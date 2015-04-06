@@ -1,0 +1,15 @@
+ui/.bower_cache
+ui/bower_components
+ui/node
+ui/node_modules
+ui/app/lib/
+ui/.tmp
+src/
+target/
+.classpath
+.project
+.settings/
+*.iml
+*.ipr
+*.iws
+
