@@ -14,8 +14,8 @@ module.exports = function (grunt) {
     // Project settings
     xd: {
       app: 'app',
-      dist:          'src/main/resources/public/admin-ui',
-      distTemplates: 'src/main/resources/templates'
+      dist:          '../src/main/resources/public/admin-ui',
+      distTemplates: '../src/main/resources/templates'
     },
     // Set bower task's targetDir to use app directory
     bower: {
@@ -143,6 +143,9 @@ module.exports = function (grunt) {
     // Empties folders to start fresh
     clean: {
       dist: {
+		options: {
+			force: true
+		},
         files: [
           {
             dot: true,
