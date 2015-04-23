@@ -21,7 +21,18 @@
  */
 define([], function () {
   'use strict';
-  return ['$window', function ($window) {
-    $window.location.href = '/admin-ui/logout';
+  return ['$window', 'XDUtils', '$state', '$log', '$rootScope', '$http', function ($window, XDUtils, $state, $log, $rootScope, $http) {
+    $log.info('Logging out...');
+    $http.get($rootScope.xdAdminServerUrl + '/admin-ui/logout');
+
+    $rootScope.user = {
+      authenticationEnabled: true,
+      isAuthenticated: false,
+      username: ''
+    };
+
+    delete $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName];
+    XDUtils.growl.success('Logged out.');
+    $state.go('login');
   }];
 });

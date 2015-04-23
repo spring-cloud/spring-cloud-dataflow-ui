@@ -217,11 +217,12 @@ define(['./app'], function (xdAdmin) {
       }
     });
   });
-  xdAdmin.run(function ($rootScope, $state, $stateParams, userService, $log, $window) {
+  xdAdmin.run(function ($rootScope, $state, $stateParams, userService, $log) {
 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     $rootScope.xdAdminServerUrl = window.location.protocol + '//' + window.location.host;
+    $rootScope.xAuthTokenHeaderName = 'x-auth-token';
     $rootScope.user = userService;
     $rootScope.pageRefreshTime = 5000;
     $rootScope.enableMessageRates = true;
@@ -229,7 +230,7 @@ define(['./app'], function (xdAdmin) {
     $rootScope.$on('$stateChangeStart', function(event, toState) {
         if (userService.authenticationEnabled && toState.data.authenticate && !userService.isAuthenticated){
           $log.info('Need to authenticate...');
-          $window.location.href = '/admin-ui/login';
+          $state.go('login');
           event.preventDefault();
         }
       });

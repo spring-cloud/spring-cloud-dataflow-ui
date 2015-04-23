@@ -23,7 +23,7 @@ define(['angular'], function (angular) {
   'use strict';
 
   return angular.module('xdShared.interceptors', [])
-      .factory('httpErrorInterceptor', function (XDUtils, $location, $window) {
+      .factory('httpErrorInterceptor', function (XDUtils, $location) {
         return {
           responseError: function (rejection) {
             if (rejection.status === 0) {
@@ -31,7 +31,8 @@ define(['angular'], function (angular) {
             }
             if (rejection.status === 401) {
               XDUtils.growl.error('Not authenticated. Please login again.');
-              $window.location.href = '/admin-ui/login';
+              //$window.location.href = '/admin-ui/login';
+              $location.path('/login');
             }
             XDUtils.$log.error('Response Error ' + rejection.status, rejection);
             return XDUtils.$q.reject(rejection);

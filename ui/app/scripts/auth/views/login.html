@@ -8,17 +8,21 @@
           </div>
         </div>
         <div class="platform--wrapper">
-          <div class="platform--title">Please sign in</div>
+          <div class="platform--title" ng-if="!user.isAuthenticated">Please sign in</div>
+          <div class="platform--title" ng-if="user.isAuthenticated">Please sign out first</div>
           <div class="platform--text">
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-4 col-md-offset-4">
-                <form class="form-signin" role="form" ng-submit="login()">
-                  <input ng-model="loginFormData.name" type="email" class="form-control" placeholder="Email address" required autofocus>
+                <form class="form-signin" role="form" ng-submit="login()" novalidate ng-if="!user.isAuthenticated">
+                  <input ng-model="loginForm.username" type="text" class="form-control" placeholder="Username" required autofocus>
                   <div class="help-block"></div>
-                  <input ng-model="loginFormData.password" type="password" class="form-control" placeholder="Password" required>
+                  <input ng-model="loginForm.password" type="password" class="form-control" placeholder="Password" required>
                   <div class="help-block"></div>
                   <button class="btn btn-lg btn-default btn-block" type="submit">Sign in</button>
+                </form>
+                <form class="form-signin" role="form" ng-submit="logout()" novalidate ng-if="user.isAuthenticated">
+                  <button class="btn btn-lg btn-default btn-block" type="submit">Sign out</button>
                 </form>
                 </div>
               </div>

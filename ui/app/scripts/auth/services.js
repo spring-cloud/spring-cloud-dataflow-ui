@@ -31,5 +31,7 @@ define(['angular'], function (angular) {
             username: securityInfo.username
           };
           return user;
-        });
+        })
+      .factory('LoginService', function () {
+      });
 });

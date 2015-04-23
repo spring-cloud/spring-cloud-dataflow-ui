@@ -9,9 +9,9 @@
 
 	<name>Spring XD User Interface</name>
 
-	<properties>
-		<spring-data-rest.version>2.2.0.RELEASE</spring-data-rest.version>
-	</properties>
+	<prerequisites>
+		<maven>3.1.0</maven>
+	</prerequisites>
 
 	<build>
 		<resources>
@@ -23,6 +23,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -31,7 +32,7 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>0.0.22</version>
+				<version>0.0.23</version>
 				<configuration>
 					<workingDirectory>ui</workingDirectory>
 				</configuration>

@@ -21,14 +21,32 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', '$state', 'userService', 'XDUtils',
-          function ($scope, $state, user, utils) {
-          $scope.loginFormData = {};
+  return ['$scope', '$state', 'userService', 'XDUtils', '$log', '$rootScope', '$http',
+          function ($scope, $state, user, utils, $log, $rootScope, $http) {
+          $scope.loginForm = {};
           $scope.login = function() {
-            user.isAuthenticated = true;
-            user.username = $scope.loginFormData.name;
-            utils.growl.success('user ' + user.username + ' logged in.');
-            $state.go('home.jobs.tabs.definitions');
+            $log.info('Logging in user:', $scope.loginForm.username);
+            var authenticationPromise = $http.post($rootScope.xdAdminServerUrl + '/authenticate', $scope.loginForm);
+            utils.addBusyPromise(authenticationPromise);
+            authenticationPromise.then(
+              function(response) {
+                $log.info(response.data);
+                $log.info($scope.loginForm);
+                $rootScope.user.username = $scope.loginForm.username;
+                $rootScope.user.isAuthenticated = true;
+                $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName] = response.data;
+
+                utils.growl.success('User ' + $scope.loginForm.username + ' logged in.');
+                $scope.loginForm = {};
+                $state.go('home.jobs.tabs.definitions');
+              },
+              function(response) {
+                utils.growl.error(response.data[0].message);
+              }
+            );
+          };
+          $scope.logout = function() {
+            $state.go('logout');
           };
         }];
 });

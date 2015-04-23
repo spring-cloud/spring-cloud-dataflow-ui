@@ -87,6 +87,7 @@ define([
   var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
 
   promiseHttp.then(function(response) {
+    
     app.constant('securityInfo', response.data);
     require(['app', './routes'], function () {
       require(['domReady!'], function (document) {
