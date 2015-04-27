@@ -1,6 +1,8 @@
 Spring XD User Interface Module
 ===============================
 
+[![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUC)](https://build.spring.io/browse/XD-AUC)
+
 This is the *Spring XD User Interface (UI) Module*. This module uses [AngularJS][]. The project started out using [Yeoman][] (with the [AngularJS generator][]) to follow some common conventions. Instead of [ngRoute][], [AngularUI Router][] is used to provide nested view support.
 
 For E2E Testing we use [Protractor][].
