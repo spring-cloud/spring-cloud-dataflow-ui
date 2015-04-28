@@ -53,7 +53,7 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>install</arguments>
+							<arguments>install -verbose</arguments>
 						</configuration>
 					</execution>
 					<execution>
@@ -67,6 +67,38 @@
 					</execution>
 				</executions>
 			</plugin>
+			 <plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.6.1</version>
+				<configuration>
+				<filesets>
+						<fileset>
+							<directory>ui/node_modules</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							 <directory>ui/node</directory>
+							 <followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							 <directory>ui/node_modules</directory>
+							  <followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							  <directory>ui/bower_components</directory>
+							  <followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							  <directory>ui/.bower_cache</directory>
+							  <followSymlinks>false</followSymlinks>
+							</fileset>
+						<fileset>
+							  <directory>ui/app/lib</directory>
+							  <followSymlinks>false</followSymlinks>
+							</fileset>
+						</filesets>
+    </configuration>
+  </plugin>
 		</plugins>
 	</build>
 
