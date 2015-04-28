@@ -53,7 +53,7 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>install -verbose</arguments>
+							<arguments>install</arguments>
 						</configuration>
 					</execution>
 					<execution>
