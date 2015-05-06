@@ -9,7 +9,7 @@
 	<p ng-show="!definitionDeployRequest.moduleName" class="index-page--subtitle"> An error occurred. We were unable to retrieve
 		the module name from the provided definition '<strong>{{definitionName}}</strong>'.
 	</p>
-	<form name="deployDefinitionForm" class="form-horizontal" role="form">
+	<form name="deployDefinitionForm" class="form-horizontal" role="form" ng-submit="deployDefinition(definitionDeployRequest)">
 		<div class="form-group" ng-class="deployDefinitionForm.containerMatchCriteria.$invalid ? 'has-warning has-feedback' : ''">
 			<label for="containerMatchCriteria" class="col-sm-3 control-label">Container Match Criteria</label>
 			<div class="col-sm-9">
@@ -34,9 +34,10 @@
                 that one will be matched as well.</p>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-6 text-right"><button id="back-button"   type="button" class="btn btn-default" ng-click="cancelDefinitionDeploy()">Back</button></div>
+			<div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default"
+			 ng-disabled="deployDefinitionForm.$invalid || !definitionDeployRequest.moduleName">Deploy</button></div>
+		</div>
 	</form>
-	<div class="row">
-		<div class="col-md-6 text-right"><button id="back-button"   type="button" class="btn btn-default" ng-click="cancelDefinitionDeploy()">Back</button></div>
-		<div class="col-md-6 text-left"><button  id="submit-button" type="button" class="btn btn-default"
-		ng-click="deployDefinition(definitionDeployRequest)" ng-disabled="deployDefinitionForm.$invalid || !definitionDeployRequest.moduleName">Deploy</button></div>
-	</div>
+

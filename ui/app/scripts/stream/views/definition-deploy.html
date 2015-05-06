@@ -4,7 +4,7 @@
 		<a href="https://github.com/spring-projects/spring-xd/wiki/XD-Distributed-Runtime#deployment-manifest"
 		target="_blank">Technical Documentation</a>.
 	</p>
-	<form name="deployDefinitionForm" class="form-horizontal" role="form">
+	<form name="deployDefinitionForm" class="form-horizontal" role="form" ng-submit="deployDefinition(definitionDeployRequest)">
 		<div class="form-group">
 			<label for="deploymentProperties" class="col-sm-3 control-label">Deployment Properties</label>
 			<div class="col-sm-9">
@@ -12,9 +12,8 @@
 							class="form-control" placeholder="Enter deployment properties" ng-model="definitionDeployRequest.deploymentProperties"/>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-6 text-right"><button id="back-button"   type="button" class="btn btn-default" ng-click="cancelDefinitionDeploy()">Back</button></div>
+			<div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default">Deploy</button></div>
+		</div>
 	</form>
-	<div class="row">
-		<div class="col-md-6 text-right"><button id="back-button"   type="button" class="btn btn-default" ng-click="cancelDefinitionDeploy()">Back</button></div>
-		<div class="col-md-6 text-left"><button  id="submit-button" type="button" class="btn btn-default"
-		ng-click="deployDefinition(definitionDeployRequest)">Deploy</button></div>
-	</div>
