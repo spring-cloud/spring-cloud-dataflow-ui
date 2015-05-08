@@ -3,9 +3,11 @@ Spring XD User Interface Module
 
 # Build Status
 
-Linux: [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUC)](https://build.spring.io/browse/XD-AUC)
+|               | Build Status  |
+| ------------- | ------------- |
+| Linux         | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUC)](https://build.spring.io/browse/XD-AUC)  |
+| Windows       | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUCWIN)](https://build.spring.io/browse/XD-AUCWIN)  |
 
-Windows: [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUCWIN)](https://build.spring.io/browse/XD-AUCWIN)
 
 This is the *Spring XD User Interface (UI) Module*. This module uses [AngularJS][]. In order to provide nested view support, we use [AngularUI Router][]. For E2E Testing [Protractor][] is used.
 
