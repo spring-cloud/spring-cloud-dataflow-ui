@@ -1,8 +1,6 @@
 Spring XD User Interface Module
 ===============================
 
-# Build Status
-
 |               | Build Status  |
 | ------------- | ------------- |
 | Linux         | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUC)](https://build.spring.io/browse/XD-AUC)  |
