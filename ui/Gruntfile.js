@@ -88,6 +88,7 @@ module.exports = function (grunt) {
       test: {
         options: {
           port: 9001,
+          browserNoActivityTimeout: 100000,
           base: [
             '.tmp',
             'test',
