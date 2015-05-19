@@ -15,28 +15,40 @@
  */
 
 /**
- * Definition of xdAdmin app module.
+ * App for XD containers.
  *
  * @author Ilayaperumal Gopinathan
  */
 define([
   'angular',
-  './analytics/app',
-  './job/app',
-  './stream/app',
-  './container/app',
-  './auth/app'
+  'uiRouter',
+  'ngResource',
+  'cgBusy',
+  'ngAnimate',
+  'ngGrowl',
+  'ngCookies',
+  'ngCharts',
+  './controllers',
+  './directives',
+  './services',
+  '../shared/controllers',
+  '../shared/services',
+  '../shared/interceptors'
 ], function (angular) {
   'use strict';
-
-  console.log('Loading Spring XD Admin UI');
-
-  return  angular.module('xdAdmin', [
-    'xdConf',
-    'xdAnalyticsAdmin',
-    'xdJobsAdmin',
-    'xdStreamsAdmin',
-    'xdContainerAdmin',
-    'xdAuth'
+  return angular.module('xdAnalyticsAdmin', [
+    'xdAnalyticsAdmin.services',
+    'xdAnalyticsAdmin.controllers',
+    'xdAnalyticsAdmin.directives',
+    'xdShared.controllers',
+    'xdShared.services',
+    'xdShared.interceptors',
+    'ui.router',
+    'ngResource',
+    'ngAnimate',
+    'cgBusy',
+    'angular-growl',
+    'googlechart',
+    'ngCookies'
   ]);
 });

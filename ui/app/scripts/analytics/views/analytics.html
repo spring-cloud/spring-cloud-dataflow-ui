@@ -1,0 +1,32 @@
+<h1>Analytics</h1>
+<p ng-class="{ hide: !$state.includes('home.analytics.tabs.dashboard') }" class="index-page--subtitle"> This section
+    displays dashboard for the metrics data from various counter modules.
+</p>
+<p ng-class="{ hide: !$state.includes('home.analytics.tabs.counters') }" class="index-page--subtitle"> This section
+    displays counters and their values.
+</p>
+<p ng-class="{ hide: !$state.includes('home.analytics.tabs.gauges') }" class="index-page--subtitle"> This section
+    displays gauges and their values.
+</p>
+<p ng-class="{ hide: !$state.includes('home.analytics.tabs.richgauges') }" class="index-page--subtitle"> This section
+    displays rich gauges and their data.
+</p>
+<div class="tab-pane active col-md-12">
+    <ul class="nav nav-tabs">
+        <li ng-class="{ active: $state.includes('home.analytics.tabs.dashboard') }"><a
+                ui-sref="home.analytics.tabs.dashboard">Dashboard</a>
+        </li>
+        <li ng-class="{ active: $state.includes('home.analytics.tabs.counters') }"><a
+                ui-sref="home.analytics.tabs.counters">Counters</a>
+        </li>
+        <li ng-class="{ active: $state.includes('home.analytics.tabs.gauges') }"><a
+                ui-sref="home.analytics.tabs.gauges">Gauges</a>
+        </li>
+        <li ng-class="{ active: $state.includes('home.analytics.tabs.richgauges') }"><a
+                ui-sref="home.analytics.tabs.richgauges">Rich-Gauges</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div ui-view></div>
+    </div>
+</div>

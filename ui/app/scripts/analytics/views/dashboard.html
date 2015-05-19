@@ -1,0 +1,120 @@
+<div class="tab-content-header">
+</div>
+<div ng-if="visualization === 'Gauge-Chart' && currentStream" google-chart chart="metricsData.gaugeData" style="height:130px; width:100%;"></div>
+<table class="table table-double-striped table-hover metrics-table">
+    <thead>
+    <tr>
+        <th width="200px">Metric Type</th>
+        <th>Stream</th>
+        <th width="200px">Visualization</th>
+        <th width="100px">Refresh [seconds]</th>
+        <th colspan="4" class="text-center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat-start="item in items">
+            <td>
+                <select ng-model="item.type" ng-options="type.label for type in allMetricTypes"
+                    ng-change="item.stream = ''; item.visualization = '';">
+                    <option value=''>- Please Select -</option>
+                </select>
+            </td>
+            <td>
+                <select ng-model="item.stream" ng-options="m for m in item.type.streams"
+                        ng-disabled="!(item.type && item.type.streams && item.type.streams.length)">
+                    <option value=''>- Please Select -</option>
+                </select>
+            </td>
+            <td>
+                <select ng-model="item.visualization" ng-options="viz for viz in item.type.visualizations"
+                        ng-disabled="!item.stream">
+                    <option value=''>- Please Select -</option>
+                </select>
+            </td>
+            <td>
+                <input type="text" ng-model="item.refreshRate" ng-model-options="{ getterSetter: true, updateOn: 'blur change' }" size="8"></input>
+            </td>
+            <td class="action-column">
+                <button type="button" ng-click="temp=items[$index - 1]; items[$index - 1] = items[$index]; items[$index] = temp;"
+                        ng-disabled="$first"
+                        class="btn btn-default"
+                        ><span class="glyphicon glyphicon-arrow-up"></span>
+                </button>
+            </td>
+            <td class="action-column">
+                <button type="button" ng-click="temp=items[$index + 1]; items[$index + 1] = items[$index]; items[$index] = temp;"
+                        ng-disabled="$last"
+                        class="btn btn-default"
+                        ><span class="glyphicon glyphicon-arrow-down"></span>
+                </button>
+            </td>
+            <td class="action-column">
+                <button type="button" ng-click="items.splice($index + 1, 0, newEntry());"
+                        class="btn btn-default"
+                        ><span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </td>
+            <td class="action-column">
+                <button type="button" ng-click="items.splice($index, 1)"
+                        ng-disabled="items.length <= 1"
+                        class="btn btn-default"
+                        ><span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </td>
+        </tr>
+        <tr ng-controller="MetricController" ng-repeat-end>
+            <td ng-if="item.stream && item.type" colspan="8">
+                    <counter-header ng-if="item.type.label === 'Counters' && item.stream" data="metricsData.value" rates="metricsData.values"></counter-header>
+                    <gauge-header ng-if="item.type.label === 'Gauges' && item.stream" data="metricsData.value"></gauge-header>
+                    <rich-gauge-header ng-if="item.type.label === 'Rich-Gauges' && item.stream" data="metricsData.value"></rich-gauge-header>
+                    <div ng-if="item.visualization === 'Bar-Chart' && item.stream">
+                        <div class="chart-slider">
+                            <label>Bar-Size: </label>
+                            <input type="range" ng-model="item.barSize" ng-init="item.barSize=item.barSize || 10;" step="1" max="50" min="2" data-type="range" name="range"/>
+                            <label>Width: </label>
+                            <input type="range" ng-init="item.width=item.width || 1000;" ng-model="item.width" step="10" max="2000" min="50" data-type="range" name="range"/>
+                        </div>
+                        <bar-chart chart-data="metricsData.values" class="bar-chart" width="item.width" bar-size="item.barSize"></bar-chart>
+                    </div>
+                    <div class="bubble-chart" ng-if="item.visualization === 'Bubble-Chart' && item.stream">
+                        <div class="chart-slider">
+                            <label>Size: </label>
+                            <input type="range" ng-init="item.height=item.height || 300;" ng-model="item.height" step="10" max="2000" min="100" data-type="range" name="range"/>
+                        </div>
+                        <bubble-chart chart-data="metricsData.values" diameter="item.height"></bubble-chart>
+                    </div>
+                    <div class="pie-chart" ng-if="item.visualization === 'Pie-Chart' && item.stream">
+                        <div class="chart-slider">
+                            <label>Size: </label>
+                            <input type="range" ng-init="item.height=item.height || 300;" ng-model="item.height" step="10" max="2000" min="100" data-type="range" name="range"/>
+                        </div>
+                        <pie-chart chart-data="metricsData.values" height="item.height" width="item.height"></pie-chart>
+                    </div>
+                    <div class="graph-chart" ng-if="item.visualization === 'Graph-Chart' && item.stream">
+                        <div class="chart-slider">
+                            <label>Height: </label>
+                            <input type="range" ng-model="item.height" ng-init="item.height=item.height || 300;" step="10" max="2000" min="100" data-type="range" name="range"/>
+                            <label>Width: </label>
+                            <input type="range" ng-model="item.width" step="10" max="2000" min="100" data-type="range" name="range"/>
+                        </div>
+                        <graph-chart chart-data="metricsData.values"
+                                     width="item.width"
+                                     height="item.height"
+                                     total="metricsData.valuesCount"
+                                     reverse="true"
+                                     axis-units-x="'seconds ago'"
+                                     axis-units-y="metricsData.valueLabel"
+                                     units-per-tick-x="metricsData.unitsPerTickX"></graph-chart>
+                    </div>
+                    <div ng-if="item.visualization === 'Gauge-Chart' && item.stream">
+                        <div class="chart-slider">
+                            <label>Size: </label>
+                            <input type="range" ng-model="item.height" ng-init="item.height=item.height || 200;" step="5" max="1000" min="50" data-type="range" name="range"/>
+                        </div>
+                        <div google-chart chart="metricsData.gaugeData"></div>
+                    </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

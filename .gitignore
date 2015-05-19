@@ -13,4 +13,4 @@ target/
 *.iml
 *.ipr
 *.iws
-
+npm-debug.log

@@ -40,7 +40,8 @@ define(['./app'], function (xdAdmin) {
         streamTemplatesPath = 'scripts/stream/views',
         authTemplatesPath = 'scripts/auth/views',
         sharedTemplatesPath = 'scripts/shared/views',
-        containerTemplatesPath = 'scripts/container/views';
+        containerTemplatesPath = 'scripts/container/views',
+        analyticsTemplatesPath = 'scripts/analytics/views';
 
     $stateProvider.state('home', {
       url : '/',
@@ -51,6 +52,13 @@ define(['./app'], function (xdAdmin) {
       abstract:true,
       template: '<ui-view/>',
       data:{
+        authenticate: true
+      }
+    })
+    .state('home.analytics', {
+      abstract: true,
+      template: '<ui-view/>',
+      data: {
         authenticate: true
       }
     })
@@ -199,6 +207,50 @@ define(['./app'], function (xdAdmin) {
         authenticate: true
       }
     })
+        .state('home.analytics.tabs', {
+          url : 'analytics',
+          abstract:true,
+          data:{
+            authenticate: true
+          },
+          templateUrl : analyticsTemplatesPath + '/analytics.html'
+        })
+        .state('home.analytics.tabs.dashboard', {
+          url : '/dashboard',
+          templateUrl : analyticsTemplatesPath + '/dashboard.html',
+          controller: 'DashboardController',
+          data:{
+            title: 'Dashboard',
+            authenticate: true
+          }
+        })
+        .state('home.analytics.tabs.counters', {
+          url : '/counters',
+          templateUrl : analyticsTemplatesPath + '/counters.html',
+          controller: 'CountersController',
+          data:{
+            title: 'Counters',
+            authenticate: true
+          }
+        })
+        .state('home.analytics.tabs.gauges', {
+          url : '/gauges',
+          templateUrl : analyticsTemplatesPath + '/gauges.html',
+          controller: 'GaugesController',
+          data:{
+            title: 'Gauges',
+            authenticate: true
+          }
+        })
+        .state('home.analytics.tabs.richgauges', {
+          url : '/rich-gauges',
+          templateUrl : analyticsTemplatesPath + '/rich-gauges.html',
+          controller: 'RichGaugesController',
+          data:{
+            title: 'Rich-Gauges',
+            authenticate: true
+          }
+        })
     .state('home.containers.tabs', {
       url : 'containers',
       abstract:true,

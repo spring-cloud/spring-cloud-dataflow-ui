@@ -35,7 +35,10 @@ require.config({
     highlightjs: '../lib/highlightjs/highlight.pack',
     xregexp: '../lib/xregexp/xregexp-all',
     pagination: '../lib/angular-utils-pagination/dirPagination',
-    moment: '../lib/moment/moment'
+    moment: '../lib/moment/moment',
+    ngCharts: '../lib/angular-google-chart/ng-google-chart',
+    ngCookies: '../lib/angular-cookies/angular-cookies',
+    d3: '../lib/d3/d3'
   },
   shim: {
     angular: {
@@ -68,7 +71,13 @@ require.config({
     },
     'angularHighlightjs': {
       deps: ['angular', 'highlightjs']
-    }
+    },
+    'ngCharts': {
+      deps: ['angular']
+    },
+    'ngCookies': {
+      deps: ['angular']
+    },
   }
 });
 

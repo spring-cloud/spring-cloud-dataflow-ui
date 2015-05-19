@@ -104,7 +104,8 @@ module.exports = function (grunt) {
         {
           context: [
             '/authenticate', '/batch', '/job', '/logout', '/meta', '/modules', '/streams',
-            '/runtime', '/validation', '/management', '/admin-ui', '/security'],
+            '/runtime', '/validation', '/management', '/admin-ui', '/security',
+            '/metrics'],
           host: 'localhost',
           port: 9393,
           changeOrigin: true
@@ -272,7 +273,7 @@ module.exports = function (grunt) {
               'lib/**/*',
               'scripts/**/*',
               'fonts/*',
-              'images/*'
+              'images/**/*'
             ]
           }
         ]

@@ -1,0 +1,83 @@
+.table-double-striped > tbody > tr:nth-child(4n-1) {
+  background-color: #f9f9f9;
+}
+
+.table-double-striped > tbody > tr:nth-child(4n) {
+  background-color: #f9f9f9;
+}
+
+.table-double-striped > tbody > tr:nth-child(2n) > td {
+  border-top-width: 0px;
+}
+
+.tab-content-header {
+  background-color: @spring-brown;
+  color: @spring-light-grey;
+  padding: 9px 12px;
+  width: 100%;
+}
+
+.tab-content-header td {
+  padding: 3px;
+}
+
+.tab-content-header select {
+  -webkit-appearance: menulist-button;
+  color: @spring-brown;
+  background-color: @spring-light-grey;
+  width: 100%;
+}
+
+.metrics-table select {
+  -webkit-appearance: menulist-button;
+  //background-color: inherit;
+  width: 100%;
+}
+
+.metrics-table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.bar-chart {
+  font: 10px sans-serif;
+  shape-rendering: crispEdges;
+}
+
+.bar-chart rect {
+  stroke: white;
+  fill: steelblue;
+}
+
+.bar-chart text.bar {
+  fill: white;
+}
+
+.pie-chart path {
+  stroke: #fff;
+}
+
+.chart-slider input[type="range"] {
+  width: 300px;
+  display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.inline-graph-chart {
+  width: 600px;
+}
+
+.inline-gauge-chart {
+  width: 130px;
+}
+
+.tick line{
+  opacity: 0.2;
+}
+
+.tick text{
+  font-size: 12px;
+  font-family: Helvetica, Arial, Sans-Serif;
+  stroke: none;
+  fill: black;
+}
