@@ -1,4 +1,23 @@
-<div class="tab-content-header">
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 table-filter">
+            <div>
+                <table class="col-lg-12 tab-content-header"><tr>
+                    <td class="col-xs-8">
+                        <button type="button" ng-click="items = [ newEntry() ];"
+                                class="btn btn-default"
+                                ><span class="glyphicon glyphicon-trash"></span>
+                            Clear
+                        </button>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
+                               placeholder="Quick filter">
+                    </td>
+                </tr></table>
+            </div>
+        </div>
+    </div>
 </div>
 <div ng-if="visualization === 'Gauge-Chart' && currentStream" google-chart chart="metricsData.gaugeData" style="height:130px; width:100%;"></div>
 <table class="table table-double-striped table-hover metrics-table">
@@ -12,7 +31,7 @@
     </tr>
     </thead>
     <tbody>
-        <tr ng-repeat-start="item in items">
+        <tr ng-repeat-start="item in items | filter:filterQuery">
             <td>
                 <select ng-model="item.type" ng-options="type.label for type in allMetricTypes"
                     ng-change="item.stream = ''; item.visualization = '';">
