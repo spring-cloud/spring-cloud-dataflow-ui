@@ -18,13 +18,23 @@
  * XD Containers controller
  *
  * @author Ilayaperumal Gopinathan
+ * @author Gunnar Hillert
  */
-define([], function () {
+define(['model/pageable'], function (Pageable) {
   'use strict';
   return ['$scope', 'ContainerService', 'XDUtils', '$timeout', '$rootScope',
     function ($scope, containerService, utils, $timeout, $rootScope) {
-      function loadContainers() {
-        containerService.getContainers().$promise.then(
+      $scope.pageable = new Pageable();
+      $scope.pagination = {
+        current: 1
+      };
+      $scope.pageChanged = function(newPage) {
+        $scope.pageable.pageNumber = newPage-1;
+        loadContainers($scope.pageable);
+      };
+      function loadContainers(pageable) {
+        utils.$log.info('pageable', pageable);
+        containerService.getContainers(pageable).$promise.then(
             function (result) {
               utils.$log.info('Retrieved containers...', result);
               var containers = result.content;
@@ -44,15 +54,19 @@ define([], function () {
                   });
                 }
               });
-              $scope.containers = containers;
+              $scope.pageable.items = containers;
+              $scope.pageable.total = result.page.totalElements;
               loadContainersWithTimeout();
             }
         );
       }
       function loadContainersWithTimeout() {
-        $scope.containerTimeOutPromise = $timeout(loadContainers, $rootScope.pageRefreshTime);
+        $scope.containerTimeOutPromise = $timeout(function() {
+          loadContainers($scope.pageable);
+        }, $rootScope.pageRefreshTime);
       }
-      loadContainers();
+
+      loadContainers($scope.pageable);
 
       $scope.$on('$destroy', function () {
         console.log('Polling cancelled');

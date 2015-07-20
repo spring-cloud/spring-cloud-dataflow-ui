@@ -18,19 +18,27 @@
  * XD Container services.
  *
  * @author Ilayaperumal Gopinathan
+ * @author Gunnar Hillert
  */
 define(['angular'], function (angular) {
   'use strict';
 
   return angular.module('xdContainerAdmin.services', [])
-      .factory('ContainerService', function ($resource, $rootScope) {
+      .factory('ContainerService', function ($resource, $rootScope, $log) {
         return {
-          getContainers: function () {
-            return $resource($rootScope.xdAdminServerUrl + '/runtime/containers.json', {}, {
-              getContainers: {
-                method: 'GET'
-              }
-            }).getContainers();
+          getContainers: function (pageable) {
+            if (pageable === 'undefined') {
+              $log.info('Getting all containers.');
+              return $resource($rootScope.xdAdminServerUrl + '/runtime/containers.json', {}).get();
+            }
+            else {
+              $log.info('Getting containers for pageable:', pageable);
+              return $resource($rootScope.xdAdminServerUrl + '/runtime/containers.json',
+                {
+                  'page': pageable.pageNumber,
+                  'size': pageable.pageSize
+                }).get();
+            }
           },
           shutdownContainer: function (containerId) {
             return $resource($rootScope.xdAdminServerUrl + '/runtime/containers?containerId=' + containerId, null, {

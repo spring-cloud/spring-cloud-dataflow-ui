@@ -18,8 +18,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in containers | filter:filterQuery | orderBy: item.groups"
-        ng-show="!item.inactive">
+    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total" ng-show="!item.inactive">
         <td id="container-id">
             <a xd-popover=".containerDetails{{$index}}" rel="popover" data-original-title="Container Attributes">{{item.containerId}}</a>
             <div class="containerDetails{{$index}} hide">
@@ -95,6 +94,8 @@
     </tr>
     </tbody>
 </table>
+<dir-pagination-controls template-url="scripts/directives/dirPagination.tpl.html"
+                         on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
 <div class="modal fade" xd-modal id="confirm-shutdown" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
