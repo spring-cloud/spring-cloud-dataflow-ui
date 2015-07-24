@@ -6599,7 +6599,8 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
 .erlang_repl .hljs-function_or_atom,
 .asciidoc .hljs-header,
 .markdown .hljs-header,
-.coffeescript .hljs-attribute {
+.coffeescript .hljs-attribute,
+.tp .hljs-variable {
   color: #800;
 }
 .smartquote,
@@ -6629,7 +6630,6 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
   color: #080;
 }
 .hljs-label,
-.hljs-javadoc,
 .ruby .hljs-string,
 .hljs-decorator,
 .hljs-filter .hljs-argument,
@@ -6664,10 +6664,7 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
 .hljs-title,
 .hljs-built_in,
 .css .hljs-tag,
-.hljs-javadoctag,
-.hljs-phpdoc,
-.hljs-dartdoc,
-.hljs-yardoctag,
+.hljs-doctag,
 .smalltalk .hljs-class,
 .hljs-winutils,
 .bash .hljs-variable,
@@ -6679,11 +6676,14 @@ Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiac
 .asciidoc .hljs-strong,
 .markdown .hljs-strong,
 .hljs-request,
-.hljs-status {
+.hljs-status,
+.tp .hljs-data,
+.tp .hljs-io {
   font-weight: bold;
 }
 .asciidoc .hljs-emphasis,
-.markdown .hljs-emphasis {
+.markdown .hljs-emphasis,
+.tp .hljs-units {
   font-style: italic;
 }
 .nginx .hljs-built_in {
