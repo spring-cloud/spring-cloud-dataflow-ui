@@ -4,7 +4,7 @@
 
 	<groupId>org.springframework.xd</groupId>
 	<artifactId>spring-xd-admin-ui-client</artifactId>
-	<version>1.2.2.BUILD-SNAPSHOT</version>
+	<version>1.3.0.BUILD-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Spring XD User Interface</name>

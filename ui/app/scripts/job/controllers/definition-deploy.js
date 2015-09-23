@@ -18,6 +18,7 @@
  * Definition of the Job Deployment Details controller
  *
  * @author Gunnar Hillert
+ * @author Gary Russell
  */
 define([], function () {
   'use strict';
@@ -41,7 +42,7 @@ define([], function () {
               jobDefinition: jobDefinition,
               moduleName: moduleName,
               containerMatchCriteria: '',
-              jobModuleCount: ''
+              jobModuleCount: undefined
             };
           },function (error) {
             utils.growl.error('Error fetching job definition. ' + error.data[0].message);
@@ -61,7 +62,7 @@ define([], function () {
           properties.push('module.' + definitionDeployRequest.moduleName +
           '.criteria=' + definitionDeployRequest.containerMatchCriteria);
         }
-        if (definitionDeployRequest.jobModuleCount) {
+        if (typeof definitionDeployRequest.jobModuleCount !== 'undefined') {
           properties.push('module.' + definitionDeployRequest.moduleName +
           '.count=' + definitionDeployRequest.jobModuleCount);
         }
