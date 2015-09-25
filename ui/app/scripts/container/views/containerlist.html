@@ -50,9 +50,9 @@
                             title="{{deployments.deploymentStatus || 'N/A'}}">{{deployments.unitName}}</span>
                     </td>
                     <td class="input-group-addon">
-                        <a xd-popover=".deploymentDetails{{$index}}" rel="popover" data-original-title="Deployment Details">
-                        {{deployments.name}}</a>
-                        <div class="deploymentDetails{{$index}} hide">
+                        <a xd-popover=".deploymentDetails_{{deployments.containerId}}_{{$index}}" rel="popover" data-original-title="Deployment Details">
+                        {{deployments.name}} - {{$index}}</a>
+                        <div class="deploymentDetails_{{deployments.containerId}}_{{$index}} hide">
                           <table class="table-hover table-condensed table-bordered container-details-table">
                             <thead>
                               <tr><th colspan="2">Module Options</th></tr>
