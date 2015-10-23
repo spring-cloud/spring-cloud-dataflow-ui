@@ -197,6 +197,26 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
         templateUrl: 'scripts/directives/xdDeploymentStatus.html'
       };
     })
+    .directive('xdComposedJobStatus', function() {
+      var linkFunction = function(scope) {
+        scope.$watch('xdComposedJobStatus', function(resource){
+          if (resource) {
+            if (resource.composedJob) {
+              scope.labelClass = 'info';
+              scope.label = 'Composed';
+            }
+          }
+        });
+      };
+      return {
+        restrict: 'A',
+        scope: {
+          xdComposedJobStatus: '='
+        },
+        link: linkFunction,
+        templateUrl: 'scripts/directives/xdComposedJobStatus.html'
+      };
+    })
     .directive('xdPopover', function() {
       return {
         restrict: 'A',

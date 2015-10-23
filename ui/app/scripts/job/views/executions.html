@@ -17,7 +17,7 @@
 	<tbody>
 		<tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total"
 		    ng-show="!item.inactive">
-			<td>{{item.name}}&nbsp;<span xd-deployment-status="item"></span></td>
+			<td>{{item.name}}&nbsp;<span xd-deployment-status="item"></span><span xd-composed-job-status="item"></span></td>
             <td class="text-center">{{item.jobExecution.jobInstance.id}}</td>
             <td class="text-center">{{item.jobExecution.id}}</td>
 			<td xd-date-time="{{item.jobExecution.startTime}}"></td>

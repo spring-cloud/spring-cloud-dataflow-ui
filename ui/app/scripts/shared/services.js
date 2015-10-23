@@ -26,6 +26,9 @@ define(['angular', 'xregexp'], function (angular) {
       .factory('XDUtils', function ($log, growl, $timeout, $q, $rootScope) {
 
         var moduleNameRegex = new XRegExp('[\\p{N}|\\p{L}|\\p{Po}]*(?=[\\s]*--)', 'i');
+
+        $rootScope.jobExecutionIdHierarchy = [];
+
         return {
           $log: $log,
           growl: growl,
@@ -35,6 +38,7 @@ define(['angular', 'xregexp'], function (angular) {
           addBusyPromise: function (promise) {
             $rootScope.cgbusy = promise;
           },
+          jobExecutionIdHierarchy: $rootScope.jobExecutionIdHierarchy,
           getModuleNameFromJobDefinition: function(jobDefinition) {
             if (!jobDefinition) {
               throw new Error('jobDefinition must be defined.');

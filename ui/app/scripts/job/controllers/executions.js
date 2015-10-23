@@ -32,6 +32,8 @@ define(['model/pageable'], function (Pageable) {
       loadJobExecutions($scope.pageable);
     };
 
+    utils.jobExecutionIdHierarchy.length=0;
+
     function loadJobExecutions(pageable) {
       var jobExcutionsPromise = jobExecutions.getAllJobExecutions(pageable).$promise;
       utils.addBusyPromise(jobExcutionsPromise);
