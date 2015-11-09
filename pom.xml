@@ -2,16 +2,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.springframework.xd</groupId>
-	<artifactId>spring-xd-admin-ui-client</artifactId>
-	<version>1.3.0.BUILD-SNAPSHOT</version>
+	<groupId>org.springframework.cloud</groupId>
+	<artifactId>spring-cloud-dataflow-ui</artifactId>
+	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Spring XD User Interface</name>
+	<name>Spring Cloud Data Flow User Interface</name>
+
+	<url>http://cloud.spring.io/spring-cloud-dataflow/</url>
+
+	<organization>
+		<name>Pivotal Software, Inc.</name>
+		<url>http://www.spring.io</url>
+	</organization>
 
 	<prerequisites>
 		<maven>3.1.0</maven>
 	</prerequisites>
+
+	<scm>
+		<url>https://github.com/spring-cloud/spring-cloud-dataflow-ui</url>
+		<connection>scm:git:git://github.com/spring-cloud/spring-cloud-dataflow-ui.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/spring-cloud/spring-cloud-dataflow-ui.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 
 	<build>
 		<resources>
@@ -97,8 +111,8 @@
 							  <followSymlinks>false</followSymlinks>
 							</fileset>
 						</filesets>
-    </configuration>
-  </plugin>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

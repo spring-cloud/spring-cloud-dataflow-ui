@@ -29,7 +29,7 @@ define([
 ], function (angular) {
   'use strict';
 
-  console.log('Loading Spring XD Admin UI');
+  console.log('Loading Spring Cloud Data Flow UI');
 
   return  angular.module('xdAdmin', [
     'xdConf',

@@ -1,5 +1,5 @@
 {
-  "name": "xd",
+  "name": "Spring Cloud Data Flow UI",
   "version": "1.0.0",
   "devDependencies": {
     "tmp": "0.0.25",

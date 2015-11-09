@@ -1,5 +1,5 @@
-Spring XD User Interface Module
-===============================
+Spring Cloud Data Flow UI
+=========================
 
 |               | Build Status    |
 | ------------- | :-------------: |
@@ -7,13 +7,13 @@ Spring XD User Interface Module
 | Windows       | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUCWIN)](https://build.spring.io/browse/XD-AUCWIN)  |
 
 
-This is the *Spring XD User Interface (UI) Module*. This module uses [AngularJS][]. In order to provide nested view support, we use [AngularUI Router][]. For E2E Testing [Protractor][] is used.
+This is the *Spring Cloud Data Flow UI*. The UI uses [AngularJS][]. In order to provide nested view support, we use [AngularUI Router][]. For E2E Testing [Protractor][] is used.
 
 # Building the Module
 
-Two build tool chains are supported. Primarily, the *Spring XD UI Module* uses [Grunt][] ([Node.js][]-based) and [Bower][] for managing dependencies and the execution of the build. In order to provide easier Continuous Integration support, [Maven][] can also be used to execute the build.
+Two build tool chains are supported. Primarily, the *Spring Cloud Data Flow UI* uses [Grunt][] ([Node.js][]-based) and [Bower][] for managing dependencies and the execution of the build. In order to provide easier Continuous Integration support, [Maven][] can also be used to execute the build.
 
-While the main Spring XD project uses [Gradle][] as a build tool, the *Spring XD UI Module* uses [Maven][]. We felt that the available  [grunt-maven-plugin][] is the more robust solution. The [grunt-maven-plugin][] will actually execute [Grunt][] and [Bower][] underneath. Using the [grunt-maven-plugin][], however, the required tooling will be installed and executed for you.
+The *Spring Cloud Data Flow UI* uses [Maven][], specifically the [grunt-maven-plugin][] which will actually execute [Grunt][] and [Bower][] underneath. Using the [grunt-maven-plugin][], however, the required tooling will be downloaded, installed and executed for you.
 
 ## Requirements
 
@@ -22,25 +22,25 @@ Using [Maven][] is also the easiest route for Java developers to get started, as
 * [Maven][]
 * Git
 
-Optionally, if you like to deploy the created artifact into an existing *Spring XD* installation, setup the `XD_HOME` environment variable.
+Optionally, if you like to deploy the created artifact into an existing *Spring Cloud Data Flow UI* installation, setup the `XD_HOME` environment variable.
 
 ## Building the Project using Maven
 
-	$ git clone https://github.com/spring-projects/spring-xd-admin-ui-client.git
-	$ cd spring-xd-admin-ui-client
+	$ git clone https://github.com/spring-cloud/spring-cloud-dataflow-ui.git
+	$ cd spring-cloud-dataflow-ui
 	$ mvn clean package
 
-This will create `target/spring-xd-admin-ui-client-1.2.0.BUILD-SNAPSHOT.jar`. In order to install this Jar into an existing Spring XD installation execute:
+This will create `target/spring-cloud-dataflow-ui-1.0.0.BUILD-SNAPSHOT.jar`. In order to install this Jar into an existing Spring Cloud Data Flow installation execute:
 
-	$ rm $XD_HOME/lib/spring-xd-admin-ui-client-*.jar
-	$ cp target/spring-xd-admin-ui-client-*.jar $XD_HOME/lib
+	$ rm $XD_HOME/lib/spring-cloud-dataflow-ui-*.jar
+	$ cp target/spring-cloud-dataflow-ui-*.jar $XD_HOME/lib
 
 ## Building the Project using Grunt
 
 For UI development purposes, we recommend using [Grunt][] and [Bower][] directly. Please ensure that at a minimum [Node.js][] and [npm][] are available on your system. In order to execute the build simply do:
 
-	$ git clone https://github.com/spring-projects/spring-xd-admin-ui-client.git
-	$ cd spring-xd-admin-ui-client/ui
+	$ git clone https://github.com/spring-cloud/spring-cloud-dataflow-ui.git
+	$ cd spring-cloud-dataflow-ui/ui
 	$ npm install
 	$ grunt
 
@@ -79,7 +79,7 @@ you can also run the E2E tests separately using:
 
 	$ grunt protractor:run
 
-Please ensure that a Spring XD server instance is running at `http://localhost:9393/`.
+Please ensure that a Spring Cloud Data Flow server instance is running at `http://localhost:9393/`.
 
 ### Protractor
 
@@ -181,7 +181,7 @@ For development, just run:
 
 	$ grunt serve
 
-The local browser window should open automatically. Please ensure that a Spring XD server instance is running at `http://localhost:9393/`. The browser will automatically reload upon saving any changes to the application sources.
+The local browser window should open automatically. Please ensure that a Spring Cloud Data Flow server instance is running at `http://localhost:9393/`. The browser will automatically reload upon saving any changes to the application sources.
 
 ## Dependency Management using Bower
 
