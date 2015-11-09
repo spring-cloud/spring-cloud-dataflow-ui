@@ -1,5 +1,5 @@
 {
-  "name": "Spring Cloud Data Flow UI",
+  "name": "spring-cloud-dataflow-ui",
   "version": "1.0.0",
   "devDependencies": {
     "tmp": "0.0.25",

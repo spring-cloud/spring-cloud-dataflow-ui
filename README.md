@@ -3,8 +3,8 @@ Spring Cloud Data Flow UI
 
 |               | Build Status    |
 | ------------- | :-------------: |
-| Linux         | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUC)](https://build.spring.io/browse/XD-AUC)  |
-| Windows       | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/XD-AUCWIN)](https://build.spring.io/browse/XD-AUCWIN)  |
+| Linux         | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/SCD-UILINUX)](https://build.spring.io/browse/SCD-UILINUX)  |
+| Windows       | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/SCD-UIWIN)](https://build.spring.io/browse/SCD-UIWIN)  |
 
 
 This is the *Spring Cloud Data Flow UI*. The UI uses [AngularJS][]. In order to provide nested view support, we use [AngularUI Router][]. For E2E Testing [Protractor][] is used.
