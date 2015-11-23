@@ -21,7 +21,7 @@
 
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total" ng-show="!item.inactive">
         <td>{{item.name}}</td>
-        <td>{{item.definition}}</td>
+        <td>{{item.dslText}}</td>
         <td>{{item.status}}</td>
         <td class="action-column">
             <button type="button" ng-click="undeployStream(item)"
