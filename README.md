@@ -8,6 +8,8 @@
 
 This is the *Spring Cloud Data Flow UI*. The UI uses [AngularJS][]. In order to provide nested view support, we use [AngularUI Router][]. For E2E Testing [Protractor][] is used.
 
+| The Git repository for the main *Spring Cloud Data Flow* project is at: https://github.com/spring-cloud/spring-cloud-dataflow
+
 # Building the Module
 
 Two build tool chains are supported. Primarily, the *Spring Cloud Data Flow UI* uses [Grunt][] ([Node.js][]-based) and [Bower][] for managing dependencies and the execution of the build. In order to provide easier Continuous Integration support, [Maven][] can also be used to execute the build.

@@ -29,11 +29,11 @@ define(['angular'], function (angular) {
           getContainers: function (pageable) {
             if (pageable === 'undefined') {
               $log.info('Getting all containers.');
-              return $resource($rootScope.xdAdminServerUrl + '/runtime/containers.json', {}).get();
+              return $resource($rootScope.xdAdminServerUrl + '/runtime/containers', {}).get();
             }
             else {
               $log.info('Getting containers for pageable:', pageable);
-              return $resource($rootScope.xdAdminServerUrl + '/runtime/containers.json',
+              return $resource($rootScope.xdAdminServerUrl + '/runtime/containers',
                 {
                   'page': pageable.pageNumber,
                   'size': pageable.pageSize

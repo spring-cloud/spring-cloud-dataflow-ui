@@ -37,14 +37,14 @@ define(['angular'], function (angular) {
                 'size': pageable.pageSize
               };
             }
-            return $resource($rootScope.xdAdminServerUrl + '/streams/definitions.json', params, {
+            return $resource($rootScope.xdAdminServerUrl + '/streams/definitions', params, {
               query: {
                 method: 'GET'
               }
             }).get();
           },
           getSingleStreamDefinition: function (streamName) {
-            $log.info('Getting single stream definition for job named ' + streamName);
+            $log.info('Getting single stream definition for stream named ' + streamName);
             return $http({
               method: 'GET',
               url: $rootScope.xdAdminServerUrl + '/streams/definitions/' + streamName

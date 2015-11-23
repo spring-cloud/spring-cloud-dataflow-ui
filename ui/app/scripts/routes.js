@@ -25,7 +25,7 @@ define(['./app'], function (xdAdmin) {
   xdAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvider, hljsServiceProvider, growlProvider, $animateProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.interceptors.push('httpErrorInterceptor');
-    $urlRouterProvider.otherwise('/jobs/definitions');
+    $urlRouterProvider.otherwise('/tasks/definitions');
 
     hljsServiceProvider.setOptions({
       tabReplace: '  '
@@ -77,7 +77,7 @@ define(['./app'], function (xdAdmin) {
       }
     })
     .state('home.jobs.tabs', {
-      url : 'jobs',
+      url : 'tasks',
       abstract:true,
       data:{
         authenticate: true
