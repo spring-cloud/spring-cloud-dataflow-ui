@@ -38,7 +38,9 @@ define(['model/pageable'], function (Pageable) {
         jobModulesPromise.then(
           function (result) {
             utils.$log.info(result);
-            $scope.pageable.items = result._embedded.moduleRegistrationResourceList;
+            if (!!result._embedded) {
+              $scope.pageable.items = result._embedded.moduleRegistrationResourceList;
+            }
             $scope.pageable.total = result.page.totalElements;
           }, function (result) {
             utils.growl.error(result.data[0].message);

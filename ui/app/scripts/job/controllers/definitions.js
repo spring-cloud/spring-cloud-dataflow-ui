@@ -39,7 +39,10 @@ define(['model/pageable'], function (Pageable) {
         jobDefinitionsPromise.then(
             function (result) {
               utils.$log.info(result);
-              $scope.pageable.items = result.content;
+
+              if (!!result._embedded) {
+                $scope.pageable.items = result._embedded.taskDefinitionResourceList;
+              }
               $scope.pageable.total = result.page.totalElements;
 
               var getJobDefinitions = $timeout(function() {

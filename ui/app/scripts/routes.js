@@ -264,7 +264,7 @@ define(['./app'], function (xdAdmin) {
       templateUrl : containerTemplatesPath + '/containerlist.html',
       controller: 'ContainersController',
       data:{
-        title: 'Containers',
+        title: 'Runtime Modules',
         authenticate: true
       }
     });

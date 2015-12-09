@@ -41,7 +41,9 @@ define(['model/pageable'], function (Pageable) {
         utils.$log.info(streamDefinitionsPromise);
         streamDefinitionsPromise.then(
           function (result) {
-            $scope.pageable.items = result._embedded.streamDefinitionResourceList;
+            if (!!result._embedded) {
+              $scope.pageable.items = result._embedded.streamDefinitionResourceList;
+            }
             $scope.pageable.total = result.page.totalElements;
             var getStreamDefinitions = $timeout(function() {
               loadStreamDefinitions($scope.pageable, false);
