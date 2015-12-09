@@ -11,16 +11,16 @@
 <table class="cluster-view table">
     <thead>
     <tr>
-        <th>Container Id</th>
-        <th>Groups</th>
-        <th>Deployed Modules</th>
+        <th>Module Id</th>
+        <th>State</th>
+        <th>Instances</th>
         <th>Action</th>
     </tr>
     </thead>
     <tbody>
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total" ng-show="!item.inactive">
         <td id="container-id">
-            <a xd-popover=".containerDetails{{$index}}" rel="popover" data-original-title="Container Attributes">{{item.containerId}}</a>
+            <a xd-popover=".containerDetails{{$index}}" rel="popover" data-original-title="Container Attributes">{{item.moduleDeploymentId}}</a>
             <div class="containerDetails{{$index}} hide">
               <table class="table-hover table-condensed container-details-table">
                 <tbody>
@@ -34,13 +34,7 @@
             </div>
         </td>
         <td>
-            <table>
-                <tr ng-repeat="group in item.groups.split(',')">
-                    <td class="label label-default">
-                      {{group || 'N/A'}}
-                    </td>
-                </tr>
-            </table>
+            {{item.state}}
         </td>
         <td>
             <table class="deployed-modules">

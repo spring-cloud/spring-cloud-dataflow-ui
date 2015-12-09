@@ -37,24 +37,24 @@ define(['model/pageable'], function (Pageable) {
         containerService.getContainers(pageable).$promise.then(
             function (result) {
               utils.$log.info('Retrieved containers...', result);
-              var containers = result.content;
-              containers.forEach(function (container) {
-                if (container.attributes.managementPort && $rootScope.enableMessageRates) {
-                  var deployedModules = container.deployedModules;
-                  deployedModules.forEach(function (deployedModule) {
-                    console.log(deployedModule);
-                    if (container.messageRates && container.messageRates[deployedModule.moduleId]) {
-                      if (container.messageRates[deployedModule.moduleId].hasOwnProperty('input')) {
-                        deployedModule.incomingRate = container.messageRates[deployedModule.moduleId].input.toFixed(5);
-                      }
-                      if (container.messageRates[deployedModule.moduleId].hasOwnProperty('output')) {
-                        deployedModule.outgoingRate = container.messageRates[deployedModule.moduleId].output.toFixed(5);
-                      }
-                    }
-                  });
-                }
-              });
-              $scope.pageable.items = containers;
+              //var containers = result._embedded.moduleStatusResourceList;
+              //containers.forEach(function (container) {
+                //if (container.attributes.managementPort && $rootScope.enableMessageRates) {
+                //  var deployedModules = container.deployedModules;
+                //  deployedModules.forEach(function (deployedModule) {
+                //    console.log(deployedModule);
+                //    if (container.messageRates && container.messageRates[deployedModule.moduleId]) {
+                //      if (container.messageRates[deployedModule.moduleId].hasOwnProperty('input')) {
+                //        deployedModule.incomingRate = container.messageRates[deployedModule.moduleId].input.toFixed(5);
+                //      }
+                //      if (container.messageRates[deployedModule.moduleId].hasOwnProperty('output')) {
+                //        deployedModule.outgoingRate = container.messageRates[deployedModule.moduleId].output.toFixed(5);
+                //      }
+                //    }
+                //  });
+                //}
+              //});
+              //$scope.pageable.items = containers;
               $scope.pageable.total = result.page.totalElements;
               loadContainersWithTimeout();
             }
