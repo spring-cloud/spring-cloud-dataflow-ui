@@ -17,26 +17,38 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total" ng-show="!item.inactive">
+    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter: {moduleDeploymentId: filterQuery}" total-items="pageable.total" ng-show="!item.inactive">
         <td id="container-id">
-            <a xd-popover=".containerDetails{{$index}}" rel="popover" data-original-title="Container Attributes">{{item.moduleDeploymentId}}</a>
-            <div class="containerDetails{{$index}} hide">
-            <table class="deployed-modules">
-                <tr ng-repeat="moduleInstance in item.instances._embedded.moduleInstanceStatusResourceList | orderBy:'instanceId'">
-                    <td class="input-group-addon">
-                        {{moduleInstance.instanceId}}
-                    </td>
-                    <td class="input-group-addon">
-                        {{moduleInstance.state}}
-                    </td>
-                    <td class="input-group-addon">
-                       <table>
-                           <tr ng-repeat="(key, value) in moduleInstance.attributes">
-                               <td>{{key}}</td><td>{{value}}</td></tr>
-                       </table>
-                    </td>
-                </tr>
-            </table>
+            <a data-toggle="modal" data-target="#containerDetails{{$index}}" data-original-title="Container Attributes">{{item.moduleDeploymentId}}</a>
+            <div class="modal fade" xd-modal id="containerDetails{{$index}}" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Instances for module <strong>{{item.moduleDeploymentId}}</strong></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div ng-repeat="moduleInstance in item.instances._embedded.moduleInstanceStatusResourceList | orderBy:'instanceId'">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h2>{{moduleInstance.instanceId}}</h2>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <p>Status: <strong>{{moduleInstance.state}}</strong></p>
+                                    </div>
+                                </div>
+                                <h2 class="text-center">Attributes</h2>
+                                <div ng-repeat="(key, value) in moduleInstance.attributes">
+                                    <h4>{{key}}</h4>
+                                    <pre class="pre-scrollable">{{value}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </td>
         <td>

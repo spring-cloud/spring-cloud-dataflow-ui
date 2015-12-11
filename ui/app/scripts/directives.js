@@ -167,8 +167,14 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       return {
         restrict: 'A',
         link: function(scope, element) {
+          if (typeof scope.stopPolling === 'function') {
+            scope.stopPolling();
+          }
           scope.closeModal = function() {
             element.modal('hide');
+            if (typeof scope.startPolling === 'function') {
+              scope.startPolling();
+            }
           };
         }
       };
