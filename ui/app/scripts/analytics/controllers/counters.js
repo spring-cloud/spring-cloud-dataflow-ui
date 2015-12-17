@@ -50,19 +50,22 @@ define(function (require) {
                                 index[item.name] = item;
                             });
                         }
-                        result.content.forEach(function(entry) {
-                            if (index[entry.name]) {
-                                var cached = index[entry.name];
-                                entry.rates = cached.rates;
-                                entry.rates.push((entry.value - cached.value) / ($scope.refreshRate()));
-                                entry.rates.splice(0, entry.rates.length - $scope.totalCacheSize());
-                            } else {
-                                entry.rates = [];
-                                entry.initialValue = entry.value;
-                            }
-                        });
-                        $scope.pageable.items = result.content;
-                        $scope.pageable.total = result.page.totalElements;
+                        if (!!result._embedded) {
+                            result._embedded.counterResourceList.forEach(function(entry) {
+                                if (index[entry.name]) {
+                                    var cached = index[entry.name];
+                                    entry.rates = cached.rates;
+                                    entry.rates.push((entry.value - cached.value) / ($scope.refreshRate()));
+                                    entry.rates.splice(0, entry.rates.length - $scope.totalCacheSize());
+                                } else {
+                                    entry.rates = [];
+                                    entry.initialValue = entry.value;
+                                }
+                            });
+                            $scope.pageable.items = result._embedded.counterResourceList;
+                            $scope.pageable.total = result.page.totalElements;
+                        }
+
                         if ($scope.refreshRate()) {
                             $scope.getCountersTimer = $timeout(function () {
                                 loadCounters();

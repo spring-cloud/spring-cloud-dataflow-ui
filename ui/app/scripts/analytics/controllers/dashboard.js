@@ -37,9 +37,13 @@ define([], function () {
                     if (type && type.service) {
                         promises.push(type.service.getAll().success(function(data) {
                             var streams = [];
-                            data.content.forEach(function(entry) {
-                                streams.push(entry.name);
-                            });
+
+                            if (!!data._embedded) {
+                                data._embedded.metricResourceList.forEach(function(entry) {
+                                    streams.push(entry.name);
+                                });
+                            }
+
                             type.streams = streams;
                         }, function(error) {
                             utils.$log.error('Cannot load all ' + $scope.type + ' ' + JSON.stringify(error));
@@ -101,32 +105,32 @@ define([], function () {
                     service: $injector.get('CounterService'),
                     streams: [],
                     visualizations: ['Bar-Chart', 'Graph-Chart'],
-                },
-                {
-                    label: 'Aggregate-Counters',
-                    service: $injector.get('AggregateCounterService'),
-                    streams: [],
-                    visualizations: ['Bar-Chart'],
-                    requestOptions: {resolution: 'minute'}
-                },
-                {
-                    label: 'Field-Value-Counters',
-                    service: $injector.get('FieldValueCounterService'),
-                    streams: [],
-                    visualizations: ['Bubble-Chart', 'Pie-Chart']
-                },
-                {
-                    label: 'Gauges',
-                    service: $injector.get('GaugeService'),
-                    streams: [],
-                    visualizations: ['Graph-Chart']
-                },
-                {
-                    label: 'Rich-Gauges',
-                    service: $injector.get('RichGaugeService'),
-                    streams: [],
-                    visualizations: ['Gauge-Chart']
-                }
+                }//,
+                //{
+                //    label: 'Aggregate-Counters',
+                //    service: $injector.get('AggregateCounterService'),
+                //    streams: [],
+                //    visualizations: ['Bar-Chart'],
+                //    requestOptions: {resolution: 'minute'}
+                //},
+                //{
+                //    label: 'Field-Value-Counters',
+                //    service: $injector.get('FieldValueCounterService'),
+                //    streams: [],
+                //    visualizations: ['Bubble-Chart', 'Pie-Chart']
+                //},
+                //{
+                //    label: 'Gauges',
+                //    service: $injector.get('GaugeService'),
+                //    streams: [],
+                //    visualizations: ['Graph-Chart']
+                //},
+                //{
+                //    label: 'Rich-Gauges',
+                //    service: $injector.get('RichGaugeService'),
+                //    streams: [],
+                //    visualizations: ['Gauge-Chart']
+                //}
             ];
 
             $scope.labelToType = {};
