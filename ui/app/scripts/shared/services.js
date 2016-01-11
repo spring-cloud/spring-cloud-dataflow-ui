@@ -59,7 +59,7 @@ define(['angular', 'xregexp'], function (angular) {
       })
       .factory('xdVersionInfo', function ($resource, $rootScope, XDUtils) {
         console.log('xdVersionInfo');
-        var xdVersionInfoPromise =  $resource($rootScope.xdAdminServerUrl + '/meta/version', {}, {
+        var xdVersionInfoPromise =  $resource($rootScope.xdAdminServerUrl + '/management/info', {}, {
           query: {
             method: 'GET'
           }
