@@ -96,7 +96,7 @@ define([
   var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
 
   promiseHttp.then(function(response) {
-    
+
     app.constant('securityInfo', response.data);
     require(['app', './routes'], function () {
       require(['domReady!'], function (document) {
@@ -109,15 +109,6 @@ define([
     console.log(errorMessage, errorResponse);
     $('.splash .container').html(errorMessage);
   });
-
-  require(['jquery', 'bootstrap'], function () {
-    console.log('Loaded Twitter Bootstrap.');
-    updateGrowl();
-    $(window).on('scroll resize', function () {
-      updateGrowl();
-    });
-  });
-
   function updateGrowl() {
     var bodyScrollTop = $(document).scrollTop();
     var navHeight = $('nav').outerHeight();
@@ -134,4 +125,11 @@ define([
       $('.growl-container').css('top', distance + marginToParent);
     }
   }
+  require(['jquery', 'bootstrap'], function () {
+    console.log('Loaded Twitter Bootstrap.');
+    updateGrowl();
+    $(window).on('scroll resize', function () {
+      updateGrowl();
+    });
+  });
 });

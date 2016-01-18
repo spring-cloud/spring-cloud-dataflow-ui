@@ -23,6 +23,22 @@ define(['model/pageable'], function (Pageable) {
 
   return ['$scope', 'JobModuleService', 'XDUtils', '$state',
     function ($scope, jobModuleService, utils, $state) {
+      function getJobModules(pageable) {
+        utils.$log.info('pageable', pageable);
+        var jobModulesPromise = jobModuleService.getAllModules(pageable).$promise;
+        utils.addBusyPromise(jobModulesPromise);
+        jobModulesPromise.then(
+            function (result) {
+              utils.$log.info(result);
+              if (!!result._embedded) {
+                $scope.pageable.items = result._embedded.moduleRegistrationResourceList;
+              }
+              $scope.pageable.total = result.page.totalElements;
+            }, function (result) {
+              utils.growl.error(result.data[0].message);
+            }
+        );
+      }
       $scope.pageable = new Pageable();
       $scope.pagination = {
         current: 1
@@ -31,22 +47,7 @@ define(['model/pageable'], function (Pageable) {
         $scope.pageable.pageNumber = newPage-1;
         getJobModules($scope.pageable);
       };
-      function getJobModules(pageable) {
-        utils.$log.info('pageable', pageable);
-        var jobModulesPromise = jobModuleService.getAllModules(pageable).$promise;
-        utils.addBusyPromise(jobModulesPromise);
-        jobModulesPromise.then(
-          function (result) {
-            utils.$log.info(result);
-            if (!!result._embedded) {
-              $scope.pageable.items = result._embedded.moduleRegistrationResourceList;
-            }
-            $scope.pageable.total = result.page.totalElements;
-          }, function (result) {
-            utils.growl.error(result.data[0].message);
-          }
-        );
-      }
+
       $scope.viewModuleDetails = function (item) {
         utils.$log.info('Showing Module details for module: ' + item.name);
         $state.go('home.jobs.moduledetails', {moduleName: item.name});

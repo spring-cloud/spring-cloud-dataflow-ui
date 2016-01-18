@@ -24,6 +24,21 @@ define(['model/pageable'], function (Pageable) {
   'use strict';
   return ['$scope', 'JobDeployments', 'XDUtils', '$state',
     function ($scope, jobDeployments, utils, $state) {
+      function loadJobDeployments(pageable) {
+        utils.$log.info('pageable', pageable);
+        var jobDeploymentsPromise = jobDeployments.getJobDeployments(pageable).$promise;
+        utils.addBusyPromise(jobDeploymentsPromise);
+        jobDeploymentsPromise.then(
+            function (data) {
+              utils.$log.info(data);
+              $scope.pageable.items = data.content;
+              $scope.pageable.total = data.page.totalElements;
+            },
+            function () {
+              utils.growl.error('Error fetching data. Is the XD server running?');
+            }
+        );
+      }
       $scope.pageable = new Pageable();
       $scope.pagination = {
         current: 1
@@ -32,21 +47,6 @@ define(['model/pageable'], function (Pageable) {
         $scope.pageable.pageNumber = newPage-1;
         loadJobDeployments($scope.pageable);
       };
-      function loadJobDeployments(pageable) {
-        utils.$log.info('pageable', pageable);
-        var jobDeploymentsPromise = jobDeployments.getJobDeployments(pageable).$promise;
-        utils.addBusyPromise(jobDeploymentsPromise);
-        jobDeploymentsPromise.then(
-          function (data) {
-            utils.$log.info(data);
-            $scope.pageable.items = data.content;
-            $scope.pageable.total = data.page.totalElements;
-          },
-          function () {
-            utils.growl.error('Error fetching data. Is the XD server running?');
-          }
-        );
-      }
       $scope.viewDeploymentDetails = function (item) {
           utils.$log.info('Showing Deployment details for job: ' + item.name);
           $state.go('home.jobs.deploymentdetails', {jobName: item.name});

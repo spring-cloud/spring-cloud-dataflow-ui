@@ -23,12 +23,6 @@ define([], function () {
   'use strict';
   return ['$scope', 'JobExecutions', 'XDUtils', '$state', '$stateParams',
     function ($scope, jobExecutions, utils, $state, $stateParams) {
-      $scope.$apply(function () {
-        $scope.moduleName = $stateParams.moduleName;
-        $scope.optionsPredicate = 'name';
-        loadJobExecutionDetails($stateParams.executionId);
-      });
-
       function loadJobExecutionDetails(executionId) {
         var singleJobExecutionPromise = jobExecutions.getSingleJobExecution(executionId).$promise;
         utils.addBusyPromise(singleJobExecutionPromise);
@@ -52,7 +46,11 @@ define([], function () {
             }
         );
       }
-
+      $scope.$apply(function () {
+        $scope.moduleName = $stateParams.moduleName;
+        $scope.optionsPredicate = 'name';
+        loadJobExecutionDetails($stateParams.executionId);
+      });
       $scope.closeJobExecutionDetails = function () {
         utils.$log.info('Closing Job Execution Details Window');
 

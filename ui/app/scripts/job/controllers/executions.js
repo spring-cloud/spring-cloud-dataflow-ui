@@ -23,17 +23,6 @@
 define(['model/pageable'], function (Pageable) {
   'use strict';
   return ['$scope', 'JobExecutions', 'XDUtils', '$state', function ($scope, jobExecutions, utils, $state) {
-    $scope.pageable = new Pageable();
-    $scope.pagination = {
-      current: 1
-    };
-    $scope.pageChanged = function(newPage) {
-      $scope.pageable.pageNumber = newPage-1;
-      loadJobExecutions($scope.pageable);
-    };
-
-    utils.jobExecutionIdHierarchy.length=0;
-
     function loadJobExecutions(pageable) {
       var jobExcutionsPromise = jobExecutions.getAllJobExecutions(pageable).$promise;
       utils.addBusyPromise(jobExcutionsPromise);
@@ -48,6 +37,16 @@ define(['model/pageable'], function (Pageable) {
             utils.growl.error('Error fetching data. Is the XD server running?');
           });
     }
+    $scope.pageable = new Pageable();
+    $scope.pagination = {
+      current: 1
+    };
+    $scope.pageChanged = function(newPage) {
+      $scope.pageable.pageNumber = newPage-1;
+      loadJobExecutions($scope.pageable);
+    };
+
+    utils.jobExecutionIdHierarchy.length=0;
     $scope.viewJobExecutionDetails = function (jobExecution) {
       utils.$log.info('Showing Job Execution details for Job Execution with Id: ' + jobExecution.executionId);
       $state.go('home.jobs.executiondetails', {executionId: jobExecution.executionId});

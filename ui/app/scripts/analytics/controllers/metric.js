@@ -24,25 +24,6 @@ define([], function () {
 
     return ['XDUtils', '$scope', '$timeout',
         function (utils, $scope, $timeout) {
-
-            function loadMetricsData() {
-                if ($scope.dataTimeOutPromise) {
-                    $timeout.cancel($scope.dataTimeOutPromise);
-                }
-                if ($scope.item.type && $scope.item.stream) {
-                    /* jshint ignore:start */
-                    $scope.item.type.service.getData($scope.item.stream, $scope.item.type.requestOptions).success(function (data) {
-                        dataHandlers[$scope.item.type.label](data);
-                    }, function (error) {
-                        utils.$log.error('Cannot load all ' + $scope.item.type + ' ' + JSON.stringify(error));
-                    });
-                    /* jshint ignore:end */
-                    if ($scope.item.refreshRate()) {
-                        $scope.dataTimeOutPromise = $timeout(loadMetricsData, $scope.item.refreshRate() * 1000);
-                    }
-                }
-            }
-
             function processCountsData(data) {
                 $scope.metricsData.values = data.counts;
             }
@@ -96,15 +77,30 @@ define([], function () {
                     [data.name, data.value]
                 ];
             }
-
-            var dataHandlers = {
+            var dataHandlers = { // jshint ignore:line
                 'Counters': processValueData,
                 'Aggregate-Counters': processCountsData,
                 'Field-Value-Counters': processCountsData,
                 'Gauges': processGaugeData,
                 'Rich-Gauges': processRichGaugeData
             };
-
+            function loadMetricsData() {
+                if ($scope.dataTimeOutPromise) {
+                    $timeout.cancel($scope.dataTimeOutPromise);
+                }
+                if ($scope.item.type && $scope.item.stream) {
+                    /* jshint ignore:start */
+                    $scope.item.type.service.getData($scope.item.stream, $scope.item.type.requestOptions).success(function (data) {
+                        dataHandlers[$scope.item.type.label](data);
+                    }, function (error) {
+                        utils.$log.error('Cannot load all ' + $scope.item.type + ' ' + JSON.stringify(error));
+                    });
+                    /* jshint ignore:end */
+                    if ($scope.item.refreshRate()) {
+                        $scope.dataTimeOutPromise = $timeout(loadMetricsData, $scope.item.refreshRate() * 1000);
+                    }
+                }
+            }
             $scope.metricRefreshRate = 5000;
 
             $scope.metricsData = $scope.$new();

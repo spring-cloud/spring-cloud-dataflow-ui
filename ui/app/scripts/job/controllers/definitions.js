@@ -24,15 +24,6 @@ define(['model/pageable'], function (Pageable) {
   'use strict';
   return ['$scope', 'JobDefinitions', 'JobDefinitionService', 'XDUtils', '$state', '$timeout', '$rootScope',
     function ($scope, jobDefinitions, jobDefinitionService, utils, $state, $timeout, $rootScope) {
-      $scope.pageable = new Pageable();
-      $scope.pagination = {
-        current: 1
-      };
-      $scope.pageChanged = function(newPage) {
-        $scope.pageable.pageNumber = newPage-1;
-        loadJobDefinitions($scope.pageable);
-      };
-
       function loadJobDefinitions(pageable, showGrowl) {
         utils.$log.info('pageable', pageable);
         var jobDefinitionsPromise = jobDefinitions.getAllJobDefinitions(pageable).$promise;
@@ -57,6 +48,14 @@ define(['model/pageable'], function (Pageable) {
           utils.addBusyPromise(jobDefinitionsPromise);
         }
       }
+      $scope.pageable = new Pageable();
+      $scope.pagination = {
+        current: 1
+      };
+      $scope.pageChanged = function(newPage) {
+        $scope.pageable.pageNumber = newPage-1;
+        loadJobDefinitions($scope.pageable);
+      };
       $scope.deployJob = function (jobDefinition) {
         $state.go('home.jobs.deployjob', {definitionName: jobDefinition.name});
       };

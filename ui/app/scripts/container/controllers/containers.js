@@ -24,15 +24,12 @@ define(['model/pageable'], function (Pageable) {
   'use strict';
   return ['$scope', 'ContainerService', 'XDUtils', '$timeout', '$rootScope',
     function ($scope, containerService, utils, $timeout, $rootScope) {
-      $scope.pageable = new Pageable();
-      $scope.pagination = {
-        current: 1
-      };
-      $scope.pageChanged = function(newPage) {
-        $scope.pageable.pageNumber = newPage-1;
-        loadContainers($scope.pageable);
-      };
-      function loadContainers(pageable) {
+      function loadContainersWithTimeout() {
+        $scope.containerTimeOutPromise = $timeout(function() {
+          loadContainers($scope.pageable);
+        }, $rootScope.pageRefreshTime);
+      }
+      function loadContainers(pageable) { // jshint ignore:line
         utils.$log.info('pageable', pageable);
         containerService.getContainers(pageable).$promise.then(
             function (result) {
@@ -60,11 +57,14 @@ define(['model/pageable'], function (Pageable) {
             }
         );
       }
-      function loadContainersWithTimeout() {
-        $scope.containerTimeOutPromise = $timeout(function() {
-          loadContainers($scope.pageable);
-        }, $rootScope.pageRefreshTime);
-      }
+      $scope.pageable = new Pageable();
+      $scope.pagination = {
+        current: 1
+      };
+      $scope.pageChanged = function(newPage) {
+        $scope.pageable.pageNumber = newPage-1;
+        loadContainers($scope.pageable);
+      };
 
       loadContainers($scope.pageable);
 
