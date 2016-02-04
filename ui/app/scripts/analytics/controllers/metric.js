@@ -25,7 +25,7 @@ define([], function () {
     return ['XDUtils', '$scope', '$timeout',
         function (utils, $scope, $timeout) {
             function processCountsData(data) {
-                $scope.metricsData.values = data.counts;
+                $scope.metricsData.values = data.values;
             }
 
             function processValueData(data) {

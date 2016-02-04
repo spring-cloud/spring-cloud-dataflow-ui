@@ -105,7 +105,7 @@ define([], function () {
                     service: $injector.get('CounterService'),
                     streams: [],
                     visualizations: ['Bar-Chart', 'Graph-Chart'],
-                }//,
+                },
                 //{
                 //    label: 'Aggregate-Counters',
                 //    service: $injector.get('AggregateCounterService'),
@@ -113,12 +113,12 @@ define([], function () {
                 //    visualizations: ['Bar-Chart'],
                 //    requestOptions: {resolution: 'minute'}
                 //},
-                //{
-                //    label: 'Field-Value-Counters',
-                //    service: $injector.get('FieldValueCounterService'),
-                //    streams: [],
-                //    visualizations: ['Bubble-Chart', 'Pie-Chart']
-                //},
+                {
+                    label: 'Field-Value-Counters',
+                    service: $injector.get('FieldValueCounterService'),
+                    streams: [],
+                    visualizations: ['Bubble-Chart', 'Pie-Chart']
+                }//,
                 //{
                 //    label: 'Gauges',
                 //    service: $injector.get('GaugeService'),
