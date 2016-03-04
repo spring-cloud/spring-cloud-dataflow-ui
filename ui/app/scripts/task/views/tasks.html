@@ -1,0 +1,22 @@
+<h1>Tasks</h1>
+<p ng-class="{ hide: !$state.includes('home.tasks.tabs.modules') }" class="index-page--subtitle"> This section lists all
+    available task modules. You have the ability to view module details and to create task definitions.
+</p>
+<p ng-class="{ hide: !$state.includes('home.tasks.tabs.definitions') }" class="index-page--subtitle">This section lists all
+    the task definitions and allows you to create, launch and destroy them.
+</p>
+<p ng-class="{ hide: !$state.includes('home.tasks.tabs.executions') }" class="index-page--subtitle">This section lists all the
+    available task executions.
+</p>
+<div id="xd-tasks" class="tab-pane active col-md-12">
+    <ul class="nav nav-tabs">
+        <li ng-class="{ active: $state.includes('home.tasks.tabs.modules') }"><a ui-sref="home.tasks.tabs.modules">Modules</a></li>
+        <li ng-class="{ active: $state.includes('home.tasks.tabs.definitions') }"><a ui-sref="home.tasks.tabs.definitions">Definitions</a>
+        </li>
+        <li ng-class="{ active: $state.includes('home.tasks.tabs.executions') }"><a
+                ui-sref="home.tasks.tabs.executions">Executions</a></li>
+    </ul>
+    <div class="tab-content">
+        <div ui-view></div>
+    </div>
+</div>

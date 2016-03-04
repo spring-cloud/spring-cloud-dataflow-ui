@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,19 @@
  */
 
 /**
- * Create a Job Definition from a Module
+ * Create a Task Definition from a Module
  *
  * @author Gunnar Hillert
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'JobModuleService', 'XDUtils', '$state', '$stateParams',
-    function ($scope, jobModuleService, utils, $state, $stateParams) {
+  return ['$scope', 'TaskModuleService', 'XDUtils', '$state', '$stateParams',
+    function ($scope, taskModuleService, utils, $state, $stateParams) {
       $scope.$apply(function () {
 
         $scope.moduleName = $stateParams.moduleName;
 
-        var singleModulePromise = jobModuleService.getSingleModule($stateParams.moduleName).$promise;
+        var singleModulePromise = taskModuleService.getSingleModule($stateParams.moduleName).$promise;
         utils.addBusyPromise(singleModulePromise);
           function escapeStringIfNecessary(name, value) {
               if (value && /\s/g.test(value)) {
@@ -40,23 +40,23 @@ define([], function () {
                   return value;
               }
           }
-          function calculateDefinition(jobDefinition) {
-              var arrayLength = jobDefinition.parameters.length;
+          function calculateDefinition(taskDefinition) {
+              var arrayLength = taskDefinition.parameters.length;
               $scope.calculatedDefinition = $scope.moduleDetails.name;
               for (var i = 0; i < arrayLength; i++) {
-                  var parameter = jobDefinition.parameters[i];
-                  if (parameter.value) {
-                      var parameterValueToUse = escapeStringIfNecessary(parameter.name, parameter.value);
-                      $scope.calculatedDefinition = $scope.calculatedDefinition + ' --' + parameter.name + '=' + parameterValueToUse;
+                  var parameter = taskDefinition.parameters[i];
+
+                  if (parameter.value && parameter.valueInclude === 'true') {
+                      var parameterValueToUse = escapeStringIfNecessary(parameter.id, parameter.value);
+                      $scope.calculatedDefinition = $scope.calculatedDefinition + ' --' + parameter.id + '=' + parameterValueToUse;
                   }
               }
           }
 
           singleModulePromise.then(
             function (result) {
-                $scope.jobDefinition = {
+                $scope.taskDefinition = {
                   name: '',
-                  deploy: true,
                   parameters: []
                 };
                 var arrayLength = result.options.length;
@@ -64,8 +64,9 @@ define([], function () {
                   var option = result.options[i];
                   var optionValue = option.defaultValue ? option.defaultValue : '';
 
-                  $scope.jobDefinition.parameters.push({
+                  $scope.taskDefinition.parameters.push({
                     name: option.name,
+                    id: option.id,
                     value: optionValue,
                     type: option.type,
                     description: option.description
@@ -76,26 +77,26 @@ define([], function () {
                 utils.growl.error('Error fetching data. Is the XD server running?');
               });
         $scope.closeCreateDefinition = function () {
-            utils.$log.info('Closing Job Definition Creation Window');
-            $state.go('home.jobs.tabs.modules');
+            utils.$log.info('Closing Task Definition Creation Window');
+            $state.go('home.tasks.tabs.modules');
           };
-        $scope.submitJobDefinition = function () {
+        $scope.submitTaskDefinition = function () {
             utils.$log.info('Submitting Definition');
-            calculateDefinition($scope.jobDefinition);
-            var createDefinitionPromise = jobModuleService.createDefinition(
-                    $scope.jobDefinition.name, $scope.calculatedDefinition, $scope.jobDefinition.deploy).$promise;
+            calculateDefinition($scope.taskDefinition);
+            var createDefinitionPromise = taskModuleService.createDefinition(
+                    $scope.taskDefinition.name, $scope.calculatedDefinition).$promise;
             utils.addBusyPromise(createDefinitionPromise);
             createDefinitionPromise.then(
                     function () {
                       utils.growl.success('The Definition was created.');
-                      $state.go('home.jobs.tabs.modules');
+                      $state.go('home.tasks.tabs.modules');
                     }, function (error) {
                       utils.growl.error(error.data[0].message);
                     });
           };
-        $scope.$watch('jobDefinition', function() {
-          if ($scope.jobDefinition) {
-            calculateDefinition($scope.jobDefinition);
+        $scope.$watch('taskDefinition', function() {
+          if ($scope.taskDefinition) {
+            calculateDefinition($scope.taskDefinition);
           }
         }, true);
 

@@ -46,8 +46,11 @@
             <li ng-class="{ active: $state.includes('home.streams') }">
                <a ui-sref="home.streams.tabs.definitions">Streams</a>
             </li>
+            <li ng-class="{ active: $state.includes('home.tasks') }">
+              <a ui-sref="home.tasks.tabs.definitions">Tasks</a>
+            </li>
             <li ng-class="{ active: $state.includes('home.jobs') }">
-              <a ui-sref="home.jobs.tabs.definitions">Jobs</a>
+              <a ui-sref="home.jobs.tabs.executions">Jobs</a>
             </li>
             <li ng-class="{ active: $state.includes('home.analytics') }">
               <a ui-sref="home.analytics.tabs.dashboard">Analytics</a>

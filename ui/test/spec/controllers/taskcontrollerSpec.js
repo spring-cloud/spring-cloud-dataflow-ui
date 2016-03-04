@@ -23,12 +23,12 @@ define([
   angular.module('xdConf', [])
     .constant('securityInfo', {});
 
-  describe('Unit: Testing Jobs Controllers', function() {
+  describe('Unit: Testing Tasks Controllers', function() {
 
     var $httpBackend, $rootScope, $scope;
 
     beforeEach(angular.mock.module('xdConf'));
-    beforeEach(angular.mock.module('xdJobsAdmin'));
+    beforeEach(angular.mock.module('xdTasksAdmin'));
 
     beforeEach(inject(function(_$httpBackend_, _$rootScope_) {
       $httpBackend = _$httpBackend_;
@@ -38,25 +38,19 @@ define([
       $httpBackend.expectGET(/.*/).respond('');
       $httpBackend.expectGET(/.*/).respond('');
     }));
-
-    //it('should have a JobDefinitionsController', inject(function($rootScope, $controller) {
-    //  var controller = $controller('JobDefinitionsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
-    //  expect(controller).toBeDefined();
-    //}));
-    //
-    //it('should have a JobDeploymentsController', inject(function($rootScope, $controller) {
-    //  var controller = $controller('JobDeploymentsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
-    //  expect(controller).toBeDefined();
-    //}));
-
-    it('should have a JobExecutionsController', inject(function($rootScope, $controller) {
-      var controller = $controller('JobExecutionsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
+    it('should have a TaskLaunchController', inject(function($rootScope, $controller) {
+      var controller = $controller('TaskLaunchController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
       expect(controller).toBeDefined();
     }));
-    //it('should have a JobDefinitionDeployController', inject(function($rootScope, $controller) {
-    //  var controller = $controller('JobDefinitionDeployController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
-    //  expect(controller).toBeDefined();
-    //}));
+    it('should have a ModuleController', inject(function($rootScope, $controller) {
+      var controller = $controller('ModuleController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
+      expect(controller).toBeDefined();
+    }));
+
+    it('should have a ModuleDetailsController', inject(function($rootScope, $controller) {
+      var controller = $controller('ModuleDetailsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
+      expect(controller).toBeDefined();
+    }));
   });
 });
 

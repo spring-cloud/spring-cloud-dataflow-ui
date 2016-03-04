@@ -23,6 +23,7 @@ define([
   'angular',
   './analytics/app',
   './job/app',
+  './task/app',
   './stream/app',
   './container/app',
   './auth/app'
@@ -35,6 +36,7 @@ define([
     'xdConf',
     'xdAnalyticsAdmin',
     'xdJobsAdmin',
+    'xdTasksAdmin',
     'xdStreamsAdmin',
     'xdContainerAdmin',
     'xdAuth'
