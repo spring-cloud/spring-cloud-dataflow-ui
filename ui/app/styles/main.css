@@ -6897,7 +6897,7 @@ strong {
   border-right: 0;
 }
 .navbar a.navbar-brand {
-  background: url("../images/spring-logo-xd.png") -1px -1px no-repeat;
+  background: url("../images/spring-logo-dataflow.png") -1px -1px no-repeat;
   margin: 12px 0 6px;
   width: 229px;
   height: 46px;
@@ -6909,7 +6909,7 @@ strong {
   display: block;
   width: 229px;
   height: 46px;
-  background: url("../images/spring-logo-xd.png") -1px -48px no-repeat;
+  background: url("../images/spring-logo-dataflow.png") -1px -48px no-repeat;
   opacity: 0;
   -moz-transition: opacity 0.12s ease-in-out;
   -webkit-transition: opacity 0.12s ease-in-out;
@@ -6958,12 +6958,6 @@ strong {
   background-position: center;
   background-repeat: no-repeat;
   text-align: center;
-}
-.icon-spring-xd-logo {
-  width: 100px;
-  height: 100px;
-  background-image: url("../images/platform-spring-xd.png");
-  background-repeat: no-repeat;
 }
 .homepage-title--container {
   margin: 80px auto 80px auto;
@@ -7314,7 +7308,7 @@ hr {
     width: 148px;
     height: 50px;
     float: none;
-    background: url("../images/spring-logo-xd-mobile.png") 0 center no-repeat;
+    background: url("../images/spring-logo-dataflow-mobile.png") 0 center no-repeat;
   }
   .homepage-billboard .homepage-subtitle {
     font-size: 21px;
