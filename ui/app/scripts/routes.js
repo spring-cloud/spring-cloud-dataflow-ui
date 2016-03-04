@@ -25,7 +25,7 @@ define(['./app'], function (xdAdmin) {
   xdAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvider, hljsServiceProvider, growlProvider, $animateProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.interceptors.push('httpErrorInterceptor');
-    $urlRouterProvider.otherwise('/tasks/definitions');
+    $urlRouterProvider.otherwise('/streams/definitions');
 
     hljsServiceProvider.setOptions({
       tabReplace: '  '
@@ -37,6 +37,7 @@ define(['./app'], function (xdAdmin) {
     $animateProvider.classNameFilter(/^((?!(myspinner)).)*$/);
 
     var jobTemplatesPath = 'scripts/job/views',
+        taskTemplatesPath = 'scripts/task/views',
         streamTemplatesPath = 'scripts/stream/views',
         authTemplatesPath = 'scripts/auth/views',
         sharedTemplatesPath = 'scripts/shared/views',
@@ -47,6 +48,13 @@ define(['./app'], function (xdAdmin) {
       url : '/',
       abstract:true,
       templateUrl : sharedTemplatesPath + '/home.html'
+    })
+    .state('home.tasks', {
+      abstract:true,
+      template: '<ui-view/>',
+      data:{
+        authenticate: true
+      }
     })
     .state('home.jobs', {
       abstract:true,
@@ -77,12 +85,20 @@ define(['./app'], function (xdAdmin) {
       }
     })
     .state('home.jobs.tabs', {
-      url : 'tasks',
+      url : 'jobs',
       abstract:true,
       data:{
         authenticate: true
       },
       templateUrl : jobTemplatesPath + '/jobs.html'
+    })
+    .state('home.tasks.tabs', {
+      url : 'tasks',
+      abstract:true,
+      data:{
+        authenticate: true
+      },
+      templateUrl : taskTemplatesPath + '/tasks.html'
     })
     .state('home.about', {
       url : 'about',
@@ -128,36 +144,11 @@ define(['./app'], function (xdAdmin) {
         authenticate: true
       }
      })
-    .state('home.jobs.tabs.modules', {
-      url : '/modules',
-      templateUrl : jobTemplatesPath + '/modules.html',
-      controller: 'ModuleController'
-    })
+
     .state('home.jobs.tabs.definitions', {
       url : '/definitions',
       templateUrl : jobTemplatesPath + '/definitions.html',
       controller: 'JobDefinitionsController'
-    })
-    .state('home.jobs.deployjob', {
-      url : 'jobs/definitions/{definitionName}/deploy',
-      templateUrl : jobTemplatesPath + '/definition-deploy.html',
-      controller: 'JobDefinitionDeployController',
-      data:{
-        authenticate: true
-      }
-    })
-    .state('home.jobs.tabs.deployments', {
-      url : '/deployments',
-      templateUrl : jobTemplatesPath + '/deployments.html',
-      controller: 'JobDeploymentsController'
-    })
-    .state('home.jobs.deploymentdetails', {
-      url : 'jobs/deployments/{jobName}',
-      templateUrl : jobTemplatesPath + '/deployment-details.html',
-      controller: 'JobDeploymentDetailsController',
-      data:{
-        authenticate: true
-      }
     })
     .state('home.jobs.tabs.executions', {
       url : '/executions',
@@ -179,34 +170,49 @@ define(['./app'], function (xdAdmin) {
       templateUrl : jobTemplatesPath + '/stepexecution-progress.html',
       controller: 'StepExecutionProgressController'
     })
-    .state('home.jobs.deploymentsLaunch', {
-      url : 'jobs/deployments/launch/{jobName}',
-      templateUrl : jobTemplatesPath + '/launch.html',
-      controller: 'JobLaunchController'
-    })
     .state('home.jobs.deploymentsSchedule', {
       url : 'schedule/{jobName}',
       templateUrl : jobTemplatesPath + '/schedule.html',
       controller: 'JobScheduleController'
     })
-    .state('home.jobs.moduledetails', {
-      url : 'jobs/modules/{moduleName}',
-      templateUrl : jobTemplatesPath + '/module-details.html',
+    .state('home.tasks.tabs.modules', {
+      url : '/modules',
+      templateUrl : taskTemplatesPath + '/modules.html',
+      controller: 'ModuleController'
+    })
+    .state('home.tasks.moduledetails', {
+      url : 'tasks/modules/{moduleName}',
+      templateUrl : taskTemplatesPath + '/module-details.html',
       controller: 'ModuleDetailsController',
       data:{
         title: 'Module Details',
         authenticate: true
       }
     })
-    .state('home.jobs.modulecreatedefinition', {
-      url : 'jobs/modules/{moduleName}/create-definition',
-      templateUrl : jobTemplatesPath + '/module-create-definition.html',
+    .state('home.tasks.modulecreatedefinition', {
+      url : 'tasks/modules/{moduleName}/create-definition',
+      templateUrl : taskTemplatesPath + '/module-create-definition.html',
       controller: 'ModuleCreateDefinitionController',
       data:{
         title: 'Module Create Definition',
         authenticate: true
       }
     })
+    .state('home.tasks.tabs.definitions', {
+      url : '/definitions',
+      templateUrl : taskTemplatesPath + '/definitions.html',
+      controller: 'TaskDefinitionsController'
+    })
+        .state('home.tasks.deploymentsLaunch', {
+          url : 'tasks/definitions/launch/{taskName}',
+          templateUrl : taskTemplatesPath + '/launch.html',
+          controller: 'TaskLaunchController'
+        })
+        .state('home.tasks.tabs.executions', {
+          url : '/executions',
+          templateUrl : taskTemplatesPath + '/executions.html',
+          controller: 'TaskExecutionsController'
+        })
         .state('home.analytics.tabs', {
           url : 'analytics',
           abstract:true,

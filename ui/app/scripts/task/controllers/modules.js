@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 /**
- * Handles the listing of job modules.
+ * Handles the listing of task modules.
  *
  * @author Gunnar Hillert
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
 
-  return ['$scope', 'JobModuleService', 'XDUtils', '$state',
-    function ($scope, jobModuleService, utils, $state) {
-      function getJobModules(pageable) {
+  return ['$scope', 'TaskModuleService', 'XDUtils', '$state',
+    function ($scope, taskModuleService, utils, $state) {
+      function getTaskModules(pageable) {
         utils.$log.info('pageable', pageable);
-        var jobModulesPromise = jobModuleService.getAllModules(pageable).$promise;
-        utils.addBusyPromise(jobModulesPromise);
-        jobModulesPromise.then(
+        var taskModulesPromise = taskModuleService.getAllModules(pageable).$promise;
+        utils.addBusyPromise(taskModulesPromise);
+        taskModulesPromise.then(
             function (result) {
               utils.$log.info(result);
               if (!!result._embedded) {
@@ -45,18 +45,18 @@ define(['model/pageable'], function (Pageable) {
       };
       $scope.pageChanged = function(newPage) {
         $scope.pageable.pageNumber = newPage-1;
-        getJobModules($scope.pageable);
+        getTaskModules($scope.pageable);
       };
 
       $scope.viewModuleDetails = function (item) {
         utils.$log.info('Showing Module details for module: ' + item.name);
-        $state.go('home.jobs.moduledetails', {moduleName: item.name});
+        $state.go('home.tasks.moduledetails', {moduleName: item.name});
       };
       $scope.createDefinition = function (item) {
-        $state.go('home.jobs.modulecreatedefinition', {moduleName: item.name});
+        $state.go('home.tasks.modulecreatedefinition', {moduleName: item.name});
       };
 
-      getJobModules($scope.pageable);
+      getTaskModules($scope.pageable);
     }
   ];
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,19 @@
  */
 
 /**
- * Definition of Job Definition controller
+ * Definition of Task Definition controller
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
-  return ['$scope', 'JobDefinitions', 'JobDefinitionService', 'XDUtils', '$state', '$timeout', '$rootScope',
-    function ($scope, jobDefinitions, jobDefinitionService, utils, $state, $timeout, $rootScope) {
-      function loadJobDefinitions(pageable, showGrowl) {
+  return ['$scope', 'TaskDefinitions', 'TaskDefinitionService', 'XDUtils', '$state', '$timeout', '$rootScope',
+    function ($scope, taskDefinitions, taskDefinitionService, utils, $state, $timeout, $rootScope) {
+      function loadTaskDefinitions(pageable, showGrowl) {
         utils.$log.info('pageable', pageable);
-        var jobDefinitionsPromise = jobDefinitions.getAllJobDefinitions(pageable).$promise;
-        jobDefinitionsPromise.then(
+        var taskDefinitionsPromise =  taskDefinitions.getAllTaskDefinitions(pageable).$promise;
+        taskDefinitionsPromise.then(
             function (result) {
               utils.$log.info(result);
 
@@ -36,16 +36,16 @@ define(['model/pageable'], function (Pageable) {
               }
               $scope.pageable.total = result.page.totalElements;
 
-              var getJobDefinitions = $timeout(function() {
-                loadJobDefinitions($scope.pageable, false);
+              var getTaskDefinitions = $timeout(function() {
+                loadTaskDefinitions($scope.pageable, false);
               }, $rootScope.pageRefreshTime);
               $scope.$on('$destroy', function(){
-                $timeout.cancel(getJobDefinitions);
+                $timeout.cancel(getTaskDefinitions);
               });
             }
         );
         if (showGrowl || showGrowl === undefined) {
-          utils.addBusyPromise(jobDefinitionsPromise);
+          utils.addBusyPromise(taskDefinitionsPromise);
         }
       }
       $scope.pageable = new Pageable();
@@ -54,42 +54,31 @@ define(['model/pageable'], function (Pageable) {
       };
       $scope.pageChanged = function(newPage) {
         $scope.pageable.pageNumber = newPage-1;
-        loadJobDefinitions($scope.pageable);
-      };
-      $scope.deployJob = function (jobDefinition) {
-        $state.go('home.jobs.deployjob', {definitionName: jobDefinition.name});
-      };
-      $scope.undeployJob = function (jobDefinition) {
-        utils.$log.info('Undeploying Job ' + jobDefinition.name);
-        utils.$log.info(jobDefinitionService);
-        jobDefinitionService.undeploy(jobDefinition).$promise.then(
-            function (data) {
-              console.log(data);
-              utils.growl.success('Undeployment Request Sent.');
-            },
-            function () {
-              utils.growl.error('Error Undeploying Job.');
-            }
-        );
+        loadTaskDefinitions($scope.pageable);
       };
       $scope.clickModal = function (streamDefinition) {
         $scope.destroyItem = streamDefinition;
       };
-      $scope.destroyJob = function (jobDefinition) {
-        utils.$log.info('Destroying Job ' + jobDefinition.name);
-        utils.$log.info(jobDefinitionService);
-        jobDefinitionService.destroy(jobDefinition).$promise.then(
+      $scope.destroyTask = function (taskDefinition) {
+        utils.$log.info('Destroying Task ' + taskDefinition.name);
+        utils.$log.info(taskDefinitionService);
+        taskDefinitionService.destroy(taskDefinition).$promise.then(
             function () {
               utils.growl.success('Destroy Request Sent.');
-              jobDefinition.inactive = true;
+              taskDefinition.inactive = true;
               $scope.closeModal();
             },
             function () {
-              utils.growl.error('Error Destroying Job.');
+              utils.growl.error('Error Destroying Task.');
               $scope.closeModal();
             }
         );
       };
-      loadJobDefinitions($scope.pageable);
+      $scope.launchTask = function (item) {
+        utils.$log.info('Launching Task: ' + item.name);
+        $state.go('home.tasks.deploymentsLaunch', {taskName: item.name});
+      };
+
+      loadTaskDefinitions($scope.pageable);
     }];
 });

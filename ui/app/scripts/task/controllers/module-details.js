@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'JobModuleService', 'XDUtils', '$state', '$stateParams',
-    function ($scope, jobModuleService, utils, $state, $stateParams) {
+  return ['$scope', 'TaskModuleService', 'XDUtils', '$state', '$stateParams',
+    function ($scope, taskModuleService, utils, $state, $stateParams) {
       $scope.$apply(function () {
         $scope.moduleName = $stateParams.moduleName;
         $scope.optionsPredicate = 'name';
-        var singleModulePromise = jobModuleService.getSingleModule($stateParams.moduleName).$promise;
+        var singleModulePromise = taskModuleService.getSingleModule($stateParams.moduleName).$promise;
         utils.addBusyPromise(singleModulePromise);
 
         singleModulePromise.then(
@@ -37,8 +37,8 @@ define([], function () {
               }
             );
         $scope.closeModuleDetails = function () {
-            utils.$log.info('Closing Job Details Window');
-            $state.go('home.jobs.tabs.modules');
+            utils.$log.info('Closing Task Details Window');
+            $state.go('home.tasks.tabs.modules');
           };
       });
     }];
