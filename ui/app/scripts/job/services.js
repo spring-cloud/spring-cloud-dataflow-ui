@@ -29,11 +29,11 @@ define(['angular'], function (angular) {
           getAllJobExecutions: function (pageable) {
             if (pageable === 'undefined') {
               $log.info('Getting all task executions.');
-              return $resource($rootScope.xdAdminServerUrl + '/tasks/executions', {}).get();
+              return $resource($rootScope.xdAdminServerUrl + '/jobs/executions', {}).get();
             }
             else {
               $log.info('Getting task definitions for pageable:', pageable);
-              return $resource($rootScope.xdAdminServerUrl + '/tasks/executions',
+              return $resource($rootScope.xdAdminServerUrl + '/jobs/executions',
                 {
                   'page': pageable.pageNumber,
                   'size': pageable.pageSize

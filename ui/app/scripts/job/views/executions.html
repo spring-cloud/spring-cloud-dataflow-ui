@@ -10,7 +10,8 @@
 <table class="table table-striped table-hover">
 	<thead>
 		<tr>
-			<th>Name</th><th class="text-center">Instance Id</th><th class="text-center">Execution Id</th><th>Job Start Time</th>
+			<th>Name</th><th class="text-center">Task Id</th>
+			<th class="text-center">Instance Id</th><th class="text-center">Execution Id</th><th>Job Start Time</th>
 			<th class="text-center">Step Executions Count</th><th>Status</th><th colspan="3" class="text-center">Actions</th>
 		</tr>
 	</thead>
@@ -18,6 +19,7 @@
 		<tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total"
 		    ng-show="!item.inactive">
 			<td>{{item.name}}&nbsp;<span xd-deployment-status="item"></span><span xd-composed-job-status="item"></span></td>
+			<td class="text-center">{{item.taskExecutionId}}</td>
             <td class="text-center">{{item.jobExecution.jobInstance.id}}</td>
             <td class="text-center">{{item.jobExecution.id}}</td>
 			<td xd-date-time="{{item.jobExecution.startTime}}"></td>

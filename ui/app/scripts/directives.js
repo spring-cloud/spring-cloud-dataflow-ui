@@ -183,13 +183,9 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       var linkFunction = function(scope) {
         scope.$watch('xdDeploymentStatus', function(resource){
           if (resource) {
-            if (resource.deleted) {
+            if (!resource.defined) {
               scope.labelClass = 'danger';
               scope.label = 'Deleted';
-            }
-            else if (!resource.deleted && !resource.deployed) {
-              scope.labelClass = 'warning';
-              scope.label = 'Undeployed';
             }
           }
         });
