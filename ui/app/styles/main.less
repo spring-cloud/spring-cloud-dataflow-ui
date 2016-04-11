@@ -213,6 +213,35 @@ table td.action-column {
   color: @spring-brown;
 }
 
+.modal-body {
+  overflow-y: auto;
+  max-height: calc(~"100vh - 300px");
+  min-height: 50px;
+}
+
+.full-cell-select-input select {
+  -webkit-appearance: menulist-button;
+  width: 100%;
+}
+
+.type-block {
+  display: block;
+  font-family: "Courier New";
+  font-size: 70%;
+  font-weight: bold;
+  margin-top: 1px;
+  margin-bottom: 10px;
+  color: #871461;
+}
+
+.form-table > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.property-group {
+  display: flex;
+}
+
 .alert-success {
   .alert-variant(fade(@alert-success-bg, 70%); @alert-success-border; @alert-success-text);
 }

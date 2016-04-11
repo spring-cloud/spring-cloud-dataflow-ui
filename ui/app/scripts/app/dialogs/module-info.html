@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="close()">&times;</button>
+    <h4 class="modal-title"><strong>{{name | uppercase}}</strong> ({{type | capitalize}})</h4>
+    <p ng-if="data.shortDescription">{{data.shortDescription}}</p>
+</div>
+<div class="modal-body" ng-cloak cg-busy="{promise:cgbusy,delay:0,minDuration:100}">
+    <div class="property-group" ng-repeat="property in data.options" ng-if="data.options.length">
+        <label class="col-sm-3 control-label">{{property.name | camelCaseToHuman}}</label>
+        <span class="col-sm-9">
+            <p>{{property.description ? property.description : '(No Description Available)'}}</p>
+            <p class="type-block">{{property.type}}</p>
+        </span>
+    </div>
+    <div class="row" ng-if="data.options.length === 0">No properties available.</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="close()">Close</button>
+</div>
