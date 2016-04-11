@@ -41,7 +41,7 @@ define(function () {
             $scope.namePattern = '[\\w_]+[\\w_-]*';
 
             // Basic URI validation RegEx pattern
-            $scope.uriPattern = '^((https?:\/\/)|(maven:\/\/)|(docker:\/\/)|(file:\/\/))([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
+            $scope.uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
 
             // Module types
             $scope.types = ['source', 'processor', 'sink', 'task', 'library'];
