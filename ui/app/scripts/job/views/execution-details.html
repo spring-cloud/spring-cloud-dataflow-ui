@@ -22,7 +22,7 @@
 <table class="table table-striped table-hover" ng-show="jobExecutionDetails">
   <thead>
     <tr>
-      <th>Property</th><th>Value</th>
+      <th class="col-md-2">Property</th><th>Value</th>
     </tr>
   </thead>
   <tbody>
@@ -37,6 +37,10 @@
     <tr>
       <td>Job Instance</td>
       <td>{{jobExecutionDetails.jobExecution.jobInstance.instanceId}}</td>
+    <tr>
+    <tr>
+      <td>Task Execution Id</td>
+      <td>{{jobExecutionDetails.taskExecutionId}}</td>
     <tr>
     <tr>
       <td>Composed Job</td>

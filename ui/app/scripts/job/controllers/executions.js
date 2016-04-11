@@ -30,7 +30,7 @@ define(['model/pageable'], function (Pageable) {
       jobExcutionsPromise.then(
           function (result) {
             utils.$log.info('job excutions', result);
-            $scope.pageable.items = result.content;
+            $scope.pageable.items = result._embedded.jobExecutionResourceList;
             $scope.pageable.total = result.page.totalElements;
             utils.$log.info('$scope.pageable', $scope.pageable);
           }, function () {
