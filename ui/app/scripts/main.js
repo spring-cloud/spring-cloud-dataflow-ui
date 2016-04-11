@@ -37,6 +37,8 @@ require.config({
     pagination: '../lib/angular-utils-pagination/dirPagination',
     moment: '../lib/moment/moment',
     ngCharts: '../lib/angular-google-chart/ng-google-chart',
+    ngBootstrap: '../lib/angular-bootstrap/ui-bootstrap-tpls',
+    ngIndeterminate: '../lib/angular-ui-indeterminate/indeterminate',
     ngCookies: '../lib/angular-cookies/angular-cookies',
     d3: '../lib/d3/d3'
   },
@@ -73,6 +75,12 @@ require.config({
       deps: ['angular', 'highlightjs']
     },
     'ngCharts': {
+      deps: ['angular']
+    },
+    'ngBootstrap': {
+      deps: ['angular']
+    },
+    'ngIndeterminate': {
       deps: ['angular']
     },
     'ngCookies': {

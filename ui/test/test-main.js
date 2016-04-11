@@ -26,6 +26,8 @@ require.config({
     moment: '/base/app/lib/moment/moment',
     pagination: '/base/app/lib/angular-utils-pagination/dirPagination',
     ngCharts: '/base/app/lib/angular-google-chart/ng-google-chart',
+    ngBootstrap: '/base/app/lib/angular-bootstrap/ui-bootstrap-tpls',
+    ngIndeterminate: '/base/app/lib/angular-ui-indeterminate/indeterminate',
     ngCookies: '/base/app/lib/angular-cookies/angular-cookies',
     d3: '/base/app/lib/d3/d3'
   },
@@ -59,6 +61,12 @@ require.config({
       deps: ['angular', 'ngAnimate']
     },
     'ngCharts': {
+      deps: ['angular']
+    },
+    'ngBootstrap': {
+      deps: ['angular']
+    },
+    'ngIndeterminate': {
       deps: ['angular']
     },
     'ngCookies': {

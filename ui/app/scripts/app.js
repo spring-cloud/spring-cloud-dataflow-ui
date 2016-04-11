@@ -21,6 +21,7 @@
  */
 define([
   'angular',
+  './app/app',
   './analytics/app',
   './job/app',
   './task/app',
@@ -34,6 +35,7 @@ define([
 
   return  angular.module('xdAdmin', [
     'xdConf',
+    'xdAppsAdmin',
     'xdAnalyticsAdmin',
     'xdJobsAdmin',
     'xdTasksAdmin',

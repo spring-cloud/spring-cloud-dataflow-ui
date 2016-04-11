@@ -42,7 +42,8 @@ define(['./app'], function (xdAdmin) {
         authTemplatesPath = 'scripts/auth/views',
         sharedTemplatesPath = 'scripts/shared/views',
         containerTemplatesPath = 'scripts/container/views',
-        analyticsTemplatesPath = 'scripts/analytics/views';
+        analyticsTemplatesPath = 'scripts/analytics/views',
+        appTemplatesPath = 'scripts/app/views';
 
     $stateProvider.state('home', {
       url : '/',
@@ -64,6 +65,13 @@ define(['./app'], function (xdAdmin) {
       }
     })
     .state('home.analytics', {
+      abstract: true,
+      template: '<ui-view/>',
+      data: {
+        authenticate: true
+      }
+    })
+    .state('home.apps', {
       abstract: true,
       template: '<ui-view/>',
       data: {
@@ -204,76 +212,102 @@ define(['./app'], function (xdAdmin) {
       controller: 'TaskDefinitionsController'
     })
         .state('home.tasks.deploymentsLaunch', {
-          url : 'tasks/definitions/launch/{taskName}',
-          templateUrl : taskTemplatesPath + '/launch.html',
+          url: 'tasks/definitions/launch/{taskName}',
+          templateUrl: taskTemplatesPath + '/launch.html',
           controller: 'TaskLaunchController'
         })
         .state('home.tasks.tabs.executions', {
-          url : '/executions',
-          templateUrl : taskTemplatesPath + '/executions.html',
+          url: '/executions',
+          templateUrl: taskTemplatesPath + '/executions.html',
           controller: 'TaskExecutionsController'
         })
         .state('home.analytics.tabs', {
-          url : 'analytics',
-          abstract:true,
-          data:{
+          url: 'analytics',
+          abstract: true,
+          data: {
             authenticate: true
           },
-          templateUrl : analyticsTemplatesPath + '/analytics.html'
+          templateUrl: analyticsTemplatesPath + '/analytics.html'
         })
         .state('home.analytics.tabs.dashboard', {
-          url : '/dashboard',
-          templateUrl : analyticsTemplatesPath + '/dashboard.html',
+          url: '/dashboard',
+          templateUrl: analyticsTemplatesPath + '/dashboard.html',
           controller: 'DashboardController',
-          data:{
+          data: {
             title: 'Dashboard',
             authenticate: true
           }
         })
         .state('home.analytics.tabs.counters', {
-          url : '/counters',
-          templateUrl : analyticsTemplatesPath + '/counters.html',
+          url: '/counters',
+          templateUrl: analyticsTemplatesPath + '/counters.html',
           controller: 'CountersController',
-          data:{
+          data: {
             title: 'Counters',
             authenticate: true
           }
         })
         .state('home.analytics.tabs.gauges', {
-          url : '/gauges',
-          templateUrl : analyticsTemplatesPath + '/gauges.html',
+          url: '/gauges',
+          templateUrl: analyticsTemplatesPath + '/gauges.html',
           controller: 'GaugesController',
-          data:{
+          data: {
             title: 'Gauges',
             authenticate: true
           }
         })
         .state('home.analytics.tabs.richgauges', {
-          url : '/rich-gauges',
-          templateUrl : analyticsTemplatesPath + '/rich-gauges.html',
+          url: '/rich-gauges',
+          templateUrl: analyticsTemplatesPath + '/rich-gauges.html',
           controller: 'RichGaugesController',
-          data:{
+          data: {
             title: 'Rich-Gauges',
             authenticate: true
           }
         })
-    .state('home.containers.tabs', {
-      url : 'containers',
-      abstract:true,
-      data:{
-        authenticate: true
-      },
-      templateUrl : containerTemplatesPath + '/containers.html'
-    })
-    .state('home.containers.tabs.containerlist', {
-      url : '/containers',
-      templateUrl : containerTemplatesPath + '/containerlist.html',
-      controller: 'ContainersController',
-      data:{
-        title: 'Runtime',
-        authenticate: true
-      }
-    });
+        .state('home.apps.tabs', {
+          url: 'apps',
+          abstract: true,
+          data: {
+            authenticate: true
+          },
+          templateUrl: appTemplatesPath + '/apps.html'
+        })
+        .state('home.apps.tabs.modules', {
+          url: '/modules',
+          templateUrl: appTemplatesPath + '/modules.html',
+          controller: 'ModulesController',
+          data: {
+            title: 'Modules',
+            authenticate: true
+          }
+        })
+        .state('home.apps.registerModules', {
+          url: 'apps/register-modules',
+          templateUrl: appTemplatesPath + '/register-modules.html',
+          controller: 'RegisterModulesController',
+          data: {
+            title: 'Register Modules',
+            authenticate: true
+          }
+        })
+        .state('home.containers.tabs', {
+          url: 'containers',
+          abstract: true,
+          data: {
+            authenticate: true
+          },
+          templateUrl: containerTemplatesPath + '/containers.html'
+        })
+        .state('home.containers.tabs.containerlist', {
+          url: '/containers',
+          templateUrl: containerTemplatesPath + '/containerlist.html',
+          controller: 'ContainersController',
+          data: {
+            title: 'Runtime',
+            authenticate: true
+          }
+        });
   });
   xdAdmin.run(function ($rootScope, $state, $stateParams, userService, $log) {
 
