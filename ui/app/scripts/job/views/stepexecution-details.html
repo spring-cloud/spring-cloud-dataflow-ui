@@ -109,9 +109,9 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="contextValue in stepExecutionDetails.stepExecution.executionContext.values | orderBy:'key'">
-      <td>{{contextValue.key}}</td>
-      <td xd-parse-urls>{{contextValue.value}}</td>
+    <tr ng-repeat="contextParameter in stepExecutionDetails.stepExecution.executionContext.values">
+      <td               ng-repeat-start="(key, value) in contextParameter">{{key}}</td>
+      <td xd-parse-urls ng-repeat-end>{{value}}</td>
     </tr>
     <tr ng-show="stepExecutionDetails.stepExecution.executionContext.values.length == 0">
       <td colspan="2">No Execution Context values are available.</td>
