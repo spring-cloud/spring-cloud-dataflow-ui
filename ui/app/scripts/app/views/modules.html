@@ -10,7 +10,7 @@
                             Register Application(s)
                         </button>
                         <button type="button" ng-click="unregisterSelectedModules()"
-                                class="btn btn-default" ng-disabled="keys(selected).length === 0"
+                                class="btn btn-default" ng-disabled="isNoneSelected()"
                         ><span class="glyphicon glyphicon-trash"></span>
                             Unregister Application(s)
                         </button>

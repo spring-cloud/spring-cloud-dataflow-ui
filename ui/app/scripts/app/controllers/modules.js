@@ -103,9 +103,6 @@ define(['model/pageable'], function (Pageable) {
                 );
             }
 
-            // Make Object.keys available on the scope to be accessible in HTML template
-            $scope.keys = Object.keys;
-
             // Selected modules map
             $scope.selected = {};
 
@@ -141,6 +138,14 @@ define(['model/pageable'], function (Pageable) {
                 var numSelected = Object.keys($scope.selected).length;
                 var numTotal = $scope.pageable.items ? $scope.pageable.items.length : 0;
                 return numTotal > 0 && numSelected > 0 && numSelected < numTotal;
+            };
+
+            /**
+             * Returns true if no modules selected
+             * @returns {boolean}
+             */
+            $scope.isNoneSelected = function() {
+                return Object.keys($scope.selected).length === 0;
             };
 
             /**
