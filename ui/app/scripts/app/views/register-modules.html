@@ -1,12 +1,12 @@
 <h1>Register Applications</h1>
-<p>Register one or more applications by entering <strong>Name</strong>, <strong>Type</strong> and <strong>URI</strong> of the application JAR. The URI is typically Maven coordinates of the JAR, but can be local file or docker image URI.</p>
+<p>Register one or more applications by entering a <strong>Name</strong>, <strong>Type</strong> and <strong>URI</strong> of the application Jar. The URI is typically provided using the Maven coordinates of the Jar (e.g. <code>maven://io.spring.cloud:scdf-sample-app:jar:exec:1.0.0.BUILD-SNAPSHOT</code>), but can be a local file or a docker image URI.</p>
 <hr/>
 <form name="registerModulesForm" role="form" ng-submit="register()" novalidate>
     <table class="table form-table">
         <col width="20%">
         <col width="10%">
-        <col width="58%">
-        <col width="7%">
+        <col width="57%">
+        <col width="8%">
         <thead>
             <tr>
                 <th>Name</th>
@@ -16,6 +16,7 @@
                     <span>
                         <input type="checkbox" ng-model="toggleAllForce" ng-model-options="{ getterSetter: true }" ui-indeterminate="someForceButNotAll()"/>
                         Force
+                        <a xd-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a>
                     </span>
                 </th>
                 <th colspan="2">Actions</th>
@@ -34,7 +35,7 @@
                 </td>
                 <td>
                     <div ng-class="registerModulesForm[$index + '_uri'].$invalid ? 'has-warning has-feedback' : ''">
-                        <input type="text" id="{{$index + '_uri'}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<Application URI>" required ng-model="module.uri" ng-pattern="uriPattern">
+                        <input type="text" id="{{$index + '_uri'}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<maven://io.spring.cloud:scdf-sample-app:jar:exec:1.0.0.BUILD-SNAPSHOT>" required ng-model="module.uri" ng-pattern="uriPattern">
                         <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerModulesForm[$index + '_uri'].$invalid"></span>
                     </div>
                 </td>
@@ -44,6 +45,7 @@
                 <td class="action-column">
                     <button type="button" ng-click="addModule($index)"
                             class="btn btn-sm btn-default"
+                            title="Add"
                     ><span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </td>
@@ -51,6 +53,7 @@
                     <button type="button" ng-click="removeModule($index)"
                             ng-disabled="modules.length <= 1"
                             class="btn btn-sm btn-default"
+                            title="Remove"
                     ><span class="glyphicon glyphicon-minus"></span>
                     </button>
                 </td>
@@ -62,3 +65,7 @@
         <div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default" ng-disabled="registerModulesForm.$invalid">Register</button></div>
     </div>
 </form>
+
+<div class="force-help-content hide">
+    <span class="force-help-content">By checking <strong>force</strong>, the application will be installed even if it already exists but only if not being used already.</span>
+</div>
