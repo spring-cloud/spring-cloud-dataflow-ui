@@ -19,16 +19,16 @@
     <tbody>
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter: {moduleDeploymentId: filterQuery}" total-items="pageable.total" ng-show="!item.inactive">
         <td id="container-id">
-            <a data-toggle="modal" data-target="#containerDetails{{$index}}" data-original-title="Container Attributes">{{item.moduleDeploymentId}}</a>
+            <a data-toggle="modal" data-target="#containerDetails{{$index}}" data-original-title="Container Attributes">{{item.deploymentId}}</a>
             <div class="modal fade" xd-modal id="containerDetails{{$index}}" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Instances for module <strong>{{item.moduleDeploymentId}}</strong></h4>
+                            <h4 class="modal-title">Instances for module <strong>{{item.deploymentId}}</strong></h4>
                         </div>
                         <div class="modal-body">
-                            <div ng-repeat="moduleInstance in item.instances._embedded.moduleInstanceStatusResourceList | orderBy:'instanceId'">
+                            <div ng-repeat="moduleInstance in item.instances._embedded.appInstanceStatusResourceList | orderBy:'instanceId'">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <h2>{{moduleInstance.instanceId}}</h2>
@@ -37,10 +37,14 @@
                                         <p>Status: <strong>{{moduleInstance.state}}</strong></p>
                                     </div>
                                 </div>
-                                <h2 class="text-center">Attributes</h2>
-                                <div ng-repeat="(key, value) in moduleInstance.attributes">
-                                    <h4>{{key}}</h4>
-                                    <pre class="pre-scrollable">{{value}}</pre>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h2 class="text-center">Attributes</h2>
+                                        <div ng-repeat="(key, value) in moduleInstance.attributes">
+                                            <h4>{{key}}</h4>
+                                            <pre class="pre-scrollable">{{value}}</pre>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +59,7 @@
             {{item.state}}
         </td>
         <td>
-            {{item.instances._embedded.moduleInstanceStatusResourceList.length}}
+            {{item.instances._embedded.appInstanceStatusResourceList.length}}
         </td>
     </tr>
     </tbody>
