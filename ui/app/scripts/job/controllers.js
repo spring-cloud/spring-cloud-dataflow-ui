@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xdAdmin controllers.
+ * Definition of Dashboard job controllers.
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan

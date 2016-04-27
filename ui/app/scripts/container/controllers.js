@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xd container controllers.
+ * Definition of Dashboard runtime controllers.
  *
  * @author Ilayaperumal Gopinathan
  */

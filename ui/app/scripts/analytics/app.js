@@ -15,7 +15,7 @@
  */
 
 /**
- * App for XD containers.
+ * Analytics Module for the Dataflow Dashboard.
  *
  * @author Ilayaperumal Gopinathan
  */

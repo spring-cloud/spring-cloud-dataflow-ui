@@ -15,7 +15,7 @@
  */
 
 /**
- * XD Containers controller
+ * Dashboard runtime module controllers
  *
  * @author Ilayaperumal Gopinathan
  * @author Gunnar Hillert

@@ -15,7 +15,7 @@
  */
 
 /**
- * XD Container services.
+ * Services of the analytics module.
  *
  * @author Ilayaperumal Gopinathan
  */

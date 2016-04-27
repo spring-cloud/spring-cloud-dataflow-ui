@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of XD streams app module.
+ * Definition of Dashboard streams app module.
  *
  * @author Ilayaperumal Gopinathan
  */

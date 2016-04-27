@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xdAdmin app module.
+ * Definition of the main app module.
  *
  * @author Ilayaperumal Gopinathan
  */

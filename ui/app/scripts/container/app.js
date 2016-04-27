@@ -15,7 +15,7 @@
  */
 
 /**
- * App for XD containers.
+ * App for Dashboard runtime modules.
  *
  * @author Ilayaperumal Gopinathan
  */

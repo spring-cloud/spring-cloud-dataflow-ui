@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xd container controllers.
+ * Definition of Dashboard directives of the analytics module.
  *
  * @author Ilayaperumal Gopinathan
  */

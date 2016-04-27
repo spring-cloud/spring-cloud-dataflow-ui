@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ describe('Stream Tests', function() {
   describe('When I navigate to "/#/streams"', function() {
     it('the main header should be labelled "Streams"', function() {
       browser.get('#/streams/definitions');
+      browser.sleep(2000);
       expect(element(by.css('#xd-content h1')).getText()).toEqual('Streams');
     });
     it('there should be 1 tab which is active', function() {

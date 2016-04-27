@@ -15,7 +15,7 @@
  */
 
 /**
- * XD Container services.
+ * Dashboard runtime module services.
  *
  * @author Ilayaperumal Gopinathan
  * @author Gunnar Hillert

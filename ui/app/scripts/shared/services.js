@@ -15,7 +15,7 @@
  */
 
 /**
- * XD shared (global) services.
+ * Dashboard shared (global) services.
  *
  * @author Ilayaperumal Gopinathan
  */
