@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * Definition of custom directives.
  *
  * @author Gunnar Hillert
+ * @author Alex Boyko
  */
 define(['angular', 'xregexp', 'moment'], function(angular) {
   'use strict';
@@ -62,7 +63,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
               }
               return p1 + XRegExp.replace(p3, subRegex,'*');
             });
-            element.html(result);
+            element.text(result);
           }
         });
       };
@@ -176,6 +177,18 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
               scope.startPolling();
             }
           };
+        }
+      };
+    })
+    .directive('xdFormAutofocus', function() {
+      return {
+        restrict: 'A',
+        link: function(scope, element) {
+          scope.focusInvalidField = function() {
+            element.find('.ng-invalid:visible').first().focus();
+          };
+          element.on('submit', scope.focusInvalidField);
+          scope.focusInvalidField();
         }
       };
     })

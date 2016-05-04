@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
  * RequireJS configuration and bootstrapping angular.
  *
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
+ * @author Andy Clement
  */
 require.config({
   paths: {
@@ -40,7 +42,17 @@ require.config({
     ngBootstrap: '../lib/angular-bootstrap/ui-bootstrap-tpls',
     ngIndeterminate: '../lib/angular-ui-indeterminate/indeterminate',
     ngCookies: '../lib/angular-cookies/angular-cookies',
-    d3: '../lib/d3/d3'
+    d3: '../lib/d3/d3',
+    joint: '../lib/joint/joint',
+    backbone: '../lib/backbone/backbone',
+    lodash: '../lib/lodash/lodash.compat',
+    flo: '../lib/spring-flo/spring-flo'
+  },
+  map: {
+    '*': {
+      // Backbone requires underscore. This forces requireJS to load lodash instead:
+      'underscore': 'lodash'
+    }
   },
   shim: {
     angular: {
@@ -86,6 +98,18 @@ require.config({
     'ngCookies': {
       deps: ['angular']
     },
+	underscore: {
+	    exports: '_'
+	},
+    backbone: {
+      deps: ['jquery', 'underscore']
+    },
+    joint: {
+      deps: ['jquery', 'underscore', 'backbone']
+    },
+    'flo': {
+    	deps: ['angular', 'jquery', 'joint', 'underscore']
+    }
   }
 });
 

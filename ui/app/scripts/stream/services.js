@@ -18,11 +18,14 @@
  * Dashboard Stream services.
  *
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
-define(['angular'], function (angular) {
+define(function(require) {
   'use strict';
+    
+  var angular = require('angular');  
 
-  return angular.module('xdStreamsAdmin.services', [])
+  return angular.module('xdStreamsAdmin.services', ['ui.bootstrap'])
       .factory('StreamService', function ($resource, $rootScope, $log, $http) {
         return {
           getDefinitions: function (pageable) {
@@ -72,7 +75,25 @@ define(['angular'], function (angular) {
             return $resource($rootScope.xdAdminServerUrl + '/streams/definitions/' + streamDefinition.name, null, {
               destroy: { method: 'DELETE' }
             }).destroy();
+          },
+          create: function(streamName, streamDefinition, deploy) {
+        	$log.info('Creating Stream name=' + streamName + ' def=' + streamDefinition);
+        	return $http({
+                method: 'POST',
+                url: $rootScope.xdAdminServerUrl + '/streams/definitions',
+                params: {
+                	name: streamName,
+                	definition: streamDefinition,
+                	deploy: deploy ? true : false
+                }
+              });
           }
-        };
-      });
+        };        
+      }).
+      factory('StreamMetamodelService',require('stream/services/metamodel')).
+      factory('StreamParserService',require('stream/services/parser')).
+      factory('StreamEditorService', require('stream/services/editor-service')).
+      factory('StreamRenderService', require('stream/services/render-service')).
+      factory('StreamContentAssistService', require('stream/services/content-assist-service'));
+
 });

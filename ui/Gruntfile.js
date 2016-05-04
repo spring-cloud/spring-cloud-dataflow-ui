@@ -104,7 +104,7 @@ module.exports = function (grunt) {
         {
           context: [
             '/authenticate', '/batch', '/tasks', '/jobs', '/logout', '/meta', '/modules', '/streams',
-            '/runtime', '/validation', '/management', '/admin-ui', '/security',
+            '/runtime', '/validation', '/management', '/admin-ui', '/security', '/completions',
             '/metrics'],
           host: 'localhost',
           port: 9393,

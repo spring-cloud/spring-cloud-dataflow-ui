@@ -1,0 +1,104 @@
+<form name="moduleForm" class="form-horizontal form-dialog" ng-submit="submit()" role="form">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title"><b>{{cell.attr('metadata/name').toUpperCase()}}</b> Module Properties</h4>
+    </div>
+    <div class="modal-body" id="modal-properties-container" ng-cloak cg-busy="{promise:cgbusy,delay:0,minDuration:100}">
+        <fieldset id="module-properties">
+            <div class="form-group form-dialog" ng-repeat="key in keys(derivedProperties)" ng-if="keys(derivedProperties).length > 0">
+                <div class="form-group" id="{{derivedProperties[key].id + '-form-group'}}" ng-class="moduleForm[derivedProperties[key].id].$invalid ? 'has-warning has-feedback' : ''">
+                    <label for="{{derivedProperties[key].id}}" class="col-sm-3 control-label">{{derivedProperties[key].name | camelCaseToHuman}}</label>
+                    <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) !== 'checkbox' && getInputType(derivedProperties[key]) !== 'code' && getInputType(derivedProperties[key]) !== 'select'">
+                        <input type="{{getInputType(derivedProperties[key])}}" id="{{derivedProperties[key].id}}"
+                               name="{{derivedProperties[key].id}}" class="form-control" placeholder="{{derivedProperties[key].defaultValue}}" ng-model="derivedProperties[key].value" ng-pattern="derivedProperties[key].pattern">
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="moduleForm[derivedProperties[key].id].$invalid"></span>
+                        <p class="help-block">{{derivedProperties[key].description | capitalize}}</p>
+                    </div>
+                    <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) === 'checkbox'">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="{{derivedProperties[key].id}}" ng-true-value="true" ng-false-value="false"
+                                       name="{{derivedProperties[key].id}}" ng-model="derivedProperties[key].valueFunc" ng-model-options="{ getterSetter: true }">
+                                {{derivedProperties[key].valueFunc() ? 'True' : 'False' }}
+                            </label>
+                            <p class="help-block">{{derivedProperties[key].description | capitalize}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) === 'code'">
+                        <div class="property-code-editor">
+                            <textarea code-editor name="{{derivedProperties[key].id}}" class="form-control"
+                                      placeholder="{{derivedProperties[key].defaultValue}}"
+                                      code-language="derivedProperties[getLanguageProperty(derivedProperties[key])].value"
+                                      code-text="derivedProperties[key].value"
+                                      default-text="{{derivedProperties[key].defaultValue}}"
+                                      default-language="{{getDefaultLanguage(derivedProperties[key])}}"
+                                      decode-function="decodeTextFromDSL" encode-function="encodeTextToDSL"/>
+                        </div>
+                        <p class="help-block">{{derivedProperties[key].description | capitalize}}</p>
+                    </div>
+                    <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) === 'select'">
+                        <select id="{{derivedProperties[key].id}}" required
+                                name="{{derivedProperties[key].id}}" class="form-control" ng-model="derivedProperties[key].valueFunc"
+                                ng-model-options="{ getterSetter: true }"
+                                ng-options="option | capitalize for option in derivedProperties[key].options">
+                            <option ng-if="!derivedProperties[key].defaultValue" value="">-- Select {{derivedProperties[key].name | capitalize}} --</option>
+                        </select>
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback feedback-with-offset" ng-show="moduleForm[derivedProperties[key].id].$invalid"></span>
+                        <p class="help-block">{{derivedProperties[key].description | capitalize}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-dialog" ng-repeat="key in keys(properties).sort()" ng-if="keys(properties).length > 0">
+                <div class="form-group" id="{{properties[key].id + '-form-group'}}" ng-class="moduleForm[properties[key].id].$invalid ? 'has-warning has-feedback' : ''">
+                    <label for="{{properties[key].id}}" class="col-sm-3 control-label">{{properties[key].name | camelCaseToHuman}}</label>
+                    <div class="col-sm-9" ng-if="getInputType(properties[key]) !== 'checkbox' && getInputType(properties[key]) !== 'code' && getInputType(properties[key]) !== 'select'">
+                        <input type="{{getInputType(properties[key])}}" id="{{properties[key].id}}"
+                               name="{{properties[key].id}}" class="form-control" placeholder="{{properties[key].defaultValue}}" ng-model="properties[key].value" ng-pattern="properties[key].pattern">
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="moduleForm[properties[key].id].$invalid"></span>
+                        <p class="help-block">{{properties[key].description | capitalize}}</p>
+                    </div>
+                    <div class="col-sm-9" ng-if="getInputType(properties[key]) === 'checkbox'">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="{{properties[key].id}}" ng-true-value="true" ng-false-value="false"
+                                       name="{{properties[key].id}}" ng-model="properties[key].valueFunc" ng-model-options="{ getterSetter: true }">
+                                {{properties[key].valueFunc() ? 'True' : 'False' }}
+                            </label>
+                            <p class="help-block">{{properties[key].description | capitalize}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-9" ng-if="getInputType(properties[key]) === 'code'">
+                        <div class="property-code-editor">
+                            <textarea code-editor name="{{properties[key].id}}" class="form-control"
+                                      placeholder="{{properties[key].defaultValue}}"
+                                      code-language="properties[getLanguageProperty(properties[key])].value"
+                                      code-text="properties[key].value"
+                                      default-text="{{properties[key].defaultValue}}"
+                                      default-language="{{getDefaultLanguage(properties[key])}}"
+                                      decode-function="decodeTextFromDSL" encode-function="encodeTextToDSL"/>
+                        </div>
+                        <p class="help-block">{{properties[key].description | capitalize}}</p>
+                    </div>
+                    <div class="col-sm-9" ng-if="getInputType(properties[key]) === 'select'">
+                        <select id="{{properties[key].id}}" required
+                                name="{{properties[key].id}}" class="form-control" ng-model="properties[key].valueFunc"
+                                ng-model-options="{ getterSetter: true }"
+                                ng-options="option | capitalize for option in properties[key].options">
+                            <option ng-if="!properties[key].defaultValue" value="">-- Select {{properties[key].name | capitalize}} --</option>
+                        </select>
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback feedback-with-offset" ng-show="moduleForm[properties[key].id].$invalid"></span>
+                        <p class="help-block">{{properties[key].description | capitalize}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="keys(properties).length === 0">No parameters available.</div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary"
+                ng-disabled="moduleForm.$invalid"
+                ng-click="submit()">OK
+        </button>
+    </div>
+</form>

@@ -79,17 +79,24 @@
   -moz-transition: border 0.15s;
   -o-transition: border 0.15s;
   -ms-transition: border 0.15s;
+  outline: none;
 
   &:hover,
-  &:focus,
   &:active,
   &.active,
   .open .dropdown-toggle& {
     background-color: @spring-brown;
     border-color: @spring-brown;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
+.btn input[type="checkbox"] {
+  margin-right: 4px;
+}
 
 .container .text-muted {
   margin: 20px 0;
@@ -286,6 +293,77 @@ hr {
   border-top: 1px dotted @spring-brown;
 }
 
+.tab-content-header {
+  background-color: @spring-brown;
+  color: @spring-light-grey;
+  padding: 9px 12px;
+  width: 100%;
+}
+
+.tab-content-header td {
+  padding: 3px;
+}
+
+.tab-content-header select {
+  -webkit-appearance: menulist-button;
+  color: @spring-brown;
+  background-color: @spring-light-grey;
+  width: 100%;
+}
+
+.dialog-control input[type="checkbox"] {
+  margin: 4px;
+}
+
+.dialog-validation {
+  padding: 3px;
+  margin-bottom: 5px;
+}
+
+.dialog-validation label {
+  padding: 0px;
+  margin: 0px;
+  display: inline;
+}
+
+.dialog-error-sign {
+  color: red;
+}
+
+.dialog-warning-sign {
+  color: orange;
+}
+
+.no-user-selection {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.feedback-with-offset {
+  padding-right: 20px;
+}
+
+.modal-body .stream-definition-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.table-compact > tbody > tr > td {
+  vertical-align: middle;
+}
+
+.form-horizontal .form-dialog .form-group {
+  margin: 0;
+}
+
+@import (less) "../lib/spring-flo/spring-flo.css";
+
 @import "analytics.less";
+
+@import "flo.less";
 
 @import "responsive.less";

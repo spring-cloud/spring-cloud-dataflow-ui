@@ -19,6 +19,7 @@
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
 define(['./app'], function (xdAdmin) {
   'use strict';
@@ -143,6 +144,11 @@ define(['./app'], function (xdAdmin) {
       url : '/definitions',
       templateUrl : streamTemplatesPath + '/definitions.html',
       controller: 'StreamsDefinitionsController'
+    })
+    .state('home.streams.tabs.create', {
+      url : '/create',
+      templateUrl : streamTemplatesPath + '/create-stream.html',
+      controller: 'StreamsCreationController'
     })
     .state('home.streams.deployStream', {
       url : 'streams/definitions/{definitionName}/deploy',

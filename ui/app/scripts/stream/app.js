@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * Definition of Dashboard streams app module.
  *
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
 define([
   'angular',
@@ -26,8 +27,11 @@ define([
   'cgBusy',
   'ngAnimate',
   'ngGrowl',
+  'ngBootstrap',
+  'ngCookies',
   './controllers',
   './services',
+  '../app/services',
   '../shared/services',
   '../shared/interceptors'
 ], function (angular) {
@@ -37,10 +41,13 @@ define([
     'xdStreamsAdmin.controllers',
     'xdShared.services',
     'xdShared.interceptors',
+    'xdAppsAdmin.services',
     'ui.router',
     'ngResource',
     'ngAnimate',
     'cgBusy',
-    'angular-growl'
+    'angular-growl',
+    'ui.bootstrap',
+    'ngCookies'
   ]);
 });
