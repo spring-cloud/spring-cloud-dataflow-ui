@@ -15,7 +15,7 @@
  */
 
 /**
- * XD shared (global) interceptors.
+ * Dashboard shared (global) interceptors.
  *
  * @author Gunnar Hillert
  */
@@ -27,7 +27,7 @@ define(['angular'], function (angular) {
         return {
           responseError: function (rejection) {
             if (rejection.status === 0) {
-              XDUtils.growl.error('Looks like the XD server is down.');
+              XDUtils.growl.error('Looks like the Dataflow server is down.');
             }
             if (rejection.status === 401) {
               XDUtils.growl.error('Not authenticated. Please login again.');

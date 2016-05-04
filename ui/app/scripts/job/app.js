@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of XD jobs admin app module.
+ * Definition of Dashboard jobs admin app module.
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan

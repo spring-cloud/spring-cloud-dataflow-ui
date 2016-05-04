@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xd container controllers.
+ * Definition of Dataflow Dashbaord controllers for the analytics module.
  *
  * @author Ilayaperumal Gopinathan
  */

@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xdAdmin services.
+ * Definition of Dashboard job services.
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan

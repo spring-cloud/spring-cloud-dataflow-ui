@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of XD auth services.
+ * Definition of Dashboard auth services.
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan

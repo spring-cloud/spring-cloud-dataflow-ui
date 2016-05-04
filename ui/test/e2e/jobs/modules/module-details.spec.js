@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,34 +28,47 @@ describe('Tests for the Module Details Page', function() {
     browser.ignoreSynchronization = false;
   });
 
-  describe('When I navigate to the Module Details URL for the "filejdbc" module - "#/jobs/modules/filejdbc"', function() {
+  describe('When I navigate to the Module Details URL for the "timestamp" module - "#/tasks/modules/timestamp"', function() {
     it('The page title should be "Module Details"', function() {
-      browser.get('#/jobs/modules/filejdbc');
-      expect(browser.getCurrentUrl()).toContain('#/jobs/modules/filejdbc')
+      browser.get('#/tasks/modules/timestamp');
+      browser.sleep(2000);
+      expect(browser.getCurrentUrl()).toContain('#/tasks/modules/timestamp')
       expect(browser.getTitle()).toBe('Module Details');
     });
     it('there should be a table with 4 columns', function() {
+      browser.get('#/tasks/modules/timestamp');
+      browser.sleep(2000);
       expect(element.all(by.css('#xd-content table thead th')).count()).toEqual(4);
     });
     it('the first column is labelled "Name"', function() {
-      browser.driver.sleep(2000);
+      browser.get('#/tasks/modules/timestamp');
+      browser.sleep(2000);
       expect(element(by.css('#xd-content table thead th:nth-child(1)')).getText()).toEqual('Name');
     });
     it('the second column is labelled "Type"', function() {
+      browser.get('#/tasks/modules/timestamp');
+      browser.sleep(4000);
       expect(element(by.css('#xd-content table thead th:nth-child(2)')).getText()).toEqual('Type');
     });
     it('the third column is labelled "Default Value"', function() {
+      browser.get('#/tasks/modules/timestamp');
+      browser.sleep(2000);
       expect(element(by.css('#xd-content table thead th:nth-child(3)')).getText()).toEqual('Default Value');
     });
     it('the fourth column is labelled "Description"', function() {
+      browser.get('#/tasks/modules/timestamp');
+      browser.sleep(2000);
       expect(element(by.css('#xd-content table thead th:nth-child(4)')).getText()).toEqual('Description');
     });
     it('if the user clicks the "back" button, the module list page should be loaded', function() {
+      browser.get('#/tasks/modules/timestamp');
+      browser.sleep(4000);
       var backButton = element(by.css('#back-button'));
       expect(backButton.isPresent()).toBe(true);
       expect(backButton.getText()).toEqual('Back');
       backButton.click();
-      expect(browser.getCurrentUrl()).toContain('/jobs/modules');
+      browser.sleep(2000);
+      expect(browser.getCurrentUrl()).toContain('/tasks/modules');
     });
   });
 });

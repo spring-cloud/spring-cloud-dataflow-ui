@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xdApps controllers.
+ * Definition of main Dashboard controllers.
  *
  * @author Alex Boyko
  */

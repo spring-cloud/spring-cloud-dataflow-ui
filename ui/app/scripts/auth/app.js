@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of XD auth module.
+ * Definition of Dashboard auth module.
  *
  * @author Ilayaperumal Gopinathan
  */

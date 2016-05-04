@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of XD auth controllers.
+ * Definition of Dashboard auth controllers.
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan

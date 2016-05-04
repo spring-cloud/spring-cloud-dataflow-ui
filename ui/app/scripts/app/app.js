@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xdApps angular module.
+ * Definition of the main Dashboard Angular module.
  *
  * @author Alex Boyko
  */

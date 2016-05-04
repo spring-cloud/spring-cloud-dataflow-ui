@@ -15,7 +15,7 @@
  */
 
 /**
- * XD Stream services.
+ * Dashboard Stream services.
  *
  * @author Ilayaperumal Gopinathan
  */

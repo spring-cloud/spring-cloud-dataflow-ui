@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of xd streams controllers.
+ * Definition of Dashboard streams controllers.
  *
  * @author Ilayaperumal Gopinathan
  */

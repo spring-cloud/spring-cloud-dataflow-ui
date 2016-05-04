@@ -15,7 +15,7 @@
  */
 
 /**
- * XD Containers controller
+ * Dashboard runtime module controllers
  *
  * @author Ilayaperumal Gopinathan
  * @author Gunnar Hillert
@@ -33,7 +33,7 @@ define(['model/pageable'], function (Pageable) {
         utils.$log.info('pageable', pageable);
         containerService.getContainers(pageable).$promise.then(
             function (result) {
-              var containers = result._embedded.moduleStatusResourceList;
+              var containers = result._embedded ? result._embedded.appStatusResourceList : [];
               utils.$log.info('Retrieved containers...', containers);
               //containers.forEach(function (container) {
               //  //if (container.attributes.managementPort && $rootScope.enableMessageRates) {

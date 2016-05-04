@@ -1,4 +1,4 @@
-# Spring Cloud Data Flow UI [![Stories in Ready](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui) [![Stories in Progress](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui)
+# Spring Cloud Data Flow Dashboard [![Stories in Ready](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui) [![Stories in Progress](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui)
 
 |               | Build Status    |
 | ------------- | :-------------: |
@@ -23,18 +23,13 @@ Using [Maven][] is also the easiest route for Java developers to get started, as
 * [Maven][]
 * Git
 
-Optionally, if you like to deploy the created artifact into an existing *Spring Cloud Data Flow UI* installation, setup the `XD_HOME` environment variable.
-
 ## Building the Project using Maven
 
 	$ git clone https://github.com/spring-cloud/spring-cloud-dataflow-ui.git
 	$ cd spring-cloud-dataflow-ui
-	$ mvn clean package
+	$ mvn clean package install
 
-This will create `target/spring-cloud-dataflow-ui-1.0.0.BUILD-SNAPSHOT.jar`. In order to install this Jar into an existing Spring Cloud Data Flow installation execute:
-
-	$ rm $XD_HOME/lib/spring-cloud-dataflow-ui-*.jar
-	$ cp target/spring-cloud-dataflow-ui-*.jar $XD_HOME/lib
+This will create `target/spring-cloud-dataflow-ui-1.0.0.BUILD-SNAPSHOT.jar` and also install the build artifact into the local Maven repository.
 
 ## Building the Project using Grunt
 
