@@ -26,8 +26,11 @@ define([
   'cgBusy',
   'ngAnimate',
   'ngGrowl',
+  'ngBootstrap',
+  'ngCookies',
   './controllers',
   './services',
+  '../app/services',
   '../shared/services',
   '../shared/interceptors'
 ], function (angular) {
@@ -37,10 +40,13 @@ define([
     'xdStreamsAdmin.controllers',
     'xdShared.services',
     'xdShared.interceptors',
+    'xdAppsAdmin.services',
     'ui.router',
     'ngResource',
     'ngAnimate',
     'cgBusy',
-    'angular-growl'
+    'angular-growl',
+    'ui.bootstrap',
+    'ngCookies'
   ]);
 });

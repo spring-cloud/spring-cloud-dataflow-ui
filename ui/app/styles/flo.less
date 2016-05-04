@@ -1,0 +1,262 @@
+@import "main.less";
+
+.flow-view {
+  height:625px;
+  font-family: inherit;
+}
+
+.crop {
+  overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow:ellipsis; 
+}​
+
+input.ng-invalid.flo-toolbar {
+  border: 1px solid red;
+}
+
+input.ng-valid.flo-toolbar {
+  border: 1px solid green;
+}
+
+input.flo-toolbar[type=range] {
+    border: 0px;    
+    width: 150px;
+  	display: inline;
+	vertical-align:middle;
+}
+
+input.flo-toolbar[type=range]::-webkit-slider-runnable-track {
+    width: 150px;
+    height: 5px;
+    background: @spring-light-grey;
+    border: none;
+    border-radius: 3px;
+}
+
+input.flo-toolbar[type=range]::-webkit-slider-thumb {
+    border: 1px;
+    border-radius: 50%;
+    background: @spring-light-grey;
+    margin-top: -5px; 
+}
+
+input.flo-toolbar[type=range]:focus {
+    outline: none;
+    border: 0px;
+}
+
+input.flo-toolbar[type=range]::-moz-range-track {
+    width: 150px;
+    height: 5px;
+    background: @spring-light-grey;
+    border-radius: 3px;
+}
+
+input.flo-toolbar[type=range]::-moz-range-thumb {
+    border-radius: 50%;
+    border: 1px;
+    background: @spring-light-grey;
+}
+
+input.flo-toolbar[type=range]::-ms-track {
+    width: 150px;
+    height: 5px;
+    background: @spring-light-grey;
+    border: none;
+    border-radius: 3px;
+}
+
+input.flo-toolbar[type=range]::-ms-thumb {
+    border-radius: 50%;
+    border: 1px;
+    background: @spring-light-grey;
+}
+
+.btn label {
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
+}
+
+input.btn.ng-valid {
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
+  text-align: right;
+}
+
+input.btn.ng-invalid {
+  padding: 0px;
+  border: 0px;
+  margin: 0px;
+  text-align: right;
+}
+
+.flow-definition-container {
+	border: 1px solid;
+	border-color: @spring-green;
+	border-radius: 2px;
+	margin-top: 3px;
+	background-color: @body-bg;
+	font-family: monospace;
+	z-index: 2;
+	width:100%;	
+	height:100px;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.flow-definition {
+	border: 5px;
+	height:100%;
+	width:100%;
+	font-size: 16px;
+	resize: none;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.available-magnet {
+    stroke-width: 3;
+}
+
+.input-port {
+  cursor: pointer;
+}
+
+.output-port {
+  cursor: pointer;
+}
+
+.tap-port {
+  cursor: pointer;
+}
+
+[magnet=true]:not(.element) {
+  cursor: pointer;
+}
+
+.element.highlighted circle {
+  stroke: #34302d;
+  stroke-width: 3;
+}
+
+.link.highlighted path {
+  stroke-width: 3;
+}
+
+.link-tools .tool-options circle {
+  fill: white;
+  stroke: black;
+}
+
+.link-tools .tool-options path {
+  fill: black;
+  stroke: black;
+}
+
+.link-tools .tool-remove circle {
+  fill: red;
+  stroke: red;
+}
+
+.link-tools .tool-remove path {
+  fill: white;
+  stroke: white;
+}
+
+.link-tools-container {
+  stroke-width: 0;
+  fill: transparent;
+}
+
+.connection.job-graph-transition {
+  stroke: #777777;
+  stroke-dasharray: 1,5;
+}
+
+.marker-source.job-graph-transition {
+  stroke: #777777;
+  fill: #777777;
+}
+
+.marker-target.job-graph-transition {
+  stroke: #777777;
+  fill: #777777;
+}
+
+.marker-vertex {
+  fill: #70A5D9;
+  stroke: @spring-brown;
+  stroke-width: 1;
+}
+
+.marker-vertex:hover {
+  fill: #4C7EA5;
+  stroke: @spring-brown;
+  stroke-width: 2;
+}
+
+.marker-arrowhead {
+  fill: #70A5D9;
+  stroke: @spring-brown;
+  stroke-width: 1;
+}
+
+.marker-arrowhead:hover {
+  fill: #4C7EA5;
+  stroke: @spring-brown;
+  stroke-width: 2;
+}
+
+.marker-vertex-remove {
+  fill: @spring-brown;
+  stroke: @spring-brown;
+  opacity: 0.4
+}
+
+.marker-vertex-remove:hover {
+  fill: @spring-brown;
+  stroke: @spring-brown;
+  opacity: 1;
+}
+
+.marker-vertex-remove-area {
+  stroke: @spring-brown;
+  opacity: 0.4
+}
+
+.marker-vertex-remove-area:hover {
+  stroke: @spring-brown;
+  opacity: 1;
+}
+
+.available-magnet {
+    stroke-width: 3;
+}
+
+.label1 {
+  font-family: inherit;
+}
+
+#modal-properties-container {
+  overflow-y: auto;
+  max-height: calc(~"100vh - 300px");
+}
+
+.property-code-editor {
+  border: 1px solid;
+  border-color: lightgrey;
+  height: 180px;
+}
+
+.form-horizontal .form-dialog .form-group {
+  margin: 0;
+}
+
+.CodeMirror-lint-tooltip {
+  z-index: 2000;
+}

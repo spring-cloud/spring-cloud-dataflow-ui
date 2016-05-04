@@ -40,7 +40,21 @@ require.config({
     ngBootstrap: '../lib/angular-bootstrap/ui-bootstrap-tpls',
     ngIndeterminate: '../lib/angular-ui-indeterminate/indeterminate',
     ngCookies: '../lib/angular-cookies/angular-cookies',
-    d3: '../lib/d3/d3'
+    d3: '../lib/d3/d3',
+    
+    joint: '../lib/joint/joint',
+    backbone: '../lib/backbone/backbone',
+    dagre: '../lib/dagre/dagre.core.min',
+    graphlib: '../lib/graphlib/graphlib.core',
+    lodash: '../lib/lodash/lodash.compat',
+
+    flo: '../lib/flo/flo'
+  },
+  map: {
+    '*': {
+      // Backbone requires underscore. This forces requireJS to load lodash instead:
+      'underscore': 'lodash'
+    }
   },
   shim: {
     angular: {
@@ -86,6 +100,24 @@ require.config({
     'ngCookies': {
       deps: ['angular']
     },
+	'graphlib': {
+		deps: ['underscore']
+	},
+	'dagre': {
+		deps: ['graphlib', 'underscore']
+	},
+	underscore: {
+	    exports: '_'
+	},
+    backbone: {
+      deps: ['jquery', 'underscore']
+    },
+    joint: {
+      deps: ['jquery', 'underscore', 'backbone']
+    },
+    'flo': {
+    	deps: ['angular', 'jquery', 'joint', 'dagre', 'underscore']
+    }
   }
 });
 

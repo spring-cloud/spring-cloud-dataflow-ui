@@ -1,0 +1,30 @@
+<div id="flo-container">
+	<div class="row no-user-selection">
+		<div class="col-md-12">
+			 <div class="col-md-12 table-filter">
+				<button ng-click="createStreamDefs()" class="btn btn-default" ng-disabled="!definition.text">Create Stream</button>
+				<button ng-click="flo.createNewFlow()" class="btn btn-default">Clear</button>
+				<button ng-click="flo.resetLayout(); flo.fitToPage();" class="btn btn-default">Layout</button>
+				<span class="btn btn-default">
+					<label>Zoom: </label>
+					<input class="btn btn-default flo-toolbar" type="text" ng-model="flo.zoomPercent" ng-model-options="{ getterSetter: true, updateOn: 'blur change' }" size="3"></input>
+					<label>%</label>
+					<span>
+					<input type="range" ng-model="flo.zoomPercent" ng-model-options="{ getterSetter: true }" step="{{flo.getZoomStep()}}" max="{{flo.getMaxZoom()}}" min="{{flo.getMinZoom()}}" data-type="range" name="range" class="range flo-toolbar"/>
+					</span>
+				</span>
+				<span class="btn btn-default">
+                    <input type="checkbox" ng-model="flo.autolink">Auto Link</input>
+				</span>
+                <span class="btn btn-default">
+                    <input type="checkbox" ng-model="gridOn">Grid</input>
+				</span>
+			</div>
+		 </div>
+	</div>
+	<div class="flow-definition-container">
+		<textarea dsl-editor id="flow-definition" class="flow-definition" placeholder="Enter stream definition..." ng-model="definition.text" ng-keyup="flo.updateGraphDef($event)" ng-blur="flo.enableSyncing(true)"></textarea>
+	</div>
+	<flo-editor disable-properties="true"
+				ng-init="flo.paletteSize=170; metamodelServiceName='StreamMetamodelServiceXD'; editorServiceName='xdFloEditorService'; renderServiceName='xdFloRenderService'; contentAssistServiceName='xdStreamContentAssistService';gridOn ? flo.gridSize(40) : flo.gridSize(1);"></flo-editor>
+</div>

@@ -21,6 +21,7 @@
  */
 define([
   'angular',
+  'flo',
   './app/app',
   './analytics/app',
   './job/app',
@@ -41,6 +42,7 @@ define([
     'xdTasksAdmin',
     'xdStreamsAdmin',
     'xdContainerAdmin',
-    'xdAuth'
+    'xdAuth',
+    'flo'
   ]);
 });
