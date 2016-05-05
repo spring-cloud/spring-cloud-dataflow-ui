@@ -44,7 +44,6 @@ require.config({
     
     joint: '../lib/joint/joint',
     backbone: '../lib/backbone/backbone',
-    graphlib: '../lib/graphlib/graphlib.core',
     lodash: '../lib/lodash/lodash.compat',
 
     flo: '../lib/flo/flo'
@@ -99,9 +98,6 @@ require.config({
     'ngCookies': {
       deps: ['angular']
     },
-	'graphlib': {
-		deps: ['underscore']
-	},
 	underscore: {
 	    exports: '_'
 	},

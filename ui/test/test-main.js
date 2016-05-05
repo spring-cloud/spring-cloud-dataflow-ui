@@ -34,7 +34,6 @@ require.config({
 
     joint: '/base/app/lib/joint/joint',
     backbone: '/base/app/lib/backbone/backbone',
-    graphlib: '/base/app/lib/graphlib/graphlib.core',
     lodash: '/base/app/lib/lodash/lodash.compat',
 
     flo: '/base/app/lib/flo/flo'
@@ -87,9 +86,6 @@ require.config({
     'ngCookies': {
       deps: ['angular']
     },
-	'graphlib': {
-		deps: ['underscore']
-	},
     backbone: {
       deps: ['underscore', 'jquery']
     },
