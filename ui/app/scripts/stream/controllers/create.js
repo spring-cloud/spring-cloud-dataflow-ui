@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@
 define(function(require) {
   'use strict';
 
-	var graphUtils = require('../services/utils');
+  var graphUtils = require('../services/utils');
 
-	var GRID_ON_COOKIE_KEY = 'createStream.grid.on';
-    var AUTOLINK_ON_COOKIE_KEY = 'createStream.autolink.on';
+  var GRID_ON_COOKIE_KEY = 'createStream.grid.on';
+  var AUTOLINK_ON_COOKIE_KEY = 'createStream.autolink.on';
   
   return ['XDUtils', '$scope', 'StreamMetamodelServiceXD', '$modal','$cookieStore',
     function (utils, $scope, metamodelService, $modal, $cookieStore) {
@@ -41,12 +41,12 @@ define(function(require) {
   		  $scope.flo = {};
   	  }
 
-		$scope.flo.autolink = $cookieStore.get(AUTOLINK_ON_COOKIE_KEY);
-		$scope.gridOn = $cookieStore.get(GRID_ON_COOKIE_KEY);
+	  $scope.flo.autolink = $cookieStore.get(AUTOLINK_ON_COOKIE_KEY);
+	  $scope.gridOn = $cookieStore.get(GRID_ON_COOKIE_KEY);
 
-		$scope.paperPadding = 50;
+	  $scope.paperPadding = 50;
 
-		$scope.createStreamDefs = function() {
+	  $scope.createStreamDefs = function() {
 		  $modal.open({
 			  animation: true,
 			  templateUrl: 'scripts/stream/views/create-stream-dialog.html',

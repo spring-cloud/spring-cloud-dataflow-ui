@@ -18,6 +18,7 @@
  * Dashboard Stream services.
  *
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
 define(function(require) {
   'use strict';

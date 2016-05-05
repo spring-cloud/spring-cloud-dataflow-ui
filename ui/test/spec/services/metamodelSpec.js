@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+/**
+ * @author Andy Clement
+ * @author Alex Boyko
+ */
 define(['angular', 'angularMocks', 'app'], function(angular) {
   'use strict';
 

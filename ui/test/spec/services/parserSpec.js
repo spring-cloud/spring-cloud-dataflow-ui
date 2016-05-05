@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * @author Andy Clement
+ * @author Alex Boyko
+ */ 
 define(['angular', 'angularMocks', 'app'], function(angular) {
   'use strict';
 
@@ -34,7 +39,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
     	//    "success":[
     	//      {"group":"UNKNOWN_0","type":"source","name":"time","range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}},"options":{},"optionsranges":{},"sourceChannelName":null,"sinkChannelName":null},
     	//      {"group":"UNKNOWN_0","type":"sink","name":"log","range":{"start":{"ch":7,"line":0},"end":{"ch":10,"line":0}},"options":{},"optionsranges":{},"sourceChannelName":null,"sinkChannelName":null}]}]}
-//    	console.log('parse response: '+JSON.stringify(output));
+		// console.log('parse response: '+JSON.stringify(output));
     	expect(output.lines).toBeDefined();
     	expect(output.lines.length).toEqual(1);
     	var line = output.lines[0];
@@ -57,7 +62,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
     	//  {"errors":null,
     	//   "success":[
     	//    {"group":"UNKNOWN_0","type":"sink","name":"time","range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}},"options":{},"optionsranges":{},"sourceChannelName":null,"sinkChannelName":"destination"}]}]}'
-//    	console.log('parse response: '+JSON.stringify(output));
+		// console.log('parse response: '+JSON.stringify(output));
     	expect(output.lines).toBeDefined();
     	expect(output.lines.length).toEqual(1);
     	var line = output.lines[0];
@@ -74,7 +79,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
     it('source destination parsing', inject(function(ParserService) {
     	// {"lines":[{"errors":null,"success":[{"group":"UNKNOWN_0","type":"processor","name":"log","range":{"start":{"ch":15,"line":0},"end":{"ch":18,"line":0}},"options":{},"optionsranges":{},"sourceChannelName":"destination","sinkChannelName":null}]}]}
     	var output = ParserService.parse(':destination > log');
-//    	console.log('parse response'+JSON.stringify(output));
+		// console.log('parse response'+JSON.stringify(output));
     	expect(output.lines).toBeDefined();
     	expect(output.lines.length).toEqual(1);
     	var line = output.lines[0];
@@ -90,7 +95,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
     
     it('tap destination parsing', inject(function(ParserService) {
     	var output = ParserService.parse(':someStream.foo > log');
-    	console.log('parse response'+JSON.stringify(output));
+    	// console.log('parse response'+JSON.stringify(output));
     	expect(output.lines).toBeDefined();
     	expect(output.lines.length).toEqual(1);
     	var line = output.lines[0];
