@@ -29,8 +29,8 @@ define([], function () {
 
             $scope.keys = Object.keys;
 
-            $scope.dsl2multiline = metaModelService.dsl2multiline;
-            $scope.multiline2dsl = metaModelService.multiline2dsl;
+            $scope.decodeTextFromDSL = metaModelService.decodeTextFromDSL;
+            $scope.encodeTextToDSL = metaModelService.encodeTextToDSL;
 
             $scope.derivedProperties = {};
 

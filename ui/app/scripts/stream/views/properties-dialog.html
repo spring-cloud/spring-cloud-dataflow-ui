@@ -32,7 +32,7 @@
                                       code-text="derivedProperties[key].value"
                                       default-text="{{derivedProperties[key].defaultValue}}"
                                       default-language="{{getDefaultLanguage(derivedProperties[key])}}"
-                                      dsl2multiline="dsl2multiline" multiline2dsl="multiline2dsl"/>
+                                      decode-function="decodeTextFromDSL" encode-function="encodeTextToDSL"/>
                         </div>
                         <p class="help-block">{{derivedProperties[key].description | capitalize}}</p>
                     </div>
@@ -75,7 +75,7 @@
                                       code-text="properties[key].value"
                                       default-text="{{properties[key].defaultValue}}"
                                       default-language="{{getDefaultLanguage(properties[key])}}"
-                                      dsl2multiline="dsl2multiline" multiline2dsl="multiline2dsl"/>
+                                      decode-function="decodeTextFromDSL" encode-function="encodeTextToDSL"/>
                         </div>
                         <p class="help-block">{{properties[key].description | capitalize}}</p>
                     </div>

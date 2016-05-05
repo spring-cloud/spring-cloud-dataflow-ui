@@ -34,7 +34,6 @@ require.config({
 
     joint: '/base/app/lib/joint/joint',
     backbone: '/base/app/lib/backbone/backbone',
-    dagre: '/base/app/lib/dagre/dagre.core.min',
     graphlib: '/base/app/lib/graphlib/graphlib.core',
     lodash: '/base/app/lib/lodash/lodash.compat',
 
@@ -91,9 +90,6 @@ require.config({
 	'graphlib': {
 		deps: ['underscore']
 	},
-	'dagre': {
-		deps: ['graphlib', 'underscore']
-	},
     backbone: {
       deps: ['underscore', 'jquery']
     },
@@ -104,7 +100,7 @@ require.config({
       deps: ['jquery', 'underscore', 'backbone']
     },
     'flo': {
-    	deps: ['angular', 'jquery', 'joint', 'dagre', 'underscore']
+    	deps: ['angular', 'jquery', 'joint', 'underscore']
     },
   },
   deps: tests,

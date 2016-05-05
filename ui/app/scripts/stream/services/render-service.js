@@ -471,7 +471,7 @@ define(function(require) {
             scope.getPropertyValue = function(key) {
                 var value = node.attr('props/' + key);
                 if (value && scope.isCode(key)) {
-                    value = metamodelService.dsl2multiline(value);
+                    value = metamodelService.decodeTextFromDSL(value);
                 }
                 return value;
             };

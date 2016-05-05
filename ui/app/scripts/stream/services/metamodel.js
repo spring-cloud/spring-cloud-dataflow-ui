@@ -1,4 +1,3 @@
-// TODOX: replace console.log with XDUtils.$log
 define(function (require) {
 
     'use strict';
@@ -17,10 +16,10 @@ define(function (require) {
 
     var DEBUG = false;
 
-    var convertGraph2Text = require('./graph2text');
+    var convertGraphToText = require('./graph-to-text');
 
-    return ['$http', '$q', '$timeout', 'ModuleService', 'ParserService', /*'JobDefinitions',*/ 'XDUtils', 'createMetamodel',
-        function ($http, $q, $timeout, ModuleService, ParserService, /*JobDefinitions,*/ XDUtils, createMetamodel) {
+    return ['$http', 'XDUtils', 'ModuleService', 'ParserService', /*'JobDefinitions',*/ 'createMetamodel',
+        function ($http, utils, ModuleService, ParserService, /*JobDefinitions,*/ createMetamodel) {
 
             // Pre ES6 browsers don't have 'startsWith' function, hence add it if necessary
             // TODO: remove in the future
@@ -40,8 +39,10 @@ define(function (require) {
             var listeners = [];
 
             /**
-             * Map of group names to map of modules names to module data
-             * @type {Object.<string,{Object.<string,ModuleData>}>}
+             * Map from palette group names to maps from palette entry names to palette data objects
+             * // Map<String,Map<String,PaletteData>>
+             * TODO [palette] is this jsdoc tag right?
+             * @type {Object.<string,{Object.<string,PaleteData>}>}
              */
             var metamodel;
 
@@ -117,7 +118,7 @@ define(function (require) {
                 // TODO could make this more flexible, some property on a node we could check if further metadata might be fetchable
                 if (node.group === 'job' || node.group === 'other' || node.group === 'job definition') {
                     get = function (property) {
-                        var deferred = $q.defer();
+                        var deferred = utils.$q.defer();
                         deferred.resolve(node[property]);
                         return deferred.promise;
                     };
@@ -127,7 +128,7 @@ define(function (require) {
                         if (!infoPromise) {
                             infoPromise = ModuleService.getModuleInfo(node.group, node.name);
                         }
-                        var deferred = $q.defer();
+                        var deferred = utils.$q.defer();
                         infoPromise.then(function (result) {
                             var properties = {};
                             if (Array.isArray(result.data.options)) {
@@ -280,7 +281,7 @@ define(function (require) {
                         //return loadJobDefinitionPageIntoPalette(0, metamodel);
                     }
                 }, function (result) {
-                    XDUtils.growl.addErrorMessage(result.data[0].message);
+                    utils.growl.error(result.data[0].message);
                 });
             }
 
@@ -293,7 +294,7 @@ define(function (require) {
 //					Array.isArray(result._embedded.taskDefinitionResourceList) ? result._embedded.taskDefinitionResourceList : [];
 //        		for (var i=0;i<jobDefinitions.length;i++) {
 //        			var jobDefinition = jobDefinitions[i];
-//        			console.log('jobDefinition['+i+'] = '+JSON.stringify(jobDefinition));
+//        			utils.$log.info('jobDefinition['+i+'] = '+JSON.stringify(jobDefinition));
 //        			var entry = {
 //        					'name':jobDefinition.name,
 //        					'group':'job definition',
@@ -306,12 +307,12 @@ define(function (require) {
 //        			}
 //        			metamodel.typeToDataMap[metadata.group][metadata.name] = metadata;
 //        		}
-////        		console.log('page? '+JSON.stringify(result.page));
+////        		utils.$log.info('page? '+JSON.stringify(result.page));
 //        		if (pageNumber < (result.page.totalPages-1)) {
 //        			return loadJobDefinitionPageIntoPalette(pageNumber+1, metamodel);
 //        		}
 //        	}, function (result) {
-//        		XDUtils.growl.addErrorMessage(result.data[0].message);
+//        		utils.growl.error(result.data[0].message);
 //        	});
 //        	return jobDefinitionsPromise;
 //        }
@@ -353,7 +354,7 @@ define(function (require) {
                     var streamdef = '';
                     //var streamStartNodeId = nodeId;
                     var nameSet = false;
-                    console.log('convertParseResponseToGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
+                    utils.$log.info('convertParseResponseToGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
 
                     // Build the graph/links if there was successfully parsed output
                     var parsedNodes = line.success;
@@ -375,8 +376,8 @@ define(function (require) {
                                     // Is it a tap on a stream already seen?
                                     var alreadyAllocated = streamModulesToIds[tappedDestination];
                                     if (DEBUG) {
-                                        console.log('Processing tap: ' + channelText + ' alreadyAllocated=' + alreadyAllocated);
-                                        console.log(JSON.stringify(streamModulesToIds));
+                                        utils.$log.debug('Processing tap: ' + channelText + ' alreadyAllocated=' + alreadyAllocated);
+                                        utils.$log.debug(JSON.stringify(streamModulesToIds));
                                     }
                                     if (typeof alreadyAllocated !== 'undefined') {
                                         // No node for this tap, link from the already existing module to the next node
@@ -553,10 +554,10 @@ define(function (require) {
                                 };
                                 errorToRecord = {'message': error.message, 'range': range};
                             } else {
-                                console.log('>>>>>> Did nothing with message: ' + JSON.stringify(error));
+                                utils.$log.info('>>>>>> Did nothing with message: ' + JSON.stringify(error));
                             }
                             if (errorToRecord) {
-                                console.log('updateGraphFn: Recording error ' + JSON.stringify(errorToRecord));
+                                utils.$log.info('updateGraphFn: Recording error ' + JSON.stringify(errorToRecord));
                                 errors.push(errorToRecord);
                             }
                         }
@@ -575,7 +576,7 @@ define(function (require) {
                     updateErrorsFn(null);
                 }
                 if (definitionsText.trim().length === 0) {
-                    console.log('UpdateGraphFn: no definition');
+                    utils.$log.info('UpdateGraphFn: no definition');
                     if (updateGraphFn && updateGraphFn.call) {
                         updateGraphFn({'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []});
                     }
@@ -589,7 +590,7 @@ define(function (require) {
                     }
                 }
                 if (graphAndErrors.graph) {
-                    console.log('UpdateGraphFn: Computed graph is ' + JSON.stringify(graphAndErrors.graph));
+                    utils.$log.info('UpdateGraphFn: Computed graph is ' + JSON.stringify(graphAndErrors.graph));
                     if (updateGraphFn && updateGraphFn.call) {
                         updateGraphFn(graphAndErrors.graph);
                     }
@@ -604,7 +605,7 @@ define(function (require) {
              * Take the JSON description of the flow as provided by the parser and map it into a series
              * of nodes that can be processed by dagre/joint.
              */
-            function buildGraphFromJson(scope, jsonFormatData, metamodel) {
+            function buildGraphFromJson(flo, jsonFormatData, metamodel) {
                 var inputnodes = jsonFormatData.nodes;
                 var inputlinks = jsonFormatData.links;
 
@@ -636,7 +637,7 @@ define(function (require) {
                     if (!group) {
                         group = metamodel.matchGroup(name, incoming[n], outgoing[n]);
                     }
-                    var newNode = scope.flo.createNewNode(metamodel.getMetadata(name, group), inputnodes[n].properties);
+                    var newNode = flo.createNewNode(metamodel.getMetadata(name, group), inputnodes[n].properties);
                     // Tap and Destination names are in 'props/name' property
                     if (name !== 'tap' && name !== 'destination') {
                         newNode.attr('node-name', label);
@@ -662,10 +663,10 @@ define(function (require) {
                 for (var l = 0; l < inputlinksCount; l++) {
                     link = inputlinks[l];
                     if (link.linkType && link.linkType === 'tap') {
-                        scope.flo.createNewLink({'id': nodesIndex[link.from], 'selector': '.tap-port', 'port': 'tap'},
+                        flo.createNewLink({'id': nodesIndex[link.from], 'selector': '.tap-port', 'port': 'tap'},
                             {'id': nodesIndex[link.to], 'selector': '.input-port', 'port': 'input'});
                     } else {
-                        scope.flo.createNewLink({
+                        flo.createNewLink({
                                 'id': nodesIndex[link.from],
                                 'selector': '.output-port',
                                 'port': 'output'
@@ -674,8 +675,8 @@ define(function (require) {
                     }
                 }
 
-                scope.flo.resetLayout();
-                scope.flo.fitToPage();
+                flo.resetLayout();
+                flo.fitToPage();
             }
 
             function isValidPropertyValue(model, property, value) {
@@ -689,12 +690,12 @@ define(function (require) {
                 return true;
             }
 
-            function multiline2dsl(value) {
+            function encodeTextToDSL(value) {
                 var retval = '\"' + value.replace(/(?:\r\n|\r|\n)/g, '\\n').replace(/"/g, '""') + '\"';
                 return retval;
             }
 
-            function dsl2multiline(value) {
+            function decodeTextFromDSL(value) {
                 if (value.charAt(0) === '\"' && value.charAt(value.length - 1) === '\"') {
                     value = value.substr(1, value.length - 2);
                 }
@@ -713,7 +714,7 @@ define(function (require) {
                         listener.metadataRefresh();
                     }
                 });
-                var deferred = $q.defer();
+                var deferred = utils.$q.defer();
                 var newMetamodel = createMetamodel({});
                 loadPageIntoPalette(0, newMetamodel).then(function () {
                     var change = {
@@ -750,22 +751,22 @@ define(function (require) {
                 return request;
             }
 
-            function text2graph(scope) {
-                return parseAndRefreshGraph(scope.definition.text, function (json) {
-                    scope.flo.getGraph().clear();
+            function textToGraph(flo, definition) {
+                return parseAndRefreshGraph(definition.text, function (json) {
+                    flo.getGraph().clear();
                     load().then(function (metamodel) {
-                        buildGraphFromJson(scope, json, metamodel);
+                        buildGraphFromJson(flo, json, metamodel);
                     });
                 }, function (errors) {
-                    scope.definition.parseError = errors;
+                    definition.parseError = errors;
                 });
             }
 
-            function graph2text(scope) {
-                scope.definition.text = convertGraph2Text(scope.flo.getGraph());
-                return $timeout(function () {
-                    return parseAndRefreshGraph(scope.definition.text, null, function (errors) {
-                        scope.definition.parseError = errors;
+            function graphToText(flo, definition) {
+                definition.text = convertGraphToText(flo.getGraph());
+                return utils.$timeout(function () {
+                    return parseAndRefreshGraph(definition.text, null, function (errors) {
+                        definition.parseError = errors;
                     });
                 });
             }
@@ -778,13 +779,13 @@ define(function (require) {
                 unsubscribe: unsubscribe,
                 refresh: refresh,
                 load: load,
-                text2graph: text2graph,
-                graph2text: graph2text,
+                textToGraph: textToGraph,
+                graphToText: graphToText,
                 convertParseResponseToGraph: convertParseResponseToGraph,
                 isValidPropertyValue: isValidPropertyValue,
-                'multiline2dsl': multiline2dsl,
-                'dsl2multiline': dsl2multiline,
-                convertGraph2Text: convertGraph2Text
+                encodeTextToDSL: encodeTextToDSL,
+                decodeTextFromDSL: decodeTextFromDSL,
+                convertGraphToText: convertGraphToText
             };
 
         }];

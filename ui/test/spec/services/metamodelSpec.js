@@ -129,7 +129,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
 //    	var parseResponse = ParserService.parse(text);
 //    	var graph = StreamMetamodelServiceXD.convertParseResponseToGraph(text,parseResponse);
 //    	console.log('>>>>'+graph);
-//    	var newtext = StreamMetamodelServiceXD.convertGraph2Text(graph);
+//    	var newtext = StreamMetamodelServiceXD.convertGraphToText(graph);
 //    	console.log('>>>>'+newtext);
 ////    	expect(newtext).equals(text);
 //    }));
@@ -141,10 +141,10 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
 //    	var line = parseResponse.lines[0];
 //    	expect(line.errors).toBeNull();
 //    	expect(StreamMetamodelServiceXD.convertParseResponseToGraph).toBeDefined();    	
-//    	expect(StreamMetamodelServiceXD.convertGraph2Text).toBeDefined();    	
+//    	expect(StreamMetamodelServiceXD.convertGraphToText).toBeDefined();
 //
 //    	var graph = StreamMetamodelServiceXD.convertParseResponseToGraph(text,parseResponse);
-//    	var newtext = StreamMetamodelServiceXD.convertGraph2Text(graph);
+//    	var newtext = StreamMetamodelServiceXD.convertGraphToText(graph);
 //    	expect(newtext).equals(text);
 //    }));
 
