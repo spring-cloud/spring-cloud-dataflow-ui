@@ -1,4 +1,23 @@
-// TODOX: replace console.log with utils.$log
+/*
+ * Copyright 2015-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @author Alex Boyko
+ * @author Andy Clement
+ */
 define(function(require) {
     'use strict';
     
@@ -7,7 +26,7 @@ define(function(require) {
     var utils = require('stream/services/utils');
     require('flo');
 
-    return [ '$modal', function ($modal) {
+    return [ '$modal', '$log', function ($modal,$log) {
 
         function createHandles(flo, createHandle, element) {
             var bbox = element.getBBox();
@@ -77,7 +96,7 @@ define(function(require) {
 
         function validateConnection(flo, cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
 
-            console.log('SOURCE=' + cellViewS.model.attr('metadata/name') + ' TARGET=' + cellViewT.model.attr('metadata/name'));
+            $log.info('SOURCE=' + cellViewS.model.attr('metadata/name') + ' TARGET=' + cellViewT.model.attr('metadata/name'));
             // Prevent linking from input ports.
             if (magnetS && magnetS.getAttribute('type') === 'input') {
                 return false;
@@ -513,7 +532,7 @@ define(function(require) {
         function canSwap(flo, dropee, target, side) {
             var i, targetId, sourceId, noSwap = (dropee.id === target.id);
             if (dropee === target) {
-                console.log('What!??? Dragged == Dropped!!! id = ' + target);
+                $log.debug('What!??? Dragged == Dropped!!! id = ' + target);
             }
             var links = flo.getGraph().getConnectedLinks(dropee);
             for (i = 0; i < links.length && !noSwap; i++) {

@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+/**
+ * Parse a textual stream definition.
+ *
+ * @author Andy Clement
+ * @author Alex Boyko
+ */
 define(function() {
 	'use strict';
 	

@@ -22,10 +22,8 @@
 define(function() {
     'use strict';
 
-    //var DEPLOY_FLAG_COOKIE_KEY = 'createSreams.dialog.deployFlag';
-
-    return ['XDUtils', '$scope', 'StreamService', '$cookieStore', '$modalInstance', 'definitionData', 'StreamMetamodelServiceXD', 'ParserService',
-        function (utils, $scope, streamService, $cookieStore, $modalInstance, definitionData, metaModelService, ParserService) {
+    return ['XDUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelServiceXD', 'ParserService',
+        function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
 
             $scope.streamdefs = [];
             $scope.errors = [];
@@ -138,14 +136,6 @@ define(function() {
             $scope.cancel = function() {
                 $modalInstance.dismiss();
             };
-
-            $scope.$on('$destroy', function() {
-                //if ($scope.deploy) {
-                //    $cookieStore.put(DEPLOY_FLAG_COOKIE_KEY, $scope.deploy);
-                //} else {
-                //    $cookieStore.remove(DEPLOY_FLAG_COOKIE_KEY);
-                //}
-            });
 
         }];
 });

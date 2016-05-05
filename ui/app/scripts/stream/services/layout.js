@@ -16,6 +16,9 @@
 
 /**
  * Implement layout function for streams.
+ *
+ * @author Andy Clement
+ * @author Alex Boyko
  */
 define(function (require) {
 	'use strict';

@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+ *
+ * @author Alex Boyko
+ * @author Andy Clement
+ */
 define(function(require) {
     'use strict';
 

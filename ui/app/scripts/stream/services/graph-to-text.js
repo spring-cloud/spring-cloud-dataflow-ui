@@ -1,3 +1,25 @@
+/*
+ * Copyright 2015-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Convert the text representation of a graph.
+ *
+ * @author Andy Clement
+ * @author Alex Boyko
+ */
 define(function () {
 	'use strict';
 	
@@ -55,10 +77,6 @@ define(function () {
 		return e && (e.attr('metadata/name') === 'tap' || e.attr('metadata/name') === 'destination');
 	}
 
-	//function isJobDefinition(e) { // jshint ignore:line
-	//	return e && e.attr('metadata/group') === 'job definition';
-	//}
-    //
 	function getName(node) {
 		if (!node) {return 'UNDEFINED';}
 		return node.attr('metadata/name');
@@ -225,7 +243,12 @@ define(function () {
 		return e;
 	}
 
-	function node2text(element, first) {
+    
+	/**
+	 * Build the string DSL representation of a stream based on the link supplied. The
+	 * link is expected to be the first one in the stream.
+	 */
+	function createTextForNode(element, first) {
 		var text = '';
 		var props = element.attr('props');
 		if (!element) {
@@ -355,7 +378,7 @@ define(function () {
 						}
                     }
                 }
-				var nodeText = node2text(node);
+				var nodeText = createTextForNode(node);
 
 				// Set text range for the graph node
 				var startCh = text.length - lineStartIndex;
@@ -381,68 +404,6 @@ define(function () {
         return text;
 	}
 
-	///**
-	// * Build the string DSL representation of a stream based on the link supplied. The
-	// * link is expected to be the first one in the stream.
-	// */
-	//function streamToText(link) {
-	//	var text = '';
-	//	var sourceId = link.get('source').id;
-	//	var source = g.getCell(sourceId);
-	//	var target;
-	//	var isTap = false;
-	//	if (!nodesToVisit[sourceId]) {
-	//		// Already visited this, so this link is for a tap
-	//		var targetId = link.get('target').id;
-	//		target = g.getCell(targetId);
-	//		if (target.attr('stream-name')) {
-	//			text += target.attr('stream-name')+'=';
-	//		}
-	//		text += toTapDestination(source);
-	//		isTap = true;
-	//	} else {
-	//		text += node2text(source, true);
-	//	}
-	//	while (link) {
-	//		target = g.getCell(link.get('target').id);
-	//
-	//		text += (isTap || isChannel(source) || isChannel(target) ||
-	//				isJobDefinition(source) || isJobDefinition(target)) ? ' > '
-	//						: ' | ';
-	//		isTap = false;
-	//		text += node2text(target, false);
-	//
-	//		// Find next not visited link to follow
-	//		link = null;
-	//		var outgoingLinks = g.getConnectedLinks(target, {outbound: true});
-	//		for (var i = 0; i < outgoingLinks.length && !link; i++) {
-	//			if (linksToVisit[outgoingLinks[i].get('id')]) {
-	//				source = target;
-	//				link = tidyup(outgoingLinks[i]);
-	//			}
-	//		}
-	//	}
-	//	return text;
-	//}
-	//
-	//function appendStreamText(text, stream) {
-	//	if (stream) {
-	//		if (text) {
-	//			text += '\n';
-	//		}
-	//		text += stream;
-	//	}
-	//	return text;
-	//}
-	//
-	//function toStringLink(link) {
-	//	var sourceId = link.get('source');
-	//	var source = g.getCell(sourceId);
-	//	var targetId = link.get('target');
-	//	var target = g.getCell(targetId);
-	//	return getName(source)+'->'+getName(target);
-	//}
-	
 	/**
 	 * Translates the graph into text form.
 	 * @param {joint.dia.Graph} g Graph form of stream(s) and or module(s)
