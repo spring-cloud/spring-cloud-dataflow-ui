@@ -1,3 +1,19 @@
+/*
+ * Copyright 2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 define(function(require) {
     'use strict';
 
@@ -10,6 +26,7 @@ define(function(require) {
         'remove': 'images/icons/delete.svg',
         'properties': 'images/icons/cog.svg'
     };
+    
     var HANDLE_ICON_SIZE = {
         'remove': {width: 10, height: 10},
         'properties': {width: 11, height: 11}
@@ -108,9 +125,6 @@ define(function(require) {
                     'font-size': 14
                 },
                 '.label2': {
-//	            	'text': '\u2603', //snowman thing
-//	            	'text': '\u263A',// smiley
-//                    'text': '\u21d2',
                     'y-alignment': 'middle',
                     'ref-x': HORIZONTAL_PADDING+2, // jointjs specific: relative position to ref'd element
                     'ref-y': 0.55, // jointjs specific: relative position to ref'd element
@@ -140,22 +154,9 @@ define(function(require) {
             attrs: {
                 '.connection': { stroke: '#34302d', 'stroke-width': 2 },
                 '.connection-wrap': { display : 'none' },
-//	            '.marker-source': { stroke: '#9B59B6', fill: '#9B59B6', d: 'M24.316,5.318,9.833,13.682,9.833,5.5,5.5,5.5,5.5,25.5,9.833,25.5,9.833,17.318,24.316,25.682z' },
-//	            '.marker-target': { stroke: '#F39C12', fill: '#F39C12', d: 'M14.615,4.928c0.487-0.986,1.284-0.986,1.771,0l2.249,4.554c0.486,0.986,1.775,1.923,2.864,2.081l5.024,0.73c1.089,0.158,1.335,0.916,0.547,1.684l-3.636,3.544c-0.788,0.769-1.28,2.283-1.095,3.368l0.859,5.004c0.186,1.085-0.459,1.553-1.433,1.041l-4.495-2.363c-0.974-0.512-2.567-0.512-3.541,0l-4.495,2.363c-0.974,0.512-1.618,0.044-1.432-1.041l0.858-5.004c0.186-1.085-0.307-2.6-1.094-3.368L3.93,13.977c-0.788-0.768-0.542-1.525,0.547-1.684l5.026-0.73c1.088-0.158,2.377-1.095,2.864-2.081L14.615,4.928z' },
-
-//	        	'.connection': { 'stroke':'black'},
-//	        	'.': { filter: { name: 'dropShadow', args: { dx: 1, dy: 1, blur: 2 } } },
-//	        	'.connection': { 'stroke-width': 10, 'stroke-linecap': 'round' },
-                // This means: moveto 10 0, lineto 0 5, lineto, 10 10 closepath(z)
-//	        	'.marker-target': { d: 'M 5 0 L 0 7 L 5 14 z', stroke: '#34302d','stroke-width' : 1},
-//	        	'.marker-target': { d: 'M 14 2 L 9,2 L9,0 L 0,7 L 9,14 L 9,12 L 14,12 z', 'stroke-width' : 1, fill: '#34302d', stroke: '#34302d'},
-//	        	'.marker-source': {d: 'M 5 0 L 5,10 L 0,10 L 0,0 z', 'stroke-width' : 0, fill: '#34302d', stroke: '#34302d'},
-
-//	            '.marker-target': { stroke: '#E74C3C', fill: '#E74C3C', d: 'M 10 0 L 0 5 L 10 10 z' },
                 '.marker-arrowheads': { display: 'none' },
                 '.tool-options': { display: 'none' }
             },
-//	    	connector: { name: 'normalDimFix' }
         }, joint.dia.Link.prototype.defaults)
     });
 

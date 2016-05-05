@@ -1,9 +1,23 @@
-// TODOX: replace console.log 
-define(function(/*require*/) {
+/*
+ * Copyright 2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+define(function() {
 	'use strict';
 	
-	return [/*'$http', '$q', 'ModuleService', 'JobDefinitions', 'XDUtils', 'createMetamodel',*/
-	        function (/*$http, $q, ModuleService, JobDefinitions, XDUtils, createMetamodel*/) {
+	return ['$log', function($log) {
 
         var tokenKinds = {
         		IDENTIFIER: {'id':0},
@@ -20,7 +34,8 @@ define(function(/*require*/) {
         		LITERAL_STRING: {'id':11},
         		EOF: {'id':12,'value':''}
         };        
-        
+
+        // TODO switch to the var x = (function() {... return yyy; })(); structure
         function tokenize(text) {
         	var tokens = [];
         	var toProcess = text+'\0';
@@ -288,8 +303,8 @@ define(function(/*require*/) {
         	return tokens;
         }
 
+        // TODO switch to the var x= (function() {... return yyy; })(); model
         function parse(definitionsText) {
-
 			var lines = [];
 			var line;
 			var text;
@@ -463,18 +478,6 @@ define(function(/*require*/) {
         			return true;
         		}
         		return false;
-//        		if (moreTokens() && isKind(tokenStream[tp],tokenKinds.IDENTIFIER)) {
-//        			var prefix = tokenStream[tp].data;
-//        			if (isLegalChannelPrefix(prefix)) {
-//        				if (tokenStreamPointer + 1 < tokenStreamLength &&
-//        						isKind(tokenStream[tp + 1],tokenKinds.COLON)) {
-//        					// if (isNextTokenAdjacent(tp) && isNextTokenAdjacent(tp + 1)) {
-//        					return true;
-//        					// }
-//        				}
-//        			}
-//        		}
-//        		return false;
         	}
 
         	// identifier ':' identifier >
@@ -544,7 +547,6 @@ define(function(/*require*/) {
         		}
         		else {
         			throw {'msg':'expected argument value','start':t.start};
-//        			raiseException(t, XDDSLMessages.EXPECTED_ARGUMENT_VALUE, t.data);
         		}
         		return argValue;
         	}
@@ -562,19 +564,15 @@ define(function(/*require*/) {
         		var name = nextToken();
         		if (!isKind(name,tokenKinds.IDENTIFIER)) {
         			throw {'msg':errorMessage,'start':name.start};
-//        			raiseException(name, error, name.data != null ? name.data
-//        					: new String(name.getKind().tokenChars));
         		}
         		result.push(name);
         		while (peekToken(tokenKinds.DOT)) {
         			if (!isNextTokenAdjacent()) {
         				throw {'msg':'no whitespace in dotted name','start':name.start};
-//        				raiseException(peekToken(), XDDSLMessages.NO_WHITESPACE_IN_DOTTED_NAME);
         			}
         			result.push(nextToken()); // consume dot
         			if (peekToken(tokenKinds.IDENTIFIER) && !isNextTokenAdjacent()) {
         				throw {'msg':'no whitespace in dotted name','start':name.start};
-//        				raiseException(peekToken(), XDDSLMessages.NO_WHITESPACE_IN_DOTTED_NAME);
         			}
         			result.push(eatToken(tokenKinds.IDENTIFIER));
         		}
@@ -758,16 +756,18 @@ define(function(/*require*/) {
 		        		lines.push({'success':[],'errors':[]});
 		        		continue;
 		        	}
-	        		console.log('JSParse: processing '+text);
+	        		$log.info('JSParse: processing '+text);
 		        	tokenStream = tokenize(text);
-		        	console.log('JSParse: tokenized to '+JSON.stringify(tokenStream));
+		        	$log.info('JSParse: tokenized to '+JSON.stringify(tokenStream));
 		        	tokenStreamPointer = 0;
 		        	tokenStreamLength = tokenStream.length;
 		        	// time | log
-		        	// [{"token":0,"data":"time","start":0,"end":4},{"token":4,"start":5,"end":6},{"token":0,"data":"log","start":7,"end":10}]
+		        	// [{"token":0,"data":"time","start":0,"end":4},
+                    //  {"token":4,"start":5,"end":6},
+                    //  {"token":0,"data":"log","start":7,"end":10}]
 	
 		        	var streamdef = eatStream();
-		        	console.log('JSParse: parsed to '+JSON.stringify(streamdef));
+		        	$log.info('JSParse: parsed to '+JSON.stringify(streamdef));
 		        	// streamDef = {"modules":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
 		        	
 		        	// {"lines":[{"errors":null,"success":
@@ -863,7 +863,7 @@ define(function(/*require*/) {
 		        			line.errors.push(errorToRecord);
 		        		}
 		        	}        	
-		        	console.log('JSParse: translated to '+JSON.stringify(line));
+		        	$log.info('JSParse: translated to '+JSON.stringify(line));
 		        	lines.push(line);
 		    	} catch (err) { 
 	        		if (typeof err === 'object' && err.msg) {
@@ -888,14 +888,14 @@ define(function(/*require*/) {
 		        			str+=' ';
 		        		}
 		        		str+='^';
-		        		console.error(str);
-		        		console.error(err.msg);
+		        		$log.error(str);
+		        		$log.error(err.msg);
 	        		} else {
-	        			console.error(err);
+	        			$log.error(err);
 	        		}
 	        	}
         	}
-        	console.log('JSParse: final lines: '+JSON.stringify(lines));
+        	$log.info('JSParse: final lines: '+JSON.stringify(lines));
         	return {'lines':lines};
         }
 

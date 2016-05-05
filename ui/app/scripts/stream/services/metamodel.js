@@ -1,8 +1,24 @@
+/*
+ * Copyright 2015-2016 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 define(function (require) {
 
     'use strict';
 
-    var keepAllProperties = false; // TODO TEMPORARY
+    var keepAllProperties = false; // TODO address when whitelisting properties fixed in SCDF
 
     // Default icons (unicode chars) for each group member, unless they override
     var groupIcons = {
@@ -18,8 +34,8 @@ define(function (require) {
 
     var convertGraphToText = require('./graph-to-text');
 
-    return ['$http', 'XDUtils', 'ModuleService', 'ParserService', /*'JobDefinitions',*/ 'createMetamodel',
-        function ($http, utils, ModuleService, ParserService, /*JobDefinitions,*/ createMetamodel) {
+    return ['$http', 'XDUtils', 'ModuleService', 'ParserService', 'createMetamodel',
+        function ($http, utils, ModuleService, ParserService, createMetamodel) {
 
             // Pre ES6 browsers don't have 'startsWith' function, hence add it if necessary
             // TODO: remove in the future
@@ -78,8 +94,10 @@ define(function (require) {
                 'rabbit':['^spring\.rabbitmq\..*']                                
             };
             
-            /* Special properties are dotted boot properties that particular modules utilise. This
-             * handling is here until the infrastructure offers a proper whitelisting mechanism. */
+            /**
+             * Special properties are dotted boot properties that particular modules utilise. This
+             * handling is here until the infrastructure offers a proper whitelisting mechanism. 
+             */
             function isSpecialProperty(nodeName,propertyName) {
                 var hasSpecialProperties = mapOfSpecialProperties[nodeName];
                 if (hasSpecialProperties) {
@@ -284,38 +302,6 @@ define(function (require) {
                     utils.growl.error(result.data[0].message);
                 });
             }
-
-//        function loadJobDefinitionPageIntoPalette(pageNumber, metamodel) {
-//        	var pageable = new Pageable();
-//        	pageable.pageNumber = pageNumber;
-//        	var jobDefinitionsPromise = JobDefinitions.getAllJobDefinitions(pageable).$promise;
-//        	jobDefinitionsPromise.then(function (result) {
-//				var jobDefinitions = result && result._embedded && result._embedded.taskDefinitionResourceList &&
-//					Array.isArray(result._embedded.taskDefinitionResourceList) ? result._embedded.taskDefinitionResourceList : [];
-//        		for (var i=0;i<jobDefinitions.length;i++) {
-//        			var jobDefinition = jobDefinitions[i];
-//        			utils.$log.info('jobDefinition['+i+'] = '+JSON.stringify(jobDefinition));
-//        			var entry = {
-//        					'name':jobDefinition.name,
-//        					'group':'job definition',
-//        					'description':jobDefinition.definition,
-//        					'properties':{'events': {'name':'events','description':'type of events to listen for when tapping into a job (e.g. \'job\', \'step\')'}}
-//        			};
-//        			var metadata = createMetadata(entry);
-//        			if (!metamodel.typeToDataMap[metadata.group]) {
-//        				metamodel.typeToDataMap[metadata.group] = {};
-//        			}
-//        			metamodel.typeToDataMap[metadata.group][metadata.name] = metadata;
-//        		}
-////        		utils.$log.info('page? '+JSON.stringify(result.page));
-//        		if (pageNumber < (result.page.totalPages-1)) {
-//        			return loadJobDefinitionPageIntoPalette(pageNumber+1, metamodel);
-//        		}
-//        	}, function (result) {
-//        		utils.growl.error(result.data[0].message);
-//        	});
-//        	return jobDefinitionsPromise;
-//        }
 
             function convertParseResponseToGraph(definitionsText, parsedDefinitions) {
                 // Compute line breaks
