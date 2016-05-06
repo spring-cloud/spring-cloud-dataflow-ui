@@ -21,8 +21,6 @@
 define(['angular', 'angularMocks', 'app'], function(angular) {
   'use strict';
 
-  angular.module('xdConf', []).constant('securityInfo', {});
-
   describe('Unit: Testing JS Parsing of DSL', function() {
 	beforeEach(function() {
           angular.mock.module('xdAdmin');
