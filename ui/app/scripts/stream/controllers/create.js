@@ -32,19 +32,7 @@ define(function(require) {
     function (utils, $scope, metamodelService, $modal, $cookieStore) {
 	  utils.$log.info('Stream Creation Controller running (create.js)');
 
-  	  $scope.definition = {
-		  name: '',
-		  text: ''
-	  };
-
-  	  if (!$scope.flo) {
-  		  $scope.flo = {};
-  	  }
-
 	  $scope.flo.autolink = $cookieStore.get(AUTOLINK_ON_COOKIE_KEY);
-	  $scope.gridOn = $cookieStore.get(GRID_ON_COOKIE_KEY);
-
-	  $scope.paperPadding = 50;
 
 	  $scope.createStreamDefs = function() {
 		  $modal.open({
@@ -110,18 +98,24 @@ define(function(require) {
 			  }
 		  });
   	  };
-		
-        $scope.$watch('gridOn', function(newValue) {
-           if (newValue) {
-               $scope.flo.gridSize(40);
-           } else {
-               $scope.flo.gridSize(1);
-           }
-        });
 
-        $scope.$on('$destroy', function() {
-            if ($scope.gridOn) {
-                $cookieStore.put(GRID_ON_COOKIE_KEY, $scope.gridOn);
+		$scope.gridOn = function(newValue) {
+			if (arguments.length) {
+				if (newValue) {
+					$scope.flo.gridSize(40);
+				} else {
+					$scope.flo.gridSize(1);
+				}
+			} else {
+				return $scope.flo.gridSize() > 1;
+			}
+		};
+
+		$scope.gridOn($cookieStore.get(GRID_ON_COOKIE_KEY));
+
+		$scope.$on('$destroy', function() {
+            if ($scope.gridOn()) {
+                $cookieStore.put(GRID_ON_COOKIE_KEY, $scope.gridOn());
             } else {
                 $cookieStore.remove(GRID_ON_COOKIE_KEY);
             }
