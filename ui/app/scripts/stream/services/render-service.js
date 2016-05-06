@@ -935,7 +935,26 @@ define(function(require) {
                 }
             }
         }
-        
+
+        function getLinkAnchorPoint(linkView, view, magnet, reference) {
+            if (magnet) {
+                var type = magnet.getAttribute('type');
+                var bbox = joint.V(magnet).bbox(false, linkView.paper.viewport); // jshint ignore:line
+                var rect = joint.g.rect(bbox);
+                if (type === 'input') {
+                    return joint.g.point(rect.x, rect.y + rect.height / 2);
+                } else {
+                    //if (magnet.getAttribute('class') === 'tap-port') {
+                    //    return joint.g.point(rect.x + rect.width / 2, rect.y + rect.height);
+                    //} else {
+                    return joint.g.point(rect.x + rect.width, rect.y + rect.height / 2);
+                    //}
+                }
+            } else {
+                return reference;
+            }
+        }
+
         return {
             'createNewNode': createNewNode,
             'createHandle': createHandle,
@@ -949,7 +968,8 @@ define(function(require) {
             'initializeNewLink': initializeNewLink,
             'handleLinkEvent': handleLinkEvent,
             'isSemanticProperty': isSemanticProperty,
-            'refreshVisuals': refreshVisuals
+            'refreshVisuals': refreshVisuals,
+            'getLinkAnchorPoint': getLinkAnchorPoint
         };
 
     }];

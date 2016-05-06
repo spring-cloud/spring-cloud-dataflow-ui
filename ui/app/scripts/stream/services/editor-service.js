@@ -797,25 +797,6 @@ define(function(require) {
             //}
         }
 
-        function linkConnectionPoint(linkView, view, magnet, reference) {
-            if (magnet) {
-                var type = magnet.getAttribute('type');
-                var bbox = joint.V(magnet).bbox(false, linkView.paper.viewport); // jshint ignore:line
-                var rect = joint.g.rect(bbox);
-                if (type === 'input') {
-                    return joint.g.point(rect.x, rect.y + rect.height / 2);
-                } else {
-                    //if (magnet.getAttribute('class') === 'tap-port') {
-                    //    return joint.g.point(rect.x + rect.width / 2, rect.y + rect.height);
-                    //} else {
-                        return joint.g.point(rect.x + rect.width, rect.y + rect.height / 2);
-                    //}
-                }
-            } else {
-                return reference;
-            }
-        }
-
         return {
             'createHandles': createHandles,
             'validateMagnet': validateMagnet,
@@ -824,11 +805,10 @@ define(function(require) {
             'handleNodeDropping': handleNodeDropping,
             'validateNode': validateNode,
             'deleteDependents': deleteDependents,
-            'getLinkConnectionPoint': linkConnectionPoint,
             'interactive': {
                 'vertexAdd': false
             },
-            'allowBendpointEdit': false
+            'allowLinkVertexEdit': false
         };
 
     }];
