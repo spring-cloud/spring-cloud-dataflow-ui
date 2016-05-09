@@ -40,8 +40,8 @@ define(function (require) {
 
     var angular = require('angular');
 
-    return ['$http', 'XDUtils', 'ModuleService', 'ParserService', 'createMetamodel',
-        function ($http, utils, ModuleService, ParserService, createMetamodel) {
+    return ['$http', 'XDUtils', 'ModuleService', 'ParserService', 'metamodelUtils',
+        function ($http, utils, ModuleService, ParserService, metamodelUtils) {
 
             // Pre ES6 browsers don't have 'startsWith' function, hence add it if necessary
             // TODO: remove in the future
@@ -124,7 +124,7 @@ define(function (require) {
                     };
                 }
 
-                // Set up constraints only to get metadata.matchGroup() function to work correctly
+                // Set up constraints only to get metamodelUtils.matchGroup() function to work here
                 var constraints;
                 if (node.group === 'source') {
                     constraints = { maxIncomingLinksNumber: 0 };
@@ -217,7 +217,7 @@ define(function (require) {
             }
 
             function loadOtherIntoPalette(metamodel) {
-                metamodel.typeToDataMap.other = {
+                metamodel.other = {
                     'tap': createMetadata({
                         'name': 'tap',
                         'group': 'other',
@@ -292,10 +292,10 @@ define(function (require) {
                                 entry.icon = icon;
                             }
                             var metadata = createMetadata(entry);
-                            if (!metamodel.typeToDataMap[metadata.group]) {
-                                metamodel.typeToDataMap[metadata.group] = {};
+                            if (!metamodel[metadata.group]) {
+                                metamodel[metadata.group] = {};
                             }
-                            metamodel.typeToDataMap[metadata.group][metadata.name] = metadata;
+                            metamodel[metadata.group][metadata.name] = metadata;
                         }
                     }
                     if (pageNumber < (result.page.totalPages - 1)) {
@@ -627,9 +627,9 @@ define(function (require) {
                     var label = inputnodes[n].label;
                     var group = inputnodes[n].group;
                     if (!group) {
-                        group = metamodel.matchGroup(name, incoming[n], outgoing[n]);
+                        group = metamodelUtils.matchGroup(metamodel, name, incoming[n], outgoing[n]);
                     }
-                    var newNode = flo.createNewNode(metamodel.getMetadata(name, group), inputnodes[n].properties);
+                    var newNode = flo.createNewNode(metamodelUtils.getMetadata(metamodel, name, group), inputnodes[n].properties);
                     // Tap and Destination names are in 'props/name' property
                     if (name !== 'tap' && name !== 'destination') {
                         newNode.attr('node-name', label);
@@ -707,7 +707,7 @@ define(function (require) {
                     }
                 });
                 var deferred = utils.$q.defer();
-                var newMetamodel = createMetamodel({});
+                var newMetamodel = {};
                 loadPageIntoPalette(0, newMetamodel).then(function () {
                     var change = {
                         newData: newMetamodel,
