@@ -94,7 +94,7 @@ define(function(require) {
 			  }
 		  }).result.then(function(created) {
 			  if (created) {
-				  $scope.flo.createNewFlow();
+				  $scope.flo.clearGraph();
 			  }
 		  });
   	  };

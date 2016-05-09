@@ -629,7 +629,7 @@ define(function (require) {
                     if (!group) {
                         group = metamodelUtils.matchGroup(metamodel, name, incoming[n], outgoing[n]);
                     }
-                    var newNode = flo.createNewNode(metamodelUtils.getMetadata(metamodel, name, group), inputnodes[n].properties);
+                    var newNode = flo.createNode(metamodelUtils.getMetadata(metamodel, name, group), inputnodes[n].properties);
                     // Tap and Destination names are in 'props/name' property
                     if (name !== 'tap' && name !== 'destination') {
                         newNode.attr('node-name', label);
@@ -655,10 +655,10 @@ define(function (require) {
                 for (var l = 0; l < inputlinksCount; l++) {
                     link = inputlinks[l];
                     if (link.linkType && link.linkType === 'tap') {
-                        flo.createNewLink({'id': nodesIndex[link.from], 'selector': '.tap-port', 'port': 'tap'},
+                        flo.createLink({'id': nodesIndex[link.from], 'selector': '.tap-port', 'port': 'tap'},
                             {'id': nodesIndex[link.to], 'selector': '.input-port', 'port': 'input'});
                     } else {
-                        flo.createNewLink({
+                        flo.createLink({
                                 'id': nodesIndex[link.from],
                                 'selector': '.output-port',
                                 'port': 'output'
@@ -667,7 +667,7 @@ define(function (require) {
                     }
                 }
 
-                flo.resetLayout();
+                flo.performLayout();
                 flo.fitToPage();
             }
 

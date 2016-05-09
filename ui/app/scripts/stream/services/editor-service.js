@@ -90,11 +90,11 @@ define(function(require) {
             }, pt);
         }
 
-        function validateMagnet(/*flo, cellView, magnet*/) {
+        function validatePort(/*flo, cellView, magnet*/) {
             return true;
         }
 
-        function validateConnection(flo, cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
+        function validateLink(flo, cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
 
             $log.info('SOURCE=' + cellViewS.model.attr('metadata/name') + ' TARGET=' + cellViewT.model.attr('metadata/name'));
             // Prevent linking from input ports.
@@ -500,7 +500,7 @@ define(function(require) {
             if (sources.length === 1) {
                 var source = sources[0];
                 for (i = 0; i < targets.length; i++) {
-                    flo.createNewLink({
+                    flo.createLink({
                         'id': source,
                         'selector': '.output-port',
                         'port': 'output'
@@ -513,7 +513,7 @@ define(function(require) {
             } else if (targets.length === 1) {
                 var target = targets[0];
                 for (i = 0; i < sources.length; i++) {
-                    flo.createNewLink({
+                    flo.createLink({
                         'id': sources[i],
                         'selector': '.output-port',
                         'port': 'output'
@@ -543,7 +543,7 @@ define(function(require) {
             return !noSwap;
         }
 
-        function deleteDependents(flo, cell) {
+        function preDelete(flo, cell) {
             repairDamage(flo, cell);
         }
 
@@ -569,7 +569,7 @@ define(function(require) {
                         link.remove();
                     }
                     for (i = 0; i < sources.length; i++) {
-                        flo.createNewLink({
+                        flo.createLink({
                             'id': sources[i],
                             'selector': '.output-port',
                             'port': 'output'
@@ -579,7 +579,7 @@ define(function(require) {
                             'port': 'input'
                         });
                     }
-                    flo.createNewLink({
+                    flo.createLink({
                         'id': node.id,
                         'selector': '.output-port',
                         'port': 'output'
@@ -605,7 +605,7 @@ define(function(require) {
                         link.remove();
                     }
                     for (i = 0; i < targets.length; i++) {
-                        flo.createNewLink({
+                        flo.createLink({
                             'id': node.id,
                             'selector': '.output-port',
                             'port': 'output'
@@ -615,7 +615,7 @@ define(function(require) {
                             'port': 'input'
                         });
                     }
-                    flo.createNewLink({
+                    flo.createLink({
                         'id': pivotNode.id,
                         'selector': '.output-port',
                         'port': 'output'
@@ -640,11 +640,11 @@ define(function(require) {
             link.remove();
 
             if (source) {
-                flo.createNewLink({'id': source, 'selector': sourceTap?'.tap-port':'.output-port', 'port': sourceTap?'tap':'output'},
+                flo.createLink({'id': source, 'selector': sourceTap?'.tap-port':'.output-port', 'port': sourceTap?'tap':'output'},
                                         {'id': node.id, 'selector': '.input-port', 'port': 'input' });
             }
             if (target) {
-                flo.createNewLink({'id': node.id,'selector': '.output-port','port': 'output'}, 
+                flo.createLink({'id': node.id,'selector': '.output-port','port': 'output'}, 
                                         {'id': target, 'selector': '.input-port', 'port': 'input' });
             }
         }
@@ -698,7 +698,7 @@ define(function(require) {
                     moveNodeOnNode(flo, source, target, 'left', true);
                     relinking = true;
                 } else if (dragDescriptor.target.selector === '.tap-port') {
-                    flo.createNewLink({
+                    flo.createLink({
                         'id': target.id,
                         'selector': dragDescriptor.target.selector,
                         'port': dragDescriptor.target.port
@@ -769,7 +769,7 @@ define(function(require) {
                     // One candidate match!
                     var match = openPorts.shift();
                     if (match.openPort === 'input') {
-                        flo.createNewLink({
+                        flo.createLink({
                             'id': source.id,
                             'selector': '.output-port', // /.output-port/.input-port
                             'port': 'output' // input/output
@@ -779,7 +779,7 @@ define(function(require) {
                             'port': 'input'
                         });
                     } else { // match.openPort === 'output'
-                        flo.createNewLink({
+                        flo.createLink({
                             'id': match.node.id,
                             'selector': '.output-port', // /.output-port/.input-port
                             'port': 'output' // input/output
@@ -793,18 +793,18 @@ define(function(require) {
 
             }
             //if (relinking) {
-            //    flo.resetLayout();
+            //    flo.performLayout();
             //}
         }
 
         return {
             'createHandles': createHandles,
-            'validateMagnet': validateMagnet,
-            'validateConnection': validateConnection,
+            'validatePort': validatePort,
+            'validateLink': validateLink,
             'calculateDragDescriptor': calculateDragDescriptor,
             'handleNodeDropping': handleNodeDropping,
             'validateNode': validateNode,
-            'deleteDependents': deleteDependents,
+            'preDelete': preDelete,
             'interactive': {
                 'vertexAdd': false
             },

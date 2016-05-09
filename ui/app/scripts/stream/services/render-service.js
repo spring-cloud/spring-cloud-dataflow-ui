@@ -224,7 +224,7 @@ define(function(require) {
             });
         }
 
-        function createNewNode(metadata) {
+        function createNode(metadata) {
             if (metadata.group === 'source') {
                 return new joint.shapes.flo.ModuleXD(
                     joint.util.deepSupplement({
@@ -715,7 +715,7 @@ define(function(require) {
             }
         }
 
-        function createNewLink() {
+        function createLink() {
             return new joint.shapes.flo.LinkXD();
         }
 
@@ -957,13 +957,13 @@ define(function(require) {
         }
 
         return {
-            'createNewNode': createNewNode,
+            'createNode': createNode,
+            'createLink': createLink,
             'createHandle': createHandle,
             'createDecoration': createDecoration,
             'initializeNewNode': initializeNewNode,
             'initializeNewDecoration': initializeNewDecoration,
             'initializeNewHandle': initializeNewHandle,
-            'createNewLink': createNewLink,
             'getLinkView': getLinkView,
             'layout': layout,
             'initializeNewLink': initializeNewLink,

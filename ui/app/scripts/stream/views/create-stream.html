@@ -5,8 +5,8 @@
 			<div class="col-md-12">
 				<div class="col-md-12 table-filter">
 					<button ng-click="createStreamDefs()" class="btn btn-default" ng-disabled="!definition.text">Create Stream</button>
-					<button ng-click="flo.createNewFlow()" class="btn btn-default">Clear</button>
-					<button ng-click="flo.resetLayout(); flo.fitToPage();" class="btn btn-default">Layout</button>
+					<button ng-click="flo.clearGraph()" class="btn btn-default">Clear</button>
+					<button ng-click="flo.performLayout(); flo.fitToPage();" class="btn btn-default">Layout</button>
 				<span class="btn btn-default">
 					<label>Zoom: </label>
 					<input class="btn btn-default flo-toolbar" type="text" ng-model="flo.zoomPercent" ng-model-options="{ getterSetter: true, updateOn: 'blur change' }" size="3"></input>
