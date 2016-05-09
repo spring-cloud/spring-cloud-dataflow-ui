@@ -181,18 +181,11 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       };
     })
     .directive('xdFormAutofocus', function() {
-      function focusInvalidField(element) {
-        var invalidElements = element.find('.ng-invalid');
-        if (invalidElements.length > 0)
-        {
-          invalidElements[0].focus();
-        }
-      }
       return {
         restrict: 'A',
         link: function(scope, element) {
           scope.focusInvalidField = function() {
-            focusInvalidField(element);
+            element.find('.ng-invalid:visible').first().focus();
           };
           element.on('submit', scope.focusInvalidField);
           scope.focusInvalidField();

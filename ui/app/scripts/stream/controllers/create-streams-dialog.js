@@ -39,11 +39,6 @@ define(function(require) {
                 if (graphAndErrors.graph) {
 //                        data = angular.fromJson(data);
                     $scope.streamdefs = graphAndErrors.graph.streamdefs;
-                    if (angular.isFunction($scope.focusInvalidField)) {
-                        // Need to be timed to let angular compile the DOM node for these changes.
-                        // HACK, but couldn't find anything better for this to work
-                        utils.$timeout($scope.focusInvalidField);
-                    }
 
                     $scope.streamdefs.forEach(function(def, index) {
                         if (definitionData.dependencies[index] && Array.isArray(definitionData.dependencies[index]) &&
@@ -58,6 +53,12 @@ define(function(require) {
                             });
                         }
                     });
+
+                    if (angular.isFunction($scope.focusInvalidField)) {
+                        // Need to be timed to let angular compile the DOM node for these changes.
+                        // HACK, but couldn't find anything better for this to work
+                        utils.$timeout($scope.focusInvalidField, 300);
+                    }
                 }
                 if (graphAndErrors.errors) {
                     graphAndErrors.errors.forEach(function(error) {
