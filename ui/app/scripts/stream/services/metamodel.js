@@ -38,6 +38,8 @@ define(function (require) {
 
     var convertGraphToText = require('./graph-to-text');
 
+    var angular = require('angular');
+
     return ['$http', 'XDUtils', 'ModuleService', 'ParserService', 'createMetamodel',
         function ($http, utils, ModuleService, ParserService, createMetamodel) {
 
@@ -562,12 +564,12 @@ define(function (require) {
             }
 
             function parseAndRefreshGraph(definitionsText, updateGraphFn, updateErrorsFn) {
-                if (updateErrorsFn && updateErrorsFn.call) {
+                if (angular.isFunction(updateErrorsFn)) {
                     updateErrorsFn(null);
                 }
                 if (definitionsText.trim().length === 0) {
                     utils.$log.info('UpdateGraphFn: no definition');
-                    if (updateGraphFn && updateGraphFn.call) {
+                    if (angular.isFunction(updateGraphFn)) {
                         updateGraphFn({'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []});
                     }
                     return;
@@ -575,13 +577,13 @@ define(function (require) {
                 var parsedStreamData = ParserService.parse(definitionsText);
                 var graphAndErrors = convertParseResponseToGraph(definitionsText, parsedStreamData);
                 if (graphAndErrors.errors.length !== 0) {
-                    if (updateErrorsFn && updateErrorsFn.call) {
+                    if (angular.isFunction(updateErrorsFn)) {
                         updateErrorsFn(graphAndErrors.errors);
                     }
                 }
                 if (graphAndErrors.graph) {
                     utils.$log.info('UpdateGraphFn: Computed graph is ' + JSON.stringify(graphAndErrors.graph));
-                    if (updateGraphFn && updateGraphFn.call) {
+                    if (angular.isFunction(updateGraphFn)) {
                         updateGraphFn(graphAndErrors.graph);
                     }
                 } else {
@@ -700,7 +702,7 @@ define(function (require) {
              */
             function refresh() {
                 listeners.forEach(function (listener) {
-                    if (listener.metadataRefresh && listener.metadataRefresh.call) {
+                    if (angular.isFunction(listener.metadataRefresh)) {
                         listener.metadataRefresh();
                     }
                 });
@@ -713,14 +715,14 @@ define(function (require) {
                     };
                     metamodel = newMetamodel;
                     listeners.forEach(function (listener) {
-                        if (listener.metadataChanged && listener.metadataChanged.call) {
+                        if (angular.isFunction(listener.metadataChanged)) {
                             listener.metadataChanged(change);
                         }
                     });
                     deferred.resolve(newMetamodel);
                 }, function (data, status, headers, config) {
                     listeners.forEach(function (listener) {
-                        if (listener.metadataError && listener.metadataError.call) {
+                        if (angular.isFunction(listener.metadataError)) {
                             listener.metadataError(data, status, headers, config);
                         }
                     });

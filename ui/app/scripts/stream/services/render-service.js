@@ -23,6 +23,7 @@ define(function(require) {
     'use strict';
 
     var joint = require('joint');
+    var angular = require('angular');
     require('flo');
     var layout = require('stream/services/layout');
     var utils = require('stream/services/utils');
@@ -499,10 +500,10 @@ define(function(require) {
             });
 
             // Disallow Core Flo tooltip
-            if (view.showTooltip && view.showTooltip.call) {
+            if (angular.isFunction(view.showTooltip)) {
                 view.showTooltip = function() {};
             }
-            if (view.hideTooltip && view.hideTooltip.call) {
+            if (angular.isFunction(view.hideTooltip)) {
                 view.hideTooltip = function() {};
             }
 
@@ -572,10 +573,10 @@ define(function(require) {
             }
 
             // Disallow Core Flo tooltip
-            if (view.showTooltip && view.showTooltip.call) {
+            if (angular.isFunction(view.showTooltip)) {
                 view.showTooltip = function() {};
             }
-            if (view.hideTooltip && view.hideTooltip.call) {
+            if (angular.isFunction(view.hideTooltip)) {
                 view.hideTooltip = function() {};
             }
 
@@ -603,10 +604,10 @@ define(function(require) {
             // Tooltip should be closed initially
             scope.tooltipIsOpen = false;
             // Disallow Core Flo tooltip
-            if (view.showTooltip && view.showTooltip.call) {
+            if (angular.isFunction(view.showTooltip)) {
                 view.showTooltip = function() {};
             }
-            if (view.hideTooltip && view.hideTooltip.call) {
+            if (angular.isFunction(view.hideTooltip)) {
                 view.hideTooltip = function() {};
             }
             // Attach the tooltip using created above scope and specific HTML template

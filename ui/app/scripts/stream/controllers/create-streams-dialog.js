@@ -19,8 +19,10 @@
  *
  * @author Alex Boyko
  */
-define(function() {
+define(function(require) {
     'use strict';
+    
+    var angular = require('angular');
 
     return ['XDUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelServiceXD', 'ParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
@@ -37,7 +39,7 @@ define(function() {
                 if (graphAndErrors.graph) {
 //                        data = angular.fromJson(data);
                     $scope.streamdefs = graphAndErrors.graph.streamdefs;
-                    if ($scope.focusInvalidField && $scope.focusInvalidField.call) {
+                    if (angular.isFunction($scope.focusInvalidField)) {
                         // Need to be timed to let angular compile the DOM node for these changes.
                         // HACK, but couldn't find anything better for this to work
                         utils.$timeout($scope.focusInvalidField);
