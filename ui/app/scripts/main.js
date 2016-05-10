@@ -46,7 +46,7 @@ require.config({
     joint: '../lib/joint/joint',
     backbone: '../lib/backbone/backbone',
     lodash: '../lib/lodash/lodash.compat',
-    flo: '../lib/flo/flo'
+    flo: '../lib/spring-flo/spring-flo'
   },
   map: {
     '*': {

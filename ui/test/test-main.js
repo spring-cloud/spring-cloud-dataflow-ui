@@ -36,7 +36,7 @@ require.config({
     backbone: '/base/app/lib/backbone/backbone',
     lodash: '/base/app/lib/lodash/lodash.compat',
 
-    flo: '/base/app/lib/flo/flo'
+    flo: '/base/app/lib/spring-flo/spring-flo'
 
   },
   map: {

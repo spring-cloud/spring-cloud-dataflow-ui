@@ -44,6 +44,6 @@ define([
     'xdStreamsAdmin',
     'xdContainerAdmin',
     'xdAuth',
-    'flo'
+    'spring.flo'
   ]);
 });
