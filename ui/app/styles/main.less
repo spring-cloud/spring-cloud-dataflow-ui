@@ -342,45 +342,22 @@ hr {
   user-select: none;
 }
 
-.tooltip.red-tooltip .tooltip-inner {
-  background-color: red;
-  max-width: 350px;
-}
-.tooltip.right.red-tooltip .tooltip-arrow {
-  border-right-color: red;
-}
-
-.tooltip.canvas-module-tooltip .tooltip-inner {
-  max-width: 600px;
-}
-
-.tooltip.palette-module-tooltip .tooltip-inner {
-  max-width: 500px;
-}
-
-.tooltip-property-value {
-  max-width: 390px;
-  white-space: pre;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.tooltip-property-key {
-  max-width: 200px;
-  vertical-align: top;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.tooltip-property-value-code {
-  font-family: monospace;
-}
-
 .feedback-with-offset {
   padding-right: 20px;
 }
 
+.modal-body .stream-definition-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .table-compact > tbody > tr > td {
   vertical-align: middle;
+}
+
+.form-horizontal .form-dialog .form-group {
+  margin: 0;
 }
 
 @import "../lib/spring-flo/spring-flo.css";

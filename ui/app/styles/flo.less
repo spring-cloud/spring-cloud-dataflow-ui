@@ -5,12 +5,6 @@
   font-family: inherit;
 }
 
-.crop {
-  overflow:hidden; 
-  white-space:nowrap; 
-  text-overflow:ellipsis; 
-}​
-
 input.ng-invalid.flo-toolbar {
   border: 1px solid red;
 }
@@ -173,21 +167,6 @@ input.btn.ng-invalid {
   fill: transparent;
 }
 
-.connection.job-graph-transition {
-  stroke: #777777;
-  stroke-dasharray: 1,5;
-}
-
-.marker-source.job-graph-transition {
-  stroke: #777777;
-  fill: #777777;
-}
-
-.marker-target.job-graph-transition {
-  stroke: #777777;
-  fill: #777777;
-}
-
 .marker-vertex {
   fill: #70A5D9;
   stroke: @spring-brown;
@@ -242,21 +221,45 @@ input.btn.ng-invalid {
   font-family: inherit;
 }
 
-#modal-properties-container {
-  overflow-y: auto;
-  max-height: calc(~"100vh - 300px");
-}
-
 .property-code-editor {
   border: 1px solid;
   border-color: lightgrey;
   height: 180px;
 }
 
-.form-horizontal .form-dialog .form-group {
-  margin: 0;
-}
-
 .CodeMirror-lint-tooltip {
   z-index: 2000;
+}
+
+.tooltip.red-tooltip .tooltip-inner {
+  background-color: red;
+  max-width: 350px;
+}
+.tooltip.right.red-tooltip .tooltip-arrow {
+  border-right-color: red;
+}
+
+.tooltip.canvas-module-tooltip .tooltip-inner {
+  max-width: 600px;
+}
+
+.tooltip.palette-module-tooltip .tooltip-inner {
+  max-width: 500px;
+}
+
+.tooltip-property-value {
+  max-width: 390px;
+  white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.tooltip-property-key {
+  max-width: 200px;
+  vertical-align: top;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tooltip-property-value-code {
+  font-family: monospace;
 }
