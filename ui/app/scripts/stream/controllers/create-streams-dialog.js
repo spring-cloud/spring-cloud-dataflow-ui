@@ -73,8 +73,14 @@ define(function(require) {
                 }
             }
 
+            $scope.canSubmit = function() {
+                return $scope.streamForm.$valid && $scope.streamdefs && $scope.streamdefs.length && !($scope.errors && $scope.errors.length);
+            };
+
             $scope.submitStreams = function() {
-                $scope.createStreams();
+                if ($scope.canSubmit()) {
+                    $scope.createStreams();
+                }
             };
 
             /**
