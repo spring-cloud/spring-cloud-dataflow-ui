@@ -15,6 +15,8 @@
  */
 
 /**
+ * Editor Service for Flo based Stream Definition Graph editor.
+ *
  * @author Alex Boyko
  * @author Andy Clement
  */

@@ -15,6 +15,8 @@
  */
 
 /**
+ * Utilities for Flo based Stream Definition graph editor.
+ *
  * @author Alex Boyko
  */
 define(function () {

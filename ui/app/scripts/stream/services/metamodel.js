@@ -15,6 +15,8 @@
  */
 
 /**
+ * Metamodel Service for Flo based Stream Definition graph editor
+ *
  * @author Alex Boyko
  * @author Andy Clement
  */

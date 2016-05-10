@@ -15,6 +15,8 @@
  */
 
 /**
+ * Service providing content assist for Flo Stream DSL editor
+ * 
  * @author Alex Boyko
  */
 define(function() {
