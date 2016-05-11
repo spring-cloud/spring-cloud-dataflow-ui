@@ -168,7 +168,7 @@ define(function(require) {
     });
 
 
-    return ['$compile', '$rootScope', '$log', 'StreamMetamodelServiceXD', function($compile, $rootScope, $log, metamodelService) {
+    return ['$compile', '$rootScope', '$log', 'StreamMetamodelService', function($compile, $rootScope, $log, metamodelService) {
 
         function fitLabel(paper, node, labelPath) {
             var label = node.attr(labelPath);
@@ -186,7 +186,7 @@ define(function(require) {
                         offset = HORIZONTAL_PADDING + box.width;
                     }
                 }
-                var width = joint.V(textView).bbox(false, paper.viewport).width; // jshint ignore:line
+                var width = joint.V(textView).bbox(false, paper.viewport).width;
                 var threshold = IMAGE_W - HORIZONTAL_PADDING - HORIZONTAL_PADDING - offset;
                 if (offset) {
                     node.attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5), { silent: true });
@@ -194,7 +194,7 @@ define(function(require) {
                 for (var i = 1; i < label.length && width > threshold; i++) {
                     node.attr(labelPath, label.substr(0, label.length - i) + '\u2026', { silent: true });
                     view.update();
-                    width = joint.V(textView).bbox(false, paper.viewport).width; // jshint ignore:line
+                    width = joint.V(textView).bbox(false, paper.viewport).width;
                     if (offset) {
                         node.attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5), { silent: true });
                     }
@@ -617,6 +617,42 @@ define(function(require) {
             $compile(view.el)(scope);
         }
 
+        function initializeNewLink(link) {
+            link.set('smooth', true);
+        }
+
+        function isSemanticProperty(propertyPath) {
+            return propertyPath === 'node-name' || propertyPath === 'stream-name';
+        }
+
+        function refreshVisuals(element, changedPropertyPath, paper) {
+            var metadata = element.attr('metadata');
+            var type = metadata ? metadata.name : undefined;
+            if (changedPropertyPath === 'stream-name') {
+                element.attr('.stream-label/text', element.attr('stream-name'));
+                element.attr('.stream-label/display', utils.canBeHeadOfStream(paper.model, element) ? 'block' : 'none');
+            } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
+                // fitLabel() calls update as necessary, so set label text silently
+                element.attr('.label1/text', element.attr('props/name') ? element.attr('props/name') : element.attr('metadata/name'));
+                fitLabel(paper, element, '.label1/text');
+            } else if (changedPropertyPath === 'props/language') {
+                /*
+                 * Check if 'language' property has changed and 'script' property is present
+                 */
+                metadata.get('properties').then(function(properties) {
+                    if (properties.script && properties.script.source) {
+                        properties.script.source.type = element.attr('props/language');
+                        properties.script.source.mime = element.attr('props/language') === 'javascript' ? 'text/javascript' : 'text/x-' + element.attr('props/language');
+                    }
+                });
+            } else if (changedPropertyPath === 'node-name') {
+                var nodeName =  element.attr('node-name');
+                // fitLabel() calls update as necessary, so set label text silently
+                element.attr('.label1/text', nodeName ? nodeName : element.attr('metadata/name'));
+                fitLabel(paper, element, '.label1/text');
+            }
+        }
+
         function initializeNewNode(node, context) {
             var metadata = node.attr('metadata');
             var view = context.paper.findViewByModel(node);
@@ -756,42 +792,6 @@ define(function(require) {
                 }
 
             });
-        }
-
-        function initializeNewLink(link) {
-            link.set('smooth', true);
-        }
-
-        function isSemanticProperty(propertyPath) {
-            return propertyPath === 'node-name' || propertyPath === 'stream-name';
-        }
-
-        function refreshVisuals(element, changedPropertyPath, paper) { // jshint ignore:line
-            var metadata = element.attr('metadata');
-            var type = metadata ? metadata.name : undefined;
-            if (changedPropertyPath === 'stream-name') {
-                element.attr('.stream-label/text', element.attr('stream-name'));
-                element.attr('.stream-label/display', utils.canBeHeadOfStream(paper.model, element) ? 'block' : 'none');
-            } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
-                // fitLabel() calls update as necessary, so set label text silently
-                element.attr('.label1/text', element.attr('props/name') ? element.attr('props/name') : element.attr('metadata/name'));
-                fitLabel(paper, element, '.label1/text');
-            } else if (changedPropertyPath === 'props/language') {
-                /*
-                 * Check if 'language' property has changed and 'script' property is present
-                 */
-                metadata.get('properties').then(function(properties) {
-                   if (properties.script && properties.script.source) {
-                       properties.script.source.type = element.attr('props/language');
-                       properties.script.source.mime = element.attr('props/language') === 'javascript' ? 'text/javascript' : 'text/x-' + element.attr('props/language');
-                   }
-                });
-            } else if (changedPropertyPath === 'node-name') {
-                var nodeName =  element.attr('node-name');
-                // fitLabel() calls update as necessary, so set label text silently
-                element.attr('.label1/text', nodeName ? nodeName : element.attr('metadata/name'));
-                fitLabel(paper, element, '.label1/text');
-            }
         }
 
         function handleLinkEvent(paper, event, link) {
@@ -941,7 +941,7 @@ define(function(require) {
         function getLinkAnchorPoint(linkView, view, magnet, reference) {
             if (magnet) {
                 var type = magnet.getAttribute('type');
-                var bbox = joint.V(magnet).bbox(false, linkView.paper.viewport); // jshint ignore:line
+                var bbox = joint.V(magnet).bbox(false, linkView.paper.viewport);
                 var rect = joint.g.rect(bbox);
                 if (type === 'input') {
                     return joint.g.point(rect.x, rect.y + rect.height / 2);

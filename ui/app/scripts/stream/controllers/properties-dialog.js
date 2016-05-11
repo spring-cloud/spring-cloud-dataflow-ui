@@ -22,7 +22,7 @@
 define([], function () {
     'use strict';
 
-    return ['$scope', 'StreamMetamodelServiceXD', '$modalInstance', 'cell', 'isStreamStart',
+    return ['$scope', 'StreamMetamodelService', '$modalInstance', 'cell', 'isStreamStart',
         function ($scope, metaModelService, $modalInstance, cell, isStreamStart) {
 
             $scope.cell = cell;

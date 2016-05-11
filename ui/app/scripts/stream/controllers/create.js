@@ -28,7 +28,7 @@ define(function(require) {
   var GRID_ON_COOKIE_KEY = 'createStream.grid.on';
   var AUTOLINK_ON_COOKIE_KEY = 'createStream.autolink.on';
   
-  return ['XDUtils', '$scope', 'StreamMetamodelServiceXD', '$modal','$cookieStore',
+  return ['XDUtils', '$scope', 'StreamMetamodelService', '$modal','$cookieStore',
     function (utils, $scope, metamodelService, $modal, $cookieStore) {
 	  utils.$log.info('Stream Creation Controller running (create.js)');
 

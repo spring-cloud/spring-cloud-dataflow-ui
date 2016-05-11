@@ -28,19 +28,19 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
 	//beforeEach(function() {angular.mock.module('xdJobsAdmin');});
 	//beforeEach(function() {angular.mock.module('xdStreamsAdmin');});
 
-    it('should contain a ParserService service', inject(function(ParserService, StreamMetamodelServiceXD) {
-    	expect(ParserService).toBeDefined();
-    	expect(StreamMetamodelServiceXD).toBeDefined();
+    it('should contain a StreamParserService service', inject(function(StreamParserService, StreamMetamodelService) {
+    	expect(StreamParserService).toBeDefined();
+    	expect(StreamMetamodelService).toBeDefined();
     }));
 
-    it('basic text to graph', inject(function(ParserService, StreamMetamodelServiceXD) {
+    it('basic text to graph', inject(function(StreamParserService, StreamMetamodelService) {
     	var text = 'time | log';
-    	var parseResponse = ParserService.parse(text);
+    	var parseResponse = StreamParserService.parse(text);
     	expect(parseResponse.lines).toBeDefined();
     	var line = parseResponse.lines[0];
     	expect(line.errors).toBeNull();
-    	expect(StreamMetamodelServiceXD.convertParseResponseToGraph).toBeDefined();    	
-    	var graph = StreamMetamodelServiceXD.convertParseResponseToGraph(text,parseResponse);
+    	expect(StreamMetamodelService.convertParseResponseToGraph).toBeDefined();    	
+    	var graph = StreamMetamodelService.convertParseResponseToGraph(text,parseResponse);
 //    	console.log("graph is "+JSON.stringify(graph));
     	//{"errors":[],
     	// "graph":
@@ -61,14 +61,14 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
     	expect(logNode.id).toEqual(1);
     }));
     
-    it('destination output', inject(function(ParserService, StreamMetamodelServiceXD) {
+    it('destination output', inject(function(StreamParserService, StreamMetamodelService) {
     	var text = 'time > :foo';
-    	var parseResponse = ParserService.parse(text);
+    	var parseResponse = StreamParserService.parse(text);
     	expect(parseResponse.lines).toBeDefined();
     	var line = parseResponse.lines[0];
     	expect(line.errors).toBeNull();
-    	expect(StreamMetamodelServiceXD.convertParseResponseToGraph).toBeDefined();    	
-    	var graph = StreamMetamodelServiceXD.convertParseResponseToGraph(text,parseResponse);
+    	expect(StreamMetamodelService.convertParseResponseToGraph).toBeDefined();    	
+    	var graph = StreamMetamodelService.convertParseResponseToGraph(text,parseResponse);
 //    	console.log("graph is "+JSON.stringify(graph));
     	// {"errors":[],
     	//  "graph":{
@@ -95,14 +95,14 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
     	expect(link.to).toEqual(1);
     }));
 
-    it('tap text to graph', inject(function(ParserService, StreamMetamodelServiceXD) {
+    it('tap text to graph', inject(function(StreamParserService, StreamMetamodelService) {
     	var text = 'FOO = time | log1\n:FOO.time > log2';
-    	var parseResponse = ParserService.parse(text);
+    	var parseResponse = StreamParserService.parse(text);
     	expect(parseResponse.lines).toBeDefined();
     	var line = parseResponse.lines[0];
     	expect(line.errors).toBeNull();
-    	expect(StreamMetamodelServiceXD.convertParseResponseToGraph).toBeDefined();
-    	var graph = StreamMetamodelServiceXD.convertParseResponseToGraph(text,parseResponse);
+    	expect(StreamMetamodelService.convertParseResponseToGraph).toBeDefined();
+    	var graph = StreamMetamodelService.convertParseResponseToGraph(text,parseResponse);
 //    	console.log('graph is '+JSON.stringify(graph));
     	// {"errors":[],
     	//  "graph":{
@@ -129,27 +129,27 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
     	// Verify tap stream
     }));
     
-//    it('text to graph and back again - basic', inject(function(ParserService, StreamMetamodelServiceXD) {
+//    it('text to graph and back again - basic', inject(function(StreamParserService, StreamMetamodelService) {
 //       	var text = 'time | log';
-//    	var parseResponse = ParserService.parse(text);
-//    	var graph = StreamMetamodelServiceXD.convertParseResponseToGraph(text,parseResponse);
+//    	var parseResponse = StreamParserService.parse(text);
+//    	var graph = StreamMetamodelService.convertParseResponseToGraph(text,parseResponse);
 //    	console.log('>>>>'+graph);
-//    	var newtext = StreamMetamodelServiceXD.convertGraphToText(graph);
+//    	var newtext = StreamMetamodelService.convertGraphToText(graph);
 //    	console.log('>>>>'+newtext);
 ////    	expect(newtext).equals(text);
 //    }));
     
-//    it('text to graph and back again - tap', inject(function(ParserService, StreamMetamodelServiceXD) {
+//    it('text to graph and back again - tap', inject(function(StreamParserService, StreamMetamodelService) {
 //    	var text = "FOO = time | log1\n:FOO.time > log2";
-//    	var parseResponse = ParserService.parse(text);
+//    	var parseResponse = StreamParserService.parse(text);
 //    	expect(parseResponse.lines).toBeDefined();
 //    	var line = parseResponse.lines[0];
 //    	expect(line.errors).toBeNull();
-//    	expect(StreamMetamodelServiceXD.convertParseResponseToGraph).toBeDefined();    	
-//    	expect(StreamMetamodelServiceXD.convertGraphToText).toBeDefined();
+//    	expect(StreamMetamodelService.convertParseResponseToGraph).toBeDefined();    	
+//    	expect(StreamMetamodelService.convertGraphToText).toBeDefined();
 //
-//    	var graph = StreamMetamodelServiceXD.convertParseResponseToGraph(text,parseResponse);
-//    	var newtext = StreamMetamodelServiceXD.convertGraphToText(graph);
+//    	var graph = StreamMetamodelService.convertParseResponseToGraph(text,parseResponse);
+//    	var newtext = StreamMetamodelService.convertGraphToText(graph);
 //    	expect(newtext).equals(text);
 //    }));
 

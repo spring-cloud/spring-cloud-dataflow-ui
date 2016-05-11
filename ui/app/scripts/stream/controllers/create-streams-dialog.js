@@ -24,7 +24,7 @@ define(function(require) {
     
     var angular = require('angular');
 
-    return ['XDUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelServiceXD', 'ParserService',
+    return ['XDUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
 
             $scope.streamdefs = [];

@@ -26,12 +26,12 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
           angular.mock.module('xdAdmin');
         });
     
-    it('should contain a ParserService service', inject(function(ParserService) {
-    	expect(ParserService).toBeDefined();
+    it('should contain a StreamParserService service', inject(function(StreamParserService) {
+    	expect(StreamParserService).toBeDefined();
     }));
     
-    it('basic stream', inject(function(ParserService) {
-    	var output = ParserService.parse('time | log');
+    it('basic stream', inject(function(StreamParserService) {
+    	var output = StreamParserService.parse('time | log');
     	// {"lines":[
     	//   {"errors":null,
     	//    "success":[
@@ -54,8 +54,8 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
         expect(logNode.range.end.ch).toEqual(10);
     }));
 
-    it('sink destination parsing', inject(function(ParserService) {
-    	var output = ParserService.parse('time > :destination');
+    it('sink destination parsing', inject(function(StreamParserService) {
+    	var output = StreamParserService.parse('time > :destination');
     	// {"lines":[
     	//  {"errors":null,
     	//   "success":[
@@ -74,9 +74,9 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
         expect(timeNode.sinkChannelName).toEqual('destination');
     }));
     
-    it('source destination parsing', inject(function(ParserService) {
+    it('source destination parsing', inject(function(StreamParserService) {
     	// {"lines":[{"errors":null,"success":[{"group":"UNKNOWN_0","type":"processor","name":"log","range":{"start":{"ch":15,"line":0},"end":{"ch":18,"line":0}},"options":{},"optionsranges":{},"sourceChannelName":"destination","sinkChannelName":null}]}]}
-    	var output = ParserService.parse(':destination > log');
+    	var output = StreamParserService.parse(':destination > log');
 		// console.log('parse response'+JSON.stringify(output));
     	expect(output.lines).toBeDefined();
     	expect(output.lines.length).toEqual(1);
@@ -91,8 +91,8 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
         expect(logNode.sourceChannelName).toEqual('destination');
     }));
     
-    it('tap destination parsing', inject(function(ParserService) {
-    	var output = ParserService.parse(':someStream.foo > log');
+    it('tap destination parsing', inject(function(StreamParserService) {
+    	var output = StreamParserService.parse(':someStream.foo > log');
     	// console.log('parse response'+JSON.stringify(output));
     	expect(output.lines).toBeDefined();
     	expect(output.lines.length).toEqual(1);

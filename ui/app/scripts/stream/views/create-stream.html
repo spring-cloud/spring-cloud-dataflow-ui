@@ -1,6 +1,6 @@
 <div id="flo-container">
-	<flo-editor disable-properties="true" palette-size="170" paper-padding="50" metamodel-service-name="StreamMetamodelServiceXD"
-				editor-service-name="xdFloEditorService" render-service-name="xdFloRenderService">
+	<flo-editor disable-properties="true" palette-size="170" paper-padding="50" metamodel-service-name="StreamMetamodelService"
+				editor-service-name="StreamEditorService" render-service-name="StreamRenderService">
 		<div class="row no-user-selection">
 			<div class="col-md-12">
 				<div class="col-md-12 table-filter">
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<div class="flow-definition-container">
-			<textarea dsl-editor id="flow-definition" class="flow-definition" ng-model="definition.text" content-assist-service-name="xdStreamContentAssistService"></textarea>
+			<textarea dsl-editor id="flow-definition" class="flow-definition" content-assist-service-name="StreamContentAssistService"></textarea>
 		</div>
 	</flo-editor>
 </div>

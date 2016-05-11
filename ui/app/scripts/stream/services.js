@@ -90,10 +90,10 @@ define(function(require) {
           }
         };        
       }).
-      factory('StreamMetamodelServiceXD',require('stream/services/metamodel')).
-      factory('ParserService',require('stream/services/parser')).
-      factory('xdFloEditorService', require('stream/services/editor-service')).
-      factory('xdFloRenderService', require('stream/services/render-service')).
-      factory('xdStreamContentAssistService', require('stream/services/content-assist-service'));
+      factory('StreamMetamodelService',require('stream/services/metamodel')).
+      factory('StreamParserService',require('stream/services/parser')).
+      factory('StreamEditorService', require('stream/services/editor-service')).
+      factory('StreamRenderService', require('stream/services/render-service')).
+      factory('StreamContentAssistService', require('stream/services/content-assist-service'));
 
 });
