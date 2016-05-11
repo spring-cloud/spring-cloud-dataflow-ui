@@ -201,7 +201,7 @@ define(function(require) {
         function calculateDragDescriptor(flo, draggedView, targetUnderMouse, point, context) {
             // check if it's a tap being dragged
             var source = draggedView.model;
-            if ((targetUnderMouse instanceof joint.dia.Element) && source.attr('metadata/name') === 'tap') { // jshint ignore:line
+            if ((targetUnderMouse instanceof joint.dia.Element) && source.attr('metadata/name') === 'tap') {
                 return {
                     context: context,
                     source: {
@@ -225,11 +225,11 @@ define(function(require) {
             if (!hasIncomingPort && !hasOutgoingPort) {
                 return;
             }
-            var elements = graph.findModelsInArea(joint.g.rect(point.x - range, point.y - range, 2 * range, 2 * range)); // jshint ignore:line
+            var elements = graph.findModelsInArea(joint.g.rect(point.x - range, point.y - range, 2 * range, 2 * range));
             if (Array.isArray(elements)) {
                 elements.forEach(function(model) {
                     var view = paper.findViewByModel(model);
-                    if (view && view !== draggedView && model instanceof joint.dia.Element) { // jshint ignore:line
+                    if (view && view !== draggedView && model instanceof joint.dia.Element) {
                         var targetHasIncomingPort = view.model.attr('.input-port') && view.model.attr('.input-port/display') !== 'none';
                         // 2 output ports: output-port and tap-port
                         var targetHasOutgoingPort = (view.model.attr('.output-port') && view.model.attr('.output-port/display') !== 'none') ||
@@ -237,7 +237,7 @@ define(function(require) {
                         view.$('[magnet]').each(function(index, magnet) {
                             var type = magnet.getAttribute('type');
                             if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort) || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
-                                var bbox = joint.V(magnet).bbox(false, paper.viewport); // jshint ignore:line
+                                var bbox = joint.V(magnet).bbox(false, paper.viewport);
                                 var distance = point.distance({
                                     x: bbox.x + bbox.width / 2,
                                     y: bbox.y + bbox.height / 2
@@ -271,7 +271,7 @@ define(function(require) {
             // Check if drop on a link is allowed
             var sourceType = source.attr('metadata/name');
             var sourceGroup = source.attr('metadata/group');
-            if (targetUnderMouse instanceof joint.dia.Link && !(sourceType === 'destination' || sourceGroup === 'sink' || sourceGroup === 'source') && graph.getConnectedLinks(source).length === 0) { // jshint ignore:line
+            if (targetUnderMouse instanceof joint.dia.Link && !(sourceType === 'destination' || sourceGroup === 'sink' || sourceGroup === 'source') && graph.getConnectedLinks(source).length === 0) {
                 return {
                     context: context,
                     source: {
@@ -658,7 +658,7 @@ define(function(require) {
             var target = dragDescriptor.target ? dragDescriptor.target.cell : undefined;
             var type = source.attr('metadata/name');
             // NODE DROPPING TURNED OFF FOR NOW
-            if (false && target instanceof joint.dia.Element && target.attr('metadata/name')) { // jshint ignore:line
+            if (false && target instanceof joint.dia.Element && target.attr('metadata/name')) {
                 //if (type === 'tap') {
                 //    // Fill in the channel on the new node
                 //    // work out tap name, something like: tap:stream:mystream.filter (filter optional if on head of stream)
@@ -711,7 +711,7 @@ define(function(require) {
                     });
                 }
                 //}
-            } else if (target instanceof joint.dia.Link && type !== 'tap' && type !== 'destination') { // jshint ignore:line
+            } else if (target instanceof joint.dia.Link && type !== 'tap' && type !== 'destination') {
                 moveNodeOnLink(flo, source, target);
                 relinking = true;
             } else if (flo.autolink && relinking) {
