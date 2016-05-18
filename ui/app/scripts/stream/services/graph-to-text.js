@@ -24,6 +24,8 @@ define(function () {
 	'use strict';
 	
     var DEBUG = true;
+
+	var COLON_PREFIX = ':';
     
 	/**
 	 * Graph representation of stream(s)/module(s).
@@ -182,7 +184,7 @@ define(function () {
 		if (!appname) {
 			appname = node.attr('metadata/name');
 		}
-		return ':'+findStreamName(node)+'.'+appname;
+		return COLON_PREFIX+findStreamName(node)+'.'+appname;
 	}
 
 	/**
@@ -260,24 +262,9 @@ define(function () {
 				text += element.attr('stream-name') + '=';
 			}
 		}
-		if ('job definition' === element.attr('metadata/group')) {
-			// expressed as a queue
-			if (first) {
-				text += 'tap:job:' + element.attr('metadata/name');
-				if (props) {
-					Object.keys(props).forEach(function(propertyName) {
-						var prop = props[propertyName];
-						if (prop && prop.length !== 0) {
-							text += '.' + props[propertyName];
-						}
-					});
-				}
-			} else {
-				text += 'queue:job:' + element.attr('metadata/name');
-			}
-		} else if ('tap' === element.attr('metadata/name') || 'destination' === element.attr('metadata/name')) {
+		if ('tap' === element.attr('metadata/name') || 'destination' === element.attr('metadata/name')) {
 			if (props.name) {
-				text += ':'+props.name;
+				text += COLON_PREFIX+props.name;
 			}
 		} else {
 			if (element.attr('node-name')) {
@@ -413,5 +400,4 @@ define(function () {
 		init(g);		
         return processGraph();
 	};
-	
 });

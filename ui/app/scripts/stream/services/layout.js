@@ -24,6 +24,9 @@ define(function (require) {
 	'use strict';
 	
     var DEBUG = false;
+
+    var OUTPUT_PORT = 'output';
+    var TAP_PORT = 'tap';
     
     var joint = require('joint');
     
@@ -40,7 +43,6 @@ define(function (require) {
     function getOutgoingLinks(node,portKind) {
         var allLinks = graph.getConnectedLinks(node,{outbound: true});
         var retval = [];
-        // Exclude TAPS
         for (var i=0;i<allLinks.length;i++) {
         var link = allLinks[i];
             if (link.get('source').port === portKind) {
@@ -51,7 +53,7 @@ define(function (require) {
     }
     
     function isTapLink(link) {
-        return link.get('source').port === 'tap';
+        return link.get('source').port === TAP_PORT;
     }
     
     /**
@@ -66,7 +68,7 @@ define(function (require) {
         var hspace = 120+80;//bbox.width*1.5; 
         var vspace = 40*2;//bbox.height*2; 
         node.translate((offsetx+col*hspace)-bbox.x,(offsety+row*vspace)-bbox.y);
-        var outgoingLinks = getOutgoingLinks(node,'output');
+        var outgoingLinks = getOutgoingLinks(node,OUTPUT_PORT);
         var target, targetId;
         if (outgoingLinks.length !== 0) {
             targetId = outgoingLinks[0].get('target').id;
@@ -74,7 +76,7 @@ define(function (require) {
             row = positionNode(target,col+1,row);
         }
         // As we 'unwind' visit tap streams
-        var outgoingTapLinks = getOutgoingLinks(node,'tap');
+        var outgoingTapLinks = getOutgoingLinks(node,TAP_PORT);
         for (var i=0;i<outgoingTapLinks.length;i++) {
             row++;
             var link = outgoingTapLinks[i];
@@ -121,13 +123,13 @@ define(function (require) {
             var length = 1;
             var link;
             // Compute size of 'tail'
-            var outgoingLinks = getOutgoingLinks(headInfo.head,'output');
+            var outgoingLinks = getOutgoingLinks(headInfo.head,OUTPUT_PORT);
             while (outgoingLinks.length!==0) {
                 length++;
                 link = outgoingLinks[0];
                 var targetId = link.get('target').id;
                 var target = graph.getCell(targetId);
-                outgoingLinks = getOutgoingLinks(target,'output');
+                outgoingLinks = getOutgoingLinks(target,OUTPUT_PORT);
             }
             // If this is the head of a tap then need to compute the upstream length too
             incomingLinks = getIncomingLinks(headInfo.head);

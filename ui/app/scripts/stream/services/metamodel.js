@@ -277,22 +277,11 @@ define(function (require) {
                             if (module.type === 'task') { // Don't include Tasks!
                                 continue;
                             }
-                            var icon;
-                            if (module.type === 'sink') {
-                                icon = 'images/icons/xd/sink.png';
-                            } else if (module.type === 'source') {
-                                icon = 'images/icons/xd/source.png';
-                            } else if (module.type === 'processor') {
-                                icon = 'images/icons/xd/transform.png';
-                            }
                             // If specific icon provided, use it
 //            			if (iconMap[module.name]) {
 //            				icon = iconMap[module.name];
 //            			}
                             var entry = {'name': module.name, 'group': module.type};
-                            if (icon) {
-                                entry.icon = icon;
-                            }
                             var metadata = createMetadata(entry);
                             if (!metamodel[metadata.group]) {
                                 metamodel[metadata.group] = {};
@@ -457,12 +446,6 @@ define(function (require) {
 
                             if (parsedNode.sinkChannelName) {
                                 channelText = parsedNode.sinkChannelName;
-//    						if (parsedNode.sinkChannelName.startsWith('job:')) {
-//    							// A job output channel should be represented by a job node
-//								graphNode = { 'id':nodeId++,'name':parsedNode.sinkChannelName.substring(4),'properties':{}};
-//								sinkchannel='queue:'+sinkchannel;
-//    						} else {
-                                // assert n==parsedNodes.length-1
                                 graphNode = {
                                     'id': nodeId++,
                                     'name': 'destination',
