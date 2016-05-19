@@ -283,62 +283,62 @@ define(function () {
 
 	// Walk the graph and produce DSL
 	function processGraph() {
-        if (DEBUG) {console.log('> graph2text');}
-        // 1. Find the obvious stream heads. A stream head is any node without an incoming link or where the incoming link
-        //    is a tap link
+		if (DEBUG) {console.log('> graph2text');}
+		// 1. Find the obvious stream heads. A stream head is any node without an incoming link or where the incoming link
+		//    is a tap link
 		var i;
-        var streamheads=[];
-        var nodesToHead={};
-        _.forEach(nodesToVisit, function(node) {
-            var head = findHead(node);
-            if (!_.contains(streamheads,head)) {
-                streamheads.push(head);
-            }
-            nodesToHead[node]=head;
-        });
-        if (DEBUG) {
-            console.log('Stream Heads discovered from the graph: ');
-            for (i=0;i<streamheads.length;i++) {
-                console.log(i+') '+getName(streamheads[i]));
-            } 
-        }
-        var streams = [];
-        var streamId = 1;
+		var streamheads=[];
+		var nodesToHead={};
+		_.forEach(nodesToVisit, function(node) {
+			var head = findHead(node);
+			if (!_.contains(streamheads,head)) {
+				streamheads.push(head);
+			}
+			nodesToHead[node]=head;
+		});
+		if (DEBUG) {
+			console.log('Stream Heads discovered from the graph: ');
+			for (i=0;i<streamheads.length;i++) {
+				console.log(i+') '+getName(streamheads[i]));
+			}
+		}
+		var streams = [];
+		var streamId = 1;
 		var stream;
-        while (streamheads.length>0) {
-            var headNode = streamheads.shift();
+		while (streamheads.length>0) {
+			var headNode = streamheads.shift();
 
 			if (isTapped(headNode)) {
-                // Needs a name
+				// Needs a name
 				var streamName = headNode.attr('stream-name');
 				if (!streamName) {
 					headNode.attr('stream-name','STREAM_'+streamId);
 				}
 			}
 
-            stream = [headNode];
-            var outgoingLinks = getOutgoingStreamLinks(headNode);
-            while (outgoingLinks.length>0) {
-                var targetId = outgoingLinks[0].get('target').id;
-                if (!targetId) {
-                    // This link is not yet connected to something, it is currently being edited
-                    outgoingLinks = [];
-                } else {
-                    var target = g.getCell(targetId);
-                    stream.push(target);
-                    outgoingLinks = getOutgoingStreamLinks(target);
-                }
-            }
-            streamId++;
-            streams.push(stream);
-        }
-        if (DEBUG) {
-            console.log('computed streams');
-            _.forEach(streams,function(stream) {
-                printStream(stream);
-            });
-        }
-        // 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text
+			stream = [headNode];
+			var outgoingLinks = getOutgoingStreamLinks(headNode);
+			while (outgoingLinks.length>0) {
+				var targetId = outgoingLinks[0].get('target').id;
+				if (!targetId) {
+					// This link is not yet connected to something, it is currently being edited
+					outgoingLinks = [];
+				} else {
+					var target = g.getCell(targetId);
+					stream.push(target);
+					outgoingLinks = getOutgoingStreamLinks(target);
+				}
+			}
+			streamId++;
+			streams.push(stream);
+		}
+		if (DEBUG) {
+			console.log('computed streams');
+			_.forEach(streams,function(stream) {
+				printStream(stream);
+			});
+		}
+		// 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text
 		var text = '';
 		var lineNumber = 0;
 		var lineStartIndex = 0;
@@ -388,7 +388,7 @@ define(function () {
 				}
 			}
 		}
-        return text;
+		return text;
 	}
 
 	/**
