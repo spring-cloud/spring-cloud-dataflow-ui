@@ -24,6 +24,8 @@ define(function () {
 	'use strict';
 	
     var DEBUG = true;
+
+	var COLON_PREFIX = ':';
     
 	/**
 	 * Graph representation of stream(s)/module(s).
@@ -182,7 +184,7 @@ define(function () {
 		if (!appname) {
 			appname = node.attr('metadata/name');
 		}
-		return ':'+findStreamName(node)+'.'+appname;
+		return COLON_PREFIX+findStreamName(node)+'.'+appname;
 	}
 
 	/**
@@ -260,24 +262,9 @@ define(function () {
 				text += element.attr('stream-name') + '=';
 			}
 		}
-		if ('job definition' === element.attr('metadata/group')) {
-			// expressed as a queue
-			if (first) {
-				text += 'tap:job:' + element.attr('metadata/name');
-				if (props) {
-					Object.keys(props).forEach(function(propertyName) {
-						var prop = props[propertyName];
-						if (prop && prop.length !== 0) {
-							text += '.' + props[propertyName];
-						}
-					});
-				}
-			} else {
-				text += 'queue:job:' + element.attr('metadata/name');
-			}
-		} else if ('tap' === element.attr('metadata/name') || 'destination' === element.attr('metadata/name')) {
+		if ('tap' === element.attr('metadata/name') || 'destination' === element.attr('metadata/name')) {
 			if (props.name) {
-				text += ':'+props.name;
+				text += COLON_PREFIX+props.name;
 			}
 		} else {
 			if (element.attr('node-name')) {
@@ -296,88 +283,88 @@ define(function () {
 
 	// Walk the graph and produce DSL
 	function processGraph() {
-        if (DEBUG) {console.log('> graph2text');}
-        // 1. Find the obvious stream heads. A stream head is any node without an incoming link or where the incoming link
-        //    is a tap link
+		if (DEBUG) {console.log('> graph2text');}
+		// 1. Find the obvious stream heads. A stream head is any node without an incoming link or where the incoming link
+		//    is a tap link
 		var i;
-        var streamheads=[];
-        var nodesToHead={};
-        _.forEach(nodesToVisit, function(node) {
-            var head = findHead(node);
-            if (!_.contains(streamheads,head)) {
-                streamheads.push(head);
-            }
-            nodesToHead[node]=head;
-        });
-        if (DEBUG) {
-            console.log('Stream Heads discovered from the graph: ');
-            for (i=0;i<streamheads.length;i++) {
-                console.log(i+') '+getName(streamheads[i]));
-            } 
-        }
-        var streams = [];
-        var streamId = 1;
+		var streamheads=[];
+		var nodesToHead={};
+		_.forEach(nodesToVisit, function(node) {
+			var head = findHead(node);
+			if (!_.contains(streamheads,head)) {
+				streamheads.push(head);
+			}
+			nodesToHead[node]=head;
+		});
+		if (DEBUG) {
+			console.log('Stream Heads discovered from the graph: ');
+			for (i=0;i<streamheads.length;i++) {
+				console.log(i+') '+getName(streamheads[i]));
+			}
+		}
+		var streams = [];
+		var streamId = 1;
 		var stream;
-        while (streamheads.length>0) {
-            var headNode = streamheads.shift();
+		while (streamheads.length>0) {
+			var headNode = streamheads.shift();
 
 			if (isTapped(headNode)) {
-                // Needs a name
+				// Needs a name
 				var streamName = headNode.attr('stream-name');
 				if (!streamName) {
 					headNode.attr('stream-name','STREAM_'+streamId);
 				}
 			}
 
-            stream = [headNode];
-            var outgoingLinks = getOutgoingStreamLinks(headNode);
-            while (outgoingLinks.length>0) {
-                var targetId = outgoingLinks[0].get('target').id;
-                if (!targetId) {
-                    // This link is not yet connected to something, it is currently being edited
-                    outgoingLinks = [];
-                } else {
-                    var target = g.getCell(targetId);
-                    stream.push(target);
-                    outgoingLinks = getOutgoingStreamLinks(target);
-                }
-            }
-            streamId++;
-            streams.push(stream);
-        }
-        if (DEBUG) {
-            console.log('computed streams');
-            _.forEach(streams,function(stream) {
-                printStream(stream);
-            });
-        }
-        // 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text
-        var text= '';
+			stream = [headNode];
+			var outgoingLinks = getOutgoingStreamLinks(headNode);
+			while (outgoingLinks.length>0) {
+				var targetId = outgoingLinks[0].get('target').id;
+				if (!targetId) {
+					// This link is not yet connected to something, it is currently being edited
+					outgoingLinks = [];
+				} else {
+					var target = g.getCell(targetId);
+					stream.push(target);
+					outgoingLinks = getOutgoingStreamLinks(target);
+				}
+			}
+			streamId++;
+			streams.push(stream);
+		}
+		if (DEBUG) {
+			console.log('computed streams');
+			_.forEach(streams,function(stream) {
+				printStream(stream);
+			});
+		}
+		// 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text
+		var text = '';
 		var lineNumber = 0;
 		var lineStartIndex = 0;
-        for (var s=0;s<streams.length;s++) {
-            if (s>0) {
-                text+='\n';
+		for (var s = 0; s < streams.length; s++) {
+			if (s > 0) {
+				text += '\n';
 				lineNumber++;
 				lineStartIndex = text.length;
-            }            
-            stream = streams[s];
-            for (i=0;i<stream.length;i++) {
-                var node = stream[i];
-                if (i===0) {
-                    if (node.attr('stream-name')) {
-                        console.log('Stream has name '+node.attr('stream-name'));
-                        text += node.attr('stream-name')+'=';
-                    }
-                    var incomingLinks = getIncomingLinks(node);
-                    if (incomingLinks.length>0) {
-                        var sourceId = incomingLinks[0].get('source').id;
+			}
+			stream = streams[s];
+			for (i = 0; i < stream.length; i++) {
+				var node = stream[i];
+				if (i === 0) {
+					if (node.attr('stream-name')) {
+						console.log('Stream has name ' + node.attr('stream-name'));
+						text += node.attr('stream-name') + '=';
+					}
+					var incomingLinks = getIncomingLinks(node);
+					if (incomingLinks.length > 0) {
+						var sourceId = incomingLinks[0].get('source').id;
 						if (sourceId) {
 							var source = g.getCell(sourceId);
 							text += toTapDestination(source) + ' > ';
 						}
-                    }
-                }
+					}
+				}
 				var nodeText = createTextForNode(node);
 
 				// Set text range for the graph node
@@ -389,19 +376,19 @@ define(function () {
 				});
 
 				// Append textual representation of the node
-                text += nodeText;
-                
-                // Are there more nodes?
-                if ((i+1)<stream.length) {
-                    if (isChannel(node) || isChannel(stream[i+1])) {
-                        text+=' > ';
-                    } else {
-                        text+=' | ';
-                    }
-                }
-            }
-        }
-        return text;
+				text += nodeText;
+
+				// Are there more nodes?
+				if ((i + 1) < stream.length) {
+					if (isChannel(node) || isChannel(stream[i + 1])) {
+						text += ' > ';
+					} else {
+						text += ' | ';
+					}
+				}
+			}
+		}
+		return text;
 	}
 
 	/**
@@ -413,5 +400,4 @@ define(function () {
 		init(g);		
         return processGraph();
 	};
-	
 });

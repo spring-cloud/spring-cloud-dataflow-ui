@@ -291,32 +291,139 @@ define(function(require) {
             };
         }
 
-        function validateNode(flo, element) {
-            var errors = [];
-            var graph = flo.getGraph();
+        function validateSource(element, incoming, outgoing, tap, errors) {
+            if (incoming.length !== 0) {
+                errors.push({
+                    message: 'Sources must appear at the start of a stream',
+                    range: element.attr('range')
+                });
+            }
+            if (outgoing.length !== 1) {
+                errors.push({
+                    message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
+                    range: element.attr('range')
+                });
+            }
+        }
+
+        function validateProcessor(element, incoming, outgoing, tap, errors) {
+            if (incoming.length !== 1) {
+                errors.push({
+                    message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
+                    range: element.attr('range')
+                });
+            }
+            if (outgoing.length !== 1) {
+                errors.push({
+                    message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
+                    range: element.attr('range')
+                });
+            }
+        }
+
+        function validateSink(element, incoming, outgoing, tap, errors) {
+            if (incoming.length !== 1) {
+                errors.push({
+                    message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
+                    range: element.attr('range')
+                });
+            }
+            if (outgoing.length !== 0) {
+                errors.push({
+                    message: 'Sink should be at the end of a stream',
+                    range: element.attr('range')
+                });
+            }
+            if (tap.length !== 0) {
+                errors.push({
+                    message: 'Cannot tap into a sink module',
+                    range: element.attr('range')
+                });
+            }
+        }
+
+        function validateTask(element, incoming, outgoing, tap, errors) {
+            if (incoming.length !== 1) {
+                errors.push({
+                    message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
+                    range: element.attr('range')
+                });
+            }
+            if (outgoing.length !== 0) {
+                errors.push({
+                    message: 'Task should be at the end of a stream',
+                    range: element.attr('range')
+                });
+            }
+            if (tap.length !== 0) {
+                errors.push({
+                    message: 'Cannot tap into a task module',
+                    range: element.attr('range')
+                });
+            }
+        }
+
+        function validateTap(element, incoming, outgoing, tap, errors) {
+            if (incoming.length !== 0) {
+                errors.push({
+                    message: 'Tap must appear at the start of a stream',
+                    range: element.attr('range')
+                });
+            }
+            if (outgoing.length !== 1) {
+                errors.push({
+                    message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
+                    range: element.attr('range')
+                });
+            }
+            if (tap.length !== 0) {
+                errors.push({
+                    message: 'Cannot tap into a tap module',
+                    range: element.attr('range')
+                });
+            }
+        }
+
+        function validateDestination(element, incoming, outgoing, tap, errors) {
+            if (incoming.length > 0 && outgoing.length > 0) {
+                errors.push({
+                    message: 'Destination should either have input or output but not both at the same time',
+                    range: element.attr('range')
+                });
+            }
+            if (tap.length !== 0) {
+                errors.push({
+                    message: 'Cannot tap into a destination module',
+                    range: element.attr('range')
+                });
+            }
+        }
+
+        function validateConnectedLinks(flo, element, errors) {
             var group = element.attr('metadata/group');
             var type = element.attr('metadata/name');
+            var graph = flo.getGraph();
             var incoming = [], outgoing = [], tap = [], invalidIncoming = [], invalidOutgoing = [];
             var port;
 
             graph.getConnectedLinks(element).forEach(function(link) {
-               if (link.get('source').id === element.id) {
-                   port = link.get('source').port;
-                   if (port === 'output') {
+                if (link.get('source').id === element.id) {
+                    port = link.get('source').port;
+                    if (port === 'output') {
                         outgoing.push(link);
-                   } else if (port === 'tap') {
-                       tap.push(link);
-                   } else {
-                       invalidOutgoing.push(link);
-                   }
-               } else if (link.get('target').id === element.id) {
-                   port = link.get('target').port;
-                   if (port === 'input') {
-                       incoming.push(link);
-                   } else {
-                       invalidIncoming.push(link);
-                   }
-               }
+                    } else if (port === 'tap') {
+                        tap.push(link);
+                    } else {
+                        invalidOutgoing.push(link);
+                    }
+                } else if (link.get('target').id === element.id) {
+                    port = link.get('target').port;
+                    if (port === 'input') {
+                        incoming.push(link);
+                    } else {
+                        invalidIncoming.push(link);
+                    }
+                }
             });
 
             if (invalidIncoming.length > 0) {
@@ -334,116 +441,23 @@ define(function(require) {
             }
 
             if (group === 'source') {
-                if (incoming.length !== 0) {
-                    errors.push({
-                        message: 'Sources must appear at the start of a stream',
-                        range: element.attr('range')
-                    });
-                }
-                if (outgoing.length !== 1) {
-                    errors.push({
-                        message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
-                        range: element.attr('range')
-                    });
-                }
+                validateSource(element, incoming, outgoing, tap, errors);
             } else if (group === 'processor') {
-                if (incoming.length !== 1) {
-                    errors.push({
-                        message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
-                        range: element.attr('range')
-                    });
-                }
-                if (outgoing.length !== 1) {
-                    errors.push({
-                        message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
-                        range: element.attr('range')
-                    });
-                }
+                validateProcessor(element, incoming, outgoing, tap, errors);
             } else if (group === 'sink') {
-                if (incoming.length !== 1) {
-                    errors.push({
-                        message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
-                        range: element.attr('range')
-                    });
-                }
-                if (outgoing.length !== 0) {
-                    errors.push({
-                        message: 'Sink should be at the end of a stream',
-                        range: element.attr('range')
-                    });
-                }
-                if (tap.length !== 0) {
-                    errors.push({
-                        message: 'Cannot tap into a sink module',
-                        range: element.attr('range')
-                    });
-                }
+                validateSink(element, incoming, outgoing, tap, errors);
             } else if (group === 'task') {
-                if (incoming.length !== 1) {
-                    errors.push({
-                        message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
-                        range: element.attr('range')
-                    });
-                }
-                if (outgoing.length !== 0) {
-                    errors.push({
-                        message: 'Task should be at the end of a stream',
-                        range: element.attr('range')
-                    });
-                }
-                if (tap.length !== 0) {
-                    errors.push({
-                        message: 'Cannot tap into a task module',
-                        range: element.attr('range')
-                    });
-                }
+                validateTask(element, incoming, outgoing, tap, errors);
             } else if (group === 'other') {
                 if (type === 'tap') {
-                    if (incoming.length !== 0) {
-                        errors.push({
-                            message: 'Tap must appear at the start of a stream',
-                            range: element.attr('range')
-                        });
-                    }
-                    if (outgoing.length !== 1) {
-                        errors.push({
-                            message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
-                            range: element.attr('range')
-                        });
-                    }
-                    if (tap.length !== 0) {
-                        errors.push({
-                            message: 'Cannot tap into a tap module',
-                            range: element.attr('range')
-                        });
-                    }
+                    validateTap(element, incoming, outgoing, tap, errors);
                 } else if (type === 'destination') {
-                    if (incoming.length > 0 && outgoing.length > 0) {
-                        errors.push({
-                            message: 'Destination should either have input or output but not both at the same time',
-                            range: element.attr('range')
-                        });
-                    }
-                    if (tap.length !== 0) {
-                        errors.push({
-                            message: 'Cannot tap into a destination module',
-                            range: element.attr('range')
-                        });
-                    }
+                    validateDestination(element, incoming, outgoing, tap, errors);
                 }
             }
+        }
 
-            if (!element.attr('metadata') || element.attr('metadata/unresolved')) {
-                var msg = 'Unknown element \'' + element.attr('metadata/name') + '\'';
-                if (element.attr('metadata/group')) {
-                    msg += ' from group \'' + element.attr('metadata/group') + '\'.';
-                }
-                errors.push({
-                    message: msg,
-                    range: element.attr('range')
-                });
-            }
-
+        function validateProperties(element, errors) {
             // If possible, verify the properties specified match those allowed on this type of element
             // propertiesRanges are the ranges for each property included the entire '--name=value'.
             // The format of a range is {'start':{'ch':NNNN,'line':NNNN},'end':{'ch':NNNN,'line':NNNN}}
@@ -473,6 +487,30 @@ define(function(require) {
                     });
                 });
             }
+        }
+
+        function validateMetadta(element, errors) {
+            // Unresolved elements validation
+            if (!element.attr('metadata') || element.attr('metadata/unresolved')) {
+                var msg = 'Unknown element \'' + element.attr('metadata/name') + '\'';
+                if (element.attr('metadata/group')) {
+                    msg += ' from group \'' + element.attr('metadata/group') + '\'.';
+                }
+                errors.push({
+                    message: msg,
+                    range: element.attr('range')
+                });
+            }
+        }
+
+        function validateNode(flo, element) {
+            var errors = [];
+
+            validateMetadta(element, errors);
+
+            validateConnectedLinks(flo, element, errors);
+
+            validateProperties(element, errors);
 
             return errors;
         }
@@ -557,12 +595,7 @@ define(function(require) {
                 if (side === 'left') {
                     var sources = [];
                     if (shouldRepairDamage) {
-                        /*
-                         * Commented out because it doesn't prevent cycles.
-                         */
-//						if (graph.getConnectedLinks(pivotNode, {inbound: true}).length > 0 || graph.getConnectedLinks(node, {outbound: true}).length > 0) {
                         repairDamage(flo, node);
-//						}
                     }
                     var pivotTargetLinks = flo.getGraph().getConnectedLinks(pivotNode, {inbound: true});
                     for (i = 0; i < pivotTargetLinks.length; i++) {
@@ -593,12 +626,7 @@ define(function(require) {
                 } else if (side === 'right') {
                     var targets = [];
                     if (shouldRepairDamage) {
-                        /*
-                         * Commented out because it doesn't prevent cycles.
-                         */
-//						if (graph.getConnectedLinks(pivotNode, {outbound: true}).length > 0 || graph.getConnectedLinks(node, {inbound: true}).length > 0) {
                         repairDamage(flo, node);
-//						}
                     }
                     var pivotSourceLinks = flo.getGraph().getConnectedLinks(pivotNode, {outbound: true});
                     for (i = 0; i < pivotSourceLinks.length; i++) {
@@ -659,40 +687,6 @@ define(function(require) {
             var type = source.attr('metadata/name');
             // NODE DROPPING TURNED OFF FOR NOW
             if (false && target instanceof joint.dia.Element && target.attr('metadata/name')) {
-                //if (type === 'tap') {
-                //    // Fill in the channel on the new node
-                //    // work out tap name, something like: tap:stream:mystream.filter (filter optional if on head of stream)
-                //    // 1. work your way back from node that was dropped on to the first node (the one with no further links)
-                //    var oncell = target;
-                //    var headerCell = oncell;
-                //    var incomingLinks = graph.getConnectedLinks(oncell, { inbound: true });
-                //    while (incomingLinks.length !== 0) {
-                //        headerCell = graph.getCell(incomingLinks[0].get('source').id);
-                //        incomingLinks = graph.getConnectedLinks(headerCell, { inbound: true });
-                //    }
-                //    var streamname = 'STREAM';
-                //    if (headerCell.attr('stream-name')) {
-                //        streamname = headerCell.attr('stream-name');
-                //    }
-                //    else {
-                //        var streamId = headerCell.attr('stream-id');
-                //        if (streamId) {
-                //            streamname = 'STREAM'+streamId;
-                //        } else {
-                //            streamname = 'STREAM';
-                //        }
-                //        headerCell.attr('stream-name',streamname);
-                //    }
-                //    var channel = 'tap:stream:'+streamname;
-                //    var label2 = 'tap:stream:\n' + streamname;
-                //    if (oncell.id !== headerCell.id) {
-                //        channel = channel + '.' + oncell.attr('.label1/text');
-                //        label2 = label2 + '.' + oncell.attr('.label1/text');
-                //    }
-                //    source.attr('.label2/text', label2);
-                //    source.attr('props/channel', channel);
-                //    relinking = true;
-                //} else {
                 if (dragDescriptor.target.selector === '.output-port') {
                     moveNodeOnNode(flo, source, target, 'right', true);
                     relinking = true;
@@ -713,7 +707,6 @@ define(function(require) {
                 //}
             } else if (target instanceof joint.dia.Link && type !== 'tap' && type !== 'destination') {
                 moveNodeOnLink(flo, source, target);
-                relinking = true;
             } else if (flo.autolink && relinking) {
                 // Search the graph for open ports - if only 1 is found, and it matches what
                 // the dropped node needs, join it up!
@@ -794,9 +787,6 @@ define(function(require) {
                 }
 
             }
-            //if (relinking) {
-            //    flo.performLayout();
-            //}
         }
 
         return {

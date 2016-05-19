@@ -142,7 +142,7 @@ define(function (require) {
 
                 var get;
                 // TODO could make this more flexible, some property on a node we could check if further metadata might be fetchable
-                if (node.group === 'job' || node.group === 'other' || node.group === 'job definition') {
+                if (node.group === 'other') {
                     get = function (property) {
                         var deferred = utils.$q.defer();
                         deferred.resolve(node[property]);
@@ -190,7 +190,6 @@ define(function (require) {
                                     type: 'java',
                                     mime: 'text/x-java'
                                 };
-//                            properties.code.description = 'Return should map from Observable to Observable';
                             }
                             if (property === 'properties') {
                                 deferred.resolve(properties);
@@ -211,7 +210,6 @@ define(function (require) {
                 return {
                     name: node.name,
                     group: node.group,
-                    icon: node.icon,
                     metadata: node.metadata,
                     constraints: constraints,
                     get: get
@@ -270,29 +268,10 @@ define(function (require) {
                     if (modules) {
                         for (var i = 0; i < modules.length; i++) {
                             var module = modules[i];
-                            if (module.type === 'job') {
-                                // Don't include jobs, include job definitions (added later)
-                                continue;
-                            }
                             if (module.type === 'task') { // Don't include Tasks!
                                 continue;
                             }
-                            var icon;
-                            if (module.type === 'sink') {
-                                icon = 'images/icons/xd/sink.png';
-                            } else if (module.type === 'source') {
-                                icon = 'images/icons/xd/source.png';
-                            } else if (module.type === 'processor') {
-                                icon = 'images/icons/xd/transform.png';
-                            }
-                            // If specific icon provided, use it
-//            			if (iconMap[module.name]) {
-//            				icon = iconMap[module.name];
-//            			}
                             var entry = {'name': module.name, 'group': module.type};
-                            if (icon) {
-                                entry.icon = icon;
-                            }
                             var metadata = createMetadata(entry);
                             if (!metamodel[metadata.group]) {
                                 metamodel[metadata.group] = {};
@@ -457,12 +436,6 @@ define(function (require) {
 
                             if (parsedNode.sinkChannelName) {
                                 channelText = parsedNode.sinkChannelName;
-//    						if (parsedNode.sinkChannelName.startsWith('job:')) {
-//    							// A job output channel should be represented by a job node
-//								graphNode = { 'id':nodeId++,'name':parsedNode.sinkChannelName.substring(4),'properties':{}};
-//								sinkchannel='queue:'+sinkchannel;
-//    						} else {
-                                // assert n==parsedNodes.length-1
                                 graphNode = {
                                     'id': nodeId++,
                                     'name': 'destination',

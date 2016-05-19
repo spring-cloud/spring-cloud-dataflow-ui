@@ -841,7 +841,7 @@ define(function() {
 							}
 		        		}
 		        	} else {
-		        		// error case: 'tap:stream:foo >'
+		        		// error case: ':stream:foo >'
 		        		// there is no target for the tap yet
 		        		if (streamdef.sourceChannel) {
 		        			// need to build a dummy module to hang the sourcechannel off
