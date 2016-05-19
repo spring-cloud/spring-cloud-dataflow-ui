@@ -626,12 +626,7 @@ define(function(require) {
                 } else if (side === 'right') {
                     var targets = [];
                     if (shouldRepairDamage) {
-                        /*
-                         * Commented out because it doesn't prevent cycles.
-                         */
-//						if (graph.getConnectedLinks(pivotNode, {outbound: true}).length > 0 || graph.getConnectedLinks(node, {inbound: true}).length > 0) {
                         repairDamage(flo, node);
-//						}
                     }
                     var pivotSourceLinks = flo.getGraph().getConnectedLinks(pivotNode, {outbound: true});
                     for (i = 0; i < pivotSourceLinks.length; i++) {

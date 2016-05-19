@@ -210,7 +210,6 @@ define(function (require) {
                 return {
                     name: node.name,
                     group: node.group,
-                    icon: node.icon,
                     metadata: node.metadata,
                     constraints: constraints,
                     get: get
@@ -269,10 +268,6 @@ define(function (require) {
                     if (modules) {
                         for (var i = 0; i < modules.length; i++) {
                             var module = modules[i];
-                            if (module.type === 'job') {
-                                // Don't include jobs, include job definitions (added later)
-                                continue;
-                            }
                             if (module.type === 'task') { // Don't include Tasks!
                                 continue;
                             }
