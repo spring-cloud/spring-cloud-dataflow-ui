@@ -190,7 +190,7 @@ define(['./app'], function (xdAdmin) {
       controller: 'JobScheduleController'
     })
     .state('home.tasks.tabs.modules', {
-      url : '/modules',
+      url : '/apps',
       templateUrl : taskTemplatesPath + '/modules.html',
       controller: 'ModuleController'
     })
@@ -280,7 +280,7 @@ define(['./app'], function (xdAdmin) {
           templateUrl: appTemplatesPath + '/apps.html'
         })
         .state('home.apps.tabs.modules', {
-          url: '/modules',
+          url: '/apps',
           templateUrl: appTemplatesPath + '/modules.html',
           controller: 'ModulesController',
           data: {
