@@ -38,7 +38,7 @@ define(['angular'], function (angular) {
                             'size': pageable.pageSize
                         };
                     }
-                    return $resource($rootScope.xdAdminServerUrl + '/modules', params, {
+                    return $resource($rootScope.xdAdminServerUrl + '/apps', params, {
                         query: {
                             method: 'GET'
                         }
@@ -48,7 +48,7 @@ define(['angular'], function (angular) {
                     $log.info('Creating composite module name=' + moduleName + ' def=' + definition);
                     return $http({
                         method: 'POST',
-                        url: $rootScope.xdAdminServerUrl + '/modules',
+                        url: $rootScope.xdAdminServerUrl + '/apps',
                         params: {
                             name: moduleName,
                             definition: definition
@@ -58,11 +58,11 @@ define(['angular'], function (angular) {
                 getModuleInfo: function(moduleType,moduleName) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/modules/'+moduleType+'/'+moduleName
+                        url: $rootScope.xdAdminServerUrl + '/apps/'+moduleType+'/'+moduleName
                     });
                 },
                 registerModule: function(type, name, uri, force) {
-                    return $resource($rootScope.xdAdminServerUrl + '/modules/' + type + '/' + name, {}, {
+                    return $resource($rootScope.xdAdminServerUrl + '/apps/' + type + '/' + name, {}, {
                         registerModule: {
                             method: 'POST',
                             params: {
@@ -73,7 +73,7 @@ define(['angular'], function (angular) {
                     }).registerModule();
                 },
                 unregisterModule: function(type, name) {
-                    return $resource($rootScope.xdAdminServerUrl + '/modules/' + type + '/' + name, {}, {
+                    return $resource($rootScope.xdAdminServerUrl + '/apps/' + type + '/' + name, {}, {
                         unregisterModule: {
                             method: 'DELETE'
                         }

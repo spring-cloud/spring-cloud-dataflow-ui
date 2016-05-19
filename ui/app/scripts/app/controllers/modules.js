@@ -43,7 +43,7 @@ define(['model/pageable'], function (Pageable) {
                 moduleDefinitionsPromise.then(
                     function (result) {
                         if (!!result._embedded) {
-                            $scope.pageable.items = result._embedded.moduleRegistrationResourceList;
+                            $scope.pageable.items = result._embedded.appRegistrationResourceList;
                         }
                         // Process received array of modules
                         if (Array.isArray($scope.pageable.items)) {
