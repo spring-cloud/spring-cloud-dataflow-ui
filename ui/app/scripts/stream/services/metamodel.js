@@ -142,7 +142,7 @@ define(function (require) {
 
                 var get;
                 // TODO could make this more flexible, some property on a node we could check if further metadata might be fetchable
-                if (node.group === 'job' || node.group === 'other' || node.group === 'job definition') {
+                if (node.group === 'other') {
                     get = function (property) {
                         var deferred = utils.$q.defer();
                         deferred.resolve(node[property]);
@@ -190,7 +190,6 @@ define(function (require) {
                                     type: 'java',
                                     mime: 'text/x-java'
                                 };
-//                            properties.code.description = 'Return should map from Observable to Observable';
                             }
                             if (property === 'properties') {
                                 deferred.resolve(properties);
@@ -277,10 +276,6 @@ define(function (require) {
                             if (module.type === 'task') { // Don't include Tasks!
                                 continue;
                             }
-                            // If specific icon provided, use it
-//            			if (iconMap[module.name]) {
-//            				icon = iconMap[module.name];
-//            			}
                             var entry = {'name': module.name, 'group': module.type};
                             var metadata = createMetadata(entry);
                             if (!metamodel[metadata.group]) {

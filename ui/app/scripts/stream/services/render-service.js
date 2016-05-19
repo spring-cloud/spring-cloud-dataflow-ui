@@ -794,147 +794,150 @@ define(function(require) {
             });
         }
 
-        function handleLinkEvent(paper, event, link) {
+        function handleLinkSourceChanged(link, paper) {
             var graph = paper.model;
-            var source, target, view;
-            // Source has changed
-            if (event === 'change:source') {
-                var newSourceId = link.get('source').id;
-                var oldSourceId = link.previous('source').id;
-                var targetId = link.get('target').id;
-                if (newSourceId !== oldSourceId) {
-                    var newSource = graph.getCell(newSourceId);
-                    var oldSource = graph.getCell(oldSourceId);
-                    target = graph.getCell(targetId);
-                    // Show input port for 'destination' if outgoing links are gone
-                    if (oldSource && oldSource.attr('metadata/name') === 'destination' /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
-                        //oldSource.removeAttr('.input-port/display');
-                        //// Removing an attr doesn't cause refresh of the view. Refresh it ourselves
-                        //var view = paper.findViewByModel(oldSource);
-                        //if (view) {
-                        //    view.update();
-                        //}
+            var newSourceId = link.get('source').id;
+            var oldSourceId = link.previous('source').id;
+            var targetId = link.get('target').id;
+            if (newSourceId !== oldSourceId) {
+                var newSource = graph.getCell(newSourceId);
+                var oldSource = graph.getCell(oldSourceId);
+                var target = graph.getCell(targetId);
+                // Show input port for 'destination' if outgoing links are gone
+                if (oldSource && oldSource.attr('metadata/name') === 'destination' /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
+                    // No outgoing links -> hide stream name label
+                    // Set silently, last attr call would refresh the view
+                    oldSource.attr('.stream-label/display', 'none', { silent: true });
 
-                        // No outgoing links -> hide stream name label
+                    // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
+                    oldSource.attr('.input-port/display', 'block');
+                }
+                // Hide input port for destination if it has a new outgoing link
+                if (newSource && newSource.attr('metadata/name') === 'destination') {
+                    // Has outgoing link, there shouldn't be any incoming links yet -> show stream name label
+                    // Set silently, last attr call would refresh the view
+                    newSource.attr('.stream-label/display', 'block', { silent: true });
+
+                    newSource.attr('.input-port/display', 'none');
+                }
+
+                // If tap link has been reconnected update the stream-label for the target if necessary
+                if (target) {
+                    if (link.previous('source').port === 'tap') {
+                        target.attr('.stream-label/display', 'none');
+                    }
+                    if (link.get('source').port === 'tap') {
+                        target.attr('.stream-label/display', 'block');
+                    }
+                }
+            }
+        }
+
+        function handleLinkTargetChanged(link, paper) {
+            var graph = paper.model;
+            var newTargetId = link.get('target').id;
+            var oldTargetId = link.previous('target').id;
+            if (newTargetId !== oldTargetId) {
+                var oldTarget = graph.getCell(oldTargetId);
+                if (oldTarget) {
+                    if (oldTarget.attr('metadata/name') === 'destination') {
+                        // old target is a destination. Ensure output port is showing now since incoming links are gone
+
+                        // No more incoming links, there shouldn't be any outgoing links yet -> indeterminate, hide stream label
                         // Set silently, last attr call would refresh the view
-                        oldSource.attr('.stream-label/display', 'none', { silent: true });
+                        oldTarget.attr('.stream-label/display', 'none', { silent: true });
 
                         // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
-                        oldSource.attr('.input-port/display', 'block');
+                        oldTarget.attr('.output-port/display', 'block');
                     }
-                    // Hide input port for destination if it has a new outgoing link
-                    if (newSource && newSource.attr('metadata/name') === 'destination') {
-                        // Has outgoing link, there shouldn't be any incoming links yet -> show stream name label
+                }
+                var newTarget = graph.getCell(newTargetId);
+                if (newTarget) {
+                    if (newTarget.attr('metadata/name') === 'destination') {
+                        // Incoming link -> hide stream name label
                         // Set silently, last attr call would refresh the view
-                        newSource.attr('.stream-label/display', 'block', { silent: true });
+                        newTarget.attr('.stream-label/display', 'none', { silent: true });
 
-                        newSource.attr('.input-port/display', 'none');
-                    }
-
-                    // If tap link has been reconnected update the stream-label for the target if necessary
-                    if (target) {
-                        if (link.previous('source').port === 'tap') {
-                            target.attr('.stream-label/display', 'none');
-                        }
-                        if (link.get('source').port === 'tap') {
-                            target.attr('.stream-label/display', 'block');
-                        }
+                        // new target is destination? Hide output port then.
+                        newTarget.attr('.output-port/display', 'none');
                     }
                 }
-            } else if (event === 'change:target') {
-                var newTargetId = link.get('target').id;
-                var oldTargetId = link.previous('target').id;
-                var sourceId = link.get('source').id;
-                if (newTargetId !== oldTargetId) {
-                    var oldTarget = graph.getCell(oldTargetId);
+
+                // If tap link has been reconnected update the stream-label for the new target and old target
+                if (link.get('source').port === 'tap') {
                     if (oldTarget) {
-                        if (oldTarget.attr('metadata/name') === 'destination' /*&& graph.getConnectedLinks(oldTarget, {inbound: true}).length === 0*/) {
-                            // old target is a destination. Ensure output port is showing now since incoming links are gone
-                            //oldTarget.removeAttr('.output-port/display');
-                            //// Removing an attr doesn't cause refresh of the view. Refresh it ourselves
-                            //var view = paper.findViewByModel(oldTarget);
-                            //if (view) {
-                            //    view.update(oldTarget, oldTarget.attr('.output-port'));
-                            //}
-
-                            // No more incoming links, there shouldn't be any outgoing links yet -> indeterminate, hide stream label
-                            // Set silently, last attr call would refresh the view
-                            oldTarget.attr('.stream-label/display', 'none', { silent: true });
-
-                            // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
-                            oldTarget.attr('.output-port/display', 'block');
-                        }
+                        oldTarget.attr('.stream-label/display', 'none');
                     }
-                    var newTarget = graph.getCell(newTargetId);
-                    source = graph.getCell(sourceId);
                     if (newTarget) {
-                        if (newTarget.attr('metadata/name') === 'destination') {
-                            // Incoming link -> hide stream name label
-                            // Set silently, last attr call would refresh the view
-                            newTarget.attr('.stream-label/display', 'none', { silent: true });
-
-                            // new target is destination? Hide output port then.
-                            newTarget.attr('.output-port/display', 'none');
-                        }
+                        newTarget.attr('.stream-label/display', 'block');
                     }
-
-                    // If tap link has been reconnected update the stream-label for the new target and old target
-                    if (link.get('source').port === 'tap') {
-                        if (oldTarget) {
-                            oldTarget.attr('.stream-label/display', 'none');
-                        }
-                        if (newTarget) {
-                            newTarget.attr('.stream-label/display', 'block');
-                        }
-                    }
-
                 }
+
+            }
+        }
+
+        function handleLinkRemoved(link, paper) {
+            var graph = paper.model;
+            var source = graph.getCell(link.get('source').id);
+            var target = graph.getCell(link.get('target').id);
+            var view;
+            if (source && source.attr('metadata/name') === 'destination' && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
+                // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
+                // Set silently, last attr call would refresh the view
+                source.attr('.stream-label/display', 'none', { silent: true });
+                source.removeAttr('.input-port/display');
+                view = paper.findViewByModel(source);
+                if (view) {
+                    view.update();
+                }
+            }
+            if (target && target.attr('metadata/name') === 'destination' && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
+                // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
+                // Set silently, last attr call would refresh the view
+                target.attr('.stream-label/display', 'none', { silent: true });
+                target.removeAttr('.output-port/display');
+                view = paper.findViewByModel(target);
+                if (view) {
+                    view.update();
+                }
+            }
+            // If tap link is removed update stream-name value for the target, i.e. don't display stream anymore
+            if (link.get('source').port === 'tap' && target) {
+                target.attr('.stream-label/display', 'none');
+            }
+        }
+
+        function handleLinkAdded(link, paper) {
+            var graph = paper.model;
+            var source = graph.getCell(link.get('source').id);
+            var target = graph.getCell(link.get('target').id);
+            if (source && source.attr('metadata/name') === 'destination') {
+                // New outgoing link added, there can't be any incoming links yet -> show stream label
+                // Set silently because explicit update is called next
+                source.attr('.stream-label/display', 'block', { silent: true });
+                source.attr('.input-port/display', 'none');
+            }
+            if (target && target.attr('metadata/name') === 'destination') {
+                // Incoming link has been added -> hide stream label
+                // Set silently because update will be called for the next property setting
+                target.attr('.stream-label/display', 'none', { silent: true });
+                target.attr('.output-port/display', 'none');
+            }
+            // If tap link has been added update the stream-label for the target
+            if (link.get('source').port === 'tap' && target) {
+                target.attr('.stream-label/display', 'block');
+            }
+        }
+
+        function handleLinkEvent(paper, event, link) {
+            if (event === 'change:source') {
+                handleLinkSourceChanged(link, paper);
+            } else if (event === 'change:target') {
+                handleLinkTargetChanged(link, paper);
             } else if (event === 'remove') {
-                source = graph.getCell(link.get('source').id);
-                target = graph.getCell(link.get('target').id);
-                if (source && source.attr('metadata/name') === 'destination' && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
-                    // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
-                    // Set silently, last attr call would refresh the view
-                    source.attr('.stream-label/display', 'none', { silent: true });
-                    source.removeAttr('.input-port/display');
-                    view = paper.findViewByModel(source);
-                    if (view) {
-                        view.update();
-                    }
-                }
-                if (target && target.attr('metadata/name') === 'destination' && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
-                    // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
-                    // Set silently, last attr call would refresh the view
-                    target.attr('.stream-label/display', 'none', { silent: true });
-                    target.removeAttr('.output-port/display');
-                    view = paper.findViewByModel(target);
-                    if (view) {
-                        view.update();
-                    }
-                }
-                // If tap link is removed update stream-name value for the target, i.e. don't display stream anymore
-                if (link.get('source').port === 'tap' && target) {
-                    target.attr('.stream-label/display', 'none');
-                }
+                handleLinkRemoved(link, paper);
             } else if (event === 'add') {
-                source = graph.getCell(link.get('source').id);
-                target = graph.getCell(link.get('target').id);
-                if (source && source.attr('metadata/name') === 'destination') {
-                    // New outgoing link added, there can't be any incoming links yet -> show stream label
-                    // Set silently because explicit update is called next
-                    source.attr('.stream-label/display', 'block', { silent: true });
-                    source.attr('.input-port/display', 'none');
-                }
-                if (target && target.attr('metadata/name') === 'destination') {
-                    // Incoming link has been added -> hide stream label
-                    // Set silently because update will be called for the next property setting
-                    target.attr('.stream-label/display', 'none', { silent: true });
-                    target.attr('.output-port/display', 'none');
-                }
-                // If tap link has been added update the stream-label for the target
-                if (link.get('source').port === 'tap' && target) {
-                    target.attr('.stream-label/display', 'block');
-                }
+                handleLinkAdded(link, paper);
             }
         }
 

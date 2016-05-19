@@ -595,12 +595,7 @@ define(function(require) {
                 if (side === 'left') {
                     var sources = [];
                     if (shouldRepairDamage) {
-                        /*
-                         * Commented out because it doesn't prevent cycles.
-                         */
-//						if (graph.getConnectedLinks(pivotNode, {inbound: true}).length > 0 || graph.getConnectedLinks(node, {outbound: true}).length > 0) {
                         repairDamage(flo, node);
-//						}
                     }
                     var pivotTargetLinks = flo.getGraph().getConnectedLinks(pivotNode, {inbound: true});
                     for (i = 0; i < pivotTargetLinks.length; i++) {
@@ -832,9 +827,6 @@ define(function(require) {
                 }
 
             }
-            //if (relinking) {
-            //    flo.performLayout();
-            //}
         }
 
         return {
