@@ -339,32 +339,32 @@ define(function () {
             });
         }
         // 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text
-        var text= '';
+		var text = '';
 		var lineNumber = 0;
 		var lineStartIndex = 0;
-        for (var s=0;s<streams.length;s++) {
-            if (s>0) {
-                text+='\n';
+		for (var s = 0; s < streams.length; s++) {
+			if (s > 0) {
+				text += '\n';
 				lineNumber++;
 				lineStartIndex = text.length;
-            }            
-            stream = streams[s];
-            for (i=0;i<stream.length;i++) {
-                var node = stream[i];
-                if (i===0) {
-                    if (node.attr('stream-name')) {
-                        console.log('Stream has name '+node.attr('stream-name'));
-                        text += node.attr('stream-name')+'=';
-                    }
-                    var incomingLinks = getIncomingLinks(node);
-                    if (incomingLinks.length>0) {
-                        var sourceId = incomingLinks[0].get('source').id;
+			}
+			stream = streams[s];
+			for (i = 0; i < stream.length; i++) {
+				var node = stream[i];
+				if (i === 0) {
+					if (node.attr('stream-name')) {
+						console.log('Stream has name ' + node.attr('stream-name'));
+						text += node.attr('stream-name') + '=';
+					}
+					var incomingLinks = getIncomingLinks(node);
+					if (incomingLinks.length > 0) {
+						var sourceId = incomingLinks[0].get('source').id;
 						if (sourceId) {
 							var source = g.getCell(sourceId);
 							text += toTapDestination(source) + ' > ';
 						}
-                    }
-                }
+					}
+				}
 				var nodeText = createTextForNode(node);
 
 				// Set text range for the graph node
@@ -376,18 +376,18 @@ define(function () {
 				});
 
 				// Append textual representation of the node
-                text += nodeText;
-                
-                // Are there more nodes?
-                if ((i+1)<stream.length) {
-                    if (isChannel(node) || isChannel(stream[i+1])) {
-                        text+=' > ';
-                    } else {
-                        text+=' | ';
-                    }
-                }
-            }
-        }
+				text += nodeText;
+
+				// Are there more nodes?
+				if ((i + 1) < stream.length) {
+					if (isChannel(node) || isChannel(stream[i + 1])) {
+						text += ' > ';
+					} else {
+						text += ' | ';
+					}
+				}
+			}
+		}
         return text;
 	}
 
