@@ -383,6 +383,8 @@ define(function (require) {
                                 }
                                 if (channelText.startsWith('tap:')) {
                                     channelText = channelText.substring(3); //TODO tidy up - do it here or sooner?
+                                } else {
+                                    channelText = ':' + channelText;
                                 }
                                 streamdef = channelText + ' > ';
                             }
@@ -451,11 +453,11 @@ define(function (require) {
                                 linkFrom = graphNode.id;
 //    						}
                                 nodes.push(graphNode);
-                                if (!parsedNode.sourceChannelName) {
+                                if (!parsedNode.sourceChannelName || parsedNode.name !== 'bridge') {
                                     // if it is a bridge then the source channel already added a '>'
                                     streamdef = streamdef + ' > ';
                                 }
-                                streamdef = streamdef + channelText;
+                                streamdef = streamdef + ':' + channelText;
                             }
 
                         }
