@@ -23,7 +23,7 @@
             <tbody>
             <tr ng-repeat="def in streamdefs" ng-if="!def.created" ng-class="streamForm['stream-' + $index].$invalid ? 'has-warning has-feedback' : ''">
                 <td>
-                    <input class="form-control" name="{{'stream-' + $index}}" type="text" placeholder="<Stream Name>" ng-model-options="{ debounce: 250 }"
+                    <input ng-disabled="isStreamCreationInProgress()" class="form-control" name="{{'stream-' + $index}}" type="text" placeholder="<Stream Name>" ng-model-options="{ debounce: 250 }"
                            ng-model="def.name" ng-pattern="/^\s*[\w\-]+\s*$/" ng-trim="true" required unique-field-values="stream-" unique-stream-name/>
                     <p ng-show="streamForm['stream-' + $index].$error.required" class="help-block validation-block">Stream name is required!</p>
                     <p ng-show="streamForm['stream-' + $index].$error.uniqueStreamName" class="help-block validation-block">Stream name is already taken!</p>
@@ -36,10 +36,15 @@
             </tr>
             </tbody>
         </table>
-        <label class="dialog-control"><input type="checkbox" ng-model="deploy"/>Deploy stream(s)</label>
+        <label class="dialog-control"><input ng-disabled="isStreamCreationInProgress()" type="checkbox" ng-model="deploy"/>Deploy stream(s)</label>
+        <div ng-if="isStreamCreationInProgress()">
+            <hr/>
+            <div>Creating Streams...</div>
+            <progressbar animate="true" value="getProgressPercent()" type="success"><b>{{getProgressPercent()}}%</b></progressbar>
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()">{{isStreamCreationInProgress() ? 'Close' : 'Cancel'}}</button>
         <button type="submit" class="btn btn-primary" ng-disabled="!canSubmit()">Create</button>
     </div>
 </form>
