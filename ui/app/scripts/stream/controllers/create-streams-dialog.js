@@ -27,6 +27,26 @@ define(function(require) {
     return ['XDUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
 
+            function waitForStreamDef(streamDefNameToWaitFor, attemptCount) {
+                var deferred = utils.$q.defer();
+                if (attemptCount === 10) {
+                    utils.$log.info('Aborting after 10 attempts, cannot find the stream: '+streamDefNameToWaitFor);
+                    deferred.resolve();
+                }
+                streamService.getSingleStreamDefinition(streamDefNameToWaitFor).success(function() {
+                    utils.$log.info('Stream '+streamDefNameToWaitFor+' is ok!');
+                    deferred.resolve();
+                }).error(function() {
+                    utils.$log.info('Stream '+streamDefNameToWaitFor+' is not there yet (attempt=#'+attemptCount+')');
+                    utils.$timeout(function() {
+                        $scope.createStreams(streamDefNameToWaitFor, attemptCount+1).then(function() {
+                            deferred.resolve();
+                        });
+                    },400);
+                });
+                return deferred.$promise;
+            }
+
             $scope.streamdefs = [];
             $scope.errors = [];
             $scope.warnings = [];
@@ -83,6 +103,12 @@ define(function(require) {
                 }
             };
 
+            $scope.createStreamDefinitions = function() {
+                var deferred = utils.$q.defer();
+                $scope.cgbusy = deferred.$promise;
+
+            };
+
             /**
              * Function creating streams based on the info in scopes flo.streamdefs contents.
              *
@@ -91,20 +117,6 @@ define(function(require) {
              * stream depends on an earlier stream, everything works.
              */
             $scope.createStreams = function(streamDefNameToWaitFor, attemptCount) {
-                // Are we waiting for a stream to be available?
-                if (streamDefNameToWaitFor) {
-                    if (attemptCount === 10) {
-                        utils.$log.info('Aborting after 10 attempts, cannot find the stream: '+streamDefNameToWaitFor);
-                        return;
-                    }
-                    streamService.getSingleStreamDefinition(streamDefNameToWaitFor).success(function() {
-                        utils.$log.info('Stream '+streamDefNameToWaitFor+' is ok!');
-                        utils.$timeout(function(){$scope.createStreams();},0);
-                    }).error(function() {
-                        utils.$log.info('Stream '+streamDefNameToWaitFor+' is not there yet (attempt=#'+attemptCount+')');
-                        utils.$timeout(function(){$scope.createStreams(streamDefNameToWaitFor,attemptCount+1);},400);
-                    });
-                } else {
                     // Find index of the first not yet created stream
                     var index = $scope.streamdefs.findIndex(function(def) {
                         return !def.created;
@@ -124,7 +136,9 @@ define(function(require) {
                                 $modalInstance.close(true);
                             } else {
                                 // There are more streams to create, so create the next one
-                                $scope.createStreams(def.name,0);
+                                waitForStreamDef(def.name, 0).then(function() {
+                                    $scope.createStreams(def.name,0);
+                                });
                             }
                         }).error(function(error) {
                             for (var e=0; e<error.length; e++) {
@@ -133,7 +147,6 @@ define(function(require) {
                             utils.$log.error('Failed to create stream ' + JSON.stringify(def));
                         });
                     }
-                }
             };
 
             $scope.cancel = function() {
