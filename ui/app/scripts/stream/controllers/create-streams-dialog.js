@@ -24,8 +24,30 @@ define(function(require) {
 
     var angular = require('angular');
 
+    var PROGRESS_BAR_WAIT_TIME = 600; // to account for animation delay
+
     return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
+
+            function waitForStreamDef(streamDefNameToWaitFor, attemptCount) {
+                var deferred = utils.$q.defer();
+                if (attemptCount === 10) {
+                    utils.$log.info('Aborting after 10 attempts, cannot find the stream: '+streamDefNameToWaitFor);
+                    deferred.resolve();
+                }
+                streamService.getSingleStreamDefinition(streamDefNameToWaitFor).success(function() {
+                    utils.$log.info('Stream '+streamDefNameToWaitFor+' is ok!');
+                    deferred.resolve();
+                }).error(function() {
+                    utils.$log.info('Stream '+streamDefNameToWaitFor+' is not there yet (attempt=#'+attemptCount+')');
+                    utils.$timeout(function() {
+                        $scope.waitForStreamDef(streamDefNameToWaitFor, attemptCount+1).then(function() {
+                            deferred.resolve();
+                        });
+                    },400);
+                });
+                return deferred.promise;
+            }
 
             $scope.streamdefs = [];
             $scope.errors = [];
@@ -74,13 +96,32 @@ define(function(require) {
             }
 
             $scope.canSubmit = function() {
-                return $scope.streamForm.$valid && $scope.streamdefs && $scope.streamdefs.length && !($scope.errors && $scope.errors.length);
+                return !$scope.isStreamCreationInProgress() && $scope.streamForm.$valid && $scope.streamdefs && $scope.streamdefs.length && !($scope.errors && $scope.errors.length);
             };
 
             $scope.submitStreams = function() {
                 if ($scope.canSubmit()) {
-                    $scope.createStreams();
+                    // Find index of the first not yet created stream
+                    // Can't use Array#findIndex(...) because not all browsers support it
+                    var index = 0;
+                    for (; index < $scope.streamdefs.length && $scope.streamdefs[index].created; index++) {
+                        // nothing to do - just loop to the not created stream def
+                    }
+                    // Setup progress bar data
+                    $scope.createProgressData(($scope.streamdefs.length - index) * 2 - 1); // create, wait for each - wait for the last
+                    // Start stream(s) creation
+                    $scope.createStreams(index);
                 }
+            };
+
+            $scope.createProgressData = function(total, count) {
+                $scope.progressData = {
+                    count: count ? count : 0,
+                    total: total,
+                    getPercent: function() {
+                        return Math.round(this.count / this.total * 100);
+                    }
+                };
             };
 
             /**
@@ -90,52 +131,59 @@ define(function(require) {
              * function can be passed a stream name that it should wait on before continuing. This ensures that if a later
              * stream depends on an earlier stream, everything works.
              */
-            $scope.createStreams = function(streamDefNameToWaitFor, attemptCount) {
-                // Are we waiting for a stream to be available?
-                if (streamDefNameToWaitFor) {
-                    if (attemptCount === 10) {
-                        utils.$log.info('Aborting after 10 attempts, cannot find the stream: '+streamDefNameToWaitFor);
-                        return;
-                    }
-                    streamService.getSingleStreamDefinition(streamDefNameToWaitFor).success(function() {
-                        utils.$log.info('Stream '+streamDefNameToWaitFor+' is ok!');
-                        utils.$timeout(function(){$scope.createStreams();},0);
-                    }).error(function() {
-                        utils.$log.info('Stream '+streamDefNameToWaitFor+' is not there yet (attempt=#'+attemptCount+')');
-                        utils.$timeout(function(){$scope.createStreams(streamDefNameToWaitFor,attemptCount+1);},400);
-                    });
+            $scope.createStreams = function(index) {
+                if (index < 0 || index >= $scope.streamdefs.length) {
+                    // Invalid index means all streams have been created, close the dialog.
+                    $modalInstance.close(true);
                 } else {
-                    // Find index of the first not yet created stream
-                    // Can't use Array#findIndex(...) because not all browsers support it
-                    var index = 0;
-                    for (; index < $scope.streamdefs.length && $scope.streamdefs[index].created; index++) {
-                        // nothing to do - just loop to the not created stream def
-                    }
-                    if (index < 0 || index >= $scope.streamdefs.length) {
-                        // Invalid index means all streams have been created, close the dialog.
-                        $modalInstance.close(true);
-                    } else {
-                        // Send the request to create a stream
-                        var def = $scope.streamdefs[index];
-                        streamService.create(def.name, def.def, $scope.deploy).success(function() {
-                            utils.$log.info('Stream '+def.name+' created OK');
-                            // Stream created successfully, mark it as created
-                            def.created = true;
-                            if ($scope.streamdefs.length - 1 === index) {
-                                // Last stream created, close the dialog
+                    // Send the request to create a stream
+                    var def = $scope.streamdefs[index];
+                    streamService.create(def.name, def.def, $scope.deploy).success(function () {
+                        utils.$log.info('Stream ' + def.name + ' created OK');
+                        // Stream created successfully, mark it as created
+                        def.created = true;
+                        $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
+                        if ($scope.streamdefs.length - 1 === index) {
+                            // Last stream created, close the dialog
+                            // Delay closing the dialog thus progress bar 100% would stay up for a short a bit
+                            utils.$timeout(function() {
                                 $modalInstance.close(true);
-                            } else {
-                                // There are more streams to create, so create the next one
-                                $scope.createStreams(def.name,0);
-                            }
-                        }).error(function(error) {
-                            for (var e=0; e<error.length; e++) {
-                                utils.growl.error('Problem creating stream: ' + def.name + ':' + error[e].message);
-                            }
-                            utils.$log.error('Failed to create stream ' + JSON.stringify(def));
-                        });
-                    }
+                                utils.growl.success('Stream(s) have been created successfully');
+                            }, PROGRESS_BAR_WAIT_TIME);
+                        } else {
+                            // There are more streams to create, so create the next one
+                            waitForStreamDef(def.name, 0).then(function () {
+                                $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
+                                $scope.createStreams(index + 1);
+                            }, function() {
+                                // Error handling
+                                // Previous stream creation request was issues but the stream resource is still unavailable for some reason
+                                // Never mind and keep creating the rest of the streams?
+                                $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
+                                $scope.createStreams(index + 1);
+                            });
+                        }
+                    }).error(function (error) {
+                        // Delay hiding the progress bar thus user can see it if operation went too fast
+                        utils.$timeout(function() {
+                            $scope.progressData = undefined;
+                        }, PROGRESS_BAR_WAIT_TIME);
+                        for (var e = 0; e < error.length; e++) {
+                            utils.growl.error('Problem creating stream: ' + def.name + ':' + error[e].message);
+                        }
+                        utils.$log.error('Failed to create stream ' + JSON.stringify(def));
+                    });
                 }
+            };
+
+            $scope.getProgressPercent = function() {
+                if ($scope.progressData) {
+                    return $scope.progressData.getPercent();
+                }
+            };
+
+            $scope.isStreamCreationInProgress = function() {
+                return $scope.progressData;
             };
 
             $scope.cancel = function() {
