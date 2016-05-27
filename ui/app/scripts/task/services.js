@@ -156,6 +156,8 @@ define(['angular'], function (angular) {
         return {
           convertToJsonAndSend: function (taskLaunchRequest) {
             var parameters = [];
+            var taskArgs = [];
+
             taskLaunchRequest.taskParameters.forEach(function (taskParameter) {
 
               var key = taskParameter.key;
@@ -163,16 +165,25 @@ define(['angular'], function (angular) {
 
               parameters.push(key + '=' + value);
             });
+            taskLaunchRequest.taskArguments.forEach(function (taskArgument) {
+
+              var key = taskArgument.key;
+              var value = taskArgument.value;
+
+              taskArgs.push(key + '=' + value);
+            });
 
             var parametersAsString = parameters.join();
+            var argumentsAsString = taskArgs.join();
 
-            console.log(parametersAsString);
+            console.log('parametersAsString: ' + parametersAsString + '; argumentsAsString: ' + argumentsAsString);
 
-            this.launch(taskLaunchRequest.taskName, parametersAsString);
+            this.launch(taskLaunchRequest.taskName, parametersAsString, argumentsAsString);
           },
-          launch: function (taskName, jsonDataAsString) {
+          launch: function (taskName, parametersAsString, argumentsAsString) {
             console.log('Launching task...' + taskName);
-            $resource($rootScope.dataflowServerUrl + '/tasks/deployments/:taskname', { 'taskname': taskName, 'properties': jsonDataAsString }, {
+            $resource($rootScope.dataflowServerUrl + '/tasks/deployments/:taskname', {
+              'taskname': taskName, 'properties': parametersAsString, 'params': argumentsAsString }, {
               launch: { method: 'POST' }
             }).launch().$promise.then(
                 function () {
