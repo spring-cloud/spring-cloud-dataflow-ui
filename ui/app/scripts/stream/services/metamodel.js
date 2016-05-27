@@ -42,8 +42,8 @@ define(function (require) {
 
     var angular = require('angular');
 
-    return ['$http', 'XDUtils', 'ModuleService', 'StreamParserService', 'MetamodelUtils',
-        function ($http, utils, ModuleService, ParserService, metamodelUtils) {
+    return ['$http', 'XDUtils', 'AppService', 'StreamParserService', 'MetamodelUtils',
+        function ($http, utils, appService, ParserService, metamodelUtils) {
 
             // Pre ES6 browsers don't have 'startsWith' function, hence add it if necessary
             // TODO: remove in the future
@@ -103,7 +103,7 @@ define(function (require) {
             };
             
             /**
-             * Special properties are dotted boot properties that particular modules utilise. This
+             * Special properties are dotted boot properties that particular apps utilise. This
              * handling is here until the infrastructure offers a proper whitelisting mechanism. 
              */
             function isSpecialProperty(nodeName,propertyName) {
@@ -152,7 +152,7 @@ define(function (require) {
                     var infoPromise;
                     get = function (property) {
                         if (!infoPromise) {
-                            infoPromise = ModuleService.getModuleInfo(node.group, node.name);
+                            infoPromise = appService.getAppInfo(node.group, node.name);
                         }
                         var deferred = utils.$q.defer();
                         infoPromise.then(function (result) {
@@ -221,7 +221,7 @@ define(function (require) {
                     'tap': createMetadata({
                         'name': 'tap',
                         'group': 'other',
-                        'description': 'Tap into an existing module',
+                        'description': 'Tap into an existing app',
                         'metadata': {
                             /*'titleProperty': 'stream-name',*/
                             'hide-tooltip-options': true,
@@ -232,7 +232,7 @@ define(function (require) {
                                 'name': 'Source Destination Name',
                                 'id': 'name',
                                 'defaultValue': '',
-                                'description': 'the identifier of the producer endpoint in a stream in the form <stream-name>.<module/app-name>',
+                                'description': 'the identifier of the producer endpoint in a stream in the form <stream-name>.<app/app-name>',
                                 'pattern': '[\\w_]+[\\w_-]*\\.[\\w_]+[\\w_-]*'
                             }
                         }
@@ -259,19 +259,19 @@ define(function (require) {
                 var pageable = new Pageable();
                 pageable.pageNumber = pageNumber;
                 loadOtherIntoPalette(metamodel);
-                var moduleDefinitionsPromise = ModuleService.getDefinitions(pageable).$promise;
-                return moduleDefinitionsPromise.then(function (result) {
-                    var modules;
+                var appDefinitionPromise = appService.getDefinitions(pageable).$promise;
+                return appDefinitionPromise.then(function (result) {
+                    var apps;
                     if (!!result._embedded) {
-                        modules = result._embedded.moduleRegistrationResourceList;
+                        apps = result._embedded.appRegistrationResourceList;
                     }
-                    if (modules) {
-                        for (var i = 0; i < modules.length; i++) {
-                            var module = modules[i];
-                            if (module.type === 'task') { // Don't include Tasks!
+                    if (apps) {
+                        for (var i = 0; i < apps.length; i++) {
+                            var app = apps[i];
+                            if (app.type === 'task') { // Don't include Tasks!
                                 continue;
                             }
-                            var entry = {'name': module.name, 'group': module.type};
+                            var entry = {'name': app.name, 'group': app.type};
                             var metadata = createMetadata(entry);
                             if (!metamodel[metadata.group]) {
                                 metamodel[metadata.group] = {};
@@ -282,7 +282,7 @@ define(function (require) {
                     if (pageNumber < (result.page.totalPages - 1)) {
                         return loadPageIntoPalette(pageNumber + 1, metamodel);
                     } else {
-                        // finished loading modules, let's load job definitions
+                        // finished loading apps, let's load job definitions
                         //return loadJobDefinitionPageIntoPalette(0, metamodel);
                     }
                 }, function (result) {
@@ -298,7 +298,7 @@ define(function (require) {
                 while ((pos = definitionsText.indexOf('\n', pos)) !== -1) {
                     linebreaks.push(++pos);
                 }
-                var streamModulesToIds = {}; // foo.bar=99
+                var streamAppsToIds = {}; // foo.bar=99
 
                 // The result should look like this:
                 // {errors:[...], graph:{format:.., streamdefs:[...], nodes:[...], links:[...]}
@@ -347,13 +347,13 @@ define(function (require) {
                                 if (channelText.startsWith('tap:')) { // TAP SOURCE
                                     var tappedDestination = channelText.substring(4);
                                     // Is it a tap on a stream already seen?
-                                    var alreadyAllocated = streamModulesToIds[tappedDestination];
+                                    var alreadyAllocated = streamAppsToIds[tappedDestination];
                                     if (DEBUG) {
                                         utils.$log.debug('Processing tap: ' + channelText + ' alreadyAllocated=' + alreadyAllocated);
-                                        utils.$log.debug(JSON.stringify(streamModulesToIds));
+                                        utils.$log.debug(JSON.stringify(streamAppsToIds));
                                     }
                                     if (typeof alreadyAllocated !== 'undefined') {
-                                        // No node for this tap, link from the already existing module to the next node
+                                        // No node for this tap, link from the already existing app to the next node
                                         linkFrom = alreadyAllocated;
                                         linkType = 'tap';
                                     } else {
@@ -391,7 +391,7 @@ define(function (require) {
 
                             // Definitions like ":foo > :bar" results in a bridge node with channels set - do not create
                             // a node for the bridge.
-                            // Constructs like 'tap:stream:foo >' use a module with undefined name to hang the channel off (the node isn't real, don't build graph elements for it)
+                            // Constructs like 'tap:stream:foo >' use a app with undefined name to hang the channel off (the node isn't real, don't build graph elements for it)
                             if (!(parsedNode.sourceChannelName && parsedNode.sinkChannelName && parsedNode.name === 'bridge') &&
                                 parsedNode.name) {
                                 if (n > 0) {
@@ -415,7 +415,7 @@ define(function (require) {
                                     graphNode['stream-id'] = streamNumber++;
                                 }
                                 if (nameSet) {
-                                    streamModulesToIds[streamName + '.' + (parsedNode.label ? parsedNode.label : graphNode.name)] = graphNode.id;
+                                    streamAppsToIds[streamName + '.' + (parsedNode.label ? parsedNode.label : graphNode.name)] = graphNode.id;
                                 }
                                 if (parsedNode.label) {
                                     streamdef = streamdef + parsedNode.label + ': ';
@@ -476,7 +476,7 @@ define(function (require) {
 
                     if (line.errors) {
                         // Example errors:
-                        // VALIDATION: {"message":"Could not find module with name 'bo' and type among [processor, sink]","position":null}
+                        // VALIDATION: {"message":"Could not find app with name 'bo' and type among [processor, sink]","position":null}
                         // SEVERE: {"message":"XD112E:(pos 5): Unexpectedly ran out of input\nbar |\n   * ^\n","position":5}
                         // SEVERE: {"message":"XD100E:(pos 14): Found unexpected data after stream definition: 'log'\nmail |  wibbe log |\n             *^\n","position":14}
                         // SEVERE: {"message":"XD102E:(pos 20): No whitespace allowed after argument name and before =\nrofo | asdfa --name = var\n            *       ^\n","position":20}]
@@ -490,22 +490,22 @@ define(function (require) {
                                 // If accurate is set then the message is already correct and needs no processing.
                                 // Accurate messages are produced by the local parse.
                                 errorToRecord = error;
-                            } else if (error.message.startsWith('Could not find module with name')) {
+                            } else if (error.message.startsWith('Could not find app with name')) {
                                 range = {'start': {'ch': 0, 'line': lineNumber}, 'end': {'ch': 0, 'line': lineNumber}};
-                                // "Could not find module with name 'abcd'"
-                                var moduleName = error.message.substring(error.message.indexOf('\'') + 1);
-                                moduleName = moduleName.substring(0, moduleName.indexOf('\''));
-                                errpos = lineText.indexOf(moduleName);
-                                if (lineText.indexOf(moduleName, errpos + 1) !== -1) {
+                                // "Could not find app with name 'abcd'"
+                                var appName = error.message.substring(error.message.indexOf('\'') + 1);
+                                appName = appName.substring(0, appName.indexOf('\''));
+                                errpos = lineText.indexOf(appName);
+                                if (lineText.indexOf(appName, errpos + 1) !== -1) {
                                     // occurring more than once, let's not be too clever for now, just mark the line
                                 } else {
                                     // only occurs once, this must be it!
                                     range = {
                                         'start': {'ch': errpos, 'line': lineNumber},
-                                        'end': {'ch': errpos + moduleName.length, 'line': lineNumber}
+                                        'end': {'ch': errpos + appName.length, 'line': lineNumber}
                                     };
                                 }
-                                // Have a go at finding the module - if it is unique we know we can point at the
+                                // Have a go at finding the app - if it is unique we know we can point at the
                                 // right now. If it isn't unique, they probably are all wrong !
                                 errorToRecord = {'message': error.message, 'range': range};
                             } else if (error.message.startsWith('XD112E')) {

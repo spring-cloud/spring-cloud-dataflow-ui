@@ -42,7 +42,7 @@ define(['./app'], function (xdAdmin) {
         streamTemplatesPath = 'scripts/stream/views',
         authTemplatesPath = 'scripts/auth/views',
         sharedTemplatesPath = 'scripts/shared/views',
-        containerTemplatesPath = 'scripts/container/views',
+        runtimeTemplatesPath = 'scripts/runtime/views',
         analyticsTemplatesPath = 'scripts/analytics/views',
         appTemplatesPath = 'scripts/app/views';
 
@@ -86,7 +86,7 @@ define(['./app'], function (xdAdmin) {
         authenticate: true
       }
     })
-    .state('home.containers', {
+    .state('home.runtime', {
       abstract:true,
       template: '<ui-view/>',
       data:{
@@ -189,26 +189,26 @@ define(['./app'], function (xdAdmin) {
       templateUrl : jobTemplatesPath + '/schedule.html',
       controller: 'JobScheduleController'
     })
-    .state('home.tasks.tabs.modules', {
-      url : '/apps',
-      templateUrl : taskTemplatesPath + '/modules.html',
-      controller: 'ModuleController'
+    .state('home.tasks.tabs.appsList', {
+      url : 'tasks/apps',
+      templateUrl : taskTemplatesPath + '/apps.html',
+      controller: 'TaskAppsController'
     })
-    .state('home.tasks.moduledetails', {
-      url : 'tasks/modules/{moduleName}',
-      templateUrl : taskTemplatesPath + '/module-details.html',
-      controller: 'ModuleDetailsController',
+    .state('home.tasks.appdetails', {
+      url : 'tasks/apps/{appName}',
+      templateUrl : taskTemplatesPath + '/app-details.html',
+      controller: 'AppDetailsController',
       data:{
-        title: 'Module Details',
+        title: 'App Details',
         authenticate: true
       }
     })
-    .state('home.tasks.modulecreatedefinition', {
-      url : 'tasks/modules/{moduleName}/create-definition',
-      templateUrl : taskTemplatesPath + '/module-create-definition.html',
-      controller: 'ModuleCreateDefinitionController',
+    .state('home.tasks.appcreatedefinition', {
+      url : 'tasks/apps/{appName}/create-definition',
+      templateUrl : taskTemplatesPath + '/app-create-definition.html',
+      controller: 'AppCreateDefinitionController',
       data:{
-        title: 'Module Create Definition',
+        title: 'App Create Definition',
         authenticate: true
       }
     })
@@ -279,36 +279,36 @@ define(['./app'], function (xdAdmin) {
           },
           templateUrl: appTemplatesPath + '/apps.html'
         })
-        .state('home.apps.tabs.modules', {
+        .state('home.apps.tabs.appsList', {
           url: '/apps',
-          templateUrl: appTemplatesPath + '/modules.html',
-          controller: 'ModulesController',
+          templateUrl: appTemplatesPath + '/apps-list.html',
+          controller: 'AppsController',
           data: {
-            title: 'Modules',
+            title: 'Apps',
             authenticate: true
           }
         })
-        .state('home.apps.registerModules', {
-          url: 'apps/register-modules',
-          templateUrl: appTemplatesPath + '/register-modules.html',
-          controller: 'RegisterModulesController',
+        .state('home.apps.registerApps', {
+          url: 'apps/register-apps',
+          templateUrl: appTemplatesPath + '/register-apps.html',
+          controller: 'RegisterAppsController',
           data: {
-            title: 'Register Modules',
+            title: 'Register Apps',
             authenticate: true
           }
         })
-        .state('home.containers.tabs', {
-          url: 'containers',
+        .state('home.runtime.tabs', {
+          url: 'runtime',
           abstract: true,
           data: {
             authenticate: true
           },
-          templateUrl: containerTemplatesPath + '/containers.html'
+          templateUrl: runtimeTemplatesPath + '/runtime-apps.html'
         })
-        .state('home.containers.tabs.containerlist', {
-          url: '/containers',
-          templateUrl: containerTemplatesPath + '/containerlist.html',
-          controller: 'ContainersController',
+        .state('home.runtime.tabs.runtimeAppsList', {
+          url: '/runtime',
+          templateUrl: runtimeTemplatesPath + '/runtime-apps-list.html',
+          controller: 'RuntimeAppsController',
           data: {
             title: 'Runtime',
             authenticate: true
@@ -319,7 +319,7 @@ define(['./app'], function (xdAdmin) {
 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
-    $rootScope.xdAdminServerUrl = window.location.protocol + '//' + window.location.host;
+    $rootScope.dataflowServerUrl = window.location.protocol + '//' + window.location.host;
     $rootScope.xAuthTokenHeaderName = 'x-auth-token';
     $rootScope.user = userService;
     $rootScope.pageRefreshTime = 5000;

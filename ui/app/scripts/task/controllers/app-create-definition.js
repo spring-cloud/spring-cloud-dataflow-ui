@@ -15,20 +15,20 @@
  */
 
 /**
- * Create a Task Definition from a Module
+ * Create a Task Definition from an Application.
  *
  * @author Gunnar Hillert
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'TaskModuleService', 'XDUtils', '$state', '$stateParams',
-    function ($scope, taskModuleService, utils, $state, $stateParams) {
+  return ['$scope', 'TaskAppService', 'XDUtils', '$state', '$stateParams',
+    function ($scope, taskAppService, utils, $state, $stateParams) {
       $scope.$apply(function () {
 
-        $scope.moduleName = $stateParams.moduleName;
+        $scope.appName = $stateParams.appName;
 
-        var singleModulePromise = taskModuleService.getSingleModule($stateParams.moduleName).$promise;
-        utils.addBusyPromise(singleModulePromise);
+        var singleAppPromise = taskAppService.getSingleApp($stateParams.appName).$promise;
+        utils.addBusyPromise(singleAppPromise);
           function escapeStringIfNecessary(name, value) {
               if (value && /\s/g.test(value)) {
                   return '"' + value + '"';
@@ -42,7 +42,7 @@ define([], function () {
           }
           function calculateDefinition(taskDefinition) {
               var arrayLength = taskDefinition.parameters.length;
-              $scope.calculatedDefinition = $scope.moduleDetails.name;
+              $scope.calculatedDefinition = $scope.appDetails.name;
               for (var i = 0; i < arrayLength; i++) {
                   var parameter = taskDefinition.parameters[i];
 
@@ -53,7 +53,7 @@ define([], function () {
               }
           }
 
-          singleModulePromise.then(
+          singleAppPromise.then(
             function (result) {
                 $scope.taskDefinition = {
                   name: '',
@@ -72,24 +72,24 @@ define([], function () {
                     description: option.description
                   });
                 }
-                $scope.moduleDetails = result;
+                $scope.appDetails = result;
               }, function () {
                 utils.growl.error('Error fetching data. Is the XD server running?');
               });
         $scope.closeCreateDefinition = function () {
             utils.$log.info('Closing Task Definition Creation Window');
-            $state.go('home.tasks.tabs.modules');
+            $state.go('home.tasks.tabs.appsList');
           };
         $scope.submitTaskDefinition = function () {
             utils.$log.info('Submitting Definition');
             calculateDefinition($scope.taskDefinition);
-            var createDefinitionPromise = taskModuleService.createDefinition(
+            var createDefinitionPromise = taskAppService.createDefinition(
                     $scope.taskDefinition.name, $scope.calculatedDefinition).$promise;
             utils.addBusyPromise(createDefinitionPromise);
             createDefinitionPromise.then(
                     function () {
                       utils.growl.success('The Definition was created.');
-                      $state.go('home.tasks.tabs.modules');
+                      $state.go('home.tasks.tabs.appsList');
                     }, function (error) {
                       utils.growl.error(error.data[0].message);
                     });

@@ -28,7 +28,7 @@ define([
   './job/app',
   './task/app',
   './stream/app',
-  './container/app',
+  './runtime/app',
   './auth/app'
 ], function (angular) {
   'use strict';
@@ -42,7 +42,7 @@ define([
     'xdJobsAdmin',
     'xdTasksAdmin',
     'xdStreamsAdmin',
-    'xdContainerAdmin',
+    'xdRuntimeAdmin',
     'xdAuth',
     'spring.flo'
   ]);

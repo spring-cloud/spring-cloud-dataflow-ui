@@ -28,7 +28,7 @@ define(function () {
         } else {
             var incoming = graph.getConnectedLinks(element, { inbound: true });
             if (incoming.length === 1 && incoming[0].get('source').port === 'tap') {
-                // If module has one incoming link and its from a tap port then module is a start of a tap stream
+                // If app has one incoming link and its from a tap port then app is a start of a tap stream
                 return true;
             }
         }

@@ -25,7 +25,7 @@ define(['angular', 'xregexp'], function (angular) {
   return angular.module('xdShared.services', [])
       .factory('XDUtils', function ($log, growl, $timeout, $q, $rootScope) {
 
-        var moduleNameRegex = new XRegExp('[\\p{N}|\\p{L}|\\p{Po}]*(?=[\\s]*--)', 'i');
+        var appNameRegex = new XRegExp('[\\p{N}|\\p{L}|\\p{Po}]*(?=[\\s]*--)', 'i');
 
         $rootScope.jobExecutionIdHierarchy = [];
 
@@ -39,27 +39,27 @@ define(['angular', 'xregexp'], function (angular) {
             $rootScope.cgbusy = promise;
           },
           jobExecutionIdHierarchy: $rootScope.jobExecutionIdHierarchy,
-          getModuleNameFromJobDefinition: function(jobDefinition) {
+          getAppNameFromJobDefinition: function(jobDefinition) {
             if (!jobDefinition) {
               throw new Error('jobDefinition must be defined.');
             }
             $log.info('Processing job definition: ' + jobDefinition);
-            var module = XRegExp.exec(jobDefinition, moduleNameRegex);
-            var moduleName;
-            if (module) {
-              moduleName = module[0];
+            var app = XRegExp.exec(jobDefinition, appNameRegex);
+            var appName;
+            if (app) {
+              appName = app[0];
             }
             else {
-              moduleName = jobDefinition;
+              appName = jobDefinition;
             }
-            $log.info('Found Module Name: ' + moduleName);
-            return moduleName;
+            $log.info('Found App Name: ' + appName);
+            return appName;
           }
         };
       })
       .factory('xdVersionInfo', function ($resource, $rootScope, XDUtils) {
         console.log('xdVersionInfo');
-        var xdVersionInfoPromise =  $resource($rootScope.xdAdminServerUrl + '/management/info', {}, {
+        var xdVersionInfoPromise =  $resource($rootScope.dataflowServerUrl + '/management/info', {}, {
           query: {
             method: 'GET'
           }

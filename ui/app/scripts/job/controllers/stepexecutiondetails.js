@@ -51,7 +51,7 @@ define([], function () {
         $state.go('home.jobs.executiondetails', {executionId: stepExecutionDetails.jobExecutionId});
       };
       $scope.$apply(function () {
-        $scope.moduleName = $stateParams.moduleName;
+        $scope.appName = $stateParams.appName;
         $scope.optionsPredicate = 'name';
 
         var singleStepExecutionPromise = stepExecutions.getSingleStepExecution($stateParams.executionId, $stateParams.stepExecutionId).$promise;

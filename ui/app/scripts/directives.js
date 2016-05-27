@@ -327,7 +327,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
             if (isActive) {
               if (modelValue) {
                 $http({
-                  method: 'POST', url: $rootScope.xdAdminServerUrl + '/validation/cron', data: {
+                  method: 'POST', url: $rootScope.dataflowServerUrl + '/validation/cron', data: {
                     cronExpression: modelValue
                   }
                 }).success(function (data) {

@@ -1,7 +1,7 @@
 <h1>Register Applications</h1>
 <p>Register one or more applications by entering a <strong>Name</strong>, <strong>Type</strong> and <strong>URI</strong> of the application Jar. The URI is typically provided using the Maven coordinates of the Jar (e.g. <code>maven://io.spring.cloud:scdf-sample-app:jar:exec:1.0.0.BUILD-SNAPSHOT</code>), but can be a local file or a docker image URI.</p>
 <hr/>
-<form name="registerModulesForm" role="form" ng-submit="register()" novalidate>
+<form name="registerAppsForm" role="form" ng-submit="register()" novalidate>
     <table class="table form-table">
         <col width="20%">
         <col width="10%">
@@ -23,35 +23,35 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="{{$index}}" ng-repeat="module in modules">
+            <tr id="{{$index}}" ng-repeat="app in apps">
                 <td>
-                    <div ng-class="registerModulesForm[$index + '_name'].$invalid ? 'has-warning has-feedback' : ''">
-                        <input type="text" id="{{$index + '_name'}}" name="{{$index + '_name'}}" class="form-control" placeholder="<Application Name>" required ng-model="module.name" ng-pattern="namePattern">
-                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerModulesForm[$index + '_name'].$invalid"></span>
+                    <div ng-class="registerAppsForm[$index + '_name'].$invalid ? 'has-warning has-feedback' : ''">
+                        <input type="text" id="{{$index + '_name'}}" name="{{$index + '_name'}}" class="form-control" placeholder="<Application Name>" required ng-model="app.name" ng-pattern="namePattern">
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerAppsForm[$index + '_name'].$invalid"></span>
                     </div>
                 </td>
                 <td>
-                    <select id="{{$index + '_type'}}" name="{{$index + '_type'}}" class="form-control full-cell-select-input" ng-model="module.type" ng-options="type | capitalize for type in types">
+                    <select id="{{$index + '_type'}}" name="{{$index + '_type'}}" class="form-control full-cell-select-input" ng-model="app.type" ng-options="type | capitalize for type in types">
                 </td>
                 <td>
-                    <div ng-class="registerModulesForm[$index + '_uri'].$invalid ? 'has-warning has-feedback' : ''">
-                        <input type="text" id="{{$index + '_uri'}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<maven://io.spring.cloud:scdf-sample-app:jar:exec:1.0.0.BUILD-SNAPSHOT>" required ng-model="module.uri" ng-pattern="uriPattern">
-                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerModulesForm[$index + '_uri'].$invalid"></span>
+                    <div ng-class="registerAppsForm[$index + '_uri'].$invalid ? 'has-warning has-feedback' : ''">
+                        <input type="text" id="{{$index + '_uri'}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<maven://io.spring.cloud:scdf-sample-app:jar:exec:1.0.0.BUILD-SNAPSHOT>" required ng-model="app.uri" ng-pattern="uriPattern">
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerAppsForm[$index + '_uri'].$invalid"></span>
                     </div>
                 </td>
                 <td class="text-center">
-                    <input type="checkbox" id="{{$index + '_force'}}" name="{{$index + '_force'}}" ng-model="module.force">
+                    <input type="checkbox" id="{{$index + '_force'}}" name="{{$index + '_force'}}" ng-model="app.force">
                 </td>
                 <td class="action-column">
-                    <button type="button" ng-click="addModule($index)"
+                    <button type="button" ng-click="addApp($index)"
                             class="btn btn-sm btn-default"
                             title="Add"
                     ><span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </td>
                 <td class="action-column">
-                    <button type="button" ng-click="removeModule($index)"
-                            ng-disabled="modules.length <= 1"
+                    <button type="button" ng-click="removeApp($index)"
+                            ng-disabled="apps.length <= 1"
                             class="btn btn-sm btn-default"
                             title="Remove"
                     ><span class="glyphicon glyphicon-minus"></span>
@@ -62,7 +62,7 @@
     </table>
     <div class="row">
         <div class="col-md-6 text-right"><button id="back-button"   type="button" class="btn btn-default" ng-click="close()">Cancel</button></div>
-        <div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default" ng-disabled="registerModulesForm.$invalid">Register</button></div>
+        <div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default" ng-disabled="registerAppsForm.$invalid">Register</button></div>
     </div>
 </form>
 

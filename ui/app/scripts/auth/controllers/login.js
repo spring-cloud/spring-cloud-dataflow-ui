@@ -26,7 +26,7 @@ define([], function () {
           $scope.loginForm = {};
           $scope.login = function() {
             $log.info('Logging in user:', $scope.loginForm.username);
-            var authenticationPromise = $http.post($rootScope.xdAdminServerUrl + '/authenticate', $scope.loginForm);
+            var authenticationPromise = $http.post($rootScope.dataflowServerUrl + '/authenticate', $scope.loginForm);
             utils.addBusyPromise(authenticationPromise);
             authenticationPromise.then(
               function(response) {

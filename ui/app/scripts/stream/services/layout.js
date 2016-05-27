@@ -31,7 +31,7 @@ define(function (require) {
     var joint = require('joint');
     
     /**
-	 * Graph representation of stream(s)/module(s).
+	 * Graph representation of stream(s)/app(s).
 	 * @type {joint.dia.Graph}
 	 */
     var graph;

@@ -23,7 +23,7 @@ define([], function () {
   'use strict';
   return ['$window', 'XDUtils', '$state', '$log', '$rootScope', '$http', function ($window, XDUtils, $state, $log, $rootScope, $http) {
     $log.info('Logging out...');
-    $http.get($rootScope.xdAdminServerUrl + '/admin-ui/logout');
+    $http.get($rootScope.dataflowServerUrl + '/admin-ui/logout');
 
     $rootScope.user = {
       authenticationEnabled: true,

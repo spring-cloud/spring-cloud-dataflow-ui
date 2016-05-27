@@ -25,31 +25,31 @@ define([
       angular.mock.module('xdAdmin');
     });
 
-    it('The module name should be retrieved from a definition with parameters.', inject(function(XDUtils) {
-      expect(XDUtils.getModuleNameFromJobDefinition).toBeDefined();
-      expect(XDUtils.getModuleNameFromJobDefinition('myMod --param=1234')).toEqual('myMod');
+    it('The app name should be retrieved from a definition with parameters.', inject(function(XDUtils) {
+      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
+      expect(XDUtils.getAppNameFromJobDefinition('myMod --param=1234')).toEqual('myMod');
     }));
 
-    it('The module name should be retrieved from a definition without parameters.', inject(function(XDUtils) {
-      expect(XDUtils.getModuleNameFromJobDefinition).toBeDefined();
-      expect(XDUtils.getModuleNameFromJobDefinition('myMod2')).toEqual('myMod2');
+    it('The app name should be retrieved from a definition without parameters.', inject(function(XDUtils) {
+      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
+      expect(XDUtils.getAppNameFromJobDefinition('myMod2')).toEqual('myMod2');
     }));
-    it('Getting a module name from an undefined definition should casuse an error.', inject(function(XDUtils) {
-      expect(XDUtils.getModuleNameFromJobDefinition).toBeDefined();
+    it('Getting a app name from an undefined definition should casuse an error.', inject(function(XDUtils) {
+      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
-        XDUtils.getModuleNameFromJobDefinition();
+        XDUtils.getAppNameFromJobDefinition();
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
-    it('Getting a module name from an undefined definition should casuse an error 2.', inject(function(XDUtils) {
-      expect(XDUtils.getModuleNameFromJobDefinition).toBeDefined();
+    it('Getting a app name from an undefined definition should casuse an error 2.', inject(function(XDUtils) {
+      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
-        XDUtils.getModuleNameFromJobDefinition(undefined);
+        XDUtils.getAppNameFromJobDefinition(undefined);
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
-    it('Getting a module name from a null definition should casuse an error.', inject(function(XDUtils) {
-      expect(XDUtils.getModuleNameFromJobDefinition).toBeDefined();
+    it('Getting a app name from a null definition should casuse an error.', inject(function(XDUtils) {
+      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
-        XDUtils.getModuleNameFromJobDefinition(null);
+        XDUtils.getAppNameFromJobDefinition(null);
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
   });

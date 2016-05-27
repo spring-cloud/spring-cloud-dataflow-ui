@@ -1,17 +1,17 @@
-<form name="moduleForm" class="form-horizontal form-dialog" ng-submit="submit()" role="form">
+<form name="appForm" class="form-horizontal form-dialog" ng-submit="submit()" role="form">
     <div class="modal-header">
         <button type="button" class="close" ng-click="cancel()">&times;</button>
-        <h4 class="modal-title"><b>{{cell.attr('metadata/name').toUpperCase()}}</b> Module Properties</h4>
+        <h4 class="modal-title"><b>{{cell.attr('metadata/name').toUpperCase()}}</b> Application Properties</h4>
     </div>
     <div class="modal-body" id="modal-properties-container" ng-cloak cg-busy="{promise:cgbusy,delay:0,minDuration:100}">
-        <fieldset id="module-properties">
+        <fieldset id="app-properties">
             <div class="form-group form-dialog" ng-repeat="key in keys(derivedProperties)" ng-if="keys(derivedProperties).length > 0">
-                <div class="form-group" id="{{derivedProperties[key].id + '-form-group'}}" ng-class="moduleForm[derivedProperties[key].id].$invalid ? 'has-warning has-feedback' : ''">
+                <div class="form-group" id="{{derivedProperties[key].id + '-form-group'}}" ng-class="appForm[derivedProperties[key].id].$invalid ? 'has-warning has-feedback' : ''">
                     <label for="{{derivedProperties[key].id}}" class="col-sm-3 control-label">{{derivedProperties[key].name | camelCaseToHuman}}</label>
                     <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) !== 'checkbox' && getInputType(derivedProperties[key]) !== 'code' && getInputType(derivedProperties[key]) !== 'select'">
                         <input type="{{getInputType(derivedProperties[key])}}" id="{{derivedProperties[key].id}}"
                                name="{{derivedProperties[key].id}}" class="form-control" placeholder="{{derivedProperties[key].defaultValue}}" ng-model="derivedProperties[key].value" ng-pattern="derivedProperties[key].pattern">
-                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="moduleForm[derivedProperties[key].id].$invalid"></span>
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="appForm[derivedProperties[key].id].$invalid"></span>
                         <p class="help-block">{{derivedProperties[key].description | capitalize}}</p>
                     </div>
                     <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) === 'checkbox'">
@@ -43,18 +43,18 @@
                                 ng-options="option | capitalize for option in derivedProperties[key].options">
                             <option ng-if="!derivedProperties[key].defaultValue" value="">-- Select {{derivedProperties[key].name | capitalize}} --</option>
                         </select>
-                        <span class="glyphicon glyphicon-warning-sign form-control-feedback feedback-with-offset" ng-show="moduleForm[derivedProperties[key].id].$invalid"></span>
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback feedback-with-offset" ng-show="appForm[derivedProperties[key].id].$invalid"></span>
                         <p class="help-block">{{derivedProperties[key].description | capitalize}}</p>
                     </div>
                 </div>
             </div>
             <div class="form-group form-dialog" ng-repeat="key in keys(properties).sort()" ng-if="keys(properties).length > 0">
-                <div class="form-group" id="{{properties[key].id + '-form-group'}}" ng-class="moduleForm[properties[key].id].$invalid ? 'has-warning has-feedback' : ''">
+                <div class="form-group" id="{{properties[key].id + '-form-group'}}" ng-class="appForm[properties[key].id].$invalid ? 'has-warning has-feedback' : ''">
                     <label for="{{properties[key].id}}" class="col-sm-3 control-label">{{properties[key].name | camelCaseToHuman}}</label>
                     <div class="col-sm-9" ng-if="getInputType(properties[key]) !== 'checkbox' && getInputType(properties[key]) !== 'code' && getInputType(properties[key]) !== 'select'">
                         <input type="{{getInputType(properties[key])}}" id="{{properties[key].id}}"
                                name="{{properties[key].id}}" class="form-control" placeholder="{{properties[key].defaultValue}}" ng-model="properties[key].value" ng-pattern="properties[key].pattern">
-                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="moduleForm[properties[key].id].$invalid"></span>
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="appForm[properties[key].id].$invalid"></span>
                         <p class="help-block">{{properties[key].description | capitalize}}</p>
                     </div>
                     <div class="col-sm-9" ng-if="getInputType(properties[key]) === 'checkbox'">
@@ -86,7 +86,7 @@
                                 ng-options="option | capitalize for option in properties[key].options">
                             <option ng-if="!properties[key].defaultValue" value="">-- Select {{properties[key].name | capitalize}} --</option>
                         </select>
-                        <span class="glyphicon glyphicon-warning-sign form-control-feedback feedback-with-offset" ng-show="moduleForm[properties[key].id].$invalid"></span>
+                        <span class="glyphicon glyphicon-warning-sign form-control-feedback feedback-with-offset" ng-show="appForm[properties[key].id].$invalid"></span>
                         <p class="help-block">{{properties[key].description | capitalize}}</p>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
         <button type="submit" class="btn btn-primary"
-                ng-disabled="moduleForm.$invalid"
+                ng-disabled="appForm.$invalid"
                 ng-click="submit()">OK
         </button>
     </div>

@@ -47,7 +47,7 @@ define([], function () {
         );
       }
       $scope.$apply(function () {
-        $scope.moduleName = $stateParams.moduleName;
+        $scope.appName = $stateParams.appName;
         $scope.optionsPredicate = 'name';
         loadJobExecutionDetails($stateParams.executionId);
       });

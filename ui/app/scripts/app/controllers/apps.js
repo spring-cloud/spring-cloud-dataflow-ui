@@ -21,38 +21,38 @@
  */
 define(['model/pageable'], function (Pageable) {
     'use strict';
-    return ['$scope', 'ModuleService', 'XDUtils', '$modal', '$state',
-        function ($scope, moduleService, utils, $modal, $state) {
+    return ['$scope', 'AppService', 'XDUtils', '$modal', '$state',
+        function ($scope, appService, utils, $modal, $state) {
 
             /**
-             * Loads applications/modules
+             * Loads applications/apps
              *
              * @param pageable Paging model object. Undefined or null if paging is off
              * @param showGrowl Show loading message while data is fetched
              */
-            function loadModuleDefinitions(pageable, showGrowl) {
-                // Loading modules now. Switch off the timer if it's available
-                if ($scope.getModuleDefinitions) {
-                    utils.$timeout.cancel($scope.getModuleDefinitions);
+            function loadAppDefinitions(pageable, showGrowl) {
+                // Loading apps now. Switch off the timer if it's available
+                if ($scope.getAppDefinitions) {
+                    utils.$timeout.cancel($scope.getAppDefinitions);
                 }
-                var moduleDefinitionsPromise = moduleService.getDefinitions(pageable).$promise;
+                var appDefinitionsPromise = appService.getDefinitions(pageable).$promise;
                 // Show loading message in the UI if option is on
                 if (showGrowl || showGrowl === undefined) {
-                    utils.addBusyPromise(moduleDefinitionsPromise);
+                    utils.addBusyPromise(appDefinitionsPromise);
                 }
-                moduleDefinitionsPromise.then(
+                appDefinitionsPromise.then(
                     function (result) {
                         if (!!result._embedded) {
                             $scope.pageable.items = result._embedded.appRegistrationResourceList;
                         }
-                        // Process received array of modules
+                        // Process received array of apps
                         if (Array.isArray($scope.pageable.items)) {
                             $scope.pageable.items.forEach(function(item) {
 
-                                // Create id for tracking modules with ng-repeat directive
+                                // Create id for tracking apps with ng-repeat directive
                                 item.id = item.name + '.' + item.type;
 
-                                // Define function for selecting a module in the table
+                                // Define function for selecting an app in the table
                                 item.select = function(newValue) {
                                     if (arguments.length) {
                                         if (newValue) {
@@ -65,7 +65,7 @@ define(['model/pageable'], function (Pageable) {
                                     }
                                 };
 
-                                // Define function for removing module controller
+                                // Define function for removing app controller
                                 item.remove = function(index) {
                                     this.select(false);
                                     if (typeof index !== 'number' || index < 0 || index >= $scope.pageable.items.length) {
@@ -76,9 +76,9 @@ define(['model/pageable'], function (Pageable) {
                                     }
                                 };
 
-                                // Define function for obtaining properties of a module
+                                // Define function for obtaining properties of a app
                                 item.getProperties = function() {
-                                    return moduleService.getModuleInfo(this.type, this.name);
+                                    return appService.getAppInfo(this.type, this.name);
                                 };
 
                             });
@@ -93,9 +93,9 @@ define(['model/pageable'], function (Pageable) {
                             $scope.pageable.pageSize = $scope.pageable.total;
                             $scope.pageNumber = 0;
                         }
-                        // Poll modules after a period of time to refresh
-                        $scope.getModuleDefinitions = utils.$timeout(function() {
-                            loadModuleDefinitions(p, false);
+                        // Poll apps after a period of time to refresh
+                        $scope.getAppDefinitions = utils.$timeout(function() {
+                            loadAppDefinitions(p, false);
                         }, utils.$rootScope.pageRefreshTime);
                     }, function (result) {
                         utils.growl.error(result.data[0].message);
@@ -103,7 +103,7 @@ define(['model/pageable'], function (Pageable) {
                 );
             }
 
-            // Selected modules map
+            // Selected apps map
             $scope.selected = {};
 
             // Paging model object
@@ -115,7 +115,7 @@ define(['model/pageable'], function (Pageable) {
             };
 
             /**
-             * Select all modules
+             * Select all apps
              */
             $scope.selectAll = function() {
                 $scope.pageable.items.forEach(function(item) {
@@ -124,14 +124,14 @@ define(['model/pageable'], function (Pageable) {
             };
 
             /**
-             * Unselect all modules
+             * Unselect all apps
              */
             $scope.unselectAll = function() {
                 $scope.selected = {};
             };
 
             /**
-             * Returns true if some modules are selected but not all
+             * Returns true if some apps are selected but not all
              * @returns {boolean}
              */
             $scope.isSomeButNotAllSelected = function() {
@@ -141,7 +141,7 @@ define(['model/pageable'], function (Pageable) {
             };
 
             /**
-             * Returns true if no modules selected
+             * Returns true if no apps selected
              * @returns {boolean}
              */
             $scope.isNoneSelected = function() {
@@ -171,19 +171,19 @@ define(['model/pageable'], function (Pageable) {
              */
             $scope.pageChanged = function(newPage) {
                 $scope.pageable.pageNumber = newPage-1;
-                loadModuleDefinitions(/*$scope.pageable*/);
+                loadAppDefinitions(/*$scope.pageable*/);
             };
 
             /**
-             * Unregisters module
-             * @param item Module object
-             * @param index Module index in the array of items
+             * Unregisters app
+             * @param item App object
+             * @param index App index in the array of items
              */
             $scope.unregister = function(item, index) {
                 // Pop up confirmation dialog
                 $modal.open({
                     animation: true,
-                    templateUrl: 'scripts/app/dialogs/unregister-single-module.html',
+                    templateUrl: 'scripts/app/dialogs/unregister-single-app.html',
                     controller: ['$scope', '$modalInstance', 'item',
                         function ($scope, $modalInstance, item) {
 
@@ -204,10 +204,10 @@ define(['model/pageable'], function (Pageable) {
                         }
                     }
                 }).result.then(function() {
-                    // Fire off the request to unregister module
-                    moduleService.unregisterModule(item.type, item.name).$promise.then(function() {
-                        utils.growl.success('Successfully removed module "' + item.name + '" of type "' + item.type + '"');
-                        // Remove from the list of modules if unregistered successfully
+                    // Fire off the request to unregister app
+                    appService.unregisterApp(item.type, item.name).$promise.then(function() {
+                        utils.growl.success('Successfully removed app "' + item.name + '" of type "' + item.type + '"');
+                        // Remove from the list of apps if unregistered successfully
                         if (typeof index === 'number' && index >= 0) {
                             $scope.pageable.items[index].remove(index);
                         }
@@ -219,18 +219,18 @@ define(['model/pageable'], function (Pageable) {
             };
 
             /**
-             * Unregister selected modules
+             * Unregister selected apps
              */
-            $scope.unregisterSelectedModules = function() {
-                var modules = [];
-                // Collect selected modules in a list
+            $scope.unregisterSelectedApps = function() {
+                var apps = [];
+                // Collect selected apps in a list
                 Object.keys($scope.selected).forEach(function(id) {
-                    modules.push($scope.selected[id]);
+                    apps.push($scope.selected[id]);
                 });
-                // Pop up confirmation dialog listing modules to be unregistered
+                // Pop up confirmation dialog listing apps to be unregistered
                 $modal.open({
                     animation: true,
-                    templateUrl: 'scripts/app/dialogs/unregister-modules.html',
+                    templateUrl: 'scripts/app/dialogs/unregister-apps.html',
                     controller: ['$scope', '$modalInstance', 'items',
                         function ($scope, $modalInstance, items) {
 
@@ -247,21 +247,21 @@ define(['model/pageable'], function (Pageable) {
                         }],
                     resolve: {
                         items: function () {
-                            return modules;
+                            return apps;
                         }
                     }
                 }).result.then(function() {
                     var promises = [];
                     var p;
-                    // Fire off unregister request for each module
-                    modules.forEach(function(module) {
-                        p = moduleService.unregisterModule(module.type, module.name).$promise;
+                    // Fire off unregister request for each app
+                    apps.forEach(function(app) {
+                        p = appService.unregisterApp(app.type, app.name).$promise;
                         promises.push(p);
                         p.then(function() {
-                            // Remove the module.
-                            module.remove();
+                            // Remove the app.
+                            app.remove();
                         });
-                        // Show errors per modules registration rather then one general message
+                        // Show errors per apps registration rather then one general message
                         p.catch(function(error) {
                             utils.growl.error(error.data[0].message);
                         });
@@ -273,15 +273,15 @@ define(['model/pageable'], function (Pageable) {
             };
 
             /**
-             * Show module info
-             * @param item Module
+             * Show app info
+             * @param item App
              */
             $scope.info = function(item) {
-                // Pop dialog listing module name, type, description and table of properties
+                // Pop dialog listing app name, type, description and table of properties
                 $modal.open({
                     animation: true,
                     size: 'lg',
-                    templateUrl: 'scripts/app/dialogs/module-info.html',
+                    templateUrl: 'scripts/app/dialogs/app-info.html',
                     controller: ['$scope', 'XDUtils', '$modalInstance', 'item',
                         function ($scope, utils, $modalInstance, item) {
 
@@ -312,18 +312,18 @@ define(['model/pageable'], function (Pageable) {
             };
 
             /**
-             * Takes one to module registration page
+             * Takes one to app registration page
              */
-            $scope.registerModules = function() {
-                $state.go('home.apps.registerModules');
+            $scope.registerApps = function() {
+                $state.go('home.apps.registerApps');
             };
 
             $scope.$on('$destroy', function(){
-                if ($scope.getModuleDefinitions) {
-                    utils.$timeout.cancel($scope.getModuleDefinitions);
+                if ($scope.getAppDefinitions) {
+                    utils.$timeout.cancel($scope.getAppDefinitions);
                 }
             });
 
-            loadModuleDefinitions(null/*$scope.pageable*/, true);
+            loadAppDefinitions(null/*$scope.pageable*/, true);
         }];
 });

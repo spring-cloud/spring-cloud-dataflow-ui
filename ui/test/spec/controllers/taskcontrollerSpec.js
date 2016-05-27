@@ -42,13 +42,13 @@ define([
       var controller = $controller('TaskLaunchController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
       expect(controller).toBeDefined();
     }));
-    it('should have a ModuleController', inject(function($rootScope, $controller) {
-      var controller = $controller('ModuleController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
+    it('should have a TaskAppsController', inject(function($rootScope, $controller) {
+      var controller = $controller('TaskAppsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
       expect(controller).toBeDefined();
     }));
 
-    it('should have a ModuleDetailsController', inject(function($rootScope, $controller) {
-      var controller = $controller('ModuleDetailsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
+    it('should have a AppDetailsController', inject(function($rootScope, $controller) {
+      var controller = $controller('AppDetailsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
       expect(controller).toBeDefined();
     }));
   });

@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of Dashboard streams app module.
+ * Definition of Dashboard streams applications.
  *
  * @author Ilayaperumal Gopinathan
  * @author Alex Boyko

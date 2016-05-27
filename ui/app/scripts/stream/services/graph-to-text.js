@@ -28,7 +28,7 @@ define(function () {
 	var COLON_PREFIX = ':';
     
 	/**
-	 * Graph representation of stream(s)/module(s).
+	 * Graph representation of stream(s)/app(s).
 	 * @type {joint.dia.Graph}
 	 */
 	var g;
@@ -393,7 +393,7 @@ define(function () {
 
 	/**
 	 * Translates the graph into text form.
-	 * @param {joint.dia.Graph} g Graph form of stream(s) and or module(s)
+	 * @param {joint.dia.Graph} g Graph form of stream(s) and or app(s)
 	 * @return {string} Textual form
 	 */
 	return function(g) {

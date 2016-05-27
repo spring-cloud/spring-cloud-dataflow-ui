@@ -15,30 +15,30 @@
  */
 
 /**
- * Definition of the Module Details controller
+ * Definition of the App Details controller
  *
  * @author Gunnar Hillert
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'TaskModuleService', 'XDUtils', '$state', '$stateParams',
-    function ($scope, taskModuleService, utils, $state, $stateParams) {
+  return ['$scope', 'TaskAppService', 'XDUtils', '$state', '$stateParams',
+    function ($scope, taskAppService, utils, $state, $stateParams) {
       $scope.$apply(function () {
-        $scope.moduleName = $stateParams.moduleName;
+        $scope.appName = $stateParams.appName;
         $scope.optionsPredicate = 'name';
-        var singleModulePromise = taskModuleService.getSingleModule($stateParams.moduleName).$promise;
-        utils.addBusyPromise(singleModulePromise);
+        var singleAppPromise = taskAppService.getSingleApp($stateParams.appName).$promise;
+        utils.addBusyPromise(singleAppPromise);
 
-        singleModulePromise.then(
+        singleAppPromise.then(
             function (result) {
-                $scope.moduleDetails = result;
+                $scope.appDetails = result;
               }, function (error) {
-                utils.growl.error('Error fetching module details. ' + error.data[0].message);
+                utils.growl.error('Error fetching app details. ' + error.data[0].message);
               }
             );
-        $scope.closeModuleDetails = function () {
+        $scope.closeAppDetails = function () {
             utils.$log.info('Closing Task Details Window');
-            $state.go('home.tasks.tabs.modules');
+            $state.go('home.tasks.tabs.appsList');
           };
       });
     }];

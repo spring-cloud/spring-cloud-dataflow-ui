@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 /**
- * Handles the listing of task modules.
+ * Handles the listing of task apps.
  *
  * @author Gunnar Hillert
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
 
-  return ['$scope', 'TaskModuleService', 'XDUtils', '$state',
-    function ($scope, taskModuleService, utils, $state) {
-      function getTaskModules(pageable) {
+  return ['$scope', 'TaskAppService', 'XDUtils', '$state',
+    function ($scope, taskAppService, utils, $state) {
+      function getTaskApps(pageable) {
         utils.$log.info('pageable', pageable);
-        var taskModulesPromise = taskModuleService.getAllModules(pageable).$promise;
-        utils.addBusyPromise(taskModulesPromise);
-        taskModulesPromise.then(
+        var taskAppsPromise = taskAppService.getAllApps(pageable).$promise;
+        utils.addBusyPromise(taskAppsPromise);
+        taskAppsPromise.then(
             function (result) {
               utils.$log.info(result);
               if (!!result._embedded) {
-                $scope.pageable.items = result._embedded.moduleRegistrationResourceList;
+                $scope.pageable.items = result._embedded.appRegistrationResourceList;
               }
               $scope.pageable.total = result.page.totalElements;
             }, function (result) {
@@ -45,18 +45,18 @@ define(['model/pageable'], function (Pageable) {
       };
       $scope.pageChanged = function(newPage) {
         $scope.pageable.pageNumber = newPage-1;
-        getTaskModules($scope.pageable);
+        getTaskApps($scope.pageable);
       };
 
-      $scope.viewModuleDetails = function (item) {
-        utils.$log.info('Showing Module details for module: ' + item.name);
-        $state.go('home.tasks.moduledetails', {moduleName: item.name});
+      $scope.viewAppDetails = function (item) {
+        utils.$log.info('Showing App details for app: ' + item.name);
+        $state.go('home.tasks.appdetails', {appName: item.name});
       };
       $scope.createDefinition = function (item) {
-        $state.go('home.tasks.modulecreatedefinition', {moduleName: item.name});
+        $state.go('home.tasks.appcreatedefinition', {appName: item.name});
       };
 
-      getTaskModules($scope.pageable);
+      getTaskApps($scope.pageable);
     }
   ];
 });

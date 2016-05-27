@@ -21,14 +21,14 @@
  */
 define(function () {
     'use strict';
-    return ['$scope', 'ModuleService', 'XDUtils', '$modal', '$state',
-        function ($scope, moduleService, utils, $modal, $state) {
+    return ['$scope', 'AppService', 'XDUtils', '$modal', '$state',
+        function ($scope, appService, utils, $modal, $state) {
 
             /**
-             * Creates a controller entry for a new module
+             * Creates a controller entry for a new app
              * @returns {{name: string, type: (*|string), force: boolean, uri: string}}
              */
-            function newModule() {
+            function newApp() {
                 return {
                     name: '',
                     type: $scope.types[0],
@@ -37,33 +37,33 @@ define(function () {
                 };
             }
 
-            // Module name validation RegEx pattern
+            // App name validation RegEx pattern
             $scope.namePattern = '[\\w_]+[\\w_-]*';
 
             // Basic URI validation RegEx pattern
             $scope.uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
 
-            // Module types
-            $scope.types = ['source', 'processor', 'sink', 'task', 'library'];
+            // App types
+            $scope.types = ['source', 'processor', 'sink', 'task'];
 
             /**
-             * Register modules.
+             * Register apps.
              */
             $scope.register = function() {
                 var promises = [], promise, index;
-                // Array of modules will have registered modules removed as promises are resolved,
+                // Array of apps will have registered apps removed as promises are resolved,
                 // hence create 'success' message now based on the initial data
-                var successMsg = 'Successfully registered ' + ($scope.modules.length === 1 ? 'application "' + $scope.modules[0].name + '" of type "' + $scope.modules[0].type + '"' : $scope.modules.length + ' applications.');
-                // Fire off a registration request for each module
-                $scope.modules.forEach(function(module) {
-                    promise = moduleService.registerModule(module.type, module.name, module.uri, module.force).$promise;
+                var successMsg = 'Successfully registered ' + ($scope.apps.length === 1 ? 'application "' + $scope.apps[0].name + '" of type "' + $scope.apps[0].type + '"' : $scope.apps.length + ' applications.');
+                // Fire off a registration request for each app
+                $scope.apps.forEach(function(app) {
+                    promise = appService.registerApp(app.type, app.name, app.uri, app.force).$promise;
                     promise.then(function() {
-                        // Need to find module index because index might have been changed by the time promise is resolved due to other removals
-                        index = $scope.modules.indexOf(module);
+                        // Need to find app index because index might have been changed by the time promise is resolved due to other removals
+                        index = $scope.apps.indexOf(app);
                         if (index >= 0) {
-                            $scope.modules.splice(index, 1);
+                            $scope.apps.splice(index, 1);
                         } else {
-                            utils.$log('Cannot find module in the lis of modules!');
+                            utils.$log('Cannot find app in the lis of apps!');
                         }
                     });
                     promise.catch(function(error) {
@@ -71,7 +71,7 @@ define(function () {
                     });
                     promises.push(promise);
                 });
-                // Error messages are shown per failed module registration promise
+                // Error messages are shown per failed app registration promise
                 utils.$q.all(promises).then(function() {
                     utils.growl.success(successMsg);
                     $scope.close();
@@ -82,40 +82,40 @@ define(function () {
              * Takes one to All Applications page
              */
             $scope.close = function() {
-                $state.go('home.apps.tabs.modules');
+                $state.go('home.apps.tabs.appsList');
             };
 
             /**
-             * Removes module comntroller entry
+             * Removes app comntroller entry
              * @param index Index of the entry
              */
-            $scope.removeModule = function(index) {
-                $scope.modules.splice(index, 1);
+            $scope.removeApp = function(index) {
+                $scope.apps.splice(index, 1);
             };
 
             /**
-             * Adds module controller entry at the specified index
+             * Adds app controller entry at the specified index
              * @param index Insertion index
              */
-            $scope.addModule = function(index) {
-                $scope.modules.splice(index + 1, 0, newModule());
+            $scope.addApp = function(index) {
+                $scope.apps.splice(index + 1, 0, newApp());
             };
 
             /**
              * Angular ng-model compliant 'getter/setter' model for 'force all'
-             * @param force Force flag for module registration. Overwrites exisitng module if necessary
+             * @param force Force flag for app registration. Overwrites exisitng app if necessary
              * @returns {boolean}
              */
             $scope.toggleAllForce = function(force) {
                 if (arguments.length) {
                     // Setter mode
-                    $scope.modules.forEach(function(module) {
-                       module.force = force;
+                    $scope.apps.forEach(function(app) {
+                       app.force = force;
                     });
                 } else {
                     // Getter mode
-                    for (var i = 0; i < $scope.modules.length; i++) {
-                        if (!$scope.modules[i].force) {
+                    for (var i = 0; i < $scope.apps.length; i++) {
+                        if (!$scope.apps[i].force) {
                             return false;
                         }
                     }
@@ -124,13 +124,13 @@ define(function () {
             };
 
             /**
-             * Returns true if some modules have force flag but not all of them.
+             * Returns true if some apps have force flag but not all of them.
              * @returns {boolean}
              */
             $scope.someForceButNotAll = function() {
                 var numForce = 0;
-                for (var i = 0; i < $scope.modules.length; i++) {
-                    if ($scope.modules[i].force) {
+                for (var i = 0; i < $scope.apps.length; i++) {
+                    if ($scope.apps[i].force) {
                         if (numForce !== i) {
                             return true;
                         } else {
@@ -145,7 +145,7 @@ define(function () {
                 return false;
             };
 
-            $scope.modules = [ newModule() ];
+            $scope.apps = [ newApp() ];
 
             $scope.$apply();
 

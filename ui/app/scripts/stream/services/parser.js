@@ -585,12 +585,12 @@ define(function() {
         		return result;
         	}
 
-        	// moduleArguments : DOUBLE_MINUS identifier(name) EQUALS identifier(value)
-        	function maybeEatModuleArgs() {
+        	// appArguments : DOUBLE_MINUS identifier(name) EQUALS identifier(value)
+        	function maybeEatAppArgs() {
         		var args = null;
-        		// TODO not entirely sure this first problem can happen since dashes can now be in the module names
+        		// TODO not entirely sure this first problem can happen since dashes can now be in the app names
         		if (peekToken(tokenKinds.DOUBLE_MINUS) && isNextTokenAdjacent()) {
-        			throw {'msg':'Expected whitespace after module name before option','start':peekAtToken().start};
+        			throw {'msg':'Expected whitespace after app name before option','start':peekAtToken().start};
         		}
         		while (peekToken(tokenKinds.DOUBLE_MINUS)) {
         			var dashDash = nextToken(); // skip the '--'
@@ -616,12 +616,12 @@ define(function() {
         		return args;
         	}
 
-        	// module: [label':']? identifier (moduleArguments)*
-        	function eatModule() {
+        	// app: [label':']? identifier (appArguments)*
+        	function eatApp() {
         		var label = null;
         		var name = nextToken();
         		if (!isKind(name,tokenKinds.IDENTIFIER)) {
-        			throw {'msg':'Expected module name ','start':name.start,'end':name.end};
+        			throw {'msg':'Expected app name ','start':name.start,'end':name.end};
         		}
         		if (peekToken(tokenKinds.COLON)) {
         			if (!isNextTokenAdjacent()) {
@@ -631,38 +631,38 @@ define(function() {
         			label = name;
         			name = eatToken(tokenKinds.IDENTIFIER);
         		}
-        		var moduleNameToken = name;
-        		var args = maybeEatModuleArgs();
-        		var startpos = label !== null ? label.start : moduleNameToken.start;
-        		var moduleNode = {'name':moduleNameToken.data,'start':startpos,'end':moduleNameToken.end};
+        		var appNameToken = name;
+        		var args = maybeEatAppArgs();
+        		var startpos = label !== null ? label.start : appNameToken.start;
+        		var appNode = {'name':appNameToken.data,'start':startpos,'end':appNameToken.end};
         		if (label) {
-        			moduleNode.label = label.data;
+        			appNode.label = label.data;
         		}
         		if (args) {
-        			moduleNode.options = args;
+        			appNode.options = args;
         		}
 
-        		return moduleNode;
+        		return appNode;
         	}
 
-        	// moduleList: module (| module)*
-        	// A stream may end in a module (if it is a sink) or be followed by
+        	// appList: app (| app)*
+        	// A stream may end in a app (if it is a sink) or be followed by
         	// a sink channel.
-        	function eatModuleList() {
-        		var moduleNodes = [];
-        		moduleNodes.push(eatModule());
+        	function eatAppList() {
+        		var appNodes = [];
+        		appNodes.push(eatApp());
         		while (moreTokens()) {
         			var t = peekAtToken();
         			if (isKind(t,tokenKinds.PIPE)) {
         				nextToken();
-        				moduleNodes.push(eatModule());
+        				appNodes.push(eatApp());
         			}
         			else {
         				// might be followed by sink channel
         				break;
         			}
         		}
-        		return moduleNodes;
+        		return appNodes;
         	}
 
         	// (name =)
@@ -711,7 +711,7 @@ define(function() {
 
         		var sourceChannelNode = maybeEatSourceChannel();
 
-        		// the construct queue:foo > topic:bar is a source then a sink with no module. Special handling for
+        		// the construct queue:foo > topic:bar is a source then a sink with no app. Special handling for
         		// that is right here
         		var bridge = false;
         		if (sourceChannelNode) { // so if we are just after a '>'
@@ -727,17 +727,17 @@ define(function() {
         			return streamNode;
         		}
 
-        		var moduleNodes = null;
+        		var appNodes = null;
         		if (bridge) {
-        			// Create a bridge module to hang the source/sink channels off
+        			// Create a bridge app to hang the source/sink channels off
         			tokenStreamPointer--; // Rewind so we can nicely eat the sink channel
-        			moduleNodes = [];
-        			moduleNodes.push({'name':'bridge','start':peekAtToken().startpos, 'end':peekAtToken().endpos});
+        			appNodes = [];
+        			appNodes.push({'name':'bridge','start':peekAtToken().startpos, 'end':peekAtToken().endpos});
         		}
         		else {
-        			moduleNodes = eatModuleList();
+        			appNodes = eatAppList();
         		}
-        		streamNode.modules = moduleNodes;
+        		streamNode.apps = appNodes;
         		var sinkChannelNode = maybeEatSinkChannel();
 
         		// Further data is an error
@@ -774,7 +774,7 @@ define(function() {
 	
 		        	var streamdef = eatStream();
 		        	$log.info('JSParse: parsed to '+JSON.stringify(streamdef));
-		        	// streamDef = {"modules":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
+		        	// streamDef = {"apps":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
 		        	
 		        	// {"lines":[{"errors":null,"success":
 		        	// [{"group":"UNKNOWN_1","label":"time","type":"source","name":"time","options":{},"sourceChannelName":null,"sinkChannelName":null},{"group":"UNKNOWN_1","label":"log","type":"sink","name":"log","options":{},"sourceChannelName":null,"sinkChannelName":null}]
@@ -782,14 +782,14 @@ define(function() {
 		        	
 		        	var streamName = streamdef.name?streamdef.name:'UNKNOWN_'+lineNumber;
 		        	var success = [];
-		        	if (streamdef.modules) {
+		        	if (streamdef.apps) {
 						var alreadySeen = {};
-		        		for (var m=0;m<streamdef.modules.length;m++) {
+		        		for (var m=0;m<streamdef.apps.length;m++) {
 		        			var expectedType = 'processor';
 		        			if (m === 0 && !streamdef.sourceChannel) {
 		        				expectedType = 'source';
 		        			}
-		        			if (m === (streamdef.modules.length-1) && !streamdef.sourceChannel) {
+		        			if (m === (streamdef.apps.length-1) && !streamdef.sourceChannel) {
 		        				expectedType = 'sink';
 		        			}
 				        	var sourceChannelName = null;
@@ -797,25 +797,25 @@ define(function() {
 				        		sourceChannelName = streamdef.sourceChannel.channel.name;
 				        	}
 				        	var sinkChannelName = null;
-				        	if (m===streamdef.modules.length-1 && streamdef.sinkChannel) {
+				        	if (m===streamdef.apps.length-1 && streamdef.sinkChannel) {
 				        		sinkChannelName = streamdef.sinkChannel.channel.name;
 				        	}
-		        			var module = streamdef.modules[m];
+		        			var app = streamdef.apps[m];
 		        			var uglyObject = {};
 		        			uglyObject.group=streamName;
-		        			if (module.label) {
-		        				uglyObject.label = module.label;
+		        			if (app.label) {
+		        				uglyObject.label = app.label;
 		        			}
 		        			uglyObject.type = expectedType;
-	        				uglyObject.name = module.name;
-	        				uglyObject.range = {'start':{'ch':module.start,'line':lineNumber},'end':{'ch':module.end,'line':lineNumber}};
+	        				uglyObject.name = app.name;
+	        				uglyObject.range = {'start':{'ch':app.start,'line':lineNumber},'end':{'ch':app.end,'line':lineNumber}};
 	        				var options = {};
 	        				var optionsranges = {};
-	        				if (module.options) {
+	        				if (app.options) {
 	        					options = {};
 	        					optionsranges = {};
-	        					for (var o=0;o<module.options.length;o++) {
-	        						var option = module.options[o];
+	        					for (var o=0;o<app.options.length;o++) {
+	        						var option = app.options[o];
 	        						options[option.name]=option.value;
 	        						optionsranges[option.name]={'start':{'ch':option.start,'line':lineNumber},'end':{'ch':option.end,'line':lineNumber}};
 	        					}
@@ -827,13 +827,13 @@ define(function() {
 				        	success.push(uglyObject);
 
 				        	var nameToCheck = uglyObject.label?uglyObject.label:uglyObject.name;
-							// Check that each module has a unique label (either explicit or implicit)
+							// Check that each app has a unique label (either explicit or implicit)
 							var previous = alreadySeen[nameToCheck];
 							if (typeof previous === 'number') {
 								recordError(streamdef, {
-									'msg': module.label ?
-										'Label \'' + module.label + '\' should be unique but module \'' + module.name + '\' (at position ' + m + ') and module \'' + streamdef.modules[previous].name + '\' (at position ' + previous + ') both use it'
-										: 'Module \'' + module.name + '\' should be unique within the stream, use a label to differentiate multiple occurrences',
+									'msg': app.label ?
+										'Label \'' + app.label + '\' should be unique but app \'' + app.name + '\' (at position ' + m + ') and app \'' + streamdef.apps[previous].name + '\' (at position ' + previous + ') both use it'
+										: 'App \'' + app.name + '\' should be unique within the stream, use a label to differentiate multiple occurrences',
 									'range': uglyObject.range
 								});
 							} else {
@@ -844,7 +844,7 @@ define(function() {
 		        		// error case: ':stream:foo >'
 		        		// there is no target for the tap yet
 		        		if (streamdef.sourceChannel) {
-		        			// need to build a dummy module to hang the sourcechannel off
+		        			// need to build a dummy app to hang the sourcechannel off
 		        			var obj = {};
 		        			obj.sourceChannelName = streamdef.sourceChannel.channel.name;
 		        			success.push(obj);

@@ -1,4 +1,4 @@
-<h1 ng-show="moduleDetails.name">Create Definition for Task Module {{moduleDetails.name}}</h1>
+<h1 ng-show="appDetails.name">Create Definition for Task App {{appDetails.name}}</h1>
 
 	<form name="createDefinitionForm" class="form-horizontal" role="form" ng-submit="submitTaskDefinition()" novalidate>
 		<fieldset id="commonDefinitionParameters">
@@ -6,10 +6,10 @@
 				<label for="definitionName" class="col-sm-3 control-label">Definition Name</label>
 				<div class="col-sm-9">
 					<input type="text" id="definitionName" name="definitionName" autofocus
-					       required not-the-same-as="{{moduleDetails.name}}"
+					       required not-the-same-as="{{appDetails.name}}"
 					       class="form-control" placeholder="Enter a definition name" ng-model="taskDefinition.name">
 					<span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="createDefinitionForm.definitionName.$invalid"></span>
-					<p class="help-block">The name of the definition must be different from the module name</p>
+					<p class="help-block">The name of the definition must be different from the app name</p>
 				</div>
 			</div>
 		</fieldset>

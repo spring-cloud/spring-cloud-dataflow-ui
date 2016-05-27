@@ -15,7 +15,7 @@
  */
 
 /**
- * Dashboard runtime module services.
+ * Dashboard runtime apps services.
  *
  * @author Ilayaperumal Gopinathan
  * @author Gunnar Hillert
@@ -23,29 +23,22 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdContainerAdmin.services', [])
-      .factory('ContainerService', function ($resource, $rootScope, $log) {
+  return angular.module('xdRuntimeAdmin.services', [])
+      .factory('RuntimeService', function ($resource, $rootScope, $log) {
         return {
-          getContainers: function (pageable) {
+          getRuntimeApps: function (pageable) {
             if (pageable === 'undefined') {
-              $log.info('Getting all containers.');
-              return $resource($rootScope.xdAdminServerUrl + '/runtime/apps', {}).get();
+              $log.info('Getting all runtime apps.');
+              return $resource($rootScope.dataflowServerUrl + '/runtime/apps', {}).get();
             }
             else {
-              $log.info('Getting containers for pageable:', pageable);
-              return $resource($rootScope.xdAdminServerUrl + '/runtime/apps',
+              $log.info('Getting all runtime applications for pageable:', pageable);
+              return $resource($rootScope.dataflowServerUrl + '/runtime/apps',
                 {
                   'page': pageable.pageNumber,
                   'size': pageable.pageSize
                 }).get();
             }
-          },
-          shutdownContainer: function (containerId) {
-            return $resource($rootScope.xdAdminServerUrl + '/runtime/containers?containerId=' + containerId, null, {
-              shutdownContainer: {
-                method: 'DELETE'
-              }
-            }).shutdownContainer();
           }
         };
       });

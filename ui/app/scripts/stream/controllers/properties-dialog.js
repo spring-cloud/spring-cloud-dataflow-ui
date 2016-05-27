@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of the Module Creation dialog controller
+ * Definition of the App Creation dialog controller
  *
  * @author Alex Boyko
  */
@@ -44,7 +44,7 @@ define([], function () {
                     name: 'Stream Name',
                     value: cell.attr('stream-name'),
                     defaultValue: '',
-                    description: 'The name of the stream started by this module',
+                    description: 'The name of the stream started by this app',
                     attr: 'stream-name',
                     pattern: '[\\w_]+[\\w_-]*'
                 };
@@ -58,7 +58,7 @@ define([], function () {
                     defaultValue: cell.attr('metadata/name'),
                     name: 'label',
                     id: 'label',
-                    description: 'Label of a module',
+                    description: 'Label of the app',
                     attr: titleProperty,
                     pattern: '[\\w_]+[\\w_-]*'
                 };

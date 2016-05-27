@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of Dashboard directives of the analytics module.
+ * Definition of Dashboard directives of the analytics apps.
  *
  * @author Ilayaperumal Gopinathan
  */

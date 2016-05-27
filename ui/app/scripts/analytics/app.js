@@ -15,7 +15,7 @@
  */
 
 /**
- * Analytics Module for the Dataflow Dashboard.
+ * Analytics App for the Dataflow Dashboard.
  *
  * @author Ilayaperumal Gopinathan
  */

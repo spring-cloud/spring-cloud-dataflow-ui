@@ -30,17 +30,17 @@ define(['angular'], function (angular) {
             $log.info('Getting single task definition for task named ' + taskname);
             return $http({
               method: 'GET',
-              url: $rootScope.xdAdminServerUrl + '/tasks/definitions/' + taskname
+              url: $rootScope.dataflowServerUrl + '/tasks/definitions/' + taskname
             });
           },
           getAllTaskDefinitions: function (pageable) {
             if (pageable === 'undefined') {
               $log.info('Getting all task definitions.');
-              return $resource($rootScope.xdAdminServerUrl + '/tasks/definitions', {}).get();
+              return $resource($rootScope.dataflowServerUrl + '/tasks/definitions', {}).get();
             }
             else {
               $log.info('Getting task definitions for pageable:', pageable);
-              return $resource($rootScope.xdAdminServerUrl + '/tasks/definitions',
+              return $resource($rootScope.dataflowServerUrl + '/tasks/definitions',
                 {
                   'page': pageable.pageNumber,
                   'size': pageable.pageSize
@@ -53,7 +53,7 @@ define(['angular'], function (angular) {
                 }).get();
             }
             $log.info('Getting all task definitions.');
-            return $resource($rootScope.xdAdminServerUrl + '/tasks/definitions', {}, {
+            return $resource($rootScope.dataflowServerUrl + '/tasks/definitions', {}, {
               query: {
                 method: 'GET',
                 isArray: true
@@ -62,38 +62,38 @@ define(['angular'], function (angular) {
           }
         };
       })
-      .factory('TaskModules', function ($resource, $rootScope) {
-        return $resource($rootScope.xdAdminServerUrl + '/modules?type=task', {}, {
+      .factory('TaskApps', function ($resource, $rootScope) {
+        return $resource($rootScope.dataflowServerUrl + '/apps?type=task', {}, {
           query: {
             method: 'GET',
             isArray: true
           }
         }).query();
       })
-      .factory('ModuleMetaData', function ($resource, $log, $rootScope) {
+      .factory('AppMetaData', function ($resource, $log, $rootScope) {
         return {
-          getModuleMetaDataForTask: function (taskName) {
-              $log.info('Getting ModuleMetaData for task ' + taskName);
-              return $resource($rootScope.xdAdminServerUrl + '/runtime/modules',
+          getAppMetadataForTask: function (taskName) {
+              $log.info('Getting AppMetaData for task ' + taskName);
+              return $resource($rootScope.dataflowServerUrl + '/runtime/apps',
               {'taskname' : taskName}, {
-                getModuleMetaDataForTask: {
+                getAppMetadataForTask: {
                   method: 'GET',
                   isArray: true
                 }
-              }).getModuleMetaDataForTask();
+              }).getAppMetadataForTask();
             }
         };
       })
-      .factory('TaskModuleService', function ($resource, $http, $log, $rootScope) {
+      .factory('TaskAppService', function ($resource, $http, $log, $rootScope) {
         return {
-          getAllModules: function (pageable) {
+          getAllApps: function (pageable) {
             if (pageable === 'undefined') {
-              $log.info('Getting all tasks modules.');
-              return $resource($rootScope.xdAdminServerUrl + '/modules', { 'type': 'task' }).get();
+              $log.info('Getting all tasks apps.');
+              return $resource($rootScope.dataflowServerUrl + '/apps', { 'type': 'task' }).get();
             }
             else {
-              $log.info('Getting task modules for pageable:', pageable);
-              return $resource($rootScope.xdAdminServerUrl + '/modules',
+              $log.info('Getting task apps for pageable:', pageable);
+              return $resource($rootScope.dataflowServerUrl + '/apps',
                 {
                   'type': 'task',
                   'page': pageable.pageNumber,
@@ -101,12 +101,12 @@ define(['angular'], function (angular) {
                 }).get();
             }
           },
-          getSingleModule: function (moduleName) {
-            $log.info('Getting details for module222 ' + moduleName);
-            return $resource($rootScope.xdAdminServerUrl + '/modules/task/' + moduleName + '?unprefixedPropertiesOnly=true').get();
+          getSingleApp: function (appName) {
+            $log.info('Getting details for app222 ' + appName);
+            return $resource($rootScope.dataflowServerUrl + '/apps/task/' + appName + '?unprefixedPropertiesOnly=true').get();
           },
           createDefinition: function (name, definition) {
-            return $resource($rootScope.xdAdminServerUrl + '/tasks/definitions', {}, {
+            return $resource($rootScope.dataflowServerUrl + '/tasks/definitions', {}, {
               createDefinition: {
                 method: 'POST',
                 params: {
@@ -122,7 +122,7 @@ define(['angular'], function (angular) {
         return {
           destroy: function (taskDefinition) {
             $log.info('Undeploy Task ' + taskDefinition.name);
-            return $resource($rootScope.xdAdminServerUrl + '/tasks/definitions/' + taskDefinition.name, null, {
+            return $resource($rootScope.dataflowServerUrl + '/tasks/definitions/' + taskDefinition.name, null, {
               destroy: { method: 'DELETE' }
             }).destroy();
           }
@@ -133,11 +133,11 @@ define(['angular'], function (angular) {
           getAllTaskExecutions: function (pageable) {
             if (pageable === 'undefined') {
               $log.info('Getting all task executions.');
-              return $resource($rootScope.xdAdminServerUrl + '/tasks/executions', {}).get();
+              return $resource($rootScope.dataflowServerUrl + '/tasks/executions', {}).get();
             }
             else {
               $log.info('Getting task definitions for pageable:', pageable);
-              return $resource($rootScope.xdAdminServerUrl + '/tasks/executions',
+              return $resource($rootScope.dataflowServerUrl + '/tasks/executions',
                 {
                   'page': pageable.pageNumber,
                   'size': pageable.pageSize
@@ -172,7 +172,7 @@ define(['angular'], function (angular) {
           },
           launch: function (taskName, jsonDataAsString) {
             console.log('Launching task...' + taskName);
-            $resource($rootScope.xdAdminServerUrl + '/tasks/deployments/:taskname', { 'taskname': taskName, 'properties': jsonDataAsString }, {
+            $resource($rootScope.dataflowServerUrl + '/tasks/deployments/:taskname', { 'taskname': taskName, 'properties': jsonDataAsString }, {
               launch: { method: 'POST' }
             }).launch().$promise.then(
                 function () {

@@ -15,7 +15,7 @@
  */
 
 /**
- * SCDF Module services.
+ * SCDF App services.
  *
  * @author Andy Clement
  * @author Alex Boyko
@@ -24,60 +24,60 @@ define(['angular'], function (angular) {
     'use strict';
 
     return angular.module('xdAppsAdmin.services', [])
-        .factory('ModuleService', function ($resource, $rootScope, $log, $http) {
+        .factory('AppService', function ($resource, $rootScope, $log, $http) {
             return {
                 getDefinitions: function (pageable) {
                     var params = {};
                     if (!pageable) {
-                        $log.info('Getting all module definitions.');
+                        $log.info('Getting all app definitions.');
                     }
                     else {
-                        // $log.info('Getting paged module definitions', pageable);
+                        // $log.info('Getting paged app definitions', pageable);
                         params = {
                             'page': pageable.pageNumber,
                             'size': pageable.pageSize
                         };
                     }
-                    return $resource($rootScope.xdAdminServerUrl + '/apps', params, {
+                    return $resource($rootScope.dataflowServerUrl + '/apps', params, {
                         query: {
                             method: 'GET'
                         }
                     }).get();
                 },
-                createCompositeModule: function(moduleName,definition) {
-                    $log.info('Creating composite module name=' + moduleName + ' def=' + definition);
+                createCompositeApp: function(appName,definition) {
+                    $log.info('Creating composite app name=' + appName + ' def=' + definition);
                     return $http({
                         method: 'POST',
-                        url: $rootScope.xdAdminServerUrl + '/apps',
+                        url: $rootScope.dataflowServerUrl + '/apps',
                         params: {
-                            name: moduleName,
+                            name: appName,
                             definition: definition
                         }
                     });
                 },
-                getModuleInfo: function(moduleType,moduleName) {
+                getAppInfo: function(appType,appName) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/apps/'+moduleType+'/'+moduleName
+                        url: $rootScope.dataflowServerUrl + '/apps/'+appType+'/'+appName
                     });
                 },
-                registerModule: function(type, name, uri, force) {
-                    return $resource($rootScope.xdAdminServerUrl + '/apps/' + type + '/' + name, {}, {
-                        registerModule: {
+                registerApp: function(type, name, uri, force) {
+                    return $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
+                        registerApp: {
                             method: 'POST',
                             params: {
                                 uri: uri,
                                 force: force ? true : false
                             }
                         }
-                    }).registerModule();
+                    }).registerApp();
                 },
-                unregisterModule: function(type, name) {
-                    return $resource($rootScope.xdAdminServerUrl + '/apps/' + type + '/' + name, {}, {
-                        unregisterModule: {
+                unregisterApp: function(type, name) {
+                    return $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
+                        unregisterApp: {
                             method: 'DELETE'
                         }
-                    }).unregisterModule();
+                    }).unregisterApp();
                 }
             };
         });

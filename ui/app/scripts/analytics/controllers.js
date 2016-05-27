@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of Dataflow Dashbaord controllers for the analytics module.
+ * Definition of Dataflow Dashbaord controllers for the analytics apps.
  *
  * @author Ilayaperumal Gopinathan
  */

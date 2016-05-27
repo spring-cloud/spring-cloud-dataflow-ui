@@ -15,34 +15,18 @@
  */
 
 /**
- * App for Dashboard runtime modules.
+ * Controller for runtime applications.
  *
  * @author Ilayaperumal Gopinathan
  */
-define([
-  'angular',
-  'uiRouter',
-  'ngResource',
-  'cgBusy',
-  'ngAnimate',
-  'ngGrowl',
-  './controllers',
-  './services',
-  '../shared/controllers',
-  '../shared/services',
-  '../shared/interceptors'
-], function (angular) {
+define(['angular'], function (angular) {
   'use strict';
-  return angular.module('xdContainerAdmin', [
-    'xdContainerAdmin.services',
-    'xdContainerAdmin.controllers',
-    'xdShared.controllers',
-    'xdShared.services',
-    'xdShared.interceptors',
-    'ui.router',
-    'ngResource',
-    'ngAnimate',
-    'cgBusy',
-    'angular-growl'
-  ]);
+
+  return angular.module('xdRuntimeAdmin.controllers', ['xdRuntimeAdmin.services'])
+      .controller('RuntimeAppsController',
+          ['$scope', '$injector', function ($scope, $injector) {
+            require(['runtime/controllers/runtime-apps'], function (runtimeAppsController) {
+              $injector.invoke(runtimeAppsController, this, {'$scope': $scope});
+            });
+          }]);
 });

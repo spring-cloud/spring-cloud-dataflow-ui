@@ -29,11 +29,11 @@ define(['angular'], function (angular) {
           getAllJobExecutions: function (pageable) {
             if (pageable === 'undefined') {
               $log.info('Getting all task executions.');
-              return $resource($rootScope.xdAdminServerUrl + '/jobs/executions', {}).get();
+              return $resource($rootScope.dataflowServerUrl + '/jobs/executions', {}).get();
             }
             else {
               $log.info('Getting task definitions for pageable:', pageable);
-              return $resource($rootScope.xdAdminServerUrl + '/jobs/executions',
+              return $resource($rootScope.dataflowServerUrl + '/jobs/executions',
                 {
                   'page': pageable.pageNumber,
                   'size': pageable.pageSize
@@ -48,17 +48,17 @@ define(['angular'], function (angular) {
           },
           getSingleJobExecution: function (jobExecutionId) {
             $log.info('Getting details for Job Execution with Id ' + jobExecutionId);
-            return $resource($rootScope.xdAdminServerUrl + '/jobs/executions/' + jobExecutionId).get();
+            return $resource($rootScope.dataflowServerUrl + '/jobs/executions/' + jobExecutionId).get();
           },
           restart: function (jobExecution) {
             $log.info('Restart Job Execution' + jobExecution.executionId);
-            return $resource($rootScope.xdAdminServerUrl + '/jobs/executions/' + jobExecution.executionId, { 'restart': true }, {
+            return $resource($rootScope.dataflowServerUrl + '/jobs/executions/' + jobExecution.executionId, { 'restart': true }, {
               restart: { method: 'PUT' }
             }).restart();
           },
           stop: function (jobExecution) {
               $log.info('Stop Job Execution' + jobExecution.executionId);
-              return $resource($rootScope.xdAdminServerUrl + '/jobs/executions/' + jobExecution.executionId, { 'stop': true }, {
+              return $resource($rootScope.dataflowServerUrl + '/jobs/executions/' + jobExecution.executionId, { 'stop': true }, {
                 stop: { method: 'PUT' }
               }).stop();
             }
@@ -68,11 +68,11 @@ define(['angular'], function (angular) {
         return {
           getSingleStepExecution: function (jobExecutionId, stepExecutionId) {
             $log.info('Getting details for Step Execution with Id ' + stepExecutionId + '(Job Execution Id ' + jobExecutionId + ')');
-            return $resource($rootScope.xdAdminServerUrl + '/jobs/executions/' + jobExecutionId +  '/steps/' + stepExecutionId).get();
+            return $resource($rootScope.dataflowServerUrl + '/jobs/executions/' + jobExecutionId +  '/steps/' + stepExecutionId).get();
           },
           getStepExecutionProgress: function (jobExecutionId, stepExecutionId) {
             $log.info('Getting progress details for Step Execution with Id ' + stepExecutionId + '(Job Execution Id ' + jobExecutionId + ')');
-            return $resource($rootScope.xdAdminServerUrl + '/jobs/executions/' + jobExecutionId +  '/steps/' + stepExecutionId + '/progress').get();
+            return $resource($rootScope.dataflowServerUrl + '/jobs/executions/' + jobExecutionId +  '/steps/' + stepExecutionId + '/progress').get();
           }
         };
       });
