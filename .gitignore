@@ -6,7 +6,7 @@ ui/app/lib/
 ui/app/styles/main.css
 ui/app/styles/main.css.map
 ui/.tmp
-src/
+src/main/resources/public/dashboard
 target/
 .classpath
 .project

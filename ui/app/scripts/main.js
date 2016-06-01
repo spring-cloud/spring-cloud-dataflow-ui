@@ -118,7 +118,7 @@ define([
   'angular'
 ], function (require, angular) {
   'use strict';
-  
+
   function startApp() {
     require(['app', './routes'], function () {
       require(['domReady!'], function (document) {
@@ -138,14 +138,14 @@ define([
   var promiseFeature = $http.get('/features', {timeout: timeout});
 
   promiseHttp.then(function(response) {
+    console.log('Security info retrieved ...', response.data);
     app.constant('securityInfo', response.data);
 
     promiseFeature.then(function(featuresResponse) {
       app.constant('featuresInfo', featuresResponse.data);
       startApp();
     }, function() {
-      console.error('Cannot load enabled features info');
-      startApp();
+      console.error('Cannot load enabled features info. Application cannot be loaded.');
     });
   }, function(errorResponse) {
     var errorMessage = 'Error retrieving security info from ' + securityInfoUrl + ' (timeout: ' + timeout + 'ms)';

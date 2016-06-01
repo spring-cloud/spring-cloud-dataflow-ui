@@ -105,7 +105,7 @@ module.exports = function (grunt) {
           context: [
             '/authenticate', '/batch', '/tasks', '/jobs', '/logout', '/meta', '/apps', '/streams',
             '/runtime', '/validation', '/management', '/dashboard', '/security', '/completions',
-            '/metrics', '/features'],
+            '/metrics', '/features', '/login'],
           host: 'localhost',
           port: 9393,
           changeOrigin: true
