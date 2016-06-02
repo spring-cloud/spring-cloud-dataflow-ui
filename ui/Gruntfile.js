@@ -14,7 +14,7 @@ module.exports = function (grunt) {
     // Project settings
     xd: {
       app: 'app',
-      dist:          '../src/main/resources/public/admin-ui',
+      dist:          '../src/main/resources/public/dashboard',
       distTemplates: '../src/main/resources/templates'
     },
     // Set bower task's targetDir to use app directory
@@ -104,7 +104,7 @@ module.exports = function (grunt) {
         {
           context: [
             '/authenticate', '/batch', '/tasks', '/jobs', '/logout', '/meta', '/apps', '/streams',
-            '/runtime', '/validation', '/management', '/admin-ui', '/security', '/completions',
+            '/runtime', '/validation', '/management', '/dashboard', '/security', '/completions',
             '/metrics'],
           host: 'localhost',
           port: 9393,
