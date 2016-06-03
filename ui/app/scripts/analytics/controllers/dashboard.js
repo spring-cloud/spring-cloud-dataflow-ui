@@ -20,8 +20,10 @@
  * @author Andy Clement
  * @author Alex Boyko
  */
-define([], function () {
+define(function(require) {
     'use strict';
+
+    var angular = require('angular');
 
     var ITEMS_COOKIE_KEY = 'analytics.dashboard.items';
 
@@ -39,9 +41,15 @@ define([], function () {
                             var streams = [];
 
                             if (!!data._embedded) {
-                                data._embedded.metricResourceList.forEach(function(entry) {
-                                    streams.push(entry.name);
-                                });
+                                if (data._embedded.aggregateCounterResourceList && angular.isArray(data._embedded.aggregateCounterResourceList)) {
+                                    data._embedded.aggregateCounterResourceList.forEach(function(entry) {
+                                        streams.push(entry.name);
+                                    });
+                                } else {
+                                    data._embedded.metricResourceList.forEach(function(entry) {
+                                        streams.push(entry.name);
+                                    });
+                                }
                             }
 
                             type.streams = streams;
