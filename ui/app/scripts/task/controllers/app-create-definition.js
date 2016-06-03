@@ -21,7 +21,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'TaskAppService', 'XDUtils', '$state', '$stateParams',
+  return ['$scope', 'TaskAppService', 'DataflowUtils', '$state', '$stateParams',
     function ($scope, taskAppService, utils, $state, $stateParams) {
       $scope.$apply(function () {
 
@@ -74,7 +74,7 @@ define([], function () {
                 }
                 $scope.appDetails = result;
               }, function () {
-                utils.growl.error('Error fetching data. Is the XD server running?');
+                utils.growl.error('Error fetching data. Is the Data Flow server running?');
               });
         $scope.closeCreateDefinition = function () {
             utils.$log.info('Closing Task Definition Creation Window');

@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdAuth.controllers', ['xdAuth.services'])
+  return angular.module('dataflowAuth.controllers', ['dataflowAuth.services'])
       .controller('LoginController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['auth/controllers/login'], function (loginController) {

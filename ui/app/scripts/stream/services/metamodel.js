@@ -42,7 +42,7 @@ define(function (require) {
 
     var angular = require('angular');
 
-    return ['$http', 'XDUtils', 'AppService', 'StreamParserService', 'MetamodelUtils',
+    return ['$http', 'DataflowUtils', 'AppService', 'StreamParserService', 'MetamodelUtils',
         function ($http, utils, appService, ParserService, metamodelUtils) {
 
             // Pre ES6 browsers don't have 'startsWith' function, hence add it if necessary
@@ -94,17 +94,17 @@ define(function (require) {
                     listeners.splice(index);
                 }
             }
-            
+
             var mapOfSpecialProperties = {
                 'http':['^server.port$'],
                 'jdbc':['^spring\.datasource\..*'],
                 'jms':['^spring\.jms\..*'],
-                'rabbit':['^spring\.rabbitmq\..*']                                
+                'rabbit':['^spring\.rabbitmq\..*']
             };
-            
+
             /**
              * Special properties are dotted boot properties that particular apps utilise. This
-             * handling is here until the infrastructure offers a proper whitelisting mechanism. 
+             * handling is here until the infrastructure offers a proper whitelisting mechanism.
              */
             function isSpecialProperty(nodeName,propertyName) {
                 var hasSpecialProperties = mapOfSpecialProperties[nodeName];

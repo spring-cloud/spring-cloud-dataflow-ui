@@ -29,9 +29,9 @@ define([
   './services'
 ], function (angular) {
   'use strict';
-  return angular.module('xdAuth', [
-    'xdAuth.services',
-    'xdAuth.controllers',
+  return angular.module('dataflowAuth', [
+    'dataflowAuth.services',
+    'dataflowAuth.controllers',
     'ui.router',
     'ngResource',
     'cgBusy',

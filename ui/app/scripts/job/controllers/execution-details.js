@@ -21,7 +21,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'JobExecutions', 'XDUtils', '$state', '$stateParams',
+  return ['$scope', 'JobExecutions', 'DataflowUtils', '$state', '$stateParams',
     function ($scope, jobExecutions, utils, $state, $stateParams) {
       function loadJobExecutionDetails(executionId) {
         var singleJobExecutionPromise = jobExecutions.getSingleJobExecution(executionId).$promise;

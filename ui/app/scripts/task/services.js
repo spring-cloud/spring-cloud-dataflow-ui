@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdTasksAdmin.services', [])
+  return angular.module('dataflowTasks.services', [])
       .factory('TaskDefinitions', function ($resource, $rootScope, $log, $http) {
         return {
           getSingleTaskDefinition: function (taskname) {

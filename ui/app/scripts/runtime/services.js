@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdRuntimeAdmin.services', [])
+  return angular.module('dataflowRuntime.services', [])
       .factory('RuntimeService', function ($resource, $rootScope, $log) {
         return {
           getRuntimeApps: function (pageable) {

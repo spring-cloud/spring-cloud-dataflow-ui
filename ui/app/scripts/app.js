@@ -35,15 +35,15 @@ define([
 
   console.log('Loading Spring Cloud Data Flow UI');
 
-  return  angular.module('xdAdmin', [
-    'xdConf',
-    'xdAppsAdmin',
-    'xdAnalyticsAdmin',
-    'xdJobsAdmin',
-    'xdTasksAdmin',
-    'xdStreamsAdmin',
-    'xdRuntimeAdmin',
-    'xdAuth',
+  return  angular.module('dataflowMain', [
+    'dataflowConf',
+    'dataflowApps',
+    'dataflowAnalytics',
+    'dataflowJobs',
+    'dataflowTasks',
+    'dataflowStreams',
+    'dataflowRuntime',
+    'dataflowAuth',
     'spring.flo'
   ]);
 });

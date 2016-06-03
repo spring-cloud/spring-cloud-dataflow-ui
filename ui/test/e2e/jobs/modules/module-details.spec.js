@@ -38,27 +38,27 @@ describe('Tests for the Module Details Page', function() {
     it('there should be a table with 4 columns', function() {
       browser.get('#/tasks/modules/timestamp');
       browser.sleep(2000);
-      expect(element.all(by.css('#xd-content table thead th')).count()).toEqual(4);
+      expect(element.all(by.css('#dataflow-content table thead th')).count()).toEqual(4);
     });
     it('the first column is labelled "Name"', function() {
       browser.get('#/tasks/modules/timestamp');
       browser.sleep(2000);
-      expect(element(by.css('#xd-content table thead th:nth-child(1)')).getText()).toEqual('Name');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(1)')).getText()).toEqual('Name');
     });
     it('the second column is labelled "Type"', function() {
       browser.get('#/tasks/modules/timestamp');
       browser.sleep(4000);
-      expect(element(by.css('#xd-content table thead th:nth-child(2)')).getText()).toEqual('Type');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(2)')).getText()).toEqual('Type');
     });
     it('the third column is labelled "Default Value"', function() {
       browser.get('#/tasks/modules/timestamp');
       browser.sleep(2000);
-      expect(element(by.css('#xd-content table thead th:nth-child(3)')).getText()).toEqual('Default Value');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(3)')).getText()).toEqual('Default Value');
     });
     it('the fourth column is labelled "Description"', function() {
       browser.get('#/tasks/modules/timestamp');
       browser.sleep(2000);
-      expect(element(by.css('#xd-content table thead th:nth-child(4)')).getText()).toEqual('Description');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(4)')).getText()).toEqual('Description');
     });
     it('if the user clicks the "back" button, the module list page should be loaded', function() {
       browser.get('#/tasks/modules/timestamp');

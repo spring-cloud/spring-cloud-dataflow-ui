@@ -22,7 +22,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'XDUtils', '$state', '$stateParams', 'StreamService',
+  return ['$scope', 'DataflowUtils', '$state', '$stateParams', 'StreamService',
     function ($scope, utils, $state, $stateParams, streamService) {
       $scope.$apply(function () {
         $scope.definitionName = $stateParams.definitionName;

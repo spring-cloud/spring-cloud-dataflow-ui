@@ -22,7 +22,7 @@
 define(['angular'], function (angular) {
     'use strict';
 
-    return angular.module('xdAnalyticsAdmin.controllers', ['xdAnalyticsAdmin.services'])
+    return angular.module('dataflowAnalytics.controllers', ['dataflowAnalytics.services'])
         .controller('DashboardController',
         ['$scope', '$injector', function ($scope, $injector) {
             require(['analytics/controllers/dashboard'], function (dashboardController) {

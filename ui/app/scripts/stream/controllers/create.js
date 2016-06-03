@@ -27,8 +27,8 @@ define(function(require) {
 
   var GRID_ON_COOKIE_KEY = 'createStream.grid.on';
   var AUTOLINK_ON_COOKIE_KEY = 'createStream.autolink.on';
-  
-  return ['XDUtils', '$scope', 'StreamMetamodelService', '$modal','$cookieStore',
+
+  return ['DataflowUtils', '$scope', 'StreamMetamodelService', '$modal','$cookieStore',
     function (utils, $scope, metamodelService, $modal, $cookieStore) {
 	  utils.$log.info('Stream Creation Controller running (create.js)');
 
@@ -77,14 +77,14 @@ define(function(require) {
 						  }
 					  });
 
-					  // Create stream dependency map based on new line numbers 
+					  // Create stream dependency map based on new line numbers
 					  var dependencyMap = {};
 					  Object.keys(dependencyLineMap).forEach(function(oldLine) {
 						  dependencyMap[old2newLineNumbers[oldLine]] = dependencyLineMap[oldLine].map(function(entry) {
 							  return old2newLineNumbers[entry];
 						  });
 					  });
-					  
+
 					  return {
 						  text: text,
 						  dependencies: dependencyMap,

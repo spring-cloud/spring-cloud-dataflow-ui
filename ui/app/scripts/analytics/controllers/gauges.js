@@ -22,7 +22,7 @@
 define(function () {
     'use strict';
 
-    return ['$scope', 'GaugeService', 'XDUtils', '$timeout',
+    return ['$scope', 'GaugeService', 'DataflowUtils', '$timeout',
         function ($scope, gaugeService, utils, $timeout) {
 
             var _refreshRate = 2;

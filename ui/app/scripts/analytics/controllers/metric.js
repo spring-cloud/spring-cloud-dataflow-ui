@@ -22,7 +22,7 @@
 define([], function () {
     'use strict';
 
-    return ['XDUtils', '$scope', '$timeout',
+    return ['DataflowUtils', '$scope', '$timeout',
         function (utils, $scope, $timeout) {
             function processCountsData(data) {
                 $scope.metricsData.values = data.values;

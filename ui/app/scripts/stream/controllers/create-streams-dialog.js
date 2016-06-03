@@ -21,10 +21,10 @@
  */
 define(function(require) {
     'use strict';
-    
+
     var angular = require('angular');
 
-    return ['XDUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
+    return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
 
             $scope.streamdefs = [];

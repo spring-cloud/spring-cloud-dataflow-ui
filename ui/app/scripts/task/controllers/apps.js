@@ -21,7 +21,7 @@
 define(['model/pageable'], function (Pageable) {
   'use strict';
 
-  return ['$scope', 'TaskAppService', 'XDUtils', '$state',
+  return ['$scope', 'TaskAppService', 'DataflowUtils', '$state',
     function ($scope, taskAppService, utils, $state) {
       function getTaskApps(pageable) {
         utils.$log.info('pageable', pageable);

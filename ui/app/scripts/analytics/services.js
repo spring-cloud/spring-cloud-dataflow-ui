@@ -22,7 +22,7 @@
 define(['angular'], function (angular) {
     'use strict';
 
-    return angular.module('xdAnalyticsAdmin.services', [])
+    return angular.module('dataflowAnalytics.services', [])
         .factory('CounterService', function ($rootScope, $http) {
             return {
                 getAll: function (params) {
