@@ -190,7 +190,7 @@ define(['./app'], function (dashboard) {
       controller: 'JobScheduleController'
     })
     .state('home.tasks.tabs.appsList', {
-      url : 'tasks/apps',
+      url : '/apps',
       templateUrl : taskTemplatesPath + '/apps.html',
       controller: 'TaskAppsController'
     })

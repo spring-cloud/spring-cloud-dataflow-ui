@@ -35,7 +35,7 @@ describe('Stream Tests', function() {
       expect(element(by.css('#dataflow-content h1')).getText()).toEqual('Streams');
     });
     it('there should be 1 tab which is active', function() {
-      expect(element.all(by.css('#dataflow-content ul li')).count()).toEqual(1);
+      expect(element.all(by.css('#dataflow-content ul li')).count()).toEqual(2);
       expect(element.all(by.css('#dataflow-content ul li.active')).count()).toEqual(1);
     });
     it('the active tab should be labelled "Definitions"', function() {

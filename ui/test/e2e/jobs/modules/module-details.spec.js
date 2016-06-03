@@ -28,47 +28,47 @@ describe('Tests for the Module Details Page', function() {
     browser.ignoreSynchronization = false;
   });
 
-  describe('When I navigate to the Module Details URL for the "timestamp" module - "#/tasks/modules/timestamp"', function() {
-    it('The page title should be "Module Details"', function() {
-      browser.get('#/tasks/modules/timestamp');
+  describe('When I navigate to the App Details URL for the "timestamp" module - "#/tasks/apps/timestamp"', function() {
+    it('The page title should be "App Details"', function() {
+      browser.get('#/tasks/apps/timestamp');
       browser.sleep(2000);
-      expect(browser.getCurrentUrl()).toContain('#/tasks/modules/timestamp')
-      expect(browser.getTitle()).toBe('Module Details');
+      expect(browser.getCurrentUrl()).toContain('#/tasks/apps/timestamp')
+      expect(browser.getTitle()).toBe('App Details');
     });
     it('there should be a table with 4 columns', function() {
-      browser.get('#/tasks/modules/timestamp');
+      browser.get('#/tasks/apps/timestamp');
       browser.sleep(2000);
       expect(element.all(by.css('#dataflow-content table thead th')).count()).toEqual(4);
     });
     it('the first column is labelled "Name"', function() {
-      browser.get('#/tasks/modules/timestamp');
-      browser.sleep(2000);
+      browser.get('#/tasks/apps/timestamp');
+      browser.sleep(4000);
       expect(element(by.css('#dataflow-content table thead th:nth-child(1)')).getText()).toEqual('Name');
     });
     it('the second column is labelled "Type"', function() {
-      browser.get('#/tasks/modules/timestamp');
+      browser.get('#/tasks/apps/timestamp');
       browser.sleep(4000);
       expect(element(by.css('#dataflow-content table thead th:nth-child(2)')).getText()).toEqual('Type');
     });
     it('the third column is labelled "Default Value"', function() {
-      browser.get('#/tasks/modules/timestamp');
-      browser.sleep(2000);
+      browser.get('#/tasks/apps/timestamp');
+      browser.sleep(4000);
       expect(element(by.css('#dataflow-content table thead th:nth-child(3)')).getText()).toEqual('Default Value');
     });
     it('the fourth column is labelled "Description"', function() {
-      browser.get('#/tasks/modules/timestamp');
+      browser.get('#/tasks/apps/timestamp');
       browser.sleep(2000);
       expect(element(by.css('#dataflow-content table thead th:nth-child(4)')).getText()).toEqual('Description');
     });
     it('if the user clicks the "back" button, the module list page should be loaded', function() {
-      browser.get('#/tasks/modules/timestamp');
+      browser.get('#/tasks/apps/timestamp');
       browser.sleep(4000);
       var backButton = element(by.css('#back-button'));
       expect(backButton.isPresent()).toBe(true);
       expect(backButton.getText()).toEqual('Back');
       backButton.click();
       browser.sleep(2000);
-      expect(browser.getCurrentUrl()).toContain('/tasks/modules');
+      expect(browser.getCurrentUrl()).toContain('/tasks/apps');
     });
   });
 });
