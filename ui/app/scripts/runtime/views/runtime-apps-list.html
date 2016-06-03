@@ -18,9 +18,9 @@
     </thead>
     <tbody>
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter: {appDeploymentId: filterQuery}" total-items="pageable.total" ng-show="!item.inactive">
-        <td id="container-id">
-            <a data-toggle="modal" data-target="#containerDetails{{$index}}" data-original-title="Container Attributes">{{item.deploymentId}}</a>
-            <div class="modal fade" dataflow-modal id="containerDetails{{$index}}" role="dialog">
+        <td id="application-id">
+            <a data-toggle="modal" data-target="#applicationDetails{{$index}}" data-original-title="Application Attributes">{{item.deploymentId}}</a>
+            <div class="modal fade" dataflow-modal id="applicationDetails{{$index}}" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -74,11 +74,11 @@
                 <h4 class="modal-title">Confirm Shutdown Action</h4>
             </div>
             <div class="modal-body">
-                <p>This action will shutdown the container <b>{{destroyItem}}</b>. Are you sure?</p>
+                <p>This action will shutdown the application <b>{{destroyItem}}</b>. Are you sure?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="shutdownContainer(destroyItem)">Confirm Shutdown
+                <button type="button" class="btn btn-primary" ng-click="shutdownApplication(destroyItem)">Confirm Shutdown
                 </button>
             </div>
         </div>
