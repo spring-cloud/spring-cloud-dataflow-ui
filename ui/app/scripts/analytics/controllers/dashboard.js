@@ -106,13 +106,13 @@ define([], function () {
                     streams: [],
                     visualizations: ['Bar-Chart', 'Graph-Chart'],
                 },
-                //{
-                //    label: 'Aggregate-Counters',
-                //    service: $injector.get('AggregateCounterService'),
-                //    streams: [],
-                //    visualizations: ['Bar-Chart'],
-                //    requestOptions: {resolution: 'minute'}
-                //},
+                {
+                   label: 'Aggregate-Counters',
+                   service: $injector.get('AggregateCounterService'),
+                   streams: [],
+                   visualizations: ['Bar-Chart'],
+                   requestOptions: {resolution: 'minute'}
+                },
                 {
                     label: 'Field-Value-Counters',
                     service: $injector.get('FieldValueCounterService'),
