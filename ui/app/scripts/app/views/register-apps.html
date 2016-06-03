@@ -1,5 +1,5 @@
 <h1>Register Applications</h1>
-<p>Register one or more applications by entering a <strong>Name</strong>, <strong>Type</strong> and <strong>URI</strong> of the application Jar. The URI is typically provided using the Maven coordinates of the Jar (e.g. <code>maven://io.spring.cloud:scdf-sample-app:jar:exec:1.0.0.BUILD-SNAPSHOT</code>), but can be a local file or a docker image URI.</p>
+<p>Register one or more applications by entering a <strong>Name</strong>, <strong>Type</strong> and <strong>URI</strong> of the application Jar. The URI is typically provided using the Maven coordinates of the Jar (e.g. <code>maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT</code>), but can be a local file or a docker image URI.</p>
 <hr/>
 <form name="registerAppsForm" role="form" ng-submit="register()" novalidate>
     <table class="table form-table">
@@ -35,7 +35,7 @@
                 </td>
                 <td>
                     <div ng-class="registerAppsForm[$index + '_uri'].$invalid ? 'has-warning has-feedback' : ''">
-                        <input type="text" id="{{$index + '_uri'}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<maven://io.spring.cloud:scdf-sample-app:jar:exec:1.0.0.BUILD-SNAPSHOT>" required ng-model="app.uri" ng-pattern="uriPattern">
+                        <input type="text" id="{{$index + '_uri'}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT>" required ng-model="app.uri" ng-pattern="uriPattern">
                         <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerAppsForm[$index + '_uri'].$invalid"></span>
                     </div>
                 </td>
