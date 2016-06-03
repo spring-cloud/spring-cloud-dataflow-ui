@@ -32,29 +32,29 @@ describe('Stream Tests', function() {
     it('the main header should be labelled "Streams"', function() {
       browser.get('#/streams/definitions');
       browser.sleep(2000);
-      expect(element(by.css('#xd-content h1')).getText()).toEqual('Streams');
+      expect(element(by.css('#dataflow-content h1')).getText()).toEqual('Streams');
     });
     it('there should be 1 tab which is active', function() {
-      expect(element.all(by.css('#xd-content ul li')).count()).toEqual(1);
-      expect(element.all(by.css('#xd-content ul li.active')).count()).toEqual(1);
+      expect(element.all(by.css('#dataflow-content ul li')).count()).toEqual(1);
+      expect(element.all(by.css('#dataflow-content ul li.active')).count()).toEqual(1);
     });
     it('the active tab should be labelled "Definitions"', function() {
-      expect(element(by.css('#xd-content ul li.active a')).getText()).toEqual('Definitions');
+      expect(element(by.css('#dataflow-content ul li.active a')).getText()).toEqual('Definitions');
     });
     it('there should be a table with 4 columns', function() {
-      expect(element.all(by.css('#xd-content table thead th')).count()).toEqual(4);
+      expect(element.all(by.css('#dataflow-content table thead th')).count()).toEqual(4);
     });
     it('the first column is labelled "Name"', function() {
-      expect(element(by.css('#xd-content table thead th:nth-child(1)')).getText()).toEqual('Name');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(1)')).getText()).toEqual('Name');
     });
     it('the second column is labelled "Definition"', function() {
-      expect(element(by.css('#xd-content table thead th:nth-child(2)')).getText()).toEqual('Definition');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(2)')).getText()).toEqual('Definition');
     });
     it('the third column is labelled "Status"', function() {
-      expect(element(by.css('#xd-content table thead th:nth-child(3)')).getText()).toEqual('Status');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(3)')).getText()).toEqual('Status');
     });
     it('the forth column is labelled "Actions"', function() {
-      expect(element(by.css('#xd-content table thead th:nth-child(4)')).getText()).toEqual('Actions');
+      expect(element(by.css('#dataflow-content table thead th:nth-child(4)')).getText()).toEqual('Actions');
     });
     it('the "Definitions" Tab should have a "Quick Filter" search input field', function() {
       expect(element(by.css('#filterTable')).isPresent()).toBe(true);

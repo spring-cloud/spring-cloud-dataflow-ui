@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdTasksAdmin.controllers', [])
+  return angular.module('dataflowTasks.controllers', [])
       .controller('TaskDefinitionsController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['task/controllers/definitions'], function (taskDefinitionsController) {

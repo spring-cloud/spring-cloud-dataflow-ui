@@ -21,7 +21,7 @@
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
-  return ['$scope', 'StreamService', 'XDUtils', '$timeout', '$rootScope', '$state',
+  return ['$scope', 'StreamService', 'DataflowUtils', '$timeout', '$rootScope', '$state',
     function ($scope, streamService, utils, $timeout, $rootScope, $state) {
 
       function loadStreamDefinitions(pageable, showGrowl) {

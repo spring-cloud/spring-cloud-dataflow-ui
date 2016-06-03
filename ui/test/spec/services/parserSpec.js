@@ -17,19 +17,20 @@
 /**
  * @author Andy Clement
  * @author Alex Boyko
- */ 
+ * @author Gunnar Hillert
+ */
 define(['angular', 'angularMocks', 'app'], function(angular) {
   'use strict';
 
   describe('Unit: Testing JS Parsing of DSL', function() {
 	beforeEach(function() {
-          angular.mock.module('xdAdmin');
+          angular.mock.module('dataflowMain');
         });
-    
+
     it('should contain a StreamParserService service', inject(function(StreamParserService) {
     	expect(StreamParserService).toBeDefined();
     }));
-    
+
     it('basic stream', inject(function(StreamParserService) {
     	var output = StreamParserService.parse('time | log');
     	// {"lines":[
@@ -73,7 +74,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
         expect(timeNode.range.end.ch).toEqual(4);
         expect(timeNode.sinkChannelName).toEqual('destination');
     }));
-    
+
     it('source destination parsing', inject(function(StreamParserService) {
     	// {"lines":[{"errors":null,"success":[{"group":"UNKNOWN_0","type":"processor","name":"log","range":{"start":{"ch":15,"line":0},"end":{"ch":18,"line":0}},"options":{},"optionsranges":{},"sourceChannelName":"destination","sinkChannelName":null}]}]}
     	var output = StreamParserService.parse(':destination > log');
@@ -90,7 +91,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
         expect(logNode.range.end.ch).toEqual(18);
         expect(logNode.sourceChannelName).toEqual('destination');
     }));
-    
+
     it('tap destination parsing', inject(function(StreamParserService) {
     	var output = StreamParserService.parse(':someStream.foo > log');
     	// console.log('parse response'+JSON.stringify(output));
@@ -106,7 +107,7 @@ define(['angular', 'angularMocks', 'app'], function(angular) {
         expect(logNode.range.end.ch).toEqual(21);
         expect(logNode.sourceChannelName).toEqual('tap:someStream.foo');
     }));
-    
+
   });
 });
 

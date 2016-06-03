@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,36 +20,36 @@ define([
 ], function(angular) {
   'use strict';
 
-  describe('Unit: Testing XD Shared Services', function() {
+  describe('Unit: Testing Data Flow Shared Services', function() {
     beforeEach(function() {
-      angular.mock.module('xdAdmin');
+      angular.mock.module('dataflowMain');
     });
 
-    it('The app name should be retrieved from a definition with parameters.', inject(function(XDUtils) {
-      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
-      expect(XDUtils.getAppNameFromJobDefinition('myMod --param=1234')).toEqual('myMod');
+    it('The app name should be retrieved from a definition with parameters.', inject(function(DataflowUtils) {
+      expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
+      expect(DataflowUtils.getAppNameFromJobDefinition('myMod --param=1234')).toEqual('myMod');
     }));
 
-    it('The app name should be retrieved from a definition without parameters.', inject(function(XDUtils) {
-      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
-      expect(XDUtils.getAppNameFromJobDefinition('myMod2')).toEqual('myMod2');
+    it('The app name should be retrieved from a definition without parameters.', inject(function(DataflowUtils) {
+      expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
+      expect(DataflowUtils.getAppNameFromJobDefinition('myMod2')).toEqual('myMod2');
     }));
-    it('Getting a app name from an undefined definition should casuse an error.', inject(function(XDUtils) {
-      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
+    it('Getting a app name from an undefined definition should casuse an error.', inject(function(DataflowUtils) {
+      expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
-        XDUtils.getAppNameFromJobDefinition();
+        DataflowUtils.getAppNameFromJobDefinition();
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
-    it('Getting a app name from an undefined definition should casuse an error 2.', inject(function(XDUtils) {
-      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
+    it('Getting a app name from an undefined definition should casuse an error 2.', inject(function(DataflowUtils) {
+      expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
-        XDUtils.getAppNameFromJobDefinition(undefined);
+        DataflowUtils.getAppNameFromJobDefinition(undefined);
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
-    it('Getting a app name from a null definition should casuse an error.', inject(function(XDUtils) {
-      expect(XDUtils.getAppNameFromJobDefinition).toBeDefined();
+    it('Getting a app name from a null definition should casuse an error.', inject(function(DataflowUtils) {
+      expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
-        XDUtils.getAppNameFromJobDefinition(null);
+        DataflowUtils.getAppNameFromJobDefinition(null);
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
   });

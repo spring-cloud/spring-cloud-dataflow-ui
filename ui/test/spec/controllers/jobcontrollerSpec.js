@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,15 @@ define([
 ], function(angular) {
   'use strict';
 
-  angular.module('xdConf', [])
+  angular.module('dataflowConf', [])
     .constant('securityInfo', {});
 
   describe('Unit: Testing Jobs Controllers', function() {
 
     var $httpBackend, $rootScope, $scope;
 
-    beforeEach(angular.mock.module('xdConf'));
-    beforeEach(angular.mock.module('xdJobsAdmin'));
+    beforeEach(angular.mock.module('dataflowConf'));
+    beforeEach(angular.mock.module('dataflowJobs'));
 
     beforeEach(inject(function(_$httpBackend_, _$rootScope_) {
       $httpBackend = _$httpBackend_;

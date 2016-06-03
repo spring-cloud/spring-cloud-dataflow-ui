@@ -22,20 +22,20 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdShared.interceptors', [])
-      .factory('httpErrorInterceptor', function (XDUtils, $location) {
+  return angular.module('dataflowShared.interceptors', [])
+      .factory('httpErrorInterceptor', function (DataflowUtils, $location) {
         return {
           responseError: function (rejection) {
             if (rejection.status === 0) {
-              XDUtils.growl.error('Looks like the Dataflow server is down.');
+              DataflowUtils.growl.error('Looks like the Dataflow server is down.');
             }
             if (rejection.status === 401) {
-              XDUtils.growl.error('Not authenticated. Please login again.');
+              DataflowUtils.growl.error('Not authenticated. Please login again.');
               //$window.location.href = '/dashboard/login';
               $location.path('/login');
             }
-            XDUtils.$log.error('Response Error ' + rejection.status, rejection);
-            return XDUtils.$q.reject(rejection);
+            DataflowUtils.$log.error('Response Error ' + rejection.status, rejection);
+            return DataflowUtils.$q.reject(rejection);
           }
         };
       });

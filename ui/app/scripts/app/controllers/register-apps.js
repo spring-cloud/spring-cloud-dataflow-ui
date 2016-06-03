@@ -18,10 +18,11 @@
  * Definition apps registration page controller.
  *
  * @author Alex Boyko
+ * @author Gunnar Hillert
  */
 define(function () {
     'use strict';
-    return ['$scope', 'AppService', 'XDUtils', '$modal', '$state',
+    return ['$scope', 'AppService', 'DataflowUtils', '$modal', '$state',
         function ($scope, appService, utils, $modal, $state) {
 
             /**

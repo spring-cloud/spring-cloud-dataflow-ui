@@ -22,7 +22,7 @@
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
-  return ['$scope', 'TaskExecutions', 'XDUtils', function ($scope, taskExecutions, utils) {
+  return ['$scope', 'TaskExecutions', 'DataflowUtils', function ($scope, taskExecutions, utils) {
     function loadTaskExecutions(pageable) {
       var taskExcutionsPromise = taskExecutions.getAllTaskExecutions(pageable).$promise;
       utils.addBusyPromise(taskExcutionsPromise);
@@ -34,7 +34,7 @@ define(['model/pageable'], function (Pageable) {
             $scope.pageable.total = result.page.totalElements;
             utils.$log.info('$scope.pageable', $scope.pageable);
           }, function () {
-            utils.growl.error('Error fetching data. Is the XD server running?');
+            utils.growl.error('Error fetching data. Is the Data Flow server running?');
           });
     }
     $scope.pageable = new Pageable();

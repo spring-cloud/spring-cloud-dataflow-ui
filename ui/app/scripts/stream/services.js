@@ -22,10 +22,10 @@
  */
 define(function(require) {
   'use strict';
-    
-  var angular = require('angular');  
 
-  return angular.module('xdStreamsAdmin.services', ['ui.bootstrap'])
+  var angular = require('angular');
+
+  return angular.module('dataflowStreams.services', ['ui.bootstrap'])
       .factory('StreamService', function ($resource, $rootScope, $log, $http) {
         return {
           getDefinitions: function (pageable) {
@@ -88,7 +88,7 @@ define(function(require) {
                 }
               });
           }
-        };        
+        };
       }).
       factory('StreamMetamodelService',require('stream/services/metamodel')).
       factory('StreamParserService',require('stream/services/parser')).

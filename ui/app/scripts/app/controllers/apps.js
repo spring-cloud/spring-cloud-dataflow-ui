@@ -18,10 +18,11 @@
  * Definition of all apps table page controller.
  *
  * @author Alex Boyko
+ * @author Gunnar Hillert
  */
 define(['model/pageable'], function (Pageable) {
     'use strict';
-    return ['$scope', 'AppService', 'XDUtils', '$modal', '$state',
+    return ['$scope', 'AppService', 'DataflowUtils', '$modal', '$state',
         function ($scope, appService, utils, $modal, $state) {
 
             /**
@@ -282,7 +283,7 @@ define(['model/pageable'], function (Pageable) {
                     animation: true,
                     size: 'lg',
                     templateUrl: 'scripts/app/dialogs/app-info.html',
-                    controller: ['$scope', 'XDUtils', '$modalInstance', 'item',
+                    controller: ['$scope', 'DataflowUtils', '$modalInstance', 'item',
                         function ($scope, utils, $modalInstance, item) {
 
                             $scope.name = item.name;

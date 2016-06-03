@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdJobsAdmin.services', [])
+  return angular.module('dataflowJobs.services', [])
       .factory('JobExecutions', function ($resource, $rootScope, $log) {
         return {
           getAllJobExecutions: function (pageable) {

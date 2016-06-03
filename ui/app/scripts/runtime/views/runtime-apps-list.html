@@ -20,7 +20,7 @@
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize track by item.deploymentId | filter: {appDeploymentId: filterQuery}" total-items="pageable.total" ng-show="!item.inactive">
         <td id="container-id">
             <a data-toggle="modal" data-target="#containerDetails{{$index}}" data-original-title="Container Attributes">{{item.deploymentId}}</a>
-            <div class="modal fade" xd-modal id="containerDetails{{$index}}" role="dialog">
+            <div class="modal fade" dataflow-modal id="containerDetails{{$index}}" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -66,7 +66,7 @@
 </table>
 <dir-pagination-controls template-url="scripts/directives/dirPagination.tpl.html"
                          on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
-<div class="modal fade" xd-modal id="confirm-shutdown" role="dialog">
+<div class="modal fade" dataflow-modal id="confirm-shutdown" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

@@ -22,7 +22,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdRuntimeAdmin.controllers', ['xdRuntimeAdmin.services'])
+  return angular.module('dataflowRuntime.controllers', ['dataflowRuntime.services'])
       .controller('RuntimeAppsController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['runtime/controllers/runtime-apps'], function (runtimeAppsController) {

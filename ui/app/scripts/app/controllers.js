@@ -18,11 +18,12 @@
  * Definition of main Dashboard controllers.
  *
  * @author Alex Boyko
+ * @author Gunnar Hillert
  */
 define(['angular'], function (angular) {
     'use strict';
 
-    return angular.module('xdAppsAdmin.controllers', [])
+    return angular.module('dataflowApps.controllers', [])
         .controller('AppsController',
             ['$scope', '$injector', function ($scope, $injector) {
                 require(['app/controllers/apps'], function (appsController) {

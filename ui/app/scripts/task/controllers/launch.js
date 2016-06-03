@@ -22,7 +22,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'TaskLaunchService', 'XDUtils', '$state', '$stateParams', '$location',
+  return ['$scope', 'TaskLaunchService', 'DataflowUtils', '$state', '$stateParams', '$location',
     function ($scope, taskLaunchService, utils, $state, $stateParams, $location) {
       $scope.$apply(function () {
         var taskLaunchRequest = $scope.taskLaunchRequest = {

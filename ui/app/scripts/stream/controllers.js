@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdStreamsAdmin.controllers', ['xdStreamsAdmin.services'])
+  return angular.module('dataflowStreams.controllers', ['dataflowStreams.services'])
       .controller('StreamsDefinitionsController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['stream/controllers/definitions'], function (streamDefinitionsController) {

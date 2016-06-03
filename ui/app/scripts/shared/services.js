@@ -22,8 +22,8 @@
 define(['angular', 'xregexp'], function (angular) {
   'use strict';
 
-  return angular.module('xdShared.services', [])
-      .factory('XDUtils', function ($log, growl, $timeout, $q, $rootScope) {
+  return angular.module('dataflowShared.services', [])
+      .factory('DataflowUtils', function ($log, growl, $timeout, $q, $rootScope) {
 
         var appNameRegex = new XRegExp('[\\p{N}|\\p{L}|\\p{Po}]*(?=[\\s]*--)', 'i');
 
@@ -57,14 +57,14 @@ define(['angular', 'xregexp'], function (angular) {
           }
         };
       })
-      .factory('xdVersionInfo', function ($resource, $rootScope, XDUtils) {
-        console.log('xdVersionInfo');
-        var xdVersionInfoPromise =  $resource($rootScope.dataflowServerUrl + '/management/info', {}, {
+      .factory('dataflowVersionInfo', function ($resource, $rootScope, DataflowUtils) {
+        console.log('dataflowVersionInfo');
+        var dataflowVersionInfoPromise =  $resource($rootScope.dataflowServerUrl + '/management/info', {}, {
           query: {
             method: 'GET'
           }
         }).query();
-        XDUtils.addBusyPromise(xdVersionInfoPromise);
-        return xdVersionInfoPromise;
+        DataflowUtils.addBusyPromise(dataflowVersionInfoPromise);
+        return dataflowVersionInfoPromise;
       });
 });

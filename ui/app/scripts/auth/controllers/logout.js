@@ -21,7 +21,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$window', 'XDUtils', '$state', '$log', '$rootScope', '$http', function ($window, XDUtils, $state, $log, $rootScope, $http) {
+  return ['$window', 'DataflowUtils', '$state', '$log', '$rootScope', '$http', function ($window, DataflowUtils, $state, $log, $rootScope, $http) {
     $log.info('Logging out...');
     $http.get($rootScope.dataflowServerUrl + '/dashboard/logout');
 
@@ -32,7 +32,7 @@ define([], function () {
     };
 
     delete $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName];
-    XDUtils.growl.success('Logged out.');
+    DataflowUtils.growl.success('Logged out.');
     $state.go('login');
   }];
 });

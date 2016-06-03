@@ -24,7 +24,7 @@ define(function (require) {
 
     var Pageable = require('model/pageable');
 
-    return ['$scope', 'CounterService', 'XDUtils', '$timeout',
+    return ['$scope', 'CounterService', 'DataflowUtils', '$timeout',
         function ($scope, counterService, utils, $timeout) {
 
             var _refreshRate = 2;

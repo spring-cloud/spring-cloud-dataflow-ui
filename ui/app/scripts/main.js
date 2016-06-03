@@ -119,7 +119,7 @@ define([
 ], function (require, angular) {
   'use strict';
 
-  var app = angular.module('xdConf', []);
+  var app = angular.module('dataflowConf', []);
 
   var initInjector = angular.injector(['ng']);
   var $http = initInjector.get('$http');
@@ -133,7 +133,7 @@ define([
     require(['app', './routes'], function () {
       require(['domReady!'], function (document) {
         console.log('Start angular application.');
-        angular.bootstrap(document, ['xdAdmin']);
+        angular.bootstrap(document, ['dataflowMain']);
       });
     });
   }, function(errorResponse) {
