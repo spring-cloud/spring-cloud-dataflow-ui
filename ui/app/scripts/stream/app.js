@@ -31,6 +31,7 @@ define([
   'ngCookies',
   './controllers',
   './services',
+  './directives',
   '../app/services',
   '../shared/services',
   '../shared/interceptors'
@@ -39,6 +40,7 @@ define([
   return angular.module('xdStreamsAdmin', [
     'xdStreamsAdmin.services',
     'xdStreamsAdmin.controllers',
+    'xdStreamsAdmin.directives',
     'xdShared.services',
     'xdShared.interceptors',
     'xdAppsAdmin.services',

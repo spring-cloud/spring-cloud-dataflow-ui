@@ -39,6 +39,7 @@ define(function(require) {
 			  animation: true,
 			  templateUrl: 'scripts/stream/views/create-stream-dialog.html',
 			  controller: 'CreateStreamsDialogController',
+			  size: 'lg',
 			  resolve: {
 				  definitionData: function () {
 					  var dependencyLineMap = {};

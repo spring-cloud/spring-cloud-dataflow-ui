@@ -49,8 +49,20 @@ define(function(require) {
                         cell: function () {
                             return element;
                         },
-                        isStreamStart: function() {
-                          return utils.canBeHeadOfStream(flo.getGraph(), element);
+                        streamInfo: function() {
+                            if (utils.canBeHeadOfStream(flo.getGraph(), element)) {
+                                var info = {
+                                    streamNames: []
+                                };
+                                flo.getGraph().getElements().forEach(function(e) {
+                                   if (element !== e && utils.canBeHeadOfStream(flo.getGraph(), e)) {
+                                       if (e.attr('stream-name')) {
+                                           info.streamNames.push(e.attr('stream-name'));
+                                       }
+                                   } 
+                                });
+                                return info;
+                            }
                         }
                     }
                 }).result.then(function (results) {
