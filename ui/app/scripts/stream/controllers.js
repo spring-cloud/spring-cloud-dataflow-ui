@@ -43,9 +43,9 @@ define(['angular'], function (angular) {
           });
       }])
       .controller('PropertiesDialogController',
-      ['$scope','$injector', '$modalInstance', 'cell', 'isStreamStart', function ($scope, $injector, $modalInstance, cell, isStreamStart) {
+      ['$scope','$injector', '$modalInstance', 'cell', 'streamInfo', function ($scope, $injector, $modalInstance, cell, streamInfo) {
           require(['stream/controllers/properties-dialog'], function (propertiesDialogController) {
-              $injector.invoke(propertiesDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'cell': cell, 'isStreamStart': isStreamStart});
+              $injector.invoke(propertiesDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'cell': cell, 'streamInfo': streamInfo});
           });
       }])
       .controller('DefinitionDeployController',

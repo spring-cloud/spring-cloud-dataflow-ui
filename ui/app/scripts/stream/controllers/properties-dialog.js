@@ -22,8 +22,8 @@
 define([], function () {
     'use strict';
 
-    return ['$scope', 'StreamMetamodelService', '$modalInstance', 'cell', 'isStreamStart',
-        function ($scope, metaModelService, $modalInstance, cell, isStreamStart) {
+    return ['$scope', 'StreamMetamodelService', '$modalInstance', 'cell', 'streamInfo',
+        function ($scope, metaModelService, $modalInstance, cell, streamInfo) {
 
             $scope.cell = cell;
 
@@ -38,7 +38,7 @@ define([], function () {
 
             var property;
 
-            if (isStreamStart) {
+            if (streamInfo) {
                 property = {
                     id: 'stream-name',
                     name: 'Stream Name',
@@ -46,7 +46,8 @@ define([], function () {
                     defaultValue: '',
                     description: 'The name of the stream started by this app',
                     attr: 'stream-name',
-                    pattern: '[\\w_]+[\\w_-]*'
+                    pattern: '[\\w_]+[\\w_-]*',
+                    streamNames: streamInfo.streamNames
                 };
                 $scope.derivedProperties[property.id] = property;
             }
@@ -127,7 +128,9 @@ define([], function () {
             };
 
             $scope.getInputType = function(property) {
-                if (property.type === 'java.lang.Long' || property.type === 'java.lang.Integer') {
+                if (property.id === 'stream-name') {
+                    return property.id;
+                } else if (property.type === 'java.lang.Long' || property.type === 'java.lang.Integer') {
                     return 'number';
                 } else if (property.type === 'java.lang.Boolean') {
                     return 'checkbox';
