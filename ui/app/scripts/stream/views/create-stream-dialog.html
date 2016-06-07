@@ -24,11 +24,11 @@
             <tr ng-repeat="def in streamdefs" ng-if="!def.created" ng-class="streamForm['stream-' + $index].$invalid ? 'has-warning has-feedback' : ''">
                 <td>
                     <input class="form-control" name="{{'stream-' + $index}}" type="text" placeholder="<Stream Name>" ng-model-options="{ debounce: 250 }"
-                           ng-model="def.name" ng-pattern="/^\s*[\w\-]+\s*$/" ng-trim="true" required unique-in="stream-" unique-stream-name/>
+                           ng-model="def.name" ng-pattern="/^\s*[\w\-]+\s*$/" ng-trim="true" required unique-field-values="stream-" unique-stream-name/>
                     <p ng-show="streamForm['stream-' + $index].$error.required" class="help-block validation-block">Stream name is required!</p>
                     <p ng-show="streamForm['stream-' + $index].$error.uniqueStreamName" class="help-block validation-block">Stream name is already taken!</p>
                     <p ng-show="streamForm['stream-' + $index].$error.pattern" class="help-block validation-block">Invalid stream name!</p>
-                    <p ng-show="streamForm['stream-' + $index].$error.unique" class="help-block validation-block">Duplicate stream name on the form!</p>
+                    <p ng-show="streamForm['stream-' + $index].$error.uniqueFieldValues" class="help-block validation-block">Duplicate stream name on the form!</p>
                 </td>
                 <td>
                     <label class="control-label">{{def.def}}</label>

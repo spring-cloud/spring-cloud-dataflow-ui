@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of Dashboard directives of the analytics apps.
+ * Directives for streams UI
  *
  * @author Alex Boyko
  */
@@ -75,16 +75,16 @@ define(function(require) {
                 }
             };
         }])
-        .directive('uniqueIn', [function() {
+        .directive('uniqueFieldValues', [function() {
             return {
                 require: 'ngModel',
                 link: function(scope, elm, attrs, ctrl) {
                     var form = elm.inheritedData('$formController');
 
                     ctrl.$parsers.push(function(value) {
-                        // no value - we it's valid (required takes care of it)
+                        // no value -> it's valid (required takes care of it)
                         if (!value) {
-                            ctrl.$setValidity('unique', true);
+                            ctrl.$setValidity('uniqueFieldValues', true);
                             return value;
                         }
 
@@ -97,14 +97,18 @@ define(function(require) {
                         var unique = true;
                         var formControl;
                         var oldValueDupIndexes = [];
-                        while (angular.isObject(form[attrs.uniqueIn + index])) {
-                            formControl = form[attrs.uniqueIn + index];
+                        // Iterate over all fields of pattern <Pattern><numerical index starting at 0>
+                        while (angular.isObject(form[attrs.uniqueFieldValues + index])) {
+                            formControl = form[attrs.uniqueFieldValues + index];
                             if (ctrl !== formControl) {
+                                // form field value has the same value as about to be set -> mark duplicate
                                 if (formControl.$modelValue === value) {
-                                    formControl.$setValidity('unique', false);
+                                    formControl.$setValidity('uniqueFieldValues', false);
                                     unique = false;
                                 }
+                                // form field has the old value of the field
                                 if (formControl.$modelValue && formControl.$modelValue === ctrl.$modelValue) {
+                                    // Record number of fields having the old value set to unset duplicate later if there is only one value recorded
                                     oldValueDupIndexes.push(index);
                                 }
                             }
@@ -113,10 +117,10 @@ define(function(require) {
 
                         // Only one form field has an old value so it's not a duplicate anymore
                         if (oldValueDupIndexes.length === 1) {
-                            form[attrs.uniqueIn + oldValueDupIndexes[0]].$setValidity('unique', true);
+                            form[attrs.uniqueFieldValues + oldValueDupIndexes[0]].$setValidity('uniqueFieldValues', true);
                         }
 
-                        ctrl.$setValidity('unique', unique);
+                        ctrl.$setValidity('uniqueFieldValues', unique);
                         return value;
                     });
                 }
