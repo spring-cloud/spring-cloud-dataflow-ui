@@ -38,7 +38,7 @@
 			</div>
 		</div>
 	</fieldset>
-	<fieldset id="taskArguments3" ng-if="!taskLaunchRequest.taskParameters.length">
+	<fieldset id="taskArguments3" ng-if="!taskLaunchRequest.taskArguments.length">
 		<div class="row">
 			<div class="col-xs-12 text-center">
 				No Arguments added. If needed, please add a task arguments before launching the task.
@@ -47,13 +47,13 @@
 	</fieldset>
 	<div class="row" style="margin-top: 1em;">
 		<div class="col-xs-6 text-left">
-			<h2>Task Parameters</h2>
+			<h2>Task Properties</h2>
 		</div>
-		<div class="col-xs-6 text-right"><button type="button" class="btn btn-default add-task-param" ng-click="addParameter()">
-			<span class="glyphicon glyphicon-plus"></span> Parameter</button></div>
+		<div class="col-xs-6 text-right"><button type="button" class="btn btn-default add-task-param" ng-click="addProperty()">
+			<span class="glyphicon glyphicon-plus"></span> Property</button></div>
 	</div>
 	<hr>
-	<fieldset id="taskParameters" ng-form="taskParameterForm" ng-repeat="taskParam in taskLaunchRequest.taskParameters" ng-if="taskLaunchRequest.taskParameters.length">
+	<fieldset id="taskProperties" ng-form="taskPropertyForm" ng-repeat="taskProperty in taskLaunchRequest.taskProperties" ng-if="taskLaunchRequest.taskProperties.length">
 		<div class="row" ng-show="!$first">
 			<div class="col-xs-12">
 				<hr>
@@ -61,30 +61,30 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-2">
-				<button data-id="" type="button" class="btn btn-warning" data-dismiss="modal" ng-click="removeParameter(taskParam)"><span class="glyphicon glyphicon-remove"></span></button>
+				<button data-id="" type="button" class="btn btn-warning" data-dismiss="modal" ng-click="removeProperty(taskProperty)"><span class="glyphicon glyphicon-remove"></span></button>
 			</div>
 			<div class="col-xs-10">
 				<div class="form-group">
-					<div class="col-xs-10 col-sm-5" ng-class="taskParameterForm.key.$invalid && taskParameterForm.key.$touched ? 'has-warning has-feedback' : ''">
-						<input type="text" name="key" class="form-control" placeholder="Parameter Key" ng-model="taskParam.key" required>
+					<div class="col-xs-10 col-sm-5" ng-class="taskPropertyForm.key.$invalid && taskPropertyForm.key.$touched ? 'has-warning has-feedback' : ''">
+						<input type="text" name="key" class="form-control" placeholder="Parameter Key" ng-model="taskProperty.key" required>
 						<span class="glyphicon glyphicon-warning-sign form-control-feedback"
-								ng-show="taskParameterForm.key.$invalid && taskParameterForm.key.$touched"></span>
-						<p class="help-block" ng-show="taskParameterForm.key.$error.required && taskParameterForm.key.$touched">You must provide a key.</p>
+								ng-show="taskPropertyForm.key.$invalid && taskPropertyForm.key.$touched"></span>
+						<p class="help-block" ng-show="taskPropertyForm.key.$error.required && taskPropertyForm.key.$touched">You must provide a key.</p>
 					</div>
-					<div class="col-xs-10 col-sm-5" ng-class="taskParameterForm.value.$invalid && taskParameterForm.value.$touched ? 'has-warning has-feedback' : ''">
-						<input type="text" name="value" class="form-control" placeholder="Parameter Value" ng-model="taskParam.value" required>
+					<div class="col-xs-10 col-sm-5" ng-class="taskPropertyForm.value.$invalid && taskPropertyForm.value.$touched ? 'has-warning has-feedback' : ''">
+						<input type="text" name="value" class="form-control" placeholder="Parameter Value" ng-model="taskProperty.value" required>
 						<span class="glyphicon glyphicon-warning-sign form-control-feedback"
-								ng-show="taskParameterForm.value.$invalid && taskParameterForm.value.$touched"></span>
-						<p class="help-block" ng-show="taskParameterForm.value.$error.required && taskParameterForm.value.$touched">You must provide a value.</p>
+								ng-show="taskPropertyForm.value.$invalid && taskPropertyForm.value.$touched"></span>
+						<p class="help-block" ng-show="taskPropertyForm.value.$error.required && taskPropertyForm.value.$touched">You must provide a value.</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</fieldset>
-	<fieldset id="taskParameters3" ng-if="!taskLaunchRequest.taskParameters.length">
+	<fieldset id="taskProperty3" ng-if="!taskLaunchRequest.taskProperties.length">
 		<div class="row">
 			<div class="col-xs-12 text-center">
-				No parameters added. If needed, please add a task parameter before launching the task.
+				No properties added. If needed, please add a task property before launching the task.
 			</div>
 		</div>
 	</fieldset>
