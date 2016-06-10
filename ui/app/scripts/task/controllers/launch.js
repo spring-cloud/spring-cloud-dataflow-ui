@@ -27,23 +27,34 @@ define([], function () {
       $scope.$apply(function () {
         var taskLaunchRequest = $scope.taskLaunchRequest = {
           taskName: $stateParams.taskName,
-          taskParameters: []
+          taskProperties: [],
+          taskArguments: []
         };
 
         utils.$log.info($stateParams);
 
-        $scope.addParameter = function () {
-          taskLaunchRequest.taskParameters.push({key: '', value: '', type: 'string'});
+        $scope.addProperty = function () {
+          taskLaunchRequest.taskProperties.push({key: '', value: '', type: 'string'});
         };
 
-        $scope.removeParameter = function (taskParameter) {
-          for (var i = 0, ii = taskLaunchRequest.taskParameters.length; i < ii; i++) {
-            if (taskParameter === taskLaunchRequest.taskParameters[i]) {
-              $scope.taskLaunchRequest.taskParameters.splice(i, 1);
+        $scope.addArgument = function () {
+          taskLaunchRequest.taskArguments.push({key: '', value: '', type: 'string'});
+        };
+
+        $scope.removeProperty = function (taskProperty) {
+          for (var i = 0, ii = taskLaunchRequest.taskProperties.length; i < ii; i++) {
+            if (taskProperty === taskLaunchRequest.taskProperties[i]) {
+              $scope.taskLaunchRequest.taskProperties.splice(i, 1);
             }
           }
         };
-
+        $scope.removeArgument = function (taskArgument) {
+          for (var i = 0, ii = taskLaunchRequest.taskArguments.length; i < ii; i++) {
+            if (taskArgument === taskLaunchRequest.taskArguments[i]) {
+              $scope.taskLaunchRequest.taskArguments.splice(i, 1);
+            }
+          }
+        };
         $scope.cancelTaskLaunch = function () {
           utils.$log.info('Cancelling Task Launch');
           $state.go('home.tasks.tabs.definitions');

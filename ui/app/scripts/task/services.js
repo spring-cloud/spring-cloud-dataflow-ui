@@ -155,24 +155,35 @@ define(['angular'], function (angular) {
       .factory('TaskLaunchService', function ($resource, growl, $rootScope) {
         return {
           convertToJsonAndSend: function (taskLaunchRequest) {
-            var parameters = [];
-            taskLaunchRequest.taskParameters.forEach(function (taskParameter) {
+            var taskProperties = [];
+            var taskArguments = [];
 
-              var key = taskParameter.key;
-              var value = taskParameter.value;
+            taskLaunchRequest.taskProperties.forEach(function (taskProperty) {
 
-              parameters.push(key + '=' + value);
+              var key = taskProperty.key;
+              var value = taskProperty.value;
+
+              taskProperties.push(key + '=' + value);
+            });
+            taskLaunchRequest.taskArguments.forEach(function (taskArgument) {
+
+              var key = taskArgument.key;
+              var value = taskArgument.value;
+
+              taskArguments.push(key + '=' + value);
             });
 
-            var parametersAsString = parameters.join();
+            var propertiesAsString = taskProperties.join();
+            var argumentsAsString = taskArguments.join();
 
-            console.log(parametersAsString);
+            console.log('propertiesAsString: ' + propertiesAsString + '; argumentsAsString: ' + argumentsAsString);
 
-            this.launch(taskLaunchRequest.taskName, parametersAsString);
+            this.launch(taskLaunchRequest.taskName, propertiesAsString, argumentsAsString);
           },
-          launch: function (taskName, jsonDataAsString) {
+          launch: function (taskName, propertiesAsString, argumentsAsString) {
             console.log('Launching task...' + taskName);
-            $resource($rootScope.dataflowServerUrl + '/tasks/deployments/:taskname', { 'taskname': taskName, 'properties': jsonDataAsString }, {
+            $resource($rootScope.dataflowServerUrl + '/tasks/deployments/:taskname', {
+              'taskname': taskName, 'properties': propertiesAsString, 'arguments': argumentsAsString }, {
               launch: { method: 'POST' }
             }).launch().$promise.then(
                 function () {
