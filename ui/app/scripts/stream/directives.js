@@ -82,12 +82,6 @@ define(function(require) {
                     var form = elm.inheritedData('$formController');
 
                     ctrl.$parsers.push(function(value) {
-                        // no value -> it's valid (required takes care of it)
-                        if (!value) {
-                            ctrl.$setValidity('uniqueFieldValues', true);
-                            return value;
-                        }
-
                         // no change - do nothing, keep the validity
                         if (value === ctrl.$modelValue) {
                             return value;
@@ -102,12 +96,12 @@ define(function(require) {
                             formControl = form[attrs.uniqueFieldValues + index];
                             if (ctrl !== formControl) {
                                 // form field value has the same value as about to be set -> mark duplicate
-                                if (formControl.$modelValue === value) {
+                                if (value && formControl.$modelValue === value) {
                                     formControl.$setValidity('uniqueFieldValues', false);
                                     unique = false;
                                 }
                                 // form field has the old value of the field
-                                if (formControl.$modelValue && formControl.$modelValue === ctrl.$modelValue) {
+                                if (ctrl.$modelValue && formControl.$modelValue && formControl.$modelValue === ctrl.$modelValue) {
                                     // Record number of fields having the old value set to unset duplicate later if there is only one value recorded
                                     oldValueDupIndexes.push(index);
                                 }
