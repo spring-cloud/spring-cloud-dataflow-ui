@@ -28,6 +28,10 @@ define([], function () {
                 $scope.metricsData.values = data.values;
             }
 
+            function processAggreagetCountsData(data) {
+                $scope.metricsData.values = data.counts;
+            }
+
             function processValueData(data) {
                 if ($scope.metricsData.values) {
                     var rates =  Array.prototype.slice.call($scope.metricsData.values);
@@ -79,7 +83,7 @@ define([], function () {
             }
             var dataHandlers = { // jshint ignore:line
                 'Counters': processValueData,
-                'Aggregate-Counters': processCountsData,
+                'Aggregate-Counters': processAggreagetCountsData,
                 'Field-Value-Counters': processCountsData,
                 'Gauges': processGaugeData,
                 'Rich-Gauges': processRichGaugeData
