@@ -20,9 +20,9 @@ define([
 ], function(angular) {
   'use strict';
 
-  describe('Unit: Testing XD Services', function() {
+  describe('Unit: Testing Data Flow Services', function() {
     beforeEach(function() {
-      angular.mock.module('xdAdmin');
+      angular.mock.module('dataflowMain');
     });
 
     it('should contain a JobExecutions service', inject(function(JobExecutions) {

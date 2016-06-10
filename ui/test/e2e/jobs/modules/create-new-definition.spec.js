@@ -19,14 +19,14 @@
 /**
  * @author Gunnar Hillert
  */
-describe('Tests for creating a new Task Definition from a Module', function() {
+describe('Tests for creating a new Task Definition from an App', function() {
 
-  describe('When I navigate to the Module Create Definition URL for the "timestamp" module - "#/tasks/modules/timestamp/create-definition"', function() {
+  describe('When I navigate to the App Create Definition URL for the "timestamp" application - "#/tasks/apps/timestamp/create-definition"', function() {
 
-    it('The page title should be "Module Details"', function() {
-      browser.get('#/tasks/modules/timestamp/create-definition');
-      expect(browser.getCurrentUrl()).toContain('#/tasks/modules/timestamp')
-      expect(browser.getTitle()).toBe('Module Create Definition');
+    it('The page title should be "App Details"', function() {
+      browser.get('#/tasks/apps/timestamp/create-definition');
+      expect(browser.getCurrentUrl()).toContain('#/tasks/apps/timestamp')
+      expect(browser.getTitle()).toBe('App Create Definition');
     });
     it('The "Definition Name" input field should be in error state as no name is specified yet', function() {
       var formGroup = $('#definition-name-form-group');
@@ -40,7 +40,7 @@ describe('Tests for creating a new Task Definition from a Module', function() {
       expect(formGroup.getAttribute('class')).not.toMatch('has-feedback');
       expect(formGroup.getAttribute('class')).not.toMatch('has-warning');
     });
-    it('When entering a "Definition Name" that is the same name as the module name,' +
+    it('When entering a "Definition Name" that is the same name as the app name,' +
        'then the input field should be in error state', function() {
 
       var inputField = $('#definitionName');
@@ -57,12 +57,12 @@ describe('Tests for creating a new Task Definition from a Module', function() {
     //  var passwordField = $('#password');
     //  expect(passwordField.getAttribute('type')).toMatch('password');
     //});
-    it('if the user clicks the "back" button, the module list page should be loaded', function() {
+    it('if the user clicks the "back" button, the application list page should be loaded', function() {
       var backButton = element(by.css('#back-button'));
       expect(backButton.isPresent()).toBe(true);
       expect(backButton.getText()).toEqual('Back');
       backButton.click();
-      expect(browser.getCurrentUrl()).toContain('/tasks/modules');
+      expect(browser.getCurrentUrl()).toContain('/tasks/apps');
     });
   });
 });

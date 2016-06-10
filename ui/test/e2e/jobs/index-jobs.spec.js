@@ -45,51 +45,51 @@ describe('Tests', function() {
     });
   });
 
-  //Modules tab
+  //Apps tab
 
-  describe('When I navigate to "/tasks/modules"', function() {
+  describe('When I navigate to "/tasks/apps"', function() {
     it('there should be 3 tabs of which one is active', function() {
-      browser.get('#/tasks/modules').then(function() {
-        expect(element.all(by.css('#xd-tasks ul.nav-tabs li')).count()).toEqual(3);
-        expect(element.all(by.css('#xd-tasks ul.nav-tabs li.active')).count()).toEqual(1);
+      browser.get('#/tasks/apps').then(function() {
+        expect(element.all(by.css('#dataflow-tasks ul.nav-tabs li')).count()).toEqual(3);
+        expect(element.all(by.css('#dataflow-tasks ul.nav-tabs li.active')).count()).toEqual(1);
       });
     });
-    it('the active tab should be labelled "Modules"', function() {
-      browser.get('#/tasks/modules').then(function() {
-        expect(element(by.css('#xd-tasks ul li.active a')).getText()).toEqual('Modules');
+    it('the active tab should be labelled "Apps"', function() {
+      browser.get('#/tasks/apps').then(function() {
+        expect(element(by.css('#dataflow-tasks ul li.active a')).getText()).toEqual('Apps');
       });
     });
     it('there should be at least 1 task module being listed', function() {
-      browser.get('#/tasks/modules').then(function() {
+      browser.get('#/tasks/apps').then(function() {
         browser.driver.sleep(2000);
-        expect(element.all(by.css('#xd-tasks table tbody tr')).count()).toBeGreaterThan(0);
+        expect(element.all(by.css('#dataflow-tasks table tbody tr')).count()).toBeGreaterThan(0);
       });
     });
-    it('there should a task module named timestamp', function() {
-      browser.get('#/tasks/modules');
+    it('there should a task app named timestamp', function() {
+      browser.get('#/tasks/apps');
       browser.driver.sleep(2000);
-      expect(element(by.css('#xd-tasks table tbody tr:nth-child(1) td:nth-child(1)')).getText()).toEqual('timestamp');
+      expect(element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(1)')).getText()).toEqual('timestamp');
     });
     it('When I click on the Create Definition button for module timestamp, ' +
-       'the page should redirect to /tasks/modules/timestamp/create-definition', function() {
-      browser.get('#/tasks/modules').then(function() {
+       'the page should redirect to /tasks/apps/timestamp/create-definition', function() {
+      browser.get('#/tasks/apps').then(function() {
         browser.sleep(3000);
-        expect(element(by.css('#xd-tasks table tbody tr td:nth-child(3) button')).getAttribute('title')).toMatch('Create Definition');
-        element(by.css('#xd-tasks table tbody tr:nth-child(1) td:nth-child(3) button')).click();
+        expect(element(by.css('#dataflow-tasks table tbody tr td:nth-child(3) button')).getAttribute('title')).toMatch('Create Definition');
+        element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(3) button')).click();
         browser.sleep(2000);
-        expect(browser.getCurrentUrl()).toContain('/tasks/modules/timestamp/create-definition');
+        expect(browser.getCurrentUrl()).toContain('/tasks/apps/timestamp/create-definition');
       });
     });
-    it('When I click on the Details button for module timestamp, ' +
-       'the page should redirect to /tasks/modules/timestamp', function() {
-       browser.get('#/tasks/modules').then(function() {
+    it('When I click on the Details button for app timestamp, ' +
+       'the page should redirect to /tasks/apps/timestamp', function() {
+       browser.get('#/tasks/apps').then(function() {
 
          browser.sleep(2000);
 
-         expect(element(by.css('#xd-tasks table tbody tr:nth-child(1) td:nth-child(4) button')).getAttribute('title')).toMatch('Details');
-         element(by.css('#xd-tasks table tbody tr:nth-child(1) td:nth-child(4) button')).click();
+         expect(element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(4) button')).getAttribute('title')).toMatch('Details');
+         element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(4) button')).click();
          browser.sleep(2000);
-         expect(browser.getCurrentUrl()).toContain('/tasks/modules/timestamp');
+         expect(browser.getCurrentUrl()).toContain('/tasks/apps/timestamp');
        });
      });
   });
@@ -99,12 +99,12 @@ describe('Tests', function() {
   describe('When I navigate to "/tasks/definitions"', function() {
     it('there should be 3 tabs of which one is active', function() {
       browser.get('#/tasks/definitions');
-      expect(element.all(by.css('#xd-tasks ul li')).count()).toEqual(3);
-      expect(element.all(by.css('#xd-tasks ul li.active')).count()).toEqual(1);
+      expect(element.all(by.css('#dataflow-tasks ul li')).count()).toEqual(3);
+      expect(element.all(by.css('#dataflow-tasks ul li.active')).count()).toEqual(1);
     });
     it('the active tab should be labelled "Definitions"', function() {
       browser.get('#/tasks/definitions');
-      expect(element(by.css('#xd-tasks ul li.active a')).getText()).toEqual('Definitions');
+      expect(element(by.css('#dataflow-tasks ul li.active a')).getText()).toEqual('Definitions');
     });
   });
 
@@ -113,12 +113,12 @@ describe('Tests', function() {
   describe('When I navigate to "/jobs/executions"', function() {
     it('there should be 1 tab which is active', function() {
       browser.get('#/jobs/executions');
-      expect(element.all(by.css('#xd-jobs ul li')).count()).toEqual(1);
-      expect(element.all(by.css('#xd-jobs ul li.active')).count()).toEqual(1);
+      expect(element.all(by.css('#dataflow-jobs ul li')).count()).toEqual(1);
+      expect(element.all(by.css('#dataflow-jobs ul li.active')).count()).toEqual(1);
     });
     it('the active tab should be labelled "Executions"', function() {
       browser.get('#/jobs/executions');
-      expect(element(by.css('#xd-jobs ul li.active a')).getText()).toEqual('Executions');
+      expect(element(by.css('#dataflow-jobs ul li.active a')).getText()).toEqual('Executions');
     });
   });
 
@@ -127,7 +127,7 @@ describe('Tests', function() {
   describe('When I navigate to "/#/about"', function() {
     it('the main header should be labelled "About"', function() {
       browser.get('#/about');
-      expect(element(by.css('#xd-content h1')).getText()).toEqual('About');
+      expect(element(by.css('#dataflow-content h1')).getText()).toEqual('About');
     });
   });
 });

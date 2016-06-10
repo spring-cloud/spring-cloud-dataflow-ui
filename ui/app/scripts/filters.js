@@ -21,7 +21,7 @@
  */
 define(['angular'], function(angular) {
   'use strict';
-  angular.module('xdAdmin.filters', [])
+  angular.module('dataflowMain.filters', [])
     .filter('capitalize', function() {
       return function(input) {
         if (input) {

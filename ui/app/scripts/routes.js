@@ -21,9 +21,9 @@
  * @author Ilayaperumal Gopinathan
  * @author Alex Boyko
  */
-define(['./app'], function (xdAdmin) {
+define(['./app'], function (dashboard) {
   'use strict';
-  xdAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvider, hljsServiceProvider, growlProvider, $animateProvider) {
+  dashboard.config(function ($stateProvider, $urlRouterProvider, $httpProvider, hljsServiceProvider, growlProvider, $animateProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.interceptors.push('httpErrorInterceptor');
     $urlRouterProvider.otherwise('/streams/definitions');
@@ -190,7 +190,7 @@ define(['./app'], function (xdAdmin) {
       controller: 'JobScheduleController'
     })
     .state('home.tasks.tabs.appsList', {
-      url : 'tasks/apps',
+      url : '/apps',
       templateUrl : taskTemplatesPath + '/apps.html',
       controller: 'TaskAppsController'
     })
@@ -315,7 +315,7 @@ define(['./app'], function (xdAdmin) {
           }
         });
   });
-  xdAdmin.run(function ($rootScope, $state, $stateParams, userService, $log) {
+  dashboard.run(function ($rootScope, $state, $stateParams, userService, $log) {
 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
@@ -333,5 +333,5 @@ define(['./app'], function (xdAdmin) {
         }
       });
   });
-  return xdAdmin;
+  return dashboard;
 });

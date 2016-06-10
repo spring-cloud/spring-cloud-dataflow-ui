@@ -27,7 +27,7 @@ define(function(require) {
 
     var ITEMS_COOKIE_KEY = 'analytics.dashboard.items';
 
-    return ['XDUtils', '$scope', '$injector', '$timeout', '$rootScope', '$cookieStore', '$q',
+    return ['DataflowUtils', '$scope', '$injector', '$timeout', '$rootScope', '$cookieStore', '$q',
         function (utils, $scope, $injector, $timeout, $rootScope, $cookieStore, $q) {
 
             function loadAllStreams() {

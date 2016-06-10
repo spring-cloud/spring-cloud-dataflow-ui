@@ -21,7 +21,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'TaskAppService', 'XDUtils', '$state', '$stateParams',
+  return ['$scope', 'TaskAppService', 'DataflowUtils', '$state', '$stateParams',
     function ($scope, taskAppService, utils, $state, $stateParams) {
       $scope.$apply(function () {
         $scope.appName = $stateParams.appName;

@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of SCDF Task admin app module.
+ * Definition of SCDF Task app module.
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
@@ -38,13 +38,13 @@ define([
   '../shared/interceptors'
 ], function (angular) {
   'use strict';
-  return angular.module('xdTasksAdmin', [
-    'xdTasksAdmin.services',
-    'xdTasksAdmin.controllers',
-    'xdShared.services',
-    'xdShared.interceptors',
-    'xdAdmin.directives',
-    'xdAdmin.filters',
+  return angular.module('dataflowTasks', [
+    'dataflowTasks.services',
+    'dataflowTasks.controllers',
+    'dataflowShared.services',
+    'dataflowShared.interceptors',
+    'dataflowMain.directives',
+    'dataflowMain.filters',
     'ui.router',
     'ngResource',
     'ngAnimate',

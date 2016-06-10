@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of Dashboard jobs admin app module.
+ * Definition of Dashboard jobs app module.
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
@@ -38,13 +38,13 @@ define([
   '../shared/interceptors'
 ], function (angular) {
   'use strict';
-  return angular.module('xdJobsAdmin', [
-    'xdJobsAdmin.services',
-    'xdJobsAdmin.controllers',
-    'xdShared.services',
-    'xdShared.interceptors',
-    'xdAdmin.directives',
-    'xdAdmin.filters',
+  return angular.module('dataflowJobs', [
+    'dataflowJobs.services',
+    'dataflowJobs.controllers',
+    'dataflowShared.services',
+    'dataflowShared.interceptors',
+    'dataflowMain.directives',
+    'dataflowMain.filters',
     'ui.router',
     'ngResource',
     'ngAnimate',

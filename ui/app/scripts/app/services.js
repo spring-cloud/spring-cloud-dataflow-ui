@@ -19,11 +19,12 @@
  *
  * @author Andy Clement
  * @author Alex Boyko
+ * @author Gunnar Hillert
  */
 define(['angular'], function (angular) {
     'use strict';
 
-    return angular.module('xdAppsAdmin.services', [])
+    return angular.module('dataflowApps.services', [])
         .factory('AppService', function ($resource, $rootScope, $log, $http) {
             return {
                 getDefinitions: function (pageable) {

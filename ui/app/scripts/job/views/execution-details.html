@@ -55,15 +55,15 @@
     <tr>
     <tr>
       <td>Start Time</td>
-      <td xd-date-time="{{jobExecutionDetails.jobExecution.startTime}}"></td>
+      <td dataflow-date-time="{{jobExecutionDetails.jobExecution.startTime}}"></td>
     <tr>
     <tr>
       <td>End Time</td>
-      <td xd-date-time="{{jobExecutionDetails.jobExecution.endTime}}"></td>
+      <td dataflow-date-time="{{jobExecutionDetails.jobExecution.endTime}}"></td>
     <tr>
     <tr>
       <td>Duration</td>
-      <td xd-duration start='jobExecutionDetails.jobExecution.startTime' end='jobExecutionDetails.jobExecution.endTime'></td>
+      <td dataflow-duration start='jobExecutionDetails.jobExecution.startTime' end='jobExecutionDetails.jobExecution.endTime'></td>
     <tr>
     <tr>
       <td>Status</td>
@@ -102,7 +102,7 @@
       <td class="text-center">{{stepExecution.writeCount}}</td>
       <td class="text-center">{{stepExecution.commitCount}}</td>
       <td class="text-center">{{stepExecution.rollbackCount}}</td>
-      <td xd-duration start='stepExecution.startTime' end='stepExecution.endTime'></td>
+      <td dataflow-duration start='stepExecution.startTime' end='stepExecution.endTime'></td>
       <td><a ng-class="{'text-success': stepExecution.exitStatus.exitCode === 'COMPLETED', 'text-danger': stepExecution.exitStatus.exitCode === 'FAILED'}" href="" data-toggle="modal" data-target="#step-execution-id-{{stepExecution.id}}"
              ng-click="viewJobExecutionDetails(item)" title="Exit Status Details"
                 >{{stepExecution.exitStatus.exitCode}}</a></td>
@@ -132,10 +132,10 @@
   <tbody>
   <tr ng-repeat="item in jobExecutionDetails.childJobExecutions | filter:filterQuery"
       ng-show="!item.inactive">
-    <td>{{item.name}}&nbsp;<span xd-deployment-status="item"></span><span xd-composed-job-status="item"></span></td>
+    <td>{{item.name}}&nbsp;<span dataflow-deployment-status="item"></span><span dataflow-composed-job-status="item"></span></td>
     <td class="text-center">{{item.jobExecution.jobInstance.id}}</td>
     <td class="text-center">{{item.jobExecution.id}}</td>
-    <td xd-date-time="{{item.jobExecution.startTime}}"></td>
+    <td dataflow-date-time="{{item.jobExecution.startTime}}"></td>
     <td class="text-center">{{item.stepExecutionCount}}</td>
     <td ng-class="{'text-success': item.jobExecution.status === 'COMPLETED', 'text-danger': item.jobExecution.status === 'FAILED'}">{{item.jobExecution.status}}</td>
     <td class="action-column"><button ng-disabled="!item.restartable" type="button" class="btn btn-default" ng-click="restartJob(item)" title="Restart Job Execution">

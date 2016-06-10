@@ -24,7 +24,7 @@ define(function(require) {
 
     var angular = require('angular');
 
-    return angular.module('xdAnalyticsAdmin.directives', [])
+    return angular.module('dataflowAnalytics.directives', [])
         .directive('counterHeader', [function () {
             return {
                 restrict: 'E',

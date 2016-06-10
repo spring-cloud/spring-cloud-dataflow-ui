@@ -21,7 +21,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'StepExecutions', 'XDUtils', '$state', '$stateParams',
+  return ['$scope', 'StepExecutions', 'DataflowUtils', '$state', '$stateParams',
     function ($scope, stepExecutions, utils, $state, $stateParams) {
 
       $scope.showStepExecutionProgress = function (stepExecutionProgress) {

@@ -22,8 +22,8 @@
  */
 define(['angular', 'xregexp', 'moment'], function(angular) {
   'use strict';
-  angular.module('xdAdmin.directives', [])
-    .directive('xdParseUrls', [function() {
+  angular.module('dataflowMain.directives', [])
+    .directive('dataflowParseUrls', [function() {
       var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
 
       return {
@@ -47,13 +47,13 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
         }
       };
     }])
-    .directive('xdFormatStream', [function() {
+    .directive('dataflowFormatStream', [function() {
       var mainRegex = new XRegExp(
           '(--[\\p{Z}]*(password|passwd)[\\p{Z}]*=[\\p{Z}]*)(("[\\p{L}|\\p{Pd}|\\p{Ps}|\\p{Pe}|\\p{Pc}|\\p{S}|\\p{N}|\\p{Z}]*")|([\\p{N}|\\p{L}|\\p{Po}|\\p{Pc}|\\p{S}]*))', 'gi');
 
       var subRegex = new XRegExp('\\P{C}', 'gi');
       var linkFunction = function(scope, element) {
-        scope.$watch('xdFormatStream', function(originalStreamDefinition){
+        scope.$watch('dataflowFormatStream', function(originalStreamDefinition){
           if(originalStreamDefinition) {
             var result = XRegExp.replace(originalStreamDefinition, mainRegex, function(match, p1, p2, p3) {
               if (p3.charAt(0) === '"' && p3.slice(-1) === '"') {
@@ -70,12 +70,12 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       return {
         restrict: 'A',
         scope: {
-          xdFormatStream: '='
+          dataflowFormatStream: '='
         },
         link: linkFunction,
       };
     }])
-    .directive('xdDuration', [function() {
+    .directive('dataflowDuration', [function() {
 
       var linkFunction = function(scope, el) {
         var startDateTime;
@@ -107,14 +107,14 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       return {
         restrict: 'A',
         scope: {
-          xdDuration: '=',
+          dataflowDuration: '=',
           start: '=',
           end: '='
         },
         link: linkFunction,
       };
     }])
-    .directive('xdDateTime', [function() {
+    .directive('dataflowDateTime', [function() {
       var dateTimeFormat = 'YYYY-MM-DD HH:mm:ss,SSS';
 
       var linkFunction = function(scope, element, attributes) {
@@ -129,9 +129,9 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
           }
         }
 
-        formatDateTime(attributes.xdDateTime);
+        formatDateTime(attributes.dataflowDateTime);
 
-        attributes.$observe('xdDateTime', function(value){
+        attributes.$observe('dataflowDateTime', function(value){
           if (value) {
             formatDateTime(value);
           }
@@ -140,7 +140,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       return {
         restrict: 'A',
         scope: {
-          xdDateTime: '@'
+          dataflowDateTime: '@'
         },
         link: linkFunction,
       };
@@ -164,7 +164,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
         }
       };
     })
-    .directive('xdModal', function() {
+    .directive('dataflowModal', function() {
       return {
         restrict: 'A',
         link: function(scope, element) {
@@ -180,7 +180,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
         }
       };
     })
-    .directive('xdFormAutofocus', function() {
+    .directive('dataflowFormAutofocus', function() {
       return {
         restrict: 'A',
         link: function(scope, element) {
@@ -192,9 +192,9 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
         }
       };
     })
-    .directive('xdDeploymentStatus', function() {
+    .directive('dataflowDeploymentStatus', function() {
       var linkFunction = function(scope) {
-        scope.$watch('xdDeploymentStatus', function(resource){
+        scope.$watch('dataflowDeploymentStatus', function(resource){
           if (resource) {
             if (!resource.defined) {
               scope.labelClass = 'danger';
@@ -206,15 +206,15 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       return {
         restrict: 'A',
         scope: {
-          xdDeploymentStatus: '='
+          dataflowDeploymentStatus: '='
         },
         link: linkFunction,
-        templateUrl: 'scripts/directives/xdDeploymentStatus.html'
+        templateUrl: 'scripts/directives/dataflowDeploymentStatus.html'
       };
     })
-    .directive('xdComposedJobStatus', function() {
+    .directive('dataflowComposedJobStatus', function() {
       var linkFunction = function(scope) {
-        scope.$watch('xdComposedJobStatus', function(resource){
+        scope.$watch('dataflowComposedJobStatus', function(resource){
           if (resource) {
             if (resource.composedJob) {
               scope.labelClass = 'info';
@@ -226,17 +226,17 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       return {
         restrict: 'A',
         scope: {
-          xdComposedJobStatus: '='
+          dataflowComposedJobStatus: '='
         },
         link: linkFunction,
-        templateUrl: 'scripts/directives/xdComposedJobStatus.html'
+        templateUrl: 'scripts/directives/dataflowComposedJobStatus.html'
       };
     })
-    .directive('xdPopover', function() {
+    .directive('dataflowPopover', function() {
       return {
         restrict: 'A',
         link: function(scope, element, attributes) {
-          attributes.$observe('xdPopover', function(attributeValue){
+          attributes.$observe('dataflowPopover', function(attributeValue){
             element.popover({
               placement: 'bottom',
               html: 'true',
@@ -249,7 +249,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
               if (typeof scope.stopPolling === 'function') {
                 scope.stopPolling();
               }
-              $(this).data('bs.popover').tip().css('max-width', $(this).closest('#xd-content').width() + 'px');
+              $(this).data('bs.popover').tip().css('max-width', $(this).closest('#dataflow-content').width() + 'px');
               scope.$on('$destroy', function() {
                 angular.element('.popover').remove();
               });
@@ -263,7 +263,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
         }
       };
     })
-    .directive('xdTooltip', function() {
+    .directive('dataflowTooltip', function() {
       return {
         restrict: 'A',
         link: function(scope, element, attributes) {

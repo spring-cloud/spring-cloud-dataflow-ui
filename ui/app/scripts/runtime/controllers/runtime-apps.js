@@ -22,7 +22,7 @@
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
-  return ['$scope', 'RuntimeService', 'XDUtils', '$timeout', '$rootScope',
+  return ['$scope', 'RuntimeService', 'DataflowUtils', '$timeout', '$rootScope',
     function ($scope, runtimeService, utils, $timeout, $rootScope) {
       function loadRuntimeAppsWithTimeout() {
         $scope.runtimeTimeOutPromise = $timeout(function() {

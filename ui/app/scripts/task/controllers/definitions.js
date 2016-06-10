@@ -22,7 +22,7 @@
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
-  return ['$scope', 'TaskDefinitions', 'TaskDefinitionService', 'XDUtils', '$state', '$timeout', '$rootScope',
+  return ['$scope', 'TaskDefinitions', 'TaskDefinitionService', 'DataflowUtils', '$state', '$timeout', '$rootScope',
     function ($scope, taskDefinitions, taskDefinitionService, utils, $state, $timeout, $rootScope) {
       function loadTaskDefinitions(pageable, showGrowl) {
         utils.$log.info('pageable', pageable);

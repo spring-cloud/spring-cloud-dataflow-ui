@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /**
- * Testing the "xdFormatStream" Directive
+ * Testing the "dataflowFormatStream" Directive
  *
  * @author Gunnar Hillert
  */
@@ -26,18 +26,18 @@ define([
 ], function(angular) {
   'use strict';
 
-  describe('Unit: Testing xdFormatStream Directive', function() {
+  describe('Unit: Testing dataflowFormatStream Directive', function() {
 
     var $scope, element;
 
     beforeEach(function() {
-      angular.mock.module('xdJobsAdmin');
+      angular.mock.module('dataflowJobs');
     });
 
     beforeEach(inject(function($compile, $rootScope) {
       $scope = $rootScope;
       element = angular.element(
-       '<div id="myDiv" xd-format-stream="myVal"></div>'
+       '<div id="myDiv" dataflow-format-stream="myVal"></div>'
       );
       $scope.myVal = 'hello world';
       $compile(element)($scope);

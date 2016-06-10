@@ -21,7 +21,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', '$state', 'userService', 'XDUtils', '$log', '$rootScope', '$http',
+  return ['$scope', '$state', 'userService', 'DataflowUtils', '$log', '$rootScope', '$http',
           function ($scope, $state, user, utils, $log, $rootScope, $http) {
           $scope.loginForm = {};
           $scope.login = function() {

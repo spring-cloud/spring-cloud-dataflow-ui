@@ -33,7 +33,7 @@ define(function(require) {
         'remove': 'images/icons/delete.svg',
         'properties': 'images/icons/cog.svg'
     };
-    
+
     var HANDLE_ICON_SIZE = {
         'remove': {width: 10, height: 10},
         'properties': {width: 11, height: 11}
@@ -154,7 +154,7 @@ define(function(require) {
         }, joint.shapes.basic.Generic.prototype.defaults)
     });
 
-    joint.shapes.flo.LinkXD = joint.dia.Link.extend({
+    joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
         defaults: joint.util.deepSupplement({
             type: joint.shapes.flo.LINK_TYPE,
             smooth: true,
@@ -753,7 +753,7 @@ define(function(require) {
         }
 
         function createLink() {
-            return new joint.shapes.flo.LinkXD();
+            return new joint.shapes.flo.LinkDataflow();
         }
 
         function getLinkView() {

@@ -36,12 +36,12 @@ define([
   '../shared/interceptors'
 ], function (angular) {
   'use strict';
-  return angular.module('xdStreamsAdmin', [
-    'xdStreamsAdmin.services',
-    'xdStreamsAdmin.controllers',
-    'xdShared.services',
-    'xdShared.interceptors',
-    'xdAppsAdmin.services',
+  return angular.module('dataflowStreams', [
+    'dataflowStreams.services',
+    'dataflowStreams.controllers',
+    'dataflowShared.services',
+    'dataflowShared.interceptors',
+    'dataflowApps.services',
     'ui.router',
     'ngResource',
     'ngAnimate',
