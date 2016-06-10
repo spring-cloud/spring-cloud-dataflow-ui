@@ -66,13 +66,13 @@
 			<div class="col-xs-10">
 				<div class="form-group">
 					<div class="col-xs-10 col-sm-5" ng-class="taskPropertyForm.key.$invalid && taskPropertyForm.key.$touched ? 'has-warning has-feedback' : ''">
-						<input type="text" name="key" class="form-control" placeholder="Parameter Key" ng-model="taskProperty.key" required>
+						<input type="text" name="key" class="form-control" placeholder="Property Key" ng-model="taskProperty.key" required>
 						<span class="glyphicon glyphicon-warning-sign form-control-feedback"
 								ng-show="taskPropertyForm.key.$invalid && taskPropertyForm.key.$touched"></span>
 						<p class="help-block" ng-show="taskPropertyForm.key.$error.required && taskPropertyForm.key.$touched">You must provide a key.</p>
 					</div>
 					<div class="col-xs-10 col-sm-5" ng-class="taskPropertyForm.value.$invalid && taskPropertyForm.value.$touched ? 'has-warning has-feedback' : ''">
-						<input type="text" name="value" class="form-control" placeholder="Parameter Value" ng-model="taskProperty.value" required>
+						<input type="text" name="value" class="form-control" placeholder="Property Value" ng-model="taskProperty.value" required>
 						<span class="glyphicon glyphicon-warning-sign form-control-feedback"
 								ng-show="taskPropertyForm.value.$invalid && taskPropertyForm.value.$touched"></span>
 						<p class="help-block" ng-show="taskPropertyForm.value.$error.required && taskPropertyForm.value.$touched">You must provide a value.</p>
