@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
  * Handles user logins.
  *
  * @author Gunnar Hillert
+ * @author Alex Boyko
  */
 define([], function () {
   'use strict';
@@ -38,7 +39,7 @@ define([], function () {
 
                 utils.growl.success('User ' + $scope.loginForm.username + ' logged in.');
                 $scope.loginForm = {};
-                $state.go('home.jobs.tabs.definitions');
+                $state.go('home.apps.tabs.appsList');
               },
               function(response) {
                 utils.growl.error(response.data[0].message);

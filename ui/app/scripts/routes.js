@@ -315,15 +315,26 @@ define(['./app'], function (dashboard) {
           }
         });
   });
-  dashboard.run(function ($rootScope, $state, $stateParams, userService, $log) {
+  dashboard.run(function ($rootScope, $state, $stateParams, userService, featuresService, $log) {
 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     $rootScope.dataflowServerUrl = window.location.protocol + '//' + window.location.host;
     $rootScope.xAuthTokenHeaderName = 'x-auth-token';
     $rootScope.user = userService;
+    $rootScope.features = {};
     $rootScope.pageRefreshTime = 5000;
     $rootScope.enableMessageRates = true;
+
+    featuresService.getFeatures().then(function(features) {
+      $rootScope.features = {
+        analyticsEnabled: features.analyticsEnabled,
+        streamsEnabled: features.streamsEnabled,
+        tasksEnabled: features.tasksEnabled
+      };
+    }, function() {
+      $log.error('Cannot load enabled features info');
+    });
 
     $rootScope.$on('$stateChangeStart', function(event, toState) {
         if (userService.authenticationEnabled && toState.data.authenticate && !userService.isAuthenticated){
