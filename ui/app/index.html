@@ -46,16 +46,16 @@
             <li ng-class="{ active: $state.includes('home.runtime') }">
                <a ui-sref="home.runtime.tabs.runtimeAppsList">Runtime</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.streams') }">
+            <li ng-show="features.streamsEnabled" ng-class="{ active: $state.includes('home.streams') }">
                <a ui-sref="home.streams.tabs.definitions">Streams</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.tasks') }">
+            <li ng-show="features.tasksEnabled" ng-class="{ active: $state.includes('home.tasks') }">
               <a ui-sref="home.tasks.tabs.definitions">Tasks</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.jobs') }">
+            <li ng-show="features.tasksEnabled" ng-class="{ active: $state.includes('home.jobs') }">
               <a ui-sref="home.jobs.tabs.executions">Jobs</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.analytics') }">
+            <li ng-show="features.analyticsEnabled" ng-class="{ active: $state.includes('home.analytics') }">
               <a ui-sref="home.analytics.tabs.dashboard">Analytics</a>
             </li>
             <li ng-class="{ active: $state.includes('home.about') }">
