@@ -68,14 +68,26 @@ describe('Tests', function() {
     it('there should a task app named timestamp', function() {
       browser.get('#/tasks/apps');
       browser.driver.sleep(2000);
-      expect(element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(1)')).getText()).toEqual('timestamp');
+        // Check timestamp on the list
+	expect(element.all(by.css('#dataflow-tasks table tbody tr')).filter(function(e) {
+           return e.all(by.css('td:nth-child(1)')).getText().then(function (text) {
+             return (''+text === 'timestamp');
+           });
+         }).count()).toEqual(1);
     });
     it('When I click on the Create Definition button for module timestamp, ' +
        'the page should redirect to /tasks/apps/timestamp/create-definition', function() {
       browser.get('#/tasks/apps').then(function() {
         browser.sleep(3000);
         expect(element(by.css('#dataflow-tasks table tbody tr td:nth-child(3) button')).getAttribute('title')).toMatch('Create Definition');
-        element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(3) button')).click();
+
+        // Click create definition button in the timestamp row
+	element.all(by.css('#dataflow-tasks table tbody tr')).filter(function(e) {
+           return e.all(by.css('td:nth-child(1)')).getText().then(function (text) {
+             return (''+text === 'timestamp');
+           });
+         }).first().all(by.css('td:nth-child(3) button')).click();
+
         browser.sleep(2000);
         expect(browser.getCurrentUrl()).toContain('/tasks/apps/timestamp/create-definition');
       });
@@ -87,7 +99,14 @@ describe('Tests', function() {
          browser.sleep(2000);
 
          expect(element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(4) button')).getAttribute('title')).toMatch('Details');
-         element(by.css('#dataflow-tasks table tbody tr:nth-child(1) td:nth-child(4) button')).click();
+        // element(by.css('#dataflow-tasks table tbody tr:nth-child(6) td:nth-child(4) button')).click();
+        // Click details button in the timestamp row
+	element.all(by.css('#dataflow-tasks table tbody tr')).filter(function(e) {
+           return e.all(by.css('td:nth-child(1)')).getText().then(function (text) {
+             return (''+text === 'timestamp');
+           });
+         }).first().all(by.css('td:nth-child(4) button')).click();
+
          browser.sleep(2000);
          expect(browser.getCurrentUrl()).toContain('/tasks/apps/timestamp');
        });
