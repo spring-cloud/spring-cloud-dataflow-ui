@@ -132,7 +132,6 @@ define([
 
   var initInjector = angular.injector(['ng']);
   var $http = initInjector.get('$http');
-  var $q = initInjector.get('$q');
   var securityInfoUrl = '/security/info';
   var timeout = 20000;
   var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
