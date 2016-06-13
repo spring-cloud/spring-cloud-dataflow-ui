@@ -23,16 +23,11 @@ define(['angular'], function (angular) {
   'use strict';
 
   return angular.module('dataflowFeature.services', [])
-      .factory('featuresService', function($http) {
+      .factory('featuresService', function(featuresInfo) {
           return {
-              getFeatures: function() {
-                  return $http({
-                      method: 'GET',
-                      url: '/features'
-                  }).then(function(response) {
-                      return response.data;
-                  });
-              }
+              analyticsEnabled: featuresInfo.analyticsEnabled,
+              streamsEnabled: featuresInfo.streamsEnabled,
+              tasksEnabled: featuresInfo.tasksEnabled
           };
       });
 });
