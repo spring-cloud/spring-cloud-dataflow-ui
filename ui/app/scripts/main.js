@@ -118,23 +118,35 @@ define([
   'angular'
 ], function (require, angular) {
   'use strict';
-
-  var app = angular.module('dataflowConf', []);
-
-  var initInjector = angular.injector(['ng']);
-  var $http = initInjector.get('$http');
-  var securityInfoUrl = '/security/info';
-  var timeout = 20000;
-  var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
-
-  promiseHttp.then(function(response) {
-
-    app.constant('securityInfo', response.data);
+  
+  function startApp() {
     require(['app', './routes'], function () {
       require(['domReady!'], function (document) {
         console.log('Start angular application.');
         angular.bootstrap(document, ['dataflowMain']);
       });
+    });
+  }
+
+  var app = angular.module('dataflowConf', []);
+
+  var initInjector = angular.injector(['ng']);
+  var $http = initInjector.get('$http');
+  var $q = initInjector.get('$q');
+  var securityInfoUrl = '/security/info';
+  var timeout = 20000;
+  var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
+  var promiseFeature = $http.get('/features', {timeout: timeout});
+
+  promiseHttp.then(function(response) {
+    app.constant('securityInfo', response.data);
+
+    promiseFeature.then(function(featuresResponse) {
+      app.constant('featuresInfo', featuresResponse.data);
+      startApp();
+    }, function() {
+      console.error('Cannot load enabled features info');
+      startApp();
     });
   }, function(errorResponse) {
     var errorMessage = 'Error retrieving security info from ' + securityInfoUrl + ' (timeout: ' + timeout + 'ms)';
