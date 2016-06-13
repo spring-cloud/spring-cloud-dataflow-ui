@@ -26,7 +26,7 @@ define(['./app'], function (dashboard) {
   dashboard.config(function ($stateProvider, $urlRouterProvider, $httpProvider, hljsServiceProvider, growlProvider, $animateProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.interceptors.push('httpErrorInterceptor');
-    $urlRouterProvider.otherwise('/streams/definitions');
+    $urlRouterProvider.otherwise('/apps/apps');
 
     hljsServiceProvider.setOptions({
       tabReplace: '  '
