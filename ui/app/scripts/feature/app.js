@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 the original author or authors.
+ * Copyright 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,37 +15,20 @@
  */
 
 /**
- * Definition of the main app module.
+ * Definition of Dashboard features module.
  *
- * @author Ilayaperumal Gopinathan
  * @author Alex Boyko
  */
 define([
   'angular',
-  'flo',
-  './app/app',
-  './analytics/app',
-  './job/app',
-  './task/app',
-  './stream/app',
-  './runtime/app',
-  './auth/app',
-  './feature/app',
+  'uiRouter',
+  './controllers',
+  './services'
 ], function (angular) {
   'use strict';
-
-  console.log('Loading Spring Cloud Data Flow UI');
-
-  return  angular.module('dataflowMain', [
-    'dataflowConf',
-    'dataflowApps',
-    'dataflowAnalytics',
-    'dataflowJobs',
-    'dataflowTasks',
-    'dataflowStreams',
-    'dataflowRuntime',
-    'dataflowAuth',
-    'dataflowFeature',
-    'spring.flo'
+  return angular.module('dataflowFeature', [
+    'dataflowFeature.services',
+    'dataflowFeature.controllers',
+    'ui.router'
   ]);
 });

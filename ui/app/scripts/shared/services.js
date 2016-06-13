@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 the original author or authors.
+ * Copyright 2013-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
  * Dashboard shared (global) services.
  *
  * @author Ilayaperumal Gopinathan
- * @author Alex Boyko
  */
 define(['angular', 'xregexp'], function (angular) {
   'use strict';
@@ -67,17 +66,5 @@ define(['angular', 'xregexp'], function (angular) {
         }).query();
         DataflowUtils.addBusyPromise(dataflowVersionInfoPromise);
         return dataflowVersionInfoPromise;
-      })
-      .factory('featuresService', function($http) {
-        return {
-          getFeatures: function() {
-            return $http({
-              method: 'GET',
-              url: '/features'
-            }).then(function(response) {
-              return response.data;
-            });
-          }
-        };
       });
 });

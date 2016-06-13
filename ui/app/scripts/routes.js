@@ -41,6 +41,7 @@ define(['./app'], function (dashboard) {
         taskTemplatesPath = 'scripts/task/views',
         streamTemplatesPath = 'scripts/stream/views',
         authTemplatesPath = 'scripts/auth/views',
+        featureTemplatePath = 'scripts/feature/views',
         sharedTemplatesPath = 'scripts/shared/views',
         runtimeTemplatesPath = 'scripts/runtime/views',
         analyticsTemplatesPath = 'scripts/analytics/views',
@@ -55,21 +56,24 @@ define(['./app'], function (dashboard) {
       abstract:true,
       template: '<ui-view/>',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
     .state('home.jobs', {
       abstract:true,
       template: '<ui-view/>',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
     .state('home.analytics', {
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authenticate: true
+        authenticate: true,
+        feature: 'analyticsEnabled'
       }
     })
     .state('home.apps', {
@@ -83,7 +87,8 @@ define(['./app'], function (dashboard) {
       abstract:true,
       template: '<ui-view/>',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'streamsEnabled'
       }
     })
     .state('home.runtime', {
@@ -97,7 +102,8 @@ define(['./app'], function (dashboard) {
       url : 'jobs',
       abstract:true,
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       },
       templateUrl : jobTemplatesPath + '/jobs.html'
     })
@@ -105,7 +111,8 @@ define(['./app'], function (dashboard) {
       url : 'tasks',
       abstract:true,
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       },
       templateUrl : taskTemplatesPath + '/tasks.html'
     })
@@ -132,67 +139,113 @@ define(['./app'], function (dashboard) {
         authenticate: true
       }
     })
+    .state('featureDisabled', {
+      url : '/disabled/{feature}',
+      controller: 'FeatureDisabledController',
+      templateUrl : featureTemplatePath + '/disabled.html',
+      data:{
+        authenticate: false
+      }
+    })
     .state('home.streams.tabs', {
       url : 'streams',
       abstract:true,
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'streamsEnabled'
       },
       templateUrl : streamTemplatesPath + '/streams.html'
     })
     .state('home.streams.tabs.definitions', {
       url : '/definitions',
       templateUrl : streamTemplatesPath + '/definitions.html',
-      controller: 'StreamsDefinitionsController'
+      controller: 'StreamsDefinitionsController',
+      data:{
+        authenticate: true,
+        feature: 'streamsEnabled'
+      }
     })
     .state('home.streams.tabs.create', {
       url : '/create',
       templateUrl : streamTemplatesPath + '/create-stream.html',
-      controller: 'StreamsCreationController'
+      controller: 'StreamsCreationController',
+      data:{
+        authenticate: true,
+        feature: 'streamsEnabled'
+      }
     })
     .state('home.streams.deployStream', {
       url : 'streams/definitions/{definitionName}/deploy',
       templateUrl : streamTemplatesPath + '/definition-deploy.html',
       controller: 'DefinitionDeployController',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'streamsEnabled'
       }
      })
 
     .state('home.jobs.tabs.definitions', {
       url : '/definitions',
       templateUrl : jobTemplatesPath + '/definitions.html',
-      controller: 'JobDefinitionsController'
+      controller: 'JobDefinitionsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.tabs.executions', {
       url : '/executions',
       templateUrl : jobTemplatesPath + '/executions.html',
-      controller: 'JobExecutionsController'
+      controller: 'JobExecutionsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.executiondetails', {
       url : 'jobs/executions/{executionId}',
       templateUrl : jobTemplatesPath + '/execution-details.html',
-      controller: 'JobExecutionDetailsController'
+      controller: 'JobExecutionDetailsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.stepexecutiondetails', {
       url : 'jobs/executions/{executionId}/{stepExecutionId}',
       templateUrl : jobTemplatesPath + '/stepexecution-details.html',
-      controller: 'StepExecutionDetailsController'
+      controller: 'StepExecutionDetailsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.stepexecutionprogress', {
       url : 'jobs/executions/{executionId}/{stepExecutionId}/progress',
       templateUrl : jobTemplatesPath + '/stepexecution-progress.html',
-      controller: 'StepExecutionProgressController'
+      controller: 'StepExecutionProgressController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.deploymentsSchedule', {
       url : 'schedule/{jobName}',
       templateUrl : jobTemplatesPath + '/schedule.html',
-      controller: 'JobScheduleController'
+      controller: 'JobScheduleController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.tasks.tabs.appsList', {
       url : '/apps',
       templateUrl : taskTemplatesPath + '/apps.html',
-      controller: 'TaskAppsController'
+      controller: 'TaskAppsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.tasks.appdetails', {
       url : 'tasks/apps/{appName}',
@@ -200,7 +253,8 @@ define(['./app'], function (dashboard) {
       controller: 'AppDetailsController',
       data:{
         title: 'App Details',
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
     .state('home.tasks.appcreatedefinition', {
@@ -209,29 +263,43 @@ define(['./app'], function (dashboard) {
       controller: 'AppCreateDefinitionController',
       data:{
         title: 'App Create Definition',
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
     .state('home.tasks.tabs.definitions', {
       url : '/definitions',
       templateUrl : taskTemplatesPath + '/definitions.html',
-      controller: 'TaskDefinitionsController'
+      controller: 'TaskDefinitionsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
         .state('home.tasks.deploymentsLaunch', {
           url: 'tasks/definitions/launch/{taskName}',
           templateUrl: taskTemplatesPath + '/launch.html',
-          controller: 'TaskLaunchController'
+          controller: 'TaskLaunchController',
+          data:{
+            authenticate: true,
+            feature: 'tasksEnabled'
+          }
         })
         .state('home.tasks.tabs.executions', {
           url: '/executions',
           templateUrl: taskTemplatesPath + '/executions.html',
-          controller: 'TaskExecutionsController'
+          controller: 'TaskExecutionsController',
+          data:{
+            authenticate: true,
+            feature: 'tasksEnabled'
+          }
         })
         .state('home.analytics.tabs', {
           url: 'analytics',
           abstract: true,
           data: {
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           },
           templateUrl: analyticsTemplatesPath + '/analytics.html'
         })
@@ -241,7 +309,8 @@ define(['./app'], function (dashboard) {
           controller: 'DashboardController',
           data: {
             title: 'Dashboard',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.analytics.tabs.counters', {
@@ -250,7 +319,8 @@ define(['./app'], function (dashboard) {
           controller: 'CountersController',
           data: {
             title: 'Counters',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.analytics.tabs.gauges', {
@@ -259,7 +329,8 @@ define(['./app'], function (dashboard) {
           controller: 'GaugesController',
           data: {
             title: 'Gauges',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.analytics.tabs.richgauges', {
@@ -268,7 +339,8 @@ define(['./app'], function (dashboard) {
           controller: 'RichGaugesController',
           data: {
             title: 'Rich-Gauges',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.apps.tabs', {
@@ -337,7 +409,11 @@ define(['./app'], function (dashboard) {
     });
 
     $rootScope.$on('$stateChangeStart', function(event, toState) {
-        if (userService.authenticationEnabled && toState.data.authenticate && !userService.isAuthenticated){
+        if (toState.data.feature && !$rootScope.features[toState.data.feature]) {
+          $log.error('Feature disabled: ' + toState.data.feature);
+          $state.go('featureDisabled', {feature: toState.data.feature});
+          event.preventDefault();
+        } else if (userService.authenticationEnabled && toState.data.authenticate && !userService.isAuthenticated){
           $log.info('Need to authenticate...');
           $state.go('login');
           event.preventDefault();
