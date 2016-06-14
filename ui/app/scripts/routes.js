@@ -394,19 +394,9 @@ define(['./app'], function (dashboard) {
     $rootScope.dataflowServerUrl = window.location.protocol + '//' + window.location.host;
     $rootScope.xAuthTokenHeaderName = 'x-auth-token';
     $rootScope.user = userService;
-    $rootScope.features = {};
+    $rootScope.features = featuresService;
     $rootScope.pageRefreshTime = 5000;
     $rootScope.enableMessageRates = true;
-
-    featuresService.getFeatures().then(function(features) {
-      $rootScope.features = {
-        analyticsEnabled: features.analyticsEnabled,
-        streamsEnabled: features.streamsEnabled,
-        tasksEnabled: features.tasksEnabled
-      };
-    }, function() {
-      $log.error('Cannot load enabled features info');
-    });
 
     $rootScope.$on('$stateChangeStart', function(event, toState) {
         if (toState.data.feature && !$rootScope.features[toState.data.feature]) {
