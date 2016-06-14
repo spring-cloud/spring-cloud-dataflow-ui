@@ -26,6 +26,22 @@ define(function (require) {
 
     var keepAllProperties = false; // TODO address when whitelisting properties fixed in SCDF
 
+    var WHITELISTING_NOT_SUPPORTED_APPS = [
+        'cassandra',
+        'cloudfoundry',
+        'gemfire',
+        'gpfdist',
+        'hdfs',
+        'http',
+        'jdbc',
+        'jms',
+        'log',
+        'rabbit',
+        'redis',
+        'syslog',
+        'websocket'
+    ];
+
     // Default icons (unicode chars) for each group member, unless they override
     var groupIcons = {
         'source': '⤇',// 2907
@@ -118,6 +134,13 @@ define(function (require) {
                 return false;
             }
 
+            function isSpecialApp(group, name) {
+                if (group === 'processor') {
+                    return true;
+                }
+                return WHITELISTING_NOT_SUPPORTED_APPS.indexOf(name) >= 0;
+            }
+
             function createMetadata(node) {
                 if (node.name !== 'tap' && node.name !== 'destination') {
                     node.metadata = {
@@ -159,12 +182,16 @@ define(function (require) {
                             var properties = {};
                             if (Array.isArray(result.data.options)) {
                                 result.data.options.forEach(function (p) {
-                                    // An interesting property is not dotted and is not 'debug' or 'info'
-                                    var interestingProperty = p.id.indexOf('.')===-1  && p.id!=='debug' && p.id!=='info';
-                                    if (keepAllProperties || interestingProperty || isSpecialProperty(node.name,p.id)) {
-                                        p.name = p.id;
-                                        properties[p.id] = p;
+                                    if (isSpecialApp(node.group, node.name)) {
+                                        // An interesting property is not dotted and is not 'debug' or 'info'
+                                        var interestingProperty = p.id.indexOf('.')===-1  && p.id!=='debug' && p.id!=='info';
+                                        if (keepAllProperties || interestingProperty || isSpecialProperty(node.name,p.id)) {
+                                            p.name = p.id;
+                                        }
+                                    } else {
+                                        p.id = p.name;
                                     }
+                                    properties[p.id] = p;
                                     if (p.sourceType === 'org.springframework.cloud.stream.app.transform.ProgrammableRxJavaProcessorProperties') {
                                         if (p.id === 'code') {
                                             p.contentType = 'java';
