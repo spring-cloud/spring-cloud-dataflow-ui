@@ -21,3 +21,9 @@
 </table>
 <dir-pagination-controls template-url="scripts/directives/dirPagination.tpl.html"
                          on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+<div class="text-center col-md-8 col-md-offset-2" ng-hide="pageable.items">
+  <p><strong>No registered task apps.</strong></p>
+  <p>You can register task apps by going to the <strong>Apps</strong> tab.</p>
+  <p>Alternatively, using the <i>Data Flow Shell</i> application,
+    you can register new apps with the <strong>app register</strong> and <strong>app import</strong> commands.</p>
+</div>
