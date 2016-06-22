@@ -75,9 +75,25 @@ define([], function () {
                 Object.keys(schemaProperties).forEach(function (key) {
                     schema = schemaProperties[key];
 
+                    // Captures what the user has specified in the DSL if anything. Search
+                    // for a value under the long-name and the short-name
+                    var specifiedValue;
+                    // If the user specifies a name in the DSL then that 'alias' should be
+                    // used when converting the properties back to text. By default the
+                    // short-name will be used if the user hasn't specified anything.
+                    var nameInUse = schema.name;
+                    var props = cell.attr('props');
+                    if (props.hasOwnProperty(key)) { // long-name, eg. 'trigger.cron'
+                        specifiedValue = props[key];
+                        nameInUse = key;
+                    } else if (props.hasOwnProperty(schema.name)) { // short-name, eg. 'cron'
+                        specifiedValue = props[schema.name];
+                    }
+
                     properties[key] = {
                         id: schema.id,
                         name: schema.name,
+                        nameInUse: nameInUse,
                         description: schema.description,
                         defaultValue: schema.defaultValue,
                         type: schema.type,
@@ -85,7 +101,7 @@ define([], function () {
                         contentType: schema.contentType,
                         contentTypeProperty: schema.contentTypeProperty,
                         options: schema.options,
-                        value: cell.attr('props/' + key),
+                        value: specifiedValue,
                         pattern: schema.pattern,
                         valueFunc: function(newValue) {
                             if (arguments.length) {

@@ -88,13 +88,13 @@ define(function(require) {
                             property = properties[key];
                             if ((typeof property.value === 'boolean' && !property.defaultValue && !property.value) ||
                                 (property.value === property.defaultValue || property.value === '' || property.value === undefined || property.value === null)) {
-                                if (angular.isDefined(element.attr('props/' + property.id))) {
+                                if (angular.isDefined(element.attr('props/' + property.nameInUse))) {
                                     // Remove attr doesn't fire appropriate event. Set default value first as a workaround to schedule DSL resync
-                                    element.attr('props/' + property.id, property.defaultValue === undefined ? null : property.defaultValue);
-                                    element.removeAttr('props/' + property.id);
+                                    element.attr('props/' + property.nameInUse, property.defaultValue === undefined ? null : property.defaultValue);
+                                    element.removeAttr('props/' + property.nameInUse);
                                 }
                             } else {
-                                element.attr('props/' + property.id, property.value);
+                                element.attr('props/' + property.nameInUse, property.value);
                             }
                         });
 
