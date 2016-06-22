@@ -165,7 +165,8 @@ define(function (require) {
                                 var whitelisted = isWhitelisted(result.data.options);
                                 result.data.options.forEach(function (p) {
                                     if (whitelisted) {
-                                        p.id = p.name;
+                                        // id is the long-name, eg. 'trigger.initial-delay'
+                                        // name is the short-name, eg. 'initial-delay'
                                         properties[p.id] = p;
                                     } else {
                                         // An interesting property is not dotted and is not 'debug' or 'info'
@@ -176,14 +177,14 @@ define(function (require) {
                                         }
                                     }
                                     if (p.sourceType === 'org.springframework.cloud.stream.app.transform.ProgrammableRxJavaProcessorProperties') {
-                                        if (p.id === 'code') {
+                                        if (p.name === 'code') {
                                             p.contentType = 'java';
                                         }
                                     } else if (p.sourceType === 'org.springframework.cloud.stream.app.scriptable.transform.processor.ScriptableTransformProcessorProperties') {
-                                        if (p.id === 'script') {
+                                        if (p.name === 'script') {
                                             p.contentType = 'Plain Text';
                                             p.contentTypeProperty = 'language';
-                                        } else if (p.id === 'language') {
+                                        } else if (p.name === 'language') {
                                             p.options = ['groovy', 'javascript', 'ruby', 'python'];
                                         }
                                     }
