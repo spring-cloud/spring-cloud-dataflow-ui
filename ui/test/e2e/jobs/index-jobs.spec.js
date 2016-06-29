@@ -20,7 +20,6 @@
  * @author Gunnar Hillert
  */
 describe('Tests', function() {
-
   beforeEach(function() {
     browser.get('/');
     browser.ignoreSynchronization = true;
@@ -30,24 +29,49 @@ describe('Tests', function() {
   });
 
   describe('When I navigate to the root URL "/"', function() {
-    it('the app should redirect to "#/tasks/definitions"', function() {
+    it('the app should redirect to "#/apps/apps"', function() {
       browser.get('/');
       browser.driver.sleep(2000);
-      expect(browser.getCurrentUrl()).toContain('/#/streams/definitions')
-      expect(browser.getTitle()).toBe('Spring Cloud Data Flow');
+      expect(browser.getCurrentUrl()).toContain('/#/apps/apps')
+      expect(browser.getTitle()).toBe('Apps');
     });
   });
 
   describe('When I navigate to some non-existing URL, e.g. "/#/foobar"', function() {
-    it('the app should redirect to "#/tasks/definitions"', function() {
+    it('the app should redirect to "#/apps/apps"', function() {
       browser.get('/#/foobar');
-      expect(browser.getCurrentUrl()).toContain('/streams/definitions');
+      expect(browser.getCurrentUrl()).toContain('/apps/apps');
     });
   });
 
   //Apps tab
 
-  describe('When I navigate to "/tasks/apps"', function() {
+  describe('When I navigate to "/tasks/apps" (default installation)', function() {
+
+    it('First delete all Apps', function() {
+      browser.get('#/apps/apps').then(function() {
+        browser.driver.sleep(2000);
+        var selectAllAppsCheckbox = element(by.css('#selectAllAppsCheckbox'));
+
+        selectAllAppsCheckbox.click().then(
+          function(value) {
+            //console.log(value, value);
+            //browser.driver.sleep(4000);
+            var unregisterSelectedAppsButton = element(by.css('#unregisterSelectedAppsButton'));
+
+            unregisterSelectedAppsButton.getAttribute('disabled').then(function(disabled) {
+              if (!disabled) {
+                unregisterSelectedAppsButton.click().then(function(value) {
+                  browser.driver.sleep(2000);
+                  var unregisterAllAppsConfirmationButton = element(by.css('#unregisterAllAppsConfirmationButton'));
+                  unregisterAllAppsConfirmationButton.click();
+                });
+              }
+            });
+          });
+      });
+    });
+
     it('there should be 3 tabs of which one is active', function() {
       browser.get('#/tasks/apps').then(function() {
         expect(element.all(by.css('#dataflow-tasks ul.nav-tabs li')).count()).toEqual(3);
@@ -59,10 +83,34 @@ describe('Tests', function() {
         expect(element(by.css('#dataflow-tasks ul li.active a')).getText()).toEqual('Apps');
       });
     });
-    it('there should be at least 1 task module being listed', function() {
+    it('there should be 0 task modules being listed', function() {
       browser.get('#/tasks/apps').then(function() {
         browser.driver.sleep(2000);
-        expect(element.all(by.css('#dataflow-tasks table tbody tr')).count()).toBeGreaterThan(0);
+        expect(element.all(by.css('#dataflow-tasks table tbody tr')).count()).toBe(0);
+      });
+    });
+    it('We need to install the timestamp task', function() {
+      browser.get('#/apps/apps').then(function() {
+        browser.driver.sleep(3000);
+        var registerAppsButton = element(by.css('#registerAppsButton'));
+        registerAppsButton.click().then(function(value) {
+          browser.driver.sleep(1000);
+          var nameInputField = element(by.css('#name_0'));
+          var typeSelectBox = element(by.css('#type_0'));
+          var uriInputField = element(by.css('#uri_0'));
+
+          nameInputField.clear();
+          nameInputField.sendKeys('timestamp');
+
+          typeSelectBox.element(by.cssContainingText('option', 'Task')).click();
+
+          uriInputField.clear();
+          uriInputField.sendKeys('maven://org.springframework.cloud.task.app:timestamp-task:1.0.0.BUILD-SNAPSHOT');
+
+          browser.driver.sleep(2000);
+          element(by.css('#submit-button')).click()
+          browser.driver.sleep(2000);
+        });
       });
     });
     it('there should a task app named timestamp', function() {

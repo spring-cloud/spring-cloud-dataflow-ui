@@ -90,7 +90,12 @@ define(['model/pageable'], function (Pageable) {
                             p = $scope.pageable;
                         } else {
                             // Remove the else block when paging restored.
-                            $scope.pageable.total = $scope.pageable.items.length;
+                            if ($scope.pageable.items) {
+                                $scope.pageable.total = $scope.pageable.items.length;
+                            }
+                            else {
+                                $scope.pageable.total = 0;
+                            }
                             $scope.pageable.pageSize = $scope.pageable.total;
                             $scope.pageNumber = 0;
                         }
@@ -119,9 +124,11 @@ define(['model/pageable'], function (Pageable) {
              * Select all apps
              */
             $scope.selectAll = function() {
-                $scope.pageable.items.forEach(function(item) {
-                    $scope.selected[item.id] = item;
-                });
+                if ($scope.pageable.items && $scope.pageable.items.length > 0) {
+                    $scope.pageable.items.forEach(function(item) {
+                        $scope.selected[item.id] = item;
+                    });
+                }
             };
 
             /**

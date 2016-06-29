@@ -25,7 +25,8 @@ define(function(require) {
     var angular = require('angular');
 
     return angular.module('dataflowStreams.directives', ['dataflowShared.services', 'dataflowStreams.services'])
-        .directive('uniqueStreamName', ['DataflowUtils', 'StreamService', function (utils, streamService) {
+        //.directive('uniqueStreamName', ['DataflowUtils', 'StreamService', function (utils, streamService) {
+        .directive('uniqueStreamName', ['DataflowUtils', function (utils) {
             return {
                 require: 'ngModel',
                 link: function(scope, elm, attrs, ctrl) {

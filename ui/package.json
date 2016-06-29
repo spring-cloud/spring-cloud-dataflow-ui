@@ -1,6 +1,8 @@
 {
   "name": "spring-cloud-dataflow-ui",
   "version": "1.0.0",
+  "description": "Provides the Dashboard application of Spring Cloud Data Flow",
+  "license": "Apache-2.0",
   "devDependencies": {
     "tmp": "0.0.25",
     "bower": "1.4.1",

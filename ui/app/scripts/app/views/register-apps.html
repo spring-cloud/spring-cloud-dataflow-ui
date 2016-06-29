@@ -26,16 +26,16 @@
             <tr id="{{$index}}" ng-repeat="app in apps">
                 <td>
                     <div ng-class="registerAppsForm[$index + '_name'].$invalid ? 'has-warning has-feedback' : ''">
-                        <input type="text" id="{{$index + '_name'}}" name="{{$index + '_name'}}" class="form-control" placeholder="<Application Name>" required ng-model="app.name" ng-pattern="namePattern">
+                        <input type="text" id="{{'name_' + $index}}" name="{{$index + '_name'}}" class="form-control" placeholder="<Application Name>" required ng-model="app.name" ng-pattern="namePattern">
                         <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerAppsForm[$index + '_name'].$invalid"></span>
                     </div>
                 </td>
                 <td>
-                    <select id="{{$index + '_type'}}" name="{{$index + '_type'}}" class="form-control full-cell-select-input" ng-model="app.type" ng-options="type | capitalize for type in types">
+                    <select id="{{'type_' + $index}}" name="{{$index + '_type'}}" class="form-control full-cell-select-input" ng-model="app.type" ng-options="type | capitalize for type in types">
                 </td>
                 <td>
                     <div ng-class="registerAppsForm[$index + '_uri'].$invalid ? 'has-warning has-feedback' : ''">
-                        <input type="text" id="{{$index + '_uri'}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT>" required ng-model="app.uri" ng-pattern="uriPattern">
+                        <input type="text" id="{{'uri_' + $index}}" name="{{$index + '_uri'}}" class="form-control" placeholder="<maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT>" required ng-model="app.uri" ng-pattern="uriPattern">
                         <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="registerAppsForm[$index + '_uri'].$invalid"></span>
                     </div>
                 </td>
