@@ -183,7 +183,14 @@ define(function (require) {
                                     } else if (p.sourceType === 'org.springframework.cloud.stream.app.scriptable.transform.processor.ScriptableTransformProcessorProperties') {
                                         if (p.name === 'script') {
                                             p.contentType = 'Plain Text';
-                                            p.contentTypeProperty = 'language';
+                                            // Add proeprty prefix if any is found.
+                                            var prefix = '';
+                                            var idx = p.id.lastIndexOf('.');
+                                            if (idx >= 0) {
+                                                prefix = p.id.substring(0, idx + 1);
+                                            }
+                                            // Prefix at the moment should be 'scriptable-transform.'
+                                            p.contentTypeProperty = prefix + 'language';
                                         } else if (p.name === 'language') {
                                             p.options = ['groovy', 'javascript', 'ruby', 'python'];
                                         }
