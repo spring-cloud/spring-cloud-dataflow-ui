@@ -473,7 +473,21 @@ define(function(require) {
             });
 
             scope.isCode = function(key) {
-                return scope.schema && scope.schema[key] && typeof scope.schema[key].contentType === 'string';
+                if (scope.schema) {
+                    // Key is a property name, properties are indexed by ids of a form <prefix><name>
+                    var prefix = '';
+                    var ids = scope.keys(scope.schema);
+                    // Check if property is a property name, i.e. . char is a delimiter between prefixes
+                    if (key.lastIndexOf('.') < 0 && ids.length) {
+                        var propertyId = ids[0];
+                        var idx = propertyId.lastIndexOf('.');
+                        if (idx >= 0) {
+                            prefix = propertyId.substring(0, idx + 1);
+                        }
+                    }
+                    var id = prefix + key;
+                    return scope.schema[id] && typeof scope.schema[id].contentType === 'string';
+                }
             };
 
             scope.getPropertyValue = function(key) {
