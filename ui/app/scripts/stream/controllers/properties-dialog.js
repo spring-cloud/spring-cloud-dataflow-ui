@@ -67,7 +67,8 @@ define([], function () {
             }
 
 
-            var propertiesSchemaPromise = cell.attr('metadata').get('properties');
+            var metadata = cell.attr('metadata');
+            var propertiesSchemaPromise = metadata.get('properties');
             $scope.cgbusy = propertiesSchemaPromise;
             propertiesSchemaPromise.then(function (schemaProperties) {
                 var properties = {};
@@ -81,7 +82,9 @@ define([], function () {
                     // If the user specifies a name in the DSL then that 'alias' should be
                     // used when converting the properties back to text. By default the
                     // short-name will be used if the user hasn't specified anything.
-                    var nameInUse = schema.name;
+                    // The alias is applicable to sources, processors and sinks.
+                    // Exclusions are: explicit taps and destinations. The entire other group.
+                    var nameInUse = metadata.group === 'other' ? schema.id : schema.name;
                     var props = cell.attr('props');
                     if (props.hasOwnProperty(key)) { // long-name, eg. 'trigger.cron'
                         specifiedValue = props[key];
