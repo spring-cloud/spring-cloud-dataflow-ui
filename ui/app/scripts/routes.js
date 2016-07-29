@@ -369,6 +369,15 @@ define(['./app'], function (dashboard) {
             authenticate: true
           }
         })
+        .state('home.apps.bulkImportApps', {
+          url: 'apps/bulk-import-apps',
+          templateUrl: appTemplatesPath + '/bulk-import-apps.html',
+          controller: 'BulkImportAppsController',
+          data: {
+            title: 'Bulk Import Apps',
+            authenticate: true
+          }
+        })
         .state('home.runtime.tabs', {
           url: 'runtime',
           abstract: true,

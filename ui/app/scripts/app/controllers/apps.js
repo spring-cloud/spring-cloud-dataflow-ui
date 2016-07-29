@@ -326,6 +326,13 @@ define(['model/pageable'], function (Pageable) {
                 $state.go('home.apps.registerApps');
             };
 
+            /**
+             * Takes one to bulk import app page
+             */
+            $scope.bulkImportApps = function() {
+                $state.go('home.apps.bulkImportApps');
+            };
+
             $scope.$on('$destroy', function(){
                 if ($scope.getAppDefinitions) {
                     utils.$timeout.cancel($scope.getAppDefinitions);

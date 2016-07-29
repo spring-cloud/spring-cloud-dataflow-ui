@@ -35,5 +35,11 @@ define(['angular'], function (angular) {
                 require(['app/controllers/register-apps'], function (registerAppsController) {
                     $injector.invoke(registerAppsController, this, {'$scope': $scope});
                 });
+            }])
+        .controller('BulkImportAppsController',
+            ['$scope', '$injector', function ($scope, $injector) {
+                require(['app/controllers/bulk-import-apps'], function (bulkImportAppsController) {
+                    $injector.invoke(bulkImportAppsController, this, {'$scope': $scope});
+                });
             }]);
 });

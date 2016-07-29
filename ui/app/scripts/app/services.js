@@ -79,6 +79,18 @@ define(['angular'], function (angular) {
                             method: 'DELETE'
                         }
                     }).unregisterApp();
+                },
+                bulkImportApps: function(uri, appsProperties, force) {
+                    return $resource($rootScope.dataflowServerUrl + '/apps', {}, {
+                        bulkImportApps: {
+                            method: 'POST',
+                            params: {
+                                uri: uri,
+                                apps: appsProperties ? appsProperties.join('\n') : null,
+                                force: force ? true : false
+                            }
+                        }
+                    }).bulkImportApps();
                 }
             };
         });
