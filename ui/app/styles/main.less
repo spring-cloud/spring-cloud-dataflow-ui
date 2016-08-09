@@ -363,6 +363,30 @@ hr {
   margin: 5px 0px 5px 0px;
 }
 
+.collapse-handle-button {
+  width: 24px;
+  height: 24px;
+  background: transparent url(../images/collapsed.svg) no-repeat;
+  border: 0px;
+  outline: none;
+}
+
+.collapse-handle-button.on {
+  background-image: url(../images/expanded.svg);
+}
+
+.table-double-striped > tbody > tr:nth-child(4n-1) > td {
+  background-color: @spring-light-grey;
+}
+
+.table-double-striped > tbody > tr:nth-child(4n) > td {
+  background-color: @spring-light-grey;
+}
+
+.table-double-striped > tbody > tr:nth-child(2n) > td {
+  border-top-width: 0px;
+}
+
 @import (less) "../lib/spring-flo/spring-flo.css";
 
 @import "analytics.less";
