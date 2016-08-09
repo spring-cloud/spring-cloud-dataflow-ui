@@ -49,9 +49,9 @@
         </td>
     </tr>
     <tr dir-paginate-end ng-show="!item.inactive">
-        <td ng-if="isExpanded(item.name)" colspan="7">
+        <td ng-if="isExpanded(item.name)" colspan="7" ng-class="{undeployed: item.status !== 'deployed'}">
             <flo-editor ng-controller="StreamController" init-read-only-canvas="true" metamodel-service-name="StreamMetamodelService" render-service-name="StreamRenderService" init-read-only-canvas="true"
-                        ng-init="paperPadding=20; definition.text=item.dslText; flo.noPalette=true; canvasControls={zoom:true};"></flo-editor>
+                        ng-init="paperPadding=65; definition.text=item.dslText; flo.noPalette=true; canvasControls={zoom:true};"></flo-editor>
         </td>
     </tr>
     </tbody>
