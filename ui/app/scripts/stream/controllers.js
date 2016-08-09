@@ -42,6 +42,12 @@ define(['angular'], function (angular) {
               $injector.invoke(createStreamsDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'definitionData': definitionData});
           });
       }])
+      .controller('StreamController',
+          ['$scope','$injector', function ($scope, $injector) {
+              require(['stream/controllers/stream'], function (streamController) {
+                  $injector.invoke(streamController, this, {'$scope': $scope});
+              });
+          }])
       .controller('PropertiesDialogController',
       ['$scope','$injector', '$modalInstance', 'cell', 'streamInfo', function ($scope, $injector, $modalInstance, cell, streamInfo) {
           require(['stream/controllers/properties-dialog'], function (propertiesDialogController) {
