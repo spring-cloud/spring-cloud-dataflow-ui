@@ -24,6 +24,7 @@ define(function (require) {
     var statusToFilter = {
         undeployed: 'grayscale',
         deploying: 'grayscale',
+        partial: 'grayscale',
         incomplete: 'orangescale',
         failed: 'redscale'
     };
@@ -46,11 +47,17 @@ define(function (require) {
             }
         }
 
+        function stopAnimation(cell) {
+            cell.off('transition:end', endTransition);
+            cell.stopTransitions('attrs/.shape/filter/args/amount');
+        }
+
         // Transitions between filters applying animation where appropriate
         function transitionFilter(cell, newFilter) { // jshint ignore:line
             var oldFilter = cell.attr('.shape/filter/name');
             if (newFilter !== oldFilter) {
                 if (!oldFilter) {
+                    stopAnimation(cell);
                     cell.attr('.shape/filter', {name: newFilter, args: {amount: 0}});
                     cell.transition('attrs/.shape/filter/args/amount', 1, {
                         delay: 0,
@@ -62,6 +69,7 @@ define(function (require) {
                 } else if (!newFilter) {
                     // cell.stopTransitions('attrs/.shape/filter/args/amount');
                     // Ensure that filter amount is set explicitly!
+                    stopAnimation(cell);
                     cell.attr('.shape/filter/args/amount', 1);
                     cell.transition('attrs/.shape/filter/args/amount', 0, {
                         delay: 0,
@@ -78,9 +86,8 @@ define(function (require) {
 
         function initAppColouring(cell) {
             if (cell.attr('metadata')) {
+                stopAnimation(cell);
                 cell.removeAttr('.shape/filter');
-                cell.off('transition:end', endTransition);
-                cell.stopTransitions('attrs/.shape/filter/args/amount');
                 var status = $scope.item.status;
                 var filter = statusToFilter[status];
                 if (filter) {
