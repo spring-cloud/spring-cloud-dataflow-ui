@@ -667,27 +667,27 @@ define(function(require) {
             }
         }
 
-        function initializeNewNode(node, context) {
+        function initializeNewNode(view) {
+            var node = view.model;
             var metadata = node.attr('metadata');
-            var view = context.paper.findViewByModel(node);
             if (metadata) {
-                var isPalette = view && (context.graph.attributes.type === joint.shapes.flo.PALETTE_TYPE);
-
+                var paper = view.paper;
+                var isPalette = paper.model.get('type') === joint.shapes.flo.PALETTE_TYPE;
                 if (metadata.name === 'tap') {
-                    refreshVisuals(node, 'props/name', context.paper);
+                    refreshVisuals(node, 'props/name', paper);
                 } else if (metadata.name === 'destination') {
-                    refreshVisuals(node, 'props/name', context.paper);
+                    refreshVisuals(node, 'props/name', paper);
                 } else {
-                    refreshVisuals(node, 'node-name', context.paper);
+                    refreshVisuals(node, 'node-name', paper);
                 }
 
                 if (!isPalette) {
-                    refreshVisuals(node, 'stream-name', context.paper);
+                    refreshVisuals(node, 'stream-name', paper);
                 }
 
                 // Attach angular style tooltip to a app view
                 if (view) {
-                    if (context.graph.attributes.type === joint.shapes.flo.CANVAS_TYPE) {
+                    if (paper.model.attributes.type === joint.shapes.flo.CANVAS_TYPE) {
                         attachCanvasAppTooltip(view);
                     } else if (isPalette) {
                         attachPaletteAppTooltip(view);
@@ -697,72 +697,64 @@ define(function(require) {
         }
 
         /**
-         * Sets some initialization data on the decoration Joint JS model element
+         * Sets some initialization data on the decoration Joint JS view object
          *
-         * @param decoration Joint JS model object for decoration
-         * @param context The context of the object (corresponding Joint JS graph and paper objects)
+         * @param view Joint JS view object for decoration
          */
-        function initializeNewDecoration(decoration, context) {
-            // Find the Joint JS view object giveb the model. View object should exist by now.
-            var view = context.paper.findViewByModel(decoration);
+        function initializeNewDecoration(view) {
             // Attach angular-bootstrap-ui tooltip to error marker
-            if (view && decoration.attr('./kind') === 'error') {
+            if (view.model.attr('./kind') === 'error') {
                 attachErrorMarkerTooltip(view);
             }
         }
 
         /**
-         * Sets some initialization data on the handle Joint JS model element
+         * Sets some initialization data on the handle Joint JS view object
          *
-         * @param handle Joint JS model object for handle
-         * @param context The context of the object (corresponding Joint JS graph and paper objects)
+         * @param view Joint JS view object for handle
          */
-        function initializeNewHandle(handle, context) {
-            // Find the Joint JS view object giveb the model. View object should exist by now.
-            var view = context.paper.findViewByModel(handle);
-            if (view) {
+        function initializeNewHandle(view) {
+            var handle = view.model;
+            // Attach angular-bootstrap-ui tooltip to handles
 
-                // Attach angular-bootstrap-ui tooltip to handles
+            // For some reason angular-bootstrap-ui 0.13.4 tooltip app doesn't detect mouseleave for handles
+            // Therefore we track mouselave (or mouseout in Joint JS terms) and hide tooltip ourselves
+            var scope = $rootScope.$new(true);
+            scope.disabled = false;
 
-                // For some reason angular-bootstrap-ui 0.13.4 tooltip app doesn't detect mouseleave for handles
-                // Therefore we track mouselave (or mouseout in Joint JS terms) and hide tooltip ourselves
-                var scope = $rootScope.$new(true);
+            // Enable tooltip when the mouse is over the shape
+            view.on('cell:mouseover', function () {
+                // Enable tooltip
                 scope.disabled = false;
+                // Occurs outside of angular digest cycle, so trigger angular listeners update
+                scope.$digest();
+            });
 
-                // Enable tooltip when the mouse is over the shape
-                view.on('cell:mouseover', function() {
-                    // Enable tooltip
-                    scope.disabled = false;
-                    // Occurs outside of angular digest cycle, so trigger angular listeners update
-                    scope.$digest();
-                });
+            // Hide tooltip if mouse pointer has left the shape. Angular 0.13.4 fails to detect it for handles properly :-(
+            view.on('cell:mouseout', function () {
+                // Disable tooltip
+                scope.disabled = true;
+                // Occurs outside of angular digest cycle, so trigger angular listeners update
+                scope.$digest();
+            });
 
-                // Hide tooltip if mouse pointer has left the shape. Angular 0.13.4 fails to detect it for handles properly :-(
-                view.on('cell:mouseout', function() {
-                    // Disable tooltip
-                    scope.disabled = true;
-                    // Occurs outside of angular digest cycle, so trigger angular listeners update
-                    scope.$digest();
-                });
+            // Hide tooltip if handle has been clicked.
+            // The 'cell:pointerup' event is important! None of the others work properly
+            view.on('cell:pointerup', function () {
+                // Disable tooltip
+                scope.disabled = true;
+                // Occurs outside of angular digest cycle, so trigger angular listeners update
+                scope.$digest();
+            });
 
-                // Hide tooltip if handle has been clicked.
-                // The 'cell:pointerup' event is important! None of the others work properly
-                view.on('cell:pointerup', function() {
-                    // Disable tooltip
-                    scope.disabled = true;
-                    // Occurs outside of angular digest cycle, so trigger angular listeners update
-                    scope.$digest();
-                });
-
-                if (handle.attr('./kind') === 'remove') {
-                    attachBootstrapTextTooltip(view.el, scope, 'Remove Element', 'bottom', 500);
-                    // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
-                    $compile(view.el)(scope);
-                } else if (handle.attr('./kind') === 'properties') {
-                    attachBootstrapTextTooltip(view.el, scope, 'Edit Properties', 'bottom', 500);
-                    // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
-                    $compile(view.el)(scope);
-                }
+            if (handle.attr('./kind') === 'remove') {
+                attachBootstrapTextTooltip(view.el, scope, 'Remove Element', 'bottom', 500);
+                // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
+                $compile(view.el)(scope);
+            } else if (handle.attr('./kind') === 'properties') {
+                attachBootstrapTextTooltip(view.el, scope, 'Edit Properties', 'bottom', 500);
+                // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
+                $compile(view.el)(scope);
             }
         }
 
@@ -803,6 +795,26 @@ define(function(require) {
                     }
                     delete this._oldSource;
                     delete this._oldTarget;
+                }
+
+            });
+        }
+
+        function getNodeView() {
+            return joint.dia.ElementView.extend({
+                options: joint.util.deepSupplement({
+                }, joint.dia.ElementView.prototype.options),
+
+                renderMarkup: function() {
+                    joint.dia.ElementView.prototype.renderMarkup.apply(this, arguments);
+                    var type = this.model.get('type');
+                    if (type === joint.shapes.flo.NODE_TYPE) {
+                        initializeNewNode(this);
+                    } else if (type === joint.shapes.flo.DECORATION_TYPE) {
+                        initializeNewDecoration(this);
+                    } else if (type === joint.shapes.flo.HANDLE_TYPE) {
+                        initializeNewHandle(this);
+                    }
                 }
 
             });
@@ -979,10 +991,8 @@ define(function(require) {
             'createLink': createLink,
             'createHandle': createHandle,
             'createDecoration': createDecoration,
-            'initializeNewNode': initializeNewNode,
-            'initializeNewDecoration': initializeNewDecoration,
-            'initializeNewHandle': initializeNewHandle,
             'getLinkView': getLinkView,
+            'getNodeView': getNodeView,
             'layout': layout,
             'initializeNewLink': initializeNewLink,
             'handleLinkEvent': handleLinkEvent,
