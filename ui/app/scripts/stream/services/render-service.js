@@ -805,8 +805,8 @@ define(function(require) {
                 options: joint.util.deepSupplement({
                 }, joint.dia.ElementView.prototype.options),
 
-                renderMarkup: function() {
-                    joint.dia.ElementView.prototype.renderMarkup.apply(this, arguments);
+                render: function() {
+                    joint.dia.ElementView.prototype.render.apply(this, arguments);
                     var type = this.model.get('type');
                     if (type === joint.shapes.flo.NODE_TYPE) {
                         initializeNewNode(this);
