@@ -22,7 +22,7 @@
     "moment": "2.8.4",
     "angular-utils-pagination": "0.11.0",
     "d3": "3.5.5",
-    "spring-flo": "0.5.0"
+    "spring-flo": "git://github.com/spring-projects/spring-flo#master"
   },
   "devDependencies": {
     "angular-mocks": "1.3.5",
