@@ -14,14 +14,14 @@
     <tr>
       <th>Name</th>
       <th>Definition</th>
-      <th>Status <a class="status-help" xd-popover=".status-help-content" title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+      <th>Status <a class="status-help" dataflow-popover=".status-help-content" title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a></th>
       <th colspan="3" class="text-center">Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total" ng-show="!item.inactive">
       <td>{{item.name}}</td>
-      <td xd-format-stream='item.dslText'></td>
+      <td dataflow-format-stream='item.dslText'></td>
       <td>{{item.status}}</td>
       <td class="action-column">
         <button type="button" ng-click="launchTask(item)"
@@ -39,7 +39,7 @@
 </table>
 <dir-pagination-controls template-url="scripts/directives/dirPagination.tpl.html"
                          on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
-<div class="modal fade" xd-modal id="confirm-destroy">
+<div class="modal fade" dataflow-modal id="confirm-destroy">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -63,9 +63,9 @@
   <table class="table-hover table-condensed status-help-content-table">
     <tbody>
       <tr><td><strong>deploying</strong></td><td>Deployment has been initiated</td></tr>
-      <tr><td><strong>deployed</strong></td><td>Fully deployed based on each of the stream's modules' count properties</td></tr>
-      <tr><td><strong>incomplete</strong></td><td>At least 1 of each module, but 1 or more of them not at requested capacity</td></tr>
-      <tr><td><strong>failed</strong></td><td>1 or more of the modules does not have even a single instance deployed</td></tr>
+      <tr><td><strong>deployed</strong></td><td>Fully deployed based on each of the stream's apps' count properties</td></tr>
+      <tr><td><strong>incomplete</strong></td><td>At least 1 of each app, but 1 or more of them not at requested capacity</td></tr>
+      <tr><td><strong>failed</strong></td><td>1 or more of the apps does not have even a single instance deployed</td></tr>
       <tr><td><strong>undeployed</strong></td><td>Intentionally undeployed, or created but not yet deployed</td></tr>
     </tbody>
   </table>

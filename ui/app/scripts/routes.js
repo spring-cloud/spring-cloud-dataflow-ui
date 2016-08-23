@@ -21,12 +21,12 @@
  * @author Ilayaperumal Gopinathan
  * @author Alex Boyko
  */
-define(['./app'], function (xdAdmin) {
+define(['./app'], function (dashboard) {
   'use strict';
-  xdAdmin.config(function ($stateProvider, $urlRouterProvider, $httpProvider, hljsServiceProvider, growlProvider, $animateProvider) {
+  dashboard.config(function ($stateProvider, $urlRouterProvider, $httpProvider, hljsServiceProvider, growlProvider, $animateProvider) {
     $httpProvider.defaults.useXDomain = true;
     $httpProvider.interceptors.push('httpErrorInterceptor');
-    $urlRouterProvider.otherwise('/streams/definitions');
+    $urlRouterProvider.otherwise('/apps/apps');
 
     hljsServiceProvider.setOptions({
       tabReplace: '  '
@@ -41,8 +41,9 @@ define(['./app'], function (xdAdmin) {
         taskTemplatesPath = 'scripts/task/views',
         streamTemplatesPath = 'scripts/stream/views',
         authTemplatesPath = 'scripts/auth/views',
+        featureTemplatePath = 'scripts/feature/views',
         sharedTemplatesPath = 'scripts/shared/views',
-        containerTemplatesPath = 'scripts/container/views',
+        runtimeTemplatesPath = 'scripts/runtime/views',
         analyticsTemplatesPath = 'scripts/analytics/views',
         appTemplatesPath = 'scripts/app/views';
 
@@ -55,21 +56,24 @@ define(['./app'], function (xdAdmin) {
       abstract:true,
       template: '<ui-view/>',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
     .state('home.jobs', {
       abstract:true,
       template: '<ui-view/>',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
     .state('home.analytics', {
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authenticate: true
+        authenticate: true,
+        feature: 'analyticsEnabled'
       }
     })
     .state('home.apps', {
@@ -83,10 +87,11 @@ define(['./app'], function (xdAdmin) {
       abstract:true,
       template: '<ui-view/>',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'streamsEnabled'
       }
     })
-    .state('home.containers', {
+    .state('home.runtime', {
       abstract:true,
       template: '<ui-view/>',
       data:{
@@ -97,7 +102,8 @@ define(['./app'], function (xdAdmin) {
       url : 'jobs',
       abstract:true,
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       },
       templateUrl : jobTemplatesPath + '/jobs.html'
     })
@@ -105,7 +111,8 @@ define(['./app'], function (xdAdmin) {
       url : 'tasks',
       abstract:true,
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       },
       templateUrl : taskTemplatesPath + '/tasks.html'
     })
@@ -132,106 +139,167 @@ define(['./app'], function (xdAdmin) {
         authenticate: true
       }
     })
+    .state('featureDisabled', {
+      url : '/disabled/{feature}',
+      controller: 'FeatureDisabledController',
+      templateUrl : featureTemplatePath + '/disabled.html',
+      data:{
+        authenticate: false
+      }
+    })
     .state('home.streams.tabs', {
       url : 'streams',
       abstract:true,
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'streamsEnabled'
       },
       templateUrl : streamTemplatesPath + '/streams.html'
     })
     .state('home.streams.tabs.definitions', {
       url : '/definitions',
       templateUrl : streamTemplatesPath + '/definitions.html',
-      controller: 'StreamsDefinitionsController'
+      controller: 'StreamsDefinitionsController',
+      data:{
+        authenticate: true,
+        feature: 'streamsEnabled'
+      }
     })
     .state('home.streams.tabs.create', {
       url : '/create',
       templateUrl : streamTemplatesPath + '/create-stream.html',
-      controller: 'StreamsCreationController'
+      controller: 'StreamsCreationController',
+      data:{
+        authenticate: true,
+        feature: 'streamsEnabled'
+      }
     })
     .state('home.streams.deployStream', {
       url : 'streams/definitions/{definitionName}/deploy',
       templateUrl : streamTemplatesPath + '/definition-deploy.html',
       controller: 'DefinitionDeployController',
       data:{
-        authenticate: true
+        authenticate: true,
+        feature: 'streamsEnabled'
       }
      })
 
     .state('home.jobs.tabs.definitions', {
       url : '/definitions',
       templateUrl : jobTemplatesPath + '/definitions.html',
-      controller: 'JobDefinitionsController'
+      controller: 'JobDefinitionsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.tabs.executions', {
       url : '/executions',
       templateUrl : jobTemplatesPath + '/executions.html',
-      controller: 'JobExecutionsController'
+      controller: 'JobExecutionsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.executiondetails', {
       url : 'jobs/executions/{executionId}',
       templateUrl : jobTemplatesPath + '/execution-details.html',
-      controller: 'JobExecutionDetailsController'
+      controller: 'JobExecutionDetailsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.stepexecutiondetails', {
       url : 'jobs/executions/{executionId}/{stepExecutionId}',
       templateUrl : jobTemplatesPath + '/stepexecution-details.html',
-      controller: 'StepExecutionDetailsController'
+      controller: 'StepExecutionDetailsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.stepexecutionprogress', {
       url : 'jobs/executions/{executionId}/{stepExecutionId}/progress',
       templateUrl : jobTemplatesPath + '/stepexecution-progress.html',
-      controller: 'StepExecutionProgressController'
+      controller: 'StepExecutionProgressController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
     .state('home.jobs.deploymentsSchedule', {
       url : 'schedule/{jobName}',
       templateUrl : jobTemplatesPath + '/schedule.html',
-      controller: 'JobScheduleController'
-    })
-    .state('home.tasks.tabs.modules', {
-      url : '/modules',
-      templateUrl : taskTemplatesPath + '/modules.html',
-      controller: 'ModuleController'
-    })
-    .state('home.tasks.moduledetails', {
-      url : 'tasks/modules/{moduleName}',
-      templateUrl : taskTemplatesPath + '/module-details.html',
-      controller: 'ModuleDetailsController',
+      controller: 'JobScheduleController',
       data:{
-        title: 'Module Details',
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
-    .state('home.tasks.modulecreatedefinition', {
-      url : 'tasks/modules/{moduleName}/create-definition',
-      templateUrl : taskTemplatesPath + '/module-create-definition.html',
-      controller: 'ModuleCreateDefinitionController',
+    .state('home.tasks.tabs.appsList', {
+      url : '/apps',
+      templateUrl : taskTemplatesPath + '/apps.html',
+      controller: 'TaskAppsController',
       data:{
-        title: 'Module Create Definition',
-        authenticate: true
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
+    })
+    .state('home.tasks.appdetails', {
+      url : 'tasks/apps/{appName}',
+      templateUrl : taskTemplatesPath + '/app-details.html',
+      controller: 'AppDetailsController',
+      data:{
+        title: 'App Details',
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
+    })
+    .state('home.tasks.appcreatedefinition', {
+      url : 'tasks/apps/{appName}/create-definition',
+      templateUrl : taskTemplatesPath + '/app-create-definition.html',
+      controller: 'AppCreateDefinitionController',
+      data:{
+        title: 'App Create Definition',
+        authenticate: true,
+        feature: 'tasksEnabled'
       }
     })
     .state('home.tasks.tabs.definitions', {
       url : '/definitions',
       templateUrl : taskTemplatesPath + '/definitions.html',
-      controller: 'TaskDefinitionsController'
+      controller: 'TaskDefinitionsController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
     })
         .state('home.tasks.deploymentsLaunch', {
           url: 'tasks/definitions/launch/{taskName}',
           templateUrl: taskTemplatesPath + '/launch.html',
-          controller: 'TaskLaunchController'
+          controller: 'TaskLaunchController',
+          data:{
+            authenticate: true,
+            feature: 'tasksEnabled'
+          }
         })
         .state('home.tasks.tabs.executions', {
           url: '/executions',
           templateUrl: taskTemplatesPath + '/executions.html',
-          controller: 'TaskExecutionsController'
+          controller: 'TaskExecutionsController',
+          data:{
+            authenticate: true,
+            feature: 'tasksEnabled'
+          }
         })
         .state('home.analytics.tabs', {
           url: 'analytics',
           abstract: true,
           data: {
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           },
           templateUrl: analyticsTemplatesPath + '/analytics.html'
         })
@@ -241,7 +309,8 @@ define(['./app'], function (xdAdmin) {
           controller: 'DashboardController',
           data: {
             title: 'Dashboard',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.analytics.tabs.counters', {
@@ -250,7 +319,8 @@ define(['./app'], function (xdAdmin) {
           controller: 'CountersController',
           data: {
             title: 'Counters',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.analytics.tabs.gauges', {
@@ -259,7 +329,8 @@ define(['./app'], function (xdAdmin) {
           controller: 'GaugesController',
           data: {
             title: 'Gauges',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.analytics.tabs.richgauges', {
@@ -268,7 +339,8 @@ define(['./app'], function (xdAdmin) {
           controller: 'RichGaugesController',
           data: {
             title: 'Rich-Gauges',
-            authenticate: true
+            authenticate: true,
+            feature: 'analyticsEnabled'
           }
         })
         .state('home.apps.tabs', {
@@ -279,59 +351,73 @@ define(['./app'], function (xdAdmin) {
           },
           templateUrl: appTemplatesPath + '/apps.html'
         })
-        .state('home.apps.tabs.modules', {
-          url: '/modules',
-          templateUrl: appTemplatesPath + '/modules.html',
-          controller: 'ModulesController',
+        .state('home.apps.tabs.appsList', {
+          url: '/apps',
+          templateUrl: appTemplatesPath + '/apps-list.html',
+          controller: 'AppsController',
           data: {
-            title: 'Modules',
+            title: 'Apps',
             authenticate: true
           }
         })
-        .state('home.apps.registerModules', {
-          url: 'apps/register-modules',
-          templateUrl: appTemplatesPath + '/register-modules.html',
-          controller: 'RegisterModulesController',
+        .state('home.apps.registerApps', {
+          url: 'apps/register-apps',
+          templateUrl: appTemplatesPath + '/register-apps.html',
+          controller: 'RegisterAppsController',
           data: {
-            title: 'Register Modules',
+            title: 'Register Apps',
             authenticate: true
           }
         })
-        .state('home.containers.tabs', {
-          url: 'containers',
+        .state('home.apps.bulkImportApps', {
+          url: 'apps/bulk-import-apps',
+          templateUrl: appTemplatesPath + '/bulk-import-apps.html',
+          controller: 'BulkImportAppsController',
+          data: {
+            title: 'Bulk Import Apps',
+            authenticate: true
+          }
+        })
+        .state('home.runtime.tabs', {
+          url: 'runtime',
           abstract: true,
           data: {
             authenticate: true
           },
-          templateUrl: containerTemplatesPath + '/containers.html'
+          templateUrl: runtimeTemplatesPath + '/runtime-apps.html'
         })
-        .state('home.containers.tabs.containerlist', {
-          url: '/containers',
-          templateUrl: containerTemplatesPath + '/containerlist.html',
-          controller: 'ContainersController',
+        .state('home.runtime.tabs.runtimeAppsList', {
+          url: '/runtime',
+          templateUrl: runtimeTemplatesPath + '/runtime-apps-list.html',
+          controller: 'RuntimeAppsController',
           data: {
             title: 'Runtime',
             authenticate: true
           }
         });
   });
-  xdAdmin.run(function ($rootScope, $state, $stateParams, userService, $log) {
+  dashboard.run(function ($rootScope, $state, $stateParams, userService, featuresService, $log) {
 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
-    $rootScope.xdAdminServerUrl = window.location.protocol + '//' + window.location.host;
+    $rootScope.dataflowServerUrl = window.location.protocol + '//' + window.location.host;
     $rootScope.xAuthTokenHeaderName = 'x-auth-token';
     $rootScope.user = userService;
+    $rootScope.features = featuresService;
     $rootScope.pageRefreshTime = 5000;
     $rootScope.enableMessageRates = true;
 
     $rootScope.$on('$stateChangeStart', function(event, toState) {
-        if (userService.authenticationEnabled && toState.data.authenticate && !userService.isAuthenticated){
+        if (toState.data.feature && !$rootScope.features[toState.data.feature]) {
+          $log.error('Feature disabled: ' + toState.data.feature);
+          $state.go('featureDisabled', {feature: toState.data.feature});
+          event.preventDefault();
+        } else if (userService.authenticationEnabled && toState.data.authenticate && !userService.isAuthenticated){
           $log.info('Need to authenticate...');
           $state.go('login');
           event.preventDefault();
         }
       });
   });
-  return xdAdmin;
+  return dashboard;
 });

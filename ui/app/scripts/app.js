@@ -28,22 +28,24 @@ define([
   './job/app',
   './task/app',
   './stream/app',
-  './container/app',
-  './auth/app'
+  './runtime/app',
+  './auth/app',
+  './feature/app',
 ], function (angular) {
   'use strict';
 
   console.log('Loading Spring Cloud Data Flow UI');
 
-  return  angular.module('xdAdmin', [
-    'xdConf',
-    'xdAppsAdmin',
-    'xdAnalyticsAdmin',
-    'xdJobsAdmin',
-    'xdTasksAdmin',
-    'xdStreamsAdmin',
-    'xdContainerAdmin',
-    'xdAuth',
+  return  angular.module('dataflowMain', [
+    'dataflowConf',
+    'dataflowApps',
+    'dataflowAnalytics',
+    'dataflowJobs',
+    'dataflowTasks',
+    'dataflowStreams',
+    'dataflowRuntime',
+    'dataflowAuth',
+    'dataflowFeature',
     'spring.flo'
   ]);
 });

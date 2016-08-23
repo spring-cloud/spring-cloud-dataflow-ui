@@ -15,7 +15,7 @@
  */
 
 /**
- * Analytics Module for the Dataflow Dashboard.
+ * Analytics App for the Dataflow Dashboard.
  *
  * @author Ilayaperumal Gopinathan
  */
@@ -36,13 +36,13 @@ define([
   '../shared/interceptors'
 ], function (angular) {
   'use strict';
-  return angular.module('xdAnalyticsAdmin', [
-    'xdAnalyticsAdmin.services',
-    'xdAnalyticsAdmin.controllers',
-    'xdAnalyticsAdmin.directives',
-    'xdShared.controllers',
-    'xdShared.services',
-    'xdShared.interceptors',
+  return angular.module('dataflowAnalytics', [
+    'dataflowAnalytics.services',
+    'dataflowAnalytics.controllers',
+    'dataflowAnalytics.directives',
+    'dataflowShared.controllers',
+    'dataflowShared.services',
+    'dataflowShared.interceptors',
     'ui.router',
     'ngResource',
     'ngAnimate',

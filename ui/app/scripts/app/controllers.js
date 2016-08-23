@@ -18,21 +18,28 @@
  * Definition of main Dashboard controllers.
  *
  * @author Alex Boyko
+ * @author Gunnar Hillert
  */
 define(['angular'], function (angular) {
     'use strict';
 
-    return angular.module('xdAppsAdmin.controllers', [])
-        .controller('ModulesController',
+    return angular.module('dataflowApps.controllers', [])
+        .controller('AppsController',
             ['$scope', '$injector', function ($scope, $injector) {
-                require(['app/controllers/modules'], function (modulesController) {
-                    $injector.invoke(modulesController, this, {'$scope': $scope});
+                require(['app/controllers/apps'], function (appsController) {
+                    $injector.invoke(appsController, this, {'$scope': $scope});
                 });
             }])
-        .controller('RegisterModulesController',
+        .controller('RegisterAppsController',
             ['$scope', '$injector', function ($scope, $injector) {
-                require(['app/controllers/register-modules'], function (registerModulesController) {
-                    $injector.invoke(registerModulesController, this, {'$scope': $scope});
+                require(['app/controllers/register-apps'], function (registerAppsController) {
+                    $injector.invoke(registerAppsController, this, {'$scope': $scope});
+                });
+            }])
+        .controller('BulkImportAppsController',
+            ['$scope', '$injector', function ($scope, $injector) {
+                require(['app/controllers/bulk-import-apps'], function (bulkImportAppsController) {
+                    $injector.invoke(bulkImportAppsController, this, {'$scope': $scope});
                 });
             }]);
 });

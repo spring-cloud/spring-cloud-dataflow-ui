@@ -22,7 +22,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdShared.controllers', [])
+  return angular.module('dataflowShared.controllers', [])
       .controller('AboutController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['shared/controllers/about'], function (aboutController) {

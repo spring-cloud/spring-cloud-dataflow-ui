@@ -26,7 +26,7 @@
     <nav class="navbar navbar-default" role="navigation" ng-cloak>
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" ui-sref="home.jobs.tabs.definitions"><span></span></a>
+          <a class="navbar-brand" ui-sref="home.apps.tabs.appsList"><span></span></a>
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -41,21 +41,21 @@
           <p ng-if="user.authenticationEnabled && !user.isAuthenticated" class="navbar-text navbar-right">Not logged in</p>
           <ul class="nav navbar-nav navbar-right">
             <li ng-class="{ active: $state.includes('home.apps') }">
-              <a ui-sref="home.apps.tabs.modules">Apps</a>
+              <a ui-sref="home.apps.tabs.appsList">Apps</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.containers') }">
-               <a ui-sref="home.containers.tabs.containerlist">Runtime</a>
+            <li ng-class="{ active: $state.includes('home.runtime') }">
+               <a ui-sref="home.runtime.tabs.runtimeAppsList">Runtime</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.streams') }">
+            <li ng-show="features.streamsEnabled" ng-class="{ active: $state.includes('home.streams') }">
                <a ui-sref="home.streams.tabs.definitions">Streams</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.tasks') }">
+            <li ng-show="features.tasksEnabled" ng-class="{ active: $state.includes('home.tasks') }">
               <a ui-sref="home.tasks.tabs.definitions">Tasks</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.jobs') }">
+            <li ng-show="features.tasksEnabled" ng-class="{ active: $state.includes('home.jobs') }">
               <a ui-sref="home.jobs.tabs.executions">Jobs</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.analytics') }">
+            <li ng-show="features.analyticsEnabled" ng-class="{ active: $state.includes('home.analytics') }">
               <a ui-sref="home.analytics.tabs.dashboard">Analytics</a>
             </li>
             <li ng-class="{ active: $state.includes('home.about') }">
@@ -64,7 +64,7 @@
             <li ng-if="user.authenticationEnabled"
               class="dropdown"><a data-target="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li ng-if="user.isAuthenticated"><a ui-sref="logout">Logout</a></li>
+                <li ng-if="user.isAuthenticated"><a href="/logout">Logout</a></li>
                 <li ng-if="!user.isAuthenticated"><a ui-sref="login">Login</a></li>
               </ul>
             </li>

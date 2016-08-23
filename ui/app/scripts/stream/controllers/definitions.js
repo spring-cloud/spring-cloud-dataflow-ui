@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,17 @@
  * Stream Definition controller
  *
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
-  return ['$scope', 'StreamService', 'XDUtils', '$timeout', '$rootScope', '$state',
-    function ($scope, streamService, utils, $timeout, $rootScope, $state) {
+
+  var EXPANDED_STATE_COOKIE_KEY = 'stremDefs.expandedState';
+
+  return ['$scope', 'StreamService', 'DataflowUtils', '$timeout', '$rootScope', '$state', '$cookieStore',
+    function ($scope, streamService, utils, $timeout, $rootScope, $state, $cookieStore) {
+
+      var getStreamDefinitions;
 
       function loadStreamDefinitions(pageable, showGrowl) {
         //utils.$log.info('pageable', pageable);
@@ -37,7 +43,7 @@ define(['model/pageable'], function (Pageable) {
                 $scope.pageable.items = result._embedded.streamDefinitionResourceList;
               }
               $scope.pageable.total = result.page.totalElements;
-              var getStreamDefinitions = $timeout(function() {
+              getStreamDefinitions = $timeout(function() {
                 loadStreamDefinitions($scope.pageable, false);
               }, $rootScope.pageRefreshTime);
               $scope.$on('$destroy', function(){
@@ -49,9 +55,35 @@ define(['model/pageable'], function (Pageable) {
         );
       }
 
+      var expandedState = $cookieStore.get(EXPANDED_STATE_COOKIE_KEY) || {};
+
       $scope.pageable = new Pageable();
       $scope.pagination = {
         current: 1
+      };
+
+      $scope.toggleExpanded = function(name) {
+        if (expandedState[name]) {
+          delete expandedState[name];
+        } else {
+          expandedState[name] = true;
+        }
+      };
+
+      $scope.isExpanded = function(name) {
+        return expandedState[name];
+      };
+
+      $scope.collapsePage = function() {
+        $scope.pageable.items.forEach(function(item) {
+            delete expandedState[item.name];
+        });
+      };
+
+      $scope.expandPage = function() {
+        $scope.pageable.items.forEach(function(item) {
+          expandedState[item.name] = true;
+        });
       };
 
       $scope.pageChanged = function(newPage) {
@@ -84,6 +116,7 @@ define(['model/pageable'], function (Pageable) {
         streamService.destroy(streamDefinition).$promise.then(
             function () {
               utils.growl.success('Destroy Request Sent.');
+              delete expandedState[streamDefinition.name];
               streamDefinition.inactive = true;
               $scope.closeModal();
             },
@@ -94,6 +127,18 @@ define(['model/pageable'], function (Pageable) {
         );
       };
 
+      $scope.$on('$destroy', function() {
+        if (Object.keys(expandedState).length === 0) {
+          $cookieStore.remove(EXPANDED_STATE_COOKIE_KEY);
+        } else {
+          $cookieStore.put(EXPANDED_STATE_COOKIE_KEY, expandedState);
+        }
+        if (getStreamDefinitions) {
+          $timeout.cancel(getStreamDefinitions);
+        }
+      });
+
       loadStreamDefinitions($scope.pageable);
+
     }];
 });

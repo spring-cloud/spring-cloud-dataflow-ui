@@ -15,27 +15,27 @@
  */
 
 /**
- * Services of the analytics module.
+ * Services of the analytics apps.
  *
  * @author Ilayaperumal Gopinathan
  */
 define(['angular'], function (angular) {
     'use strict';
 
-    return angular.module('xdAnalyticsAdmin.services', [])
+    return angular.module('dataflowAnalytics.services', [])
         .factory('CounterService', function ($rootScope, $http) {
             return {
                 getAll: function (params) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/counters',
+                        url: $rootScope.dataflowServerUrl + '/metrics/counters',
                         params: params
                     });
                 },
                 getData: function (name) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/counters/' + name
+                        url: $rootScope.dataflowServerUrl + '/metrics/counters/' + name
                     });
                 }
             };
@@ -45,14 +45,14 @@ define(['angular'], function (angular) {
                 getAll: function (params) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/field-value-counters',
+                        url: $rootScope.dataflowServerUrl + '/metrics/field-value-counters',
                         params: params
                     });
                 },
                 getData: function (name) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/field-value-counters/' + name
+                        url: $rootScope.dataflowServerUrl + '/metrics/field-value-counters/' + name
                     });
                 }
             };
@@ -62,14 +62,14 @@ define(['angular'], function (angular) {
                 getAll: function (params) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/aggregate-counters',
+                        url: $rootScope.dataflowServerUrl + '/metrics/aggregate-counters',
                         params: params
                     });
                 },
                 getData: function (name, params) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/aggregate-counters/' + name,
+                        url: $rootScope.dataflowServerUrl + '/metrics/aggregate-counters/' + name,
                         params: params
                     });
                 }
@@ -80,14 +80,14 @@ define(['angular'], function (angular) {
                 getAll: function (params) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/gauges',
+                        url: $rootScope.dataflowServerUrl + '/metrics/gauges',
                         params: params
                     });
                 },
                 getData: function (name) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/gauges/' + name
+                        url: $rootScope.dataflowServerUrl + '/metrics/gauges/' + name
                     });
                 }
             };
@@ -97,14 +97,14 @@ define(['angular'], function (angular) {
                 getAll: function (params) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/rich-gauges',
+                        url: $rootScope.dataflowServerUrl + '/metrics/rich-gauges',
                         params: params
                     });
                 },
                 getData: function (name) {
                     return $http({
                         method: 'GET',
-                        url: $rootScope.xdAdminServerUrl + '/metrics/rich-gauges/' + name
+                        url: $rootScope.dataflowServerUrl + '/metrics/rich-gauges/' + name
                     });
                 }
             };

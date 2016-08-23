@@ -22,10 +22,10 @@
  */
 define(function(require) {
   'use strict';
-    
-  var angular = require('angular');  
 
-  return angular.module('xdStreamsAdmin.services', ['ui.bootstrap'])
+  var angular = require('angular');
+
+  return angular.module('dataflowStreams.services', ['ui.bootstrap'])
       .factory('StreamService', function ($resource, $rootScope, $log, $http) {
         return {
           getDefinitions: function (pageable) {
@@ -40,7 +40,7 @@ define(function(require) {
                 'size': pageable.pageSize
               };
             }
-            return $resource($rootScope.xdAdminServerUrl + '/streams/definitions', params, {
+            return $resource($rootScope.dataflowServerUrl + '/streams/definitions', params, {
               query: {
                 method: 'GET'
               }
@@ -50,12 +50,12 @@ define(function(require) {
             $log.info('Getting single stream definition for stream named ' + streamName);
             return $http({
               method: 'GET',
-              url: $rootScope.xdAdminServerUrl + '/streams/definitions/' + streamName
+              url: $rootScope.dataflowServerUrl + '/streams/definitions/' + streamName
             });
           },
           deploy: function (streamDefinition, properties) {
             $log.info('Deploy Stream ' + streamDefinition.name);
-            return $resource($rootScope.xdAdminServerUrl + '/streams/deployments/' + streamDefinition.name, null, {
+            return $resource($rootScope.dataflowServerUrl + '/streams/deployments/' + streamDefinition.name, null, {
               deploy: {
                 method: 'POST',
                 params: {
@@ -66,13 +66,13 @@ define(function(require) {
           },
           undeploy: function (streamDefinition) {
             $log.info('Undeploy Stream ' + streamDefinition.name);
-            return $resource($rootScope.xdAdminServerUrl + '/streams/deployments/' + streamDefinition.name, null, {
+            return $resource($rootScope.dataflowServerUrl + '/streams/deployments/' + streamDefinition.name, null, {
               undeploy: { method: 'DELETE' }
             }).undeploy();
           },
           destroy: function (streamDefinition) {
             $log.info('Undeploy Stream ' + streamDefinition.name);
-            return $resource($rootScope.xdAdminServerUrl + '/streams/definitions/' + streamDefinition.name, null, {
+            return $resource($rootScope.dataflowServerUrl + '/streams/definitions/' + streamDefinition.name, null, {
               destroy: { method: 'DELETE' }
             }).destroy();
           },
@@ -80,7 +80,7 @@ define(function(require) {
         	$log.info('Creating Stream name=' + streamName + ' def=' + streamDefinition);
         	return $http({
                 method: 'POST',
-                url: $rootScope.xdAdminServerUrl + '/streams/definitions',
+                url: $rootScope.dataflowServerUrl + '/streams/definitions',
                 params: {
                 	name: streamName,
                 	definition: streamDefinition,
@@ -88,7 +88,7 @@ define(function(require) {
                 }
               });
           }
-        };        
+        };
       }).
       factory('StreamMetamodelService',require('stream/services/metamodel')).
       factory('StreamParserService',require('stream/services/parser')).

@@ -15,15 +15,15 @@
  */
 
 /**
- * Definition of the Module Creation dialog controller
+ * Definition of the App Creation dialog controller
  *
  * @author Alex Boyko
  */
 define([], function () {
     'use strict';
 
-    return ['$scope', 'StreamMetamodelService', '$modalInstance', 'cell', 'isStreamStart',
-        function ($scope, metaModelService, $modalInstance, cell, isStreamStart) {
+    return ['$scope', 'StreamMetamodelService', '$modalInstance', 'cell', 'streamInfo',
+        function ($scope, metaModelService, $modalInstance, cell, streamInfo) {
 
             $scope.cell = cell;
 
@@ -38,15 +38,16 @@ define([], function () {
 
             var property;
 
-            if (isStreamStart) {
+            if (streamInfo) {
                 property = {
                     id: 'stream-name',
                     name: 'Stream Name',
                     value: cell.attr('stream-name'),
                     defaultValue: '',
-                    description: 'The name of the stream started by this module',
+                    description: 'The name of the stream started by this app',
                     attr: 'stream-name',
-                    pattern: '[\\w_]+[\\w_-]*'
+                    pattern: '[\\w_]+[\\w_-]*',
+                    streamNames: streamInfo.streamNames
                 };
                 $scope.derivedProperties[property.id] = property;
             }
@@ -58,7 +59,7 @@ define([], function () {
                     defaultValue: cell.attr('metadata/name'),
                     name: 'label',
                     id: 'label',
-                    description: 'Label of a module',
+                    description: 'Label of the app',
                     attr: titleProperty,
                     pattern: '[\\w_]+[\\w_-]*'
                 };
@@ -66,7 +67,8 @@ define([], function () {
             }
 
 
-            var propertiesSchemaPromise = cell.attr('metadata').get('properties');
+            var metadata = cell.attr('metadata');
+            var propertiesSchemaPromise = metadata.get('properties');
             $scope.cgbusy = propertiesSchemaPromise;
             propertiesSchemaPromise.then(function (schemaProperties) {
                 var properties = {};
@@ -74,9 +76,27 @@ define([], function () {
                 Object.keys(schemaProperties).forEach(function (key) {
                     schema = schemaProperties[key];
 
+                    // Captures what the user has specified in the DSL if anything. Search
+                    // for a value under the long-name and the short-name
+                    var specifiedValue;
+                    // If the user specifies a name in the DSL then that 'alias' should be
+                    // used when converting the properties back to text. By default the
+                    // short-name will be used if the user hasn't specified anything.
+                    // The alias is applicable to sources, processors and sinks.
+                    // Exclusions are: explicit taps and destinations. The entire other group.
+                    var nameInUse = metadata.group === 'other' ? schema.id : schema.name;
+                    var props = cell.attr('props');
+                    if (props.hasOwnProperty(key)) { // long-name, eg. 'trigger.cron'
+                        specifiedValue = props[key];
+                        nameInUse = key;
+                    } else if (props.hasOwnProperty(schema.name)) { // short-name, eg. 'cron'
+                        specifiedValue = props[schema.name];
+                    }
+
                     properties[key] = {
                         id: schema.id,
                         name: schema.name,
+                        nameInUse: nameInUse,
                         description: schema.description,
                         defaultValue: schema.defaultValue,
                         type: schema.type,
@@ -84,7 +104,7 @@ define([], function () {
                         contentType: schema.contentType,
                         contentTypeProperty: schema.contentTypeProperty,
                         options: schema.options,
-                        value: cell.attr('props/' + key),
+                        value: specifiedValue,
                         pattern: schema.pattern,
                         valueFunc: function(newValue) {
                             if (arguments.length) {
@@ -127,7 +147,9 @@ define([], function () {
             };
 
             $scope.getInputType = function(property) {
-                if (property.type === 'java.lang.Long' || property.type === 'java.lang.Integer') {
+                if (property.id === 'stream-name') {
+                    return property.id;
+                } else if (property.type === 'java.lang.Long' || property.type === 'java.lang.Integer') {
                     return 'number';
                 } else if (property.type === 'java.lang.Boolean') {
                     return 'checkbox';

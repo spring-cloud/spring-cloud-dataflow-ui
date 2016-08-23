@@ -33,7 +33,7 @@ define(function(require) {
         'remove': 'images/icons/delete.svg',
         'properties': 'images/icons/cog.svg'
     };
-    
+
     var HANDLE_ICON_SIZE = {
         'remove': {width: 10, height: 10},
         'properties': {width: 11, height: 11}
@@ -48,7 +48,7 @@ define(function(require) {
 
     var HORIZONTAL_PADDING = 5;
 
-    joint.shapes.flo.ModuleXD = joint.shapes.basic.Generic.extend({
+    joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
 
         markup:
         '<g class="shape">'+
@@ -154,7 +154,7 @@ define(function(require) {
         }, joint.shapes.basic.Generic.prototype.defaults)
     });
 
-    joint.shapes.flo.LinkXD = joint.dia.Link.extend({
+    joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
         defaults: joint.util.deepSupplement({
             type: joint.shapes.flo.LINK_TYPE,
             smooth: true,
@@ -227,7 +227,7 @@ define(function(require) {
 
         function createNode(metadata) {
             if (metadata.group === 'source') {
-                return new joint.shapes.flo.ModuleXD(
+                return new joint.shapes.flo.DataFlowApp(
                     joint.util.deepSupplement({
                         attrs: {
                             '.box': {
@@ -243,10 +243,10 @@ define(function(require) {
                                 'text': metadata.metadata.unicodeChar
                             }
                         }
-                    }, joint.shapes.flo.ModuleXD.prototype.defaults)
+                    }, joint.shapes.flo.DataFlowApp.prototype.defaults)
                 );
             } else if (metadata.group === 'processor') {
-                return new joint.shapes.flo.ModuleXD(
+                return new joint.shapes.flo.DataFlowApp(
                     joint.util.deepSupplement({
                         attrs: {
                             '.box': {
@@ -262,10 +262,10 @@ define(function(require) {
                                 display: 'none'
                             }
                         }
-                    }, joint.shapes.flo.ModuleXD.prototype.defaults)
+                    }, joint.shapes.flo.DataFlowApp.prototype.defaults)
                 );
             } else if (metadata.group === 'sink') {
-                return new joint.shapes.flo.ModuleXD(
+                return new joint.shapes.flo.DataFlowApp(
                     joint.util.deepSupplement({
                         attrs: {
                             '.box': {
@@ -287,10 +287,10 @@ define(function(require) {
                                 display: 'none'
                             }
                         }
-                    }, joint.shapes.flo.ModuleXD.prototype.defaults)
+                    }, joint.shapes.flo.DataFlowApp.prototype.defaults)
                 );
             } else if (metadata.group === 'task') {
-                return new joint.shapes.flo.ModuleXD(
+                return new joint.shapes.flo.DataFlowApp(
                     joint.util.deepSupplement({
                         attrs: {
                             '.box': {
@@ -312,10 +312,10 @@ define(function(require) {
                                 display: 'none'
                             }
                         }
-                    }, joint.shapes.flo.ModuleXD.prototype.defaults)
+                    }, joint.shapes.flo.DataFlowApp.prototype.defaults)
                 );
             } else if (metadata.name === 'tap') {
-                return new joint.shapes.flo.ModuleXD(
+                return new joint.shapes.flo.DataFlowApp(
                     joint.util.deepSupplement({
                         attrs: {
                             '.box': {
@@ -335,10 +335,10 @@ define(function(require) {
                                 'text': metadata.metadata.unicodeChar
                             }
                         }
-                    }, joint.shapes.flo.ModuleXD.prototype.defaults)
+                    }, joint.shapes.flo.DataFlowApp.prototype.defaults)
                 );
             } else if (metadata.name === 'destination') {
-                return new joint.shapes.flo.ModuleXD(
+                return new joint.shapes.flo.DataFlowApp(
                     joint.util.deepSupplement({
                         attrs: {
                             '.box': {
@@ -355,10 +355,10 @@ define(function(require) {
                                 'text': metadata.metadata.unicodeChar
                             }
                         }
-                    }, joint.shapes.flo.ModuleXD.prototype.defaults)
+                    }, joint.shapes.flo.DataFlowApp.prototype.defaults)
                 );
             } else {
-                return new joint.shapes.flo.ModuleXD();
+                return new joint.shapes.flo.DataFlowApp();
             }
         }
 
@@ -449,11 +449,11 @@ define(function(require) {
         }
 
         /**
-         * Attach angular-bootstrap-ui tooltip to a module shape on the main canvas
+         * Attach angular-bootstrap-ui tooltip to a app shape on the main canvas
          *
-         * @param view module shape Joint JS view
+         * @param view app shape Joint JS view
          */
-        function attachCanvasModuleTooltip(view) {
+        function attachCanvasAppTooltip(view) {
             var node = view.model;
 
             // Create scope for the tooltip
@@ -473,7 +473,21 @@ define(function(require) {
             });
 
             scope.isCode = function(key) {
-                return scope.schema && scope.schema[key] && typeof scope.schema[key].contentType === 'string';
+                if (scope.schema) {
+                    // Key is a property name, properties are indexed by ids of a form <prefix><name>
+                    var prefix = '';
+                    var ids = scope.keys(scope.schema);
+                    // Check if property is a property name, i.e. . char is a delimiter between prefixes
+                    if (key.lastIndexOf('.') < 0 && ids.length) {
+                        var propertyId = ids[0];
+                        var idx = propertyId.lastIndexOf('.');
+                        if (idx >= 0) {
+                            prefix = propertyId.substring(0, idx + 1);
+                        }
+                    }
+                    var id = prefix + key;
+                    return scope.schema[id] && typeof scope.schema[id].contentType === 'string';
+                }
             };
 
             scope.getPropertyValue = function(key) {
@@ -523,7 +537,7 @@ define(function(require) {
 
             // Scope is prepared. Attach the tooltip using specific HTML template
             // to shape group element (not the view group element) such that tooltip is not shown when hovering on ports
-            attachBootstrapTemplateTooltip(view.$el.find('.shape')[0], scope, 'scripts/stream/views/canvas-module-tooltip.html', 'top', 500, 'canvas-module-tooltip');
+            attachBootstrapTemplateTooltip(view.$el.find('.shape')[0], scope, 'scripts/stream/views/canvas-app-tooltip.html', 'top', 500, 'canvas-app-tooltip');
 
             // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
             $compile(view.el)(scope);
@@ -531,11 +545,11 @@ define(function(require) {
         }
 
         /**
-         * Attach to a palette module entry angular-bootstrap-ui tooltip for showing info about the module and its parameters
+         * Attach to a palette app entry angular-bootstrap-ui tooltip for showing info about the app and its parameters
          *
-         * @param view palette module entry Joint JS view
+         * @param view palette app entry Joint JS view
          */
-        function attachPaletteModuleTooltip(view) {
+        function attachPaletteAppTooltip(view) {
             var node = view.model;
 
             // Create scope for the tooltip
@@ -582,7 +596,7 @@ define(function(require) {
             }
 
             // Scope is prepared. Attach the tooltip using specific HTML template
-            attachBootstrapTemplateTooltip(view.el, scope, 'scripts/stream/views/palette-module-tooltip.html', 'bottom', 500, 'palette-module-tooltip');
+            attachBootstrapTemplateTooltip(view.el, scope, 'scripts/stream/views/palette-app-tooltip.html', 'bottom', 500, 'palette-app-tooltip');
 
             // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
             $compile(view.el)(scope);
@@ -671,12 +685,12 @@ define(function(require) {
                     refreshVisuals(node, 'stream-name', context.paper);
                 }
 
-                // Attach angular style tooltip to a module view
+                // Attach angular style tooltip to a app view
                 if (view) {
                     if (context.graph.attributes.type === joint.shapes.flo.CANVAS_TYPE) {
-                        attachCanvasModuleTooltip(view);
+                        attachCanvasAppTooltip(view);
                     } else if (isPalette) {
-                        attachPaletteModuleTooltip(view);
+                        attachPaletteAppTooltip(view);
                     }
                 }
             }
@@ -710,7 +724,7 @@ define(function(require) {
 
                 // Attach angular-bootstrap-ui tooltip to handles
 
-                // For some reason angular-bootstrap-ui 0.13.4 tooltip module doesn't detect mouseleave for handles
+                // For some reason angular-bootstrap-ui 0.13.4 tooltip app doesn't detect mouseleave for handles
                 // Therefore we track mouselave (or mouseout in Joint JS terms) and hide tooltip ourselves
                 var scope = $rootScope.$new(true);
                 scope.disabled = false;
@@ -753,7 +767,7 @@ define(function(require) {
         }
 
         function createLink() {
-            return new joint.shapes.flo.LinkXD();
+            return new joint.shapes.flo.LinkDataflow();
         }
 
         function getLinkView() {

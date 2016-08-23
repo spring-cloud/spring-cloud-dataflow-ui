@@ -4,29 +4,72 @@
 
 	<groupId>org.springframework.cloud</groupId>
 	<artifactId>spring-cloud-dataflow-ui</artifactId>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
+	<version>1.0.2.BUILD-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
 	<name>Spring Cloud Data Flow User Interface</name>
-
+	<description>This application provides the Dashboard application of Spring Cloud Data Flow.</description>
 	<url>http://cloud.spring.io/spring-cloud-dataflow/</url>
-
 	<organization>
 		<name>Pivotal Software, Inc.</name>
 		<url>http://www.spring.io</url>
 	</organization>
-
-	<prerequisites>
-		<maven>3.1.0</maven>
-	</prerequisites>
-
+	<licenses>
+	  <license>
+	    <name>The Apache License, Version 2.0</name>
+	    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	  </license>
+	</licenses>
 	<scm>
 		<url>https://github.com/spring-cloud/spring-cloud-dataflow-ui</url>
 		<connection>scm:git:git://github.com/spring-cloud/spring-cloud-dataflow-ui.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/spring-cloud/spring-cloud-dataflow-ui.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
-
+	<developers>
+		<developer>
+			<id>ghillert</id>
+			<name>Gunnar Hillert</name>
+			<email>ghillert at pivotal.io</email>
+			<organization>Pivotal Software, Inc.</organization>
+			<organizationUrl>http://www.spring.io</organizationUrl>
+			<roles>
+				<role>Project lead</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ilayaperumalg</id>
+			<name>Ilayaperumal Gopinathan</name>
+			<email>ilayaperumalg at pivotal.io</email>
+			<organization>Pivotal Software, Inc.</organization>
+			<organizationUrl>http://www.spring.io</organizationUrl>
+			<roles>
+				<role>Project lead</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>aclement</id>
+			<name>Andy Clement</name>
+			<email>aclement at pivotal.io</email>
+			<organization>Pivotal Software, Inc.</organization>
+			<organizationUrl>http://www.spring.io</organizationUrl>
+			<roles>
+				<role>Project lead</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>aboyko</id>
+			<name>Alex Boyko</name>
+			<email>aboyko at pivotal.io</email>
+			<organization>Pivotal Software, Inc.</organization>
+			<organizationUrl>http://www.spring.io</organizationUrl>
+			<roles>
+				<role>Project lead</role>
+			</roles>
+		</developer>
+	</developers>
+	<prerequisites>
+		<maven>3.1.0</maven>
+	</prerequisites>
 	<build>
 		<resources>
 			<resource>
@@ -115,25 +158,20 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>repo.spring.io.milestone</id>
-			<name>Spring Maven Milestone Repository</name>
-			<url>https://repo.spring.io/libs-milestone</url>
-		</repository>
-		<repository>
-			<id>clojars.org</id>
-			<url>http://clojars.org/repo</url>
-		</repository>
-	</repositories>
+	<profiles>
+		<profile>
+			<id>spring</id>
+			<repositories>
+				<repository>
+					<id>repo.spring.io.milestone</id>
+					<name>Spring Maven Milestone Repository</name>
+					<url>https://repo.spring.io/libs-milestone</url>
+				</repository>
+				<repository>
+					<id>clojars.org</id>
+					<url>http://clojars.org/repo</url>
+				</repository>
+			</repositories>
+		</profile>
+	</profiles>
 </project>

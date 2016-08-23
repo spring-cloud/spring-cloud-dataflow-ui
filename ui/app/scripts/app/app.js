@@ -18,6 +18,7 @@
  * Definition of the main Dashboard Angular module.
  *
  * @author Alex Boyko
+ * @author Gunnar Hillert
  */
 define([
     'angular',
@@ -34,12 +35,12 @@ define([
     '../shared/interceptors'
 ], function (angular) {
     'use strict';
-    return angular.module('xdAppsAdmin', [
-        'xdAppsAdmin.services',
-        'xdAppsAdmin.controllers',
-        'xdShared.services',
-        'xdShared.interceptors',
-        'xdAdmin.filters',
+    return angular.module('dataflowApps', [
+        'dataflowApps.services',
+        'dataflowApps.controllers',
+        'dataflowShared.services',
+        'dataflowShared.interceptors',
+        'dataflowMain.filters',
         'ui.router',
         'ngResource',
         'ngAnimate',

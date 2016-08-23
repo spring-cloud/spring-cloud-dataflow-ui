@@ -21,10 +21,10 @@
  */
 define(function(require) {
     'use strict';
-    
+
     var angular = require('angular');
 
-    return ['XDUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
+    return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
 
             function waitForStreamDef(streamDefNameToWaitFor, attemptCount) {
@@ -118,9 +118,11 @@ define(function(require) {
              */
             $scope.createStreams = function(streamDefNameToWaitFor, attemptCount) {
                     // Find index of the first not yet created stream
-                    var index = $scope.streamdefs.findIndex(function(def) {
-                        return !def.created;
-                    });
+                    // Can't use Array#findIndex(...) because not all browsers support it
+                    var index = 0;
+                    for (; index < $scope.streamdefs.length && $scope.streamdefs[index].created; index++) {
+                        // nothing to do - just loop to the not created stream def
+                    }
                     if (index < 0 || index >= $scope.streamdefs.length) {
                         // Invalid index means all streams have been created, close the dialog.
                         $modalInstance.close(true);

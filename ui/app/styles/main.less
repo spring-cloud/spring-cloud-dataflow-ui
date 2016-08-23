@@ -13,11 +13,11 @@
  */
 @import "../../bower_components/bootstrap/less/bootstrap.less";
 
-@spring-green:      #6db33f;
-@spring-dark-green: #5fa134;
-@spring-brown:      #34302D;
-@spring-grey:       #838789;
-@spring-light-grey: #f1f1f1;
+@spring-green:      #00A79D;
+@spring-dark-green: #00776D;
+@spring-brown:      #232B2F;
+@spring-grey:       #8d8e8e;
+@spring-light-grey: #F8F8F8;
 
 @body-bg:                           @spring-light-grey;
 @text-color:                        @spring-brown;
@@ -57,6 +57,10 @@
 @import "typography.less";
 @import "header.less";
 @import "login-page.less";
+
+p.inverted {
+	color: @spring-light-grey;
+}
 
 .table > thead > tr > th {
   background-color: lighten(@spring-brown, 3%);
@@ -106,7 +110,7 @@ code {
   font-size: 80%;
 }
 
-.xd-container {
+.dataflow-container {
   margin-top: 40px;
   margin-bottom: 100px;
   padding-left: 5px;
@@ -173,7 +177,7 @@ table td.action-column {
   color: lighten(@text-color, 50%); // lighten the text some for contrast
 }
 
-.xd-containers {
+.dataflow-containers {
   font-size: 15px;
 }
 
@@ -346,18 +350,41 @@ hr {
   padding-right: 20px;
 }
 
-.modal-body .stream-definition-text {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .table-compact > tbody > tr > td {
   vertical-align: middle;
 }
 
 .form-horizontal .form-dialog .form-group {
   margin: 0;
+}
+
+.validation-block {
+  font-size: 85%;
+  margin: 5px 0px 5px 0px;
+}
+
+.collapse-handle-button {
+  width: 24px;
+  height: 24px;
+  background: transparent url(../images/collapsed.svg) no-repeat;
+  border: 0px;
+  outline: none;
+}
+
+.collapse-handle-button.on {
+  background-image: url(../images/expanded.svg);
+}
+
+.table-double-striped > tbody > tr:nth-child(4n-1) > td {
+  background-color: @spring-light-grey;
+}
+
+.table-double-striped > tbody > tr:nth-child(4n) > td {
+  background-color: @spring-light-grey;
+}
+
+.table-double-striped > tbody > tr:nth-child(2n) > td {
+  border-top-width: 0px;
 }
 
 @import (less) "../lib/spring-flo/spring-flo.css";

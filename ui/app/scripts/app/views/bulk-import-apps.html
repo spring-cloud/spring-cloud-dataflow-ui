@@ -1,0 +1,138 @@
+<h1>Bulk Import Applications</h1>
+<p>
+    Import and register applications in bulk. Simply provide a URI that points to
+    the location of the <strong>properties file</strong> where the keys are formatted as
+    <strong>type.name</strong> and the values are the URIs of the apps.
+    For convenience, a list of out-of-the-box Stream and Task app starters is provided below, as well.
+</p>
+<hr/>
+
+<form class="form-horizontal" name="bulkImportAppsForm" role="form" ng-submit="bulkImportApps(apps)" novalidate>
+    <fieldset id="importAppsViaUri">
+        <div class="form-group" ng-class="bulkImportAppsForm.uri.$invalid ? 'has-warning has-feedback' : ''">
+            <label for="uri" class="col-sm-3 control-label">Uri</label>
+            <div class="col-sm-7">
+                <input type="text" id="uri" name="uri" autofocus
+                       class="form-control" placeholder="<http://url.to.properties>" ng-model="apps.uri" ng-pattern="uriPattern">
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="bulkImportAppsForm.uri.$invalid"></span>
+                <p class="help-block">Please provide a valid URI pointing to the respective properties file.</p>
+            </div>
+        </div>
+    </fieldset>
+    <h2 class="text-center">OR</h2>
+    <div class="row" style="margin-bottom: 1em;">
+        <div class="col-md-6 col-md-offset-3">
+            <p>
+               Enter the list of properties into the text area field below. Alternatively, you can also select a
+               file in your local file system, which is used to populate the text area field.
+            </p>
+        </div>
+    </div>
+
+    <fieldset id="importAppsViaUpload">
+        <div class="form-group" ng-class="bulkImportAppsForm.appsProperties.$invalid ? 'has-warning has-feedback' : ''">
+            <label for="appsProperties" class="col-sm-3 control-label">Apps as Properties</label>
+            <div class="col-sm-7">
+            <textarea id="appsProperties" autofocus ng-model="apps.appsProperties" rows="5" ng-list="&#10;" ng-trim="false"
+                class="form-control" placeholder="Example:
+task.timestamp=maven://org.springframework.cloud.task.app:timestamp-task:1.0.0.BUILD-SNAPSHOT
+task.spark-client=maven://org.springframework.cloud.task.app:spark-client-task:1.0.0.BUILD-SNAPSHOT"
+            ></textarea>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="bulkImportAppsForm.appsProperties.$invalid"></span>
+                <p class="help-block">Please provide a valid properties where the keys are formatted as
+                    <strong>type.name</strong> and the values are the URIs of the apps.</p>
+            </div>
+        </div>
+        <div class="form-group" ng-class="bulkImportAppsForm.uri.$invalid ? 'has-warning has-feedback' : ''">
+            <label for="uri" class="col-sm-3 control-label">Select Properties File</label>
+            <div class="col-sm-7">
+                <input type="file" on-read-file="displayFileContents(contents)" />
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="createDefinitionForm.definitionName.$invalid"></span>
+                <p class="help-block">Please provide a text file containing properties. This will be used
+                to populate the text area above.</p>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="form-group">
+        <div class="col-sm-7 col-sm-offset-3">
+        <input type="checkbox" ng-model="apps.force" ng-model-options="{ getterSetter: true }" ui-indeterminate="someForceButNotAll()"/>
+        Force
+        <a dataflow-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 2em;">
+        <div class="col-md-6 text-right"><button id="back-button"   type="button" class="btn btn-default" ng-click="close()">Cancel</button></div>
+        <div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default" ng-disabled="bulkImportAppsForm.$invalid"><span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import</button></div>
+    </div>
+</form>
+
+<h2>Out-of-the-box Stream app-starters</h2>
+
+<table class="table form-table">
+    <col width="80%">
+    <col width="10%">
+    <col width="10%">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th class="text-center">Force <a dataflow-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+        <th class="text-center">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in streamAppStarters">
+        <td>
+            {{item.name}}
+        </td>
+        <td class="text-center">
+            <input type="checkbox" name="{{$index + '_force'}}" ng-model="item.force">
+        </td>
+        <td class="action-column text-center">
+            <button type="button" ng-click="bulkImportApps(item)"
+                    class="btn btn-sm btn-default"
+                    title="Bulk Import Apps"
+            ><span class="glyphicon glyphicon-import"></span>
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Out-of-the-box Task app-starters</h2>
+
+<table class="table form-table">
+    <col width="80%">
+    <col width="10%">
+    <col width="10%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th class="text-center">Force <a dataflow-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in taskAppStarters">
+            <td>
+                {{item.name}}
+            </td>
+            <td class="text-center">
+                <input type="checkbox" name="{{$index + '_force'}}" ng-model="item.force">
+            </td>
+            <td class="action-column text-center">
+                <button type="button" ng-click="bulkImportApps(item)"
+                        class="btn btn-sm btn-default"
+                        title="Bulk Import Apps"
+                ><span class="glyphicon glyphicon-import"></span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="force-help-content hide">
+    <span class="force-help-content">By checking <strong>force</strong>, the applications will be imported and installed
+        even if it already exists but only if not being used already.</span>
+</div>

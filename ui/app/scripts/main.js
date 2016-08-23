@@ -22,6 +22,9 @@
  * @author Andy Clement
  */
 require.config({
+  // The number of seconds to wait before giving up on loading a script.
+  // Setting it to 0 disables the timeout. The default is 7 seconds.
+  waitSeconds: 60,
   paths: {
     model:   'shared/model',
     domReady: '../lib/requirejs-domready/domReady',
@@ -119,22 +122,33 @@ define([
 ], function (require, angular) {
   'use strict';
 
-  var app = angular.module('xdConf', []);
+  function startApp() {
+    require(['app', './routes'], function () {
+      require(['domReady!'], function (document) {
+        console.log('Start angular application.');
+        angular.bootstrap(document, ['dataflowMain']);
+      });
+    });
+  }
+
+  var app = angular.module('dataflowConf', []);
 
   var initInjector = angular.injector(['ng']);
   var $http = initInjector.get('$http');
   var securityInfoUrl = '/security/info';
   var timeout = 20000;
   var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
+  var promiseFeature = $http.get('/features', {timeout: timeout});
 
   promiseHttp.then(function(response) {
-
+    console.log('Security info retrieved ...', response.data);
     app.constant('securityInfo', response.data);
-    require(['app', './routes'], function () {
-      require(['domReady!'], function (document) {
-        console.log('Start angular application.');
-        angular.bootstrap(document, ['xdAdmin']);
-      });
+
+    promiseFeature.then(function(featuresResponse) {
+      app.constant('featuresInfo', featuresResponse.data);
+      startApp();
+    }, function() {
+      console.error('Cannot load enabled features info. Application cannot be loaded.');
     });
   }, function(errorResponse) {
     var errorMessage = 'Error retrieving security info from ' + securityInfoUrl + ' (timeout: ' + timeout + 'ms)';

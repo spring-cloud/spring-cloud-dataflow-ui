@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdStreamsAdmin.controllers', ['xdStreamsAdmin.services'])
+  return angular.module('dataflowStreams.controllers', ['dataflowStreams.services'])
       .controller('StreamsDefinitionsController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['stream/controllers/definitions'], function (streamDefinitionsController) {
@@ -42,10 +42,16 @@ define(['angular'], function (angular) {
               $injector.invoke(createStreamsDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'definitionData': definitionData});
           });
       }])
+      .controller('StreamController',
+          ['$scope','$injector', function ($scope, $injector) {
+              require(['stream/controllers/stream'], function (streamController) {
+                  $injector.invoke(streamController, this, {'$scope': $scope});
+              });
+          }])
       .controller('PropertiesDialogController',
-      ['$scope','$injector', '$modalInstance', 'cell', 'isStreamStart', function ($scope, $injector, $modalInstance, cell, isStreamStart) {
+      ['$scope','$injector', '$modalInstance', 'cell', 'streamInfo', function ($scope, $injector, $modalInstance, cell, streamInfo) {
           require(['stream/controllers/properties-dialog'], function (propertiesDialogController) {
-              $injector.invoke(propertiesDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'cell': cell, 'isStreamStart': isStreamStart});
+              $injector.invoke(propertiesDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'cell': cell, 'streamInfo': streamInfo});
           });
       }])
       .controller('DefinitionDeployController',

@@ -22,10 +22,14 @@
 define([], function () {
     'use strict';
 
-    return ['XDUtils', '$scope', '$timeout',
+    return ['DataflowUtils', '$scope', '$timeout',
         function (utils, $scope, $timeout) {
             function processCountsData(data) {
                 $scope.metricsData.values = data.values;
+            }
+
+            function processAggreagetCountsData(data) {
+                $scope.metricsData.values = data.counts;
             }
 
             function processValueData(data) {
@@ -79,7 +83,7 @@ define([], function () {
             }
             var dataHandlers = { // jshint ignore:line
                 'Counters': processValueData,
-                'Aggregate-Counters': processCountsData,
+                'Aggregate-Counters': processAggreagetCountsData,
                 'Field-Value-Counters': processCountsData,
                 'Gauges': processGaugeData,
                 'Rich-Gauges': processRichGaugeData

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@
  */
 define([], function () {
   'use strict';
-  return ['$window', 'XDUtils', '$state', '$log', '$rootScope', '$http', function ($window, XDUtils, $state, $log, $rootScope, $http) {
+  return ['$window', 'DataflowUtils', '$state', '$log', '$rootScope', '$http', function ($window, DataflowUtils, $state, $log, $rootScope, $http) {
     $log.info('Logging out...');
-    $http.get($rootScope.xdAdminServerUrl + '/admin-ui/logout');
+    $http.get($rootScope.dataflowServerUrl + '/dashboard/logout');
 
     $rootScope.user = {
       authenticationEnabled: true,
@@ -32,7 +32,7 @@ define([], function () {
     };
 
     delete $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName];
-    XDUtils.growl.success('Logged out.');
+    DataflowUtils.growl.success('Logged out.');
     $state.go('login');
   }];
 });

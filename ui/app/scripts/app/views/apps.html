@@ -1,11 +1,11 @@
 <h1>Apps</h1>
-<p ng-class="{ hide: !$state.includes('home.apps.tabs.modules') }" class="index-page--subtitle">This section lists all the
+<p ng-class="{ hide: !$state.includes('home.apps.tabs.appsList') }" class="index-page--subtitle">This section lists all the
     available applications and provides the control to register/unregister them (if applicable).
 </p>
-<div id="xd-apps" class="tab-pane active col-md-12">
+<div id="dataflow-apps" class="tab-pane active col-md-12">
     <ul class="nav nav-tabs">
-        <li ng-class="{ active: $state.includes('home.apps.tabs.modules') }"><a
-                ui-sref="home.apps.tabs.modules">All Applications</a></li>
+        <li ng-class="{ active: $state.includes('home.apps.tabs.appsList') }"><a
+                ui-sref="home.apps.tabs.appsList">All Applications</a></li>
     </ul>
     <div class="tab-content">
         <div ui-view></div>

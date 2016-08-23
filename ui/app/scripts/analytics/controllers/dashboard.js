@@ -20,12 +20,14 @@
  * @author Andy Clement
  * @author Alex Boyko
  */
-define([], function () {
+define(function(require) {
     'use strict';
+
+    var angular = require('angular');
 
     var ITEMS_COOKIE_KEY = 'analytics.dashboard.items';
 
-    return ['XDUtils', '$scope', '$injector', '$timeout', '$rootScope', '$cookieStore', '$q',
+    return ['DataflowUtils', '$scope', '$injector', '$timeout', '$rootScope', '$cookieStore', '$q',
         function (utils, $scope, $injector, $timeout, $rootScope, $cookieStore, $q) {
 
             function loadAllStreams() {
@@ -39,9 +41,15 @@ define([], function () {
                             var streams = [];
 
                             if (!!data._embedded) {
-                                data._embedded.metricResourceList.forEach(function(entry) {
-                                    streams.push(entry.name);
-                                });
+                                if (data._embedded.aggregateCounterResourceList && angular.isArray(data._embedded.aggregateCounterResourceList)) {
+                                    data._embedded.aggregateCounterResourceList.forEach(function(entry) {
+                                        streams.push(entry.name);
+                                    });
+                                } else {
+                                    data._embedded.metricResourceList.forEach(function(entry) {
+                                        streams.push(entry.name);
+                                    });
+                                }
                             }
 
                             type.streams = streams;
@@ -106,13 +114,13 @@ define([], function () {
                     streams: [],
                     visualizations: ['Bar-Chart', 'Graph-Chart'],
                 },
-                //{
-                //    label: 'Aggregate-Counters',
-                //    service: $injector.get('AggregateCounterService'),
-                //    streams: [],
-                //    visualizations: ['Bar-Chart'],
-                //    requestOptions: {resolution: 'minute'}
-                //},
+                {
+                   label: 'Aggregate-Counters',
+                   service: $injector.get('AggregateCounterService'),
+                   streams: [],
+                   visualizations: ['Bar-Chart'],
+                   requestOptions: {resolution: 'minute'}
+                },
                 {
                     label: 'Field-Value-Counters',
                     service: $injector.get('FieldValueCounterService'),

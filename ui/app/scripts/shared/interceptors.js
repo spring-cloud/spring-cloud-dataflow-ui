@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 the original author or authors.
+ * Copyright 2014-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,20 +22,20 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdShared.interceptors', [])
-      .factory('httpErrorInterceptor', function (XDUtils, $location) {
+  return angular.module('dataflowShared.interceptors', [])
+      .factory('httpErrorInterceptor', function (DataflowUtils, $location) {
         return {
           responseError: function (rejection) {
             if (rejection.status === 0) {
-              XDUtils.growl.error('Looks like the Dataflow server is down.');
+              DataflowUtils.growl.error('Looks like the Dataflow server is down.');
             }
             if (rejection.status === 401) {
-              XDUtils.growl.error('Not authenticated. Please login again.');
-              //$window.location.href = '/admin-ui/login';
+              DataflowUtils.growl.error('Not authenticated. Please login again.');
+              //$window.location.href = '/dashboard/login';
               $location.path('/login');
             }
-            XDUtils.$log.error('Response Error ' + rejection.status, rejection);
-            return XDUtils.$q.reject(rejection);
+            DataflowUtils.$log.error('Response Error ' + rejection.status, rejection);
+            return DataflowUtils.$q.reject(rejection);
           }
         };
       });

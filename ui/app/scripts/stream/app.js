@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of Dashboard streams app module.
+ * Definition of Dashboard streams applications.
  *
  * @author Ilayaperumal Gopinathan
  * @author Alex Boyko
@@ -31,17 +31,19 @@ define([
   'ngCookies',
   './controllers',
   './services',
+  './directives',
   '../app/services',
   '../shared/services',
   '../shared/interceptors'
 ], function (angular) {
   'use strict';
-  return angular.module('xdStreamsAdmin', [
-    'xdStreamsAdmin.services',
-    'xdStreamsAdmin.controllers',
-    'xdShared.services',
-    'xdShared.interceptors',
-    'xdAppsAdmin.services',
+  return angular.module('dataflowStreams', [
+    'dataflowStreams.services',
+    'dataflowStreams.controllers',
+    'dataflowStreams.directives',
+    'dataflowShared.services',
+    'dataflowShared.interceptors',
+    'dataflowApps.services',
     'ui.router',
     'ngResource',
     'ngAnimate',

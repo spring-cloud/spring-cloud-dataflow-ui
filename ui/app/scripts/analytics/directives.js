@@ -15,7 +15,7 @@
  */
 
 /**
- * Definition of Dashboard directives of the analytics module.
+ * Definition of Dashboard directives of the analytics apps.
  *
  * @author Ilayaperumal Gopinathan
  */
@@ -24,7 +24,7 @@ define(function(require) {
 
     var angular = require('angular');
 
-    return angular.module('xdAnalyticsAdmin.directives', [])
+    return angular.module('dataflowAnalytics.directives', [])
         .directive('counterHeader', [function () {
             return {
                 restrict: 'E',

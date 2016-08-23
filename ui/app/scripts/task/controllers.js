@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdTasksAdmin.controllers', [])
+  return angular.module('dataflowTasks.controllers', [])
       .controller('TaskDefinitionsController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['task/controllers/definitions'], function (taskDefinitionsController) {
@@ -42,22 +42,22 @@ define(['angular'], function (angular) {
               $injector.invoke(taskLaunchController, this, {'$scope': $scope});
             });
           }])
-      .controller('ModuleController',
+      .controller('TaskAppsController',
           ['$scope', '$injector', function ($scope, $injector) {
-            require(['task/controllers/modules'], function (modulesController) {
-              $injector.invoke(modulesController, this, {'$scope': $scope});
+            require(['task/controllers/apps'], function (taskAppsController) {
+              $injector.invoke(taskAppsController, this, {'$scope': $scope});
             });
           }])
-      .controller('ModuleDetailsController',
+      .controller('AppDetailsController',
           ['$scope', '$injector', function ($scope, $injector) {
-            require(['task/controllers/module-details'], function (moduleDetailsController) {
-              $injector.invoke(moduleDetailsController, this, {'$scope': $scope});
+            require(['task/controllers/app-details'], function (appDetailsController) {
+              $injector.invoke(appDetailsController, this, {'$scope': $scope});
             });
           }])
-      .controller('ModuleCreateDefinitionController',
+      .controller('AppCreateDefinitionController',
           ['$scope', '$injector', function ($scope, $injector) {
-            require(['task/controllers/module-create-definition'], function (moduleCreateDefinitionController) {
-              $injector.invoke(moduleCreateDefinitionController, this, {'$scope': $scope});
+            require(['task/controllers/app-create-definition'], function (appCreateDefinitionController) {
+              $injector.invoke(appCreateDefinitionController, this, {'$scope': $scope});
             });
           }]);
 });

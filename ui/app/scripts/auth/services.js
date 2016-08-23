@@ -23,7 +23,7 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdAuth.services', [])
+  return angular.module('dataflowAuth.services', [])
       .factory('userService', function(securityInfo) {
           var user = {
             authenticationEnabled: securityInfo.authenticationEnabled,

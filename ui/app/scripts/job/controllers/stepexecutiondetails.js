@@ -21,7 +21,7 @@
  */
 define([], function () {
   'use strict';
-  return ['$scope', 'StepExecutions', 'XDUtils', '$state', '$stateParams',
+  return ['$scope', 'StepExecutions', 'DataflowUtils', '$state', '$stateParams',
     function ($scope, stepExecutions, utils, $state, $stateParams) {
 
       $scope.showStepExecutionProgress = function (stepExecutionProgress) {
@@ -51,7 +51,7 @@ define([], function () {
         $state.go('home.jobs.executiondetails', {executionId: stepExecutionDetails.jobExecutionId});
       };
       $scope.$apply(function () {
-        $scope.moduleName = $stateParams.moduleName;
+        $scope.appName = $stateParams.appName;
         $scope.optionsPredicate = 'name';
 
         var singleStepExecutionPromise = stepExecutions.getSingleStepExecution($stateParams.executionId, $stateParams.stepExecutionId).$promise;

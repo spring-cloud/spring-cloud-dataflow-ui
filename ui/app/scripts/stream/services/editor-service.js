@@ -49,8 +49,20 @@ define(function(require) {
                         cell: function () {
                             return element;
                         },
-                        isStreamStart: function() {
-                          return utils.canBeHeadOfStream(flo.getGraph(), element);
+                        streamInfo: function() {
+                            if (utils.canBeHeadOfStream(flo.getGraph(), element)) {
+                                var info = {
+                                    streamNames: []
+                                };
+                                flo.getGraph().getElements().forEach(function(e) {
+                                   if (element !== e && utils.canBeHeadOfStream(flo.getGraph(), e)) {
+                                       if (e.attr('stream-name')) {
+                                           info.streamNames.push(e.attr('stream-name'));
+                                       }
+                                   } 
+                                });
+                                return info;
+                            }
                         }
                     }
                 }).result.then(function (results) {
@@ -76,13 +88,13 @@ define(function(require) {
                             property = properties[key];
                             if ((typeof property.value === 'boolean' && !property.defaultValue && !property.value) ||
                                 (property.value === property.defaultValue || property.value === '' || property.value === undefined || property.value === null)) {
-                                if (angular.isDefined(element.attr('props/' + property.id))) {
+                                if (angular.isDefined(element.attr('props/' + property.nameInUse))) {
                                     // Remove attr doesn't fire appropriate event. Set default value first as a workaround to schedule DSL resync
-                                    element.attr('props/' + property.id, property.defaultValue === undefined ? null : property.defaultValue);
-                                    element.removeAttr('props/' + property.id);
+                                    element.attr('props/' + property.nameInUse, property.defaultValue === undefined ? null : property.defaultValue);
+                                    element.removeAttr('props/' + property.nameInUse);
                                 }
                             } else {
-                                element.attr('props/' + property.id, property.value);
+                                element.attr('props/' + property.nameInUse, property.value);
                             }
                         });
 
@@ -300,7 +312,7 @@ define(function(require) {
             }
             if (outgoing.length !== 1) {
                 errors.push({
-                    message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
+                    message: outgoing.length === 0 ? 'Should direct its output to an app' : 'Output should be directed to only one app',
                     range: element.attr('range')
                 });
             }
@@ -309,13 +321,13 @@ define(function(require) {
         function validateProcessor(element, incoming, outgoing, tap, errors) {
             if (incoming.length !== 1) {
                 errors.push({
-                    message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
+                    message: incoming.length === 0 ? 'Should have an input from an app' : 'Input should come from one app only',
                     range: element.attr('range')
                 });
             }
             if (outgoing.length !== 1) {
                 errors.push({
-                    message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
+                    message: outgoing.length === 0 ? 'Should direct its output to an app' : 'Output should be directed to only one app',
                     range: element.attr('range')
                 });
             }
@@ -324,7 +336,7 @@ define(function(require) {
         function validateSink(element, incoming, outgoing, tap, errors) {
             if (incoming.length !== 1) {
                 errors.push({
-                    message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
+                    message: incoming.length === 0 ? 'Should have an input from an app' : 'Input should come from one app only',
                     range: element.attr('range')
                 });
             }
@@ -336,7 +348,7 @@ define(function(require) {
             }
             if (tap.length !== 0) {
                 errors.push({
-                    message: 'Cannot tap into a sink module',
+                    message: 'Cannot tap into a sink app',
                     range: element.attr('range')
                 });
             }
@@ -345,7 +357,7 @@ define(function(require) {
         function validateTask(element, incoming, outgoing, tap, errors) {
             if (incoming.length !== 1) {
                 errors.push({
-                    message: incoming.length === 0 ? 'Should have an input from a module' : 'Input should come from one module only',
+                    message: incoming.length === 0 ? 'Should have an input from an app' : 'Input should come from one app only',
                     range: element.attr('range')
                 });
             }
@@ -357,7 +369,7 @@ define(function(require) {
             }
             if (tap.length !== 0) {
                 errors.push({
-                    message: 'Cannot tap into a task module',
+                    message: 'Cannot tap into a task app',
                     range: element.attr('range')
                 });
             }
@@ -372,13 +384,13 @@ define(function(require) {
             }
             if (outgoing.length !== 1) {
                 errors.push({
-                    message: outgoing.length === 0 ? 'Should direct its output to a module' : 'Output should be directed to only one module',
+                    message: outgoing.length === 0 ? 'Should direct its output to an app' : 'Output should be directed to only one app',
                     range: element.attr('range')
                 });
             }
             if (tap.length !== 0) {
                 errors.push({
-                    message: 'Cannot tap into a tap module',
+                    message: 'Cannot tap into a tap app',
                     range: element.attr('range')
                 });
             }
@@ -393,7 +405,7 @@ define(function(require) {
             }
             if (tap.length !== 0) {
                 errors.push({
-                    message: 'Cannot tap into a destination module',
+                    message: 'Cannot tap into a destination app',
                     range: element.attr('range')
                 });
             }
@@ -463,23 +475,23 @@ define(function(require) {
             // The format of a range is {'start':{'ch':NNNN,'line':NNNN},'end':{'ch':NNNN,'line':NNNN}}
             var propertiesRanges = element.attr('propertiesranges');
             if (propertiesRanges) {
-                var moduleSchema = element.attr('metadata');
-                // Grab the list of supported properties for this module type
-                moduleSchema.get('properties').then(function(moduleSchemaProperties) {
-                    if (!moduleSchemaProperties) {
-                        moduleSchemaProperties = {};
+                var appSchema = element.attr('metadata');
+                // Grab the list of supported properties for this app type
+                appSchema.get('properties').then(function(appSchemaProperties) {
+                    if (!appSchemaProperties) {
+                        appSchemaProperties = {};
                     }
-                    // Example moduleSchemaProperties:
+                    // Example appSchemaProperties:
                     // {"host":{"name":"host","type":"String","description":"the hostname of the mail server","defaultValue":"localhost","hidden":false},
                     //  "password":{"name":"password","type":"String","description":"the password to use to connect to the mail server ","defaultValue":null,"hidden":false}
                     var specifiedProperties = element.attr('props');
                     Object.keys(specifiedProperties).forEach(function(propertyName) {
-                        if (!moduleSchemaProperties[propertyName]) {
+                        if (!appSchemaProperties[propertyName]) {
                             // The schema does not mention that property
                             var propertyRange = propertiesRanges[propertyName];
                             if (propertyRange) {
                                 errors.push({
-                                    message: 'unrecognized option \''+propertyName+'\' for module \''+element.attr('metadata/name')+'\'',
+                                    message: 'unrecognized option \''+propertyName+'\' for app \''+element.attr('metadata/name')+'\'',
                                     range: propertyRange
                                 });
                             }

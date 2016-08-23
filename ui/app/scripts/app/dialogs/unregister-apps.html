@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h4 class="modal-title">Confirm Unregister Applications</h4>
+</div>
+<div class="modal-body">
+    <p>This action will unregister and delete applications listed below. Are you sure?</p>
+    <br/>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in items track by item.id">
+            <td>{{item.name}}</td>
+            <td>{{item.type}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()">No</button>
+    <button id="unregisterAllAppsConfirmationButton" type="button" class="btn btn-primary" ng-click="proceed()">Yes</button>
+</div>

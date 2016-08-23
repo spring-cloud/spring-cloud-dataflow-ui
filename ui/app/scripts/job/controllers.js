@@ -23,11 +23,10 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('xdJobsAdmin.controllers', [])
+  return angular.module('dataflowJobs.controllers', [])
       .controller('JobExecutionsController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['job/controllers/executions'], function (jobExecutionsController) {
-                console.log('>>>>JobExecutionsController', jobExecutionsController);
               $injector.invoke(jobExecutionsController, this, {'$scope': $scope});
             });
           }])

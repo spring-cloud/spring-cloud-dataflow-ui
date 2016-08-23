@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,15 @@ define([
 ], function(angular) {
   'use strict';
 
-  angular.module('xdConf', [])
+  angular.module('dataflowConf', [])
     .constant('securityInfo', {});
 
   describe('Unit: Testing Tasks Controllers', function() {
 
     var $httpBackend, $rootScope, $scope;
 
-    beforeEach(angular.mock.module('xdConf'));
-    beforeEach(angular.mock.module('xdTasksAdmin'));
+    beforeEach(angular.mock.module('dataflowConf'));
+    beforeEach(angular.mock.module('dataflowTasks'));
 
     beforeEach(inject(function(_$httpBackend_, _$rootScope_) {
       $httpBackend = _$httpBackend_;
@@ -42,13 +42,13 @@ define([
       var controller = $controller('TaskLaunchController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
       expect(controller).toBeDefined();
     }));
-    it('should have a ModuleController', inject(function($rootScope, $controller) {
-      var controller = $controller('ModuleController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
+    it('should have a TaskAppsController', inject(function($rootScope, $controller) {
+      var controller = $controller('TaskAppsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
       expect(controller).toBeDefined();
     }));
 
-    it('should have a ModuleDetailsController', inject(function($rootScope, $controller) {
-      var controller = $controller('ModuleDetailsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
+    it('should have a AppDetailsController', inject(function($rootScope, $controller) {
+      var controller = $controller('AppDetailsController', { $scope: $rootScope.$new(), $rootScope: $rootScope });
       expect(controller).toBeDefined();
     }));
   });
