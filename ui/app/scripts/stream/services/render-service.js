@@ -740,7 +740,7 @@ define(function(require) {
 
             // Hide tooltip if handle has been clicked.
             // The 'cell:pointerup' event is important! None of the others work properly
-            view.on('cell:pointerup', function () {
+            view.on('cell:pointerup', function() {
                 // Disable tooltip
                 scope.disabled = true;
                 // Occurs outside of angular digest cycle, so trigger angular listeners update
