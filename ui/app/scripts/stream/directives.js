@@ -25,8 +25,7 @@ define(function(require) {
     var angular = require('angular');
 
     return angular.module('dataflowStreams.directives', ['dataflowShared.services', 'dataflowStreams.services'])
-        //.directive('uniqueStreamName', ['DataflowUtils', 'StreamService', function (utils, streamService) {
-        .directive('uniqueStreamName', ['DataflowUtils', function (utils) {
+        .directive('uniqueStreamName', ['DataflowUtils', 'StreamService', function (utils, streamService) {
             return {
                 require: 'ngModel',
                 link: function(scope, elm, attrs, ctrl) {
@@ -37,26 +36,20 @@ define(function(require) {
                             return utils.$q.when();
                         }
 
-                        // For now consider everything valid (it will fail when the create operation
-                        // is actually driven if there is a real problem). Once there is a quiet
-                        // backend operation to check for stream existence, reactivate the code
-                        // below.
-                        return utils.$q.when();
-
                         // This variant calls the API that currently logs an exception on the server.
-//                        var def = utils.$q.defer();
-//                        streamService.getSingleStreamDefinition(modelValue).then(function() {
-//                            // Success! Found stream with such name
-//                            def.reject('Stream with such name exists');
-//                        }, function(error) {
-//                            if (error.status === 404) {
-//                                def.resolve();
-//                            } else {
-//                                def.reject(error.statusText);
-//                            }
-//                        });
-//
-//                        return def.promise;
+                       var def = utils.$q.defer();
+                       streamService.getSingleStreamDefinition(modelValue).then(function() {
+                           // Success! Found stream with such name
+                           def.reject('Stream with such name exists');
+                       }, function(error) {
+                           if (error.status === 404) {
+                               def.resolve();
+                           } else {
+                               def.reject(error.statusText);
+                           }
+                       });
+
+                       return def.promise;
                     };
                 }
             };
