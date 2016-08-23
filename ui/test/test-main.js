@@ -8,6 +8,9 @@ for (var file in window.__karma__.files) {
 }
 
 require.config({
+  // The number of seconds to wait before giving up on loading a script.
+  // Setting it to 0 disables the timeout. The default is 7 seconds.
+  waitSeconds: 60,
   paths: {
     model:   'shared/model',
     jquery: '/base/app/lib/jquery/jquery',
