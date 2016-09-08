@@ -24,8 +24,8 @@ define(function(require) {
 
     var angular = require('angular');
 
-    var PROGRESS_BAR_OPEN_WAIT_TIME = 500;
-    var PROGRESS_BAR_CLOSE_WAIT_TIME = PROGRESS_BAR_OPEN_WAIT_TIME + 300; // to account for animation delay
+    var PROGRESS_BAR_OPEN_WAIT_TIME = 300;
+    var PROGRESS_BAR_CLOSE_WAIT_TIME = PROGRESS_BAR_OPEN_WAIT_TIME + 400; // to account for animation delay
 
     return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
