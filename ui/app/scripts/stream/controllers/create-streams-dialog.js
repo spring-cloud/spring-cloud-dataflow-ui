@@ -24,6 +24,9 @@ define(function(require) {
 
     var angular = require('angular');
 
+    var PROGRESS_BAR_OPEN_WAIT_TIME = 500;
+    var PROGRESS_BAR_CLOSE_WAIT_TIME = PROGRESS_BAR_OPEN_WAIT_TIME + 300; // to account for animation delay
+
     return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
 
@@ -105,7 +108,12 @@ define(function(require) {
                     for (; index < $scope.streamdefs.length && $scope.streamdefs[index].created; index++) {
                         // nothing to do - just loop to the not created stream def
                     }
-                    $scope.createStreams(index);
+                    // Setup progress bar data if not already setup
+                    $scope.createProgressData(($scope.streamdefs.length - index) * 2 - 1); // create, wait for each - wait for the last
+                    // Delay the creation for half a second to show progress bar
+                    utils.$timeout(function() {
+                        $scope.createStreams(index);
+                    }, PROGRESS_BAR_OPEN_WAIT_TIME);
                 }
             };
 
@@ -131,10 +139,6 @@ define(function(require) {
                     // Invalid index means all streams have been created, close the dialog.
                     $modalInstance.close(true);
                 } else {
-                    // Setup progress bar data if not already setup
-                    if (!$scope.progressData) {
-                        $scope.createProgressData(($scope.streamdefs.length - index) * 2 - 1); // create, wait for each - wait for the last
-                    }
                     // Send the request to create a stream
                     var def = $scope.streamdefs[index];
                     streamService.create(def.name, def.def, $scope.deploy).success(function () {
@@ -144,7 +148,11 @@ define(function(require) {
                         $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
                         if ($scope.streamdefs.length - 1 === index) {
                             // Last stream created, close the dialog
-                            $modalInstance.close(true);
+                            // Delay closing the dialog thus progress bar 100% would stay up for a short a bit
+                            utils.$timeout(function() {
+                                $modalInstance.close(true);
+                                utils.growl.success('Stream(s) have been created successfully');
+                            }, PROGRESS_BAR_CLOSE_WAIT_TIME);
                         } else {
                             // There are more streams to create, so create the next one
                             waitForStreamDef(def.name, 0).then(function () {
@@ -159,7 +167,10 @@ define(function(require) {
                             });
                         }
                     }).error(function (error) {
-                        $scope.progressData = undefined;
+                        // Delay hiding the progress bar thus user can see it if operation went too fast
+                        utils.$timeout(function() {
+                            $scope.progressData = undefined;
+                        }, PROGRESS_BAR_CLOSE_WAIT_TIME);
                         for (var e = 0; e < error.length; e++) {
                             utils.growl.error('Problem creating stream: ' + def.name + ':' + error[e].message);
                         }
