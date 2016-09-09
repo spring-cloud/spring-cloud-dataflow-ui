@@ -34,19 +34,19 @@ define([
       expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(DataflowUtils.getAppNameFromJobDefinition('myMod2')).toEqual('myMod2');
     }));
-    it('Getting a app name from an undefined definition should casuse an error.', inject(function(DataflowUtils) {
+    it('Getting a app name from an undefined definition should cause an error.', inject(function(DataflowUtils) {
       expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
         DataflowUtils.getAppNameFromJobDefinition();
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
-    it('Getting a app name from an undefined definition should casuse an error 2.', inject(function(DataflowUtils) {
+    it('Getting a app name from an undefined definition should cause an error 2.', inject(function(DataflowUtils) {
       expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
         DataflowUtils.getAppNameFromJobDefinition(undefined);
       }).toThrow(new Error('jobDefinition must be defined.'));
     }));
-    it('Getting a app name from a null definition should casuse an error.', inject(function(DataflowUtils) {
+    it('Getting a app name from a null definition should cause an error.', inject(function(DataflowUtils) {
       expect(DataflowUtils.getAppNameFromJobDefinition).toBeDefined();
       expect(function() {
         DataflowUtils.getAppNameFromJobDefinition(null);
