@@ -14,11 +14,13 @@
     </div>
 
     <fieldset id="bulkDefine">
-        <div class="form-group">
+        <div class="form-group" style="height:500px;">
             <label for="taskDefinitions" class="col-sm-2 control-label">Tasks Definitions:</label>
-            <div class="col-sm-10">
-                <textarea id="taskDefinitions" rows="30" autofocus ng-model="dsl" ng-list="&#10;" ng-trim="false"
-                      class="form-control"></textarea>
+            <div class="col-sm-10 dsl-editor" style="height:100%;">
+                <textarea id="taskDefinitions" rows="30" autofocus ng-trim="false"
+                      class="form-control" generic-dsl-editor dsl="dsl" debounce="300" line-wrapping=true" line-numbers="true"
+                      content-assist-service-name="TaskDslContentAssistService"
+                      lint-service-name="TaskDslLintService" placeholder="TODO: Put example DSL here"></textarea>
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="bulkDefineTasksForm.taskDefinitions.$invalid"></span>
             </div>
         </div>

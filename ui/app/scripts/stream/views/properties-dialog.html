@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) === 'code'">
-                        <div class="property-code-editor">
+                        <div class="dsl-editor property-code-editor">
                             <textarea code-editor name="{{derivedProperties[key].id}}" class="form-control"
                                       placeholder="{{derivedProperties[key].defaultValue}}"
                                       code-language="derivedProperties[getLanguageProperty(derivedProperties[key])].value"
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="col-sm-9" ng-if="getInputType(properties[key]) === 'code'">
-                        <div class="property-code-editor">
+                        <div class="dsl-editor property-code-editor">
                             <textarea code-editor name="{{properties[key].id}}" class="form-control"
                                       placeholder="{{properties[key].defaultValue}}"
                                       code-language="properties[getLanguageProperty(properties[key])].value"

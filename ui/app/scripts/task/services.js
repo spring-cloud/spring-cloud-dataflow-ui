@@ -197,5 +197,37 @@ define(['angular'], function (angular) {
             );
           }
         };
+      })
+      .factory('TaskDslContentAssistService', function($log) {
+        return {
+          complete: function(cm, callback) { // jshint ignore:line
+            // TODO: calculate completion proposals and return results as shown below
+
+            // See https://codemirror.net/doc/manual.html#addons hint/show-hint.js section
+
+            // return callback({
+            //   list: listOfStrings
+            //   from: {line: startLine, ch:startCharIndex},
+            //   to: {line: endLine, ch:endCharIndex}
+            // });
+
+            $log.info('Task DSL Content Assist Invoked!');
+          }
+        };
+      })
+      .factory('TaskDslLintService', function($log) {
+        return {
+          getAnnotations: function(dslText, callback, options, doc) { // jshint ignore:line
+            // TODO: perform linting, return results as shown below
+            // markers.push({
+            //   from: range.start,
+            //   to: range.end,
+            //   message: 'Some error message!',
+            //   severity: 'error'
+            // callback(doc, markers);
+
+            $log.info('Task DSL Lint invoked');
+          }
+        };
       });
 });
