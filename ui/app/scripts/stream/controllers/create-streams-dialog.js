@@ -24,8 +24,7 @@ define(function(require) {
 
     var angular = require('angular');
 
-    var PROGRESS_BAR_OPEN_WAIT_TIME = 300;
-    var PROGRESS_BAR_CLOSE_WAIT_TIME = PROGRESS_BAR_OPEN_WAIT_TIME + 400; // to account for animation delay
+    var PROGRESS_BAR_WAIT_TIME = 600; // to account for animation delay
 
     return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
@@ -108,12 +107,10 @@ define(function(require) {
                     for (; index < $scope.streamdefs.length && $scope.streamdefs[index].created; index++) {
                         // nothing to do - just loop to the not created stream def
                     }
-                    // Setup progress bar data if not already setup
+                    // Setup progress bar data
                     $scope.createProgressData(($scope.streamdefs.length - index) * 2 - 1); // create, wait for each - wait for the last
-                    // Delay the creation for half a second to show progress bar
-                    utils.$timeout(function() {
-                        $scope.createStreams(index);
-                    }, PROGRESS_BAR_OPEN_WAIT_TIME);
+                    // Start stream(s) creation
+                    $scope.createStreams(index);
                 }
             };
 
@@ -152,7 +149,7 @@ define(function(require) {
                             utils.$timeout(function() {
                                 $modalInstance.close(true);
                                 utils.growl.success('Stream(s) have been created successfully');
-                            }, PROGRESS_BAR_CLOSE_WAIT_TIME);
+                            }, PROGRESS_BAR_WAIT_TIME);
                         } else {
                             // There are more streams to create, so create the next one
                             waitForStreamDef(def.name, 0).then(function () {
@@ -170,7 +167,7 @@ define(function(require) {
                         // Delay hiding the progress bar thus user can see it if operation went too fast
                         utils.$timeout(function() {
                             $scope.progressData = undefined;
-                        }, PROGRESS_BAR_CLOSE_WAIT_TIME);
+                        }, PROGRESS_BAR_WAIT_TIME);
                         for (var e = 0; e < error.length; e++) {
                             utils.growl.error('Problem creating stream: ' + def.name + ':' + error[e].message);
                         }
