@@ -277,7 +277,7 @@ define(['./app'], function (dashboard) {
       }
     })
     .state('home.tasks.bulkDefineTasks', {
-      url : '/bulk-define-tasks',
+      url : 'tasks/bulk-define-tasks',
       templateUrl : taskTemplatesPath + '/bulk-define-tasks.html',
       controller: 'BulkDefineTasksController',
       data:{
