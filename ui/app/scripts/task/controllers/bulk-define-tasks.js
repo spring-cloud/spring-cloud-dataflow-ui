@@ -24,6 +24,21 @@ define(function () {
     return ['$scope', 'DataflowUtils', '$modal', '$state',
         function ($scope, utils, $modal, $state) {
 
+            // function calculateValidationMarkers() {
+            //     return {
+            //         list: [
+            //             {
+            //                 from: {line: 0, ch: 0},
+            //                 to: {line: 0, ch: 0},
+            //                 message: 'Some error!',
+            //                 severity: 'error'
+            //             }
+            //         ],
+            //         numberOfErrors: 1,
+            //         numberOfWarnings: 1
+            //     };
+            // }
+
             /**
              * Bulk Define Tasks.
              */
@@ -41,6 +56,46 @@ define(function () {
             $scope.displayFileContents = function(contents) {
                 $scope.dsl = contents;
             };
+
+            $scope.hint = {
+                async: 'true',
+                hint: function(cm, callback) { // jshint ignore:line
+                    // TODO: calculate completion proposals and return results as shown below
+
+                    // See https://codemirror.net/doc/manual.html#addons hint/show-hint.js section
+
+                    // return callback({
+                    //   list: listOfStrings
+                    //   from: {line: startLine, ch:startCharIndex},
+                    //   to: {line: endLine, ch:endCharIndex}
+                    // });
+
+                    utils.$log.info('Task DSL Content Assist Invoked!');
+                }
+            };
+
+            $scope.lint = {
+                async: true,
+                getAnnotations: function (dslText, callback, options, doc) { // jshint ignore:line
+                    // TODO: perform linting, return results as shown below
+                    // markers.push({
+                    //   from: range.start,
+                    //   to: range.end,
+                    //   message: 'Some error message!',
+                    //   severity: 'error'
+                    // callback(doc, markers);
+
+                    utils.$log.info('Task DSL Lint invoked');
+
+                    // var markers = calculateValidationMarkers();
+                    // callback(doc, markers.list);
+                    //
+                    // $scope.numberOfErrors = markers.numberOfErrors;
+                    // $scope.numberOfWarnings = markers.numberOfWarnings;
+                }
+            };
+
+            $scope.$apply();
 
         }];
 });

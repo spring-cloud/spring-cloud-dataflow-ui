@@ -12,14 +12,23 @@
             Enter Tasks definitions in the DSL editor.
         </p>
     </div>
+    <div ng-show="numberOfErrors || numberOfWarnings">
+        <span ng-show="numberOfErrors">
+            <span class="CodeMirror-lint-marker-error"></span>
+            <span>{{numberOfErrors}} Error(s)</span>
+        </span>
+        <span ng-show="numberOfWarnings">
+            <span class="CodeMirror-lint-marker-warning"></span>
+            <span>{{numberOfWarnings}} Warning(s)</span>
+        </span>
+    </div>
     <fieldset id="bulkDefine">
         <div class="form-group">
             <div class="dsl-editor dsl-editor-page">
                 <textarea id="taskDefinitions" autofocus ng-trim="false"
                           class="form-control" generic-dsl-editor dsl="dsl" debounce="300" line-wrapping=true"
-                          line-numbers="true"
-                          content-assist-service-name="TaskDslContentAssistService"
-                          lint-service-name="TaskDslLintService" placeholder="TODO: Example Task Definition DSL goes here"></textarea>
+                          line-numbers="true" hint="hint" lint="lint"
+                          placeholder="TODO: Example Task Definition DSL goes here"></textarea>
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback"
                       ng-show="bulkDefineTasksForm.taskDefinitions.$invalid"></span>
             </div>
