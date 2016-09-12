@@ -24,7 +24,6 @@ define(function () {
     return ['$scope', 'DataflowUtils', '$modal', '$state',
         function ($scope, utils, $modal, $state) {
 
-
             /**
              * Bulk Define Tasks.
              */
@@ -40,8 +39,7 @@ define(function () {
             };
 
             $scope.displayFileContents = function(contents) {
-                console.log(contents);
-                $scope.dsl = contents.split('\n');
+                $scope.dsl = contents;
             };
 
         }];
