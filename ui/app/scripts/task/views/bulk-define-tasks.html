@@ -2,21 +2,17 @@
 <p>
     Define tasks in bulk. Type in tasks definitions in the text box or simply browse to a local task definitions
     file
-    <label type="button" class="btn btn-default" tooltip-placement="top"
-           tooltip="Select a file from local file system to import its contents into the DSL editor">
-        <span class="glyphicon glyphicon-file"></span>
-        <input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>
-        Import File
-    </label>
 </p>
 <hr/>
-
-<form class="form-horizontal tab-pane col-md-12" name="bulkDefineTasksForm" role="form" ng-submit="defineTasks(dsl)"
+<form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="defineTasks(dsl)"
       novalidate>
-    <div class="row" style="margin-bottom: 1em;">
-        <p>
-            Enter Tasks definitions in the DSL editor
-        </p>
+    <div class="col-md-12 table-filter panel-group">
+        <label type="button" class="btn btn-default" tooltip-placement="top"
+               tooltip="Select a file from local file system to import its contents into the DSL editor">
+            <span class="glyphicon glyphicon-file"></span>
+            <input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>
+            Import File
+        </label>
     </div>
     <div class="row">
         <div class="col-md-6 text-left help-block">
@@ -43,14 +39,6 @@
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback"
                       ng-show="bulkDefineTasksForm.taskDefinitions.$invalid"></span>
             </div>
-            <!--<div class="text-right" style="margin-top:1em;">-->
-                <!--<label type="button" class="btn btn-default" tooltip-placement="right"-->
-                       <!--tooltip="Select a file from local file system to import its contents into the DSL editor">-->
-                    <!--<span class="glyphicon glyphicon-file"></span>-->
-                    <!--<input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>-->
-                    <!--Import File-->
-                <!--</label>-->
-            <!--</div>-->
         </div>
     </fieldset>
     <div class="row" style="margin-bottom: 2em;">
