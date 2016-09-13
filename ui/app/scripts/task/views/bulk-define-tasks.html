@@ -4,12 +4,16 @@
     file
 </p>
 <hr/>
-<form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="defineTasks()">
-    <div class="row">
-        <div class="col-md-6 text-left help-block">
-            <span>{{numberOfTasks === 0 ? 'No Tasks Defined' : numberOfTasks + ' tasks defined'}}</span>
+<form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="bulkDefineTasks()" novalidate>
+    <div class="row help-block">
+        <div class="col-md-6 text-left">
+            <span ng-hide="numberOfTasks < 0">{{numberOfTasks === 0 ? 'No Tasks Defined' : numberOfTasks + ' tasks defined'}}</span>
+            <span ng-show="numberOfTasks < 0">
+                <span class="glyphicon glyphicon-refresh icon-rotate-animation"></span>
+                <i>Parsing tasks definitions</i>
+            </span>
         </div>
-        <div class="col-md-6 text-right help-block">
+        <div class="col-md-6 text-right">
             <span ng-hide="numberOfErrors === 0">
                 <span class="CodeMirror-lint-marker-error"></span>
                 <span>{{numberOfErrors}} Error(s)</span>
@@ -21,13 +25,11 @@
         </div>
     </div>
     <fieldset id="bulkDefine">
-        <div class="form-group dsl-editor dsl-editor-page" ng-class="bulkDefineTasksForm.taskDefinitions.$invalid ? 'has-warning has-feedback' : ''">
-            <textarea id="taskDefinitions" name="taskDefinitions" autofocus ng-trim="false"
+        <div class="form-group dsl-editor dsl-editor-page">
+            <textarea id="taskDefinitions" autofocus ng-trim="false"
                 class="form-control" generic-dsl-editor dsl="dsl" debounce="300" line-wrapping=true"
                 line-numbers="true" hint="hint" lint="lint"
                 placeholder="TODO: Example Task Definition DSL goes here"></textarea>
-            <span class="glyphicon glyphicon-warning-sign form-control-feedback"
-                ng-show="bulkDefineTasksForm.taskDefinitions.$invalid"></span>
         </div>
     </fieldset>
     <div class="col-md-12 text-right">

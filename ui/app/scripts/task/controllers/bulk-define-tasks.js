@@ -21,23 +21,46 @@
  */
 define(function () {
     'use strict';
-    return ['$scope', 'DataflowUtils', '$modal', '$state',
-        function ($scope, utils, $modal, $state) {
+
+    var PROGRESS_BAR_WAIT_TIME = 500;
+
+    return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService',
+        function ($scope, utils, $modal, $state, taskAppService) {
 
             // function calculateValidationMarkers(text) {
+            //     var lines = [];
+            //     text.split('\n').forEach(function(line) {
+            //         var parsedLine = line.trim();
+            //         if (parsedLine.length) {
+            //             lines.push(parsedLine);
+            //         }
+            //     });
+            //
             //     return {
             //         list: [
-            //             {
-            //                 from: {line: 0, ch: 0},
-            //                 to: {line: 0, ch: 0},
-            //                 message: 'Some error!',
-            //                 severity: 'error'
-            //             }
             //         ],
-            //         numberOfErrors: text.length > 0 ? 1 : 0,
-            //         numberOfWarnings: text.length > 0 ? 1 : 0
+            //         numberOfErrors: 0,
+            //         numberOfWarnings: 0,
+            //         numberOfTasks: lines.length
             //     };
             // }
+
+            function getDefinitionsFromDsl(dsl) {
+                var defs = [];
+                dsl.split('\n').forEach(function(line) {
+                    var parsedLine = line.trim();
+                    if (parsedLine.length) {
+                        var idx = parsedLine.indexOf('=');
+                        if (idx > 0 && idx < parsedLine.length - 1) {
+                            defs.push({
+                                name: parsedLine.substr(0, idx),
+                                definition: parsedLine.substr(idx + 1)
+                            });
+                        }
+                    }
+                });
+                return defs;
+            }
             
             $scope.numberOfErrors = 0;
             $scope.numberOfWarnings = 0;
@@ -48,13 +71,111 @@ define(function () {
              */
             $scope.bulkDefineTasks = function() {
                 utils.$log.info('Bulk define clicked!');
+                var defs = getDefinitionsFromDsl($scope.dsl);
+                var failedDefs = [];
+                var requests = [];
+                defs.forEach(function(def) {
+                    var request = taskAppService.createDefinition(
+                        def.name,
+                        def.definition
+                    ).$promise;
+                    request.catch(function() {
+                        failedDefs.push(def);
+                    });
+                    requests.push(request);
+                });
+
+
+                utils.$q.all(requests).then(function() {
+                    utils.growl.success('Task Definitions created successfully');
+                }, function() {
+                    utils.growl.error('Failed to be created task(s) definition(s) are shown in the editor!');
+                    // Show only failed defs DSL
+                    if (failedDefs.length !== defs.length) {
+                        var text = '';
+                        failedDefs.forEach(function(def) {
+                            text += def.name + '=' + def.definition + '\n';
+                        });
+                        $scope.dsl = text;
+                    }
+                });
+
+                // Pop up progress dialog
+                $modal.open({
+                    animation: true,
+                    templateUrl: 'scripts/task/dialogs/bulk-define-progress.html',
+                    controller: ['$scope', 'DataflowUtils', '$modalInstance', 'requests',
+                        function ($scope, utils, $modalInstance, requests) {
+
+                            var total = requests.length;
+                            var completed = 0;
+
+                            $scope.close = function() {
+                                $modalInstance.close();
+                            };
+
+                            $scope.cancel = function() {
+                                $modalInstance.dismiss('cancel');
+                            };
+
+                            $scope.getProgressPercent = function() {
+                                return Math.round(100 * completed / total);
+                            };
+
+                            requests.forEach(function(promise) {
+                                promise.then(function() {
+                                    completed++;
+                                });
+                            });
+
+                            utils.$q.all(requests).then(function() {
+                                utils.$timeout($scope.close, PROGRESS_BAR_WAIT_TIME);
+                            }, function() {
+                                utils.$timeout($scope.cancel, PROGRESS_BAR_WAIT_TIME);
+                            });
+
+                        }],
+                    resolve: {
+                        requests: function () {
+                            return requests;
+                        }
+                    }
+                }).result.then(function() {
+                    // Dialog closed in the case of success
+                    $state.go('home.tasks.tabs.definitions');
+                });
+
             };
 
             /**
-             * Takes one to All Applications page
+             * Takes one to Tasks Definitions page
              */
             $scope.cancel = function() {
-                $state.go('home.tasks.tabs.definitions');
+                // Pop up confirmation dialog
+                if ($scope.dsl) {
+                    $modal.open({
+                        animation: true,
+                        templateUrl: 'scripts/task/dialogs/bulk-define-cancel.html',
+                        controller: ['$scope', '$modalInstance',
+                            function ($scope, $modalInstance) {
+
+                                $scope.proceed = function() {
+                                    $modalInstance.close();
+                                };
+
+                                $scope.cancel = function() {
+                                    $modalInstance.dismiss('cancel');
+                                };
+
+                            }]
+                    }).result.then(function() {
+                        // Navigate away on successfully closed dialog
+                        $state.go('home.tasks.tabs.definitions');
+                    });
+                } else {
+                    // Simply navigate away if DSL editor is empty
+                    $state.go('home.tasks.tabs.definitions');
+                }
             };
 
             $scope.displayFileContents = function(contents) {
@@ -97,6 +218,9 @@ define(function () {
                     // utils.$timeout(function() {
                     //     $scope.numberOfErrors = markers.numberOfErrors;
                     //     $scope.numberOfWarnings = markers.numberOfWarnings;
+                    //     $scope.numberOfTasks = markers.numberOfTasks;
+                    //     $scope.bulkDefineTasksForm.$setValidity('invalidDsl', $scope.numberOfErrors === 0);
+                    //     $scope.bulkDefineTasksForm.$setValidity('noTasksDefined', $scope.numberOfTasks > 0);
                     // });
                 }
             };
