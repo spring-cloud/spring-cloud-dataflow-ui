@@ -24,7 +24,7 @@ define(function () {
     return ['$scope', 'DataflowUtils', '$modal', '$state',
         function ($scope, utils, $modal, $state) {
 
-            // function calculateValidationMarkers() {
+            // function calculateValidationMarkers(text) {
             //     return {
             //         list: [
             //             {
@@ -34,10 +34,14 @@ define(function () {
             //                 severity: 'error'
             //             }
             //         ],
-            //         numberOfErrors: 1,
-            //         numberOfWarnings: 1
+            //         numberOfErrors: text.length > 0 ? 1 : 0,
+            //         numberOfWarnings: text.length > 0 ? 1 : 0
             //     };
             // }
+            
+            $scope.numberOfErrors = 0;
+            $scope.numberOfWarnings = 0;
+            $scope.numberOfTasks = 0;
 
             /**
              * Bulk Define Tasks.
@@ -87,11 +91,13 @@ define(function () {
 
                     utils.$log.info('Task DSL Lint invoked');
 
-                    // var markers = calculateValidationMarkers();
+                    // var markers = calculateValidationMarkers(doc.getValue());
                     // callback(doc, markers.list);
                     //
-                    // $scope.numberOfErrors = markers.numberOfErrors;
-                    // $scope.numberOfWarnings = markers.numberOfWarnings;
+                    // utils.$timeout(function() {
+                    //     $scope.numberOfErrors = markers.numberOfErrors;
+                    //     $scope.numberOfWarnings = markers.numberOfWarnings;
+                    // });
                 }
             };
 

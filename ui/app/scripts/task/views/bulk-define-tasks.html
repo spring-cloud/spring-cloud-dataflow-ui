@@ -1,7 +1,13 @@
 <h1>Bulk Define Tasks</h1>
 <p>
-    Define tasks in bulk. Type in tasks definitions in the text box or simply browse to a local <strong>task definitions
-    file</strong>.
+    Define tasks in bulk. Type in tasks definitions in the text box or simply browse to a local task definitions
+    file
+    <label type="button" class="btn btn-default" tooltip-placement="top"
+           tooltip="Select a file from local file system to import its contents into the DSL editor">
+        <span class="glyphicon glyphicon-file"></span>
+        <input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>
+        Import File
+    </label>
 </p>
 <hr/>
 
@@ -9,18 +15,23 @@
       novalidate>
     <div class="row" style="margin-bottom: 1em;">
         <p>
-            Enter Tasks definitions in the DSL editor.
+            Enter Tasks definitions in the DSL editor
         </p>
     </div>
-    <div ng-show="numberOfErrors || numberOfWarnings">
-        <span ng-show="numberOfErrors">
-            <span class="CodeMirror-lint-marker-error"></span>
-            <span>{{numberOfErrors}} Error(s)</span>
-        </span>
-        <span ng-show="numberOfWarnings">
-            <span class="CodeMirror-lint-marker-warning"></span>
-            <span>{{numberOfWarnings}} Warning(s)</span>
-        </span>
+    <div class="row">
+        <div class="col-md-6 text-left help-block">
+            <span>{{numberOfTasks === 0 ? 'No Tasks Defined' : numberOfTasks + ' tasks defined'}}</span>
+        </div>
+        <div class="col-md-6 text-right help-block">
+            <span ng-hide="numberOfErrors === 0">
+                <span class="CodeMirror-lint-marker-error"></span>
+                <span>{{numberOfErrors}} Error(s)</span>
+            </span>
+            <span ng-hide="numberOfWarnings === 0">
+                <span class="CodeMirror-lint-marker-warning"></span>
+                <span>{{numberOfWarnings}} Warning(s)</span>
+            </span>
+        </div>
     </div>
     <fieldset id="bulkDefine">
         <div class="form-group">
@@ -32,14 +43,14 @@
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback"
                       ng-show="bulkDefineTasksForm.taskDefinitions.$invalid"></span>
             </div>
-            <p class="text-right" style="margin-top:1em;">
-                Select a file from local file system to import its contents into the DSL editor.
-                <label type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-file"></span>
-                    <input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>
-                    Import File
-                </label>
-            </p>
+            <!--<div class="text-right" style="margin-top:1em;">-->
+                <!--<label type="button" class="btn btn-default" tooltip-placement="right"-->
+                       <!--tooltip="Select a file from local file system to import its contents into the DSL editor">-->
+                    <!--<span class="glyphicon glyphicon-file"></span>-->
+                    <!--<input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>-->
+                    <!--Import File-->
+                <!--</label>-->
+            <!--</div>-->
         </div>
     </fieldset>
     <div class="row" style="margin-bottom: 2em;">
