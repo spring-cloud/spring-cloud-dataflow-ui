@@ -4,16 +4,7 @@
     file
 </p>
 <hr/>
-<form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="defineTasks(dsl)"
-      novalidate>
-    <div class="col-md-12 table-filter panel-group">
-        <label type="button" class="btn btn-default" tooltip-placement="top"
-               tooltip="Select a file from local file system to import its contents into the DSL editor">
-            <span class="glyphicon glyphicon-file"></span>
-            <input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>
-            Import File
-        </label>
-    </div>
+<form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="defineTasks()">
     <div class="row">
         <div class="col-md-6 text-left help-block">
             <span>{{numberOfTasks === 0 ? 'No Tasks Defined' : numberOfTasks + ' tasks defined'}}</span>
@@ -30,18 +21,24 @@
         </div>
     </div>
     <fieldset id="bulkDefine">
-        <div class="form-group">
-            <div class="dsl-editor dsl-editor-page">
-                <textarea id="taskDefinitions" autofocus ng-trim="false"
-                          class="form-control" generic-dsl-editor dsl="dsl" debounce="300" line-wrapping=true"
-                          line-numbers="true" hint="hint" lint="lint"
-                          placeholder="TODO: Example Task Definition DSL goes here"></textarea>
-                <span class="glyphicon glyphicon-warning-sign form-control-feedback"
-                      ng-show="bulkDefineTasksForm.taskDefinitions.$invalid"></span>
-            </div>
+        <div class="form-group dsl-editor dsl-editor-page" ng-class="bulkDefineTasksForm.taskDefinitions.$invalid ? 'has-warning has-feedback' : ''">
+            <textarea id="taskDefinitions" name="taskDefinitions" autofocus ng-trim="false"
+                class="form-control" generic-dsl-editor dsl="dsl" debounce="300" line-wrapping=true"
+                line-numbers="true" hint="hint" lint="lint"
+                placeholder="TODO: Example Task Definition DSL goes here"></textarea>
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback"
+                ng-show="bulkDefineTasksForm.taskDefinitions.$invalid"></span>
         </div>
     </fieldset>
-    <div class="row" style="margin-bottom: 2em;">
+    <div class="col-md-12 text-right">
+        <label type="button" class="btn btn-default" tooltip-placement="top"
+               tooltip="Select a file from local file system to import its contents into the DSL editor">
+            <span class="glyphicon glyphicon-file"></span>
+            <input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>
+            Import File
+        </label>
+    </div>
+    <div class="row" style="margin-bottom: 2em; margin-top: 2em;">
         <div class="col-md-6 text-right">
             <button id="back-button" type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
         </div>
