@@ -47,14 +47,16 @@ define(function () {
 
             function getDefinitionsFromDsl(dsl) {
                 var defs = [];
-                dsl.split('\n').forEach(function(line) {
+                dsl.split('\n').forEach(function(line, number) {
                     var parsedLine = line.trim();
                     if (parsedLine.length) {
                         var idx = parsedLine.indexOf('=');
                         if (idx > 0 && idx < parsedLine.length - 1) {
                             defs.push({
-                                name: parsedLine.substr(0, idx),
-                                definition: parsedLine.substr(idx + 1)
+                                name: parsedLine.substr(0, idx).trim(),
+                                definition: parsedLine.substr(idx + 1).trim(),
+                                line: number,
+                                text: line
                             });
                         }
                     }
@@ -94,7 +96,7 @@ define(function () {
                     if (failedDefs.length !== defs.length) {
                         var text = '';
                         failedDefs.forEach(function(def) {
-                            text += def.name + '=' + def.definition + '\n';
+                            text += def.text + '\n';
                         });
                         $scope.dsl = text;
                     }
