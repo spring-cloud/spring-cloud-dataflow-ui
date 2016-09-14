@@ -7,20 +7,20 @@
 <form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="bulkDefineTasks()" novalidate>
     <div class="row help-block">
         <div class="col-md-6 text-left">
-            <span ng-hide="numberOfTasks < 0">{{numberOfTasks === 0 ? 'No Tasks Defined' : numberOfTasks + ' tasks defined'}}</span>
-            <span ng-show="numberOfTasks < 0">
+            <span ng-hide="bulkDefineTasksForm.$error.processedDsl">{{definitions.length === 0 ? 'No Tasks Defined' : definitions.length + ' tasks defined'}}</span>
+            <span ng-show="bulkDefineTasksForm.$error.processedDsl">
                 <span class="glyphicon glyphicon-refresh icon-rotate-animation"></span>
                 <i>Parsing tasks definitions</i>
             </span>
         </div>
-        <div class="col-md-6 text-right">
-            <span ng-hide="numberOfErrors === 0">
+        <div class="col-md-6 text-right" ng-hide="bulkDefineTasksForm.$error.processedDsl">
+            <span ng-show="errors && errors.length">
                 <span class="CodeMirror-lint-marker-error"></span>
-                <span>{{numberOfErrors}} Error(s)</span>
+                <a href="" ng-click="nextError()">{{errors.length}} Error(s)</a>
             </span>
-            <span ng-hide="numberOfWarnings === 0">
+            <span ng-show="warnings && warnings.length">
                 <span class="CodeMirror-lint-marker-warning"></span>
-                <span>{{numberOfWarnings}} Warning(s)</span>
+                <a href="" ng-click="nextWarning()">{{warnings.length}} Warning(s)</a>
             </span>
         </div>
     </div>

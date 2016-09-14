@@ -19,64 +19,94 @@
  *
  * @author Alex Boyko
  */
-define(function () {
+define(function (require) {
     'use strict';
 
     var PROGRESS_BAR_WAIT_TIME = 500;
 
+    var angular = require('angular');
+
     return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService',
         function ($scope, utils, $modal, $state, taskAppService) {
 
-            // function calculateValidationMarkers(text) {
-            //     var lines = [];
-            //     text.split('\n').forEach(function(line) {
-            //         var parsedLine = line.trim();
-            //         if (parsedLine.length) {
-            //             lines.push(parsedLine);
-            //         }
-            //     });
-            //
-            //     return {
-            //         list: [
-            //         ],
-            //         numberOfErrors: 0,
-            //         numberOfWarnings: 0,
-            //         numberOfTasks: lines.length
-            //     };
-            // }
+            var editor;
 
-            function getDefinitionsFromDsl(dsl) {
+            function extractDefinitionFromLine(line, number) {
+                var parsedLine = line.trim();
+                if (parsedLine.length) {
+                    var idx = parsedLine.indexOf('=');
+                    if (idx > 0 && idx < parsedLine.length - 1) {
+                        return {
+                            name: parsedLine.substr(0, idx).trim(),
+                            definition: parsedLine.substr(idx + 1).trim(),
+                            line: number,
+                            text: line
+                        };
+                    }
+                }
+            }
+
+            function calculateValidationMarkers(text) {
+                var errors = [];
+                var warnings = [];
                 var defs = [];
-                dsl.split('\n').forEach(function(line, number) {
-                    var parsedLine = line.trim();
-                    if (parsedLine.length) {
-                        var idx = parsedLine.indexOf('=');
-                        if (idx > 0 && idx < parsedLine.length - 1) {
-                            defs.push({
-                                name: parsedLine.substr(0, idx).trim(),
-                                definition: parsedLine.substr(idx + 1).trim(),
-                                line: number,
-                                text: line
-                            });
-                        }
+                text.split('\n').forEach(function(line, number) {
+                    var idx = line.indexOf('koko');
+                    if (idx >= 0) {
+                        errors.push({
+                            message: 'Invalid identifier',
+                            severity: 'error',
+                            from: {line: number, ch: idx},
+                            to: {line: number, ch: idx + 'koko'.length}
+                        });
+                    }
+                    var def = extractDefinitionFromLine(line, number);
+                    if (def) {
+                        defs.push(def);
                     }
                 });
-                return defs;
+
+                return {
+                    errors: errors,
+                    warnings: warnings,
+                    defs: defs
+                };
             }
-            
-            $scope.numberOfErrors = 0;
-            $scope.numberOfWarnings = 0;
-            $scope.numberOfTasks = 0;
+
+            function findNextMarker(markers, cursor) {
+                if (angular.isArray(markers)) {
+                    for (var i = 0; i < markers.length; i++) {
+                        if (markers[i].from.line === cursor.line && markers[i].from.ch > cursor.ch) {
+                            return markers[i];
+                        } else if (markers[i].from.line > cursor.line) {
+                            return markers[i];
+                        }
+                    }
+                    return markers[0];
+                }
+            }
+
+            function navigateToNextMarker(editor, markers) {
+                var nextMarker = findNextMarker(markers, editor.getCursor());
+                if (nextMarker) {
+                    // Select the chunk of DSL that caused an error
+                    editor.setSelection(nextMarker.from, nextMarker.to, {scroll: false});
+                    // Scroll to marker and allow scroller viewport height / 2 space around vertically
+                    editor.scrollIntoView(nextMarker, $(editor.getScrollerElement()).height() / 2);
+                }
+            }
 
             /**
              * Bulk Define Tasks.
              */
             $scope.bulkDefineTasks = function() {
-                utils.$log.info('Bulk define clicked!');
-                var defs = getDefinitionsFromDsl($scope.dsl);
+                if ($scope.definitions) {
+                    utils.$log.error('No tasks defined by the DSL');
+                    return;
+                }
                 var failedDefs = [];
                 var requests = [];
-                defs.forEach(function(def) {
+                $scope.definitions.forEach(function(def) {
                     var request = taskAppService.createDefinition(
                         def.name,
                         def.definition
@@ -93,7 +123,7 @@ define(function () {
                 }, function() {
                     utils.growl.error('Failed to be created task(s) definition(s) are shown in the editor!');
                     // Show only failed defs DSL
-                    if (failedDefs.length !== defs.length) {
+                    if (failedDefs.length !== $scope.definitions.length) {
                         var text = '';
                         failedDefs.forEach(function(def) {
                             text += def.text + '\n';
@@ -212,20 +242,57 @@ define(function () {
                     //   severity: 'error'
                     // callback(doc, markers);
 
+                    if (!editor) {
+                        editor = doc;
+                        editor.on('change', function() {
+                            $scope.$apply(function() {
+                                $scope.definitions = undefined;
+                            });
+                        });
+                    }
+
+                    $scope.definitions = undefined;
+
                     utils.$log.info('Task DSL Lint invoked');
 
-                    // var markers = calculateValidationMarkers(doc.getValue());
-                    // callback(doc, markers.list);
-                    //
-                    // utils.$timeout(function() {
-                    //     $scope.numberOfErrors = markers.numberOfErrors;
-                    //     $scope.numberOfWarnings = markers.numberOfWarnings;
-                    //     $scope.numberOfTasks = markers.numberOfTasks;
-                    //     $scope.bulkDefineTasksForm.$setValidity('invalidDsl', $scope.numberOfErrors === 0);
-                    //     $scope.bulkDefineTasksForm.$setValidity('noTasksDefined', $scope.numberOfTasks > 0);
-                    // });
+                    utils.$timeout(function() {
+
+
+                        var markers = calculateValidationMarkers(doc.getValue());
+                        callback(doc, markers.errors.concat(markers.warnings));
+
+                        utils.$timeout(function() {
+                            $scope.errors = markers.errors;
+                            $scope.warnings = markers.warnings;
+                            $scope.definitions = markers.defs;
+                        });
+
+
+                    }, 3000);
                 }
             };
+
+            $scope.nextError = function() {
+                navigateToNextMarker(editor, $scope.errors);
+            };
+
+            $scope.nextWarning = function() {
+                navigateToNextMarker(editor, $scope.warnings);
+            };
+
+            $scope.$watch('errors', function(errors) {
+                $scope.bulkDefineTasksForm.$setValidity('validDsl', !errors || errors.length === 0);
+            });
+
+            $scope.$watch('definitions', function(definitions) {
+                $scope.bulkDefineTasksForm.$setValidity('taskDefsPresent', angular.isArray(definitions) && definitions.length > 0);
+                $scope.bulkDefineTasksForm.$setValidity('processedDsl', angular.isArray(definitions));
+            });
+
+            $scope.numberOfTasks = 0;
+            $scope.errors = [];
+            $scope.warnings = [];
+            $scope.definitions = [];
 
             $scope.$apply();
 
