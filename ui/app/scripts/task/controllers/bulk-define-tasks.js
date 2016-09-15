@@ -113,7 +113,7 @@ define(function (require) {
              * Bulk Define Tasks.
              */
             $scope.bulkDefineTasks = function() {
-                if ($scope.definitions) {
+                if (!$scope.definitions || !$scope.definitions.length) {
                     utils.$log.error('No tasks defined by the DSL');
                     return;
                 }
