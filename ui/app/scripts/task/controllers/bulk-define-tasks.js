@@ -31,6 +31,10 @@ define(function (require) {
 
             var editor;
 
+            var updateRulerErrors;
+
+            var updateRulerWarnings;
+
             function extractDefinitionFromLine(line, number) {
                 var parsedLine = line.trim();
                 if (parsedLine.length) {
@@ -58,6 +62,15 @@ define(function (require) {
                             severity: 'error',
                             from: {line: number, ch: idx},
                             to: {line: number, ch: idx + 'koko'.length}
+                        });
+                    }
+                    idx = line.indexOf('ab');
+                    if (idx >= 0) {
+                        warnings.push({
+                            message: 'Questionable identifier',
+                            severity: 'warning',
+                            from: {line: number, ch: idx},
+                            to: {line: number, ch: idx + 'ab'.length}
                         });
                     }
                     var def = extractDefinitionFromLine(line, number);
@@ -249,6 +262,8 @@ define(function (require) {
                                 $scope.definitions = undefined;
                             });
                         });
+                        updateRulerWarnings = editor.annotateScrollbar('vertical-ruler-warning');
+                        updateRulerErrors =  editor.annotateScrollbar('vertical-ruler-error');
                     }
 
                     $scope.definitions = undefined;
@@ -260,6 +275,9 @@ define(function (require) {
 
                         var markers = calculateValidationMarkers(doc.getValue());
                         callback(doc, markers.errors.concat(markers.warnings));
+
+                        updateRulerWarnings.update(markers.warnings);
+                        updateRulerErrors.update(markers.errors);
 
                         utils.$timeout(function() {
                             $scope.errors = markers.errors;
