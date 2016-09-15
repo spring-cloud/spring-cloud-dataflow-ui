@@ -262,8 +262,8 @@ define(function (require) {
                                 $scope.definitions = undefined;
                             });
                         });
-                        updateRulerWarnings = editor.annotateScrollbar('vertical-ruler-warning');
-                        updateRulerErrors =  editor.annotateScrollbar('vertical-ruler-error');
+                        updateRulerWarnings = editor.annotateScrollbar('CodeMirror-vertical-ruler-warning');
+                        updateRulerErrors =  editor.annotateScrollbar('CodeMirror-vertical-ruler-error');
                     }
 
                     $scope.definitions = undefined;
