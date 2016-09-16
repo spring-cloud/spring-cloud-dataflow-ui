@@ -54,6 +54,12 @@ define(['angular'], function (angular) {
               $injector.invoke(propertiesDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'cell': cell, 'streamInfo': streamInfo});
           });
       }])
+      .controller('DetailedStreamController',
+          ['$scope','$injector', function ($scope, $injector) {
+              require(['stream/controllers/detailed-stream'], function (detailedStreamController) {
+                  $injector.invoke(detailedStreamController, this, {'$scope': $scope});
+              });
+          }])
       .controller('DefinitionDeployController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['stream/controllers/definition-deploy'], function (streamDefinitionDeployController) {
