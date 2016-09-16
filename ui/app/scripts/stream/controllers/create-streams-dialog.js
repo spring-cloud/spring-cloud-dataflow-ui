@@ -26,7 +26,7 @@ define(function(require) {
 
     var PROGRESS_BAR_WAIT_TIME = 600; // to account for animation delay
 
-    return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'StreamParserService',
+    return ['DataflowUtils', '$scope', 'StreamService', '$modalInstance', 'definitionData', 'StreamMetamodelService', 'ParserService',
         function (utils, $scope, streamService, $modalInstance, definitionData, metaModelService, ParserService) {
 
             function waitForStreamDef(streamDefNameToWaitFor, attemptCount) {

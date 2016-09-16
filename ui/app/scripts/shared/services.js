@@ -19,8 +19,11 @@
  *
  * @author Ilayaperumal Gopinathan
  */
-define(['angular', 'xregexp'], function (angular) {
+define(function (require) {
   'use strict';
+
+  var angular = require('angular');
+  require('xregexp');
 
   return angular.module('dataflowShared.services', [])
       .factory('DataflowUtils', function ($log, growl, $timeout, $q, $rootScope) {
@@ -57,6 +60,7 @@ define(['angular', 'xregexp'], function (angular) {
           }
         };
       })
+      .factory('ParserService',require('shared/services/parser'))
       .factory('dataflowVersionInfo', function ($resource, $rootScope, DataflowUtils) {
         console.log('dataflowVersionInfo');
         var dataflowVersionInfoPromise =  $resource($rootScope.dataflowServerUrl + '/management/info', {}, {

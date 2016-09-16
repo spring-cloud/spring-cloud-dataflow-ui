@@ -7,16 +7,16 @@
 <form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="bulkDefineTasks()" novalidate>
     <div class="row help-block">
         <div class="col-md-6 text-left">
-            <span ng-hide="bulkDefineTasksForm.$error.processedDsl">{{definitions.length === 0 ? 'No Tasks Defined' : definitions.length + ' tasks defined'}}</span>
+            <span ng-hide="bulkDefineTasksForm.$error.processedDsl">{{definitions.length === 0 ? 'No valid task definitions detected' : definitions.length + ' valid task definition'+(definitions.length>1?'s':'')+' detected'}}</span>
             <span ng-show="bulkDefineTasksForm.$error.processedDsl">
                 <span class="glyphicon glyphicon-refresh icon-rotate-animation"></span>
-                <i>Parsing tasks definitions</i>
+                <i>Validating task definitions</i>
             </span>
         </div>
         <div class="col-md-6 text-right" ng-hide="bulkDefineTasksForm.$error.processedDsl">
             <span ng-show="errors && errors.length">
                 <span class="CodeMirror-lint-marker-error"></span>
-                <a href="" ng-click="nextError()">{{errors.length}} Error(s)</a>
+                <a href="" ng-click="nextError()">{{errors.length}} {{errors.length === 1 ? 'Error':'Errors'}}</a>
             </span>
             <span ng-show="warnings && warnings.length">
                 <span class="CodeMirror-lint-marker-warning"></span>
@@ -29,7 +29,7 @@
             <textarea id="taskDefinitions" autofocus ng-trim="false"
                 class="form-control" generic-dsl-editor dsl="dsl" debounce="300" line-wrapping="false"
                 line-numbers="true" hint="hint" lint="lint" scrollbar-style="simple"
-                placeholder="TODO: Example Task Definition DSL goes here"></textarea>
+                placeholder="Please enter one or more definitions in the format: mytask=taskapp --option1=value1 --option2=value2"></textarea>
         </div>
     </fieldset>
     <div class="col-md-12 text-right">

@@ -42,7 +42,7 @@ define(function (require) {
 
     var angular = require('angular');
 
-    return ['$http', 'DataflowUtils', 'AppService', 'StreamParserService', 'MetamodelUtils',
+    return ['$http', 'DataflowUtils', 'AppService', 'ParserService', 'MetamodelUtils',
         function ($http, utils, appService, ParserService, metamodelUtils) {
 
             // Pre ES6 browsers don't have 'startsWith' function, hence add it if necessary
