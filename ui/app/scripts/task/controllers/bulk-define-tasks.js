@@ -324,18 +324,20 @@ define(function (require) {
                                     messages.push({message: error.message, severity: 'error', from: error.range.start, to: error.range.end});
                                 }
                             }
-                            if (line.success && line.success.length !== 0 ) {
+                            if (line.success && line.success.length !== 0) {
                                 // Check if already seen an app called this
-                                var taskDefinitionName = line.success[0].group;
-                                var alreadyExists = false;
-                                for (var d = 0; d < knownTaskDefinitionNames.length; d++) {
-                                    if (knownTaskDefinitionNames[d] === taskDefinitionName) {
-                                        alreadyExists = true;
-                                        messages.push({message: 'Duplicate task definition name \''+taskDefinitionName+'\'', severity: 'error', from: line.success[0].grouprange.start, to: line.success[0].grouprange.end});                                        
+                                if (line.success[0].group) {
+                                    var taskDefinitionName = line.success[0].group;
+                                    var alreadyExists = false;
+                                    for (var d = 0; d < knownTaskDefinitionNames.length; d++) {
+                                        if (knownTaskDefinitionNames[d] === taskDefinitionName) {
+                                            alreadyExists = true;
+                                            messages.push({message: 'Duplicate task definition name \''+taskDefinitionName+'\'', severity: 'error', from: line.success[0].grouprange.start, to: line.success[0].grouprange.end});                                        
+                                        }
                                     }
-                                }
-                                if (!alreadyExists) {
-                                    knownTaskDefinitionNames.push(taskDefinitionName);
+                                    if (!alreadyExists) {
+                                        knownTaskDefinitionNames.push(taskDefinitionName);
+                                    }
                                 }
                                 verificationPromiseChain = verificationPromiseChain.then(callVerifyApp.bind(this,line.success[0]));
                             }
