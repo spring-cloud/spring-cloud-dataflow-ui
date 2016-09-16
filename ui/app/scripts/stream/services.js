@@ -53,6 +53,15 @@ define(function(require) {
               url: $rootScope.dataflowServerUrl + '/streams/definitions/' + streamName
             });
           },
+          getRelatedDefinitions: function(streamName, nested) {
+            return $http({
+              method: 'GET',
+              url: $rootScope.dataflowServerUrl + '/streams/definitions/' + streamName + '/related',
+              params: {
+                nested: nested
+              }
+            });
+          },
           deploy: function (streamDefinition, properties) {
             $log.info('Deploy Stream ' + streamDefinition.name);
             return $resource($rootScope.dataflowServerUrl + '/streams/deployments/' + streamDefinition.name, null, {

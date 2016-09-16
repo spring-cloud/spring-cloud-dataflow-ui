@@ -183,6 +183,15 @@ define(['./app'], function (dashboard) {
         feature: 'streamsEnabled'
       }
      })
+    .state('home.streams.detailedStream', {
+      url : 'streams/definitions/{streamName}',
+      templateUrl : streamTemplatesPath + '/detailed-stream.html',
+      controller: 'DetailedStreamController',
+      data:{
+        authenticate: true,
+        feature: 'streamsEnabled'
+      }
+    })
 
     .state('home.jobs.tabs.definitions', {
       url : '/definitions',

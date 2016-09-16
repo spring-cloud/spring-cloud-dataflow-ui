@@ -94,6 +94,9 @@ define(['model/pageable'], function (Pageable) {
       $scope.deployStream = function (streamDefinition) {
         $state.go('home.streams.deployStream', {definitionName: streamDefinition.name});
       };
+      $scope.detailed = function(streamDefinition) {
+        $state.go('home.streams.detailedStream', {streamName: streamDefinition.name});
+      };
       $scope.undeployStream = function (streamDefinition) {
         utils.$log.info('Undeploying Stream ' + streamDefinition.name);
         utils.$log.info(streamService);
