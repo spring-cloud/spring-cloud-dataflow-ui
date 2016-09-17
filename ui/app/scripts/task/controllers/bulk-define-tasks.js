@@ -26,14 +26,16 @@ define(function (require) {
 
     var angular = require('angular');
 
-    return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService', 'ParserService', 'AppService',
-        function ($scope, utils, $modal, $state, taskAppService, parserService, appService) {
+    return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService', 'TaskDslValidatorService',
+        function ($scope, utils, $modal, $state, taskAppService, validatorService) {
 
             var editor;
 
             var updateRulerErrors;
 
             var updateRulerWarnings;
+
+            var activeValidator;
 
             function findNextMarker(markers, cursor) {
                 if (angular.isArray(markers)) {
@@ -193,177 +195,6 @@ define(function (require) {
                 }
             };
 
-            var activeValidator;
-
-            function Validator(dslText, callback, options, doc) {
-                this.cancelled = false;
-                this.dslText = dslText;
-                this.callback = callback;
-                this.options = options;
-                this.doc = doc;
-                this.appInfos = {}; // Cached results for one run of the validator
-            }
-
-            Validator.prototype.cancel = function() { 
-                this.cancelled = true;
-            };
-
-            /**
-             * Retrieve application description (what options does it support, etc). This 
-             * function uses a cache with a lifetime of this validation run to avoid
-             * asking for the definition of the same app over and over.
-             */
-            Validator.prototype.getAppInfo = function(name) {
-                var deferred = utils.$q.defer();
-                if (this.appInfos.hasOwnProperty(name)) {
-                    deferred.resolve(this.appInfos[name]);
-                } else {
-                    // On a successful call, result.data will be a JSON Object
-                    // with name/type/uri/shortDescription/options
-                    appService.getAppInfo('task',name).then(function (result) {
-                        // sleep(2000).then(()=>{
-                        this.appInfos[name]=result.data;
-                        deferred.resolve(result.data);
-                        // });
-                    }.bind(this), function(error) {
-                        console.error(error);
-                        deferred.reject(error);
-                    });
-                }
-                return deferred.promise;
-            };
-
-            /**
-             * Check if the parsed definition supports the specified options. If not then
-             * append error messages to the messageAccumulator. Returns a promise that will be resolved
-             * when the checking is complete.
-             */
-            Validator.prototype.verifyApp = function(parsedInfo, messageAccumulator, definitionsAccumulator) {
-                // console.log('Verifying '+JSON.stringify(parsedInfo));
-                var appName = parsedInfo.name;
-                var deferred = utils.$q.defer();
-                this.getAppInfo(appName).then(function(result) {
-                    // console.log('getAppInfo responded: '+JSON.stringify(result));
-                    if (!result || result === '') {
-                        // unknown app
-                        messageAccumulator.push({
-                            message: '\''+appName+'\' is not a known task application',
-                            severity: 'error',
-                            from: parsedInfo.range.start,
-                            to: parsedInfo.range.end,
-                        });
-                    } else {
-                        var hasErrors = false;
-                        var validOptions = result.options;
-                        Object.keys(parsedInfo.options).forEach(function (k) {
-                            var valid = false;
-                            for (var o = 0; o < validOptions.length; o++) {
-                                if (k === validOptions[o].name || k === validOptions[o].id) {
-                                    valid = true;
-                                    break;
-                                }
-                            }
-                            if (!valid) {
-                                hasErrors = true;
-                                messageAccumulator.push({
-                                    from: parsedInfo.optionsranges[k].start,
-                                    to: parsedInfo.optionsranges[k].end,
-                                    message: 'Application \''+name+'\' does not support the option \''+k+'\'',
-                                    severity: 'error'
-                                });
-                            }
-                        });
-                        // TODO create errors for options you *must* specify but haven't
-                        if (!hasErrors && parsedInfo.group) {
-                            // Build a nicely structured command definition
-                            var def = appName;
-                            if (parsedInfo.options) {
-                                Object.keys(parsedInfo.options).forEach(function(name) {
-                                    def+=' --'+name+'='+parsedInfo.options[name];
-                                });
-                            }
-                            definitionsAccumulator.push({
-                                name: parsedInfo.group,
-                                definition: def,
-                                line: parsedInfo.range.start.line,
-                                text: ''
-                            });
-                        }
-                    }
-                    deferred.resolve(parsedInfo);
-                }, function(error) {
-                    console.error(error);
-                    deferred.reject();
-                });
-                return deferred.promise;
-            };
-
-            /**
-             * Validate the data in the text box. First attempt to parse it and if successful
-             * then verify each line refers to a valid application and provides valid options.
-             */
-            Validator.prototype.validate = function() {
-                    var results = parserService.parse(this.dslText,'task');
-                    // console.log('validation: parser result = ' +JSON.stringify(results));
-                    var messages = [];
-                    var definitions = [];
-                    var knownTaskDefinitionNames = [];
-                    var verificationPromiseChain = utils.$q.when();
-                    var callVerifyApp = function(lineToValidate) {
-                        return this.verifyApp(lineToValidate, messages, definitions);
-                    };
-                    if (results.lines) {
-                        for (var i = 0; i<results.lines.length; i++) {
-                            if (this.cancelled) {
-                                return;
-                            }
-                            var line = results.lines[i];
-                            if (line.errors) {
-                                for (var e = 0; e < line.errors.length; e++) {
-                                    var error = line.errors[e];
-                                    messages.push({message: error.message, severity: 'error', from: error.range.start, to: error.range.end});
-                                }
-                            }
-                            if (line.success && line.success.length !== 0) {
-                                // Check if already seen an app called this
-                                if (line.success[0].group) {
-                                    var taskDefinitionName = line.success[0].group;
-                                    var alreadyExists = false;
-                                    for (var d = 0; d < knownTaskDefinitionNames.length; d++) {
-                                        if (knownTaskDefinitionNames[d] === taskDefinitionName) {
-                                            alreadyExists = true;
-                                            messages.push({message: 'Duplicate task definition name \''+taskDefinitionName+'\'', severity: 'error', from: line.success[0].grouprange.start, to: line.success[0].grouprange.end});                                        
-                                        }
-                                    }
-                                    if (!alreadyExists) {
-                                        knownTaskDefinitionNames.push(taskDefinitionName);
-                                    }
-                                }
-                                verificationPromiseChain = verificationPromiseChain.then(callVerifyApp.bind(this,line.success[0]));
-                            }
-                        }
-                    }
-
-                    verificationPromiseChain.then(function() {
-                        if (!this.cancelled) {
-                            this.callback(this.doc, messages);
-                            utils.$timeout(function() {
-                                messages.sort(function(a,b) {
-                                    return a.from.line - b.from.line;
-                                });
-                                // console.log('messages: '+JSON.stringify(messages));
-                                $scope.errors = messages;
-                                $scope.warnings = [];
-                                $scope.definitions = definitions;
-
-                                // updateRulerWarnings.update(markers.warnings);
-                                updateRulerErrors.update(messages);
-                            }.bind(this));
-                        }
-                    }.bind(this));
-            };
-            
-
             $scope.lint = {
                 async: true,
                 getAnnotations: function (dslText, callback, options, doc) { // jshint ignore:line
@@ -389,12 +220,27 @@ define(function (require) {
                     if (activeValidator) {
                         activeValidator.cancel();
                     }
-                    activeValidator = new Validator(dslText, callback, options, doc);
-                    activeValidator.validate();
-
-                    // TODO not currently doing this
-                    // updateRulerWarnings.update(markers.warnings);
-                    // updateRulerErrors.update(markers.errors);
+                    activeValidator = validatorService.createValidator(dslText);
+                    activeValidator.validate().then(function(validationResults) {
+                        // Update CodeMirror gutter error/warning markers
+                        callback(doc, validationResults.errors.concat(validationResults.warnings));
+                        // Update overview ruler error/warning markers
+                        updateRulerWarnings.update(validationResults.warnings);
+                        updateRulerErrors.update(validationResults.errors);
+                        // Update scope vars via timeout thus it'd be in angular digest-apply cycle
+                        // Sometimes this staff within the cycle sometimes out, hence the timeout
+                        utils.$timeout(function () {
+                            validationResults.errors.sort(function (a, b) {
+                                return a.from.line - b.from.line;
+                            });
+                            validationResults.warnings.sort(function (a, b) {
+                                return a.from.line - b.from.line;
+                            });
+                            $scope.errors = validationResults.errors;
+                            $scope.warnings = validationResults.warnings;
+                            $scope.definitions = validationResults.definitions;
+                        });
+                    });
                 }
             };
 

@@ -19,9 +19,12 @@
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
-define(['angular'], function (angular) {
+define(function(require) {
   'use strict';
+
+  var angular = require('angular');
 
   return angular.module('dataflowTasks.services', [])
       .factory('TaskDefinitions', function ($resource, $rootScope, $log, $http) {
@@ -197,5 +200,6 @@ define(['angular'], function (angular) {
             );
           }
         };
-      });
+      })
+      .factory('TaskDslValidatorService', require('task/services/task-dsl-validator'));
 });
