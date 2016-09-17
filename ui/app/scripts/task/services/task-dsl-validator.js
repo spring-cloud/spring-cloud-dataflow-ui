@@ -177,6 +177,8 @@ define(function() {
                             warnings: [],
                             definitions: definitions
                         });
+                    } else {
+                        deferred.reject();
                     }
                 });
 
