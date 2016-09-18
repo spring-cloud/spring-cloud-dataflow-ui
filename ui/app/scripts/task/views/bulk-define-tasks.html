@@ -6,14 +6,14 @@
 <hr/>
 <form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="bulkDefineTasks()" novalidate>
     <div class="row help-block">
-        <div class="col-md-6 text-left">
+        <div class="text-left pull-left">
             <span ng-hide="bulkDefineTasksForm.$error.processedDsl">{{definitions.length === 0 ? 'No valid task definitions detected' : definitions.length + ' valid task definition'+(definitions.length>1?'s':'')+' detected'}}</span>
             <span ng-show="bulkDefineTasksForm.$error.processedDsl">
                 <span class="glyphicon glyphicon-refresh icon-rotate-animation"></span>
                 <i>Validating task definitions</i>
             </span>
         </div>
-        <div class="col-md-6 text-right" ng-hide="bulkDefineTasksForm.$error.processedDsl">
+        <div class="text-right pull-right" ng-hide="bulkDefineTasksForm.$error.processedDsl">
             <span ng-show="errors && errors.length">
                 <span class="CodeMirror-lint-marker-error"></span>
                 <a href="" ng-click="nextError()">{{errors.length}} {{errors.length === 1 ? 'Error':'Errors'}}</a>
@@ -40,14 +40,14 @@
             Import File
         </label>
     </div>
-    <div class="row" style="margin-bottom: 2em; margin-top: 2em;">
-        <div class="col-md-6 text-right">
+    <div class="col-md-12 text-center" style="padding: 9px 12px;">
+        <span style="padding-right: 15px;">
             <button id="back-button" type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
-        </div>
-        <div class="col-md-6 text-left">
+        </span>
+        <span style="padding-left: 15px;">
             <button id="submit-button" type="submit" class="btn btn-default" ng-disabled="bulkDefineTasksForm.$invalid">
                 <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Create
             </button>
-        </div>
+        </span>
     </div>
 </form>
