@@ -15,7 +15,7 @@
  */
 
 /**
- * Service providing content assist for Flo Stream DSL editor
+ * Service providing validation for task definitions.
  *
  * @author Andy Clement
  * @author Alex Boyko
@@ -24,6 +24,8 @@ define(function() {
     'use strict';
 
     return ['DataflowUtils', 'ParserService', 'AppService', function (utils, parserService, appService) {
+
+        var DEBUG = true;
 
         function createValidator(dslText) {
             var cancelled = false;
@@ -39,6 +41,7 @@ define(function() {
              * asking for the definition of the same app over and over.
              */
             function getAppInfo(name) {
+                if (DEBUG) { utils.$log.info('>getAppInfo '+name); }
                 var deferred = utils.$q.defer();
                 if (appInfos.hasOwnProperty(name)) {
                     deferred.resolve(appInfos[name]);
@@ -49,6 +52,7 @@ define(function() {
                         // sleep(2000).then(()=>{
                         appInfos[name] = result.data;
                         deferred.resolve(result.data);
+                        if (DEBUG) { utils.$log.info('>getAppInfo fetched data for app '+name+' = '+JSON.stringify(result.data)); }
                         // });
                     }, function (error) {
                         utils.$log.error(error);
@@ -63,15 +67,14 @@ define(function() {
              * append error messages to the messageAccumulator. Returns a promise that will be resolved
              * when the checking is complete.
              */
-            function verifyApp(parsedInfo, messageAccumulator, definitionsAccumulator) {
-                // console.log('Verifying '+JSON.stringify(parsedInfo));
+            function verifyApp(parsedInfo, messagesAccumulator, definitionsAccumulator) {
+                if (DEBUG) { utils.$log.info('>verifyApp '+JSON.stringify(parsedInfo)); }
                 var appName = parsedInfo.name;
                 var deferred = utils.$q.defer();
                 getAppInfo(appName).then(function (result) {
-                    // console.log('getAppInfo responded: '+JSON.stringify(result));
                     if (!result || result === '') {
                         // unknown app
-                        messageAccumulator.push({
+                        messagesAccumulator.push({
                             message: '\'' + appName + '\' is not a known task application',
                             severity: 'error',
                             from: parsedInfo.range.start,
@@ -90,7 +93,7 @@ define(function() {
                             }
                             if (!valid) {
                                 hasErrors = true;
-                                messageAccumulator.push({
+                                messagesAccumulator.push({
                                     from: parsedInfo.optionsranges[k].start,
                                     to: parsedInfo.optionsranges[k].end,
                                     message: 'Application \'' + name + '\' does not support the option \'' + k + '\'',
@@ -134,7 +137,7 @@ define(function() {
                 var messages = [];
                 var definitions = [];
                 var knownTaskDefinitionNames = [];
-                var verificationPromiseChain = utils.$q.when();
+                var verificationPromiseChain = utils.$q.when(function() { console.log('a');});
                 if (results.lines) {
                     for (var i = 0; i<results.lines.length; i++) {
                         if (cancelled) {
@@ -164,7 +167,7 @@ define(function() {
                             }
                             var lineToValidate = line.success[0];
                             verificationPromiseChain = verificationPromiseChain.then(function() { // jshint ignore:line
-                                verifyApp(lineToValidate, messages, definitions);
+                                return verifyApp(lineToValidate, messages, definitions);
                             });
                         }
                     }
@@ -172,6 +175,7 @@ define(function() {
 
                 verificationPromiseChain.then(function () {
                     if (!cancelled) {
+                        console.log('messages = '+JSON.stringify(messages));
                         deferred.resolve({
                             errors: messages,
                             warnings: [],
@@ -180,14 +184,22 @@ define(function() {
                     } else {
                         deferred.reject();
                     }
+                    // TODO deferred is never resolved if cancelled? Shouldn't it be rejected
                 });
 
                 return deferred.promise;
             }
 
+            // TESTING-ONLY: pre-populdate appInfos to avoid needing to populate server task app list
+            function setAppInfos(testAppInfos) {
+                appInfos = testAppInfos;
+            }
+
             return {
                 cancel: cancel,
-                validate: validate
+                validate: validate,
+                // For testing
+                setAppInfos: setAppInfos
             };   
         }
 
