@@ -44,28 +44,28 @@
         <td>{{item.dslText}}</td>
         <td>{{item.status}}</td>
         <td class="action-column">
-            <button type="button" ng-click="detailed(item)" class="btn btn-default" tooltip="Stream's Detailed Information">
-                <span class="glyphicon glyphicon-info-sign"></span>
+            <button type="button" ng-click="detailed(item)" class="btn btn-default">
+                <span class="glyphicon glyphicon-info-sign"></span> Details
             </button>
         </td>
         <td class="action-column">
             <button type="button" ng-click="undeployStream(item)"
                     ng-disabled="item.status === 'deploying' || item.status === 'undeployed'"
-                    class="btn btn-default" tooltip="Undeploy Stream"
-                    ><span class="glyphicon glyphicon-stop"></span>
+                    class="btn btn-default"
+                    ><span class="glyphicon glyphicon-stop"></span> Undeploy
             </button>
         </td>
         <td class="action-column">
             <button type="button" ng-click="deployStream(item)"
                     ng-disabled="item.status === 'deploying' || item.status === 'deployed' || item.status === 'incomplete' || item.status === 'failed'"
-                    class="btn btn-default" tooltip="Deploy Stream"
-                    ><span class="glyphicon glyphicon-play"></span>
+                    class="btn btn-default"
+                    ><span class="glyphicon glyphicon-play"></span> Deploy
             </button>
         </td>
         <td class="action-column">
-            <button type="button" ng-click="clickModal(item)" tooltip="Destroy Stream"
+            <button type="button" ng-click="clickModal(item)"
                     class="btn btn-default" data-toggle="modal" data-target="#confirm-destroy"
-                    ><span class="glyphicon glyphicon-remove"></span>
+                    ><span class="glyphicon glyphicon-remove"></span> Destroy
             </button>
         </td>
     </tr>
