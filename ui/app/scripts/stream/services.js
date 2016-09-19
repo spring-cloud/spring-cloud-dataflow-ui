@@ -54,15 +54,13 @@ define(function(require) {
             });
           },
           getRelatedDefinitions: function(streamName, nested) {
-            $log.info('Getting related streams for stream named ' + streamName);
-            return $resource($rootScope.dataflowServerUrl + '/streams/definitions/' + streamName + '/related', null, {
-              related: {
-                method: 'GET',
-                params: {
-                  nested: nested
-                }
+            return $http({
+              method: 'GET',
+              url: $rootScope.dataflowServerUrl + '/streams/definitions/' + streamName + '/related',
+              params: {
+                nested: nested
               }
-            }).related();
+            });
           },
           deploy: function (streamDefinition, properties) {
             $log.info('Deploy Stream ' + streamDefinition.name);

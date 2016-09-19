@@ -19,11 +19,13 @@
  *
  * @author Alex Boyko
  */
-define(function() {
+define(function(require) {
     'use strict';
 
-    return ['DataflowUtils', '$scope', '$state', '$stateParams', 'StreamMetamodelService', 'StreamService',
-        function (utils, $scope, $state, $stateParams/*, metamodelService, streamService*/) {
+    var angular = require('angular');
+
+    return ['DataflowUtils', '$scope', '$state', '$stateParams', 'StreamService',
+        function (utils, $scope, $state, $stateParams, streamService) {
 
             $scope.back = function() {
                 $state.go('home.streams.tabs.definitions');
@@ -31,7 +33,28 @@ define(function() {
 
             $scope.streamName = $stateParams.streamName;
 
+            streamService.getRelatedDefinitions($scope.streamName, true).then(function(results) {
+                var streams = results.data._embedded.streamDefinitionResourceList;
+                if (streams && angular.isArray(streams) && streams.length > 0) {
+                    var dsl = '';
+                    streams.forEach(function(stream) {
+                        dsl += stream.name + '=' + stream.dslText + '\n';
+                    });
+                    $scope.definition = {
+                        text: dsl,
+                        name: $scope.streamName
+                    };
+                } else {
+                    $scope.definition = {
+                        text: '',
+                        name: $scope.streamName
+                    };
+                }
+                $scope.flo.updateGraphRepresentation();
+            });
+
             $scope.$apply();
 
-        }];
+        }
+    ];
 });
