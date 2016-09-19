@@ -20,28 +20,73 @@
 define(['angular', 'angularMocks', 'app'], function (angular) {
     'use strict';
 
+    var TASK_APPS = {
+        'timestamp': {
+            name: 'timestamp'
+        },
+    };
+
     describe('Unit: Testing JS validation of task definitions', function () {
 
-        beforeEach(function () {
-            angular.mock.module('dataflowMain');
-        });
+        // beforeEach(function () {
+        //     angular.mock.module('dataflowMain');
+        // });
+
+        beforeEach(module('dataflowMain'));
+
+        beforeEach(inject(function(AppService, $q){
+            spyOn(AppService, 'getAppInfo').and.callFake(function(type, name) {
+                var deferred = $q.defer();
+                if (angular.isDefined(TASK_APPS[name])) {
+                    deferred.resolve({
+                        data: TASK_APPS[name]
+                    });
+                } else {
+                    deferred.reject();
+                }
+                return deferred.promise;
+            });
+        }));
 
         it('should have a TaskDslValidatorService', inject(function (TaskDslValidatorService) {
             expect(TaskDslValidatorService).toBeDefined();
         }));
 
-        it('validation of basic task', function(done) {
-            inject(function(TaskDslValidatorService) {
-                var validator = TaskDslValidatorService.createValidator('foo=bar');
-                // I fear there is too much horrible magic required to do this nicely *sigh*
-                // Without messing about in beforeEach I'm not sure you can make the test
-                // properly wait for the promise to resolve and the results to be checked
-
-                validator.validate().then(function (validationResults) {
-                    console.log('validationResults = ' + JSON.stringify(validationResults));
+        it('Basic valid of task definition', function(done) {
+            inject(function(TaskDslValidatorService, $rootScope) {
+                var validator = TaskDslValidatorService.createValidator('foo=timestamp');
+                validator.validate().then(function (results) {
+                    expect(results.errors.length).toEqual(0);
+                    expect(results.warnings.length).toEqual(0);
+                    expect(results.definitions.length).toEqual(1);
                     done();
+                }, function() {
+                    fail('Validation unexpectedly cancelled'); // jshint ignore:line
                 });
-            })
+
+                // Mocked promises require digest cycle kick off for `then` to be called
+                $rootScope.$apply();
+            });
+        });
+
+        it('Basic invalid task definition', function(done) {
+            inject(function(TaskDslValidatorService, $rootScope) {
+                var validator = TaskDslValidatorService.createValidator('foo=bar');
+                validator.validate().then(function(results) {
+                    expect(results.errors.length).toEqual(1);
+                    expect(results.warnings.length).toEqual(0);
+                    expect(results.definitions.length).toEqual(0);
+                    var error = results.errors[0];
+                    expect(error.message).toEqual('\'bar\' is not a known task application');
+                    expect(error.severity).toEqual('error');
+                    done();
+                }, function() {
+                    fail('Validation unexpectedly cancelled'); // jshint ignore:line
+                });
+
+                // Mocked promises require digest cycle kick off for `then` to be called
+                $rootScope.$apply();
+            });
         });
 
         // it('parser service', inject(function(ParserService) {

@@ -120,8 +120,14 @@ define(function() {
                     }
                     deferred.resolve(parsedInfo);
                 }, function (error) {
+                    messagesAccumulator.push({
+                        message: '\'' + appName + '\' is not a known task application',
+                        severity: 'error',
+                        from: parsedInfo.range.start,
+                        to: parsedInfo.range.end,
+                    });
                     utils.$log.error(error);
-                    deferred.reject();
+                    deferred.resolve(parsedInfo);
                 });
                 return deferred.promise;
             }
