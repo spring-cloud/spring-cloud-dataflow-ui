@@ -149,9 +149,9 @@ define(function (require) {
                     // Dialog closed in the case of success
                     $state.go('home.tasks.tabs.definitions');
                 }, function() {
-                    utils.growl.info('Failed to be created task(s) definition(s) are shown in the editor!');
                     // Show only failed defs DSL
                     if (failedDefs.length !== $scope.definitions.length) {
+                        utils.growl.info('Failed to be created task(s) definition(s) are shown in the editor!');
                         var text = '';
                         failedDefs.sort(function(d1, d2) {
                            return d1.line - d2.line;
