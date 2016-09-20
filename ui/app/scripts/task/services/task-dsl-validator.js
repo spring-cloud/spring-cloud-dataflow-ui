@@ -144,6 +144,11 @@ define(function() {
                 var definitions = [];
                 var knownTaskDefinitionNames = [];
                 var verificationPromiseChain = utils.$q.when(function() { console.log('a');});
+                var createVerifyAppInvoker = function (toValidate, messages, definitions) {
+                    return function() {
+                        return verifyApp(toValidate, messages, definitions);
+                    };
+                };
                 if (results.lines) {
                     for (var i = 0; i<results.lines.length; i++) {
                         if (cancelled) {
@@ -171,17 +176,18 @@ define(function() {
                                     knownTaskDefinitionNames.push(taskDefinitionName);
                                 }
                             }
-                            var lineToValidate = line.success[0];
-                            verificationPromiseChain = verificationPromiseChain.then(function() { // jshint ignore:line
-                                return verifyApp(lineToValidate, messages, definitions);
-                            });
+                            verificationPromiseChain = 
+                                verificationPromiseChain.then(
+                                    createVerifyAppInvoker(line.success[0],messages,definitions));
                         }
                     }
                 }
 
                 verificationPromiseChain.then(function () {
                     if (!cancelled) {
-                        console.log('messages = '+JSON.stringify(messages));
+                        messages.sort(function(a,b) {
+                            return a.from.line - b.from.line;
+                        });
                         deferred.resolve({
                             errors: messages,
                             warnings: [],
