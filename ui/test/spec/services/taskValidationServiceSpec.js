@@ -23,7 +23,7 @@ define(['angular', 'angularMocks', 'app'], function (angular) {
 
     // Output from: curl localhost:9393/apps/task/timestamp - then just removed the escaped quotes.
     var TASK_APPS = {
-        'test':'{"name":"test"}',
+        'test':'{"name":"test","options":[{"name":"testone"},{"name":"testtwo"}]}',
         'timestamp': '{"name":"timestamp","type":"task","uri":"maven://org.springframework.cloud.task.app:timestamp-task:1.0.0.BUILD-SNAPSHOT","shortDescription":null,"options":[{"id":"timestamp.format","name":"format","type":"java.lang.String","description":"The timestamp format, yyyy-MM-dd HH:mm:ss.SSS by default.","shortDescription":"The timestamp format, yyyy-MM-dd HH:mm:ss.SSS by default.","defaultValue":"yyyy-MM-dd HH:mm:ss.SSS","valueHints":[],"valueProviders":[],"deprecation":null,"sourceType":"org.springframework.cloud.task.app.timestamp.TimestampTaskProperties","sourceMethod":null,"deprecated":false}]}'
     };
 
@@ -125,8 +125,56 @@ define(['angular', 'angularMocks', 'app'], function (angular) {
                     expect(error.from.line).toEqual(0);
                     expect(error.to.ch).toEqual(29);
                     expect(error.to.line).toEqual(0);
-                    expect(error.message).toEqual('Application \'context\' does not support the option \'wibble\'');
+                    expect(error.message).toEqual('Application \'timestamp\' does not support the option \'wibble\'');
                     expect(error.severity).toEqual('error');
+                    done();
+                }, function() {
+                    fail('Validation unexpectedly cancelled'); // jshint ignore:line
+                });
+
+                // Mocked promises require digest cycle kick off for `then` to be called
+                $rootScope.$apply();
+            });
+        });
+
+        it('Multiple options - all valid', function(done) {
+            inject(function(TaskDslValidatorService, $rootScope) {
+                var validator = TaskDslValidatorService.createValidator('foo=test --testone=abc --testtwo=def');
+                validator.validate().then(function (results) {
+                    expect(results.errors.length).toEqual(0);
+                    expect(results.warnings.length).toEqual(0);
+                    expect(results.definitions.length).toEqual(1);
+
+                    var def = results.definitions[0];
+                    expect(def.name).toEqual('foo');
+                    expect(def.definition).toEqual('test --testone=abc --testtwo=def');
+                    expect(def.line).toEqual(0);
+                    done();
+                }, function() {
+                    fail('Validation unexpectedly cancelled'); // jshint ignore:line
+                });
+
+                // Mocked promises require digest cycle kick off for `then` to be called
+                $rootScope.$apply();
+            });
+        });
+
+        it('Multiple options - one invalid', function(done) {
+            inject(function(TaskDslValidatorService, $rootScope) {
+                var validator = TaskDslValidatorService.createValidator('foo=test --testone=abc --testtwo=def --phoney=baloney');
+                validator.validate().then(function (results) {
+                    expect(results.errors.length).toEqual(1);
+                    expect(results.warnings.length).toEqual(0);
+                    expect(results.definitions.length).toEqual(0);
+
+                    var error = results.errors[0];
+                    expect(error.from.ch).toEqual(37);
+                    expect(error.from.line).toEqual(0);
+                    expect(error.to.ch).toEqual(53);
+                    expect(error.to.line).toEqual(0);
+                    expect(error.message).toEqual('Application \'test\' does not support the option \'phoney\'');
+                    expect(error.severity).toEqual('error');
+
                     done();
                 }, function() {
                     fail('Validation unexpectedly cancelled'); // jshint ignore:line

@@ -25,7 +25,7 @@ define(function() {
 
     return ['DataflowUtils', 'ParserService', 'AppService', function (utils, parserService, appService) {
 
-        var DEBUG = true;
+        var DEBUG = false;
 
         function createValidator(dslText) {
             var cancelled = false;
@@ -96,7 +96,7 @@ define(function() {
                                 messagesAccumulator.push({
                                     from: parsedInfo.optionsranges[k].start,
                                     to: parsedInfo.optionsranges[k].end,
-                                    message: 'Application \'' + name + '\' does not support the option \'' + k + '\'',
+                                    message: 'Application \'' + appName + '\' does not support the option \'' + k + '\'',
                                     severity: 'error'
                                 });
                             }
@@ -196,22 +196,14 @@ define(function() {
                     } else {
                         deferred.reject();
                     }
-                    // TODO deferred is never resolved if cancelled? Shouldn't it be rejected
                 });
 
                 return deferred.promise;
             }
 
-            // TESTING-ONLY: pre-populdate appInfos to avoid needing to populate server task app list
-            function setAppInfos(testAppInfos) {
-                appInfos = testAppInfos;
-            }
-
             return {
                 cancel: cancel,
-                validate: validate,
-                // For testing
-                setAppInfos: setAppInfos
+                validate: validate
             };   
         }
 
