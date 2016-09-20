@@ -81,7 +81,7 @@ define(function (require) {
                     });
                     requests.push(request);
                 });
-                
+
                 // Pop up progress dialog
                 $modal.open({
                     animation: true,
@@ -148,7 +148,9 @@ define(function (require) {
                     // Show only failed defs DSL
                     if (failedDefs.length !== $scope.definitions.length) {
                         var text = '';
-                        failedDefs.forEach(function(def) {
+                        failedDefs.sort(function(d1, d2) {
+                           return d1.line - d2.line;
+                        }).forEach(function(def) {
                             text += editor.getLine(def.line) + '\n';
                         });
                         $scope.dsl = text;
