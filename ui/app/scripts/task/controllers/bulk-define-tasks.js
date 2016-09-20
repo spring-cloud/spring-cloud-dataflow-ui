@@ -81,6 +81,12 @@ define(function (require) {
                     });
                     requests.push(request);
                 });
+                
+                utils.$q.all(requests).then(function() {
+                    utils.growl.success('Task Definitions created successfully');
+                }, function() {
+                    utils.growl.error('Failed creating some Task Definitions');
+                });
 
                 // Pop up progress dialog
                 $modal.open({
@@ -141,10 +147,9 @@ define(function (require) {
                     }
                 }).result.then(function() {
                     // Dialog closed in the case of success
-                    utils.growl.success('Task Definitions created successfully');
                     $state.go('home.tasks.tabs.definitions');
                 }, function() {
-                    utils.growl.error('Failed to be created task(s) definition(s) are shown in the editor!');
+                    utils.growl.info('Failed to be created task(s) definition(s) are shown in the editor!');
                     // Show only failed defs DSL
                     if (failedDefs.length !== $scope.definitions.length) {
                         var text = '';
