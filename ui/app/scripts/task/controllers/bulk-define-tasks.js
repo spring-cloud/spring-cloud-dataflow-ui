@@ -81,22 +81,7 @@ define(function (require) {
                     });
                     requests.push(request);
                 });
-
-
-                utils.$q.all(requests).then(function() {
-                    utils.growl.success('Task Definitions created successfully');
-                }, function() {
-                    utils.growl.error('Failed to be created task(s) definition(s) are shown in the editor!');
-                    // Show only failed defs DSL
-                    if (failedDefs.length !== $scope.definitions.length) {
-                        var text = '';
-                        failedDefs.forEach(function(def) {
-                            text += editor.getLine(def.line) + '\n';
-                        });
-                        $scope.dsl = text;
-                    }
-                });
-
+                
                 // Pop up progress dialog
                 $modal.open({
                     animation: true,
@@ -106,6 +91,7 @@ define(function (require) {
 
                             var total = requests.length;
                             var completed = 0;
+                            var errors = 0;
 
                             $scope.close = function() {
                                 $modalInstance.close();
@@ -119,13 +105,29 @@ define(function (require) {
                                 return Math.round(100 * completed / total);
                             };
 
+                            var deferred = utils.$q.defer();
+
+                            function tryResolve() {
+                                if (completed + errors === requests.length) {
+                                    if (errors) {
+                                        deferred.reject();
+                                    } else {
+                                        deferred.resolve();
+                                    }
+                                }
+                            }
+
                             requests.forEach(function(promise) {
                                 promise.then(function() {
                                     completed++;
+                                    tryResolve();
+                                }, function() {
+                                    errors++;
+                                    tryResolve();
                                 });
                             });
 
-                            utils.$q.all(requests).then(function() {
+                            deferred.promise.then(function() {
                                 utils.$timeout($scope.close, PROGRESS_BAR_WAIT_TIME);
                             }, function() {
                                 utils.$timeout($scope.cancel, PROGRESS_BAR_WAIT_TIME);
@@ -139,7 +141,18 @@ define(function (require) {
                     }
                 }).result.then(function() {
                     // Dialog closed in the case of success
+                    utils.growl.success('Task Definitions created successfully');
                     $state.go('home.tasks.tabs.definitions');
+                }, function() {
+                    utils.growl.error('Failed to be created task(s) definition(s) are shown in the editor!');
+                    // Show only failed defs DSL
+                    if (failedDefs.length !== $scope.definitions.length) {
+                        var text = '';
+                        failedDefs.forEach(function(def) {
+                            text += editor.getLine(def.line) + '\n';
+                        });
+                        $scope.dsl = text;
+                    }
                 });
 
             };
