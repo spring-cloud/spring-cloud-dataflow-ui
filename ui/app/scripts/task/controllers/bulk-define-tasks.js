@@ -91,7 +91,7 @@ define(function (require) {
                     if (failedDefs.length !== $scope.definitions.length) {
                         var text = '';
                         failedDefs.forEach(function(def) {
-                            text += def.text + '\n';
+                            text += editor.getLine(def.line) + '\n';
                         });
                         $scope.dsl = text;
                     }
@@ -199,24 +199,19 @@ define(function (require) {
             $scope.lint = {
                 async: true,
                 getAnnotations: function (dslText, callback, options, doc) { // jshint ignore:line
-                    // TODO: perform linting, return results as shown below
                     // markers.push({from: range.start, to: range.end, message: 'Some error message!', severity: 'error'});
                     // callback(doc, markers);
 
                     if (!editor) {
                         editor = doc;
                         editor.on('change', function() {
-                            $scope.$apply(function() {
-                                $scope.definitions = undefined;
-                            });
+                            $scope.definitions = undefined;
                         });
                         updateRulerWarnings = editor.annotateScrollbar('CodeMirror-vertical-ruler-warning');
                         updateRulerErrors =  editor.annotateScrollbar('CodeMirror-vertical-ruler-error');
                     }
 
                     $scope.definitions = undefined;
-
-                    utils.$log.info('Task validation invoked');
 
                     if (activeValidator) {
                         activeValidator.cancel();
@@ -228,19 +223,16 @@ define(function (require) {
                         // Update overview ruler error/warning markers
                         updateRulerWarnings.update(validationResults.warnings);
                         updateRulerErrors.update(validationResults.errors);
-                        // Update scope vars via timeout thus it'd be in angular digest-apply cycle
-                        // Sometimes this staff within the cycle sometimes out, hence the timeout
-                        utils.$timeout(function () {
-                            validationResults.errors.sort(function (a, b) {
-                                return a.from.line - b.from.line;
-                            });
-                            validationResults.warnings.sort(function (a, b) {
-                                return a.from.line - b.from.line;
-                            });
-                            $scope.errors = validationResults.errors;
-                            $scope.warnings = validationResults.warnings;
-                            $scope.definitions = validationResults.definitions;
+
+                        validationResults.errors.sort(function (a, b) {
+                            return a.from.line - b.from.line;
                         });
+                        validationResults.warnings.sort(function (a, b) {
+                            return a.from.line - b.from.line;
+                        });
+                        $scope.errors = validationResults.errors;
+                        $scope.warnings = validationResults.warnings;
+                        $scope.definitions = validationResults.definitions;
                     });
                 }
             };

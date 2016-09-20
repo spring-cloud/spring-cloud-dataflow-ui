@@ -113,8 +113,7 @@ define(function() {
                             definitionsAccumulator.push({
                                 name: parsedInfo.group,
                                 definition: def,
-                                line: parsedInfo.range.start.line,
-                                text: ''
+                                line: parsedInfo.range.start.line
                             });
                         }
                     }
@@ -139,11 +138,10 @@ define(function() {
             function validate() {
                 var deferred = utils.$q.defer();
                 var results = parserService.parse(dslText,'task');
-                // console.log('validation: parser result = ' +JSON.stringify(results));
                 var messages = [];
                 var definitions = [];
                 var knownTaskDefinitionNames = [];
-                var verificationPromiseChain = utils.$q.when(function() { console.log('a');});
+                var verificationPromiseChain = utils.$q.when(function() { });
                 var createVerifyAppInvoker = function (toValidate, messages, definitions) {
                     return function() {
                         return verifyApp(toValidate, messages, definitions);
