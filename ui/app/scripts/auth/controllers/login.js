@@ -31,10 +31,9 @@ define([], function () {
             utils.addBusyPromise(authenticationPromise);
             authenticationPromise.then(
               function(response) {
-                $log.info(response.data);
-                $log.info($scope.loginForm);
                 $rootScope.user.username = $scope.loginForm.username;
                 $rootScope.user.isAuthenticated = true;
+                $rootScope.user.isFormLogin = true;
                 $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName] = response.data;
 
                 utils.growl.success('User ' + $scope.loginForm.username + ' logged in.');

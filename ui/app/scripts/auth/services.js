@@ -28,7 +28,8 @@ define(['angular'], function (angular) {
           var user = {
             authenticationEnabled: securityInfo.authenticationEnabled,
             isAuthenticated: securityInfo.authenticated,
-            username: securityInfo.username
+            username: securityInfo.username,
+            isFormLogin: false
           };
           return user;
         })

@@ -21,18 +21,32 @@
  */
 define([], function () {
   'use strict';
-  return ['$window', 'DataflowUtils', '$state', '$log', '$rootScope', '$http', function ($window, DataflowUtils, $state, $log, $rootScope, $http) {
+  return ['$window', 'DataflowUtils', '$state', '$log', '$rootScope', '$http', 'userService', function ($window, DataflowUtils, $state, $log, $rootScope, $http, user) {
     $log.info('Logging out...');
-    $http.get($rootScope.dataflowServerUrl + '/dashboard/logout');
 
-    $rootScope.user = {
-      authenticationEnabled: true,
-      isAuthenticated: false,
-      username: ''
-    };
+    if ($rootScope.user.isFormLogin) {
+      $http.get($rootScope.dataflowServerUrl + '/dashboard/logout').then(function() {
 
-    delete $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName];
-    DataflowUtils.growl.success('Logged out.');
-    $state.go('login');
+        $rootScope.user.username = '';
+        $rootScope.user.isAuthenticated = false;
+        $rootScope.user.isFormLogin = false;
+
+        user = {
+          authenticationEnabled: true,
+          isFormLogin: false,
+          isAuthenticated: false,
+          username: ''
+        };
+
+        delete $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName];
+        DataflowUtils.growl.success('Logged out.');
+        $state.go('login');
+      });
+    }
+    else{
+      var logoutUrl = '//' + $window.location.host + '/logout';
+      console.log('Redirecting to ' + logoutUrl);
+      $window.open(logoutUrl, '_self');
+    }
   }];
 });

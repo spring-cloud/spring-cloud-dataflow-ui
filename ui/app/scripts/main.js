@@ -147,8 +147,8 @@ define([
     promiseFeature.then(function(featuresResponse) {
       app.constant('featuresInfo', featuresResponse.data);
       startApp();
-    }, function() {
-      console.error('Cannot load enabled features info. Application cannot be loaded.');
+    }, function(errorResponse) {
+      console.error('Cannot load enabled features info. Application cannot be loaded.', errorResponse);
     });
   }, function(errorResponse) {
     var errorMessage = 'Error retrieving security info from ' + securityInfoUrl + ' (timeout: ' + timeout + 'ms)';
