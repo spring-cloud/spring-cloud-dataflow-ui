@@ -21,6 +21,10 @@
  */
 define(function () {
     'use strict';
+
+    var STREAM_APP_STARTERS_VERSION_SUFFIX = '1-0-2-GA-';
+    var TASK_APP_STARTERS_VERSION_SUFFIX = '1-0-1-GA-';
+
     return ['$scope', 'AppService', 'DataflowUtils', '$modal', '$state',
         function ($scope, appService, utils, $modal, $state) {
 
@@ -36,22 +40,22 @@ define(function () {
                 return [
                     {
                         name: 'Maven based Stream Applications with RabbitMQ Binder',
-                        uri:  'http://bit.ly/stream-applications-rabbit-maven',
+                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-rabbit-maven',
                         force: false
                     },
                     {
                         name: 'Maven based Stream Applications with Kafka Binder',
-                        uri:  'http://bit.ly/stream-applications-kafka-maven',
+                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-kafka-maven',
                         force: false
                     },
                     {
                         name: 'Docker based Stream Applications with RabbitMQ Binder',
-                        uri:  'http://bit.ly/stream-applications-rabbit-docker',
+                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-rabbit-docker',
                         force: false
                     },
                     {
                         name: 'Docker based Stream Applications with Kafka Binder',
-                        uri:  'http://bit.ly/stream-applications-kafka-docker',
+                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-kafka-docker',
                         force: false
                     }
                 ];
@@ -61,12 +65,12 @@ define(function () {
                 return [
                     {
                         name: 'Maven based Task Applications',
-                        uri:  'http://bit.ly/task-applications-maven',
+                        uri:  'http://bit.ly/' + TASK_APP_STARTERS_VERSION_SUFFIX + 'task-applications-maven',
                         force: false
                     },
                     {
                         name: 'Docker based Task Applications',
-                        uri:  'http://bit.ly/task-applications-docker',
+                        uri:  'http://bit.ly/' + TASK_APP_STARTERS_VERSION_SUFFIX + 'task-applications-docker',
                         force: false
                     }
                 ];
