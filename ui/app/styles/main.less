@@ -387,6 +387,19 @@ hr {
   border-top-width: 0px;
 }
 
+.icon-rotate-animation {
+  animation-name: rotateIcon;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes rotateIcon {
+  from { transform: scale( 1 ) rotate( 0deg );   }
+  to   { transform: scale( 1 ) rotate( 360deg ); }
+}
+
+
 @import (less) "../lib/spring-flo/spring-flo.css";
 
 @import "analytics.less";

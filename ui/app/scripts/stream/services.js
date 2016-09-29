@@ -100,7 +100,6 @@ define(function(require) {
         };
       }).
       factory('StreamMetamodelService',require('stream/services/metamodel')).
-      factory('StreamParserService',require('stream/services/parser')).
       factory('StreamEditorService', require('stream/services/editor-service')).
       factory('StreamRenderService', require('stream/services/render-service')).
       factory('StreamContentAssistService', require('stream/services/content-assist-service'));
