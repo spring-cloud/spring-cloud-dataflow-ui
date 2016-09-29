@@ -34,11 +34,13 @@ define([
   '../directives',
   '../filters',
   '../shared/services',
+  '../app/services',
   'model/pageable',
   '../shared/interceptors'
 ], function (angular) {
   'use strict';
   return angular.module('dataflowTasks', [
+    'dataflowApps.services',
     'dataflowTasks.services',
     'dataflowTasks.controllers',
     'dataflowShared.services',

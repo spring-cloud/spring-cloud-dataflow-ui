@@ -78,6 +78,9 @@ define(['model/pageable'], function (Pageable) {
         utils.$log.info('Launching Task: ' + item.name);
         $state.go('home.tasks.deploymentsLaunch', {taskName: item.name});
       };
+      $scope.bulkDefineTasks = function() {
+        $state.go('home.tasks.bulkDefineTasks');
+      };
 
       loadTaskDefinitions($scope.pageable);
     }];
