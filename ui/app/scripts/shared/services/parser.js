@@ -669,22 +669,6 @@ define(function() {
         		return appNodes;
         	}
 
-
-        	// (name =)
-        	function maybeEatStreamName() {
-        		var streamName = null;
-        		if (lookAhead(1, tokenKinds.EQUALS)) {
-        			if (peekToken(tokenKinds.IDENTIFIER)) {
-        				streamName = eatToken(tokenKinds.IDENTIFIER);
-        				nextToken(); // skip '='
-        			}
-        			else {
-        				throw {'msg':'Illegal Stream Name '+peekAtToken(),'start':peekAtToken().start};
-        			}
-        		}
-        		return streamName;
-        	}
-
         	function toString(token) {
         		if (token.data) {
         			return token.data;
@@ -693,6 +677,21 @@ define(function() {
         			return token.kind.value;
         		}
     			return JSON.stringify(token);
+        	}
+
+        	// (name =)
+        	function maybeEatName() {
+        		var name = null;
+        		if (lookAhead(1, tokenKinds.EQUALS)) {
+        			if (peekToken(tokenKinds.IDENTIFIER)) {
+        				name = eatToken(tokenKinds.IDENTIFIER);
+        				nextToken(); // skip '='
+        			}
+        			else {
+        				throw {'msg':'Illegal Name \''+toString(peekAtToken())+'\'','start':peekAtToken().start};
+        			}
+        		}
+        		return name;
         	}
 
         	function outOfData() {
@@ -708,7 +707,7 @@ define(function() {
 			
 			function eatTaskDefinition(lineNum) {
 				var taskNode = {};
-				var taskName = maybeEatStreamName();
+				var taskName = maybeEatName();
 				if (!taskName) {
 					recordError(taskNode, {
 						'msg': 'Expected format: name = taskapplication [options]',
@@ -740,7 +739,7 @@ define(function() {
         	function eatStream() {
         		var streamNode = {};
 
-        		var streamName = maybeEatStreamName();
+        		var streamName = maybeEatName();
         		if (streamName) {
         			streamNode.name = streamName.data;
         		}
@@ -943,7 +942,7 @@ define(function() {
 		        	}        	
 		        	$log.info('JSParse: translated to '+JSON.stringify(line));
 		        	lines.push(line);
-		    	} catch (err) { 
+		    	} catch (err) {
 	        		if (typeof err === 'object' && err.msg) {
 	        			if (!line.errors) {
 	        				line.errors = [];
@@ -973,7 +972,6 @@ define(function() {
 	        		}
 	        	}
         	}
-        	// $log.info('JSParse: final lines: '+JSON.stringify(lines));
         	return {'lines':lines};
         }
 
