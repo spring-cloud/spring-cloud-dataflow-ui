@@ -285,6 +285,15 @@ define(['./app'], function (dashboard) {
         feature: 'tasksEnabled'
       }
     })
+    .state('home.tasks.bulkDefineTasks', {
+      url : 'tasks/bulk-define-tasks',
+      templateUrl : taskTemplatesPath + '/bulk-define-tasks.html',
+      controller: 'BulkDefineTasksController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
+    })
         .state('home.tasks.deploymentsLaunch', {
           url: 'tasks/definitions/launch/{taskName}',
           templateUrl: taskTemplatesPath + '/launch.html',

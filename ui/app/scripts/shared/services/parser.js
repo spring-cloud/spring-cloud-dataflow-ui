@@ -117,7 +117,7 @@ define(function() {
         				}
         			}
         			if (pos >= max) {
-        				throw {'msg':'StreamDefinitionException: non terminating quoted string','start':start,'end':pos};
+        				throw {'msg':'DefinitionException: non terminating quoted string','start':start,'end':pos};
         			}
         		}
         		pos++;
@@ -201,7 +201,7 @@ define(function() {
         				}
         			}
         			if (pos >= max) {
-        				throw {'msg':'StreamDefinitionException: non terminating double quoted string','start':start,'end':pos};
+        				throw {'msg':'DefinitionException: non terminating double quoted string','start':start,'end':pos};
         			}
         		}
         		pos++;
@@ -300,9 +300,9 @@ define(function() {
 						pos++; // will take us to the end
 						break;
 					case '\\':
-						throw {'msg':'StreamDefinitionException: Unexpected escape char','start':pos};
+						throw {'msg':'DefinitionException: Unexpected escape char','start':pos};
 					default:
-						throw {'msg':'StreamDefinitionException: Unexpected character','start':pos};
+						throw {'msg':'DefinitionException: Unexpected character','start':pos};
         			}
         		}
         	}
@@ -310,7 +310,11 @@ define(function() {
         }
 
         // TODO switch to the var x= (function() {... return yyy; })(); model
-        function parse(definitionsText) {
+		// mode may be 'task' or 'stream' - will default to 'stream'
+        function parse(definitionsText, mode) {
+			if (!mode) { 
+				mode = 'stream';
+			}
 			var lines = [];
 			var line;
 			var text;
@@ -665,21 +669,6 @@ define(function() {
         		return appNodes;
         	}
 
-        	// (name =)
-        	function maybeEatStreamName() {
-        		var streamName = null;
-        		if (lookAhead(1, tokenKinds.EQUALS)) {
-        			if (peekToken(tokenKinds.IDENTIFIER)) {
-        				streamName = eatToken(tokenKinds.IDENTIFIER).data;
-        				nextToken(); // skip '='
-        			}
-        			else {
-        				throw {'msg':'Illegal Stream Name '+peekAtToken(),'start':peekAtToken().start};
-        			}
-        		}
-        		return streamName;
-        	}
-
         	function toString(token) {
         		if (token.data) {
         			return token.data;
@@ -688,6 +677,21 @@ define(function() {
         			return token.kind.value;
         		}
     			return JSON.stringify(token);
+        	}
+
+        	// (name =)
+        	function maybeEatName() {
+        		var name = null;
+        		if (lookAhead(1, tokenKinds.EQUALS)) {
+        			if (peekToken(tokenKinds.IDENTIFIER)) {
+        				name = eatToken(tokenKinds.IDENTIFIER);
+        				nextToken(); // skip '='
+        			}
+        			else {
+        				throw {'msg':'Illegal Name \''+toString(peekAtToken())+'\'','start':peekAtToken().start};
+        			}
+        		}
+        		return name;
         	}
 
         	function outOfData() {
@@ -700,13 +704,44 @@ define(function() {
 	        	}
         		node.errors.push(error);
         	}
+			
+			function eatTaskDefinition(lineNum) {
+				var taskNode = {};
+				var taskName = maybeEatName();
+				if (!taskName) {
+					recordError(taskNode, {
+						'msg': 'Expected format: name = taskapplication [options]',
+						'range':{'start':{'ch':0,'line':lineNum},
+									'end':{'ch':0,'line':lineNum}}
+					});
+				} else {
+					taskNode.name = taskName.data;
+					taskNode.namerange = 
+						{'start':{'ch':taskName.start,'line':lineNum},
+						   'end':{'ch':taskName.end,'line':lineNum}};
+					if (outOfData()) {
+						recordError(taskNode,{
+							'msg':'Expected format: name = taskapplication [options]',
+							'range':{'start':{'ch':0,'line':lineNum},
+									'end':{'ch':0,'line':lineNum}
+						}});
+						return taskNode;
+					}
+				}
+				taskNode.app = eatApp();
+				if (moreTokens()) {
+        			var t = peekAtToken();
+        			throw {'msg':'Unexpected data after task definition: '+toString(t),'start':t.start};
+        		}
+				return taskNode;
+			}
 
         	function eatStream() {
         		var streamNode = {};
 
-        		var streamName = maybeEatStreamName();
+        		var streamName = maybeEatName();
         		if (streamName) {
-        			streamNode.name = streamName;
+        			streamNode.name = streamName.data;
         		}
 
         		var sourceChannelNode = maybeEatSourceChannel();
@@ -752,6 +787,7 @@ define(function() {
         	}
 
 			var start, end, errorToRecord;
+
         	for (var lineNumber=0;lineNumber<textlines.length;lineNumber++) {
 	        	try {
 		        	line = {};
@@ -764,7 +800,7 @@ define(function() {
 		        	}
 	        		$log.info('JSParse: processing '+text);
 		        	tokenStream = tokenize(text);
-		        	$log.info('JSParse: tokenized to '+JSON.stringify(tokenStream));
+		        	// $log.info('JSParse: tokenized to '+JSON.stringify(tokenStream));
 		        	tokenStreamPointer = 0;
 		        	tokenStreamLength = tokenStream.length;
 		        	// time | log
@@ -772,90 +808,125 @@ define(function() {
                     //  {"token":4,"start":5,"end":6},
                     //  {"token":0,"data":"log","start":7,"end":10}]
 	
-		        	var streamdef = eatStream();
-		        	$log.info('JSParse: parsed to '+JSON.stringify(streamdef));
-		        	// streamDef = {"apps":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
-		        	
-		        	// {"lines":[{"errors":null,"success":
-		        	// [{"group":"UNKNOWN_1","label":"time","type":"source","name":"time","options":{},"sourceChannelName":null,"sinkChannelName":null},{"group":"UNKNOWN_1","label":"log","type":"sink","name":"log","options":{},"sourceChannelName":null,"sinkChannelName":null}]
-		        	// }],"links":[]}
-		        	
-		        	var streamName = streamdef.name?streamdef.name:'UNKNOWN_'+lineNumber;
-		        	var success = [];
-		        	if (streamdef.apps) {
-						var alreadySeen = {};
-		        		for (var m=0;m<streamdef.apps.length;m++) {
-		        			var expectedType = 'processor';
-		        			if (m === 0 && !streamdef.sourceChannel) {
-		        				expectedType = 'source';
-		        			}
-		        			if (m === (streamdef.apps.length-1) && !streamdef.sourceChannel) {
-		        				expectedType = 'sink';
-		        			}
-				        	var sourceChannelName = null;
-				        	if (m === 0 && streamdef.sourceChannel) {
-				        		sourceChannelName = streamdef.sourceChannel.channel.name;
-				        	}
-				        	var sinkChannelName = null;
-				        	if (m===streamdef.apps.length-1 && streamdef.sinkChannel) {
-				        		sinkChannelName = streamdef.sinkChannel.channel.name;
-				        	}
-		        			var app = streamdef.apps[m];
-		        			var uglyObject = {};
-		        			uglyObject.group=streamName;
-		        			if (app.label) {
-		        				uglyObject.label = app.label;
-		        			}
-		        			uglyObject.type = expectedType;
-	        				uglyObject.name = app.name;
-	        				uglyObject.range = {'start':{'ch':app.start,'line':lineNumber},'end':{'ch':app.end,'line':lineNumber}};
-	        				var options = {};
-	        				var optionsranges = {};
-	        				if (app.options) {
-	        					options = {};
-	        					optionsranges = {};
-	        					for (var o=0;o<app.options.length;o++) {
-	        						var option = app.options[o];
-	        						options[option.name]=option.value;
-	        						optionsranges[option.name]={'start':{'ch':option.start,'line':lineNumber},'end':{'ch':option.end,'line':lineNumber}};
-	        					}
-	        				}
-	    					uglyObject.options=options;
-	    					uglyObject.optionsranges = optionsranges;
-							uglyObject.sourceChannelName = sourceChannelName;
-							uglyObject.sinkChannelName = sinkChannelName;
-				        	success.push(uglyObject);
-
-				        	var nameToCheck = uglyObject.label?uglyObject.label:uglyObject.name;
-							// Check that each app has a unique label (either explicit or implicit)
-							var previous = alreadySeen[nameToCheck];
-							if (typeof previous === 'number') {
-								recordError(streamdef, {
-									'msg': app.label ?
-										'Label \'' + app.label + '\' should be unique but app \'' + app.name + '\' (at position ' + m + ') and app \'' + streamdef.apps[previous].name + '\' (at position ' + previous + ') both use it'
-										: 'App \'' + app.name + '\' should be unique within the stream, use a label to differentiate multiple occurrences',
-									'range': uglyObject.range
-								});
-							} else {
-								alreadySeen[nameToCheck] = m;
+					var errorsToProcess = [];
+					var success = [];
+					var app;
+					var option;
+					var options;
+					var optionsranges;
+					if (mode === 'task') {
+						var taskdef = eatTaskDefinition(lineNumber);
+						$log.info('JSParse: parsed to task definition: '+JSON.stringify(taskdef));
+						app = taskdef.app;
+						if (app) {
+							var taskObject = {};
+							taskObject.group = taskdef.name;
+							taskObject.grouprange = taskdef.namerange;
+							taskObject.type = 'task';
+							taskObject.name = app.name;
+							taskObject.range = {'start':{'ch':app.start,'line':lineNumber},'end':{'ch':app.end,'line':lineNumber}};
+							options = {};
+							optionsranges = {};
+							if (app.options) {
+								for (var o1=0;o1<app.options.length;o1++) {
+									option = app.options[o1];
+									options[option.name]=option.value;
+									optionsranges[option.name]={'start':{'ch':option.start,'line':lineNumber},'end':{'ch':option.end,'line':lineNumber}};
+								}
 							}
-		        		}
-		        	} else {
-		        		// error case: ':stream:foo >'
-		        		// there is no target for the tap yet
-		        		if (streamdef.sourceChannel) {
-		        			// need to build a dummy app to hang the sourcechannel off
-		        			var obj = {};
-		        			obj.sourceChannelName = streamdef.sourceChannel.channel.name;
-		        			success.push(obj);
-		        		}
-		        	}
+							taskObject.options=options;
+							taskObject.optionsranges = optionsranges;
+							success.push(taskObject);
+						}
+						if (taskdef.errors) {
+							errorsToProcess = taskdef.errors;
+						}
+					} else {
+						var streamdef = eatStream();
+						$log.info('JSParse: parsed to stream definition: '+JSON.stringify(streamdef));
+						// streamDef = {"apps":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
+						
+						// {"lines":[{"errors":null,"success":
+						// [{"group":"UNKNOWN_1","label":"time","type":"source","name":"time","options":{},"sourceChannelName":null,"sinkChannelName":null},{"group":"UNKNOWN_1","label":"log","type":"sink","name":"log","options":{},"sourceChannelName":null,"sinkChannelName":null}]
+						// }],"links":[]}
+						
+						var streamName = streamdef.name?streamdef.name:'UNKNOWN_'+lineNumber;
+						if (streamdef.apps) {
+							var alreadySeen = {};
+							for (var m=0;m<streamdef.apps.length;m++) {
+								var expectedType = 'processor';
+								if (m === 0 && !streamdef.sourceChannel) {
+									expectedType = 'source';
+								}
+								if (m === (streamdef.apps.length-1) && !streamdef.sourceChannel) {
+									expectedType = 'sink';
+								}
+								var sourceChannelName = null;
+								if (m === 0 && streamdef.sourceChannel) {
+									sourceChannelName = streamdef.sourceChannel.channel.name;
+								}
+								var sinkChannelName = null;
+								if (m===streamdef.apps.length-1 && streamdef.sinkChannel) {
+									sinkChannelName = streamdef.sinkChannel.channel.name;
+								}
+								app = streamdef.apps[m];
+								var uglyObject = {};
+								uglyObject.group=streamName;
+								if (app.label) {
+									uglyObject.label = app.label;
+								}
+								uglyObject.type = expectedType;
+								uglyObject.name = app.name;
+								uglyObject.range = {'start':{'ch':app.start,'line':lineNumber},'end':{'ch':app.end,'line':lineNumber}};
+								options = {};
+								optionsranges = {};
+								if (app.options) {
+									for (var o2=0;o2<app.options.length;o2++) {
+										option = app.options[o2];
+										options[option.name]=option.value;
+										optionsranges[option.name]={'start':{'ch':option.start,'line':lineNumber},'end':{'ch':option.end,'line':lineNumber}};
+									}
+								}
+								uglyObject.options=options;
+								uglyObject.optionsranges = optionsranges;
+								uglyObject.sourceChannelName = sourceChannelName;
+								uglyObject.sinkChannelName = sinkChannelName;
+								success.push(uglyObject);
+
+								var nameToCheck = uglyObject.label?uglyObject.label:uglyObject.name;
+								// Check that each app has a unique label (either explicit or implicit)
+								var previous = alreadySeen[nameToCheck];
+								if (typeof previous === 'number') {
+									recordError(streamdef, {
+										'msg': app.label ?
+											'Label \'' + app.label + '\' should be unique but app \'' + app.name + '\' (at position ' + m + ') and app \'' + streamdef.apps[previous].name + '\' (at position ' + previous + ') both use it'
+											: 'App \'' + app.name + '\' should be unique within the stream, use a label to differentiate multiple occurrences',
+										'range': uglyObject.range
+									});
+								} else {
+									alreadySeen[nameToCheck] = m;
+								}
+							}
+						} else {
+							// error case: ':stream:foo >'
+							// there is no target for the tap yet
+							if (streamdef.sourceChannel) {
+								// need to build a dummy app to hang the sourcechannel off
+								var obj = {};
+								obj.sourceChannelName = streamdef.sourceChannel.channel.name;
+								success.push(obj);
+							}
+						}
+						if (streamdef.errors) {
+							errorsToProcess = streamdef.errors;
+						}
+					}
  		        	line.success = success;	  
 		        	
-		        	if (streamdef.errors) {
+		        	if (errorsToProcess && errorsToProcess.length !== 0) {
 		        		line.errors = [];
-		        		for (var e=0;e<streamdef.errors.length;e++) {
-		        			var error = streamdef.errors[e];
+		        		for (var e=0;e<errorsToProcess.length;e++) {
+		        			var error = errorsToProcess[e];
 		        			errorToRecord = {};
 		        			errorToRecord.accurate = true;
 		        			errorToRecord.message = error.msg;
@@ -871,7 +942,7 @@ define(function() {
 		        	}        	
 		        	$log.info('JSParse: translated to '+JSON.stringify(line));
 		        	lines.push(line);
-		    	} catch (err) { 
+		    	} catch (err) {
 	        		if (typeof err === 'object' && err.msg) {
 	        			if (!line.errors) {
 	        				line.errors = [];
@@ -901,7 +972,6 @@ define(function() {
 	        		}
 	        	}
         	}
-        	$log.info('JSParse: final lines: '+JSON.stringify(lines));
         	return {'lines':lines};
         }
 

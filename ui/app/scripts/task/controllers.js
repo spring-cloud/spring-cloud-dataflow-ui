@@ -19,6 +19,7 @@
  *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
 define(['angular'], function (angular) {
   'use strict';
@@ -29,6 +30,12 @@ define(['angular'], function (angular) {
             require(['task/controllers/definitions'], function (taskDefinitionsController) {
               $injector.invoke(taskDefinitionsController, this, {'$scope': $scope});
             });
+          }])
+      .controller('BulkDefineTasksController',
+          ['$scope', '$injector', function ($scope, $injector) {
+              require(['task/controllers/bulk-define-tasks'], function (bulkDefineTasksController) {
+                  $injector.invoke(bulkDefineTasksController, this, {'$scope': $scope});
+              });
           }])
       .controller('TaskExecutionsController',
           ['$scope', '$injector', function ($scope, $injector) {
