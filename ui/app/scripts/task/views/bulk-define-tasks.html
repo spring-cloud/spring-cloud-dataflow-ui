@@ -39,6 +39,11 @@
             <input type="file" on-read-file="displayFileContents(contents)" style="display:none;"/>
             Import File
         </label>
+		<label class="btn btn-default" tooltip-placement="top"
+               tooltip="Switch On/Off DSL editor live verification of app names and options">
+            <input type="checkbox" ng-model="verifyApps"/>
+            Verify Apps
+    	</label>
     </div>
     <div class="col-md-12 text-center" style="padding: 9px 12px;">
         <span style="padding-right: 15px;">

@@ -27,7 +27,7 @@ define(function() {
 
         var DEBUG = false;
 
-        function createValidator(dslText) {
+        function createValidator(dslText, options) {
             var cancelled = false;
             var appInfos = {}; // Cached results for one run of the validator
 
@@ -60,6 +60,25 @@ define(function() {
                     });
                 }
                 return deferred.promise;
+            }
+
+            // Build a nicely structured command definition
+            function constructDefinitionText(parsedInfo) {
+                var def = parsedInfo.name;
+                if (parsedInfo.options) {
+                    Object.keys(parsedInfo.options).forEach(function (name) {
+                        def += ' --' + name + '=' + parsedInfo.options[name];
+                    });
+                }
+                return def;
+            }
+
+            function constructDefinitionObject(parsedInfo) {
+                return {
+                    name: parsedInfo.group,
+                    definition: constructDefinitionText(parsedInfo),
+                    line: parsedInfo.range.start.line
+                };
             }
 
             /**
@@ -103,18 +122,7 @@ define(function() {
                         });
                         // TODO create errors for options you *must* specify but haven't
                         if (!hasErrors && parsedInfo.group) {
-                            // Build a nicely structured command definition
-                            var def = appName;
-                            if (parsedInfo.options) {
-                                Object.keys(parsedInfo.options).forEach(function (name) {
-                                    def += ' --' + name + '=' + parsedInfo.options[name];
-                                });
-                            }
-                            definitionsAccumulator.push({
-                                name: parsedInfo.group,
-                                definition: def,
-                                line: parsedInfo.range.start.line
-                            });
+                            definitionsAccumulator.push(constructDefinitionObject(parsedInfo));
                         }
                     }
                     deferred.resolve(parsedInfo);
@@ -174,9 +182,14 @@ define(function() {
                                     knownTaskDefinitionNames.push(taskDefinitionName);
                                 }
                             }
-                            verificationPromiseChain =
-                                verificationPromiseChain.then(
-                                    createVerifyAppInvoker(line.success[0],messages,definitions));
+                            var parsedInfo = line.success[0];
+                            if (options.semantics) {
+                                verificationPromiseChain =
+                                    verificationPromiseChain.then(
+                                        createVerifyAppInvoker(parsedInfo, messages, definitions));
+                            } else if (parsedInfo.group) {
+                                definitions.push(constructDefinitionObject(parsedInfo));
+                            }
                         }
                     }
                 }
@@ -202,7 +215,7 @@ define(function() {
             return {
                 cancel: cancel,
                 validate: validate
-            };
+            };   
         }
 
         return {
