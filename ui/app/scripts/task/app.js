@@ -29,6 +29,7 @@ define([
   'ngAnimate',
   'pagination',
   'angularHighlightjs',
+  'ngCookies',
   './controllers',
   './services',
   '../directives',
@@ -53,6 +54,7 @@ define([
     'angularUtils.directives.dirPagination',
     'cgBusy',
     'hljs',
-    'angular-growl'
+    'angular-growl',
+    'ngCookies'
   ]);
 });

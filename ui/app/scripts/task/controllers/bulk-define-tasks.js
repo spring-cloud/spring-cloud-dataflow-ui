@@ -25,10 +25,12 @@ define(function (require) {
 
     var PROGRESS_BAR_WAIT_TIME = 500;
 
+    var VERIFY_APPS_OFF_COOKIE_KEY = 'taskDefs.bulkDefine.verifyAppsOff';
+
     var angular = require('angular');
 
-    return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService', 'TaskDslValidatorService',
-        function ($scope, utils, $modal, $state, taskAppService, validatorService) {
+    return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService', 'TaskDslValidatorService', '$cookieStore',
+        function ($scope, utils, $modal, $state, taskAppService, validatorService, $cookieStore) {
 
             var editor;
 
@@ -61,6 +63,49 @@ define(function (require) {
                 }
             }
 
+            function createLinterOption() {
+                return {
+                    async: true,
+                    getAnnotations: function (dslText, callback, options, doc) { // jshint ignore:line
+                        // markers.push({from: range.start, to: range.end, message: 'Some error message!', severity: 'error'});
+                        // callback(doc, markers);
+
+                        // Init editor
+                        if (!editor) {
+                            editor = doc;
+                            editor.on('change', function() {
+                                $scope.definitions = undefined;
+                                $scope.bulkDefineTasksForm.$setValidity('notEmpty', dslText && dslText.length);
+                            });
+                            updateRulerWarnings = editor.annotateScrollbar('CodeMirror-vertical-ruler-warning');
+                            updateRulerErrors =  editor.annotateScrollbar('CodeMirror-vertical-ruler-error');
+                        }
+
+                        // Switch validator
+                        if (activeValidator) {
+                            activeValidator.cancel();
+                        }
+                        activeValidator = validatorService.createValidator(dslText, {semantics: $scope.verifyApps});
+
+                        // Perform validation
+                        activeValidator.validate().then(function (validationResults) {
+                            // Update CodeMirror gutter error/warning markers
+                            callback(doc, validationResults.errors.concat(validationResults.warnings));
+
+                            validationResults.errors.sort(function (a, b) {
+                                return a.from.line - b.from.line;
+                            });
+                            validationResults.warnings.sort(function (a, b) {
+                                return a.from.line - b.from.line;
+                            });
+                            $scope.errors = validationResults.errors;
+                            $scope.warnings = validationResults.warnings;
+                            $scope.definitions = validationResults.definitions;
+                        });
+                    }
+                };
+            }
+
             /**
              * Bulk Define Tasks.
              */
@@ -81,7 +126,7 @@ define(function (require) {
                     });
                     requests.push(request);
                 });
-
+                
                 utils.$q.all(requests).then(function() {
                     utils.growl.success('Task Definitions created successfully');
                 }, function() {
@@ -152,13 +197,11 @@ define(function (require) {
                     utils.growl.info('Failed to be created task(s) definition(s) are shown in the editor!');
                     // Show only failed defs DSL
                     if (failedDefs.length !== $scope.definitions.length) {
-                        var text = '';
-                        failedDefs.sort(function(d1, d2) {
+                        $scope.dsl = failedDefs.sort(function(d1, d2) {
                            return d1.line - d2.line;
-                        }).forEach(function(def) {
-                            text += editor.getLine(def.line) + '\n';
-                        });
-                        $scope.dsl = text;
+                        }).map(function(def) {
+                            return editor.getLine(def.line);
+                        }).join('\n');
                     }
                 });
 
@@ -216,47 +259,6 @@ define(function (require) {
                 }
             };
 
-            $scope.lint = {
-                async: true,
-                getAnnotations: function (dslText, callback, options, doc) { // jshint ignore:line
-                    // markers.push({from: range.start, to: range.end, message: 'Some error message!', severity: 'error'});
-                    // callback(doc, markers);
-
-                    if (!editor) {
-                        editor = doc;
-                        editor.on('change', function() {
-                            $scope.definitions = undefined;
-                        });
-                        updateRulerWarnings = editor.annotateScrollbar('CodeMirror-vertical-ruler-warning');
-                        updateRulerErrors =  editor.annotateScrollbar('CodeMirror-vertical-ruler-error');
-                    }
-
-                    $scope.definitions = undefined;
-
-                    if (activeValidator) {
-                        activeValidator.cancel();
-                    }
-                    activeValidator = validatorService.createValidator(dslText);
-                    activeValidator.validate().then(function(validationResults) {
-                        // Update CodeMirror gutter error/warning markers
-                        callback(doc, validationResults.errors.concat(validationResults.warnings));
-                        // Update overview ruler error/warning markers
-                        updateRulerWarnings.update(validationResults.warnings);
-                        updateRulerErrors.update(validationResults.errors);
-
-                        validationResults.errors.sort(function (a, b) {
-                            return a.from.line - b.from.line;
-                        });
-                        validationResults.warnings.sort(function (a, b) {
-                            return a.from.line - b.from.line;
-                        });
-                        $scope.errors = validationResults.errors;
-                        $scope.warnings = validationResults.warnings;
-                        $scope.definitions = validationResults.definitions;
-                    });
-                }
-            };
-
             $scope.nextError = function() {
                 navigateToNextMarker(editor, $scope.errors);
             };
@@ -265,8 +267,28 @@ define(function (require) {
                 navigateToNextMarker(editor, $scope.warnings);
             };
 
+            $scope.getValidationStatus = function() {
+                var validStr = $scope.verifyApps ?  'valid' : 'syntactically correct';
+                if ($scope.definitions && $scope.definitions.length) {
+                    return $scope.definitions.length + ' ' + validStr + ' task definition' + ($scope.definitions.length > 1 ? 's' : '') + ' detected';
+                } else {
+                    return 'No ' + validStr + ' task definitions detected';
+                }
+            };
+
             $scope.$watch('errors', function(errors) {
+                if (updateRulerErrors) {
+                    // Update overview ruler error/warning markers
+                    updateRulerErrors.update(errors);
+                }
                 $scope.bulkDefineTasksForm.$setValidity('validDsl', !errors || errors.length === 0);
+            });
+
+            $scope.$watch('warnings', function(warnings) {
+                if (updateRulerWarnings) {
+                    // Update overview ruler error/warning markers
+                    updateRulerWarnings.update(warnings);
+                }
             });
 
             $scope.$watch('definitions', function(definitions) {
@@ -274,6 +296,29 @@ define(function (require) {
                 $scope.bulkDefineTasksForm.$setValidity('processedDsl', angular.isArray(definitions));
             });
 
+            $scope.$watch('verifyApps', function() {
+                if (activeValidator) {
+                    activeValidator.cancel();
+                }
+                $scope.numberOfTasks = 0;
+                $scope.errors = [];
+                $scope.warnings = [];
+                $scope.definitions = undefined;
+                $scope.lint = createLinterOption();
+            });
+
+            $scope.$on('$destroy', function() {
+                if (activeValidator) {
+                    activeValidator.cancel();
+                }
+                if ($scope.verifyApps) {
+                    $cookieStore.remove(VERIFY_APPS_OFF_COOKIE_KEY);
+                } else {
+                    $cookieStore.put(VERIFY_APPS_OFF_COOKIE_KEY, true);
+                }
+            });
+
+            $scope.verifyApps = !$cookieStore.get(VERIFY_APPS_OFF_COOKIE_KEY);
             $scope.numberOfTasks = 0;
             $scope.errors = [];
             $scope.warnings = [];
