@@ -382,5 +382,16 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
           });
         }
       };
+    })
+    .directive('clearSelectedFile', function () {
+      return {
+        restrict: 'A',
+        scope: false,
+        link: function(scope, element) {
+          element.bind('change', function() {
+            element.val(null);
+          });
+        }
+      };
     });
 });
