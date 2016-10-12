@@ -7,7 +7,7 @@
 <form class="form-horizontal col-md-12" style="padding: 0px;" name="bulkDefineTasksForm" role="form" ng-submit="bulkDefineTasks()" novalidate>
     <div class="row help-block">
         <div class="text-left pull-left">
-            <span ng-hide="bulkDefineTasksForm.$error.processedDsl">{{definitions.length === 0 ? 'No valid task definitions detected' : definitions.length + ' valid task definition'+(definitions.length>1?'s':'')+' detected'}}</span>
+            <span ng-hide="bulkDefineTasksForm.$error.processedDsl">{{getValidationStatus()}}</span>
             <span ng-show="bulkDefineTasksForm.$error.processedDsl">
                 <span class="glyphicon glyphicon-refresh icon-rotate-animation"></span>
                 <i>Validating task definitions</i>

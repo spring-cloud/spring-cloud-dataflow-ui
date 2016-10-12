@@ -267,6 +267,15 @@ define(function (require) {
                 navigateToNextMarker(editor, $scope.warnings);
             };
 
+            $scope.getValidationStatus = function() {
+                var validStr = $scope.verifyApps ?  'valid' : 'syntactically correct';
+                if ($scope.definitions && $scope.definitions.length) {
+                    return $scope.definitions.length + ' ' + validStr + ' task definition' + ($scope.definitions.length > 1 ? 's' : '') + ' detected';
+                } else {
+                    return 'No ' + validStr + ' task definitions detected';
+                }
+            };
+
             $scope.$watch('errors', function(errors) {
                 if (updateRulerErrors) {
                     // Update overview ruler error/warning markers
@@ -291,6 +300,10 @@ define(function (require) {
                 if (activeValidator) {
                     activeValidator.cancel();
                 }
+                $scope.numberOfTasks = 0;
+                $scope.errors = [];
+                $scope.warnings = [];
+                $scope.definitions = undefined;
                 $scope.lint = createLinterOption();
             });
 
