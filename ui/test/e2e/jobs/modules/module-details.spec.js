@@ -22,10 +22,10 @@
 describe('Tests for the Module Details Page', function() {
 
   beforeEach(function() {
-    browser.ignoreSynchronization = true;
+    //browser.ignoreSynchronization = true;
   });
   afterEach(function() {
-    browser.ignoreSynchronization = false;
+    //browser.ignoreSynchronization = false;
   });
 
   describe('When I navigate to the App Details URL for the "timestamp" module - "#/tasks/apps/timestamp"', function() {
