@@ -45,6 +45,8 @@ define(['model/pageable'], function (Pageable) {
                     function (result) {
                         if (!!result._embedded) {
                             $scope.pageable.items = result._embedded.appRegistrationResourceList;
+                        } else {
+                            $scope.pageable.items = [];
                         }
                         // Process received array of apps
                         if (Array.isArray($scope.pageable.items)) {

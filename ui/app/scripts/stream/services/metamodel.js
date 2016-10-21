@@ -758,6 +758,11 @@ define(function (require) {
                 });
             }
 
+            // Add listener to App service to keep track if list of registered apps changing
+            appService.addListener({
+                changed: refresh
+            });
+
             /**
              * Service object. See the comments for individual functions above.
              */

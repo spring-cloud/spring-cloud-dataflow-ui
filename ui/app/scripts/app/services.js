@@ -21,11 +21,23 @@
  * @author Alex Boyko
  * @author Gunnar Hillert
  */
-define(['angular'], function (angular) {
+define(['angular', 'lodash'], function (angular, _) {
     'use strict';
 
     return angular.module('dataflowApps.services', [])
         .factory('AppService', function ($resource, $rootScope, $log, $http) {
+
+            var listeners = [];
+
+            // Debounce notifying listeners in case of multiple register/unregister single app calls
+            var notifyListeners = _.debounce(function() {
+                listeners.forEach(function (listener) {
+                    if (angular.isFunction(listener.changed)) {
+                        listener.changed();
+                    }
+                });
+            }, 100);
+
             return {
                 getDefinitions: function (pageable) {
                     var params = {};
@@ -47,7 +59,7 @@ define(['angular'], function (angular) {
                 },
                 createCompositeApp: function(appName,definition) {
                     $log.info('Creating composite app name=' + appName + ' def=' + definition);
-                    return $http({
+                    var request = $http({
                         method: 'POST',
                         url: $rootScope.dataflowServerUrl + '/apps',
                         params: {
@@ -55,6 +67,10 @@ define(['angular'], function (angular) {
                             definition: definition
                         }
                     });
+                    request.then(function() {
+                        notifyListeners();
+                    });
+                    return request;
                 },
                 getAppInfo: function(appType,appName) {
                     return $http({
@@ -63,7 +79,7 @@ define(['angular'], function (angular) {
                     });
                 },
                 registerApp: function(type, name, uri, force) {
-                    return $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
+                    var request = $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
                         registerApp: {
                             method: 'POST',
                             params: {
@@ -72,16 +88,24 @@ define(['angular'], function (angular) {
                             }
                         }
                     }).registerApp();
+                    request.$promise.then(function() {
+                        notifyListeners();
+                    });
+                    return request;
                 },
                 unregisterApp: function(type, name) {
-                    return $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
+                    var request = $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
                         unregisterApp: {
                             method: 'DELETE'
                         }
                     }).unregisterApp();
+                    request.$promise.then(function() {
+                        notifyListeners();
+                    });
+                    return request;
                 },
                 bulkImportApps: function(uri, appsProperties, force) {
-                    return $resource($rootScope.dataflowServerUrl + '/apps', {}, {
+                    var request = $resource($rootScope.dataflowServerUrl + '/apps', {}, {
                         bulkImportApps: {
                             method: 'POST',
                             params: {
@@ -91,6 +115,19 @@ define(['angular'], function (angular) {
                             }
                         }
                     }).bulkImportApps();
+                    request.$promise.then(function() {
+                        notifyListeners();
+                    });
+                    return request;
+                },
+                addListener: function(listener) {
+                    listeners.push(listener);
+                },
+                removeListener: function(listener) {
+                    var index = listeners.indexOf(listener);
+                    if (index >= 0) {
+                        listeners.splice(index);
+                    }
                 }
             };
         });
