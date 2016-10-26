@@ -40,10 +40,10 @@
     "karma-jasmine": "0.3.8",
     "karma-coffee-preprocessor": "0.2.1",
     "karma-requirejs": "0.2.2",
-    "karma-phantomjs-launcher": "0.1.4",
+    "karma-phantomjs-launcher": "1.0.2",
     "karma": "0.12.31",
     "karma-ng-html2js-preprocessor": "0.1.2",
-    "phantomjs": "1.9.16",
+    "phantomjs": "2.1.7",
     "protractor": "2.0.0",
     "grunt-protractor-runner": "2.0.0",
     "grunt-contrib-nodeunit": "0.4.1"
