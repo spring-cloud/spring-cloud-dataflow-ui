@@ -393,5 +393,40 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
           });
         }
       };
+    })
+    .directive('tableSort', function() {
+      function applySort(scope) {
+        if( scope.sortState.sortProperty.toString() === scope.sortProperty.toString() && scope.sortState.sortOrder === 'DESC' ) {
+          scope.sortState.sortOrder = 'ASC';
+        }
+        else if( scope.sortState.sortProperty.toString() === scope.sortProperty.toString() && scope.sortState.sortOrder === 'ASC' ) {
+          scope.sortState.sortOrder = 'DESC';
+        }
+        else {
+          scope.sortState.sortOrder = 'ASC';
+        }
+        scope.sortState.sortProperty = scope.sortProperty;
+        scope.sortOrderChangeHandler()(scope.sortState);
+      }
+      return {
+        restrict: 'A',
+        transclude: true,
+        template :
+        '<a ng-click="onClick()">'+
+        '<span ng-transclude></span> '+
+        '<i class="glyphicon" ng-class="{\'glyphicon-triangle-bottom\' : sortState.sortOrder === \'DESC\' && sortProperty.toString() === sortState.sortProperty.toString(),  \'glyphicon-triangle-top\' : sortState.sortOrder===\'ASC\' && sortProperty.toString() === sortState.sortProperty.toString()}"></i>'+
+        '</a>',
+        scope: {
+          sortOrderChangeHandler: '&',
+          sortProperty: '=',
+          sortState: '='
+        },
+        link: function(scope) {
+          scope.onClick = function () {
+            applySort(scope);
+          };
+
+        },
+      };
     });
 });

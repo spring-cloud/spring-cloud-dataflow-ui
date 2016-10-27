@@ -39,6 +39,8 @@ define(function(require) {
                 'page': pageable.pageNumber,
                 'size': pageable.pageSize
               };
+
+              params.sort = pageable.calculateSortParameter();
             }
             return $resource($rootScope.dataflowServerUrl + '/streams/definitions', params, {
               query: {

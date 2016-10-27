@@ -24,37 +24,43 @@ define(['model/pageable'], function (Pageable) {
   'use strict';
   return ['$scope', 'TaskDefinitions', 'TaskDefinitionService', 'DataflowUtils', '$state', '$timeout', '$rootScope',
     function ($scope, taskDefinitions, taskDefinitionService, utils, $state, $timeout, $rootScope) {
+
+      var getTaskDefinitions;
+
       function loadTaskDefinitions(pageable, showGrowl) {
-        utils.$log.info('pageable', pageable);
         var taskDefinitionsPromise =  taskDefinitions.getAllTaskDefinitions(pageable).$promise;
+        if (showGrowl || showGrowl === undefined) {
+          utils.addBusyPromise(taskDefinitionsPromise);
+        }
         taskDefinitionsPromise.then(
             function (result) {
-              utils.$log.info(result);
-
               if (!!result._embedded) {
                 $scope.pageable.items = result._embedded.taskDefinitionResourceList;
               }
               $scope.pageable.total = result.page.totalElements;
-
-              var getTaskDefinitions = $timeout(function() {
+              getTaskDefinitions = $timeout(function() {
                 loadTaskDefinitions($scope.pageable, false);
               }, $rootScope.pageRefreshTime);
               $scope.$on('$destroy', function(){
                 $timeout.cancel(getTaskDefinitions);
               });
+            }, function (result) {
+              utils.growl.addErrorMessage(result.data[0].message);
             }
         );
-        if (showGrowl || showGrowl === undefined) {
-          utils.addBusyPromise(taskDefinitionsPromise);
-        }
       }
       $scope.pageable = new Pageable();
+      $scope.pageable.sortOrder = 'ASC';
+      $scope.pageable.sortProperty = ['DEFINITION_NAME', 'DEFINITION'];
       $scope.pagination = {
         current: 1
       };
       $scope.pageChanged = function(newPage) {
         $scope.pageable.pageNumber = newPage-1;
         loadTaskDefinitions($scope.pageable);
+      };
+      $scope.sortChanged = function(sortState) {
+        loadTaskDefinitions(sortState);
       };
       $scope.clickModal = function (streamDefinition) {
         $scope.destroyItem = streamDefinition;

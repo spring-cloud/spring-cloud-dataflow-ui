@@ -37,5 +37,25 @@ define(function() {
     }
     this.pageNumber = 0;
     this.pageSize = 10;
+    this.sortProperty = [''];
+    this.sortOrder = ''; //ASC or DESC
+
+    this.calculateSortParameter = function calculateSortParameter() {
+      var arrayLength = this.sortProperty.length;
+      var sortParam = '';
+      for (var i = 0; i < arrayLength; i++) {
+        var sortPropertyValue = this.sortProperty[i];
+        if (i === 0) {
+          sortParam = sortPropertyValue;
+        }
+        else {
+          sortParam = sortParam + ',' + sortPropertyValue;
+        }
+        if (i === arrayLength - 1) {
+          sortParam = sortParam + ',' + this.sortOrder;
+        }
+      }
+      return sortParam;
+    };
   };
 });

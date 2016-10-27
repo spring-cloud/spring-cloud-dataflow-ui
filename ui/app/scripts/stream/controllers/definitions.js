@@ -31,12 +31,10 @@ define(['model/pageable'], function (Pageable) {
       var getStreamDefinitions;
 
       function loadStreamDefinitions(pageable, showGrowl) {
-        //utils.$log.info('pageable', pageable);
         var streamDefinitionsPromise = streamService.getDefinitions(pageable).$promise;
         if (showGrowl || showGrowl === undefined) {
           utils.addBusyPromise(streamDefinitionsPromise);
         }
-        utils.$log.info(streamDefinitionsPromise);
         streamDefinitionsPromise.then(
             function (result) {
               if (!!result._embedded) {
@@ -58,6 +56,9 @@ define(['model/pageable'], function (Pageable) {
       var expandedState = $cookieStore.get(EXPANDED_STATE_COOKIE_KEY) || {};
 
       $scope.pageable = new Pageable();
+      $scope.pageable.sortOrder = 'ASC';
+      $scope.pageable.sortProperty = ['DEFINITION_NAME', 'DEFINITION'];
+
       $scope.pagination = {
         current: 1
       };
@@ -88,6 +89,11 @@ define(['model/pageable'], function (Pageable) {
 
       $scope.pageChanged = function(newPage) {
         $scope.pageable.pageNumber = newPage-1;
+        loadStreamDefinitions($scope.pageable);
+      };
+
+      $scope.sortChanged = function(sortState) {
+        console.log('sortState: ', sortState);
         loadStreamDefinitions($scope.pageable);
       };
 
