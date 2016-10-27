@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,21 +24,29 @@ define(['model/pageable'], function (Pageable) {
   'use strict';
   return ['$scope', 'RuntimeService', 'DataflowUtils', '$timeout', '$rootScope',
     function ($scope, runtimeService, utils, $timeout, $rootScope) {
-      function loadRuntimeAppsWithTimeout() {
-        $scope.runtimeTimeOutPromise = $timeout(function() {
-          loadRuntimeApps($scope.pageable);
-        }, $rootScope.pageRefreshTime);
-      }
-      function loadRuntimeApps(pageable) { // jshint ignore:line
-        utils.$log.info('pageable', pageable);
-        runtimeService.getRuntimeApps(pageable).$promise.then(
-            function (result) {
-              var apps = result._embedded ? result._embedded.appStatusResourceList : [];
-              utils.$log.info('Retrieved runtimeApps...', apps);
-              $scope.pageable.items = apps;
-              $scope.pageable.total = result.page.totalElements;
-              loadRuntimeAppsWithTimeout();
-            }
+
+      var runtimeAppsTimeoutPromise;
+
+      function loadRuntimeApps(pageable, showGrowl) {
+        var runtimeAppsPromise = runtimeService.getRuntimeApps(pageable).$promise;
+        if (showGrowl || showGrowl === undefined) {
+          utils.addBusyPromise(runtimeAppsPromise);
+        }
+        runtimeAppsPromise.then(
+          function (result) {
+            var apps = result._embedded ? result._embedded.appStatusResourceList : [];
+            utils.$log.info('Retrieved runtimeApps...', apps);
+            $scope.pageable.items = apps;
+            $scope.pageable.total = result.page.totalElements;
+            runtimeAppsTimeoutPromise = $timeout(function() {
+              loadRuntimeApps($scope.pageable, false);
+            }, $rootScope.pageRefreshTime);
+            $scope.$on('$destroy', function(){
+              $timeout.cancel(runtimeAppsTimeoutPromise);
+            });
+          }, function (result) {
+            utils.growl.addErrorMessage(result.data[0].message);
+          }
         );
       }
       $scope.pageable = new Pageable();

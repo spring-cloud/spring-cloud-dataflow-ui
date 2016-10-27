@@ -40,12 +40,19 @@ define(['model/pageable'], function (Pageable) {
           });
     }
     $scope.pageable = new Pageable();
+    $scope.pageable.sortOrder = 'DESC';
+    $scope.pageable.sortProperty = ['TASK_EXECUTION_ID'];
+
     $scope.pagination = {
       current: 1
     };
     $scope.pageChanged = function(newPage) {
       $scope.pageable.pageNumber = newPage-1;
       loadTaskExecutions($scope.pageable);
+    };
+    $scope.sortChanged = function(sortState) {
+      console.log('sortState: ', sortState);
+      loadTaskExecutions(sortState);
     };
 
     loadTaskExecutions($scope.pageable);

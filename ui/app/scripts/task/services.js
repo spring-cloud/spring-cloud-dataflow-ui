@@ -37,26 +37,19 @@ define(function(require) {
             });
           },
           getAllTaskDefinitions: function (pageable) {
+            var params = {};
             if (pageable === 'undefined') {
               $log.info('Getting all task definitions.');
-              return $resource($rootScope.dataflowServerUrl + '/tasks/definitions', {}).get();
             }
             else {
               $log.info('Getting task definitions for pageable:', pageable);
-              return $resource($rootScope.dataflowServerUrl + '/tasks/definitions',
-                {
-                  'page': pageable.pageNumber,
-                  'size': pageable.pageSize
-                },
-                {
-                  query: {
-                    method: 'GET',
-                    isArray: true
-                  }
-                }).get();
+              params = {
+                'page': pageable.pageNumber,
+                'size': pageable.pageSize
+              };
+              params.sort = pageable.calculateSortParameter();
             }
-            $log.info('Getting all task definitions.');
-            return $resource($rootScope.dataflowServerUrl + '/tasks/definitions', {}, {
+            return $resource($rootScope.dataflowServerUrl + '/tasks/definitions', params, {
               query: {
                 method: 'GET',
                 isArray: true
@@ -105,7 +98,7 @@ define(function(require) {
             }
           },
           getSingleApp: function (appName) {
-            $log.info('Getting details for app222 ' + appName);
+            $log.info('Getting details for app ' + appName);
             return $resource($rootScope.dataflowServerUrl + '/apps/task/' + appName + '?unprefixedPropertiesOnly=true').get();
           },
           createDefinition: function (name, definition) {
@@ -134,24 +127,27 @@ define(function(require) {
       .factory('TaskExecutions', function ($resource, $rootScope, $log) {
         return {
           getAllTaskExecutions: function (pageable) {
-            if (pageable === 'undefined') {
+            var params = {};
+            if (pageable === undefined) {
               $log.info('Getting all task executions.');
-              return $resource($rootScope.dataflowServerUrl + '/tasks/executions', {}).get();
             }
             else {
               $log.info('Getting task definitions for pageable:', pageable);
-              return $resource($rootScope.dataflowServerUrl + '/tasks/executions',
-                {
-                  'page': pageable.pageNumber,
-                  'size': pageable.pageSize
-                },
-                {
-                  query: {
-                    method: 'GET',
-                    isArray: true
-                  }
-                }).get();
+              params = {
+                'page': pageable.pageNumber,
+                'size': pageable.pageSize
+              };
+
+              params.sort = pageable.calculateSortParameter();
+              console.log('>>' + params.sort);
             }
+            console.log('pppppp', params);
+            return $resource($rootScope.dataflowServerUrl + '/tasks/executions', params, {
+              query: {
+                method: 'GET',
+                isArray: true
+              }
+            }).get();
           }
         };
       })
