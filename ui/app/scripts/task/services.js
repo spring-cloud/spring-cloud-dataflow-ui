@@ -141,7 +141,6 @@ define(function(require) {
               params.sort = pageable.calculateSortParameter();
               console.log('>>' + params.sort);
             }
-            console.log('pppppp', params);
             return $resource($rootScope.dataflowServerUrl + '/tasks/executions', params, {
               query: {
                 method: 'GET',
