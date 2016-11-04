@@ -20,10 +20,6 @@
                             Bulk Import Applications
                         </button>
                     </td>
-                    <td>
-                        <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
-                               placeholder="Quick filter">
-                    </td>
                 </tr></table>
             </div>
         </div>
@@ -43,7 +39,7 @@
     </thead>
     <tbody>
 
-    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery track by item.id" total-items="pageable.total">
+    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total">
         <td><input type="checkbox" ng-model="item.select" ng-model-options="{ getterSetter: true }"/></td>
         <td>{{item.name}}</td>
         <td>{{item.type}}</td>

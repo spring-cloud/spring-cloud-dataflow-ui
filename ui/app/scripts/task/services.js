@@ -48,6 +48,10 @@ define(function(require) {
                 'size': pageable.pageSize
               };
               params.sort = pageable.calculateSortParameter();
+
+              if (pageable.filterQuery && pageable.filterQuery.trim().length > 0) {
+                params.search = pageable.filterQuery;
+              }
             }
             return $resource($rootScope.dataflowServerUrl + '/tasks/definitions', params, {
               query: {

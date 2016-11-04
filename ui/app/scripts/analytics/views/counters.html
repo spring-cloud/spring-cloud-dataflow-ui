@@ -3,13 +3,9 @@
         <div class="col-md-12 table-filter">
             <div>
                 <table class="col-lg-12 tab-content-header"><tr>
-                    <td width="67%">
+                    <td>
                         <label>Update [seconds]:</label>
                         <input type="text" ng-model="refreshRate" ng-model-options="{ getterSetter: true, updateOn: 'blur change' }" size="3"></input>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
-                               placeholder="Quick filter">
                     </td>
                 </tr></table>
             </div>
@@ -26,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr  dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total">
+    <tr  dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total">
         <td>{{item.name}}</td>
         <td>{{item.value}}</td>
         <td>{{item.rates.length ? item.rates[item.rates.length - 1] : '--N/A--'}}</td>

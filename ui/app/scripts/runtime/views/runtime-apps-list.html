@@ -1,13 +1,3 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="col-md-12 table-filter">
-            <div class="col-md-4 col-md-offset-8">
-                <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
-                       placeholder="Quick filter">
-            </div>
-        </div>
-    </div>
-</div>
 <table class="cluster-view table">
     <thead>
     <tr>
@@ -17,7 +7,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize track by item.deploymentId | filter: {appDeploymentId: filterQuery}" total-items="pageable.total" ng-show="!item.inactive">
+    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize track by item.deploymentId" total-items="pageable.total" ng-show="!item.inactive">
         <td id="application-id">
             <a data-toggle="modal" data-target="#applicationDetails{{$index}}" data-original-title="Application Attributes">{{item.deploymentId}}</a>
             <div class="modal fade" dataflow-modal id="applicationDetails{{$index}}" role="dialog">

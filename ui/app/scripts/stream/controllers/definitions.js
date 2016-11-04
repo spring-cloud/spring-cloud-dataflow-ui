@@ -57,6 +57,7 @@ define(['model/pageable'], function (Pageable) {
 
       $scope.pageable = new Pageable();
       $scope.pageable.sortOrder = 'ASC';
+      $scope.pageable.filterQuery = '';
       $scope.pageable.sortProperty = ['DEFINITION_NAME', 'DEFINITION'];
 
       $scope.pagination = {
@@ -94,6 +95,10 @@ define(['model/pageable'], function (Pageable) {
 
       $scope.sortChanged = function(sortState) {
         console.log('sortState: ', sortState);
+        loadStreamDefinitions($scope.pageable);
+      };
+
+      $scope.searchChanged = function() {
         loadStreamDefinitions($scope.pageable);
       };
 

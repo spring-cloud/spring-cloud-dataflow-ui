@@ -10,10 +10,6 @@
                             Clear
                         </button>
                     </td>
-                    <td>
-                        <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
-                               placeholder="Quick filter">
-                    </td>
                 </tr></table>
             </div>
         </div>
@@ -31,7 +27,7 @@
     </tr>
     </thead>
     <tbody>
-        <tr ng-repeat-start="item in items | filter:filterQuery">
+        <tr ng-repeat-start="item in items">
             <td>
                 <select ng-model="item.type" ng-options="type.label for type in allMetricTypes"
                     ng-change="item.stream = ''; item.visualization = '';">

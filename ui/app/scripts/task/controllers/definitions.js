@@ -62,6 +62,9 @@ define(['model/pageable'], function (Pageable) {
       $scope.sortChanged = function(sortState) {
         loadTaskDefinitions(sortState);
       };
+      $scope.searchChanged = function() {
+        loadTaskDefinitions($scope.pageable);
+      };
       $scope.clickModal = function (streamDefinition) {
         $scope.destroyItem = streamDefinition;
       };

@@ -11,8 +11,9 @@
             </button>
           </td>
           <td>
-            <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
-                   placeholder="Quick filter">
+            <input type="text" class="form-control" ng-model="pageable.filterQuery" id="filterTable"
+                   ng-model-options='{ debounce: 1000 }' ng-change="searchChanged()"
+                   placeholder="Filter definitions">
           </td>
         </tr></table>
       </div>
@@ -30,7 +31,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery" total-items="pageable.total" ng-show="!item.inactive">
+    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total" ng-show="!item.inactive">
       <td>{{item.name}}</td>
       <td dataflow-format-stream='item.dslText'></td>
       <td>{{item.status}}</td>

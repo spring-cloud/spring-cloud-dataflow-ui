@@ -2,13 +2,9 @@
     <div class="col-md-12">
         <div class="col-md-12 table-filter">
             <table class="col-lg-12 tab-content-header"><tr>
-                <td width="67%">
+                <td>
                     <label>Update [seconds]:</label>
                     <input type="text" ng-model="refreshRate" ng-model-options="{ getterSetter: true, updateOn: 'blur change' }" size="3"></input>
-                </td>
-                <td>
-                    <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
-                           placeholder="Quick filter">
                 </td>
             </tr></table>
         </div>
@@ -26,7 +22,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in items track by item.name | filter:filterQuery">
+    <tr ng-repeat="item in items track by item.name">
         <td>{{item.name}}</td>
         <td>{{item.value}}</td>
         <td>{{item.min}}</td>

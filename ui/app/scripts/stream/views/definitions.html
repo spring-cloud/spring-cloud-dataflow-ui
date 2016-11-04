@@ -16,8 +16,9 @@
                         </button>
                     </td>
                     <td>
-                        <input type="text" class="form-control" ng-model="filterQuery" id="filterTable"
-                               placeholder="Quick filter">
+                        <input type="text" class="form-control" ng-model="pageable.filterQuery" id="filterTable"
+                               ng-model-options='{ debounce: 1000 }' ng-change="searchChanged()"
+                               placeholder="Filter definitions">
                     </td>
                 </tr>
             </table>
@@ -36,7 +37,7 @@
     </thead>
     <tbody>
 
-    <tr dir-paginate-start="item in pageable.items | itemsPerPage: pageable.pageSize | filter:filterQuery track by item.name" total-items="pageable.total" ng-show="!item.inactive">
+    <tr dir-paginate-start="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total" ng-show="!item.inactive">
         <td>
             <button class="collapse-handle-button" ng-click="toggleExpanded(item.name)" ng-class="{on:isExpanded(item.name)}"></button>
         </td>
