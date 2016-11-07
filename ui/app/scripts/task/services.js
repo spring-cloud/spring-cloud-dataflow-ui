@@ -196,5 +196,6 @@ define(function(require) {
           }
         };
       })
-      .factory('TaskDslValidatorService', require('task/services/task-dsl-validator'));
+      .factory('TaskDslValidatorService', require('task/services/task-dsl-validator')).
+      factory('TaskContentAssistService', require('task/services/content-assist-service'));
 });

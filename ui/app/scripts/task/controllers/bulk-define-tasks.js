@@ -29,8 +29,8 @@ define(function (require) {
 
     var angular = require('angular');
 
-    return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService', 'TaskDslValidatorService', '$cookieStore',
-        function ($scope, utils, $modal, $state, taskAppService, validatorService, $cookieStore) {
+    return ['$scope', 'DataflowUtils', '$modal', '$state', 'TaskAppService', 'TaskDslValidatorService', '$cookieStore', 'TaskContentAssistService',
+        function ($scope, utils, $modal, $state, taskAppService, validatorService, $cookieStore, contentAssistService) {
 
             var editor;
 
@@ -242,21 +242,80 @@ define(function (require) {
                 $scope.dsl = contents;
             };
 
+            function isDelimiter(c) {
+                return c && c === ' ';
+            }
+
+            /**
+             * The suggestions provided by rest api are very long and include the whole command typed
+             * from the start of the line. This function determines the start of the 'interesting' part
+             * at the end of the prefix, so that we can use it to chop-off the suggestion there.
+             */
+            function interestingPrefixStart(prefix, completions) {
+                var cursor = prefix.length;
+                if (completions.every(function (completion) {
+                        return isDelimiter(completion[cursor]);
+                    })) {
+                    return cursor;
+                }
+                return prefix.lastIndexOf(' ');
+            }
+
+            var taskProposalComputer = function(cm, callback) { // jshint ignore:line
+                    var cursor = cm.getDoc().getCursor();
+                    var startOfLine = {line: cursor.line, ch: 0};
+                    var prefix = cm.getDoc().getRange(startOfLine, cursor);
+
+                    // Handle content assist for the name if not yet specified or followed by equals:
+                    var equalsIndex = prefix.indexOf('=');
+                    if (equalsIndex === -1) {
+                        var trimmed = prefix.trim();
+                        if (trimmed.length !== 0) {
+                            // Suggest they follow the name with an '='
+                            return callback({list:[trimmed+'='],from:{line:cursor.line,ch:0},to:cursor});
+                        } else {
+                            return callback({list:['task'+(cursor.line+1)+'='],from:{line:cursor.line,ch:0},to:cursor});
+                        }
+                    }
+                    var textAfterEquals = prefix.substring(equalsIndex+1);
+                    contentAssistService.getProposals(textAfterEquals).then(function(completions) {
+                        // Example:
+                        // [{"text":"spark-yarn","explanation":"Choose a task app"},
+                        //  {"text":"spark-cluster","explanation":"Choose a task app"},
+                        //  {"text":"timestamp","explanation":"Choose a task app"},
+                        //  {"text":"spark-client","explanation":"Choose a task app"}]
+                        var chopAt = interestingPrefixStart(textAfterEquals, completions);
+                        if (chopAt === -1) {
+                            chopAt = 0;
+                        }
+                        // If all the proposals are options adjust the chopAt
+                        var areAllOptions = true;
+                        for (var c=0;c<completions.length;c++) {
+                            var longCompletion = completions[c];
+                            var text = typeof longCompletion === 'string'?longCompletion: longCompletion.text;
+                            if (!text.substring(textAfterEquals.length).startsWith(' --')) {
+                                areAllOptions = false;
+                                break;
+                            }
+                        }
+                        if (areAllOptions) {
+                            chopAt = textAfterEquals.length; 
+                        }
+                        return callback({
+                            list:completions.map(function(longCompletion) {
+                                var text= typeof longCompletion === 'string'?longCompletion: longCompletion.text;
+                                return text.substring(chopAt);
+                            }),
+                            from:{line:cursor.line,ch:chopAt+equalsIndex+1},
+                            to:cursor
+                        });
+                    });
+                };
+            taskProposalComputer.async = true;
+
             $scope.hint = {
                 async: 'true',
-                hint: function(cm, callback) { // jshint ignore:line
-                    // TODO: calculate completion proposals and return results as shown below
-
-                    // See https://codemirror.net/doc/manual.html#addons hint/show-hint.js section
-
-                    // return callback({
-                    //   list: listOfStrings
-                    //   from: {line: startLine, ch:startCharIndex},
-                    //   to: {line: endLine, ch:endCharIndex}
-                    // });
-
-                    utils.$log.info('Task DSL Content Assist Invoked!');
-                }
+                hint: taskProposalComputer
             };
 
             $scope.nextError = function() {
