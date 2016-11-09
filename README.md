@@ -67,6 +67,14 @@ If you are executing the E2E tests for the first time, you may have to execute:
 
 	node node_modules/protractor/bin/webdriver-manager update
 
+If you run into errors running the e2e tests, you may be hitting the following Chromium issue:
+
+https://bugs.chromium.org/p/chromedriver/issues/detail?id=1552
+
+In that case start the tests using:
+
+	LC_NUMERIC="en_US.UTF-8" grunt test:e2e
+
 If you have already the UI running using:
 
 	$grunt serve

@@ -59,8 +59,8 @@ describe('Stream Tests', function() {
     it('the "Definitions" Tab should have a "Quick Filter" search input field', function() {
       expect(element(by.css('#filterTable')).isPresent()).toBe(true);
     });
-    it('the "Definitions Tab Quick Filter" should have a placeholder text of "Quick filter"', function() {
-      expect(element(by.css('#filterTable')).getAttribute('placeholder')).toMatch('Quick filter');
+    it('the "Definitions Tab Quick Filter" should have a placeholder text of "Filter definitions"', function() {
+      expect(element(by.css('#filterTable')).getAttribute('placeholder')).toMatch('Filter definitions');
     });
   });
 

@@ -45,8 +45,8 @@ module.exports = function (grunt) {
           specs: [
             './test/e2e/**/*.spec.js'
           ],
-          baseUrl: 'http://localhost:8000',
-          chromeDriver: 'node_modules/protractor/selenium/chromedriver'
+          baseUrl: 'http://localhost:8000'
+          //chromeDriver: 'node_modules/protractor/selenium/chromedriver'
         }
       },
       run: {
