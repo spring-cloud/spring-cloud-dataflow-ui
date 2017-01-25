@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,6 @@
 define(function () {
     'use strict';
 
-    var STREAM_APP_STARTERS_VERSION_SUFFIX = '1-0-2-GA-';
-    var TASK_APP_STARTERS_VERSION_SUFFIX = '1-0-1-GA-';
-
     return ['$scope', 'AppService', 'DataflowUtils', '$modal', '$state',
         function ($scope, appService, utils, $modal, $state) {
 
@@ -36,44 +33,17 @@ define(function () {
                 };
             }
 
-            function newStreamAppStarters() {
-                return [
-                    {
-                        name: 'Maven based Stream Applications with RabbitMQ Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-rabbit-maven',
-                        force: false
-                    },
-                    {
-                        name: 'Maven based Stream Applications with Kafka Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-kafka-maven',
-                        force: false
-                    },
-                    {
-                        name: 'Docker based Stream Applications with RabbitMQ Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-rabbit-docker',
-                        force: false
-                    },
-                    {
-                        name: 'Docker based Stream Applications with Kafka Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-kafka-docker',
-                        force: false
+            function getAppStarters() {
+                var appStartersPromise = appService.getAppStarters().$promise;
+                utils.addBusyPromise(appStartersPromise);
+                appStartersPromise.then(
+                    function (result) {
+                        utils.$log.info(result);
+                        $scope.appStarters = result;
+                    }, function (result) {
+                        utils.growl.error(result.data[0].message);
                     }
-                ];
-            }
-
-            function newTaskAppStarters() {
-                return [
-                    {
-                        name: 'Maven based Task Applications',
-                        uri:  'http://bit.ly/' + TASK_APP_STARTERS_VERSION_SUFFIX + 'task-applications-maven',
-                        force: false
-                    },
-                    {
-                        name: 'Docker based Task Applications',
-                        uri:  'http://bit.ly/' + TASK_APP_STARTERS_VERSION_SUFFIX + 'task-applications-docker',
-                        force: false
-                    }
-                ];
+                );
             }
 
             // Basic URI validation RegEx pattern
@@ -103,14 +73,12 @@ define(function () {
 
                 promise.then(function() {
                     utils.growl.success('Submitted bulk import request');
-                    console.log(newBulkAppImport());
                     $scope.$watch('apps', function () {
                         $scope.apps.appsProperties = '';
                         $scope.apps.uri = '';
                         $scope.apps.force = false;
                     });
-                    $scope.streamAppStarters = newStreamAppStarters();
-                    $scope.taskAppStarters   = newTaskAppStarters();
+                    getAppStarters();
                 });
                 promise.catch(function(error) {
                     utils.growl.error(error.data[0].message);
@@ -132,8 +100,7 @@ define(function () {
             };
 
             $scope.apps = newBulkAppImport();
-            $scope.streamAppStarters = newStreamAppStarters();
-            $scope.taskAppStarters   = newTaskAppStarters();
+            getAppStarters();
 
             $scope.$apply();
 
