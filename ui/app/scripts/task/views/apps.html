@@ -7,7 +7,7 @@
   <tbody>
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total">
       <td>{{item.name}}</td>
-      <td>{{item.coordinates}}</td>
+      <td>{{item.uri}}</td>
       <td class="action-column">
         <button type="button"
         class="btn btn-default" ng-click="createDefinition(item)" title="Create Definition"

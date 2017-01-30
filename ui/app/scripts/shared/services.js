@@ -42,6 +42,7 @@ define(function (require) {
             $rootScope.cgbusy = promise;
           },
           jobExecutionIdHierarchy: $rootScope.jobExecutionIdHierarchy,
+          taskExecutionIdHierarchy: $rootScope.taskExecutionIdHierarchy,
           getAppNameFromJobDefinition: function(jobDefinition) {
             if (!jobDefinition) {
               throw new Error('jobDefinition must be defined.');
