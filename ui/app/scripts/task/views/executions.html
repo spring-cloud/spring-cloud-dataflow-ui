@@ -6,6 +6,7 @@
 			<th table-sort sort-property="['START_TIME', 'TASK_EXECUTION_ID']" sort-state="pageable" sort-order-change-handler="sortChanged">Start Time</th>
 			<th table-sort sort-property="['END_TIME',   'TASK_EXECUTION_ID']" sort-state="pageable" sort-order-change-handler="sortChanged">End Time</th>
 			<th table-sort sort-property="['EXIT_CODE',  'TASK_EXECUTION_ID']" sort-state="pageable" sort-order-change-handler="sortChanged">Exit Code</th>
+			<th class="text-center">Actions</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -16,6 +17,7 @@
 			<td dataflow-date-time="{{item.startTime}}"></td>
 			<td dataflow-date-time="{{item.endTime}}"></td>
 			<td>{{item.exitCode}}</td>
+			<td class="action-column"><button type="button" class="btn btn-default" ng-click="viewTaskExecutionDetails(item)" title="Details"><span class="glyphicon glyphicon-search"></span></button></td>
 		</tr>
 	</tbody>
 </table>

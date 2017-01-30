@@ -22,7 +22,7 @@
  */
 define(['model/pageable'], function (Pageable) {
   'use strict';
-  return ['$scope', 'TaskExecutions', 'DataflowUtils', function ($scope, taskExecutions, utils) {
+  return ['$scope', 'TaskExecutions', 'DataflowUtils', '$state', function ($scope, taskExecutions, utils, $state) {
     function loadTaskExecutions(pageable) {
       var taskExcutionsPromise = taskExecutions.getAllTaskExecutions(pageable).$promise;
       utils.addBusyPromise(taskExcutionsPromise);
@@ -53,6 +53,12 @@ define(['model/pageable'], function (Pageable) {
     $scope.sortChanged = function(sortState) {
       console.log('sortState: ', sortState);
       loadTaskExecutions(sortState);
+    };
+
+    utils.taskExecutionIdHierarchy.length=0;
+    $scope.viewTaskExecutionDetails = function (taskExecution) {
+      utils.$log.info('Showing Task Execution details for Task Execution with Id: ' + taskExecution.executionId);
+      $state.go('home.tasks.executiondetails', {executionId: taskExecution.executionId});
     };
 
     loadTaskExecutions($scope.pageable);

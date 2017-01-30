@@ -31,19 +31,24 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
         //transclude: true,
         //scope: {},
         link: function (scope, element) {
-          var originalValue = scope.contextValue.value;
-          var newHtml = originalValue;
-          var matches;
+          scope.$watch(
+            function () { return element.text(); },
+            function (newValue/*, oldValue */) {
+              var originalValue = newValue;
+              var newHtml = originalValue;
+              var matches;
 
-          if (originalValue.substring) {
-            matches = originalValue.match(urlPattern);
-          }
-          if (typeof matches !== 'undefined') {
-            angular.forEach(matches, function(url) {
-              newHtml = newHtml.replace(url, '<a href=\''+ url + '\'>' + url + '</a>');
-            });
-          }
-          element.html(newHtml);
+              if (originalValue.substring) {
+                matches = originalValue.match(urlPattern);
+              }
+              if (typeof matches !== 'undefined') {
+                angular.forEach(matches, function(url) {
+                  newHtml = newHtml.replace(url, '<a href=\''+ url + '\'>' + url + '</a>');
+                });
+              }
+              element.html(newHtml);
+            }
+          );
         }
       };
     }])

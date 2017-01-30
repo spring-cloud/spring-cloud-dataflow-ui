@@ -43,6 +43,12 @@ define(['angular'], function (angular) {
               $injector.invoke(taskExecutionsController, this, {'$scope': $scope});
             });
           }])
+      .controller('TaskExecutionDetailsController',
+      ['$scope', '$injector', function ($scope, $injector) {
+        require(['task/controllers/execution-details'], function (taskExecutionDetailsController) {
+          $injector.invoke(taskExecutionDetailsController, this, {'$scope': $scope});
+        });
+      }])
       .controller('TaskLaunchController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['task/controllers/launch'], function (taskLaunchController) {
