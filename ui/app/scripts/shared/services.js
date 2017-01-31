@@ -31,6 +31,7 @@ define(function (require) {
         var appNameRegex = new XRegExp('[\\p{N}|\\p{L}|\\p{Po}]*(?=[\\s]*--)', 'i');
 
         $rootScope.jobExecutionIdHierarchy = [];
+        $rootScope.taskExecutionIdHierarchy = [];
 
         return {
           $log: $log,

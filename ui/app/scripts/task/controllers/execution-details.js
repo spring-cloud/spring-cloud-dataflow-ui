@@ -53,13 +53,13 @@ define([], function () {
       $scope.taskJobExecutionDetails = function () {
         utils.$log.info('Closing Task Execution Details Window');
 
-        // if (utils.jobExecutionIdHierarchy.length > 1) {
-        //   utils.jobExecutionIdHierarchy.pop();
-        //   $state.go('home.jobs.executiondetails', {executionId: utils.jobExecutionIdHierarchy.pop()});
-        // }
-        // else {
+        if (utils.taskExecutionIdHierarchy.length > 1) {
+          utils.taskExecutionIdHierarchy.pop();
+          $state.go('home.tasks.executiondetails', {executionId: utils.taskExecutionIdHierarchy.pop()});
+        }
+        else {
           $state.go('home.tasks.tabs.executions');
-        //}
+        }
       };
       $scope.viewJobExecutionDetails = function (jobExecutionId) {
         utils.$log.info('Showing Job Execution details for Job Execution with Id: ' + jobExecutionId);
