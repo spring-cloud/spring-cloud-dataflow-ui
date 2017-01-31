@@ -31,6 +31,7 @@ define(function (require) {
         var appNameRegex = new XRegExp('[\\p{N}|\\p{L}|\\p{Po}]*(?=[\\s]*--)', 'i');
 
         $rootScope.jobExecutionIdHierarchy = [];
+        $rootScope.taskExecutionIdHierarchy = [];
 
         return {
           $log: $log,
@@ -42,6 +43,7 @@ define(function (require) {
             $rootScope.cgbusy = promise;
           },
           jobExecutionIdHierarchy: $rootScope.jobExecutionIdHierarchy,
+          taskExecutionIdHierarchy: $rootScope.taskExecutionIdHierarchy,
           getAppNameFromJobDefinition: function(jobDefinition) {
             if (!jobDefinition) {
               throw new Error('jobDefinition must be defined.');

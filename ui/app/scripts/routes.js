@@ -312,6 +312,15 @@ define(['./app'], function (dashboard) {
             feature: 'tasksEnabled'
           }
         })
+        .state('home.tasks.executiondetails', {
+          url : 'tasks/executions/{executionId}',
+          templateUrl : taskTemplatesPath + '/execution-details.html',
+          controller: 'TaskExecutionDetailsController',
+          data:{
+            authenticate: true,
+            feature: 'tasksEnabled'
+          }
+        })
         .state('home.analytics.tabs', {
           url: 'analytics',
           abstract: true,

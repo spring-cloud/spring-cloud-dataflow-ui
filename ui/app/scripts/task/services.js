@@ -130,6 +130,10 @@ define(function(require) {
       })
       .factory('TaskExecutions', function ($resource, $rootScope, $log) {
         return {
+          getSingleTaskExecution: function (taskExecutionId) {
+            $log.info('Getting details for Task Execution with Id ' + taskExecutionId);
+            return $resource($rootScope.dataflowServerUrl + '/tasks/executions/' + taskExecutionId).get();
+          },
           getAllTaskExecutions: function (pageable) {
             var params = {};
             if (pageable === undefined) {
@@ -184,8 +188,8 @@ define(function(require) {
           },
           launch: function (taskName, propertiesAsString, argumentsAsString) {
             console.log('Launching task...' + taskName);
-            $resource($rootScope.dataflowServerUrl + '/tasks/deployments/:taskname', {
-              'taskname': taskName, 'properties': propertiesAsString, 'arguments': argumentsAsString }, {
+            $resource($rootScope.dataflowServerUrl + '/tasks/executions', {
+              'name': taskName, 'properties': propertiesAsString, 'arguments': argumentsAsString }, {
               launch: { method: 'POST' }
             }).launch().$promise.then(
                 function () {

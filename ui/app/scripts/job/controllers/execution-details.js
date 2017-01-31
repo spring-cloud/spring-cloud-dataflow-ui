@@ -73,6 +73,10 @@ define([], function () {
         utils.$log.info('Showing Job Execution details for Job Execution with Id: ' + jobExecution.executionId);
         $state.go('home.jobs.executiondetails', {executionId: jobExecution.executionId});
       };
+      $scope.viewTaskExecutionDetails = function (taskExecutionId) {
+        utils.$log.info('Showing Task Execution details for Task Execution with Id: ' + taskExecutionId);
+        $state.go('home.tasks.executiondetails', {executionId: taskExecutionId});
+      };
       $scope.restartJob = function (job) {
         utils.$log.info('Restarting Job ' + job.name);
         jobExecutions.restart(job).$promise.then(
