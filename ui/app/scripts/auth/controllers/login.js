@@ -20,6 +20,7 @@
  * @author Gunnar Hillert
  * @author Alex Boyko
  */
+
 define([], function () {
   'use strict';
   return ['$scope', '$state', 'userService', 'DataflowUtils', '$log', '$rootScope', '$http',
@@ -36,9 +37,21 @@ define([], function () {
                 $rootScope.user.isFormLogin = true;
                 $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName] = response.data;
 
+                var securityInfoUrl = '/security/info';
+                var timeout = 20000;
+                var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
                 utils.growl.success('User ' + $scope.loginForm.username + ' logged in.');
                 $scope.loginForm = {};
-                $state.go('home.apps.tabs.appsList');
+
+                promiseHttp.then(function(response) {
+                  console.log('Security info retrieved ...', response.data);
+                  $rootScope.user.roles = response.data.roles;
+                  $state.go('home.apps.tabs.appsList');
+                }, function(errorResponse) {
+                  var errorMessage = 'Error retrieving security info from ' + securityInfoUrl + ' (timeout: ' + timeout + 'ms)';
+                  console.log(errorMessage, errorResponse);
+                  $('.splash .container').html(errorMessage);
+                });
               },
               function(response) {
                 utils.growl.error(response.data[0].message);

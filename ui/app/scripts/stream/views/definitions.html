@@ -50,21 +50,21 @@
             </button>
         </td>
         <td class="action-column">
-            <button type="button" ng-click="undeployStream(item)"
+            <button type="button" ng-click="undeployStream(item)" roles="['ROLE_CREATE']"
                     ng-disabled="item.status === 'deploying' || item.status === 'undeployed'"
                     class="btn btn-default"
                     ><span class="glyphicon glyphicon-stop"></span> Undeploy
             </button>
         </td>
         <td class="action-column">
-            <button type="button" ng-click="deployStream(item)"
+            <button type="button" ng-click="deployStream(item)" roles="['ROLE_CREATE']"
                     ng-disabled="item.status === 'deploying' || item.status === 'deployed' || item.status === 'incomplete' || item.status === 'failed'"
                     class="btn btn-default"
                     ><span class="glyphicon glyphicon-play"></span> Deploy
             </button>
         </td>
         <td class="action-column">
-            <button type="button" ng-click="clickModal(item)"
+            <button type="button" ng-click="clickModal(item)" roles="['ROLE_CREATE']"
                     class="btn btn-default" data-toggle="modal" data-target="#confirm-destroy"
                     ><span class="glyphicon glyphicon-remove"></span> Destroy
             </button>

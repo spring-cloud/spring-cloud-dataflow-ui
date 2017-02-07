@@ -10,7 +10,7 @@ the visual editor.
         <li ng-class="{ active: $state.includes('home.streams.tabs.definitions') }"><a
                 ui-sref="home.streams.tabs.definitions">Definitions</a>
         </li>
-        <li ng-class="{ active: $state.includes('home.streams.tabs.create') }"><a
+        <li ng-class="{ active: $state.includes('home.streams.tabs.create') }" roles="['ROLE_CREATE']"><a
                 ui-sref="home.streams.tabs.create">Create Stream</a>
     </ul>
     <div class="tab-content">

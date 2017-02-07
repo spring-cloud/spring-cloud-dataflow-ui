@@ -4,17 +4,17 @@
             <div>
                 <table class="col-lg-12 tab-content-header"><tr>
                     <td class="col-xs-8">
-                        <button id="registerAppsButton" type="button" ng-click="registerApps()"
+                        <button id="registerAppsButton" roles="['ROLE_CREATE']" type="button" ng-click="registerApps()"
                                 class="btn btn-default"
                         ><span class="glyphicon glyphicon-plus"></span>
                             Register Application(s)
                         </button>
-                        <button id="unregisterSelectedAppsButton" type="button" ng-click="unregisterSelectedApps()"
+                        <button id="unregisterSelectedAppsButton" roles="['ROLE_CREATE']" type="button" ng-click="unregisterSelectedApps()"
                                 class="btn btn-default" ng-disabled="isNoneSelected()"
                         ><span class="glyphicon glyphicon-trash"></span>
                             Unregister Application(s)
                         </button>
-                        <button id="bulkImportAppsButton" type="button" ng-click="bulkImportApps()"
+                        <button id="bulkImportAppsButton" roles="['ROLE_CREATE']" type="button" ng-click="bulkImportApps()"
                                 class="btn btn-default"
                         ><span class="glyphicon glyphicon-import"></span>
                             Bulk Import Applications
@@ -29,7 +29,8 @@
     <thead>
     <tr>
         <th>
-            <input id="selectAllAppsCheckbox" type="checkbox" ng-model="toggleSelectAll" ng-model-options="{ getterSetter: true }" ui-indeterminate="isSomeButNotAllSelected()"/>
+            <input id="selectAllAppsCheckbox" type="checkbox" ng-model="toggleSelectAll" ng-model-options="{ getterSetter: true }" ui-indeterminate="isSomeButNotAllSelected()"
+                   roles="['ROLE_CREATE']"/>
         </th>
         <th>Name</th>
         <th>Type</th>
@@ -40,7 +41,7 @@
     <tbody>
 
     <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total">
-        <td><input type="checkbox" ng-model="item.select" ng-model-options="{ getterSetter: true }"/></td>
+        <td><input type="checkbox" ng-model="item.select" ng-model-options="{ getterSetter: true }" roles="['ROLE_CREATE']"/></td>
         <td>{{item.name}}</td>
         <td>{{item.type}}</td>
         <td>{{item.uri}}</td>
@@ -51,7 +52,7 @@
             </button>
         </td>
         <td class="action-column">
-            <button type="button" ng-click="unregister(item, $index)"
+            <button roles="['ROLE_CREATE']" type="button" ng-click="unregister(item, $index)"
                     class="btn btn-default" title="Unregister"
             ><span class="glyphicon glyphicon-trash"></span>
             </button>

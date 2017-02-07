@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 the original author or authors.
+ * Copyright 2014-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,43 @@
 define(['angular', 'xregexp', 'moment'], function(angular) {
   'use strict';
   angular.module('dataflowMain.directives', [])
+    .directive('roles', ['userService', '$rootScope', function(userService, $rootScope) {
+
+      function applyRoles(scope, elem) {
+        var found = false;
+
+        if(userService.isAuthenticated){
+          angular.forEach(scope.roles, function(role){
+            found = userService.hasRole(role);
+            console.log('Needed one for the following roles ' + scope.roles + '. Found: ' + found);
+          });
+        }
+        else {
+          found = true;
+        }
+        if (found) {
+          elem.show();
+        }
+        else {
+          elem.hide();
+        }
+      }
+
+      return {
+        restrict: 'A',
+        scope: {
+          roles: '='
+        },
+        link: function (scope, elem) {
+          scope.$watch('userService.isAuthenticated', function() {
+            applyRoles(scope, elem);
+          }, true);
+          $rootScope.$watch('user.roles', function() {
+            applyRoles(scope, elem);
+          }, true);
+        }
+      };
+    }])
     .directive('dataflowParseUrls', [function() {
       var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/gi;
 

@@ -57,6 +57,7 @@ define(['./app'], function (dashboard) {
       template: '<ui-view/>',
       data:{
         authenticate: true,
+        roles: ['ROLE_VIEW'],
         feature: 'tasksEnabled'
       }
     })
@@ -65,6 +66,7 @@ define(['./app'], function (dashboard) {
       template: '<ui-view/>',
       data:{
         authenticate: true,
+        roles: ['ROLE_VIEW'],
         feature: 'tasksEnabled'
       }
     })
@@ -73,6 +75,7 @@ define(['./app'], function (dashboard) {
       template: '<ui-view/>',
       data: {
         authenticate: true,
+        roles: ['ROLE_VIEW'],
         feature: 'analyticsEnabled'
       }
     })
@@ -80,7 +83,8 @@ define(['./app'], function (dashboard) {
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authenticate: true
+        authenticate: true,
+        roles: ['ROLE_VIEW']
       }
     })
     .state('home.streams', {
@@ -88,6 +92,7 @@ define(['./app'], function (dashboard) {
       template: '<ui-view/>',
       data:{
         authenticate: true,
+        roles: ['ROLE_VIEW'],
         feature: 'streamsEnabled'
       }
     })
@@ -95,7 +100,8 @@ define(['./app'], function (dashboard) {
       abstract:true,
       template: '<ui-view/>',
       data:{
-        authenticate: true
+        authenticate: true,
+        roles: ['ROLE_VIEW']
       }
     })
     .state('home.jobs.tabs', {
@@ -143,6 +149,13 @@ define(['./app'], function (dashboard) {
       url : '/disabled/{feature}',
       controller: 'FeatureDisabledController',
       templateUrl : featureTemplatePath + '/disabled.html',
+      data:{
+        authenticate: false
+      }
+    })
+    .state('home.rolesMissing', {
+      url : '/roles-missing',
+      templateUrl : sharedTemplatesPath + '/roles-missing.html',
       data:{
         authenticate: false
       }
@@ -443,6 +456,19 @@ define(['./app'], function (dashboard) {
           $log.info('Need to authenticate...');
           $state.go('login');
           event.preventDefault();
+        }
+        else if (userService.authenticationEnabled && toState.data.authenticate &&
+          userService.isAuthenticated && toState.data.roles && toState.data.roles.length > 0) {
+          $log.info('State requires one of the following roles: ' + toState.data.roles);
+          var found = false;
+          angular.forEach(toState.data.roles, function(role){
+            found = userService.hasRole(role);
+          });
+          if (!found) {
+            $log.info('You do not have any of the necessary role(s) ' + toState.data.roles);
+            $state.go('home.rolesMissing', {feature: toState.data.roles});
+            event.preventDefault();
+          }
         }
       });
   });

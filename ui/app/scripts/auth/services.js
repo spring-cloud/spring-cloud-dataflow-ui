@@ -29,6 +29,15 @@ define(['angular'], function (angular) {
             authenticationEnabled: securityInfo.authenticationEnabled,
             isAuthenticated: securityInfo.authenticated,
             username: securityInfo.username,
+            roles: securityInfo.roles,
+            hasRole: function(role) {
+              if (user.roles.indexOf(role) >= 0){
+                return true;
+              }
+              else {
+                return false;
+              }
+            },
             isFormLogin: false
           };
           return user;
