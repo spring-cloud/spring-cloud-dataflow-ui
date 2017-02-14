@@ -57,6 +57,13 @@ define(['angular', 'lodash'], function (angular, _) {
                         }
                     }).get();
                 },
+                getAppStarters: function () {
+                    return $resource($rootScope.dataflowServerUrl + '/app-starters', {}, {
+                        query: {
+                            method: 'GET'
+                        }
+                    }).get();
+                },
                 createCompositeApp: function(appName,definition) {
                     $log.info('Creating composite app name=' + appName + ' def=' + definition);
                     var request = $http({

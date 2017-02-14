@@ -68,9 +68,9 @@ task.spark-client=maven://org.springframework.cloud.task.app:spark-client-task:1
     </div>
 </form>
 
-<h2>Out-of-the-box Stream app-starters</h2>
+<h2 ng-hide="!appStarters.streamAppStarters.length">Out-of-the-box Stream app-starters</h2>
 
-<table class="table form-table">
+<table class="table form-table" ng-hide="!appStarters.streamAppStarters.length">
     <col width="80%">
     <col width="10%">
     <col width="10%">
@@ -82,7 +82,7 @@ task.spark-client=maven://org.springframework.cloud.task.app:spark-client-task:1
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="item in streamAppStarters">
+    <tr ng-repeat="item in appStarters.streamAppStarters">
         <td>
             {{item.name}}
         </td>
@@ -100,9 +100,9 @@ task.spark-client=maven://org.springframework.cloud.task.app:spark-client-task:1
     </tbody>
 </table>
 
-<h2>Out-of-the-box Task app-starters</h2>
+<h2 ng-hide="!appStarters.taskAppStarters.length">Out-of-the-box Task app-starters</h2>
 
-<table class="table form-table">
+<table class="table form-table" ng-hide="!appStarters.taskAppStarters.length">
     <col width="80%">
     <col width="10%">
     <col width="10%">
@@ -114,7 +114,7 @@ task.spark-client=maven://org.springframework.cloud.task.app:spark-client-task:1
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="item in taskAppStarters">
+        <tr ng-repeat="item in appStarters.taskAppStarters">
             <td>
                 {{item.name}}
             </td>
