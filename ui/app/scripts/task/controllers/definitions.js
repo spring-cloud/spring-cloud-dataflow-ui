@@ -51,7 +51,7 @@ define(['model/pageable'], function (Pageable) {
       }
       $scope.pageable = new Pageable();
       $scope.pageable.sortOrder = 'ASC';
-      $scope.pageable.sortProperty = ['DEFINITION_NAME', 'DEFINITION'];
+      $scope.pageable.sortProperty = ['DEFINITION_NAME'];
       $scope.pagination = {
         current: 1
       };
