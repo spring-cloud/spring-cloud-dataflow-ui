@@ -436,7 +436,7 @@ define(['./app'], function (dashboard) {
           }
         });
   });
-  dashboard.run(function ($rootScope, $state, $stateParams, userService, featuresService, $log) {
+  dashboard.run(function ($rootScope, $state, $stateParams, userService, featuresService, $log, $window, $http) {
 
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
@@ -447,6 +447,11 @@ define(['./app'], function (dashboard) {
     $rootScope.pageRefreshTime = 5000;
     $rootScope.enableMessageRates = true;
 
+    var xAuthToken = $window.sessionStorage.getItem('xAuthToken');
+    if (xAuthToken !== null && userService.isAuthenticated) {
+      console.log('User ' + userService.username + ' is already authenticated, populating http header ' + $rootScope.xAuthTokenHeaderName);
+      $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName] = xAuthToken;
+    }
     $rootScope.$on('$stateChangeStart', function(event, toState) {
         if (toState.data.feature && !$rootScope.features[toState.data.feature]) {
           $log.error('Feature disabled: ' + toState.data.feature);

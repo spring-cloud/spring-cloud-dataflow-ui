@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,13 @@ define(['angular'], function (angular) {
   'use strict';
 
   return angular.module('dataflowAuth.services', [])
-      .factory('userService', function(securityInfo) {
+      .factory('userService', function(securityInfo, $rootScope, $window, $http) {
           var user = {
             authenticationEnabled: securityInfo.authenticationEnabled,
             isAuthenticated: securityInfo.authenticated,
             username: securityInfo.username,
             roles: securityInfo.roles,
+            isFormLogin: securityInfo.formLogin,
             hasRole: function(role) {
               if (user.roles.indexOf(role) >= 0){
                 return true;
@@ -38,7 +39,49 @@ define(['angular'], function (angular) {
                 return false;
               }
             },
-            isFormLogin: false
+            resetUser: function() {
+              user.authenticationEnabled = null;
+              user.isAuthenticated = null;
+              user.isFormLogin = null;
+              user.roles = [];
+              user.username = null;
+              $rootScope.user.username = '';
+              $rootScope.user.isAuthenticated = false;
+            },
+            populateUser: function(userInfo) {
+              user.authenticationEnabled = userInfo.authenticationEnabled;
+              user.isAuthenticated = userInfo.authenticated;
+              user.isFormLogin = userInfo.formLogin;
+              user.roles = userInfo.roles;
+              user.username = userInfo.username;
+
+              $rootScope.user.username = user.username;
+              $rootScope.user.isAuthenticated = user.isAuthenticated;
+            },
+            restoreUser: function (xAuthToken) {
+                if (xAuthToken !== null) {
+                  $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName] = xAuthToken;
+                  $window.sessionStorage.setItem('xAuthToken', xAuthToken);
+                }
+
+                var securityInfoUrl = '/security/info';
+                var timeout = 20000;
+                var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
+
+                promiseHttp.then(function(response) {
+                  console.log('Security info retrieved ...', response.data);
+
+                  $rootScope.user = {
+                    username: response.data.username,
+                    isAuthenticated: response.data.authenticated,
+                    isFormLogin: true,
+                    roles: response.data.roles
+                  };
+
+                  console.log($rootScope.user);
+                });
+                return promiseHttp;
+            }
           };
           return user;
         })
