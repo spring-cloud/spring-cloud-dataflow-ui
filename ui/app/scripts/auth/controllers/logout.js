@@ -21,29 +21,24 @@
  */
 define([], function () {
   'use strict';
-  return ['$window', 'DataflowUtils', '$state', '$log', '$rootScope', '$http', 'userService', function ($window, DataflowUtils, $state, $log, $rootScope, $http, user) {
-    $log.info('Logging out...');
+  return ['$window', 'DataflowUtils', '$state', '$log', '$rootScope', '$http', 'userService', function ($window, DataflowUtils, $state, $log, $rootScope, $http, userService) {
 
-    if ($rootScope.user.isFormLogin) {
+    $log.info('Logging out ...');
+
+    if (userService.isFormLogin) {
+      console.log('Logging out user ' + userService.username + ' (FormLogin)');
       $http.get($rootScope.dataflowServerUrl + '/dashboard/logout').then(function() {
-
-        $rootScope.user.username = '';
-        $rootScope.user.isAuthenticated = false;
-        $rootScope.user.isFormLogin = false;
-
-        user = {
-          authenticationEnabled: true,
-          isFormLogin: false,
-          isAuthenticated: false,
-          username: ''
-        };
-
+        userService.resetUser();
         delete $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName];
+        $window.sessionStorage.removeItem('xAuthToken-token');
         DataflowUtils.growl.success('Logged out.');
         $state.go('login');
       });
     }
-    else{
+    else {
+      console.log('Logging out user ' + userService.username + ' (OAuth)');
+      delete $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName];
+      $window.sessionStorage.removeItem('xAuthToken-token');
       var logoutUrl = '//' + $window.location.host + '/logout';
       console.log('Redirecting to ' + logoutUrl);
       $window.open(logoutUrl, '_self');

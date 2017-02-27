@@ -23,37 +23,50 @@
 
 define([], function () {
   'use strict';
-  return ['$scope', '$state', 'userService', 'DataflowUtils', '$log', '$rootScope', '$http',
-          function ($scope, $state, user, utils, $log, $rootScope, $http) {
-          $scope.loginForm = {};
+  return ['$scope', '$state', 'userService', 'DataflowUtils', '$log', '$rootScope', '$http', '$window',
+          function ($scope, $state, userService, utils, $log, $rootScope, $http, $window) {
+          $scope.loginModel = {
+            username: '',
+            password: ''
+          };
+          $scope.errorMessage = null;
+
           $scope.login = function() {
-            $log.info('Logging in user:', $scope.loginForm.username);
-            var authenticationPromise = $http.post($rootScope.dataflowServerUrl + '/authenticate', $scope.loginForm);
+            $log.info('Logging in user:', $scope);
+            var authenticationPromise = $http.post($rootScope.dataflowServerUrl + '/authenticate', $scope.loginModel);
             utils.addBusyPromise(authenticationPromise);
             authenticationPromise.then(
               function(response) {
-                $rootScope.user.username = $scope.loginForm.username;
-                $rootScope.user.isAuthenticated = true;
-                $rootScope.user.isFormLogin = true;
-                $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName] = response.data;
+                var oauthToken = response.data;
+                $http.defaults.headers.common[$rootScope.xAuthTokenHeaderName] = oauthToken;
 
                 var securityInfoUrl = '/security/info';
                 var timeout = 20000;
                 var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
-                utils.growl.success('User ' + $scope.loginForm.username + ' logged in.');
-                $scope.loginForm = {};
 
                 promiseHttp.then(function(response) {
                   console.log('Security info retrieved ...', response.data);
-                  $rootScope.user.roles = response.data.roles;
-                  $state.go('home.apps.tabs.appsList');
+                  userService.populateUser(response.data);
+                  $window.sessionStorage.setItem('xAuthToken', oauthToken);
+
+                  if (response.data.authenticated) {
+                    utils.growl.success('User ' + response.data.username + ' logged in.');
+                    $scope.loginModel = {
+                      username: '',
+                      password: ''
+                    };
+                    $state.go('home.apps.tabs.appsList');
+                  }
+                  else {
+                    $scope.errorMessage = 'Login failed. Please retry.';
+                  }
                 }, function(errorResponse) {
-                  var errorMessage = 'Error retrieving security info from ' + securityInfoUrl + ' (timeout: ' + timeout + 'ms)';
-                  console.log(errorMessage, errorResponse);
-                  $('.splash .container').html(errorMessage);
+                  console.log('Error getteng securityInfo', errorResponse);
+                  $scope.errorMessage = 'Error retrieving security info from ' + securityInfoUrl + ' (timeout: ' + timeout + 'ms)';
                 });
               },
               function(response) {
+                $scope.errorMessage = response.data[0].message ;
                 utils.growl.error(response.data[0].message);
               }
             );

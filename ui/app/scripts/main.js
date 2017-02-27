@@ -135,13 +135,26 @@ define([
 
   var initInjector = angular.injector(['ng']);
   var $http = initInjector.get('$http');
+  var $window = initInjector.get('$window');
+
+  console.log('Checking whether current session is active ...');
+  var xAuthToken = $window.sessionStorage.getItem('xAuthToken');
+
+  if (xAuthToken !== null) {
+    console.log('Current session found.');
+    $http.defaults.headers.common['x-auth-token'] = xAuthToken;
+  }
+  else {
+    console.log('Initiating new session.');
+  }
+
   var securityInfoUrl = '/security/info';
   var timeout = 20000;
   var promiseHttp = $http.get(securityInfoUrl, {timeout: timeout});
   var promiseFeature = $http.get('/features', {timeout: timeout});
 
   promiseHttp.then(function(response) {
-    console.log('Security info retrieved ...', response.data);
+    console.log('Security info retrieved, user authenticated: ' + response.data.authenticated, response.data);
     app.constant('securityInfo', response.data);
 
     promiseFeature.then(function(featuresResponse) {
@@ -155,6 +168,7 @@ define([
     console.log(errorMessage, errorResponse);
     $('.splash .container').html(errorMessage);
   });
+
   function updateGrowl() {
     var bodyScrollTop = $(document).scrollTop();
     var navHeight = $('nav').outerHeight();
