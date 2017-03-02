@@ -22,9 +22,6 @@
 define(function () {
     'use strict';
 
-    var STREAM_APP_STARTERS_VERSION_SUFFIX = 'Avogadro-SR1-';
-    var TASK_APP_STARTERS_VERSION_SUFFIX = 'Addison-GA-';
-
     return ['$scope', 'AppService', 'DataflowUtils', '$modal', '$state',
         function ($scope, appService, utils, $modal, $state) {
 
@@ -34,46 +31,6 @@ define(function () {
                     appsProperties: null,
                     force: false
                 };
-            }
-
-            function newStreamAppStarters() {
-                return [
-                    {
-                        name: 'Maven based Stream Applications with RabbitMQ Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-rabbit-maven',
-                        force: false
-                    },
-                    {
-                        name: 'Maven based Stream Applications with Kafka Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-kafka-10-maven',
-                        force: false
-                    },
-                    {
-                        name: 'Docker based Stream Applications with RabbitMQ Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-rabbit-docker',
-                        force: false
-                    },
-                    {
-                        name: 'Docker based Stream Applications with Kafka Binder',
-                        uri:  'http://bit.ly/' + STREAM_APP_STARTERS_VERSION_SUFFIX + 'stream-applications-kafka-10-docker',
-                        force: false
-                    }
-                ];
-            }
-
-            function newTaskAppStarters() {
-                return [
-                    {
-                        name: 'Maven based Task Applications',
-                        uri:  'http://bit.ly/' + TASK_APP_STARTERS_VERSION_SUFFIX + 'task-applications-maven',
-                        force: false
-                    },
-                    {
-                        name: 'Docker based Task Applications',
-                        uri:  'http://bit.ly/' + TASK_APP_STARTERS_VERSION_SUFFIX + 'task-applications-docker',
-                        force: false
-                    }
-                ];
             }
 
             // Basic URI validation RegEx pattern
@@ -109,8 +66,6 @@ define(function () {
                         $scope.apps.uri = '';
                         $scope.apps.force = false;
                     });
-                    $scope.streamAppStarters = newStreamAppStarters();
-                    $scope.taskAppStarters   = newTaskAppStarters();
                 });
                 promise.catch(function(error) {
                     utils.growl.error(error.data[0].message);
@@ -132,8 +87,6 @@ define(function () {
             };
 
             $scope.apps = newBulkAppImport();
-            $scope.streamAppStarters = newStreamAppStarters();
-            $scope.taskAppStarters   = newTaskAppStarters();
 
             $scope.$apply();
 

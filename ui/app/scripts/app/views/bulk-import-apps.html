@@ -35,8 +35,8 @@
             <div class="col-sm-7">
             <textarea id="appsProperties" autofocus ng-model="apps.appsProperties" rows="5" ng-list="&#10;" ng-trim="false"
                 class="form-control" placeholder="Example:
-task.timestamp=maven://org.springframework.cloud.task.app:timestamp-task:1.0.0.BUILD-SNAPSHOT
-task.spark-client=maven://org.springframework.cloud.task.app:spark-client-task:1.0.0.BUILD-SNAPSHOT"
+task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE
+task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE"
             ></textarea>
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="bulkImportAppsForm.appsProperties.$invalid"></span>
                 <p class="help-block">Please provide a valid properties where the keys are formatted as
@@ -67,70 +67,6 @@ task.spark-client=maven://org.springframework.cloud.task.app:spark-client-task:1
         <div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default" ng-disabled="bulkImportAppsForm.$invalid"><span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import</button></div>
     </div>
 </form>
-
-<h2>Out-of-the-box Stream app-starters</h2>
-
-<table class="table form-table">
-    <col width="80%">
-    <col width="10%">
-    <col width="10%">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th class="text-center">Force <a dataflow-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a></th>
-        <th class="text-center">Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="item in streamAppStarters">
-        <td>
-            {{item.name}}
-        </td>
-        <td class="text-center">
-            <input type="checkbox" name="{{$index + '_force'}}" ng-model="item.force">
-        </td>
-        <td class="action-column text-center">
-            <button type="button" ng-click="bulkImportApps(item)"
-                    class="btn btn-sm btn-default"
-                    title="Bulk Import Apps"
-            ><span class="glyphicon glyphicon-import"></span>
-            </button>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<h2>Out-of-the-box Task app-starters</h2>
-
-<table class="table form-table">
-    <col width="80%">
-    <col width="10%">
-    <col width="10%">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th class="text-center">Force <a dataflow-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a></th>
-            <th class="text-center">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="item in taskAppStarters">
-            <td>
-                {{item.name}}
-            </td>
-            <td class="text-center">
-                <input type="checkbox" name="{{$index + '_force'}}" ng-model="item.force">
-            </td>
-            <td class="action-column text-center">
-                <button type="button" ng-click="bulkImportApps(item)"
-                        class="btn btn-sm btn-default"
-                        title="Bulk Import Apps"
-                ><span class="glyphicon glyphicon-import"></span>
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
 <div class="force-help-content hide">
     <span class="force-help-content">By checking <strong>force</strong>, the applications will be imported and installed
