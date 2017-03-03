@@ -176,7 +176,7 @@ define(function (require) {
                                             properties[p.id] = p;
                                         }
                                     }
-                                    if (p.sourceType === 'org.springframework.cloud.stream.app.transform.ProgrammableRxJavaProcessorProperties') {
+                                    if (p.sourceType === 'org.springframework.cloud.stream.app.transform.ProgrammableReactiveProcessorProperties') {
                                         if (p.name === 'code') {
                                             p.contentType = 'java';
                                         }
