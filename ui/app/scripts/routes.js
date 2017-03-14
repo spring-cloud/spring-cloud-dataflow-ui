@@ -306,6 +306,24 @@ define(['./app'], function (dashboard) {
         feature: 'tasksEnabled'
       }
     })
+    .state('home.tasks.detailedTask', {
+      url : 'tasks/definitions/{taskName}',
+      templateUrl : taskTemplatesPath + '/detailed-task.html',
+      controller: 'DetailedTaskController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
+    })
+    .state('home.tasks.tabs.createComposedTask', {
+      url: '/create-composed-task',
+      templateUrl: taskTemplatesPath + '/create-composed-task.html',
+      controller: 'CreateComposedTaskController',
+      data:{
+        authenticate: true,
+        feature: 'tasksEnabled'
+      }
+    })
     .state('home.tasks.bulkDefineTasks', {
       url : 'tasks/bulk-define-tasks',
       templateUrl : taskTemplatesPath + '/bulk-define-tasks.html',

@@ -35,17 +35,19 @@ define(['angular', 'angularMocks', 'app'], function (angular) {
 
         beforeEach(module('dataflowMain'));
 
-        beforeEach(inject(function(AppService, $q){
-            spyOn(AppService, 'getAppInfo').and.callFake(function(type, name) {
+        beforeEach(inject(function(TaskAppService, $q){
+            spyOn(TaskAppService, 'getSingleApp').and.callFake(function(name) {
                 var deferred = $q.defer();
                 if (angular.isDefined(TASK_APPS[name])) {
-                    deferred.resolve({
-                        data: JSON.parse(TASK_APPS[name])
-                    });
+                    deferred.resolve(
+                        JSON.parse(TASK_APPS[name])
+                    );
                 } else {
                     deferred.reject();
                 }
-                return deferred.promise;
+                return {
+                    '$promise': deferred.promise
+                };
             });
         }));
 

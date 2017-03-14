@@ -10,8 +10,8 @@
                     <label for="{{derivedProperties[key].id}}" class="col-sm-3 control-label">{{derivedProperties[key].name | camelCaseToHuman}}</label>
                     <div class="col-sm-9" ng-if="getInputType(derivedProperties[key]) === 'stream-name'">
                         <input type="text" id="{{derivedProperties[key].id}}" ng-model-options="{ debounce: 250 }"
-                               name="{{derivedProperties[key].id}}" class="form-control" placeholder="{{derivedProperties[key].defaultValue}}" ng-model="derivedProperties[key].value"
-                               ng-pattern="derivedProperties[key].pattern" none-of="derivedProperties[key].streamNames" unique-stream-name>
+                               name="{{derivedProperties[key].id}}" class="form-control" placeholder="{{derivedProperties[key].defaultValue}}" ng-model="derivedProperties[key].valueFunc"
+                               ng-model-options="{ getterSetter: true }" ng-pattern="derivedProperties[key].pattern" none-of="derivedProperties[key].streamNames" unique-stream-name>
                         <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="appForm[derivedProperties[key].id].$invalid"></span>
                         <p ng-show="appForm[derivedProperties[key].id].$valid" class="help-block">{{derivedProperties[key].description | capitalize}}</p>
                         <p ng-show="appForm[derivedProperties[key].id].$pending.uniqueStreamName" class="help-block"><i>Checking if stream name is available...</i></p>
@@ -65,7 +65,8 @@
                     <label for="{{properties[key].id}}" class="col-sm-3 control-label">{{properties[key].name | camelCaseToHuman}}</label>
                     <div class="col-sm-9" ng-if="getInputType(properties[key]) !== 'checkbox' && getInputType(properties[key]) !== 'code' && getInputType(properties[key]) !== 'select'">
                         <input type="{{getInputType(properties[key])}}" id="{{properties[key].id}}"
-                               name="{{properties[key].id}}" class="form-control" placeholder="{{properties[key].defaultValue}}" ng-model="properties[key].value" ng-pattern="properties[key].pattern">
+                               name="{{properties[key].id}}" class="form-control" placeholder="{{properties[key].defaultValue}}"
+                               ng-model="properties[key].valueFunc" ng-model-options="{ getterSetter: true }" ng-pattern="properties[key].pattern">
                         <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="appForm[properties[key].id].$invalid"></span>
                         <p class="help-block">{{properties[key].description | capitalize}}</p>
                     </div>

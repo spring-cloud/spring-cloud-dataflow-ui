@@ -78,7 +78,7 @@
             </td>
         </tr>
         <tr ng-controller="MetricController" ng-repeat-end>
-            <td ng-if="item.stream && item.type" colspan="8">
+            <td class="collapse-row" ng-if="item.stream && item.type" colspan="8">
                     <counter-header ng-if="item.type.label === 'Counters' && item.stream" data="metricsData.value" rates="metricsData.values"></counter-header>
                     <gauge-header ng-if="item.type.label === 'Gauges' && item.stream" data="metricsData.value"></gauge-header>
                     <rich-gauge-header ng-if="item.type.label === 'Rich-Gauges' && item.stream" data="metricsData.value"></rich-gauge-header>

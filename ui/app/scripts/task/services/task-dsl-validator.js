@@ -23,7 +23,7 @@
 define(function() {
     'use strict';
 
-    return ['DataflowUtils', 'ParserService', 'AppService', function (utils, parserService, appService) {
+    return ['DataflowUtils', 'ParserService', 'TaskAppService', function (utils, parserService, taskAppService) {
 
         var DEBUG = false;
 
@@ -48,10 +48,10 @@ define(function() {
                 } else {
                     // On a successful call, result.data will be a JSON Object
                     // with name/type/uri/shortDescription/options
-                    appService.getAppInfo('task', name).then(function (result) {
+                    taskAppService.getSingleApp(name).$promise.then(function (result) {
                         // sleep(2000).then(()=>{
-                        appInfos[name] = result.data;
-                        deferred.resolve(result.data);
+                        appInfos[name] = result;
+                        deferred.resolve(result);
                         if (DEBUG) { utils.$log.info('>getAppInfo fetched data for app '+name+' = '+JSON.stringify(result.data)); }
                         // });
                     }, function (error) {

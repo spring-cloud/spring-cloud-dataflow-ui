@@ -1,3 +1,5 @@
+@flo-shape-fill-color: #eeeeee;
+
 .flow-view {
   height:625px;
   font-family: inherit;
@@ -131,18 +133,19 @@ input.btn.ng-invalid {
   cursor: pointer;
 }
 
-.element.highlighted circle {
+.joint-element.highlighted circle {
   stroke: #34302d;
   stroke-width: 3;
 }
 
-.link.highlighted path {
+.joint-link.highlighted path {
   stroke-width: 3;
 }
 
+// Make transparent the circle around the link-tools (cog) icon. It'll allow shape to have a circle clicking area
 .link-tools .tool-options circle {
-  fill: white;
-  stroke: black;
+  fill: transparent;
+  stroke: transparent;
 }
 
 .link-tools .tool-options path {
@@ -165,51 +168,51 @@ input.btn.ng-invalid {
   fill: transparent;
 }
 
-.marker-vertex {
+.joint-link.joint-theme-default .marker-vertex {
   fill: #70A5D9;
   stroke: @spring-brown;
   stroke-width: 1;
 }
 
-.marker-vertex:hover {
+.joint-link.joint-theme-default .marker-vertex:hover {
   fill: #4C7EA5;
   stroke: @spring-brown;
   stroke-width: 2;
 }
 
-.marker-arrowhead {
+.joint-link.joint-theme-default .marker-arrowhead {
   fill: #70A5D9;
   stroke: @spring-brown;
   stroke-width: 1;
 }
 
-.marker-arrowhead:hover {
+.joint-link.joint-theme-default .marker-arrowhead:hover {
   fill: #4C7EA5;
   stroke: @spring-brown;
   stroke-width: 2;
 }
 
-.marker-vertex-remove {
-  fill: @spring-brown;
-  stroke: @spring-brown;
-  opacity: 0.4
-}
+//.joint-link.joint-theme-default .marker-vertex-remove {
+//  fill: @spring-brown;
+//  stroke: @spring-brown;
+//  opacity: 0.4
+//}
+//
+//.joint-link.joint-theme-default .marker-vertex-remove:hover {
+//  fill: @spring-brown;
+//  stroke: @spring-brown;
+//  opacity: 1;
+//}
 
-.marker-vertex-remove:hover {
-  fill: @spring-brown;
-  stroke: @spring-brown;
-  opacity: 1;
-}
-
-.marker-vertex-remove-area {
-  stroke: @spring-brown;
-  opacity: 0.4
-}
-
-.marker-vertex-remove-area:hover {
-  stroke: @spring-brown;
-  opacity: 1;
-}
+//.joint-link.joint-theme-default .marker-vertex-remove-area {
+//  stroke: @spring-brown;
+//  opacity: 0.4
+//}
+//
+//.joint-link.joint-theme-default .marker-vertex-remove-area:hover {
+//  stroke: @spring-brown;
+//  opacity: 1;
+//}
 
 .available-magnet {
     stroke-width: 3;
@@ -235,6 +238,7 @@ input.btn.ng-invalid {
 .tooltip.red-tooltip .tooltip-inner {
   background-color: red;
   max-width: 350px;
+  text-align: left;
 }
 .tooltip.right.red-tooltip .tooltip-arrow {
   border-right-color: red;
@@ -283,6 +287,10 @@ input.btn.ng-invalid {
   border-color: @btn-default-border;
 }
 
+.joint-type-palette-groupheader rect {
+  stroke: @spring-green;
+}
+
 #sidebar-resizer {
   background-color: @spring-brown;
 }
@@ -302,8 +310,9 @@ input.btn.ng-invalid {
   stroke: @btn-default-color;
 }
 
-.IntNode .box {
+.stream-module .box {
   stroke: @spring-green;
+  fill: @flo-shape-fill-color;
 }
 
 .table .flow-view {
@@ -321,3 +330,117 @@ input.btn.ng-invalid {
 .dsl-editor-page {
   height: 400px;
 }
+
+.composed-task .border {
+  fill: @flo-shape-fill-color;
+  stroke: @spring-green;
+  stroke-width: 2;
+}
+
+.composed-task .outer {
+  fill: transparent;
+  stroke: @spring-green;
+  stroke-width: 2;
+}
+
+.composed-task .inner {
+  fill: @flo-shape-fill-color;
+  stroke: @spring-green;
+  stroke-width: 2;
+}
+
+.composed-task .input-port {
+  fill: @flo-shape-fill-color;
+  stroke: @spring-brown;
+}
+
+.composed-task .output-port {
+  fill: @flo-shape-fill-color;
+  stroke: @spring-brown;
+}
+
+.fail-cross {
+  fill: @spring-green;
+  stroke: @spring-green;
+}
+
+.composed-task .label {
+  font-family: inherit;
+  fill: @spring-brown;
+  font-size: 85%;
+}
+
+.connection.composed-task-graph-transition {
+  stroke: #777777;
+  stroke-dasharray: 1,5;
+}
+
+.marker-source.composed-task-graph-transition {
+  stroke: #777777;
+  fill: #777777;
+}
+
+.marker-target.composed-task-graph-transition {
+  stroke: #777777;
+  fill: #777777;
+}
+
+// Link Tools handle shows up on a link in Composed Task editor
+.link-tool.composed-task .tool-options {
+  display: block;
+}
+
+@keyframes flash-stroke-width {
+  0%    { stroke-width: 1; }
+  50%   { stroke-width: 4; }
+  100%  { stroke-width: 1; }
+}
+
+// Stream modules DnD shape animation
+.dnd-source-feedback .stream-module .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback .stream-module .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+// Composed Task DnD shape animation
+.dnd-source-feedback .composed-task .border {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback .composed-task .border {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+// Ports DnD animation
+.dnd-source-feedback.input-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-source-feedback.output-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-source-feedback.tap-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback.input-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback.output-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback.tap-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+// Links DnD feedback animation
+.dnd-source-feedback .connection {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback .connection {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+.stream-deploying .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+

@@ -95,6 +95,14 @@ define(function (require) {
                 }
             }
 
+            /**
+             * List of groups in a specific order for the palette
+             * @returns {[string,string,string,string]}
+             */
+            function groups() {
+                return ['source', 'processor', 'sink', 'other'];
+            }
+
             var mapOfSpecialProperties = {
                 'http':['^server.port$'],
                 'jdbc':['^spring\.datasource\..*'],
@@ -156,14 +164,14 @@ define(function (require) {
                     var infoPromise;
                     get = function (property) {
                         if (!infoPromise) {
-                            infoPromise = appService.getAppInfo(node.group, node.name);
+                            infoPromise = appService.getAppInfo(node.group, node.name).$promise;
                         }
                         var deferred = utils.$q.defer();
                         infoPromise.then(function (result) {
                             var properties = {};
-                            if (angular.isArray(result.data.options)) {
-                                var whitelisted = isWhitelisted(result.data.options);
-                                result.data.options.forEach(function (p) {
+                            if (angular.isArray(result.options)) {
+                                var whitelisted = isWhitelisted(result.options);
+                                result.options.forEach(function (p) {
                                     if (whitelisted) {
                                         // id is the long-name, eg. 'trigger.initial-delay'
                                         // name is the short-name, eg. 'initial-delay'
@@ -213,9 +221,9 @@ define(function (require) {
                                 deferred.resolve(properties);
                             } else {
                                 if (property === 'description') {
-                                    deferred.resolve(result.data.shortDescription);
+                                    deferred.resolve(result.shortDescription);
                                 } else {
-                                    deferred.resolve(result.data[property]);
+                                    deferred.resolve(result[property]);
                                 }
                             }
                         }, function (error) {
@@ -769,6 +777,7 @@ define(function (require) {
             return {
                 subscribe: subscribe,
                 unsubscribe: unsubscribe,
+                groups: groups,
                 refresh: refresh,
                 load: load,
                 textToGraph: textToGraph,

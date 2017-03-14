@@ -37,7 +37,7 @@
     </thead>
     <tbody>
 
-    <tr dir-paginate-start="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total" ng-show="!item.inactive">
+    <tr dir-paginate-start="item in pageable.items | itemsPerPage: pageable.pageSize track by item.name" total-items="pageable.total" ng-show="!item.inactive">
         <td>
             <button class="collapse-handle-button" ng-click="toggleExpanded(item.name)" ng-class="{on:isExpanded(item.name)}"></button>
         </td>
@@ -71,9 +71,9 @@
         </td>
     </tr>
     <tr dir-paginate-end ng-show="!item.inactive">
-        <td ng-if="isExpanded(item.name)" colspan="7" ng-class="{undeployed: item.status !== 'deployed'}">
+        <td class="collapse-row" ng-if="isExpanded(item.name)" colspan="8" ng-class="{undeployed: item.status !== 'deployed'}">
             <flo-editor ng-controller="StreamController" init-read-only-canvas="true" metamodel-service-name="StreamMetamodelService" render-service-name="StreamRenderService" init-read-only-canvas="true"
-                        ng-init="paperPadding=65; definition.text=item.dslText; flo.noPalette=true; canvasControls={zoom:true};"></flo-editor>
+                        ng-init="paperPadding=10; definition.text=item.dslText; flo.noPalette=true; canvasControls={zoom:true};"></flo-editor>
         </td>
     </tr>
     </tbody>

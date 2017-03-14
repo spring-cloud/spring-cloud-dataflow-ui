@@ -5,6 +5,9 @@
 <p ng-class="{ hide: !$state.includes('home.tasks.tabs.definitions') }" class="index-page--subtitle">This section lists all
     the task definitions and allows you to create, launch and destroy them.
 </p>
+<p ng-class="{ hide: !$state.includes('home.tasks.tabs.createComposedTask') }" class="index-page--subtitle">This section allows
+    for creation of composed tasks.
+</p>
 <p ng-class="{ hide: !$state.includes('home.tasks.tabs.executions') }" class="index-page--subtitle">This section lists all the
     available task executions.
 </p>
@@ -13,6 +16,8 @@
         <li ng-class="{ active: $state.includes('home.tasks.tabs.appsList') }"><a ui-sref="home.tasks.tabs.appsList">Apps</a></li>
         <li ng-class="{ active: $state.includes('home.tasks.tabs.definitions') }"><a ui-sref="home.tasks.tabs.definitions">Definitions</a>
         </li>
+        <li ng-class="{ active: $state.includes('home.tasks.tabs.createComposedTask') }"><a
+                ui-sref="home.tasks.tabs.createComposedTask">Create Composed Task</a></li>
         <li ng-class="{ active: $state.includes('home.tasks.tabs.executions') }"><a
                 ui-sref="home.tasks.tabs.executions">Executions</a></li>
     </ul>

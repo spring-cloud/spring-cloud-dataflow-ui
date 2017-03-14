@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+/**
+ * Definition of the read-only Flo Stream controller
+ *
+ * @author Alex Boyko
+ */
 define(function (require) {
     'use strict';
 
     var joint = require('joint');
-
-    var ANIMATION_DURATION = 1500;
 
     var statusToFilter = {
         undeployed: 'grayscale',
@@ -31,86 +34,21 @@ define(function (require) {
 
     return ['$scope', function ($scope) {
 
-        function isFlashing() {
-            return $scope.item.status === 'deploying' || $scope.item.status === 'partial';
-        }
-
-        // End of transition callback
-        function endTransition(cell, transition) {
-            // Consider only at animations that are done on appropriate color filter
-            if (transition === 'attrs/.shape/filter/args/amount') {
-                // Color filter turned off -> remove colour filter
-                if (cell.attr('.shape/filter/args/amount') === 0) {
-                    cell.attr('.shape/filter', null);
-                }
-                // Remove end of transition event callback
-                cell.off('transition:end', endTransition);
-                if (isFlashing()) {
-                    // Switch on/off colour filter if shape should be flashing
-                    transitionFilter(cell, cell.attr('.shape/filter') ? undefined : statusToFilter[$scope.item.status]);
-                }
-            }
-        }
-
-        // Stop colour filter animation
-        function stopAnimation(cell) {
-            // Remove end of transition event callback
-            cell.off('transition:end', endTransition);
-            // Stop the colour filter animation
-            cell.stopTransitions('attrs/.shape/filter/args/amount');
-        }
-
-        // Transitions between filters applying animation where appropriate
-        function transitionFilter(cell, newFilter) { // jshint ignore:line
-            var oldFilter = cell.attr('.shape/filter/name');
-            if (newFilter !== oldFilter) {
-                if (!oldFilter) {
-                    stopAnimation(cell);
-                    cell.attr('.shape/filter', {name: newFilter, args: {amount: 0}});
-                    cell.transition('attrs/.shape/filter/args/amount', 1, {
-                        delay: 0,
-                        duration: ANIMATION_DURATION,
-                        valueFunction: joint.util.interpolate.number,
-                        timingFunction: joint.util.timing.quad
-                    });
-                    cell.on('transition:end', endTransition);
-                } else if (!newFilter) {
-                    // Ensure that filter amount is set explicitly!
-                    stopAnimation(cell);
-                    cell.attr('.shape/filter/args/amount', 1);
-                    cell.transition('attrs/.shape/filter/args/amount', 0, {
-                        delay: 0,
-                        duration: ANIMATION_DURATION,
-                        valueFunction: joint.util.interpolate.number,
-                        timingFunction: joint.util.timing.quad
-                    });
-                    cell.on('transition:end', endTransition);
-                } else {
-                    cell.attr('.shape/filter', {name: newFilter});
-                }
-            }
-        }
-
-        // Initial setting of the colour feedback for an app shape
-        function initAppColouring(cell) {
+        function colorApp(cell) {
             // Check if it one the apps, destination or tap shapes
             if (cell.attr('metadata/group')) {
-                // Stop any color filter animation if there is any in progress
-                stopAnimation(cell);
-                // Unset color filter
-                cell.removeAttr('.shape/filter');
-                var status = $scope.item.status;
-                var filter = statusToFilter[status];
-                // If filter needs to be applied, do so.
-                if (filter) {
-                    if (isFlashing()) {
-                        // If shape needs to be flashed, start animation of the color filter.
-                        transitionFilter(cell, filter);
-                    } else {
-                        // Otherwise, set the colour filter
-                        cell.attr('.shape/filter', {name: filter});
-                    }
-                }
+                var filter = statusToFilter[$scope.item.status.toLowerCase()];
+                cell.attr('.shape/filter', filter ? {name: filter, args: {amount: 1}} : null);
+            }
+        }
+
+        function animateGraph() {
+            var paper = $scope.flo.getPaper();
+            var status = $scope.item.status ? $scope.item.status.toLowerCase() : undefined;
+            if (status === 'deploying' || status === 'partial') {
+                joint.V(paper.el).addClass('stream-deploying');
+            } else {
+                joint.V(paper.el).removeClass('stream-deploying');
             }
         }
 
@@ -119,7 +57,7 @@ define(function (require) {
         // contents. Therefore, just add a listener to track when cells are added to the graph and adjust the color
         // filter for the newly added cell.
         $scope.flo.getGraph().on('add', function (cell) {
-            initAppColouring(cell);
+            colorApp(cell);
         });
 
         $scope.$watch(function () {
@@ -127,14 +65,17 @@ define(function (require) {
         }, function (newValue, oldValue) {
             if (newValue !== oldValue) {
                 $scope.flo.getGraph().getElements().forEach(function (cell) {
-                    transitionFilter(cell, statusToFilter[$scope.item.status]);
+                    colorApp(cell);
                 });
+                animateGraph();
             }
         });
 
         $scope.flo.getGraph().getElements().forEach(function (cell) {
-            initAppColouring(cell);
+            colorApp(cell);
         });
+
+        animateGraph();
 
     }];
 });

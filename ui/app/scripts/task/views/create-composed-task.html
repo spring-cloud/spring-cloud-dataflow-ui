@@ -1,0 +1,34 @@
+<div id="flo-container">
+    <flo-editor disable-properties="true" palette-size="170" paper-padding="10" metamodel-service-name="ComposedTasksMetamodelService"
+                editor-service-name="ComposedTasksEditorService" render-service-name="ComposedTasksRenderService" ng-init="gridOn ? flo.gridSize(25) : flo.gridSize(1)";>
+        <div class="row no-user-selection">
+            <div class="col-md-12">
+                <div class="col-md-12 table-filter">
+                    <button ng-click="createComposedJob()" class="btn btn-default" ng-disabled="flo.getGraph().getElements().length <= 2">Create</button>
+                    <button ng-click="flo.clearGraph()" class="btn btn-default">Clear</button>
+                    <button ng-click="flo.performLayout(); flo.fitToPage();" class="btn btn-default">Layout</button>
+                    <span class="btn btn-default">
+					    <label>Zoom: </label>
+					    <input class="btn btn-default flo-toolbar" type="text" ng-model="flo.zoomPercent" ng-model-options="{ getterSetter: true, updateOn: 'blur change' }" size="3"></input>
+					    <label>%</label>
+					    <span>
+					        <input type="range" ng-model="flo.zoomPercent" ng-model-options="{ getterSetter: true }" step="{{flo.getZoomStep()}}" max="{{flo.getMaxZoom()}}" min="{{flo.getMinZoom()}}" data-type="range" name="range" class="range flo-toolbar"/>
+					    </span>
+                    </span>
+                    <span class="btn btn-default">
+                        <input type="checkbox" ng-model="gridOn" ng-model-options="{ getterSetter: true }">Grid</input>
+				    </span>
+                    <button type="button" class="btn btn-default" ng-click="toggleCollapsed()">
+                        <span class="{{isCollapsed() ? 'glyphicon glyphicon-collapse-down' : 'glyphicon glyphicon-collapse-up'}}"></span>
+                        {{isCollapsed() ?'Open DSL View':'Close DSL View'}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div collapse="isCollapsed()">
+            <div class="flow-definition-container">
+                <textarea dsl-editor id="flow-definition" class="flow-definition" placeholder="Enter Composed Task definition here..." overview-ruler="true"></textarea>
+            </div>
+        </div>
+    </flo-editor>
+</div>

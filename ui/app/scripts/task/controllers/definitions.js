@@ -20,12 +20,42 @@
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
  */
-define(['model/pageable'], function (Pageable) {
+define(['model/pageable', 'angular'], function (Pageable, angular) {
   'use strict';
-  return ['$scope', 'TaskDefinitions', 'TaskDefinitionService', 'DataflowUtils', '$state', '$timeout', '$rootScope',
-    function ($scope, taskDefinitions, taskDefinitionService, utils, $state, $timeout, $rootScope) {
+
+  var PREFIX_COMPOSED_TASK_DEF = '--graph="';
+  var SUFFIX_COMPOSED_TASK_DEF = '"';
+  // var EXPANDED_STATE_COOKIE_KEY = 'taskDefs.expandedState';
+
+  return ['$scope', 'TaskDefinitions', 'TaskDefinitionService', 'DataflowUtils', '$state', '$rootScope', /*'$cookieStore',*/
+    function ($scope, taskDefinitions, taskDefinitionService, utils, $state, $rootScope/*, $cookieStore*/) {
 
       var getTaskDefinitions;
+      var expandedState = /*$cookieStore.get(EXPANDED_STATE_COOKIE_KEY) ||*/ {};
+
+      $scope.toggleExpanded = function(name) {
+        if (expandedState[name]) {
+          delete expandedState[name];
+        } else {
+          expandedState[name] = true;
+        }
+      };
+
+      $scope.isExpanded = function(name) {
+        return expandedState[name];
+      };
+
+      $scope.collapsePage = function() {
+        $scope.pageable.items.forEach(function(item) {
+          delete expandedState[item.name];
+        });
+      };
+
+      $scope.expandPage = function() {
+        $scope.pageable.items.forEach(function(item) {
+          expandedState[item.name] = true;
+        });
+      };
 
       function loadTaskDefinitions(pageable, showGrowl) {
         var taskDefinitionsPromise =  taskDefinitions.getAllTaskDefinitions(pageable).$promise;
@@ -38,11 +68,11 @@ define(['model/pageable'], function (Pageable) {
                 $scope.pageable.items = result._embedded.taskDefinitionResourceList;
               }
               $scope.pageable.total = result.page.totalElements;
-              getTaskDefinitions = $timeout(function() {
+              getTaskDefinitions = utils.$timeout(function() {
                 loadTaskDefinitions($scope.pageable, false);
               }, $rootScope.pageRefreshTime);
               $scope.$on('$destroy', function(){
-                $timeout.cancel(getTaskDefinitions);
+                utils.$timeout.cancel(getTaskDefinitions);
               });
             }, function (result) {
               utils.growl.addErrorMessage(result.data[0].message);
@@ -90,6 +120,33 @@ define(['model/pageable'], function (Pageable) {
       $scope.bulkDefineTasks = function() {
         $state.go('home.tasks.bulkDefineTasks');
       };
+      $scope.detailed = function(task) {
+        $state.go('home.tasks.detailedTask', {taskName: task.name});
+      };
+      $scope.getComposedTaskDefinition = function(item) {
+        if (item && angular.isString(item.dslText)) {
+          var start = item.dslText.indexOf(PREFIX_COMPOSED_TASK_DEF);
+          if (start >= 0) {
+            start = start + PREFIX_COMPOSED_TASK_DEF.length;
+            var end = item.dslText.indexOf(SUFFIX_COMPOSED_TASK_DEF, start);
+            if (end > start) {
+              return item.dslText.substring(start, end);
+            }
+          }
+        }
+      };
+      $scope.$on('$destroy', function() {
+        // if (Object.keys(expandedState).length === 0) {
+        //   $cookieStore.remove(EXPANDED_STATE_COOKIE_KEY);
+        // } else {
+        //   $cookieStore.put(EXPANDED_STATE_COOKIE_KEY, expandedState);
+        // }
+
+        if (getTaskDefinitions) {
+          utils.$timeout.cancel(getTaskDefinitions);
+        }
+      });
+
 
       loadTaskDefinitions($scope.pageable);
     }];
