@@ -39,9 +39,12 @@ require.config({
 
     joint: '/base/app/lib/joint/joint',
     backbone: '/base/app/lib/backbone/backbone',
-    lodash: '/base/app/lib/lodash/lodash.compat',
+    lodash: '/base/app/lib/lodash/lodash',
 
-    flo: '/base/app/lib/spring-flo/spring-flo'
+    flo: '/base/app/lib/spring-flo/spring-flo',
+
+    dagre: '/base/app/lib/dagre/dagre.core',
+    graphlib: '/base/app/lib/graphlib/graphlib.core'
 
   },
   map: {
@@ -64,7 +67,7 @@ require.config({
     cgBusy: {
       deps: ['angular']
     },
-    'ngClipboard': {
+    'ngclipboard': {
       deps: ['clipboard', 'angular']
     },
     'angularHighlightjs': {
@@ -97,6 +100,12 @@ require.config({
     backbone: {
       deps: ['underscore', 'jquery']
     },
+    'graphlib': {
+      deps: ['underscore']
+    },
+    'dagre': {
+      deps: ['graphlib', 'underscore']
+    },
 	'underscore': {
 	    exports: '_'
 	},
@@ -105,7 +114,7 @@ require.config({
     },
     'flo': {
     	deps: ['angular', 'jquery', 'joint', 'underscore']
-    },
+    }
   },
   deps: tests,
   callback: window.__karma__.start

@@ -81,7 +81,7 @@ define(['model/pageable'], function (Pageable) {
 
                                 // Define function for obtaining properties of a app
                                 item.getProperties = function() {
-                                    return appService.getAppInfo(this.type, this.name);
+                                    return appService.getAppInfo(this.type, this.name).$promise;
                                 };
 
                             });
@@ -303,9 +303,9 @@ define(['model/pageable'], function (Pageable) {
                             utils.addBusyPromise(infoPromise);
 
                             infoPromise.then(function (result) {
-                                $scope.data = result.data;
+                                $scope.data = result;
                             }, function (error) {
-                                utils.growl.error(error.data[0].message);
+                                utils.growl.error(error.message);
                             });
 
                             $scope.close = function () {

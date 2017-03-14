@@ -24,17 +24,26 @@
 <table class="table table-striped table-hover">
   <thead>
     <tr>
+      <th></th>
       <th table-sort sort-property="['DEFINITION_NAME', 'DEFINITION']" sort-state="pageable" sort-order-change-handler="sortChanged">Name</th>
       <th table-sort sort-property="['DEFINITION','DEFINITION_NAME']"      sort-state="pageable" sort-order-change-handler="sortChanged">Definition</th>
       <th>Status <a class="status-help" dataflow-popover=".status-help-content" title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a></th>
-      <th colspan="3" class="text-center">Actions</th>
+      <th colspan="4" class="text-center">Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr dir-paginate="item in pageable.items | itemsPerPage: pageable.pageSize" total-items="pageable.total" ng-show="!item.inactive">
+    <tr dir-paginate-start="item in pageable.items | itemsPerPage: pageable.pageSize track by item.name" total-items="pageable.total" ng-show="!item.inactive">
+      <td>
+        <button ng-if="getComposedTaskDefinition(item)" class="collapse-handle-button" ng-click="toggleExpanded(item.name)" ng-class="{on:isExpanded(item.name)}"></button>
+      </td>
       <td>{{item.name}}</td>
       <td dataflow-format-stream='item.dslText'></td>
       <td>{{item.status}}</td>
+      <td class="action-column">
+        <button ng-if="getComposedTaskDefinition(item)" type="button" ng-click="detailed(item)" class="btn btn-default">
+          <span class="glyphicon glyphicon-info-sign"></span> Details
+        </button>
+      </td>
       <td class="action-column">
         <button type="button" ng-click="launchTask(item)"
                                         class="btn btn-default"
@@ -45,6 +54,12 @@
                 class="btn btn-default" data-toggle="modal" data-target="#confirm-destroy"
                 ><span class="glyphicon glyphicon-remove"></span> Destroy
         </button>
+      </td>
+    </tr>
+    <tr dir-paginate-end ng-show="!item.inactive">
+      <td class="collapse-row" ng-if="getComposedTaskDefinition(item) && isExpanded(item.name)" colspan="8" ng-class="{undeployed: item.status !== 'deployed'}">
+        <flo-editor init-read-only-canvas="true" metamodel-service-name="ComposedTasksMetamodelService" render-service-name="ComposedTasksRenderService"
+                    ng-init="paperPadding=5; definition.text=getComposedTaskDefinition(item); flo.noPalette=true; canvasControls={zoom:true};"></flo-editor>
       </td>
     </tr>
   </tbody>

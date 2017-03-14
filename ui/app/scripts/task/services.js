@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 the original author or authors.
+ * Copyright 2013-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ define(function(require) {
           },
           getAllTaskDefinitions: function (pageable) {
             var params = {};
-            if (pageable === 'undefined') {
+            if (pageable === undefined) {
               $log.info('Getting all task definitions.');
             }
             else {
@@ -87,7 +87,7 @@ define(function(require) {
       .factory('TaskAppService', function ($resource, $http, $log, $rootScope) {
         return {
           getAllApps: function (pageable) {
-            if (pageable === 'undefined') {
+            if (pageable === undefined) {
               $log.info('Getting all tasks apps.');
               return $resource($rootScope.dataflowServerUrl + '/apps', { 'type': 'task' }).get();
             }
@@ -125,6 +125,18 @@ define(function(require) {
             return $resource($rootScope.dataflowServerUrl + '/tasks/definitions/' + taskDefinition.name, null, {
               destroy: { method: 'DELETE' }
             }).destroy();
+          },
+          createDefinition: function (name, dsl) {
+            $log.info('Creating Task Definition' + name);
+            return $resource($rootScope.dataflowServerUrl + '/tasks/definitions/', {}, {
+              createDefinition: {
+                method: 'POST',
+                params: {
+                  name: name,
+                  definition: dsl
+                }
+              }
+            }).createDefinition();
           }
         };
       })
@@ -204,6 +216,62 @@ define(function(require) {
           }
         };
       })
-      .factory('TaskDslValidatorService', require('task/services/task-dsl-validator')).
-      factory('TaskContentAssistService', require('task/services/content-assist-service'));
+      .factory('PropertiesDialogService', function($modal, $log) {
+          return {
+              show: function(element) {
+                  $modal.open({
+                      animation: true,
+                      templateUrl: 'scripts/task/dialogs/task-element-properties-dialog.html',
+                      controller: 'TaskElementPropertiesDialogController',
+                      size: 'lg',
+                      resolve: {
+                          cell: function () {
+                              return element;
+                          }
+                      }
+                  }).result.then(function (results) {
+
+                      $log.debug(JSON.stringify(results));
+
+                      var properties = results.properties;
+                      var property;
+
+                      element.trigger('batch:start', { batchName: 'update properties' });
+
+                      if (results.labelProperty) {
+                          if (results.labelProperty.attr) {
+                              if (angular.isDefined(results.labelProperty.value)) {
+                                  element.attr(results.labelProperty.attr, results.labelProperty.value);
+                              } else {
+                                  element.attr(results.labelProperty.attr, '');
+                              }
+                          }
+                      }
+
+                      Object.keys(properties).forEach(function (key) {
+                          property = properties[key];
+                          if ((typeof property.value === 'boolean' && !property.defaultValue && !property.value) ||
+                              (property.value === property.defaultValue || property.value === '' || property.value === undefined || property.value === null)) {
+                              if (angular.isDefined(element.attr('props/' + property.nameInUse))) {
+                                  // Remove attr doesn't fire appropriate event. Set default value first as a workaround to schedule DSL resync
+                                  element.attr('props/' + property.nameInUse, property.defaultValue === undefined ? null : property.defaultValue);
+                                  element.removeAttr('props/' + property.nameInUse);
+                              }
+                          } else {
+                              element.attr('props/' + property.nameInUse, property.value);
+                          }
+                      });
+
+                      element.trigger('batch:stop', { batchName: 'update properties' });
+                  });
+
+              }
+          };
+      })
+      .factory('TaskDslValidatorService', require('task/services/task-dsl-validator'))
+      .factory('TaskContentAssistService', require('task/services/content-assist-service'))
+      .factory('ComposedTasksMetamodelService', require('task/services/metamodel'))
+      .factory('ComposedTasksEditorService', require('task/services/editor-service'))
+      .factory('ComposedTasksRenderService', require('task/services/render-service'));
+
 });

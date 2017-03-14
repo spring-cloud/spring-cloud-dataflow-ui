@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ define(function(require) {
     var utils = require('stream/services/utils');
     require('flo');
 
+    var NODE_DROPPING = false;
+
     return [ '$modal', '$log', function ($modal,$log) {
 
         function createHandles(flo, createHandle, element) {
@@ -38,34 +40,35 @@ define(function(require) {
             createHandle(element, 'remove', flo.deleteSelectedNode, pt);
 
             // Properties handle
-            pt = bbox.origin().offset(-14, bbox.height + 3);
-            createHandle(element, 'properties', function() {
-                $modal.open({
-                    animation: true,
-                    templateUrl: 'scripts/stream/views/properties-dialog.html',
-                    controller: 'PropertiesDialogController',
-                    size: 'lg',
-                    resolve: {
-                        cell: function () {
-                            return element;
-                        },
-                        streamInfo: function() {
-                            if (utils.canBeHeadOfStream(flo.getGraph(), element)) {
-                                var info = {
-                                    streamNames: []
-                                };
-                                flo.getGraph().getElements().forEach(function(e) {
-                                   if (element !== e && utils.canBeHeadOfStream(flo.getGraph(), e)) {
-                                       if (e.attr('stream-name')) {
-                                           info.streamNames.push(e.attr('stream-name'));
-                                       }
-                                   } 
-                                });
-                                return info;
+            if (!element.attr('metadata/unresolved')) {
+                pt = bbox.origin().offset(-14, bbox.height + 3);
+                createHandle(element, 'properties', function() {
+                    $modal.open({
+                        animation: true,
+                        templateUrl: 'scripts/stream/views/properties-dialog.html',
+                        controller: 'PropertiesDialogController',
+                        size: 'lg',
+                        resolve: {
+                            cell: function () {
+                                return element;
+                            },
+                            streamInfo: function() {
+                                if (utils.canBeHeadOfStream(flo.getGraph(), element)) {
+                                    var info = {
+                                        streamNames: []
+                                    };
+                                    flo.getGraph().getElements().forEach(function(e) {
+                                        if (element !== e && utils.canBeHeadOfStream(flo.getGraph(), e)) {
+                                            if (e.attr('stream-name')) {
+                                                info.streamNames.push(e.attr('stream-name'));
+                                            }
+                                        }
+                                    });
+                                    return info;
+                                }
                             }
                         }
-                    }
-                }).result.then(function (results) {
+                    }).result.then(function (results) {
 
                         var properties = results.properties || {};
                         var derivedProperties = results.derivedProperties || {};
@@ -101,7 +104,8 @@ define(function(require) {
                         element.trigger('batch:stop', { batchName: 'update properties' });
                     });
 
-            }, pt);
+                }, pt);
+            }
         }
 
         function validatePort(/*flo, cellView, magnet*/) {
@@ -211,16 +215,23 @@ define(function(require) {
         }
 
         function calculateDragDescriptor(flo, draggedView, targetUnderMouse, point, context) {
-            // check if it's a tap being dragged
             var source = draggedView.model;
+            var paper = flo.getPaper();
+            // If node dropping not enabled then short-circuit
+            if (!NODE_DROPPING && !(targetUnderMouse instanceof joint.dia.Link && targetUnderMouse.attr('metadata/name') !== 'tap' && targetUnderMouse.attr('metadata/name') !== 'destination')) {
+                return;
+            }
+            // check if it's a tap being dragged
             if ((targetUnderMouse instanceof joint.dia.Element) && source.attr('metadata/name') === 'tap') {
                 return {
                     context: context,
                     source: {
                         cell: draggedView.model,
+                        view: draggedView
                     },
                     target: {
                         cell: targetUnderMouse,
+                        view: paper.findViewByModel(targetUnderMouse)
                     }
                 };
             }
@@ -228,7 +239,6 @@ define(function(require) {
             // Find closest port
             var range = 30;
             var graph = flo.getGraph();
-            var paper = flo.getPaper();
             var closestData;
             var minDistance = Number.MAX_VALUE;
             var hasIncomingPort = draggedView.model.attr('.input-port') && draggedView.model.attr('.input-port/display') !== 'none';
@@ -261,12 +271,14 @@ define(function(require) {
                                         source: {
                                             cell: draggedView.model,
                                             selector: type === 'output' ? '.input-port' : '.output-port',
-                                            port: type === 'output' ? 'input' : 'output'
+                                            port: type === 'output' ? 'input' : 'output',
+                                            view: draggedView
                                         },
                                         target: {
                                             cell: model,
-                                            selector: '.' + magnet.getAttribute('class'),
-                                            port: magnet.getAttribute('port')
+                                            selector: '.' + magnet.getAttribute('class').split(/\s+/)[0],
+                                            port: magnet.getAttribute('port'),
+                                            view: view
                                         },
                                         range: minDistance
                                     };
@@ -287,20 +299,15 @@ define(function(require) {
                 return {
                     context: context,
                     source: {
-                        cell: source
+                        cell: source,
+                        view: draggedView
                     },
                     target: {
-                        cell: targetUnderMouse
+                        cell: targetUnderMouse,
+                        view: paper.findViewByModel(targetUnderMouse)
                     }
                 };
             }
-
-            return {
-                context: context,
-                source: {
-                    cell: source
-                },
-            };
         }
 
         function validateSource(element, incoming, outgoing, tap, errors) {
@@ -698,7 +705,7 @@ define(function(require) {
             var target = dragDescriptor.target ? dragDescriptor.target.cell : undefined;
             var type = source.attr('metadata/name');
             // NODE DROPPING TURNED OFF FOR NOW
-            if (false && target instanceof joint.dia.Element && target.attr('metadata/name')) {
+            if (NODE_DROPPING && target instanceof joint.dia.Element && target.attr('metadata/name')) {
                 if (dragDescriptor.target.selector === '.output-port') {
                     moveNodeOnNode(flo, source, target, 'right', true);
                     relinking = true;

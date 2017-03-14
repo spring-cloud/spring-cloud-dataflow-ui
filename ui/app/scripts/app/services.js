@@ -39,17 +39,18 @@ define(['angular', 'lodash'], function (angular, _) {
             }, 100);
 
             return {
-                getDefinitions: function (pageable) {
-                    var params = {};
+                getDefinitions: function (pageable, type, detailed) {
+                    var params = {
+                        type: type,
+                        detailed: detailed
+                    };
                     if (!pageable) {
                         $log.info('Getting all app definitions.');
                     }
                     else {
                         // $log.info('Getting paged app definitions', pageable);
-                        params = {
-                            'page': pageable.pageNumber,
-                            'size': pageable.pageSize
-                        };
+                        params.page = pageable.pageNumber;
+                        params.size = pageable.pageSize;
                     }
                     return $resource($rootScope.dataflowServerUrl + '/apps', params, {
                         query: {
@@ -73,10 +74,11 @@ define(['angular', 'lodash'], function (angular, _) {
                     return request;
                 },
                 getAppInfo: function(appType,appName) {
-                    return $http({
-                        method: 'GET',
-                        url: $rootScope.dataflowServerUrl + '/apps/'+appType+'/'+appName
-                    });
+                    return $resource($rootScope.dataflowServerUrl + '/apps/'+appType+'/'+appName, {}, {
+                        query: {
+                            method: 'GET'
+                        }
+                    }).get();
                 },
                 registerApp: function(type, name, uri, force, metadataUri) {
 

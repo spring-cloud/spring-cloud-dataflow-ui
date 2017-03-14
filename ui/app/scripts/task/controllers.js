@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 the original author or authors.
+ * Copyright 2013-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,5 +72,29 @@ define(['angular'], function (angular) {
             require(['task/controllers/app-create-definition'], function (appCreateDefinitionController) {
               $injector.invoke(appCreateDefinitionController, this, {'$scope': $scope});
             });
+          }])
+      .controller('CreateComposedTaskController',
+          ['$scope', '$injector', function ($scope, $injector) {
+            require(['task/controllers/create-composed-task'], function (CreateComposedTaskController) {
+                $injector.invoke(CreateComposedTaskController, this, {'$scope': $scope});
+            });
+          }])
+      .controller('CreateComposedTaskDialogController',
+          ['$scope','$injector', '$modalInstance', 'textDefinition', function ($scope, $injector, $modalInstance, textDefinition) {
+            require(['task/controllers/create-composed-task-dialog'], function (createComposedTaskDialogController) {
+                $injector.invoke(createComposedTaskDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'textDefinition': textDefinition});
+            });
+          }])
+      .controller('DetailedTaskController',
+          ['$scope','$injector', function ($scope, $injector) {
+              require(['task/controllers/detailed-task'], function (detailedTaskController) {
+                  $injector.invoke(detailedTaskController, this, {'$scope': $scope});
+              });
+          }])
+      .controller('TaskElementPropertiesDialogController',
+          ['$scope','$injector', '$modalInstance', 'cell', function ($scope, $injector, $modalInstance, cell) {
+              require(['task/controllers/task-element-properties-dialog'], function (propertiesDialogController) {
+                  $injector.invoke(propertiesDialogController, this, {'$scope': $scope, '$modalInstance': $modalInstance, 'cell': cell });
+              });
           }]);
 });

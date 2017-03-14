@@ -18,6 +18,7 @@
  * Dashboard shared (global) services.
  *
  * @author Ilayaperumal Gopinathan
+ * @author Alex Boyko
  */
 define(function (require) {
   'use strict';
@@ -62,6 +63,7 @@ define(function (require) {
         };
       })
       .factory('ParserService',require('shared/services/parser'))
+      .factory('FloBootstrapTooltip',require('shared/services/flo-bootstrap-tooltip'))
       .factory('dataflowVersionInfo', function ($resource, $rootScope, DataflowUtils) {
         console.log('dataflowVersionInfo');
         var dataflowVersionInfoPromise =  $resource($rootScope.dataflowServerUrl + '/about', {}, {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ define(function (require) {
                 cell.off('transition:end', endTransition);
                 if (isFlashing()) {
                     // Switch on/off colour filter if shape should be flashing
-                    transitionFilter(cell, cell.attr('.shape/filter') ? undefined : statusToFilter[$scope.item.status]);
+                    transitionFilter(cell, cell.attr('.shape/filter') ? undefined : statusToFilter[$scope.item.status.toLowerCase()]);
                 }
             }
         }
@@ -99,7 +99,7 @@ define(function (require) {
                 stopAnimation(cell);
                 // Unset color filter
                 cell.removeAttr('.shape/filter');
-                var status = $scope.item.status;
+                var status = $scope.item.status.toLowerCase();
                 var filter = statusToFilter[status];
                 // If filter needs to be applied, do so.
                 if (filter) {
@@ -127,7 +127,7 @@ define(function (require) {
         }, function (newValue, oldValue) {
             if (newValue !== oldValue) {
                 $scope.flo.getGraph().getElements().forEach(function (cell) {
-                    transitionFilter(cell, statusToFilter[$scope.item.status]);
+                    transitionFilter(cell, statusToFilter[$scope.item.status.toLowerCase()]);
                 });
             }
         });

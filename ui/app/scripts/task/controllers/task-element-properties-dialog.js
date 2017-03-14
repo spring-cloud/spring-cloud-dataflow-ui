@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,59 +15,38 @@
  */
 
 /**
- * Definition of the App Creation dialog controller
+ * Definition of the Composed Task graph element properties dialog controller
  *
  * @author Alex Boyko
  */
-define(function(require) {
+define(function (require) {
     'use strict';
 
     var angular = require('angular');
 
-    return ['$scope', 'StreamMetamodelService', '$modalInstance', 'cell', 'streamInfo',
-        function ($scope, metaModelService, $modalInstance, cell, streamInfo) {
+    return ['$scope', '$modalInstance', 'cell',
+        function ($scope, $modalInstance, cell) {
 
             $scope.cell = cell;
 
             $scope.keys = Object.keys;
 
-            $scope.decodeTextFromDSL = metaModelService.decodeTextFromDSL;
-            $scope.encodeTextToDSL = metaModelService.encodeTextToDSL;
-
-            $scope.derivedProperties = {};
-
             $scope.properties = {};
-
-            var property;
-
-            if (streamInfo) {
-                property = {
-                    id: 'stream-name',
-                    name: 'Stream Name',
-                    value: cell.attr('stream-name'),
-                    defaultValue: '',
-                    description: 'The name of the stream started by this app',
-                    attr: 'stream-name',
-                    pattern: '[\\w_]+[\\w_-]*',
-                    streamNames: streamInfo.streamNames
-                };
-                $scope.derivedProperties[property.id] = property;
-            }
 
             var titleProperty = cell.attr('metadata/metadata/titleProperty');
             if (titleProperty) {
-                property = {
+                $scope.labelProperty = {
                     value: cell.attr(titleProperty),
                     defaultValue: cell.attr('metadata/name'),
                     name: 'label',
                     id: 'label',
-                    description: 'Label of the app',
+                    description: 'Name label',
                     attr: titleProperty,
                     pattern: '[\\w_]+[\\w_-]*'
                 };
-                $scope.derivedProperties[property.id] = property;
             }
 
+            // var property;
 
             var metadata = cell.attr('metadata');
             var propertiesSchemaPromise = metadata.get('properties');
@@ -86,7 +65,7 @@ define(function(require) {
                     // short-name will be used if the user hasn't specified anything.
                     // The alias is applicable to sources, processors and sinks.
                     // Exclusions are: explicit taps and destinations. The entire other group.
-                    var nameInUse = metadata.group === 'other' ? schema.id : schema.name;
+                    var nameInUse = metadata.group === 'apps' || metadata.groups === 'definitions' ? schema.name : schema.id;
                     var props = cell.attr('props');
                     if (props.hasOwnProperty(key)) { // long-name, eg. 'trigger.cron'
                         specifiedValue = props[key];
@@ -109,7 +88,7 @@ define(function(require) {
                         value: specifiedValue,
                         pattern: schema.pattern,
                         isList: function() {
-                            return this.type.endsWith('[]');
+                            return angular.isString(this.type) && this.type.endsWith('[]');
                         },
                         valueFunc: function(newValue) {
                             if (arguments.length) {
@@ -158,7 +137,7 @@ define(function(require) {
             $scope.submit = function () {
                 $modalInstance.close({
                     properties: $scope.properties,
-                    derivedProperties: $scope.derivedProperties
+                    labelProperty: $scope.labelProperty
                 });
             };
 

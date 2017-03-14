@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ define(function(require) {
     'use strict';
 
     var joint = require('joint');
-    var angular = require('angular');
     require('flo');
     var layout = require('stream/services/layout');
     var utils = require('stream/services/utils');
@@ -51,16 +50,17 @@ define(function(require) {
     joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
 
         markup:
-        '<g class="shape">'+
-            '<rect class="border"/>' +
-            '<rect class="box"/>'+
-            '<text class="label1"/>'+
-            '<text class="label2"/>'+
-        '</g>' +
-        '<text class="stream-label"/>'+
-        '<rect class="input-port" />'+
-        '<rect class="output-port"/>'+
-        '<circle class="tap-port"/>',
+        '<g class="stream-module">' +
+            '<g class="shape">'+
+                '<rect class="box"/>'+
+                '<text class="label1"/>'+
+                '<text class="label2"/>'+
+            '</g>' +
+            '<text class="stream-label"/>'+
+            '<rect class="input-port" />'+
+            '<rect class="output-port"/>'+
+            '<circle class="tap-port"/>' +
+        '</g>',
 
         defaults: joint.util.deepSupplement({
 
@@ -70,16 +70,6 @@ define(function(require) {
             attrs: {
                 '.': {
                     magnet: false,
-                },
-                // rounded edges around image
-                '.border': {
-                    width: IMAGE_W,
-                    height: IMAGE_H,
-                    rx: 2,
-                    ry: 2,
-                    'fill-opacity':0, // see through
-                    stroke: '#eeeeee',
-                    'stroke-width': 0,
                 },
                 '.box': {
                     width: IMAGE_W,
@@ -119,7 +109,7 @@ define(function(require) {
                     fill: '#eeeeee',
                     'ref-x': 0.5,
                     'ref-y': 0.99999999,
-                    ref: '.border',
+                    ref: '.box',
                     stroke: '#34302D'
                 },
                 '.label1': {
@@ -127,7 +117,7 @@ define(function(require) {
                     'ref-y': 0.525,
                     'y-alignment': 'middle',
                     'x-alignment' : 'middle',
-                    ref: '.border', // jointjs specific: element for ref-x, ref-y
+                    ref: '.box', // jointjs specific: element for ref-x, ref-y
                     fill: 'black',
                     'font-size': 14
                 },
@@ -135,7 +125,7 @@ define(function(require) {
                     'y-alignment': 'middle',
                     'ref-x': HORIZONTAL_PADDING+2, // jointjs specific: relative position to ref'd element
                     'ref-y': 0.55, // jointjs specific: relative position to ref'd element
-                    ref: '.border', // jointjs specific: element for ref-x, ref-y
+                    ref: '.box', // jointjs specific: element for ref-x, ref-y
                     fill: 'black',
                     'font-size': 20
                 },
@@ -144,7 +134,7 @@ define(function(require) {
                     'y-alignment': -0.999999,
                     'ref-x': 0.5, // jointjs specific: relative position to ref'd element
                     'ref-y': 0, // jointjs specific: relative position to ref'd element
-                    ref: '.border', // jointjs specific: element for ref-x, ref-y
+                    ref: '.box', // jointjs specific: element for ref-x, ref-y
                     fill: '#AAAAAA',
                     'font-size': 15
                 },
@@ -168,7 +158,7 @@ define(function(require) {
     });
 
 
-    return ['$compile', '$rootScope', '$log', 'StreamMetamodelService', function($compile, $rootScope, $log, metamodelService) {
+    return ['$compile', '$rootScope', '$log', 'StreamMetamodelService', 'FloBootstrapTooltip', function($compile, $rootScope, $log, metamodelService, bootstrapTooltip) {
 
         function fitLabel(paper, node, labelPath) {
             var label = node.attr(labelPath);
@@ -362,275 +352,6 @@ define(function(require) {
             }
         }
 
-        /**
-         * Attached angular-bootstrap-ui text tooltip to Joint JS view
-         *
-         * @param domElement DOM element
-         * @param scope Tooltip compilation scope
-         * @param tooltip Tooltip text
-         * @param location Tooltip location
-         * @param delay Tooltip appearance delay in milliseconds
-         * @param tooltipClass Tooltip CSS class
-         */
-        function attachBootstrapTextTooltip(domElement, scope, tooltip, location, delay, tooltipClass) {
-            // Set tooltip attributes on the DOM element.
-            domElement.setAttribute('tooltip-placement', location);
-            domElement.setAttribute('tooltip', tooltip);
-            domElement.setAttribute('tooltip-append-to-body', true);
-            if (typeof delay === 'number') {
-                domElement.setAttribute('tooltip-popup-delay', delay);
-            }
-            if (typeof tooltipClass === 'string' && tooltipClass) {
-                domElement.setAttribute('tooltip-class', tooltipClass);
-            }
-
-            if (scope && typeof scope.disabled === 'boolean') {
-                // 2-way binding for disabled attribute to be able to enable/disable tooltip programatically via scope.disabled property
-                // Use 'disabled' attribute rather than 'tooltip-enable' which just enables/disables triggers for showing/hiding tooltip
-                // Disabled attribute change to true would also cancel scheduled tooltip appearance
-                domElement.setAttribute('disabled', '{{disabled}}');
-            }
-
-            if (scope && typeof scope.tooltipIsOpen === 'boolean') {
-                // 2-way binding for tooltip-is-open attribute to be able to close tooltip programatically via scope.tooltipIsOpen property
-                domElement.setAttribute('tooltip-is-open', 'tooltipIsOpen');
-            }
-
-            // Destroy scope when DOM node is destroyed
-            if (scope) {
-                $(domElement).on('$destroy', function() {
-                    scope.$destroy();
-                });
-            }
-        }
-
-        /**
-         * Attached angular-bootstrap-ui HTML template tooltip to Joint JS view.
-         * Adds necessary content to the DOM, disables default tooltips
-         *
-         * @param domElement dom element
-         * @param scope Tooltip compilation scope
-         * @param template HTML template for the tooltip content
-         * @param placement Tooltip's placement
-         * @param delay Tooltips appearance delay in milliseconds
-         * @param tooltipClass Tooltip CSS class
-         */
-        function attachBootstrapTemplateTooltip(domElement, scope, template, placement, delay, tooltipClass) {
-            // Set tooltip attributes on the DOM element.
-            domElement.setAttribute('tooltip-placement', placement);
-            domElement.setAttribute('tooltip-append-to-body', true);
-            if (typeof delay === 'number') {
-                domElement.setAttribute('tooltip-popup-delay', delay);
-            }
-            if (typeof tooltipClass === 'string' && tooltipClass) {
-                domElement.setAttribute('tooltip-class', tooltipClass);
-            }
-            domElement.setAttribute('tooltip-template', '\'' + template + '\'');
-
-            if (scope && typeof scope.disabled === 'boolean') {
-                // 2-way binding for disabled attribute to be able to enable/disable tooltip programatically via scope.disabled property
-                // Use 'disabled' attribute rather than 'tooltip-enable' which just enables/disables triggers for showing/hiding tooltip
-                // Disabled attribute change to true would also cancel scheduled tooltip appearance
-                domElement.setAttribute('disabled', '{{disabled}}');
-            }
-
-            if (scope && typeof scope.tooltipIsOpen === 'boolean') {
-                // 2-way binding for tooltip-is-open attribute to be able to close tooltip programatically via scope.tooltipIsOpen property
-                domElement.setAttribute('tooltip-is-open', 'tooltipIsOpen');
-            }
-
-            // Destroy scope when DOM node is destroyed
-            if (scope) {
-                $(domElement).on('$destroy', function() {
-                    scope.$destroy();
-                });
-            }
-
-        }
-
-        /**
-         * Attach angular-bootstrap-ui tooltip to a app shape on the main canvas
-         *
-         * @param view app shape Joint JS view
-         */
-        function attachCanvasAppTooltip(view) {
-            var node = view.model;
-
-            // Create scope for the tooltip
-            var scope = $rootScope.$new(true);
-            // Pass Joint JS model onto the tooltip scope
-            scope.cell = node;
-            // Template uses Object#keys function. Need to pass it on the scope to make it available to angular template compiler
-            scope.keys = Object.keys;
-            // Tooltip should be closed initially
-            scope.tooltipIsOpen = false;
-
-            // Track shape DnD event to hide the tooltip if DnD started
-            view.on('cell:pointermove', function() {
-                scope.tooltipIsOpen = false;
-                // Occurs outside of angular digest cycle, so trigger angular listeners update
-                scope.$digest();
-            });
-
-            scope.isCode = function(key) {
-                if (scope.schema) {
-                    // Key is a property name, properties are indexed by ids of a form <prefix><name>
-                    var prefix = '';
-                    var ids = scope.keys(scope.schema);
-                    // Check if property is a property name, i.e. . char is a delimiter between prefixes
-                    if (key.lastIndexOf('.') < 0 && ids.length) {
-                        var propertyId = ids[0];
-                        var idx = propertyId.lastIndexOf('.');
-                        if (idx >= 0) {
-                            prefix = propertyId.substring(0, idx + 1);
-                        }
-                    }
-                    var id = prefix + key;
-                    return scope.schema[id] && typeof scope.schema[id].contentType === 'string';
-                }
-            };
-
-            scope.getPropertyValue = function(key) {
-                var value = node.attr('props/' + key);
-                if (value && scope.isCode(key)) {
-                    value = metamodelService.decodeTextFromDSL(value);
-                }
-                return value;
-            };
-
-            // Track when tooltip is showing to load some data asynchronously when tooltip is showing
-            scope.$watch('tooltipIsOpen', function(newValue) {
-                if (newValue) {
-                    node.attr('metadata').get('description').then(function(description) {
-                        scope.description = description;
-                    }, function(error) {
-                        if (error) {
-                            $log.error(error);
-                        }
-                    });
-                    node.attr('metadata').get('properties').then(function(schema) {
-                        scope.schema = schema;
-                    });
-                }
-            });
-
-            // Disallow Core Flo tooltip
-            if (angular.isFunction(view.showTooltip)) {
-                view.showTooltip = function() {};
-            }
-            if (angular.isFunction(view.hideTooltip)) {
-                view.hideTooltip = function() {};
-            }
-
-            // Attach tooltips to ports. No need to compile against scope because parent element is being compiled
-            // and no specific scope is attached to port tooltips
-            view.$('[magnet]').each(function(index, magnet) {
-                var port = magnet.getAttribute('port');
-                if (port === 'input') {
-                    attachBootstrapTextTooltip(magnet, null, 'Input Port', 'top', 500);
-                } else if (port === 'output') {
-                    attachBootstrapTextTooltip(magnet, null, 'Output Port', 'top', 500);
-                } else if (port === 'tap') {
-                    attachBootstrapTextTooltip(magnet, null, 'Tap Port', 'top', 500);
-                }
-            });
-
-            // Scope is prepared. Attach the tooltip using specific HTML template
-            // to shape group element (not the view group element) such that tooltip is not shown when hovering on ports
-            attachBootstrapTemplateTooltip(view.$el.find('.shape')[0], scope, 'scripts/stream/views/canvas-app-tooltip.html', 'top', 500, 'canvas-app-tooltip');
-
-            // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
-            $compile(view.el)(scope);
-
-        }
-
-        /**
-         * Attach to a palette app entry angular-bootstrap-ui tooltip for showing info about the app and its parameters
-         *
-         * @param view palette app entry Joint JS view
-         */
-        function attachPaletteAppTooltip(view) {
-            var node = view.model;
-
-            // Create scope for the tooltip
-            var scope = $rootScope.$new(true);
-            // Pass the Joint JS model on to the tooltip scope
-            scope.cell = node;
-            // Template uses Object#keys function. Need to pass it on the scope to make it available to angular template compiler
-            scope.keys = Object.keys;
-            // Tooltip should be closed initially
-            scope.tooltipIsOpen = false;
-
-            if (node.attr('metadata')) {
-                // Watch for tooltip opening/closing
-                scope.$watch('tooltipIsOpen', function(newValue) {
-                    if (newValue) {
-
-                        // Tooltip is showing! Load properties and description data via promises asynchronously now
-
-                        node.attr('metadata').get('description').then(function(description) {
-                            scope.description = description;
-                        }, function(error) {
-                            if (error) {
-                                $log.error(error);
-                            }
-                        });
-
-                        node.attr('metadata').get('properties').then(function(properties) {
-                            scope.properties = properties;
-                        }, function(error) {
-                            if (error) {
-                                $log.error(error);
-                            }
-                        });
-                    }
-                });
-            }
-
-            // Disallow Core Flo tooltip
-            if (angular.isFunction(view.showTooltip)) {
-                view.showTooltip = function() {};
-            }
-            if (angular.isFunction(view.hideTooltip)) {
-                view.hideTooltip = function() {};
-            }
-
-            // Scope is prepared. Attach the tooltip using specific HTML template
-            attachBootstrapTemplateTooltip(view.el, scope, 'scripts/stream/views/palette-app-tooltip.html', 'bottom', 500, 'palette-app-tooltip');
-
-            // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
-            $compile(view.el)(scope);
-
-        }
-
-        /**
-         * Attach angular-bootstrap-ui tooltip to error mareker shape to show error details
-         *
-         * @param view Joint JS view of the error marker
-         */
-        function attachErrorMarkerTooltip(view) {
-            var node = view.model;
-            // Create tooltip scope
-            var scope = $rootScope.$new(true);
-            // Pass the error messages to the tooltip scope
-            scope.errors = function() {
-                return node.attr('messages');
-            };
-            // Tooltip should be closed initially
-            scope.tooltipIsOpen = false;
-            // Disallow Core Flo tooltip
-            if (angular.isFunction(view.showTooltip)) {
-                view.showTooltip = function() {};
-            }
-            if (angular.isFunction(view.hideTooltip)) {
-                view.hideTooltip = function() {};
-            }
-            // Attach the tooltip using created above scope and specific HTML template
-            attachBootstrapTemplateTooltip(view.el, scope, 'scripts/stream/views/error-marker-tooltip.html', 'right', 100, 'red-tooltip');
-            // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
-            $compile(view.el)(scope);
-        }
-
         function initializeNewLink(link) {
             link.set('smooth', true);
         }
@@ -673,6 +394,7 @@ define(function(require) {
             if (metadata) {
                 var paper = view.paper;
                 var isPalette = paper.model.get('type') === joint.shapes.flo.PALETTE_TYPE;
+                var isCanvas = paper.model.get('type') === joint.shapes.flo.CANVAS_TYPE;
                 if (metadata.name === 'tap') {
                     refreshVisuals(node, 'props/name', paper);
                 } else if (metadata.name === 'destination') {
@@ -681,16 +403,31 @@ define(function(require) {
                     refreshVisuals(node, 'node-name', paper);
                 }
 
-                if (!isPalette) {
+                if (isCanvas) {
                     refreshVisuals(node, 'stream-name', paper);
                 }
 
                 // Attach angular style tooltip to a app view
                 if (view) {
-                    if (paper.model.attributes.type === joint.shapes.flo.CANVAS_TYPE) {
-                        attachCanvasAppTooltip(view);
+                    if (isCanvas) {
+
+                        // IMPORTANT: Need to go before the element to avoid extra compile cycle!!!!
+                        // Attach tooltips to ports. No need to compile against scope because parent element is being compiled
+                        // and no specific scope is attached to port tooltips
+                        view.$('[magnet]').each(function(index, magnet) {
+                            var port = magnet.getAttribute('port');
+                            if (port === 'input') {
+                                bootstrapTooltip.attachBootstrapTextTooltip(magnet, null, 'Input Port', 'top', 500);
+                            } else if (port === 'output') {
+                                bootstrapTooltip.attachBootstrapTextTooltip(magnet, null, 'Output Port', 'top', 500);
+                            } else if (port === 'tap') {
+                                bootstrapTooltip.attachBootstrapTextTooltip(magnet, null, 'Tap Port', 'top', 500);
+                            }
+                        });
+
+                        bootstrapTooltip.attachCanvasNodeTooltip(view, '.shape', metamodelService);
                     } else if (isPalette) {
-                        attachPaletteAppTooltip(view);
+                        bootstrapTooltip.attachPaletteNodeTooltip(view);
                     }
                 }
             }
@@ -703,8 +440,8 @@ define(function(require) {
          */
         function initializeNewDecoration(view) {
             // Attach angular-bootstrap-ui tooltip to error marker
-            if (view.model.attr('./kind') === 'error') {
-                attachErrorMarkerTooltip(view);
+            if (view.paper.model.get('type') === joint.shapes.flo.CANVAS_TYPE && view.model.attr('./kind') === 'error') {
+                bootstrapTooltip.attachErrorMarkerTooltip(view);
             }
         }
 
@@ -714,47 +451,9 @@ define(function(require) {
          * @param view Joint JS view object for handle
          */
         function initializeNewHandle(view) {
-            var handle = view.model;
             // Attach angular-bootstrap-ui tooltip to handles
-
-            // For some reason angular-bootstrap-ui 0.13.4 tooltip app doesn't detect mouseleave for handles
-            // Therefore we track mouselave (or mouseout in Joint JS terms) and hide tooltip ourselves
-            var scope = $rootScope.$new(true);
-            scope.disabled = false;
-
-            // Enable tooltip when the mouse is over the shape
-            view.on('cell:mouseover', function () {
-                // Enable tooltip
-                scope.disabled = false;
-                // Occurs outside of angular digest cycle, so trigger angular listeners update
-                scope.$digest();
-            });
-
-            // Hide tooltip if mouse pointer has left the shape. Angular 0.13.4 fails to detect it for handles properly :-(
-            view.on('cell:mouseout', function () {
-                // Disable tooltip
-                scope.disabled = true;
-                // Occurs outside of angular digest cycle, so trigger angular listeners update
-                scope.$digest();
-            });
-
-            // Hide tooltip if handle has been clicked.
-            // The 'cell:pointerup' event is important! None of the others work properly
-            view.on('cell:pointerup', function() {
-                // Disable tooltip
-                scope.disabled = true;
-                // Occurs outside of angular digest cycle, so trigger angular listeners update
-                scope.$digest();
-            });
-
-            if (handle.attr('./kind') === 'remove') {
-                attachBootstrapTextTooltip(view.el, scope, 'Remove Element', 'bottom', 500);
-                // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
-                $compile(view.el)(scope);
-            } else if (handle.attr('./kind') === 'properties') {
-                attachBootstrapTextTooltip(view.el, scope, 'Edit Properties', 'bottom', 500);
-                // All DOM modifications should be in place now. Let angular compile the DOM element to fuse scope and HTML
-                $compile(view.el)(scope);
+            if (view.paper.model.get('type') === joint.shapes.flo.CANVAS_TYPE) {
+                bootstrapTooltip.attachHandleTooltip(view);
             }
         }
 

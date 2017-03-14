@@ -50,8 +50,11 @@ require.config({
     d3: '../lib/d3/d3',
     joint: '../lib/joint/joint',
     backbone: '../lib/backbone/backbone',
-    lodash: '../lib/lodash/lodash.compat',
-    flo: '../lib/spring-flo/spring-flo'
+    lodash: '../lib/lodash/lodash',
+    flo: '../lib/spring-flo/spring-flo',
+    dagre: '../lib/dagre/dagre.core',
+    graphlib: '../lib/graphlib/graphlib.core'
+
   },
   map: {
     '*': {
@@ -105,6 +108,12 @@ require.config({
     },
     'ngCookies': {
       deps: ['angular']
+    },
+    'graphlib': {
+      deps: ['underscore']
+    },
+    'dagre': {
+      deps: ['graphlib', 'underscore']
     },
 	underscore: {
 	    exports: '_'

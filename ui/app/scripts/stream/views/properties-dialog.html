@@ -65,7 +65,8 @@
                     <label for="{{properties[key].id}}" class="col-sm-3 control-label">{{properties[key].name | camelCaseToHuman}}</label>
                     <div class="col-sm-9" ng-if="getInputType(properties[key]) !== 'checkbox' && getInputType(properties[key]) !== 'code' && getInputType(properties[key]) !== 'select'">
                         <input type="{{getInputType(properties[key])}}" id="{{properties[key].id}}"
-                               name="{{properties[key].id}}" class="form-control" placeholder="{{properties[key].defaultValue}}" ng-model="properties[key].value" ng-pattern="properties[key].pattern">
+                               name="{{properties[key].id}}" class="form-control" placeholder="{{properties[key].defaultValue}}"
+                               ng-model="properties[key].valueFunc" ng-model-options="{ getterSetter: true }" ng-pattern="properties[key].pattern">
                         <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="appForm[properties[key].id].$invalid"></span>
                         <p class="help-block">{{properties[key].description | capitalize}}</p>
                     </div>
