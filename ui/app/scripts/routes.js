@@ -130,6 +130,14 @@ define(['./app'], function (dashboard) {
         authenticate: false
       }
     })
+    .state('home.about-details', {
+      url : 'about-details',
+      controller: 'AboutDetailsController',
+      templateUrl : sharedTemplatesPath + '/about-details.html',
+      data:{
+        authenticate: false
+      }
+    })
     .state('login', {
       url : '/login',
       controller: 'LoginController',

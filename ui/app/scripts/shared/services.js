@@ -24,7 +24,6 @@ define(function (require) {
 
   var angular = require('angular');
   require('xregexp');
-
   return angular.module('dataflowShared.services', [])
       .factory('DataflowUtils', function ($log, growl, $timeout, $q, $rootScope) {
 
@@ -65,7 +64,7 @@ define(function (require) {
       .factory('ParserService',require('shared/services/parser'))
       .factory('dataflowVersionInfo', function ($resource, $rootScope, DataflowUtils) {
         console.log('dataflowVersionInfo');
-        var dataflowVersionInfoPromise =  $resource($rootScope.dataflowServerUrl + '/management/info', {}, {
+        var dataflowVersionInfoPromise =  $resource($rootScope.dataflowServerUrl + '/about', {}, {
           query: {
             method: 'GET'
           }

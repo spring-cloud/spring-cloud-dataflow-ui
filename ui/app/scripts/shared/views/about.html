@@ -11,16 +11,21 @@
 <table class="table table-hover">
   <tbody>
   <tr>
-    <td>Name</td><td>{{dataflowVersionInfo.app.name}}</td>
+    <td>Name</td><td>{{dataflowVersionInfo.versionInfo.implementation.name}}</td>
   </tr>
   <tr>
-    <td>Version</td><td>{{dataflowVersionInfo.app.version}} ({{dataflowVersionInfo.git.commit.id}}) </td>
-  </tr>
-  <tr>
-    <td>Description</td><td>{{dataflowVersionInfo.app.description}}</td>
+    <td>Version</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}} <span ng-show="dataflowVersionInfo.versionInfo.shortCommitId">({{dataflowVersionInfo.versionInfo.shortCommitId}})</span></td>
   </tr>
   </tbody>
 </table>
+
+<button id="showAboutDetailsButton" type="button" ng-click="goToDetails()"
+        class="btn btn-default"
+><span class="glyphicon glyphicon-search"></span>
+    Show Details
+</button>
+
+<hr>
 
 <h2>Get the Spring Cloud Data Flow Shell</h2>
 

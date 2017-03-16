@@ -22,11 +22,17 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  return angular.module('dataflowShared.controllers', [])
+  return angular.module('dataflowShared.controllers', ['ngclipboard'])
       .controller('AboutController',
           ['$scope', '$injector', function ($scope, $injector) {
             require(['shared/controllers/about'], function (aboutController) {
               $injector.invoke(aboutController, this, {'$scope': $scope});
+            });
+          }])
+      .controller('AboutDetailsController',
+          ['$scope', '$injector', function ($scope, $injector) {
+            require(['shared/controllers/about-details'], function (aboutDetailsController) {
+              $injector.invoke(aboutDetailsController, this, {'$scope': $scope});
             });
           }]);
 });
