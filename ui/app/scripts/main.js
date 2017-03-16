@@ -32,6 +32,8 @@ require.config({
     jquery: '../lib/jquery/jquery',
     bootstrap: '../lib/bootstrap/bootstrap',
     ngResource: '../lib/angular-resource/angular-resource',
+    ngclipboard: '../lib/ngclipboard/ngclipboard',
+    clipboard: '../lib/clipboard/clipboard',
     uiRouter: '../lib/angular-ui-router/angular-ui-router',
     cgBusy: '../lib/angular-busy/angular-busy',
     ngGrowl: '../lib/angular-growl-v2/angular-growl',
@@ -80,6 +82,9 @@ require.config({
     'cgBusy': {
       deps: ['angular']
     },
+    'ngclipboard': {
+      deps: ['clipboard', 'angular']
+    },
     'ngGrowl': {
       deps: ['angular', 'ngAnimate']
     },
@@ -114,6 +119,11 @@ require.config({
     	deps: ['angular', 'jquery', 'joint', 'underscore']
     }
   }
+});
+
+require(['clipboard'], function(clipboard) {
+  'use strict';
+  window.Clipboard = clipboard;
 });
 
 define([

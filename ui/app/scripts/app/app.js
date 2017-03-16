@@ -27,6 +27,7 @@ define([
     'cgBusy',
     'ngAnimate',
     'ngGrowl',
+    'ngclipboard',
     'ngBootstrap',
     'ngIndeterminate',
     './controllers',

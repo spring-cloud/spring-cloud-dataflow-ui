@@ -21,15 +21,28 @@
 define([], function () {
   'use strict';
 
-  return ['$scope', 'dataflowVersionInfo', '$state',
-    function ($scope, dataflowVersionInfo, $state) {
+  return ['$scope', 'dataflowVersionInfo', '$state', 'DataflowUtils',
+    function ($scope, dataflowVersionInfo, $state, utils) {
       $scope.$apply(function () {
         console.log(dataflowVersionInfo);
         $scope.dataflowVersionInfo = dataflowVersionInfo;
       });
+      $scope.goBack = function() {
+          $state.go('home.about');
+      };
 
-      $scope.goToDetails = function() {
-          $state.go('home.about-details');
+      $scope.isEmpty = function(obj) {
+        for(var prop in obj) {
+          if(obj.hasOwnProperty(prop)) {
+            return false;
+          }
+        }
+        return true;
+      };
+
+      $scope.onCopyToClipboardSuccess = function(e) {
+          utils.growl.success('Copied About Details to Clipboard (As JSON).');
+          e.clearSelection();
       };
     }
   ];

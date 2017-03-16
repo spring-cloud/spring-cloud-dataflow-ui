@@ -18,6 +18,8 @@ require.config({
     angularRoute: '/base/app/lib/angular-route/angular-route',
     angularMocks: '/base/app/lib/angular-mocks/angular-mocks',
     ngResource: '/base/app/lib/angular-resource/angular-resource',
+    clipboard: '/base/app/lib/clipboard/clipboard',
+    ngclipboard: '/base/app/lib/ngclipboard/ngclipboard',
     text: '/base/app/lib/requirejs-text/text',
     fixtures: '/base/app/test/spec/fixtures',
     angularHighlightjs: '/base/app/lib/angular-highlightjs/angular-highlightjs',
@@ -61,6 +63,9 @@ require.config({
     },
     cgBusy: {
       deps: ['angular']
+    },
+    'ngClipboard': {
+      deps: ['clipboard', 'angular']
     },
     'angularHighlightjs': {
       deps: ['angular', 'highlightjs']
