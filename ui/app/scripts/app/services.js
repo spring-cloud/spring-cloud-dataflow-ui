@@ -78,14 +78,19 @@ define(['angular', 'lodash'], function (angular, _) {
                         url: $rootScope.dataflowServerUrl + '/apps/'+appType+'/'+appName
                     });
                 },
-                registerApp: function(type, name, uri, force) {
+                registerApp: function(type, name, uri, force, metadataUri) {
+
+                    var httpParams = {
+                      uri: uri,
+                      force: force ? true : false
+                    };
+                    if (metadataUri) {
+                        httpParams['metadata-uri'] = metadataUri;
+                    }
                     var request = $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
                         registerApp: {
                             method: 'POST',
-                            params: {
-                                uri: uri,
-                                force: force ? true : false
-                            }
+                            params: httpParams
                         }
                     }).registerApp();
                     request.$promise.then(function() {

@@ -35,6 +35,7 @@ define(function () {
                     type: $scope.types[0],
                     force: false,
                     uri: '',
+                    metadataUri: ''
                 };
             }
 
@@ -57,7 +58,7 @@ define(function () {
                 var successMsg = 'Successfully registered ' + ($scope.apps.length === 1 ? 'application "' + $scope.apps[0].name + '" of type "' + $scope.apps[0].type + '"' : $scope.apps.length + ' applications.');
                 // Fire off a registration request for each app
                 $scope.apps.forEach(function(app) {
-                    promise = appService.registerApp(app.type, app.name, app.uri, app.force).$promise;
+                    promise = appService.registerApp(app.type, app.name, app.uri, app.force, app.metadataUri).$promise;
                     promise.then(function() {
                         // Need to find app index because index might have been changed by the time promise is resolved due to other removals
                         index = $scope.apps.indexOf(app);
