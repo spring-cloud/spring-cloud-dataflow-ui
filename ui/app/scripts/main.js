@@ -122,6 +122,7 @@ require.config({
 });
 
 require(['clipboard'], function(clipboard) {
+  'use strict';
   window.Clipboard = clipboard;
 });
 

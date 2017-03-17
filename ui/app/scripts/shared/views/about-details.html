@@ -8,7 +8,7 @@
     <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.versionInfo.implementation.name}}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Version</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}} ({{dataflowVersionInfo.versionInfo.commitId}}) </td>
+    <td class="col-xs-6">Version</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}} ({{dataflowVersionInfo.versionInfo.shortCommitId}}) </td>
   </tr>
   </tbody>
 </table>
@@ -18,13 +18,25 @@
 <table class="table table-hover">
   <tbody>
   <tr>
-    <td class="col-xs-6">Analytics</td><td>{{dataflowVersionInfo.featureInfo.analyticsEnabled}}</td>
+    <td class="col-xs-6">Analytics</td>
+    <td>
+      <span ng-show="dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span ng-hide="dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
   </tr>
   <tr>
-    <td class="col-xs-6">Streams</td><td>{{dataflowVersionInfo.featureInfo.streamsEnabled}}</td>
+    <td class="col-xs-6">Streams</td>
+    <td>
+      <span ng-show="dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span ng-hide="dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
   </tr>
-    <tr>
-    <td class="col-xs-6">Tasks</td><td>{{dataflowVersionInfo.featureInfo.tasksEnabled}}</td>
+  <tr>
+    <td class="col-xs-6">Tasks</td>
+    <td>
+      <span ng-show="dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span ng-hide="dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
   </tr>
   </tbody>
 </table>
@@ -34,22 +46,40 @@
 <table class="table table-hover">
   <tbody>
   <tr>
-    <td class="col-xs-6">Authentication Enabled</td><td>{{dataflowVersionInfo.securityInfo.authenticationEnabled}}</td>
+    <td class="col-xs-6">Authentication Enabled</td>
+    <td>
+      <span ng-show="dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span ng-hide="dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
   </tr>
   <tr>
-    <td class="col-xs-6">Authorization Enabled</td><td>{{dataflowVersionInfo.securityInfo.authorizationEnabled}}</td>
+    <td class="col-xs-6">Authorization Enabled</td>
+    <td>
+      <span ng-show="dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span ng-hide="dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
   </tr>
-    <tr>
-    <td class="col-xs-6">Form Login</td><td>{{dataflowVersionInfo.securityInfo.formLogin}}</td>
+  <tr>
+    <td class="col-xs-6">Form Login</td>
+    <td>
+      <span ng-show="dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span ng-hide="dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
   </tr>
-    <tr>
-    <td class="col-xs-6">Authenticated</td><td>{{dataflowVersionInfo.securityInfo.authenticated}}</td>
+  <tr>
+    <td class="col-xs-6">Authenticated</td>
+    <td>
+      <span ng-show="dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span ng-hide="dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
   </tr>
-    <tr>
-    <td class="col-xs-6">Username</td><td>{{dataflowVersionInfo.securityInfo.username || 'N/A'}}</td>
+  <tr>
+    <td class="col-xs-6">Username</td>
+    <td>{{dataflowVersionInfo.securityInfo.username || 'N/A'}}</td>
   </tr>
-    <tr>
-    <td class="col-xs-6">Roles</td><td>{{dataflowVersionInfo.securityInfo.roles}}</td>
+  <tr>
+    <td class="col-xs-6">Roles</td>
+    <td>{{dataflowVersionInfo.securityInfo.roles}}</td>
   </tr>
   </tbody>
 </table>
@@ -69,9 +99,6 @@
   </tr>
   <tr>
     <td class="col-xs-6">Shell</td><td>{{dataflowVersionInfo.versionInfo.shell.version}} ({{dataflowVersionInfo.versionInfo.shell.name}})</td>
-  </tr>
-  <tr>
-    <td class="col-xs-6">Rest Api Revision</td><td>{{dataflowVersionInfo.versionInfo.restApiRevision}}</td>
   </tr>
   </tbody>
 </table>
