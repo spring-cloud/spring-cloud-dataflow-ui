@@ -103,7 +103,7 @@
   </tbody>
 </table>
 
-<h2>Runtime Environment - Deployer</h2>
+<h2>Runtime Environment - App Deployer</h2>
 
 <table class="table table-hover">
   <tbody>
@@ -140,14 +140,14 @@
   </tbody>
 </table>
 
-<h2>Platform-specific Information</h2>
+<h2>Platform-specific Information of the App Deployer</h2>
 
 <table class="table table-hover">
   <tbody>
-  <tr ng-show="dataflowVersionInfo.runtimeEnvironment.appDeployer.platFormSpecificInfo" ng-repeat="(key, value) in dataflowVersionInfo.runtimeEnvironment.appDeployer.platFormSpecificInfo">
+  <tr ng-show="!isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)" ng-repeat="(key, value) in dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo">
     <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
   </tr>
-  <tr ng-hide="dataflowVersionInfo.runtimeEnvironment.deployer.platFormSpecificInfo">
+  <tr ng-show="isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)">
     <td class="col-xs-12 text-center" colspan="2">No platform-specific app deployer information available.</td>
   </tr>
   </tbody>
@@ -190,14 +190,14 @@
   </tbody>
 </table>
 
-<h2>Platform-specific Information</h2>
+<h2>Platform-specific Information of the Task Launcher</h2>
 
 <table class="table table-hover">
   <tbody>
-  <tr ng-show="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platFormSpecificInfo" ng-repeat="(key, value) in dataflowVersionInfo.runtimeEnvironment.taskLauncher.platFormSpecificInfo">
+  <tr ng-show="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)" ng-repeat="(key, value) in dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo">
     <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
   </tr>
-  <tr ng-hide="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platFormSpecificInfo">
+  <tr ng-show="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)">
     <td colspan="2" class="col-xs-6 text-center">No platform-specific task launcher information available.</td>
   </tr>
   </tbody>

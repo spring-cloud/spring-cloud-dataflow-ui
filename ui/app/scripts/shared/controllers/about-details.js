@@ -31,6 +31,15 @@ define([], function () {
           $state.go('home.about');
       };
 
+      $scope.isEmpty = function(obj) {
+        for(var prop in obj) {
+          if(obj.hasOwnProperty(prop)) {
+            return false;
+          }
+        }
+        return true;
+      };
+
       $scope.onCopyToClipboardSuccess = function(e) {
           utils.growl.success('Copied About Details to Clipboard (As JSON).');
           e.clearSelection();
