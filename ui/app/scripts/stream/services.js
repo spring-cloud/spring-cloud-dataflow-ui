@@ -74,7 +74,7 @@ define(function(require) {
               deploy: {
                 method: 'POST',
                 params: {
-                  properties: properties
+                  properties: properties ? properties.join(',') : null,
                 }
               }
             }).deploy();

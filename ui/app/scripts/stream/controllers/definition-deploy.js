@@ -49,6 +49,12 @@ define([], function () {
         utils.$log.info('Canceling Stream Definition Deployment');
         $state.go('home.streams.tabs.definitions');
       };
+      $scope.displayFileContents = function(contents) {
+        console.log(contents);
+        $scope.$watch('definitionDeployRequest', function () {
+          $scope.definitionDeployRequest.deploymentProperties = contents.split('\n');
+        });
+      };
       $scope.deployDefinition = function (definitionDeployRequest) {
         utils.$log.info('Deploying Stream Definition ' + definitionDeployRequest.streamDefinition.name, definitionDeployRequest);
         var properties = definitionDeployRequest.deploymentProperties;
