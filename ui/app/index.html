@@ -64,11 +64,11 @@
                 ng-show="features.analyticsEnabled" ng-class="{ active: $state.includes('home.analytics') }">
               <a ui-sref="home.analytics.tabs.dashboard">Analytics</a>
             </li>
-            <li ng-class="{ active: $state.includes('home.about') }">
+            <li ng-hide="user.authenticationEnabled && !user.isAuthenticated" roles="['ROLE_VIEW']" ng-class="{ active: $state.includes('home.about') }">
               <a ui-sref="home.about">About</a>
             </li>
             <li ng-if="user.authenticationEnabled"
-              class="dropdown"><a data-target="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
+              class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li ng-if="user.isAuthenticated"><a  ui-sref="logout">Logout</a></li>
                 <li ng-if="!user.isAuthenticated"><a ui-sref="login">Login</a></li>
