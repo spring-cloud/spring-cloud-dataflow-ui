@@ -49,13 +49,34 @@ define([], function () {
         utils.$log.info('Canceling Stream Definition Deployment');
         $state.go('home.streams.tabs.definitions');
       };
+      $scope.displayFileContents = function(contents) {
+        console.log(contents);
+        $scope.$watch('definitionDeployRequest', function () {
+          $scope.definitionDeployRequest.deploymentProperties = contents.split('\n');
+        });
+      };
       $scope.deployDefinition = function (definitionDeployRequest) {
         utils.$log.info('Deploying Stream Definition ' + definitionDeployRequest.streamDefinition.name, definitionDeployRequest);
         var properties = definitionDeployRequest.deploymentProperties;
 
-        utils.$log.info('Deployment Properties:', properties);
+        var propertiesAsMap = null;
 
-        streamService.deploy(definitionDeployRequest.streamDefinition, properties).$promise.then(
+        if (properties) {
+          propertiesAsMap = {};
+          for (let prop of properties) {
+            var keyValue = prop.split('=');
+            if (keyValue.length===2) {
+              propertiesAsMap[keyValue[0]] = keyValue[1];
+            }
+            else {
+              utils.$log.warn('Invalid deployment property "' + prop +'" must contain a single "=".');
+              $scope.deployDefinitionForm.deploymentProperties.$setValidity('invalidDeploymentProperties', false);
+              return;
+            }
+          }
+        }
+        $scope.deployDefinitionForm.deploymentProperties.$setValidity('invalidDeploymentProperties', true);
+        streamService.deploy(definitionDeployRequest.streamDefinition, propertiesAsMap).$promise.then(
             function () {
               utils.growl.success('Deployment Request Sent.');
               $state.go('home.streams.tabs.definitions');
