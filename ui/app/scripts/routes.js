@@ -127,7 +127,7 @@ define(['./app'], function (dashboard) {
       controller: 'AboutController',
       templateUrl : sharedTemplatesPath + '/about.html',
       data:{
-        authenticate: false
+        authenticate: true
       }
     })
     .state('home.about-details', {
@@ -135,7 +135,7 @@ define(['./app'], function (dashboard) {
       controller: 'AboutDetailsController',
       templateUrl : sharedTemplatesPath + '/about-details.html',
       data:{
-        authenticate: false
+        authenticate: true
       }
     })
     .state('login', {
