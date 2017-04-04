@@ -68,16 +68,14 @@ define(function(require) {
               }
             });
           },
-          deploy: function (streamDefinition, properties) {
-            $log.info('Deploy Stream ' + streamDefinition.name);
-            return $resource($rootScope.dataflowServerUrl + '/streams/deployments/' + streamDefinition.name, null, {
-              deploy: {
-                method: 'POST',
-                params: {
-                  properties: properties ? properties.join(',') : null,
-                }
-              }
-            }).deploy();
+          deploy: function (streamDefinition, propertiesAsMap) {
+            $log.info('Deploy Stream ' + streamDefinition.name +'. Using deployment properties:', propertiesAsMap);
+            return $resource($rootScope.dataflowServerUrl + '/streams/deployments/' + streamDefinition.name,
+              null, {
+                deploy: {
+                  method: 'POST'
+                },
+              }).deploy(propertiesAsMap);
           },
           undeploy: function (streamDefinition) {
             $log.info('Undeploy Stream ' + streamDefinition.name);
