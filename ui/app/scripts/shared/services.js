@@ -61,6 +61,14 @@ define(function (require) {
           }
         };
       })
+      .factory('MetricService', function ($resource, $rootScope, $log) {
+        return {
+          getMetrics: function (metricRequestMap) {
+            $log.info('Getting all runtime metrics.');
+            return $resource($rootScope.dataflowServerUrl + '/metrics/runtime', {}).save(null, metricRequestMap);
+          }
+        };
+      })
       .factory('ParserService',require('shared/services/parser'))
       .factory('dataflowVersionInfo', function ($resource, $rootScope, DataflowUtils) {
         console.log('dataflowVersionInfo');

@@ -20,13 +20,42 @@
  * @author Ilayaperumal Gopinathan
  * @author Gunnar Hillert
  */
-define(['model/pageable'], function (Pageable) {
+define(['model/pageable', 'angular'], function (Pageable) {
   'use strict';
-  return ['$scope', 'RuntimeService', 'DataflowUtils', '$timeout', '$rootScope',
-    function ($scope, runtimeService, utils, $timeout, $rootScope) {
+  return ['$scope', 'RuntimeService', 'MetricService', 'DataflowUtils', '$timeout', '$rootScope',
+    function ($scope, runtimeService, metricService, utils, $timeout, $rootScope) {
 
+      var metricsTimeoutPromise;
+      function loadMetrics(showGrowl, apps) {
+    	  
+        var metricRequestMap = {};
+        angular.forEach(apps, function(app){
+    		var metricRequestMapItem = {};
+        	angular.forEach(app.instances._embedded.appInstanceStatusResourceList, function(instance){
+        		metricRequestMapItem[instance.instanceId] = instance.attributes.guid;
+        	});
+    		metricRequestMap[app.deploymentId] = metricRequestMapItem;
+        });
+    	  
+        var metricsPromise = metricService.getMetrics(metricRequestMap).$promise;
+        if (showGrowl || showGrowl === undefined) {
+          utils.addBusyPromise(metricsPromise);
+        }
+        metricsPromise.then(
+          function (result) {
+            var metrics = result._embedded ? result._embedded.appMetricResourceList : [];
+            utils.$log.info('Retrieved metrics...', metrics);
+            $scope.metrics = metrics;
+            $scope.$on('$destroy', function(){
+              $timeout.cancel(metricsTimeoutPromise);
+            });
+          }, function (result) {
+            utils.growl.addErrorMessage(result.data[0].message);
+          }
+        );
+      }	  
+	  
       var runtimeAppsTimeoutPromise;
-
       function loadRuntimeApps(pageable, showGrowl) {
         var runtimeAppsPromise = runtimeService.getRuntimeApps(pageable).$promise;
         if (showGrowl || showGrowl === undefined) {
@@ -38,6 +67,7 @@ define(['model/pageable'], function (Pageable) {
             utils.$log.info('Retrieved runtimeApps...', apps);
             $scope.pageable.items = apps;
             $scope.pageable.total = result.page.totalElements;
+            loadMetrics(false, apps);
             runtimeAppsTimeoutPromise = $timeout(function() {
               loadRuntimeApps($scope.pageable, false);
             }, $rootScope.pageRefreshTime);
@@ -49,6 +79,7 @@ define(['model/pageable'], function (Pageable) {
           }
         );
       }
+      
       $scope.pageable = new Pageable();
       $scope.pagination = {
         current: 1
