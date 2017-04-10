@@ -316,7 +316,7 @@ define(['./app'], function (dashboard) {
       }
     })
     .state('home.tasks.tabs.createComposedTask', {
-      url: '/createComposedJob',
+      url: '/create-composed-task',
       templateUrl: taskTemplatesPath + '/create-composed-task.html',
       controller: 'CreateComposedTaskController',
       data:{
