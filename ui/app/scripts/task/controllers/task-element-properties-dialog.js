@@ -111,8 +111,6 @@ define(function (require) {
                             } else {
                                 if (angular.isDefined(this.value)) {
                                     return this.isList() ? this.value.join(', ') : this.value;
-                                } else {
-                                    return this.defaultValue;
                                 }
                             }
                         }
