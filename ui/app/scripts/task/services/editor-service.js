@@ -39,7 +39,8 @@ define(function(require) {
             var pt;
 
             // Handles for all elements except start and end nodes
-            if (element instanceof joint.dia.Element && metadata && !(metadata.group === joint.shapes.flo.batch.CONTROL_NODES && metadata.name === joint.shapes.flo.batch.START_NODE_TYPE)) {
+            if (element instanceof joint.dia.Element && metadata && !(metadata.group === joint.shapes.flo.batch.CONTROL_NODES &&
+                (metadata.name === joint.shapes.flo.batch.START_NODE_TYPE || metadata.name === joint.shapes.flo.batch.END_NODE_TYPE))) {
                 bbox = element.getBBox();
                 pt = bbox.origin().offset(bbox.width + 3, bbox.height + 3);
                 createHandle(element, 'remove', flo.deleteSelectedNode, pt);

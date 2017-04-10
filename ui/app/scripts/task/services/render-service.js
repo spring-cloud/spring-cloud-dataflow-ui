@@ -194,7 +194,7 @@ define(function(require) {
 
     joint.shapes.flo.BatchEnd = joint.shapes.basic.Generic.extend({
         // Wrap ports in a dedicated group tag. Otherwise connection anchoring shape becomes the outer circle :-(
-        markup: '<g class="composed-task"><g class="shape"><circle class="inner" /><circle class="outer"/><text class="label"/></g><g><circle class="input-port" /><circle class="output-port" /></g></g>',
+        markup: '<g class="composed-task"><g class="shape"><circle class="inner" /><circle class="outer"/><text class="label"/></g><g><circle class="input-port" /></g></g>',
 
         defaults: joint.util.deepSupplement({
             size: CONTROL_NODE_SIZE,
@@ -210,16 +210,6 @@ define(function(require) {
                     ref: '.outer',
                     stroke: '#34302D'
                 },
-                '.output-port': {
-                    r: 7,
-                    type: 'output',
-                    magnet: true,
-                    fill: '#5fa134',
-                    'ref-x': 0.5,
-                    'ref-y': 0.99999999,
-                    ref: '.outer',
-                    stroke: '#34302D',
-                },
                 '.outer': {
                     fill: 'transparent',
                     stroke: '#34302D',
@@ -233,7 +223,7 @@ define(function(require) {
                     'ref-y': 0.52, // jointjs specific: relative position to ref'd element
                     'x-alignment': 'middle',
                     'y-alignment': 'middle',
-                    ref: '.', // jointjs specific: element for ref-x, ref-y
+                    ref: '.outer', // jointjs specific: element for ref-x, ref-y
                     fill: 'white',
                     'font-family': 'Monospace',
                     'font-size': 10,
@@ -610,20 +600,22 @@ define(function(require) {
                 }
             });
 
-            if (empty && start && end) {
-                // Only start and end node are present
-                // In this case ensure that start is located above the end. Fake a link between start and end nodes
-                g.setEdge(start.get('id'), end.get('id'), {
-                    minlen: 7
-                });
-            }
-
             g.graph().rankdir = 'TB';
             g.graph().marginx = gridSize;
             g.graph().marginy = gridSize;
             g.graph().nodesep = 2 * gridSize;
             g.graph().ranksep = 2 * gridSize;
             g.graph().edgesep = gridSize;
+
+            if (empty && start && end) {
+                // Only start and end node are present
+                // In this case ensure that start is located above the end. Fake a link between start and end nodes
+                g.setEdge(start.get('id'), end.get('id'), {
+                    minlen: 7
+                });
+
+                g.graph().marginx = 5 * gridSize;
+            }
 
             dagre.layout(g);
             g.nodes().forEach(function (v) {

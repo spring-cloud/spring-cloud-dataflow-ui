@@ -60,6 +60,7 @@ define(function(require) {
             'group': joint.shapes.flo.batch.CONTROL_NODES,
             'name': joint.shapes.flo.batch.END_NODE_TYPE,
             'shortDescription': 'End element for a flow or the entire composed task.',
+            'noPaletteEntry': true,
             'metadata': {
                 'noEditableProps': true
             }
@@ -72,14 +73,14 @@ define(function(require) {
                 'noEditableProps': true
             }
         },
-        {
-            'group': joint.shapes.flo.batch.CONTROL_NODES,
-            'name' : joint.shapes.flo.batch.FAIL_NODE_TYPE,
-            'shortDescription': 'Composed task failure',
-            'metadata': {
-                'noEditableProps': true
-            }
-        }
+        // {
+        //     'group': joint.shapes.flo.batch.CONTROL_NODES,
+        //     'name' : joint.shapes.flo.batch.FAIL_NODE_TYPE,
+        //     'shortDescription': 'Composed task failure',
+        //     'metadata': {
+        //         'noEditableProps': true
+        //     }
+        // }
     ];
 
     return ['$http', 'DataflowUtils', 'MetamodelUtils', 'TaskAppService', /*'TaskDefinitions',*/
