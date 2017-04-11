@@ -27,6 +27,7 @@ define(['angular'], function (angular) {
       .factory('userService', function(securityInfo, $rootScope, $window, $http) {
           var user = {
             authenticationEnabled: securityInfo.authenticationEnabled,
+            authorizationEnabled: securityInfo.authorizationEnabled,
             isAuthenticated: securityInfo.authenticated,
             username: securityInfo.username,
             roles: securityInfo.roles,
@@ -41,6 +42,7 @@ define(['angular'], function (angular) {
             },
             resetUser: function() {
               user.authenticationEnabled = null;
+              user.authorizationEnabled = null;
               user.isAuthenticated = null;
               user.isFormLogin = null;
               user.roles = [];
@@ -50,6 +52,7 @@ define(['angular'], function (angular) {
             },
             populateUser: function(userInfo) {
               user.authenticationEnabled = userInfo.authenticationEnabled;
+              user.authorizationEnabled = userInfo.authorizationEnabled;
               user.isAuthenticated = userInfo.authenticated;
               user.isFormLogin = userInfo.formLogin;
               user.roles = userInfo.roles;

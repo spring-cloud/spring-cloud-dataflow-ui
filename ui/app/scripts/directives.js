@@ -28,7 +28,7 @@ define(['angular', 'xregexp', 'moment'], function(angular) {
       function applyRoles(scope, elem) {
         var found = false;
 
-        if(userService.isAuthenticated){
+        if(userService.isAuthenticated && userService.authorizationEnabled){
           angular.forEach(scope.roles, function(role){
             found = userService.hasRole(role);
             console.log('Needed one for the following roles ' + scope.roles + '. Found: ' + found);
