@@ -470,7 +470,8 @@ define(['./app'], function (dashboard) {
           $state.go('login');
           event.preventDefault();
         }
-        else if (userService.authenticationEnabled && toState.data.authenticate &&
+        else if (userService.authenticationEnabled && userService.authorizationEnabled &&
+          toState.data.authenticate &&
           userService.isAuthenticated && toState.data.roles && toState.data.roles.length > 0) {
           $log.info('State requires one of the following roles: ' + toState.data.roles);
           var found = false;
