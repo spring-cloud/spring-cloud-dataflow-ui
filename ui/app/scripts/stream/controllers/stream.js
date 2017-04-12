@@ -25,7 +25,6 @@ define(function (require) {
     var joint = require('joint');
     var angular = require('angular');
 
-    var INSTANCE_INDEX_PROP = /*'spring.cloud.stream.instanceIndex`*/ 'spring.application.index';
     var INSTANCE_COUNT_PROP = 'spring.cloud.stream.instanceCount';
 
     var MAGNITUDE_NUMBERS = [ 1000000000, 1000000, 1000];
@@ -312,14 +311,6 @@ define(function (require) {
             });
         }
 
-        function findInstance(instances, index) {
-            return instances.find(function(instance) {
-                if (angular.isObject(instance) && angular.isObject(instance.properties)) {
-                    return Number(instance.properties[INSTANCE_INDEX_PROP]) === index;
-                }
-            });
-        }
-
         function updateInstanceDecorations(cell, moduleMetrics) {
             var label, dots = [];
             // Find label or dots currently painted
@@ -403,7 +394,8 @@ define(function (require) {
                             var even = numberOfDots % 2 === 0;
                             var dotX = x - (Math.floor(numberOfDots / 2) * (diameter + padding) + (even ? -padding / 2 : diameter / 2));
                             for (var i = 0; i < numberOfDots; i++) {
-                                var data = findInstance(moduleMetrics.instances, lane * maxDotsPerLine + i/* + 1*/);
+                                var idx = lane * maxDotsPerLine + i/* + 1*/;
+                                var data = idx < moduleMetrics.instances.length ? moduleMetrics.instances[idx] : undefined;
                                 var dot = new joint.shapes.dataflow.InstanceDot({
                                     position: {x: dotX, y: dotY},
                                     size: {width: diameter, height: diameter}
