@@ -241,7 +241,6 @@ define(function(require) {
                 // Verify that there is no more than link with the same 'ExitStatus' coming out
                 // Verify there are no outgoing links to same type tasks (to duplicates)
                 var exitStatusNumber = {};
-                var typesOfTasks = {};
                 var number;
                 outgoing.forEach(function(link) {
                     var exitStatus = link.attr('props/ExitStatus');
@@ -252,30 +251,11 @@ define(function(require) {
                         } else {
                             exitStatusNumber[exitStatus] = 1;
                         }
-                    } else {
-                        var targetId = link.get('target').id;
-                        if (targetId) {
-                            var target = graph.getCell(targetId);
-                            if (target) {
-                                var type = target.attr('metadata/name');
-                                number = typesOfTasks[type];
-                                if (number) {
-                                    typesOfTasks[type] = number + 1;
-                                } else {
-                                    typesOfTasks[type] = 1;
-                                }
-                            }
-                        }
                     }
                 });
                 Object.keys(exitStatusNumber).forEach(function(exitStatus) {
                     if (exitStatusNumber[exitStatus] && exitStatusNumber[exitStatus] > 1) {
                         errors.push(exitStatusNumber[exitStatus] + ' links with Exit Status "' + exitStatus + '". Should only be one such link');
-                    }
-                });
-                Object.keys(typesOfTasks).forEach(function(type) {
-                    if (typesOfTasks[type] && typesOfTasks[type] > 1) {
-                        errors.push(typesOfTasks[type] + ' duplicate links to "' + type + '". Should only be one such link');
                     }
                 });
 
