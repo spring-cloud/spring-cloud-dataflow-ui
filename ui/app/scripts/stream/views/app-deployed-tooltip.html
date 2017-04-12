@@ -1,0 +1,32 @@
+<table class="table-hover table-condensed container-details-table">
+    <tbody>
+    <tr>
+        <td class="text-left"><strong>Group</strong></td>
+        <td>{{moduleInstanceData.properties['spring.cloud.application.group']}}</td>
+    </tr>
+    <tr>
+        <td class="text-left"><strong>Host</strong></td>
+        <td>{{moduleInstanceData.properties['spring.cloud.client.hostname']}}</td>
+    </tr>
+    <tr>
+        <td class="text-left"><strong>IP</strong></td>
+        <td>{{moduleInstanceData.properties['spring.cloud.client.ipAddress']}}</td>
+    </tr>
+    <tr>
+        <td class="text-left"><strong>Port</strong></td>
+        <td>{{moduleInstanceData.properties['spring.cloud.client.port'] ? moduleInstanceData.properties['spring.cloud.client.port'] : 8080}}</td>
+    </tr>
+    <tr>
+        <td class="text-left"><strong>Guid</strong></td>
+        <td>{{moduleInstanceData.properties['spring.cloud.application.guid']}}</td>
+    </tr>
+    <tr ng-if="moduleInstanceData.properties['spring.cloud.dataflow.stream.app.type'] !== 'source'">
+        <td class="text-left"><strong>Incoming</strong></td>
+        <td>{{moduleInstanceData.incomingRate.toFixed(8)}}</td>
+    </tr>
+    <tr ng-if="moduleInstanceData.properties['spring.cloud.dataflow.stream.app.type'] !== 'sink'">
+        <td class="text-left"><strong>Outgoing</strong></td>
+        <td>{{moduleInstanceData.outgoingRate.toFixed(8)}}</td>
+    </tr>
+    </tbody>
+</table>

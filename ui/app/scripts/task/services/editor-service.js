@@ -27,9 +27,10 @@ define(function(require) {
 
     var DND_ENABLED = true; // Is smart DnD enabled?
 
-    var DUPLICATE_LABEL_MSG = 'Duplicate label. Ensure unique labels for tasks';
-    var DUPLICATE_TASK_MSG = 'Same task app can be used only if it has unique label';
-    var LABEL_DUPLICATES_TASK_TYPE_MSG = 'Label duplicates task app type used in the definition';
+    // Commented out node label validation
+    // var DUPLICATE_LABEL_MSG = 'Duplicate label. Ensure unique labels for tasks';
+    // var DUPLICATE_TASK_MSG = 'Same task app can be used only if it has unique label';
+    // var LABEL_DUPLICATES_TASK_TYPE_MSG = 'Label duplicates task app type used in the definition';
 
     return ['$log', 'MetamodelUtils', 'PropertiesDialogService', function ($log, metamodelUtils, propertiesDialog) {
 
@@ -184,51 +185,51 @@ define(function(require) {
             });
         }
 
-        function _findErrorDecorationCell(element) {
-            var embeds = element.getEmbeddedCells();
-            for (var i = 0; i < embeds.length; i++) {
-                if ('error' === embeds[i].attr('./kind')) {
-                    return embeds[i];
-                }
-            }
-        }
-
-        function _validateNodeLabel(flo, node) {
-            $log.debug('Validating: ' + node.id);
-            var label = node.attr('node-label');
-            var type = node.attr('metadata/name');
-            var cells = flo.getGraph().getCells();
-            var errorCell;
-            var errorMessages;
-            for (var i = 0; i < cells.length; i++) {
-                var n = cells[i];
-                if (n !== node && n instanceof joint.shapes.flo.TaskModule && !n.attr('metadata/unresolved') && n.attr('metadata/name')) {
-                    errorCell = _findErrorDecorationCell(n);
-                    errorMessages = errorCell && errorCell.attr('messages') ? errorCell.attr('messages') : [];
-                    if (label) {
-                        if (label === n.attr('node-label')) {
-                            if (errorMessages.indexOf(DUPLICATE_LABEL_MSG) === -1) {
-                                flo._postValidation(n.id);
-                            }
-                            return DUPLICATE_LABEL_MSG;
-                        } else if (label === n.attr('metadata/name')) {
-                            return LABEL_DUPLICATES_TASK_TYPE_MSG;
-                        }
-                    } else if (type) {
-                        if (type === n.attr('node-label')) {
-                            if (errorMessages.indexOf(LABEL_DUPLICATES_TASK_TYPE_MSG) === -1) {
-                                flo._postValidation(n.id);
-                            }
-                        } else if (type === n.attr('metadata/name')) {
-                            if (errorMessages.indexOf(DUPLICATE_TASK_MSG) === -1) {
-                                flo._postValidation(n.id);
-                            }
-                            return DUPLICATE_TASK_MSG;
-                        }
-                    }
-                }
-            }
-        }
+        // function _findErrorDecorationCell(element) {
+        //     var embeds = element.getEmbeddedCells();
+        //     for (var i = 0; i < embeds.length; i++) {
+        //         if ('error' === embeds[i].attr('./kind')) {
+        //             return embeds[i];
+        //         }
+        //     }
+        // }
+        //
+        // function _validateNodeLabel(flo, node) {
+        //     $log.debug('Validating: ' + node.id);
+        //     var label = node.attr('node-label');
+        //     var type = node.attr('metadata/name');
+        //     var cells = flo.getGraph().getCells();
+        //     var errorCell;
+        //     var errorMessages;
+        //     for (var i = 0; i < cells.length; i++) {
+        //         var n = cells[i];
+        //         if (n !== node && n instanceof joint.shapes.flo.TaskModule && !n.attr('metadata/unresolved') && n.attr('metadata/name')) {
+        //             errorCell = _findErrorDecorationCell(n);
+        //             errorMessages = errorCell && errorCell.attr('messages') ? errorCell.attr('messages') : [];
+        //             if (label) {
+        //                 if (label === n.attr('node-label')) {
+        //                     if (errorMessages.indexOf(DUPLICATE_LABEL_MSG) === -1) {
+        //                         flo._postValidation(n.id);
+        //                     }
+        //                     return DUPLICATE_LABEL_MSG;
+        //                 } else if (label === n.attr('metadata/name')) {
+        //                     return LABEL_DUPLICATES_TASK_TYPE_MSG;
+        //                 }
+        //             } else if (type) {
+        //                 if (type === n.attr('node-label')) {
+        //                     if (errorMessages.indexOf(LABEL_DUPLICATES_TASK_TYPE_MSG) === -1) {
+        //                         flo._postValidation(n.id);
+        //                     }
+        //                 } else if (type === n.attr('metadata/name')) {
+        //                     if (errorMessages.indexOf(DUPLICATE_TASK_MSG) === -1) {
+        //                         flo._postValidation(n.id);
+        //                     }
+        //                     return DUPLICATE_TASK_MSG;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
 
         function validateNode(flo, element) {
             var errors = [];
@@ -295,10 +296,11 @@ define(function(require) {
                         }
                     }
                 } else {
-                    var labelError = _validateNodeLabel(flo, element);
-                    if (labelError) {
-                        errors.push(labelError);
-                    }
+                    // Commented out node label validation
+                    // var labelError = _validateNodeLabel(flo, element);
+                    // if (labelError) {
+                    //     errors.push(labelError);
+                    // }
                     if (incoming.length === 0) {
                         errors.push('Must have an incoming link');
                     }
