@@ -25,12 +25,21 @@ define(['model/pageable'], function (Pageable) {
 
   var EXPANDED_STATE_COOKIE_KEY = 'stremDefs.expandedState';
 
-  return ['$scope', 'StreamService', 'DataflowUtils', '$timeout', '$rootScope', '$state', '$cookieStore',
-    function ($scope, streamService, utils, $timeout, $rootScope, $state, $cookieStore) {
+  return ['$scope', 'StreamService', 'DataflowUtils', '$timeout', '$rootScope', '$state', '$cookieStore', 'StreamMetricsService',
+    function ($scope, streamService, utils, $timeout, $rootScope, $state, $cookieStore, streamMetricsService) {
 
       var getStreamDefinitions;
 
-      function loadStreamDefinitions(pageable, showGrowl) {
+        function loadMetrics() {
+            streamMetricsService.metrics().then(function(result) {
+                $scope.metrics = result.data;
+            }, function(error) {
+                utils.growl.addErrorMessage(error);
+                $scope.metrics = undefined;
+            });
+        }
+
+        function loadStreamDefinitions(pageable, showGrowl) {
         var streamDefinitionsPromise = streamService.getDefinitions(pageable).$promise;
         if (showGrowl || showGrowl === undefined) {
           utils.addBusyPromise(streamDefinitionsPromise);
@@ -41,6 +50,7 @@ define(['model/pageable'], function (Pageable) {
                 $scope.pageable.items = result._embedded.streamDefinitionResourceList;
               }
               $scope.pageable.total = result.page.totalElements;
+              loadMetrics();
               getStreamDefinitions = $timeout(function() {
                 loadStreamDefinitions($scope.pageable, false);
               }, $rootScope.pageRefreshTime);

@@ -34,7 +34,7 @@ define(function(require) {
               $log.info('Getting all stream definitions.');
             }
             else {
-              $log.info('Getting paged stream definitions', pageable);
+//              $log.info('Getting paged stream definitions', pageable);
               params = {
                 'page': pageable.pageNumber,
                 'size': pageable.pageSize
@@ -102,10 +102,23 @@ define(function(require) {
               });
           }
         };
-      }).
-      factory('StreamMetamodelService',require('stream/services/metamodel')).
-      factory('StreamEditorService', require('stream/services/editor-service')).
-      factory('StreamRenderService', require('stream/services/render-service')).
-      factory('StreamContentAssistService', require('stream/services/content-assist-service'));
+      })
+      .factory('StreamMetricsService', function($http, $rootScope) {
+          return {
+              metrics: function (streams) {
+                  return $http({
+                     method: 'GET',
+                     url: $rootScope.dataflowServerUrl + '/metrics/streams',
+                     params: {
+                        nameS: streams
+                     }
+                  });
+              }
+          };
+      })
+      .factory('StreamMetamodelService',require('stream/services/metamodel'))
+      .factory('StreamEditorService', require('stream/services/editor-service'))
+      .factory('StreamRenderService', require('stream/services/render-service'))
+      .factory('StreamContentAssistService', require('stream/services/content-assist-service'));
 
 });

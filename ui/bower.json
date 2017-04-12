@@ -21,7 +21,7 @@
     "moment": "2.8.4",
     "angular-utils-pagination": "0.11.0",
     "d3": "3.5.5",
-    "spring-flo": "http://github.com/spring-projects/spring-flo.git#master",
+    "spring-flo": "0.6.1",
     "dagre": "0.7.4",
     "ngclipboard": "1.1.1"
   },
