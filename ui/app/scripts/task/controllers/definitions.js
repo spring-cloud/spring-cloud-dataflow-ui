@@ -23,8 +23,6 @@
 define(['model/pageable', 'angular'], function (Pageable, angular) {
   'use strict';
 
-  var PREFIX_COMPOSED_TASK_DEF = '--graph="';
-  var SUFFIX_COMPOSED_TASK_DEF = '"';
   // var EXPANDED_STATE_COOKIE_KEY = 'taskDefs.expandedState';
 
   return ['$scope', 'TaskDefinitions', 'TaskDefinitionService', 'DataflowUtils', '$state', '$rootScope', /*'$cookieStore',*/
@@ -124,15 +122,8 @@ define(['model/pageable', 'angular'], function (Pageable, angular) {
         $state.go('home.tasks.detailedTask', {taskName: task.name});
       };
       $scope.getComposedTaskDefinition = function(item) {
-        if (item && angular.isString(item.dslText)) {
-          var start = item.dslText.indexOf(PREFIX_COMPOSED_TASK_DEF);
-          if (start >= 0) {
-            start = start + PREFIX_COMPOSED_TASK_DEF.length;
-            var end = item.dslText.indexOf(SUFFIX_COMPOSED_TASK_DEF, start);
-            if (end > start) {
-              return item.dslText.substring(start, end);
-            }
-          }
+        if (item && item.composed && angular.isString(item.dslText)) {
+          return item.dslText;
         }
       };
       $scope.$on('$destroy', function() {

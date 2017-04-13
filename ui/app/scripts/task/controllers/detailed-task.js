@@ -22,9 +22,6 @@
 define(function() {
     'use strict';
 
-    var PREFIX_COMPOSED_TASK_DEF = '--graph="';
-    var SUFFIX_COMPOSED_TASK_DEF = '"';
-
     return ['DataflowUtils', '$scope', '$state', '$stateParams', 'TaskDefinitions',
         function (utils, $scope, $state, $stateParams, taskService) {
 
@@ -35,10 +32,8 @@ define(function() {
             $scope.taskName = $stateParams.taskName;
 
             taskService.getSingleTaskDefinition($scope.taskName).success(function(task) {
-                var start = task.dslText.indexOf(PREFIX_COMPOSED_TASK_DEF) + PREFIX_COMPOSED_TASK_DEF.length;
-                var end = task.dslText.lastIndexOf(SUFFIX_COMPOSED_TASK_DEF);
                 $scope.definition = {
-                    text: task.dslText.substring(start, end),
+                    text: task.dslText,
                     name: task.name
                 };
                 $scope.flo.updateGraphRepresentation();
