@@ -34,7 +34,7 @@ define(function(require) {
               $log.info('Getting all stream definitions.');
             }
             else {
-              $log.info('Getting paged stream definitions', pageable);
+//              $log.info('Getting paged stream definitions', pageable);
               params = {
                 'page': pageable.pageNumber,
                 'size': pageable.pageSize

@@ -22,11 +22,11 @@
     </tr>
     <tr ng-if="moduleInstanceData.properties['spring.cloud.dataflow.stream.app.type'] !== 'source'">
         <td class="text-left"><strong>Incoming</strong></td>
-        <td>{{moduleInstanceData.incomingRate.toFixed(8)}}</td>
+        <td>{{moduleInstanceData.computed.inputMean}}</td>
     </tr>
     <tr ng-if="moduleInstanceData.properties['spring.cloud.dataflow.stream.app.type'] !== 'sink'">
         <td class="text-left"><strong>Outgoing</strong></td>
-        <td>{{moduleInstanceData.outgoingRate.toFixed(8)}}</td>
+        <td>{{moduleInstanceData.computed.outputMean}}</td>
     </tr>
     </tbody>
 </table>

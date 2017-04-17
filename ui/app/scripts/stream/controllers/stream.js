@@ -211,26 +211,34 @@ define(function (require) {
                         if (source) {
                             name = source.attr('node-name') ? source.attr('node-name') : source.attr('metadata/name');
                             moduleMetrics = findModuleMetrics(streamMetrics, name);
-                            if (moduleMetrics && angular.isNumber(moduleMetrics.outgoingRate)) {
+                            var outgoingRate = null;
+                            if (moduleMetrics && moduleMetrics.aggregateMetrics) {
+                                outgoingRate = _.find(moduleMetrics.aggregateMetrics, function(item) {
+                                        return item.name === 'integration.channel.output.send.mean'; 
+                                });
+                            }
+                            if (outgoingRate) {
+                                var outgoingRateValue = outgoingRate.value;
                                 if (typeof outgoingIndex === 'number') {
                                     // Labels DOM element is present. Update the scope of the DOM element with new rate
                                     // UI will reflect the changes done to the scope
-                                    utils.$log.debug('SOURCE LABEL UPDATE: rate = ' + moduleMetrics.outgoingRate);
-                                    labels[outgoingIndex].rate = moduleMetrics.outgoingRate;
+                                    // var outgoingRate = moduleMetrics.aggregateMetrics['integration.channel.output.send.mean'];
+                                    // utils.$log.debug('SOURCE LABEL UPDATE: rate = ' + outgoingRateValue);
+                                    labels[outgoingIndex].rate = outgoingRateValue;
                                     scope = angular.element(views[outgoingIndex]).scope();
                                     if (scope) {
-                                        scope.rate = moduleMetrics.outgoingRate;
+                                        scope.rate = outgoingRateValue;
                                     } else {
                                         utils.$log.warn('No scope for outgoing message rate label for node "' + name + '"');
                                     }
                                 } else {
-                                    utils.$log.debug('SOURCE LABEL CREATED: rate = ' + moduleMetrics.outgoingRate);
+                                    // utils.$log.debug('SOURCE LABEL CREATED: rate = ' + outgoingRateValue);
                                     // Create new label for outgoing message rate
                                     outgoingIndex = link.get('labels') ? link.get('labels').length : 0;
                                     link.label(outgoingIndex, {
                                         position: 15,
                                         type: 'outgoing-rate',
-                                        rate: moduleMetrics.outgoingRate,
+                                        rate: outgoingRateValue,
                                         attrs: {
                                             text: {
                                                 transform: 'translate(0, -10)',
@@ -255,14 +263,21 @@ define(function (require) {
                         if (target) {
                             name = target.attr('node-name') ? target.attr('node-name') : target.attr('metadata/name');
                             moduleMetrics = findModuleMetrics(streamMetrics, name);
-                            if (moduleMetrics && angular.isNumber(moduleMetrics.incomingRate)) {
+                            var incomingRate = null; // will be an object with name and value properties
+                            if (moduleMetrics && moduleMetrics.aggregateMetrics) {
+                                incomingRate = _.find(moduleMetrics.aggregateMetrics, function(item) {
+                                        return item.name === 'integration.channel.input.send.mean'; 
+                                });
+                            }
+                            if (incomingRate) {
+                                var incomingRateValue = incomingRate.value;
                                 if (typeof incomingIndex === 'number') {
                                     // Labels DOM element is present. Update the scope of the DOM element with new rate
                                     // UI will reflect the changes done to the scope
-                                    labels[incomingIndex].rate = moduleMetrics.incomingRate;
+                                    labels[incomingIndex].rate = incomingRateValue;
                                     scope = angular.element(views[incomingIndex]).scope();
                                     if (scope) {
-                                        scope.rate = moduleMetrics.incomingRate;
+                                        scope.rate = incomingRateValue;
                                     } else {
                                         utils.$log.warn('No scope for incoming message rate label for node "' + name + '"');
                                     }
@@ -272,7 +287,7 @@ define(function (require) {
                                     link.label(incomingIndex, {
                                         position: -15,
                                         type: 'incoming-rate',
-                                        rate: moduleMetrics.incomingRate,
+                                        rate: incomingRateValue,
                                         attrs: {
                                             text: {
                                                 transform: 'translate(0, 11)',
@@ -427,7 +442,26 @@ define(function (require) {
                     } else {
                         dots.forEach(function(dot, i) {
                             if (i < moduleMetrics.instances.length) {
-                                dot.scope.moduleInstanceData = moduleMetrics.instances[i];
+                                var instanceMetrics = moduleMetrics.instances[i];
+                                if (instanceMetrics) {
+                                    // pull out the relevant stats
+                                    var inputMean = _.find(instanceMetrics.metrics, function(item) {
+                                        return item.name === 'integration.channel.input.sendRate.mean'; 
+                                    });
+                                    var outputMean = _.find(instanceMetrics.metrics, function(item) {
+                                        return item.name === 'integration.channel.output.sendRate.mean'; 
+                                    });
+                                    if (inputMean) {
+                                        inputMean = inputMean.value.toFixed(3);
+                                    }
+                                    if (outputMean) {
+                                        outputMean = outputMean.value.toFixed(3);
+                                    }
+                                    instanceMetrics.computed = {};
+                                    instanceMetrics.computed.inputMean = inputMean;
+                                    instanceMetrics.computed.outputMean = outputMean;
+                                }
+                                dot.scope.moduleInstanceData = instanceMetrics;
                             } else {
                                 dot.scope.moduleInstanceData = undefined;
                             }
