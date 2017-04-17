@@ -89,7 +89,13 @@ define(function(require) {
             if (typeof tooltipClass === 'string' && tooltipClass) {
                 domElement.setAttribute('tooltip-class', tooltipClass);
             }
-            domElement.setAttribute('tooltip-template', '\'' + template + '\'');
+
+            if (template && /^\/?([\w,\s-]+\/)*[\w,\s-]+\.[A-Za-z\d]+$/.test(template)) {
+                // template is just a file name not some kind of expression
+                domElement.setAttribute('tooltip-template', '\'' + template + '\'');
+            } else {
+                domElement.setAttribute('tooltip-template', template);
+            }
 
             if (scope && typeof scope.disabled === 'boolean') {
                 // 2-way binding for disabled attribute to be able to enable/disable tooltip programatically via scope.disabled property
