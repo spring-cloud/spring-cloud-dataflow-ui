@@ -27,6 +27,9 @@ define(function (require) {
 
     var INSTANCE_COUNT_PROP = 'spring.cloud.stream.instanceCount';
 
+    var INPUT_CHANNEL_MEAN = 'integration.channel.input.send.mean';
+    var OUTPUT_CHANNEL_MEAN = 'integration.channel.output.send.mean';
+
     var MAGNITUDE_NUMBERS = [ 1000000000, 1000000, 1000];
     var MAGNITUDE_LITERALS = ['B', 'M', 'K'];
 
@@ -214,7 +217,7 @@ define(function (require) {
                             var outgoingRate = null;
                             if (moduleMetrics && moduleMetrics.aggregateMetrics) {
                                 outgoingRate = _.find(moduleMetrics.aggregateMetrics, function(item) {
-                                        return item.name === 'integration.channel.output.send.mean';
+                                        return item.name === OUTPUT_CHANNEL_MEAN;
                                 });
                             }
                             if (outgoingRate) {
@@ -266,7 +269,7 @@ define(function (require) {
                             var incomingRate = null; // will be an object with name and value properties
                             if (moduleMetrics && moduleMetrics.aggregateMetrics) {
                                 incomingRate = _.find(moduleMetrics.aggregateMetrics, function(item) {
-                                        return item.name === 'integration.channel.input.send.mean';
+                                        return item.name === INPUT_CHANNEL_MEAN;
                                 });
                             }
                             if (incomingRate) {
@@ -446,10 +449,10 @@ define(function (require) {
                                 if (instanceMetrics) {
                                     // pull out the relevant stats
                                     var inputMean = _.find(instanceMetrics.metrics, function(item) {
-                                        return item.name === 'integration.channel.input.sendRate.mean';
+                                        return item.name === INPUT_CHANNEL_MEAN;
                                     });
                                     var outputMean = _.find(instanceMetrics.metrics, function(item) {
-                                        return item.name === 'integration.channel.output.sendRate.mean';
+                                        return item.name === OUTPUT_CHANNEL_MEAN;
                                     });
                                     if (inputMean) {
                                         inputMean = inputMean.value.toFixed(3);
