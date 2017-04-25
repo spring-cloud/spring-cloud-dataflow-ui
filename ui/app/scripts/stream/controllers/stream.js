@@ -429,7 +429,7 @@ define(function (require) {
 
                                     floBootstrapTooltip.attachBootstrapTemplateTooltip(dotView.el, dotScope,
                                         'moduleInstanceData ? \'scripts/stream/views/app-deployed-tooltip.html\' : \'scripts/stream/views/app-undeployed-tooltip.html\'',
-                                        'bottom');
+                                        'bottom', 500, 'app-instance-tooltip');
 
                                     $compile(dotView.el)(dotScope);
                                 }

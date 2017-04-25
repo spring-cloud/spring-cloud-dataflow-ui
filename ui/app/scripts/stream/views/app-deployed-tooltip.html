@@ -1,16 +1,16 @@
 <table class="table-hover table-condensed container-details-table">
     <tbody>
     <tr>
-        <td class="text-left"><strong>Guid</strong></td>
-        <td>{{moduleInstanceData.properties['spring.cloud.application.guid']}}</td>
+        <td nowrap class="text-left tooltip-property-key"><strong>Guid</strong></td>
+        <td class="text-left tooltip-property-value">{{moduleInstanceData.properties['spring.cloud.application.guid']}}</td>
     </tr>
     <tr ng-if="moduleInstanceData.properties['spring.cloud.dataflow.stream.app.type'] !== 'source'">
-        <td class="text-left"><strong>Incoming</strong></td>
-        <td>{{moduleInstanceData.computed.inputMean}}</td>
+        <td nowrap class="text-left tooltip-property-key"><strong>Incoming</strong></td>
+        <td class="text-left tooltip-property-value">{{moduleInstanceData.computed.inputMean}}</td>
     </tr>
     <tr ng-if="moduleInstanceData.properties['spring.cloud.dataflow.stream.app.type'] !== 'sink'">
-        <td class="text-left"><strong>Outgoing</strong></td>
-        <td>{{moduleInstanceData.computed.outputMean}}</td>
+        <td nowrap class="text-left tooltip-property-key"><strong>Outgoing</strong></td>
+        <td class="text-left tooltip-property-value">{{moduleInstanceData.computed.outputMean}}</td>
     </tr>
     </tbody>
 </table>
