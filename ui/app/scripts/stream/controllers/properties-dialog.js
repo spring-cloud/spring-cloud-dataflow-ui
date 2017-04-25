@@ -109,7 +109,7 @@ define(function(require) {
                         value: specifiedValue,
                         pattern: schema.pattern,
                         isList: function() {
-                            return this.type.endsWith('[]');
+                            return angular.isString(this.type) && this.type.endsWith('[]');
                         },
                         valueFunc: function(newValue) {
                             if (arguments.length) {
