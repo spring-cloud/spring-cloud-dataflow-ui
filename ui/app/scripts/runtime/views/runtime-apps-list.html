@@ -36,6 +36,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h2 class="text-center">Metrics</h2>
+                                        <div ng-repeat="metric in metrics">
+                                            <div ng-if="metric.guid == appInstance.attributes.guid">
+                                              <div ng-repeat="(key, value) in metric.metrics">
+                                                  <h3>{{key}}: {{value}}</h3>
+                                              </div>
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
