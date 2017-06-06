@@ -5,10 +5,18 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AboutComponent } from './about/about.component';
+import { StreamsComponent } from './streams/streams.component';
+import { StreamDefinitionsComponent } from './stream-definitions/stream-definitions.component';
+import { StreamCreateComponent } from './stream-create/stream-create.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AboutComponent,
+    StreamsComponent,
+    StreamDefinitionsComponent,
+    StreamCreateComponent
   ],
   imports: [
     BrowserModule,
