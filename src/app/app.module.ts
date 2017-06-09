@@ -9,6 +9,17 @@ import { AboutComponent } from './about/about.component';
 import { StreamsComponent } from './streams/streams.component';
 import { StreamDefinitionsComponent } from './stream-definitions/stream-definitions.component';
 import { StreamCreateComponent } from './stream-create/stream-create.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS} from 'angular2-busy';
+
+const busyConfig: BusyConfig = {
+    message: 'Processing..',
+    delay: 0,
+    template: BUSY_CONFIG_DEFAULTS.template,
+    minDuration: 2000,
+    backdrop: true,
+    wrapperClass: BUSY_CONFIG_DEFAULTS.wrapperClass
+};
 
 @NgModule({
   declarations: [
@@ -22,7 +33,9 @@ import { StreamCreateComponent } from './stream-create/stream-create.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    BusyModule.forRoot(busyConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]

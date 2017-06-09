@@ -15,6 +15,11 @@ const routes: Routes = [
     component: StreamsComponent,
     children: [
       {
+          path: '',
+          pathMatch: 'full',
+          redirectTo: 'definitions'
+      },
+      {
         path: 'definitions',
         component: StreamDefinitionsComponent
       },

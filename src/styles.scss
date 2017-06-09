@@ -1,7 +1,65 @@
+@import 'variables';
+
 /* You can add global styles to this file, and also import other style files */
 @import 'variables';
+@import '../node_modules/pui-css-variables-and-mixins/pui-variables';
+
+//@import '../node_modules/pui-css-variables-and-mixins/mixins';
+
+$navbar-inverse-bg: $navy-2;
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/typography/typography';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/buttons/buttons';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/colors/colors';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/iconography/iconography';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/panes/panes';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/backgrounds/backgrounds';
+// @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/forms/forms';
+//@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/grids/grids';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/tables/tables';
+// @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/tooltips/tooltips';
+// @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/pagination/pagination';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/tabs/tabs';
+
+@import '../node_modules/angular2-busy/build/style/busy.css';
+
+@keyframes fade {
+  0%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.fade {
+  animation: fade ease-in-out 1s;
+  animation-fill-mode: forwards;
+}
+
+.vertical-center {
+  background-color: #232b2f;
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
+
 body {
-  padding-top: 50px;
+  background-color: #232b2f;
+}
+
+.ng-busy {
+  margin-top: -20px;
+}
+
+.dataflow-main-container {
+  padding-top: 20px;
+  padding-bottom: 2em;
+  background-color: #ffffff;
+}
+
+.glyphicon {
+  line-height: inherit;
+  margin-right: 2px;
 }

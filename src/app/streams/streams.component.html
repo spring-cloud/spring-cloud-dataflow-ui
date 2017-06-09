@@ -4,10 +4,12 @@
     lists all the stream definitions and provides the ability to deploy/undeploy or destroy streams.
 </p>
 
-<ul class="nav nav-tabs">
-  <li role="presentation" routerLinkActive="active"><a routerLink="definitions">Definitions</a></li>
-  <li role="presentation" routerLinkActive="active"><a routerLink="create">Create Stream</a></li>
-</ul>
-<div class="tab-content">
-  <div><router-outlet></router-outlet></div>
+<div class="tab-simple">
+  <ul class="nav nav-tabs">
+    <li role="presentation" routerLinkActive="active"><a routerLink="definitions">Definitions</a></li>
+    <li role="presentation" routerLinkActive="active"><a routerLink="create">Create Stream</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane in active"><router-outlet></router-outlet></div>
+  </div>
 </div>

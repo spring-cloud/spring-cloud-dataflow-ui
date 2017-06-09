@@ -1,6 +1,4 @@
-
-<h1>About</h1>
-
+<h1 [ngBusy]="busy">About</h1>
 <p class="index-page--subtitle">
   Spring Cloud Data Flow is a unified, distributed, and extensible system for data ingestion,
   real time analytics, batch processing, and data export. The project's goal is to
@@ -26,9 +24,7 @@
     Show Details
 </button>
 
-<hr>
-
-<h2>Get the Spring Cloud Data Flow Shell</h2>
+<h2 style="margin-top: 1em;">Get the Spring Cloud Data Flow Shell</h2>
 
 <p *ngIf="dataflowVersionInfo" class="index-page--subtitle">As an alternative to the Dashboard UI, you can also
    <a href="https://repo.spring.io/libs-snapshot/org/springframework/cloud/spring-cloud-dataflow-shell/{{dataflowVersionInfo.versionInfo.core.version}}/spring-cloud-dataflow-shell-{{dataflowVersionInfo.versionInfo.core.version}}.jar"

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -7,7 +7,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Spring Cloud Data Flow</a>
+        <a class="navbar-brand" href="#"><img alt="Spring Cloud Data Flow" src="../assets/img/scdf-logo-navbar.png" style="margin-top: -10px;"> Spring Cloud Data Flow</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
@@ -22,8 +22,105 @@
       </div><!--/.nav-collapse -->
     </div>
 </nav>
-<div class="container">
-  <router-outlet></router-outlet>
+<div class="container dataflow-main-container">
+  <div class='row'>
+    <div class='col-sm-24'>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
-
+<div class='pane footer bg-dark-1'>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-sm-8'>
+        <p class='type-neutral-4 mtxl'>
+          © 2017 Pivotal Software, Inc.
+          <br>
+          All Rights Reserved.
+        </p>
+        <ul class='list-unstyled'>
+          <li>
+            <a class='link-lowlight-alt' href='/policies/terms-of-service'>Terms of Service</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='/policies/privacy-policy'>Privacy</a>
+          </li>
+        </ul>
+      </div>
+      <div class='col-sm-4'>
+        <h3 class='h4 type-neutral-11 em-alt mbs'>Product</h3>
+        <ul class='list-unstyled'>
+          <li>
+            <a class='link-lowlight-alt' href='/features/'>Features</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='/pricing/'>Pricing</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='https://console.run.pivotal.io/marketplace'>Marketplace</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div class='col-sm-4'>
+        <h3 class='h4 type-neutral-11 em-alt mbs'>Company</h3>
+        <ul class='list-unstyled'>
+          <li>
+            <a class='link-lowlight-alt' href='http://support.run.pivotal.io'>Support</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='http://docs.run.pivotal.io'>Docs</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='https://console.run.pivotal.io/tools'>Tools</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='http://blog.pivotal.io/cloud-foundry-pivotal'>Blog</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='http://status.run.pivotal.io'>Status</a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='http://www.pivotal.io/careers'>Jobs</a>
+          </li>
+        </ul>
+      </div>
+      <div class='col-sm-4'>
+        <h3 class='h4 type-neutral-11 em-alt mbs'>Company</h3>
+        <ul class='list-unstyled'>
+          <li>
+            <a class='link-lowlight-alt' href='https://twitter.com/pivotalws'>
+              <i class='fa fa-twitter mrm'></i>
+              Twitter
+            </a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='https://www.facebook.com/cloudfoundry'>
+              <i class='fa fa-facebook-square mrm'></i>
+              Facebook
+            </a>
+          </li>
+          <li>
+            <a class='link-lowlight-alt' href='https://plus.google.com/+cloudfoundry/posts'>
+              <i class='fa fa-google-plus-square mrm'></i>
+              Google Plus
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class='col-sm-5 col-md-4'>
+        <h3 class='h4 type-neutral-11 em-alt mbs'>Need Help?</h3>
+        <ul class='list-unstyled'>
+          <li class='type-neutral-11'>
+            For questions, comments or feedback
+            <br>
+            <a class='link-lowlight-alt' href='mailto:support@run.pivotal.io'>support@run.pivotal.io</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
