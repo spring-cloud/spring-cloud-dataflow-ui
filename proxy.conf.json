@@ -3,5 +3,15 @@
         "target": "http://localhost:9393/",
         "secure": false,
         "logLevel": "debug"
+    },
+    "/apps" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
+    "/websocket/*": {
+        "target": "http://localhost:9393/websocket/",
+        "ws": true,
+        "logLevel": "debug"
     }
 }

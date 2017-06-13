@@ -1,14 +1,24 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AboutComponent } from './about/about.component';
+import { AppsComponent } from './apps/apps.component'
+import { RuntimeComponent } from './runtime/runtime.component'
 import { StreamsComponent } from './streams/streams.component'
-import { StreamDefinitionsComponent } from './stream-definitions/stream-definitions.component'
-import { StreamCreateComponent } from './stream-create/stream-create.component'
+import { TasksComponent } from './tasks/tasks.component'
+import { JobsComponent } from './jobs/jobs.component'
+import { AnalyticsComponent } from './analytics/analytics.component'
+import { AboutComponent } from './about/about.component';
+
+import { StreamDefinitionsComponent } from './streams/stream-definitions/stream-definitions.component'
+import { StreamCreateComponent } from './streams/stream-create/stream-create.component'
 
 const routes: Routes = [
   {
-    path: 'about',
-    component: AboutComponent
+    path: 'apps',
+    component: AppsComponent
+  },
+  {
+    path: 'runtime',
+    component: RuntimeComponent
   },
   {
     path: 'streams',
@@ -28,6 +38,22 @@ const routes: Routes = [
         component: StreamCreateComponent
       }
     ]
+  },
+  {
+    path: 'tasks',
+    component: TasksComponent
+  },
+  {
+    path: 'jobs',
+    component: TasksComponent
+  },
+  {
+    path: 'analytics',
+    component: AnalyticsComponent
+  },
+  {
+    path: 'about',
+    component: AboutComponent
   }
   // {
   //   path: '',

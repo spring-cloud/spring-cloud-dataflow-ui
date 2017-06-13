@@ -26,6 +26,9 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
 @import '../node_modules/angular2-busy/build/style/busy.css';
 
+@import '../node_modules/ng2-toasty/bundles/style.css';
+@import '../node_modules/ng2-toasty/bundles/style-bootstrap.css';
+
 @keyframes fade {
   0%  { opacity: 0; }
   100% { opacity: 1; }
@@ -62,4 +65,100 @@ body {
 .glyphicon {
   line-height: inherit;
   margin-right: 2px;
+}
+
+#toasty {
+  top: unset !important;
+}
+// Navbar
+
+.navbar {
+  //border-top: 4px solid @spring-green;
+  //background-color: @spring-brown;
+  //margin-bottom: 0px;
+  //border-bottom: 0;
+  //border-left: 0;
+  //border-right: 0;
+}
+
+.navbar .container {
+  padding-right: 0;
+}
+.navbar a.navbar-brand {
+  background: url("assets/img/spring-logo-dataflow.png") -1px -1px no-repeat;
+  margin: 12px 0 6px;
+  width: 229px;
+  height: 46px;
+  display: inline-block;
+  text-decoration: none;
+  padding: 0;
+}
+
+.navbar a.navbar-brand span {
+  display: block;
+  width: 229px;
+  height: 46px;
+  background: url("assets/img/spring-logo-dataflow.png") -1px -48px no-repeat;
+  opacity: 0;
+  -moz-transition: opacity 0.12s ease-in-out;
+  -webkit-transition: opacity 0.12s ease-in-out;
+  -o-transition: opacity 0.12s ease-in-out;
+}
+
+.navbar a:hover.navbar-brand span {
+  opacity: 1;
+}
+
+.navbar li > a, .navbar-text {
+  font-family: "montserratregular", sans-serif;
+  text-shadow: none;
+  font-size: 16px;
+
+/* line-height: 14px; */
+  padding: 24px 8px;
+  transition: all 0.15s;
+  -webkit-transition: all 0.15s;
+  -moz-transition: all 0.15s;
+  -o-transition: all 0.15s;
+  -ms-transition: all 0.15s;
+}
+
+// ~~~~ responsive
+
+
+@media (max-width: 768px) {
+  .navbar-toggle {
+    position:absolute;
+    z-index: 9999;
+    left:0px;
+  top:0px;
+  }
+
+  .navbar a.navbar-brand {
+    display: block;
+    margin: 0 auto 0 auto;
+    width: 148px;
+    height: 50px;
+    float: none;
+    background: url("assets/img/spring-logo-dataflow-mobile.png") 0 center no-repeat;
+  }
+
+  .homepage-billboard .homepage-subtitle {
+    font-size: 21px;
+    line-height: 21px;
+  }
+
+  .navbar a.navbar-brand span {
+    display: none;
+  }
+
+  .navbar {
+    border-top-width: 0;
+  }
+
+  .dataflow-container {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
 }
