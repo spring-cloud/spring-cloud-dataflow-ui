@@ -10,6 +10,7 @@ export class TasksComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('Taaaassssks');
   }
 
 }

@@ -5,23 +5,22 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class AboutService {
+export class TasksService {
 
-  private aboutUrl = '/about';
+  private appstUrl = '/apps';
 
   constructor(private http: Http) { }
 
-  getAboutInfo(): Observable<any[]> {
-    return this.http.get(this.aboutUrl)
+  getApps(): Observable<any[]> {
+    return this.http.get(this.appstUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
 
   private extractData(res: Response) {
-    let body = res.json();
-    console.log("Body", body);
-    return body;
-    //return body.data || { };
+    const body = res.json();
+    console.log('Body: ', body);
+    return body._embedded;
   }
 
   private handleError (error: Response | any) {

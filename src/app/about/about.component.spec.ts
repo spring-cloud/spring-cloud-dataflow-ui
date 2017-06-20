@@ -5,7 +5,7 @@ import {BaseRequestOptions, ConnectionBackend, Http, RequestOptions} from '@angu
 import {Response, ResponseOptions} from '@angular/http';
 import {MockBackend, MockConnection} from '@angular/http/testing';
 import { AboutComponent } from './about.component';
-import {AboutService} from './about-service.service'
+import {AboutService} from './about.service';
 import { Observable } from 'rxjs/Observable';
 
 describe('AboutComponent', () => {
@@ -14,14 +14,14 @@ describe('AboutComponent', () => {
 
   beforeEach( async(() => {
 
-        let dataStub = {
-      versionInfo: "abcd"
-    }
-    let aboutServiceStub = {
+    const dataStub = {
+      versionInfo: 'abcd'
+    };
+    const aboutServiceStub = {
       getAboutInfo(): Observable<any> {
         return Observable.of(
           dataStub
-        )
+        );
       }
     };
 
@@ -29,9 +29,9 @@ describe('AboutComponent', () => {
       imports: [BusyModule],
       declarations:   [ AboutComponent],
       providers: [
-      //  { provide: ActivatedRoute, useValue: activatedRoute },
-      //  { provide: Router,         useClass: RouterStub},
-        // HeroDetailService at this level is IRRELEVANT!
+      // { provide: ActivatedRoute, useValue: activatedRoute },
+      // { provide: Router,         useClass: RouterStub},
+      // HeroDetailService at this level is IRRELEVANT!
         { provide: AboutService, useValue: {} }
       ]
     })

@@ -18,10 +18,9 @@ export class AppsService {
   }
 
   private extractData(res: Response) {
-    let body = res.json();
-    console.log("Body", body);
-    return body;
-    //return body.data || { };
+    const body = res.json();
+    return body._embedded;
+    // return body.data || { };
   }
 
   private handleError (error: Response | any) {

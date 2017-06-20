@@ -18,10 +18,16 @@
   </tbody>
 </table>
 
-<button id="showAboutDetailsButton" type="button" ng-click="goToDetails()"
+<button id="showAboutDetailsButton" type="button" (click)="goToDetails()"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-search"></span>
     Show Details
+</button>
+
+<button id="stopWebSocketsButton" type="button"  (click)="stopWebsockets()"
+        class="btn btn-default"
+><span class="glyphicon glyphicon-search"></span>
+    Stop
 </button>
 
 <h2 style="margin-top: 1em;">Get the Spring Cloud Data Flow Shell</h2>
@@ -54,3 +60,5 @@
     </tr>
   </tbody>
 </table>
+
+<pre>{{websocketData}}</pre>

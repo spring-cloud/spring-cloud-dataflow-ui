@@ -1,4 +1,4 @@
-<h1 [ngBusy]="busy">About</h1>
+<h1 [ngBusy]="busy">Apps</h1>
 <p>
   This section lists all the available applications and provides the control to register/unregister them (if applicable).
 </p>
@@ -13,13 +13,14 @@
 ><span class="glyphicon glyphicon-search"></span>
     Unregister Application(s)
 </button>
-<button id="showAboutDetailsButton" type="button" ng-click="bulkImportApps()"
+<button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-search"></span>
     Bulk Import Applications
 </button>
 
-<table *ngIf="apps" class="table table-hover">
+<div *ngIf="!apps?.appRegistrationResourceList">No apps available.</div>
+<table *ngIf="apps?.appRegistrationResourceList" class="table table-hover">
   <thead>
     <tr>
         <th style="width: 30px">
@@ -33,7 +34,7 @@
     </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let item of apps._embedded.appRegistrationResourceList">
+  <tr *ngFor="let item of apps.appRegistrationResourceList">
     <td><input type="checkbox" ng-model="item.select" ng-model-options="{ getterSetter: true }" roles="['ROLE_CREATE']"/></td>
     <td>{{item.name}}</td>
     <td>{{item.type}}</td>

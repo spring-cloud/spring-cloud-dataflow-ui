@@ -1,0 +1,74 @@
+<h1>Bulk Import Applications</h1>
+<p>
+    Import and register applications in bulk. Simply provide a URI that points to
+    the location of the <strong>properties file</strong> where the keys are formatted as
+    <strong>type.name</strong> and the values are the URIs of the apps.
+    For convenience, a list of out-of-the-box Stream and Task app starters is provided below, as well.
+</p>
+<hr/>
+
+<form class="form-horizontal" name="bulkImportAppsForm" role="form" ng-submit="bulkImportApps(apps)" novalidate>
+    <fieldset id="importAppsViaUri">
+        <div class="form-group" ng-class="bulkImportAppsForm.uri.$invalid ? 'has-warning has-feedback' : ''">
+            <label for="uri" class="col-sm-6 control-label">Uri</label>
+            <div class="col-sm-14">
+                <input type="text" id="uri" name="uri" autofocus
+                       class="form-control" placeholder="<http://url.to.properties>" ng-model="apps.uri" ng-pattern="uriPattern">
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="bulkImportAppsForm.uri.$invalid"></span>
+                <p class="help-block">Please provide a valid URI pointing to the respective properties file.</p>
+            </div>
+        </div>
+    </fieldset>
+    <h2 class="text-center">OR</h2>
+    <div class="row" style="margin-bottom: 1em;">
+        <div class="col-md-12 col-md-offset-6">
+            <p>
+               Enter the list of properties into the text area field below. Alternatively, you can also select a
+               file in your local file system, which is used to populate the text area field.
+            </p>
+        </div>
+    </div>
+
+    <fieldset id="importAppsViaUpload">
+        <div class="form-group" ng-class="bulkImportAppsForm.appsProperties.$invalid ? 'has-warning has-feedback' : ''">
+            <label for="appsProperties" class="col-sm-6 control-label">Apps as Properties</label>
+            <div class="col-sm-14">
+            <textarea id="appsProperties" autofocus ng-model="apps.appsProperties" rows="5" ng-list="&#10;" ng-trim="false"
+                class="form-control" placeholder="Example:
+task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE
+task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE"
+            ></textarea>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="bulkImportAppsForm.appsProperties.$invalid"></span>
+                <p class="help-block">Please provide a valid properties where the keys are formatted as
+                    <strong>type.name</strong> and the values are the URIs of the apps.</p>
+            </div>
+        </div>
+        <div class="form-group" ng-class="bulkImportAppsForm.uri.$invalid ? 'has-warning has-feedback' : ''">
+            <label for="uri" class="col-sm-6 control-label">Select Properties File</label>
+            <div class="col-sm-14">
+                <input type="file" on-read-file="displayFileContents(contents)" />
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-show="createDefinitionForm.definitionName.$invalid"></span>
+                <p class="help-block">Please provide a text file containing properties. This will be used
+                to populate the text area above.</p>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="form-group">
+        <div class="col-sm-14 col-sm-offset-6">
+        <input type="checkbox" ng-model="apps.force" ng-model-options="{ getterSetter: true }" ui-indeterminate="someForceButNotAll()"/>
+        Force
+        <a dataflow-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 2em;">
+        <div class="col-md-6 text-right"><button id="back-button"   type="button" class="btn btn-default" ng-click="close()">Cancel</button></div>
+        <div class="col-md-6 text-left"><button  id="submit-button" type="submit" class="btn btn-default" ng-disabled="bulkImportAppsForm.$invalid"><span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import</button></div>
+    </div>
+</form>
+
+<div class="force-help-content hide">
+    <span class="force-help-content">By checking <strong>force</strong>, the applications will be imported and installed
+        even if it already exists but only if not being used already.</span>
+</div>

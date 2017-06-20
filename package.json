@@ -25,9 +25,13 @@
     "angular2-busy": "^2.0.4",
     "bootstrap-sass": "^3.3.7",
     "core-js": "^2.4.1",
+    "ng2-stomp-service": "^1.2.2",
     "ng2-toasty": "^4.0.0",
+    "ngx-clipboard": "^8.0.2",
     "pui-css-variables-and-mixins": "^8.1.0",
     "rxjs": "^5.1.0",
+    "sockjs-client": "^1.1.4",
+    "stompjs": "^2.3.3",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

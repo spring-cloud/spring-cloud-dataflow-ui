@@ -8,21 +8,15 @@ import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private toastyConfig: ToastyConfig) { 
+  constructor(private toastyConfig: ToastyConfig) {
     this.toastyConfig.theme = 'bootstrap';
     this.toastyConfig.limit = 5;
     this.toastyConfig.showClose = true;
     this.toastyConfig.position  =  'top-right';
-    this.toastyConfig.timeout   = 5000;
+    this.toastyConfig.timeout   = 3000;
   }
-
-  title = 'app works!';
 
   ngOnInit() {
-
   }
 
-  showToast() {
-    console.log('Pressed button.');
-  }
 }
