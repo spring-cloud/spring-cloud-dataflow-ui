@@ -1,0 +1,56 @@
+<h1 [ngBusy]="busy">Apps</h1>
+<p>
+  This section lists all the available applications and provides the control to register/unregister them (if applicable).
+</p>
+
+<button id="showAboutDetailsButton" type="button" ng-click="registerApps()"
+        class="btn btn-default"
+><span class="glyphicon glyphicon-search"></span>
+    Register Application(s)
+</button>
+<button id="showAboutDetailsButton" type="button" ng-click="unregisterSelectedApps()"
+        class="btn btn-default"
+><span class="glyphicon glyphicon-search"></span>
+    Unregister Application(s)
+</button>
+<button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
+        class="btn btn-default"
+><span class="glyphicon glyphicon-search"></span>
+    Bulk Import Applications
+</button>
+
+<div *ngIf="!apps?.appRegistrationResourceList">No apps available.</div>
+<table *ngIf="apps?.appRegistrationResourceList" class="table table-hover">
+  <thead>
+    <tr>
+        <th style="width: 30px">
+          <input id="selectAllAppsCheckbox" type="checkbox"
+                 roles="['ROLE_CREATE']"/>
+        </th>
+        <th style="width: 200px">Name</th>
+        <th style="width: 100px">Type</th>
+        <th>URI</th>
+        <th style="width: 130px" colspan="2" class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of apps.appRegistrationResourceList">
+    <td><input type="checkbox" ng-model="item.select" ng-model-options="{ getterSetter: true }" roles="['ROLE_CREATE']"/></td>
+    <td>{{item.name}}</td>
+    <td>{{item.type}}</td>
+    <td>{{item.uri}}</td>
+    <td class="action-column">
+        <button type="button" ng-click="info(item)"
+                class="btn btn-default" title="Details"
+        ><span class="glyphicon glyphicon-search"></span>
+        </button>
+    </td>
+    <td class="action-column">
+        <button roles="['ROLE_CREATE']" type="button" ng-click="unregister(item, $index)"
+                class="btn btn-default" title="Unregister"
+        ><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </td>
+  </tr>
+  </tbody>
+</table>

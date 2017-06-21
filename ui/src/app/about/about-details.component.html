@@ -1,0 +1,209 @@
+<h1 [ngBusy]="busy">About Details</h1>
+<h2>Data Flow Server Implementation</h2>
+
+<div *ngIf="dataflowVersionInfo">
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.versionInfo.implementation.name}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Version</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}}</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Enabled Features</h2>
+
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td class="col-xs-6">Analytics</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span *ngIf="!dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Streams</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span *ngIf="!dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Tasks</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span *ngIf="!dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Security Information</h2>
+
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td class="col-xs-6">Authentication Enabled</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Authorization Enabled</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Form Login</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Authenticated</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Username</td>
+    <td>{{dataflowVersionInfo.securityInfo.username || 'N/A'}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Roles</td>
+    <td>{{dataflowVersionInfo.securityInfo.roles}}</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Version Information</h2>
+
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td class="col-xs-6">Implementation</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}} ({{dataflowVersionInfo.versionInfo.implementation.name}})</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Core</td><td>{{dataflowVersionInfo.versionInfo.core.version}} ({{dataflowVersionInfo.versionInfo.core.name}})</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Dashboard</td><td>{{dataflowVersionInfo.versionInfo.dashboard.version}} ({{dataflowVersionInfo.versionInfo.dashboard.name}})</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Runtime Environment - App Deployer</h2>
+
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td class="col-xs-6">Implementation Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerImplementationVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerName}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Spi Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerSpiVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Java Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.javaVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Api Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformApiVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Client Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformClientVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Host Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformHostVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Type</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformType}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Spring Boot Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.springBootVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Spring Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.springVersion}}</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Platform-specific Information of the App Deployer</h2>
+
+<table class="table table-hover">
+  <tbody>
+  <tr *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)" ng-repeat="(key, value) in dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo">
+    <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
+  </tr>
+  <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)">
+    <td class="col-xs-12 text-center" colspan="2">No platform-specific app deployer information available.</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Runtime Environment - Task Launcher</h2>
+
+<table class="table table-hover">
+  <tbody>
+  <tr>
+    <td class="col-xs-6">ImplementationVersion</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerName}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Spi Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerSpiVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Java Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.javaVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Api Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformApiVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Client Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformClientVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Host Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformHostVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Platform Type</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformType}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Spring Boot Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.springBootVersion}}</td>
+  </tr>
+  <tr>
+    <td class="col-xs-6">Spring Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.springVersion}}</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Platform-specific Information of the Task Launcher</h2>
+
+<table class="table table-hover">
+  <tbody>
+  <!--<tr *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)" **ngFor="(key, value) in dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo">
+    <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
+  </tr>-->
+  <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)">
+    <td colspan="2" class="col-xs-6 text-center">No platform-specific task launcher information available.</td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-6 text-right"><button id="back-button" type="button" class="btn btn-default" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left"></span> Back</button></div>
+    <div class="col-md-6 text-left"><button id="back-button"
+      [ngxClipboard] [cbContent]="123" (cbOnSuccess)="onCopyToClipboardSuccess(e);"
+      type="button" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> Copy Details to Clipboard</button></div>
+</div>
+</div>

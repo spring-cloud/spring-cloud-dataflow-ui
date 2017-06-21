@@ -1,0 +1,22 @@
+{
+    "/about" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
+    "/apps" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
+    "/websocket": {
+        "target": "http://localhost:9393",
+        "ws": true,
+        "logLevel": "debug"
+    },
+    "/spring-websocket-portfolio/*": {
+        "target": "http://localhost:8080",
+        "ws": true,
+        "logLevel": "debug"
+    }
+}
