@@ -47,4 +47,13 @@ export class AboutDetailsComponent implements OnInit {
     this.toastyService.success('Copied About Details to Clipboard (As JSON).');
     console.log(e);
   }
+
+  isEmpty(obj) {
+    for(var prop in obj) {
+      if(obj.hasOwnProperty(prop)) {
+        return false;
+      }
+    }
+    return true;
+  };
 }
