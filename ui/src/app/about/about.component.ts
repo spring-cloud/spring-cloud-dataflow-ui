@@ -8,7 +8,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss'],
   providers: [AboutService]
 })
 export class AboutComponent implements OnInit {

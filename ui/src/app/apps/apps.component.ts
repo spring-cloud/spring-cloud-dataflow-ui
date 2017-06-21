@@ -7,7 +7,6 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 @Component({
   selector: 'app-apps',
   templateUrl: './apps.component.html',
-  styleUrls: ['./apps.component.scss'],
   providers: [AppsService]
 })
 export class AppsComponent implements OnInit {
