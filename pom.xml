@@ -101,7 +101,15 @@
 						</goals>
 						<configuration>
 							<nodeVersion>v6.10.0</nodeVersion>
-							<npmVersion>3.10.10</npmVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
 						</configuration>
 					</execution>
 					<execution>
@@ -110,7 +118,7 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>build --prod</arguments>
+							<arguments>run mavenbuild</arguments>
 						</configuration>
 					</execution>
 				</executions>
@@ -122,6 +130,14 @@
 				<filesets>
 						<fileset>
 							<directory>ui/node_modules</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							<directory>ui/dist</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							<directory>src/main/resources/public/dashboard</directory>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>

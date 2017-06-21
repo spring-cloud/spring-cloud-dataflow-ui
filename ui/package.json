@@ -1,6 +1,6 @@
 {
   "name": "spring-cloud-dataflow-ui",
-  "version": "2.0.0.BUILD-SNAPSHOT",
+  "version": "2.0.0",
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
@@ -9,7 +9,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "install": "napa pivotal-cf/pivotal-ui:pivotal-ui-git-clone"
+    "install": "napa pivotal-cf/pivotal-ui:pivotal-ui-git-clone",
+    "mavenbuild": "node ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../src/main/resources/public/dashboard"
   },
   "private": true,
   "dependencies": {

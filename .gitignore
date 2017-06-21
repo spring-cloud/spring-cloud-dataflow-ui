@@ -16,3 +16,4 @@ target/
 *.ipr
 *.iws
 npm-debug.log
+.vscode
