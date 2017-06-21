@@ -4,7 +4,7 @@
 
 	<groupId>org.springframework.cloud</groupId>
 	<artifactId>spring-cloud-dataflow-ui</artifactId>
-	<version>1.2.1.BUILD-SNAPSHOT</version>
+	<version>2.0.0.BUILD-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Spring Cloud Data Flow User Interface</name>
 	<description>This application provides the Dashboard application of Spring Cloud Data Flow.</description>
@@ -80,16 +80,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.6.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>0.0.23</version>
+				<version>1.4</version>
 				<configuration>
 					<workingDirectory>ui</workingDirectory>
 				</configuration>
@@ -100,33 +100,24 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<nodeVersion>v0.12.2</nodeVersion>
-							<npmVersion>2.9.1</npmVersion>
+							<nodeVersion>v6.10.0</nodeVersion>
+							<npmVersion>3.10.10</npmVersion>
 						</configuration>
 					</execution>
 					<execution>
-						<id>npm install</id>
+						<id>npm build</id>
 						<goals>
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>install</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>grunt build</id>
-						<goals>
-							<goal>grunt</goal>
-						</goals>
-						<configuration>
-							<arguments>build --no-color</arguments>
+							<arguments>build --prod</arguments>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			 <plugin>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>2.6.1</version>
+				<version>3.0.0</version>
 				<configuration>
 				<filesets>
 						<fileset>
@@ -141,19 +132,7 @@
 							 <directory>ui/node_modules</directory>
 							  <followSymlinks>false</followSymlinks>
 						</fileset>
-						<fileset>
-							  <directory>ui/bower_components</directory>
-							  <followSymlinks>false</followSymlinks>
-						</fileset>
-						<fileset>
-							  <directory>ui/.bower_cache</directory>
-							  <followSymlinks>false</followSymlinks>
-							</fileset>
-						<fileset>
-							  <directory>ui/app/lib</directory>
-							  <followSymlinks>false</followSymlinks>
-							</fileset>
-						</filesets>
+				</filesets>
 				</configuration>
 			</plugin>
 		</plugins>
