@@ -19,8 +19,12 @@
     Bulk Import Applications
 </button>
 
-<div *ngIf="!apps?.appRegistrationResourceList">No apps available.</div>
-<table *ngIf="apps?.appRegistrationResourceList" class="table table-hover">
+<label class="control">Filter items
+  <input type="text" class="input" placeholder="filter" [(ngModel)]="filter">
+</label>
+
+<div *ngIf="!appRegistrations">No apps available.</div>
+<table *ngIf="appRegistrations" class="table table-hover">
   <thead>
     <tr>
         <th style="width: 30px">
@@ -34,7 +38,7 @@
     </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let item of apps.appRegistrationResourceList">
+  <tr *ngFor="let item of appRegistrations | searchFilter: filter | paginate: { itemsPerPage: 10, currentPage: currentPage }">
     <td><input type="checkbox" ng-model="item.select" ng-model-options="{ getterSetter: true }" roles="['ROLE_CREATE']"/></td>
     <td>{{item.name}}</td>
     <td>{{item.type}}</td>
@@ -54,3 +58,4 @@
   </tr>
   </tbody>
 </table>
+<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>

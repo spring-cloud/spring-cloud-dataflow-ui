@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import { AppsService } from './apps.service';
 import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-apps',
@@ -15,9 +16,16 @@ export class AppsBulkImportComponent implements OnInit {
   displayFileContents: any;
   contents: any;
 
-  constructor( private appsService: AppsService, private toastyService: ToastyService ) { }
+  constructor(
+    private appsService: AppsService,
+    private toastyService: ToastyService,
+    private router: Router) { }
 
   ngOnInit() {
   }
 
+  goBack() {
+    console.log('Back to apps page ...');
+    this.router.navigate(['apps']);
+  };
 }

@@ -4,23 +4,30 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
+import { AppRegistration } from './model/app-registration';
+
 @Injectable()
 export class AppsService {
 
   private appstUrl = '/apps';
 
+  currentPage: number = 1;
+  filter: string = '';
+
   constructor(private http: Http) { }
 
-  getApps(): Observable<any[]> {
+  getApps(): Observable<AppRegistration[]> {
     return this.http.get(this.appstUrl)
                     .map(this.extractData)
                     .catch(this.handleError);
   }
 
-  private extractData(res: Response) {
+  private extractData(res: Response) : AppRegistration[] {
     const body = res.json();
-    return body._embedded;
-    // return body.data || { };
+    //console.log(body);
+    let items = body._embedded.appRegistrationResourceList as AppRegistration[];
+//console.log(items);
+    return items;
   }
 
   private handleError (error: Response | any) {

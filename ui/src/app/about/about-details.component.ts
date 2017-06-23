@@ -21,7 +21,8 @@ export class AboutDetailsComponent implements OnInit {
   constructor(
     private aboutService: AboutService,
     private toastyService: ToastyService,
-    stomp: StompService, private router: Router) {
+    private stomp: StompService,
+    private router: Router) {
   }
 
   ngOnInit() {
