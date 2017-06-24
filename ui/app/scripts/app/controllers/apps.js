@@ -19,6 +19,7 @@
  *
  * @author Alex Boyko
  * @author Gunnar Hillert
+ * @author Ilayaperumal Gopinathan
  */
 define(['model/pageable'], function (Pageable) {
     'use strict';
@@ -122,6 +123,10 @@ define(['model/pageable'], function (Pageable) {
                 current: 1
             };
 
+            $scope.pageable.sortOrder = 'ASC';
+            $scope.pageable.filterQuery = '';
+            $scope.pageable.pageSize = 60;
+
             /**
              * Select all apps
              */
@@ -175,13 +180,27 @@ define(['model/pageable'], function (Pageable) {
                 }
             };
 
+            $scope.pageChanged = function(newPage) {
+                $scope.pageable.pageNumber = newPage-1;
+                loadAppDefinitions($scope.pageable);
+            };
+
+            $scope.sortChanged = function(sortState) {
+                console.log('sortState: ', sortState);
+                loadAppDefinitions($scope.pageable);
+            };
+
+            $scope.searchChanged = function() {
+                loadAppDefinitions($scope.pageable);
+            };
+
             /**
              * Swicthes to specified page. (Applicable if paging is on)
              * @param newPage Page number
              */
             $scope.pageChanged = function(newPage) {
                 $scope.pageable.pageNumber = newPage-1;
-                loadAppDefinitions(/*$scope.pageable*/);
+                loadAppDefinitions($scope.pageable);
             };
 
             /**
@@ -341,6 +360,6 @@ define(['model/pageable'], function (Pageable) {
                 }
             });
 
-            loadAppDefinitions(null/*$scope.pageable*/, true);
+            loadAppDefinitions($scope.pageable, true);
         }];
 });

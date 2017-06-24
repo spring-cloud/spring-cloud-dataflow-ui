@@ -62,7 +62,7 @@
 </table>
 <dir-pagination-controls template-url="scripts/directives/dirPagination.tpl.html"
                          on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
-<div class="text-center col-md-8 col-md-offset-2" ng-hide="pageable.items">
+<div class="text-center col-md-8 col-md-offset-2" ng-hide="pageable.items.length > 0">
     <p><strong>No registered apps.</strong></p>
     <p>You can register apps by clicking:</p>
     <button type="button" ng-click="registerApps()"
