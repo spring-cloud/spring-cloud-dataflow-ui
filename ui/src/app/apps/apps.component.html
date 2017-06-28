@@ -19,12 +19,12 @@
     Bulk Import Applications
 </button>
 
-<label class="control">Filter items
-  <input type="text" class="input" placeholder="filter" [(ngModel)]="filter">
+<label *ngIf="appRegistrations" class="control">Filter items
+  <input type="text" class="input" placeholder="filter" [(ngModel)]="appRegistrations.filter">
 </label>
 
 <div *ngIf="!appRegistrations">No apps available.</div>
-<table *ngIf="appRegistrations" class="table table-hover">
+<table *ngIf="appRegistrations?.items" class="table table-hover">
   <thead>
     <tr>
         <th style="width: 30px">
@@ -38,7 +38,7 @@
     </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let item of appRegistrations | searchFilter: filter | paginate: { itemsPerPage: 10, currentPage: currentPage }">
+  <tr *ngFor="let item of appRegistrations.items | searchFilter: appRegistrations.filter | paginate: { itemsPerPage: 10, currentPage: appRegistrations.pageNumber }; index as i">
     <td><input type="checkbox" ng-model="item.select" ng-model-options="{ getterSetter: true }" roles="['ROLE_CREATE']"/></td>
     <td>{{item.name}}</td>
     <td>{{item.type}}</td>
@@ -50,7 +50,7 @@
         </button>
     </td>
     <td class="action-column">
-        <button roles="['ROLE_CREATE']" type="button" ng-click="unregister(item, $index)"
+        <button roles="['ROLE_CREATE']" type="button" (click)="unregister(item, i)"
                 class="btn btn-default" title="Unregister"
         ><span class="glyphicon glyphicon-trash"></span>
         </button>
@@ -58,4 +58,27 @@
   </tr>
   </tbody>
 </table>
-<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+<pagination-controls (pageChange)="appRegistrations.pageNumber = $event"></pagination-controls>
+
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirm Unregister Application</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="appRegistrationToUnregister">
+          <p>This action will unregister and delete application
+            <u><strong>{{appRegistrationToUnregister.name}}</strong></u>
+            of type <u><strong>{{appRegistrationToUnregister.type}}</strong></u>.
+            Are you sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancel()">No</button>
+        <button type="button" class="btn btn-primary" (click)="proceed()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

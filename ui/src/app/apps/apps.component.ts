@@ -1,40 +1,54 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { AppsService } from './apps.service';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AppRegistration } from './model/app-registration';
+import { Page } from '../shared/model/page';
+
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-apps',
-  templateUrl: './apps.component.html',
-  providers: [AppsService]
+  templateUrl: './apps.component.html'
 })
 export class AppsComponent implements OnInit {
 
-  currentPage: number = 1;
-  filter: string = '';
-
-  appRegistrations: AppRegistration[];
+  appRegistrations: Page<AppRegistration>;
   busy: Subscription;
+  
+  appRegistrationToUnregister: AppRegistration;
+
+  @ViewChild('childModal')
+  public childModal:ModalDirective;
 
   constructor(
-    private appsService: AppsService,
+    public appsService: AppsService,
     private toastyService: ToastyService,
     private router: Router ) {
-      this.currentPage = appsService.currentPage;
-      this.filter = appsService.filter;
+
     }
 
   ngOnInit() {
     this.busy = this.appsService.getApps().subscribe(
       data => {
-        console.log(data);
+        console.log('DATA', data);
         this.appRegistrations = data;
+        console.log('DATA', this.appRegistrations);
         this.toastyService.success('Apps loaded.');
       }
     );
+  }
+
+  registerApps() {
+    
+  }
+
+  unregister(item:AppRegistration, index:number) {
+    console.log(index, item);
+    this.appRegistrationToUnregister = item;
+    this.showChildModal();
   }
 
   bulkImportApps() {
@@ -42,7 +56,19 @@ export class AppsComponent implements OnInit {
     this.router.navigate(['apps/bulk-import-apps']);
   };
 
-  setCurrentFilter(value) {
-    console.log('Set filter to ' + value);
+  public showChildModal():void {
+    this.childModal.show();
   }
+ 
+  public hideChildModal():void {
+    this.childModal.hide();
+  }
+
+  public proceed = function() {
+    this.hideChildModal();
+  };
+
+  public cancel = function() {
+    this.hideChildModal();
+  };
 }

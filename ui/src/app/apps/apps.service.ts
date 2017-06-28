@@ -1,33 +1,78 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
 
+import { URLSearchParams } from '@angular/http';
 import { AppRegistration } from './model/app-registration';
+import { AppRegistrationImport } from './model/app-registration-import';
+
+import { Page } from '../shared/model/page';
 
 @Injectable()
 export class AppsService {
 
-  private appstUrl = '/apps';
+  public appRegistrations: Page<AppRegistration>;
 
-  currentPage: number = 1;
-  filter: string = '';
+  private static appstUrl = '/apps';
 
-  constructor(private http: Http) { }
+  public currentPage: number = 1;
+  public filter: string = '';
 
-  getApps(): Observable<AppRegistration[]> {
-    return this.http.get(this.appstUrl)
-                    .map(this.extractData)
+  constructor(private http: Http) {
+    console.log('constructing');
+  }
+
+  getApps(reload?: boolean): Observable<Page<AppRegistration>> {
+    console.log('apps', this.appRegistrations);
+    if (!this.appRegistrations || reload) {
+      console.log('Fetching App Registrations remotely.')
+      return this.http.get(AppsService.appstUrl)
+                      .map(this.extractData.bind(this))
+                      .catch(this.handleError);
+    }
+    else {
+      console.log('Fetching App Registrations from local state.', this.appRegistrations);
+      return Observable.of(this.appRegistrations);
+    }
+  }
+
+  bulkImportApps(appRegistrationImport: AppRegistrationImport): Observable<Response> {
+    console.log(this.appRegistrations);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let params = new URLSearchParams();
+
+    params.append('uri', appRegistrationImport.uri);
+    params.append('apps', appRegistrationImport.appsProperties ? appRegistrationImport.appsProperties.join('\n') : null);
+    params.append('force', appRegistrationImport.force ? 'true' : 'false');
+
+    let options = new RequestOptions({ headers: headers, params: params });
+    console.log(options.params);
+    return this.http.post(AppsService.appstUrl, {}, options)
                     .catch(this.handleError);
   }
 
-  private extractData(res: Response) : AppRegistration[] {
+  private extractData(res: Response) : Page<AppRegistration> {
     const body = res.json();
-    //console.log(body);
-    let items = body._embedded.appRegistrationResourceList as AppRegistration[];
-//console.log(items);
-    return items;
+    let items: AppRegistration[];
+    if (body._embedded && body._embedded.appRegistrationResourceList) {
+      items = body._embedded.appRegistrationResourceList as AppRegistration[];
+    }
+    else {
+      items = [];
+    }
+
+    let page = new Page<AppRegistration>();
+    page.items = items;
+    page.totalElements = items.length;
+
+    this.appRegistrations = page;
+    
+    console.log('Extracted App Registrations:', this.appRegistrations);
+    return page;
   }
 
   private handleError (error: Response | any) {

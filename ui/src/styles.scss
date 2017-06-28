@@ -17,8 +17,35 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/iconography/iconography';
 @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/panes/panes';
 @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/backgrounds/backgrounds';
-// @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/forms/forms';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/forms/forms';
 //@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/grids/grids';
+
+.row-gutter-sm {
+  margin-left: -$grid-gutter-width-small / 2;
+  margin-right: -$grid-gutter-width-small / 2;
+
+  > [class^="col"] {
+    padding-left: $grid-gutter-width-small / 2;
+    padding-right: $grid-gutter-width-small / 2;
+  }
+}
+
+.row-gutter-md {
+  margin-left: -$grid-gutter-width-md / 2;
+  margin-right: -$grid-gutter-width-md / 2;
+
+  > [class^="col"] {
+    padding-left: $grid-gutter-width-md / 2;
+    padding-right: $grid-gutter-width-md / 2;
+  }
+}
+
+@media (min-width: $screen-xl-min) {
+  @include make-grid(xl);
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~grids
+
 @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/tables/tables';
 // @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/tooltips/tooltips';
 // @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/pagination/pagination';
@@ -28,6 +55,10 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
 @import '../node_modules/ng2-toasty/bundles/style.css';
 @import '../node_modules/ng2-toasty/bundles/style-bootstrap.css';
+
+.help-block {
+  position: unset;
+}
 
 @keyframes fade {
   0%  { opacity: 0; }

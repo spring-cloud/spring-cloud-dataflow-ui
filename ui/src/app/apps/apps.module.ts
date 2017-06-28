@@ -13,12 +13,14 @@ import { SearchfilterPipe } from '../shared/pipes/search-filter';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from '../shared/custom-route-reuse-strategy';
 
+import { AlertModule, ModalModule } from 'ngx-bootstrap';
+
 @NgModule({
-  imports:      [ AppsRoutingModule, SharedModule, NgxPaginationModule ],
+  imports:      [ AppsRoutingModule, SharedModule, NgxPaginationModule, AlertModule.forRoot(), ModalModule.forRoot() ],
   declarations: [ AppsComponent, AppsBulkImportComponent, SearchfilterPipe ],
   providers:    [
-    AppsService,
-    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
+    AppsService
+    //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ]
 })
 export class AppsModule { }

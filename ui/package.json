@@ -28,6 +28,7 @@
     "core-js": "^2.4.1",
     "ng2-stomp-service": "^1.2.2",
     "ng2-toasty": "^4.0.0",
+    "ngx-bootstrap": "^1.7.1",
     "ngx-clipboard": "^8.0.2",
     "ngx-pagination": "^3.0.1",
     "pui-css-variables-and-mixins": "^8.1.0",
