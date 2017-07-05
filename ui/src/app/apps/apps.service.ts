@@ -55,6 +55,33 @@ export class AppsService {
                     .catch(this.handleError);
   }
 
+  unregisterApp(appRegistration: AppRegistration): Observable<Response> {
+    console.log('Unregistering...', appRegistration);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    console.log(appRegistration.name);
+    return this.http.delete('/apps/' + appRegistration.type + '/' + appRegistration.name, options)
+      .map(data => {
+        this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
+      })
+      .catch(this.handleError);
+
+    //                 .catch(this.handleError);
+    // var request = $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
+    //                     unregisterApp: {
+    //                         method: 'DELETE'
+    //                     }
+    //                 }).unregisterApp();
+    //                 request.$promise.then(function() {
+    //                     notifyListeners();
+    //                 });
+    //                 return request;
+
+
+
+    //return;
+  }
+
   private extractData(res: Response) : Page<AppRegistration> {
     const body = res.json();
     let items: AppRegistration[];
@@ -70,7 +97,7 @@ export class AppsService {
     page.totalElements = items.length;
 
     this.appRegistrations = page;
-    
+
     console.log('Extracted App Registrations:', this.appRegistrations);
     return page;
   }

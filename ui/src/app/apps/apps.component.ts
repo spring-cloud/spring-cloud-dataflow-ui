@@ -64,9 +64,18 @@ export class AppsComponent implements OnInit {
     this.childModal.hide();
   }
 
-  public proceed = function() {
-    this.hideChildModal();
-  };
+  public proceed(appRegistration: AppRegistration): void {
+    console.log('Proceeding to unregister application...', appRegistration);
+
+    this.busy = this.appsService.unregisterApp(appRegistration).subscribe(
+      data => {
+        this.cancel();
+        this.toastyService.success('Successfully removed app "'
+          + appRegistration.name + '" of type "' + appRegistration.type + '"');
+      },
+      error => {}
+    );
+  }
 
   public cancel = function() {
     this.hideChildModal();

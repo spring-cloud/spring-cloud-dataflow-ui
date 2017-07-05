@@ -58,7 +58,11 @@ task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE"
         <div class="col-sm-14 col-sm-offset-6">
         <input name="force" type="checkbox"  [(ngModel)]="model.force"/>
         Force
-        <a dataflow-popover=".force-help-content" title="Force"><span class="glyphicon glyphicon-question-sign"></span></a>
+        <a #childPopover="bs-popover"
+        [popover]="popTemplate"
+        placement="bottom"
+        (clickOutside)="closePopOver()"
+        title="Force"><span class="glyphicon glyphicon-question-sign"></span></a>
         </div>
     </div>
 
@@ -68,7 +72,6 @@ task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE"
     </div>
 </form>
 
-<div class="force-help-content hide">
-    <span class="force-help-content">By checking <strong>force</strong>, the applications will be imported and installed
-        even if it already exists but only if not being used already.</span>
-</div>
+<template #popTemplate>By checking <strong>force</strong>, the applications will be imported and installed
+        even if it already exists but only if not being used already.</template>
+

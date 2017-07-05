@@ -1,10 +1,11 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import { AppsService } from './apps.service';
 import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AppRegistrationImport } from './model/app-registration-import';
+import { PopoverDirective } from 'ngx-bootstrap/popover';
 
 @Component({
   selector: 'app-apps',
@@ -12,18 +13,22 @@ import { AppRegistrationImport } from './model/app-registration-import';
 })
 export class AppsBulkImportComponent implements OnInit, OnChanges {
 
+  @ViewChild('childPopover')
+  public childPopover:PopoverDirective;
+
   public model = new AppRegistrationImport(false, [], '');
 
   apps: any;
   busy: Subscription[] = [];
-  //displayFileContents: any;
+
   contents: any;
   uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
 
   constructor(
     private appsService: AppsService,
     private toastyService: ToastyService,
-    private router: Router) { }
+    private router: Router,
+    private elementRef: ElementRef) { }
 
   ngOnInit() {
     console.log('App Service Registrations', this.appsService.appRegistrations);
@@ -60,6 +65,9 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
       console.log(changes);
   }
 
+  closePopOver() {
+    this.childPopover.hide();
+  }
   /**
    * Bulk Import Apps.
    */
