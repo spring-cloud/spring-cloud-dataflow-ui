@@ -1,7 +1,9 @@
 
 <h1 class="no-user-selection">Streams</h1>
-<p> This section
+<p [hidden]="!router.isActive('/streams/definitions')"> This section
     lists all the stream definitions and provides the ability to deploy/undeploy or destroy streams.
+</p>
+<p [hidden]="router.isActive('/streams/definitions')"> Create a stream using text based input or the visual editor.
 </p>
 
 <div class="tab-simple">
@@ -13,3 +15,5 @@
     <div class="tab-pane in active"><router-outlet></router-outlet></div>
   </div>
 </div>
+
+
