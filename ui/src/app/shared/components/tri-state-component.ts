@@ -56,6 +56,7 @@ export class Tristate implements AfterViewInit, DoCheck, OnInit  {
   ngOnInit() { }
 
   ngAfterViewInit() {
+    console.log('ngAfterViewInit', this.items);
     this._subscription = this.items.subscribe(res => {
       console.log("Subscription triggered.");
       this._items = res;

@@ -9,6 +9,8 @@ import { Page } from '../shared/model/page';
 
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
+import { Observable } from 'rxjs/Observable';
+
 @Component({
   selector: 'app-apps',
   templateUrl: './apps.component.html'
@@ -17,7 +19,7 @@ export class AppsComponent implements OnInit {
 
   appRegistrations: Page<AppRegistration>;
   busy: Subscription;
-  
+
   appRegistrationToUnregister: AppRegistration;
 
   @ViewChild('childModal')
@@ -27,22 +29,31 @@ export class AppsComponent implements OnInit {
     public appsService: AppsService,
     private toastyService: ToastyService,
     private router: Router ) {
-
     }
 
+  public items: Observable<Array<any>>;
+  private _items: Array<any>;
+
   ngOnInit() {
+    this._items = [];
+    this.items = Observable.of(this._items);
+    this.items.subscribe(res => {
+      console.log("Subscription triggered.");
+    });
+
     this.busy = this.appsService.getApps().subscribe(
       data => {
         console.log('DATA', data);
+        for (let i of data.items) {
+          this._items.push(i);
+        }
         this.appRegistrations = data;
-        console.log('DATA', this.appRegistrations);
         this.toastyService.success('Apps loaded.');
       }
     );
   }
 
   registerApps() {
-    
   }
 
   unregister(item:AppRegistration, index:number) {
@@ -80,4 +91,10 @@ export class AppsComponent implements OnInit {
   public cancel = function() {
     this.hideChildModal();
   };
+
 }
+
+
+
+
+
