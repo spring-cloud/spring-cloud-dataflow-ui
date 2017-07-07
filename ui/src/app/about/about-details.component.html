@@ -203,7 +203,7 @@
 <div class="row">
     <div class="col-md-6 text-right"><button id="back-button" type="button" class="btn btn-default" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left"></span> Back</button></div>
     <div class="col-md-6 text-left"><button id="back-button"
-      [ngxClipboard] [cbContent]="123" (cbOnSuccess)="onCopyToClipboardSuccess(e);"
+      [ngxClipboard] [cbContent]="dataflowVersionInfo | json" (cbOnSuccess)="onCopyToClipboardSuccess($event);"
       type="button" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> Copy Details to Clipboard</button></div>
 </div>
 </div>
