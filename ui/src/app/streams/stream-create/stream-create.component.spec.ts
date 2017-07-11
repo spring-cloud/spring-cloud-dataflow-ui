@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StreamCreateComponent } from './stream-create.component';
 
-describe('StreamCreateComponent', () => {
+xdescribe('StreamCreateComponent', () => {
   let component: StreamCreateComponent;
   let fixture: ComponentFixture<StreamCreateComponent>;
 
