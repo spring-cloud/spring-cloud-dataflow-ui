@@ -9,6 +9,11 @@
         "secure": false,
         "logLevel": "debug"
     },
+    "/streams" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
     "/websocket": {
         "target": "http://localhost:9393",
         "ws": true,

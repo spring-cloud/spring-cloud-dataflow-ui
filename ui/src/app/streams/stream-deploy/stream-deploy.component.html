@@ -1,0 +1,33 @@
+<div>Deploy Stream Definition {{id}}</div>
+
+<div>Please specify any optional deployment properties. You can either enter deployment properties directly into the text-area field below or alternatively, you can point to an external properties file, which will be used to populate the text-area field.</div>
+
+<form class="form-horizontal" novalidate [formGroup]="form" (ngSubmit)="deployDefinition()">
+  <div class="form-group">
+    <label for="deploymentProperties" class="col-sm-3 control-label">Deployment Properties</label>
+    <div class="col-sm-9">
+      <textarea class="form-control" id="deploymentProperties" name="deploymentProperties"
+                formControlName="deploymentProperties" autofocus rows="5"
+                placeholder="Enter optional deployment properties.
+1 line per property e.g.:
+property1=Spring
+property2=Data Flow"></textarea>
+      <p class="help-block" *ngIf="form.controls.deploymentProperties.errors">The format of your deployment properties is invalid. {{form.controls.deploymentProperties.errors.validateDeploymentProperties.reason}}</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="uri" class="col-sm-3 control-label">Select Properties File</label>
+    <div class="col-sm-7">
+      <input type="file" (change)="displayFileContents($event)"/>
+      <p class="help-block">Please provide a text file containing deployment properties. This will be used to populate the text area above.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 text-right">
+      <button type="button" class="btn btn-default" (click)="cancelDefinitionDeploy()">Back</button>
+    </div>
+    <div class="col-md-6 text-left">
+      <button type="submit" class="btn btn-default" [disabled]="!form.valid">Deploy</button>
+    </div>
+  </div>
+</form>
