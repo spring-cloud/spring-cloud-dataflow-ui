@@ -14,6 +14,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {StreamModule} from "./streams/stream-deploy/stream-deploy-module";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
     RuntimeModule,
     SharedModule,
     StreamsModule,
-    TasksModule
+    TasksModule,
+    StreamModule
   ],
   bootstrap: [AppComponent]
 })
