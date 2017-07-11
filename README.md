@@ -1,10 +1,9 @@
 # Spring Cloud Data Flow Dashboard [![Stories in Ready](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui) [![Stories in Progress](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui)
 
-|               | Build Status    |
-| ------------- | :-------------: |
-| Linux         | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/SCD-UILINUX)](https://build.spring.io/browse/SCD-UILINUX)  |
-| Windows       | [![Build Status](http://build.spring.io/plugins/servlet/buildStatusImage/SCD-UIWIN)](https://build.spring.io/browse/SCD-UIWIN)  |
-
+[![Build Status](https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui.png?branch=angular)](https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui)
+[![Build status](https://ci.appveyor.com/api/projects/status/7pqco2aqjyaphp36/branch/angular?svg=true)](https://ci.appveyor.com/project/spring-cloud/spring-cloud-dataflow-ui/branch/angular)
+[![Code Coverage](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow/branch/master/graph/badge.svg)](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/angular)
+[![Dependency Status](https://www.versioneye.com/user/projects/59658bc06725bd0049dfdfaf/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/59658bc06725bd0049dfdfaf)
 
 This is the *Spring Cloud Data Flow Dashboard* user interface (UI). The UI uses [Angular][].
 

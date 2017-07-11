@@ -1,15 +1,19 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { AboutService } from './about.service';
+import { Observable } from 'rxjs/Rx'
 
-import { AboutServiceService } from './about-service.service';
+xdescribe('AboutService', () => {
 
-describe('AboutServiceService', () => {
+  let aboutService: AboutService;
+  let mockHttp;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [AboutServiceService]
-    });
+    mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
+    aboutService = new AboutService(this.mockHttp);
   });
 
-  // it('should be created', inject([AboutServiceService], (service: AboutServiceService) => {
-  //   expect(service).toBeTruthy();
-  // }));
+  it('should be created', () => {
+    mockHttp.get.and.returnValue(Observable.of(false));
+    aboutService.getAboutInfo();
+    //expect(aboutService.getAboutInfo()).toBe();
+  });
 });

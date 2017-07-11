@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RuntimeComponent } from './runtime.component';
 
-describe('RuntimeComponent', () => {
+xdescribe('RuntimeComponent', () => {
   let component: RuntimeComponent;
   let fixture: ComponentFixture<RuntimeComponent>;
 
