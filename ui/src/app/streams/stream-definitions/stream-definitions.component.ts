@@ -12,6 +12,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
   selector: 'app-stream-definitions',
   templateUrl: './stream-definitions.component.html',
 })
+
 export class StreamDefinitionsComponent implements OnInit {
 
   streamDefinitions: Page<StreamDefinition>;
