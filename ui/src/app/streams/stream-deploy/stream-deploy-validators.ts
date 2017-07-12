@@ -1,7 +1,8 @@
 import { FormControl } from '@angular/forms';
 
-export function validateDeploymentProperties(c: FormControl) {
-  var properties = c.value.split('\n');
+
+export function validateDeploymentProperties(formControl: FormControl) {
+  var properties = formControl.value.split('\n');
   var propertiesAsMap = null;
 
   if (properties) {

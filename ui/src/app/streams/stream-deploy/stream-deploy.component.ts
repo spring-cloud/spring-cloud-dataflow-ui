@@ -10,6 +10,12 @@ import { validateDeploymentProperties } from './stream-deploy-validators';
   templateUrl: './stream-deploy.component.html',
 })
 
+/**
+ * Component used to deploy stream definitions.
+ *
+ * @author Janne Valkealahti
+ * @author Glenn Renfro
+ */
 export class StreamDeployComponent implements OnInit {
 
   id: String;
@@ -17,6 +23,14 @@ export class StreamDeployComponent implements OnInit {
   form: FormGroup;
   deploymentProperties = new FormControl("", validateDeploymentProperties);
 
+  /**
+   * Adds deployment properties to the FormBuilder
+   * @param streamsService The service used to deploy the stream.
+   * @param route used to subscribe to the id param
+   * @param router used to navigate back to the home page
+   * @param toastyService used to display the status of a deployment
+   * @param fb used establish the deployment properties as a part of the form.
+   */
   constructor(
     private streamsService: StreamsService,
     private route: ActivatedRoute,
@@ -29,6 +43,9 @@ export class StreamDeployComponent implements OnInit {
      });
   }
 
+  /**
+   * Establishes the stream name for the deployment as obtained from the URL.
+   */
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
        this.id = params['id'];
@@ -39,18 +56,24 @@ export class StreamDeployComponent implements OnInit {
     this.sub.unsubscribe();
   }
 
+  /**
+   * Navigates back to the stream definitions page.
+   */
   cancelDefinitionDeploy() {
     this.router.navigate(['streams/definitions']);
   }
 
+  /**
+   * Requests a stream deployment for the stream definition.
+   */
   deployDefinition() {
     console.log('deployDefinition ' + this.deploymentProperties.value);
 
-    var propertiesAsMap = {};
+    let propertiesAsMap = {};
     if (this.deploymentProperties.value) {
       for (let prop of this.deploymentProperties.value.split('\n')) {
         if (prop && prop.length > 0 && !prop.startsWith('#')) {
-          var keyValue = prop.split('=');
+          let keyValue = prop.split('=');
           if (keyValue.length===2) {
             propertiesAsMap[keyValue[0]] = keyValue[1];
           }
@@ -64,16 +87,26 @@ export class StreamDeployComponent implements OnInit {
           + this.id + '"');
         this.router.navigate(['streams/definitions']);
       },
-      error => {}
+      error => {
+        if (error.message != null) {
+          this.toastyService.error(error.message);
+        }
+        else {
+          this.toastyService.error(error);
+        }
+      }
     );
   }
 
-  displayFileContents(event) {
-    var file:File = event.target.files[0];
-    var reader:FileReader = new FileReader();
-    var _form = this.form;
+  /**
+   * Used to read the deployment properties of a stream from a flat file
+   * @param event The event from the file selection dialog.
+   */
+  displayFileContents(event: any) {
+    let file:File = event.target.files[0];
+    let reader:FileReader = new FileReader();
+    let _form = this.form;
     reader.onloadend = function(e){
-      console.log(reader.result);
       _form.patchValue({deploymentProperties: reader.result});
     }
     reader.readAsText(file);

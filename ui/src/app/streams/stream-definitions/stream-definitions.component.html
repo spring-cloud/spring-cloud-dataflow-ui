@@ -53,7 +53,7 @@
             <span class="glyphicon glyphicon-info-sign"></span>
             Details
           </button>
-          <button type="button" (click)="undeploy(item, i)"
+          <button type="button" [disabled]="(item.status==='undeployed' || item.status==='failed' || item.status==='incomplete')" (click)="undeploy(item, i)"
                   class="btn btn-default" title="Undeploy">
             <span class="glyphicon glyphicon-stop"></span>
             Undeploy
