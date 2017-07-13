@@ -1,3 +1,103 @@
-<p>
-  stream-definitions works!
-</p>
+<div class="row">
+  <div class="col-md-24">
+    <div class="col-md-24 table-filter">
+      <table class="col-lg-24 tab-content-header">
+        <tr>
+          <td class="col-xs-12">
+            <button type="button" (click)="expandPage()"
+                    class="btn btn-default">
+              <span class="glyphicon glyphicon-collapse-down"></span>
+              Expand All
+            </button>
+            <button type="button" (click)="collapsePage()"
+                    class="btn btn-default">
+              <span class="glyphicon glyphicon-expand"></span>
+              Collapse All
+            </button>
+          </td>
+          <td>
+            <label *ngIf="streamDefinitions" class="control">Filter Stream Definitions
+              <input type="text" class="input" placeholder="Filter definitions" [(ngModel)]="filter">
+            </label>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="!streamDefinitions">No streams available.</div>
+<table *ngIf="streamDefinitions?.items" class="table table-hover">
+  <thead>
+    <tr>
+      <th style="width: 20px"></th>
+      <th style="width: 70px" table-sort sort-property="['DEFINITION_NAME', 'DEFINITION']" sort-state="pageable" sort-order-change-handler="sortChanged">Name</th>
+      <th style="width: 130px" table-sort sort-property="['DEFINITION','DEFINITION_NAME']"  sort-state="pageable" sort-order-change-handler="sortChanged">Definition</th>
+      <th style="width: 50px">Status <a class="status-help" dataflow-popover=".status-help-content" title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a></th>
+      <th style="width: 240px" colspan="1" class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-template ngFor let-item [ngForOf]="streamDefinitions.items | paginate: { itemsPerPage: 10, currentPage: streamDefinitions.pageNumber }">
+      <tr>
+        <td>
+          <button class="glyphicon glyphicon-expand"
+                  (click)="expandItem(item)"
+                  [ngClass]="{'glyphicon-expand': isExpanded(item), 'glyphicon-collapse-down': !isExpanded(item)}"></button>
+        </td>
+        <td>{{item.name}}</td>
+        <td>{{item.dslText}}</td>
+        <td>{{item.status}}</td>
+        <td class="action-column">
+          <button type="button" (click)="details(item, i)"
+                  class="btn btn-default" title="Details">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            Details
+          </button>
+          <button type="button" [disabled]="(item.status==='undeployed' || item.status==='failed' || item.status==='incomplete')" (click)="undeploy(item, i)"
+                  class="btn btn-default" title="Undeploy">
+            <span class="glyphicon glyphicon-stop"></span>
+            Undeploy
+          </button>
+          <button type="button" (click)="deploy(item, i)"
+                  class="btn btn-default" title="Deploy">
+            <span class="glyphicon glyphicon-play"></span>
+            Deploy
+          </button>
+          <button type="button" (click)="destroy(item, i)"
+                  class="btn btn-default" title="Destroy">
+            <span class="glyphicon glyphicon-remove"></span>
+            Destroy
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="!isExpanded(item)">
+        <td colspan="4">
+          <div>flo for {{item.name}} tbd</div>
+        <td>
+      </tr>
+    </ng-template>
+  </tbody>
+</table>
+<pagination-controls (pageChange)="streamDefinitions.pageNumber = $event"></pagination-controls>
+
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirm Destroy Action</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="streamDefinitionToDestroy">
+          <p>This action will undeploy and delete the stream foostream1
+            <u><strong>{{streamDefinitionToDestroy.name}}</strong></u>.
+            Are you sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancel()">No</button>
+        <button type="button" class="btn btn-primary" (click)="proceed(streamDefinitionToDestroy)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
