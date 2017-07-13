@@ -39,6 +39,21 @@ For UI development purposes, we recommend using [npm][] directly. Please ensure 
 	$ npm install
 	$ ng build --prod
 
+**NOTE:** Before building be sure that the `ng-serve` development server has been shutdown.
+
+### Build fails after merging a branch or changing branches.
+In some cases the npm-modules or other dependencies may become inconsistent during branch changes.
+In order to resolve the problem we need to clean out inconsistent dependencies.
+The following instructions can be used to do this:
+
+* Shutdown the development server if it is running.
+* Commit or stash your changes
+* Execute the following:
+	* `git clean -fx`
+	* `npm install`
+* If you stashed your files execute the following:  `git stash pop`
+* Now build the application by executing the following: `ng build --prod`
+
 ## Important Build-related Configuration Files
 
 * **pom.xml** Maven config file
@@ -88,5 +103,3 @@ Use [https://github.com/tjunnone/npm-check-updates](https://github.com/tjunnone/
 [Node.js]: http://nodejs.org/
 [npm]: https://www.npmjs.com/
 [Protractor]: https://github.com/angular/protractor
-
-
