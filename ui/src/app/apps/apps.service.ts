@@ -11,6 +11,7 @@ import { AppRegistration } from './model/app-registration';
 import { AppRegistrationImport } from './model/app-registration-import';
 
 import { Page } from '../shared/model/page';
+import {ErrorHandler} from "../shared/model/error-handler";
 
 @Injectable()
 export class AppsService {
@@ -22,7 +23,7 @@ export class AppsService {
   public currentPage: number = 1;
   public filter: string = '';
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private errorHandler: ErrorHandler) {
     console.log('constructing');
   }
 
@@ -32,7 +33,7 @@ export class AppsService {
       console.log('Fetching App Registrations remotely.')
       return this.http.get(AppsService.appstUrl)
                       .map(this.extractData.bind(this))
-                      .catch(this.handleError);
+                      .catch(this.errorHandler.handleError);
     }
     else {
       console.log('Fetching App Registrations from local state.', this.appRegistrations);
@@ -52,7 +53,7 @@ export class AppsService {
     let options = new RequestOptions({ headers: headers, params: params });
     console.log(options.params);
     return this.http.post(AppsService.appstUrl, {}, options)
-                    .catch(this.handleError);
+                    .catch(this.errorHandler.handleError);
   }
 
   unregisterApp(appRegistration: AppRegistration): Observable<Response> {
@@ -64,7 +65,7 @@ export class AppsService {
       .map(data => {
         this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
       })
-      .catch(this.handleError);
+      .catch(this.errorHandler.handleError);
 
     //                 .catch(this.handleError);
     // var request = $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
@@ -100,20 +101,6 @@ export class AppsService {
 
     console.log('Extracted App Registrations:', this.appRegistrations);
     return page;
-  }
-
-  private handleError (error: Response | any) {
-    // In a real world app, you might use a remote logging infrastructure
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
   }
 
 }

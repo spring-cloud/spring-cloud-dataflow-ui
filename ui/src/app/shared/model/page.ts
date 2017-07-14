@@ -8,7 +8,7 @@ import 'rxjs/add/observable/of';
  *
  * @author Gunnar Hillert
  */
-export class Page<T> { 
+export class Page<T> {
   totalPages: number;
   totalElements: number;
 

@@ -5,6 +5,7 @@ import {Page} from '../shared/model/page';
 import {StreamDefinition} from './model/stream-definition';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import {ErrorHandler} from "../shared/model/error-handler";
 
 /**
  * Provides {@streamDefinition} related services.
@@ -21,7 +22,7 @@ export class StreamsService {
 
   private streamDefinitionsUrl = '/streams/definitions';
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private errorHandler: ErrorHandler) {
     this.streamDefinitions = new Page<StreamDefinition>();
   }
 
@@ -45,7 +46,7 @@ export class StreamsService {
     }
     return this.http.get(this.streamDefinitionsUrl, {search: params})
       .map(this.extractData.bind(this))
-      .catch(this.handleError);
+      .catch(this.errorHandler.handleError);
   }
 
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> {
@@ -56,7 +57,7 @@ export class StreamsService {
       .map(data => {
         this.streamDefinitions.items = this.streamDefinitions.items.filter(item => item.name !== streamDefinition.name);
       })
-      .catch(this.handleError);
+      .catch(this.errorHandler.handleError);
   }
 
   undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> {
@@ -64,7 +65,7 @@ export class StreamsService {
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
     return this.http.delete('/streams/deployments/' + streamDefinition.name, options)
-      .catch(this.handleError);
+      .catch(this.errorHandler.handleError);
   }
 
   /**
@@ -78,7 +79,7 @@ export class StreamsService {
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
     return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
-      .catch(this.handleError);
+      .catch(this.errorHandler.handleError);
   }
 
   private extractData(res: Response): Page<StreamDefinition> {
@@ -110,33 +111,5 @@ export class StreamsService {
 
     console.log('Extracted Stream Definitions:', this.streamDefinitions);
     return this.streamDefinitions;
-  }
-
-
-  /**
-   * Generate the error message that will be used and throw the appropriate exception.
-   * @param error the exception that was thrown by the http post.
-   * @returns {any} Exception to be thrown by the Observable
-   */
-  private handleError(error: Response | any) {
-    let errMsg: string = '';
-
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      let isFirst: boolean = true;
-      for (let bodyElement of body) {
-        if (!isFirst) {
-          errMsg += '\n';
-        }
-        else {
-          isFirst = false;
-        }
-        errMsg += bodyElement.message;
-      }
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
   }
 }
