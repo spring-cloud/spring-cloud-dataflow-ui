@@ -12,8 +12,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { Selectable } from '../../shared/model/selectable';
 
 @Component({
-    selector: 'tri-state-checkbox',
-    template: `<input #theCheckbox type="checkbox" [(ngModel)]="topLevel" (change)="topLevelChange()">`
+  selector: 'tri-state-checkbox',
+  template: `<input #theCheckbox type="checkbox" [(ngModel)]="topLevel" (change)="topLevelChange()">`
 })
 export class Tristate implements AfterViewInit, DoCheck, OnInit  {
 

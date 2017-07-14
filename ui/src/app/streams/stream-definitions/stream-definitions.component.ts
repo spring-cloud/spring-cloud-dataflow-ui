@@ -3,9 +3,13 @@ import { Page } from '../../shared/model/page';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
 import { Observable } from 'rxjs/Observable';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+import { ModalDirective} from 'ngx-bootstrap/modal';
+import { PopoverDirective } from 'ngx-bootstrap/popover';
+import { Subscription } from 'rxjs/Subscription';
+
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { PaginationInstance } from 'ngx-pagination'
 
 
 @Component({
@@ -17,6 +21,10 @@ export class StreamDefinitionsComponent implements OnInit {
 
   streamDefinitions: Page<StreamDefinition>;
   streamDefinitionToDestroy: StreamDefinition;
+  busy: Subscription;
+
+  @ViewChild('childPopover')
+  public childPopover:PopoverDirective;
 
   @ViewChild('childModal')
   public childModal:ModalDirective;
@@ -27,24 +35,32 @@ export class StreamDefinitionsComponent implements OnInit {
     private router: Router) {
   }
 
-  public items: Observable<Array<any>>;
-  private _items: Array<any>;
-  private expandItems: Map<String,Boolean>;
-
   ngOnInit() {
-    this._items = [];
-    this.items = Observable.of(this._items);
-    this.expandItems = new Map<String,Boolean>();
-    console.log('hello');
-    this.streamsService.getDefinitions().subscribe(
+    this.loadStreamDefinitions();
+  }
+
+  loadStreamDefinitions() {
+    console.log('Loading Stream Definitions...', this.streamDefinitions);
+
+    this.busy = this.streamsService.getDefinitions().subscribe(
       data => {
-        console.log('DATA', data);
-        for (let i of data.items) {
-          this._items.push(i);
-        }
         this.streamDefinitions = data;
+        this.toastyService.success('Stream definitions loaded.');
       }
     );
+  }
+
+  /**
+   * Used for requesting a new page. The past is page number is
+   * 1-index-based. It will be converted to a zero-index-based
+   * page number under the hood.
+   *
+   * @param page 1-index-based
+   */
+  getPage(page: number) {
+    console.log(`Getting page ${page}.`)
+    this.streamsService.streamDefinitions.pageNumber = page-1;
+    this.loadStreamDefinitions();
   }
 
   details(item:StreamDefinition, index:number) {
@@ -75,20 +91,6 @@ export class StreamDefinitionsComponent implements OnInit {
     this.showChildModal();
   }
 
-  expandItem(item:StreamDefinition) {
-    if (this.expandItems.get(item.name)) {
-      this.expandItems.set(item.name, !this.expandItems.get(item.name));
-    }
-    else {
-      this.expandItems.set(item.name, true);
-    }
-    console.log(item);
-  }
-
-  isExpanded(item:StreamDefinition):Boolean {
-    return !this.expandItems.get(item.name);
-  }
-
   public showChildModal():void {
     this.childModal.show();
   }
@@ -114,10 +116,22 @@ export class StreamDefinitionsComponent implements OnInit {
   };
 
   expandPage() {
-    this.streamDefinitions.items.map(x => {this.expandItems.set(x.name, true)});
+    console.log('Expand all.')
+    this.streamDefinitions.items.map(x => {
+      console.log(x)
+      x.isExpanded = true;
+    });
   }
 
   collapsePage() {
-    this.streamDefinitions.items.map(x => {this.expandItems.set(x.name, false)});
+    console.log('Collapse all.')
+    this.streamDefinitions.items.map(x => {
+      console.log(x);
+      x.isExpanded = false;
+    });
+  }
+
+  closePopOver() {
+    this.childPopover.hide();
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { StreamsComponent } from './streams.component';
 import { StreamDefinitionsComponent } from './stream-definitions/stream-definitions.component';
@@ -7,9 +7,8 @@ import { StreamDetailsComponent } from './stream-details/stream-details.componen
 import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { StreamDeployComponent } from './stream-deploy/stream-deploy.component';
 
-@NgModule({
-  imports: [RouterModule.forChild([
-    {
+const streamRoutes: Routes = [
+  {
     path: 'streams',
     component: StreamsComponent,
     children: [
@@ -36,7 +35,10 @@ import { StreamDeployComponent } from './stream-deploy/stream-deploy.component';
       }
     ]
   }
-  ])],
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(streamRoutes)],
   exports: [RouterModule]
 })
 export class StreamsRoutingModule {}

@@ -6,20 +6,42 @@ import {StreamDefinition} from './model/stream-definition';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
+/**
+ * Provides {@streamDefinition} related services.
+ *
+ * @author Janne Valkealahti
+ * @author Gunnar Hillert
+ *
+ */
 @Injectable()
 export class StreamsService {
 
+  /** Will never be null. */
   public streamDefinitions: Page<StreamDefinition>;
 
   private streamDefinitionsUrl = '/streams/definitions';
 
   constructor(private http: Http) {
+    this.streamDefinitions = new Page<StreamDefinition>();
   }
 
-  getDefinitions(filter?: string): Observable<Page<StreamDefinition>> {
+  getDefinitions(): Observable<Page<StreamDefinition>> {
     let params = new URLSearchParams();
-    if (filter) {
-      params.append('search', filter);
+
+    console.info('Getting paged stream definitions', this.streamDefinitions);
+    console.log(this.streamDefinitions.getPaginationInstance());
+    params.append('page', this.streamDefinitions.pageNumber.toString());
+    params.append('size', this.streamDefinitions.pageSize.toString());
+
+      //TODO Implement Sorting
+      //params.sort = pageable.calculateSortParameter();
+
+      // if (pageable.filterQuery && pageable.filterQuery.trim().length > 0) {
+      //   params.search = pageable.filterQuery;
+      // }
+
+    if (this.streamDefinitions.filter && this.streamDefinitions.filter.length > 0) {
+      params.append('search', this.streamDefinitions.filter);
     }
     return this.http.get(this.streamDefinitionsUrl, {search: params})
       .map(this.extractData.bind(this))
@@ -63,20 +85,31 @@ export class StreamsService {
     const body = res.json();
     let items: StreamDefinition[];
     if (body._embedded && body._embedded.streamDefinitionResourceList) {
-      items = body._embedded.streamDefinitionResourceList as StreamDefinition[];
+      items = body._embedded.streamDefinitionResourceList.map(jsonItem => {
+        let streamDefinition: StreamDefinition  = new StreamDefinition(
+          jsonItem.name,
+          jsonItem.dslText,
+          jsonItem.status
+        );
+        return streamDefinition;
+      });
     }
     else {
       items = [];
     }
 
-    let page = new Page<StreamDefinition>();
-    page.items = items;
-    page.totalElements = items.length;
+    if (body.page) {
+      console.log('BODY', body.page);
+      this.streamDefinitions.pageNumber = body.page.number;
+      this.streamDefinitions.pageSize = body.page.size;
+      this.streamDefinitions.totalElements = body.page.totalElements;
+      this.streamDefinitions.totalPages = body.page.totalPages;
+    }
 
-    this.streamDefinitions = page;
+    this.streamDefinitions.items = items;
 
     console.log('Extracted Stream Definitions:', this.streamDefinitions);
-    return page;
+    return this.streamDefinitions;
   }
 
 

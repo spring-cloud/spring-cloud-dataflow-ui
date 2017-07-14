@@ -28,7 +28,7 @@
   <thead>
     <tr>
         <th style="width: 30px">
-          <tri-state-checkbox class="toggle-all" [items]="items"></tri-state-checkbox>
+          <tri-state-checkbox class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></tri-state-checkbox>
         </th>
         <th style="width: 200px">Name</th>
         <th style="width: 100px">Type</th>
