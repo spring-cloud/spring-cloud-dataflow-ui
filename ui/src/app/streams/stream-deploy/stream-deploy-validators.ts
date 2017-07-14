@@ -1,6 +1,10 @@
 import { FormControl } from '@angular/forms';
 
-
+/**
+ * Verifies that the properties text box is properly formatted.
+ * @param formControl used to obtain the value of the properties text box.
+ * @returns {any} null if successful or reason of the failure.
+ */
 export function validateDeploymentProperties(formControl: FormControl) {
   var properties = formControl.value.split('\n');
   var propertiesAsMap = null;

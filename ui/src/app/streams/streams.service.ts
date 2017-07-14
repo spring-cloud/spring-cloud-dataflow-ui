@@ -8,10 +8,11 @@ import 'rxjs/add/operator/map';
 import {ErrorHandler} from "../shared/model/error-handler";
 
 /**
- * Provides {@streamDefinition} related services.
+ * Provides {@link StreamDefinition} related services.
  *
  * @author Janne Valkealahti
  * @author Gunnar Hillert
+ * @author Glenn Renfro
  *
  */
 @Injectable()
@@ -22,10 +23,20 @@ export class StreamsService {
 
   private streamDefinitionsUrl = '/streams/definitions';
 
+  /**
+   * Creates the {@link Page} instance for {@link StreamDefinition} pagination support.
+   * @param http handler for making calls to the data flow restful api
+   * @param errorHandler used to generate the error messages.
+   */
   constructor(private http: Http, private errorHandler: ErrorHandler) {
     this.streamDefinitions = new Page<StreamDefinition>();
   }
 
+  /**
+   * Retrieves the {@link StreamDefinition}s based on the page requested.
+   * @returns {Observable<R|T>} that will call the subscribed funtions to handle
+   * the results when returned from the Spring Cloud Data Flow server.
+   */
   getDefinitions(): Observable<Page<StreamDefinition>> {
     let params = new URLSearchParams();
 
@@ -49,6 +60,11 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
+  /**
+   * Calls the Spring Cloud Data Flow server to delete the specified {@link StreamDefinition}.
+   * @param streamDefinition the {@link StreamDefinition} to be deleted.
+   * @returns {Observable<R|T>} that will call the subscribed functions to handle the result of the destroy.
+   */
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> {
     console.log('Destroying...', streamDefinition);
     let headers = new Headers({'Content-Type': 'application/json'});
@@ -60,6 +76,11 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
+  /**
+   * Calls the Spring Cloud Data Flow server to undeploy the {@link StreamDefinition}.
+   * @param streamDefinition
+   * @returns {Observable<R|T>} that will call subscribed functions to handle the result from the undeploy.
+   */
   undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> {
     console.log('Undeploying...', streamDefinition);
     let headers = new Headers({'Content-Type': 'application/json'});
@@ -72,7 +93,7 @@ export class StreamsService {
    * Posts a request to the data flow server to deploy the stream associated with the streamDefinitionName.
    * @param streamDefinitionName the name of the stream to deploy.
    * @param propertiesAsMap the application or deployment properties to be used for stream deployment.
-   * @returns {Observable<R|T>}
+   * @returns {Observable<R|T>} that will call the subscribed functions to handle the resut of the deploy.
    */
   deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> {
     console.log('Deploying...', streamDefinitionName);

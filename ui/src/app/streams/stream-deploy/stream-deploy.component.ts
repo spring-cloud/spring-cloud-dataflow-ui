@@ -64,7 +64,7 @@ export class StreamDeployComponent implements OnInit {
   }
 
   /**
-   * Requests a stream deployment for the stream definition.
+   * Requests a stream deployment for the {@link StreamDefinition}.
    */
   deployDefinition() {
     console.log('deployDefinition ' + this.deploymentProperties.value);
