@@ -1,12 +1,15 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-
-import { RuntimeComponent } from './runtime.component';
+import {NgModule} from "@angular/core";
+import {RouterModule, Routes} from "@angular/router";
+import {RuntimeAppsComponent} from "./runtime-apps.component";
 
 @NgModule({
-  imports: [RouterModule.forChild([
-    { path: 'runtime', component: RuntimeComponent }
-  ])],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild([
+        {
+            path: 'runtime/apps',
+            component: RuntimeAppsComponent
+        }
+    ])],
+    exports: [RouterModule]
 })
-export class RuntimeRoutingModule {}
+export class RuntimeAppsRoutingModule {
+}

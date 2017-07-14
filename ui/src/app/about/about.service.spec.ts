@@ -1,14 +1,16 @@
 import { AboutService } from './about.service';
 import { Observable } from 'rxjs/Rx'
+import {ErrorHandler} from "../shared/model/error-handler";
 
 xdescribe('AboutService', () => {
 
   let aboutService: AboutService;
   let mockHttp;
+  let errorHandler: ErrorHandler;
 
   beforeEach(() => {
     mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
-    aboutService = new AboutService(this.mockHttp);
+    aboutService = new AboutService(this.mockHttp, this.errorHandler);
   });
 
   it('should be created', () => {
