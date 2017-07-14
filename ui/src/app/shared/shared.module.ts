@@ -7,6 +7,7 @@ import { ToastyModule, ToastyConfig } from 'ng2-toasty';
 import { StompService } from 'ng2-stomp-service';
 
 import { BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'angular2-busy';
+import {ErrorHandler} from "./model/error-handler";
 
 const busyConfig: BusyConfig = {
     message: 'Processing..',
@@ -24,7 +25,7 @@ const busyConfig: BusyConfig = {
     BusyModule.forRoot(busyConfig),
     ToastyModule.forRoot() ],
   declarations: [ ],
-  providers: [StompService],
+  providers: [StompService, ErrorHandler],
   exports: [
     BusyModule,
     CommonModule,

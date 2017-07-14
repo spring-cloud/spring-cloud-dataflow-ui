@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RuntimeComponent } from './runtime.component';
+import { RuntimeAppsComponent } from './runtime-apps.component';
 
-xdescribe('RuntimeComponent', () => {
-  let component: RuntimeComponent;
-  let fixture: ComponentFixture<RuntimeComponent>;
+xdescribe('RuntimeAppsComponent', () => {
+  let component: RuntimeAppsComponent;
+  let fixture: ComponentFixture<RuntimeAppsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RuntimeComponent ]
+      declarations: [ RuntimeAppsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RuntimeComponent);
+    fixture = TestBed.createComponent(RuntimeAppsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

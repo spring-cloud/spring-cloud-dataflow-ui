@@ -1,0 +1,64 @@
+<h1 class="no-user-selection">Runtime applications</h1>
+<p> This section shows the list of all running apps.</p>
+<div *ngIf="runtimeApps?.items.length == 0">No applications are running.</div>
+<table *ngIf="runtimeApps?.items.length > 0" class="table table-hover">
+    <thead>
+    <tr>
+        <th>App Id</th>
+        <th>State</th>
+        <th># of Instances</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-item
+                 [ngForOf]="runtimeApps.items | paginate: runtimeApps.getPaginationInstance()">
+            <tr>
+                <td>
+                    <a (click)="appDetails(item)">{{item.deploymentId}}</a>
+                </td>
+                <td>
+                    {{item.state}}
+                </td>
+                <td>
+                    {{item.instances._embedded.appInstanceStatusResourceList.length}}
+                </td>
+            </tr>
+    </ng-template>
+    </tbody>
+</table>
+<pagination-controls *ngIf="runtimeApps?.items.length > 0" (pageChange)="getPage($event)"
+                     [id]="runtimeApps.getPaginationInstance().id"></pagination-controls>
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content " *ngIf="runtimeApp">
+            <div class="modal-header">
+                <h4 class="modal-title">Instances for app <strong>{{runtimeApp.deploymentId}}</strong></h4>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ng-template ngFor let-item
+                             [ngForOf]="runtimeApp.instances._embedded.appInstanceStatusResourceList">
+                    <div class="row">
+                        <p>Instance ID: <strong>{{item.instanceId}}</strong></p>
+                    </div>
+                    <div class="row">
+                        <p>Status: <strong>{{item.state}}</strong></p>
+                    </div>
+                    <div class="row">
+                        <h2>Attributes</h2>
+                        <ng-template ngFor let-item
+                                     [ngForOf]="item.attributes | keyvalues">
+                            <h4>{{item.key}}</h4>
+                            <pre class="pre-scrollable">{{item.value}}</pre>
+                        </ng-template>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="cancel()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
