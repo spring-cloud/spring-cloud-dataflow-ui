@@ -57,22 +57,22 @@
         <td>{{item.dslText}}</td>
         <td>{{item.status}}</td>
         <td class="action-column">
-          <button type="button" (click)="details(item, i)"
+          <button type="button" (click)="details(item)"
                   class="btn btn-default" title="Details">
             <span class="glyphicon glyphicon-info-sign"></span>
             Details
           </button>
-          <button type="button" [disabled]="(item.status==='undeployed' || item.status==='failed' || item.status==='incomplete')" (click)="undeploy(item, i)"
+          <button type="button" [disabled]="(item.status==='undeployed' || item.status==='failed' || item.status==='incomplete')" (click)="undeploy(item)"
                   class="btn btn-default" title="Undeploy">
             <span class="glyphicon glyphicon-stop"></span>
             Undeploy
           </button>
-          <button type="button" (click)="deploy(item, i)"
+          <button type="button" [disabled]="(item.status==='deployed' || item.status==='deploying')" (click)="deploy(item)"
                   class="btn btn-default" title="Deploy">
             <span class="glyphicon glyphicon-play"></span>
             Deploy
           </button>
-          <button type="button" (click)="destroy(item, i)"
+          <button type="button" (click)="destroy(item)"
                   class="btn btn-default" title="Destroy">
             <span class="glyphicon glyphicon-remove"></span>
             Destroy

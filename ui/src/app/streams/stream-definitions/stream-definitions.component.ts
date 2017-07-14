@@ -63,13 +63,11 @@ export class StreamDefinitionsComponent implements OnInit {
     this.loadStreamDefinitions();
   }
 
-  details(item:StreamDefinition, index:number) {
-    console.log(index, item);
+  details(item:StreamDefinition) {
     this.router.navigate(['streams/definitions/' + item.name]);
   }
 
-  undeploy(item:StreamDefinition, index:number) {
-    console.log(index, item);
+  undeploy(item:StreamDefinition) {
     this.streamsService.undeployDefinition(item).subscribe(
       data => {
         this.cancel();
@@ -80,13 +78,11 @@ export class StreamDefinitionsComponent implements OnInit {
     );
   }
 
-  deploy(item:StreamDefinition, index:number) {
-    console.log(index, item);
+  deploy(item:StreamDefinition) {
     this.router.navigate(['streams/definitions/' + item.name + '/deploy']);
   }
 
-  destroy(item:StreamDefinition, index:number) {
-    console.log(index, item);
+  destroy(item:StreamDefinition) {
     this.streamDefinitionToDestroy = item;
     this.showChildModal();
   }
