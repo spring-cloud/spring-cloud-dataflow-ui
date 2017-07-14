@@ -23,7 +23,7 @@ export class AppsComponent implements OnInit {
   appRegistrationToUnregister: AppRegistration;
 
   @ViewChild('childModal')
-  public childModal:ModalDirective;
+  public childModal: ModalDirective;
 
   constructor(
     public appsService: AppsService,
@@ -31,22 +31,9 @@ export class AppsComponent implements OnInit {
     private router: Router ) {
     }
 
-  public items: Observable<Array<any>>;
-  private _items: Array<any>;
-
   ngOnInit() {
-    this._items = [];
-    this.items = Observable.of(this._items);
-    this.items.subscribe(res => {
-      console.log("Subscription triggered.");
-    });
-
     this.busy = this.appsService.getApps().subscribe(
       data => {
-        console.log('DATA', data);
-        for (let i of data.items) {
-          this._items.push(i);
-        }
         this.appRegistrations = data;
         this.toastyService.success('Apps loaded.');
       }
