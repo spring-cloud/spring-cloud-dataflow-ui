@@ -4,7 +4,6 @@ import { AboutService } from './about.service';
 import { Subscription } from 'rxjs/Subscription';
 import { BusyModule, BusyDirective } from 'angular2-busy';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
-import { StompService } from 'ng2-stomp-service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
@@ -14,14 +13,12 @@ export class AboutDetailsComponent implements OnInit {
 
   dataflowVersionInfo;
   busy: Subscription;
-  websocketData;
 
   private subscription: any;
 
   constructor(
     private aboutService: AboutService,
     private toastyService: ToastyService,
-    private stomp: StompService,
     private router: Router) {
   }
 
