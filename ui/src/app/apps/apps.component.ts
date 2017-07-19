@@ -41,6 +41,8 @@ export class AppsComponent implements OnInit {
   }
 
   registerApps() {
+    console.log('Go to Register Apps page ...');
+    this.router.navigate(['apps/register-apps']);
   }
 
   unregister(item:AppRegistration, index:number) {

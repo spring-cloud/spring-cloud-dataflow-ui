@@ -3,22 +3,17 @@
   This section lists all the available applications and provides the control to register/unregister them (if applicable).
 </p>
 
-<button id="showAboutDetailsButton" type="button" ng-click="registerApps()"
+<button id="showAboutDetailsButton" type="button" (click)="registerApps()"
         class="btn btn-default"
-><span class="glyphicon glyphicon-search"></span>
+><span class="glyphicon glyphicon-plus"></span>
     Register Application(s)
 </button>
-<button id="showAboutDetailsButton" type="button" ng-click="unregisterSelectedApps()"
-        class="btn btn-default"
-><span class="glyphicon glyphicon-search"></span>
-    Unregister Application(s)
-</button>
+<scdf-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></scdf-tri-state-button>
 <button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
         class="btn btn-default"
-><span class="glyphicon glyphicon-search"></span>
+><span class="glyphicon glyphicon-import"></span>
     Bulk Import Applications
 </button>
-
 <label *ngIf="appRegistrations" class="control">Filter items
   <input type="text" class="input" placeholder="filter" [(ngModel)]="appRegistrations.filter">
 </label>
@@ -28,7 +23,7 @@
   <thead>
     <tr>
         <th style="width: 30px">
-          <tri-state-checkbox class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></tri-state-checkbox>
+          <tri-state-checkbox *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></tri-state-checkbox>
         </th>
         <th style="width: 200px">Name</th>
         <th style="width: 100px">Type</th>

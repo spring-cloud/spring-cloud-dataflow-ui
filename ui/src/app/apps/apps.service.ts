@@ -4,7 +4,9 @@ import { Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
+import { Subscription } from 'rxjs/Subscription';
 
 import { URLSearchParams } from '@angular/http';
 import { AppRegistration } from './model/app-registration';
@@ -18,7 +20,7 @@ export class AppsService {
 
   public appRegistrations: Page<AppRegistration>;
 
-  private static appstUrl = '/apps';
+  private static appsUrl = '/apps';
 
   public currentPage: number = 1;
   public filter: string = '';
@@ -31,7 +33,7 @@ export class AppsService {
     console.log('apps', this.appRegistrations);
     if (!this.appRegistrations || reload) {
       console.log('Fetching App Registrations remotely.')
-      return this.http.get(AppsService.appstUrl)
+      return this.http.get(AppsService.appsUrl)
                       .map(this.extractData.bind(this))
                       .catch(this.errorHandler.handleError);
     }
@@ -52,7 +54,7 @@ export class AppsService {
 
     let options = new RequestOptions({ headers: headers, params: params });
     console.log(options.params);
-    return this.http.post(AppsService.appstUrl, {}, options)
+    return this.http.post(AppsService.appsUrl, {}, options)
                     .catch(this.errorHandler.handleError);
   }
 
@@ -60,27 +62,43 @@ export class AppsService {
     console.log('Unregistering...', appRegistration);
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    console.log(appRegistration.name);
-    return this.http.delete('/apps/' + appRegistration.type + '/' + appRegistration.name, options)
+
+    return this.http.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, options)
       .map(data => {
         this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
       })
       .catch(this.errorHandler.handleError);
 
-    //                 .catch(this.handleError);
-    // var request = $resource($rootScope.dataflowServerUrl + '/apps/' + type + '/' + name, {}, {
-    //                     unregisterApp: {
-    //                         method: 'DELETE'
-    //                     }
-    //                 }).unregisterApp();
-    //                 request.$promise.then(function() {
-    //                     notifyListeners();
-    //                 });
-    //                 return request;
+  }
 
+  registerMultipleApps(appRegs: AppRegistration[]): Observable<Response[]> {
+    let observables:Observable<Response>[] = [];
+    for (let appReg of appRegs) {
+      observables.push(this.registerApp(appReg));
+    }
+    return Observable.forkJoin(observables);
+  }
 
+  registerApp(appRegistration: AppRegistration): Observable<Response> {
+    console.log('Registering...', appRegistration);
 
-    //return;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let params = new URLSearchParams();
+
+    params.append('uri', appRegistration.uri);
+    if (appRegistration.metaDataUri) {
+        params.append('metadata-uri', appRegistration.metaDataUri);
+    }
+    params.append('force', appRegistration.force ? 'true' : 'false');
+
+    let options = new RequestOptions({ headers: headers, params: params });
+    console.log(options.params);
+
+    return this.http.post(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, {}, options)
+      .map(data => {
+        this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
+    })
+    .catch(this.errorHandler.handleError);
   }
 
   private extractData(res: Response) : Page<AppRegistration> {
