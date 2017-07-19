@@ -12,33 +12,50 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { Selectable } from '../../shared/model/selectable';
 
 @Component({
-  selector: 'tri-state-checkbox',
-  template: `<input #theCheckbox type="checkbox" [(ngModel)]="topLevel" (change)="topLevelChange()">`
+  selector: 'scdf-tri-state-button',
+  template:
+  `<button #theButton name="topLevel" type="button"
+         class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>
+    {{label}}
+  </button>`
 })
-export class Tristate implements AfterViewInit, DoCheck, OnInit  {
+export class TriStateButtonComponent implements AfterViewInit, DoCheck  {
 
   public topLevel: boolean = false;
-  public _items: Array<Selectable>;
+  public _items: Array<Selectable> = [];
 
   private _subscription: Subscription;
-  @Input() items: Observable<any[]>;
-  @ViewChild("theCheckbox") checkbox;
+  @Input()
+  items: Observable<any[]>;
+
+  label:String = '';
+
+  @ViewChild("theButton") button;
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) { }
 
   private setState() {
-    if (!this._items) return;
-    var count: number = 0;
-    for (var i: number = 0; i < this._items.length; i++) {
+    if (!this._items) {
+      this.button.nativeElement.disabled = true;
+      this.label = 'No app selected to unregister';
+      return;
+    }
+    let count: number = 0;
+    for (let i: number = 0; i < this._items.length; i++) {
       count += this._items[i].isSelected ? 1 : 0;
     }
     this.topLevel = (count === 0) ? false : true;
-    if (count > 0 && count< i) {
-      console.log("Setting indeterminate.");
-      this.checkbox.nativeElement.indeterminate = true;
-    } else {
-      console.log("Removing indeterminate.");
-      this.checkbox.nativeElement.indeterminate = false;
+    if (count > 0 && count < this._items.length) {
+      this.label = `Unregister ${count} Selected App(s)`;
+      this.button.nativeElement.disabled = false;
+    }
+    else if (count === 0) {
+      this.label = 'No app selected to unregister';
+      this.button.nativeElement.disabled = true;
+    }
+    else {
+      this.label = `Unregister all ${this._items.length} selected apps`;
+      this.button.nativeElement.indeterminate = false;
     }
   }
 
@@ -46,19 +63,9 @@ export class Tristate implements AfterViewInit, DoCheck, OnInit  {
     this.setState();
   }
 
-  public topLevelChange() {
-    console.log("Clicked. " + this.topLevel);
-    for (var i: number = 0; i < this._items.length; i++) {
-      this._items[i].isSelected = this.topLevel;
-    }
-  }
-
-  ngOnInit() { }
-
   ngAfterViewInit() {
     console.log('ngAfterViewInit', this.items);
     this._subscription = this.items.subscribe(res => {
-      console.log("Subscription triggered.");
       this._items = res;
       this.setState();
       this._changeDetectorRef.detectChanges();

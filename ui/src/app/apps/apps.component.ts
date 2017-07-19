@@ -35,12 +35,18 @@ export class AppsComponent implements OnInit {
     this.busy = this.appsService.getApps().subscribe(
       data => {
         this.appRegistrations = data;
-        this.toastyService.success('Apps loaded.');
+        if (this.appsService.remotelyLoaded) {
+          this.toastyService.success('Apps loaded.');
+        }
+      },
+      error => {
+        this.toastyService.error(error);
       }
     );
   }
 
   registerApps() {
+    this.router.navigate(['apps/register-apps']);
   }
 
   unregister(item:AppRegistration, index:number) {
@@ -57,7 +63,7 @@ export class AppsComponent implements OnInit {
   public showChildModal():void {
     this.childModal.show();
   }
- 
+
   public hideChildModal():void {
     this.childModal.hide();
   }
