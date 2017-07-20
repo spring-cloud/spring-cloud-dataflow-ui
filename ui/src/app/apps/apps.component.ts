@@ -21,9 +21,14 @@ export class AppsComponent implements OnInit {
   busy: Subscription;
 
   appRegistrationToUnregister: AppRegistration;
+  appRegistrationsToUnregister: AppRegistration[];
 
-  @ViewChild('childModal')
-  public childModal: ModalDirective;
+  @ViewChild('unregisterSingleAppModal')
+  public unregisterSingleAppModal: ModalDirective;
+
+
+  @ViewChild('unregisterMultipleAppsModal')
+  public unregisterMultipleAppsModal: ModalDirective;
 
   constructor(
     public appsService: AppsService,
@@ -32,7 +37,11 @@ export class AppsComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.busy = this.appsService.getApps().subscribe(
+    this.loadAppRegistrations(false);
+  }
+
+  public loadAppRegistrations(reload: boolean) {
+    this.busy = this.appsService.getApps(reload).subscribe(
       data => {
         this.appRegistrations = data;
         if (this.appsService.remotelyLoaded) {
@@ -49,42 +58,57 @@ export class AppsComponent implements OnInit {
     this.router.navigate(['apps/register-apps']);
   }
 
-  unregister(item:AppRegistration, index:number) {
-    console.log(index, item);
-    this.appRegistrationToUnregister = item;
-    this.showChildModal();
+  unregisterSingleApp(appRegistration: AppRegistration, index: number) {
+    console.log(`Unregister single app ${appRegistration.name} (Index: ${index})`);
+    this.appRegistrationToUnregister = appRegistration;
+    this.unregisterSingleAppModal.show();
+  }
+
+  unregisterMultipleApps(appRegistrations: AppRegistration[]) {
+    this.appRegistrationsToUnregister = appRegistrations.filter(item => item.isSelected);
+    console.log(`Unregister ${this.appRegistrationsToUnregister} app(s).`, this.appRegistrationsToUnregister);
+    this.unregisterMultipleAppsModal.show();
   }
 
   bulkImportApps() {
     console.log('Go to Bulk Import page ...');
     this.router.navigate(['apps/bulk-import-apps']);
   };
-
-  public showChildModal():void {
-    this.childModal.show();
-  }
-
-  public hideChildModal():void {
-    this.childModal.hide();
-  }
-
-  public proceed(appRegistration: AppRegistration): void {
+t
+  public proceedToUnregisterSingleAppRegistration(appRegistration: AppRegistration): void {
     console.log('Proceeding to unregister application...', appRegistration);
 
     this.busy = this.appsService.unregisterApp(appRegistration).subscribe(
       data => {
-        this.cancel();
+        this.unregisterSingleAppModal.hide();
         this.toastyService.success('Successfully removed app "'
           + appRegistration.name + '" of type "' + appRegistration.type + '"');
       },
-      error => {}
+      error => {
+        this.toastyService.error(error);
+      }
     );
   }
 
-  public cancel = function() {
-    this.hideChildModal();
+  public proceedToUnregisterMultipleAppRegistrations(appRegistrations: AppRegistration[]): void {
+    console.log(`Proceeding to unregister ${appRegistrations.length} application(s).`, appRegistrations);
+    for (let appRegistrationToUnregister of appRegistrations) {
+      this.proceedToUnregisterSingleAppRegistration(appRegistrationToUnregister);
+    }
+    this.unregisterMultipleAppsModal.hide();
+  }
+
+  public cancelUnregisterSingleApp() {
+    this.unregisterSingleAppModal.hide();
   };
 
+  public cancelUnregisterMultipleApps() {
+    this.unregisterMultipleAppsModal.hide();
+  };
+
+  public viewDetails(appRegistration: AppRegistration) {
+    this.router.navigate(['apps/' + appRegistration.type + '/' +  appRegistration.name]);
+  }
 }
 
 

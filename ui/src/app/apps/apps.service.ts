@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { URLSearchParams } from '@angular/http';
 import { AppRegistration } from './model/app-registration';
+import { DetailedAppRegistration } from './model/detailed-app-registration';
+import { ApplicationType } from './model/application-type';
 import { AppRegistrationImport } from './model/app-registration-import';
 
 import { Page } from '../shared/model/page';
@@ -44,6 +46,21 @@ export class AppsService {
       console.log('Fetching App Registrations from local state.', this.appRegistrations);
       return Observable.of(this.appRegistrations);
     }
+  }
+
+  getAppInfo(appType: ApplicationType, appName: string): Observable<DetailedAppRegistration> {
+    console.log(this.appRegistrations);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(AppsService.appsUrl + '/' + appType + '/' + appName, options)
+      .map(data => {
+        console.log('Returned App Registration Detail:', data);
+        const body = data.json();
+        let detailedAppRegistration = <DetailedAppRegistration> body;
+        return detailedAppRegistration;
+      })
+      .catch(this.errorHandler.handleError);
   }
 
   bulkImportApps(appRegistrationImport: AppRegistrationImport): Observable<Response> {
