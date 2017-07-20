@@ -1,14 +1,12 @@
 import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { AppsService } from '../apps.service';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ToastyService } from 'ng2-toasty';
+import { Router } from '@angular/router';
 
 import { AppRegistration } from '../model/app-registration';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { ApplicationType } from '../model/application-type';
-
-import { ChangeDetectorRef } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -37,7 +35,6 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
   uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
 
   constructor(
-    private ref: ChangeDetectorRef,
     private appsService: AppsService,
     private toastyService: ToastyService,
     private router: Router) {

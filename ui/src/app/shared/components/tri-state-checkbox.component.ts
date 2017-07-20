@@ -1,21 +1,23 @@
-import {Component,Input,Output,OnInit, AfterViewInit, DoCheck,
-  ViewChild,EventEmitter,ChangeDetectionStrategy,
-  ChangeDetectorRef, Renderer, ElementRef,
-  forwardRef} from '@angular/core';
-import {Pipe, PipeTransform} from '@angular/core';
-import {Observable, Subscription} from 'rxjs/Rx';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/throttleTime';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/distinctUntilChanged';
-
+import { Component, Input, AfterViewInit, DoCheck,
+         ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { Selectable } from '../../shared/model/selectable';
 
+/**
+ * Component to be primarily used in multi-select data-grids. The component will
+ * render a checkbox that keeps in synch dynamically with the underlying data-model:
+ * 
+ * - All elements are selected
+ * - Some elements are selected
+ * - None of the elements are selected
+ * 
+ * @author Gunnar Hillert
+ */
 @Component({
   selector: 'tri-state-checkbox',
   template: `<input #theCheckbox type="checkbox" [(ngModel)]="topLevel" (change)="topLevelChange()" [disabled]="!_items || _items.length==0">`
 })
-export class Tristate implements AfterViewInit, DoCheck, OnInit  {
+export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
 
   public topLevel: boolean = false;
   public _items: Array<Selectable>;
@@ -30,12 +32,12 @@ export class Tristate implements AfterViewInit, DoCheck, OnInit  {
     if (!this._items) {
       return;
     }
-    var count: number = 0;
-    for (var i: number = 0; i < this._items.length; i++) {
+    let count: number = 0;
+    for (let i: number = 0; i < this._items.length; i++) {
       count += this._items[i].isSelected ? 1 : 0;
     }
     this.topLevel = (count === 0) ? false : true;
-    if (count > 0 && count< i) {
+    if (count > 0 && count < this._items.length) {
       console.log("Setting indeterminate.");
       this.checkbox.nativeElement.indeterminate = true;
     } else {
@@ -54,8 +56,6 @@ export class Tristate implements AfterViewInit, DoCheck, OnInit  {
       this._items[i].isSelected = this.topLevel;
     }
   }
-
-  ngOnInit() { }
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit', this.items);

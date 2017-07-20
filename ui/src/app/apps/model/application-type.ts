@@ -26,13 +26,20 @@ export enum ApplicationType {
   task
 }
 
+/**
+ * Helper methods for the ApplicationType enum.
+ */
 export namespace ApplicationType {
+
+  /**
+   * Returns an array containing the string representation of all
+   * ApplicationType enums.
+   */
   export function getApplicationTypes() {
     let applicationTypes: String[] = [];
-    for(let n in ApplicationType) {
-        if(typeof ApplicationType[n] === 'number') {
-          console.log('>>>>>>>',n);
-          applicationTypes.push(n);
+    for(let enumItem in ApplicationType) {
+        if(typeof ApplicationType[enumItem] === 'number') {
+          applicationTypes.push(enumItem);
         }
     }
     return applicationTypes;

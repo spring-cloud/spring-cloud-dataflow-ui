@@ -18,8 +18,8 @@
   <input type="text" class="input" placeholder="filter" [(ngModel)]="appRegistrations.filter">
 </label>
 
-<div *ngIf="!appRegistrations">No apps available.</div>
-<table *ngIf="appRegistrations?.items" class="table table-hover">
+<div *ngIf="!appRegistrations || appRegistrations.items.length === 0">No apps available.</div>
+<table *ngIf="appRegistrations?.items && appRegistrations.items.length > 1" class="table table-hover">
   <thead>
     <tr>
         <th style="width: 30px">
@@ -52,7 +52,7 @@
   </tr>
   </tbody>
 </table>
-<pagination-controls (pageChange)="appRegistrations.pageNumber = $event"></pagination-controls>
+<pagination-controls *ngIf="appRegistrations?.items && appRegistrations.items.length > 1" (pageChange)="appRegistrations.pageNumber = $event"></pagination-controls>
 
 <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">

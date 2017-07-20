@@ -1,6 +1,12 @@
 import { Selectable } from '../../shared/model/selectable';
 import { ApplicationType } from './application-type';
 
+/**
+ * Represents an App Registration and implements Selectable
+ * so it can be used in multi-select data-grids.
+ *
+ * @author Gunnar Hillert
+ */
 export class AppRegistration implements Selectable {
   public name: string;
   public type: ApplicationType;
@@ -17,9 +23,9 @@ export class AppRegistration implements Selectable {
       this.uri = uri;
     }
     get isSelected(): boolean {
-        return this.force;
+      return this.force;
     }
     set isSelected(isSelected: boolean) {
-        this.force = isSelected;
+      this.force = isSelected;
     }
 }

@@ -19,7 +19,7 @@ import { Selectable } from '../../shared/model/selectable';
     {{label}}
   </button>`
 })
-export class TristateButton implements AfterViewInit, DoCheck, OnInit  {
+export class TriStateButtonComponent implements AfterViewInit, DoCheck  {
 
   public topLevel: boolean = false;
   public _items: Array<Selectable> = [];
@@ -41,11 +41,11 @@ export class TristateButton implements AfterViewInit, DoCheck, OnInit  {
       return;
     }
     let count: number = 0;
-    for (var i: number = 0; i < this._items.length; i++) {
+    for (let i: number = 0; i < this._items.length; i++) {
       count += this._items[i].isSelected ? 1 : 0;
     }
     this.topLevel = (count === 0) ? false : true;
-    if (count > 0 && count< i) {
+    if (count > 0 && count < this._items.length) {
       console.log("Setting button to enabled.");
       this.label = `Unregister ${count} Selected App(s)`;
       this.button.nativeElement.disabled = false;
@@ -65,15 +65,6 @@ export class TristateButton implements AfterViewInit, DoCheck, OnInit  {
   ngDoCheck() {
     this.setState();
   }
-
-  public topLevelChange() {
-    console.log("Clicked. " + this.topLevel);
-    for (var i: number = 0; i < this._items.length; i++) {
-      this._items[i].isSelected = this.topLevel;
-    }
-  }
-
-  ngOnInit() { }
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit', this.items);

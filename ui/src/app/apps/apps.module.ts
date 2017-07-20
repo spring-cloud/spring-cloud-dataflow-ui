@@ -10,14 +10,12 @@ import { AppsRoutingModule } from './apps-routing.module';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 
-import { SearchfilterPipe } from '../shared/pipes/search-filter';
+import { SearchfilterPipe } from '../shared/pipes/search-filter.pipe';
 import { ClickOutsideDirective } from '../shared/directives/click-outside.directive'
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from '../shared/custom-route-reuse-strategy';
 
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
-import { Tristate } from '../shared/components/tri-state-component';
-import { TristateButton } from '../shared/components/tri-state-button.component';
 
 @NgModule({
   imports:      [
@@ -26,10 +24,9 @@ import { TristateButton } from '../shared/components/tri-state-button.component'
   ],
   declarations: [
     AppsComponent, AppsBulkImportComponent, AppsRegisterComponent,
-    SearchfilterPipe, ClickOutsideDirective, Tristate, TristateButton ],
+    SearchfilterPipe, ClickOutsideDirective ],
   providers:    [
     AppsService
-    //{ provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ]
 })
 export class AppsModule { }

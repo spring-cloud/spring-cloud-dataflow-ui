@@ -30,17 +30,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr id="{{index}}" *ngFor="let item of model; index as index; trackBy: trackHero">
+            <tr id="{{index}}" *ngFor="let item of model; index as index; trackBy: trackModel">
                 <td [class.has-error]="name.invalid && name.touched">
                   <input #name="ngModel" type="text" name="name_{{index}}" autofocus [(ngModel)]="item.name" required [pattern]="namePattern"
                          class="form-control" placeholder="&lt;Application Name&gt;">
                   <span class="help-block" *ngIf="name.invalid && name.touched">Please provide a valid name for the app.</span>
                 </td>
                 <td [class.has-error]="type.invalid && type.touched">
-                  <select #type="ngModel" name="type_{{index}}" [(ngModel)]="item.type" required
-                          options="type | capitalize for type in types" >
+                  <select #type="ngModel" name="type_{{index}}" [(ngModel)]="item.type" required>
                     <option [ngValue]="item.type" disabled="disabled">Please select a type...</option>
-                    <option *ngFor="let applicationType of applicationTypes" [ngValue]="applicationType">{{applicationType}}</option>
+                    <option *ngFor="let applicationType of applicationTypes" [ngValue]="applicationType">{{applicationType | capitalize}}</option>
                   </select>
                   <span class="help-block" *ngIf="type.invalid && type.touched">Please provide a valid type.</span>
                 </td>
