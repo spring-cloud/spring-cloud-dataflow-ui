@@ -85,6 +85,9 @@ export class AppsComponent implements OnInit {
     this.hideChildModal();
   };
 
+  public viewDetails(appRegistration: AppRegistration) {
+    this.router.navigate(['apps/' + appRegistration.type + '/' +  appRegistration.name]);
+  }
 }
 
 

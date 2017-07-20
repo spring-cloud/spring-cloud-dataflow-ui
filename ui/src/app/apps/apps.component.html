@@ -38,7 +38,7 @@
     <td>{{item.type}}</td>
     <td>{{item.uri}}</td>
     <td class="action-column">
-        <button type="button" ng-click="info(item)"
+        <button type="button" (click)="viewDetails(item)"
                 class="btn btn-default" title="Details"
         ><span class="glyphicon glyphicon-search"></span>
         </button>
