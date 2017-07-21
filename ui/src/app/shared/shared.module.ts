@@ -9,7 +9,7 @@ import { StompService } from 'ng2-stomp-service';
 
 import { BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'angular2-busy';
 import { ErrorHandler } from "./model/error-handler";
-import { CapitalizePipe } from './pipes/capitalize-filter.pipe';
+import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { TriStateCheckboxComponent } from './components/tri-state-checkbox.component';
 import { TriStateButtonComponent } from './components/tri-state-button.component';
 import { KeyValuePipe } from "./pipes/key-value-filter.pipe";
