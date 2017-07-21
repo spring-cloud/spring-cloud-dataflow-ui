@@ -24,6 +24,7 @@ export class AppsService {
 
   public currentPage: number = 1;
   public filter: string = '';
+  public remotelyLoaded = false;
 
   constructor(private http: Http, private errorHandler: ErrorHandler) {
     console.log('constructing');
@@ -33,11 +34,13 @@ export class AppsService {
     console.log('apps', this.appRegistrations);
     if (!this.appRegistrations || reload) {
       console.log('Fetching App Registrations remotely.')
+      this.remotelyLoaded = true;
       return this.http.get(AppsService.appsUrl)
                       .map(this.extractData.bind(this))
                       .catch(this.errorHandler.handleError);
     }
     else {
+      this.remotelyLoaded = false;
       console.log('Fetching App Registrations from local state.', this.appRegistrations);
       return Observable.of(this.appRegistrations);
     }

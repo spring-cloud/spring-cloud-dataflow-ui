@@ -38,10 +38,8 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
     }
     this.topLevel = (count === 0) ? false : true;
     if (count > 0 && count < this._items.length) {
-      console.log("Setting indeterminate.");
       this.checkbox.nativeElement.indeterminate = true;
     } else {
-      console.log("Removing indeterminate.");
       this.checkbox.nativeElement.indeterminate = false;
     }
   }

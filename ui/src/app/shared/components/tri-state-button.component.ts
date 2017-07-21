@@ -46,17 +46,14 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck  {
     }
     this.topLevel = (count === 0) ? false : true;
     if (count > 0 && count < this._items.length) {
-      console.log("Setting button to enabled.");
       this.label = `Unregister ${count} Selected App(s)`;
       this.button.nativeElement.disabled = false;
     }
     else if (count === 0) {
-      console.log("Disabling button.");
       this.label = 'No app selected to unregister';
       this.button.nativeElement.disabled = true;
     }
     else {
-      console.log("Button enabled.");
       this.label = `Unregister all ${this._items.length} selected apps`;
       this.button.nativeElement.indeterminate = false;
     }

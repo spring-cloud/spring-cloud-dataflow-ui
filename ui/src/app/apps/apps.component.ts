@@ -35,7 +35,9 @@ export class AppsComponent implements OnInit {
     this.busy = this.appsService.getApps().subscribe(
       data => {
         this.appRegistrations = data;
-        this.toastyService.success('Apps loaded.');
+        if (this.appsService.remotelyLoaded) {
+          this.toastyService.success('Apps loaded.');
+        }
       }
     );
   }
