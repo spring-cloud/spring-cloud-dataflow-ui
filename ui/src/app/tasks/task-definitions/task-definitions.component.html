@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-md-24">
+    <div class="col-md-24 table-filter">
+      <table class="col-lg-24 tab-content-header" [ngBusy]="busy">
+        <tr>
+          <td class="col-xs-12">
+            <button type="button" (click)="bulkDefineTasks()"
+                    class="btn btn-default">
+              <span class="glyphicon glyphicon-import"></span>
+              Bulk Define Tasks
+            </button>
+          </td>
+          <td>
+            <label *ngIf="taskDefinitions" class="control">Filter Task Definitions
+              <input type="text" class="input" placeholder="Filter definitions" [(ngModel)]="taskDefinitions.filter">
+            </label>
+            <button *ngIf="taskDefinitions" type="button" (click)="loadTaskDefinitions()"
+                    class="btn btn-default">
+              <span class="glyphicon glyphicon-refresh"></span></button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div *ngIf="!taskDefinitions">No tasks available.</div>
+<table *ngIf="taskDefinitions?.items" class="table table-hover">
+  <thead>
+  <tr>
+    <th style="width: 70px" table-sort sort-property="['DEFINITION_NAME', 'DEFINITION']" sort-state="pageable" sort-order-change-handler="sortChanged">Name</th>
+    <th style="width: 300px" table-sort sort-property="['DEFINITION','DEFINITION_NAME']"  sort-state="pageable" sort-order-change-handler="sortChanged">Definition</th>
+    <th style="width: 50px">Status
+      <a #childPopover="bs-popover"
+         [popover]="popTemplate"
+         placement="bottom"
+         (clickOutside)="closePopOver()"
+         title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a>
+    </th>
+    <th style="width: 240px" colspan="1" class="text-center">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <ng-template ngFor let-item [ngForOf]="taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance()">
+    <tr>
+      <td>{{item.name}}</td>
+      <td>{{item.dslText}}</td>
+      <td>{{item.status}}</td>
+      <td class="action-column">
+        <button type="button" (click)="launchTask(item)"
+                class="btn btn-default" title="Launch">
+          <span class="glyphicon glyphicon-play"></span>
+          Launch
+        </button>
+        <button type="button" (click)="destroyTask(item)"
+                class="btn btn-default" title="Destroy">
+          <span class="glyphicon glyphicon-remove"></span>
+          Destroy
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  </tbody>
+</table>
+<pagination-controls *ngIf="taskDefinitions?.items" (pageChange)="getPage($event)" [id]="taskDefinitions.getPaginationInstance().id"></pagination-controls>
+
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirm Destroy Action</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="taskDefinitionToDestroy">
+        <p>This action will delete definition
+          <u><strong>{{taskDefinitionToDestroy.name}}</strong></u>.
+          Are you sure?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancel()">No</button>
+        <button type="button" class="btn btn-primary" (click)="proceed(taskDefinitionToDestroy)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

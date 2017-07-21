@@ -1,0 +1,34 @@
+<h1 [ngBusy]="busy">Task Executions</h1>
+<p>
+  This section lists all the available task executions.
+</p>
+
+<div *ngIf="!taskExecutions">No task executions available.</div>
+<table *ngIf="taskExecutions?.items" class="table table-hover">
+  <thead>
+    <tr>
+        <th style="width: 200px">Execution Id</th>
+        <th style="width: 100px">Task Name</th>
+        <th style="width: 100px">Start Time</th>
+        <th style="width: 100px">End Time</th>
+        <th style="width: 100px">Exit Code</th>
+        <th style="width: 130px" class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of taskExecutions.items | paginate: taskExecutions.getPaginationInstance()">
+    <td>{{item.executionId}}</td>
+    <td>{{item.taskName}}</td>
+    <td>{{item.startTime}}</td>
+    <td>{{item.endTime}}</td>
+    <td>{{item.exitCode}}</td>
+    <td class="action-column">
+        <button type="button" (click)="details(item)"
+                class="btn btn-default" title="Details"
+        ><span class="glyphicon glyphicon-search"></span>
+        </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<pagination-controls *ngIf="taskExecutions?.items" (pageChange)="getPage($event)" [id]="taskExecutions.getPaginationInstance().id"></pagination-controls>

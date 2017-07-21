@@ -1,4 +1,19 @@
-<h1>Tasks</h1>
-<p>
+<h1 class="no-user-selection">Tasks</h1>
+<p [hidden]="!router.isActive('/tasks', true)">
   This section lists all the task definitions and allows you to create, launch and destroy them.
 </p>
+<p [hidden]="router.isActive('/tasks', true)">
+  Create a task using text based input or the visual editor.
+</p>
+
+<div class="tab-simple">
+  <ul class="nav nav-tabs">
+    <li role="presentation" routerLinkActive="active"><a routerLink="apps">Apps</a></li>
+    <li role="presentation" routerLinkActive="active"><a routerLink="definitions">Definitions</a></li>
+    <li role="presentation" routerLinkActive="active"><a routerLink="create-composed-task">Create Composed Task</a></li>
+    <li role="presentation" routerLinkActive="active"><a routerLink="executions">Executions</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane in active"><router-outlet></router-outlet></div>
+  </div>
+</div>

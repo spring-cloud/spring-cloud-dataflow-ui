@@ -1,0 +1,34 @@
+<h1>Bulk Define Tasks</h1>
+<p>
+  Define tasks in bulk. Type in tasks definitions in the text box or
+  simply browse to a local task definitions file
+</p>
+<hr/>
+
+<form class="form-horizontal" novalidate [formGroup]="form" (ngSubmit)="bulkDefineTasks()">
+  <div class="form-group" [ngClass]="form.controls.definitions.errors ? 'has-warning has-feedback' : ''">
+    <label for="definitions" class="col-sm-4 control-label">Task Definitions</label>
+    <div class="col-sm-18">
+      <textarea class="form-control" id="definitions" name="definitions"
+                formControlName="definitions" autofocus rows="5"
+                placeholder="Please enter one or more definitions in the format: mytask=taskapp --option1=value1 --option2=value2"></textarea>
+      <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="form.controls.definitions.errors"></span>
+      <p class="help-block" *ngIf="form.controls.definitions.errors">The format of your task definitioins are invalid. {{form.controls.definitions.errors.validateBulkTaskDefinitions.reason}}</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-4 control-label">Select Definitions File</label>
+    <div class="col-sm-14">
+      <input type="file" (change)="displayFileContents($event)"/>
+      <p class="help-block">Please provide a text file containing task definitions. This will be used to populate the text area above.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <button type="button" class="btn btn-default" (click)="cancelBulkDefineTasks()">Cancel</button>
+    </div>
+    <div class="col-md-12 text-left">
+      <button type="submit" class="btn btn-default" [disabled]="!form.valid">Create</button>
+    </div>
+  </div>
+</form>
