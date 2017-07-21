@@ -13,7 +13,7 @@ import { AppRegistration } from './model/app-registration';
 import { AppRegistrationImport } from './model/app-registration-import';
 
 import { Page } from '../shared/model/page';
-import {ErrorHandler} from "../shared/model/error-handler";
+import { ErrorHandler } from "../shared/model/error-handler";
 
 @Injectable()
 export class AppsService {
@@ -99,7 +99,9 @@ export class AppsService {
 
     return this.http.post(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, {}, options)
       .map(data => {
-        this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
+        if(this.appRegistrations && this.appRegistrations.items) {
+          this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
+        }
     })
     .catch(this.errorHandler.handleError);
   }

@@ -34,10 +34,14 @@ export class AppsComponent implements OnInit {
   ngOnInit() {
     this.busy = this.appsService.getApps().subscribe(
       data => {
+        console.log(111);
         this.appRegistrations = data;
         if (this.appsService.remotelyLoaded) {
           this.toastyService.success('Apps loaded.');
         }
+      },
+      error => {
+        this.toastyService.error(error);
       }
     );
   }
