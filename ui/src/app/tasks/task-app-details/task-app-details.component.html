@@ -1,0 +1,24 @@
+<div>App {{id}} (Type: task)</div>
+
+<table *ngIf="appInfo" class="table table-hover">
+  <thead>
+    <tr>
+        <th style="width: 140px">Name</th>
+        <th style="width: 140px">Type</th>
+        <th style="width: 140px">Default Value</th>
+        <th style="width: 400px">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of appInfo.options">
+      <td>{{item.name}}</td>
+      <td>{{item.type}}</td>
+      <td>{{item.defaultValue}}</td>
+      <td>{{item.description}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <button type="button" class="btn btn-default" (click)="back()">Back</button>
+</div>

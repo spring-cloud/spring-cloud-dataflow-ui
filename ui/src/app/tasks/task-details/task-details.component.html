@@ -1,0 +1,73 @@
+<div>Task Execution Details - Execution ID: {{id}}</div>
+
+<table *ngIf="taskExecution" class="table table-hover">
+  <thead>
+    <tr>
+        <th style="width: 200px">Property</th>
+        <th style="width: 200px">Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Execution Id</td>
+      <td>{{taskExecution.executionId}}</td>
+    </tr>
+    <tr>
+      <td>Task Name</td>
+      <td>{{taskExecution.taskName}}</td>
+    </tr>
+    <tr>
+      <td>Arguments</td>
+      <td>{{taskExecution.arguments || 'N/A'}}</td>
+    </tr>
+    <tr>
+      <td>External Execution Id</td>
+      <td>{{taskExecution.externalExecutionId || 'N/A'}}</td>
+    </tr>
+    <tr>
+      <td>Start Time</td>
+      <td>{{taskExecution.startTime}}</td>
+    </tr>
+    <tr>
+      <td>End Time</td>
+      <td>{{taskExecution.endTime}}</td>
+    </tr>
+    <tr>
+      <td>Batch Job</td>
+      <td>
+        <span *ngIf="taskExecution.jobExecutionIds.length > 0" class="glyphicon glyphicon-ok text-info"></span>
+        <span *ngIf="taskExecution.jobExecutionIds.length == 0" class="glyphicon glyphicon-remove"></span>
+      </td>
+    </tr>
+    <tr>
+      <td>Job Execution Ids</td>
+      <td>
+        <span *ngFor="let jobExecutionId of taskExecution.jobExecutionIds"><button type="button" class="btn btn-default" (click)="viewJobExecutionDetails(jobExecutionId)" title="Details">{{jobExecutionId}}</button>{{$last ? '' : '&nbsp;'}}</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Start Time</td>
+      <td>{{taskExecution.startTime}}</td>
+    </tr>
+    <tr>
+      <td>End Time</td>
+      <td>{{taskExecution.endTime}}</td>
+    </tr>
+    <tr>
+      <td>Duration</td>
+      <td>TBD duration</td>
+    </tr>
+    <tr>
+      <td>Exit Code</td>
+      <td>{{taskExecution.exitCode}}</td>
+    </tr>
+    <tr>
+      <td>Exit Message</td>
+      <td>{{taskExecution.errorMessage || 'N/A'}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <button type="button" class="btn btn-default" (click)="back()">Back</button>
+</div>
