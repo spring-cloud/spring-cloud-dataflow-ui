@@ -45,8 +45,11 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck  {
       count += this._items[i].isSelected ? 1 : 0;
     }
     this.topLevel = (count === 0) ? false : true;
+
+    let appOrApps = count > 1 ? 'apps' : 'app';
+
     if (count > 0 && count < this._items.length) {
-      this.label = `Unregister ${count} Selected App(s)`;
+      this.label = `Unregister ${count} Selected ${appOrApps}`;
       this.button.nativeElement.disabled = false;
     }
     else if (count === 0) {
@@ -54,7 +57,7 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck  {
       this.button.nativeElement.disabled = true;
     }
     else {
-      this.label = `Unregister all ${this._items.length} selected apps`;
+      this.label = `Unregister all ${this._items.length} selected ${appOrApps}`;
       this.button.nativeElement.indeterminate = false;
     }
   }

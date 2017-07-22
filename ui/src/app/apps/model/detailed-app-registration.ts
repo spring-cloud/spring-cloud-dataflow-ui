@@ -2,10 +2,16 @@ import { Selectable } from '../../shared/model/selectable';
 import { ApplicationType } from './application-type';
 import { AppRegistration } from './app-registration';
 
+/**
+ * The DetailedAppRegistration provides additional information compared
+ * to the base {@link AppRegistration} such as options
+ * ({@link ConfigurationMetadataProperty}).
+ * 
+ * @author Gunnar Hillert
+ */
 export class DetailedAppRegistration extends AppRegistration {
   
   public options: ConfigurationMetadataProperty[];
-  public shortDescription: string;
 
   constructor(
     name?: string,
@@ -20,8 +26,6 @@ export class ConfigurationMetadataProperty {
   public  name: string;
   public  type: string;
   public  description: string;
-  public  shortDescription: string;
   public  defaultValue: string;
-  public  hints: string;
   public  deprecation: string;
 }

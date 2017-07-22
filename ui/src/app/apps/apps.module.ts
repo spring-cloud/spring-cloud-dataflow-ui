@@ -25,7 +25,7 @@ import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
   ],
   declarations: [
     AppsComponent, AppsBulkImportComponent, AppsRegisterComponent, AppDetailsComponent,
-    SearchfilterPipe, ClickOutsideDirective ],
+    SearchfilterPipe, ClickOutsideDirective
   ],
   providers:    [
     AppsService
