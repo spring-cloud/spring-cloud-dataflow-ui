@@ -66,9 +66,10 @@ export class AppsComponent implements OnInit {
 
   unregisterMultipleApps(appRegistrations: AppRegistration[]) {
     this.appRegistrationsToUnregister = appRegistrations.filter(item => item.isSelected);
-    console.log(`Unregister ${this.appRegistrationsToUnregister} app(s).`, this.appRegistrationsToUnregister);
+    console.log(`Unregister ${this.appRegistrationsToUnregister.length} app(s).`, this.appRegistrationsToUnregister);
     this.unregisterMultipleAppsModal.show();
   }
+
 
   bulkImportApps() {
     console.log('Go to Bulk Import page ...');

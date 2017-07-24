@@ -8,7 +8,7 @@
 ><span class="glyphicon glyphicon-plus"></span>
     Register Application(s)
 </button>
-<scdf-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()" (click)="unregisterMultipleApps(appRegistrations.items)"></scdf-tri-state-button>
+<scdf-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()" (eventHandler)="unregisterMultipleApps(appRegistrations.items)"></scdf-tri-state-button>
 <button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-import"></span>
