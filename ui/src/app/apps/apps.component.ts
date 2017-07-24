@@ -70,6 +70,7 @@ export class AppsComponent implements OnInit {
     this.unregisterMultipleAppsModal.show();
   }
 
+
   bulkImportApps() {
     console.log('Go to Bulk Import page ...');
     this.router.navigate(['apps/bulk-import-apps']);

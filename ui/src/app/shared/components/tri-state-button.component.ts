@@ -14,7 +14,7 @@ import { Selectable } from '../../shared/model/selectable';
 @Component({
   selector: 'scdf-tri-state-button',
   template:
-  `<button #theButton name="topLevel" type="button"
+  `<button #theButton name="topLevel" type="button" (click)="onClick()"
          class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>
     {{label}}
   </button>`
@@ -28,11 +28,17 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck  {
   @Input()
   items: Observable<any[]>;
 
+  @Output() eventHandler = new EventEmitter();
+
   label:String = '';
 
   @ViewChild("theButton") button;
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) { }
+
+  public onClick() {
+    this.eventHandler.emit();
+  }
 
   private setState() {
     if (!this._items) {
