@@ -8,15 +8,18 @@
 ><span class="glyphicon glyphicon-plus"></span>
     Register Application(s)
 </button>
-<scdf-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></scdf-tri-state-button>
+<scdf-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()" (click)="unregisterMultipleApps(appRegistrations.items)"></scdf-tri-state-button>
 <button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-import"></span>
     Bulk Import Applications
 </button>
-<label *ngIf="appRegistrations" class="control">Filter items
-  <input type="text" class="input" placeholder="filter" [(ngModel)]="appRegistrations.filter">
+<label *ngIf="appRegistrations" class="control">
+  <input type="text" class="input" placeholder="Filter items" [(ngModel)]="appRegistrations.filter" [disabled]="!appRegistrations || appRegistrations.items.length === 0">
 </label>
+<button id="refreshAppRegistrationsButton" type="button" (click)="loadAppRegistrations(true)"
+        class="btn btn-default"
+><span class="glyphicon glyphicon-refresh"></span></button>
 
 <div *ngIf="!appRegistrations || appRegistrations.items.length === 0">No apps available.</div>
 <table *ngIf="appRegistrations?.items && appRegistrations.items.length > 1" class="table table-hover">
@@ -38,13 +41,13 @@
     <td>{{item.type}}</td>
     <td>{{item.uri}}</td>
     <td class="action-column">
-        <button type="button" ng-click="info(item)"
+        <button type="button" (click)="viewDetails(item)"
                 class="btn btn-default" title="Details"
         ><span class="glyphicon glyphicon-search"></span>
         </button>
     </td>
     <td class="action-column">
-        <button roles="['ROLE_CREATE']" type="button" (click)="unregister(item)"
+        <button roles="['ROLE_CREATE']" type="button" (click)="unregisterSingleApp(item)"
                 class="btn btn-default" title="Unregister"
         ><span class="glyphicon glyphicon-trash"></span>
         </button>
@@ -54,12 +57,12 @@
 </table>
 <pagination-controls *ngIf="appRegistrations?.items && appRegistrations.items.length > 1" (pageChange)="appRegistrations.pageNumber = $event"></pagination-controls>
 
-<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div bsModal #unregisterSingleApppModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title pull-left">Confirm Unregister Application</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelUnregisterSingleApp()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -70,8 +73,46 @@
             Are you sure?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="cancel()">No</button>
-        <button type="button" class="btn btn-primary" (click)="proceed(appRegistrationToUnregister)">Yes</button>
+        <button type="button" class="btn btn-default" (click)="cancelUnregisterSingleApp()">No</button>
+        <button type="button" class="btn btn-primary" (click)="proceedToUnregisterSingleAppRegistration(appRegistrationToUnregister)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #unregisterMultipleApppsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirm Unregister Applications</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelUnregisterMultipleApps()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="appRegistrationsToUnregister">
+        <p>
+          This action will unregister and delete the {{appRegistrationsToUnregister.length}}
+          application{{appRegistrationsToUnregister.length > 1 ? 's' : ''}} listed below. Are you sure?
+        </p>
+        <br/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of appRegistrationsToUnregister">
+                <td>{{item.name}}</td>
+                <td>{{item.type}}</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancelUnregisterMultipleApps()">No</button>
+        <button type="button" class="btn btn-primary" (click)="proceedToUnregisterMultipleAppRegistrations(appRegistrationsToUnregister)">Yes</button>
       </div>
     </div>
   </div>
