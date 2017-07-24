@@ -57,10 +57,10 @@ export class AppsService {
       .map(data => {
         console.log('Returned App Registration Detail:', data);
         const body = data.json();
-        let detailedAppRegistration = new DetailedAppRegistration();
-        detailedAppRegistration = <DetailedAppRegistration> body;
+        let detailedAppRegistration = <DetailedAppRegistration> body;
         return detailedAppRegistration;
       })
+      .catch(this.errorHandler.handleError);
   }
 
   bulkImportApps(appRegistrationImport: AppRegistrationImport): Observable<Response> {

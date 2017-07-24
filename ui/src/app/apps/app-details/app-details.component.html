@@ -29,7 +29,13 @@
   </tbody>
 </table>
 
-<h2>Application Properties</h2>
+<div class="row" *ngIf="!detailedAppRegistration">
+  <div class="col-md-12">
+    No information available.
+  </div>
+</div>
+
+<h2 *ngIf="detailedAppRegistration">Application Properties</h2>
 
 <table class="table table-striped table-hover table-fixed" *ngIf="detailedAppRegistration?.options">
   <tbody>
@@ -45,7 +51,7 @@
   </tbody>
 </table>
 
-<div class="row" *ngIf="!detailedAppRegistration?.options || detailedAppRegistration?.options.length === 0">No properties available.</div>
+<div class="row" *ngIf="detailedAppRegistration && (detailedAppRegistration.options || detailedAppRegistration?.options.length === 0)">No properties available.</div>
 
 <div class="row">
   <div class="col-md-12 text-right"><button id="back-button"

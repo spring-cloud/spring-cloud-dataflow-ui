@@ -1,14 +1,14 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+
 import { AppsService } from '../apps.service';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { DetailedAppRegistration } from '../model/detailed-app-registration';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { ApplicationType } from '../model/application-type';
 
-import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
 
 /**
@@ -20,9 +20,6 @@ import 'rxjs/add/observable/of';
   templateUrl: './app-details.component.html'
 })
 export class AppDetailsComponent implements OnInit {
-
-  @ViewChild('childPopover')
-  public childPopover:PopoverDirective;
 
   public detailedAppRegistration: DetailedAppRegistration;
 
@@ -45,8 +42,12 @@ export class AppDetailsComponent implements OnInit {
        
        console.log(`Retrieving app registration details for ${appName} (${appType}).`);
        this.busy.push(this.appsService.getAppInfo(appType, appName).subscribe(data => {
-         this.detailedAppRegistration = data;
-       }));
+          this.detailedAppRegistration = data;
+        },
+        error => {
+          this.toastyService.error(error);
+        })
+      );
     });
   }
 
@@ -55,7 +56,5 @@ export class AppDetailsComponent implements OnInit {
     this.router.navigate(['apps']);
   };
 
-  closePopOver() {
-    this.childPopover.hide();
-  }
+
 }
