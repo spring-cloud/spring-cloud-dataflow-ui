@@ -6,25 +6,26 @@ import { Selectable } from '../../shared/model/selectable';
 /**
  * Component to be primarily used in multi-select data-grids. The component will
  * render a checkbox that keeps in synch dynamically with the underlying data-model:
- * 
+ *
  * - All elements are selected
  * - Some elements are selected
  * - None of the elements are selected
- * 
+ *
  * @author Gunnar Hillert
  */
 @Component({
-  selector: 'tri-state-checkbox',
-  template: `<input #theCheckbox type="checkbox" [(ngModel)]="topLevel" (change)="topLevelChange()" [disabled]="!_items || _items.length==0">`
+  selector: 'app-tri-state-checkbox',
+  template: `<input #theCheckbox type="checkbox" [(ngModel)]="topLevel"
+    (change)="topLevelChange()" [disabled]="!_items || _items.length==0">`
 })
 export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
 
-  public topLevel: boolean = false;
+  public topLevel = false;
   public _items: Array<Selectable>;
 
   private _subscription: Subscription;
   @Input() items: Observable<any[]>;
-  @ViewChild("theCheckbox") checkbox;
+  @ViewChild('theCheckbox') checkbox;
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) { }
 
@@ -32,8 +33,8 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
     if (!this._items) {
       return;
     }
-    let count: number = 0;
-    for (let i: number = 0; i < this._items.length; i++) {
+    let count = 0;
+    for (let i = 0; i < this._items.length; i++) {
       count += this._items[i].isSelected ? 1 : 0;
     }
     this.topLevel = (count === 0) ? false : true;
@@ -49,8 +50,7 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
   }
 
   public topLevelChange() {
-    console.log("Clicked. " + this.topLevel);
-    for (var i: number = 0; i < this._items.length; i++) {
+    for (let i = 0; i < this._items.length; i++) {
       this._items[i].isSelected = this.topLevel;
     }
   }
@@ -58,7 +58,6 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
   ngAfterViewInit() {
     console.log('ngAfterViewInit', this.items);
     this._subscription = this.items.subscribe(res => {
-      console.log("Subscription triggered.");
       this._items = res;
       this.setState();
       this._changeDetectorRef.detectChanges();

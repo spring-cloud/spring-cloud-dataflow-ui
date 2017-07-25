@@ -1,6 +1,6 @@
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {RuntimeAppsComponent} from "./runtime-apps.component";
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {RuntimeAppsComponent} from './runtime-apps.component';
 
 @NgModule({
     imports: [RouterModule.forChild([

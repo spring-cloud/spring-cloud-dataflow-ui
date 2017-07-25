@@ -12,9 +12,7 @@ import { AppsRoutingModule } from './apps-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { SearchfilterPipe } from '../shared/pipes/search-filter.pipe';
-import { ClickOutsideDirective } from '../shared/directives/click-outside.directive'
 import { RouteReuseStrategy } from '@angular/router';
-import { CustomRouteReuseStrategy } from '../shared/custom-route-reuse-strategy';
 
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 
@@ -25,7 +23,7 @@ import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
   ],
   declarations: [
     AppsComponent, AppsBulkImportComponent, AppsRegisterComponent, AppDetailsComponent,
-    SearchfilterPipe, ClickOutsideDirective
+    SearchfilterPipe
   ],
   providers:    [
     AppsService

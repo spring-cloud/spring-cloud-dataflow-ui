@@ -1,12 +1,12 @@
 import { AboutService } from './about.service';
 import { Observable } from 'rxjs/Rx'
-import {ErrorHandler} from "../shared/model/error-handler";
+import { ErrorHandler } from '../shared/model/error-handler';
 
 xdescribe('AboutService', () => {
 
   let aboutService: AboutService;
   let mockHttp;
-  let errorHandler: ErrorHandler;
+  const errorHandler = new ErrorHandler();
 
   beforeEach(() => {
     mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
@@ -16,6 +16,6 @@ xdescribe('AboutService', () => {
   it('should be created', () => {
     mockHttp.get.and.returnValue(Observable.of(false));
     aboutService.getAboutInfo();
-    //expect(aboutService.getAboutInfo()).toBe();
+    // expect(aboutService.getAboutInfo()).toBe();
   });
 });

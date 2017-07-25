@@ -75,7 +75,7 @@ export class AppsComponent implements OnInit {
     console.log('Go to Bulk Import page ...');
     this.router.navigate(['apps/bulk-import-apps']);
   };
-t
+
   public proceedToUnregisterSingleAppRegistration(appRegistration: AppRegistration): void {
     console.log('Proceeding to unregister application...', appRegistration);
 
@@ -93,7 +93,7 @@ t
 
   public proceedToUnregisterMultipleAppRegistrations(appRegistrations: AppRegistration[]): void {
     console.log(`Proceeding to unregister ${appRegistrations.length} application(s).`, appRegistrations);
-    for (let appRegistrationToUnregister of appRegistrations) {
+    for (const appRegistrationToUnregister of appRegistrations) {
       this.proceedToUnregisterSingleAppRegistration(appRegistrationToUnregister);
     }
     this.unregisterMultipleAppsModal.hide();

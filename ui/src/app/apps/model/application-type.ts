@@ -36,9 +36,9 @@ export namespace ApplicationType {
    * ApplicationType enums.
    */
   export function getApplicationTypes() {
-    let applicationTypes: String[] = [];
-    for(let enumItem in ApplicationType) {
-        if(typeof ApplicationType[enumItem] === 'number') {
+    const applicationTypes: String[] = [];
+    for (const enumItem in ApplicationType) {
+        if (typeof ApplicationType[enumItem] === 'number') {
           applicationTypes.push(enumItem);
         }
     }
