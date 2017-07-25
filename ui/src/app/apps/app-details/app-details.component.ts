@@ -37,9 +37,9 @@ export class AppDetailsComponent implements OnInit {
     console.log(this.appsService.appRegistrations);
 
     this.route.params.subscribe(params => {
-       let appName: string = params['appName'];
-       let appType: ApplicationType = params['appType'] as ApplicationType;
-       
+       const appName: string = params['appName'];
+       const appType: ApplicationType = params['appType'] as ApplicationType;
+
        console.log(`Retrieving app registration details for ${appName} (${appType}).`);
        this.busy.push(this.appsService.getAppInfo(appType, appName).subscribe(data => {
           this.detailedAppRegistration = data;

@@ -8,7 +8,9 @@
 ><span class="glyphicon glyphicon-plus"></span>
     Register Application(s)
 </button>
-<scdf-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()" (eventHandler)="unregisterMultipleApps(appRegistrations.items)"></scdf-tri-state-button>
+
+<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()" (eventHandler)="unregisterMultipleApps(appRegistrations.items)"></app-tri-state-button>
+
 <button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-import"></span>
@@ -26,7 +28,7 @@
   <thead>
     <tr>
         <th style="width: 30px">
-          <tri-state-checkbox *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></tri-state-checkbox>
+          <app-tri-state-checkbox *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></app-tri-state-checkbox>
         </th>
         <th style="width: 200px">Name</th>
         <th style="width: 100px">Type</th>

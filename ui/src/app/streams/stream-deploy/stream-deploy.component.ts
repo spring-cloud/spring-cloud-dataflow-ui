@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { StreamsService } from '../streams.service';
@@ -16,12 +16,12 @@ import { validateDeploymentProperties } from './stream-deploy-validators';
  * @author Janne Valkealahti
  * @author Glenn Renfro
  */
-export class StreamDeployComponent implements OnInit {
+export class StreamDeployComponent implements OnInit, OnDestroy {
 
   id: String;
   private sub: any;
   form: FormGroup;
-  deploymentProperties = new FormControl("", validateDeploymentProperties);
+  deploymentProperties = new FormControl('', validateDeploymentProperties);
 
   /**
    * Adds deployment properties to the FormBuilder
@@ -39,7 +39,7 @@ export class StreamDeployComponent implements OnInit {
     fb: FormBuilder
   ) {
      this.form = fb.group({
-       "deploymentProperties": this.deploymentProperties
+       'deploymentProperties': this.deploymentProperties
      });
   }
 
@@ -69,12 +69,12 @@ export class StreamDeployComponent implements OnInit {
   deployDefinition() {
     console.log('deployDefinition ' + this.deploymentProperties.value);
 
-    let propertiesAsMap = {};
+    const propertiesAsMap = {};
     if (this.deploymentProperties.value) {
-      for (let prop of this.deploymentProperties.value.split('\n')) {
+      for (const prop of this.deploymentProperties.value.split('\n')) {
         if (prop && prop.length > 0 && !prop.startsWith('#')) {
-          let keyValue = prop.split('=');
-          if (keyValue.length===2) {
+          const keyValue = prop.split('=');
+          if (keyValue.length === 2) {
             propertiesAsMap[keyValue[0]] = keyValue[1];
           }
         }
@@ -90,8 +90,7 @@ export class StreamDeployComponent implements OnInit {
       error => {
         if (error.message != null) {
           this.toastyService.error(error.message);
-        }
-        else {
+        } else {
           this.toastyService.error(error);
         }
       }
@@ -103,9 +102,9 @@ export class StreamDeployComponent implements OnInit {
    * @param event The event from the file selection dialog.
    */
   displayFileContents(event: any) {
-    let file:File = event.target.files[0];
-    let reader:FileReader = new FileReader();
-    let _form = this.form;
+    const file: File = event.target.files[0];
+    const reader: FileReader = new FileReader();
+    const _form = this.form;
     reader.onloadend = function(e){
       _form.patchValue({deploymentProperties: reader.result});
     }

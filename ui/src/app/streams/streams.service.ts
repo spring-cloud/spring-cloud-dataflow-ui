@@ -5,7 +5,7 @@ import {Page} from '../shared/model/page';
 import {StreamDefinition} from './model/stream-definition';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {ErrorHandler} from "../shared/model/error-handler";
+import {ErrorHandler} from '../shared/model/error-handler';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -38,15 +38,15 @@ export class StreamsService {
    * the results when returned from the Spring Cloud Data Flow server.
    */
   getDefinitions(): Observable<Page<StreamDefinition>> {
-    let params = new URLSearchParams();
+    const params = new URLSearchParams();
 
-    console.info('Getting paged stream definitions', this.streamDefinitions);
+    console.log('Getting paged stream definitions', this.streamDefinitions);
     console.log(this.streamDefinitions.getPaginationInstance());
     params.append('page', this.streamDefinitions.pageNumber.toString());
     params.append('size', this.streamDefinitions.pageSize.toString());
 
-      //TODO Implement Sorting
-      //params.sort = pageable.calculateSortParameter();
+      // TODO Implement Sorting
+      // params.sort = pageable.calculateSortParameter();
 
       // if (pageable.filterQuery && pageable.filterQuery.trim().length > 0) {
       //   params.search = pageable.filterQuery;
@@ -67,8 +67,8 @@ export class StreamsService {
    */
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> {
     console.log('Destroying...', streamDefinition);
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers});
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions({headers: headers});
     return this.http.delete('/streams/definitions/' + streamDefinition.name, options)
       .map(data => {
         this.streamDefinitions.items = this.streamDefinitions.items.filter(item => item.name !== streamDefinition.name);
@@ -83,8 +83,8 @@ export class StreamsService {
    */
   undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> {
     console.log('Undeploying...', streamDefinition);
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers});
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions({headers: headers});
     return this.http.delete('/streams/deployments/' + streamDefinition.name, options)
       .catch(this.errorHandler.handleError);
   }
@@ -97,8 +97,8 @@ export class StreamsService {
    */
   deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> {
     console.log('Deploying...', streamDefinitionName);
-    let headers = new Headers({'Content-Type': 'application/json'});
-    let options = new RequestOptions({headers: headers});
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions({headers: headers});
     return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
       .catch(this.errorHandler.handleError);
   }
@@ -108,15 +108,14 @@ export class StreamsService {
     let items: StreamDefinition[];
     if (body._embedded && body._embedded.streamDefinitionResourceList) {
       items = body._embedded.streamDefinitionResourceList.map(jsonItem => {
-        let streamDefinition: StreamDefinition  = new StreamDefinition(
+        const streamDefinition: StreamDefinition  = new StreamDefinition(
           jsonItem.name,
           jsonItem.dslText,
           jsonItem.status
         );
         return streamDefinition;
       });
-    }
-    else {
+    } else {
       items = [];
     }
 

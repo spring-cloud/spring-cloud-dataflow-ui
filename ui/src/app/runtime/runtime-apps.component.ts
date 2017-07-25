@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {ToastyService} from "ng2-toasty";
-import {RuntimeApp} from "./model/runtime-app";
-import {Page} from "../shared/model/page";
-import {ModalDirective} from "ngx-bootstrap";
-import {RuntimeAppsService} from "./runtime-apps.service";
-import {Subscription} from "rxjs";
-import {PageInfo} from "../shared/model/pageInfo";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ToastyService } from 'ng2-toasty';
+import { RuntimeApp } from './model/runtime-app';
+import { Page } from '../shared/model/page';
+import { ModalDirective } from 'ngx-bootstrap';
+import { RuntimeAppsService } from './runtime-apps.service';
+import { Subscription } from 'rxjs/Subscription';
+import { PageInfo } from '../shared/model/pageInfo';
 
 /**
  * Component that loads Runtime applications.
@@ -13,7 +13,7 @@ import {PageInfo} from "../shared/model/pageInfo";
  * @author Ilayaperumal Gopinathan
  */
 @Component({
-    selector: 'runtime-apps',
+    selector: 'app-runtime-apps',
     templateUrl: './runtime-apps.component.html',
 })
 export class RuntimeAppsComponent implements OnInit {
@@ -46,8 +46,8 @@ export class RuntimeAppsComponent implements OnInit {
 
     private getPage(page: number) {
         console.log(`Getting page ${page}.`)
-        let pageInfo = new PageInfo();
-        pageInfo.pageNumber = page -1;
+        const pageInfo = new PageInfo();
+        pageInfo.pageNumber = page - 1;
         this.loadRuntimeApps(pageInfo);
     }
 

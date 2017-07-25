@@ -11,7 +11,7 @@ export class StreamDefinition implements Expandable {
   public name: String;
   public dslText: String;
   public status: String;
-  public isExpanded: boolean = false;
+  public isExpanded = false;
 
   constructor(
       name: String,
