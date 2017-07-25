@@ -6,11 +6,11 @@ import { AppRegistration } from './app-registration';
  * The DetailedAppRegistration provides additional information compared
  * to the base {@link AppRegistration} such as options
  * ({@link ConfigurationMetadataProperty}).
- * 
+ *
  * @author Gunnar Hillert
  */
 export class DetailedAppRegistration extends AppRegistration {
-  
+
   public options: ConfigurationMetadataProperty[];
 
   constructor(

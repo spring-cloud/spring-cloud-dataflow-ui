@@ -15,10 +15,10 @@ export class Page<T> {
   /**
    * The page number is 0-index-based.
    */
-  pageNumber: number = 0;
-  pageSize: number = 10;
+  pageNumber = 0;
+  pageSize = 10;
   items: T[];
-  filter: string = '';
+  filter = '';
   paginationId: 'pagination-instance';
 
   /**
@@ -38,7 +38,7 @@ export class Page<T> {
     return {
       id: this.paginationId,
       itemsPerPage: this.pageSize,
-      currentPage: this.pageNumber+1,
+      currentPage: this.pageNumber + 1,
       totalItems: this.totalElements
     };
   }

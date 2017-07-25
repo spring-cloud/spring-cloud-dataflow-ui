@@ -17,12 +17,12 @@
                 <th>App URI &amp; optional Metadata URI</th>
                 <th style="width: 90px">
                   <span>
-                    <tri-state-checkbox class="toggle-all" [items]="getItemsAsObservable()"></tri-state-checkbox>
+                    <app-tri-state-checkbox class="toggle-all" [items]="getItemsAsObservable()"></app-tri-state-checkbox>
                     Force
                     <a #childPopover="bs-popover"
                       [popover]="popTemplate"
                       placement="bottom"
-                      (clickOutside)="closePopOver()"
+                      (appClickOutside)="closePopOver()"
                       title="Force"><span class="glyphicon glyphicon-question-sign"></span></a>
                   </span>
                 </th>

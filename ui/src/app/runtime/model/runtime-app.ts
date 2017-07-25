@@ -1,5 +1,5 @@
-import {RuntimeAppInstance} from "./runtime-app-instance";
-import {Page} from "../../shared/model/page";
+import {RuntimeAppInstance} from './runtime-app-instance';
+import {Page} from '../../shared/model/page';
 
 /**
  * Runtime application model that corresponds to AppStatusResource from SCDF server.

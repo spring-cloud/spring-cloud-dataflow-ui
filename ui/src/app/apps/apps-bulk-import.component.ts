@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import { Subscription} from 'rxjs/Subscription';
 import { AppsService } from './apps.service';
-import {ToastyService, ToastyConfig, ToastOptions, ToastData} from 'ng2-toasty';
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AppRegistrationImport } from './model/app-registration-import';
@@ -14,7 +14,7 @@ import { PopoverDirective } from 'ngx-bootstrap/popover';
 export class AppsBulkImportComponent implements OnInit, OnChanges {
 
   @ViewChild('childPopover')
-  public childPopover:PopoverDirective;
+  public childPopover: PopoverDirective;
 
   public model = new AppRegistrationImport(false, [], '');
 
@@ -42,8 +42,8 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
 
   displayFileContents(contents) {
     console.log(contents);
-    let reader = new FileReader();
-    reader.onloadend = (e)=> {
+    const reader = new FileReader();
+    reader.onloadend = (e) => {
       this.parseTextArea(reader.result);
     }
     console.log(contents.target.files[0]);
@@ -56,9 +56,10 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
 
   parseTextArea(data) {
     if (data.trim().length > 0) {
-      this.model.appsProperties = data.split("\n");
+      this.model.appsProperties = data.split('\n');
+    } else {
+      this.model.appsProperties = [];
     }
-    else this.model.appsProperties = [];
   }
 
   ngOnChanges(changes) {
@@ -85,12 +86,12 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
           console.log('Importing apps using textarea values:\n' + this.model.appsProperties + ' (force: ' + this.model.force + ')');
       }
 
-      let observable = this.appsService.bulkImportApps(this.model).subscribe(
+      const observable = this.appsService.bulkImportApps(this.model).subscribe(
         data => {
         console.log(data);
         this.toastyService.success('Apps Imported.');
-        let reloadAppsObservable = this.appsService.getApps(true).subscribe(
-          data => {
+        const reloadAppsObservable = this.appsService.getApps(true).subscribe(
+          appRegistrations => {
             console.log('Back to about page ...')
             this.router.navigate(['apps'])
           }

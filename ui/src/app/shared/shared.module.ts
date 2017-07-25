@@ -8,11 +8,13 @@ import { ToastyModule, ToastyConfig } from 'ng2-toasty';
 import { StompService } from 'ng2-stomp-service';
 
 import { BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'angular2-busy';
-import { ErrorHandler } from "./model/error-handler";
+import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { TriStateCheckboxComponent } from './components/tri-state-checkbox.component';
 import { TriStateButtonComponent } from './components/tri-state-button.component';
-import { KeyValuePipe } from "./pipes/key-value-filter.pipe";
+import { ClickOutsideDirective } from '../shared/directives/click-outside.directive'
+
+import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 
 const busyConfig: BusyConfig = {
     message: 'Processing..',
@@ -25,7 +27,7 @@ const busyConfig: BusyConfig = {
 
 /**
  * This module contains/declares all application-wide shared functionality.
- * 
+ *
  * @author Gunnar Hillert
  * @author Ilayaperumal Gopinathan
  */
@@ -40,12 +42,14 @@ const busyConfig: BusyConfig = {
     CapitalizePipe,
     KeyValuePipe,
     TriStateButtonComponent,
-    TriStateCheckboxComponent],
+    TriStateCheckboxComponent,
+    ClickOutsideDirective],
   providers: [
     StompService,
     ErrorHandler],
   exports: [
     BusyModule,
+    ClickOutsideDirective,
     CommonModule,
     FormsModule,
     ToastyModule,

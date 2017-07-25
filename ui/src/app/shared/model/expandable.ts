@@ -4,6 +4,6 @@
  *
  * @author Gunnar Hillert
  */
-export interface Expandable { 
-  isExpanded:boolean;
+export interface Expandable {
+  isExpanded: boolean;
 }

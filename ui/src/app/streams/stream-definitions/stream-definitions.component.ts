@@ -33,10 +33,10 @@ export class StreamDefinitionsComponent implements OnInit {
   busy: Subscription;
 
   @ViewChild('childPopover')
-  public childPopover:PopoverDirective;
+  public childPopover: PopoverDirective;
 
   @ViewChild('childModal')
-  public childModal:ModalDirective;
+  public childModal: ModalDirective;
 
   constructor(
     public streamsService: StreamsService,
@@ -74,7 +74,7 @@ export class StreamDefinitionsComponent implements OnInit {
    */
   getPage(page: number) {
     console.log(`Getting page ${page}.`)
-    this.streamsService.streamDefinitions.pageNumber = page-1;
+    this.streamsService.streamDefinitions.pageNumber = page - 1;
     this.loadStreamDefinitions();
   }
 
@@ -82,7 +82,7 @@ export class StreamDefinitionsComponent implements OnInit {
    * Route to {@link StreamDefinition} details page.
    * @param item the stream definition to be displayed.
    */
-  details(item:StreamDefinition) {
+  details(item: StreamDefinition) {
     this.router.navigate(['streams/definitions/' + item.name]);
   }
 
@@ -90,7 +90,7 @@ export class StreamDefinitionsComponent implements OnInit {
    * Undeploys the {@link StreamDefinition} and displays toasty message after complete.
    * @param item the stream definition to be undeployed.
    */
-  undeploy(item:StreamDefinition) {
+  undeploy(item: StreamDefinition) {
     this.streamsService.undeployDefinition(item).subscribe(
       data => {
         this.cancel();
@@ -105,7 +105,7 @@ export class StreamDefinitionsComponent implements OnInit {
    * Route to stream deployment page.
    * @param item the stream definition to be deployed.
    */
-  deploy(item:StreamDefinition) {
+  deploy(item: StreamDefinition) {
     this.router.navigate(['streams/definitions/' + item.name + '/deploy']);
   }
 
@@ -114,7 +114,7 @@ export class StreamDefinitionsComponent implements OnInit {
    * prior to deletion to verify if user wants to destroy definition.
    * @param item the stream definition to be removed.
    */
-  destroy(item:StreamDefinition) {
+  destroy(item: StreamDefinition) {
     this.streamDefinitionToDestroy = item;
     this.showChildModal();
   }
@@ -122,7 +122,7 @@ export class StreamDefinitionsComponent implements OnInit {
   /**
    * Displays modal dialog box that confirms the user wants to destroy a {@link StreamDefinition}.
    */
-  public showChildModal():void {
+  public showChildModal(): void {
     this.childModal.show();
   }
 
@@ -130,7 +130,7 @@ export class StreamDefinitionsComponent implements OnInit {
    *  Hides the modal dialog box that confirms whether the user wants to
    *  destroy a {@link StreamDefinition}.
    */
-  public hideChildModal():void {
+  public hideChildModal(): void {
     this.childModal.hide();
   }
 

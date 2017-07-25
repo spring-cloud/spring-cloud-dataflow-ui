@@ -17,15 +17,15 @@ import 'rxjs/add/observable/of';
 })
 export class AppsRegisterComponent implements OnInit, OnChanges {
 
-  @ViewChild('childPopover')
-  public childPopover:PopoverDirective;
-
   // App name validation RegEx pattern
   public static namePattern = '[\\w_]+[\\w_-]*';
-
-  public applicationTypes:String[] = ApplicationType.getApplicationTypes();
   // Basic URI validation RegEx pattern
   public static uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
+
+  @ViewChild('childPopover')
+  public childPopover: PopoverDirective;
+
+  public applicationTypes: String[] = ApplicationType.getApplicationTypes();
 
   public model = [new AppRegistration()];
 
@@ -69,8 +69,8 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
     this.busy.push(this.appsService.registerMultipleApps(this.model).subscribe(
       data => {
         this.toastyService.success(`${data.length} App(s) registered.`);
-        let reloadAppsObservable = this.appsService.getApps(true).subscribe(
-          data => {
+        const reloadAppsObservable = this.appsService.getApps(true).subscribe(
+          appRegistrations => {
             console.log('Back to apps page ...')
             this.router.navigate(['apps'])
           }

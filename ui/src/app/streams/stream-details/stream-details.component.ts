@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StreamDefinition } from '../model/stream-definition';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './stream-details.component.html',
 })
 
-export class StreamDetailsComponent implements OnInit {
+export class StreamDetailsComponent implements OnInit, OnDestroy {
 
   id: String;
   private sub: any;

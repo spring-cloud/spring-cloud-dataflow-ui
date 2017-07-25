@@ -1,12 +1,12 @@
-import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
-import {Observable} from "rxjs/Observable";
-import "rxjs/add/operator/catch";
-import "rxjs/add/operator/map";
-import {Page} from "../shared/model/page";
-import {RuntimeApp} from "./model/runtime-app";
-import {PageInfo} from "../shared/model/pageInfo";
-import {ErrorHandler} from "../shared/model/error-handler";
+import {Injectable} from '@angular/core';
+import {Http, Response} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import {Page} from '../shared/model/page';
+import {RuntimeApp} from './model/runtime-app';
+import {PageInfo} from '../shared/model/pageInfo';
+import {ErrorHandler} from '../shared/model/error-handler';
 
 /**
  * Service to interact with the SCDF server on Runtime applications queries.
@@ -28,7 +28,7 @@ export class RuntimeAppsService {
      * @returns {Observable<R|T>} the Promise that returns the paged result of Runtime applications.
      */
     public getRuntimeApps(pageInfo: PageInfo): Observable<Page<RuntimeApp>> {
-        let params = {};
+        const params = {};
         params['page'] = pageInfo.pageNumber.toString();
         params['size'] = pageInfo.pageSize.toString();
         return this.http.get(this.runtimeServiceURL, {params: params})
@@ -41,12 +41,11 @@ export class RuntimeAppsService {
         let items: RuntimeApp[];
         if (response._embedded && response._embedded.appStatusResourceList) {
             items = response._embedded.appStatusResourceList as RuntimeApp[];
-        }
-        else {
+        } else {
             items = [];
         }
 
-        let page = new Page<RuntimeApp>();
+        const page = new Page<RuntimeApp>();
         page.items = items;
         page.totalElements = response.page.totalElements;
         page.totalPages = response.page.totalPages;

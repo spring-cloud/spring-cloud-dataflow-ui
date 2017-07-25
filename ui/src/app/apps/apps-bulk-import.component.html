@@ -61,7 +61,7 @@ task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE"
         <a #childPopover="bs-popover"
         [popover]="popTemplate"
         placement="bottom"
-        (clickOutside)="closePopOver()"
+        (appClickOutside)="closePopOver()"
         title="Force"><span class="glyphicon glyphicon-question-sign"></span></a>
         </div>
     </div>

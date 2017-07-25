@@ -1,5 +1,5 @@
-import {Observable} from "rxjs";
-import {Response} from "@angular/http";
+import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
 
 export class ErrorHandler {
 
@@ -9,16 +9,15 @@ export class ErrorHandler {
      * @returns {any} Exception to be thrown by the Observable
      */
     public handleError(error: Response | any) {
-        let errMsg: string = '';
+        let errMsg = '';
 
         if (error instanceof Response) {
             const body = error.json() || '';
-            let isFirst: boolean = true;
-            for (let bodyElement of body) {
+            let isFirst = true;
+            for (const bodyElement of body) {
                 if (!isFirst) {
                     errMsg += '\n';
-                }
-                else {
+                } else {
                     isFirst = false;
                 }
                 errMsg += bodyElement.message;

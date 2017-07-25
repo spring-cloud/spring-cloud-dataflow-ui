@@ -39,7 +39,7 @@
         <a #childPopover="bs-popover"
         [popover]="popTemplate"
         placement="bottom"
-        (clickOutside)="closePopOver()"
+        (appClickOutside)="closePopOver()"
         title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a>
       </th>
       <th style="width: 240px" colspan="1" class="text-center">Actions</th>
