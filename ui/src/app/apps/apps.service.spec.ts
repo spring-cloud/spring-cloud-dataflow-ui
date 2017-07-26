@@ -89,7 +89,8 @@ describe('AppsService', () => {
 
       this.mockHttp.post.and.returnValue(Observable.of(true));
 
-      const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://somewhere');
+      const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://blubba');
+      appRegistration.force = true;
 
       this.appsService.registerApp(appRegistration);
       expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/source/blubba', {}, requestOptions);
@@ -98,23 +99,37 @@ describe('AppsService', () => {
 
   describe('registerMultipleApps', () => {
     it('should call the apps service with the right url to register multiple apps', () => {
-      const requestOptions = HttpUtils.getDefaultRequestOptions()
-      const params = new URLSearchParams();
+      const requestOptions1 = HttpUtils.getDefaultRequestOptions()
+      const params1 = new URLSearchParams();
 
-      params.append('uri', 'http://blubba');
-      params.append('force', 'true');
+      params1.append('uri', 'http://somewhere');
+      params1.append('force', 'false');
 
-      requestOptions.params = params;
+      requestOptions1.params = params1;
+
+      const requestOptions2 = HttpUtils.getDefaultRequestOptions()
+      const params2 = new URLSearchParams();
+
+      params2.append('uri', 'http://somewhere-else');
+      params2.append('force', 'false');
+
+      requestOptions2.params = params2;
 
       this.mockHttp.post.and.returnValue(Observable.of(true));
       const appRegistrations = [
         new AppRegistration('blubba',  ApplicationType.source, 'http://somewhere'),
-        new AppRegistration('blubba2', ApplicationType.source, 'http://somewhere-else')
+        new AppRegistration('blubba2', ApplicationType.sink, 'http://somewhere-else')
       ];
 
       this.appsService.registerMultipleApps(appRegistrations);
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/source/blubba', {}, requestOptions);
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/source/blubba2', {}, requestOptions);
+
+      expect(this.mockHttp.post.calls.allArgs()).toEqual([
+        ['/apps/source/blubba', {}, requestOptions1],
+        ['/apps/sink/blubba2', {}, requestOptions2]
+      ]);
+
+      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/source/blubba', {}, requestOptions1);
+      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/sink/blubba2', {}, requestOptions2);
 
       expect(this.mockHttp.post).toHaveBeenCalledTimes(2);
     });
