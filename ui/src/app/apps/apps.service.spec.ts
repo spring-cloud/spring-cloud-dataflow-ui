@@ -11,12 +11,9 @@ import { AppRegistration } from './model/app-registration';
 
 describe('AppsService', () => {
 
-  let appsService: AppsService;
-  let mockHttp;
-  const jsonData = { };
-
   beforeEach(() => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+    this.jsonData = { };
     const errorHandler = new ErrorHandler();
     this.appsService = new AppsService(this.mockHttp, errorHandler);
   });
@@ -24,9 +21,9 @@ describe('AppsService', () => {
   describe('getApps', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(jsonData));
+      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       this.appsService.getApps();
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps');
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', {});
     });
 
   });
@@ -37,7 +34,7 @@ describe('AppsService', () => {
       const applicationType = 'source';
       const applicationName = 'blubba';
 
-      this.mockHttp.get.and.returnValue(Observable.of(jsonData));
+      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       this.appsService.getAppInfo(applicationType, applicationName);
 
       expect(this.mockHttp.get).toHaveBeenCalledWith(
@@ -72,7 +69,7 @@ describe('AppsService', () => {
     it('should call the apps service with the right url to unregister a single app', () => {
       const requestOptions = HttpUtils.getDefaultRequestOptions()
       const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://somewhere');
-      this.mockHttp.delete.and.returnValue(Observable.of(jsonData));
+      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
       this.appsService.unregisterApp(appRegistration);
       expect(this.mockHttp.delete).toHaveBeenCalledWith('/apps/0/blubba', requestOptions);
     });

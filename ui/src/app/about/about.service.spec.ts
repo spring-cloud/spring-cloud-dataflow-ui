@@ -5,9 +5,6 @@ import { Response, ResponseOptions } from '@angular/http';
 
 describe('AboutService', () => {
 
-  let aboutService: AboutService;
-  let mockHttp;
-
   const jsonData = {
       'featureInfo':
       {
