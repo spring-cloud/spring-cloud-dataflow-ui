@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { ToastyService } from 'ng2-toasty';
 import { Subscription } from 'rxjs/Subscription';
 import { TasksService } from '../tasks.service';
-import { AppInfo, AppInfoOptions } from '../model/app-info';
+import { AppInfo } from '../model/app-info';
 
 @Component({
   selector: 'app-task-create',

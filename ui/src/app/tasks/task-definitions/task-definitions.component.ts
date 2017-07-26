@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { Subscription } from 'rxjs/Subscription';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { ToastyService } from 'ng2-toasty';
 import { ModalDirective} from 'ngx-bootstrap/modal';
 import { Page } from '../../shared/model/page';
 import { Router, ActivatedRoute, Params } from '@angular/router';
@@ -79,7 +79,9 @@ export class TaskDefinitionsComponent implements OnInit {
         this.toastyService.success('Successfully destroyed task definition "'
           + taskDefinition.name + '"');
       },
-      error => {}
+      error => {
+        this.toastyService.error(error);
+      }
     );
   }
 

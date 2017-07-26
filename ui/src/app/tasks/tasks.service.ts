@@ -7,7 +7,7 @@ import { ErrorHandler } from "../shared/model/error-handler";
 import { Page } from '../shared/model/page';
 import { TaskExecution } from './model/task-execution';
 import { TaskDefinition } from './model/task-definition';
-import { AppInfo, AppInfoOptions } from './model/app-info';
+import { AppInfo } from './model/app-info';
 
 @Injectable()
 export class TasksService {
@@ -81,6 +81,7 @@ export class TasksService {
     const options = new RequestOptions({headers: headers});
     return this.http.delete('/tasks/definitions/' + name, options)
       .map(data => {
+        this.taskDefinitions.items = this.taskDefinitions.items.filter(item => item.name !== name);
       })
       .catch(this.errorHandler.handleError);
   }

@@ -42,6 +42,7 @@ export class TaskBulkDefineComponent implements OnInit {
         }
       }
     }
+    this.router.navigate(['tasks/definitions']);
   }
 
   /**
