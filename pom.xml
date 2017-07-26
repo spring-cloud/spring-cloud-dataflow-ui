@@ -113,6 +113,15 @@
 						</configuration>
 					</execution>
 					<execution>
+						<id>npm install enhanced resolve</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install enhanced-resolve@3.3.0</arguments>
+						</configuration>
+					</execution>
+					<execution>
 						<id>npm build</id>
 						<goals>
 							<goal>npm</goal>
