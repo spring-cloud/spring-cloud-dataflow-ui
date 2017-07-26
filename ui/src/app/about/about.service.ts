@@ -10,7 +10,7 @@ export class AboutService {
 
   private aboutUrl = '/about';
 
-  constructor(private http: Http, private errorHandler: ErrorHandler) { }
+  constructor(private http: Http, private errorHandler: ErrorHandler) {}
 
   getAboutInfo(): Observable<any[]> {
     return this.http.get(this.aboutUrl)
@@ -25,6 +25,7 @@ export class AboutService {
   }
 
   private extractData(res: Response) {
+    console.log('extract data', res);
     const body = res.json();
     return body;
     // return body.data || { };
