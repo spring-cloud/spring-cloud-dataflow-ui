@@ -1,0 +1,34 @@
+<h1 [ngBusy]="busy">Apps</h1>
+<p>
+  This section lists all available task apps. You have the ability to view app details and to create task definitions.
+</p>
+
+<div *ngIf="!appRegistrations">No apps available.</div>
+<table *ngIf="appRegistrations?.items" class="table table-hover">
+  <thead>
+    <tr>
+        <th style="width: 200px">Name</th>
+        <th>Coordinates</th>
+        <th style="width: 130px" colspan="2" class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance()">
+    <td>{{item.name}}</td>
+    <td>{{item.uri}}</td>
+    <td class="action-column">
+        <button type="button" (click)="createDefinition(item)"
+                class="btn btn-default" title="Create Definition"
+        ><span class="glyphicon glyphicon-import"></span>
+        </button>
+    </td>
+    <td class="action-column">
+        <button type="button" (click)="details(item)"
+                class="btn btn-default" title="Details"
+        ><span class="glyphicon glyphicon-search"></span>
+        </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<pagination-controls *ngIf="appRegistrations?.items" (pageChange)="getPage($event)" [id]="appRegistrations.getPaginationInstance().id"></pagination-controls>

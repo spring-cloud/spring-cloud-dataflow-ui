@@ -31,12 +31,16 @@ export class AppsService {
     console.log('constructing');
   }
 
-  getApps(reload?: boolean): Observable<Page<AppRegistration>> {
+  getApps(reload?: boolean, type?: string): Observable<Page<AppRegistration>> {
     console.log('apps', this.appRegistrations);
     if (!this.appRegistrations || reload) {
       console.log('Fetching App Registrations remotely.')
       this.remotelyLoaded = true;
-      return this.http.get(AppsService.appsUrl)
+      const params = new URLSearchParams();
+      if (type) {
+        params.append('type', type);
+      }
+      return this.http.get(AppsService.appsUrl, {search: params})
                       .map(this.extractData.bind(this))
                       .catch(this.errorHandler.handleError);
     } else {
