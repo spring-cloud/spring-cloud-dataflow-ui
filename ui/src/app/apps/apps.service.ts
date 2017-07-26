@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Headers, RequestOptions } from '@angular/http';
+import { RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -16,6 +16,7 @@ import { AppRegistrationImport } from './model/app-registration-import';
 
 import { Page } from '../shared/model/page';
 import { ErrorHandler } from '../shared/model/error-handler';
+import { HttpUtils } from '../shared/support/http.utils'
 
 @Injectable()
 export class AppsService {
@@ -52,8 +53,7 @@ export class AppsService {
 
   getAppInfo(appType: ApplicationType, appName: string): Observable<DetailedAppRegistration> {
     console.log(this.appRegistrations);
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
+    const options = HttpUtils.getDefaultRequestOptions();
 
     return this.http.get(AppsService.appsUrl + '/' + appType + '/' + appName, options)
       .map(data => {
@@ -67,14 +67,16 @@ export class AppsService {
 
   bulkImportApps(appRegistrationImport: AppRegistrationImport): Observable<Response> {
     console.log(this.appRegistrations);
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = HttpUtils.getDefaultRequestOptions();
+
     const params = new URLSearchParams();
 
     params.append('uri', appRegistrationImport.uri);
     params.append('apps', appRegistrationImport.appsProperties ? appRegistrationImport.appsProperties.join('\n') : null);
     params.append('force', appRegistrationImport.force ? 'true' : 'false');
 
-    const options = new RequestOptions({ headers: headers, params: params });
+    options.params = params;
+
     console.log(options.params);
     return this.http.post(AppsService.appsUrl, {}, options)
                     .catch(this.errorHandler.handleError);
@@ -82,8 +84,7 @@ export class AppsService {
 
   unregisterApp(appRegistration: AppRegistration): Observable<Response> {
     console.log('Unregistering...', appRegistration);
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
+    const options = HttpUtils.getDefaultRequestOptions();
 
     return this.http.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, options)
       .map(data => {
@@ -104,7 +105,6 @@ export class AppsService {
   registerApp(appRegistration: AppRegistration): Observable<Response> {
     console.log('Registering...', appRegistration);
 
-    const headers = new Headers({ 'Content-Type': 'application/json' });
     const params = new URLSearchParams();
 
     params.append('uri', appRegistration.uri);
@@ -113,10 +113,12 @@ export class AppsService {
     }
     params.append('force', appRegistration.force ? 'true' : 'false');
 
-    const options = new RequestOptions({ headers: headers, params: params });
+    const options = HttpUtils.getDefaultRequestOptions();
+    options.params = params;
+
     console.log(options.params);
 
-    return this.http.post(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, {}, options)
+    return this.http.post(AppsService.appsUrl + '/' + ApplicationType[appRegistration.type] + '/' + appRegistration.name, {}, options)
       .map(data => {
         if (this.appRegistrations && this.appRegistrations.items) {
           this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
