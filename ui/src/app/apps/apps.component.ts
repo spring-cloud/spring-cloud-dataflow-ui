@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { AppsService } from './apps.service';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { AppRegistration } from './model/app-registration';
-import { Page } from '../shared/model/page';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AppsService } from './apps.service';
+import { AppRegistration, Page } from '../shared/model';
+
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 
 import { ModalDirective } from 'ngx-bootstrap/modal';
-
-import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-apps',
@@ -43,12 +43,12 @@ export class AppsComponent implements OnInit {
   public loadAppRegistrations(reload: boolean) {
     this.busy = this.appsService.getApps(reload).subscribe(
       data => {
-        this.appRegistrations = data;
-        if (this.appsService.remotelyLoaded) {
-          this.toastyService.success('Apps loaded.');
+        if (!this.appRegistrations) {
+          this.appRegistrations = data;
         }
       },
       error => {
+        console.log('error', error);
         this.toastyService.error(error);
       }
     );
@@ -109,6 +109,19 @@ export class AppsComponent implements OnInit {
 
   public viewDetails(appRegistration: AppRegistration) {
     this.router.navigate(['apps/' + appRegistration.type + '/' +  appRegistration.name]);
+  }
+
+  /**
+   * Used for requesting a new page. The past is page number is
+   * 1-index-based. It will be converted to a zero-index-based
+   * page number under the hood.
+   *
+   * @param page 1-index-based
+   */
+  getPage(page: number) {
+    console.log(`Getting page ${page}.`)
+    this.appsService.appRegistrations.pageNumber = page - 1;
+    this.loadAppRegistrations(true);
   }
 }
 

@@ -1,13 +1,11 @@
-import { AppsService } from './apps.service';
+import { Headers, RequestOptions, Response, ResponseOptions, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx'
-import { ErrorHandler } from '../shared/model/error-handler';
-import { HttpUtils } from '../shared/support/http.utils'
 
-import { Response, ResponseOptions, URLSearchParams } from '@angular/http';
-import { ApplicationType } from './model/application-type';
-import { Headers, RequestOptions } from '@angular/http';
+import { AppsService } from './apps.service';
+import { HttpUtils } from '../shared/support/http.utils'
+import { ApplicationType, AppRegistration, ErrorHandler } from '../shared/model';
+import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppRegistrationImport } from './model/app-registration-import';
-import { AppRegistration } from './model/app-registration';
 
 describe('AppsService', () => {
 
@@ -15,15 +13,28 @@ describe('AppsService', () => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
     this.jsonData = { };
     const errorHandler = new ErrorHandler();
-    this.appsService = new AppsService(this.mockHttp, errorHandler);
+    const sharedServices = new SharedAppsService(this.mockHttp, errorHandler);
+    this.appsService = new AppsService(this.mockHttp, errorHandler, sharedServices);
   });
 
   describe('getApps', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+
+      expect(this.appsService.appRegistrations).toBeUndefined();
+
+      const params = HttpUtils.getPaginationParams(0, 10);
+
       this.appsService.getApps();
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', {});
+
+      const defaultPageNumber: number = this.appsService.appRegistrations.pageNumber;
+      const defaultPageSize: number = this.appsService.appRegistrations.pageSize;
+
+      expect(defaultPageNumber).toBe(0);
+      expect(defaultPageSize).toBe(10);
+
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', { search: params });
     });
 
   });

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { AppRegistration } from '../../apps/model/app-registration';
+import { AppRegistration } from '../../shared/model/app-registration';
 import { Page } from '../../shared/model/page';
-import { AppsService } from '../../apps/apps.service';
+import { TasksService } from '../tasks.service';
 
 @Component({
   selector: 'app-task-app',
@@ -16,7 +16,7 @@ export class TaskAppsComponent implements OnInit {
   busy: Subscription;
 
   constructor(
-    private appsService: AppsService,
+    private tasksService: TasksService,
     private toastyService: ToastyService,
     private router: Router) {
   }
@@ -34,7 +34,7 @@ export class TaskAppsComponent implements OnInit {
    */
   getPage(page: number) {
     console.log(`Getting page ${page}.`)
-    this.appsService.appRegistrations.pageNumber = page - 1;
+    this.tasksService.appRegistrations.pageNumber = page - 1;
     this.loadAppRegistrations();
   }
 
@@ -49,7 +49,7 @@ export class TaskAppsComponent implements OnInit {
   }
 
   loadAppRegistrations() {
-    this.busy = this.appsService.getApps(true, 'task').subscribe(
+    this.busy = this.tasksService.getTaskAppRegistrations().subscribe(
       data => {
         this.appRegistrations = data;
         this.toastyService.success('Task apps loaded.');

@@ -1,11 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions, URLSearchParams} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {Page} from '../shared/model/page';
-import {StreamDefinition} from './model/stream-definition';
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions, URLSearchParams} from '@angular/http';
+
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {ErrorHandler} from '../shared/model/error-handler';
+
+import { StreamDefinition } from './model/stream-definition';
+import { Page } from '../shared/model/page';
+import { ErrorHandler } from '../shared/model/error-handler';
+import { HttpUtils } from '../shared/support/http.utils';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -38,13 +41,14 @@ export class StreamsService {
    * the results when returned from the Spring Cloud Data Flow server.
    */
   getDefinitions(): Observable<Page<StreamDefinition>> {
-    const params = new URLSearchParams();
 
     console.log('Getting paged stream definitions', this.streamDefinitions);
     console.log(this.streamDefinitions.getPaginationInstance());
-    params.append('page', this.streamDefinitions.pageNumber.toString());
-    params.append('size', this.streamDefinitions.pageSize.toString());
 
+    const params = HttpUtils.getPaginationParams(
+      this.streamDefinitions.pageNumber,
+      this.streamDefinitions.pageSize
+    )
       // TODO Implement Sorting
       // params.sort = pageable.calculateSortParameter();
 

@@ -1,6 +1,6 @@
 import { Selectable } from '../../shared/model/selectable';
-import { ApplicationType } from './application-type';
-import { AppRegistration } from './app-registration';
+import { ApplicationType } from '../../shared/model/application-type';
+import { AppRegistration } from '../../shared/model/app-registration';
 
 /**
  * The DetailedAppRegistration provides additional information compared

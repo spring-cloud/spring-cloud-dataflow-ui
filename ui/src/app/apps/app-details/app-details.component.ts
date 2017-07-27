@@ -6,7 +6,7 @@ import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty
 
 import { DetailedAppRegistration } from '../model/detailed-app-registration';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { ApplicationType } from '../model/application-type';
+import { ApplicationType } from '../../shared/model/application-type';
 
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';

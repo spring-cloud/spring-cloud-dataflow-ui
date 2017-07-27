@@ -1,4 +1,4 @@
-import { Headers, RequestOptions } from '@angular/http';
+import { Headers, RequestOptions, URLSearchParams } from '@angular/http';
 
 /**
  * Contains common HTTP-related helper methods.
@@ -11,5 +11,14 @@ export class HttpUtils {
     const options = new RequestOptions({ headers: headers });
 
     return options;
+  }
+
+  public static getPaginationParams(page: number, size: number): URLSearchParams {
+    const params = new URLSearchParams();
+
+    params.append('page', page.toString());
+    params.append('size', size.toString());
+
+    return params;
   }
 }
