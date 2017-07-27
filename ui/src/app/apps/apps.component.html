@@ -9,7 +9,14 @@
     Register Application(s)
 </button>
 
-<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()" (eventHandler)="unregisterMultipleApps(appRegistrations.items)"></app-tri-state-button>
+<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all"
+                      [items]="appRegistrations.getItemsAsObservable()"
+                      (eventHandler)="unregisterMultipleApps(appRegistrations.items)"
+                      noneSelectedLabel="No app selected to unregister"
+                      oneSelectedLabel="Unregister {selectedCount} selected app"
+                      manySelectedLabel="Unregister {selectedCount} selected apps"
+                      allSelectedLabel="Unregister all {selectedCount} selected apps"
+></app-tri-state-button>
 
 <button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
         class="btn btn-default"

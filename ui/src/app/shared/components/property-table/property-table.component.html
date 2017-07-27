@@ -34,7 +34,14 @@
 <div class="row">
   <div class="col-md-12 text-left">
     <button type="button" class="btn btn-default" (click)="addProperty()">{{addText}}</button>
-    <app-tri-state-button *ngIf="getProperties().length > 0" class="toggle-all" [items]="getPropertiesAsObservable()" (eventHandler)="removeSelectedItems()"></app-tri-state-button>
+    <app-tri-state-button *ngIf="getProperties().length > 0"class="toggle-all"
+                          [items]="getPropertiesAsObservable()"
+                          (eventHandler)="removeSelectedItems()"
+                          noneSelectedLabel="No item selected to remove"
+                          oneSelectedLabel="Remove {selectedCount} selected item"
+                          manySelectedLabel="Remove {selectedCount} selected items"
+                          allSelectedLabel="Remove all {selectedCount} selected items"
+    ></app-tri-state-button>
   </div>
 </div>
 
