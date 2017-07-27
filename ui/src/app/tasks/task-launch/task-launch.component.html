@@ -1,6 +1,13 @@
 <h1>Launch task '{{id}}'</h1>
-
-<div class="row">
+<app-property-table id="arguments"
+                    titleText="Task Arguments"
+                    emptyText="No Arguments added. If needed, please add a task arguments before launching the task."
+                    addText="Add Arguments"></app-property-table>
+<app-property-table id="properties"
+                    titleText="Task Properties"
+                    emptyText="No properties added. If needed, please add a task property before launching the task."
+                    addText="Add Properties"></app-property-table>
+<div class="row" style="margin-top: 20px">
   <div class="col-md-12 text-right">
     <button type="button" class="btn btn-default" (click)="launch(id)"><span class="glyphicon glyphicon-play"></span>Launch Task</button>
   </div>
