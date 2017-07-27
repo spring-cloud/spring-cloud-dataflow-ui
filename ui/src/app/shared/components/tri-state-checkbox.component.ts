@@ -1,5 +1,4 @@
-import { Component, Input, AfterViewInit, DoCheck,
-         ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, AfterViewInit, DoCheck, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Selectable } from '../../shared/model/selectable';
 
@@ -27,7 +26,7 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
   @Input() items: Observable<any[]>;
   @ViewChild('theCheckbox') checkbox;
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef) { }
+  constructor() { }
 
   private setState() {
     if (!this._items) {
@@ -46,7 +45,7 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
   }
 
   ngDoCheck() {
-    this.setState();
+    this.getItems();
   }
 
   public topLevelChange() {
@@ -56,11 +55,23 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit', this.items);
-    this._subscription = this.items.subscribe(res => {
-      this._items = res;
-      this.setState();
-      this._changeDetectorRef.detectChanges();
-    });
+    this.getItems();
+  }
+
+  private getItems() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+    }
+    this._subscription = this.items.subscribe(
+      res => {
+        this._items = res;
+      },
+      error => {
+        console.log('error', error);
+        this.setState();
+      },
+      () => {
+        this.setState();
+      });
   }
 }
