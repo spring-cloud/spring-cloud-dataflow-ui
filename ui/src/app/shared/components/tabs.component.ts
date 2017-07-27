@@ -1,5 +1,10 @@
 import {AfterContentInit, Component, ContentChildren, Input, QueryList} from '@angular/core';
 
+/**
+ * Generic tab component representing one tab in tabs.
+ *
+ * @author Janne Valkealahti
+ */
 @Component({
   selector: 'app-tab',
   styles: [`
@@ -18,6 +23,11 @@ export class TabComponent {
   @Input() active = false;
 }
 
+/**
+ * Generic tabs component to layout panes.
+ *
+ * @author Janne Valkealahti
+ */
 @Component({
   selector: 'app-tabs',
   template: `

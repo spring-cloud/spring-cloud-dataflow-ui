@@ -4,6 +4,13 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Selectable } from '../../model/selectable';
 
+/**
+ * Component representing key/values in a table
+ * and have functionality to import those as
+ * single or bulk modes.
+ *
+ * @author Janne Valkealahti
+ */
 @Component({
   selector: 'app-property-table',
   templateUrl: './property-table.component.html'
@@ -104,6 +111,11 @@ export class PropertyTableComponent {
   }
 }
 
+/**
+ * Class which is used in property table component as table item.
+ *
+ * @author Janne Valkealahti
+ */
 export class PropertyTableItem implements Selectable {
 
   key: string;
