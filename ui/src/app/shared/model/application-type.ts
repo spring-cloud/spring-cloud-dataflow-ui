@@ -32,16 +32,14 @@ export enum ApplicationType {
 export namespace ApplicationType {
 
   /**
-   * Returns an array containing the string representation of all
+   * Returns an array containing the numric key values of all
    * ApplicationType enums.
    */
-  export function getApplicationTypes() {
-    const applicationTypes: String[] = [];
-    for (const enumItem in ApplicationType) {
-        if (typeof ApplicationType[enumItem] === 'number') {
-          applicationTypes.push(enumItem);
-        }
-    }
-    return applicationTypes;
+  export function getKeys(): number[] {
+    return Object.keys(ApplicationType).filter(isNumber).map(value => Number(value));
+  }
+
+  function isNumber(element, index, array) {
+    return !isNaN(element);
   }
 }

@@ -17,7 +17,7 @@ export class Page<T> {
    */
   pageNumber = 0;
   pageSize = 10;
-  items: T[];
+  items: T[] = [];
   filter = '';
   paginationId: 'pagination-instance';
 
@@ -45,5 +45,14 @@ export class Page<T> {
 
   public getItemsAsObservable(): Observable<T[]> {
     return Observable.of(this.items);
+  }
+
+  public update(page: Page<T> ) {
+    this.items.length = 0;
+    this.items.push(...page.items);
+    this.pageNumber = page.pageNumber;
+    this.pageSize = page.pageSize;
+    this.totalElements = page.totalElements;
+    this.totalPages = page.totalPages;
   }
 }

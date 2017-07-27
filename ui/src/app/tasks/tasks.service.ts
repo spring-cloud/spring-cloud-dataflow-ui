@@ -8,6 +8,11 @@ import { Page } from '../shared/model/page';
 import { TaskExecution } from './model/task-execution';
 import { TaskDefinition } from './model/task-definition';
 import { AppInfo } from './model/app-info';
+import { SharedAppsService } from '../shared/services/shared-apps.service';
+import { AppRegistration } from '../shared/model/app-registration';
+
+import { PageRequest } from '../shared/model/pagination/page-request.model';
+import { ApplicationType } from '../shared/model/application-type'
 
 @Injectable()
 export class TasksService {
@@ -18,7 +23,9 @@ export class TasksService {
   public taskExecutions: Page<TaskExecution>;
   public taskDefinitions: Page<TaskDefinition>;
 
-  constructor(private http: Http, private errorHandler: ErrorHandler) {
+  public appRegistrations: Page<AppRegistration>;
+
+  constructor(private http: Http, private errorHandler: ErrorHandler, private sharedAppsService: SharedAppsService) {
     this.taskExecutions = new Page<TaskExecution>();
     this.taskDefinitions = new Page<TaskDefinition>();
   }
@@ -48,6 +55,15 @@ export class TasksService {
     return this.http.get(this.appInfoUrl + '/' + id, {search: params})
       .map(this.extractAppInfoData.bind(this))
       .catch(this.errorHandler.handleError);
+  }
+
+  getTaskAppRegistrations(): Observable<Page<AppRegistration>> {
+    return this.sharedAppsService.getApps(
+      new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize), ApplicationType.task).map(
+        appRegistrations => {
+          this.appRegistrations = appRegistrations;
+          return appRegistrations;
+        });
   }
 
   getDefinitions(): Observable<Page<TaskDefinition>> {

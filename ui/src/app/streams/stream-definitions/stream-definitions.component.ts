@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Page } from '../../shared/model/page';
+import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { PaginationInstance } from 'ngx-pagination'
-
 
 @Component({
   selector: 'app-stream-definitions',

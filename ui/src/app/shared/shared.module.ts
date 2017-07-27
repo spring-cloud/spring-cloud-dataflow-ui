@@ -15,9 +15,12 @@ import { TriStateButtonComponent } from './components/tri-state-button.component
 import { ClickOutsideDirective } from '../shared/directives/click-outside.directive'
 
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
+
 import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { ModalModule } from 'ngx-bootstrap';
 import {TabComponent, TabsComponent} from './components/tabs.component';
+
+import { SharedAppsService } from '../shared/services/shared-apps.service';
 
 const busyConfig: BusyConfig = {
     message: 'Processing..',
@@ -54,6 +57,7 @@ const busyConfig: BusyConfig = {
     TabComponent],
   providers: [
     StompService,
+    SharedAppsService,
     ErrorHandler],
   exports: [
     BusyModule,

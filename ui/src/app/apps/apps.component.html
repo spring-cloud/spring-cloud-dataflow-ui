@@ -31,7 +31,7 @@
 ><span class="glyphicon glyphicon-refresh"></span></button>
 
 <div *ngIf="!appRegistrations || appRegistrations.items.length === 0">No apps available.</div>
-<table *ngIf="appRegistrations?.items && appRegistrations.items.length > 1" class="table table-hover">
+<table *ngIf="appRegistrations?.items && appRegistrations.items.length > 0" class="table table-hover">
   <thead>
     <tr>
         <th style="width: 30px">
@@ -44,7 +44,7 @@
     </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let item of appRegistrations.items | searchFilter: appRegistrations.filter | paginate: { itemsPerPage: 10, currentPage: appRegistrations.pageNumber }; index as i">
+  <tr *ngFor="let item of appRegistrations.items | searchFilter: appRegistrations.filter | paginate: appRegistrations.getPaginationInstance(); index as i">
     <td><input type="checkbox" [(ngModel)]="item.isSelected" roles="['ROLE_CREATE']"/></td>
     <td>{{item.name}}</td>
     <td>{{item.type}}</td>
@@ -64,7 +64,7 @@
   </tr>
   </tbody>
 </table>
-<pagination-controls *ngIf="appRegistrations?.items && appRegistrations.items.length > 1" (pageChange)="appRegistrations.pageNumber = $event"></pagination-controls>
+<pagination-controls *ngIf="appRegistrations?.items && appRegistrations.items.length > 0" (pageChange)="getPage($event)"></pagination-controls>
 
 <div bsModal #unregisterSingleAppModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">

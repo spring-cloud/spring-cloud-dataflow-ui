@@ -4,9 +4,9 @@ import { AppsService } from '../apps.service';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 
-import { AppRegistration } from '../model/app-registration';
+import { AppRegistration } from '../../shared/model/app-registration';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { ApplicationType } from '../model/application-type';
+import { ApplicationType } from '../../shared/model/application-type';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -25,7 +25,7 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
 
-  public applicationTypes: String[] = ApplicationType.getApplicationTypes();
+  public applicationType = ApplicationType;
 
   public model = [new AppRegistration()];
 
@@ -76,6 +76,9 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
           }
         );
         this.busy.push(reloadAppsObservable);
+      },
+      error => {
+        this.toastyService.error(error);
       }
     ));
   };

@@ -8,13 +8,13 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
 
-import { AppRegistration } from './model/app-registration';
+import { AppRegistration, ErrorHandler, Page } from '../shared/model';
+import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { DetailedAppRegistration } from './model/detailed-app-registration';
-import { ApplicationType } from './model/application-type';
+import { ApplicationType } from '../shared/model/application-type';
 import { AppRegistrationImport } from './model/app-registration-import';
+import { PageRequest } from '../shared/model/pagination/page-request.model';
 
-import { Page } from '../shared/model/page';
-import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils'
 
 /**
@@ -32,26 +32,26 @@ export class AppsService {
   public filter = '';
   public remotelyLoaded = false;
 
-  constructor(private http: Http, private errorHandler: ErrorHandler) {
+  constructor(private http: Http, private errorHandler: ErrorHandler,
+    private sharedAppsService: SharedAppsService) {
     console.log('constructing');
   }
 
-  getApps(reload?: boolean, type?: string): Observable<Page<AppRegistration>> {
-    console.log('apps', this.appRegistrations);
+  getApps(reload?: boolean): Observable<Page<AppRegistration>> {
+    console.log(`Get apps - reload ${reload}`, this.appRegistrations);
     if (!this.appRegistrations || reload) {
+      if (!this.appRegistrations) {
+        this.appRegistrations = new Page<AppRegistration>();
+      }
       console.log('Fetching App Registrations remotely.')
       this.remotelyLoaded = true;
-      const params = new URLSearchParams();
 
-      const requestOptionsArgs: RequestOptionsArgs = {};
-
-      if (type) {
-        params.append('type', type);
-        requestOptionsArgs.search = params;
-      }
-      return this.http.get(AppsService.appsUrl, requestOptionsArgs)
-                      .map(this.extractData.bind(this))
-                      .catch(this.errorHandler.handleError);
+      return this.sharedAppsService.getApps(
+        new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize))
+          .map(page => {
+            this.appRegistrations.update(page);
+            return this.appRegistrations;
+          });
     } else {
       this.remotelyLoaded = false;
       console.log('Fetching App Registrations from local state.', this.appRegistrations);
@@ -96,7 +96,8 @@ export class AppsService {
 
     return this.http.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, options)
       .map(data => {
-        this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
+        const index: number = this.appRegistrations.items.findIndex(item => item.name === appRegistration.name);
+        this.appRegistrations.items.splice(index, 1);
       })
       .catch(this.errorHandler.handleError);
 
@@ -133,25 +134,6 @@ export class AppsService {
         }
     })
     .catch(this.errorHandler.handleError);
-  }
-
-  private extractData(res: Response): Page<AppRegistration> {
-    const body = res.json();
-    let items: AppRegistration[];
-    if (body._embedded && body._embedded.appRegistrationResourceList) {
-      items = body._embedded.appRegistrationResourceList as AppRegistration[];
-    } else {
-      items = [];
-    }
-
-    const page = new Page<AppRegistration>();
-    page.items = items;
-    page.totalElements = items.length;
-
-    this.appRegistrations = page;
-
-    console.log('Extracted App Registrations:', this.appRegistrations);
-    return page;
   }
 
 }
