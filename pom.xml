@@ -130,6 +130,15 @@
 							<arguments>run mavenbuild</arguments>
 						</configuration>
 					</execution>
+					<execution>
+						<id>npm doc</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run doc</arguments>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			 <plugin>

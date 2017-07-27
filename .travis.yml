@@ -12,3 +12,10 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+deploy:
+  local_dir: ui/documentation
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  on:
+    branch: angular
