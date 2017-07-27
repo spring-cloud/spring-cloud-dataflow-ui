@@ -27,7 +27,7 @@
   </tbody>
 </table>
 <div class="row" *ngIf="getProperties().length === 0">
-  <div class="col-xs-24 text-center">
+  <div class="col-xs-24 text-left">
     {{emptyText}}
   </div>
 </div>
@@ -90,7 +90,7 @@
               <div class="form-group">
                 <label class="col-sm-6 control-label">Select Properties File</label>
                 <div class="col-sm-14">
-                  <input type="file" (change)="displayFileContents($event)"/>
+                  <input type="file" (change)="displayFileContents($event)" formControlName="bulkFile"/>
                   <p class="help-block">Please provide a text file containing {{titleText}}. This will be used to populate the text area above.</p>
                 </div>
               </div>

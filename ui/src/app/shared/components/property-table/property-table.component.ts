@@ -22,6 +22,7 @@ export class PropertyTableComponent {
   singleForm: FormGroup;
   bulkForm: FormGroup;
   bulkProperties = new FormControl('', validateProperties);
+  bulkFile  = new FormControl('');
   singlePropertyKey = new FormControl('', validateKeyOrValue);
   singlePropertyValue = new FormControl('', validateKeyOrValue);
 
@@ -32,7 +33,8 @@ export class PropertyTableComponent {
       'singlePropertyValue': this.singlePropertyValue
     });
     this.bulkForm = fb.group({
-      'bulkProperties': this.bulkProperties
+      'bulkProperties': this.bulkProperties,
+      'bulkFile': this.bulkFile
     });
   }
 
@@ -69,6 +71,7 @@ export class PropertyTableComponent {
     this.singlePropertyKey.setValue('');
     this.singlePropertyValue.setValue('');
     this.bulkProperties.setValue('');
+    this.bulkFile.setValue('');
   }
 
   submitBulkProperties(): void {
