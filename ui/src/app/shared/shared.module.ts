@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { HttpModule } from '@angular/http';
 
@@ -15,6 +15,9 @@ import { TriStateButtonComponent } from './components/tri-state-button.component
 import { ClickOutsideDirective } from '../shared/directives/click-outside.directive'
 
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
+import { PropertyTableComponent } from './components/property-table/property-table.component';
+import { ModalModule } from 'ngx-bootstrap';
+import {TabComponent, TabsComponent} from './components/tabs.component';
 
 const busyConfig: BusyConfig = {
     message: 'Processing..',
@@ -36,14 +39,19 @@ const busyConfig: BusyConfig = {
     CommonModule,
     FormsModule,
     HttpModule,
+    ReactiveFormsModule,
     BusyModule.forRoot(busyConfig),
+    ModalModule.forRoot(),
     ToastyModule.forRoot() ],
   declarations: [
     CapitalizePipe,
     KeyValuePipe,
     TriStateButtonComponent,
     TriStateCheckboxComponent,
-    ClickOutsideDirective],
+    ClickOutsideDirective,
+    PropertyTableComponent,
+    TabsComponent,
+    TabComponent],
   providers: [
     StompService,
     ErrorHandler],
@@ -56,7 +64,8 @@ const busyConfig: BusyConfig = {
     CapitalizePipe,
     KeyValuePipe,
     TriStateCheckboxComponent,
-    TriStateButtonComponent
+    TriStateButtonComponent,
+    PropertyTableComponent
   ]
 })
 export class SharedModule { }
