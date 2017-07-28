@@ -39,7 +39,7 @@
                 <td [class.has-error]="type.invalid && type.touched">
                   <select #type="ngModel" name="type_{{index}}" [(ngModel)]="item.type" required>
                     <option [ngValue]="item.type" disabled="disabled">Please select a type...</option>
-                    <option *ngFor="let applicationType of applicationTypes" [ngValue]="applicationType">{{applicationType | capitalize}}</option>
+                    <option *ngFor="let applicationTypeKey of applicationType.getKeys()" [ngValue]="applicationTypeKey">{{applicationType[applicationTypeKey] | capitalize}}</option>
                   </select>
                   <span class="help-block" *ngIf="type.invalid && type.touched">Please provide a valid type.</span>
                 </td>

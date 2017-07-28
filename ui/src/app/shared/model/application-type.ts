@@ -36,12 +36,20 @@ export namespace ApplicationType {
    * ApplicationType enums.
    */
   export function getApplicationTypes() {
-    const applicationTypes: String[] = [];
+    const applicationTypes: string[] = [];
     for (const enumItem in ApplicationType) {
         if (typeof ApplicationType[enumItem] === 'number') {
           applicationTypes.push(enumItem);
         }
     }
     return applicationTypes;
+  }
+
+  /**
+   * Returns an array containing the numric key values of all
+   * ApplicationType enums.
+   */
+  export function getKeys(): number[] {
+    return Object.keys(ApplicationType).filter(Number).map(value => Number(value));
   }
 }

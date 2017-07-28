@@ -19,7 +19,6 @@ export class SharedAppsService {
   private static appsUrl = '/apps';
 
   constructor(private http: Http, private errorHandler: ErrorHandler) {
-    console.log('constructing');
   }
 
   getApps(pageRequest: PageRequest, type?: ApplicationType): Observable<Page<AppRegistration>> {

@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AppsService } from './apps.service';
 import { AppRegistration, Page } from '../shared/model';
 
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { ToastyService } from 'ng2-toasty';
 
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
@@ -84,6 +83,11 @@ export class AppsComponent implements OnInit {
         this.unregisterSingleAppModal.hide();
         this.toastyService.success('Successfully removed app "'
           + appRegistration.name + '" of type "' + appRegistration.type + '"');
+
+        if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
+          this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
+          this.loadAppRegistrations(true);
+        }
       },
       error => {
         this.toastyService.error(error);

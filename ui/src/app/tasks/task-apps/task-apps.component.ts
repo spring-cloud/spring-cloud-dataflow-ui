@@ -53,6 +53,9 @@ export class TaskAppsComponent implements OnInit {
       data => {
         this.appRegistrations = data;
         this.toastyService.success('Task apps loaded.');
+      },
+      error => {
+        this.toastyService.error(error);
       }
     );
   }

@@ -96,7 +96,8 @@ export class AppsService {
 
     return this.http.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, options)
       .map(data => {
-        this.appRegistrations.items = this.appRegistrations.items.filter(item => item.name !== appRegistration.name);
+        const index: number = this.appRegistrations.items.findIndex(item => item.name === appRegistration.name);
+        this.appRegistrations.items.splice(index, 1);
       })
       .catch(this.errorHandler.handleError);
 

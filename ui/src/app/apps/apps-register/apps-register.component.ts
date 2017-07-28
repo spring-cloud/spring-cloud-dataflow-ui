@@ -25,7 +25,7 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
 
-  public applicationTypes: String[] = ApplicationType.getApplicationTypes();
+  public applicationType = ApplicationType;
 
   public model = [new AppRegistration()];
 
@@ -76,6 +76,9 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
           }
         );
         this.busy.push(reloadAppsObservable);
+      },
+      error => {
+        this.toastyService.error(error);
       }
     ));
   };
