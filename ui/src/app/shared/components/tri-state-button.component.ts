@@ -1,14 +1,11 @@
-import { Component, Input, Output, OnInit, AfterViewInit, DoCheck,
-  ViewChild, EventEmitter, ChangeDetectionStrategy,
-  ChangeDetectorRef, Renderer, ElementRef,
-  forwardRef } from '@angular/core';
-import { Pipe, PipeTransform } from '@angular/core';
+import {
+  Component, Input, Output, AfterViewInit, DoCheck, ViewChild, EventEmitter
+} from '@angular/core';
 import { Observable, Subscription } from 'rxjs/Rx';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/distinctUntilChanged';
-
 import { Selectable } from '../../shared/model/selectable';
 
 @Component({
@@ -21,7 +18,7 @@ import { Selectable } from '../../shared/model/selectable';
 })
 export class TriStateButtonComponent implements AfterViewInit, DoCheck {
 
-  public topLevel = false;
+  // public topLevel = false;
   public _items: Array<Selectable> = [];
 
   private _subscription: Subscription;
@@ -29,54 +26,83 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck {
   @Input()
   items: Observable<any[]>;
 
-  @Output() eventHandler = new EventEmitter();
+  @Input()
+  noneSelectedLabel: string;
+
+  @Input()
+  oneSelectedLabel: string;
+
+  @Input()
+  manySelectedLabel: string;
+
+  @Input()
+  allSelectedLabel: string;
 
   label = '';
 
+  @Output() eventHandler = new EventEmitter();
+
   @ViewChild('theButton') button;
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef) { }
+  constructor() { }
 
   public onClick() {
     this.eventHandler.emit();
   }
 
   private setState() {
+    if (!this.button) {
+      return;
+    }
     if (!this._items) {
       this.button.nativeElement.disabled = true;
-      this.label = 'No app selected to unregister';
       return;
     }
     let count = 0;
     for (let i = 0; i < this._items.length; i++) {
       count += this._items[i].isSelected ? 1 : 0;
     }
-    this.topLevel = (count === 0) ? false : true;
-
-    const appOrApps = count > 1 ? 'apps' : 'app';
 
     if (count > 0 && count < this._items.length) {
-      this.label = `Unregister ${count} Selected ${appOrApps}`;
+      if (count > 1) {
+        this.label = this.manySelectedLabel.replace('{selectedCount}', count + '');
+      }
+      else {
+        this.label = this.oneSelectedLabel.replace('{selectedCount}', count + '');
+      }
       this.button.nativeElement.disabled = false;
     } else if (count === 0) {
-      this.label = 'No app selected to unregister';
+      this.label = this.noneSelectedLabel.replace('{selectedCount}', count + '');
       this.button.nativeElement.disabled = true;
     } else {
-      this.label = `Unregister all ${this._items.length} selected ${appOrApps}`;
+      this.label = this.allSelectedLabel.replace('{selectedCount}', count + '');
+      this.button.nativeElement.disabled = false;
       this.button.nativeElement.indeterminate = false;
     }
   }
 
   ngDoCheck() {
-    this.setState();
+    this.getItems();
   }
 
   ngAfterViewInit() {
-    console.log('ngAfterViewInit', this.items);
-    this._subscription = this.items.subscribe(res => {
-      this._items = res;
-      this.setState();
-      this._changeDetectorRef.detectChanges();
-    });
+    this.getItems();
+  }
+
+  private getItems() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+    }
+    this._subscription = this.items.subscribe(
+      res => {
+        this._items = res;
+      },
+      error => {
+        console.log('error', error);
+        this.setState();
+      },
+      () => {
+        this.setState();
+      });
   }
 }
