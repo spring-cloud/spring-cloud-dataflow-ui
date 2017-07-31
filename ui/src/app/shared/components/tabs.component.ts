@@ -19,7 +19,14 @@ import {AfterContentInit, Component, ContentChildren, Input, QueryList} from '@a
   `
 })
 export class TabComponent {
+  /**
+   * The text that will be displayed for the tab.
+   */
   @Input() tabTitle: string;
+  /**
+   * Indicates whether a tab is hidden or not.  SHown if true, hidden if false.
+   * @type {boolean}
+   */
   @Input() active = false;
 }
 

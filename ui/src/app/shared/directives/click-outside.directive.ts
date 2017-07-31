@@ -12,12 +12,21 @@ import { Directive, ElementRef, Output, EventEmitter, HostListener } from '@angu
 })
 export class ClickOutsideDirective {
 
-    @Output()
+  /**
+   * Event emitter for sending events on when click is outside of element.
+    * @type {EventEmitter<MouseEvent>}
+   */
+  @Output()
     public appClickOutside = new EventEmitter<MouseEvent>();
 
     constructor(private _elementRef: ElementRef) {
     }
 
+  /**
+   * Emits click event if a click occurs outside of element.
+   * @param event the document click event that was captured.
+   * @param targetElement The element to which the event occurred.
+   */
     @HostListener('document:click', ['$event', '$event.target'])
     public onClick(event: MouseEvent, targetElement: HTMLElement): void {
 

@@ -19,15 +19,36 @@ import { Selectable } from '../../shared/model/selectable';
 })
 export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
 
+  /**
+   * The state of the tri-state button.  True selected, false unselected.
+   * @type {boolean}
+   */
   public topLevel = false;
+
+  /**
+   * The array that is used to determine the state of the button.
+   * @type {Array}
+   */
   public _items: Array<Selectable>;
 
+  /**
+   * The subscription to the item observable.
+   */
   private _subscription: Subscription;
+
+  /**
+   * Observable on a list that populates the _items list that is used to determine button state.
+   */
   @Input() items: Observable<any[]>;
+
   @ViewChild('theCheckbox') checkbox;
 
   constructor() { }
 
+
+  /**
+   * Establishes the state of the checkbox.
+   */
   private setState() {
     if (!this._items) {
       return;
@@ -44,20 +65,32 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
     }
   }
 
+  /**
+   * Updates the checkbox state when the monitored array is dirty.
+   */
   ngDoCheck() {
     this.getItems();
   }
 
+  /**
+   * Sets the state of the child check boxes in the array to the same state as the triState.
+   */
   public topLevelChange() {
     for (let i = 0; i < this._items.length; i++) {
       this._items[i].isSelected = this.topLevel;
     }
   }
 
+  /**
+   * Initializes the state of the tri-state checkbox after component is initialized.
+   */
   ngAfterViewInit() {
     this.getItems();
   }
 
+  /**
+   * Subscribes the items observable to obtain an array of items.
+   */
   private getItems() {
     if (this._subscription) {
       this._subscription.unsubscribe();

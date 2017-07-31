@@ -8,6 +8,12 @@ import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { Selectable } from '../../shared/model/selectable';
 
+/**
+ * Component that supports a button that can change its message based on count of items in a array.
+ * @author Gunnar Hillert
+ * @author Janne Valkealahti
+ * @author Glenn Renfro
+ */
 @Component({
   selector: 'app-tri-state-button',
   template:
@@ -18,37 +24,73 @@ import { Selectable } from '../../shared/model/selectable';
 })
 export class TriStateButtonComponent implements AfterViewInit, DoCheck {
 
+  /**
+   * The array that is used to determine the state of the button.
+   * @type {Array}
+   */
   public _items: Array<Selectable> = [];
 
+  /**
+   * The subscription to the item observable.
+   */
   private _subscription: Subscription;
 
+  /**
+   * Observable on a list that populates the _items list that is used to determine button state.
+   */
   @Input()
   items: Observable<any[]>;
 
+  /**
+   * The text to be displayed in the button if no items are selected.
+   */
   @Input()
   noneSelectedLabel: string;
 
+  /**
+   * The text to be displayed in the button if one item is selected.
+   */
   @Input()
   oneSelectedLabel: string;
 
+  /**
+   * The text to be displayed in the button if more than one, but not all items are selected.
+   */
   @Input()
   manySelectedLabel: string;
 
+  /**
+   * The text to be displayed in the button if all items are selected.
+   */
   @Input()
   allSelectedLabel: string;
 
+  /**
+   * The button label.
+   * @type {string}
+   */
   label = '';
 
+  /**
+   * Emits event on button click.
+   * @type {EventEmitter}
+   */
   @Output() eventHandler = new EventEmitter();
 
   @ViewChild('theButton') button;
 
   constructor() { }
 
+  /**
+   * Emits an event when click action occurs.
+   */
   public onClick() {
     this.eventHandler.emit();
   }
 
+  /**
+   * Establishes what will be displayed on the button as well as if the button is disabled or not.
+   */
   private setState() {
     if (!this.button) {
       return;
@@ -79,14 +121,23 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck {
     }
   }
 
+  /**
+   * Updates the button state when the monitored array is dirty.
+   */
   ngDoCheck() {
     this.getItems();
   }
 
+  /**
+   * Updates the button state after the component has been fully initialized.
+   */
   ngAfterViewInit() {
     this.getItems();
   }
 
+  /**
+   * Subscribes the items observable to obtain an array of items.
+   */
   private getItems() {
     if (this._subscription) {
       this._subscription.unsubscribe();
