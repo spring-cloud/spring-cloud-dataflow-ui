@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { AppsService } from '../apps.service';
 import { ToastyService } from 'ng2-toasty';

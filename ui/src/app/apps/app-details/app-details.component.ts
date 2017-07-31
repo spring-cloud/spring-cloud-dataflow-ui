@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AppsService } from '../apps.service';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
+import { ToastyService } from 'ng2-toasty';
 
 import { DetailedAppRegistration } from '../model/detailed-app-registration';
-import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { ApplicationType } from '../../shared/model/application-type';
 
 import { Subscription } from 'rxjs/Subscription';

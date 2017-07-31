@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { Http, Response, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';

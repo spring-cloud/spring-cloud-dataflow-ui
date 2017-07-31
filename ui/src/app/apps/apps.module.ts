@@ -12,7 +12,6 @@ import { AppsRoutingModule } from './apps-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { SearchfilterPipe } from '../shared/pipes/search-filter.pipe';
-import { RouteReuseStrategy } from '@angular/router';
 
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 

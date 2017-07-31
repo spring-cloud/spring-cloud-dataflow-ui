@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { StreamDefinition } from '../model/stream-definition';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

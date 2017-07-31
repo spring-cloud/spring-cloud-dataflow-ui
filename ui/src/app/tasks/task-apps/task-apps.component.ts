@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ToastyService } from 'ng2-toasty';
+import { Router } from '@angular/router';
 import { AppRegistration } from '../../shared/model/app-registration';
 import { Page } from '../../shared/model/page';
 import { TasksService } from '../tasks.service';

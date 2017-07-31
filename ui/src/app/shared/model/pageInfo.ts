@@ -1,5 +1,3 @@
-import { PaginationInstance } from 'ngx-pagination'
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 export class PageInfo {

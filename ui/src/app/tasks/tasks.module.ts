@@ -15,7 +15,7 @@ import { TaskLaunchComponent } from './task-launch/task-launch.component';
 import { TasksService } from './tasks.service';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { ModalModule, PopoverModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [

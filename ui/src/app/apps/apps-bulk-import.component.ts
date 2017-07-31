@@ -1,8 +1,8 @@
 import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { Subscription} from 'rxjs/Subscription';
 import { AppsService } from './apps.service';
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ToastyService } from 'ng2-toasty';
+import { Router } from '@angular/router';
 
 import { AppRegistrationImport } from './model/app-registration-import';
 import { PopoverDirective } from 'ngx-bootstrap/popover';

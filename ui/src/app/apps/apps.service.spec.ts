@@ -1,4 +1,4 @@
-import { Headers, RequestOptions, Response, ResponseOptions, URLSearchParams } from '@angular/http';
+import { URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx'
 
 import { AppsService } from './apps.service';

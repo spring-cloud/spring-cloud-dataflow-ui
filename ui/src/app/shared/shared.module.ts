@@ -4,7 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { HttpModule } from '@angular/http';
 
-import { ToastyModule, ToastyConfig } from 'ng2-toasty';
+import { ToastyModule } from 'ng2-toasty';
 import { StompService } from 'ng2-stomp-service';
 
 import { BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'angular2-busy';

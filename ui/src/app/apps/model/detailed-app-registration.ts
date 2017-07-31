@@ -1,4 +1,3 @@
-import { Selectable } from '../../shared/model/selectable';
 import { ApplicationType } from '../../shared/model/application-type';
 import { AppRegistration } from '../../shared/model/app-registration';
 

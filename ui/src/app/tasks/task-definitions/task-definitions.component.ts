@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { ModalDirective} from 'ngx-bootstrap/modal';
 import { Page } from '../../shared/model/page';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
 

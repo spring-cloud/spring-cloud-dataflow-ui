@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {RuntimeAppsComponent} from './runtime-apps.component';
 
 @NgModule({

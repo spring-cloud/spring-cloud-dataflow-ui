@@ -2,14 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
-import { Observable } from 'rxjs/Observable';
 import { ModalDirective} from 'ngx-bootstrap/modal';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { PaginationInstance } from 'ngx-pagination'
+import { ToastyService} from 'ng2-toasty';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stream-definitions',
