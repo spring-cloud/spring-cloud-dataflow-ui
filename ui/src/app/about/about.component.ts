@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AboutService } from './about.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService} from 'ng2-toasty';
-import { StompService } from 'ng2-stomp-service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,46 +17,7 @@ export class AboutComponent implements OnInit {
   private subscription: any;
 
   constructor(private aboutService: AboutService, private toastyService: ToastyService,
-              stomp: StompService, private router: Router) {
-
-    stomp.configure({
-      host: '/websocket',
-      debug: true,
-      queue: { 'init': false }
-    });
-
-    // start connection
-    stomp.startConnect().then(() => {
-      stomp.done('init');
-      console.log('connected');
-
-      // subscribe
-      // this.subscription = stomp.subscribe('/topic/price.stock.*', this.response);
-
-      // this.subscription = stomp.subscribe('/topic/updates', this.response);
-
-      // send data
-      // stomp.send('destionation',{"data":"data"});
-
-      // unsubscribe
-      // this.subscription.unsubscribe();
-
-      // disconnect
-      // stomp.disconnect().then(() => {
-      // console.log( 'Connection closed' )
-      // })
-    });
-  }
-
-  stopWebsockets() {
-    console.log('Unsubscribing...');
-    this.subscription.unsubscribe('/topic/updates');
-  }
-
-  public response = (data) => {
-    console.log(data);
-    this.websocketData = data.message;
-    this.toastyService.warning(`Time ${data.message} loaded.`);
+    private router: Router) {
   }
 
   ngOnInit() {

@@ -11,7 +11,7 @@
     "e2e": "ng e2e",
     "install": "napa pivotal-cf/pivotal-ui:pivotal-ui-git-clone",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json -n 'Spring Cloud Data Flow Dashboard Documentation'",
-    "mavenbuild": "node ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers PhantomJS && node ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../src/main/resources/public/dashboard"
+    "mavenbuild": "node ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers PhantomJS && node ./node_modules/@angular/cli/bin/ng build --output-path ./../src/main/resources/public/dashboard --base-href /dashboard/"
   },
   "private": true,
   "dependencies": {
