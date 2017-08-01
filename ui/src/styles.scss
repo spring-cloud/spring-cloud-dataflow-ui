@@ -1,7 +1,7 @@
-@import 'variables';
+$icon-font-path: '../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 
 /* You can add global styles to this file, and also import other style files */
-@import 'variables';
+
 @import '../node_modules/pui-css-variables-and-mixins/pui-variables';
 
 //@import '../node_modules/pui-css-variables-and-mixins/mixins';
@@ -52,7 +52,7 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 // @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/pagination/pagination';
 @import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/tabs/tabs';
 
-@import '../node_modules/angular2-busy/build/style/busy.css';
+@import '../node_modules/tixif-ngx-busy/build/style/busy.css';
 
 @import '../node_modules/ng2-toasty/bundles/style.css';
 @import '../node_modules/ng2-toasty/bundles/style-bootstrap.css';

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import {BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS} from 'angular2-busy';
+import {BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS} from 'tixif-ngx-busy';
 import {Injectable, ReflectiveInjector} from '@angular/core';
 import {BaseRequestOptions, ConnectionBackend, Http, RequestOptions} from '@angular/http';
 import {Response, ResponseOptions} from '@angular/http';

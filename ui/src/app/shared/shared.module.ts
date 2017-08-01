@@ -7,7 +7,7 @@ import { HttpModule } from '@angular/http';
 import { ToastyModule } from 'ng2-toasty';
 import { StompService } from 'ng2-stomp-service';
 
-import { BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'angular2-busy';
+import { BusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'tixif-ngx-busy';
 import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { TriStateCheckboxComponent } from './components/tri-state-checkbox.component';
