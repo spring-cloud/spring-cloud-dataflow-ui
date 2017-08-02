@@ -102,6 +102,14 @@ export class AppsService {
 
   }
 
+  unregisterMultipleApps(appRegs: AppRegistration[]): Observable<Response[]> {
+    const observables: Observable<Response>[] = [];
+    for (const appReg of appRegs) {
+      observables.push(this.unregisterApp(appReg));
+    }
+    return Observable.forkJoin(observables);
+  }
+
   registerMultipleApps(appRegs: AppRegistration[]): Observable<Response[]> {
     const observables: Observable<Response>[] = [];
     for (const appReg of appRegs) {
