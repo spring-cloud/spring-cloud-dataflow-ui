@@ -4,7 +4,7 @@ import { PipeTransform, Pipe } from '@angular/core';
 export class KeyValuePipe implements PipeTransform {
     transform(map, args: Object[]): any {
         const keys = [];
-        for (const key of map) {
+        for (const key in map) {
             keys.push({key: key, value: map[key]});
         }
         return keys;
