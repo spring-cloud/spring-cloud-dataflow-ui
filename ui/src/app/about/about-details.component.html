@@ -141,8 +141,11 @@
 
 <table class="table table-hover">
   <tbody>
-  <tr *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)" ng-repeat="(key, value) in dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo">
-    <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
+  <tr *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)">
+      <ng-template ngFor let-item
+                   [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalues">
+        <td class="col-xs-6">{{item.key}}</td><td>{{item.value}}</td>
+      </ng-template>
   </tr>
   <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)">
     <td class="col-xs-12 text-center" colspan="2">No platform-specific app deployer information available.</td>
