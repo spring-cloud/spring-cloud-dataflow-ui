@@ -22,12 +22,12 @@ export class TasksService {
   private taskDefinitionsUrl = '/tasks/definitions';
   public taskExecutions: Page<TaskExecution>;
   public taskDefinitions: Page<TaskDefinition>;
-
   public appRegistrations: Page<AppRegistration>;
 
   constructor(private http: Http, private errorHandler: ErrorHandler, private sharedAppsService: SharedAppsService) {
     this.taskExecutions = new Page<TaskExecution>();
     this.taskDefinitions = new Page<TaskDefinition>();
+    this.appRegistrations = new Page<AppRegistration>();
   }
 
   getExecutions(): Observable<Page<TaskExecution>> {
