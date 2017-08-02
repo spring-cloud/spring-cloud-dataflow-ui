@@ -48,7 +48,7 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
   goBack() {
     console.log('Back to apps page ...');
     this.router.navigate(['apps']);
-  };
+  }
 
   ngOnChanges(changes) {
       console.log(changes);
@@ -71,8 +71,8 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
         this.toastyService.success(`${data.length} App(s) registered.`);
         const reloadAppsObservable = this.appsService.getApps(true).subscribe(
           appRegistrations => {
-            console.log('Back to apps page ...')
-            this.router.navigate(['apps'])
+            console.log('Back to apps page ...');
+            this.router.navigate(['apps']);
           }
         );
         this.busy.push(reloadAppsObservable);
@@ -81,7 +81,7 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
         this.toastyService.error(error);
       }
     ));
-  };
+  }
 
   /**
    * Removes app comntroller entry
@@ -89,7 +89,7 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
    */
   removeApp(index) {
     this.model.splice(index, 1);
-  };
+  }
 
   /**
    * Adds app entry at the specified index
@@ -97,7 +97,7 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
    */
   addApp(index) {
     this.model.splice(index + 1, 0, new AppRegistration());
-  };
+  }
 
   trackModel(index, appRegistration) {
     return index;

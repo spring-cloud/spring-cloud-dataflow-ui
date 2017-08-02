@@ -12,7 +12,7 @@ import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppRegistration } from '../shared/model/app-registration';
 
 import { PageRequest } from '../shared/model/pagination/page-request.model';
-import { ApplicationType } from '../shared/model/application-type'
+import { ApplicationType } from '../shared/model/application-type';
 
 @Injectable()
 export class TasksService {

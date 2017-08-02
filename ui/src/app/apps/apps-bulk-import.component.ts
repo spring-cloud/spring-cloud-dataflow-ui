@@ -38,17 +38,17 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
   goBack() {
     console.log('Back to apps page ...');
     this.router.navigate(['apps']);
-  };
+  }
 
   displayFileContents(contents) {
     console.log(contents);
     const reader = new FileReader();
     reader.onloadend = (e) => {
       this.parseTextArea(reader.result);
-    }
+    };
     console.log(contents.target.files[0]);
     reader.readAsText(contents.target.files[0]);
-  };
+  }
 
   getAppsPropertiesAsString(): string {
     return this.model.appsProperties.join('\n');
@@ -72,7 +72,7 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
   /**
    * Bulk Import Apps.
    */
-  bulkImportApps = function() {
+  bulkImportApps() {
 
       if (this.model.uri && this.model.appsProperties.length > 0) {
           this.toastyService.error('Please provide only a URI or Properties not both.');
@@ -92,15 +92,13 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
         this.toastyService.success('Apps Imported.');
         const reloadAppsObservable = this.appsService.getApps(true).subscribe(
           appRegistrations => {
-            console.log('Back to about page ...')
-            this.router.navigate(['apps'])
+            console.log('Back to about page ...');
+            this.router.navigate(['apps']);
           }
         );
         this.busy.push(reloadAppsObservable);
       }
       );
       this.busy.push(observable);
-
-  };
-
+  }
 }

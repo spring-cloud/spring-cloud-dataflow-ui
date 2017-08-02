@@ -1,4 +1,4 @@
-import { Expandable } from './../../shared/model/expandable'
+import { Expandable } from './../../shared/model/expandable';
 
 /**
  * Represents a StreamDefiniton.
@@ -19,7 +19,7 @@ export class StreamDefinition implements Expandable {
       status: String) {
     this.name = name;
     this.dslText = dslText;
-    this.status = status
+    this.status = status;
   }
 
   /**

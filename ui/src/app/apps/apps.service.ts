@@ -14,7 +14,7 @@ import { ApplicationType } from '../shared/model/application-type';
 import { AppRegistrationImport } from './model/app-registration-import';
 import { PageRequest } from '../shared/model/pagination/page-request.model';
 
-import { HttpUtils } from '../shared/support/http.utils'
+import { HttpUtils } from '../shared/support/http.utils';
 
 /**
  * Service class for the Apps module.
@@ -42,7 +42,7 @@ export class AppsService {
       if (!this.appRegistrations) {
         this.appRegistrations = new Page<AppRegistration>();
       }
-      console.log('Fetching App Registrations remotely.')
+      console.log('Fetching App Registrations remotely.');
       this.remotelyLoaded = true;
 
       return this.sharedAppsService.getApps(

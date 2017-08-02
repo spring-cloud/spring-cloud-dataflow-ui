@@ -37,5 +37,5 @@ export class AboutComponent implements OnInit {
   goToDetails() {
     console.log('Go to details ...');
     this.router.navigate(['about/details']);
-  };
+  }
 }

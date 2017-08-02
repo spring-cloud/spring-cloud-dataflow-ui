@@ -33,7 +33,7 @@ export class TaskAppsComponent implements OnInit {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`)
+    console.log(`Getting page ${page}.`);
     this.tasksService.appRegistrations.pageNumber = page - 1;
     this.loadAppRegistrations();
   }

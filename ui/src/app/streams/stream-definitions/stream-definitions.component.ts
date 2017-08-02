@@ -70,7 +70,7 @@ export class StreamDefinitionsComponent implements OnInit {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`)
+    console.log(`Getting page ${page}.`);
     this.streamsService.streamDefinitions.pageNumber = page - 1;
     this.loadStreamDefinitions();
   }
@@ -137,7 +137,7 @@ export class StreamDefinitionsComponent implements OnInit {
    * @param streamDefinition the stream definition to destroy.
    */
   public proceed(streamDefinition: StreamDefinition): void {
-    console.log('Proceeding to destroy definition...', streamDefinition)
+    console.log('Proceeding to destroy definition...', streamDefinition);
     this.streamsService.destroyDefinition(streamDefinition).subscribe(
       data => {
         this.cancel();
@@ -159,9 +159,9 @@ export class StreamDefinitionsComponent implements OnInit {
    * Expands all definition entries to show flo diagram on list page.
    */
   expandPage() {
-    console.log('Expand all.')
+    console.log('Expand all.');
     this.streamDefinitions.items.map(x => {
-      console.log(x)
+      console.log(x);
       x.isExpanded = true;
     });
   }
@@ -170,7 +170,7 @@ export class StreamDefinitionsComponent implements OnInit {
    * Collapses all definition entries to hid the flow diagrams on list page.
    */
   collapsePage() {
-    console.log('Collapse all.')
+    console.log('Collapse all.');
     this.streamDefinitions.items.map(x => {
       console.log(x);
       x.isExpanded = false;

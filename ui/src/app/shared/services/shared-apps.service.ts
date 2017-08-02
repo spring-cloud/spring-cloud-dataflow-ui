@@ -10,7 +10,7 @@ import 'rxjs/add/observable/of';
 
 import { AppRegistration, ApplicationType, ErrorHandler, Page } from '../model';
 import { PageRequest } from '../model/pagination/page-request.model';
-import { HttpUtils } from '../support/http.utils'
+import { HttpUtils } from '../support/http.utils';
 
 @Injectable()
 export class SharedAppsService {

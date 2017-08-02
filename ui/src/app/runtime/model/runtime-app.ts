@@ -10,7 +10,7 @@ export class RuntimeApp {
     public deploymentId: String;
     public state: String;
     public instances: any;
-    public appInstances: RuntimeAppInstance[]
+    public appInstances: RuntimeAppInstance[];
 
     constructor(
         deploymentId: String,

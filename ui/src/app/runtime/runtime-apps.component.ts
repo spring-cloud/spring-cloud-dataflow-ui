@@ -44,27 +44,27 @@ export class RuntimeAppsComponent implements OnInit {
         );
     }
 
-    private getPage(page: number) {
-        console.log(`Getting page ${page}.`)
+    public getPage(page: number) {
+        console.log(`Getting page ${page}.`);
         const pageInfo = new PageInfo();
         pageInfo.pageNumber = page - 1;
         this.loadRuntimeApps(pageInfo);
     }
 
-    private appDetails(item: RuntimeApp) {
+    public appDetails(item: RuntimeApp) {
         this.showChildModal(item);
     }
 
-    private showChildModal(item: RuntimeApp): void {
+    public showChildModal(item: RuntimeApp): void {
         this.runtimeApp = item;
         this.childModal.show();
     }
 
-    private hideChildModal(): void {
+    public hideChildModal(): void {
         this.childModal.hide();
     }
 
-    private cancel = function () {
+    public cancel = function () {
         this.hideChildModal();
     };
 

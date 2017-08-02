@@ -41,7 +41,7 @@ export class AboutDetailsComponent implements OnInit {
   goBack() {
     console.log('Back to about page ...');
     this.router.navigate(['about']);
-  };
+  }
 
   onCopyToClipboardSuccess(e) {
     this.toastyService.success('Copied About Details to Clipboard (As JSON).');
@@ -55,5 +55,5 @@ export class AboutDetailsComponent implements OnInit {
       }
     }
     return true;
-  };
+  }
 }

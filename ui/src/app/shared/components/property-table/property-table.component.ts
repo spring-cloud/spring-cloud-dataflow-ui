@@ -202,7 +202,7 @@ export class PropertyTableComponent {
     const _form = this.bulkForm;
     reader.onloadend = function(e){
       _form.patchValue({bulkProperties: reader.result});
-    }
+    };
     reader.readAsText(file);
   }
 }
