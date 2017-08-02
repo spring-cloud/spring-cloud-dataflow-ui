@@ -29,7 +29,7 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
 
   public model = [new AppRegistration()];
 
-  busy: Subscription[] = [];
+  busy: Subscription;
 
   contents: any;
   uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
@@ -66,21 +66,20 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
    */
   register() {
     console.log(`Register ${this.model.length} app(s).`);
-    this.busy.push(this.appsService.registerMultipleApps(this.model).subscribe(
+    this.busy = this.appsService.registerMultipleApps(this.model).subscribe(
       data => {
         this.toastyService.success(`${data.length} App(s) registered.`);
-        const reloadAppsObservable = this.appsService.getApps(true).subscribe(
+        this.busy = this.appsService.getApps(true).subscribe(
           appRegistrations => {
             console.log('Back to apps page ...');
             this.router.navigate(['apps']);
           }
         );
-        this.busy.push(reloadAppsObservable);
       },
       error => {
         this.toastyService.error(error);
       }
-    ));
+    );
   }
 
   /**

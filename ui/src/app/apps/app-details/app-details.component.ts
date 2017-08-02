@@ -22,7 +22,7 @@ export class AppDetailsComponent implements OnInit {
 
   public detailedAppRegistration: DetailedAppRegistration;
 
-  busy: Subscription[] = [];
+  busy: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,17 +36,16 @@ export class AppDetailsComponent implements OnInit {
     console.log(this.appsService.appRegistrations);
 
     this.route.params.subscribe(params => {
-       const appName: string = params['appName'];
-       const appType: ApplicationType = params['appType'] as ApplicationType;
+      const appName: string = params['appName'];
+      const appType: ApplicationType = params['appType'] as ApplicationType;
 
-       console.log(`Retrieving app registration details for ${appName} (${appType}).`);
-       this.busy.push(this.appsService.getAppInfo(appType, appName).subscribe(data => {
-          this.detailedAppRegistration = data;
-        },
-        error => {
-          this.toastyService.error(error);
-        })
-      );
+      console.log(`Retrieving app registration details for ${appName} (${appType}).`);
+      this.busy = this.appsService.getAppInfo(appType, appName).subscribe(data => {
+        this.detailedAppRegistration = data;
+      },
+      error => {
+        this.toastyService.error(error);
+      });
     });
   }
 
