@@ -41,10 +41,12 @@ export class RuntimeAppsService {
         let items: RuntimeApp[];
         if (response._embedded && response._embedded.appStatusResourceList) {
             items = response._embedded.appStatusResourceList as RuntimeApp[];
+          for(const item of items) {
+            item.appInstances = item.instances._embedded.appInstanceStatusResourceList;
+          }
         } else {
             items = [];
         }
-
         const page = new Page<RuntimeApp>();
         page.items = items;
         page.totalElements = response.page.totalElements;

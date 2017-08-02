@@ -39,7 +39,7 @@
             </div>
             <div class="modal-body">
                 <ng-template ngFor let-item
-                             [ngForOf]="runtimeApp.instances._embedded.appInstanceStatusResourceList">
+                             [ngForOf]="runtimeApp.appInstances">
                     <div class="row">
                         <p>Instance ID: <strong>{{item.instanceId}}</strong></p>
                     </div>

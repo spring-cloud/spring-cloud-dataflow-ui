@@ -8,15 +8,18 @@ import {Page} from '../../shared/model/page';
  */
 export class RuntimeApp {
     public deploymentId: String;
-    public status: String;
-    public appInstances: Page<RuntimeAppInstance>;
+    public state: String;
+    public instances: any;
+    public appInstances: RuntimeAppInstance[]
 
     constructor(
         deploymentId: String,
-        status: String,
-        appInstances: Page<RuntimeAppInstance>) {
+        state: String,
+        instances: any,
+        appInstances: RuntimeAppInstance[]) {
         this.deploymentId = deploymentId;
-        this.status = status;
-        this.appInstances = appInstances
+        this.state = state;
+        this.instances = instances;
+        this.appInstances = appInstances;
     }
 }
