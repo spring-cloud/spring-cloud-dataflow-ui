@@ -42,7 +42,7 @@ export class TaskDefinitionsComponent implements OnInit {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`)
+    console.log(`Getting page ${page}.`);
     this.tasksService.taskDefinitions.pageNumber = page - 1;
     this.loadTaskDefinitions();
   }
@@ -72,7 +72,7 @@ export class TaskDefinitionsComponent implements OnInit {
   }
 
   public proceed(taskDefinition: TaskDefinition): void {
-    console.log('Proceeding to destroy definition...', taskDefinition)
+    console.log('Proceeding to destroy definition...', taskDefinition);
     this.tasksService.destroyDefinition(taskDefinition.name).subscribe(
       data => {
         this.cancel();

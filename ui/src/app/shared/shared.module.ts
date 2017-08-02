@@ -12,7 +12,7 @@ import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { TriStateCheckboxComponent } from './components/tri-state-checkbox.component';
 import { TriStateButtonComponent } from './components/tri-state-button.component';
-import { ClickOutsideDirective } from '../shared/directives/click-outside.directive'
+import { ClickOutsideDirective } from '../shared/directives/click-outside.directive';
 
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 

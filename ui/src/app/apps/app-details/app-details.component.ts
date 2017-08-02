@@ -53,7 +53,5 @@ export class AppDetailsComponent implements OnInit {
   goBack() {
     console.log('Back to apps page ...');
     this.router.navigate(['apps']);
-  };
-
-
+  }
 }

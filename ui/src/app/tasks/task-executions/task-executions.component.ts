@@ -36,7 +36,7 @@ export class TaskExecutionsComponent implements OnInit {
   }
 
   getPage(page: number) {
-    console.log(`Getting page ${page}.`)
+    console.log(`Getting page ${page}.`);
     this.tasksService.taskExecutions.pageNumber = page - 1;
     this.loadTaskExecutions();
   }

@@ -31,7 +31,7 @@ export class TaskBulkDefineComponent implements OnInit {
   }
 
   bulkDefineTasks() {
-    console.log('bulkDefineTasks')
+    console.log('bulkDefineTasks');
     if (this.definitions.value) {
       for (const def of this.definitions.value.split('\n')) {
         if (def.length > 2) {
@@ -55,7 +55,7 @@ export class TaskBulkDefineComponent implements OnInit {
     const _form = this.form;
     reader.onloadend = function(e){
       _form.patchValue({definitions: reader.result});
-    }
+    };
     reader.readAsText(file);
   }
 }

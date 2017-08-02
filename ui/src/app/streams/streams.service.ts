@@ -48,7 +48,7 @@ export class StreamsService {
     const params = HttpUtils.getPaginationParams(
       this.streamDefinitions.pageNumber,
       this.streamDefinitions.pageSize
-    )
+    );
       // TODO Implement Sorting
       // params.sort = pageable.calculateSortParameter();
 

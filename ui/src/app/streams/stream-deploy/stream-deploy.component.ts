@@ -107,7 +107,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     const _form = this.form;
     reader.onloadend = function(e){
       _form.patchValue({deploymentProperties: reader.result});
-    }
+    };
     reader.readAsText(file);
   }
 }

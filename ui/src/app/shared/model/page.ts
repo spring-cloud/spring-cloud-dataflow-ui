@@ -1,4 +1,4 @@
-import { PaginationInstance } from 'ngx-pagination'
+import { PaginationInstance } from 'ngx-pagination';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 

@@ -1,8 +1,8 @@
 import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx'
+import { Observable } from 'rxjs/Rx';
 
 import { AppsService } from './apps.service';
-import { HttpUtils } from '../shared/support/http.utils'
+import { HttpUtils } from '../shared/support/http.utils';
 import { ApplicationType, AppRegistration, ErrorHandler } from '../shared/model';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppRegistrationImport } from './model/app-registration-import';
@@ -58,7 +58,7 @@ describe('AppsService', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
 
-      const requestOptions = HttpUtils.getDefaultRequestOptions()
+      const requestOptions = HttpUtils.getDefaultRequestOptions();
       const params = new URLSearchParams();
 
       params.append('uri', 'http://blubba');
@@ -78,7 +78,7 @@ describe('AppsService', () => {
   describe('unregisterApp', () => {
 
     it('should call the apps service with the right url to unregister a single app', () => {
-      const requestOptions = HttpUtils.getDefaultRequestOptions()
+      const requestOptions = HttpUtils.getDefaultRequestOptions();
       const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://somewhere');
       this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
       this.appsService.unregisterApp(appRegistration);
@@ -90,7 +90,7 @@ describe('AppsService', () => {
   describe('registerApp', () => {
 
     it('should call the apps service with the right url to register a single app', () => {
-      const requestOptions = HttpUtils.getDefaultRequestOptions()
+      const requestOptions = HttpUtils.getDefaultRequestOptions();
       const params = new URLSearchParams();
 
       params.append('uri', 'http://blubba');
@@ -110,7 +110,7 @@ describe('AppsService', () => {
 
   describe('registerMultipleApps', () => {
     it('should call the apps service with the right url to register multiple apps', () => {
-      const requestOptions1 = HttpUtils.getDefaultRequestOptions()
+      const requestOptions1 = HttpUtils.getDefaultRequestOptions();
       const params1 = new URLSearchParams();
 
       params1.append('uri', 'http://somewhere');
@@ -118,7 +118,7 @@ describe('AppsService', () => {
 
       requestOptions1.params = params1;
 
-      const requestOptions2 = HttpUtils.getDefaultRequestOptions()
+      const requestOptions2 = HttpUtils.getDefaultRequestOptions();
       const params2 = new URLSearchParams();
 
       params2.append('uri', 'http://somewhere-else');

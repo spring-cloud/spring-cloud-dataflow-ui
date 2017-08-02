@@ -73,7 +73,7 @@ export class AppsComponent implements OnInit {
   bulkImportApps() {
     console.log('Go to Bulk Import page ...');
     this.router.navigate(['apps/bulk-import-apps']);
-  };
+  }
 
   public proceedToUnregisterSingleAppRegistration(appRegistration: AppRegistration): void {
     console.log('Proceeding to unregister application...', appRegistration);
@@ -105,11 +105,11 @@ export class AppsComponent implements OnInit {
 
   public cancelUnregisterSingleApp() {
     this.unregisterSingleAppModal.hide();
-  };
+  }
 
   public cancelUnregisterMultipleApps() {
     this.unregisterMultipleAppsModal.hide();
-  };
+  }
 
   public viewDetails(appRegistration: AppRegistration) {
     this.router.navigate(['apps/' + appRegistration.type + '/' +  appRegistration.name]);
@@ -123,7 +123,7 @@ export class AppsComponent implements OnInit {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`)
+    console.log(`Getting page ${page}.`);
     this.appsService.appRegistrations.pageNumber = page - 1;
     this.loadAppRegistrations(true);
   }
