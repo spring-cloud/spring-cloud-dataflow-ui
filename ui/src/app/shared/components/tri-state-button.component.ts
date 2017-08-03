@@ -19,7 +19,7 @@ import { Selectable } from '../../shared/model/selectable';
   template:
   `<button #theButton name="topLevel" type="button" (click)="onClick()"
          class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>
-    {{label}}
+    <span class="hidden-xs">{{label}}</span>
   </button>`
 })
 export class TriStateButtonComponent implements AfterViewInit, DoCheck {

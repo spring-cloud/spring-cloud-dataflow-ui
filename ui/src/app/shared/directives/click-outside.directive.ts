@@ -14,7 +14,7 @@ export class ClickOutsideDirective {
 
   /**
    * Event emitter for sending events on when click is outside of element.
-    * @type {EventEmitter<MouseEvent>}
+   * @type {EventEmitter<MouseEvent>}
    */
   @Output()
     public appClickOutside = new EventEmitter<MouseEvent>();

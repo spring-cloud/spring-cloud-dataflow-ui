@@ -6,7 +6,7 @@
 <button id="showAboutDetailsButton" type="button" (click)="registerApps()"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-plus"></span>
-    Register Application(s)
+  <span class="hidden-xs">Register Application(s)</span>
 </button>
 
 <app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all"
@@ -21,7 +21,7 @@
 <button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-import"></span>
-    Bulk Import Applications
+  <span class="hidden-xs">Bulk Import Applications</span>
 </button>
 <label *ngIf="appRegistrations" class="control">
   <input type="text" class="input" placeholder="Filter items" [(ngModel)]="appRegistrations.filter" [disabled]="!appRegistrations || appRegistrations.items.length === 0">

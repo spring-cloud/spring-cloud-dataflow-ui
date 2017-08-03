@@ -18,7 +18,7 @@ import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 
 import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { ModalModule } from 'ngx-bootstrap';
-import {TabComponent, TabsComponent} from './components/tabs.component';
+import { TabComponent, TabsComponent } from './components/tabs.component';
 
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 

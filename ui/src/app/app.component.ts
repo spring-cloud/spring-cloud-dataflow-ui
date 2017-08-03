@@ -15,7 +15,18 @@ export class AppComponent implements OnInit {
     this.toastyConfig.timeout   = 3000;
   }
 
+  public isCollapsed = true;
+
   ngOnInit() {
   }
 
+  public toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  public collapse(): void {
+    if (!this.isCollapsed) {
+      this.isCollapsed = true;
+    }
+  }
 }
