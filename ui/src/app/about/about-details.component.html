@@ -141,12 +141,15 @@
 
 <table class="table table-hover">
   <tbody>
-  <tr *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)" ng-repeat="(key, value) in dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo">
-    <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
-  </tr>
-  <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)">
-    <td class="col-xs-12 text-center" colspan="2">No platform-specific app deployer information available.</td>
-  </tr>
+    <ng-template *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)"
+      ngFor let-item [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalues">
+      <tr>
+        <td class="col-xs-6">{{item.key}}</td><td>{{item.value}}</td>
+      </tr>
+    </ng-template>
+    <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)">
+      <td class="col-xs-12 text-center" colspan="2">No platform-specific app deployer information available.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -194,6 +197,12 @@
   <!--<tr *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)" **ngFor="(key, value) in dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo">
     <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
   </tr>-->
+  <ng-template *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)"
+      ngFor let-item [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | keyvalues">
+      <tr>
+        <td class="col-xs-6">{{item.key}}</td><td>{{item.value}}</td>
+      </tr>
+  </ng-template>
   <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)">
     <td colspan="2" class="col-xs-6 text-center">No platform-specific task launcher information available.</td>
   </tr>
@@ -201,8 +210,8 @@
 </table>
 
 <div class="row">
-    <div class="col-md-6 text-right"><button id="back-button" type="button" class="btn btn-default" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left"></span> Back</button></div>
-    <div class="col-md-6 text-left"><button id="back-button"
+    <div class="col-md-12 text-right"><button id="back-button" type="button" class="btn btn-default" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left"></span> Back</button></div>
+    <div class="col-md-12 text-left"><button id="back-button"
       [ngxClipboard] [cbContent]="dataflowVersionInfo | json" (cbOnSuccess)="onCopyToClipboardSuccess($event);"
       type="button" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> Copy Details to Clipboard</button></div>
 </div>
