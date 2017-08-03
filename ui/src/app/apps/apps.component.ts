@@ -128,10 +128,9 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        const reloadAppsSubscription = this.appsService.getApps(true).subscribe(
+        this.busy = this.appsService.getApps(true).subscribe(
           appRegistrations => {}
         );
-        this.busy = reloadAppsSubscription;
       },
       error => {
         this.toastyService.error(error);
@@ -155,10 +154,9 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        const reloadAppsSubscription = this.appsService.getApps(true).subscribe(
-          appRegistrations => {}
+        this.busy = this.appsService.getApps(true).subscribe(
+          appRegistrationsResult => {}
         );
-        this.busy = reloadAppsSubscription;
       }
     );
     this.busy = subscription;
