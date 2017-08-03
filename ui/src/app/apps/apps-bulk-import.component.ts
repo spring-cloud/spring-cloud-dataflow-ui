@@ -19,7 +19,7 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
   public model = new AppRegistrationImport(false, [], '');
 
   apps: any;
-  busy: Subscription[] = [];
+  busy: Subscription;
 
   contents: any;
   uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
@@ -86,19 +86,17 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
           console.log('Importing apps using textarea values:\n' + this.model.appsProperties + ' (force: ' + this.model.force + ')');
       }
 
-      const observable = this.appsService.bulkImportApps(this.model).subscribe(
+      this.busy = this.appsService.bulkImportApps(this.model).subscribe(
         data => {
-        console.log(data);
-        this.toastyService.success('Apps Imported.');
-        const reloadAppsObservable = this.appsService.getApps(true).subscribe(
-          appRegistrations => {
-            console.log('Back to about page ...');
-            this.router.navigate(['apps']);
-          }
-        );
-        this.busy.push(reloadAppsObservable);
-      }
+          console.log(data);
+          this.toastyService.success('Apps Imported.');
+          this.busy = this.appsService.getApps(true).subscribe(
+            appRegistrations => {
+              console.log('Back to about page ...');
+              this.router.navigate(['apps']);
+            }
+          );
+        }
       );
-      this.busy.push(observable);
   }
 }

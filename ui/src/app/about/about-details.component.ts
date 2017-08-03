@@ -34,6 +34,9 @@ export class AboutDetailsComponent implements OnInit {
       data => {
         this.dataflowVersionInfo = data;
         this.toastyService.success('About details data loaded.');
+      },
+      error => {
+        this.toastyService.error(error);
       }
     );
   }

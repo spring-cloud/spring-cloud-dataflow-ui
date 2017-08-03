@@ -24,7 +24,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 export class AppsComponent implements OnInit {
 
   appRegistrations: Page<AppRegistration>;
-  busy: Subscription[] = [];
+  busy: Subscription;
 
   appRegistrationToUnregister: AppRegistration;
   appRegistrationsToUnregister: AppRegistration[];
@@ -56,7 +56,7 @@ export class AppsComponent implements OnInit {
    * @param reload
    */
   public loadAppRegistrations(reload: boolean) {
-    this.busy.push(this.appsService.getApps(reload).subscribe(
+    this.busy = this.appsService.getApps(reload).subscribe(
       data => {
         if (!this.appRegistrations) {
           this.appRegistrations = data;
@@ -66,7 +66,7 @@ export class AppsComponent implements OnInit {
         console.log('error', error);
         this.toastyService.error(error);
       }
-    ));
+    );
   }
 
   /**
@@ -119,7 +119,7 @@ export class AppsComponent implements OnInit {
   public proceedToUnregisterSingleAppRegistration(appRegistration: AppRegistration): void {
     console.log('Proceeding to unregister application...', appRegistration);
 
-    this.busy.push(this.appsService.unregisterApp(appRegistration).subscribe(
+    this.busy = this.appsService.unregisterApp(appRegistration).subscribe(
       data => {
         this.unregisterSingleAppModal.hide();
         this.toastyService.success('Successfully removed app "'
@@ -128,15 +128,15 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        const reloadAppsObservable = this.appsService.getApps(true).subscribe(
+        const reloadAppsSubscription = this.appsService.getApps(true).subscribe(
           appRegistrations => {}
         );
-        this.busy.push(reloadAppsObservable);
+        this.busy = reloadAppsSubscription;
       },
       error => {
         this.toastyService.error(error);
       }
-    ));
+    );
   }
 
   /**
@@ -147,7 +147,7 @@ export class AppsComponent implements OnInit {
    */
   public proceedToUnregisterMultipleAppRegistrations(appRegistrations: AppRegistration[]): void {
     console.log(`Proceeding to unregister ${appRegistrations.length} application(s).`, appRegistrations);
-    const observable = this.appsService.unregisterMultipleApps(appRegistrations).subscribe(
+    const subscription = this.appsService.unregisterMultipleApps(appRegistrations).subscribe(
       data => {
         console.log(data);
         this.toastyService.success(`${data.length} app(s) unregistered.`);
@@ -155,13 +155,13 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        const reloadAppsObservable = this.appsService.getApps(true).subscribe(
+        const reloadAppsSubscription = this.appsService.getApps(true).subscribe(
           appRegistrations => {}
         );
-        this.busy.push(reloadAppsObservable);
+        this.busy = reloadAppsSubscription;
       }
     );
-    this.busy.push(observable);
+    this.busy = subscription;
 
     this.unregisterMultipleAppsModal.hide();
   }
