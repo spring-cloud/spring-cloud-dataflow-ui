@@ -5,9 +5,9 @@
 [![Code Coverage](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow/branch/master/graph/badge.svg)](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/angular)
 [![Dependency Status](https://www.versioneye.com/user/projects/5982002b0fb24f003b1f7de1/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5982002b0fb24f003b1f7de1)
 
-This is the *Spring Cloud Data Flow Dashboard* user interface (UI). The UI uses [Angular][].
+This is the *Spring Cloud Data Flow Dashboard* user interface (UI). The UI uses [Angular][]. Source code documentation is available at http://cloud.spring.io/spring-cloud-dataflow-ui/.
 
-| The Git repository for the main *Spring Cloud Data Flow* project is at: https://github.com/spring-cloud/spring-cloud-dataflow
+> The Git repository for the main *Spring Cloud Data Flow* project is at: https://github.com/spring-cloud/spring-cloud-dataflow
 
 # Building the Module
 
