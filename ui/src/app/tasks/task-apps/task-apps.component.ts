@@ -49,6 +49,7 @@ export class TaskAppsComponent implements OnInit {
   }
 
   loadAppRegistrations() {
+    console.log('loadAppRegistrations', this.tasksService);
     this.busy = this.tasksService.getTaskAppRegistrations().subscribe(
       data => {
         this.appRegistrations = data;
