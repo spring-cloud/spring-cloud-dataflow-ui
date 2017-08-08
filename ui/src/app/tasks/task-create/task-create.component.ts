@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { ToastyService } from 'ng2-toasty';
@@ -14,10 +14,10 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
 
   id: string;
   private sub: any;
-  form: FormGroup;
-  iform: FormGroup;
+  mainForm: FormGroup;
+  includeForm: FormGroup;
   busy: Subscription;
-  definitionName = new FormControl('');
+  definitionName = new FormControl('', (c: FormControl) => this.validateDefinitionName(c));
   appInfo: AppInfo;
   definition: string;
 
@@ -26,32 +26,35 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private toastyService: ToastyService,
-    fb: FormBuilder
-  ) {
-      this.form = fb.group({
+    fb: FormBuilder) {
+      this.mainForm = fb.group({
         'definitionName': this.definitionName
       });
-      this.iform = fb.group({});
+      this.includeForm = fb.group({});
   }
 
   ngOnInit() {
+    this.definitionName.valueChanges.do(next => {
+      this.calculateDefinition();
+    }).subscribe();
     this.sub = this.route.params.subscribe(params => {
         this.id = params['id'];
         this.busy = this.tasksService.getAppInfo(this.id).subscribe(
           data => {
             for (const o of data.options) {
               const control: FormControl = new FormControl(o.defaultValue);
-              control.valueChanges.map(x => {
+              control.valueChanges.do(next => {
                 this.calculateDefinition();
               }).subscribe();
-              this.form.addControl(o.id, control);
+              this.mainForm.addControl(o.id, control);
               const icontrol: FormControl = new FormControl(false);
-              icontrol.valueChanges.map(x => {
+              icontrol.valueChanges.do(next => {
                 this.calculateDefinition();
               }).subscribe();
-              this.iform.addControl(o.id + '.include', icontrol);
+              this.includeForm.addControl(o.id + '.include', icontrol);
             }
             this.appInfo = data;
+            this.calculateDefinition();
             this.toastyService.success('App info loaded.');
           }
        );
@@ -72,13 +75,13 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     this.router.navigate(['tasks/definitions']);
   }
 
-  calculateDefinition() {
+  private calculateDefinition() {
     let def: string = this.appInfo.name;
-    for (const key in this.form.controls) {
-      if (this.form.controls.hasOwnProperty(key)) {
-        const control: FormControl = <FormControl>this.form.controls[key];
-        if (this.iform.contains(key + '.include')) {
-          const icontrol: FormControl = <FormControl>this.iform.controls[key + '.include'];
+    for (const key in this.mainForm.controls) {
+      if (this.mainForm.controls.hasOwnProperty(key)) {
+        const control: FormControl = <FormControl>this.mainForm.controls[key];
+        if (this.includeForm.contains(key + '.include')) {
+          const icontrol: FormControl = <FormControl>this.includeForm.controls[key + '.include'];
           if (icontrol.value === true) {
             def = def + ' --' + key + '="' + control.value + '"';
           }
@@ -89,4 +92,17 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     return def;
   }
 
+  private validateDefinitionName(formControl: FormControl) {
+    if (formControl.value.length > 0) {
+      if (formControl.value === this.id) {
+        return {validateDefinitionName: {reason: 'Cannot be same as ' + this.id}};
+      } else if (formControl.value.indexOf(' ') >= 0) {
+        return {validateDefinitionName: {reason: 'Cannot have spaces'}};
+      } else {
+        return null;
+      }
+    } else {
+      return {validateDefinitionName: {reason: 'Cannot be empty'}};
+    }
+  }
 }
