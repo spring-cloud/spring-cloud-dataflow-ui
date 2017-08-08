@@ -3,13 +3,13 @@
 <form class="form-horizontal" novalidate (ngSubmit)="submitTaskDefinition()">
 
   <fieldset id="commonDefinitionParameters">
-    <div class="form-group" [ngClass]="form.controls.definitionName.errors ? 'has-warning has-feedback' : ''">
-      <label for="definitionName" class="col-sm-3 control-label">Definition Name</label>
-      <div class="col-sm-9" [formGroup]="form">
+    <div class="form-group" [ngClass]="mainForm.controls.definitionName.errors ? 'has-warning has-feedback' : ''">
+      <label for="definitionName" class="col-sm-4 control-label">Definition Name</label>
+      <div class="col-sm-10" [formGroup]="mainForm">
         <input type="text" id="definitionName" name="definitionName" autofocus
               class="form-control" placeholder="Enter a definition name" formControlName="definitionName">
-        <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="form.controls.definitionName.errors"></span>
-        <p class="help-block">The name of the definition must be different from the app name</p>
+        <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="mainForm.controls.definitionName.errors"></span>
+        <p class="help-block" *ngIf="mainForm.controls.definitionName.errors">The format is invalid. {{mainForm.controls.definitionName.errors.validateDefinitionName.reason}}</p>
       </div>
     </div>
   </fieldset>
@@ -18,18 +18,18 @@
     <legend>Parameters</legend>
     <div class="form-group" *ngFor="let definitionParam of appInfo?.options">
 
-      <label for="{{definitionParam.name}}" class="col-sm-3 control-label">{{definitionParam.name}}</label>
-      <div class="col-sm-10" *ngIf="definitionParam.type !== 'Password' && definitionParam.type !== 'boolean'" [formGroup]="form">
+      <label for="{{definitionParam.name}}" class="col-sm-4 control-label">{{definitionParam.name}}</label>
+      <div class="col-sm-10" *ngIf="definitionParam.type !== 'Password' && definitionParam.type !== 'boolean'" [formGroup]="mainForm">
         <input type="text" id="{{definitionParam.name}}" name="{{definitionParam.name}}"
                class="form-control" [formControlName]="definitionParam.id">
         <p class="help-block">{{definitionParam.description}}</p>
       </div>
-      <div class="col-sm-10" *ngIf="definitionParam.type === 'Password'" [formGroup]="form">
+      <div class="col-sm-10" *ngIf="definitionParam.type === 'Password'" [formGroup]="mainForm">
         <input type="password" id="{{definitionParam.name}}" name="{{definitionParam.name}}"
                class="form-control" [formControlName]="definitionParam.id">
         <p class="help-block">{{definitionParam.description}}</p>
       </div>
-      <div class="col-sm-10" *ngIf="definitionParam.type === 'boolean'" [formGroup]="form">
+      <div class="col-sm-10" *ngIf="definitionParam.type === 'boolean'" [formGroup]="mainForm">
         <div class="checkbox">
           <label>
             <input type="checkbox" id="{{definitionParam.name}}" name="{{definitionParam.name}}"
@@ -38,7 +38,7 @@
           </label>
         </div>
       </div>
-      <div class="col-sm-4 checkbox" [formGroup]="iform">
+      <div class="col-sm-4 checkbox" [formGroup]="includeForm">
         <label>
           <input type="checkbox" id="{{definitionParam.name+'.include'}}"
                  [formControlName]="definitionParam.id+'.include'">Include
@@ -51,7 +51,7 @@
 
   <h2>Resulting Definition</h2>
   <div class="row">
-    <div class="col-xs-12"><pre>{{definition}}</pre></div>
+    <div class="col-xs-18"><pre>{{definition}}</pre></div>
   </div>
 
   <div class="row">
@@ -59,7 +59,7 @@
       <button type="button" class="btn btn-default" (click)="back()">Back</button>
     </div>
     <div class="col-md-12 text-left">
-      <button type="submit" class="btn btn-default" [disabled]="!form.valid">Submit</button>
+      <button type="submit" class="btn btn-default" [disabled]="!mainForm.valid">Submit</button>
     </div>
   </div>
 

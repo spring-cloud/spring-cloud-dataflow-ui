@@ -48,6 +48,10 @@ export class MockTasksService {
   getAppInfo(id: string): Observable<AppInfo> {
     const appInfo = new AppInfo();
     appInfo.name = this.testAppInfos[id].name;
+    // TODO: polish related pojos for not need for this check
+    if (this.testAppInfos[id].options) {
+      appInfo.options = this.testAppInfos[id].options;
+    }
     return Observable.of(appInfo);
   }
 
@@ -57,5 +61,10 @@ export class MockTasksService {
       p.items.push(new AppRegistration(r.name, r.type, r.uri));
     });
     return Observable.of(p);
+  }
+
+  createDefinition(definition: string, name: string) {
+    // TODO: when needed in tests return something useful
+    return Observable.of({});
   }
 }
