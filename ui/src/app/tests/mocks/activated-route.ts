@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 /**
  * Mock for angular ActivatedRoute.
  *
- * If logic for getting or subsribing to parameters is as:
+ * If logic for getting or subscribing to parameters is as:
  * this.sub = this.route.params.subscribe(params => {
  *   this.id = params['id'];
  * });
@@ -17,14 +17,14 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class MockActivatedRoute {
   private _testParams: {};
   private subject = new BehaviorSubject(this.testParams);
-  params  = this.subject.asObservable();
+  params = this.subject.asObservable();
 
   get testParams() {
     return this._testParams;
   }
 
-  set testParams(params: any) {
-    this._testParams = params;
-    this.subject.next(params);
+  set testParams(testParams: any) {
+    this._testParams = testParams;
+    this.subject.next(testParams);
   }
 }

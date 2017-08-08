@@ -46,9 +46,9 @@ describe('TaskAppDetailsComponent', () => {
   });
 
   it('should have matching app title with given param id', () => {
+    expect(component).toBeTruthy();
     activeRoute.testParams = { id: 'faketask' };
     tasksService.testAppInfos = { faketask: {name: 'fakename'}};
-    expect(component).toBeTruthy();
     fixture.detectChanges();
     de = fixture.debugElement.query(By.css('div'));
     el = de.nativeElement;

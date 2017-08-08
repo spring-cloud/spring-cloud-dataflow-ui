@@ -45,16 +45,15 @@ describe('TaskAppsComponent', () => {
     tasksService.testTaskAppRegistrations = [
       new AppRegistration('fakename', ApplicationType.task, 'fakeuri')
     ];
-    // tasksService = TestBed.get(TasksService);
     toastyService.clearAll();
-    fixture.detectChanges();
   });
 
-  it('should be created', () => {
+  it('TaskAppsComponent should be created', () => {
     expect(component).toBeTruthy();
   });
 
   it('task application registered', () => {
+    fixture.detectChanges();
     de = fixture.debugElement.query(By.css('tbody'));
     el = de.nativeElement;
     expect(el.textContent).toContain('fakename');

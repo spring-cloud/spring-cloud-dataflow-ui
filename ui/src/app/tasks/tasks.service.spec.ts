@@ -20,7 +20,7 @@ describe('TasksService', () => {
     it('should call the apps service with the right url to get task apps', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
 
-      expect(this.tasksService.appRegistrations).toBeDefined()
+      expect(this.tasksService.appRegistrations).toBeDefined();
 
       const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
       params.append('type', 'task');
