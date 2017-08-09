@@ -162,7 +162,7 @@ describe('TaskCreateComponent', () => {
     expect(de.nativeElement.disabled).toBe(false);
   });
 
-  it('should navigate to tasks definitions with submit', () => {
+  it('Submit button should navigate to tasks definitions on click', () => {
     activeRoute.testParams = commonTestParams;
     tasksService.testAppInfos = commonTestAppInfos;
     de = fixture.debugElement.query(By.css('button[type=submit]'));
@@ -173,5 +173,17 @@ describe('TaskCreateComponent', () => {
     fixture.detectChanges();
     el.click();
     expect(navigate).toHaveBeenCalledWith(['tasks/definitions']);
+  });
+
+  it('Back button should navigate to tasks apps on click', () => {
+    activeRoute.testParams = commonTestParams;
+    tasksService.testAppInfos = commonTestAppInfos;
+    de = fixture.debugElement.query(By.css('button[type=button]'));
+    el = de.nativeElement;
+    const navigate = spyOn((<any>component).router, 'navigate');
+
+    fixture.detectChanges();
+    el.click();
+    expect(navigate).toHaveBeenCalledWith(['tasks/apps']);
   });
 });
