@@ -52,6 +52,7 @@ describe('TaskCreateComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskCreateComponent);
     component = fixture.componentInstance;
+    toastyService.clearAll();
   });
 
   function updateDefinitionName(definitionName: string) {
@@ -152,11 +153,13 @@ describe('TaskCreateComponent', () => {
   it('should navigate to tasks definitions with submit', () => {
     activeRoute.testParams = commonTestParams;
     tasksService.testAppInfos = commonTestAppInfos;
+    de = fixture.debugElement.query(By.css('button[type=submit]'));
+    el = de.nativeElement;
     const navigate = spyOn((<any>component).router, 'navigate');
 
     updateDefinitionName('validtaskname');
     fixture.detectChanges();
-    component.submitTaskDefinition();
+    el.click();
     expect(navigate).toHaveBeenCalledWith(['tasks/definitions']);
   });
 });
