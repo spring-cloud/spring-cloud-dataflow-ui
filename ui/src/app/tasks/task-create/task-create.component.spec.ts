@@ -84,6 +84,10 @@ describe('TaskCreateComponent', () => {
     fixture.detectChanges();
     expect(el.classList.contains('has-warning')).toBe(true);
     expect(el.classList.contains('has-feedback')).toBe(true);
+
+    de = fixture.debugElement.query(By.css('[id=commonDefinitionParameters] p.help-block'));
+    el = de.nativeElement;
+    expect(el.textContent).toContain('Cannot be empty');
   });
 
   it('should warn about empty illegal definition name', () => {
@@ -96,6 +100,10 @@ describe('TaskCreateComponent', () => {
     fixture.detectChanges();
     expect(el.classList.contains('has-warning')).toBe(true);
     expect(el.classList.contains('has-feedback')).toBe(true);
+
+    de = fixture.debugElement.query(By.css('[id=commonDefinitionParameters] p.help-block'));
+    el = de.nativeElement;
+    expect(el.textContent).toContain('Cannot have spaces');
   });
 
   it('should warn about same definition name', () => {
@@ -113,6 +121,10 @@ describe('TaskCreateComponent', () => {
     fixture.detectChanges();
     expect(el.classList.contains('has-warning')).toBe(true);
     expect(el.classList.contains('has-feedback')).toBe(true);
+
+    de = fixture.debugElement.query(By.css('[id=commonDefinitionParameters] p.help-block'));
+    el = de.nativeElement;
+    expect(el.textContent).toContain('Cannot be same as faketask');
   });
 
   it('should have plain initial resulting definition', () => {

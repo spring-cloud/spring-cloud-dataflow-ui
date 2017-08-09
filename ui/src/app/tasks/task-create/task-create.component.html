@@ -9,7 +9,7 @@
         <input type="text" id="definitionName" name="definitionName" autofocus
               class="form-control" placeholder="Enter a definition name" formControlName="definitionName">
         <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="mainForm.controls.definitionName.errors"></span>
-        <p class="help-block">The name of the definition must be different from the app name</p>
+        <p class="help-block" *ngIf="mainForm.controls.definitionName.errors">The format is invalid. {{mainForm.controls.definitionName.errors.validateDefinitionName.reason}}</p>
       </div>
     </div>
   </fieldset>
