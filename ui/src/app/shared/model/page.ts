@@ -48,6 +48,7 @@ export class Page<T> {
   }
 
   public update(page: Page<T> ) {
+    console.log('>>>>>>>update');
     this.items.length = 0;
     this.items.push(...page.items);
     this.pageNumber = page.pageNumber;

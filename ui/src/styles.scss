@@ -1,9 +1,9 @@
 $icon-font-path: '../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 
-@import '../node_modules/pui-css-variables-and-mixins/pui-variables';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/pui-variables';
+@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/mixins';
 
-//@import '../node_modules/pui-css-variables-and-mixins/mixins';
-
+$state-success-text:   $success-1;
 $navbar-inverse-bg: $navy-2;
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
@@ -24,29 +24,29 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '../node_modules/pivotal-ui-git-clone/src/pivotal-ui/components/pagination/pagination';
 @import '../node_modules/pivotal-ui-git-clone/src/pivotal-ui/components/tabs/tabs';
 
-.row-gutter-sm {
-  margin-left: -$grid-gutter-width-small / 2;
-  margin-right: -$grid-gutter-width-small / 2;
+// .row-gutter-sm {
+//   margin-left: -$grid-gutter-width-small / 2;
+//   margin-right: -$grid-gutter-width-small / 2;
 
-  > [class^='col'] {
-    padding-left: $grid-gutter-width-small / 2;
-    padding-right: $grid-gutter-width-small / 2;
-  }
-}
+//   > [class^='col'] {
+//     padding-left: $grid-gutter-width-small / 2;
+//     padding-right: $grid-gutter-width-small / 2;
+//   }
+// }
 
-.row-gutter-md {
-  margin-left: -$grid-gutter-width-md / 2;
-  margin-right: -$grid-gutter-width-md / 2;
+// .row-gutter-md {
+//   margin-left: -$grid-gutter-width-md / 2;
+//   margin-right: -$grid-gutter-width-md / 2;
 
-  > [class^='col'] {
-    padding-left: $grid-gutter-width-md / 2;
-    padding-right: $grid-gutter-width-md / 2;
-  }
-}
+//   > [class^='col'] {
+//     padding-left: $grid-gutter-width-md / 2;
+//     padding-right: $grid-gutter-width-md / 2;
+//   }
+// }
 
-@media (min-width: $screen-xl-min) {
-  @include make-grid(xl);
-}
+// @media (min-width: $screen-xl-min) {
+//   @include make-grid(xl);
+// }
 
 @import '../node_modules/tixif-ngx-busy/build/style/busy.css';
 

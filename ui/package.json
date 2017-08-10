@@ -30,6 +30,7 @@
 
     "tixif-ngx-busy": "0.0.5",
     "bootstrap-sass": "^3.3.7",
+    "moment": "^2.18.1",
     "ng2-stomp-service": "^1.2.2",
     "ng2-toasty": "^4.0.0",
     "ngx-bootstrap": "^1.7.1",
