@@ -26,7 +26,7 @@ Using [Maven][] is also the easiest route for Java developers to get started, as
 
 	$ git clone https://github.com/spring-cloud/spring-cloud-dataflow-ui.git
 	$ cd spring-cloud-dataflow-ui
-	$ mvn clean package install
+	$ mvn clean install
 
 This will create `target/spring-cloud-dataflow-ui-2.0.0.BUILD-SNAPSHOT.jar` and also install the build artifact into the local Maven repository.
 
