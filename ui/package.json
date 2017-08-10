@@ -63,5 +63,8 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "napa": "^2.3.0",
     "@compodoc/compodoc": "^1.0.0-beta.13"
+  },
+  "napa-config": {
+    "cache": false
   }
 }
