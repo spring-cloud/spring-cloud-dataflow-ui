@@ -13,9 +13,12 @@ import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { TriStateCheckboxComponent } from './components/tri-state-checkbox.component';
 import { TriStateButtonComponent } from './components/tri-state-button.component';
 import { ClickOutsideDirective } from '../shared/directives/click-outside.directive';
+import { SearchfilterPipe } from '../shared/pipes/search-filter.pipe';
+
 
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 
+import { NgxPaginationModule } from 'ngx-pagination';
 import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { ModalModule } from 'ngx-bootstrap';
 import { TabComponent, TabsComponent } from './components/tabs.component';
@@ -45,10 +48,12 @@ const busyConfig: BusyConfig = {
     ReactiveFormsModule,
     BusyModule.forRoot(busyConfig),
     ModalModule.forRoot(),
+    NgxPaginationModule,
     ToastyModule.forRoot() ],
   declarations: [
     CapitalizePipe,
     KeyValuePipe,
+    SearchfilterPipe,
     TriStateButtonComponent,
     TriStateCheckboxComponent,
     ClickOutsideDirective,
@@ -64,9 +69,11 @@ const busyConfig: BusyConfig = {
     ClickOutsideDirective,
     CommonModule,
     FormsModule,
+    NgxPaginationModule,
     ToastyModule,
     CapitalizePipe,
     KeyValuePipe,
+    SearchfilterPipe,
     TriStateCheckboxComponent,
     TriStateButtonComponent,
     PropertyTableComponent

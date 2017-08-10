@@ -5,7 +5,12 @@ import { JobsComponent } from './jobs.component';
 
 @NgModule({
   imports: [RouterModule.forChild([
-    { path: 'jobs', component: JobsComponent }
+    {
+      path: 'jobs',
+      pathMatch: 'full',
+      redirectTo: 'jobs/executions'
+    },
+    { path: 'jobs/executions', component: JobsComponent }
   ])],
   exports: [RouterModule]
 })
