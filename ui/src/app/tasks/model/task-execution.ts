@@ -1,10 +1,12 @@
+import { Moment } from 'moment';
+
 export class TaskExecution {
 
   public executionId: number;
   public exitCode: number;
   public taskName: string;
-  public startTime: string;
-  public endTime: string;
+  public startTime: Moment;
+  public endTime: Moment;
   public exitMessage: string;
   public arguments: string[];
   public jobExecutionIds: number[];
@@ -15,8 +17,8 @@ export class TaskExecution {
       executionId: number,
       exitCode: number,
       taskName: string,
-      startTime: string,
-      endTime: string,
+      startTime: Moment,
+      endTime: Moment,
       exitMessage: string,
       args: string[], // arguments would be restricted name
       jobExecutionIds: number[],

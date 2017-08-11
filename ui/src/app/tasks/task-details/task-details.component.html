@@ -26,11 +26,11 @@
     </tr>
     <tr>
       <td>Start Time</td>
-      <td>{{taskExecution.startTime}}</td>
+      <td>{{taskExecution.startTime | dataflowDateTime}}</td>
     </tr>
     <tr>
       <td>End Time</td>
-      <td>{{taskExecution.endTime}}</td>
+      <td>{{taskExecution.endTime | dataflowDateTime}}</td>
     </tr>
     <tr>
       <td>Batch Job</td>
@@ -45,15 +45,15 @@
     </tr>
     <tr>
       <td>Start Time</td>
-      <td>{{taskExecution.startTime}}</td>
+      <td>{{taskExecution.startTime | dataflowDateTime}}</td>
     </tr>
     <tr>
       <td>End Time</td>
-      <td>{{taskExecution.endTime}}</td>
+      <td>{{taskExecution.endTime | dataflowDateTime}}</td>
     </tr>
     <tr>
       <td>Duration</td>
-      <td>TBD duration</td>
+      <td>{{taskExecution.startTime | dataflowDuration: taskExecution.endTime}}</td>
     </tr>
     <tr>
       <td>Exit Code</td>

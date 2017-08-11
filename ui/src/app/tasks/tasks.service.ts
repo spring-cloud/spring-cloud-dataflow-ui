@@ -13,6 +13,7 @@ import { AppRegistration } from '../shared/model/app-registration';
 
 import { PageRequest } from '../shared/model/pagination/page-request.model';
 import { ApplicationType } from '../shared/model/application-type';
+import * as moment from 'moment';
 
 @Injectable()
 export class TasksService {
@@ -129,8 +130,8 @@ export class TasksService {
       jsonItem.executionId,
       jsonItem.exitCode,
       jsonItem.taskName,
-      jsonItem.startTime,
-      jsonItem.endTime,
+      moment.utc(jsonItem.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]'),
+      moment.utc(jsonItem.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]'),
       jsonItem.exitMessage,
       jsonItem.arguments,
       jsonItem.jobExecutionIds,
