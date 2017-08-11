@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ErrorHandler, Page } from '../shared/model';
+import { Page } from '../shared/model';
 import { JobsService } from './jobs.service';
 import { JobExecution } from './model/job-execution.model';
-import { PageRequest } from '../shared/model/pagination/page-request.model';
 
 import { ToastyService } from 'ng2-toasty';
 
@@ -30,7 +28,7 @@ export class JobsComponent implements OnInit {
    * of {@link JobExecution}s.
    */
   ngOnInit() {
-    this.loadJobExecutions(false);
+    this.loadJobExecutions(true);
   }
 
   /**

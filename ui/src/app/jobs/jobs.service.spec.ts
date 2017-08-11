@@ -1,11 +1,8 @@
-import { URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
 import { JobsService } from './jobs.service';
 import { HttpUtils } from '../shared/support/http.utils';
-import { ApplicationType, AppRegistration, ErrorHandler } from '../shared/model';
-import { SharedAppsService } from '../shared/services/shared-apps.service';
-import { JobExecution } from './model/job-execution.model';
+import { ErrorHandler } from '../shared/model';
 
 describe('JobsService', () => {
 

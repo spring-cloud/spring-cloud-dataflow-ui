@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs } from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { ErrorHandler, Page } from '../shared/model';
-import { PageRequest } from '../shared/model/pagination/page-request.model';
 
 import { JobExecution } from './model/job-execution.model';
 import { HttpUtils } from '../shared/support/http.utils';
 
-import * as moment from 'moment';
 import { Moment } from 'moment';
 
 @Injectable()
@@ -33,7 +31,6 @@ export class JobsService {
       this.remotelyLoaded = true;
 
       const params = HttpUtils.getPaginationParams(this.jobExecutions.pageNumber, this.jobExecutions.pageSize);
-      const requestOptionsArgs: RequestOptionsArgs = {};
 
       return this.http.get(this.jobExecutionsUrl, { search: params })
                     .map(this.extractData.bind(this))
