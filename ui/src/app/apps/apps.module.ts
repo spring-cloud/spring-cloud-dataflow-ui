@@ -9,20 +9,15 @@ import { AppDetailsComponent } from './app-details/app-details.component';
 import { AppsService } from './apps.service';
 import { AppsRoutingModule } from './apps-routing.module';
 
-import { NgxPaginationModule } from 'ngx-pagination';
-
-import { SearchfilterPipe } from '../shared/pipes/search-filter.pipe';
-
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports:      [
-    AppsRoutingModule, SharedModule, NgxPaginationModule,
+    AppsRoutingModule, SharedModule,
     AlertModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot()
   ],
   declarations: [
-    AppsComponent, AppsBulkImportComponent, AppsRegisterComponent, AppDetailsComponent,
-    SearchfilterPipe
+    AppsComponent, AppsBulkImportComponent, AppsRegisterComponent, AppDetailsComponent
   ],
   providers:    [
     AppsService

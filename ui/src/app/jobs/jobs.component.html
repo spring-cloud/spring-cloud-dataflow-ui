@@ -1,4 +1,56 @@
-<h1>Batch Jobs</h1>
+<h1 [ngBusy]="busy">Batch Job Executions</h1>
 <p>
-  This is in under development. We would love to hear feedback on the other available tabs/views.
+  This section lists all available batch job executions and provides the control to restart a job execution (if restartable).
 </p>
+
+
+<div class="row">
+  <div class="col-md-24 text-right">
+    <button id="refreshJobExecutionsButton" type="button" (click)="loadJobExecutions(true)"
+          class="btn btn-default"
+    ><span class="glyphicon glyphicon-refresh"></span></button>
+  </div>
+</div>
+
+<div *ngIf="!jobExecutions || jobExecutions.items.length === 0">No Job Executions available.</div>
+<table *ngIf="jobExecutions?.items && jobExecutions.items.length > 0" class="table table-hover">
+  <thead>
+    <tr>
+        <th>Name</th>
+        <th class="text-center" style="width: 100px">Task Id</th>
+        <th class="text-center" style="width: 100px">Instance Id</th>
+        <th class="text-center" style="width: 100px">Execution Id</th>
+        <th style="width: 200px">Job Start Time</th>
+        <th style="width: 100px">Step Execution Count</th>
+        <th style="width: 100px">Status</th>
+        <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of jobExecutions.items | searchFilter: jobExecutions.filter | paginate: jobExecutions.getPaginationInstance(); index as i">
+    <td>{{item.name}} <app-definition-status [jobExecution]="item"></app-definition-status></td>
+    <td><a href="javascript:void(0);" (click)="viewTaskExecutionDetails(item)">{{item.taskExecutionId}}</a></td>
+    <td>{{item.jobInstanceId}}</td>
+    <td>{{item.taskExecutionId}}</td>
+    <td>{{item.startTimeFormatted}}</td>
+    <td>{{item.stepExecutionCount}}</td>
+    <td><app-job-execution-status [status]="item.status"></app-job-execution-status></td>
+    <td class="action-column text-right">
+        <button type="button" (click)="restartJob(item)"
+                class="btn btn-default" title="Restart" [disabled]="!item.restartable"
+        ><span class="glyphicon glyphicon-refresh"></span>
+        </button>
+        <button type="button" (click)="stopJob(item)" [disabled]="!item.stoppable"
+                class="btn btn-default" title="Stop"
+        ><span class="glyphicon glyphicon-stop"></span>
+        </button>
+        <button type="button" (click)="viewJobExecutionDetails(item)"
+                class="btn btn-default" title="Details"
+        ><span class="glyphicon glyphicon-search"></span>
+        </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<pagination-controls *ngIf="jobExecutions?.items && jobExecutions.items.length > 0" (pageChange)="getPage($event)"></pagination-controls>
+

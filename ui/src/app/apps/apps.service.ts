@@ -25,10 +25,7 @@ import { HttpUtils } from '../shared/support/http.utils';
 export class AppsService {
 
   private static appsUrl = '/apps';
-
   public appRegistrations: Page<AppRegistration>;
-  public currentPage = 1;
-  public filter = '';
   public remotelyLoaded = false;
 
   constructor(private http: Http, private errorHandler: ErrorHandler,
