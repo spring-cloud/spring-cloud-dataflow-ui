@@ -10,6 +10,7 @@ import { ErrorHandler, Page } from '../shared/model';
 import { JobExecution } from './model/job-execution.model';
 import { HttpUtils } from '../shared/support/http.utils';
 
+import * as moment from 'moment';
 import { Moment } from 'moment';
 
 @Injectable()

@@ -1,7 +1,7 @@
 $icon-font-path: '../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 
-@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/pui-variables';
-@import '../node_modules/pivotal-ui-git-clone/library/src/pivotal-ui/components/mixins';
+@import '../node_modules/pivotal-ui-git-clone/src/pivotal-ui/components/pui-variables';
+@import '../node_modules/pivotal-ui-git-clone/src/pivotal-ui/components/mixins';
 
 $state-success-text:   $success-1;
 $navbar-inverse-bg: $navy-2;
