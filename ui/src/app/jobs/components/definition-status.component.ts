@@ -10,12 +10,12 @@ import { JobExecution } from '../model/job-execution.model';
  * @author Gunnar Hillert
  */
 @Component({
-  selector: 'app-deployment-status',
+  selector: 'app-definition-status',
   template: `
     <span class="label label-{{labelClass}}">{{label}}</span>
   `
 })
-export class DeploymentStatusComponent implements AfterContentInit, DoCheck {
+export class DefinitionStatusComponent implements AfterContentInit, DoCheck {
 
   /**
    * The Job Execution from which the status will be retrieved.

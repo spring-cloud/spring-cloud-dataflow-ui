@@ -28,7 +28,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of jobExecutions.items | searchFilter: jobExecutions.filter | paginate: jobExecutions.getPaginationInstance(); index as i">
-    <td>{{item.name}} <app-deployment-status [jobExecution]="item"></app-deployment-status></td>
+    <td>{{item.name}} <app-definition-status [jobExecution]="item"></app-definition-status></td>
     <td><a href="javascript:void(0);" (click)="viewTaskExecutionDetails(item)">{{item.taskExecutionId}}</a></td>
     <td>{{item.jobInstanceId}}</td>
     <td>{{item.taskExecutionId}}</td>
