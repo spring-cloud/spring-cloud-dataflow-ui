@@ -6,6 +6,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/forkJoin';
 
 import { AppRegistration, ErrorHandler, Page } from '../shared/model';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
