@@ -15,7 +15,8 @@ export class DataflowDurationPipe implements PipeTransform {
   private DEFAULT = 'HH:mm:ss.SSS';
 
   transform(start: Moment, end: Moment, format: string = null): string {
-    const m = moment(end.diff(start));
+    // wrap end with moment to prevent null errors
+    const m = moment.utc(moment(end).diff(start));
     if (m.isValid()) {
       return m.format(format != null ? format : this.DEFAULT);
     } else {

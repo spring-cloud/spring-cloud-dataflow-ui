@@ -14,7 +14,8 @@ describe('DataflowDateTimePipe', () => {
   });
 
   it('convert string', () => {
-    expect(pipe.transform('1970')).toEqual('1970-01-01T00:00:00.000Z');
+    const expected = moment('1970').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+    expect(pipe.transform('1970')).toEqual(expected);
   });
 
   it('convert string with format argument', () => {
@@ -22,12 +23,14 @@ describe('DataflowDateTimePipe', () => {
   });
 
   it('convert number', () => {
-    expect(pipe.transform(0)).toEqual('1970-01-01T00:00:00.000Z');
+    const expected = moment(0).format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+    expect(pipe.transform(0)).toEqual(expected);
   });
 
   it('convert moment', () => {
     const datetime = moment(0);
-    expect(pipe.transform(datetime)).toEqual('1970-01-01T00:00:00.000Z');
+    const expected = moment(datetime).format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+    expect(pipe.transform(datetime)).toEqual(expected);
   });
 
   it('convert moment null passed', () => {

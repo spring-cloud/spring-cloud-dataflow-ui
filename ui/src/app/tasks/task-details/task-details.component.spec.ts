@@ -77,6 +77,8 @@ describe('TaskExecutionsDetailsComponent', () => {
     de = fixture.debugElement.query(By.css('div'));
     el = de.nativeElement;
     fixture.detectChanges();
+    const expectedStart = moment('2017-08-10T05:46:19.079Z').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+    const expectedStop = moment('2017-08-10T05:46:19.098Z').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
 
     expect(el.textContent).toContain('Task Execution Details - Execution ID: 1');
 
@@ -91,17 +93,17 @@ describe('TaskExecutionsDetailsComponent', () => {
     expect(des[6].nativeElement.textContent).toContain('External Execution Id');
     expect(des[7].nativeElement.textContent).toContain('footask-d465ffe7-6874-42f7-ab04-191e9e6c6376');
     expect(des[8].nativeElement.textContent).toContain('Start Time');
-    expect(des[9].nativeElement.textContent).toContain('2017-08-10T06:46:19.079Z');
+    expect(des[9].nativeElement.textContent).toContain(expectedStart);
     expect(des[10].nativeElement.textContent).toContain('End Time');
-    expect(des[11].nativeElement.textContent).toContain('2017-08-10T06:46:19.098Z');
+    expect(des[11].nativeElement.textContent).toContain(expectedStop);
     expect(des[12].nativeElement.textContent).toContain('Batch Job');
     expect(des[13].query(By.css('span')).nativeElement.classList.contains('glyphicon-remove')).toBe(true);
     expect(des[14].nativeElement.textContent).toContain('Job Execution Ids');
     expect(des[15].nativeElement.textContent).toBe('');
     expect(des[16].nativeElement.textContent).toContain('Start Time');
-    expect(des[17].nativeElement.textContent).toContain('2017-08-10T06:46:19.079Z');
+    expect(des[17].nativeElement.textContent).toContain(expectedStart);
     expect(des[18].nativeElement.textContent).toContain('End Time');
-    expect(des[19].nativeElement.textContent).toContain('2017-08-10T06:46:19.098Z');
+    expect(des[19].nativeElement.textContent).toContain(expectedStop);
     expect(des[20].nativeElement.textContent).toContain('Duration');
     expect(des[21].nativeElement.textContent).toContain('00:00:00.019');
     expect(des[22].nativeElement.textContent).toContain('Exit Code');
