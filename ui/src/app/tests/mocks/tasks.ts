@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { AppInfo } from '../../tasks/model/app-info';
 import { Page} from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration';
+import { TaskExecution } from '../../tasks/model/task-execution';
 
 /**
  * Mock for TasksService.
@@ -28,6 +29,7 @@ export class MockTasksService {
 
   private _testAppInfos: {};
   private _testTaskAppRegistrations: AppRegistration[];
+  private _testExecutionDetails: {};
 
   get testAppInfos() {
     return this._testAppInfos;
@@ -43,6 +45,14 @@ export class MockTasksService {
 
   set testTaskAppRegistrations(params: any) {
     this._testTaskAppRegistrations = params;
+  }
+
+  get testExecutionDetails() {
+    return this._testExecutionDetails;
+  }
+
+  set testExecutionDetails(params: any) {
+    this._testExecutionDetails = params;
   }
 
   getAppInfo(id: string): Observable<AppInfo> {
@@ -66,5 +76,9 @@ export class MockTasksService {
   createDefinition(definition: string, name: string) {
     // TODO: when needed in tests return something useful
     return Observable.of({});
+  }
+
+  getExecution(id: string): Observable<TaskExecution> {
+    return Observable.of(this.testExecutionDetails[id]);
   }
 }

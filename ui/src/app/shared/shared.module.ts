@@ -24,6 +24,8 @@ import { ModalModule } from 'ngx-bootstrap';
 import { TabComponent, TabsComponent } from './components/tabs.component';
 
 import { SharedAppsService } from '../shared/services/shared-apps.service';
+import { DataflowDateTimePipe } from './pipes/dataflow-date-time.pipe';
+import { DataflowDurationPipe } from './pipes/dataflow-duration.pipe';
 
 const busyConfig: BusyConfig = {
     message: 'Processing..',
@@ -59,7 +61,9 @@ const busyConfig: BusyConfig = {
     ClickOutsideDirective,
     PropertyTableComponent,
     TabsComponent,
-    TabComponent],
+    TabComponent,
+    DataflowDateTimePipe,
+    DataflowDurationPipe],
   providers: [
     StompService,
     SharedAppsService,
@@ -72,6 +76,8 @@ const busyConfig: BusyConfig = {
     NgxPaginationModule,
     ToastyModule,
     CapitalizePipe,
+    DataflowDateTimePipe,
+    DataflowDurationPipe,
     KeyValuePipe,
     SearchfilterPipe,
     TriStateCheckboxComponent,
