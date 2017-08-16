@@ -72,7 +72,7 @@ export class JobsComponent implements OnInit {
   }
 
   viewJobExecutionDetails(item: JobExecution) {
-    console.log('View Job Execution Details');
+    this.router.navigate(['jobs/executions/' + item.jobExecutionId]);
   }
 
   viewTaskExecutionDetails(item: JobExecution) {

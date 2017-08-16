@@ -1,0 +1,100 @@
+<h1>Job Execution Details - Execution ID: {{id}}</h1>
+
+<div *ngIf="!jobExecution">No Job Execution available.</div>
+<table id="jobExecution" *ngIf="jobExecution" class="table table-hover">
+  <thead>
+    <tr>
+      <th style="width: 250px">Property</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Id</td>
+      <td>{{jobExecution.jobExecutionId}}</td>
+    </tr>
+    <tr>
+      <td>Job Name</td>
+      <td>{{jobExecution.name}}</td>
+    </tr>
+    <tr>
+      <td>Job Instance</td>
+      <td>{{jobExecution.jobInstanceId}}</td>
+    </tr>
+    <tr>
+      <td>Task Execution Id</td>
+      <td>{{jobExecution.taskExecutionId}}</td>
+    </tr>
+    <tr>
+      <td>Job Parameters</td>
+      <td>{{jobExecution.jobParametersString}}</td>
+    </tr>
+    <tr>
+      <td>Start Time</td>
+      <td>{{jobExecution.startTime | dataflowDateTime}}</td>
+    </tr>
+    <tr>
+      <td>End Time</td>
+      <td>{{jobExecution.endTime | dataflowDateTime}}</td>
+    </tr>
+    <tr>
+      <td>Duration</td>
+      <td>{{jobExecution.startTime | dataflowDuration: jobExecution.endTime}}</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td><app-job-execution-status [status]="jobExecution.status"></app-job-execution-status></td>
+    </tr>
+    <tr>
+      <td>Exit Code</td>
+      <td><app-job-execution-status [status]="jobExecution.exitCode"></app-job-execution-status></td>
+    </tr>
+    <tr>
+      <td>Exit Message</td>
+      <td>{{jobExecution.exitMessage}}</td>
+    </tr>
+    <tr>
+      <td>Step Execution Count</td>
+      <td>{{jobExecution.stepExecutionCount}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>Steps</h4>
+<table id="stepExecutions" *ngIf="jobExecution" class="table table-hover">
+  <thead>
+    <tr>
+      <th>Step Id</th>
+      <th>Step Name</th>
+      <th>Reads</th>
+      <th>Writes</th>
+      <th>Commits</th>
+      <th>Rollbacks</th>
+      <th>Duration</th>
+      <th>Status</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let stepExecution of jobExecution.stepExecutions">
+      <td>{{stepExecution.id}}</td>
+      <td>{{stepExecution.name}}</td>
+      <td>{{stepExecution.readCount}}</td>
+      <td>{{stepExecution.writeCount}}</td>
+      <td>{{stepExecution.commitCount}}</td>
+      <td>{{stepExecution.rollbackCount}}</td>
+      <td>{{stepExecution.startTime | dataflowDuration: stepExecution.endTime}}</td>
+      <td><app-job-execution-status [status]="stepExecution.status"></app-job-execution-status></td>
+      <td>
+        <button type="button" (click)="viewStepExecutionDetails(stepExecution)"
+                class="btn btn-default" title="Details"
+        ><span class="glyphicon glyphicon-search"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="text-center">
+  <button type="button" class="btn btn-default" (click)="back()">Back</button>
+</div>
