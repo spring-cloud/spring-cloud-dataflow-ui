@@ -5,9 +5,11 @@
   simplify the development of big data applications.
 </p>
 
-<h2>Data Flow Server Implementation</h2>
+<h2 *ngIf="dataflowVersionInfo">Data Flow Server Implementation</h2>
 
-<table class="table table-hover">
+<h2 *ngIf="!dataflowVersionInfo" class="text-warning" id="serverWarningError">Error occurred when attempting to obtain about info from server.</h2>
+
+<table id="dataFlowVersionTable" class="table table-hover" *ngIf="dataflowVersionInfo">
   <tbody>
   <tr>
     <td>Name</td><td>{{dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.name : 'N/A'}}</td>
@@ -18,21 +20,21 @@
   </tbody>
 </table>
 
-<button id="showAboutDetailsButton" type="button" (click)="goToDetails()"
+<button id="showAboutDetailsButton" type="button" (click)="goToDetails() " *ngIf="dataflowVersionInfo"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-search"></span>
     Show Details
 </button>
 
-<h2 style="margin-top: 1em;">Get the Spring Cloud Data Flow Shell</h2>
+<h2 style="margin-top: 1em;" *ngIf="dataflowVersionInfo">Get the Spring Cloud Data Flow Shell</h2>
 
 <p *ngIf="dataflowVersionInfo" class="index-page--subtitle">As an alternative to the Dashboard UI, you can also
    <a href="https://repo.spring.io/libs-snapshot/org/springframework/cloud/spring-cloud-dataflow-shell/{{dataflowVersionInfo.versionInfo.core.version}}/spring-cloud-dataflow-shell-{{dataflowVersionInfo.versionInfo.core.version}}.jar"
       target="_blank">download the compatible version of the Shell</a> ({{dataflowVersionInfo.versionInfo.core.version}}).</p>
 
-<h2>Need Help or Found an Issue?</h2>
+<h2 *ngIf="dataflowVersionInfo">Need Help or Found an Issue?</h2>
 
-<table class="table table-hover" *ngIf="dataflowVersionInfo">
+<table id="dataFlowVersionLinksTable" class="table table-hover" *ngIf="dataflowVersionInfo">
   <tbody>
     <tr>
       <td>Project Page</td><td><a target="_blank" href="http://cloud.spring.io/spring-cloud-dataflow/">http://cloud.spring.io/spring-cloud-dataflow/</a></td>
