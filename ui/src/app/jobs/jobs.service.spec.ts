@@ -33,4 +33,12 @@ describe('JobsService', () => {
       expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions', { search: params });
     });
   });
+
+  describe('getJobExecution', () => {
+    it('should call the jobs service with the right url to get job execution', () => {
+      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.jobsService.getJobExecution('1');
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1', {});
+    });
+  });
 });
