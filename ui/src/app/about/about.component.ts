@@ -6,13 +6,11 @@ import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './about.component.html',
-  providers: [AboutService]
 })
 export class AboutComponent implements OnInit {
 
   dataflowVersionInfo;
   busy: Subscription;
-  websocketData;
 
   private subscription: any;
 
@@ -21,7 +19,6 @@ export class AboutComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init');
     this.getVersionInfo();
   }
 
@@ -38,7 +35,6 @@ export class AboutComponent implements OnInit {
   }
 
   goToDetails() {
-    console.log('Go to details ...');
     this.router.navigate(['about/details']);
   }
 }

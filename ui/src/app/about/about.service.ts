@@ -28,7 +28,6 @@ export class AboutService {
     console.log('extract data', res);
     const body = res.json();
     return body;
-    // return body.data || { };
   }
 
 }

@@ -1,8 +1,10 @@
 <h1 [ngBusy]="busy">About Details</h1>
 <h2>Data Flow Server Implementation</h2>
 
+<h2 *ngIf="!dataflowVersionInfo" class="text-warning" id="serverWarningError">Error occurred when attempting to obtain about info from server.</h2>
+
 <div *ngIf="dataflowVersionInfo">
-<table class="table table-hover">
+<table class="table table-hover" id="dataFlowVersionTable">
   <tbody>
   <tr>
     <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.versionInfo.implementation.name}}</td>
@@ -15,27 +17,27 @@
 
 <h2>Enabled Features</h2>
 
-<table class="table table-hover">
+<table class="table table-hover" id="enabledFeaturesTable">
   <tbody>
   <tr>
     <td class="col-xs-6">Analytics</td>
     <td>
-      <span *ngIf="dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
-      <span *ngIf="!dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+      <span *ngIf="dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true" id="analyticsEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.featureInfo.analyticsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="analyticsDisabled"></span>
     </td>
   </tr>
   <tr>
     <td class="col-xs-6">Streams</td>
     <td>
-      <span *ngIf="dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
-      <span *ngIf="!dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+      <span *ngIf="dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true" id="streamsEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.featureInfo.streamsEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="streamsDisabled"></span>
     </td>
   </tr>
   <tr>
     <td class="col-xs-6">Tasks</td>
     <td>
-      <span *ngIf="dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
-      <span *ngIf="!dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+      <span *ngIf="dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true" id="tasksEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="tasksDisabled"></span>
     </td>
   </tr>
   </tbody>
@@ -43,50 +45,50 @@
 
 <h2>Security Information</h2>
 
-<table class="table table-hover">
+<table class="table table-hover"  id="securityInformationTable">
   <tbody>
   <tr>
     <td class="col-xs-6">Authentication Enabled</td>
     <td>
-      <span *ngIf="dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
-      <span *ngIf="!dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+      <span *ngIf="dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true" id="authenticationEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.authenticationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="authenticationDisabled"></span>
     </td>
   </tr>
   <tr>
     <td class="col-xs-6">Authorization Enabled</td>
     <td>
-      <span *ngIf="dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
-      <span *ngIf="!dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+      <span *ngIf="dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true" id="authorizationEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.authorizationEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="authorizationDisabled"></span>
     </td>
   </tr>
   <tr>
     <td class="col-xs-6">Form Login</td>
     <td>
-      <span *ngIf="dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
-      <span *ngIf="!dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+      <span *ngIf="dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-ok text-success" aria-label="true" id="formLoginEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.formLogin" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="formLoginDisabled"></span>
     </td>
   </tr>
   <tr>
     <td class="col-xs-6">Authenticated</td>
     <td>
-      <span *ngIf="dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-ok text-success" aria-label="true"></span>
-      <span *ngIf="!dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-remove text-danger" aria-label="false"></span>
+      <span *ngIf="dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-ok text-success" aria-label="true" id="authenticateEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.securityInfo.authenticated" class="glyphicon glyphicon-remove text-danger" aria-label="false"id="authenticateDisabled"></span>
     </td>
   </tr>
   <tr>
     <td class="col-xs-6">Username</td>
-    <td>{{dataflowVersionInfo.securityInfo.username || 'N/A'}}</td>
+    <td id="username">{{dataflowVersionInfo.securityInfo.username || 'N/A'}}</td>
   </tr>
   <tr>
     <td class="col-xs-6">Roles</td>
-    <td>{{dataflowVersionInfo.securityInfo.roles}}</td>
+    <td id="roles">{{dataflowVersionInfo.securityInfo.roles}}</td>
   </tr>
   </tbody>
 </table>
 
 <h2>Version Information</h2>
 
-<table class="table table-hover">
+<table class="table table-hover" id="versionInformationTable">
   <tbody>
   <tr>
     <td class="col-xs-6">Implementation</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}} ({{dataflowVersionInfo.versionInfo.implementation.name}})</td>
@@ -102,7 +104,7 @@
 
 <h2>Runtime Environment - App Deployer</h2>
 
-<table class="table table-hover">
+<table class="table table-hover"  id="appDeployerTable">
   <tbody>
   <tr>
     <td class="col-xs-6">Implementation Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerImplementationVersion}}</td>
@@ -139,7 +141,7 @@
 
 <h2>Platform-specific Information of the App Deployer</h2>
 
-<table class="table table-hover">
+<table class="table table-hover" id="appDeployerPlatformSpecificTable">
   <tbody>
     <ng-template *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)"
       ngFor let-item [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalues">
@@ -148,17 +150,19 @@
       </tr>
     </ng-template>
     <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo)">
-      <td class="col-xs-12 text-center" colspan="2">No platform-specific app deployer information available.</td>
+      <td class="col-xs-12 text-center" colspan="2" id="noAppDeployerPlatformMessage">No platform-specific app deployer information available.</td>
     </tr>
   </tbody>
 </table>
 
 <h2>Runtime Environment - Task Launcher</h2>
 
-<table class="table table-hover">
+  <div *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)">No Task Launcher information is available.</div>
+
+  <table class="table table-hover" *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)" id="taskLauncherTable">
   <tbody>
   <tr>
-    <td class="col-xs-6">ImplementationVersion</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion}}</td>
+    <td class="col-xs-6">Implementation Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion}}</td>
   </tr>
   <tr>
     <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerName}}</td>
@@ -192,11 +196,8 @@
 
 <h2>Platform-specific Information of the Task Launcher</h2>
 
-<table class="table table-hover">
+<table class="table table-hover" id="appTaskLauncherPlatformSpecificTable">
   <tbody>
-  <!--<tr *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)" **ngFor="(key, value) in dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo">
-    <td class="col-xs-6">{{key}}</td><td>{{value}}</td>
-  </tr>-->
   <ng-template *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)"
       ngFor let-item [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | keyvalues">
       <tr>
@@ -204,14 +205,14 @@
       </tr>
   </ng-template>
   <tr *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo)">
-    <td colspan="2" class="col-xs-6 text-center">No platform-specific task launcher information available.</td>
+    <td colspan="2" class="col-xs-6 text-center" id="noTaskLauncherPlatformMessage">No platform-specific task launcher information available.</td>
   </tr>
   </tbody>
 </table>
 
 <div class="row">
     <div class="col-xs-12 text-right"><button id="back-button" type="button" class="btn btn-default" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left"></span> <span class="hidden-xs">Back</span></button></div>
-    <div class="col-xs-12 text-left"><button id="back-button"
+    <div class="col-xs-12 text-left"><button id="copy-button"
       [ngxClipboard] [cbContent]="dataflowVersionInfo | json" (cbOnSuccess)="onCopyToClipboardSuccess($event);"
       type="button" class="btn btn-default"><span class="glyphicon glyphicon-copy"></span> <span class="hidden-xs">Copy Details to Clipboard</span></button></div>
 </div>
