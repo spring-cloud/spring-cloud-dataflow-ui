@@ -6,10 +6,18 @@ import { JobsService } from './jobs.service';
 import { JobsRoutingModule } from './jobs-routing.module';
 import { JobExecutionStatusComponent } from './components/job-execution-status.component';
 import { DefinitionStatusComponent } from './components/definition-status.component';
+import { JobExecutionDetailsComponent } from './job-execution-details/job-execution-details.component';
+import { StepExecutionDetailsComponent } from './step-execution-details/step-execution-details.component';
 
 @NgModule({
   imports:      [ JobsRoutingModule, SharedModule ],
-  declarations: [ JobsComponent, JobExecutionStatusComponent, DefinitionStatusComponent ],
+  declarations: [
+    JobsComponent,
+    JobExecutionStatusComponent,
+    DefinitionStatusComponent,
+    JobExecutionDetailsComponent,
+    StepExecutionDetailsComponent
+  ],
   providers:    [ JobsService ]
 })
 export class JobsModule { }

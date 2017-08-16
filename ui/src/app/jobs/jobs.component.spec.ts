@@ -1,14 +1,39 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { BusyModule } from 'tixif-ngx-busy';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ToastyService } from 'ng2-toasty';
 import { JobsComponent } from './jobs.component';
+import { DefinitionStatusComponent } from './components/definition-status.component';
+import { JobExecutionStatusComponent } from './components/job-execution-status.component';
+import { SearchfilterPipe } from '../shared/pipes/search-filter.pipe';
+import { JobsService } from './jobs.service';
+import { MockToastyService } from '../tests/mocks/toasty';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MockJobsService } from '../tests/mocks/jobs';
 
-xdescribe('JobsComponent', () => {
+describe('JobsComponent', () => {
   let component: JobsComponent;
   let fixture: ComponentFixture<JobsComponent>;
+  const toastyService = new MockToastyService();
 
   beforeEach(async(() => {
+    const jobsService = new MockJobsService();
     TestBed.configureTestingModule({
-      declarations: [ JobsComponent ]
+      declarations: [
+        JobsComponent,
+        SearchfilterPipe,
+        JobExecutionStatusComponent,
+        DefinitionStatusComponent
+      ],
+      imports: [
+        BusyModule,
+        NgxPaginationModule,
+        RouterTestingModule.withRoutes([])
+      ],
+      providers: [
+        { provide: JobsService, useValue: jobsService},
+        { provide: ToastyService, useValue: toastyService }
+      ]
     })
     .compileComponents();
   }));
@@ -16,6 +41,7 @@ xdescribe('JobsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(JobsComponent);
     component = fixture.componentInstance;
+    toastyService.clearAll();
     fixture.detectChanges();
   });
 
