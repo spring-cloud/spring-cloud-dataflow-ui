@@ -1,5 +1,5 @@
 <h1>Step Execution Details - Step Execution ID: {{stepid}}</h1>
-
+<div *ngIf="!stepExecutionResource">No Step Execution available.</div>
 <table id="stepExecution" *ngIf="stepExecutionResource?.stepExecution" class="table table-hover">
   <thead>
     <tr>
@@ -71,10 +71,10 @@
   </tbody>
 </table>
 
-<h4>Exit Description</h4>
-<pre>{{stepExecutionResource?.stepExecution?.exitMessage || 'N/A'}}</pre>
+<h4 *ngIf="stepExecutionResource">Exit Description</h4>
+<pre *ngIf="stepExecutionResource">{{stepExecutionResource?.stepExecution?.exitMessage || 'N/A'}}</pre>
 
-<h4>Step Execution Context</h4>
+<h4 *ngIf="stepExecutionResource">Step Execution Context</h4>
 <table id="stepExecutionContext" *ngIf="stepExecutionResource?.stepExecution" class="table table-hover">
   <thead>
     <tr>

@@ -32,10 +32,15 @@ export class MockJobsService {
   }
 
   getJobExecution(id: string) {
-    const jobExecution = new JobExecution();
+    let jobExecution = null;
     if (this.testJobExecutions) {
       const jsonItem = this.testJobExecutions
         .find(je => je['executionId'] === +id);
+      if (!jsonItem) {
+        return Observable.of(jobExecution);
+      } else {
+        jobExecution = new JobExecution();
+      }
       jobExecution.name = jsonItem.name;
       jobExecution.startTime = moment(jsonItem.jobExecution.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
       jobExecution.endTime = moment(jsonItem.jobExecution.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
@@ -76,9 +81,10 @@ export class MockJobsService {
   }
 
   getStepExecution(jobid: string, stepid: string): Observable<StepExecutionResource> {
-    const stepExecutionResource: StepExecutionResource = new StepExecutionResource();
+    let  stepExecutionResource: StepExecutionResource = null;
     if (this.testStepExecutionResource) {
       const stepExecution: StepExecution = new StepExecution();
+      stepExecutionResource = new StepExecutionResource();
       const stepExecutionItem = this.testStepExecutionResource.stepExecution;
       stepExecution.id = stepExecutionItem.id;
       stepExecution.name = stepExecutionItem.stepName;

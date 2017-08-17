@@ -123,4 +123,16 @@ describe('StepExecutionDetailsComponent', () => {
 
     expect(navigate).toHaveBeenCalledWith(['jobs/executions/1']);
   });
+
+  it('should show No Step Execution available.', () => {
+    activeRoute.testParams = {jobid: '1', stepid: '3'};
+    fixture.detectChanges();
+    de = fixture.debugElement.query(By.css('h1'));
+    el = de.nativeElement;
+    expect(el.textContent).toContain('Step Execution Details - Step Execution ID: 3');
+
+    de = fixture.debugElement.query(By.css('div'));
+    el = de.nativeElement;
+    expect(el.textContent).toContain('No Step Execution available.');
+  });
 });

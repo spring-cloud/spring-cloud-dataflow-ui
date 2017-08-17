@@ -115,4 +115,15 @@ describe('JobExecutionDetailsComponent', () => {
     expect(navigate).toHaveBeenCalledWith(['jobs/executions']);
   });
 
+  it('should show No Job Execution available.', () => {
+    activeRoute.testParams = { id: '3' };
+    fixture.detectChanges();
+    de = fixture.debugElement.query(By.css('h1'));
+    el = de.nativeElement;
+    expect(el.textContent).toContain('Job Execution Details - Execution ID: 3');
+
+    de = fixture.debugElement.query(By.css('div'));
+    el = de.nativeElement;
+    expect(el.textContent).toContain('No Job Execution available.');
+  });
 });
