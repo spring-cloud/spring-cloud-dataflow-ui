@@ -396,3 +396,177 @@ export const JOBS_EXECUTIONS_1_STEPS_1 = {
   }
 };
 
+export const JOBS_EXECUTIONS_1_STEPS_1_PROGRESS = {
+  stepExecution: {
+    id: 1,
+    version: 3,
+    stepName: 'job1step1',
+    status: 'COMPLETED',
+    readCount: 0,
+    writeCount: 0,
+    commitCount: 1,
+    rollbackCount: 0,
+    readSkipCount: 0,
+    processSkipCount: 0,
+    writeSkipCount: 0,
+    startTime: '2017-08-21T07:25:05.028Z',
+    endTime: '2017-08-21T07:25:05.041Z',
+    lastUpdated: '2017-08-21T07:25:05.041Z',
+    executionContext: {
+      dirty: true,
+      empty: false,
+      values: [
+        {
+          'batch.taskletType': 'org.springframework.cloud.task.app.timestamp.batch.TimestampBatchTaskConfiguration$1'
+        },
+        {
+          'batch.stepType': 'org.springframework.batch.core.step.tasklet.TaskletStep'
+        }
+      ]
+    },
+    exitStatus: {
+      exitCode: 'COMPLETED',
+      exitDescription: '',
+      running: false
+    },
+    terminateOnly: false,
+    filterCount: 0,
+    failureExceptions: [],
+    skipCount: 0,
+    summary: 'StepExecution: id=1, version=3, name=job1step1, status=COMPLETED, exitStatus=COMPLETED, readCount=0, '
+    + 'filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0, commitCount=1, rollbackCount=0',
+    jobExecutionId: 1,
+    jobParameters: {
+      parameters: {
+        '-server.port': {
+          identifying: false,
+          value: '8981',
+          type: 'STRING'
+        },
+        '-spring.cloud.task.executionid': {
+          identifying: false,
+          value: '1',
+          type: 'STRING'
+        },
+        '-spring.jmx.default-domain': {
+          identifying: false,
+          value: 'timestampbatchtask-cc3dd5e9-69ca-4f91-bf2c-3361494626bd',
+          type: 'STRING'
+        },
+        '-spring.datasource.username': {
+          identifying: false,
+          value: 'sa',
+          type: 'STRING'
+        },
+        '-endpoints.jmx.unique-names': {
+          identifying: false,
+          value: 'true',
+          type: 'STRING'
+        },
+        '-spring.cloud.task.name': {
+          identifying: false,
+          value: 'timestampbatchtask',
+          type: 'STRING'
+        },
+        '-spring.datasource.driverClassName': {
+          identifying: false,
+          value: 'org.h2.Driver',
+          type: 'STRING'
+        },
+        '-spring.datasource.url': {
+          identifying: false,
+          value: 'jdbc:h2:tcp://localhost:19092/mem:dataflow',
+          type: 'STRING'
+        },
+        '-endpoints.shutdown.enabled': {
+          identifying: false,
+          value: 'true',
+          type: 'STRING'
+        }
+      },
+      empty: false
+    }
+  },
+  stepExecutionHistory: {
+    stepName: 'job1step1',
+    count: 1,
+    commitCount: {
+      count: 1,
+      min: 1,
+      max: 1,
+      standardDeviation: 0,
+      mean: 1
+    },
+    rollbackCount: {
+      count: 1,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    },
+    readCount: {
+      count: 1,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    },
+    writeCount: {
+      count: 1,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    },
+    filterCount: {
+      count: 1,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    },
+    readSkipCount: {
+      count: 1,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    },
+    writeSkipCount: {
+      count: 1,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    },
+    processSkipCount: {
+      count: 1,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    },
+    duration: {
+      count: 1,
+      min: 13,
+      max: 13,
+      standardDeviation: 0,
+      mean: 13
+    },
+    durationPerRead: {
+      count: 0,
+      min: 0,
+      max: 0,
+      standardDeviation: 0,
+      mean: 0
+    }
+  },
+  percentageComplete: 1,
+  finished: true,
+  duration: 13,
+  _links: {
+    self: {
+      href: 'http://localhost:9393/jobs/executions/1/steps/1'
+    }
+  }
+};

@@ -2,6 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ProgressbarModule } from 'ngx-bootstrap';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { JobsService } from '../jobs.service';
 import { MockJobsService } from '../../tests/mocks/jobs';
 import { MockActivatedRoute } from '../../tests/mocks/activated-route';
@@ -9,9 +12,7 @@ import { StepExecutionDetailsComponent } from './step-execution-details.componen
 import { JobExecutionStatusComponent } from '../components/job-execution-status.component';
 import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe';
 import { MapValuesPipe } from '../../shared/pipes/map-values-pipe.pipe';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { JOBS_EXECUTIONS_1_STEPS_1 } from '../../tests/mocks/mock-data';
+import { JOBS_EXECUTIONS_1_STEPS_1, JOBS_EXECUTIONS_1_STEPS_1_PROGRESS } from '../../tests/mocks/mock-data';
 import { MockToastyService } from '../../tests/mocks/toasty';
 
 describe('StepExecutionDetailsComponent', () => {
@@ -34,7 +35,8 @@ describe('StepExecutionDetailsComponent', () => {
         MapValuesPipe
       ],
       imports: [
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        ProgressbarModule.forRoot()
       ],
       providers: [
         { provide: JobsService, useValue: jobsService },
@@ -53,6 +55,8 @@ describe('StepExecutionDetailsComponent', () => {
 
   it('should be created', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
+    jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
@@ -60,6 +64,7 @@ describe('StepExecutionDetailsComponent', () => {
   it('should populate execution details', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
     jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
+    jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
 
     de = fixture.debugElement.query(By.css('h1'));
@@ -115,7 +120,9 @@ describe('StepExecutionDetailsComponent', () => {
 
   it('back should navigate to jobs executions', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
-    de = fixture.debugElement.query(By.css('button[type=button]'));
+    jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
+    jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
+    de = fixture.debugElement.query(By.css('button[id=back]'));
     el = de.nativeElement;
     const navigate = spyOn((<any>component).router, 'navigate');
     fixture.detectChanges();
@@ -124,14 +131,28 @@ describe('StepExecutionDetailsComponent', () => {
     expect(navigate).toHaveBeenCalledWith(['jobs/executions/1']);
   });
 
+  it('stats should navigate to step execution progress', () => {
+    activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
+    jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
+    de = fixture.debugElement.query(By.css('button[id=stats]'));
+    el = de.nativeElement;
+    const navigate = spyOn((<any>component).router, 'navigate');
+    fixture.detectChanges();
+    el.click();
+
+    expect(navigate).toHaveBeenCalledWith(['jobs/executions/1/1/progress']);
+  });
+
   it('should show No Step Execution available.', () => {
     activeRoute.testParams = {jobid: '1', stepid: '3'};
+    jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
     de = fixture.debugElement.query(By.css('h1'));
     el = de.nativeElement;
     expect(el.textContent).toContain('Step Execution Details - Step Execution ID: 3');
 
-    de = fixture.debugElement.query(By.css('div'));
+    de = fixture.debugElement.query(By.css('div[id=nostepexecution]'));
     el = de.nativeElement;
     expect(el.textContent).toContain('No Step Execution available.');
   });

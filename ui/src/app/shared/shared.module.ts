@@ -20,7 +20,7 @@ import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PropertyTableComponent } from './components/property-table/property-table.component';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule, ProgressbarModule } from 'ngx-bootstrap';
 import { TabComponent, TabsComponent } from './components/tabs.component';
 
 import { SharedAppsService } from '../shared/services/shared-apps.service';
@@ -52,7 +52,9 @@ const busyConfig: BusyConfig = {
     BusyModule.forRoot(busyConfig),
     ModalModule.forRoot(),
     NgxPaginationModule,
-    ToastyModule.forRoot() ],
+    ToastyModule.forRoot(),
+    ProgressbarModule.forRoot()
+  ],
   declarations: [
     CapitalizePipe,
     KeyValuePipe,
@@ -85,7 +87,8 @@ const busyConfig: BusyConfig = {
     SearchfilterPipe,
     TriStateCheckboxComponent,
     TriStateButtonComponent,
-    PropertyTableComponent
+    PropertyTableComponent,
+    ProgressbarModule
   ]
 })
 export class SharedModule { }

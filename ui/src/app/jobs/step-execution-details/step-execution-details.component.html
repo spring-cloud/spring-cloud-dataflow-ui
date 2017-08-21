@@ -1,5 +1,11 @@
 <h1>Step Execution Details - Step Execution ID: {{stepid}}</h1>
-<div *ngIf="!stepExecutionResource">No Step Execution available.</div>
+
+<div *ngIf="stepExecutionResource">
+  <h4 >Step Execution Progress</h4>
+  <progressbar [animate]="false" max="100" [value]="percentageComplete" type="success"><b>{{percentageComplete}}%</b></progressbar>
+</div>
+
+<div id="nostepexecution" *ngIf="!stepExecutionResource">No Step Execution available.</div>
 <table id="stepExecution" *ngIf="stepExecutionResource?.stepExecution" class="table table-hover">
   <thead>
     <tr>
@@ -92,8 +98,10 @@
   </tbody>
 </table>
 
-
-
-<div class="text-center">
-  <button type="button" class="btn btn-default" (click)="back()">Back</button>
+<div class="row">
+  <div class="col-md-24 text-center">
+    <button id="stats" class="btn btn-default" (click)="viewStepExecutionProgress(stepExecutionResource)" title="Details"><span class="glyphicon glyphicon-stats"></span></button>
+    <button id="refresh" class="btn btn-default" (click)="refresh()"><span class="glyphicon glyphicon-refresh"></span></button>
+    <button id="back" class="btn btn-default" (click)="back()">Back</button>
+  </div>
 </div>
