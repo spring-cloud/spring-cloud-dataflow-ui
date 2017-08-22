@@ -9,14 +9,14 @@ import { AboutDetailsComponent } from './about-details.component';
     {
       path: 'about',
       component: AboutComponent,
-      data:{
+      data: {
         authenticate: true
       }
     },
     {
       path: 'about/details',
       component: AboutDetailsComponent,
-      data:{
+      data: {
         authenticate: true
       }
     }

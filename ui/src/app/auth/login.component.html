@@ -25,8 +25,9 @@
             <div class="form-group">
               <label for="password" class="control-label">Password</label>
               <div class="input-wrapper">
-                 <input #password="ngModel" type="text" name="password" type="password" autofocus [(ngModel)]="user.password" required
+                <input #password="ngModel" type="text" name="password" type="password" autofocus [(ngModel)]="user.password" required
                           class="form-control" placeholder="&lt;Password&gt;">
+                <span class="glyphicon glyphicon-arrow-up form-control-feedback" appCapsLock></span>
                 <span class="help-block" *ngIf="password.invalid && password.touched">Please provide a valid password.</span>
               </div>
             </div>
