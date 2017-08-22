@@ -9,7 +9,7 @@
 <div class="tab-simple">
   <ul class="nav nav-tabs">
     <li role="presentation" routerLinkActive="active"><a routerLink="definitions">Definitions</a></li>
-    <li role="presentation" routerLinkActive="active"><a routerLink="create">Create Stream</a></li>
+    <li role="presentation" routerLinkActive="active" [appRoles]="['ROLE_CREATE']"><a routerLink="create">Create Stream</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane in active"><router-outlet></router-outlet></div>

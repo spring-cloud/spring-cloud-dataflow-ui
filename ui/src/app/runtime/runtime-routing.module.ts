@@ -6,7 +6,12 @@ import {RuntimeAppsComponent} from './runtime-apps.component';
     imports: [RouterModule.forChild([
         {
             path: 'runtime/apps',
-            component: RuntimeAppsComponent
+            component: RuntimeAppsComponent,
+            data: {
+              authenticate: true,
+              roles: ['ROLE_VIEW'],
+              feature: 'streamsEnabled'
+            },
         }
     ])],
     exports: [RouterModule]

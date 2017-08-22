@@ -10,10 +10,11 @@ import { AppsService } from './apps.service';
 import { AppsRoutingModule } from './apps-routing.module';
 
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   imports:      [
-    AppsRoutingModule, SharedModule,
+    AppsRoutingModule, SharedModule, AuthModule,
     AlertModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot()
   ],
   declarations: [

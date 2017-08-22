@@ -11,6 +11,7 @@ import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FloModule } from 'spring-flo';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { FloModule } from 'spring-flo';
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
     FloModule,
+    AuthModule
   ],
   declarations: [
     StreamsComponent,

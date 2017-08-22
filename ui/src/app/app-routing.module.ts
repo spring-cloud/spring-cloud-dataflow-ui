@@ -8,7 +8,6 @@ const routes: Routes = [
     redirectTo: 'apps'
   }
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]

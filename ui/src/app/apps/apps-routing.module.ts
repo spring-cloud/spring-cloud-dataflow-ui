@@ -5,12 +5,24 @@ import { AppsComponent } from './apps.component';
 import { AppsBulkImportComponent } from './apps-bulk-import.component';
 import { AppsRegisterComponent } from './apps-register/apps-register.component';
 import { AppDetailsComponent } from './app-details/app-details.component';
+import { AuthGuard } from '../auth/support/auth.guard';
 
 const appsRoutes: Routes = [
-  { path: 'apps', component: AppsComponent },
-  { path: 'apps/bulk-import-apps', component: AppsBulkImportComponent },
-  { path: 'apps/register-apps', component: AppsRegisterComponent },
-  { path: 'apps/:appType/:appName', component: AppDetailsComponent }
+  {
+    path: 'apps',
+    canActivate: [AuthGuard],
+    data: {
+      authenticate: true,
+      roles: ['ROLE_VIEW'],
+      feature: 'appsEnabled'
+    },
+    children: [
+      { path: '', component: AppsComponent },
+      { path: 'bulk-import-apps', component: AppsBulkImportComponent },
+      { path: 'register-apps', component: AppsRegisterComponent },
+      { path: ':appType/:appName', component: AppDetailsComponent }
+    ]
+  }
 ];
 
 @NgModule({

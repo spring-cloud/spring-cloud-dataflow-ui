@@ -4,7 +4,7 @@
       <table class="col-lg-24 tab-content-header" [ngBusy]="busy">
         <tr>
           <td class="col-xs-12">
-            <button type="button" (click)="bulkDefineTasks()"
+            <button type="button" [appRoles]="['ROLE_CREATE']" (click)="bulkDefineTasks()"
                     class="btn btn-default">
               <span class="glyphicon glyphicon-import"></span>
               <span class="hidden-xs">Bulk Define Tasks</span>
@@ -44,7 +44,7 @@
           <span class="glyphicon glyphicon-play"></span>
           Launch
         </button>
-        <button type="button" (click)="destroyTask(item)"
+        <button type="button" [appRoles]="['ROLE_CREATE']" (click)="destroyTask(item)"
                 class="btn btn-default" title="Destroy">
           <span class="glyphicon glyphicon-remove"></span>
           Destroy

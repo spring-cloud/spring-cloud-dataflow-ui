@@ -11,6 +11,11 @@ const streamRoutes: Routes = [
   {
     path: 'streams',
     component: StreamsComponent,
+    data: {
+      authenticate: true,
+      roles: ['ROLE_VIEW'],
+      feature: 'streamsEnabled'
+    },
     children: [
       {
           path: '',
