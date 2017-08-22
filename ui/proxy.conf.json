@@ -4,12 +4,27 @@
         "secure": false,
         "logLevel": "debug"
     },
+    "/authenticate" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
     "/apps" : {
         "target": "http://localhost:9393/",
         "secure": false,
         "logLevel": "debug"
     },
+    "/dashboard/logout" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
     "/jobs" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
+    "/security/info" : {
         "target": "http://localhost:9393/",
         "secure": false,
         "logLevel": "debug"

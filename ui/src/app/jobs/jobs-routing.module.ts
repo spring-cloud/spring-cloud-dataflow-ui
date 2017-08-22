@@ -11,7 +11,12 @@ import { StepExecutionProgressComponent } from './step-execution-progress/step-e
     {
       path: 'jobs',
       pathMatch: 'full',
-      redirectTo: 'jobs/executions'
+      redirectTo: 'jobs/executions',
+      data: {
+        authenticate: true,
+        roles: ['ROLE_VIEW'],
+        feature: 'tasksEnabled'
+      }
     },
     { path: 'jobs/executions', component: JobsComponent },
     { path: 'jobs/executions/:id', component: JobExecutionDetailsComponent },

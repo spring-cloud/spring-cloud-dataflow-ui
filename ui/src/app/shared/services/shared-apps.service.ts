@@ -20,21 +20,25 @@ export class SharedAppsService {
   constructor(private http: Http, private errorHandler: ErrorHandler) {
   }
 
+  /**
+   * Returns a paged list of {@link AppRegistrations}s.
+   */
   getApps(pageRequest: PageRequest, type?: ApplicationType): Observable<Page<AppRegistration>> {
       const params = HttpUtils.getPaginationParams(pageRequest.page, pageRequest.size);
-      const requestOptionsArgs: RequestOptionsArgs = {};
+      const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
       if (type) {
         params.append('type', ApplicationType[type]);
       }
-
-      return this.http.get(SharedAppsService.appsUrl, { search: params })
+      requestOptionsArgs.search = params;
+      return this.http.get(SharedAppsService.appsUrl, requestOptionsArgs)
                       .map(this.extractData.bind(this))
                       .catch(this.errorHandler.handleError);
   }
 
   private extractData(response: Response): Page<AppRegistration> {
     const body = response.json();
+    console.log(response);
     let items: AppRegistration[];
     if (body._embedded && body._embedded.appRegistrationResourceList) {
       items = body._embedded.appRegistrationResourceList as AppRegistration[];

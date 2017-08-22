@@ -6,8 +6,20 @@ import { AboutDetailsComponent } from './about-details.component';
 
 @NgModule({
   imports: [RouterModule.forChild([
-    { path: 'about', component: AboutComponent },
-    { path: 'about/details', component: AboutDetailsComponent }
+    {
+      path: 'about',
+      component: AboutComponent,
+      data:{
+        authenticate: true
+      }
+    },
+    {
+      path: 'about/details',
+      component: AboutDetailsComponent,
+      data:{
+        authenticate: true
+      }
+    }
   ])],
   exports: [RouterModule]
 })

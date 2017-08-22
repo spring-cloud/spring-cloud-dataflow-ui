@@ -16,6 +16,11 @@ const taskRoutes: Routes = [
   {
     path: 'tasks',
     component: TasksComponent,
+    data: {
+      authenticate: true,
+      roles: ['ROLE_VIEW'],
+      feature: 'tasksEnabled'
+    },
     children: [
       {
           path: '',
