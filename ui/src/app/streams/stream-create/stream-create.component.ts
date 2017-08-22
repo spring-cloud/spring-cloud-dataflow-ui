@@ -12,7 +12,8 @@ export class StreamCreateComponent implements OnInit {
 
   dsl : string;
 
-  private editorContext : Flo.EditorContext;
+  editorContext : Flo.EditorContext;
+
   private metamodel = new Metamodel();
 
   paletteSize = 170;
