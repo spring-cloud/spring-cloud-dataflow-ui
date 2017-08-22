@@ -27,7 +27,7 @@
     "core-js": "^2.4.1",
     "rxjs": "^5.4.2",
     "zone.js": "^0.8.14",
-
+    "spring-flo": "git://github.com/spring-projects/spring-flo.git#master",
     "tixif-ngx-busy": "0.0.5",
     "bootstrap-sass": "^3.3.7",
     "moment": "^2.18.1",

@@ -1,3 +1,7 @@
-<p>
-  This is in under development. We would love to hear feedback on the other available tabs/views.
-</p>
+<div id="flo-container">
+  <flo-editor (floApi)="editorContext = $event" [metamodel]="metamodel" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="20">
+    <div class="flow-definition-container">
+      <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true" (blur)="editorContext.graphToTextSync=true" (focus)="editorContext.graphToTextSync=false" placeholder="Enter stream definition..."></dsl-editor>
+    </div>
+  </flo-editor>
+</div>

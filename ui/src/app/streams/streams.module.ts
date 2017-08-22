@@ -10,6 +10,7 @@ import { StreamDeployComponent } from './stream-deploy/stream-deploy.component';
 import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FloModule } from 'spring-flo';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     AlertModule.forRoot(),
     ModalModule.forRoot(),
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    FloModule,
   ],
   declarations: [
     StreamsComponent,
