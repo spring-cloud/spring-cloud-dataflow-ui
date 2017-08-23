@@ -71,7 +71,14 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
 
   submitTaskDefinition() {
     const def = this.calculateDefinition();
-    this.tasksService.createDefinition(def, this.definitionName.value).subscribe();
+    this.tasksService.createDefinition(def, this.definitionName.value).subscribe(
+      data => {
+        this.toastyService.success('Task definition create requested');
+      },
+      error => {
+        this.toastyService.error(error);
+      }
+    );
     this.router.navigate(['tasks/definitions']);
   }
 
