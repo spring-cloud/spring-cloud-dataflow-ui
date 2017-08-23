@@ -32,6 +32,8 @@ export class RolesDirective implements AfterViewInit, DoCheck {
       } else {
         console.log('Needed one for the following roles ' + this.appRoles + '. Found: ' + found);
       }
+    } else {
+      found = true;
     }
 
     if (found) {

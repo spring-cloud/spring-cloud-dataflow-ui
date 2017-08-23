@@ -28,18 +28,29 @@ export class AuthService {
 
   loadSecurityInfo(reconstituteSecurity = false): Observable<SecurityInfo> {
     console.log(`Loading SecurityInfo - Reconstitute security? ${reconstituteSecurity}`);
+    const requestOptions: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
 
     if (reconstituteSecurity) {
       const xAuthToken = this.retrievePersistedXAuthToken();
       if (xAuthToken) {
-        const o: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
-        o.xAuthToken = xAuthToken;
-        console.log('o.xAuthToken', o.xAuthToken);
+        requestOptions.xAuthToken = xAuthToken;
+        console.log('o.xAuthToken', requestOptions.xAuthToken);
       }
     }
 
     return this.http.get(this.securityInfoUrl)
-                    .map(this.extractData.bind(this))
+                    .map(response => {
+                      const body = response.json();
+                      this.securityInfo = new SecurityInfo().deserialize(body);
+                      console.log('SecurityInfo:', this.securityInfo);
+
+                      if (!this.securityInfo.isAuthenticationEnabled
+                        && requestOptions.xAuthToken) {
+                        requestOptions.xAuthToken = undefined;
+                        this.deletePersistedXAuthToken();
+                      }
+                      return this.securityInfo;
+                    })
                     .catch(this.errorHandler.handleError);
   }
 
@@ -47,21 +58,21 @@ export class AuthService {
     console.log('loadSecurityInfo');
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post(this.authenticationUrl, loginRequest, options)
-                    .map(this.extractData.bind(this))
+                    .map(response => {
+                      return response.json() as string;
+                    })
                     .flatMap((id: string) => {
                       console.log('Logging you in ...', this.options);
-    const o: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
-    o.xAuthToken = id;
-    this.persistXAuthToken(id);
-
-                      console.log(id);
+                      const o: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
+                      o.xAuthToken = id;
+                      this.persistXAuthToken(id);
                       return this.loadSecurityInfo();
                     })
                     .catch(this.errorHandler.handleError);
   }
 
   logout(): Observable<SecurityInfo> {
-    console.log('loadSecurityInfo');
+    console.log('Logging out ...');
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.get(this.logoutUrl, options)
                     .map(response => {
@@ -78,9 +89,7 @@ export class AuthService {
   }
 
   private retrievePersistedXAuthToken(): string {
-
     const token = sessionStorage.getItem('xAuthToken');
-
     if (token) {
       return JSON.parse(token);
     }
@@ -96,16 +105,10 @@ export class AuthService {
     sessionStorage.removeItem('xAuthToken');
   }
 
-  private extractData(res: Response): SecurityInfo {
+  private extractSecurityInfo(res: Response): SecurityInfo {
     const body = res.json();
-    this.securityInfo = new SecurityInfo(
-      body.authenticationEnabled,
-      body.authorizationEnabled,
-      body.formLogin,
-      body.authenticated,
-      body.username,
-      body.roles as string[]);
+    this.securityInfo = new SecurityInfo().deserialize(body);
     console.log('SecurityInfo:', this.securityInfo);
-    return body;
+    return this.securityInfo;
   }
 }

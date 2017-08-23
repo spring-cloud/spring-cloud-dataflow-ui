@@ -21,11 +21,16 @@ export class AuthGuard implements CanActivate {
    * @param state
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log('Determining authorizations ... ', route.data);
 
     const securityInfo = this.authService.securityInfo;
     const routeNeedsAuthentication = route.data.authenticate;
     const rolesNeeded: string[] = route.data.roles;
+
+    if (securityInfo.isAuthenticationEnabled) {
+      console.log(`Determining authorizations ... ` +
+        `[authentication enabled: ${securityInfo.isAuthenticationEnabled}, ` +
+        `authorization enabled: ${securityInfo.isAuthorizationEnabled}]`, route.data);
+    }
 
     if (securityInfo.isAuthenticationEnabled && routeNeedsAuthentication && !securityInfo.isAuthenticated) {
       this.router.navigate(['login'], { queryParams: { 'returnUrl': state.url }});

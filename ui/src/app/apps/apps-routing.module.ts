@@ -10,17 +10,19 @@ import { AuthGuard } from '../auth/support/auth.guard';
 const appsRoutes: Routes = [
   {
     path: 'apps',
-    component: AppsComponent,
     canActivate: [AuthGuard],
     data: {
       authenticate: true,
       roles: ['ROLE_VIEW'],
       feature: 'appsEnabled'
-    }
-  },
-  { path: 'apps/bulk-import-apps', component: AppsBulkImportComponent },
-  { path: 'apps/register-apps', component: AppsRegisterComponent },
-  { path: 'apps/:appType/:appName', component: AppDetailsComponent }
+    },
+    children: [
+      { path: '', component: AppsComponent },
+      { path: 'bulk-import-apps', component: AppsBulkImportComponent },
+      { path: 'register-apps', component: AppsRegisterComponent },
+      { path: ':appType/:appName', component: AppDetailsComponent }
+    ]
+  }
 ];
 
 @NgModule({

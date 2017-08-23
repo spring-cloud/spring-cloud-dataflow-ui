@@ -9,6 +9,11 @@ import { SecurityInfo } from './model/security-info.model';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 
+/**
+ * Handles application logins.
+ *
+ * @author Gunnar Hillert
+ */
 @Component({
   templateUrl: './login.component.html',
 })
@@ -30,22 +35,24 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * login
+   * Handles the login form submission.
    */
   public login() {
+    let returnUrl;
+    if (this.route.snapshot.queryParams && this.route.snapshot.queryParams['returnUrl']) {
+      returnUrl = this.route.snapshot.queryParams['returnUrl'];
+    } else {
+      returnUrl = '';
+    }
     this.busy = this.authService.login(this.user).subscribe(
       result => {
-
-        let returnUrl;
-
-        if (this.route.queryParams && this.route.queryParams['returnUrl']) {
-          returnUrl = this.route.queryParams['returnUrl'];
-        } else {
-          returnUrl = '';
-        }
-
         if (result.isAuthenticated) {
+          console.log(`Login successful, using return Url: ${returnUrl}`);
           this.router.navigate([returnUrl]);
+        }
+        else {
+          console.error('Something went wrong.', result);
+          this.toastyService.error('Not logged in.');
         }
       },
       error => {

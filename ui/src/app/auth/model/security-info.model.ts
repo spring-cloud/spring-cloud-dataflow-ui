@@ -1,9 +1,10 @@
+import { Serializable } from '../../shared/model';
 /**
  * Contains meta data about the state of security.
  *
  * @author Gunnar Hillert
  */
-export class SecurityInfo {
+export class SecurityInfo implements Serializable<SecurityInfo> {
 
   public isAuthenticationEnabled = true;
   public isAuthorizationEnabled = true;
@@ -12,20 +13,7 @@ export class SecurityInfo {
   public username = '';
   public roles: string[] = [];
 
-  constructor(
-    authenticationEnabled: boolean,
-    authorizationEnabled: boolean,
-    formLogin: boolean,
-    authenticated: boolean,
-    username: string,
-    roles: string[]
-  ) {
-    this.isAuthenticationEnabled = authenticationEnabled;
-    this.isAuthorizationEnabled = authorizationEnabled;
-    this.isFormLogin = formLogin;
-    this.isAuthenticated = authenticated;
-    this.username = username;
-    this.roles = roles;
+  constructor() {
   }
 
   /**
@@ -38,6 +26,16 @@ export class SecurityInfo {
     this.isAuthenticated = false;
     this.username = '';
     this.roles = [];
+  }
+
+  public deserialize(input) {
+    this.isAuthenticationEnabled = input.authenticationEnabled,
+    this.isAuthorizationEnabled = input.authorizationEnabled,
+    this.isFormLogin = input.formLogin,
+    this.isAuthenticated = input.authenticated,
+    this.username = input.username,
+    this.roles = input.roles as string[];
+    return this;
   }
 
   /**
