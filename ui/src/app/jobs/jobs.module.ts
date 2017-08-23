@@ -8,6 +8,7 @@ import { JobExecutionStatusComponent } from './components/job-execution-status.c
 import { DefinitionStatusComponent } from './components/definition-status.component';
 import { JobExecutionDetailsComponent } from './job-execution-details/job-execution-details.component';
 import { StepExecutionDetailsComponent } from './step-execution-details/step-execution-details.component';
+import { StepExecutionProgressComponent } from './step-execution-progress/step-execution-progress.component';
 
 @NgModule({
   imports:      [ JobsRoutingModule, SharedModule ],
@@ -16,7 +17,8 @@ import { StepExecutionDetailsComponent } from './step-execution-details/step-exe
     JobExecutionStatusComponent,
     DefinitionStatusComponent,
     JobExecutionDetailsComponent,
-    StepExecutionDetailsComponent
+    StepExecutionDetailsComponent,
+    StepExecutionProgressComponent
   ],
   providers:    [ JobsService ]
 })
