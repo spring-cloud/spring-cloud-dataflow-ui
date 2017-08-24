@@ -1,20 +1,21 @@
-import {StreamCreateComponent} from './stream-create.component';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MockActivatedRoute} from '../../tests/mocks/activated-route';
+
+
+import {StreamDetailsComponent} from './stream-details.component';
 import {MockStreamsService} from '../../tests/mocks/streams';
+import {MockActivatedRoute} from '../../tests/mocks/activated-route';
 import {RouterTestingModule} from '@angular/router/testing';
 import {StreamsService} from '../streams.service';
 import {ActivatedRoute} from '@angular/router';
-import { FloModule} from 'spring-flo';
 
 /**
- * Test {@link StreamCreateComponent}.
+ * Test {@link StreamDetailsComponent}.
  *
  * @author Glenn Renfro
  */
-describe('StreamCreateComponent', () => {
-  let component: StreamCreateComponent;
-  let fixture: ComponentFixture<StreamCreateComponent>;
+describe('StreamDetailsComponent', () => {
+  let component: StreamDetailsComponent;
+  let fixture: ComponentFixture<StreamDetailsComponent>;
   let activeRoute: MockActivatedRoute;
   const streamsService = new MockStreamsService();
   const commonTestParams = { id: '1' };
@@ -24,11 +25,10 @@ describe('StreamCreateComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        StreamCreateComponent
+        StreamDetailsComponent
       ],
       imports: [
-        RouterTestingModule.withRoutes([]),
-        FloModule
+        RouterTestingModule.withRoutes([])
       ],
       providers: [
         {provide: StreamsService, useValue: streamsService},
@@ -40,7 +40,7 @@ describe('StreamCreateComponent', () => {
 
   beforeEach(() => {
     activeRoute.testParams = commonTestParams;
-    fixture = TestBed.createComponent(StreamCreateComponent);
+    fixture = TestBed.createComponent(StreamDetailsComponent);
     component = fixture.componentInstance;
   });
 

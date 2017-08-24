@@ -18,6 +18,7 @@ export class MockActivatedRoute {
   private _testParams: {};
   private subject = new BehaviorSubject(this.testParams);
   params = this.subject.asObservable();
+  snapshot = {};
 
   get testParams() {
     return this._testParams;
