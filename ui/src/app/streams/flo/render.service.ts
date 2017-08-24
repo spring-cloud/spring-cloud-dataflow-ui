@@ -15,7 +15,7 @@
  */
 
 import './shapes';
-import { IMAGE_W, IMAGE_H, HORIZONTAL_PADDING } from './shapes';
+import { IMAGE_W, HORIZONTAL_PADDING } from './shapes';
 import { Injectable } from '@angular/core';
 import { ApplicationType } from '../../shared/model/application-type';
 import { MetamodelService } from './metamodel.service';
