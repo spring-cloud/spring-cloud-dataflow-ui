@@ -49,8 +49,7 @@ export class LoginComponent implements OnInit {
         if (result.isAuthenticated) {
           console.log(`Login successful, using return Url: ${returnUrl}`);
           this.router.navigate([returnUrl]);
-        }
-        else {
+        } else {
           console.error('Something went wrong.', result);
           this.toastyService.error('Not logged in.');
         }

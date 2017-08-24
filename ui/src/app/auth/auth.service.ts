@@ -10,12 +10,23 @@ import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';
 import { SecurityAwareRequestOptions } from './support/security-aware-request-options';
 
+/**
+ * The AuthService deals with all security-related services:
+ *
+ * - Login
+ * - Logout
+ * - Loading of security meta-information
+ *
+ * @author Gunnar Hillert
+ */
 @Injectable()
 export class AuthService {
 
   private securityInfoUrl = '/security/info';
   private authenticationUrl = '/authenticate';
   private logoutUrl = '/dashboard/logout';
+
+  private readonly xAuthTokenKeyName = 'xAuthToken';
 
   public securityInfo: SecurityInfo;
 
@@ -26,6 +37,14 @@ export class AuthService {
     console.log('Constructing authService');
   }
 
+  /**
+   * Loading of security meta-information. E.g. used upon booting
+   * up the application in order to determine whether security (login)
+   * is needed.
+   *
+   * @param reconstituteSecurity Shall the logged-in security state
+   * be restored from a potentially persisted 'xAuthToken'.
+   */
   loadSecurityInfo(reconstituteSecurity = false): Observable<SecurityInfo> {
     console.log(`Loading SecurityInfo - Reconstitute security? ${reconstituteSecurity}`);
     const requestOptions: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
@@ -54,8 +73,17 @@ export class AuthService {
                     .catch(this.errorHandler.handleError);
   }
 
+  /**
+   * Logs in a user based on the provided {@link LoginRequest}. If the login
+   * was successful, the retrieved xAuthToken will be persisted (Session
+   * Storage) and the the xAuthToken will also be set in
+   * {@link SecurityAwareRequestOptions}. Upon login a {@link SecurityInfo}
+   * will be returned.
+   *
+   * @param loginRequest The login-request holding username and password
+   */
   login(loginRequest: LoginRequest): Observable<SecurityInfo> {
-    console.log('loadSecurityInfo');
+    console.log(`Logging in user ${loginRequest.username}.`);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post(this.authenticationUrl, loginRequest, options)
                     .map(response => {
@@ -71,6 +99,10 @@ export class AuthService {
                     .catch(this.errorHandler.handleError);
   }
 
+  /**
+   * Logs out the user. Upon logout a {@link SecurityInfo} will be
+   * returned.
+   */
   logout(): Observable<SecurityInfo> {
     console.log('Logging out ...');
     const options = HttpUtils.getDefaultRequestOptions();
@@ -89,7 +121,7 @@ export class AuthService {
   }
 
   private retrievePersistedXAuthToken(): string {
-    const token = sessionStorage.getItem('xAuthToken');
+    const token = sessionStorage.getItem(this.xAuthTokenKeyName);
     if (token) {
       return JSON.parse(token);
     }
@@ -98,17 +130,10 @@ export class AuthService {
   }
 
   private persistXAuthToken(token: string) {
-    sessionStorage.setItem('xAuthToken', JSON.stringify(token));
+    sessionStorage.setItem(this.xAuthTokenKeyName, JSON.stringify(token));
   }
 
   private deletePersistedXAuthToken() {
-    sessionStorage.removeItem('xAuthToken');
-  }
-
-  private extractSecurityInfo(res: Response): SecurityInfo {
-    const body = res.json();
-    this.securityInfo = new SecurityInfo().deserialize(body);
-    console.log('SecurityInfo:', this.securityInfo);
-    return this.securityInfo;
+    sessionStorage.removeItem(this.xAuthTokenKeyName);
   }
 }

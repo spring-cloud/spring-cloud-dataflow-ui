@@ -38,7 +38,6 @@ export class SharedAppsService {
 
   private extractData(response: Response): Page<AppRegistration> {
     const body = response.json();
-    console.log(response);
     let items: AppRegistration[];
     if (body._embedded && body._embedded.appRegistrationResourceList) {
       items = body._embedded.appRegistrationResourceList as AppRegistration[];

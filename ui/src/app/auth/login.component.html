@@ -2,40 +2,47 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-8">
         <h1 [ngBusy]="busy">Login</h1>
-        <p *ngIf="!securityInfo.isAuthenticated"> 
+        <p *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated">
           Please sign in
         </p>
-        <p *ngIf="securityInfo.isAuthenticated"> 
+        <p *ngIf="securityInfo.isAuthenticated">
           Please sign out first
+        </p>
+        <p *ngIf="!securityInfo.isAuthenticationEnabled">
+          No need to login, authentication is not enabled.
         </p>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-8 col-md-offset-8" *ngIf="!securityInfo.isAuthenticated">
-          <form #loginForm="ngForm" name="loginForm" role="form" (ngSubmit)="login()" novalidate>
-            <div class="form-group">
-              <label for="username" class="control-label">Username</label>
-              <div class="input-wrapper">
-                <input #username="ngModel" type="text" name="username" autofocus [(ngModel)]="user.username" required
-                          class="form-control" placeholder="&lt;Username&gt;">
-                <span class="help-block" *ngIf="username.invalid && username.touched">Please provide a valid username.</span>
-              </div>
+      <div class="col-md-8 col-md-offset-8"
+        *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated">
+        <form #loginForm="ngForm" name="loginForm" role="form" (ngSubmit)="login()" novalidate>
+          <div class="form-group">
+            <label for="username" class="control-label">Username</label>
+            <div class="input-wrapper">
+              <input #username="ngModel" type="text" name="username" autofocus [(ngModel)]="user.username" required
+                     class="form-control" placeholder="&lt;Username&gt;">
+              <span class="help-block" *ngIf="username.invalid && username.touched">Please provide a valid username.</span>
             </div>
-            <div class="form-group">
-              <label for="password" class="control-label">Password</label>
-              <div class="input-wrapper">
-                <input #password="ngModel" type="text" name="password" type="password" autofocus [(ngModel)]="user.password" required
-                          class="form-control" placeholder="&lt;Password&gt;">
-                <span class="glyphicon glyphicon-arrow-up form-control-feedback" appCapsLock></span>
-                <span class="help-block" *ngIf="password.invalid && password.touched">Please provide a valid password.</span>
-              </div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="control-label">Password</label>
+            <div class="input-wrapper">
+              <input #password="ngModel" type="text" name="password" type="password" autofocus [(ngModel)]="user.password" required
+                     class="form-control" placeholder="&lt;Password&gt;">
+              <span class="glyphicon glyphicon-arrow-up form-control-feedback" appCapsLock></span>
+              <span class="help-block" *ngIf="password.invalid && password.touched">Please provide a valid password.</span>
             </div>
-            <button class="btn btn-lg btn-default btn-block" type="submit" [disabled]="loginForm.invalid">Sign in</button>
-          </form>
+          </div>
+          <button class="btn btn-lg btn-default btn-block" type="submit" [disabled]="loginForm.invalid">Sign in</button>
+        </form>
       </div>
       <div class="col-md-8 col-md-offset-8" *ngIf="securityInfo.isAuthenticated">
         <a class="btn btn-lg btn-default btn-block" routerLink="../logout">Sign out</a>
+      </div>
+      <div class="col-md-8 col-md-offset-8" *ngIf="!securityInfo.isAuthenticationEnabled">
+        <a class="btn btn-lg btn-default btn-block" routerLink="">Back to the app</a>
       </div>
     </div>
 </div>

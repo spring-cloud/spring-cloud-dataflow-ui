@@ -13,6 +13,11 @@ export class CapsLockDirective implements AfterViewInit {
 
   @Output() appCapsLock = new EventEmitter<boolean>();
 
+  /**
+   * '20' is the non-printable key (function key): "CapsLock"
+   */
+  private readonly capsLockKeyCode = 20;
+
   constructor(private elem: ElementRef, private renderer: Renderer2) {
   }
 
@@ -28,7 +33,7 @@ export class CapsLockDirective implements AfterViewInit {
 
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
-    if (event.which === 20) {
+    if (event.which === this.capsLockKeyCode) {
       const capsOn = this.getCapsLockState(event);
 
       if (capsOn) {
@@ -43,14 +48,12 @@ export class CapsLockDirective implements AfterViewInit {
 
   @HostListener('window:keyup', ['$event'])
   onKeyUp(event: KeyboardEvent): void {
-    console.log('>>>>>>', event);
-    if (event.which === 20) {
+    if (event.which === this.capsLockKeyCode) {
       const capsOn = this.getCapsLockState(event);
 
       if (!capsOn) {
         this.renderer.setStyle(this.elem.nativeElement, 'display', 'none');
       }
-
       this.appCapsLock.emit(capsOn);
     }
   }

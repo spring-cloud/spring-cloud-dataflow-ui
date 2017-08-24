@@ -4,9 +4,9 @@ DoCheck, Renderer2 } from '@angular/core';
 import { AuthService } from '../auth.service';
 
 /**
- * This directive is a helper for any situation where you need
- * to close pop-overs etc. by means of clicking outside of the
- * element.
+ * This directive will show or hide the element depending whether
+ * any of the specified roles matches the roles assigned to "securityInfo"
+ * in {@link AuthService}.
  *
  * @author Gunnar Hillert
  */
@@ -42,14 +42,19 @@ export class RolesDirective implements AfterViewInit, DoCheck {
       this.renderer.setStyle(this.elem.nativeElement, 'display', 'none');
     }
   }
+
   /**
-   * Initializes the state of the tri-state checkbox after component is initialized.
+   * Initializes the state element and calls checkRoles().
    */
   ngAfterViewInit() {
     this.checkRoles();
   }
 
-   ngDoCheck() {
+  /**
+   * Called when Angular dirty checks a directive.
+   * Will in return call checkRoles().
+   */
+  ngDoCheck() {
     this.checkRoles();
   }
 }
