@@ -12,6 +12,7 @@ import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FloModule } from 'spring-flo';
 import { MetamodelService } from './flo/metamodel.service';
+import { RenderService } from './flo/render.service';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { MetamodelService } from './flo/metamodel.service';
   ],
   providers: [
       StreamsService,
-      MetamodelService
+      MetamodelService,
+      RenderService
   ]
 })
 export class StreamsModule { }

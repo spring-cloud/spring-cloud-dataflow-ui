@@ -21,21 +21,8 @@ import { AppRegistration, ErrorHandler, Page } from '../../shared/model';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { ApplicationType } from '../../shared/model/application-type';
 import { convertGraphToText } from './graph-to-text';
-
-
-
-
 // import { convertGrasphToText } from './graph-to-text';
 
-// Default icons (unicode chars) for each group member, unless they override
-const groupIcons = new Map<string, string>()
-    .set('source', '⤇')// 2907
-    .set('processor', 'λ') // 3bb  //flux capacitor? 1D21B
-    .set('sink', '⤇') // 2907
-    .set('task', '☉')//2609   ⚙=2699 gear (rubbish)
-    .set('destination', '⦂') // 2982
-    .set('tap', '⦂') // 2982
-;
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
