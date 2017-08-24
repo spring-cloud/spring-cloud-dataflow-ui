@@ -570,3 +570,87 @@ export const JOBS_EXECUTIONS_1_STEPS_1_PROGRESS = {
     }
   }
 };
+
+export const RUNTIME_APPS = {
+  _embedded: {
+    appStatusResourceList: [
+      {
+        deploymentId: 'foostream.log',
+        state: 'deployed',
+        instances: {
+          _embedded: {
+            appInstanceStatusResourceList: [
+              {
+                instanceId: 'foostream.log-0',
+                state: 'deployed',
+                attributes: {
+                  guid: '36395',
+                  pid: '18337',
+                  port: '36395',
+                  stderr: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log/stderr_0.log',
+                  stdout: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log/stdout_0.log',
+                  url: 'http://127.0.1.1:36395',
+                  'working.dir': '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log'
+                },
+                _links: {
+                  self: {
+                    href: 'http://localhost:9393/runtime/apps/foostream.log/instances/foostream.log-0'
+                  }
+                }
+              }
+            ]
+          }
+        },
+        _links: {
+          self: {
+            href: 'http://localhost:9393/runtime/apps/foostream.log'
+          }
+        }
+      },
+      {
+        deploymentId: 'foostream.time',
+        state: 'deployed',
+        instances: {
+          _embedded: {
+            appInstanceStatusResourceList: [
+              {
+                instanceId: 'foostream.time-0',
+                state: 'deployed',
+                attributes: {
+                  guid: '49401',
+                  pid: '18395',
+                  port: '49401',
+                  stderr: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time/stderr_0.log',
+                  stdout: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time/stdout_0.log',
+                  url: 'http://127.0.1.1:49401',
+                  'working.dir': '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time'
+                },
+                _links: {
+                  self: {
+                    href: 'http://localhost:9393/runtime/apps/foostream.time/instances/foostream.time-0'
+                  }
+                }
+              }
+            ]
+          }
+        },
+        _links: {
+          self: {
+            href: 'http://localhost:9393/runtime/apps/foostream.time'
+          }
+        }
+      }
+    ]
+  },
+  _links: {
+    self: {
+      href: 'http://localhost:9393/runtime/apps?page=0&size=10'
+    }
+  },
+  page: {
+    size: 10,
+    totalElements: 2,
+    totalPages: 1,
+    number: 0
+  }
+};
