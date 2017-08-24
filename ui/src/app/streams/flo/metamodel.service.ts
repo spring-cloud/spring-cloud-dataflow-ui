@@ -19,6 +19,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { AppRegistration, ErrorHandler, Page } from '../../shared/model';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
+import { ApplicationType } from '../../shared/model/application-type';
+import { convertGraphToText } from './graph-to-text';
+
 
 
 
@@ -64,8 +67,7 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     graphToText(flo: Flo.EditorContext) : Promise<string> {
-        //TODO: Implement this
-        return Promise.resolve('');
+        return Promise.resolve(convertGraphToText(flo.getGraph()));
     }
 
     subscribe(listener: Flo.MetamodelListener) {
@@ -102,13 +104,47 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     refresh(): Promise<Map<string, Map<string, Flo.ElementMetadata>>> {
-        this.appsService.getApps({page: 0, size: 1000}).subscribe(
-            data => {
+        let metamodel = new Map<string, Map<string, Flo.ElementMetadata>>();
+        return new Promise(resolve => {
+            this.appsService.getApps({page: 0, size: 1000}).subscribe(
+                data => {
+                    data.items.filter(item => {
+                        return item.type.toString() === ApplicationType[ApplicationType.source]
+                        || item.type.toString() === ApplicationType[ApplicationType.processor]
+                        || item.type.toString() === ApplicationType[ApplicationType.sink];
+                    }).forEach(item => {
+
+                        if (!metamodel.has(item.type.toString())) {
+                            metamodel.set(item.type.toString(), new Map<string, Flo.ElementMetadata>());
+                        }
+                        let group : Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
+                        if (group.has(item.name)) {
+                            console.error(`Group '${item.type}' has duplicate element '${item.name}'`);
+                        } else {
+                            group.set(item.name, this.createEntry(item.type, item.name));
+                        }
+                    });
+                    resolve(metamodel);
+                },
+                error => {
+                    console.error(error);
+                    resolve(metamodel);
+                }
+            );
+        });
+    }
+
+    private createEntry(type : ApplicationType, name) : Flo.ElementMetadata {
+        return {
+            group: type.toString(),
+            name: name,
+            get(property: String): Promise<Flo.PropertyMetadata> {
+                return Promise.resolve(null);
             },
-            error => {
+            properties(): Promise<Array<Flo.PropertyMetadata>> {
+                return Promise.resolve([]);
             }
-        );
-        return Promise.resolve(new Map());
+        }
     }
 
 }
