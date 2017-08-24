@@ -5,12 +5,12 @@
         <tr>
           <td class="col-xs-12">
             <button type="button" (click)="expandPage()"
-                    class="btn btn-default">
+                    class="btn btn-default"  id="expandAll">
               <span class="glyphicon glyphicon-collapse-down"></span>
               <span class="hidden-xs">Expand All</span>
             </button>
             <button type="button" (click)="collapsePage()"
-                    class="btn btn-default">
+                    class="btn btn-default"  id="collapseAll">
               <span class="glyphicon glyphicon-expand"></span>
               <span class="hidden-xs">Collapse All</span>
             </button>
@@ -29,7 +29,7 @@
   </div>
 </div>
 <div *ngIf="!streamDefinitions">No streams available.</div>
-<table *ngIf="streamDefinitions?.items" class="table table-hover">
+<table *ngIf="streamDefinitions?.items" class="table table-hover" id="streamDefinitionsTable">
   <thead>
     <tr>
       <th style="width: 20px"></th>

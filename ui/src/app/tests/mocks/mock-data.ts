@@ -654,3 +654,32 @@ export const RUNTIME_APPS = {
     number: 0
   }
 };
+
+export const STREAM_DEFINITIONS = {
+  _embedded: {
+    streamDefinitionResourceList: [
+      {
+        name: 'foo2',
+        dslText: 'time |log ',
+        status: 'undeployed',
+        statusDescription: 'The app or group is known to the system, but is not currently deployed',
+        _links: {
+          self: {
+            href: 'http://localhost:9393/streams/definitions/foo2'
+          }
+        }
+      }
+    ]
+  },
+  _links: {
+    self: {
+      href: 'http://localhost:9393/streams/definitions?page=0&size=20'
+    }
+  },
+  page: {
+    size: 1,
+    totalElements: 1,
+    totalPages: 1,
+    number: 0
+  }
+};

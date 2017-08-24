@@ -94,7 +94,9 @@ export class StreamDefinitionsComponent implements OnInit {
         this.toastyService.success('Successfully undeployed stream definition "'
           + item.name + '"');
       },
-      error => {}
+      error => {
+        this.toastyService.error(error);
+      }
     );
   }
 
@@ -144,7 +146,9 @@ export class StreamDefinitionsComponent implements OnInit {
         this.toastyService.success('Successfully destroyed stream definition "'
           + streamDefinition.name + '"');
       },
-      error => {}
+      error => {
+        this.toastyService.error(error);
+      }
     );
   }
 

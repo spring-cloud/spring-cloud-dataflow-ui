@@ -26,5 +26,5 @@ export function validateDeploymentProperties(formControl: FormControl) {
       }
     }
   }
-  return null;
+  return undefined;
 }
