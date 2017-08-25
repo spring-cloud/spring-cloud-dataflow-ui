@@ -1,0 +1,418 @@
+@import '../../../../node_modules/pivotal-ui-git-clone/src/pivotal-ui/components/pui-variables';
+
+$spring-green: #1BB3A8;
+$spring-brown: #17232a;
+$body-bg: inherit;
+$btn-default-border: #DFE5E8;
+$spring-light-grey: #EEEEEE;
+$btn-default-color: white;
+$btn-default-bg: #607580;
+$flo-shape-fill-color: #eeeeee;
+$spring-grey: $gray;
+
+#flow-view {
+  height:625px;
+  font-family: inherit;
+}
+
+.flow-definition-container {
+  border: 1px solid;
+  /*border-color: $spring-green;*/
+  border-radius: 2px;
+  margin-top: 3px;
+  /*background-color: $body-bg;*/
+  font-family: monospace;
+  z-index: 2;
+  width:100%;
+  height:100px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.flow-definition {
+  border: 5px;
+  height:100%;
+  width:100%;
+  font-size: 16px;
+  resize: none;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.flow-definition-container {
+  border: 1px solid;
+  border-color: /*$spring-green*/$btn-default-border;
+  border-radius: 2px;
+  margin-top: 3px;
+  background-color: $body-bg;
+  font-family: monospace;
+  z-index: 2;
+  width:100%;
+  height:100px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.flow-definition {
+  border: 5px;
+  height:100%;
+  width:100%;
+  font-size: 16px;
+  resize: none;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.available-magnet {
+  stroke-width: 3;
+}
+
+.input-port {
+  cursor: pointer;
+}
+
+.output-port {
+  cursor: pointer;
+}
+
+[magnet=true]:not(.element) {
+  cursor: pointer;
+}
+
+.joint-element.highlighted circle {
+  stroke: #34302d;
+  stroke-width: 3;
+}
+
+.joint-link.highlighted path {
+  stroke-width: 3;
+}
+
+// Make transparent the circle around the link-tools (cog) icon. It'll allow shape to have a circle clicking area
+.link-tools .tool-options circle {
+  fill: transparent;
+  stroke: transparent;
+}
+
+.link-tools .tool-options path {
+  fill: black;
+  stroke: black;
+}
+
+.link-tools .tool-remove circle {
+  fill: red;
+  stroke: red;
+}
+
+.link-tools .tool-remove path {
+  fill: white;
+  stroke: white;
+}
+
+.link-tools-container {
+  stroke-width: 0;
+  fill: transparent;
+}
+
+.joint-link.joint-theme-default .marker-vertex {
+  fill: #70A5D9;
+  stroke: $spring-brown;
+  stroke-width: 1;
+}
+
+.joint-link.joint-theme-default .marker-vertex:hover {
+  fill: #4C7EA5;
+  stroke: $spring-brown;
+  stroke-width: 2;
+}
+
+.joint-link.joint-theme-default .marker-arrowhead {
+  fill: #70A5D9;
+  stroke: $spring-brown;
+  stroke-width: 1;
+}
+
+.joint-link.joint-theme-default .marker-arrowhead:hover {
+  fill: #4C7EA5;
+  stroke: $spring-brown;
+  stroke-width: 2;
+}
+
+//.joint-link.joint-theme-default .marker-vertex-remove {
+//  fill: $spring-brown;
+//  stroke: $spring-brown;
+//  opacity: 0.4
+//}
+//
+//.joint-link.joint-theme-default .marker-vertex-remove:hover {
+//  fill: $spring-brown;
+//  stroke: $spring-brown;
+//  opacity: 1;
+//}
+
+//.joint-link.joint-theme-default .marker-vertex-remove-area {
+//  stroke: $spring-brown;
+//  opacity: 0.4
+//}
+//
+//.joint-link.joint-theme-default .marker-vertex-remove-area:hover {
+//  stroke: $spring-brown;
+//  opacity: 1;
+//}
+
+.available-magnet {
+  stroke-width: 3;
+}
+
+.label1 {
+  font-family: inherit;
+}
+
+.dsl-editor {
+  border: 1px solid;
+  border-color: $btn-default-border;
+}
+
+.property-code-editor {
+  height: 180px;
+}
+
+.CodeMirror-lint-tooltip {
+  z-index: 2000;
+}
+
+.stream-editor .canvas {
+  border-color: $btn-default-border;
+}
+
+#palette-container {
+  background-color: $spring-light-grey;
+}
+
+.palette-paper {
+  background-color: $spring-light-grey;
+  border-color: $btn-default-border;
+}
+
+.palette-paper.joint-paper.joint-theme-default {
+  background-color: $spring-light-grey;
+}
+
+.stream-editor .palette-filter {
+  border-color: $btn-default-border;
+}
+
+.joint-type-palette-groupheader rect {
+  fill: $btn-default-bg;
+  stroke: $btn-default-border;
+}
+
+.stream-editor #sidebar-resizer {
+  background-color: $btn-default-bg;
+}
+
+.groupheader > text {
+  fill: $btn-default-color;
+}
+
+.groupheader .scalable > rect {
+  fill: darken($btn-default-bg, 5%);
+  stroke: darken($btn-default-border, 5%);
+  stroke-width: 2px;
+}
+
+.groupheader .rotatable > path {
+  fill: $btn-default-color;
+  stroke: $btn-default-color;
+}
+
+.stream-module .box {
+  stroke: $spring-green;
+  fill: $flo-shape-fill-color;
+}
+
+.destination .box {
+  stroke: $spring-green;
+  fill: $flo-shape-fill-color;
+}
+
+.table .flow-view {
+  height: 225px;
+}
+
+.undeployed .canvas {
+  border-color: $spring-grey;
+}
+
+.CodeMirror pre.CodeMirror-placeholder {
+  color: $spring-grey;
+}
+
+.dsl-editor-page {
+  height: 400px;
+}
+
+.composed-task .border {
+  fill: $flo-shape-fill-color;
+  stroke: $spring-green;
+  stroke-width: 2;
+}
+
+.composed-task .outer {
+  fill: transparent;
+  stroke: $spring-green;
+  stroke-width: 2;
+}
+
+.composed-task .inner {
+  fill: $flo-shape-fill-color;
+  stroke: $spring-green;
+  stroke-width: 2;
+}
+
+.composed-task .input-port {
+  fill: $flo-shape-fill-color;
+  stroke: $spring-brown;
+}
+
+.composed-task .output-port {
+  fill: $flo-shape-fill-color;
+  stroke: $spring-brown;
+}
+
+.fail-cross {
+  fill: $spring-green;
+  stroke: $spring-green;
+}
+
+.composed-task .label {
+  font-family: inherit;
+  fill: $spring-brown;
+  font-size: 85%;
+}
+
+.connection.composed-task-graph-transition {
+  stroke: #777777;
+  stroke-dasharray: 1,5;
+}
+
+.marker-source.composed-task-graph-transition {
+  stroke: #777777;
+  fill: #777777;
+}
+
+.marker-target.composed-task-graph-transition {
+  stroke: #777777;
+  fill: #777777;
+}
+
+
+.connection.primary-output-from-app {
+  stroke: #000000;
+  stroke-dasharray: 1,0;
+}
+
+.marker-source.primary-output-from-app {
+  stroke: #000000;
+  fill: #000000;
+}
+
+.marker-target.primary-output-from-app {
+  stroke: #000000;
+  fill: #000000;
+}
+
+.connection.tapped-output-from-app {
+  stroke: #777777;
+  stroke-dasharray: 5,2;
+}
+
+.marker-source.tapped-output-from-app {
+  stroke: #777777;
+  fill: #777777;
+}
+
+.marker-target.tapped-output-from-app {
+  stroke: #777777;
+  fill: #777777;
+}
+
+// Link Tools handle shows up on a link in Composed Task editor
+.link-tool.composed-task .tool-options {
+  display: block;
+}
+
+@keyframes flash-stroke-width {
+  0%    { stroke-width: 1; }
+  50%   { stroke-width: 4; }
+  100%  { stroke-width: 1; }
+}
+
+// Stream modules DnD shape animation
+.dnd-source-feedback .stream-module .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback .stream-module .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+// Stream modules DnD shape animation
+.dnd-source-feedback .destination .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback .destination .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+// Composed Task DnD shape animation
+.dnd-source-feedback .composed-task .border {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback .composed-task .border {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+// Ports DnD animation
+.dnd-source-feedback.input-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-source-feedback.output-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback.input-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback.output-port {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+// Links DnD feedback animation
+.dnd-source-feedback .connection {
+  animation: flash-stroke-width 2s linear infinite;
+}
+.dnd-target-feedback .connection {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+.stream-deploying .box {
+  animation: flash-stroke-width 2s linear infinite;
+}
+
+.instance-dot:hover {
+  stroke-width: 3;
+}
+
+.joint-type-dataflow-instancedot.joint-element.deployed {
+  stroke: $spring-green;
+  fill: $flo-shape-fill-color;
+}
+
+.joint-type-dataflow-instancedot.joint-element {
+  stroke: 'gray';
+  fill: 'transparent';
+}
+

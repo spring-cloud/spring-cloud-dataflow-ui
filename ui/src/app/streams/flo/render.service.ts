@@ -224,7 +224,7 @@ export class RenderService implements Flo.Renderer {
                                     'text': metadata.name
                                 },
                                 '.label2': {
-                                    'text': GROUP_ICONS.get(metadata.group)
+                                    'text': GROUP_ICONS.get(metadata.name)
                                 }
                             }
                         }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -241,7 +241,7 @@ export class RenderService implements Flo.Renderer {
                                     'text': metadata.name
                                 },
                                 '.label2': {
-                                    'text': GROUP_ICONS.get(metadata.group)
+                                    'text': GROUP_ICONS.get(metadata.name)
                                 }
                             }
                         }, joint.shapes.flo.Destination.prototype.defaults)
