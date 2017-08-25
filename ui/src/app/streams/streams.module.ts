@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FloModule } from 'spring-flo';
 import { MetamodelService } from './flo/metamodel.service';
 import { RenderService } from './flo/render.service';
+import { EditorService } from './flo/editor.service';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { RenderService } from './flo/render.service';
   providers: [
       StreamsService,
       MetamodelService,
-      RenderService
+      RenderService,
+      EditorService
   ]
 })
 export class StreamsModule { }

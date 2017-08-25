@@ -28,15 +28,15 @@ const joint : any = _joint;
 
 
 const HANDLE_ICON_MAP = new Map<string, string>()
-    .set(Constants.REMOVE_HANDLE_TYPE, 'images/icons/delete.svg')
-    .set(Constants.PROPERTIES_HANDLE_TYPE, 'images/icons/cog.svg');
+    .set(Constants.REMOVE_HANDLE_TYPE, 'images/delete.svg')
+    .set(Constants.PROPERTIES_HANDLE_TYPE, 'images/cog.svg');
 
 const HANDLE_ICON_SIZE = new Map<string, dia.Size>()
     .set(Constants.REMOVE_HANDLE_TYPE, {width: 10, height: 10})
     .set(Constants.PROPERTIES_HANDLE_TYPE, {width: 11, height: 11});
 
 const DECORATION_ICON_MAP = new Map<string, string>()
-    .set(Constants.ERROR_DECORATION_KIND, 'images/icons/error.svg');
+    .set(Constants.ERROR_DECORATION_KIND, 'images/error.svg');
 
 // Default icons (unicode chars) for each group member, unless they override
 const GROUP_ICONS = new Map<string, string>()
@@ -67,7 +67,7 @@ export class RenderService implements Flo.Renderer {
             size: HANDLE_ICON_SIZE[kind],
             attrs: {
                 'image': {
-                    'xlink:href': HANDLE_ICON_MAP[kind]
+                    'xlink:href': HANDLE_ICON_MAP.get(kind)
                 }
             }
         });
@@ -78,7 +78,7 @@ export class RenderService implements Flo.Renderer {
             size: {width: 16, height: 16},
             attrs: {
                 'image': {
-                    'xlink:href': DECORATION_ICON_MAP[kind]
+                    'xlink:href': DECORATION_ICON_MAP.get(kind)
                 }
             }
         });
