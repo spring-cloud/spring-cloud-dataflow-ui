@@ -28,15 +28,15 @@ const joint : any = _joint;
 
 
 const HANDLE_ICON_MAP = new Map<string, string>()
-    .set(Constants.REMOVE_HANDLE_TYPE, 'images/delete.svg')
-    .set(Constants.PROPERTIES_HANDLE_TYPE, 'images/cog.svg');
+    .set(Constants.REMOVE_HANDLE_TYPE, 'assets/img/delete.svg')
+    .set(Constants.PROPERTIES_HANDLE_TYPE, 'assets/img/cog.svg');
 
 const HANDLE_ICON_SIZE = new Map<string, dia.Size>()
     .set(Constants.REMOVE_HANDLE_TYPE, {width: 10, height: 10})
     .set(Constants.PROPERTIES_HANDLE_TYPE, {width: 11, height: 11});
 
 const DECORATION_ICON_MAP = new Map<string, string>()
-    .set(Constants.ERROR_DECORATION_KIND, 'images/error.svg');
+    .set(Constants.ERROR_DECORATION_KIND, 'assets/img/error.svg');
 
 // Default icons (unicode chars) for each group member, unless they override
 const GROUP_ICONS = new Map<string, string>()
@@ -64,7 +64,7 @@ export class RenderService implements Flo.Renderer {
 
     createHandle(kind: string, parent: dia.Cell) {
         return new joint.shapes.flo.ErrorDecoration({
-            size: HANDLE_ICON_SIZE[kind],
+            size: HANDLE_ICON_SIZE.get(kind),
             attrs: {
                 'image': {
                     'xlink:href': HANDLE_ICON_MAP.get(kind)
