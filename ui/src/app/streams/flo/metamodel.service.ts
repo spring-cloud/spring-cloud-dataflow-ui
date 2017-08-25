@@ -130,49 +130,49 @@ export class MetamodelService implements Flo.Metamodel {
             get(property: String): Promise<Flo.PropertyMetadata> {
                 return Promise.resolve(null);
             },
-            properties(): Promise<Array<Flo.PropertyMetadata>> {
-                return Promise.resolve([]);
+            properties(): Promise<Map<string,Flo.PropertyMetadata>> {
+                return Promise.resolve(new Map());
             }
         }
     }
 
     private addOtherGroup(metamodel : Map<string, Map<string, Flo.ElementMetadata>>) : void {
         let elements = new Map<string, Flo.ElementMetadata>()
-            .set('tap', this.createMetadata('tap', OTHER_GROUP_TYPE, 'Tap into an existing app', [
-                    {
+            .set('tap', this.createMetadata('tap', OTHER_GROUP_TYPE, 'Tap into an existing app',
+                    new Map<string, Flo.PropertyMetadata>().set('name', {
                         name: 'Source Destination Name',
                         id: 'name',
                         defaultValue: '',
                         description: 'the identifier of the producer endpoint in a stream in the form <stream-name>.<app/app-name>',
                         pattern: '[\\w_]+[\\w_-]*\\.[\\w_]+[\\w_-]*'
                     }
-                ],
-                {
+                ), {
                     'hide-tooltip-options': true,
-                }))
-            .set('destination', this.createMetadata('destination', OTHER_GROUP_TYPE, 'A destination channel that can be used as a source or a sink', [
-                    {
+                })
+            )
+            .set('destination', this.createMetadata('destination', OTHER_GROUP_TYPE, 'A destination channel that can be used as a source or a sink',
+                new Map<string, Flo.PropertyMetadata>().set('name', {
                         name: 'name',
                         id: 'name',
                         defaultValue: '',
                         description: 'the input/output destination name',
                         pattern: '[\\w_]+[\\w_-]*'
                     }
-                ], {
+                ), {
                     'fixed-name': true,
-                },
-            ));
+                })
+            );
         metamodel.set(OTHER_GROUP_TYPE, elements);
     }
 
     private createMetadata(name : string, group : string, description : string,
-                           properties : Array<Flo.PropertyMetadata>, metadata? : Flo.ExtraMetadata) : Flo.ElementMetadata {
+                           properties : Map<string, Flo.PropertyMetadata>, metadata? : Flo.ExtraMetadata) : Flo.ElementMetadata {
         return {
             name: name,
             group: group,
             metadata: metadata,
             description: () => Promise.resolve(description),
-            get: (property : string) => Promise.resolve(properties.find(p => property === p.id)),
+            get: (property : string) => Promise.resolve(properties.get(property)),
             properties: () => Promise.resolve(properties)
         };
 
