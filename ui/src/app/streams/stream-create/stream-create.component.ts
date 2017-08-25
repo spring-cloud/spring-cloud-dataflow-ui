@@ -7,7 +7,7 @@ import { EditorService } from '../flo/editor.service';
 @Component({
   selector: 'app-stream-create',
   templateUrl: './stream-create.component.html',
-  styleUrls: [ '../flo/flo.css' ],
+  styleUrls: [ '../flo/flo.scss' ],
   encapsulation: ViewEncapsulation.None
 })
 export class StreamCreateComponent implements OnInit {
