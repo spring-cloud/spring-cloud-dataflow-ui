@@ -21,9 +21,8 @@ import { AppRegistration, ErrorHandler, Page } from '../../shared/model';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { ApplicationType } from '../../shared/model/application-type';
 import { convertGraphToText } from './graph-to-text';
+import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './shapes';
-// import { convertGrasphToText } from './graph-to-text';
-
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -51,9 +50,10 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     textToGraph(flo: Flo.EditorContext, dsl: string): void {
-        //TODO: Implement this
+        console.log("> textToGraph "+dsl);
+        this.load().then((metamodel) => { convertTextToGraph(dsl, flo, metamodel)}); 
     }
-
+    
     graphToText(flo: Flo.EditorContext) : Promise<string> {
         return Promise.resolve(convertGraphToText(flo.getGraph()));
     }

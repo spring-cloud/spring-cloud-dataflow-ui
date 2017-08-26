@@ -93,7 +93,7 @@ interface Ugly {
  */
 class Parser {
 
-	private lines = [];
+	private lines: Line[] = [];
 	private mode: string; // stream or task, defaults to stream
 	private text: string;
 	private tokenStream: Token[];
@@ -598,7 +598,7 @@ class Parser {
 				//  {"token":4,"start":5,"end":6},
 				//  {"token":0,"data":"log","start":7,"end":10}]
 
-				var errorsToProcess = [];
+				var errorsToProcess: Error[] = [];
 				var success = [];
 				var app;
 				var option;
@@ -727,9 +727,10 @@ class Parser {
 						if (error.range) {
 							errorToRecord.range = error.range;
 						} else {
-							start = error.start;
-							end = typeof error.end === 'number' ? error.end : start+1;
-							errorToRecord.range = {'start':{'ch':start,'line':lineNumber},'end':{'ch':end,'line':lineNumber}};
+							console.error("ERROR: WHAT ARE WE DEALING WITH HERE?");
+							// start = error.start;
+							// end = typeof error.end === 'number' ? error.end : start+1;
+							// errorToRecord.range = {'start':{'ch':start,'line':lineNumber},'end':{'ch':end,'line':lineNumber}};
 						}
 						line.errors.push(errorToRecord);
 					}
@@ -771,7 +772,7 @@ class Parser {
 }
 
 export interface Lines {
-	lines: string[];
+	lines: Line[];
 }
 
 export function parse(definitionsText: string, mode): Lines {
