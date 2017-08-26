@@ -15,19 +15,19 @@
  */
 
 export enum TokenKind {
-	IDENTIFIER = '',
+	IDENTIFIER = '<IDENTIFIER>',
 	DOUBLE_MINUS = '--',
 	EQUALS = '=',
 	AND = '&',
 	PIPE = '|',
-	NEWLINE = '',
+	NEWLINE = '<NEWLINE>',
 	COLON = ':',
 	GT = '>',
 	SEMICOLON = ';',
 	REFERENCE = '@',
 	DOT = '.',
-	LITERAL_STRING = '',
-	EOF = ''
+	LITERAL_STRING = '<LITERAL_STRING>',
+	EOF = '<EOF>'
 }
 
 export interface Token {

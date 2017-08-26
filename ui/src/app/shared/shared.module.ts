@@ -15,7 +15,6 @@ import { TriStateButtonComponent } from './components/tri-state-button.component
 import { ClickOutsideDirective } from '../shared/directives/click-outside.directive';
 import { SearchfilterPipe } from '../shared/pipes/search-filter.pipe';
 
-
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -23,6 +22,7 @@ import { PropertyTableComponent } from './components/property-table/property-tab
 import { ModalModule, ProgressbarModule } from 'ngx-bootstrap';
 import { TabComponent, TabsComponent } from './components/tabs.component';
 
+import { ParserService } from '../shared/services/parser.service';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { DataflowDateTimePipe } from './pipes/dataflow-date-time.pipe';
 import { DataflowDurationPipe } from './pipes/dataflow-duration.pipe';
@@ -71,6 +71,7 @@ const busyConfig: BusyConfig = {
   providers: [
     StompService,
     SharedAppsService,
+    ParserService,
     ErrorHandler],
   exports: [
     BusyModule,
