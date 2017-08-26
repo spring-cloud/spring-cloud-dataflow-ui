@@ -62,4 +62,22 @@ export class SecurityInfo implements Serializable<SecurityInfo> {
       return false;
     }
   }
+
+  public canAccess(appRoles: string[]): boolean {
+    let found = false;
+    if (!this.isAuthenticationEnabled) {
+      found = true;
+    } else {
+      if (this.isAuthenticated) {
+        if (this.isAuthorizationEnabled) {
+          if (this.hasAnyRoleOf(appRoles)) {
+            found = true;
+          }
+        }
+      } else {
+        found = false;
+      }
+    }
+    return found;
+  }
 }

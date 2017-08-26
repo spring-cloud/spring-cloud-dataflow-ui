@@ -5,6 +5,7 @@ import { LoginComponent } from './login.component';
 import { LogoutComponent } from './logout.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { RolesDirective } from './directives/roles.directive';
+import { RolesMissingComponent } from './roles-missing.component';
 import { CapsLockDirective } from './directives/caps-lock.directive';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './support/auth.guard';
@@ -18,7 +19,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     CapsLockDirective,
     LoginComponent,
     LogoutComponent,
-    RolesDirective
+    RolesDirective,
+    RolesMissingComponent
   ],
   providers: [
     AuthGuard,

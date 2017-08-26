@@ -24,16 +24,18 @@ export class RolesDirective implements AfterViewInit, DoCheck {
   private checkRoles() {
     let found = false;
 
-    if (this.authService.securityInfo.isAuthenticated
-        && this.authService.securityInfo.isAuthorizationEnabled) {
-
-      if (this.authService.securityInfo.hasAnyRoleOf(this.appRoles)) {
-        found = true;
-      } else {
-        console.log('Needed one for the following roles ' + this.appRoles + '. Found: ' + found);
-      }
-    } else {
+    if (!this.authService.securityInfo.isAuthenticationEnabled) {
       found = true;
+    } else {
+      if (this.authService.securityInfo.isAuthenticated) {
+        if (this.authService.securityInfo.isAuthorizationEnabled) {
+          if (this.authService.securityInfo.hasAnyRoleOf(this.appRoles)) {
+            found = true;
+          }
+        }
+      } else {
+        found = false;
+      }
     }
 
     if (found) {

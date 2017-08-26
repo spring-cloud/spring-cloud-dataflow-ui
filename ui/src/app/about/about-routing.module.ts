@@ -10,7 +10,8 @@ const aboutRoutes: Routes = [
     path: 'about',
     canActivate: [AuthGuard],
     data: {
-      authenticate: true
+      authenticate: true,
+      roles: ['ROLE_VIEW']
     },
     children: [
       { path: '', component: AboutComponent },

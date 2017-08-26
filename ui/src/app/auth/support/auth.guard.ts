@@ -32,10 +32,18 @@ export class AuthGuard implements CanActivate {
         `authorization enabled: ${securityInfo.isAuthorizationEnabled}]`, route.data);
     }
 
-    if (securityInfo.isAuthenticationEnabled && routeNeedsAuthentication && !securityInfo.isAuthenticated) {
-      this.router.navigate(['login'], { queryParams: { 'returnUrl': state.url }});
-      return false;
+    if (securityInfo.canAccess(rolesNeeded)) {
+      return true;
     }
-    return true;
+
+    if (securityInfo.isAuthenticationEnabled && securityInfo.isFormLogin) {
+      if (securityInfo.isAuthorizationEnabled) {
+        console.log('You do not have any of the necessary role(s) ' + rolesNeeded);
+        this.router.navigate(['roles-missing']);
+      } else {
+        this.router.navigate(['login'], { queryParams: { 'returnUrl': state.url }});
+      }
+    }
+    return false;
   }
 }

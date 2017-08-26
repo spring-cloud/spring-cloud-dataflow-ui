@@ -4,12 +4,12 @@
 </p>
 
 <button id="showAboutDetailsButton" type="button" (click)="registerApps()"
-        class="btn btn-default"
+        class="btn btn-default" [appRoles]="['ROLE_CREATE']"
 ><span class="glyphicon glyphicon-plus"></span>
   <span class="hidden-xs">Register Application(s)</span>
 </button>
 
-<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all"
+<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
                       [items]="appRegistrations.getItemsAsObservable()"
                       (eventHandler)="unregisterMultipleApps(appRegistrations.items)"
                       noneSelectedLabel="No app selected to unregister"
@@ -18,7 +18,7 @@
                       allSelectedLabel="Unregister all {selectedCount} selected apps"
 ></app-tri-state-button>
 
-<button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
+<button id="bulkImportAppsButton" type="button" (click)="bulkImportApps()" [appRoles]="['ROLE_CREATE']"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-import"></span>
   <span class="hidden-xs">Bulk Import Applications</span>
@@ -35,7 +35,7 @@
   <thead>
     <tr>
         <th style="width: 30px">
-          <app-tri-state-checkbox *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></app-tri-state-checkbox>
+          <app-tri-state-checkbox *ngIf="appRegistrations?.items" [appRoles]="['ROLE_CREATE']" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></app-tri-state-checkbox>
         </th>
         <th style="width: 200px">Name</th>
         <th style="width: 100px">Type</th>
@@ -45,7 +45,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of appRegistrations.items | searchFilter: appRegistrations.filter | paginate: appRegistrations.getPaginationInstance(); index as i">
-    <td><input type="checkbox" [(ngModel)]="item.isSelected" roles="['ROLE_CREATE']"/></td>
+    <td><input type="checkbox" [(ngModel)]="item.isSelected"  /></td>
     <td>{{item.name}}</td>
     <td>{{item.type}}</td>
     <td>{{item.uri}}</td>
