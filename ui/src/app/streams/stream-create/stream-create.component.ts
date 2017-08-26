@@ -27,4 +27,20 @@ export class StreamCreateComponent implements OnInit {
   ngOnInit() {
   }
 
+  get gridOn() : boolean {
+    return this.editorContext.gridSize !== 1;
+  }
+
+  set gridOn(on : boolean) {
+    this.editorContext.gridSize = on ? 40 : 1;
+  }
+
+  arrangeAll() {
+    this.editorContext.performLayout().then(() => this.editorContext.fitToPage());
+  }
+
+  createStreamDefs() {
+    console.log('TODO: popup creation dialog!');
+  }
+
 }

@@ -231,7 +231,12 @@ export class EditorService implements Flo.Editor {
         let targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
         // If node dropping not enabled then short-circuit
         if (!NODE_DROPPING && !(targetUnderMouse instanceof joint.dia.Link && targetUnderMouse.attr('metadata/name') !== 'tap' && targetUnderMouse.attr('metadata/name') !== 'destination')) {
-                return;
+          return {
+            sourceComponent: sourceComponent,
+            source: {
+              view: draggedView
+            }
+          };
         }
         // check if it's a tap being dragged
         if ((targetUnderMouse instanceof joint.dia.Element) && source.attr('metadata/name') === 'tap') {
