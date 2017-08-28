@@ -109,16 +109,27 @@ class TextToGraphConverter {
             var label = inputnodes[n].label;
 			var group = inputnodes[n].group;
             if (!group) {
-				console.log("Looking for "+name+" in="+incoming[n]+" out="+outgoing[n]);
 				group = this.matchGroup(name, incoming[n], outgoing[n]);
-                // group = metamodelUtils.matchGroup(metamodel, name, incoming[n], outgoing[n]);
 			}
-			var m1: Map<string,Flo.ElementMetadata> = this.metamodel.get(group);
-			console.log("m1="+m1);
-            var newNode = this.floEditorContext.createNode(
-				this.metamodel.get(group).get(name),
-				// metamodelUtils.getMetadata(metamodel, name, group), 
-				inputnodes[n].properties);
+			var groupMetadata: Map<string,Flo.ElementMetadata> = group?this.metamodel.get(group):null;
+			var md: Flo.ElementMetadata;
+			if (!groupMetadata) {
+				// Create fake metadata so some sort of graph can be built
+				md = {
+					'group': group, 
+					'name': name,
+					get(property: String): Promise<Flo.PropertyMetadata> {
+						return Promise.resolve(null);
+					},
+					properties(): Promise<Map<string,Flo.PropertyMetadata>> {
+						return Promise.resolve(new Map());
+					}
+					};
+			}
+			else {
+				md = group?this.metamodel.get(group).get(name):null;
+			}
+            var newNode = this.floEditorContext.createNode(md, inputnodes[n].properties);
             // Tap and Destination names are in 'props/name' property
             if (name !== 'tap' && name !== 'destination') {
                 newNode.attr('node-name', label);
@@ -136,7 +147,6 @@ class TextToGraphConverter {
             if (inputnodes[n]['stream-id']) {
                 newNode.attr('stream-id', inputnodes[n]['stream-id']);
             }
-
             nodesIndex.push(newNode.id);
         }
 
