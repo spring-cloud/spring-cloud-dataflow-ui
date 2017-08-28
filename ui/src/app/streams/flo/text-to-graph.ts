@@ -48,9 +48,9 @@ class TextToGraphConverter {
 			if (incoming > 0) {
 			  failedConstraintsNumber++;
 			}
-			if (outgoing > 1) {
-			  failedConstraintsNumber++;
-			}
+			// if (outgoing > 1) {
+			//   failedConstraintsNumber++;
+			// }
 		  } else if (match.group === 'sink') {
 			if (incoming > 1) {
 			  failedConstraintsNumber++;
@@ -62,9 +62,9 @@ class TextToGraphConverter {
 			if (incoming > 1) {
 			  failedConstraintsNumber++;
 			}
-			if (outgoing > 1) {
-			  failedConstraintsNumber++;
-			}
+			// if (outgoing > 1) {
+			//   failedConstraintsNumber++;
+			// }
 		  }
 		  if (failedConstraintsNumber < score) {
 			score = failedConstraintsNumber;
@@ -107,11 +107,14 @@ class TextToGraphConverter {
         for (var n = 0; n < inputnodesCount; n++) {
             var name = inputnodes[n].name;
             var label = inputnodes[n].label;
-            var group = inputnodes[n].group;
+			var group = inputnodes[n].group;
             if (!group) {
+				console.log("Looking for "+name+" in="+incoming[n]+" out="+outgoing[n]);
 				group = this.matchGroup(name, incoming[n], outgoing[n]);
                 // group = metamodelUtils.matchGroup(metamodel, name, incoming[n], outgoing[n]);
-            }
+			}
+			var m1: Map<string,Flo.ElementMetadata> = this.metamodel.get(group);
+			console.log("m1="+m1);
             var newNode = this.floEditorContext.createNode(
 				this.metamodel.get(group).get(name),
 				// metamodelUtils.getMetadata(metamodel, name, group), 
@@ -502,5 +505,6 @@ class TextToGraphConverter {
     // }
 }
 export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamodel: Map<string,Map<string,Flo.ElementMetadata>>) : void {
+	console.log("dsl = "+dsl+"\nmetamodel="+metamodel);
 	new TextToGraphConverter(dsl, flo, metamodel).convert(); 
 }
