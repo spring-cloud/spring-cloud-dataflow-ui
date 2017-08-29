@@ -116,7 +116,7 @@ class TextToGraphConverter {
 			if (!groupMetadata) {
 				// Create fake metadata so some sort of graph can be built
 				md = {
-					'group': group, 
+					'group': group,
 					'name': name,
 					get(property: String): Promise<Flo.PropertyMetadata> {
 						return Promise.resolve(null);
@@ -165,7 +165,7 @@ class TextToGraphConverter {
         this.floEditorContext.performLayout();
         this.floEditorContext.fitToPage();
 	}
-	
+
 	// private parseToJson(definitionsText, updateGraphFn, updateErrorsFn) {
 	// 	updateErrorsFn(null);
 	// 	if (definitionsText.trim().length === 0) {
@@ -174,7 +174,7 @@ class TextToGraphConverter {
 	// 		return;
 	// 	}
 	// 	var lines: Lines = parse(this.dsl, 'stream');
-		
+
 	// 	var parsedStreamData = ParserService.parse(definitionsText);
 	// 	var graphAndErrors = convertParseResponseToGraph(definitionsText, parsedStreamData);
 	// 	if (graphAndErrors.errors.length !== 0) {
@@ -189,17 +189,17 @@ class TextToGraphConverter {
 	// 		// get displayed.
 	// 	}
 	// }
-	private parseToJsonGraph(dsl: string): JsonGraph {
+	static parseToJsonGraph(dsl: string): JsonGraph {
 		if (!dsl || dsl.trim().length === 0) {
 			console.log('parseToJson: no text to parse');
 			return {'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []};
 		} else {
 			var parsedStreams: Lines = parse(dsl, 'stream');
-			return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;			
+			return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;
 		}
 	}
 
-	
+
 	// var graphAndErrors = convertParseResponseToGraph(definitionsText, parsedStreamData);
 	// if (graphAndErrors.errors.length !== 0) {
 	// 	updateErrorsFn(graphAndErrors.errors);
@@ -214,7 +214,7 @@ class TextToGraphConverter {
 	// }
 
 
-	private findExistingDestinationNode(nodes, name) {
+	static findExistingDestinationNode(nodes, name) {
 		for (var n = 0; n < nodes.length; n++) {
 			var node = nodes[n];
 			if (node.name && node.name === 'destination') {
@@ -226,7 +226,7 @@ class TextToGraphConverter {
 		return null;
 	}
 
-	private convertParseResponseToJsonGraph(dsl: string, parsedStreams: Lines) {
+	static convertParseResponseToJsonGraph(dsl: string, parsedStreams: Lines) {
 		// Compute line breaks
 		var linebreaks = [0];
 		var pos = 0;
@@ -298,7 +298,7 @@ class TextToGraphConverter {
 								linkFrom = graphNode.id;
 							}
 						} else { // DESTINATION SOURCE
-							graphNode = this.findExistingDestinationNode(nodes, parsedNode.sourceChannelName);
+							graphNode = TextToGraphConverter.findExistingDestinationNode(nodes, parsedNode.sourceChannelName);
 							if (!graphNode) {
 								graphNode = {
 									'id': nodeId++,
@@ -377,7 +377,7 @@ class TextToGraphConverter {
 					if (parsedNode.sinkChannelName) {
 						channelText = parsedNode.sinkChannelName;
 						graphNode = null;
-						graphNode = this.findExistingDestinationNode(nodes, channelText);
+						graphNode = TextToGraphConverter.findExistingDestinationNode(nodes, channelText);
 						if (!graphNode) {
 							graphNode = {
 								'id': nodeId++,
@@ -490,14 +490,14 @@ class TextToGraphConverter {
 		return jsonGraph;
 	}
 
-	
-	
+
+
 	public convert() {
-		var jsonGraph = this.parseToJsonGraph(this.dsl);
+		var jsonGraph = TextToGraphConverter.parseToJsonGraph(this.dsl);
 		console.log("jsongraph = "+JSON.stringify(jsonGraph));
 		this.floEditorContext.clearGraph();
 		this.buildFloGraphFromJsonGraph(jsonGraph);
-		// this.parseAndRefreshGraph(this.dsl, 
+		// this.parseAndRefreshGraph(this.dsl,
 		// 	(json) => {
 		// 		// flo.getGraph().clear();
 		// 		// this.load().then((metamodel) => {
@@ -516,5 +516,8 @@ class TextToGraphConverter {
 }
 export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamodel: Map<string,Map<string,Flo.ElementMetadata>>) : void {
 	console.log("dsl = "+dsl+"\nmetamodel="+metamodel);
-	new TextToGraphConverter(dsl, flo, metamodel).convert(); 
+	new TextToGraphConverter(dsl, flo, metamodel).convert();
+}
+export function convertParseResponseToJsonGraph(dsl : string, parsedStreams: Lines) {
+  return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
 }
