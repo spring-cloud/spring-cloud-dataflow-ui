@@ -24,7 +24,7 @@ export enum TokenKind {
 	COLON = ':',
 	GT = '>',
 	SEMICOLON = ';',
-	REFERENCE = '@',
+	// REFERENCE = '@',
 	DOT = '.',
 	LITERAL_STRING = '<LITERAL_STRING>',
 	EOF = '<EOF>'
@@ -69,7 +69,7 @@ class Tokenizer {
 		if (ch.charCodeAt(0) > 255) {
 			return false;
 		}
-		return ch>='0' && ch<='9';
+		return ch >= '0' && ch <= '9';
 	}
 
 	private isAlphabetic(ch: string): boolean {
@@ -124,7 +124,7 @@ class Tokenizer {
 				}
 			}
 			if (this.pos >= this.max) {
-				throw {'msg':'DefinitionException: non terminating quoted string','start':start,'end':this.pos};
+				throw {'msg':'TokenizationError: non terminating quoted string','start':start,'end':this.pos};
 			}
 		}
 		this.pos++;
@@ -208,7 +208,7 @@ class Tokenizer {
 				}
 			}
 			if (this.pos >= this.max) {
-				throw {'msg':'DefinitionException: non terminating double quoted string','start':start,'end':this.pos};
+				throw {'msg':'TokenizationError: non terminating double quoted string','start':start,'end':this.pos};
 			}
 		}
 		this.pos++;
@@ -233,11 +233,21 @@ class Tokenizer {
 	/**
 	 * Check if this might be a two character token.
 	 */
-	private isTwoCharToken(tokenkind): boolean {
+	private isTwoCharToken(tokenkind: TokenKind): boolean {
 		// assert tokenkind.value && tokenkind.value.length==2
 		// assert toProcess.charAt(pos) == tokenkind.value.charAt(0);
-		return this.toProcess.charAt(this.pos+1) === tokenkind.value.charAt(1);
+		return this.toProcess.charAt(this.pos + 1) === tokenkind.charAt(1);
 	}
+
+	// private printTokenizerState() {
+	// 	console.log('Tokenizer State. Input #'+this.max);
+	// 	var output = '';
+	// 	for (var i = 0; i < this.max; i++) {
+	// 		output += this.toProcess.charAt(i) + '[' + this.toProcess.charCodeAt(i) + ']';
+	// 	}
+	// 	console.log(output);
+	// 	console.log(this.pos);
+	// }
 
 	public tokenize(): Token[] {		
 		while (this.pos < this.max) {
@@ -259,7 +269,7 @@ class Tokenizer {
 				switch (ch) {
 				case '-':
 					if (!this.isTwoCharToken(TokenKind.DOUBLE_MINUS)) {
-						throw {'msg':'expected two hyphens: \'--\'','start':this.pos};
+						throw {'msg':'TokenizationError: expected two hyphens: \'--\'','start':this.pos,'end':this.pos+1};
 					}
 					this.pushPairToken(TokenKind.DOUBLE_MINUS);
 					this.haveSeenOptionQualifier = true;
@@ -300,17 +310,17 @@ class Tokenizer {
 				case '"':
 					this.lexDoubleQuotedStringLiteral();
 					break;
-				case '@':
-					this.pushCharToken(TokenKind.REFERENCE);
-					break;
+				// case '@':
+				// 	this.pushCharToken(TokenKind.REFERENCE);
+				// 	break;
 				case '\0':
 					// hit sentinel at end of char data
 					this.pos++; // will take us to the end
 					break;
 				case '\\':
-					throw {'msg':'DefinitionException: Unexpected escape char','start':this.pos};
+					throw {'msg':'TokenizationError: Unexpected escape char','start':this.pos,'end':this.pos+1};
 				default:
-					throw {'msg':'DefinitionException: Unexpected character','start':this.pos};
+					throw {'msg':'TokenizationError: Unexpected character','start':this.pos,'end':this.pos+1};
 				}
 			}
 		}

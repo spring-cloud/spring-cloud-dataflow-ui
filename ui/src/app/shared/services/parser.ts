@@ -18,70 +18,15 @@ import { TokenKind } from './tokenizer';
 import { Token } from './tokenizer';
 import { tokenize } from './tokenizer';
 
-interface Pos {
-	ch: number,
-	line: number
-}
-interface Range {
-	start: Pos,
-	end: Pos
-}
-interface Error {
-	msg: String,
-	range: Range
-}
-interface DestinationReference {
-	type: string,
-	name: string,
-	start: number,
-	end: number
-}
-interface TaskNode {
-	app?: AppNode,
-	name?: string,
-	namerange?: Range,
-	errors?: Error[]
-}
-interface AppNode {
-	label?: string,
-	name: string,
-	options?,
-	start: number,
-	end: number
-}
-interface StreamDef {
-	name?: string,
-	apps?: AppNode[],
-	sourceChannel?: ChannelReference,
-	sinkChannel?: ChannelReference,
-	errors?: Error[]
-}
-interface ChannelReference {
-	channel: DestinationReference,
-	start?: number,
-	end?: number
-}
-interface ParsedTask {
-	group: string,
-	grouprange: Range,
-	type: string,
-	name: string,
-	range: Range,
-	options,
-	optionsranges: Range[]
-}
-interface Line {
-	success?,
-	errors?: Error[]
-}
+
 interface Ugly {
 	group: string,
 	label?: string,
 	type: string,
 	name: string,
-	range: Range,
+	range: Parser.Range,
 	options?,
-	optionsranges?: Range[],
+	optionsranges?: Parser.Range[],
 	sourceChannelName?: string,
 	sinkChannelName?: string
 }
@@ -91,9 +36,9 @@ interface Ugly {
  * @author Andy Clement
  * @author Alex Boyko
  */
-class Parser {
+class InternalParser {
 
-	private lines: Line[] = [];
+	private lines: Parser.Line[] = [];
 	private mode: string; // stream or task, defaults to stream
 	private text: string;
 	private tokenStream: Token[];
@@ -102,9 +47,7 @@ class Parser {
 	private textlines: string[];
 
 	constructor(definitionsText: string, mode?: string) {
-		if (!mode) {
-			this.mode = 'stream';
-		}
+		this.mode = mode;
 		this.textlines = definitionsText.split('\n');
 	}
 			
@@ -120,14 +63,6 @@ class Parser {
 			result=result+tokens[t].data;
 		}
 		return result;
-	}
-
-	private isLegalChannelPrefix(string: string): boolean {
-		return string === 'queue' || string === 'topic' || string ==='tap';
-	}
-
-	private equalsIgnoreCase(stringA: string,stringB: string): boolean {
-		return stringA.toUpperCase()===stringB.toUpperCase();
 	}
 
 	private isKind(token: Token, expected: TokenKind): boolean {
@@ -204,9 +139,6 @@ class Parser {
 	}
 
 	private eatToken(expectedKind: TokenKind): Token {
-		if (!expectedKind) {
-			throw {'msg':'Must pass expected token kind to eatToken()'};
-		}
 		var t = this.nextToken();
 		if (t === null) {
 			throw {'msg':'Out of data','start':this.text.length};
@@ -218,22 +150,21 @@ class Parser {
 		return t;
 	}
 
-
 	// A destination reference is of the form ':'IDENTIFIER['.'IDENTIFIER]*
-	private eatDestinationReference(tapAllowed: boolean): DestinationReference {
+	private eatDestinationReference(tapAllowed: boolean): Parser.DestinationReference {
 		var nameComponents = [];
 		var t;
 		var currentToken;
 		var firstToken = this.nextToken();
 		if (firstToken.kind !== TokenKind.COLON) {
-			throw {'msg':'destination must start with a \':\'','start':firstToken.start,'end':firstToken.end};
+			throw {'msg':'Destination must start with a \':\'','start':firstToken.start,'end':firstToken.end};
 		}
 		if (!this.isNextTokenAdjacent()) {
 		t = this.peekAtToken();
 			if (t) {
-				throw {'msg':'no whitespace allowed in destination','start':firstToken.end,'end':t.start};
+				throw {'msg':'No whitespace allowed in destination','start':firstToken.end,'end':t.start};
 			} else {
-				throw {'msg':'out of data - incomplete destination','start':firstToken.start};
+				throw {'msg':'Out of data - incomplete destination','start':firstToken.start};
 			}
 		}
 		nameComponents.push(this.eatToken(TokenKind.IDENTIFIER)); // the non-optional identifier
@@ -242,9 +173,9 @@ class Parser {
 			if (!this.isNextTokenAdjacent()) {
 				t = this.peekAtToken();
 				if (t) {
-					throw {'msg':'no whitespace allowed in destination','start':currentToken.end,'end':t.start};
+					throw {'msg':'No whitespace allowed in destination','start':currentToken.end,'end':t.start};
 				} else {
-					throw {'msg':'out of data - incomplete destination','start':currentToken.start};
+					throw {'msg':'Out of data - incomplete destination','start':currentToken.start};
 				}
 			}
 			nameComponents.push(this.eatToken(TokenKind.IDENTIFIER));
@@ -257,7 +188,7 @@ class Parser {
 			type = 'tap';
 		}
 		var endpos = nameComponents[nameComponents.length - 1].end;
-		var destinationObject: DestinationReference = {
+		var destinationObject: Parser.DestinationReference = {
 			type: type,
 			start: firstToken.start,
 			end: endpos,
@@ -279,7 +210,7 @@ class Parser {
 
 	// identifier ':' identifier >
 	// tap ':' identifier ':' identifier '.' identifier >
-	private maybeEatSourceChannel(): ChannelReference {
+	private maybeEatSourceChannel(): Parser.ChannelReference {
 		var gtBeforePipe = false;
 		// Seek for a GT(>) before a PIPE(|)
 		for (var tp = this.tokenStreamPointer; tp < this.tokenStreamLength; tp++) {
@@ -319,12 +250,7 @@ class Parser {
 		var result = '';
 		for (var i=0;i<many.length;i++) {
 			var t = many[i];
-			if (t.data) {
-				result=result+t.data;
-			}
-			else {
-				result=result+t.kind.value;
-			}
+			result = result + (t.data?t.data:t.kind);
 		}
 		return result;
 	}
@@ -352,11 +278,11 @@ class Parser {
 	 *
 	 * @param error the kind of error to report if input is ill-formed
 	 */
-	private eatDottedName(errorMessage?: string) {
+	private eatDottedName(errorMessage?: string): Token[] {
 		if (!errorMessage) {
 			errorMessage = 'not expected token';
 		}
-		var result = [];
+		var result: Token[] = [];
 		var name = this.nextToken();
 		if (!this.isKind(name,TokenKind.IDENTIFIER)) {
 			throw {'msg':errorMessage,'start':name.start};
@@ -364,11 +290,11 @@ class Parser {
 		result.push(name);
 		while (this.peekToken(TokenKind.DOT)) {
 			if (!this.isNextTokenAdjacent()) {
-				throw {'msg':'no whitespace in dotted name','start':name.start};
+				throw {'msg':'No whitespace allowed in dotted name','start':name.start};
 			}
 			result.push(this.nextToken()); // consume dot
 			if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
-				throw {'msg':'no whitespace in dotted name','start':name.start};
+				throw {'msg':'No whitespace allowed in dotted name','start':name.start};
 			}
 			result.push(this.eatToken(TokenKind.IDENTIFIER));
 		}
@@ -407,15 +333,15 @@ class Parser {
 	}
 
 	// app: [label':']? identifier (appArguments)*
-	private eatApp(): AppNode {
+	private eatApp(): Parser.AppNode {
 		var label = null;
 		var name = this.nextToken();
-		if (!this.isKind(name,TokenKind.IDENTIFIER)) {
-			throw {'msg':'Expected app name ','start':name.start,'end':name.end};
+		if (!this.isKind(name, TokenKind.IDENTIFIER)) {
+			throw {'msg':'Expected app name but found \''+this.toString(name)+'\'','start':name.start,'end':name.end};
 		}
 		if (this.peekToken(TokenKind.COLON)) {
 			if (!this.isNextTokenAdjacent()) {
-				throw {'msg': 'no whitespace between label name and colon','start':name.end,'end':this.peekAtToken().start};
+				throw {'msg': 'No whitespace allowed between label name and colon','start':name.end,'end':this.peekAtToken().start};
 			}
 			this.nextToken(); // swallow colon
 			label = name;
@@ -424,7 +350,7 @@ class Parser {
 		var appNameToken = name;
 		var args = this.maybeEatAppArgs();
 		var startpos = label !== null ? label.start : appNameToken.start;
-		var appNode: AppNode = {'name':appNameToken.data,'start':startpos,'end':appNameToken.end};
+		var appNode: Parser.AppNode = {'name':appNameToken.data,'start':startpos,'end':appNameToken.end};
 		if (label) {
 			appNode.label = label.data;
 		}
@@ -438,8 +364,8 @@ class Parser {
 	// appList: app (| app)*
 	// A stream may end in a app (if it is a sink) or be followed by
 	// a sink channel.
-	private eatAppList(): AppNode[] {
-		var appNodes: AppNode[] = [];
+	private eatAppList(): Parser.AppNode[] {
+		var appNodes: Parser.AppNode[] = [];
 		appNodes.push(this.eatApp());
 		while (this.moreTokens()) {
 			var t = this.peekAtToken();
@@ -459,8 +385,8 @@ class Parser {
 		if (token.data) {
 			return token.data;
 		}
-		if (token.kind.value) {
-			return token.kind.value;
+		if (token.kind) {
+			return token.kind;
 		}
 		return JSON.stringify(token);
 	}
@@ -474,7 +400,7 @@ class Parser {
 				this.nextToken(); // skip '='
 			}
 			else {
-				throw {'msg':'Illegal Name \''+this.toString(this.peekAtToken())+'\'','start':this.peekAtToken().start};
+				throw {'msg':'Illegal name \''+this.toString(this.peekAtToken())+'\'','start':this.peekAtToken().start};
 			}
 		}
 		return name;
@@ -484,19 +410,19 @@ class Parser {
 		return this.peekAtToken() === null;
 	}
 
-	private recordError(node, error) {
+	private recordError(node, error: Parser.Error) {
 		if (!node.errors) {
 			node.errors=[];
 		}
 		node.errors.push(error);
 	}
 
-	private eatTaskDefinition(lineNum): TaskNode {
-		var taskNode:TaskNode = {};
+	private eatTaskDefinition(lineNum): Parser.TaskNode {
+		var taskNode: Parser.TaskNode = {};
 		var taskName = this.maybeEatName();
 		if (!taskName) {
 			this.recordError(taskNode, {
-				'msg': 'Expected format: name = taskapplication [options]',
+				'message': 'Expected format: name = taskapplication [options]',
 				'range':{'start':{'ch':0,'line':lineNum},
 							'end':{'ch':0,'line':lineNum}}
 			});
@@ -507,7 +433,7 @@ class Parser {
 				'end':{'ch':taskName.end,'line':lineNum}};
 			if (this.outOfData()) {
 				this.recordError(taskNode,{
-					'msg':'Expected format: name = taskapplication [options]',
+					'message':'Expected format: name = taskapplication [options]',
 					'range':{'start':{'ch':0,'line':lineNum},
 							'end':{'ch':0,'line':lineNum}
 				}});
@@ -522,8 +448,8 @@ class Parser {
 		return taskNode;
 	}
 
-	private eatStream(): StreamDef {
-		var streamNode: StreamDef = {};
+	private eatStream(lineNum: number): Parser.StreamDef {
+		var streamNode: Parser.StreamDef = {};
 
 		var streamName = this.maybeEatName();
 		if (streamName) {
@@ -544,7 +470,9 @@ class Parser {
 
 		// Are we out of data? If so return what we have but include errors.
 		if (this.outOfData()) {
-			this.recordError(streamNode,{'msg':'unexpectedly out of data','start':this.text.length});
+			this.recordError(streamNode,{'message':'unexpectedly out of data',
+				'range':{'start':{'ch':this.text.length,'line':lineNum},
+						'end':{'ch':this.text.length+1,'line':lineNum}}});
 			return streamNode;
 		}
 
@@ -576,7 +504,7 @@ class Parser {
 	// mode may be 'task' or 'stream' - will default to 'stream'
 	public parse() {	
 		var start, end, errorToRecord;
-		var line: Line;
+		var line: Parser.Line;
 		
 		for (var lineNumber=0;lineNumber<this.textlines.length;lineNumber++) {
 			try {
@@ -585,7 +513,7 @@ class Parser {
 
 				this.text = this.textlines[lineNumber];
 				if (this.text.trim().length === 0) {
-					this.lines.push({'success':[],'errors':[]});
+					this.lines.push({'nodes':[],'errors':[]});
 					continue;
 				}
 				console.log('JSParse: processing '+this.text);
@@ -598,7 +526,7 @@ class Parser {
 				//  {"token":4,"start":5,"end":6},
 				//  {"token":0,"data":"log","start":7,"end":10}]
 
-				var errorsToProcess: Error[] = [];
+				var errorsToProcess: Parser.Error[] = [];
 				var success = [];
 				var app;
 				var option;
@@ -618,7 +546,7 @@ class Parser {
 								optionsranges[option.name]={'start':{'ch':option.start,'line':lineNumber},'end':{'ch':option.end,'line':lineNumber}};
 							}
 						}
-						var taskObject: ParsedTask = {
+						var taskObject: Parser.ParsedTask = {
 							group: taskdef.name,
 							grouprange: taskdef.namerange,
 							type: 'task',
@@ -633,7 +561,7 @@ class Parser {
 						errorsToProcess = taskdef.errors;
 					}
 				} else {
-					var streamdef = this.eatStream();
+					var streamdef = this.eatStream(lineNumber);
 					console.log('JSParse: parsed to stream definition: '+JSON.stringify(streamdef));
 					// streamDef = {"apps":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
 
@@ -646,11 +574,15 @@ class Parser {
 						var alreadySeen = {};
 						for (var m=0;m<streamdef.apps.length;m++) {
 							var expectedType = 'processor';
-							if (m === 0 && !streamdef.sourceChannel) {
-								expectedType = 'source';
-							}
-							if (m === (streamdef.apps.length-1) && !streamdef.sourceChannel) {
-								expectedType = 'sink';
+							if (streamdef.sourceChannel && streamdef.sinkChannel && m === 0) {
+								// it is a bridge and so a processor
+							} else {
+								if (m === 0 && !streamdef.sourceChannel) {
+									expectedType = 'source';
+								}
+								else if (m === (streamdef.apps.length-1)) {
+									expectedType = 'sink';
+								}
 							}
 							var sourceChannelName = null;
 							if (m === 0 && streamdef.sourceChannel) {
@@ -691,8 +623,8 @@ class Parser {
 							var previous = alreadySeen[nameToCheck];
 							if (typeof previous === 'number') {
 								this.recordError(streamdef, {
-									'msg': app.label ?
-										'Label \'' + app.label + '\' should be unique but app \'' + app.name + '\' (at position ' + m + ') and app \'' + streamdef.apps[previous].name + '\' (at position ' + previous + ') both use it'
+									'message': app.label ?
+										'Label \'' + app.label + '\' should be unique but app \'' + app.name + '\' (at app position ' + m + ') and app \'' + streamdef.apps[previous].name + '\' (at app position ' + previous + ') both use it'
 										: 'App \'' + app.name + '\' should be unique within the stream, use a label to differentiate multiple occurrences',
 									'range': uglyObject.range
 								});
@@ -715,15 +647,15 @@ class Parser {
 						errorsToProcess = streamdef.errors;
 					}
 				}
-				line.success = success;
+				line.nodes = success;
 
 				if (errorsToProcess && errorsToProcess.length !== 0) {
 					line.errors = [];
-					for (var e=0;e<errorsToProcess.length;e++) {
+					for (var e = 0; e < errorsToProcess.length; e++) {
 						var error = errorsToProcess[e];
 						errorToRecord = {};
 						errorToRecord.accurate = true;
-						errorToRecord.message = error.msg;
+						errorToRecord.message = error.message; 
 						if (error.range) {
 							errorToRecord.range = error.range;
 						} else {
@@ -738,6 +670,7 @@ class Parser {
 					// $log.info('JSParse: translated to '+JSON.stringify(line));
 					this.lines.push(line);
 				} catch (err) {
+					console.log("ERROR PROCESSING: "+JSON.stringify(err));
 					if (typeof err === 'object' && err.msg) {
 						if (!line.errors) {
 							line.errors = [];
@@ -771,10 +704,84 @@ class Parser {
 		}
 }
 
-export interface Lines {
-	lines: Line[];
-}
 
-export function parse(definitionsText: string, mode): Lines {
-	return new Parser(definitionsText, mode).parse();
+export namespace Parser {
+	export interface Pos {
+		ch: number,
+		line: number
+	}
+	export interface Range {
+		start: Pos,
+		end: Pos
+	}
+	export interface Error {
+		message: String,
+		range: Range
+	}
+	export interface DestinationReference {
+		type: string,
+		name: string,
+		start: number,
+		end: number
+	}
+	export interface TaskNode {
+		app?: AppNode,
+		name?: string,
+		namerange?: Range,
+		errors?: Error[]
+	}
+	export interface AppNode {
+		label?: string,
+		name: string,
+		options?,
+		start: number,
+		end: number
+	}
+	export interface StreamDef {
+		name?: string,
+		apps?: AppNode[],
+		sourceChannel?: ChannelReference,
+		sinkChannel?: ChannelReference,
+		errors?: Error[]
+	}
+	export interface ChannelReference {
+		channel: DestinationReference,
+		start?: number,
+		end?: number
+	}
+	export interface ParsedTask {
+		group: string,
+		grouprange: Range,
+		type: string,
+		name: string,
+		range: Range,
+		options,
+		optionsranges: Range[]
+	}
+		
+	export interface ParseResult {
+		lines: Line[]; 
+	}
+
+	export interface Node {
+		group: string,
+		label?: string,
+		type: string,
+		name: string,
+		range: Parser.Range,
+		options?,
+		optionsranges?: Parser.Range[],
+		sourceChannelName?: string,
+		sinkChannelName?: string
+	}
+
+	export interface Line {
+		nodes?: Node[],
+		errors?: Error[]
+	}
+
+	// mode is stream or task
+	export function parse(definitionsText: string, mode: string): ParseResult {
+		return new InternalParser(definitionsText, mode).parse();
+	}
 }

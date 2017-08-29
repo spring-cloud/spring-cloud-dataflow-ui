@@ -17,8 +17,7 @@
 import { Flo } from 'spring-flo';
 import { dia } from 'jointjs';
 import * as _ from 'lodash';
-import { parse } from "../../shared/services/parser";
-import { Lines } from "../../shared/services/parser";
+import { Parser } from "../../shared/services/parser";
 import { MetamodelService } from './metamodel.service';
 
 interface JsonGraph {
@@ -194,7 +193,7 @@ class TextToGraphConverter {
 			console.log('parseToJson: no text to parse');
 			return {'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []};
 		} else {
-			var parsedStreams: Lines = parse(dsl, 'stream');
+			var parsedStreams: Parser.ParseResult = Parser.parse(dsl, 'stream');
 			return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;			
 		}
 	}
@@ -226,7 +225,7 @@ class TextToGraphConverter {
 		return null;
 	}
 
-	private convertParseResponseToJsonGraph(dsl: string, parsedStreams: Lines) {
+	private convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult) {
 		// Compute line breaks
 		var linebreaks = [0];
 		var pos = 0;
@@ -266,7 +265,7 @@ class TextToGraphConverter {
 			console.log('convertParseResponseToJsonGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
 
 			// Build the graph/links if there was successfully parsed output
-			var parsedNodes = line.success;
+			var parsedNodes = line.nodes;
 			if (parsedNodes) {
 				var linkFrom = -1;
 				for (var n = 0; n < parsedNodes.length; n++) {
