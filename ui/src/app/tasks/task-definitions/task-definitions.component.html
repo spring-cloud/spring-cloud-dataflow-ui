@@ -27,8 +27,8 @@
 <table *ngIf="taskDefinitions?.items" class="table table-hover">
   <thead>
   <tr>
-    <th style="width: 70px" table-sort sort-property="['DEFINITION_NAME', 'DEFINITION']" sort-state="pageable" sort-order-change-handler="sortChanged">Name</th>
-    <th style="width: 300px" table-sort sort-property="['DEFINITION','DEFINITION_NAME']"  sort-state="pageable" sort-order-change-handler="sortChanged">Definition</th>
+    <th style="width: 70px"><a (click)="toggleDefinitionNameSort()"><span style="margin-right: 5px">Name</span></a><i class="fa" [ngClass]="{'fa-sort': definitionNameSort === null, 'fa-sort-asc': definitionNameSort === false, 'fa-sort-desc': definitionNameSort === true }" aria-hidden="true"></i></th>
+    <th style="width: 300px"><a (click)="toggleDefinitionSort()"><span style="margin-right: 5px">Definitions</span></a><i class="fa" [ngClass]="{'fa-sort': definitionSort === null, 'fa-sort-asc': definitionSort === false, 'fa-sort-desc': definitionSort === true }" aria-hidden="true"></i></th>
     <th style="width: 240px" colspan="1" class="text-center">Actions</th>
   </tr>
   </thead>
