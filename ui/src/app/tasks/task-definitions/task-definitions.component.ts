@@ -18,6 +18,13 @@ export class TaskDefinitionsComponent implements OnInit {
   busy: Subscription;
   taskDefinitionToDestroy: TaskDefinition;
 
+  // undefined indicates that order is not selected
+  // thus we simply show double arrow.
+  // for sorting toggles, we just switch
+  // and first sort with true which equals desc
+  definitionNameSort: boolean = undefined;
+  definitionSort: boolean = undefined;
+
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
 
@@ -50,7 +57,7 @@ export class TaskDefinitionsComponent implements OnInit {
   loadTaskDefinitions() {
     console.log('Loading Task Definitions...', this.taskDefinitions);
 
-    this.busy = this.tasksService.getDefinitions().subscribe(
+    this.busy = this.tasksService.getDefinitions(this.definitionNameSort, this.definitionSort).subscribe(
       data => {
         this.taskDefinitions = data;
         this.toastyService.success('Task definitions loaded.');
@@ -69,6 +76,28 @@ export class TaskDefinitionsComponent implements OnInit {
   destroyTask(item: TaskDefinition) {
     this.taskDefinitionToDestroy = item;
     this.showChildModal();
+  }
+
+  toggleDefinitionNameSort() {
+    if (this.definitionNameSort === undefined) {
+      this.definitionNameSort = true;
+    } else if (this.definitionNameSort) {
+      this.definitionNameSort = false;
+    } else {
+      this.definitionNameSort = undefined;
+    }
+    this.loadTaskDefinitions();
+  }
+
+  toggleDefinitionSort() {
+    if (this.definitionSort === undefined) {
+      this.definitionSort = true;
+    } else if (this.definitionSort) {
+      this.definitionSort = false;
+    } else {
+      this.definitionSort = undefined;
+    }
+    this.loadTaskDefinitions();
   }
 
   public proceed(taskDefinition: TaskDefinition): void {
