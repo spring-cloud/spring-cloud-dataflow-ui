@@ -18,7 +18,66 @@ import { TokenKind } from './tokenizer';
 import { Token } from './tokenizer';
 import { tokenize } from './tokenizer';
 
+<<<<<<< HEAD
 
+=======
+interface Pos {
+	ch: number,
+	line: number
+}
+export interface Range {
+	start: Pos,
+	end: Pos
+}
+export interface Error {
+	msg: String,
+	range: Range
+}
+interface DestinationReference {
+	type: string,
+	name: string,
+	start: number,
+	end: number
+}
+interface TaskNode {
+	app?: AppNode,
+	name?: string,
+	namerange?: Range,
+	errors?: Error[]
+}
+interface AppNode {
+	label?: string,
+	name: string,
+	options?,
+	start: number,
+	end: number
+}
+interface StreamDef {
+	name?: string,
+	apps?: AppNode[],
+	sourceChannel?: ChannelReference,
+	sinkChannel?: ChannelReference,
+	errors?: Error[]
+}
+interface ChannelReference {
+	channel: DestinationReference,
+	start?: number,
+	end?: number
+}
+interface ParsedTask {
+	group: string,
+	grouprange: Range,
+	type: string,
+	name: string,
+	range: Range,
+	options,
+	optionsranges: Range[]
+}
+interface Line {
+	success?,
+	errors?: Error[]
+}
+>>>>>>> cabc5019a23b056b72920a709b49cf7765aa04c0
 interface Ugly {
 	group: string,
 	label?: string,
@@ -50,7 +109,7 @@ class InternalParser {
 		this.mode = mode;
 		this.textlines = definitionsText.split('\n');
 	}
-			
+
 	private tokenListToStringList(tokens, delimiter) {
 		if (tokens.length===0) {
 			return '';
@@ -502,10 +561,15 @@ class InternalParser {
 
 	// TODO switch to the var x= (function() {... return yyy; })(); model
 	// mode may be 'task' or 'stream' - will default to 'stream'
-	public parse() {	
+	public parse() {
 		var start, end, errorToRecord;
+<<<<<<< HEAD
 		var line: Parser.Line;
 		
+=======
+		var line: Line;
+
+>>>>>>> cabc5019a23b056b72920a709b49cf7765aa04c0
 		for (var lineNumber=0;lineNumber<this.textlines.length;lineNumber++) {
 			try {
 				line = {};

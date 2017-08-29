@@ -31,7 +31,7 @@ describe('JobExecutionDetailsComponent', () => {
         JobExecutionDetailsComponent,
         JobExecutionStatusComponent,
         DataflowDateTimePipe,
-        DataflowDurationPipe,
+        DataflowDurationPipe
       ],
       imports: [
         RouterTestingModule.withRoutes([])
