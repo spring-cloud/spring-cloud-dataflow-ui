@@ -34,7 +34,6 @@ export class AuthService {
     private http: Http,
     private errorHandler: ErrorHandler,
     private options: RequestOptions) {
-    console.log('Constructing authService');
   }
 
   /**
@@ -48,16 +47,16 @@ export class AuthService {
   loadSecurityInfo(reconstituteSecurity = false): Observable<SecurityInfo> {
     console.log(`Loading SecurityInfo - Reconstitute security? ${reconstituteSecurity}`);
     const requestOptions: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
+    const options = HttpUtils.getDefaultRequestOptions();
 
     if (reconstituteSecurity) {
       const xAuthToken = this.retrievePersistedXAuthToken();
       if (xAuthToken) {
         requestOptions.xAuthToken = xAuthToken;
-        console.log('o.xAuthToken', requestOptions.xAuthToken);
       }
     }
 
-    return this.http.get(this.securityInfoUrl)
+    return this.http.get(this.securityInfoUrl, options)
                     .map(response => {
                       const body = response.json();
                       this.securityInfo = new SecurityInfo().deserialize(body);
@@ -85,7 +84,7 @@ export class AuthService {
   login(loginRequest: LoginRequest): Observable<SecurityInfo> {
     console.log(`Logging in user ${loginRequest.username}.`);
     const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.post(this.authenticationUrl, loginRequest, options)
+    return this.http.post(this.authenticationUrl, JSON.stringify(loginRequest), options)
                     .map(response => {
                       return response.json() as string;
                     })

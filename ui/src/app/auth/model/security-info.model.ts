@@ -13,9 +13,6 @@ export class SecurityInfo implements Serializable<SecurityInfo> {
   public username = '';
   public roles: string[] = [];
 
-  constructor() {
-  }
-
   /**
    * Set the SecurityInfo object to default values.
    */
@@ -73,6 +70,8 @@ export class SecurityInfo implements Serializable<SecurityInfo> {
           if (this.hasAnyRoleOf(appRoles)) {
             found = true;
           }
+        } else {
+          found = true;
         }
       } else {
         found = false;

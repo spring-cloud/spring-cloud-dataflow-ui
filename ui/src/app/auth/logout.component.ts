@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { RequestOptions } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from './auth.service';
-import { LoginRequest } from './model/login-request.model';
+
 import { Subscription } from 'rxjs/Subscription';
 
 import { ToastyService } from 'ng2-toasty';
+import { AuthService } from './auth.service';
 
 @Component({
   template: ''
@@ -17,8 +16,7 @@ export class LogoutComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private toastyService: ToastyService,
-    private router: Router,
-    private route: ActivatedRoute) {
+    private router: Router) {
   }
 
   /**

@@ -7,6 +7,8 @@ import { AuthService } from '../auth.service';
  * the necessary access rights. If not, the user is redirected to the
  * login page and the original request url will be appended to the
  * 'returnUrl' query parameter.
+ *
+ * @author Gunnar Hillert
  */
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -36,8 +38,8 @@ export class AuthGuard implements CanActivate {
       return true;
     }
 
-    if (securityInfo.isAuthenticationEnabled && securityInfo.isFormLogin) {
-      if (securityInfo.isAuthorizationEnabled) {
+    if (securityInfo.isAuthenticationEnabled) {
+      if (securityInfo.isAuthorizationEnabled && securityInfo.isAuthenticated) {
         console.log('You do not have any of the necessary role(s) ' + rolesNeeded);
         this.router.navigate(['roles-missing']);
       } else {
