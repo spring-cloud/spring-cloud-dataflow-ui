@@ -22,11 +22,11 @@ interface Pos {
 	ch: number,
 	line: number
 }
-interface Range {
+export interface Range {
 	start: Pos,
 	end: Pos
 }
-interface Error {
+export interface Error {
 	msg: String,
 	range: Range
 }
@@ -107,7 +107,7 @@ class Parser {
 		}
 		this.textlines = definitionsText.split('\n');
 	}
-			
+
 	private tokenListToStringList(tokens, delimiter) {
 		if (tokens.length===0) {
 			return '';
@@ -574,10 +574,10 @@ class Parser {
 
 	// TODO switch to the var x= (function() {... return yyy; })(); model
 	// mode may be 'task' or 'stream' - will default to 'stream'
-	public parse() {	
+	public parse() {
 		var start, end, errorToRecord;
 		var line: Line;
-		
+
 		for (var lineNumber=0;lineNumber<this.textlines.length;lineNumber++) {
 			try {
 				line = {};

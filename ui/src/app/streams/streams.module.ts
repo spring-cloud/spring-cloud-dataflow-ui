@@ -14,6 +14,8 @@ import { FloModule } from 'spring-flo';
 import { MetamodelService } from './flo/metamodel.service';
 import { RenderService } from './flo/render.service';
 import { EditorService } from './flo/editor.service';
+import { StreamCreateDialogComponent } from './stream-create/stream.create.dialog.component';
+import { ProgressbarModule } from 'ngx-bootstrap';
 
 @NgModule({
   imports: [
@@ -25,13 +27,18 @@ import { EditorService } from './flo/editor.service';
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
     FloModule,
+    ProgressbarModule
   ],
   declarations: [
     StreamsComponent,
     StreamCreateComponent,
     StreamDefinitionsComponent,
     StreamDetailsComponent,
-    StreamDeployComponent
+    StreamDeployComponent,
+    StreamCreateDialogComponent
+  ],
+  entryComponents: [
+    StreamCreateDialogComponent
   ],
   providers: [
       StreamsService,

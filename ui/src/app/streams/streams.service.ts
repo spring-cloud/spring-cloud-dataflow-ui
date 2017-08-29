@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -62,6 +63,25 @@ export class StreamsService {
     return this.http.get(this.streamDefinitionsUrl, {search: params})
       .map(this.extractData.bind(this))
       .catch(this.errorHandler.handleError);
+  }
+
+  getDefinition(name: string): Observable<StreamDefinition> {
+    return this.http.get(`${this.streamDefinitionsUrl}/${name}`)
+      .map(res => {
+        const json = res.json();
+        return new StreamDefinition(json.name, json.dslText, json.status);
+      })
+      .catch(this.errorHandler.handleError);
+  }
+
+  createDefinition(name: string, dsl: string, deploy? : boolean) : Observable<Response> {
+    const params =  new URLSearchParams();
+    params.append('name', name);
+    params.append('definition', dsl);
+    if (deploy) {
+      params.set('deploy', deploy.toString());
+    }
+    return this.http.post(this.streamDefinitionsUrl, null, {params: params});
   }
 
   /**
