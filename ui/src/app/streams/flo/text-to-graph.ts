@@ -128,7 +128,11 @@ class TextToGraphConverter {
 			else {
 				md = group?this.metamodel.get(group).get(name):null;
 			}
-            var newNode = this.floEditorContext.createNode(md, inputnodes[n].properties);
+			      let propertiesMap = new Map<string, any>();
+			      if (inputnodes[n].properties) {
+              Object.keys(inputnodes[n].properties).forEach(k => propertiesMap.set(k, inputnodes[n].properties[k]));
+            }
+            var newNode = this.floEditorContext.createNode(md, propertiesMap);
             // Tap and Destination names are in 'props/name' property
             if (name !== 'tap' && name !== 'destination') {
                 newNode.attr('node-name', label);
@@ -194,7 +198,7 @@ class TextToGraphConverter {
 			return {'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []};
 		} else {
 			var parsedStreams: Parser.ParseResult = Parser.parse(dsl, 'stream');
-			return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;			
+			return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;
 		}
 	}
 
