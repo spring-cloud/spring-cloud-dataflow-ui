@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { parse } from './parser';
+import { Parser } from "./parser";
 
 @Injectable()
 export class ParserService {
@@ -8,7 +8,7 @@ export class ParserService {
   }
 
   parseDsl(text: string, mode?: string) {
-  	return parse(text, mode);
+  	return Parser.parse(text, mode);
   }
 
 }

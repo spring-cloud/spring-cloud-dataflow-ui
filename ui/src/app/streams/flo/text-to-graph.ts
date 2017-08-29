@@ -517,6 +517,6 @@ export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamode
 	console.log("dsl = "+dsl+"\nmetamodel="+metamodel);
 	new TextToGraphConverter(dsl, flo, metamodel).convert();
 }
-export function convertParseResponseToJsonGraph(dsl : string, parsedStreams: Lines) {
+export function convertParseResponseToJsonGraph(dsl : string, parsedStreams: Parser.ParseResult) {
   return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
 }
