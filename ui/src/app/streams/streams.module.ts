@@ -11,11 +11,13 @@ import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FloModule } from 'spring-flo';
+import { ProgressbarModule } from 'ngx-bootstrap';
 import { MetamodelService } from './flo/metamodel.service';
 import { RenderService } from './flo/render.service';
 import { EditorService } from './flo/editor.service';
 import { StreamCreateDialogComponent } from './stream-create/stream.create.dialog.component';
-import { ProgressbarModule } from 'ngx-bootstrap';
+import { PropertiesDialogComponent } from './flo/properties/properties.dialog.component';
+import { ContentAssistService } from './flo/content.assist.service';
 
 @NgModule({
   imports: [
@@ -35,16 +37,19 @@ import { ProgressbarModule } from 'ngx-bootstrap';
     StreamDefinitionsComponent,
     StreamDetailsComponent,
     StreamDeployComponent,
-    StreamCreateDialogComponent
+    StreamCreateDialogComponent,
+    PropertiesDialogComponent
   ],
   entryComponents: [
-    StreamCreateDialogComponent
+    StreamCreateDialogComponent,
+    PropertiesDialogComponent
   ],
   providers: [
-      StreamsService,
-      MetamodelService,
-      RenderService,
-      EditorService
+    StreamsService,
+    MetamodelService,
+    RenderService,
+    EditorService,
+    ContentAssistService
   ]
 })
 export class StreamsModule { }

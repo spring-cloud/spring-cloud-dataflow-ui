@@ -6,6 +6,7 @@ import { EditorService } from '../flo/editor.service';
 import { BsModalService } from 'ngx-bootstrap';
 import { StreamCreateDialogComponent } from './stream.create.dialog.component';
 import { Utils } from '../flo/utils';
+import { ContentAssistService } from '../flo/content.assist.service';
 
 @Component({
   selector: 'app-stream-create',
@@ -24,7 +25,8 @@ export class StreamCreateComponent implements OnInit {
   constructor(public metamodelService : MetamodelService,
               public renderService : RenderService,
               public editorService : EditorService,
-              private bsModalService : BsModalService) {
+              private bsModalService : BsModalService,
+              private contentAssistService : ContentAssistService) {
     console.log('Building');
   }
 
