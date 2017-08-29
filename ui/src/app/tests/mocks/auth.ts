@@ -1,8 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { AppInfo } from '../../tasks/model/app-info';
-import { Page} from '../../shared/model/page';
-import { AppRegistration } from '../../shared/model/app-registration';
-import { TaskExecution } from '../../tasks/model/task-execution';
 
 import { SecurityInfo } from '../../auth/model/security-info.model';
 import { LoginRequest } from '../../auth/model/login-request.model';
@@ -15,13 +11,6 @@ import { LoginRequest } from '../../auth/model/login-request.model';
 export class MockAuthService {
 
   public securityInfo = new SecurityInfo();
-
-  constructor() {
-  }
-
-  loadSecurityInfo(reconstituteSecurity = false): Observable<SecurityInfo> {
-    return Observable.of(this.securityInfo);
-  }
 
   login(loginRequest: LoginRequest): Observable<SecurityInfo> {
 

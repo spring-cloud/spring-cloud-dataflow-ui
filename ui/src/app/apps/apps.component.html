@@ -40,7 +40,7 @@
         <th style="width: 200px">Name</th>
         <th style="width: 100px">Type</th>
         <th>URI</th>
-        <th style="width: 130px" colspan="2" class="text-center">Actions</th>
+        <th style="width: 130px" class="text-center">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -54,10 +54,8 @@
                 class="btn btn-default" title="Details"
         ><span class="glyphicon glyphicon-search"></span>
         </button>
-    </td>
-    <td class="action-column">
-        <button roles="['ROLE_CREATE']" type="button" (click)="unregisterSingleApp(item)"
-                class="btn btn-default" title="Unregister"
+        <button roles="['ROLE_CREATE']" type="button" (click)="unregisterSingleApp(item)" [appRoles]="['ROLE_CREATE']"
+                class="btn btn-default" style="margin-left: 0;" title="Unregister"
         ><span class="glyphicon glyphicon-trash"></span>
         </button>
     </td>

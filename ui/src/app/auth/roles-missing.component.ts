@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       It appears that you are missing the proper roles to use the Dashboard. Please contact your administrator to rectify the
       situation.
     </p>
-  `,
+  `
 })
 export class RolesMissingComponent {
 }
