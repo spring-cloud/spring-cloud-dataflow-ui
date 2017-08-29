@@ -5,13 +5,13 @@
   </button>
 </div>
 <div class="modal-body" [formGroup]="form">
-  <div *ngIf="errors && errors.length" class="dialog-validation">
+  <div *ngIf="errors && errors.length > 0" class="dialog-validation">
     <div *ngFor="let error of errors">
       <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign"></label>
       <label>{{error}}</label>
     </div>
   </div>
-  <div *ngIf="!(errors && errors.length) && warnings && warnings.length" class="dialog-validation">
+  <div *ngIf="!(errors && errors.length) && warnings && warnings.length > 0" class="dialog-validation">
     <div *ngFor="let warning of warnings">
       <label class="glyphicon glyphicon-warning-sign dialog-warning-sign"></label>
       <label>{{warning}}</label>
