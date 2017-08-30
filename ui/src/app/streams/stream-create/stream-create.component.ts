@@ -7,6 +7,8 @@ import { BsModalService } from 'ngx-bootstrap';
 import { StreamCreateDialogComponent } from './stream.create.dialog.component';
 import { Utils } from '../flo/utils';
 import { ContentAssistService } from '../flo/content.assist.service';
+import * as CodeMirror from 'codemirror';
+
 
 @Component({
   selector: 'app-stream-create',
@@ -22,12 +24,19 @@ export class StreamCreateComponent implements OnInit {
 
   paletteSize = 170;
 
+  hintOptions : any;
+
   constructor(public metamodelService : MetamodelService,
               public renderService : RenderService,
               public editorService : EditorService,
               private bsModalService : BsModalService,
               private contentAssistService : ContentAssistService) {
     console.log('Building');
+
+    this.hintOptions = {
+      async: true,
+      hint: (doc : CodeMirror.EditorFromTextArea, options, arg) => this.contentAssist(doc, options, arg)
+    };
   }
 
   ngOnInit() {
@@ -82,6 +91,57 @@ export class StreamCreateComponent implements OnInit {
 
     bsModalRef.content.setDsl(text);
     bsModalRef.content.successCallback = () => this.editorContext.clearGraph();
+  }
+
+  contentAssist(doc : CodeMirror.EditorFromTextArea, options : any, arg : any) {
+    let cursor = (<any>doc).getCursor();
+    let startOfLine = {line: cursor.line, ch: 0};
+    let prefix = (<any>doc).getRange(startOfLine, cursor);
+
+    return new Promise((resolve) => {
+      this.contentAssistService.getProposals(prefix).subscribe(completions => {
+        let chopAt = this.interestingPrefixStart(prefix, completions);
+        let finalProposals = completions.map((longCompletion : any)=> {
+          let text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;
+          return text.substring(chopAt);
+        });
+        console.log(JSON.stringify(finalProposals));
+        resolve({
+          list: finalProposals,
+          from: {line: startOfLine.line, ch: chopAt},
+          to: cursor
+        });
+      }, err => {
+        console.error(err);
+        resolve();
+      });
+    });
+
+  }
+
+  /**
+   * The suggestions provided by rest api are very long and include the whole command typed
+   * from the start of the line. This function determines the start of the 'interesting' part
+   * at the end of the prefix, so that we can use it to chop-off the suggestion there.
+   */
+  interestingPrefixStart(prefix : string, completions : Array<any>) {
+    let cursor = prefix.length;
+    if (completions.every(completion => this.isDelimiter(completion[cursor]))) {
+      return cursor;
+    }
+    return this.findLast(prefix, (s: string) => this.isDelimiter(s));
+  }
+
+  isDelimiter(c : string) {
+    return c && (/\s|\|/).test(c);
+  }
+
+  findLast(string : string, predicate : (s : string) => boolean, start? : number) : number {
+    let pos = start || string.length - 1;
+    while (pos >= 0 && !predicate(string[pos])) {
+      pos--;
+    }
+    return pos;
   }
 
 }
