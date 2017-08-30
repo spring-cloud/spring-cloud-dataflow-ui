@@ -67,10 +67,42 @@ export class TasksService {
         });
   }
 
-  getDefinitions(): Observable<Page<TaskDefinition>> {
+  /**
+   * Calls the Spring Cloud Data Flow server to get task definitions the specified {@link TaskDefinition}.
+   *
+   * If sort order is defined as true, desc order is used and if false, as order is used.
+   * If method is called without parameter or as null, sort properties are not added
+   * to the request.
+   *
+   * @param definitionNameSort the sort for DEFINITION_NAME
+   * @param definitionSort the sort for DEFINITION
+   * @returns {Observable<R|T>} that will call the subscribed funtions to handle
+   * the results when returned from the Spring Cloud Data Flow server.
+   */
+  getDefinitions(definitionNameSort?: boolean, definitionSort?: boolean): Observable<Page<TaskDefinition>> {
     const params = new URLSearchParams();
     params.append('page', this.taskDefinitions.pageNumber.toString());
     params.append('size', this.taskDefinitions.pageSize.toString());
+
+    // we can have asc and desc with multiple fields
+    // if sort param is sent multiple times.
+    // we put sort by definition first as
+    // names are always unique, making primary
+    // sort by name pointless.
+    if (definitionSort != null) {
+      if (definitionSort) {
+        params.append('sort', 'DEFINITION,DESC');
+      } else {
+        params.append('sort', 'DEFINITION,ASC');
+      }
+    }
+    if (definitionNameSort != null) {
+      if (definitionNameSort) {
+        params.append('sort', 'DEFINITION_NAME,DESC');
+      } else {
+        params.append('sort', 'DEFINITION_NAME,ASC');
+      }
+    }
 
     if (this.taskDefinitions.filter && this.taskDefinitions.filter.length > 0) {
       params.append('search', this.taskDefinitions.filter);
