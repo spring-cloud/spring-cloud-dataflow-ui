@@ -4,8 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AppsService } from '../apps.service';
 import { ToastyService } from 'ng2-toasty';
 
-import { DetailedAppRegistration } from '../model/detailed-app-registration';
-import { ApplicationType } from '../../shared/model/application-type';
+import { ApplicationType, DetailedAppRegistration } from '../../shared/model';
 
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';

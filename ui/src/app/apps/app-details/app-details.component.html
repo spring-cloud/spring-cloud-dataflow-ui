@@ -41,7 +41,7 @@
   <tbody>
     <tr *ngFor="let property of detailedAppRegistration.options">
       <th>
-        {{property.name}} <span *ngIf="property.deprecated" class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
+        {{property.name}} <span *ngIf="property.isDeprecated" class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
       </th>
       <td>
           <p>{{property.description ? property.description : '(No Description Available)'}}</p>
