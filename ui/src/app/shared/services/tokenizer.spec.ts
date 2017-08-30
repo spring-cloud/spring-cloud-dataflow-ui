@@ -43,6 +43,7 @@ describe('tokenizer:', () => {
   it('error: non terminated single quoted literal',()=> {
     try {
       tokens = tokenize('\'abc def');
+      fail();
     } catch (error) {
       expect(error.msg).toEqual('TokenizationError: non terminating quoted string');
       expect(error.start).toEqual(0);
@@ -71,6 +72,7 @@ describe('tokenizer:', () => {
   it('error: non terminated double quoted literal',()=> {
     try {
       tokens = tokenize('  "abc def');
+      fail();      
     } catch (error) {
       expect(error.msg).toEqual('TokenizationError: non terminating double quoted string');
       expect(error.start).toEqual(2);
@@ -81,16 +83,7 @@ describe('tokenizer:', () => {
   it('error: incorrect hyphen usage',()=> {
     try {
       tokens = tokenize(' -abc=def');
-    } catch (error) {
-      expect(error.msg).toEqual('TokenizationError: expected two hyphens: \'--\'');
-      expect(error.start).toEqual(1);
-      expect(error.end).toEqual(2);
-    }
-  });
-
-  it('error: escaped char',()=> {
-    try {
-      tokens = tokenize(' \p');
+      fail();      
     } catch (error) {
       expect(error.msg).toEqual('TokenizationError: expected two hyphens: \'--\'');
       expect(error.start).toEqual(1);
@@ -101,6 +94,7 @@ describe('tokenizer:', () => {
   it('error: unexpected char',()=> {
     try {
       tokens = tokenize(' *');
+      fail();      
     } catch (error) {
       expect(error.msg).toEqual('TokenizationError: Unexpected character');
       expect(error.start).toEqual(1);

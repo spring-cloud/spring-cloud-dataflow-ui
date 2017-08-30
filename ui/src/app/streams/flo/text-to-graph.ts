@@ -20,12 +20,6 @@ import * as _ from 'lodash';
 import { Parser } from "../../shared/services/parser";
 import { MetamodelService } from './metamodel.service';
 
-interface JsonGraph {
-	format: string,
-	streamdefs,
-	nodes,
-	links
-}
 
 /**
  * Build a graph representation from text dsl.
@@ -78,7 +72,7 @@ class TextToGraphConverter {
      * Take the JSON description of the flow as provided by the parser and map it into a series
      * of nodes that can be processed by dagre/joint.
      */
-    private buildFloGraphFromJsonGraph(jsonGraph: JsonGraph) {
+    private buildFloGraphFromJsonGraph(jsonGraph: JsonGraph.Graph) {
         var inputnodes = jsonGraph.nodes;
         var inputlinks = jsonGraph.links;
 
@@ -188,10 +182,10 @@ class TextToGraphConverter {
 	// 		// get displayed.
 	// 	}
 	// }
-	static parseToJsonGraph(dsl: string): JsonGraph {
+	static parseToJsonGraph(dsl: string): JsonGraph.Graph {
 		if (!dsl || dsl.trim().length === 0) {
 			console.log('parseToJson: no text to parse');
-			return {'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []};
+			return {'errors':null, 'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []};
 		} else {
 			var parsedStreams: Parser.ParseResult = Parser.parse(dsl, 'stream');
 			return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;			
@@ -225,7 +219,7 @@ class TextToGraphConverter {
 		return null;
 	}
 
-	static convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult) {
+	static convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
 		// Compute line breaks
 		var linebreaks = [0];
 		var pos = 0;
@@ -513,10 +507,56 @@ class TextToGraphConverter {
     //     this.parseService.parseDsl(dsl);
     // }
 }
+
+export namespace JsonGraph {
+
+	export interface GraphHolder {
+		errors,
+		graph: Graph
+	}
+
+	export interface Error {
+
+	}
+	export interface Graph {
+		errors: Error[],
+		format: string,
+		streamdefs,
+		nodes: Node[],
+		links: Link[]
+	}
+
+	export interface Node {
+		id: number,
+		name: string,
+		label?: string,
+		group?: string,
+		'stream-id': number,
+		range: Range
+		properties?: Map<string,string>,
+		propertiesranges?: Map<string,Range>,
+	}
+
+	export interface Pos {
+		ch: number,
+		line: number
+	}
+	export interface Range {
+		start: Pos,
+		end: Pos
+	}
+
+	export interface Link {
+		from: number,
+		to: number,
+		linkType?: string
+	}
+}
+
 export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamodel: Map<string,Map<string,Flo.ElementMetadata>>) : void {
 	console.log("dsl = "+dsl+"\nmetamodel="+metamodel);
 	new TextToGraphConverter(dsl, flo, metamodel).convert();
 }
-export function convertParseResponseToJsonGraph(dsl : string, parsedStreams: Parser.ParseResult) {
+export function convertParseResponseToJsonGraph(dsl : string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
   return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
 }
