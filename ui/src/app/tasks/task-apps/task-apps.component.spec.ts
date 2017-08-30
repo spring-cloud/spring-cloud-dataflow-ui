@@ -6,7 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { AppRegistration } from '../../shared/model/app-registration';
+import { AppRegistration } from '../../shared/model/app-registration.model';
 import { ApplicationType } from '../../shared/model/application-type';
 import { TaskAppsComponent } from './task-apps.component';
 import { MockToastyService } from '../../tests/mocks/toasty';

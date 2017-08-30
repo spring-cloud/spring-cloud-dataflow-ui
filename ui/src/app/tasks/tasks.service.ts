@@ -9,7 +9,7 @@ import { TaskExecution } from './model/task-execution';
 import { TaskDefinition } from './model/task-definition';
 import { AppInfo } from './model/app-info';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
-import { AppRegistration } from '../shared/model/app-registration';
+import { AppRegistration } from '../shared/model/app-registration.model';
 
 import { PageRequest } from '../shared/model/pagination/page-request.model';
 import { ApplicationType } from '../shared/model/application-type';

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { AppInfo } from '../../tasks/model/app-info';
 import { Page} from '../../shared/model/page';
-import { AppRegistration } from '../../shared/model/app-registration';
+import { AppRegistration } from '../../shared/model/app-registration.model';
 import { TaskExecution } from '../../tasks/model/task-execution';
 
 /**
