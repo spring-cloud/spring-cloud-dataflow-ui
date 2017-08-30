@@ -57,7 +57,6 @@ export class AppsService {
   }
 
   getAppInfo(appType: ApplicationType, appName: string): Observable<DetailedAppRegistration> {
-    console.log(this.appRegistrations);
     const options = HttpUtils.getDefaultRequestOptions();
 
     return this.http.get(AppsService.appsUrl + '/' + appType + '/' + appName, options)
@@ -71,7 +70,7 @@ export class AppsService {
   }
 
   bulkImportApps(appRegistrationImport: AppRegistrationImport): Observable<Response> {
-    console.log(this.appRegistrations);
+    console.log('Bulk import applications...', appRegistrationImport);
     const options = HttpUtils.getDefaultRequestOptions();
 
     const params = new URLSearchParams();

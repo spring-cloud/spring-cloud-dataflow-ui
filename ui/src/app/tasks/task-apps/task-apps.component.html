@@ -9,7 +9,7 @@
     <tr>
         <th style="width: 200px">Name</th>
         <th>Coordinates</th>
-        <th style="width: 130px" colspan="2" class="text-center">Actions</th>
+        <th style="width: 130px" class="text-center">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -17,15 +17,13 @@
     <td>{{item.name}}</td>
     <td>{{item.uri}}</td>
     <td class="action-column">
-        <button type="button" (click)="createDefinition(item)"
-                class="btn btn-default" title="Create Definition"
-        ><span class="glyphicon glyphicon-import"></span>
-        </button>
-    </td>
-    <td class="action-column">
         <button type="button" (click)="details(item)"
                 class="btn btn-default" title="Details"
         ><span class="glyphicon glyphicon-search"></span>
+        </button>
+        <button type="button" (click)="createDefinition(item)" [appRoles]="['ROLE_CREATE']"
+                class="btn btn-default" style="margin-left: 0;" title="Create Definition"
+        ><span class="glyphicon glyphicon-import"></span>
         </button>
     </td>
   </tr>

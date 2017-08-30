@@ -3,6 +3,9 @@ import { TasksComponent } from './tasks.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { RolesDirective } from '../auth/directives/roles.directive';
+import { MockAuthService } from '../tests/mocks/auth';
+import { AuthService } from '../auth/auth.service';
 
 describe('TasksComponent', () => {
   let component: TasksComponent;
@@ -10,10 +13,15 @@ describe('TasksComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
 
+  const authService = new MockAuthService();
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TasksComponent ],
-      imports: [AppRoutingModule]
+      declarations: [ TasksComponent, RolesDirective ],
+      imports: [AppRoutingModule],
+      providers: [
+        { provide: AuthService, useValue: authService }
+      ]
     })
       .compileComponents();
   }));

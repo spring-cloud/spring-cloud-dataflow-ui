@@ -25,6 +25,9 @@ describe('TasksService', () => {
       const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
       params.append('type', 'task');
 
+      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+      requestOptionsArgs.search = params;
+
       this.tasksService.getTaskAppRegistrations();
 
       const defaultPageNumber: number = this.tasksService.appRegistrations.pageNumber;
@@ -33,7 +36,7 @@ describe('TasksService', () => {
       expect(defaultPageNumber).toBe(0);
       expect(defaultPageSize).toBe(10);
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', { search: params });
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', requestOptionsArgs);
     });
   });
 
