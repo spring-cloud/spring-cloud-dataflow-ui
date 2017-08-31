@@ -43,6 +43,42 @@ describe('StreamsService', () => {
       expect(this.streamsService.streamDefinitions.filter).toBe('testFilter');
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', {search: params});
     });
+
+    it('should call the definitions service with the right url [no sort params]', () => {
+      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+
+      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
+
+      this.streamsService.getDefinitions();
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', { search: params });
+    });
+
+    it('should call the definitions service with the right url [null sort params]', () => {
+      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
+      this.streamsService.getDefinitions(undefined, undefined);
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', { search: params });
+    });
+
+    it('should call the definitions service with the right url [desc asc sort]', () => {
+      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
+      const tocheck = params;
+      tocheck.append('sort', 'DEFINITION,ASC');
+      tocheck.append('sort', 'DEFINITION_NAME,DESC');
+      this.streamsService.getDefinitions(true, false);
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', { search: tocheck });
+    });
+
+    it('should call the definitions service with the right url [asc desc sort]', () => {
+      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
+      const tocheck = params;
+      tocheck.append('sort', 'DEFINITION,DESC');
+      tocheck.append('sort', 'DEFINITION_NAME,ASC');
+      this.streamsService.getDefinitions(false, true);
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', { search: tocheck });
+    });
   });
 
   describe('destroyDefinition', () => {

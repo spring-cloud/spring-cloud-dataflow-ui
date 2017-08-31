@@ -52,35 +52,35 @@ export class TasksService {
     params.append('page', this.taskExecutions.pageNumber.toString());
     params.append('size', this.taskExecutions.pageSize.toString());
 
-    if (startTimeSort != null) {
+    if (startTimeSort !== undefined) {
       if (startTimeSort) {
         params.append('sort', 'START_TIME,DESC');
       } else {
         params.append('sort', 'START_TIME,ASC');
       }
     }
-    if (endTimeSort != null) {
+    if (endTimeSort !== undefined) {
       if (endTimeSort) {
         params.append('sort', 'END_TIME,DESC');
       } else {
         params.append('sort', 'END_TIME,ASC');
       }
     }
-    if (exitCodeSort != null) {
+    if (exitCodeSort !== undefined) {
       if (exitCodeSort) {
         params.append('sort', 'EXIT_CODE,DESC');
       } else {
         params.append('sort', 'EXIT_CODE,ASC');
       }
     }
-    if (executionIdSort != null) {
+    if (executionIdSort !== undefined) {
       if (executionIdSort) {
         params.append('sort', 'TASK_EXECUTION_ID,DESC');
       } else {
         params.append('sort', 'TASK_EXECUTION_ID,ASC');
       }
     }
-    if (taskNameSort != null) {
+    if (taskNameSort !== undefined) {
       if (taskNameSort) {
         params.append('sort', 'TASK_NAME,DESC');
       } else {
