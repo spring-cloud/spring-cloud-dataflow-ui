@@ -18,13 +18,12 @@ import { Flo } from 'spring-flo';
 import { Injectable } from '@angular/core';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { ApplicationType } from '../../shared/model/application-type';
+import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../shared/model/detailed-app-registration.model';
 import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './shapes';
 import { Observable}  from "rxjs";
 
-import { AppsService } from '../../apps/apps.service'; //TODO: Remove when moved to SharedModule
-import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../apps/model/detailed-app-registration';
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -50,7 +49,6 @@ export class MetamodelService implements Flo.Metamodel {
      */
     constructor(
       private appsService : SharedAppsService,
-      private toRemoveAppService : AppsService,
     ) {}
 
     textToGraph(flo: Flo.EditorContext, dsl: string): void {
@@ -131,7 +129,7 @@ export class MetamodelService implements Flo.Metamodel {
       return new StreamAppMetadata(
         type.toString(),
         name,
-        this.toRemoveAppService.getAppInfo(type, name),
+        this.appsService.getAppInfo(type, name),
         metadata
       );
     }

@@ -20,8 +20,6 @@ import { StreamCreateDialogComponent } from './stream-create/stream.create.dialo
 import { PropertiesDialogComponent } from './flo/properties/properties.dialog.component';
 import { ContentAssistService } from './flo/content.assist.service';
 
-import { AppsModule } from '../apps/apps.module'; //TODO: Remove when moved to SharedModule
-
 @NgModule({
   imports: [
     StreamsRoutingModule,
@@ -33,9 +31,7 @@ import { AppsModule } from '../apps/apps.module'; //TODO: Remove when moved to S
     PopoverModule.forRoot(),
     FloModule,
     AuthModule,
-    ProgressbarModule,
-
-    AppsModule //TODO: Remove when moved to SharedModule
+    ProgressbarModule
   ],
   declarations: [
     StreamsComponent,

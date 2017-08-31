@@ -50,15 +50,15 @@ export class MockStreamsService {
     return Observable.of(page);
   }
 
-  undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> {
+  undeployDefinition(streamDefinition: StreamDefinition): Observable<Response>|Observable<any> {
     return Observable.of({});
   }
 
-  destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> {
+  destroyDefinition(streamDefinition: StreamDefinition): Observable<Response>|Observable<any> {
     return Observable.of({});
   }
 
-  deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> {
+  deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response>|Observable<any> {
     return Observable.of({});
   }
 }
