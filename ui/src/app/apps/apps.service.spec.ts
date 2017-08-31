@@ -25,6 +25,8 @@ describe('AppsService', () => {
       expect(this.appsService.appRegistrations).toBeUndefined();
 
       const params = HttpUtils.getPaginationParams(0, 10);
+      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+      requestOptionsArgs.search = params;
 
       this.appsService.getApps();
 
@@ -34,7 +36,7 @@ describe('AppsService', () => {
       expect(defaultPageNumber).toBe(0);
       expect(defaultPageSize).toBe(10);
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', { search: params });
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', requestOptionsArgs);
     });
 
   });

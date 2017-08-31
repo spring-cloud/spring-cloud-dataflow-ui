@@ -3,13 +3,13 @@
   This section lists all the available applications and provides the control to register/unregister them (if applicable).
 </p>
 
-<button id="showAboutDetailsButton" type="button" (click)="registerApps()"
-        class="btn btn-default"
+<button id="registerApplicationButton" type="button" (click)="registerApps()"
+        class="btn btn-default" [appRoles]="['ROLE_CREATE']"
 ><span class="glyphicon glyphicon-plus"></span>
   <span class="hidden-xs">Register Application(s)</span>
 </button>
 
-<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all"
+<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
                       [items]="appRegistrations.getItemsAsObservable()"
                       (eventHandler)="unregisterMultipleApps(appRegistrations.items)"
                       noneSelectedLabel="No app selected to unregister"
@@ -18,7 +18,7 @@
                       allSelectedLabel="Unregister all {selectedCount} selected apps"
 ></app-tri-state-button>
 
-<button id="showAboutDetailsButton" type="button" (click)="bulkImportApps()"
+<button id="bulkImportAppsButton" type="button" (click)="bulkImportApps()" [appRoles]="['ROLE_CREATE']"
         class="btn btn-default"
 ><span class="glyphicon glyphicon-import"></span>
   <span class="hidden-xs">Bulk Import Applications</span>
@@ -35,17 +35,17 @@
   <thead>
     <tr>
         <th style="width: 30px">
-          <app-tri-state-checkbox *ngIf="appRegistrations?.items" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></app-tri-state-checkbox>
+          <app-tri-state-checkbox *ngIf="appRegistrations?.items" [appRoles]="['ROLE_CREATE']" class="toggle-all" [items]="appRegistrations.getItemsAsObservable()"></app-tri-state-checkbox>
         </th>
         <th style="width: 200px">Name</th>
         <th style="width: 100px">Type</th>
         <th>URI</th>
-        <th style="width: 130px" colspan="2" class="text-center">Actions</th>
+        <th style="width: 130px" class="text-center">Actions</th>
     </tr>
   </thead>
   <tbody>
   <tr *ngFor="let item of appRegistrations.items | searchFilter: appRegistrations.filter | paginate: appRegistrations.getPaginationInstance(); index as i">
-    <td><input type="checkbox" [(ngModel)]="item.isSelected" roles="['ROLE_CREATE']"/></td>
+    <td><input type="checkbox" [(ngModel)]="item.isSelected"  /></td>
     <td>{{item.name}}</td>
     <td>{{item.type}}</td>
     <td>{{item.uri}}</td>
@@ -54,10 +54,8 @@
                 class="btn btn-default" title="Details"
         ><span class="glyphicon glyphicon-search"></span>
         </button>
-    </td>
-    <td class="action-column">
-        <button roles="['ROLE_CREATE']" type="button" (click)="unregisterSingleApp(item)"
-                class="btn btn-default" title="Unregister"
+        <button roles="['ROLE_CREATE']" type="button" (click)="unregisterSingleApp(item)" [appRoles]="['ROLE_CREATE']"
+                class="btn btn-default" style="margin-left: 0;" title="Unregister"
         ><span class="glyphicon glyphicon-trash"></span>
         </button>
     </td>

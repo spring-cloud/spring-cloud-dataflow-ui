@@ -6,11 +6,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { AppRegistration } from '../../shared/model/app-registration';
+import { AppRegistration } from '../../shared/model/app-registration.model';
 import { ApplicationType } from '../../shared/model/application-type';
 import { TaskAppsComponent } from './task-apps.component';
 import { MockToastyService } from '../../tests/mocks/toasty';
 import { MockTasksService } from '../../tests/mocks/tasks';
+import { RolesDirective } from '../../auth/directives/roles.directive';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { AuthService } from '../../auth/auth.service';
 
 describe('TaskAppsComponent', () => {
   let component: TaskAppsComponent;
@@ -19,18 +22,20 @@ describe('TaskAppsComponent', () => {
   let el: HTMLElement;
   const toastyService = new MockToastyService();
   const tasksService = new MockTasksService();
+  const authService = new MockAuthService();
 
   beforeEach(async(() => {
     const routerStub = {};
     TestBed.configureTestingModule({
       declarations: [
-        TaskAppsComponent
+        TaskAppsComponent, RolesDirective
       ],
       imports: [
         BusyModule,
         NgxPaginationModule
       ],
       providers: [
+        { provide: AuthService, useValue: authService },
         { provide: TasksService, useValue: tasksService },
         { provide: ToastyService, useValue: toastyService },
         { provide: Router, useValue: routerStub }

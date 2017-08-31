@@ -11,6 +11,7 @@ import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FloModule } from 'spring-flo';
+import { AuthModule } from '../auth/auth.module';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { MetamodelService } from './flo/metamodel.service';
 import { RenderService } from './flo/render.service';
@@ -31,6 +32,7 @@ import { AppsModule } from '../apps/apps.module'; //TODO: Remove when moved to S
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
     FloModule,
+    AuthModule,
     ProgressbarModule,
 
     AppsModule //TODO: Remove when moved to SharedModule

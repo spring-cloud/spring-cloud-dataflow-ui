@@ -126,7 +126,7 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
-  private extractData(res: Response): Page<StreamDefinition> {
+  extractData(res: Response): Page<StreamDefinition> {
     const body = res.json();
     let items: StreamDefinition[];
     if (body._embedded && body._embedded.streamDefinitionResourceList) {

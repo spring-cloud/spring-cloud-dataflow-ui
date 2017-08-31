@@ -10,7 +10,7 @@
   <ul class="nav nav-tabs">
     <li role="presentation" routerLinkActive="active"><a routerLink="apps">Apps</a></li>
     <li role="presentation" routerLinkActive="active"><a routerLink="definitions">Definitions</a></li>
-    <li role="presentation" routerLinkActive="active"><a routerLink="create-composed-task">Create Composed Task</a></li>
+    <li role="presentation" [appRoles]="['ROLE_CREATE']" routerLinkActive="active"><a routerLink="create-composed-task">Create Composed Task</a></li>
     <li role="presentation" routerLinkActive="active"><a routerLink="executions">Executions</a></li>
   </ul>
   <div class="tab-content">

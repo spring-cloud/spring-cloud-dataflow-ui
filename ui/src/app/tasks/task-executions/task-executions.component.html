@@ -7,11 +7,11 @@
 <table *ngIf="taskExecutions?.items" class="table table-hover">
   <thead>
     <tr>
-        <th style="width: 200px">Execution Id</th>
-        <th style="width: 100px">Task Name</th>
-        <th style="width: 100px">Start Time</th>
-        <th style="width: 100px">End Time</th>
-        <th style="width: 100px">Exit Code</th>
+      <th style="width: 200px"><a (click)="toggleExecutionIdSort()"><span style="margin-right: 5px">Execution Id</span></a><i class="fa" [ngClass]="{'fa-sort': executionIdSort === undefined, 'fa-sort-asc': executionIdSort === false, 'fa-sort-desc': executionIdSort === true }" aria-hidden="true"></i></th>
+      <th style="width: 100px"><a (click)="toggleTaskNameSort()"><span style="margin-right: 5px">Task Name</span></a><i class="fa" [ngClass]="{'fa-sort': taskNameSort === undefined, 'fa-sort-asc': taskNameSort === false, 'fa-sort-desc': taskNameSort === true }" aria-hidden="true"></i></th>
+      <th style="width: 100px"><a (click)="toggleStartTimeSort()"><span style="margin-right: 5px">Start Time</span></a><i class="fa" [ngClass]="{'fa-sort': startTimeSort === undefined, 'fa-sort-asc': startTimeSort === false, 'fa-sort-desc': startTimeSort === true }" aria-hidden="true"></i></th>
+      <th style="width: 100px"><a (click)="toggleEndTimeSort()"><span style="margin-right: 5px">End Time</span></a><i class="fa" [ngClass]="{'fa-sort': endTimeSort === undefined, 'fa-sort-asc': endTimeSort === false, 'fa-sort-desc': endTimeSort === true }" aria-hidden="true"></i></th>
+      <th style="width: 100px"><a (click)="toggleExitCodeSort()"><span style="margin-right: 5px">Exit Code</span></a><i class="fa" [ngClass]="{'fa-sort': exitCodeSort === undefined, 'fa-sort-asc': exitCodeSort === false, 'fa-sort-desc': exitCodeSort === true }" aria-hidden="true"></i></th>
         <th style="width: 130px" class="text-center">Actions</th>
     </tr>
   </thead>

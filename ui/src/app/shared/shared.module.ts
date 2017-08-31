@@ -19,7 +19,11 @@ import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PropertyTableComponent } from './components/property-table/property-table.component';
-import { ModalModule, ProgressbarModule } from 'ngx-bootstrap';
+
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+
 import { TabComponent, TabsComponent } from './components/tabs.component';
 
 import { ParserService } from '../shared/services/parser.service';
@@ -51,6 +55,7 @@ const busyConfig: BusyConfig = {
     ReactiveFormsModule,
     BusyModule.forRoot(busyConfig),
     ModalModule.forRoot(),
+    BsDropdownModule.forRoot(),
     NgxPaginationModule,
     ToastyModule.forRoot(),
     ProgressbarModule.forRoot()

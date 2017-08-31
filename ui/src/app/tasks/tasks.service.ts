@@ -9,7 +9,7 @@ import { TaskExecution } from './model/task-execution';
 import { TaskDefinition } from './model/task-definition';
 import { AppInfo } from './model/app-info';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
-import { AppRegistration } from '../shared/model/app-registration';
+import { AppRegistration } from '../shared/model/app-registration.model';
 
 import { PageRequest } from '../shared/model/pagination/page-request.model';
 import { ApplicationType } from '../shared/model/application-type';
@@ -31,10 +31,62 @@ export class TasksService {
     this.appRegistrations = new Page<AppRegistration>();
   }
 
-  getExecutions(): Observable<Page<TaskExecution>> {
+  /**
+   * Calls the Spring Cloud Data Flow server to get paged task executions specified in {@link TaskExecution}.
+   *
+   * If sort order is defined as true, desc order is used and if false, as order is used.
+   * If method is called without parameter or as undefined, sort properties are not added
+   * to the request.
+   *
+   * @param {boolean} executionIdSort the sort for TASK_EXECUTION_ID
+   * @param {boolean} taskNameSort the sort for TASK_NAME
+   * @param {boolean} startTimeSort the sort for START_TIME
+   * @param {boolean} endTimeSort the sort for END_TIME
+   * @param {boolean} exitCodeSort the sort for EXIT_CODE
+   * @returns {Observable<Page<TaskExecution>>} that will call the subscribed funtions to handle
+   * the results when returned from the Spring Cloud Data Flow server.
+   */
+  getExecutions(executionIdSort?: boolean, taskNameSort?: boolean, startTimeSort?: boolean, endTimeSort?: boolean,
+      exitCodeSort?: boolean): Observable<Page<TaskExecution>> {
     const params = new URLSearchParams();
     params.append('page', this.taskExecutions.pageNumber.toString());
     params.append('size', this.taskExecutions.pageSize.toString());
+
+    if (startTimeSort != null) {
+      if (startTimeSort) {
+        params.append('sort', 'START_TIME,DESC');
+      } else {
+        params.append('sort', 'START_TIME,ASC');
+      }
+    }
+    if (endTimeSort != null) {
+      if (endTimeSort) {
+        params.append('sort', 'END_TIME,DESC');
+      } else {
+        params.append('sort', 'END_TIME,ASC');
+      }
+    }
+    if (exitCodeSort != null) {
+      if (exitCodeSort) {
+        params.append('sort', 'EXIT_CODE,DESC');
+      } else {
+        params.append('sort', 'EXIT_CODE,ASC');
+      }
+    }
+    if (executionIdSort != null) {
+      if (executionIdSort) {
+        params.append('sort', 'TASK_EXECUTION_ID,DESC');
+      } else {
+        params.append('sort', 'TASK_EXECUTION_ID,ASC');
+      }
+    }
+    if (taskNameSort != null) {
+      if (taskNameSort) {
+        params.append('sort', 'TASK_NAME,DESC');
+      } else {
+        params.append('sort', 'TASK_NAME,ASC');
+      }
+    }
 
     if (this.taskExecutions.filter && this.taskExecutions.filter.length > 0) {
       params.append('search', this.taskExecutions.filter);
@@ -67,10 +119,42 @@ export class TasksService {
         });
   }
 
-  getDefinitions(): Observable<Page<TaskDefinition>> {
+  /**
+   * Calls the Spring Cloud Data Flow server to get task definitions the specified {@link TaskDefinition}.
+   *
+   * If sort order is defined as true, desc order is used and if false, as order is used.
+   * If method is called without parameter or as null, sort properties are not added
+   * to the request.
+   *
+   * @param definitionNameSort the sort for DEFINITION_NAME
+   * @param definitionSort the sort for DEFINITION
+   * @returns {Observable<R|T>} that will call the subscribed funtions to handle
+   * the results when returned from the Spring Cloud Data Flow server.
+   */
+  getDefinitions(definitionNameSort?: boolean, definitionSort?: boolean): Observable<Page<TaskDefinition>> {
     const params = new URLSearchParams();
     params.append('page', this.taskDefinitions.pageNumber.toString());
     params.append('size', this.taskDefinitions.pageSize.toString());
+
+    // we can have asc and desc with multiple fields
+    // if sort param is sent multiple times.
+    // we put sort by definition first as
+    // names are always unique, making primary
+    // sort by name pointless.
+    if (definitionSort != null) {
+      if (definitionSort) {
+        params.append('sort', 'DEFINITION,DESC');
+      } else {
+        params.append('sort', 'DEFINITION,ASC');
+      }
+    }
+    if (definitionNameSort != null) {
+      if (definitionNameSort) {
+        params.append('sort', 'DEFINITION_NAME,DESC');
+      } else {
+        params.append('sort', 'DEFINITION_NAME,ASC');
+      }
+    }
 
     if (this.taskDefinitions.filter && this.taskDefinitions.filter.length > 0) {
       params.append('search', this.taskDefinitions.filter);

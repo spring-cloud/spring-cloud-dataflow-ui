@@ -1,28 +1,53 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { StreamsComponent } from './streams.component';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-xdescribe('StreamsComponent', () => {
+import {ActivatedRoute} from '@angular/router';
+import {StreamsComponent} from './streams.component';
+import {MockStreamsService} from '../tests/mocks/streams';
+import {MockActivatedRoute} from '../tests/mocks/activated-route';
+import {RouterTestingModule} from '@angular/router/testing';
+import {StreamsService} from './streams.service';
+import { RolesDirective } from '../auth/directives/roles.directive';
+import { MockAuthService } from '../tests/mocks/auth';
+import { AuthService } from '../auth/auth.service';
+/**
+ * Test {@link StreamsComponent}.
+ *
+ * @author Glenn Renfro
+ */
+describe('StreamsComponent', () => {
   let component: StreamsComponent;
   let fixture: ComponentFixture<StreamsComponent>;
+  const streamsService = new MockStreamsService();
+  const authService = new MockAuthService();
+  let activeRoute: MockActivatedRoute;
 
   beforeEach(async(() => {
+    activeRoute = new MockActivatedRoute();
+
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
+      declarations: [
+        RolesDirective,
+        StreamsComponent
       ],
-      declarations: [ StreamsComponent ]
+      imports: [
+        RouterTestingModule.withRoutes([])
+      ],
+      providers: [
+        { provide: AuthService, useValue: authService },
+        { provide: StreamsService, useValue: streamsService },
+        { provide: ActivatedRoute, useValue: activeRoute },
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 });

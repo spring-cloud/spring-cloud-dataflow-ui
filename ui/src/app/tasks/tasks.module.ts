@@ -16,6 +16,7 @@ import { TasksService } from './tasks.service';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { AuthModule } from '../auth/auth.module';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { ModalModule, PopoverModule } from 'ngx-bootstrap';
     NgxPaginationModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
-    PopoverModule.forRoot()
+    PopoverModule.forRoot(),
+    AuthModule
   ],
   declarations: [
     TasksComponent,

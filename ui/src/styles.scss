@@ -53,6 +53,16 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '../node_modules/ng2-toasty/bundles/style.css';
 @import '../node_modules/ng2-toasty/bundles/style-bootstrap.css';
 
+@import '../node_modules/@compodoc/compodoc/src/resources/styles/font-awesome.min.css';
+
+// PUI sets this to fixed which completely
+// breaks table behaviour. With default setting
+// we seem to get better predictable layout
+// in all tables.
+table.table {
+  table-layout: auto;
+}
+
 .help-block {
   position: unset;
 }
@@ -145,6 +155,9 @@ body {
   }
 }
 
+.form-control-feedback {
+  top: 5px;
+}
 // ~~~~ responsive
 
 @media (max-width: 768px) {

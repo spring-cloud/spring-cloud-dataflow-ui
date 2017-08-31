@@ -8,10 +8,8 @@ import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 
-import { AppRegistration, ErrorHandler, Page } from '../shared/model';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
-import { DetailedAppRegistration } from './model/detailed-app-registration';
-import { ApplicationType } from '../shared/model/application-type';
+import { AppRegistration, ErrorHandler, Page, ApplicationType, DetailedAppRegistration } from '../shared/model';
 import { AppRegistrationImport } from './model/app-registration-import';
 import { PageRequest } from '../shared/model/pagination/page-request.model';
 
@@ -56,22 +54,19 @@ export class AppsService {
     }
   }
 
+  /**
+   * Returns an Observable of a {@link DetailedAppRegistration}, providing details
+   * for an app registration.
+   *
+   * @param appType The type of the application to get details for
+   * @param appName The name of the application
+   */
   getAppInfo(appType: ApplicationType, appName: string): Observable<DetailedAppRegistration> {
-    console.log(this.appRegistrations);
-    const options = HttpUtils.getDefaultRequestOptions();
-
-    return this.http.get(AppsService.appsUrl + '/' + appType + '/' + appName, options)
-      .map(data => {
-        console.log('Returned App Registration Detail:', data);
-        const body = data.json();
-        const detailedAppRegistration = <DetailedAppRegistration> body;
-        return detailedAppRegistration;
-      })
-      .catch(this.errorHandler.handleError);
+    return this.sharedAppsService.getAppInfo(appType, appName);
   }
 
   bulkImportApps(appRegistrationImport: AppRegistrationImport): Observable<Response> {
-    console.log(this.appRegistrations);
+    console.log('Bulk import applications...', appRegistrationImport);
     const options = HttpUtils.getDefaultRequestOptions();
 
     const params = new URLSearchParams();
