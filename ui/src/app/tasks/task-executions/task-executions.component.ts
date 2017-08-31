@@ -14,6 +14,11 @@ export class TaskExecutionsComponent implements OnInit {
 
   taskExecutions: Page<TaskExecution>;
   busy: Subscription;
+  executionIdSort: boolean = undefined;
+  taskNameSort: boolean = undefined;
+  startTimeSort: boolean = undefined;
+  endTimeSort: boolean = undefined;
+  exitCodeSort: boolean = undefined;
 
   constructor(
     public tasksService: TasksService,
@@ -27,7 +32,8 @@ export class TaskExecutionsComponent implements OnInit {
   }
 
   loadTaskExecutions() {
-    this.busy = this.tasksService.getExecutions().subscribe(
+    this.busy = this.tasksService.getExecutions(this.executionIdSort, this.taskNameSort, this.startTimeSort,
+        this.endTimeSort, this.exitCodeSort).subscribe(
       data => {
         this.taskExecutions = data;
         this.toastyService.success('Task Executions loaded.');
@@ -43,5 +49,60 @@ export class TaskExecutionsComponent implements OnInit {
 
   details(item: TaskExecution) {
     this.router.navigate(['tasks/executions/' + item.executionId]);
+  }
+
+  toggleExecutionIdSort() {
+    if (this.executionIdSort === undefined) {
+      this.executionIdSort = true;
+    } else if (this.executionIdSort) {
+      this.executionIdSort = false;
+    } else {
+      this.executionIdSort = undefined;
+    }
+    this.loadTaskExecutions();
+  }
+
+  toggleTaskNameSort() {
+    if (this.taskNameSort === undefined) {
+      this.taskNameSort = true;
+    } else if (this.taskNameSort) {
+      this.taskNameSort = false;
+    } else {
+      this.taskNameSort = undefined;
+    }
+    this.loadTaskExecutions();
+  }
+
+  toggleStartTimeSort() {
+    if (this.startTimeSort === undefined) {
+      this.startTimeSort = true;
+    } else if (this.startTimeSort) {
+      this.startTimeSort = false;
+    } else {
+      this.startTimeSort = undefined;
+    }
+    this.loadTaskExecutions();
+  }
+
+  toggleEndTimeSort() {
+    if (this.endTimeSort === undefined) {
+      this.endTimeSort = true;
+    } else if (this.endTimeSort) {
+      this.endTimeSort = false;
+    } else {
+      this.endTimeSort = undefined;
+    }
+    this.loadTaskExecutions();
+  }
+
+  toggleExitCodeSort() {
+    if (this.exitCodeSort === undefined) {
+      this.exitCodeSort = true;
+    } else if (this.exitCodeSort) {
+      this.exitCodeSort = false;
+    } else {
+      this.exitCodeSort = undefined;
+    }
+    this.loadTaskExecutions();
   }
 }
