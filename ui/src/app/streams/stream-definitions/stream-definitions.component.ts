@@ -28,6 +28,8 @@ export class StreamDefinitionsComponent implements OnInit {
   streamDefinitions: Page<StreamDefinition>;
   streamDefinitionToDestroy: StreamDefinition;
   busy: Subscription;
+  definitionNameSort: boolean = undefined;
+  definitionSort: boolean = undefined;
 
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
@@ -54,7 +56,7 @@ export class StreamDefinitionsComponent implements OnInit {
   loadStreamDefinitions() {
     console.log('Loading Stream Definitions...', this.streamDefinitions);
 
-    this.busy = this.streamsService.getDefinitions().subscribe(
+    this.busy = this.streamsService.getDefinitions(this.definitionNameSort, this.definitionSort).subscribe(
       data => {
         this.streamDefinitions = data;
         this.toastyService.success('Stream definitions loaded.');
@@ -116,6 +118,34 @@ export class StreamDefinitionsComponent implements OnInit {
   destroy(item: StreamDefinition) {
     this.streamDefinitionToDestroy = item;
     this.showChildModal();
+  }
+
+  /**
+   * Toggles definition name sort and updates table.
+   */
+  toggleDefinitionNameSort() {
+    if (this.definitionNameSort === undefined) {
+      this.definitionNameSort = true;
+    } else if (this.definitionNameSort) {
+      this.definitionNameSort = false;
+    } else {
+      this.definitionNameSort = undefined;
+    }
+    this.loadStreamDefinitions();
+  }
+
+  /**
+   * Toggles definition sort and updates table.
+   */
+  toggleDefinitionSort() {
+    if (this.definitionSort === undefined) {
+      this.definitionSort = true;
+    } else if (this.definitionSort) {
+      this.definitionSort = false;
+    } else {
+      this.definitionSort = undefined;
+    }
+    this.loadStreamDefinitions();
   }
 
   /**

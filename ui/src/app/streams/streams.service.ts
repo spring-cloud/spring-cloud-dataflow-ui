@@ -37,10 +37,13 @@ export class StreamsService {
 
   /**
    * Retrieves the {@link StreamDefinition}s based on the page requested.
+   *
+   * @param definitionNameSort the sort for DEFINITION_NAME
+   * @param definitionSort the sort for DEFINITION
    * @returns {Observable<R|T>} that will call the subscribed funtions to handle
    * the results when returned from the Spring Cloud Data Flow server.
    */
-  getDefinitions(): Observable<Page<StreamDefinition>> {
+  getDefinitions(definitionNameSort?: boolean, definitionSort?: boolean): Observable<Page<StreamDefinition>> {
 
     console.log('Getting paged stream definitions', this.streamDefinitions);
     console.log(this.streamDefinitions.getPaginationInstance());
@@ -49,8 +52,21 @@ export class StreamsService {
       this.streamDefinitions.pageNumber,
       this.streamDefinitions.pageSize
     );
-      // TODO Implement Sorting
-      // params.sort = pageable.calculateSortParameter();
+
+    if (definitionSort != null) {
+      if (definitionSort) {
+        params.append('sort', 'DEFINITION,DESC');
+      } else {
+        params.append('sort', 'DEFINITION,ASC');
+      }
+    }
+    if (definitionNameSort != null) {
+      if (definitionNameSort) {
+        params.append('sort', 'DEFINITION_NAME,DESC');
+      } else {
+        params.append('sort', 'DEFINITION_NAME,ASC');
+      }
+    }
 
       // if (pageable.filterQuery && pageable.filterQuery.trim().length > 0) {
       //   params.search = pageable.filterQuery;
