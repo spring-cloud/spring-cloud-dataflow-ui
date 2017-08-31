@@ -16,13 +16,15 @@
 
 import { Flo } from 'spring-flo';
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { AppRegistration, ErrorHandler, Page } from '../../shared/model';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { ApplicationType } from '../../shared/model/application-type';
 import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './shapes';
+import { Observable}  from "rxjs";
+
+import { AppsService } from '../../apps/apps.service'; //TODO: Remove when moved to SharedModule
+import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../apps/model/detailed-app-registration';
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -46,14 +48,16 @@ export class MetamodelService implements Flo.Metamodel {
      * @param http handler for making calls to the data flow restful api
      * @param errorHandler used to generate the error messages.
      */
-    constructor(private appsService : SharedAppsService, private http: Http, private errorHandler: ErrorHandler) {
-    }
+    constructor(
+      private appsService : SharedAppsService,
+      private toRemoveAppService : AppsService,
+    ) {}
 
     textToGraph(flo: Flo.EditorContext, dsl: string): void {
         console.log("> textToGraph "+dsl);
-        this.load().then((metamodel) => { convertTextToGraph(dsl, flo, metamodel)}); 
+        this.load().then((metamodel) => { convertTextToGraph(dsl, flo, metamodel)});
     }
-    
+
     graphToText(flo: Flo.EditorContext) : Promise<string> {
         return Promise.resolve(convertGraphToText(flo.getGraph()));
     }
@@ -123,17 +127,13 @@ export class MetamodelService implements Flo.Metamodel {
         });
     }
 
-    private createEntry(type : ApplicationType, name) : Flo.ElementMetadata {
-        return {
-            group: type.toString(),
-            name: name,
-            get(property: String): Promise<Flo.PropertyMetadata> {
-                return Promise.resolve(null);
-            },
-            properties(): Promise<Map<string,Flo.PropertyMetadata>> {
-                return Promise.resolve(new Map());
-            }
-        }
+    private createEntry(type : ApplicationType, name, metadata? : Flo.ExtraMetadata) : Flo.ElementMetadata {
+      return new StreamAppMetadata(
+        type.toString(),
+        name,
+        this.toRemoveAppService.getAppInfo(type, name),
+        metadata
+      );
     }
 
     private addOtherGroup(metamodel : Map<string, Map<string, Flo.ElementMetadata>>) : void {
@@ -177,6 +177,88 @@ export class MetamodelService implements Flo.Metamodel {
         };
 
     }
+
+}
+
+class StreamAppMetadata implements Flo.ElementMetadata {
+
+  private _dataPromise : Promise<DetailedAppRegistration>;
+
+  private _propertiesPromise : Promise<Map<string, Flo.PropertyMetadata>>;
+
+  constructor(
+    private _group : string,
+    private _name : string,
+    private _dataObs : Observable<DetailedAppRegistration>,
+    private _metadata? : Flo.ExtraMetadata
+  ) {}
+
+  get dataPromise() : Promise<DetailedAppRegistration> {
+    if (!this._dataPromise) {
+      this._dataPromise = new Promise(resolve => this._dataObs.subscribe(data => resolve(data), () => resolve(null)));
+    }
+    return this._dataPromise;
+  }
+
+  get propertiesPromise() : Promise<Map<string, Flo.PropertyMetadata>> {
+    if (!this._propertiesPromise) {
+      this._propertiesPromise = new Promise(resolve => this.dataPromise.then((data : DetailedAppRegistration) => {
+        let properties = new Map<string, Flo.PropertyMetadata>();
+        if (data) {
+          data.options.map((o: ConfigurationMetadataProperty) => {
+            let propertyMetadata : Flo.PropertyMetadata = {
+              id: o.id,
+              name: o.name,
+              description: o.description,
+              defaultValue: o.defaultValue,
+              type: o.type
+            };
+            if (o.type) {
+              switch (o.type) {
+                case 'java.util.concurrent.TimeUnit':
+                  propertyMetadata.options = [
+                    'NANOSECONDS',
+                    'MICROSECONDS',
+                    'MILLISECONDS',
+                    'SECONDS',
+                    'MINUTES',
+                    'HOURS',
+                    'DAYS'
+                  ];
+              }
+            }
+            properties.set(o.id, propertyMetadata);
+          });
+        }
+        resolve(properties);
+      }));
+    }
+    return this._propertiesPromise;
+  }
+
+  get name() : string {
+    return this._name;
+  }
+
+  get group() : string {
+    return this._group;
+  }
+
+  description() : Promise<string> {
+    return Promise.resolve(this._name);
+  }
+
+  get(property: string) : Promise<Flo.PropertyMetadata> {
+    return this.propertiesPromise.then(properties => properties.get(property));
+  }
+
+  properties() : Promise<Map<string, Flo.PropertyMetadata>> {
+    return this.propertiesPromise;
+  }
+
+  get metadata() : Flo.ExtraMetadata {
+    return this._metadata;
+  }
 
 }
 

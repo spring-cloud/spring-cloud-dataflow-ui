@@ -490,10 +490,12 @@ class TextToGraphConverter {
 
 
 	public convert() {
-		var jsonGraph = TextToGraphConverter.parseToJsonGraph(this.dsl);
+		let jsonGraph = TextToGraphConverter.parseToJsonGraph(this.dsl);
 		console.log("jsongraph = "+JSON.stringify(jsonGraph));
-		this.floEditorContext.clearGraph();
-		this.buildFloGraphFromJsonGraph(jsonGraph);
+		if (jsonGraph.nodes) {
+      this.floEditorContext.clearGraph();
+      this.buildFloGraphFromJsonGraph(jsonGraph);
+    }
 		// this.parseAndRefreshGraph(this.dsl,
 		// 	(json) => {
 		// 		// flo.getGraph().clear();

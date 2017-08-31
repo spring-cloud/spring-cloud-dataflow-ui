@@ -1,0 +1,47 @@
+@import '../../../../../node_modules/pivotal-ui-git-clone/src/pivotal-ui/components/pui-variables';
+
+.properties-group-container .property-row {
+  display: block;
+}
+
+.df-property-row {
+  width: 100%;
+  display:inline-table;
+}
+
+.df-property-label-cell {
+  width: 30%;
+}
+
+.df-property-container {
+  width: 100%
+}
+
+.df-property-control {
+  width: 100%;
+}
+
+.modal-body.app-properties {
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+label.df-property-control {
+  margin-bottom: 0px;
+}
+
+.invalid-property-value .df-form-label {
+  color: $error-3;
+}
+
+.invalid-property-value .df-property-control {
+  outline-color: $error-3;
+  border-color: $error-3;
+  color: $error-3
+}
+
+.validation-error-block {
+  color: $error-3;
+}
+

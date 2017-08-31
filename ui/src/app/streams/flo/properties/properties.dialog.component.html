@@ -4,8 +4,9 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <span>properties</span>
+<div class="modal-body app-properties">
+  <properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
+                    [form]="propertiesFormGroup" [ngBusy]="propertiesGroupModel.loadedSubject.subscribe()"></properties-group>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-default" (click)="handleCancel()">Close</button>

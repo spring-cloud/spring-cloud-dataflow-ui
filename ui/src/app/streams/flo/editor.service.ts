@@ -54,7 +54,7 @@ export class EditorService implements Flo.Editor {
                 createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
                     let modalRef = this.bsModalService.show(PropertiesDialogComponent);
                     modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
-
+                    modalRef.content.setData(element, flo.getGraph());
                     // $modal.open({
                     //     animation: true,
                     //     templateUrl: 'scripts/stream/views/properties-dialog.html',

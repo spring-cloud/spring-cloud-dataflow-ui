@@ -1,14 +1,14 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { FormGroup, FormControl, AbstractControl, Validators, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { ParserService } from '../../shared/services/parser.service';
 import { convertParseResponseToJsonGraph } from '../flo/text-to-graph';
 import { StreamsService } from '../streams.service';
-import { Observable}  from "rxjs";
 import { ToastyService } from 'ng2-toasty';
+import { Properties } from 'spring-flo';
 
 
-const PROGRESS_BAR_WAIT_TIME = 600; // to account for animation delay
+const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 
 @Component({
   selector: 'stream-create-dialog-content',
@@ -39,7 +39,18 @@ export class StreamCreateDialogComponent implements OnInit {
   }
 
 
-  setDsl(text: string) {
+  setDsl(dsl: string) {
+    // Remove empty lines from text definition and strip off white space
+    let newLineNumber = 0;
+    let text = '';
+    dsl.split('\n').forEach(line => {
+      let newLine = line.trim();
+      if (newLine.length > 0) {
+        text += (newLineNumber ? '\n' : '') + line.trim();
+        newLineNumber++;
+      }
+    });
+
     this.dependencies = new Map();
     if (text) {
       //TODO: Adopt to parser types once they are available
@@ -53,7 +64,7 @@ export class StreamCreateDialogComponent implements OnInit {
             Validators.required,
             Validators.pattern(/^[\w\-]+$/)
           ], [
-            this.uniqueStreamName()
+            Properties.Validators.uniqueResource((value) => this.streamService.getDefinition(value), 500)
           ]));
         });
 
@@ -114,28 +125,6 @@ export class StreamCreateDialogComponent implements OnInit {
 
   streamDefsToCreate() : Array<any> {
     return this.streamDefs ? this.streamDefs.filter(d => !d.created) : [];
-  }
-
-  uniqueStreamName(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors> => {
-      return new Observable(obs => {
-        if (control.valueChanges) {
-          control.valueChanges
-            .debounceTime(500)
-            .flatMap(value => this.streamService.getDefinition(value))
-            .subscribe(() => {
-              obs.next({uniqueStreamName: true});
-              obs.complete();
-            }, () => {
-              obs.next(null);
-              obs.complete();
-            })
-        } else {
-          obs.next(null);
-          obs.complete();
-        }
-      });
-    }
   }
 
   waitForStreamDef(streamDefNameToWaitFor : string, attemptCount : number) : Promise<void> {
@@ -226,10 +215,11 @@ export class StreamCreateDialogComponent implements OnInit {
         setTimeout(() => {
           this.progressData = undefined;
         }, PROGRESS_BAR_WAIT_TIME);
-        if (Array.isArray(error)) {
-          error.forEach(e => this.toastyService.error(`Problem creating stream: ${def.name}: ${e.message}`));
+        if (error._body && error._body.message) {
+          this.toastyService.error(`Problem creating stream '${def.name}': ${error._body.message}`);
+        } else {
+          this.toastyService.error(`Failed to create stream '${def.name}'`);
         }
-        console.error('Failed to create stream ' + JSON.stringify(def));
       });
     }
   }

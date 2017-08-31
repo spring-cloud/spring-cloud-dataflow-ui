@@ -56,40 +56,7 @@ export class StreamCreateComponent implements OnInit {
 
   createStreamDefs() {
     let bsModalRef = this.bsModalService.show(StreamCreateDialogComponent);
-
-    let dependencyLineMap = new Map<number, Array<number>>();
-    let graph = this.editorContext.getGraph();
-
-    graph.getElements()
-      .filter(e => Utils.canBeHeadOfStream(graph, e))
-      .filter(streamHead => typeof streamHead.attr('range/start/line') === 'number')
-      .forEach(streamHead => {
-        graph.getConnectedLinks(streamHead, {inbound: true})
-          .filter(link => link.attr('props/isTapLink') === 'true')
-          .forEach(link => {
-            let source = graph.getCell(link.get('source').id);
-            if (source && typeof source.attr('range/start/line') === 'number') {
-              let parentLine = source.attr('range/start/line');
-              if (!dependencyLineMap.has(parentLine)) {
-                dependencyLineMap.set(parentLine, []);
-              }
-              dependencyLineMap.get(parentLine).push(streamHead.attr('range/start/line'));
-            }
-          });
-      });
-
-    // Remove empty lines from text definition and strip off white space
-    let newLineNumber = 0;
-    let text = '';
-    this.dsl.split('\n').forEach(line => {
-      let newLine = line.trim();
-      if (newLine.length > 0) {
-        text += (newLineNumber ? '\n' : '') + line.trim();
-        newLineNumber++;
-      }
-    });
-
-    bsModalRef.content.setDsl(text);
+    bsModalRef.content.setDsl(this.dsl);
     bsModalRef.content.successCallback = () => this.editorContext.clearGraph();
   }
 

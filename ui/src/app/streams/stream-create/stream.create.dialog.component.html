@@ -27,7 +27,7 @@
           <input [disabled]="isStreamCreationInProgress()" class="form-control" [id]="def.index.toString()" [name]="def.index.toString()" [formControlName]="def.index.toString()"
                  type="text" placeholder="<Stream Name>" [ngModel]="def.name" (ngModelChange)="changeStreamName(def.index, $event)"/>
           <p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required" class="help-block validation-block">Stream name is required!</p>
-          <p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueStreamName" class="help-block validation-block">Stream name is already taken!</p>
+          <p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource" class="help-block validation-block">Stream name is already taken!</p>
           <p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern" class="help-block validation-block">Invalid stream name!</p>
           <!--<p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueFieldValues" class="help-block validation-block">Duplicate stream name on the form!</p>-->
         </td>
