@@ -327,18 +327,20 @@ export class RenderService implements Flo.Renderer {
         let metadata: Flo.ElementMetadata = node.attr('metadata');
         if (metadata) {
             let paper = viewerDescriptor.paper;
-            let isPalette = paper.model.get('type') === joint.shapes.flo.PALETTE_TYPE;
-            let isCanvas = paper.model.get('type') === joint.shapes.flo.CANVAS_TYPE;
-            if (metadata.name === 'tap') {
-                this.refreshVisuals(node, 'props/name', paper);
-            } else if (metadata.name === 'destination') {
-                this.refreshVisuals(node, 'props/name', paper);
-            } else {
-                this.refreshVisuals(node, 'node-name', paper);
-            }
+            if (paper) {
+                let isPalette = paper.model.get('type') === joint.shapes.flo.PALETTE_TYPE;
+                let isCanvas = paper.model.get('type') === joint.shapes.flo.CANVAS_TYPE;
+                if (metadata.name === 'tap') {
+                  this.refreshVisuals(node, 'props/name', paper);
+                } else if (metadata.name === 'destination') {
+                  this.refreshVisuals(node, 'props/name', paper);
+                } else {
+                  this.refreshVisuals(node, 'node-name', paper);
+                }
 
-            if (isCanvas) {
-                this.refreshVisuals(node, 'stream-name', paper);
+                if (isCanvas) {
+                  this.refreshVisuals(node, 'stream-name', paper);
+                }
             }
         }
     }

@@ -28,22 +28,22 @@ class GraphToTextConverter {
     static DEBUG : boolean = true;
 
 	static COLON_PREFIX  : string = ':';
-    
+
 	// the graph representation of stream(s)/app(s).
 	private g: dia.Graph;
-	
+
 	// Number of Links left to visit
 	private numberOfLinksToVisit : number;
-	
+
 	// Number of nodes left to visit
 	private numberOfNodesToVisit : number;
-	
+
 	// Links left to visit indexed by id
 	private linksToVisit : Map<string, dia.Link>;
-	
+
 	// Nodes left to visit indexed by id
 	private nodesToVisit : Map<string, dia.Element>;
-	
+
 	// Count of how many non-visited links a node has (indexed by node id)
 	private nodesIncomingLinksCount : Map<string, number>;
 
@@ -81,7 +81,7 @@ class GraphToTextConverter {
 		var linkSource = link.get('source');
 		return (linkSource &&
 				linkSource.id &&
-				graph.getCell(linkSource.id) && 
+				graph.getCell(linkSource.id) &&
 				this.isNode(graph.getCell(linkSource.id)));
 	}
 
@@ -96,17 +96,17 @@ class GraphToTextConverter {
 		}
 		var name = node.attr('metadata/name');
 		if (name === 'destination') {
-			return node.attr('props').name;
+			return node.attr('props/name');
 		}
 		else {
 			return name;
 		}
 	}
-    
+
     private isTapLink(link) : boolean {
 		return link.attr('props/isTapLink') === 'true';
     }
-    
+
 	private printStream(stream) : void {
 		var text = 'Stream: ';
 		for (var i=0;i<stream.length;i++) {
@@ -127,7 +127,7 @@ class GraphToTextConverter {
 	private getNonPrimaryLinks(links : dia.Link[]) : dia.Link[] {
 		var nonPrimaryLinks : dia.Link[] = [];
 		for (var i = 0; i < links.length; i++) {
-			if (this.isTapLink(links[i])) { 
+			if (this.isTapLink(links[i])) {
 				nonPrimaryLinks.push(links[i]);
 			}
 		}
@@ -140,7 +140,7 @@ class GraphToTextConverter {
 
 	private getPrimaryLink(links: dia.Link[]): dia.Link {
 		for (var i = 0; i < links.length; i++) {
-			if (!this.isTapLink(links[i])) { 
+			if (!this.isTapLink(links[i])) {
 				return links[i];
 			}
 		}
@@ -150,7 +150,7 @@ class GraphToTextConverter {
 	private getPrimaryIncomingLink(node: dia.Cell): dia.Link {
 		var incomingLinks = this.getIncomingLinks(node);
 		for (var i = 0; i < incomingLinks.length; i++) {
-			if (!this.isTapLink(incomingLinks[i])) { 
+			if (!this.isTapLink(incomingLinks[i])) {
 				return incomingLinks[i];
 			}
 		}
@@ -236,7 +236,7 @@ class GraphToTextConverter {
 	/**
 	 * For any node, for the head of the stream containing it. This will not follow tap links so the
 	 * 'heads' of tap streams will also be found (it won't chase the tap link up and
-	 * find the head of the tapped stream). It will also stop at regular destinations and 
+	 * find the head of the tapped stream). It will also stop at regular destinations and
 	 * consider the destination a head.
 	 */
 	private findHead(node: dia.Cell): dia.Cell {
@@ -303,7 +303,7 @@ class GraphToTextConverter {
 			}
 		}
 		if ('tap' === element.attr('metadata/name') || 'destination' === element.attr('metadata/name')) {
-			if (props.name) {
+			if (props && props.name) {
 				text += GraphToTextConverter.COLON_PREFIX + props.name;
 			}
 		} else {
@@ -364,7 +364,7 @@ class GraphToTextConverter {
 			}
 			var outgoingLinks = this.getOutgoingStreamLinks(headNode);
 			var toFollow;
-			var target;			
+			var target;
 			var incomingTapLinks = this.getNonPrimaryIncomingLinks(headNode);
 			// If the head is a destination it may have multiple outbound connections, create a stream for each
 			if (outgoingLinks.length === 0) {
@@ -374,7 +374,7 @@ class GraphToTextConverter {
 					streams.push(stream);
 				}
 				else {
-					// Create one variant per incoming tap link 
+					// Create one variant per incoming tap link
 					for (i=0;i<incomingTapLinks.length;i++) {
 						stream = [{'incomingtap':this.g.getCell(incomingTapLinks[i].get('source').id)}];
 						stream.push(headNode);
@@ -458,7 +458,7 @@ class GraphToTextConverter {
 				// }
 				// var nonPrimaryLinks = getNonPrimaryLinks(outgoingLinks);
 				// for (var tapLink=0; tapLink<nonPrimaryLinks.length;tapLink++) {
-				// 	toFollow = nonPrimaryLinks[tapLink]; 
+				// 	toFollow = nonPrimaryLinks[tapLink];
 				// 	stream = [];
 				// 	while (toFollow) {
 				// 		var targetId = toFollow.get('target').id;

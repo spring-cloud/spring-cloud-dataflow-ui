@@ -6,6 +6,7 @@ import { dia } from 'jointjs';
 import { StreamsService } from '../../streams.service';
 import { Utils } from '../utils';
 import { Subscription } from "rxjs";
+import { ApplicationType } from '../../../shared/model/application-type';
 
 
 @Component({
@@ -98,7 +99,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
                 {id: 'email', message: 'Invalid E-Mail value!'}
               ]
             }
-          } else if (property.metadata.type.lastIndexOf('[]') === property.metadata.type.length - 2) {
+          } else if (property.metadata.type && property.metadata.type.lastIndexOf('[]') === property.metadata.type.length - 2) {
             return new Properties.GenericListControlModel(property);
           }
       }
@@ -151,8 +152,9 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
   }
 
   private createNotationalProperties() : Array<Properties.Property> {
-    let notationalProperties = [
-      {
+    let notationalProperties = [];
+    if (ApplicationType[this.cell.attr('metadata/group')]) {
+      notationalProperties.push({
         id: 'label',
         name: 'label',
         defaultValue: this.cell.attr('metadata/name'),
@@ -160,8 +162,8 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
         value: this.cell.attr('node-name'),
         description: 'Label of the app',
         metadata: null
-      },
-    ];
+      });
+    }
     if (this.isStreamHead) {
       notationalProperties.push({
         id: 'stream-name',

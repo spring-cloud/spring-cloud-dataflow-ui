@@ -36,7 +36,7 @@ export class MetamodelService implements Flo.Metamodel {
 
     static DEBUG = false;
 
-    private keepAllProperties = false; // TODO address when whitelisting properties fixed in SCDF
+    static keepAllProperties = false; // TODO address when whitelisting properties fixed in SCDF
 
     private listeners : Array<Flo.MetamodelListener> = [];
 
