@@ -12,7 +12,6 @@ describe('text-to-graph', () => {
     let graph: JsonGraph.Graph;
     let node: JsonGraph.Node;
     let link: JsonGraph.Link;
-    let range: JsonGraph.Range;
 
     let fakemetamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
@@ -99,7 +98,7 @@ describe('text-to-graph', () => {
 });
 
   it('jsongraph: basic', () => {
-    const graph: JsonGraph.Graph = getGraph('time | log');
+    graph = getGraph('time | log');
     // {"errors":[],"graph":{
     //   "format":"scdf",
     //   "streamdefs":[{"name":"","def":"time | log"}],
@@ -133,12 +132,13 @@ describe('text-to-graph', () => {
 
 
   it('jsongraph: properties', () => {
-    const graph: JsonGraph.Graph = getGraph('time --aaa=bbb --ccc=ddd | log');
+    graph = getGraph('time --aaa=bbb --ccc=ddd | log');
     //    {"format":"scdf","streamdefs":[{"name":"","def":"time --aaa=bbb --ccc=ddd | log"}],
     // "nodes":[
     //  {"id":0,"name":"time","stream-id":1,
     //    "properties":{"aaa":"bbb","ccc":"ddd"},
-    //    "propertiesranges":{"aaa":{"start":{"ch":5,"line":0},"end":{"ch":14,"line":0}},"ccc":{"start":{"ch":15,"line":0},"end":{"ch":24,"line":0}}},
+    //    "propertiesranges":{"aaa":{"start":{"ch":5,"line":0},"end":{"ch":14,"line":0}},
+    //                        "ccc":{"start":{"ch":15,"line":0},"end":{"ch":24,"line":0}}},
     //    "range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
     //  {"id":1,"name":"log","range":{"start":{"ch":27,"line":0},"end":{"ch":30,"line":0}}}],
     // "links":[{"from":0,"to":1}]}    expect(graph.format).toEqual('scdf');
@@ -171,7 +171,7 @@ describe('text-to-graph', () => {
   });
 
   it('jsongraph: source channel', () => {
-    const graph: JsonGraph.Graph = getGraph(':abc > log');
+    graph = getGraph(':abc > log');
 //    console.log(">>"+JSON.stringify(graph));
    // {"format":"scdf","streamdefs":[{"name":"","def":":abc > log"}],
    // "nodes":[{"id":0,"name":"destination","properties":{"name":"abc"}},
@@ -204,7 +204,7 @@ describe('text-to-graph', () => {
   });
 
   it('jsongraph: sink channel', () => {
-    const graph: JsonGraph.Graph = getGraph('time > :abc');
+    graph = getGraph('time > :abc');
    // {"format":"scdf","streamdefs":[{"name":"","def":"time  > :abc"}],
    // "nodes":[{"id":0,"name":"time","stream-id":1,"range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
    //          {"id":1,"name":"destination","properties":{"name":"abc"}}],"links":[{"from":0,"to":1}]}
