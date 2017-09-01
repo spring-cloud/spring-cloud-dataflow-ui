@@ -24,29 +24,29 @@ export class StreamCreateComponent implements OnInit {
 
   paletteSize = 170;
 
-  hintOptions : any;
+  hintOptions: any;
 
-  constructor(public metamodelService : MetamodelService,
-              public renderService : RenderService,
-              public editorService : EditorService,
-              private bsModalService : BsModalService,
-              private contentAssistService : ContentAssistService) {
+  constructor(public metamodelService: MetamodelService,
+              public renderService: RenderService,
+              public editorService: EditorService,
+              private bsModalService: BsModalService,
+              private contentAssistService: ContentAssistService) {
     console.log('Building');
 
     this.hintOptions = {
       async: true,
-      hint: (doc : CodeMirror.EditorFromTextArea, options, arg) => this.contentAssist(doc, options, arg)
+      hint: (doc: CodeMirror.EditorFromTextArea) => this.contentAssist(doc)
     };
   }
 
   ngOnInit() {
   }
 
-  get gridOn() : boolean {
+  get gridOn(): boolean {
     return this.editorContext.gridSize !== 1;
   }
 
-  set gridOn(on : boolean) {
+  set gridOn(on: boolean) {
     this.editorContext.gridSize = on ? 40 : 1;
   }
 
@@ -55,20 +55,20 @@ export class StreamCreateComponent implements OnInit {
   }
 
   createStreamDefs() {
-    let bsModalRef = this.bsModalService.show(StreamCreateDialogComponent);
+    const bsModalRef = this.bsModalService.show(StreamCreateDialogComponent);
     bsModalRef.content.setDsl(this.dsl);
     bsModalRef.content.successCallback = () => this.editorContext.clearGraph();
   }
 
-  contentAssist(doc : CodeMirror.EditorFromTextArea, options : any, arg : any) {
-    let cursor = (<any>doc).getCursor();
-    let startOfLine = {line: cursor.line, ch: 0};
-    let prefix = (<any>doc).getRange(startOfLine, cursor);
+  contentAssist(doc: CodeMirror.EditorFromTextArea) {
+    const cursor = (<any>doc).getCursor();
+    const startOfLine = {line: cursor.line, ch: 0};
+    const prefix = (<any>doc).getRange(startOfLine, cursor);
 
     return new Promise((resolve) => {
       this.contentAssistService.getProposals(prefix).subscribe(completions => {
-        let chopAt = this.interestingPrefixStart(prefix, completions);
-        let finalProposals = completions.map((longCompletion : any)=> {
+        const chopAt = this.interestingPrefixStart(prefix, completions);
+        const finalProposals = completions.map((longCompletion: any)=> {
           let text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;
           return text.substring(chopAt);
         });
@@ -91,19 +91,19 @@ export class StreamCreateComponent implements OnInit {
    * from the start of the line. This function determines the start of the 'interesting' part
    * at the end of the prefix, so that we can use it to chop-off the suggestion there.
    */
-  interestingPrefixStart(prefix : string, completions : Array<any>) {
-    let cursor = prefix.length;
+  interestingPrefixStart(prefix: string, completions: Array<any>) {
+    const cursor = prefix.length;
     if (completions.every(completion => this.isDelimiter(completion[cursor]))) {
       return cursor;
     }
     return this.findLast(prefix, (s: string) => this.isDelimiter(s));
   }
 
-  isDelimiter(c : string) {
+  isDelimiter(c: string) {
     return c && (/\s|\|/).test(c);
   }
 
-  findLast(string : string, predicate : (s : string) => boolean, start? : number) : number {
+  findLast(string: string, predicate: (s: string) => boolean, start?: number): number {
     let pos = start || string.length - 1;
     while (pos >= 0 && !predicate(string[pos])) {
       pos--;

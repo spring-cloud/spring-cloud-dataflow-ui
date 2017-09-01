@@ -9,9 +9,9 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ContentAssistService {
 
-  constructor(private http : Http) {}
+  constructor(private http: Http) {}
 
-  getProposals(prefix : string) : Observable<Array<string>> {
+  getProposals(prefix: string): Observable<Array<string>> {
     const options = HttpUtils.getDefaultRequestOptions();
     options.params = new URLSearchParams();
     options.params.append('start', prefix);

@@ -73,7 +73,7 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
-  createDefinition(name: string, dsl: string, deploy? : boolean) : Observable<Response> {
+  createDefinition(name: string, dsl: string, deploy?: boolean): Observable<Response> {
     const params =  new URLSearchParams();
     params.append('name', name);
     params.append('definition', dsl);

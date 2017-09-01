@@ -19,14 +19,14 @@ export class PropertiesDialogComponent implements OnInit {
 
   public title: string;
 
-  propertiesGroupModel : Properties.PropertiesGroupModel;
+  propertiesGroupModel: Properties.PropertiesGroupModel;
 
-  propertiesFormGroup : FormGroup;
+  propertiesFormGroup: FormGroup;
 
-  busy : Subscription;
+  busy: Subscription;
 
   constructor(private bsModalRef: BsModalRef,
-      private streamService : StreamsService
+      private streamService: StreamsService
   ) {
     this.propertiesFormGroup = new FormGroup({});
   }
@@ -47,7 +47,7 @@ export class PropertiesDialogComponent implements OnInit {
   ngOnInit() {
   }
 
-  setData(c : dia.Cell, graph : dia.Graph) {
+  setData(c: dia.Cell, graph: dia.Graph) {
     let streamHeads = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
     this.propertiesGroupModel = new PropertiesGroupModel(c, streamHeads, (<Array<dia.Cell>>streamHeads).indexOf(c) >= 0, this.streamService);
     this.propertiesGroupModel.load();
@@ -57,17 +57,17 @@ export class PropertiesDialogComponent implements OnInit {
 
 class PropertiesGroupModel extends Properties.PropertiesGroupModel {
 
-  constructor(cell : dia.Cell,
-              private streamHeads : Array<dia.Cell>,
-              private isStreamHead : boolean,
-              private streamService : StreamsService
+  constructor(cell: dia.Cell,
+              private streamHeads: Array<dia.Cell>,
+              private isStreamHead: boolean,
+              private streamService: StreamsService
   ) {
     super(cell);
   }
 
-  protected createControlModel(property : Properties.Property) : Properties.ControlModel<any> {
+  protected createControlModel(property: Properties.Property): Properties.ControlModel<any> {
     let inputType = Properties.InputType.TEXT;
-    let validation : Properties.Validation;
+    let validation: Properties.Validation;
     if (property.metadata) {
       switch (property.metadata.type) {
         case 'java.lang.Long':
@@ -132,14 +132,14 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     return new Properties.GenericControlModel(property, inputType, validation);
   }
 
-  protected createProperties() : Promise<Array<Properties.Property>> {
+  protected createProperties(): Promise<Array<Properties.Property>> {
     return super.createProperties().then(semanticProperties => {
       let notationalProperties = this.createNotationalProperties();
       return semanticProperties ? notationalProperties.concat(semanticProperties) : notationalProperties;
     })
   }
 
-  protected createProperty(metadata : Flo.PropertyMetadata) : Properties.Property {
+  protected createProperty(metadata: Flo.PropertyMetadata): Properties.Property {
     return {
       id: metadata.id,
       name: metadata.name,
@@ -151,7 +151,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     }
   }
 
-  private createNotationalProperties() : Array<Properties.Property> {
+  private createNotationalProperties(): Array<Properties.Property> {
     let notationalProperties = [];
     if (typeof ApplicationType[this.cell.attr('metadata/group')] === 'number') {
       notationalProperties.push({

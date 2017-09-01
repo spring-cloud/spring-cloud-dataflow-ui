@@ -1,5 +1,5 @@
 import * as _joint from 'jointjs';
-const joint : any = _joint;
+const joint: any = _joint;
 
 // Load changes into joint object
 import 'spring-flo';
@@ -67,7 +67,7 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
                 'ref-x': 0.5, // jointjs specific: relative position to ref'd element
                 'ref-y': 0.525,
                 'y-alignment': 'middle',
-                'x-alignment' : 'middle',
+                'x-alignment': 'middle',
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
                 fill: 'black',
                 'font-size': 14
@@ -154,7 +154,7 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
                 'ref-x': 0.5, // jointjs specific: relative position to ref'd element
                 'ref-y': 0.525,
                 'y-alignment': 'middle',
-                'x-alignment' : 'middle',
+                'x-alignment': 'middle',
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
                 fill: 'black',
                 'font-size': 14
@@ -218,7 +218,7 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
 //             router: { name: 'metro' },
         attrs: {
             '.connection': { stroke: '#34302d', 'stroke-width': 2 },
-            '.connection-wrap': { display : 'none' },
+            '.connection-wrap': { display: 'none' },
             '.marker-arrowheads': { display: 'none' },
             '.tool-options': { display: 'none' }
         },

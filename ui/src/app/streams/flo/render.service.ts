@@ -24,7 +24,7 @@ import { dia } from 'jointjs';
 import { Utils } from './utils';
 import { layout } from './layout';
 import * as _joint from 'jointjs';
-const joint : any = _joint;
+const joint: any = _joint;
 
 
 const HANDLE_ICON_MAP = new Map<string, string>()
@@ -291,13 +291,13 @@ export class RenderService implements Flo.Renderer {
                 /*
                  * Check if 'language' property has changed and 'script' property is present
                  */
-                //TODO: Reevaluate #get('properties') vs properties().then(props => props.find()) vs get('script')
-                metadata.get('properties').then(properties => {
-                    if (properties.script && properties.script.source) {
-                        properties.script.source.type = element.attr('props/language');
-                        properties.script.source.mime = element.attr('props/language') === 'javascript' ? 'text/javascript' : 'text/x-' + element.attr('props/language');
-                    }
-                });
+                //TODO: Reevaluate when get to `code-editor` directive migration
+                // metadata.properties().then(properties => {
+                //     if (properties.get('script') && properties.get('script').source) {
+                //         properties.get('script').source.type = element.attr('props/language');
+                //         properties.get('script').source.mime = element.attr('props/language') === 'javascript' ? 'text/javascript' : 'text/x-' + element.attr('props/language');
+                //     }
+                // });
             } else if (changedPropertyPath === 'node-name') {
                 let nodeName = element.attr('node-name');
                 // fitLabel() calls update as necessary, so set label text silently

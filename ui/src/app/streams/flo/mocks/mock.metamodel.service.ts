@@ -10,7 +10,8 @@ const metamodelData: Array<RawMetadata> = [{
   name: 'rabbit', group: 'source', description: 'Receives messages from RabbitMQ',
   properties: [
     {id: 'queue', name: 'queue', description: 'the queue(s) from which messages will be received'},
-    {id: 'time-unit', name: 'time-unit', description: 'Time unit for heart beat messages', type: 'enum', options: ['HOURS', 'MINUTES', 'SECONDS', 'MILIOSECONDS'], defaultValue: 'SECONDS'},
+    {id: 'time-unit', name: 'time-unit', description: 'Time unit for heart beat messages', type: 'enum',
+      options: ['HOURS', 'MINUTES', 'SECONDS', 'MILIOSECONDS'], defaultValue: 'SECONDS'},
     {id: 'heart-beat', name: 'heart-beat', description: 'Heart beat on/off', type: 'boolean', defaultValue: false},
     {id: 'interval', name: 'interval', description: 'Time period being consecutive heart beat messages', type: 'number', defaultValue: 20},
     {id: 'url', name: 'url', description: 'Service URL', type: 'url'},
@@ -106,8 +107,8 @@ class Metadata implements Flo.ElementMetadata {
     return Promise.resolve(this.rawData.properties.find(p => p.id === property));
   }
 
-  properties() : Promise<Map<string,Flo.PropertyMetadata>> {
-    let propertiesMap = new Map<string, Flo.PropertyMetadata>();
+  properties(): Promise<Map<string,Flo.PropertyMetadata>> {
+    const propertiesMap = new Map<string, Flo.PropertyMetadata>();
     this.rawData.properties.forEach(p => propertiesMap.set(p.id, p));
     return Promise.resolve(propertiesMap);
   }
@@ -116,7 +117,7 @@ class Metadata implements Flo.ElementMetadata {
 
 export class MockMetamodelService extends MetamodelService {
 
-  data : Map < string, Map < string, Flo.ElementMetadata >>;
+  data: Map < string, Map < string, Flo.ElementMetadata >>;
 
   constructor() {
     super(null);
@@ -131,20 +132,6 @@ export class MockMetamodelService extends MetamodelService {
         }
       );
   }
-
-  // textToGraph(flo: Flo.EditorContext, dsl : string) {
-  //   console.log('Text -> Graph');
-  //   this.load().then(metamodel => {
-  //     convertTextToGraph(dsl, flo, metamodel);
-  //     flo.performLayout();
-  //     flo.fitToPage();
-  //   })
-  // }
-  //
-  // graphToText(flo: Flo.EditorContext) {
-  //   console.log('Graph -> Text');
-  //   return new Promise((resolve) => resolve(convertGraphToText(flo.getGraph())));
-  // }
 
   load(): Promise < Map < string, Map < string, Flo.ElementMetadata >>> {
     return Promise.resolve(this.data);

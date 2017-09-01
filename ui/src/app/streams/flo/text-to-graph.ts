@@ -32,9 +32,9 @@ class TextToGraphConverter {
 	constructor(private dsl: string, private floEditorContext: Flo.EditorContext, private metamodel:  Map<string,Map<string,Flo.ElementMetadata>>) {
 	}
 
-	private matchGroup(name : string, incoming : number, outgoing : number) : string {
+	private matchGroup(name: string, incoming: number, outgoing: number): string {
 		let score = Number.MIN_VALUE;
-		let group : string;
+		let group: string;
 		Array.from(this.metamodel.keys()).filter(group => this.metamodel.get(group).has(name)).map(group => this.metamodel.get(group).get(name)).find(match => {
 		  let failedConstraintsNumber = 0;
 		  if (match.group === 'source') {
@@ -492,7 +492,7 @@ class TextToGraphConverter {
 	public convert() {
 		let jsonGraph = TextToGraphConverter.parseToJsonGraph(this.dsl);
 		console.log("jsongraph = "+JSON.stringify(jsonGraph));
-		if (jsonGraph.nodes) {
+		if (jsonGraph && jsonGraph.nodes) {
       this.floEditorContext.clearGraph();
       this.buildFloGraphFromJsonGraph(jsonGraph);
     }
@@ -559,10 +559,10 @@ export namespace JsonGraph {
 	}
 }
 
-export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamodel: Map<string,Map<string,Flo.ElementMetadata>>) : void {
+export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamodel: Map<string,Map<string,Flo.ElementMetadata>>): void {
 	console.log("dsl = "+dsl+"\nmetamodel="+metamodel);
 	new TextToGraphConverter(dsl, flo, metamodel).convert();
 }
-export function convertParseResponseToJsonGraph(dsl : string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
+export function convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
   return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
 }

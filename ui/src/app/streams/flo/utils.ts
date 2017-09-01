@@ -23,7 +23,7 @@ import { dia } from 'jointjs';
  */
 export class Utils {
 
-     static canBeHeadOfStream(graph : dia.Graph, element : dia.Element) : boolean {
+     static canBeHeadOfStream(graph: dia.Graph, element: dia.Element): boolean {
        if (element.attr('metadata')) {
          if (!element.attr('.input-port') || element.attr('.input-port/display') === 'none') {
            return true;
@@ -33,31 +33,13 @@ export class Utils {
            if (tapLink) {
              return true;
            }
-
-           // Example incoming entry:
-           // [{"type":"sinspctr.Link","smooth":true,
-           //   "source":{"id":"0390de06-0a50-40e2-92f4-da5345293e48","selector":".output-port","port":"output"},"target":{"id":"1d83f76a-cb46-42cd-b285-a89ee8b83e8e","selector":".input-port","port":"input"},"id":"ca12147b-b7cb-4bd3-a601-ed0ff155de47","z":5,"attrs":{".marker-vertices":{"display":"none"}}}] 1
-           // if (incoming.length === 1) {
-           //   // Is the source a destination with other outputs too? If so
-           //   // then all of those nodes linked as outputs are heads rather
-           //   // than the destination itself (being heads means they can
-           //   // have the stream name set on them)
-           //   let sourceCell = graph.getCell(incoming[0].get('source').id);
-           //   let isDestination = sourceCell.attr('metadata/name') === 'destination';
-           //   if (isDestination) {
-           //     // var destinationInputs = graph.getConnectedLinks(sourceCell, { oubound: true});
-           //     // if (destinationInputs.length > 1) {
-           //     return true;
-           //     // }
-           //   }
-           // }
          }
        }
        return false;
     }
 
-    static generateStreamName(graph : dia.Graph, element : dia.Element) {
-        let streamNames : Array<string> = graph.getElements()
+    static generateStreamName(graph: dia.Graph, element: dia.Element) {
+        let streamNames: Array<string> = graph.getElements()
             .filter(e => element !== e && e.attr('stream-name') && this.canBeHeadOfStream(graph, e))
             .map(e => e.attr('stream-name'));
 
@@ -66,7 +48,8 @@ export class Utils {
             return element.attr('stream-name');
         }
 
-        let name = 'STREAM_', index = 1;
+        const name = 'STREAM_';
+        let index = 1;
         while (streamNames.indexOf(name + index) >= 0) {
             index++;
         }

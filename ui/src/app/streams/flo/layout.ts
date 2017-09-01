@@ -2,7 +2,7 @@ import { dia } from 'jointjs'
 import { IMAGE_H } from './shapes';
 import * as dagre from 'dagre';
 
-export function layout(paper : dia.Paper) {
+export function layout(paper: dia.Paper) {
     let graph = paper.model;
 
     let gridSize = paper.options.gridSize;

@@ -38,9 +38,9 @@ export class MetamodelService implements Flo.Metamodel {
 
     static keepAllProperties = false; // TODO address when whitelisting properties fixed in SCDF
 
-    private listeners : Array<Flo.MetamodelListener> = [];
+    private listeners: Array<Flo.MetamodelListener> = [];
 
-    private request : Promise<Map<string, Map<string, Flo.ElementMetadata>>>;
+    private request: Promise<Map<string, Map<string, Flo.ElementMetadata>>>;
 
     /**
      * Creates instance.
@@ -48,7 +48,7 @@ export class MetamodelService implements Flo.Metamodel {
      * @param errorHandler used to generate the error messages.
      */
     constructor(
-      private appsService : SharedAppsService,
+      private appsService: SharedAppsService,
     ) {}
 
     textToGraph(flo: Flo.EditorContext, dsl: string): void {
@@ -56,7 +56,7 @@ export class MetamodelService implements Flo.Metamodel {
         this.load().then((metamodel) => { convertTextToGraph(dsl, flo, metamodel)});
     }
 
-    graphToText(flo: Flo.EditorContext) : Promise<string> {
+    graphToText(flo: Flo.EditorContext): Promise<string> {
         return Promise.resolve(convertGraphToText(flo.getGraph()));
     }
 
@@ -108,7 +108,7 @@ export class MetamodelService implements Flo.Metamodel {
                         if (!metamodel.has(item.type.toString())) {
                             metamodel.set(item.type.toString(), new Map<string, Flo.ElementMetadata>());
                         }
-                        let group : Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
+                        let group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
                         if (group.has(item.name)) {
                             console.error(`Group '${item.type}' has duplicate element '${item.name}'`);
                         } else {
@@ -125,7 +125,7 @@ export class MetamodelService implements Flo.Metamodel {
         });
     }
 
-    private createEntry(type : ApplicationType, name, metadata? : Flo.ExtraMetadata) : Flo.ElementMetadata {
+    private createEntry(type: ApplicationType, name: string, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
       return new StreamAppMetadata(
         type.toString(),
         name,
@@ -134,7 +134,7 @@ export class MetamodelService implements Flo.Metamodel {
       );
     }
 
-    private addOtherGroup(metamodel : Map<string, Map<string, Flo.ElementMetadata>>) : void {
+    private addOtherGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
         let elements = new Map<string, Flo.ElementMetadata>()
             .set('tap', this.createMetadata('tap', OTHER_GROUP_TYPE, 'Tap into an existing app',
                     new Map<string, Flo.PropertyMetadata>().set('name', {
@@ -163,14 +163,14 @@ export class MetamodelService implements Flo.Metamodel {
         metamodel.set(OTHER_GROUP_TYPE, elements);
     }
 
-    private createMetadata(name : string, group : string, description : string,
-                           properties : Map<string, Flo.PropertyMetadata>, metadata? : Flo.ExtraMetadata) : Flo.ElementMetadata {
+    private createMetadata(name: string, group: string, description: string,
+                           properties: Map<string, Flo.PropertyMetadata>, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
         return {
             name: name,
             group: group,
             metadata: metadata,
             description: () => Promise.resolve(description),
-            get: (property : string) => Promise.resolve(properties.get(property)),
+            get: (property: string) => Promise.resolve(properties.get(property)),
             properties: () => Promise.resolve(properties)
         };
 
@@ -180,31 +180,31 @@ export class MetamodelService implements Flo.Metamodel {
 
 class StreamAppMetadata implements Flo.ElementMetadata {
 
-  private _dataPromise : Promise<DetailedAppRegistration>;
+  private _dataPromise: Promise<DetailedAppRegistration>;
 
-  private _propertiesPromise : Promise<Map<string, Flo.PropertyMetadata>>;
+  private _propertiesPromise: Promise<Map<string, Flo.PropertyMetadata>>;
 
   constructor(
-    private _group : string,
-    private _name : string,
-    private _dataObs : Observable<DetailedAppRegistration>,
-    private _metadata? : Flo.ExtraMetadata
+    private _group: string,
+    private _name: string,
+    private _dataObs: Observable<DetailedAppRegistration>,
+    private _metadata?: Flo.ExtraMetadata
   ) {}
 
-  get dataPromise() : Promise<DetailedAppRegistration> {
+  get dataPromise(): Promise<DetailedAppRegistration> {
     if (!this._dataPromise) {
       this._dataPromise = new Promise(resolve => this._dataObs.subscribe(data => resolve(data), () => resolve(null)));
     }
     return this._dataPromise;
   }
 
-  get propertiesPromise() : Promise<Map<string, Flo.PropertyMetadata>> {
+  get propertiesPromise(): Promise<Map<string, Flo.PropertyMetadata>> {
     if (!this._propertiesPromise) {
-      this._propertiesPromise = new Promise(resolve => this.dataPromise.then((data : DetailedAppRegistration) => {
+      this._propertiesPromise = new Promise(resolve => this.dataPromise.then((data: DetailedAppRegistration) => {
         let properties = new Map<string, Flo.PropertyMetadata>();
         if (data) {
           data.options.map((o: ConfigurationMetadataProperty) => {
-            let propertyMetadata : Flo.PropertyMetadata = {
+            let propertyMetadata: Flo.PropertyMetadata = {
               id: o.id,
               name: o.name,
               description: o.description,
@@ -234,27 +234,27 @@ class StreamAppMetadata implements Flo.ElementMetadata {
     return this._propertiesPromise;
   }
 
-  get name() : string {
+  get name(): string {
     return this._name;
   }
 
-  get group() : string {
+  get group(): string {
     return this._group;
   }
 
-  description() : Promise<string> {
+  description(): Promise<string> {
     return Promise.resolve(this._name);
   }
 
-  get(property: string) : Promise<Flo.PropertyMetadata> {
+  get(property: string): Promise<Flo.PropertyMetadata> {
     return this.propertiesPromise.then(properties => properties.get(property));
   }
 
-  properties() : Promise<Map<string, Flo.PropertyMetadata>> {
+  properties(): Promise<Map<string, Flo.PropertyMetadata>> {
     return this.propertiesPromise;
   }
 
-  get metadata() : Flo.ExtraMetadata {
+  get metadata(): Flo.ExtraMetadata {
     return this._metadata;
   }
 

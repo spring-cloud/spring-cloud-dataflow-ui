@@ -10,7 +10,7 @@ import {EditorService} from '../flo/editor.service';
 import {RenderService} from '../flo/render.service';
 import {ActivatedRoute} from '@angular/router';
 import { FloModule} from 'spring-flo';
-import {ModalModule, BsModalService} from "ngx-bootstrap";
+import {ModalModule, BsModalService} from 'ngx-bootstrap';
 import { ContentAssistService } from '../flo/content.assist.service';
 
 /**

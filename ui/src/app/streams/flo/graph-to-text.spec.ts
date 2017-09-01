@@ -3,10 +3,10 @@ import { dia } from 'jointjs';
 import { Flo } from 'spring-flo';
 import { convertGraphToText } from './graph-to-text';
 
-import { Shapes } from 'spring-flo'; 
+import { Shapes } from 'spring-flo';
 
 import * as _joint from 'jointjs';
-const joint : any = _joint;
+const joint: any = _joint;
 
 describe('graph-to-text', () => {
 
@@ -14,9 +14,9 @@ describe('graph-to-text', () => {
     var graph: dia.Graph;
 
     beforeAll(() => {
-        var fakeTimeMetadata: Flo.ElementMetadata = 
+        var fakeTimeMetadata: Flo.ElementMetadata =
         {
-        'group': 'fake', 
+        'group': 'fake',
         'name': 'time',
         get(property: String): Promise<Flo.PropertyMetadata> {
             return Promise.resolve(null);
@@ -60,7 +60,7 @@ describe('graph-to-text', () => {
       var link2 = createLink(cell1,cell3,true);
       var dsl = convertGraphToText(graph);
       expect(dsl).toEqual(':d1 > log\n:d1 > file');
-    })    
+    })
 
     function createDestination(destinationname: string): dia.Element {
       var newDestinationNode: dia.Element = createNode('destination','destination');

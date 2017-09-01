@@ -88,6 +88,11 @@ $spring-grey: $gray;
   stroke-width: 3;
 }
 
+.joint-element.highlighted path {
+  stroke: #34302d;
+  stroke-width: 3;
+}
+
 .joint-link.highlighted path {
   stroke-width: 3;
 }

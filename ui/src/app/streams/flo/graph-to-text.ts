@@ -24,27 +24,27 @@ import { dia } from 'jointjs';
  */
 class GraphToTextConverter {
 
-    static DEBUG : boolean = true;
+  static DEBUG: boolean = true;
 
-	static COLON_PREFIX  : string = ':';
+	static COLON_PREFIX: string = ':';
 
 	// the graph representation of stream(s)/app(s).
 	private g: dia.Graph;
 
 	// Number of Links left to visit
-	private numberOfLinksToVisit : number;
+	private numberOfLinksToVisit: number;
 
 	// Number of nodes left to visit
-	private numberOfNodesToVisit : number;
+	private numberOfNodesToVisit: number;
 
 	// Links left to visit indexed by id
-	private linksToVisit : Set<dia.Link>;
+	private linksToVisit: Set<dia.Link>;
 
 	// Nodes left to visit indexed by id
-	private nodesToVisit : Set<dia.Element>;
+	private nodesToVisit: Set<dia.Element>;
 
 	// Count of how many non-visited links a node has (indexed by node id)
-	private nodesIncomingLinksCount : Map<string, number>;
+	private nodesIncomingLinksCount: Map<string, number>;
 
 	constructor(graph: dia.Graph) {
 		this.numberOfLinksToVisit = 0;
@@ -72,11 +72,11 @@ class GraphToTextConverter {
 	}
 
 	// A node is an element with a name
-	private isNode(element) : boolean {
+	private isNode(element): boolean {
 		return element.attr('metadata/name');
 	}
 
-	private linkSourceIsNode(link, graph) : boolean {
+	private linkSourceIsNode(link, graph): boolean {
 		var linkSource = link.get('source');
 		return (linkSource &&
 				linkSource.id &&
@@ -84,7 +84,7 @@ class GraphToTextConverter {
 				this.isNode(graph.getCell(linkSource.id)));
 	}
 
-	private isChannel(e) : boolean {
+	private isChannel(e): boolean {
 		return e && (e.attr('metadata/name') === 'tap' || e.attr('metadata/name') === 'destination');
 	}
 

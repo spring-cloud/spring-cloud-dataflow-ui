@@ -22,7 +22,7 @@ import { dia } from 'jointjs';
 import { PropertiesDialogComponent } from './properties/properties.dialog.component';
 import { Utils } from './utils';
 import * as _joint from 'jointjs';
-const joint : any = _joint;
+const joint: any = _joint;
 
 const NODE_DROPPING = false;
 
@@ -35,9 +35,9 @@ const NODE_DROPPING = false;
 @Injectable()
 export class EditorService implements Flo.Editor {
 
-    constructor(private bsModalService : BsModalService) {}
+    constructor(private bsModalService: BsModalService) {}
 
-    createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string, action: () => void, location: dia.Point) => void, owner: dia.CellView) : void {
+    createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string, action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
         if (owner.model instanceof joint.dia.Link) {
             return;
         } else if (owner.model instanceof joint.dia.Element) {
@@ -55,75 +55,15 @@ export class EditorService implements Flo.Editor {
                     let modalRef = this.bsModalService.show(PropertiesDialogComponent);
                     modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
                     modalRef.content.setData(element, flo.getGraph());
-                    // $modal.open({
-                    //     animation: true,
-                    //     templateUrl: 'scripts/stream/views/properties-dialog.html',
-                    //     controller: 'PropertiesDialogController',
-                    //     size: 'lg',
-                    //     resolve: {
-                    //         cell: function () {
-                    //             return element;
-                    //         },
-                    //         streamInfo: function() {
-                    //             if (utils.canBeHeadOfStream(flo.getGraph(), element)) {
-                    //                 var info = {
-                    //                     streamNames: []
-                    //                 };
-                    //                 flo.getGraph().getElements().forEach(function(e) {
-                    //                     if (element !== e && utils.canBeHeadOfStream(flo.getGraph(), e)) {
-                    //                         if (e.attr('stream-name')) {
-                    //                             info.streamNames.push(e.attr('stream-name'));
-                    //                         }
-                    //                     }
-                    //                 });
-                    //                 return info;
-                    //             }
-                    //         }
-                    //     }
-                    // }).result.then(function (results) {
-                    //
-                    //     var properties = results.properties || {};
-                    //     var derivedProperties = results.derivedProperties || {};
-                    //     var property;
-                    //
-                    //     element.trigger('batch:start', { batchName: 'update properties' });
-                    //
-                    //     Object.keys(derivedProperties).forEach(function(key) {
-                    //         property = derivedProperties[key];
-                    //         if (property.attr) {
-                    //             if (angular.isDefined(property.value)) {
-                    //                 element.attr(property.attr, property.value);
-                    //             } else {
-                    //                 element.attr(property.attr, '');
-                    //             }
-                    //         }
-                    //     });
-                    //
-                    //     Object.keys(properties).forEach(function (key) {
-                    //         property = properties[key];
-                    //         if ((typeof property.value === 'boolean' && !property.defaultValue && !property.value) ||
-                    //             (property.value === property.defaultValue || property.value === '' || property.value === undefined || property.value === null)) {
-                    //             if (angular.isDefined(element.attr('props/' + property.nameInUse))) {
-                    //                 // Remove attr doesn't fire appropriate event. Set default value first as a workaround to schedule DSL resync
-                    //                 element.attr('props/' + property.nameInUse, property.defaultValue === undefined ? null : property.defaultValue);
-                    //                 element.removeAttr('props/' + property.nameInUse);
-                    //             }
-                    //         } else {
-                    //             element.attr('props/' + property.nameInUse, property.value);
-                    //         }
-                    //     });
-                    //
-                    //     element.trigger('batch:stop', { batchName: 'update properties' });
-                    // });
                 }, pt);
             }
         }
     }
 
     validateLink(flo: Flo.EditorContext, cellViewS: dia.ElementView, magnetS: SVGElement,
-                 cellViewT: dia.ElementView, magnetT: SVGElement, isSource: boolean, linkView: dia.LinkView) : boolean {
+                 cellViewT: dia.ElementView, magnetT: SVGElement, isSource: boolean, linkView: dia.LinkView): boolean {
         console.info('SOURCE=' + cellViewS.model.attr('metadata/name') + ' TARGET=' + cellViewT.model.attr('metadata/name'));
-        let idx : number;
+        let idx: number;
 
         // Prevent linking FROM node input port
         if (magnetS && magnetS.getAttribute('type') === 'input') {
@@ -171,7 +111,7 @@ export class EditorService implements Flo.Editor {
                 return false;
             }
 
-            let i : number;
+            let i: number;
             let targetIncomingLinks = graph.getConnectedLinks(cellViewT.model, { inbound: true });
             idx = targetIncomingLinks.indexOf(linkView.model);
             if (idx >= 0) {
@@ -222,16 +162,16 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private getOutgoingStreamLinks(graph : dia.Graph, node : dia.Element) : Array<dia.Link> {
+    private getOutgoingStreamLinks(graph: dia.Graph, node: dia.Element): Array<dia.Link> {
         // !node only possible if call is occurring during link drawing (one end connected but not the other)
-        return node ? graph.getConnectedLinks(node, {outbound: true}).filter(link => link.get('source') && link.get('source').port === 'output') : [];
+        return node ? graph.getConnectedLinks(node, {outbound: true}).filter(link => link.get('source') && link.get('source').port === 'output'): [];
     }
 
     calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,
-                            point: dia.Point, sourceComponent: string) : Flo.DnDDescriptor {
+                            point: dia.Point, sourceComponent: string): Flo.DnDDescriptor {
         let source = draggedView.model;
         let paper = flo.getPaper();
-        let targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
+        let targetUnderMouse = viewUnderMouse ? viewUnderMouse.model: undefined;
         // If node dropping not enabled then short-circuit
         if (!NODE_DROPPING && !(targetUnderMouse instanceof joint.dia.Link && targetUnderMouse.attr('metadata/name') !== 'tap' && targetUnderMouse.attr('metadata/name') !== 'destination')) {
           return {
@@ -257,7 +197,7 @@ export class EditorService implements Flo.Editor {
         // Find closest port
         let range = 30;
         let graph = flo.getGraph();
-        let closestData : Flo.DnDDescriptor;
+        let closestData: Flo.DnDDescriptor;
         let minDistance = Number.MAX_VALUE;
         let hasIncomingPort = draggedView.model.attr('.input-port') && draggedView.model.attr('.input-port/display') !== 'none';
         // Ignore tap-port for the dragged view. Only allow making connections to/from input and output port for node-on-node DnD
@@ -322,7 +262,7 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateSource(element : dia.Element, incoming : Array<dia.Link>, outgoing : Array<dia.Link>, tap : Array<dia.Link>, errors : Array<Flo.Marker>) {
+    private validateSource(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -339,7 +279,7 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateProcessor(element : dia.Element, incoming : Array<dia.Link>, outgoing : Array<dia.Link>, tap : Array<dia.Link>, errors : Array<Flo.Marker>) {
+    private validateProcessor(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -356,7 +296,7 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateSink(element : dia.Element, incoming : Array<dia.Link>, outgoing : Array<dia.Link>, tap : Array<dia.Link>, errors : Array<Flo.Marker>) {
+    private validateSink(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -429,13 +369,7 @@ export class EditorService implements Flo.Editor {
     }
 
     private validateDestination(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        // Do not enforce this now, a destination can have inputs and outputs
-        // if (incoming.length > 0 && outgoing.length > 0) {
-        //     errors.push({
-        //         message: 'Destination should either have input or output but not both at the same time',
-        //         range: element.attr('range')
-        //     });
-        // }
+        //TODO: no 'tap' port anymore hence no more such links
         if (tap.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -448,12 +382,12 @@ export class EditorService implements Flo.Editor {
     private validateConnectedLinks(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
         let group = element.attr('metadata/group');
         let type = element.attr('metadata/name');
-        let incoming : Array<dia.Link> = [];
-        let outgoing : Array<dia.Link> = [];
-        let tap : Array<dia.Link> = [];
-        let invalidIncoming : Array<dia.Link> = [];
-        let invalidOutgoing : Array<dia.Link>= [];
-        let port : string;
+        let incoming: Array<dia.Link> = [];
+        let outgoing: Array<dia.Link> = [];
+        let tap: Array<dia.Link> = [];
+        let invalidIncoming: Array<dia.Link> = [];
+        let invalidOutgoing: Array<dia.Link>= [];
+        let port: string;
 
         graph.getConnectedLinks(element).forEach(link => {
             if (link.get('source').id === element.id) {
@@ -513,7 +447,7 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateProperties(element : dia.Element, errors: Array<Flo.Marker>) {
+    private validateProperties(element: dia.Element, errors: Array<Flo.Marker>) {
         // If possible, verify the properties specified match those allowed on this type of element
         // propertiesRanges are the ranges for each property included the entire '--name=value'.
         // The format of a range is {'start':{'ch':NNNN,'line':NNNN},'end':{'ch':NNNN,'line':NNNN}}
@@ -567,11 +501,11 @@ export class EditorService implements Flo.Editor {
         this.validateProperties(element, errors);
     }
 
-    validate(graph : dia.Graph) : Promise<Map<string, Array<Flo.Marker>>> {
+    validate(graph: dia.Graph): Promise<Map<string, Array<Flo.Marker>>> {
         return new Promise(resolve => {
-            let allMarkers : Map<string, Array<Flo.Marker>> = new Map();
+            let allMarkers: Map<string, Array<Flo.Marker>> = new Map();
             graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
-                let markers : Array<Flo.Marker> = [];
+                let markers: Array<Flo.Marker> = [];
                 this.validateNode(graph, e, markers);
                 allMarkers.set(e.id, markers);
             });
@@ -583,8 +517,8 @@ export class EditorService implements Flo.Editor {
         /*
          * remove incoming, outgoing links and cache their sources and targets not equal to current node
          */
-        let sources : Array<string> = [];
-        let targets : Array<string> = [];
+        let sources: Array<string> = [];
+        let targets: Array<string> = [];
         let i = 0;
         flo.getGraph().getConnectedLinks(node).forEach(link => {
             let targetId = link.get('target').id;
@@ -643,19 +577,19 @@ export class EditorService implements Flo.Editor {
         return !noSwap;
     }
 
-    preDelete(flo : Flo.EditorContext, cell : dia.Cell) {
+    preDelete(flo: Flo.EditorContext, cell: dia.Cell) {
         if (cell instanceof joint.dia.Element) {
             this.repairDamage(flo, <dia.Element> cell);
         }
     }
 
-    private moveNodeOnNode(flo : Flo.EditorContext, node : dia.Element, pivotNode : dia.Element, side : string, shouldRepairDamage : boolean) {
+    private moveNodeOnNode(flo: Flo.EditorContext, node: dia.Element, pivotNode: dia.Element, side: string, shouldRepairDamage: boolean) {
         side = side || 'left';
         if (this.canSwap(flo, node, pivotNode, side)) {
-            let link : dia.Link;
-            let i : number;
+            let link: dia.Link;
+            let i: number;
             if (side === 'left') {
-                let sources : Array<string> = [];
+                let sources: Array<string> = [];
                 if (shouldRepairDamage) {
                     this.repairDamage(flo, node);
                 }
@@ -685,7 +619,7 @@ export class EditorService implements Flo.Editor {
                     'port': 'input'
                 });
             } else if (side === 'right') {
-                let targets : Array<string>= [];
+                let targets: Array<string>= [];
                 if (shouldRepairDamage) {
                     this.repairDamage(flo, node);
                 }

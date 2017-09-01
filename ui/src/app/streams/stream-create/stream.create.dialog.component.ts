@@ -17,21 +17,21 @@ const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 })
 export class StreamCreateDialogComponent implements OnInit {
 
-  form : FormGroup;
-  streamDefs : Array<any>;
-  errors : Array<string>;
-  warnings : Array<string>;
-  dependencies : Map<number, Array<number>>;
-  progressData : ProgressData;
-  deploy : boolean = false;
-  successCallback : () => void;
+  form: FormGroup;
+  streamDefs: Array<any>;
+  errors: Array<string>;
+  warnings: Array<string>;
+  dependencies: Map<number, Array<number>>;
+  progressData: ProgressData;
+  deploy = false;
+  successCallback: () => void;
 
 
   constructor(
     private bsModalRef: BsModalRef,
     private toastyService: ToastyService,
-    private parserService : ParserService,
-    private streamService : StreamsService
+    private parserService: ParserService,
+    private streamService: StreamsService
   ) {}
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class StreamCreateDialogComponent implements OnInit {
     let newLineNumber = 0;
     let text = '';
     dsl.split('\n').forEach(line => {
-      let newLine = line.trim();
+      const newLine = line.trim();
       if (newLine.length > 0) {
         text += (newLineNumber ? '\n' : '') + line.trim();
         newLineNumber++;
@@ -54,7 +54,7 @@ export class StreamCreateDialogComponent implements OnInit {
     this.dependencies = new Map();
     if (text) {
       //TODO: Adopt to parser types once they are available
-      let graphAndErrors = convertParseResponseToJsonGraph(text, this.parserService.parseDsl(text));
+      const graphAndErrors = convertParseResponseToJsonGraph(text, this.parserService.parseDsl(text));
       if (graphAndErrors.graph) {
         this.streamDefs = graphAndErrors.graph.streamdefs;
         this.streamDefs.forEach((streamDef, i) => {
@@ -69,8 +69,8 @@ export class StreamCreateDialogComponent implements OnInit {
         });
 
         graphAndErrors.graph.links.filter(l => l.linkType === 'tap').forEach(l => {
-          let parentLine = graphAndErrors.graph.nodes.find(n => n.id === l.from).range.start.line;
-          let childLine = graphAndErrors.graph.nodes.find(n => n.id === l.to).range.start.line;
+          const parentLine = graphAndErrors.graph.nodes.find(n => n.id === l.from).range.start.line;
+          const childLine = graphAndErrors.graph.nodes.find(n => n.id === l.to).range.start.line;
           if (parentLine !== childLine) {
             if (!this.dependencies.has(parentLine)) {
               this.dependencies.set(parentLine, [ childLine ]);
@@ -92,22 +92,22 @@ export class StreamCreateDialogComponent implements OnInit {
     }
   }
 
-  getControl(id : string) : AbstractControl {
+  getControl(id: string): AbstractControl {
     return this.form.controls[id];
   }
 
-  changeStreamName(index : number, newName : string) {
-    let oldName = this.streamDefs[index].name;
+  changeStreamName(index: number, newName: string) {
+    const oldName = this.streamDefs[index].name;
     this.streamDefs[index].name = newName;
     if (this.dependencies.has(index)) {
       this.dependencies.get(index).forEach(i => {
-        let depDef = this.streamDefs[i].def;
+        const depDef = this.streamDefs[i].def;
         this.streamDefs[i].def = depDef.replace(`:${oldName}.`, `:${newName}.`);
       });
     }
   }
 
-  isStreamCreationInProgress = function() : boolean {
+  isStreamCreationInProgress(): boolean {
     return this.progressData !== undefined && this.progressData !== null;
   }
 
@@ -123,31 +123,31 @@ export class StreamCreateDialogComponent implements OnInit {
     return false;
   }
 
-  streamDefsToCreate() : Array<any> {
+  streamDefsToCreate(): Array<any> {
     return this.streamDefs ? this.streamDefs.filter(d => !d.created) : [];
   }
 
-  waitForStreamDef(streamDefNameToWaitFor : string, attemptCount : number) : Promise<void> {
+  waitForStreamDef(streamDefNameToWaitFor: string, attemptCount: number): Promise<void> {
     return new Promise(resolve => {
       if (attemptCount === 10) {
-        console.error('Aborting after 10 attempts, cannot find the stream: '+streamDefNameToWaitFor);
+        console.error('Aborting after 10 attempts, cannot find the stream: ' + streamDefNameToWaitFor);
         resolve();
       }
       this.streamService.getDefinition(streamDefNameToWaitFor).subscribe(() => {
-        console.debug('Stream '+streamDefNameToWaitFor+' is ok!');
+        console.debug('Stream '+ streamDefNameToWaitFor + ' is ok!');
         resolve();
       }, () => {
-        console.debug('Stream '+streamDefNameToWaitFor+' is not there yet (attempt=#'+attemptCount+')');
+        console.debug('Stream '+ streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
         setTimeout(() => {
-          this.waitForStreamDef(streamDefNameToWaitFor, attemptCount+1).then(() => {
+          this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
             resolve();
           });
-        },400);
+        }, 400);
       });
     });
   }
 
-  canSubmit() : boolean {
+  canSubmit(): boolean {
     return !this.isStreamCreationInProgress() && this.form.valid && this.streamDefs && this.streamDefs.length && !(this.errors && this.errors.length);
   }
 
@@ -173,13 +173,13 @@ export class StreamCreateDialogComponent implements OnInit {
    * function can be passed a stream name that it should wait on before continuing. This ensures that if a later
    * stream depends on an earlier stream, everything works.
    */
-  createStreams(index : number) {
+  createStreams(index: number) {
     if (index < 0 || index >= this.streamDefs.length) {
       // Invalid index means all streams have been created, close the dialog.
       this.bsModalRef.hide();
     } else {
       // Send the request to create a stream
-      let def = this.streamDefs[index];
+      const def = this.streamDefs[index];
       this.streamService.createDefinition(def.name, def.def, this.deploy).subscribe(() => {
         console.debug('Stream ' + def.name + ' created OK');
         // Stream created successfully, mark it as created
@@ -228,7 +228,7 @@ export class StreamCreateDialogComponent implements OnInit {
 
 class ProgressData {
   constructor(public count, public total) {}
-  get percent() : number {
+  get percent(): number {
     return Math.round(this.count / this.total * 100);
   }
 }
