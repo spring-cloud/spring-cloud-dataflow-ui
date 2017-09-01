@@ -43,7 +43,7 @@ const GROUP_ICONS = new Map<string, string>()
         .set('source', '⤇')// 2907
         .set('processor', 'λ') // 3bb  //flux capacitor? 1D21B
         .set('sink', '⤇') // 2907
-        .set('task', '☉')//2609   ⚙=2699 gear (rubbish)
+        .set('task', '☉') // 2609   ⚙=2699 gear (rubbish)
         .set('destination', '⦂') // 2982
         .set('tap', '⦂') // 2982
     ;
@@ -291,11 +291,12 @@ export class RenderService implements Flo.Renderer {
                 /*
                  * Check if 'language' property has changed and 'script' property is present
                  */
-                //TODO: Reevaluate when get to `code-editor` directive migration
+                // TODO: Reevaluate when get to `code-editor` directive migration
                 // metadata.properties().then(properties => {
                 //     if (properties.get('script') && properties.get('script').source) {
                 //         properties.get('script').source.type = element.attr('props/language');
-                //         properties.get('script').source.mime = element.attr('props/language') === 'javascript' ? 'text/javascript' : 'text/x-' + element.attr('props/language');
+                //         properties.get('script').source.mime = element.attr('props/language') === 'javascript' ?
+                //              'text/javascript' : 'text/x-' + element.attr('props/language');
                 //     }
                 // });
             } else if (changedPropertyPath === 'node-name') {
@@ -312,11 +313,13 @@ export class RenderService implements Flo.Renderer {
                 const isTapLink = link.attr('props/isTapLink');
                 const linkView = paper.findViewByModel(link);
                 console.log('Adjusting link class isTapLink?' + isTapLink);
-                //TODO: Check if need to switch bacl to _.each(...)
+                // TODO: Check if need to switch bacl to _.each(...)
                 if (isTapLink === 'true') {
-                    linkView.el.querySelectorAll('.connection, .marker-source, .marker-target').forEach(connection => joint.V(connection).addClass('tapped-output-from-app'));
+                    linkView.el.querySelectorAll('.connection, .marker-source, .marker-target')
+                      .forEach(connection => joint.V(connection).addClass('tapped-output-from-app'));
                 } else {
-                    linkView.el.querySelectorAll('.connection, .marker-source, .marker-target').forEach(connection => joint.V(connection).removeClass('tapped-output-from-app'));
+                    linkView.el.querySelectorAll('.connection, .marker-source, .marker-target')
+                      .forEach(connection => joint.V(connection).removeClass('tapped-output-from-app'));
                 }
             }
             console.log('link being refreshed');
@@ -363,7 +366,8 @@ export class RenderService implements Flo.Renderer {
             const oldSource = graph.getCell(oldSourceId);
             const target = graph.getCell(targetId);
             // Show input port for 'destination' if outgoing links are gone
-            if (oldSource && oldSource.attr('metadata/name') === 'destination' /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
+            if (oldSource && oldSource.attr('metadata/name') === 'destination'
+              /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
                 // No outgoing links -> hide stream name label
                 // Set silently, last attr call would refresh the view
                 (<any>oldSource).attr('.stream-label/display', 'none', {silent: true});
@@ -381,7 +385,7 @@ export class RenderService implements Flo.Renderer {
             }
 
             // If tap link has been reconnected update the stream-label for the target if necessary
-            //TODO: Isn't tap port removed?
+            // TODO: Isn't tap port removed?
             if (target) {
                 if (link.previous('source').port === 'tap') {
                     target.attr('.stream-label/display', 'none');
@@ -424,7 +428,7 @@ export class RenderService implements Flo.Renderer {
             }
 
             // If tap link has been reconnected update the stream-label for the new target and old target
-            //TODO: Isn't tap port removed?
+            // TODO: Isn't tap port removed?
             if (link.get('source').port === 'tap') {
                 if (oldTarget) {
                     oldTarget.attr('.stream-label/display', 'none');
@@ -442,7 +446,8 @@ export class RenderService implements Flo.Renderer {
         const source = graph.getCell(link.get('source').id);
         const target = graph.getCell(link.get('target').id);
         let view: dia.CellView;
-        if (source && source.attr('metadata/name') === 'destination' && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
+        if (source && source.attr('metadata/name') === 'destination'
+          && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
             // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
             // Set silently, last attr call would refresh the view
             (<any>source).attr('.stream-label/display', 'none', {silent: true});
@@ -452,7 +457,8 @@ export class RenderService implements Flo.Renderer {
                 (<any>view).update();
             }
         }
-        if (target && target.attr('metadata/name') === 'destination' && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
+        if (target && target.attr('metadata/name') === 'destination'
+          && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
             // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
             // Set silently, last attr call would refresh the view
             (<any>target).attr('.stream-label/display', 'none', {silent: true});
@@ -463,7 +469,7 @@ export class RenderService implements Flo.Renderer {
             }
         }
         // If tap link is removed update stream-name value for the target, i.e. don't display stream anymore
-        //TODO: Isn't tap port removed?
+        // TODO: Isn't tap port removed?
         if (link.get('source').port === 'tap' && target) {
             target.attr('.stream-label/display', 'none');
         }
@@ -475,7 +481,8 @@ export class RenderService implements Flo.Renderer {
         return `${source ? source.attr('metadata/name') : '?'} -> ${target ? target.attr('metadata/name') : '?'}`;
     }
 
-    //TODO: Rewrite this! Should be creating elements on the graph manually! Should pass use Flo.EditorContext and pass metadata, props etc.
+    // TODO: Rewrite this! Should be creating elements on the graph manually!
+    // Should pass use Flo.EditorContext and pass metadata, props etc.
     handleLinkInsertChannel(link: dia.Link, paper: dia.Paper) {
         const graph = paper.model;
         const source = graph.getCell(link.get('source').id);
@@ -589,7 +596,7 @@ export class RenderService implements Flo.Renderer {
             // target will show the label (whether a real app or another destination).
             // This is done so that if a destination is connected to 5 outputs, this destination
             // won't track the 5 stream names, the nodes it links to will instead.
-            target.attr('.stream-label/display', 'block'); //, { silent: true });
+            target.attr('.stream-label/display', 'block'); // , { silent: true });
         }
         if (target && target.attr('metadata/name') === 'destination') {
             // Incoming link has been added -> hide stream label
@@ -598,7 +605,7 @@ export class RenderService implements Flo.Renderer {
             // XXX target.attr('.output-port/display', 'none');
         }
         // If tap link has been added update the stream-label for the target
-        //TODO: Tap port? Isn't it removed?
+        // TODO: Tap port? Isn't it removed?
         if (link.get('source').port === 'tap' && target) {
             target.attr('.stream-label/display', 'block');
         }

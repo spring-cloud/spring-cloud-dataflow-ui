@@ -22,7 +22,7 @@ import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../sh
 import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './shapes';
-import { Observable}  from 'rxjs';
+import { Observable} from 'rxjs/Observable';
 
 
 /**
@@ -148,7 +148,9 @@ export class MetamodelService implements Flo.Metamodel {
                     'hide-tooltip-options': true,
                 })
             )
-            .set('destination', this.createMetadata('destination', OTHER_GROUP_TYPE, 'A destination channel that can be used as a source or a sink',
+            .set('destination', this.createMetadata('destination',
+                OTHER_GROUP_TYPE,
+                'A destination channel that can be used as a source or a sink',
                 new Map<string, Flo.PropertyMetadata>().set('name', {
                         name: 'name',
                         id: 'name',
