@@ -11,8 +11,8 @@ import { ApplicationType } from '../../../shared/model/application-type';
 
 @Component({
   selector: 'properties-dialog-content',
-  templateUrl: './properties.dialog.component.html',
-  styleUrls: [ './properties.dialog.component.scss' ],
+  templateUrl: 'properties-dialog.component.html',
+  styleUrls: [ 'properties-dialog.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
 export class PropertiesDialogComponent implements OnInit {

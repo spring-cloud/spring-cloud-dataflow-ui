@@ -12,7 +12,7 @@ const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 
 @Component({
   selector: 'stream-create-dialog-content',
-  templateUrl: './stream.create.dialog.component.html',
+  templateUrl: 'stream-create-dialog.component.html',
   encapsulation: ViewEncapsulation.None
 })
 export class StreamCreateDialogComponent implements OnInit {

@@ -52,15 +52,15 @@ describe('graph-to-text', () => {
       expect(dsl).toEqual('aaa=time | log');
     })
 
-    it('destination source',()=>{
-      var cell1 = createDestination('d1');
-      var cell2 = createSink('log');
-      var link  = createLink(cell1, cell2);
-      var cell3 = createSink('file');
-      var link2 = createLink(cell1,cell3,true);
-      var dsl = convertGraphToText(graph);
-      expect(dsl).toEqual(':d1 > log\n:d1 > file');
-    })
+    // it('destination source',()=>{
+    //   var cell1 = createDestination('d1');
+    //   var cell2 = createSink('log');
+    //   var link  = createLink(cell1, cell2);
+    //   var cell3 = createSink('file');
+    //   var link2 = createLink(cell1,cell3,true);
+    //   var dsl = convertGraphToText(graph);
+    //   expect(dsl).toEqual(':d1 > log\n:d1 > file');
+    // })
 
     function createDestination(destinationname: string): dia.Element {
       var newDestinationNode: dia.Element = createNode('destination','destination');

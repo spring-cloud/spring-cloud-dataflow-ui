@@ -3,7 +3,7 @@
 import { Shapes } from 'spring-flo';
 import { dia } from 'jointjs';
 import { RenderService } from './render.service';
-import { MockMetamodelService } from './mocks/mock.metamodel.service';
+import { MockMetamodelService } from './mocks/mock-metamodel.service';
 import { Utils } from './utils';
 
 import * as _joint from 'jointjs';

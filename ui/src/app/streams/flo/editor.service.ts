@@ -19,7 +19,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { ApplicationType } from '../../shared/model/application-type';
 import { Flo, Constants } from 'spring-flo';
 import { dia } from 'jointjs';
-import { PropertiesDialogComponent } from './properties/properties.dialog.component';
+import { PropertiesDialogComponent } from './properties/properties-dialog.component';
 import { Utils } from './utils';
 import * as _joint from 'jointjs';
 const joint: any = _joint;

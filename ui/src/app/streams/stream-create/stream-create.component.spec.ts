@@ -2,7 +2,7 @@ import {StreamCreateComponent} from './stream-create.component';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {MockActivatedRoute} from '../../tests/mocks/activated-route';
 import {MockStreamsService} from '../../tests/mocks/streams';
-import {MockMetamodelService} from '../flo/mocks/mock.metamodel.service';
+import {MockMetamodelService} from '../flo/mocks/mock-metamodel.service';
 import {RouterTestingModule} from '@angular/router/testing';
 import {StreamsService} from '../streams.service';
 import {MetamodelService} from '../flo/metamodel.service';
@@ -11,7 +11,7 @@ import {RenderService} from '../flo/render.service';
 import {ActivatedRoute} from '@angular/router';
 import { FloModule} from 'spring-flo';
 import {ModalModule, BsModalService} from 'ngx-bootstrap';
-import { ContentAssistService } from '../flo/content.assist.service';
+import { ContentAssistService } from '../flo/content-assist.service';
 
 /**
  * Test {@link StreamCreateComponent}.
