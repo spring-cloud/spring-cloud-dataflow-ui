@@ -15,7 +15,6 @@
  */
 
 import { dia } from 'jointjs';
-import * as _ from 'lodash';
 
 /**
  * Create the text representation of a graph.
@@ -39,10 +38,10 @@ class GraphToTextConverter {
 	private numberOfNodesToVisit : number;
 
 	// Links left to visit indexed by id
-	private linksToVisit : Map<string, dia.Link>;
+	private linksToVisit : Set<dia.Link>;
 
 	// Nodes left to visit indexed by id
-	private nodesToVisit : Map<string, dia.Element>;
+	private nodesToVisit : Set<dia.Element>;
 
 	// Count of how many non-visited links a node has (indexed by node id)
 	private nodesIncomingLinksCount : Map<string, number>;
@@ -50,8 +49,8 @@ class GraphToTextConverter {
 	constructor(graph: dia.Graph) {
 		this.numberOfLinksToVisit = 0;
 		this.numberOfNodesToVisit = 0;
-		this.linksToVisit = new Map<string, dia.Link>();
-		this.nodesToVisit = new Map<string, dia.Element>();
+		this.linksToVisit = new Set<dia.Link>();
+		this.nodesToVisit = new Set<dia.Element>();
 		this.nodesIncomingLinksCount = new Map<string, number>();
 		this.g = graph;
 		this.g.getElements().forEach(element => {
@@ -60,14 +59,14 @@ class GraphToTextConverter {
 				var incomingLinkCount = 0;
 				this.g.getConnectedLinks(element, {inbound: true}).forEach(link => {
 					if (this.linkSourceIsNode(link, this.g)) {
-						this.linksToVisit[link.get('id')] = link;
+						this.linksToVisit.add(link);
 						this.numberOfLinksToVisit++;
 						incomingLinkCount++;
 					}
 				});
-				this.nodesToVisit[nodeId] = element;
+				this.nodesToVisit.add(element);
 				this.numberOfNodesToVisit++;
-				this.nodesIncomingLinksCount[nodeId] = incomingLinkCount;
+				this.nodesIncomingLinksCount.set(nodeId, incomingLinkCount);
 			}
 		});
 	}
@@ -274,13 +273,14 @@ class GraphToTextConverter {
 	 * Remove the specified element from the links or nodes to visit as it is about to
 	 * be processed.
 	 */
-	private tidyup(e: dia.Element): dia.Element {
+	private tidyup(e: dia.Cell): dia.Cell {
 		if (e.isLink()) {
-			delete this.linksToVisit[e.get('id')];
-			this.nodesIncomingLinksCount[e.get('target').id]--;
+		  this.linksToVisit.delete(<dia.Link> e);
+		  let id = e.get('target').id;
+			this.nodesIncomingLinksCount.set(id, this.nodesIncomingLinksCount.get(id)-1);
 			this.numberOfLinksToVisit--;
 		} else {
-			delete this.nodesToVisit[e.get('id')];
+		  this.nodesToVisit.delete(<dia.Element> e);
 			this.numberOfNodesToVisit--;
 		}
 		return e;
@@ -332,13 +332,13 @@ class GraphToTextConverter {
 		var i;
 		var streamheads=[];
 		// var nodesToHead={};
-		_.forEach(this.nodesToVisit, (node) => {
-			var head = this.findHead(node);
-			// if (!_.contains(streamheads,head)) {
-			if (!streamheads.find(e => e===head)) {
-				streamheads.push(head);
-			}
-		});
+    Array.from(this.nodesToVisit).forEach(node => {
+      var head = this.findHead(node);
+      // if (!_.contains(streamheads,head)) {
+      if (!streamheads.find(e => e===head)) {
+        streamheads.push(head);
+      }
+    });
 		if (GraphToTextConverter.DEBUG) {
 			console.log('Stream Heads discovered from the graph: ');
 			for (i=0;i<streamheads.length;i++) {
@@ -486,9 +486,9 @@ class GraphToTextConverter {
 		}
 		if (GraphToTextConverter.DEBUG) {
 			console.log('computed streams');
-			_.forEach(streams,(stream) => {
-				this.printStream(stream);
-			});
+			streams.forEach(stream => {
+        this.printStream(stream);
+      });
 			console.log('---');
 		}
 		// 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text
