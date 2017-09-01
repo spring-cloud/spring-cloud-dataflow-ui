@@ -1,14 +1,14 @@
-import { Parser } from "./parser";
+import { Parser } from './parser';
 
 describe('parser:', () => {
 
-  var parseResult: Parser.ParseResult;
-  var line: Parser.Line;
-  var nodes: Parser.Node[];
-  var node: Parser.Node;
-  var error: Parser.Error;
+  let parseResult: Parser.ParseResult;
+  let line: Parser.Line;
+  let nodes: Parser.Node[];
+  let node: Parser.Node;
+  let error: Parser.Error;
 
-  it('basic',()=> {
+  it('basic', () => {
     parseResult = Parser.parse('time', 'stream');
     expectOneStream(parseResult);
     line = parseResult.lines[0];
@@ -20,11 +20,11 @@ describe('parser:', () => {
     expect(node.group).toEqual('UNKNOWN_0');
     expect(node.type).toEqual('source');
     expect(node.name).toEqual('time');
-    expectRange(node.range,0,0,4,0);
+    expectRange(node.range, 0, 0, 4, 0);
     expectChannels(node);
   });
 
-  it('simple valid stream',()=> {
+  it('simple valid stream', () => {
     parseResult = Parser.parse('time | log', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
@@ -34,17 +34,17 @@ describe('parser:', () => {
     expect(node.group).toEqual('UNKNOWN_0');
     expect(node.type).toEqual('source');
     expect(node.name).toEqual('time');
-    expectRange(node.range,0,0,4,0);
+    expectRange(node.range, 0, 0, 4, 0);
     expectChannels(node);
     node = nodes[1];
     expect(node.group).toEqual('UNKNOWN_0');
     expect(node.type).toEqual('sink');
     expect(node.name).toEqual('log');
-    expectRange(node.range,7,0,10,0);
+    expectRange(node.range, 7, 0, 10, 0);
     expectChannels(node);
   });
 
-  it('channel input',()=> {
+  it('channel input', () => {
     parseResult = Parser.parse(':foo > log', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
@@ -54,11 +54,11 @@ describe('parser:', () => {
     expect(node.group).toEqual('UNKNOWN_0');
     expect(node.type).toEqual('sink');
     expect(node.name).toEqual('log');
-    expectRange(node.range,7,0,10,0);
-    expectChannels(node,'foo');
-  })
+    expectRange(node.range, 7, 0, 10, 0);
+    expectChannels(node, 'foo');
+  });
 
-  it('channel output',()=> {
+  it('channel output', () => {
     parseResult = Parser.parse('time > :foo', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
@@ -68,11 +68,11 @@ describe('parser:', () => {
     expect(node.group).toEqual('UNKNOWN_0');
     expect(node.type).toEqual('source');
     expect(node.name).toEqual('time');
-    expectRange(node.range,0,0,4,0);
-    expectChannels(node,null,'foo');
-  })
+    expectRange(node.range, 0, 0, 4, 0);
+    expectChannels(node, null, 'foo');
+  });
 
-  it('options',()=> {
+  it('options', () => {
     parseResult = Parser.parse('time --a=b --c=d | log --e=f', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
@@ -94,9 +94,9 @@ describe('parser:', () => {
     expect(line.nodes[0].options['c']).toEqual('d');
 
     expect(line.nodes[1].options['e']).toEqual('f');
-  })
+  });
 
-  it('bridge',()=> {
+  it('bridge', () => {
     parseResult = Parser.parse(':a > :b', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
@@ -106,11 +106,11 @@ describe('parser:', () => {
     expect(node.group).toEqual('UNKNOWN_0');
     expect(node.type).toEqual('processor');
     expect(node.name).toEqual('bridge');
-    expectRange(node.range,3,0,4,0);
-    expectChannels(node,'a','b');
-  })
+    expectRange(node.range, 3, 0, 4, 0);
+    expectChannels(node, 'a', 'b');
+  });
 
-  it('named',()=> {
+  it('named', () => {
     parseResult = Parser.parse('aaaa=time | log', 'stream');
     node = parseResult.lines[0].nodes[0];
     expect(node.group).toEqual('aaaa');
@@ -121,9 +121,9 @@ describe('parser:', () => {
     expect(node.group).toEqual('aaaa');
     expect(node.name).toEqual('log');
     expect(node.type).toEqual('sink');
-  })
+  });
 
-  it('multiline',()=> {
+  it('multiline', () => {
     parseResult = Parser.parse('time | log\nhdfs | file', 'stream');
     node = parseResult.lines[0].nodes[0];
     expect(node.name).toEqual('time');
@@ -134,164 +134,164 @@ describe('parser:', () => {
     expect(node.name).toEqual('hdfs');
     node = parseResult.lines[1].nodes[1];
     expect(node.name).toEqual('file');
-    expectRange(node.range,7,1,11,1);
-  })
+    expectRange(node.range, 7, 1, 11, 1);
+  });
 
-  it('task',()=> {
+  it('task', () => {
     parseResult = Parser.parse('aaaa --bb=cc', 'task');
     node = parseResult.lines[0].nodes[0];
     expect(node.name).toEqual('aaaa');
     expect(node.type).toEqual('task');
     expect(node.options['bb']).toEqual('cc');
-    expectRange(node.optionsranges['bb'],5,0,12,0);
-  })
+    expectRange(node.optionsranges['bb'], 5, 0, 12, 0);
+  });
 
-  it('error: task with only name',()=> {
+  it('error: task with only name', () => {
     parseResult = Parser.parse('aaaa=', 'task');
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Expected format: name = taskapplication [options]');
-    expectRange(error.range,0,0,0,0);
-  })
+    expectRange(error.range, 0, 0, 0, 0);
+  });
 
-  it('error: task with extra data',()=> {
+  it('error: task with extra data', () => {
     parseResult = Parser.parse('aaaa=bbb ccc', 'task');
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual("Unexpected data after task definition: ccc");
-    expectRange(error.range,9,0,10,0);
-  })
+    expect(error.message).toEqual('Unexpected data after task definition: ccc');
+    expectRange(error.range, 9, 0, 10, 0);
+  });
 
-  it('task with a name',()=> {
+  it('task with a name', () => {
     parseResult = Parser.parse('bbb = aaaa --bb=cc', 'task');
     expect(parseResult.lines.length).toEqual(1);
     node = parseResult.lines[0].nodes[0];
     expect(node.name).toEqual('aaaa');
     expect(node.group).toEqual('bbb');
     expect(node.options['bb']).toEqual('cc');
-  })
+  });
 
-  it('dotted arg names in stream',()=> {
+  it('dotted arg names in stream', () => {
     parseResult = Parser.parse('aaa --bbb.ccc.ddd=eee', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     node = parseResult.lines[0].nodes[0];
     expect(node.name).toEqual('aaa');
     expect(node.options['bbb.ccc.ddd']).toEqual('eee');
-  })
+  });
 
-  it('dotted arg names in task',()=> {
+  it('dotted arg names in task', () => {
     parseResult = Parser.parse('aaa --bbb.ccc.ddd=eee', 'task');
     expect(parseResult.lines.length).toEqual(1);
     node = parseResult.lines[0].nodes[0];
     expect(node.name).toEqual('aaa');
     expect(node.options['bbb.ccc.ddd']).toEqual('eee');
-  })
+  });
 
-  it('literal string arg value',()=> {
+  it('literal string arg value', () => {
     parseResult = Parser.parse('aaa --bbb="ccc"', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     node = parseResult.lines[0].nodes[0];
     expect(node.name).toEqual('aaa');
     expect(node.options['bbb']).toEqual('"ccc"');
-  })
+  });
 
-  it('unusual arg value',()=> {
+  it('unusual arg value', () => {
     parseResult = Parser.parse('aaa --bbb=*', 'stream');
     // Special tokenization kicks in for argument values, allowing all kinds of things
     expect(parseResult.lines[0].nodes[0].options['bbb']).toEqual('*');
-  })
+  });
 
-  it('error: dotted names 1',()=> {
+  it('error: dotted names 1', () => {
     parseResult = Parser.parse('aaa --aaa .bbb=ccc', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    var line: Parser.Line = parseResult.lines[0];
+    let line: Parser.Line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed in dotted name');
-    expectRange(error.range,6,0,7,0);
-  })
+    expectRange(error.range, 6, 0, 7, 0);
+  });
 
-  it('error: bad name',()=> {
+  it('error: bad name', () => {
     parseResult = Parser.parse('| = foo', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    var line: Parser.Line = parseResult.lines[0];
+    let line: Parser.Line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('Illegal name \'|\'');
-    expectRange(error.range,0,0,1,0);
-  })
+    expectRange(error.range, 0, 0, 1, 0);
+  });
 
-  it('error: bad app',()=> {
+  it('error: bad app', () => {
     parseResult = Parser.parse('|', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Expected app name but found \'|\'');
-    expectRange(error.range,0,0,1,0);
-  })
+    expectRange(error.range, 0, 0, 1, 0);
+  });
 
-  it('error: bad label',()=> {
+  it('error: bad label', () => {
     parseResult = Parser.parse('aaa : bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    var line: Parser.Line = parseResult.lines[0];
+    let line: Parser.Line = parseResult.lines[0];
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed between label name and colon');
-    expectRange(error.range,3,0,4,0);
-  })
+    expectRange(error.range, 3, 0, 4, 0);
+  });
 
-  it('error: dotted names 2',()=> {
+  it('error: dotted names 2', () => {
     parseResult = Parser.parse('aaa --aaa. bbb=ccc', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('No whitespace allowed in dotted name');
-    expectRange(error.range,6,0,7,0);
-  })
+    expectRange(error.range, 6, 0, 7, 0);
+  });
 
-  it('error: dotted destination',()=> {
+  it('error: dotted destination', () => {
     parseResult = Parser.parse('aaa .bbb > log', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Unexpected data after stream definition: .');
-    expectRange(error.range,4,0,5,0);
-  })
+    expectRange(error.range, 4, 0, 5, 0);
+  });
 
-  it('error: incorrect destination start char',()=> {
+  it('error: incorrect destination start char', () => {
     parseResult = Parser.parse('time > |foo', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Destination must start with a \':\'');
-    expectRange(error.range,7,0,8,0);
-  })
+    expectRange(error.range, 7, 0, 8, 0);
+  });
 
-  it('error: incomplete destination',()=> {
+  it('error: incomplete destination', () => {
     parseResult = Parser.parse('aaa.', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Unexpected data after stream definition: .');
-    expectRange(error.range,3,0,4,0);
-  })
+    expectRange(error.range, 3, 0, 4, 0);
+  });
 
-  it('error: double label usage',()=> {
+  it('error: double label usage', () => {
     parseResult = Parser.parse('aaa: bbb | aaa: ccc', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Label \'aaa\' should be unique but app \'ccc\' (at app position 1) and app \'bbb\' (at app position 0) both use it');
-    expectRange(error.range,11,0,19,0);
-  })
+    expectRange(error.range, 11, 0, 19, 0);
+  });
 
-  it('error: label required',()=> {
+  it('error: label required', () => {
     parseResult = Parser.parse('bbb | bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('App \'bbb\' should be unique within the stream, use a label to differentiate multiple occurrences');
-    expectRange(error.range,6,0,9,0);
-  })
+    expectRange(error.range, 6, 0, 9, 0);
+  });
 
-  it('tap not yet existing stream',()=> {
+  it('tap not yet existing stream', () => {
     parseResult = Parser.parse(':stream.time > log', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     // {"lines":[{"errors":null,"nodes":[{"group":"UNKNOWN_0","type":"sink","name":"log","options":{},"optionsranges":{},"range":{"start":{"ch":15,"line":0},"end":{"ch":18,"line":0}},"sourceChannelName":"tap:stream.time","sinkChannelName":null}]}]}
     expect(parseResult.lines[0].nodes[0].sourceChannelName).toEqual('tap:stream.time');
-  })
+  });
 
-  it('multiline',()=> {
+  it('multiline', () => {
     parseResult = Parser.parse('a=time | log\n:a.time > file', 'stream');
     expect(parseResult.lines.length).toEqual(2);
     // {"lines":[
@@ -305,16 +305,16 @@ describe('parser:', () => {
     expect(node.name).toEqual('time');
     node = line.nodes[1];
     expect(node.name).toEqual('log');
-    expectRange(node.range,9,0,12,0);
+    expectRange(node.range, 9, 0, 12, 0);
     line = parseResult.lines[1];
     node = line.nodes[0];
     expect(node.name).toEqual('file');
-    expectRange(node.range,10,1,14,1);
+    expectRange(node.range, 10, 1, 14, 1);
     expect(node.sourceChannelName).toEqual('tap:a.time');
-  })
+  });
 
-  it('error: spaces',() => {
-    parseResult = Parser.parse('aaa bbb','stream');
+  it('error: spaces', () => {
+    parseResult = Parser.parse('aaa bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
@@ -322,132 +322,132 @@ describe('parser:', () => {
     // {"errors":[{"accurate":true,"message":"Unexpected data after stream definition: bbb",
     //  "range":{"start":{"ch":4,"line":0},"end":{"ch":5,"line":0}}}]}
     expect(error.message).toEqual('Unexpected data after stream definition: bbb');
-    expectRange(error.range,4,0,5,0);
+    expectRange(error.range, 4, 0, 5, 0);
   });
 
-  it('error: out-of-data',() => {
-    parseResult = Parser.parse('aaa --a','stream');
+  it('error: out-of-data', () => {
+    parseResult = Parser.parse('aaa --a', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('Out of data');
-    expectRange(error.range,7,0,8,0);
+    expectRange(error.range, 7, 0, 8, 0);
   });
 
-  it('error: no data',() => {
-    parseResult = Parser.parse('','stream');
+  it('error: no data', () => {
+    parseResult = Parser.parse('', 'stream');
     expect(parseResult.lines[0].nodes.length).toEqual(0);
     expect(parseResult.lines[0].errors.length).toEqual(0);
   });
-  
-  it('error: whitespace in destination',() => {
-    parseResult = Parser.parse('aaa > : aa','stream');
+
+  it('error: whitespace in destination', () => {
+    parseResult = Parser.parse('aaa > : aa', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed in destination');
-    expectRange(error.range,7,0,8,0);
+    expectRange(error.range, 7, 0, 8, 0);
   });
 
-  it('error: whitespace in destination 2',() => {
-    parseResult = Parser.parse('aaa > :aa. bb','stream');
+  it('error: whitespace in destination 2', () => {
+    parseResult = Parser.parse('aaa > :aa. bb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed in destination');
-    expectRange(error.range,10,0,11,0);
+    expectRange(error.range, 10, 0, 11, 0);
   });
 
-  it('error: whitespace in destination 3',() => {
-    parseResult = Parser.parse('aaa > :aa. ','stream');
+  it('error: whitespace in destination 3', () => {
+    parseResult = Parser.parse('aaa > :aa. ', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('Out of data - incomplete destination');
-    expectRange(error.range,9,0,10,0);
+    expectRange(error.range, 9, 0, 10, 0);
   });
 
-  it('error: incomplete destination',() => {
-    parseResult = Parser.parse('aaa > :','stream');
+  it('error: incomplete destination', () => {
+    parseResult = Parser.parse('aaa > :', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('Out of data - incomplete destination');
-    expectRange(error.range,6,0,7,0);
+    expectRange(error.range, 6, 0, 7, 0);
   });
 
-  it('error: incomplete destination',() => {
-    parseResult = Parser.parse(': > log','stream');
+  it('error: incomplete destination', () => {
+    parseResult = Parser.parse(': > log', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed in destination');
-    expectRange(error.range,1,0,2,0);
-  })
+    expectRange(error.range, 1, 0, 2, 0);
+  });
 
-  it('check label',() => {
-    parseResult = Parser.parse('aaa: time | log','stream');
+  it('check label', () => {
+    parseResult = Parser.parse('aaa: time | log', 'stream');
     expect(parseResult.lines[0].nodes[0].label).toEqual('aaa');
     expect(parseResult.lines[0].nodes[0].name).toEqual('time');
   });
 
-  it('error: bad options 1',() => {    
-    parseResult = Parser.parse('aaa --','stream');
+  it('error: bad options 1', () => {
+    parseResult = Parser.parse('aaa --', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('Out of data');
-    expectRange(error.range,6,0,7,0);
+    expectRange(error.range, 6, 0, 7, 0);
   });
 
-  it('error: bad options 2',() => {    
-    parseResult = Parser.parse('aaa -- bbb','stream');
+  it('error: bad options 2', () => {
+    parseResult = Parser.parse('aaa -- bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed after -- but before option name');
-    expectRange(error.range,6,0,7,0);
+    expectRange(error.range, 6, 0, 7, 0);
   });
 
-  it('error: bad options 3',() => {    
-    parseResult = Parser.parse('aaa --aaa =','stream');
+  it('error: bad options 3', () => {
+    parseResult = Parser.parse('aaa --aaa =', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed before equals');
-    expectRange(error.range,9,0,10,0);
+    expectRange(error.range, 9, 0, 10, 0);
   });
 
-  it('error: bad options 4',() => {    
-    parseResult = Parser.parse('aaa --aaa= bbb','stream');
+  it('error: bad options 4', () => {
+    parseResult = Parser.parse('aaa --aaa= bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed before option value');
-    expectRange(error.range,10,0,11,0);
+    expectRange(error.range, 10, 0, 11, 0);
   });
 
-  it('hyphenated name',() => {    
-    parseResult = Parser.parse('aaa--aaa= bbb','stream');
+  it('hyphenated name', () => {
+    parseResult = Parser.parse('aaa--aaa= bbb', 'stream');
     expect(parseResult.lines[0].nodes[0].group).toEqual('aaa--aaa');
     expect(parseResult.lines[0].errors).toBeNull();
-    expect(parseResult.lines[0].nodes[0].name).toEqual('bbb');    
+    expect(parseResult.lines[0].nodes[0].name).toEqual('bbb');
   });
 
-  it('hyphenated app name',() => {    
-    parseResult = Parser.parse('aaa--aaa --aa=bb','stream');
+  it('hyphenated app name', () => {
+    parseResult = Parser.parse('aaa--aaa --aa=bb', 'stream');
     expect(parseResult.lines[0].errors).toBeNull();
-    expect(parseResult.lines[0].nodes[0].name).toEqual('aaa--aaa');   
+    expect(parseResult.lines[0].nodes[0].name).toEqual('aaa--aaa');
     expect(parseResult.lines[0].nodes[0].options['aa']).toEqual('bb');
   });
 
@@ -463,7 +463,7 @@ describe('parser:', () => {
     expect(range.end.line).toEqual(endLine);
   }
 
-  function expectChannels(node: Parser.Node, sourceChannelName?:string, sinkChannelName?:string) {
+  function expectChannels(node: Parser.Node, sourceChannelName?: string, sinkChannelName?: string) {
     if (sourceChannelName) {
       expect(node.sourceChannelName).toEqual(sourceChannelName);
     } else {

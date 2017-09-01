@@ -107,7 +107,7 @@ class Metadata implements Flo.ElementMetadata {
     return Promise.resolve(this.rawData.properties.find(p => p.id === property));
   }
 
-  properties(): Promise<Map<string,Flo.PropertyMetadata>> {
+  properties(): Promise<Map<string, Flo.PropertyMetadata>> {
     const propertiesMap = new Map<string, Flo.PropertyMetadata>();
     this.rawData.properties.forEach(p => propertiesMap.set(p.id, p));
     return Promise.resolve(propertiesMap);

@@ -5,7 +5,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { dia } from 'jointjs';
 import { StreamsService } from '../../streams.service';
 import { Utils } from '../utils';
-import { Subscription } from "rxjs";
+import { Subscription } from 'rxjs';
 import { ApplicationType } from '../../../shared/model/application-type';
 
 
@@ -48,7 +48,7 @@ export class PropertiesDialogComponent implements OnInit {
   }
 
   setData(c: dia.Cell, graph: dia.Graph) {
-    let streamHeads = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
+    const streamHeads = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
     this.propertiesGroupModel = new PropertiesGroupModel(c, streamHeads, (<Array<dia.Cell>>streamHeads).indexOf(c) >= 0, this.streamService);
     this.propertiesGroupModel.load();
   }
@@ -87,7 +87,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
               return {
                 name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
                 value: o === property.defaultValue ? undefined : o
-              }
+              };
             }));
           } else if (property.metadata.name === 'password') {
             inputType = Properties.InputType.PASSWORD;
@@ -98,7 +98,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
               errorData: [
                 {id: 'email', message: 'Invalid E-Mail value!'}
               ]
-            }
+            };
           } else if (property.metadata.type && property.metadata.type.lastIndexOf('[]') === property.metadata.type.length - 2) {
             return new Properties.GenericListControlModel(property);
           }
@@ -111,7 +111,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
           errorData: [
             {id: 'pattern', message: 'Invalid app label!'}
           ]
-        }
+        };
       } else if (property.id === 'stream-name') {
         validation = {
           validator: [
@@ -126,7 +126,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
             {id: 'uniqueResource', message: 'Stream name already exists!'},
             {id: 'noneOf', message: 'Stream name already exists on the canvas'}
           ]
-        }
+        };
       }
     }
     return new Properties.GenericControlModel(property, inputType, validation);
@@ -134,9 +134,9 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
 
   protected createProperties(): Promise<Array<Properties.Property>> {
     return super.createProperties().then(semanticProperties => {
-      let notationalProperties = this.createNotationalProperties();
+      const notationalProperties = this.createNotationalProperties();
       return semanticProperties ? notationalProperties.concat(semanticProperties) : notationalProperties;
-    })
+    });
   }
 
   protected createProperty(metadata: Flo.PropertyMetadata): Properties.Property {
@@ -148,11 +148,11 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
       value: this.cell.attr(`props/${metadata.name}`) || this.cell.attr(`props/${metadata.id}`),
       description: metadata.description,
       metadata: metadata
-    }
+    };
   }
 
   private createNotationalProperties(): Array<Properties.Property> {
-    let notationalProperties = [];
+    const notationalProperties = [];
     if (typeof ApplicationType[this.cell.attr('metadata/group')] === 'number') {
       notationalProperties.push({
         id: 'label',

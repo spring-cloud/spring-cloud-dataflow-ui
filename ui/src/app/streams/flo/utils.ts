@@ -28,8 +28,8 @@ export class Utils {
          if (!element.attr('.input-port') || element.attr('.input-port/display') === 'none') {
            return true;
          } else {
-           let incoming = graph.getConnectedLinks(element, { inbound: true });
-           let tapLink = incoming.find(l => l.attr('props/isTapLink') === 'true');
+           const incoming = graph.getConnectedLinks(element, { inbound: true });
+           const tapLink = incoming.find(l => l.attr('props/isTapLink') === 'true');
            if (tapLink) {
              return true;
            }
@@ -39,7 +39,7 @@ export class Utils {
     }
 
     static generateStreamName(graph: dia.Graph, element: dia.Element) {
-        let streamNames: Array<string> = graph.getElements()
+        const streamNames: Array<string> = graph.getElements()
             .filter(e => element !== e && e.attr('stream-name') && this.canBeHeadOfStream(graph, e))
             .map(e => e.attr('stream-name'));
 

@@ -14,14 +14,14 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
 
     markup:
     '<g class="stream-module">' +
-    '<g class="shape">'+
-    '<rect class="box"/>'+
-    '<text class="label1"/>'+
-    '<text class="label2"/>'+
+    '<g class="shape">' +
+    '<rect class="box"/>' +
+    '<text class="label1"/>' +
+    '<text class="label2"/>' +
     '</g>' +
-    '<text class="stream-label"/>'+
-    '<rect class="input-port" />'+
-    '<rect class="output-port"/>'+
+    '<text class="stream-label"/>' +
+    '<rect class="input-port" />' +
+    '<rect class="output-port"/>' +
     '</g>',
 
     defaults: joint.util.deepSupplement({
@@ -49,7 +49,7 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
                 height: 8, width: 8,
                 magnet: true,
                 fill: '#eeeeee',
-                transform: 'translate(' + -4 + ',' + ((IMAGE_H/2)-4) + ')',
+                transform: 'translate(' + -4 + ',' + ((IMAGE_H / 2) - 4) + ')',
                 stroke: '#34302d',
                 'stroke-width': 1,
             },
@@ -59,7 +59,7 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
                 height: 8, width: 8,
                 magnet: true,
                 fill: '#eeeeee',
-                transform: 'translate(' + (IMAGE_W-4) + ',' + ((IMAGE_H/2)-4) + ')',
+                transform: 'translate(' + (IMAGE_W - 4) + ',' + ((IMAGE_H / 2) - 4) + ')',
                 stroke: '#34302d',
                 'stroke-width': 1,
             },
@@ -74,7 +74,7 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             },
             '.label2': {
                 'y-alignment': 'middle',
-                'ref-x': HORIZONTAL_PADDING+2, // jointjs specific: relative position to ref'd element
+                'ref-x': HORIZONTAL_PADDING + 2, // jointjs specific: relative position to ref'd element
                 'ref-y': 0.55, // jointjs specific: relative position to ref'd element
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
                 fill: 'black',
@@ -99,15 +99,15 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
 
     markup:
     '<g class="destination">' +
-    '<g class="shape">'+
-    '<path d="m6,10 a12,12 0 0,0 0,20 l108,0 a12,12 0 0,0 0,-20 l0,0 z" class="box"/>'+
+    '<g class="shape">' +
+    '<path d="m6,10 a12,12 0 0,0 0,20 l108,0 a12,12 0 0,0 0,-20 l0,0 z" class="box"/>' +
     // '<rect transform="translate(100, -11)" class="box"/>'+
-    '<text class="label1"/>'+
-    '<text class="label2"/>'+
+    '<text class="label1"/>' +
+    '<text class="label2"/>' +
     '</g>' +
-    '<text class="stream-label"/>'+
-    '<circle class="input-port" />'+
-    '<circle class="output-port"/>'+
+    '<text class="stream-label"/>' +
+    '<circle class="input-port" />' +
+    '<circle class="output-port"/>' +
     '</g>',
 
     defaults: joint.util.deepSupplement({
@@ -121,7 +121,7 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
             },
             '.box': {
                 width: IMAGE_W,
-                height: IMAGE_H/2,
+                height: IMAGE_H / 2,
                 rx: 2,
                 ry: 2,
                 //'fill-opacity':0, // see through
@@ -136,7 +136,7 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
                 magnet: true,
                 fill: '#eeeeee',
                 // transform: 'translate(' + -4 + ',' + ((IMAGE_H/2)-4) + ')',
-                transform: 'translate(1,' + ((IMAGE_H/2)) + ')',
+                transform: 'translate(1,' + ((IMAGE_H / 2)) + ')',
                 stroke: '#34302d',
                 'stroke-width': 1,
             },
@@ -146,7 +146,7 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
                 r: 4, //height: 8, width: 8,
                 magnet: true,
                 fill: '#eeeeee',
-                transform: 'translate(' + (IMAGE_W-1) + ',' + ((IMAGE_H/2)) + ')',
+                transform: 'translate(' + (IMAGE_W - 1) + ',' + ((IMAGE_H / 2)) + ')',
                 stroke: '#34302d',
                 'stroke-width': 1,
             },
@@ -161,7 +161,7 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
             },
             '.label2': {
                 'y-alignment': 'middle',
-                'ref-x': HORIZONTAL_PADDING+2, // jointjs specific: relative position to ref'd element
+                'ref-x': HORIZONTAL_PADDING + 2, // jointjs specific: relative position to ref'd element
                 'ref-y': 0.55, // jointjs specific: relative position to ref'd element
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
                 fill: 'black',

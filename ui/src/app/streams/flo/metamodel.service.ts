@@ -22,7 +22,7 @@ import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../sh
 import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './shapes';
-import { Observable}  from "rxjs";
+import { Observable}  from 'rxjs';
 
 
 /**
@@ -52,8 +52,8 @@ export class MetamodelService implements Flo.Metamodel {
     ) {}
 
     textToGraph(flo: Flo.EditorContext, dsl: string): void {
-        console.log("> textToGraph "+dsl);
-        this.load().then((metamodel) => { convertTextToGraph(dsl, flo, metamodel)});
+        console.log('> textToGraph ' + dsl);
+        this.load().then((metamodel) => { convertTextToGraph(dsl, flo, metamodel); });
     }
 
     graphToText(flo: Flo.EditorContext): Promise<string> {
@@ -65,14 +65,14 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     unsubscribe?(listener: Flo.MetamodelListener) {
-        let index = this.listeners.indexOf(listener);
+        const index = this.listeners.indexOf(listener);
         if (index >= 0) {
             this.listeners.splice(index);
         }
     }
 
     encodeTextToDSL(text: string): string {
-        var retval = '\"' + text.replace(/(?:\r\n|\r|\n)/g, '\\n').replace(/"/g, '""') + '\"';
+        const retval = '\"' + text.replace(/(?:\r\n|\r|\n)/g, '\\n').replace(/"/g, '""') + '\"';
         return retval;
     }
 
@@ -80,7 +80,7 @@ export class MetamodelService implements Flo.Metamodel {
         if (dsl.charAt(0) === '\"' && dsl.charAt(dsl.length - 1) === '\"') {
             dsl = dsl.substr(1, dsl.length - 2);
         }
-        var retval = dsl.replace(/\\n/g, '\n').replace(/\"\"/g, '"');
+        const retval = dsl.replace(/\\n/g, '\n').replace(/\"\"/g, '"');
         return retval;
     }
 
@@ -94,7 +94,7 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     refresh(): Promise<Map<string, Map<string, Flo.ElementMetadata>>> {
-        let metamodel = new Map<string, Map<string, Flo.ElementMetadata>>();
+        const metamodel = new Map<string, Map<string, Flo.ElementMetadata>>();
         this.addOtherGroup(metamodel);
         return new Promise(resolve => {
             this.appsService.getApps({page: 0, size: 1000}).subscribe(
@@ -108,7 +108,7 @@ export class MetamodelService implements Flo.Metamodel {
                         if (!metamodel.has(item.type.toString())) {
                             metamodel.set(item.type.toString(), new Map<string, Flo.ElementMetadata>());
                         }
-                        let group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
+                        const group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
                         if (group.has(item.name)) {
                             console.error(`Group '${item.type}' has duplicate element '${item.name}'`);
                         } else {
@@ -135,7 +135,7 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     private addOtherGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
-        let elements = new Map<string, Flo.ElementMetadata>()
+        const elements = new Map<string, Flo.ElementMetadata>()
             .set('tap', this.createMetadata('tap', OTHER_GROUP_TYPE, 'Tap into an existing app',
                     new Map<string, Flo.PropertyMetadata>().set('name', {
                         name: 'Source Destination Name',
@@ -201,10 +201,10 @@ class StreamAppMetadata implements Flo.ElementMetadata {
   get propertiesPromise(): Promise<Map<string, Flo.PropertyMetadata>> {
     if (!this._propertiesPromise) {
       this._propertiesPromise = new Promise(resolve => this.dataPromise.then((data: DetailedAppRegistration) => {
-        let properties = new Map<string, Flo.PropertyMetadata>();
+        const properties = new Map<string, Flo.PropertyMetadata>();
         if (data) {
           data.options.map((o: ConfigurationMetadataProperty) => {
-            let propertyMetadata: Flo.PropertyMetadata = {
+            const propertyMetadata: Flo.PropertyMetadata = {
               id: o.id,
               name: o.name,
               description: o.description,

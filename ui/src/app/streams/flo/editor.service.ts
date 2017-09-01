@@ -41,8 +41,8 @@ export class EditorService implements Flo.Editor {
         if (owner.model instanceof joint.dia.Link) {
             return;
         } else if (owner.model instanceof joint.dia.Element) {
-            let element = <dia.Element> owner.model;
-            let bbox = element.getBBox();
+            const element = <dia.Element> owner.model;
+            const bbox = element.getBBox();
 
             // Delete handle
             let pt = (<any>bbox).origin().offset(bbox.width + 3, bbox.height + 3);
@@ -52,7 +52,7 @@ export class EditorService implements Flo.Editor {
             if (!element.attr('metadata/unresolved')) {
                 pt = (<any>bbox).origin().offset(-14, bbox.height + 3);
                 createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
-                    let modalRef = this.bsModalService.show(PropertiesDialogComponent);
+                    const modalRef = this.bsModalService.show(PropertiesDialogComponent);
                     modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
                     modalRef.content.setData(element, flo.getGraph());
                 }, pt);
@@ -80,12 +80,12 @@ export class EditorService implements Flo.Editor {
             return false;
         }
 
-        let graph = flo.getGraph();
+        const graph = flo.getGraph();
 
         if (cellViewS.model.attr) {
-            let currentSourceLinks = graph.getConnectedLinks(cellViewS.model, { outbound: true });
+            const currentSourceLinks = graph.getConnectedLinks(cellViewS.model, { outbound: true });
             idx = currentSourceLinks.indexOf(linkView.model);
-            console.log('Index into outgoing source links for this link = '+idx+' link count = '+(currentSourceLinks.length));
+            console.log('Index into outgoing source links for this link = ' + idx + ' link count = ' + (currentSourceLinks.length));
             // For a second link we will see:
             // Index into outgoing source links for this link = 1 link count = 2
             // if (idx > 0) {
@@ -112,12 +112,12 @@ export class EditorService implements Flo.Editor {
             }
 
             let i: number;
-            let targetIncomingLinks = graph.getConnectedLinks(cellViewT.model, { inbound: true });
+            const targetIncomingLinks = graph.getConnectedLinks(cellViewT.model, { inbound: true });
             idx = targetIncomingLinks.indexOf(linkView.model);
             if (idx >= 0) {
                 targetIncomingLinks.splice(idx, 1);
             }
-            let outgoingSourceLinks = graph.getConnectedLinks(cellViewS.model, { outbound: true });
+            const outgoingSourceLinks = graph.getConnectedLinks(cellViewS.model, { outbound: true });
             idx = outgoingSourceLinks.indexOf(linkView.model);
             if (idx >= 0) {
                 outgoingSourceLinks.splice(idx, 1);
@@ -132,7 +132,7 @@ export class EditorService implements Flo.Editor {
 
             if (outgoingSourceLinks.length > 0) {
                 // Make sure there is no link between this source and target already
-                let anotherLink = outgoingSourceLinks
+                const anotherLink = outgoingSourceLinks
                     .map(l => l.get('target').id)
                     .filter(id => typeof id === 'string')
                     .map(id => graph.getCell(id))
@@ -164,14 +164,14 @@ export class EditorService implements Flo.Editor {
 
     private getOutgoingStreamLinks(graph: dia.Graph, node: dia.Element): Array<dia.Link> {
         // !node only possible if call is occurring during link drawing (one end connected but not the other)
-        return node ? graph.getConnectedLinks(node, {outbound: true}).filter(link => link.get('source') && link.get('source').port === 'output'): [];
+        return node ? graph.getConnectedLinks(node, {outbound: true}).filter(link => link.get('source') && link.get('source').port === 'output') : [];
     }
 
     calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,
                             point: dia.Point, sourceComponent: string): Flo.DnDDescriptor {
-        let source = draggedView.model;
-        let paper = flo.getPaper();
-        let targetUnderMouse = viewUnderMouse ? viewUnderMouse.model: undefined;
+        const source = draggedView.model;
+        const paper = flo.getPaper();
+        const targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
         // If node dropping not enabled then short-circuit
         if (!NODE_DROPPING && !(targetUnderMouse instanceof joint.dia.Link && targetUnderMouse.attr('metadata/name') !== 'tap' && targetUnderMouse.attr('metadata/name') !== 'destination')) {
           return {
@@ -195,30 +195,30 @@ export class EditorService implements Flo.Editor {
         }
 
         // Find closest port
-        let range = 30;
-        let graph = flo.getGraph();
+        const range = 30;
+        const graph = flo.getGraph();
         let closestData: Flo.DnDDescriptor;
         let minDistance = Number.MAX_VALUE;
-        let hasIncomingPort = draggedView.model.attr('.input-port') && draggedView.model.attr('.input-port/display') !== 'none';
+        const hasIncomingPort = draggedView.model.attr('.input-port') && draggedView.model.attr('.input-port/display') !== 'none';
         // Ignore tap-port for the dragged view. Only allow making connections to/from input and output port for node-on-node DnD
-        let hasOutgoingPort = draggedView.model.attr('.output-port') && draggedView.model.attr('.output-port/display') !== 'none';
+        const hasOutgoingPort = draggedView.model.attr('.output-port') && draggedView.model.attr('.output-port/display') !== 'none';
         if (!hasIncomingPort && !hasOutgoingPort) {
             return;
         }
-        let elements = graph.findModelsInArea(joint.g.rect(point.x - range, point.y - range, 2 * range, 2 * range));
+        const elements = graph.findModelsInArea(joint.g.rect(point.x - range, point.y - range, 2 * range, 2 * range));
         if (Array.isArray(elements)) {
             elements.forEach(function(model) {
-                let view = paper.findViewByModel(model);
+                const view = paper.findViewByModel(model);
                 if (view && view !== draggedView && model instanceof joint.dia.Element) {
-                    let targetHasIncomingPort = view.model.attr('.input-port') && view.model.attr('.input-port/display') !== 'none';
+                    const targetHasIncomingPort = view.model.attr('.input-port') && view.model.attr('.input-port/display') !== 'none';
                     // 2 output ports: output-port and tap-port
-                    let targetHasOutgoingPort = (view.model.attr('.output-port') && view.model.attr('.output-port/display') !== 'none') ||
+                    const targetHasOutgoingPort = (view.model.attr('.output-port') && view.model.attr('.output-port/display') !== 'none') ||
                         view.model.attr('.tap-port') && view.model.attr('.tap-port/display') !== 'none';
                     view.$('[magnet]').each((index, magnet) => {
-                        let type = magnet.getAttribute('type');
+                        const type = magnet.getAttribute('type');
                         if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort) || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
-                            let bbox = joint.V(magnet).bbox(false, paper.viewport);
-                            let distance = (<any>point).distance({
+                            const bbox = joint.V(magnet).bbox(false, paper.viewport);
+                            const distance = (<any>point).distance({
                                 x: bbox.x + bbox.width / 2,
                                 y: bbox.y + bbox.height / 2
                             });
@@ -247,8 +247,8 @@ export class EditorService implements Flo.Editor {
         }
 
         // Check if drop on a link is allowed
-        let sourceType = source.attr('metadata/name');
-        let sourceGroup = source.attr('metadata/group');
+        const sourceType = source.attr('metadata/name');
+        const sourceGroup = source.attr('metadata/group');
         if (targetUnderMouse instanceof joint.dia.Link && !(sourceType === 'destination' || sourceGroup === 'sink' || sourceGroup === 'source') && graph.getConnectedLinks(source).length === 0) {
             return {
                 sourceComponent: sourceComponent,
@@ -380,13 +380,13 @@ export class EditorService implements Flo.Editor {
     }
 
     private validateConnectedLinks(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
-        let group = element.attr('metadata/group');
-        let type = element.attr('metadata/name');
-        let incoming: Array<dia.Link> = [];
-        let outgoing: Array<dia.Link> = [];
-        let tap: Array<dia.Link> = [];
-        let invalidIncoming: Array<dia.Link> = [];
-        let invalidOutgoing: Array<dia.Link>= [];
+        const group = element.attr('metadata/group');
+        const type = element.attr('metadata/name');
+        const incoming: Array<dia.Link> = [];
+        const outgoing: Array<dia.Link> = [];
+        const tap: Array<dia.Link> = [];
+        const invalidIncoming: Array<dia.Link> = [];
+        const invalidOutgoing: Array<dia.Link> = [];
         let port: string;
 
         graph.getConnectedLinks(element).forEach(link => {
@@ -451,9 +451,9 @@ export class EditorService implements Flo.Editor {
         // If possible, verify the properties specified match those allowed on this type of element
         // propertiesRanges are the ranges for each property included the entire '--name=value'.
         // The format of a range is {'start':{'ch':NNNN,'line':NNNN},'end':{'ch':NNNN,'line':NNNN}}
-        let propertiesRanges = element.attr('propertiesranges');
+        const propertiesRanges = element.attr('propertiesranges');
         if (propertiesRanges) {
-            let appSchema = element.attr('metadata');
+            const appSchema = element.attr('metadata');
             // Grab the list of supported properties for this app type
             appSchema.properties().then(appSchemaProperties => {
                 if (!appSchemaProperties) {
@@ -462,15 +462,15 @@ export class EditorService implements Flo.Editor {
                 // Example appSchemaProperties:
                 // {"host":{"name":"host","type":"String","description":"the hostname of the mail server","defaultValue":"localhost","hidden":false},
                 //  "password":{"name":"password","type":"String","description":"the password to use to connect to the mail server ","defaultValue":null,"hidden":false}
-                let specifiedProperties = element.attr('props');
+                const specifiedProperties = element.attr('props');
                 Object.keys(specifiedProperties).forEach(propertyName => {
                     if (!appSchemaProperties.has(propertyName)) {
                         // The schema does not mention that property
-                        let propertyRange = propertiesRanges[propertyName];
+                        const propertyRange = propertiesRanges[propertyName];
                         if (propertyRange) {
                             errors.push({
                                 severity: Flo.Severity.Error,
-                                message: 'unrecognized option \''+propertyName+'\' for app \''+element.attr('metadata/name')+'\'',
+                                message: 'unrecognized option \'' + propertyName + '\' for app \'' + element.attr('metadata/name') + '\'',
                                 range: propertyRange
                             });
                         }
@@ -503,9 +503,9 @@ export class EditorService implements Flo.Editor {
 
     validate(graph: dia.Graph): Promise<Map<string, Array<Flo.Marker>>> {
         return new Promise(resolve => {
-            let allMarkers: Map<string, Array<Flo.Marker>> = new Map();
+            const allMarkers: Map<string, Array<Flo.Marker>> = new Map();
             graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
-                let markers: Array<Flo.Marker> = [];
+                const markers: Array<Flo.Marker> = [];
                 this.validateNode(graph, e, markers);
                 allMarkers.set(e.id, markers);
             });
@@ -517,12 +517,12 @@ export class EditorService implements Flo.Editor {
         /*
          * remove incoming, outgoing links and cache their sources and targets not equal to current node
          */
-        let sources: Array<string> = [];
-        let targets: Array<string> = [];
-        let i = 0;
+        const sources: Array<string> = [];
+        const targets: Array<string> = [];
+        const i = 0;
         flo.getGraph().getConnectedLinks(node).forEach(link => {
-            let targetId = link.get('target').id;
-            let sourceId = link.get('source').id;
+            const targetId = link.get('target').id;
+            const sourceId = link.get('source').id;
             if (targetId === node.id) {
                 link.remove();
                 sources.push(sourceId);
@@ -535,7 +535,7 @@ export class EditorService implements Flo.Editor {
          * best attempt to connect source and targets bypassing the node
          */
         if (sources.length === 1) {
-            let source = sources[0];
+            const source = sources[0];
             //TODO: replace selector CSS class with the result of view.getSelector(...)
             targets.forEach(target => flo.createLink({
                 'id': source,
@@ -547,7 +547,7 @@ export class EditorService implements Flo.Editor {
                 'port': 'input'
             }));
         } else if (targets.length === 1) {
-            let target = targets[0];
+            const target = targets[0];
             sources.forEach(source => flo.createLink({
                 'id': sources[i],
                 'selector': '.output-port',
@@ -568,7 +568,7 @@ export class EditorService implements Flo.Editor {
         if (dropee === target) {
             console.debug('What!??? Dragged == Dropped!!! id = ' + target.id);
         }
-        let links = flo.getGraph().getConnectedLinks(dropee);
+        const links = flo.getGraph().getConnectedLinks(dropee);
         for (i = 0; i < links.length && !noSwap; i++) {
             targetId = links[i].get('target').id;
             sourceId = links[i].get('source').id;
@@ -589,7 +589,7 @@ export class EditorService implements Flo.Editor {
             let link: dia.Link;
             let i: number;
             if (side === 'left') {
-                let sources: Array<string> = [];
+                const sources: Array<string> = [];
                 if (shouldRepairDamage) {
                     this.repairDamage(flo, node);
                 }
@@ -619,7 +619,7 @@ export class EditorService implements Flo.Editor {
                     'port': 'input'
                 });
             } else if (side === 'right') {
-                let targets: Array<string>= [];
+                const targets: Array<string> = [];
                 if (shouldRepairDamage) {
                     this.repairDamage(flo, node);
                 }
@@ -652,11 +652,11 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private moveNodeOnLink(flo : Flo.EditorContext, node : dia.Element, link : dia.Link, shouldRepairDamage? : boolean) {
-        let source = link.get('source').id;
-        let target = link.get('target').id;
+    private moveNodeOnLink(flo: Flo.EditorContext, node: dia.Element, link: dia.Link, shouldRepairDamage?: boolean) {
+        const source = link.get('source').id;
+        const target = link.get('target').id;
 
-        let sourceTap = link.get('source').port === 'tap';
+        const sourceTap = link.get('source').port === 'tap';
 
         if (shouldRepairDamage) {
             this.repairDamage(flo, node);
@@ -690,10 +690,10 @@ export class EditorService implements Flo.Editor {
 
     handleNodeDropping(flo: Flo.EditorContext, dragDescriptor: Flo.DnDDescriptor) {
         let relinking = dragDescriptor.sourceComponent === Constants.PALETTE_CONTEXT;
-        let graph = flo.getGraph();
-        let source = dragDescriptor.source ? dragDescriptor.source.view.model : undefined;
-        let target = dragDescriptor.target ? dragDescriptor.target.view.model : undefined;
-        let type = source.attr('metadata/name');
+        const graph = flo.getGraph();
+        const source = dragDescriptor.source ? dragDescriptor.source.view.model : undefined;
+        const target = dragDescriptor.target ? dragDescriptor.target.view.model : undefined;
+        const type = source.attr('metadata/name');
         // NODE DROPPING TURNED OFF FOR NOW
         if (NODE_DROPPING && target instanceof joint.dia.Element && target.attr('metadata/name')) {
             if (dragDescriptor.target.cssClassSelector === '.output-port') {
@@ -720,7 +720,7 @@ export class EditorService implements Flo.Editor {
         } else if (flo.autolink && relinking) {
             // Search the graph for open ports - if only 1 is found, and it matches what
             // the dropped node needs, join it up!
-            let group = source.attr('metadata/group');
+            const group = source.attr('metadata/group');
             let wantOpenInputPort = false; // want something with an open input port
             let wantOpenOutputPort = false; // want something with an open output port
             if (group === ApplicationType[ApplicationType.source]) {
@@ -731,12 +731,12 @@ export class EditorService implements Flo.Editor {
                 wantOpenInputPort = true;
                 wantOpenOutputPort = true;
             }
-            let openPorts = [];
-            var elements = graph.getElements();
+            const openPorts = [];
+            const elements = graph.getElements();
             let linksIn, linksOut;
 
             graph.getElements().filter(e => e.id !== source.id && e.attr('metadata/name')).forEach(element => {
-               switch(element.attr('metadata/group')) {
+               switch (element.attr('metadata/group')) {
                    case ApplicationType[ApplicationType.source]:
                        if (wantOpenOutputPort) {
                            linksOut = this.getOutgoingStreamLinks(graph, element);
@@ -773,7 +773,7 @@ export class EditorService implements Flo.Editor {
 
             if (openPorts.length === 1) {
                 // One candidate match!
-                let match = openPorts.shift();
+                const match = openPorts.shift();
                 //TODO: replace selector CSS class with the result of view.getSelector(...)
                 if (match.openPort === 'input') {
                     flo.createLink({
@@ -803,6 +803,6 @@ export class EditorService implements Flo.Editor {
 
     get allowLinkVertexEdit() {
         return false;
-    };
+    }
 
 }

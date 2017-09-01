@@ -24,9 +24,9 @@ import { dia } from 'jointjs';
  */
 class GraphToTextConverter {
 
-  static DEBUG: boolean = true;
+  static DEBUG = true;
 
-	static COLON_PREFIX: string = ':';
+	static COLON_PREFIX = ':';
 
 	// the graph representation of stream(s)/app(s).
 	private g: dia.Graph;
@@ -55,8 +55,8 @@ class GraphToTextConverter {
 		this.g = graph;
 		this.g.getElements().forEach(element => {
 			if (this.isNode(element)) {
-				var nodeId = element.get('id');
-				var incomingLinkCount = 0;
+				const nodeId = element.get('id');
+				let incomingLinkCount = 0;
 				this.g.getConnectedLinks(element, {inbound: true}).forEach(link => {
 					if (this.linkSourceIsNode(link, this.g)) {
 						this.linksToVisit.add(link);
@@ -77,7 +77,7 @@ class GraphToTextConverter {
 	}
 
 	private linkSourceIsNode(link, graph): boolean {
-		var linkSource = link.get('source');
+		const linkSource = link.get('source');
 		return (linkSource &&
 				linkSource.id &&
 				graph.getCell(linkSource.id) &&
@@ -88,12 +88,12 @@ class GraphToTextConverter {
 		return e && (e.attr('metadata/name') === 'tap' || e.attr('metadata/name') === 'destination');
 	}
 
-	private getName(node) : string {
-		if (!node) {return 'UNDEFINED';}
+	private getName(node): string {
+		if (!node) {return 'UNDEFINED'; }
 		if (node.incomingtap) {
 			return 'TAPPED(' + this.getName(node.incomingtap) + ')';
 		}
-		var name = node.attr('metadata/name');
+		const name = node.attr('metadata/name');
 		if (name === 'destination') {
 			return node.attr('props/name');
 		}
@@ -102,30 +102,30 @@ class GraphToTextConverter {
 		}
 	}
 
-    private isTapLink(link) : boolean {
+    private isTapLink(link): boolean {
 		return link.attr('props/isTapLink') === 'true';
     }
 
-	private printStream(stream) : void {
-		var text = 'Stream: ';
-		for (var i=0;i<stream.length;i++) {
-			if (i>0) {
-				text+=' ';
+	private printStream(stream): void {
+		let text = 'Stream: ';
+		for (let i = 0; i < stream.length; i++) {
+			if (i > 0) {
+				text += ' ';
 			}
-			text+=this.getName(stream[i]);
+			text += this.getName(stream[i]);
 		}
 		console.log(text);
 	}
 
-	private getIncomingLinks(node : dia.Cell) : dia.Link[] {
+	private getIncomingLinks(node: dia.Cell): dia.Link[] {
 		// Only possible if call is occurring during link drawing (one end connected but not the other)
 		if (!node) { return []; }
 		return this.g.getConnectedLinks(node, {inbound: true});
 	}
 
-	private getNonPrimaryLinks(links : dia.Link[]) : dia.Link[] {
-		var nonPrimaryLinks : dia.Link[] = [];
-		for (var i = 0; i < links.length; i++) {
+	private getNonPrimaryLinks(links: dia.Link[]): dia.Link[] {
+		const nonPrimaryLinks: dia.Link[] = [];
+		for (let i = 0; i < links.length; i++) {
 			if (this.isTapLink(links[i])) {
 				nonPrimaryLinks.push(links[i]);
 			}
@@ -133,12 +133,12 @@ class GraphToTextConverter {
 		return nonPrimaryLinks;
 	}
 
-	private getNonPrimaryIncomingLinks(node : dia.Cell) : dia.Link[] {
+	private getNonPrimaryIncomingLinks(node: dia.Cell): dia.Link[] {
 		return this.getNonPrimaryLinks(this.getIncomingLinks(node));
 	}
 
 	private getPrimaryLink(links: dia.Link[]): dia.Link {
-		for (var i = 0; i < links.length; i++) {
+		for (let i = 0; i < links.length; i++) {
 			if (!this.isTapLink(links[i])) {
 				return links[i];
 			}
@@ -147,8 +147,8 @@ class GraphToTextConverter {
 	}
 
 	private getPrimaryIncomingLink(node: dia.Cell): dia.Link {
-		var incomingLinks = this.getIncomingLinks(node);
-		for (var i = 0; i < incomingLinks.length; i++) {
+		const incomingLinks = this.getIncomingLinks(node);
+		for (let i = 0; i < incomingLinks.length; i++) {
 			if (!this.isTapLink(incomingLinks[i])) {
 				return incomingLinks[i];
 			}
@@ -157,11 +157,11 @@ class GraphToTextConverter {
 	}
 
 	private getOutgoingStreamLinks(node: dia.Cell): dia.Link[] {
-		var links: dia.Link[] = [];
+		const links: dia.Link[] = [];
 		// !node only possible if call is occurring during link drawing (one end connected but not the other)
 		if (node) {
 			this.g.getConnectedLinks(node, {outbound: true}).forEach((link) => {
-				var source = link.get('source');
+				const source = link.get('source');
 				if (source.port === 'output') {
 					links.push(link);
 				}
@@ -171,18 +171,18 @@ class GraphToTextConverter {
 	}
 
 	private findStreamName(node: dia.Cell): string {
-		var streamName = node.attr('stream-name');
+		const streamName = node.attr('stream-name');
 		if (streamName) {
 			return streamName;
 		}
 		// Go up the link chain to find the named element
-		var incomingLinks = this.getIncomingLinks(node);
+		const incomingLinks = this.getIncomingLinks(node);
 		if (incomingLinks && incomingLinks.length > 0 && !(incomingLinks.length === 1 && incomingLinks[0].get('source').port === 'tap')) {
 			if (incomingLinks.length > 1) {
-				throw {'msg': 'nodes should only have 1 incoming link at most. Node '+this.getName(node)+' has '+incomingLinks.length};
+				throw {'msg': 'nodes should only have 1 incoming link at most. Node ' + this.getName(node) + ' has ' + incomingLinks.length};
 			}
-			var sourceId = incomingLinks[0].get('source').id;
-			var source = this.g.getCell(sourceId);
+			const sourceId = incomingLinks[0].get('source').id;
+			const source = this.g.getCell(sourceId);
 			return this.findStreamName(source);
 		}
 		return 'UNKNOWN';
@@ -192,7 +192,7 @@ class GraphToTextConverter {
 	// The 'name' element will be the node name unless a label is provided. If a label is
 	// provided it will be used instead.
 	private toTapDestination(node: dia.Cell): string {
-		var appname = node.attr('node-name');
+		let appname = node.attr('node-name');
 		if (!appname) {
 			appname = node.attr('metadata/name');
 		}
@@ -210,14 +210,14 @@ class GraphToTextConverter {
 		if (this.isChannel(headNode)) {
 			return false;
 		}
-		var outgoingLinks = this.getOutgoingStreamLinks(headNode);
+		let outgoingLinks = this.getOutgoingStreamLinks(headNode);
 		if (outgoingLinks.length > 1) { // multiple outputs, someone is tapping
 			return true;
 		}
 		while (outgoingLinks.length !== 0) {
-			var nextId = outgoingLinks[0].get('target').id;
+			const nextId = outgoingLinks[0].get('target').id;
 			if (!nextId) { break; } // link is currently being edited
-			var nextNode = this.g.getCell(nextId);
+			const nextNode = this.g.getCell(nextId);
 			if (this.isTapLink(outgoingLinks[0])) {
 				return true;
 			}
@@ -240,15 +240,15 @@ class GraphToTextConverter {
 	 */
 	private findHead(node: dia.Cell): dia.Cell {
 		console.log('findHead for ' + this.getName(node));
-		var currentNode = node;
-		var incomingTapLinks = this.getNonPrimaryIncomingLinks(node);
+		let currentNode = node;
+		const incomingTapLinks = this.getNonPrimaryIncomingLinks(node);
 		if (incomingTapLinks.length > 0) {
 			return node;
 		}
-		var inLink = this.getPrimaryIncomingLink(currentNode);
+		let inLink = this.getPrimaryIncomingLink(currentNode);
 		// Only stop at a channel if have followed at least one link
 		while (!(this.isChannel(currentNode) && currentNode !== node) && inLink) {
-			var sourceId = inLink.get('source').id;
+			const sourceId = inLink.get('source').id;
 			if (!sourceId) {
 				// the link to this node is currently being edited, it has not yet been connected to something
 				inLink = null;
@@ -276,8 +276,8 @@ class GraphToTextConverter {
 	private tidyup(e: dia.Cell): dia.Cell {
 		if (e.isLink()) {
 		  this.linksToVisit.delete(<dia.Link> e);
-		  let id = e.get('target').id;
-			this.nodesIncomingLinksCount.set(id, this.nodesIncomingLinksCount.get(id)-1);
+		  const id = e.get('target').id;
+			this.nodesIncomingLinksCount.set(id, this.nodesIncomingLinksCount.get(id) - 1);
 			this.numberOfLinksToVisit--;
 		} else {
 		  this.nodesToVisit.delete(<dia.Element> e);
@@ -291,8 +291,8 @@ class GraphToTextConverter {
 	 * link is expected to be the first one in the stream.
 	 */
 	private createTextForNode(element: dia.Element, first?: boolean): string {
-		var text = '';
-		var props = element.attr('props');
+		let text = '';
+		const props = element.attr('props');
 		if (!element) {
 			return;
 		}
@@ -329,43 +329,43 @@ class GraphToTextConverter {
 		//    - any node where the incoming link is a tap link
 		//    - any node where the incoming link is a non primary link from an app (not destination)
 		//    - any destination node that has an incoming and outgoing link(s)
-		var i;
-		var streamheads=[];
+		let i;
+		const streamheads = [];
 		// var nodesToHead={};
     Array.from(this.nodesToVisit).forEach(node => {
-      var head = this.findHead(node);
+      const head = this.findHead(node);
       // if (!_.contains(streamheads,head)) {
-      if (!streamheads.find(e => e===head)) {
+      if (!streamheads.find(e => e === head)) {
         streamheads.push(head);
       }
     });
 		if (GraphToTextConverter.DEBUG) {
 			console.log('Stream Heads discovered from the graph: ');
-			for (i=0;i<streamheads.length;i++) {
-				console.log(i+') '+this.getName(streamheads[i]));
+			for (i = 0; i < streamheads.length; i++) {
+				console.log(i + ') ' + this.getName(streamheads[i]));
 			}
 			console.log('---');
 		}
-		var streams = [];
-		var streamId = 1;
-		var stream;
-		while (streamheads.length>0) {
-			var headNode = streamheads.shift();
+		const streams = [];
+		let streamId = 1;
+		let stream;
+		while (streamheads.length > 0) {
+			const headNode = streamheads.shift();
 			if (GraphToTextConverter.DEBUG) {
-				console.log('Visiting '+this.getName(headNode));
+				console.log('Visiting ' + this.getName(headNode));
 			}
 
 			if (this.isTapped(headNode)) {
 				// This stream is tapped, it must be named (name generated if necessary)
-				var streamName = headNode.attr('stream-name');
+				const streamName = headNode.attr('stream-name');
 				if (!streamName) {
-					headNode.attr('stream-name','STREAM_'+streamId);
+					headNode.attr('stream-name', 'STREAM_' + streamId);
 				}
 			}
-			var outgoingLinks = this.getOutgoingStreamLinks(headNode);
-			var toFollow;
-			var target;
-			var incomingTapLinks = this.getNonPrimaryIncomingLinks(headNode);
+			const outgoingLinks = this.getOutgoingStreamLinks(headNode);
+			let toFollow;
+			let target;
+			const incomingTapLinks = this.getNonPrimaryIncomingLinks(headNode);
 			// If the head is a destination it may have multiple outbound connections, create a stream for each
 			if (outgoingLinks.length === 0) {
 				if (incomingTapLinks.length === 0) {
@@ -375,8 +375,8 @@ class GraphToTextConverter {
 				}
 				else {
 					// Create one variant per incoming tap link
-					for (i=0;i<incomingTapLinks.length;i++) {
-						stream = [{'incomingtap':this.g.getCell(incomingTapLinks[i].get('source').id)}];
+					for (i = 0; i < incomingTapLinks.length; i++) {
+						stream = [{'incomingtap': this.g.getCell(incomingTapLinks[i].get('source').id)}];
 						stream.push(headNode);
 						streamId++;
 						streams.push(stream);
@@ -389,13 +389,13 @@ class GraphToTextConverter {
 				// 	streamId++;
 				// 	streams.push(stream);
 				// }
-				var targetId;
-				var ol;
+				let targetId;
+				let ol;
 				if (incomingTapLinks.length > 0) {
-				for (i=0;i<incomingTapLinks.length;i++) {
+				for (i = 0; i < incomingTapLinks.length; i++) {
 					// Only need to get clever i
 					for (ol = 0; ol < outgoingLinks.length; ol++) {
-						stream = [{'incomingtap':this.g.getCell(incomingTapLinks[i].get('source').id)}];
+						stream = [{'incomingtap': this.g.getCell(incomingTapLinks[i].get('source').id)}];
 						stream.push(headNode);
 						toFollow = this.getPrimaryLink(outgoingLinks);
 						// toFollow.push(outgoingLinks[ol]);
@@ -492,10 +492,10 @@ class GraphToTextConverter {
 			console.log('---');
 		}
 		// 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text
-		var text = '';
-		var lineNumber = 0;
-		var lineStartIndex = 0;
-		for (var s = 0; s < streams.length; s++) {
+		let text = '';
+		let lineNumber = 0;
+		let lineStartIndex = 0;
+		for (let s = 0; s < streams.length; s++) {
 			if (s > 0) {
 				text += '\n';
 				lineNumber++;
@@ -503,9 +503,9 @@ class GraphToTextConverter {
 			}
 			stream = streams[s];
 			for (i = 0; i < stream.length; i++) {
-				var node = stream[i];
+				const node = stream[i];
 				if (i === 0) {
-					var whereToFindName = i;
+					let whereToFindName = i;
 					if (node.incomingtap) {
 						whereToFindName++;
 					}
@@ -515,8 +515,8 @@ class GraphToTextConverter {
 					}
 					if (this.isChannel(stream[whereToFindName])) {
 						// stream name can be on next node
-						if ((whereToFindName+1)<stream.length) {
-							var nameOnNextNode = stream[whereToFindName+1].attr('stream-name');
+						if ((whereToFindName + 1) < stream.length) {
+							const nameOnNextNode = stream[whereToFindName + 1].attr('stream-name');
 							if (nameOnNextNode) {
 								text += nameOnNextNode + '=';
 							}
@@ -534,16 +534,16 @@ class GraphToTextConverter {
 						// 		text += toTapDestination(source) + ' > ';
 						// 	}
 						// }
-						text+=this.toTapDestination(node.incomingtap) + ' > ';
+						text += this.toTapDestination(node.incomingtap) + ' > ';
 						continue;
 					}
 					// }
 				}
-				var nodeText = this.createTextForNode(node);
+				const nodeText = this.createTextForNode(node);
 
 				// Set text range for the graph node
-				var startCh = text.length - lineStartIndex;
-				var endCh = startCh + nodeText.length;
+				const startCh = text.length - lineStartIndex;
+				const endCh = startCh + nodeText.length;
 				node.attr('range', {
 					start: {ch: startCh, line: lineNumber},
 					end: {ch: endCh, line: lineNumber}
@@ -567,6 +567,6 @@ class GraphToTextConverter {
 
 }
 
-export function convertGraphToText(g: dia.Graph) : string {
+export function convertGraphToText(g: dia.Graph): string {
 	return new GraphToTextConverter(g).convert();
 }

@@ -68,8 +68,8 @@ export class StreamCreateComponent implements OnInit {
     return new Promise((resolve) => {
       this.contentAssistService.getProposals(prefix).subscribe(completions => {
         const chopAt = this.interestingPrefixStart(prefix, completions);
-        const finalProposals = completions.map((longCompletion: any)=> {
-          let text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;
+        const finalProposals = completions.map((longCompletion: any) => {
+          const text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;
           return text.substring(chopAt);
         });
         console.log(JSON.stringify(finalProposals));

@@ -8,27 +8,27 @@ import { Parser } from '../../shared/services/parser';
 
 describe('text-to-graph', () => {
 
-    var parseResult: Parser.ParseResult;
-    var graph: JsonGraph.Graph;
-    var node: JsonGraph.Node;
-    var link: JsonGraph.Link;
-    var range: JsonGraph.Range;
+    let parseResult: Parser.ParseResult;
+    let graph: JsonGraph.Graph;
+    let node: JsonGraph.Node;
+    let link: JsonGraph.Link;
+    let range: JsonGraph.Range;
 
-    var fakemetamodel: Map<string,Map<string,Flo.ElementMetadata>>;
+    let fakemetamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
     beforeAll(() => {
-        var fakeTimeMetadata: Flo.ElementMetadata = 
+        let fakeTimeMetadata: Flo.ElementMetadata =
         {
-        'group': 'fake', 
+        'group': 'fake',
         'name': 'time',
         get(property: String): Promise<Flo.PropertyMetadata> {
             return Promise.resolve(null);
         },
-        properties(): Promise<Map<string,Flo.PropertyMetadata>> {
+        properties(): Promise<Map<string, Flo.PropertyMetadata>> {
             return Promise.resolve(new Map());
         }
         };
-        var fakeTime: Map<string,Flo.ElementMetadata> = new Map();
+        let fakeTime: Map<string, Flo.ElementMetadata> = new Map();
         fakeTime['time'] = fakeTimeMetadata;
         fakemetamodel = new Map();
         fakemetamodel['fake'] = fakeTime;
@@ -36,23 +36,23 @@ describe('text-to-graph', () => {
 
   // First set of tests don't require a fake Flo - they convert DSL to a JSON graph (not a jointjs graph)
 
-  it('jsongraph: nograph',()=> {
-    var dsl = '';
-    parseResult = Parser.parse(dsl,'stream');
-    var holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
+  it('jsongraph: nograph', () => {
+    let dsl = '';
+    parseResult = Parser.parse(dsl, 'stream');
+    let holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
     expect(holder.errors.length).toEqual(0);
     expect(holder.graph).toBeNull();
-  })
+  });
 
-  it('jsongraph: error - no more data',()=> {
-    var dsl = 'time | ';
-    parseResult = Parser.parse(dsl,'stream');
-    var holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
+  it('jsongraph: error - no more data', () => {
+    let dsl = 'time | ';
+    parseResult = Parser.parse(dsl, 'stream');
+    let holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
     // {"errors":[{"accurate":true,"message":"Out of data","range":{"start":{"ch":7,"line":0},"end":{"ch":8,"line":0}}}],"graph":null}
     expect(holder.errors[0].message).toEqual('Out of data');
-  })
+  });
 
-  it('jsongraph: two streams sharing a destination',()=> {
+  it('jsongraph: two streams sharing a destination', () => {
       graph = getGraph('time > :abc\nfile > :abc');
       // {"format":"scdf","streamdefs":[{"name":"","def":"time  > :abc"},{"name":"","def":"file  > :abc"}],
       //  "nodes":[{"id":0,"name":"time","stream-id":1,"range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
@@ -72,9 +72,9 @@ describe('text-to-graph', () => {
       expect(graph.links[0].to).toEqual(1);
       expect(graph.links[1].from).toEqual(2);
       expect(graph.links[1].to).toEqual(1);
-  })
+  });
 
-  it('jsongraph: tapping a stream',()=> {
+  it('jsongraph: tapping a stream', () => {
     graph = getGraph('aaaa= time | log\n:aaaa.time>log');
     // {"format":"scdf","streamdefs":[{"name":"aaaa","def":"time | log"},{"name":"","def":":aaaa.time > log"}],
     //  "nodes":[{"id":0,"name":"time","stream-name":"aaaa","stream-id":1,"range":{"start":{"ch":6,"line":0},"end":{"ch":10,"line":0}}},
@@ -96,10 +96,10 @@ describe('text-to-graph', () => {
     expect(graph.links[1].from).toEqual(0);
     expect(graph.links[1].to).toEqual(2);
     expect(graph.links[1].linkType).toEqual('tap');
-})
+});
 
-  it('jsongraph: basic',()=> {
-    var graph: JsonGraph.Graph = getGraph('time | log');
+  it('jsongraph: basic', () => {
+    let graph: JsonGraph.Graph = getGraph('time | log');
     // {"errors":[],"graph":{
     //   "format":"scdf",
     //   "streamdefs":[{"name":"","def":"time | log"}],
@@ -107,7 +107,7 @@ describe('text-to-graph', () => {
     //            {"id":1,"name":"log","range":{"start":{"ch":7,"line":0},"end":{"ch":10,"line":0}}}],
     //   "links":[{"from":0,"to":1}]}}
     expect(graph.format).toEqual('scdf');
-    expect(graph.errors).toBeUndefined(); 
+    expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);
     expect(graph.links.length).toEqual(1);
 
@@ -118,13 +118,13 @@ describe('text-to-graph', () => {
     expect(node.id).toEqual(0);
     expect(node.name).toEqual('time');
     expect(node['stream-id']).toEqual(1);
-    expectRange(node.range,0,0,4,0);
+    expectRange(node.range, 0, 0, 4, 0);
 
     node = graph.nodes[1];
     expect(node.id).toEqual(1);
     expect(node.name).toEqual('log');
     expect(node['stream-id']).toBeUndefined();
-    expectRange(node.range,7,0,10,0);
+    expectRange(node.range, 7, 0, 10, 0);
 
     link = graph.links[0];
     expect(link.from).toEqual(0);
@@ -132,8 +132,8 @@ describe('text-to-graph', () => {
   });
 
 
-  it('jsongraph: properties',()=> {
-    var graph: JsonGraph.Graph = getGraph('time --aaa=bbb --ccc=ddd | log');
+  it('jsongraph: properties', () => {
+    let graph: JsonGraph.Graph = getGraph('time --aaa=bbb --ccc=ddd | log');
     //    {"format":"scdf","streamdefs":[{"name":"","def":"time --aaa=bbb --ccc=ddd | log"}],
     // "nodes":[
     //  {"id":0,"name":"time","stream-id":1,
@@ -142,7 +142,7 @@ describe('text-to-graph', () => {
     //    "range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
     //  {"id":1,"name":"log","range":{"start":{"ch":27,"line":0},"end":{"ch":30,"line":0}}}],
     // "links":[{"from":0,"to":1}]}    expect(graph.format).toEqual('scdf');
-    expect(graph.errors).toBeUndefined(); 
+    expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);
     expect(graph.links.length).toEqual(1);
 
@@ -154,31 +154,31 @@ describe('text-to-graph', () => {
     expect(node.name).toEqual('time');
     expect(node['stream-id']).toEqual(1);
     expect(node.properties['aaa']).toEqual('bbb');
-    expectRange(node.propertiesranges['aaa'],5,0,14,0);
+    expectRange(node.propertiesranges['aaa'], 5, 0, 14, 0);
     expect(node.properties['ccc']).toEqual('ddd');
-    expectRange(node.propertiesranges['ccc'],15,0,24,0);
-    expectRange(node.range,0,0,4,0);
+    expectRange(node.propertiesranges['ccc'], 15, 0, 24, 0);
+    expectRange(node.range, 0, 0, 4, 0);
 
     node = graph.nodes[1];
     expect(node.id).toEqual(1);
     expect(node.name).toEqual('log');
     expect(node['stream-id']).toBeUndefined();
-    expectRange(node.range,27,0,30,0);
+    expectRange(node.range, 27, 0, 30, 0);
 
     link = graph.links[0];
     expect(link.from).toEqual(0);
     expect(link.to).toEqual(1);
   });
 
-  it('jsongraph: source channel',()=> {
-    var graph: JsonGraph.Graph = getGraph(':abc > log');
+  it('jsongraph: source channel', () => {
+    let graph: JsonGraph.Graph = getGraph(':abc > log');
 //    console.log(">>"+JSON.stringify(graph));
    // {"format":"scdf","streamdefs":[{"name":"","def":":abc > log"}],
    // "nodes":[{"id":0,"name":"destination","properties":{"name":"abc"}},
    //          {"id":1,"name":"log","stream-id":1,"range":{"start":{"ch":7,"line":0},"end":{"ch":10,"line":0}}}],
    // "links":[{"from":0,"to":1}]}
     expect(graph.format).toEqual('scdf');
-    expect(graph.errors).toBeUndefined(); 
+    expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);
     expect(graph.links.length).toEqual(1);
 
@@ -196,20 +196,20 @@ describe('text-to-graph', () => {
     expect(node.id).toEqual(1);
     expect(node.name).toEqual('log');
     expect(node['stream-id']).toEqual(1);
-    expectRange(node.range,7,0,10,0);
+    expectRange(node.range, 7, 0, 10, 0);
 
     link = graph.links[0];
     expect(link.from).toEqual(0);
     expect(link.to).toEqual(1);
   });
 
-  it('jsongraph: sink channel',()=> {
-    var graph: JsonGraph.Graph = getGraph('time > :abc');
+  it('jsongraph: sink channel', () => {
+    let graph: JsonGraph.Graph = getGraph('time > :abc');
    // {"format":"scdf","streamdefs":[{"name":"","def":"time  > :abc"}],
    // "nodes":[{"id":0,"name":"time","stream-id":1,"range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
    //          {"id":1,"name":"destination","properties":{"name":"abc"}}],"links":[{"from":0,"to":1}]}
     expect(graph.format).toEqual('scdf');
-    expect(graph.errors).toBeUndefined(); 
+    expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);
     expect(graph.links.length).toEqual(1);
 
@@ -220,7 +220,7 @@ describe('text-to-graph', () => {
     expect(node.id).toEqual(0);
     expect(node.name).toEqual('time');
     expect(node['stream-id']).toEqual(1);
-    expectRange(node.range,0,0,4,0);
+    expectRange(node.range, 0, 0, 4, 0);
 
     node = graph.nodes[1];
     expect(node.id).toEqual(1);
@@ -236,7 +236,7 @@ describe('text-to-graph', () => {
   // ---
 
   function getGraph(dsl: string) {
-    parseResult = Parser.parse(dsl,'stream');
+    parseResult = Parser.parse(dsl, 'stream');
     return convertParseResponseToJsonGraph(dsl, parseResult).graph;
   }
 

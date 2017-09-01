@@ -1,16 +1,16 @@
-import { dia } from 'jointjs'
+import { dia } from 'jointjs';
 import { IMAGE_H } from './shapes';
 import * as dagre from 'dagre';
 
 export function layout(paper: dia.Paper) {
-    let graph = paper.model;
+    const graph = paper.model;
 
     let gridSize = paper.options.gridSize;
     if (gridSize <= 1) {
         gridSize = IMAGE_H / 2;
     }
 
-    let g = new dagre.graphlib.Graph();
+    const g = new dagre.graphlib.Graph();
     g.setGraph({});
     g.setDefaultEdgeLabel(function () {
         return {};
@@ -20,7 +20,7 @@ export function layout(paper: dia.Paper) {
 
     graph.getLinks().filter(link => link.get('source').id && link.get('target').id).forEach(link => {
         g.setEdge(link.get('source').id, link.get('target').id,
-            {weight: (link.get('source').port==='output'?200:1)});
+            {weight: (link.get('source').port === 'output' ? 200 : 1)});
         link.set('vertices', []);
     });
 
@@ -33,9 +33,9 @@ export function layout(paper: dia.Paper) {
 
     dagre.layout(g);
     g.nodes().forEach(v => {
-        let node = <dia.Element> graph.getCell(v);
+        const node = <dia.Element> graph.getCell(v);
         if (node) {
-            let bbox = node.getBBox();
+            const bbox = node.getBBox();
             node.translate((g.node(v).x - g.node(v).width / 2) - bbox.x, (g.node(v).y - g.node(v).height / 2) - bbox.y);
         }
     });

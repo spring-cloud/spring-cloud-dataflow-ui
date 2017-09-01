@@ -31,10 +31,10 @@ export enum TokenKind {
 }
 
 export interface Token {
-	kind: TokenKind,
-	data?: string, // Only some tokens have a non fixed payload that needs to be included here
-	start: number,
-	end: number
+	kind: TokenKind;
+	data?: string; // Only some tokens have a non fixed payload that needs to be included here
+	start: number;
+	end: number;
 }
 
 /**
@@ -60,7 +60,7 @@ class Tokenizer {
 	private isQuote(ch: string): boolean {
 		return ch === '\'' || ch === '"';
 	}
-	
+
 	private isWhitespace(ch: string): boolean {
 		return ch === ' ' || ch === '\t' || ch === '\r' || ch === '\n';
 	}
@@ -76,11 +76,11 @@ class Tokenizer {
 		if (ch.charCodeAt(0) > 255) {
 			return false;
 		}
-		return (ch>='a' && ch<='z') || (ch>='A' && ch<='Z');
+		return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
 	}
 
 	private subarray(start: number, end: number): string {
-		return this.toProcess.substring(start,end);
+		return this.toProcess.substring(start, end);
 	}
 
 	private sameQuotes(pos1: number, pos2: number): boolean{
@@ -109,11 +109,11 @@ class Tokenizer {
 	 * pair ''
 	 */
 	private lexQuotedStringLiteral() {
-		var start = this.pos;
-		var terminated = false;
+		const start = this.pos;
+		let terminated = false;
 		while (!terminated) {
 			this.pos++;
-			var ch = this.toProcess[this.pos];
+			const ch = this.toProcess[this.pos];
 			if (ch === '\'') {
 				// may not be the end if the char after is also a '
 				if (this.toProcess[this.pos + 1] === '\'') {
@@ -124,21 +124,21 @@ class Tokenizer {
 				}
 			}
 			if (this.pos >= this.max) {
-				throw {'msg':'TokenizationError: non terminating quoted string','start':start,'end':this.pos};
+				throw {'msg': 'TokenizationError: non terminating quoted string', 'start': start, 'end': this.pos};
 			}
 		}
 		this.pos++;
-		this.tokens.push({'kind':TokenKind.LITERAL_STRING,'data':this.subarray(start, this.pos), 'start': start, 'end':this.pos});
+		this.tokens.push({'kind': TokenKind.LITERAL_STRING, 'data': this.subarray(start, this.pos), 'start': start, 'end': this.pos});
 	}
 
 	private pushCharToken(tokenkind: TokenKind) {
-		this.tokens.push({'kind':tokenkind,'start':this.pos,'end':this.pos+1});
+		this.tokens.push({'kind': tokenkind, 'start': this.pos, 'end': this.pos + 1});
 		this.pos++;
 	}
 
 	private pushPairToken(tokenkind: TokenKind) {
-		this.tokens.push({'kind':tokenkind,'start':this.pos,'end':this.pos+2});
-		this.pos+=2;
+		this.tokens.push({'kind': tokenkind, 'start': this.pos, 'end': this.pos + 2});
+		this.pos += 2;
 	}
 
 	/**
@@ -153,16 +153,16 @@ class Tokenizer {
 		// argument value is being quoted, but in fact half way through it is discovered that the
 		// entire value is not quoted, only the first part of the argument value is a string literal.
 
-		var start = this.pos;
-		var quoteOpen = false;
-		var quoteClosedCount = 0; // Enables identification of this pattern: 'hello'+'world'
-		var quoteInUse = null; // If set, indicates this is being treated as a quoted string
+		const start = this.pos;
+		let quoteOpen = false;
+		let quoteClosedCount = 0; // Enables identification of this pattern: 'hello'+'world'
+		let quoteInUse = null; // If set, indicates this is being treated as a quoted string
 		if (this.isQuote(this.toProcess[this.pos])) {
 			quoteOpen = true;
 			quoteInUse = this.toProcess[this.pos++];
 		}
 		do {
-			var ch = this.toProcess[this.pos];
+			const ch = this.toProcess[this.pos];
 			if ((quoteInUse !== null && ch === quoteInUse) || (quoteInUse === null && this.isQuote(ch))) {
 				if (quoteInUse !== null && quoteInUse === '\'' && ch === '\'' && this.toProcess[this.pos + 1] === '\'') {
 					this.pos++; // skip over that too, and continue
@@ -176,15 +176,15 @@ class Tokenizer {
 			}
 			this.pos++;
 		}
-		while (this.pos<this.toProcess.length && !this.isArgValueIdentifierTerminator(this.toProcess[this.pos], quoteOpen));
-		var data = null;
+		while (this.pos < this.toProcess.length && !this.isArgValueIdentifierTerminator(this.toProcess[this.pos], quoteOpen));
+		let data = null;
 		if (quoteClosedCount < 2 && this.sameQuotes(start, this.pos - 1)) {
-			this.tokens.push({'kind':TokenKind.LITERAL_STRING,
-					'data':this.subarray(start, this.pos), 'start':start,'end': this.pos});
+			this.tokens.push({'kind': TokenKind.LITERAL_STRING,
+					'data': this.subarray(start, this.pos), 'start': start, 'end': this.pos});
 		}
 		else {
 			data = this.subarray(start, this.pos);
-			this.tokens.push({'kind':TokenKind.IDENTIFIER, 'data':data, 'start':start, 'end':this.pos});
+			this.tokens.push({'kind': TokenKind.IDENTIFIER, 'data': data, 'start': start, 'end': this.pos});
 		}
 	}
 
@@ -193,11 +193,11 @@ class Tokenizer {
 	 * pair ""
 	 */
 	private lexDoubleQuotedStringLiteral() {
-		var start = this.pos;
-		var terminated = false;
+		const start = this.pos;
+		let terminated = false;
 		while (!terminated) {
 			this.pos++;
-			var ch = this.toProcess[this.pos];
+			const ch = this.toProcess[this.pos];
 			if (ch === '"') {
 				// may not be the end if the char after is also a "
 				if (this.toProcess[this.pos + 1] === '"') {
@@ -208,11 +208,11 @@ class Tokenizer {
 				}
 			}
 			if (this.pos >= this.max) {
-				throw {'msg':'TokenizationError: non terminating double quoted string','start':start,'end':this.pos};
+				throw {'msg': 'TokenizationError: non terminating double quoted string', 'start': start, 'end': this.pos};
 			}
 		}
 		this.pos++;
-		this.tokens.push({'kind':TokenKind.LITERAL_STRING,'data':this.subarray(start, this.pos), 'start':start, 'end':this.pos});
+		this.tokens.push({'kind': TokenKind.LITERAL_STRING, 'data': this.subarray(start, this.pos), 'start': start, 'end': this.pos});
 	}
 
 	/**
@@ -221,13 +221,13 @@ class Tokenizer {
 	 * that and don't allow ' ' (space) and '\t' (tab) to terminate the value.
 	 */
 	private lexIdentifier() {
-		var start = this.pos;
+		const start = this.pos;
 		do {
 			this.pos++;
 		}
 		while (this.isIdentifier(this.toProcess[this.pos]));
-		var data = this.subarray(start, this.pos);
-		this.tokens.push({'kind':TokenKind.IDENTIFIER, 'data':data, 'start':start, 'end':this.pos});
+		const data = this.subarray(start, this.pos);
+		this.tokens.push({'kind': TokenKind.IDENTIFIER, 'data': data, 'start': start, 'end': this.pos});
 	}
 
 	/**
@@ -249,11 +249,11 @@ class Tokenizer {
 	// 	console.log(this.pos);
 	// }
 
-	public tokenize(): Token[] {		
+	public tokenize(): Token[] {
 		while (this.pos < this.max) {
-			var ch = this.toProcess.charAt(this.pos);
+			const ch = this.toProcess.charAt(this.pos);
 			if (this.justProcessedEquals) { // if in this pattern --foo=bar
-				if (!this.isWhitespace(ch) && ch.charCodeAt(0)!==0 && this.haveSeenOptionQualifier) {
+				if (!this.isWhitespace(ch) && ch.charCodeAt(0) !== 0 && this.haveSeenOptionQualifier) {
 					// following an '=' we commence a variant of regular tokenization
 					// consuming everything up to the next special char.
 					// This allows SpEL expressions to be used without quoting in many
@@ -269,13 +269,13 @@ class Tokenizer {
 				switch (ch) {
 				case '-':
 					if (!this.isTwoCharToken(TokenKind.DOUBLE_MINUS)) {
-						throw {'msg':'TokenizationError: expected two hyphens: \'--\'','start':this.pos,'end':this.pos+1};
+						throw {'msg': 'TokenizationError: expected two hyphens: \'--\'', 'start': this.pos, 'end': this.pos + 1};
 					}
 					this.pushPairToken(TokenKind.DOUBLE_MINUS);
 					this.haveSeenOptionQualifier = true;
 					break;
 				case '=':
-					this.justProcessedEquals=true;
+					this.justProcessedEquals = true;
 					this.pushCharToken(TokenKind.EQUALS);
 					break;
 				case '&':
@@ -318,9 +318,9 @@ class Tokenizer {
 					this.pos++; // will take us to the end
 					break;
 				case '\\':
-					throw {'msg':'TokenizationError: Unexpected escape char','start':this.pos,'end':this.pos+1};
+					throw {'msg': 'TokenizationError: Unexpected escape char', 'start': this.pos, 'end': this.pos + 1};
 				default:
-					throw {'msg':'TokenizationError: Unexpected character','start':this.pos,'end':this.pos+1};
+					throw {'msg': 'TokenizationError: Unexpected character', 'start': this.pos, 'end': this.pos + 1};
 				}
 			}
 		}

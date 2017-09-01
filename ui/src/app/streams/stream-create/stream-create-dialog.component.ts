@@ -134,10 +134,10 @@ export class StreamCreateDialogComponent implements OnInit {
         resolve();
       }
       this.streamService.getDefinition(streamDefNameToWaitFor).subscribe(() => {
-        console.debug('Stream '+ streamDefNameToWaitFor + ' is ok!');
+        console.debug('Stream ' + streamDefNameToWaitFor + ' is ok!');
         resolve();
       }, () => {
-        console.debug('Stream '+ streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
+        console.debug('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
         setTimeout(() => {
           this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
             resolve();
