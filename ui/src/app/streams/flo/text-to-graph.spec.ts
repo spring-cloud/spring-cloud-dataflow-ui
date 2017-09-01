@@ -17,7 +17,7 @@ describe('text-to-graph', () => {
     let fakemetamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
     beforeAll(() => {
-        let fakeTimeMetadata: Flo.ElementMetadata =
+        const fakeTimeMetadata: Flo.ElementMetadata =
         {
         'group': 'fake',
         'name': 'time',
@@ -28,7 +28,7 @@ describe('text-to-graph', () => {
             return Promise.resolve(new Map());
         }
         };
-        let fakeTime: Map<string, Flo.ElementMetadata> = new Map();
+        const fakeTime: Map<string, Flo.ElementMetadata> = new Map();
         fakeTime['time'] = fakeTimeMetadata;
         fakemetamodel = new Map();
         fakemetamodel['fake'] = fakeTime;
@@ -37,17 +37,17 @@ describe('text-to-graph', () => {
   // First set of tests don't require a fake Flo - they convert DSL to a JSON graph (not a jointjs graph)
 
   it('jsongraph: nograph', () => {
-    let dsl = '';
+    const dsl = '';
     parseResult = Parser.parse(dsl, 'stream');
-    let holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
+    const holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
     expect(holder.errors.length).toEqual(0);
     expect(holder.graph).toBeNull();
   });
 
   it('jsongraph: error - no more data', () => {
-    let dsl = 'time | ';
+    const dsl = 'time | ';
     parseResult = Parser.parse(dsl, 'stream');
-    let holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
+    const holder: JsonGraph.GraphHolder = convertParseResponseToJsonGraph(dsl, parseResult);
     // {"errors":[{"accurate":true,"message":"Out of data","range":{"start":{"ch":7,"line":0},"end":{"ch":8,"line":0}}}],"graph":null}
     expect(holder.errors[0].message).toEqual('Out of data');
   });
@@ -99,7 +99,7 @@ describe('text-to-graph', () => {
 });
 
   it('jsongraph: basic', () => {
-    let graph: JsonGraph.Graph = getGraph('time | log');
+    const graph: JsonGraph.Graph = getGraph('time | log');
     // {"errors":[],"graph":{
     //   "format":"scdf",
     //   "streamdefs":[{"name":"","def":"time | log"}],
@@ -133,7 +133,7 @@ describe('text-to-graph', () => {
 
 
   it('jsongraph: properties', () => {
-    let graph: JsonGraph.Graph = getGraph('time --aaa=bbb --ccc=ddd | log');
+    const graph: JsonGraph.Graph = getGraph('time --aaa=bbb --ccc=ddd | log');
     //    {"format":"scdf","streamdefs":[{"name":"","def":"time --aaa=bbb --ccc=ddd | log"}],
     // "nodes":[
     //  {"id":0,"name":"time","stream-id":1,
@@ -171,7 +171,7 @@ describe('text-to-graph', () => {
   });
 
   it('jsongraph: source channel', () => {
-    let graph: JsonGraph.Graph = getGraph(':abc > log');
+    const graph: JsonGraph.Graph = getGraph(':abc > log');
 //    console.log(">>"+JSON.stringify(graph));
    // {"format":"scdf","streamdefs":[{"name":"","def":":abc > log"}],
    // "nodes":[{"id":0,"name":"destination","properties":{"name":"abc"}},
@@ -204,7 +204,7 @@ describe('text-to-graph', () => {
   });
 
   it('jsongraph: sink channel', () => {
-    let graph: JsonGraph.Graph = getGraph('time > :abc');
+    const graph: JsonGraph.Graph = getGraph('time > :abc');
    // {"format":"scdf","streamdefs":[{"name":"","def":"time  > :abc"}],
    // "nodes":[{"id":0,"name":"time","stream-id":1,"range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
    //          {"id":1,"name":"destination","properties":{"name":"abc"}}],"links":[{"from":0,"to":1}]}

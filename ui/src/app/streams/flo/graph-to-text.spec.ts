@@ -14,7 +14,7 @@ describe('graph-to-text', () => {
     let graph: dia.Graph;
 
     beforeAll(() => {
-        let fakeTimeMetadata: Flo.ElementMetadata =
+        const fakeTimeMetadata: Flo.ElementMetadata =
         {
         'group': 'fake',
         'name': 'time',
@@ -25,7 +25,7 @@ describe('graph-to-text', () => {
             return Promise.resolve(new Map());
         }
         };
-        let fakeTime: Map<string, Flo.ElementMetadata> = new Map();
+        const fakeTime: Map<string, Flo.ElementMetadata> = new Map();
         fakeTime['time'] = fakeTimeMetadata;
         fakemetamodel = new Map();
         fakemetamodel['fake'] = fakeTime;
@@ -36,19 +36,19 @@ describe('graph-to-text', () => {
     });
 
     it('basic', () => {
-      let cell1 = createSource('time');
-      let cell2 = createSink('log');
-      let link  = createLink(cell1, cell2);
-      let dsl = convertGraphToText(graph);
+      const cell1 = createSource('time');
+      const cell2 = createSink('log');
+      const link  = createLink(cell1, cell2);
+      const dsl = convertGraphToText(graph);
       expect(dsl).toEqual('time | log');
     });
 
     it('named stream', () => {
-      let cell1 = createSource('time');
+      const cell1 = createSource('time');
       cell1.attr('stream-name', 'aaa');
-      let cell2 = createSink('log');
-      let link  = createLink(cell1, cell2);
-      let dsl = convertGraphToText(graph);
+      const cell2 = createSink('log');
+      const link  = createLink(cell1, cell2);
+      const dsl = convertGraphToText(graph);
       expect(dsl).toEqual('aaa=time | log');
     });
 
@@ -63,7 +63,7 @@ describe('graph-to-text', () => {
     // })
 
     function createDestination(destinationname: string): dia.Element {
-      let newDestinationNode: dia.Element = createNode('destination', 'destination');
+      const newDestinationNode: dia.Element = createNode('destination', 'destination');
       newDestinationNode.attr('props/name', destinationname);
       return newDestinationNode;
     }
@@ -77,7 +77,7 @@ describe('graph-to-text', () => {
     }
 
     function createNode(appname: string, group: string): dia.Element {
-      let params: Shapes.ElementCreationParams = {};
+      const params: Shapes.ElementCreationParams = {};
       params.metadata = {
         name: appname,
         group: group,
@@ -88,17 +88,17 @@ describe('graph-to-text', () => {
             return Promise.resolve(new Map());
         }
       };
-      let newNode: dia.Element = Shapes.Factory.createNode(params);
+      const newNode: dia.Element = Shapes.Factory.createNode(params);
       graph.addCell(newNode);
       return newNode;
     }
 
     function createLink(from, to, isTapLink?: boolean) {
-      let linkParams: Shapes.LinkCreationParams = {
+      const linkParams: Shapes.LinkCreationParams = {
         source: {'id': from.id, 'port': 'output', 'selector': '.output-port'},
         target: {'id': to.id, 'port': 'input', 'selector': '.input-port'}
       };
-      let link = Shapes.Factory.createLink(linkParams);
+      const link = Shapes.Factory.createLink(linkParams);
       link.attr('props/isTapLink', isTapLink ? 'true' : 'false');
       graph.addCell(link);
       return link;

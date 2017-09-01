@@ -202,7 +202,7 @@ describe('parser:', () => {
   it('error: dotted names 1', () => {
     parseResult = Parser.parse('aaa --aaa .bbb=ccc', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    let line: Parser.Line = parseResult.lines[0];
+    const line: Parser.Line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed in dotted name');
@@ -212,7 +212,7 @@ describe('parser:', () => {
   it('error: bad name', () => {
     parseResult = Parser.parse('| = foo', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    let line: Parser.Line = parseResult.lines[0];
+    const line: Parser.Line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('Illegal name \'|\'');
@@ -230,7 +230,7 @@ describe('parser:', () => {
   it('error: bad label', () => {
     parseResult = Parser.parse('aaa : bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    let line: Parser.Line = parseResult.lines[0];
+    const line: Parser.Line = parseResult.lines[0];
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed between label name and colon');
     expectRange(error.range, 3, 0, 4, 0);
