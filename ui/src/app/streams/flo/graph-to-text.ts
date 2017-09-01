@@ -96,8 +96,7 @@ class GraphToTextConverter {
         const name = node.attr('metadata/name');
         if (name === 'destination') {
             return node.attr('props/name');
-        }
-        else {
+        } else {
             return name;
         }
     }
@@ -179,7 +178,8 @@ class GraphToTextConverter {
         const incomingLinks = this.getIncomingLinks(node);
         if (incomingLinks && incomingLinks.length > 0 && !(incomingLinks.length === 1 && incomingLinks[0].get('source').port === 'tap')) {
             if (incomingLinks.length > 1) {
-                throw {'msg': 'nodes should only have 1 incoming link at most. Node ' + this.getName(node) + ' has ' + incomingLinks.length};
+                throw {'msg': 'nodes should only have 1 incoming link at most. Node ' +
+                this.getName(node) + ' has ' + incomingLinks.length};
             }
             const sourceId = incomingLinks[0].get('source').id;
             const source = this.g.getCell(sourceId);
@@ -372,8 +372,7 @@ class GraphToTextConverter {
                     stream = [headNode];
                     streamId++;
                     streams.push(stream);
-                }
-                else {
+                } else {
                     // Create one variant per incoming tap link
                     for (i = 0; i < incomingTapLinks.length; i++) {
                         stream = [{'incomingtap': this.g.getCell(incomingTapLinks[i].get('source').id)}];
@@ -486,9 +485,9 @@ class GraphToTextConverter {
         }
         if (GraphToTextConverter.DEBUG) {
             console.log('computed streams');
-            streams.forEach(stream => {
-        this.printStream(stream);
-      });
+            streams.forEach(str => {
+                this.printStream(str);
+            });
             console.log('---');
         }
         // 3. Walk the streams (each is an array of nodes that make up the stream) and produce the DSL text

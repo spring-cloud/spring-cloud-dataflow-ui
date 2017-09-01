@@ -29,7 +29,7 @@ import { MetamodelService } from './metamodel.service';
  */
 class TextToGraphConverter {
 
-    constructor(private dsl: string, private floEditorContext: Flo.EditorContext, 
+    constructor(private dsl: string, private floEditorContext: Flo.EditorContext,
                 private metamodel:  Map<string, Map<string, Flo.ElementMetadata>>) {
     }
 
@@ -130,7 +130,7 @@ class TextToGraphConverter {
             const line = parsedStreams.lines.shift();
             let streamName = '';
             let streamdef = '';
-            //var streamStartNodeId = nodeId;
+            // var streamStartNodeId = nodeId;
             let nameSet = false;
             console.log('convertParseResponseToJsonGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
 
@@ -189,7 +189,7 @@ class TextToGraphConverter {
                         //     }
                         // }
                         if (channelText.startsWith('tap:')) {
-                            channelText = channelText.substring(3); //TODO tidy up - do it here or sooner?
+                            channelText = channelText.substring(3); // TODO tidy up - do it here or sooner?
                         } else {
                             channelText = ':' + channelText;
                         }
@@ -198,7 +198,7 @@ class TextToGraphConverter {
 
                     // Definitions like ":foo > :bar" results in a bridge node with channels set - do not create
                     // a node for the bridge.
-                    // Constructs like 'tap:stream:foo >' use a app with undefined name to hang the channel 
+                    // Constructs like 'tap:stream:foo >' use a app with undefined name to hang the channel
                     // off (the node isn't real, don't build graph elements for it)
                     if (!(parsedNode.sourceChannelName && parsedNode.sinkChannelName && parsedNode.name === 'bridge') &&
                         parsedNode.name) {
@@ -297,14 +297,16 @@ class TextToGraphConverter {
                 // Example errors:
                 // VALIDATION: {"message":"Could not find app with name 'bo' and type among [processor, sink]","position":null}
                 // SEVERE: {"message":"XD112E:(pos 5): Unexpectedly ran out of input\nbar |\n   * ^\n","position":5}
-                // SEVERE: {"message":"XD100E:(pos 14): Found unexpected data after stream definition: 'log'\nmail |  wibbe log |\n             *^\n","position":14}
-                // SEVERE: {"message":"XD102E:(pos 20): No whitespace allowed after argument name and before =\nrofo | asdfa --name = var\n            *       ^\n","position":20}]
+                // SEVERE: {"message":"XD100E:(pos 14): Found unexpected data after stream definition:
+                // 'log'\nmail |  wibbe log |\n             *^\n","position":14}
+                // SEVERE: {"message":"XD102E:(pos 20): No whitespace allowed after argument name and
+                //                     before =\nrofo | asdfa --name = var\n            *       ^\n","position":20}]
                 for (let e = 0; e < line.errors.length; e++) {
                     const error = line.errors[e];
 
                     let errorToRecord = null;
-                    let range;
-                    let errpos;
+                    // let range;
+                    // let errpos;
                     // if (error.accurate) {
                         // If accurate is set then the message is already correct and needs no processing.
                         // Accurate messages are produced by the local parse.
@@ -364,8 +366,8 @@ class TextToGraphConverter {
     private matchGroup(name: string, incoming: number, outgoing: number): string {
         let score = Number.MIN_VALUE;
         let group: string;
-        Array.from(this.metamodel.keys()).filter(group => this.metamodel.get(group).has(name)).map(
-                    group => this.metamodel.get(group).get(name)).find(match => {
+        Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
+                    grp => this.metamodel.get(grp).get(name)).find(match => {
           let failedConstraintsNumber = 0;
           if (match.group === 'source') {
             if (incoming > 0) {
@@ -525,11 +527,8 @@ export namespace JsonGraph {
         graph: Graph;
     }
 
-    export interface Error {
-
-    }
     export interface Graph {
-        errors: Error[];
+        errors: {}[];
         format: string;
         streamdefs;
         nodes: Node[];

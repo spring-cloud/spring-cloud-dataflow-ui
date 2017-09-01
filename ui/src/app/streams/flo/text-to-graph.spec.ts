@@ -16,16 +16,15 @@ describe('text-to-graph', () => {
     let fakemetamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
     beforeAll(() => {
-        const fakeTimeMetadata: Flo.ElementMetadata =
-        {
-        'group': 'fake',
-        'name': 'time',
-        get(property: String): Promise<Flo.PropertyMetadata> {
-            return Promise.resolve(null);
-        },
-        properties(): Promise<Map<string, Flo.PropertyMetadata>> {
-            return Promise.resolve(new Map());
-        }
+        const fakeTimeMetadata: Flo.ElementMetadata = {
+            'group': 'fake',
+            'name': 'time',
+            get(property: String): Promise<Flo.PropertyMetadata> {
+                return Promise.resolve(null);
+            },
+            properties(): Promise<Map<string, Flo.PropertyMetadata>> {
+                return Promise.resolve(new Map());
+            }
         };
         const fakeTime: Map<string, Flo.ElementMetadata> = new Map();
         fakeTime['time'] = fakeTimeMetadata;

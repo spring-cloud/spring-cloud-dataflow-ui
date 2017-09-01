@@ -131,8 +131,7 @@ class InternalParser {
                 this.tokenStreamPointer++;
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -217,8 +216,7 @@ class InternalParser {
             if (t.kind === TokenKind.GT) {
                 gtBeforePipe = true;
                 break;
-            }
-            else if (t.kind === TokenKind.PIPE) {
+            } else if (t.kind === TokenKind.PIPE) {
                 break;
             }
         }
@@ -260,13 +258,11 @@ class InternalParser {
         let argValue = null;
         if (this.isKind(t, TokenKind.IDENTIFIER)) {
             argValue = t.data;
-        }
-        else if (this.isKind(t, TokenKind.LITERAL_STRING)) {
+        } else if (this.isKind(t, TokenKind.LITERAL_STRING)) {
             argValue = t.data;
-// 					var quotesUsed = t.data.substring(0, 1);
-//					argValue = t.data.substring(1, t.data.length - 1).replace(quotesUsed + quotesUsed, quotesUsed);
-        }
-        else {
+            // var quotesUsed = t.data.substring(0, 1);
+            // argValue = t.data.substring(1, t.data.length - 1).replace(quotesUsed + quotesUsed, quotesUsed);
+        } else {
             throw {'msg': 'expected argument value', 'start': t.start};
         }
         return argValue;
@@ -310,11 +306,13 @@ class InternalParser {
         while (this.peekToken(TokenKind.DOUBLE_MINUS)) {
             const dashDash = this.nextToken(); // skip the '--'
             if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
-                throw {'msg': 'No whitespace allowed after -- but before option name', 'start': dashDash.end, 'end': this.peekAtToken().start};
+                throw {'msg': 'No whitespace allowed after -- but before option name',
+                       'start': dashDash.end, 'end': this.peekAtToken().start};
             }
             const argNameComponents = this.eatDottedName();
             if (this.peekToken(TokenKind.EQUALS) && !this.isNextTokenAdjacent()) {
-                throw {'msg': 'No whitespace allowed before equals', 'start': argNameComponents[argNameComponents.length - 1].end, 'end': this.peekAtToken().start};
+                throw {'msg': 'No whitespace allowed before equals', 'start': argNameComponents[argNameComponents.length - 1].end,
+                       'end': this.peekAtToken().start};
             }
             const equalsToken = this.eatToken(TokenKind.EQUALS);
             if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
@@ -371,8 +369,7 @@ class InternalParser {
             if (this.isKind(t, TokenKind.PIPE)) {
                 this.nextToken();
                 appNodes.push(this.eatApp());
-            }
-            else {
+            } else {
                 // might be followed by sink channel
                 break;
             }
@@ -397,8 +394,7 @@ class InternalParser {
             if (this.peekToken(TokenKind.IDENTIFIER)) {
                 name = this.eatToken(TokenKind.IDENTIFIER);
                 this.nextToken(); // skip '='
-            }
-            else {
+            } else {
                 throw {'msg': 'Illegal name \'' + this.toString(this.peekAtToken()) + '\'', 'start': this.peekAtToken().start};
             }
         }
@@ -481,8 +477,7 @@ class InternalParser {
             this.tokenStreamPointer--; // Rewind so we can nicely eat the sink channel
             appNodes = [];
             appNodes.push({'name': 'bridge', 'start': this.peekAtToken().start, 'end': this.peekAtToken().end});
-        }
-        else {
+        } else {
             appNodes = this.eatAppList();
         }
         streamNode.apps = appNodes;
@@ -541,7 +536,9 @@ class InternalParser {
                             for (let o1 = 0; o1 < app.options.length; o1++) {
                                 option = app.options[o1];
                                 options[option.name] = option.value;
-                                optionsranges[option.name] = {'start': {'ch': option.start, 'line': lineNumber}, 'end': {'ch': option.end, 'line': lineNumber}};
+                                optionsranges[option.name] = {
+                                     'start': {'ch': option.start, 'line': lineNumber},
+                                     'end': {'ch': option.end, 'line': lineNumber}};
                             }
                         }
                         const taskObject: Parser.ParsedTask = {
@@ -564,7 +561,9 @@ class InternalParser {
                     // streamDef = {"apps":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
 
                     // {"lines":[{"errors":null,"success":
-                    // [{"group":"UNKNOWN_1","label":"time","type":"source","name":"time","options":{},"sourceChannelName":null,"sinkChannelName":null},{"group":"UNKNOWN_1","label":"log","type":"sink","name":"log","options":{},"sourceChannelName":null,"sinkChannelName":null}]
+                    // [{"group":"UNKNOWN_1","label":"time","type":"source","name":"time","options":{},
+                    //   "sourceChannelName":null,"sinkChannelName":null},{"group":"UNKNOWN_1","label":"log","type":"sink","name":"log",
+                    //   "options":{},"sourceChannelName":null,"sinkChannelName":null}]
                     // }],"links":[]}
 
                     const streamName = streamdef.name ? streamdef.name : 'UNKNOWN_' + lineNumber;
@@ -577,8 +576,7 @@ class InternalParser {
                             } else {
                                 if (m === 0 && !streamdef.sourceChannel) {
                                     expectedType = 'source';
-                                }
-                                else if (m === (streamdef.apps.length - 1)) {
+                                } else if (m === (streamdef.apps.length - 1)) {
                                     expectedType = 'sink';
                                 }
                             }
@@ -598,7 +596,8 @@ class InternalParser {
                                 for (let o2 = 0; o2 < app.options.length; o2++) {
                                     option = app.options[o2];
                                     options[option.name] = option.value;
-                                    optionsranges[option.name] = {'start': {'ch': option.start, 'line': lineNumber}, 'end': {'ch': option.end, 'line': lineNumber}};
+                                    optionsranges[option.name] = {'start': {'ch': option.start, 'line': lineNumber},
+                                      'end': {'ch': option.end, 'line': lineNumber}};
                                 }
                             }
                             const uglyObject: Ugly = {
@@ -622,8 +621,11 @@ class InternalParser {
                             if (typeof previous === 'number') {
                                 this.recordError(streamdef, {
                                     'message': app.label ?
-                                        'Label \'' + app.label + '\' should be unique but app \'' + app.name + '\' (at app position ' + m + ') and app \'' + streamdef.apps[previous].name + '\' (at app position ' + previous + ') both use it'
-                                        : 'App \'' + app.name + '\' should be unique within the stream, use a label to differentiate multiple occurrences',
+                                        'Label \'' + app.label + '\' should be unique but app \'' + app.name +
+                                        '\' (at app position ' + m + ') and app \'' + streamdef.apps[previous].name +
+                                        '\' (at app position ' + previous + ') both use it'
+                                        : 'App \'' + app.name +
+                                        '\' should be unique within the stream, use a label to differentiate multiple occurrences',
                                     'range': uglyObject.range
                                 });
                             } else {

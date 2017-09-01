@@ -122,8 +122,7 @@ describe('tokenizer:', () => {
     expect(token.end).toEqual(end);
     if (data) {
       expect(token.data).toEqual(data);
-    }
-    else {
+    } else {
       expect(token.data).toBeUndefined();
     }
   }

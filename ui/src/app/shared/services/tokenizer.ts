@@ -83,11 +83,10 @@ class Tokenizer {
         return this.toProcess.substring(start, end);
     }
 
-    private sameQuotes(pos1: number, pos2: number): boolean{
+    private sameQuotes(pos1: number, pos2: number): boolean {
         if (this.toProcess[pos1] === '\'') {
             return this.toProcess[pos2] === '\'';
-        }
-        else if (this.toProcess[pos1] === '"') {
+        } else if (this.toProcess[pos1] === '"') {
             return this.toProcess[pos2] === '"';
         }
         return false;
@@ -118,8 +117,7 @@ class Tokenizer {
                 // may not be the end if the char after is also a '
                 if (this.toProcess[this.pos + 1] === '\'') {
                     this.pos++; // skip over that too, and continue
-                }
-                else {
+                } else {
                     terminated = true;
                 }
             }
@@ -166,8 +164,7 @@ class Tokenizer {
             if ((quoteInUse !== null && ch === quoteInUse) || (quoteInUse === null && this.isQuote(ch))) {
                 if (quoteInUse !== null && quoteInUse === '\'' && ch === '\'' && this.toProcess[this.pos + 1] === '\'') {
                     this.pos++; // skip over that too, and continue
-                }
-                else {
+                } else {
                     quoteOpen = !quoteOpen;
                     if (!quoteOpen) {
                         quoteClosedCount++;
@@ -181,8 +178,7 @@ class Tokenizer {
         if (quoteClosedCount < 2 && this.sameQuotes(start, this.pos - 1)) {
             this.tokens.push({'kind': TokenKind.LITERAL_STRING,
                     'data': this.subarray(start, this.pos), 'start': start, 'end': this.pos});
-        }
-        else {
+        } else {
             data = this.subarray(start, this.pos);
             this.tokens.push({'kind': TokenKind.IDENTIFIER, 'data': data, 'start': start, 'end': this.pos});
         }
@@ -202,8 +198,7 @@ class Tokenizer {
                 // may not be the end if the char after is also a "
                 if (this.toProcess[this.pos + 1] === '"') {
                     this.pos++; // skip over that too, and continue
-                }
-                else {
+                } else {
                     terminated = true;
                 }
             }

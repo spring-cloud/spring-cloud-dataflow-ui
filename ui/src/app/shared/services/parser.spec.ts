@@ -202,7 +202,7 @@ describe('parser:', () => {
   it('error: dotted names 1', () => {
     parseResult = Parser.parse('aaa --aaa .bbb=ccc', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    const line: Parser.Line = parseResult.lines[0];
+    line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed in dotted name');
@@ -212,7 +212,7 @@ describe('parser:', () => {
   it('error: bad name', () => {
     parseResult = Parser.parse('| = foo', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    const line: Parser.Line = parseResult.lines[0];
+    line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
     expect(error.message).toEqual('Illegal name \'|\'');
@@ -230,7 +230,7 @@ describe('parser:', () => {
   it('error: bad label', () => {
     parseResult = Parser.parse('aaa : bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    const line: Parser.Line = parseResult.lines[0];
+    line  = parseResult.lines[0];
     error = line.errors[0];
     expect(error.message).toEqual('No whitespace allowed between label name and colon');
     expectRange(error.range, 3, 0, 4, 0);
@@ -272,7 +272,8 @@ describe('parser:', () => {
     parseResult = Parser.parse('aaa: bbb | aaa: ccc', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Label \'aaa\' should be unique but app \'ccc\' (at app position 1) and app \'bbb\' (at app position 0) both use it');
+    expect(error.message).toEqual(
+        'Label \'aaa\' should be unique but app \'ccc\' (at app position 1) and app \'bbb\' (at app position 0) both use it');
     expectRange(error.range, 11, 0, 19, 0);
   });
 
@@ -287,7 +288,8 @@ describe('parser:', () => {
   it('tap not yet existing stream', () => {
     parseResult = Parser.parse(':stream.time > log', 'stream');
     expect(parseResult.lines.length).toEqual(1);
-    // {"lines":[{"errors":null,"nodes":[{"group":"UNKNOWN_0","type":"sink","name":"log","options":{},"optionsranges":{},"range":{"start":{"ch":15,"line":0},"end":{"ch":18,"line":0}},"sourceChannelName":"tap:stream.time","sinkChannelName":null}]}]}
+    // {"lines":[{"errors":null,"nodes":[{"group":"UNKNOWN_0","type":"sink","name":"log","options":{},"optionsranges":{},
+    // "range":{"start":{"ch":15,"line":0},"end":{"ch":18,"line":0}},"sourceChannelName":"tap:stream.time","sinkChannelName":null}]}]}
     expect(parseResult.lines[0].nodes[0].sourceChannelName).toEqual('tap:stream.time');
   });
 
@@ -296,10 +298,13 @@ describe('parser:', () => {
     expect(parseResult.lines.length).toEqual(2);
     // {"lines":[
     //   {"errors":null,"nodes":[
-    //    {"group":"a","type":"source","name":"time","options":{},"optionsranges":{},"range":{"start":{"ch":2,"line":0},"end":{"ch":6,"line":0}},"sourceChannelName":null,"sinkChannelName":null},
-    //    {"group":"a","type":"sink","name":"log","options":{},"optionsranges":{},"range":{"start":{"ch":9,"line":0},"end":{"ch":12,"line":0}},"sourceChannelName":null,"sinkChannelName":null}]},
+    //    {"group":"a","type":"source","name":"time","options":{},"optionsranges":{},"range":{"start":{"ch":2,"line":0},
+    // "end":{"ch":6,"line":0}},"sourceChannelName":null,"sinkChannelName":null},
+    //    {"group":"a","type":"sink","name":"log","options":{},"optionsranges":{},"range":{"start":{"ch":9,"line":0},
+    // "end":{"ch":12,"line":0}},"sourceChannelName":null,"sinkChannelName":null}]},
     //   {"errors":null,"nodes":[
-    //    {"group":"UNKNOWN_1","type":"sink","name":"file","options":{},"optionsranges":{},"range":{"start":{"ch":10,"line":1},"end":{"ch":14,"line":1}},"sourceChannelName":"tap:a.time","sinkChannelName":null}]}]}
+    //    {"group":"UNKNOWN_1","type":"sink","name":"file","options":{},"optionsranges":{},"range":{"start":{"ch":10,"line":1},
+    // "end":{"ch":14,"line":1}},"sourceChannelName":"tap:a.time","sinkChannelName":null}]}]}
     line = parseResult.lines[0];
     node = line.nodes[0];
     expect(node.name).toEqual('time');
@@ -463,16 +468,16 @@ describe('parser:', () => {
     expect(range.end.line).toEqual(endLine);
   }
 
-  function expectChannels(node: Parser.Node, sourceChannelName?: string, sinkChannelName?: string) {
+  function expectChannels(n: Parser.Node, sourceChannelName?: string, sinkChannelName?: string) {
     if (sourceChannelName) {
-      expect(node.sourceChannelName).toEqual(sourceChannelName);
+      expect(n.sourceChannelName).toEqual(sourceChannelName);
     } else {
-      expect(node.sourceChannelName).toBeNull();
+      expect(n.sourceChannelName).toBeNull();
     }
     if (sinkChannelName) {
-      expect(node.sinkChannelName).toEqual(sinkChannelName);
+      expect(n.sinkChannelName).toEqual(sinkChannelName);
     } else {
-      expect(node.sinkChannelName).toBeNull();
+      expect(n.sinkChannelName).toBeNull();
     }
   }
 
