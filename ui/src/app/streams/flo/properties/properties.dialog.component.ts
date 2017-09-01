@@ -153,7 +153,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
 
   private createNotationalProperties() : Array<Properties.Property> {
     let notationalProperties = [];
-    if (ApplicationType[this.cell.attr('metadata/group')]) {
+    if (typeof ApplicationType[this.cell.attr('metadata/group')] === 'number') {
       notationalProperties.push({
         id: 'label',
         name: 'label',
