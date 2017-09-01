@@ -5,12 +5,12 @@ import { FormGroup, Validators } from '@angular/forms';
 import { dia } from 'jointjs';
 import { StreamsService } from '../../streams.service';
 import { Utils } from '../utils';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { ApplicationType } from '../../../shared/model/application-type';
 
 
 @Component({
-  selector: 'properties-dialog-content',
+  selector: 'app-properties-dialog-content',
   templateUrl: 'properties-dialog.component.html',
   styleUrls: [ 'properties-dialog.component.scss' ],
   encapsulation: ViewEncapsulation.None
@@ -49,7 +49,8 @@ export class PropertiesDialogComponent implements OnInit {
 
   setData(c: dia.Cell, graph: dia.Graph) {
     const streamHeads = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
-    this.propertiesGroupModel = new PropertiesGroupModel(c, streamHeads, (<Array<dia.Cell>>streamHeads).indexOf(c) >= 0, this.streamService);
+    this.propertiesGroupModel = new PropertiesGroupModel(c, streamHeads,
+      (<Array<dia.Cell>>streamHeads).indexOf(c) >= 0, this.streamService);
     this.propertiesGroupModel.load();
   }
 
@@ -83,7 +84,8 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
           break;
         default:
           if (Array.isArray(property.metadata.options)) {
-            return new Properties.SelectControlModel(property, Properties.InputType.SELECT, (<Array<string>> property.metadata.options).map(o => {
+            return new Properties.SelectControlModel(property,
+              Properties.InputType.SELECT, (<Array<string>> property.metadata.options).map(o => {
               return {
                 name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
                 value: o === property.defaultValue ? undefined : o

@@ -37,7 +37,8 @@ export class EditorService implements Flo.Editor {
 
     constructor(private bsModalService: BsModalService) {}
 
-    createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string, action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
+    createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
+                                                         action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
         if (owner.model instanceof joint.dia.Link) {
             return;
         } else if (owner.model instanceof joint.dia.Element) {
@@ -62,7 +63,6 @@ export class EditorService implements Flo.Editor {
 
     validateLink(flo: Flo.EditorContext, cellViewS: dia.ElementView, magnetS: SVGElement,
                  cellViewT: dia.ElementView, magnetT: SVGElement, isSource: boolean, linkView: dia.LinkView): boolean {
-        console.info('SOURCE=' + cellViewS.model.attr('metadata/name') + ' TARGET=' + cellViewT.model.attr('metadata/name'));
         let idx: number;
 
         // Prevent linking FROM node input port
@@ -85,7 +85,6 @@ export class EditorService implements Flo.Editor {
         if (cellViewS.model.attr) {
             const currentSourceLinks = graph.getConnectedLinks(cellViewS.model, { outbound: true });
             idx = currentSourceLinks.indexOf(linkView.model);
-            console.log('Index into outgoing source links for this link = ' + idx + ' link count = ' + (currentSourceLinks.length));
             // For a second link we will see:
             // Index into outgoing source links for this link = 1 link count = 2
             // if (idx > 0) {
@@ -111,7 +110,6 @@ export class EditorService implements Flo.Editor {
                 return false;
             }
 
-            let i: number;
             const targetIncomingLinks = graph.getConnectedLinks(cellViewT.model, { inbound: true });
             idx = targetIncomingLinks.indexOf(linkView.model);
             if (idx >= 0) {
@@ -164,7 +162,8 @@ export class EditorService implements Flo.Editor {
 
     private getOutgoingStreamLinks(graph: dia.Graph, node: dia.Element): Array<dia.Link> {
         // !node only possible if call is occurring during link drawing (one end connected but not the other)
-        return node ? graph.getConnectedLinks(node, {outbound: true}).filter(link => link.get('source') && link.get('source').port === 'output') : [];
+        return node ? graph.getConnectedLinks(node, {outbound: true})
+            .filter(link => link.get('source') && link.get('source').port === 'output') : [];
     }
 
     calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,
@@ -173,7 +172,9 @@ export class EditorService implements Flo.Editor {
         const paper = flo.getPaper();
         const targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
         // If node dropping not enabled then short-circuit
-        if (!NODE_DROPPING && !(targetUnderMouse instanceof joint.dia.Link && targetUnderMouse.attr('metadata/name') !== 'tap' && targetUnderMouse.attr('metadata/name') !== 'destination')) {
+        if (!NODE_DROPPING && !(targetUnderMouse instanceof joint.dia.Link
+          && targetUnderMouse.attr('metadata/name') !== 'tap'
+          && targetUnderMouse.attr('metadata/name') !== 'destination')) {
           return {
             sourceComponent: sourceComponent,
             source: {
@@ -210,13 +211,16 @@ export class EditorService implements Flo.Editor {
             elements.forEach(function(model) {
                 const view = paper.findViewByModel(model);
                 if (view && view !== draggedView && model instanceof joint.dia.Element) {
-                    const targetHasIncomingPort = view.model.attr('.input-port') && view.model.attr('.input-port/display') !== 'none';
+                    const targetHasIncomingPort = view.model.attr('.input-port')
+                      && view.model.attr('.input-port/display') !== 'none';
                     // 2 output ports: output-port and tap-port
-                    const targetHasOutgoingPort = (view.model.attr('.output-port') && view.model.attr('.output-port/display') !== 'none') ||
+                    const targetHasOutgoingPort = (view.model.attr('.output-port')
+                      && view.model.attr('.output-port/display') !== 'none') ||
                         view.model.attr('.tap-port') && view.model.attr('.tap-port/display') !== 'none';
                     view.$('[magnet]').each((index, magnet) => {
                         const type = magnet.getAttribute('type');
-                        if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort) || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
+                        if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort)
+                          || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
                             const bbox = joint.V(magnet).bbox(false, paper.viewport);
                             const distance = (<any>point).distance({
                                 x: bbox.x + bbox.width / 2,
@@ -249,7 +253,8 @@ export class EditorService implements Flo.Editor {
         // Check if drop on a link is allowed
         const sourceType = source.attr('metadata/name');
         const sourceGroup = source.attr('metadata/group');
-        if (targetUnderMouse instanceof joint.dia.Link && !(sourceType === 'destination' || sourceGroup === 'sink' || sourceGroup === 'source') && graph.getConnectedLinks(source).length === 0) {
+        if (targetUnderMouse instanceof joint.dia.Link && !(sourceType === 'destination'
+          || sourceGroup === 'sink' || sourceGroup === 'source') && graph.getConnectedLinks(source).length === 0) {
             return {
                 sourceComponent: sourceComponent,
                 source: {
@@ -262,7 +267,8 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateSource(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
+    private validateSource(element: dia.Element, incoming: Array<dia.Link>,
+                           outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -279,7 +285,8 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateProcessor(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
+    private validateProcessor(element: dia.Element, incoming: Array<dia.Link>,
+                              outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -296,7 +303,8 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateSink(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
+    private validateSink(element: dia.Element, incoming: Array<dia.Link>,
+                         outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -320,7 +328,8 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateTask(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
+    private validateTask(element: dia.Element, incoming: Array<dia.Link>,
+                         outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -344,7 +353,8 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateTap(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
+    private validateTap(element: dia.Element, incoming: Array<dia.Link>,
+                        outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
         if (incoming.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -368,8 +378,9 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateDestination(element: dia.Element, incoming: Array<dia.Link>, outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        //TODO: no 'tap' port anymore hence no more such links
+    private validateDestination(element: dia.Element, incoming: Array<dia.Link>,
+                                outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
+        // TODO: no 'tap' port anymore hence no more such links
         if (tap.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -460,8 +471,10 @@ export class EditorService implements Flo.Editor {
                     appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
                 }
                 // Example appSchemaProperties:
-                // {"host":{"name":"host","type":"String","description":"the hostname of the mail server","defaultValue":"localhost","hidden":false},
-                //  "password":{"name":"password","type":"String","description":"the password to use to connect to the mail server ","defaultValue":null,"hidden":false}
+                // {"host":{"name":"host","type":"String",
+                // "description":"the hostname of the mail server","defaultValue":"localhost","hidden":false},
+                //  "password":{"name":"password","type":"String",
+                //  "description":"the password to use to connect to the mail server ","defaultValue":null,"hidden":false}
                 const specifiedProperties = element.attr('props');
                 Object.keys(specifiedProperties).forEach(propertyName => {
                     if (!appSchemaProperties.has(propertyName)) {
@@ -536,7 +549,7 @@ export class EditorService implements Flo.Editor {
          */
         if (sources.length === 1) {
             const source = sources[0];
-            //TODO: replace selector CSS class with the result of view.getSelector(...)
+            // TODO: replace selector CSS class with the result of view.getSelector(...)
             targets.forEach(target => flo.createLink({
                 'id': source,
                 'selector': '.output-port',
@@ -566,13 +579,14 @@ export class EditorService implements Flo.Editor {
     private canSwap(flo: Flo.EditorContext, dropee: dia.Element, target: dia.Element, side: string) {
         let i: number, targetId: string, sourceId: string, noSwap = (dropee.id === target.id);
         if (dropee === target) {
-            console.debug('What!??? Dragged == Dropped!!! id = ' + target.id);
+          // Shouldn't happen
         }
         const links = flo.getGraph().getConnectedLinks(dropee);
         for (i = 0; i < links.length && !noSwap; i++) {
             targetId = links[i].get('target').id;
             sourceId = links[i].get('source').id;
-            noSwap = (side === 'left' && targetId === target.id && sourceId === dropee.id) || (side === 'right' && targetId === dropee.id && sourceId === target.id);
+            noSwap = (side === 'left' && targetId === target.id && sourceId === dropee.id)
+              || (side === 'right' && targetId === dropee.id && sourceId === target.id);
         }
         return !noSwap;
     }
@@ -586,8 +600,6 @@ export class EditorService implements Flo.Editor {
     private moveNodeOnNode(flo: Flo.EditorContext, node: dia.Element, pivotNode: dia.Element, side: string, shouldRepairDamage: boolean) {
         side = side || 'left';
         if (this.canSwap(flo, node, pivotNode, side)) {
-            let link: dia.Link;
-            let i: number;
             if (side === 'left') {
                 const sources: Array<string> = [];
                 if (shouldRepairDamage) {
@@ -597,7 +609,7 @@ export class EditorService implements Flo.Editor {
                     sources.push(link.get('source').id);
                     link.remove();
                 });
-                //TODO: replace selector CSS class with the result of view.getSelector(...)
+                // TODO: replace selector CSS class with the result of view.getSelector(...)
                 sources.forEach(source => {
                     flo.createLink({
                         'id': source,
@@ -627,7 +639,7 @@ export class EditorService implements Flo.Editor {
                     targets.push(link.get('target').id);
                     link.remove();
                 });
-                //TODO: replace selector CSS class with the result of view.getSelector(...)
+                // TODO: replace selector CSS class with the result of view.getSelector(...)
                 targets.forEach(target => {
                     flo.createLink({
                         'id': node.id,
@@ -663,7 +675,7 @@ export class EditorService implements Flo.Editor {
         }
         link.remove();
 
-        //TODO: replace selector CSS class with the result of view.getSelector(...)
+        // TODO: replace selector CSS class with the result of view.getSelector(...)
         if (source) {
             flo.createLink({
                     'id': source,
@@ -703,7 +715,7 @@ export class EditorService implements Flo.Editor {
                 this.moveNodeOnNode(flo,  <dia.Element> source,  <dia.Element> target, 'left', true);
                 relinking = true;
             } else if (dragDescriptor.target.cssClassSelector === '.tap-port') {
-                //TODO: replace selector CSS class with the result of view.getSelector(...)
+                // TODO: replace selector CSS class with the result of view.getSelector(...)
                 flo.createLink({
                     'id': target.id,
                     'selector': dragDescriptor.target.cssClassSelector,
@@ -714,7 +726,6 @@ export class EditorService implements Flo.Editor {
                     // 'port': dragDescriptor.source.port
                 });
             }
-            //}
         } else if (target instanceof joint.dia.Link && type !== 'tap' && type !== 'destination') {
             this.moveNodeOnLink(flo, <dia.Element> source, <dia.Link> target);
         } else if (flo.autolink && relinking) {
@@ -774,7 +785,7 @@ export class EditorService implements Flo.Editor {
             if (openPorts.length === 1) {
                 // One candidate match!
                 const match = openPorts.shift();
-                //TODO: replace selector CSS class with the result of view.getSelector(...)
+                // TODO: replace selector CSS class with the result of view.getSelector(...)
                 if (match.openPort === 'input') {
                     flo.createLink({
                         'id': source.id,

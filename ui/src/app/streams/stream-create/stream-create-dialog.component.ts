@@ -11,7 +11,7 @@ import { Properties } from 'spring-flo';
 const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 
 @Component({
-  selector: 'stream-create-dialog-content',
+  selector: 'app-stream-create-dialog-content',
   templateUrl: 'stream-create-dialog.component.html',
   encapsulation: ViewEncapsulation.None
 })
@@ -53,7 +53,7 @@ export class StreamCreateDialogComponent implements OnInit {
 
     this.dependencies = new Map();
     if (text) {
-      //TODO: Adopt to parser types once they are available
+      // TODO: Adopt to parser types once they are available
       const graphAndErrors = convertParseResponseToJsonGraph(text, this.parserService.parseDsl(text));
       if (graphAndErrors.graph) {
         this.streamDefs = graphAndErrors.graph.streamdefs;
@@ -134,10 +134,10 @@ export class StreamCreateDialogComponent implements OnInit {
         resolve();
       }
       this.streamService.getDefinition(streamDefNameToWaitFor).subscribe(() => {
-        console.debug('Stream ' + streamDefNameToWaitFor + ' is ok!');
+        console.log('Stream ' + streamDefNameToWaitFor + ' is ok!');
         resolve();
       }, () => {
-        console.debug('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
+        console.log('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
         setTimeout(() => {
           this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
             resolve();
@@ -148,7 +148,11 @@ export class StreamCreateDialogComponent implements OnInit {
   }
 
   canSubmit(): boolean {
-    return !this.isStreamCreationInProgress() && this.form.valid && this.streamDefs && this.streamDefs.length && !(this.errors && this.errors.length);
+    return !this.isStreamCreationInProgress()
+      && this.form.valid
+      && this.streamDefs
+      && this.streamDefs.length
+      && !(this.errors && this.errors.length);
   }
 
   submitStreams() {
@@ -181,7 +185,7 @@ export class StreamCreateDialogComponent implements OnInit {
       // Send the request to create a stream
       const def = this.streamDefs[index];
       this.streamService.createDefinition(def.name, def.def, this.deploy).subscribe(() => {
-        console.debug('Stream ' + def.name + ' created OK');
+        console.log('Stream ' + def.name + ' created OK');
         // Stream created successfully, mark it as created
         def.created = true;
         this.progressData.count++;
