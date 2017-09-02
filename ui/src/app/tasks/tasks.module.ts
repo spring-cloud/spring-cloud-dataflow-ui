@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { SharedModule } from '../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -17,6 +19,8 @@ import { TasksRoutingModule } from './tasks-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { AuthModule } from '../auth/auth.module';
+import { reducers } from './store/tasks-reducer';
+import { DefinitionsEffects } from './store/definitions-effects';
 
 @NgModule({
   imports: [
@@ -26,7 +30,9 @@ import { AuthModule } from '../auth/auth.module';
     ReactiveFormsModule,
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
-    AuthModule
+    AuthModule,
+    StoreModule.forFeature('tasks', reducers),
+    EffectsModule.forFeature([DefinitionsEffects])
   ],
   declarations: [
     TasksComponent,

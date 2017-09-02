@@ -22,12 +22,10 @@ export class TasksService {
   private appInfoUrl = '/apps/task';
   private taskDefinitionsUrl = '/tasks/definitions';
   public taskExecutions: Page<TaskExecution>;
-  public taskDefinitions: Page<TaskDefinition>;
   public appRegistrations: Page<AppRegistration>;
 
   constructor(private http: Http, private errorHandler: ErrorHandler, private sharedAppsService: SharedAppsService) {
     this.taskExecutions = new Page<TaskExecution>();
-    this.taskDefinitions = new Page<TaskDefinition>();
     this.appRegistrations = new Page<AppRegistration>();
   }
 
@@ -126,15 +124,26 @@ export class TasksService {
    * If method is called without parameter or as null, sort properties are not added
    * to the request.
    *
-   * @param definitionNameSort the sort for DEFINITION_NAME
-   * @param definitionSort the sort for DEFINITION
+   * @param {boolean} the sort for DEFINITION_NAME
+   * @param {boolean} the sort for DEFINITION
+   * @param {number} pageNumber the pagination page number
+   * @param {number} pageSize the pagination page size
+   * @param {string} filter the filter string
    * @returns {Observable<R|T>} that will call the subscribed funtions to handle
    * the results when returned from the Spring Cloud Data Flow server.
    */
-  getDefinitions(definitionNameSort?: boolean, definitionSort?: boolean): Observable<Page<TaskDefinition>> {
+  getDefinitions(definitionNameSort?: boolean, definitionSort?: boolean, pageNumber?: number, pageSize?: number,
+                 filter?: string): Observable<Page<TaskDefinition>> {
     const params = new URLSearchParams();
-    params.append('page', this.taskDefinitions.pageNumber.toString());
-    params.append('size', this.taskDefinitions.pageSize.toString());
+    if (pageNumber) {
+      params.append('page', pageNumber.toString());
+    }
+    if (pageSize) {
+      params.append('size', pageSize.toString());
+    }
+    if (filter && filter.length > 0) {
+      params.append('search', filter);
+    }
 
     // we can have asc and desc with multiple fields
     // if sort param is sent multiple times.
@@ -156,9 +165,6 @@ export class TasksService {
       }
     }
 
-    if (this.taskDefinitions.filter && this.taskDefinitions.filter.length > 0) {
-      params.append('search', this.taskDefinitions.filter);
-    }
     return this.http.get(this.taskDefinitionsUrl, {search: params})
       .map(this.extractDefinitionsData.bind(this))
       .catch(this.errorHandler.handleError);
@@ -182,7 +188,7 @@ export class TasksService {
     const options = new RequestOptions({headers: headers});
     return this.http.delete('/tasks/definitions/' + name, options)
       .map(data => {
-        this.taskDefinitions.items = this.taskDefinitions.items.filter(item => item.name !== name);
+        // this.taskDefinitions.items = this.taskDefinitions.items.filter(item => item.name !== name);
       })
       .catch(this.errorHandler.handleError);
   }
@@ -279,18 +285,15 @@ export class TasksService {
       items = [];
     }
 
+    const page: Page<TaskDefinition> = new Page<TaskDefinition>();
+    page.items = items;
     if (body.page) {
-      console.log('BODY', body.page);
-      this.taskDefinitions.pageNumber = body.page.number;
-      this.taskDefinitions.pageSize = body.page.size;
-      this.taskDefinitions.totalElements = body.page.totalElements;
-      this.taskDefinitions.totalPages = body.page.totalPages;
+      page.pageNumber = body.page.number;
+      page.pageSize = body.page.size;
+      page.totalElements = body.page.totalElements;
+      page.totalPages = body.page.totalPages;
     }
-
-    this.taskDefinitions.items = items;
-
-    console.log('Extracted Task Definitions:', this.taskDefinitions);
-    return this.taskDefinitions;
+    return page;
   }
 
 }

@@ -11,20 +11,23 @@
             </button>
           </td>
           <td>
-            <label *ngIf="taskDefinitions" class="control">Filter Task Definitions
-              <input type="text" class="input" placeholder="Filter definitions" [(ngModel)]="taskDefinitions.filter">
+            <label class="control">Filter Task Definitions
+              <input type="text" class="input" placeholder="Filter definitions" (keyup)="filter($event.target.value)" [(ngModel)]="definitionFilter" >
             </label>
-            <button *ngIf="taskDefinitions" type="button" (click)="loadTaskDefinitions()"
+            <button type="button" (click)="loadTaskDefinitions()"
                     class="btn btn-default">
               <span class="glyphicon glyphicon-refresh"></span></button>
+            <button type="button" (click)="reset()"
+                    class="btn btn-default">
+              <span class="glyphicon glyphicon-erase"></span></button>
           </td>
         </tr>
       </table>
     </div>
   </div>
 </div>
-<div *ngIf="!taskDefinitions">No tasks available.</div>
-<table *ngIf="taskDefinitions?.items" class="table table-hover">
+
+<table class="table table-hover">
   <thead>
   <tr>
     <th style="width: 70px"><a (click)="toggleDefinitionNameSort()"><span style="margin-right: 5px">Name</span></a><i class="fa" [ngClass]="{'fa-sort': definitionNameSort === undefined, 'fa-sort-asc': definitionNameSort === false, 'fa-sort-desc': definitionNameSort === true }" aria-hidden="true"></i></th>
@@ -34,7 +37,7 @@
   </thead>
 
   <tbody>
-  <ng-template ngFor let-item [ngForOf]="taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance()">
+  <ng-template ngFor let-item [ngForOf]="(taskDefinitions | async)?.items | paginate: paginationInstance">
     <tr>
       <td>{{item.name}}</td>
       <td>{{item.dslText}}</td>
@@ -54,7 +57,7 @@
   </ng-template>
   </tbody>
 </table>
-<pagination-controls *ngIf="taskDefinitions?.items" (pageChange)="getPage($event)" [id]="taskDefinitions.getPaginationInstance().id"></pagination-controls>
+<pagination-controls (pageChange)="getPage($event)"></pagination-controls>
 
 <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">

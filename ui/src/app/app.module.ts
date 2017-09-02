@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { RequestOptions } from '@angular/http';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { SecurityAwareRequestOptions } from './auth/support/security-aware-request-options';
 
 /* Feature Modules */
@@ -20,6 +22,7 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AuthService } from './auth/auth.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { reducers } from "./store/app-reducer";
 
 /**
  * Executed when the app starts up. Will load the security
@@ -52,7 +55,9 @@ export function init(authService: AuthService) {
     SharedModule,
     StreamsModule,
     TasksModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([])
   ],
   providers: [
     {

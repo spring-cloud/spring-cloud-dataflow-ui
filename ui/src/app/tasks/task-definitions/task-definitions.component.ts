@@ -1,12 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { PaginationInstance } from 'ngx-pagination';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { ModalDirective} from 'ngx-bootstrap/modal';
 import { Page } from '../../shared/model/page';
-import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
+import {
+  TasksState,
+  getTaskDefinitionsFilter,
+  getTaskDefinitions,
+  getTaskDefinitionsPaginationInstance,
+  getTaskDefinitionsSort
+} from '../store/tasks-reducer';
+import {
+  TaskDefinitionsFilterDebounceAction, TaskDefinitionsPageAction, TaskDefinitionsResetAction, TaskDefinitionsSortAction,
+  TaskDefinitionsUpdateAction
+} from "../store/tasks-actions";
 
 @Component({
   selector: 'app-task-definition',
@@ -14,7 +28,6 @@ import { TasksService } from '../tasks.service';
 })
 export class TaskDefinitionsComponent implements OnInit {
 
-  taskDefinitions: Page<TaskDefinition>;
   busy: Subscription;
   taskDefinitionToDestroy: TaskDefinition;
 
@@ -25,6 +38,17 @@ export class TaskDefinitionsComponent implements OnInit {
   definitionNameSort: boolean = undefined;
   definitionSort: boolean = undefined;
 
+  // only exists to be able to update
+  // filter input field from a store
+  // when component is initialised
+  definitionFilter: string;
+
+  // observable page is updated from a store
+  taskDefinitions: Observable<Page<TaskDefinition>>;
+
+  // pagination instance is updated from a store
+  paginationInstance: PaginationInstance;
+
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
 
@@ -34,11 +58,47 @@ export class TaskDefinitionsComponent implements OnInit {
   constructor(
     private tasksService: TasksService,
     private toastyService: ToastyService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private store: Store<TasksState>
+  ) {
+    this.paginationInstance = {
+      currentPage: 0,
+      totalItems: 10,
+      itemsPerPage: 10
+    };
+  }
 
   ngOnInit() {
+    this.taskDefinitions = this.store.select(getTaskDefinitions);
+
+    this.store.select(getTaskDefinitionsFilter).do(state => {
+      if (state) {
+        this.definitionFilter = state;
+      }
+    }).take(1).subscribe();
+
+    this.store.select(getTaskDefinitionsPaginationInstance).do(instance => {
+      if (instance) {
+        this.paginationInstance = instance;
+      }
+    }).subscribe();
+
+    this.store.select(getTaskDefinitionsSort).do(sort => {
+      this.definitionNameSort = sort['DEFINITION_NAME'];
+      this.definitionSort = sort['DEFINITION'];
+    }).subscribe();
     this.loadTaskDefinitions();
+  }
+
+  loadTaskDefinitions() {
+    this.store.dispatch(new TaskDefinitionsUpdateAction());
+  }
+
+  reset() {
+    this.store.dispatch(new TaskDefinitionsResetAction());
+    // need to reset filter here as we don't want to listen
+    // store as its only taken once in ngOnInit
+    this.definitionFilter = '';
   }
 
   /**
@@ -49,20 +109,7 @@ export class TaskDefinitionsComponent implements OnInit {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`);
-    this.tasksService.taskDefinitions.pageNumber = page - 1;
-    this.loadTaskDefinitions();
-  }
-
-  loadTaskDefinitions() {
-    console.log('Loading Task Definitions...', this.taskDefinitions);
-
-    this.busy = this.tasksService.getDefinitions(this.definitionNameSort, this.definitionSort).subscribe(
-      data => {
-        this.taskDefinitions = data;
-        this.toastyService.success('Task definitions loaded.');
-      }
-    );
+    this.store.dispatch(new TaskDefinitionsPageAction(page - 1));
   }
 
   bulkDefineTasks() {
@@ -79,25 +126,11 @@ export class TaskDefinitionsComponent implements OnInit {
   }
 
   toggleDefinitionNameSort() {
-    if (this.definitionNameSort === undefined) {
-      this.definitionNameSort = true;
-    } else if (this.definitionNameSort) {
-      this.definitionNameSort = false;
-    } else {
-      this.definitionNameSort = undefined;
-    }
-    this.loadTaskDefinitions();
+    this.store.dispatch(new TaskDefinitionsSortAction('DEFINITION_NAME'));
   }
 
   toggleDefinitionSort() {
-    if (this.definitionSort === undefined) {
-      this.definitionSort = true;
-    } else if (this.definitionSort) {
-      this.definitionSort = false;
-    } else {
-      this.definitionSort = undefined;
-    }
-    this.loadTaskDefinitions();
+    this.store.dispatch(new TaskDefinitionsSortAction('DEFINITION'));
   }
 
   public proceed(taskDefinition: TaskDefinition): void {
@@ -107,11 +140,16 @@ export class TaskDefinitionsComponent implements OnInit {
         this.cancel();
         this.toastyService.success('Successfully destroyed task definition "'
           + taskDefinition.name + '"');
+        this.loadTaskDefinitions();
       },
       error => {
         this.toastyService.error(error);
       }
     );
+  }
+
+  filter(query: string) {
+    this.store.dispatch(new TaskDefinitionsFilterDebounceAction(query));
   }
 
   /**
