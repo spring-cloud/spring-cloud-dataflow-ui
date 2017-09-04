@@ -1,5 +1,3 @@
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Shapes } from 'spring-flo';
 import { dia } from 'jointjs';
 import { RenderService } from './render.service';

@@ -234,16 +234,6 @@ class Tokenizer {
         return this.toProcess.charAt(this.pos + 1) === tokenkind.charAt(1);
     }
 
-    // private printTokenizerState() {
-    // 	console.log('Tokenizer State. Input #'+this.max);
-    // 	var output = '';
-    // 	for (var i = 0; i < this.max; i++) {
-    // 		output += this.toProcess.charAt(i) + '[' + this.toProcess.charCodeAt(i) + ']';
-    // 	}
-    // 	console.log(output);
-    // 	console.log(this.pos);
-    // }
-
     public tokenize(): Token[] {
         while (this.pos < this.max) {
             const ch = this.toProcess.charAt(this.pos);
@@ -306,8 +296,8 @@ class Tokenizer {
                     this.lexDoubleQuotedStringLiteral();
                     break;
                 // case '@':
-                // 	this.pushCharToken(TokenKind.REFERENCE);
-                // 	break;
+                // this.pushCharToken(TokenKind.REFERENCE);
+                // break;
                 case '\0':
                     // hit sentinel at end of char data
                     this.pos++; // will take us to the end

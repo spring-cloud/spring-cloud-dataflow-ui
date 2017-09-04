@@ -102,8 +102,4 @@ describe('graph-to-text', () => {
       graph.addCell(link);
       return link;
     }
-
-  // it('should be created', () => {
-  //   expect(component).toBeTruthy();
-  // });
 });

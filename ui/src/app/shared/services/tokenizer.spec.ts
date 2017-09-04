@@ -112,10 +112,6 @@ describe('tokenizer:', () => {
     expectToken(tokens[4], TokenKind.IDENTIFIER, 10, 13, 'bbb');
   });
 
-
-  // ---
-
-  //    tokens: [{"kind":"<IDENTIFIER>","data":"abc","start":0,"end":3}]
   function expectToken(token: Token, tokenKind: TokenKind, start: number, end: number, data?: string) {
     expect(token.kind).toEqual(tokenKind);
     expect(token.start).toEqual(start);
