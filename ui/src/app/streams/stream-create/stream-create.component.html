@@ -1,7 +1,19 @@
-<div id="flo-container">
-  <flo-editor (floApi)="editorContext = $event" [metamodel]="metamodel" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="20">
+<div id="flo-container" class="stream-editor">
+  <flo-editor (floApi)="editorContext = $event" [metamodel]="metamodelService" [renderer]="renderService"
+              [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="20">
+    <button (click)="createStreamDefs()" class="btn btn-default" type="button" [disabled]="!dsl">Create
+      Stream
+    </button>
+    <button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>
+    <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
+    <button class="btn" (click)="editorContext.autolink = !editorContext.autolink"
+            [ngClass]="{'btn-default-alt': !editorContext.autolink, 'btn-default': editorContext.autolink}">Auto Link</button>
+    <button class="btn" (click)="gridOn = !gridOn"
+            [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid</button>
     <div class="flow-definition-container">
-      <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true" (blur)="editorContext.graphToTextSync=true" (focus)="editorContext.graphToTextSync=false" placeholder="Enter stream definition..."></dsl-editor>
+      <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true" (blur)="editorContext.graphToTextSync=true"
+                  (focus)="editorContext.graphToTextSync=false" placeholder="Enter stream definition..."
+                  [hintOptions]="hintOptions"></dsl-editor>
     </div>
   </flo-editor>
 </div>
