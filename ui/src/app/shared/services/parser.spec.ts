@@ -1,4 +1,5 @@
 import { Parser } from './parser';
+import * as _ from 'lodash';
 
 describe('parser:', () => {
 
@@ -10,6 +11,33 @@ describe('parser:', () => {
 
   it('basic', () => {
     parseResult = Parser.parse('time', 'stream');
+    expect(_.isEqual(parseResult, {
+      lines: [
+        {
+          errors: null,
+          nodes: [
+            {
+              group: 'UNKNOWN_0',
+              type: 'source',
+              name: 'time',
+              options: {},
+              optionsranges: {},
+              range: {
+                start: {
+                  ch: 0,
+                  line: 0
+                }, end: {
+                  ch: 4,
+                  line: 0
+                }
+              },
+              sourceChannelName: null,
+              sinkChannelName: null
+            }
+          ]
+        }
+      ]
+    })).toBeTruthy();
     expectOneStream(parseResult);
     line = parseResult.lines[0];
     expect(line.errors).toBeNull();
@@ -73,6 +101,19 @@ describe('parser:', () => {
     parseResult = Parser.parse('time --a=b --c=d | log --e=f', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     line = parseResult.lines[0];
+    // {"errors":null,"nodes":[
+    //   {"group":"UNKNOWN_0","type":"source","name":"time",
+    //    "options":{"a":"b","c":"d"},
+    //    "optionsranges":
+    //     {"a":{"start":{"ch":5,"line":0},"end":{"ch":10,"line":0}},
+    //      "c":{"start":{"ch":11,"line":0},"end":{"ch":16,"line":0}}},
+    //    "range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}},
+    //    "sourceChannelName":null,"sinkChannelName":null},
+    //   {"group":"UNKNOWN_0","type":"sink","name":"log",
+    //    "options":{"e":"f"},
+    //    "optionsranges":{"e":{"start":{"ch":23,"line":0},"end":{"ch":28,"line":0}}},
+    //    "range":{"start":{"ch":19,"line":0},"end":{"ch":22,"line":0}},
+    //    "sourceChannelName":null,"sinkChannelName":null}]}
     expect(line.nodes.length).toEqual(2);
     expect(line.nodes[0].options['a']).toEqual('b');
     expect(line.nodes[0].options['c']).toEqual('d');
@@ -280,6 +321,15 @@ describe('parser:', () => {
   it('multiline', () => {
     parseResult = Parser.parse('a=time | log\n:a.time > file', 'stream');
     expect(parseResult.lines.length).toEqual(2);
+    // {"lines":[
+    //   {"errors":null,"nodes":[
+    //    {"group":"a","type":"source","name":"time","options":{},"optionsranges":{},"range":{"start":{"ch":2,"line":0},
+    // "end":{"ch":6,"line":0}},"sourceChannelName":null,"sinkChannelName":null},
+    //    {"group":"a","type":"sink","name":"log","options":{},"optionsranges":{},"range":{"start":{"ch":9,"line":0},
+    // "end":{"ch":12,"line":0}},"sourceChannelName":null,"sinkChannelName":null}]},
+    //   {"errors":null,"nodes":[
+    //    {"group":"UNKNOWN_1","type":"sink","name":"file","options":{},"optionsranges":{},"range":{"start":{"ch":10,"line":1},
+    // "end":{"ch":14,"line":1}},"sourceChannelName":"tap:a.time","sinkChannelName":null}]}]}
     line = parseResult.lines[0];
     node = line.nodes[0];
     expect(node.name).toEqual('time');
@@ -299,6 +349,8 @@ describe('parser:', () => {
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
+    // {"errors":[{"accurate":true,"message":"Unexpected data after stream definition: bbb",
+    //  "range":{"start":{"ch":4,"line":0},"end":{"ch":5,"line":0}}}]}
     expect(error.message).toEqual('Unexpected data after stream definition: bbb');
     expectRange(error.range, 4, 0, 5, 0);
   });
