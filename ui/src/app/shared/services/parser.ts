@@ -514,6 +514,10 @@ class InternalParser {
                 console.log('JSParse: tokenized to ' + JSON.stringify(this.tokenStream));
                 this.tokenStreamPointer = 0;
                 this.tokenStreamLength = this.tokenStream.length;
+                // time | log
+                // [{"token":0,"data":"time","start":0,"end":4},
+                //  {"token":4,"start":5,"end":6},
+                //  {"token":0,"data":"log","start":7,"end":10}]
 
                 let errorsToProcess: Parser.Error[] = [];
                 const success = [];
@@ -554,6 +558,13 @@ class InternalParser {
                 } else {
                     const streamdef = this.eatStream(lineNumber);
                     console.log('JSParse: parsed to stream definition: ' + JSON.stringify(streamdef));
+                    // streamDef = {"apps":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
+
+                    // {"lines":[{"errors":null,"success":
+                    // [{"group":"UNKNOWN_1","label":"time","type":"source","name":"time","options":{},
+                    //   "sourceChannelName":null,"sinkChannelName":null},{"group":"UNKNOWN_1","label":"log","type":"sink","name":"log",
+                    //   "options":{},"sourceChannelName":null,"sinkChannelName":null}]
+                    // }],"links":[]}
 
                     const streamName = streamdef.name ? streamdef.name : 'UNKNOWN_' + lineNumber;
                     if (streamdef.apps) {
