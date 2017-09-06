@@ -1,4 +1,5 @@
 import { Parser } from './parser';
+import * as _ from 'lodash';
 
 describe('parser:', () => {
 
@@ -10,13 +11,37 @@ describe('parser:', () => {
 
   it('basic', () => {
     parseResult = Parser.parse('time', 'stream');
+    expect(_.isEqual(parseResult, {
+      lines: [
+        {
+          errors: null,
+          nodes: [
+            {
+              group: 'UNKNOWN_0',
+              type: 'source',
+              name: 'time',
+              options: {},
+              optionsranges: {},
+              range: {
+                start: {
+                  ch: 0,
+                  line: 0
+                }, end: {
+                  ch: 4,
+                  line: 0
+                }
+              },
+              sourceChannelName: null,
+              sinkChannelName: null
+            }
+          ]
+        }
+      ]
+    })).toBeTruthy();
     expectOneStream(parseResult);
     line = parseResult.lines[0];
     expect(line.errors).toBeNull();
     node = line.nodes[0];
-    // [{"group":"UNKNOWN_0","type":"sink","name":"time","options":{},"optionsranges":{},
-    //   "range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}},
-    //   "sourceChannelName":null,"sinkChannelName":null}]
     expect(node.group).toEqual('UNKNOWN_0');
     expect(node.type).toEqual('source');
     expect(node.name).toEqual('time');

@@ -1,8 +1,8 @@
 import { Flo } from 'spring-flo';
-import { convertTextToGraph } from './text-to-graph';
 import { convertParseResponseToJsonGraph } from './text-to-graph';
 import { JsonGraph } from './text-to-graph';
 import { Parser } from '../../shared/services/parser';
+import * as _ from 'lodash';
 
 describe('text-to-graph', () => {
 
@@ -49,34 +49,155 @@ describe('text-to-graph', () => {
   });
 
   it('jsongraph: two streams sharing a destination', () => {
-      graph = getGraph('time > :abc\nfile > :abc');
-      // {"format":"scdf","streamdefs":[{"name":"","def":"time  > :abc"},{"name":"","def":"file  > :abc"}],
-      //  "nodes":[{"id":0,"name":"time","stream-id":1,"range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
-      //           {"id":1,"name":"destination","properties":{"name":"abc"}},
-      //           {"id":2,"name":"file","stream-id":2,"range":{"start":{"ch":0,"line":1},"end":{"ch":4,"line":1}}}],
-      //  "links":[{"from":0,"to":1},{"from":2,"to":1}]}
-      expect(graph.streamdefs[0].def).toEqual('time  > :abc');
-      expect(graph.streamdefs[1].def).toEqual('file  > :abc');
-      expect(graph.nodes[0].name).toEqual('time');
-      expect(graph.nodes[0]['stream-id']).toEqual(1);
-      expect(graph.nodes[1].name).toEqual('destination');
-      expect(graph.nodes[1]['stream-id']).toBeUndefined();
-      expect(graph.nodes[2].name).toEqual('file');
-      expect(graph.nodes[2]['stream-id']).toEqual(2);
-      expect(graph.links.length).toEqual(2);
-      expect(graph.links[0].from).toEqual(0);
-      expect(graph.links[0].to).toEqual(1);
-      expect(graph.links[1].from).toEqual(2);
-      expect(graph.links[1].to).toEqual(1);
+    graph = getGraph('time > :abc\nfile > :abc');
+    expect(_.isEqual(graph, {
+      format: 'scdf',
+      streamdefs: [
+        {
+          name: '',
+          def: 'time  > :abc'
+        },
+        {
+          name: '',
+          def: 'file  > :abc'
+        }
+      ],
+      nodes: [
+        {
+          id: 0,
+          name: 'time',
+          'stream-id': 1,
+          label: undefined,
+          range: {
+            start: {
+              ch: 0,
+              line: 0
+            },
+            end: {
+              ch: 4,
+              line: 0
+            }
+          }
+        },
+        {
+          id: 1,
+          name: 'destination',
+          properties: {
+            name: 'abc'
+          }
+        },
+        {
+          id: 2,
+          name: 'file',
+          'stream-id': 2,
+          label: undefined,
+          range: {
+            start: {
+              ch: 0,
+              line: 1
+            },
+            end: {
+              ch: 4,
+              line: 1
+            }
+          }
+        }
+      ],
+      links: [
+        {
+          from: 0,
+          to: 1
+        },
+        {
+          from: 2,
+          to: 1
+        }
+      ]
+    })).toBeTruthy();
+    expect(graph.streamdefs[0].def).toEqual('time  > :abc');
+    expect(graph.streamdefs[1].def).toEqual('file  > :abc');
+    expect(graph.nodes[0].name).toEqual('time');
+    expect(graph.nodes[0]['stream-id']).toEqual(1);
+    expect(graph.nodes[1].name).toEqual('destination');
+    expect(graph.nodes[1]['stream-id']).toBeUndefined();
+    expect(graph.nodes[2].name).toEqual('file');
+    expect(graph.nodes[2]['stream-id']).toEqual(2);
+    expect(graph.links.length).toEqual(2);
+    expect(graph.links[0].from).toEqual(0);
+    expect(graph.links[0].to).toEqual(1);
+    expect(graph.links[1].from).toEqual(2);
+    expect(graph.links[1].to).toEqual(1);
   });
 
   it('jsongraph: tapping a stream', () => {
     graph = getGraph('aaaa= time | log\n:aaaa.time>log');
-    // {"format":"scdf","streamdefs":[{"name":"aaaa","def":"time | log"},{"name":"","def":":aaaa.time > log"}],
-    //  "nodes":[{"id":0,"name":"time","stream-name":"aaaa","stream-id":1,"range":{"start":{"ch":6,"line":0},"end":{"ch":10,"line":0}}},
-    //           {"id":1,"name":"log","range":{"start":{"ch":13,"line":0},"end":{"ch":16,"line":0}}},
-    //           {"id":2,"name":"log","stream-id":2,"range":{"start":{"ch":11,"line":1},"end":{"ch":14,"line":1}}}],
-    //  "links":[{"from":0,"to":1},{"from":0,"to":2,"linkType":"tap"}]}
+    expect(_.isEqual(graph, {
+      format: 'scdf',
+      streamdefs: [
+        {
+          name: 'aaaa',
+          def: 'time | log'
+        },
+        {
+          name: '',
+          def: ':aaaa.time > log'
+        }
+      ],
+      nodes: [
+        {
+          id: 0,
+          name: 'time',
+          'stream-name': 'aaaa',
+          'stream-id': 1,
+          label: undefined,
+          range: {
+            start: {
+              ch: 6,
+              line: 0
+            },
+            end: {
+              ch: 10,
+              line: 0
+            }
+          }
+        },
+        {
+          id: 1,
+          name: 'log',
+          label: undefined,
+          range: {
+            start: {
+              ch: 13,
+              line: 0
+            },
+            end: {
+              ch: 16,
+              line: 0
+            }
+          }
+        },
+        {
+          id: 2,
+          name: 'log',
+          'stream-id': 2,
+          label: undefined,
+          range: {
+            start: {
+              ch: 11,
+              line: 1
+            },
+            end: {
+              ch: 14,
+              line: 1
+            }
+          }
+        }
+      ],
+      links: [
+        {from: 0, to: 1},
+        {from: 0, to: 2, linkType: 'tap'}
+      ]
+    })).toBeTruthy();
     expect(graph.streamdefs[0].def).toEqual('time | log');
     expect(graph.streamdefs[0].name).toEqual('aaaa');
     expect(graph.streamdefs[1].def).toEqual(':aaaa.time > log');
@@ -96,12 +217,51 @@ describe('text-to-graph', () => {
 
   it('jsongraph: basic', () => {
     graph = getGraph('time | log');
-    // {"errors":[],"graph":{
-    //   "format":"scdf",
-    //   "streamdefs":[{"name":"","def":"time | log"}],
-    //   "nodes":[{"id":0,"name":"time","stream-id":1,"range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
-    //            {"id":1,"name":"log","range":{"start":{"ch":7,"line":0},"end":{"ch":10,"line":0}}}],
-    //   "links":[{"from":0,"to":1}]}}
+    expect(_.isEqual(graph, {
+      format: 'scdf',
+      streamdefs: [
+        {
+          name: '',
+          def: 'time | log'
+        }
+      ],
+      nodes: [
+        {
+          id: 0,
+          name: 'time',
+          'stream-id': 1,
+          label: undefined,
+          range: {
+            start: {
+              ch: 0,
+              line: 0
+            },
+            end: {
+              ch: 4,
+              line: 0
+            }
+          }
+        },
+        {
+          id: 1,
+          name: 'log',
+          label: undefined,
+          range: {
+            start: {
+              ch: 7,
+              line: 0
+            },
+            end: {
+              ch: 10,
+              line: 0
+            }
+          }
+        }
+      ],
+      links: [
+        {from: 0, to: 1}
+      ]
+    })).toBeTruthy();
     expect(graph.format).toEqual('scdf');
     expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);
@@ -130,15 +290,78 @@ describe('text-to-graph', () => {
 
   it('jsongraph: properties', () => {
     graph = getGraph('time --aaa=bbb --ccc=ddd | log');
-    //    {"format":"scdf","streamdefs":[{"name":"","def":"time --aaa=bbb --ccc=ddd | log"}],
-    // "nodes":[
-    //  {"id":0,"name":"time","stream-id":1,
-    //    "properties":{"aaa":"bbb","ccc":"ddd"},
-    //    "propertiesranges":{"aaa":{"start":{"ch":5,"line":0},"end":{"ch":14,"line":0}},
-    //                        "ccc":{"start":{"ch":15,"line":0},"end":{"ch":24,"line":0}}},
-    //    "range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
-    //  {"id":1,"name":"log","range":{"start":{"ch":27,"line":0},"end":{"ch":30,"line":0}}}],
-    // "links":[{"from":0,"to":1}]}    expect(graph.format).toEqual('scdf');
+    expect(_.isEqual(graph, {
+      format: 'scdf',
+      streamdefs: [
+        {
+          name: '',
+          def: 'time --aaa=bbb --ccc=ddd | log'
+        }
+      ],
+      nodes: [
+        {
+          id: 0,
+          name: 'time',
+          'stream-id': 1,
+          label: undefined,
+          properties: {
+            aaa: 'bbb',
+            ccc: 'ddd'
+          },
+          propertiesranges: {
+            aaa: {
+              start: {
+                ch: 5,
+                line: 0
+              },
+              end: {
+                ch: 14,
+                line: 0
+              }
+            },
+            ccc: {
+              start: {
+                ch: 15,
+                line: 0
+              },
+              end: {
+                ch: 24,
+                line: 0
+              }
+            }
+          },
+          range: {
+            start: {
+              ch: 0,
+              line: 0
+            },
+            end: {
+              ch: 4,
+              line: 0
+            }
+          }
+        },
+        {
+          id: 1,
+          name: 'log',
+          label: undefined,
+          range: {
+            start: {
+              ch: 27,
+              line: 0
+            },
+            end: {
+              ch: 30,
+              line: 0
+            }
+          }
+        }
+      ],
+      links: [
+        {from: 0, to: 1}
+      ]
+    })).toBeTruthy();
+    expect(graph.format).toEqual('scdf');
     expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);
     expect(graph.links.length).toEqual(1);
@@ -169,10 +392,43 @@ describe('text-to-graph', () => {
 
   it('jsongraph: source channel', () => {
     graph = getGraph(':abc > log');
-   // {"format":"scdf","streamdefs":[{"name":"","def":":abc > log"}],
-   // "nodes":[{"id":0,"name":"destination","properties":{"name":"abc"}},
-   //          {"id":1,"name":"log","stream-id":1,"range":{"start":{"ch":7,"line":0},"end":{"ch":10,"line":0}}}],
-   // "links":[{"from":0,"to":1}]}
+    expect(_.isEqual(graph, {
+      format: 'scdf',
+      streamdefs: [
+        {
+          name: '',
+          def: ':abc > log'
+        }
+      ],
+      nodes: [
+        {
+          id: 0,
+          name: 'destination',
+          properties: {
+            name: 'abc'
+          }
+        },
+        {
+          id: 1,
+          name: 'log',
+          'stream-id': 1,
+          label: undefined,
+          range: {
+            start: {
+              ch: 7,
+              line: 0
+            },
+            end: {
+              ch: 10,
+              line: 0
+            }
+          }
+        }
+      ],
+      links: [
+        {from: 0, to: 1}
+      ]
+    })).toBeTruthy();
     expect(graph.format).toEqual('scdf');
     expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);
@@ -201,9 +457,43 @@ describe('text-to-graph', () => {
 
   it('jsongraph: sink channel', () => {
     graph = getGraph('time > :abc');
-   // {"format":"scdf","streamdefs":[{"name":"","def":"time  > :abc"}],
-   // "nodes":[{"id":0,"name":"time","stream-id":1,"range":{"start":{"ch":0,"line":0},"end":{"ch":4,"line":0}}},
-   //          {"id":1,"name":"destination","properties":{"name":"abc"}}],"links":[{"from":0,"to":1}]}
+    expect(_.isEqual(graph, {
+      format: 'scdf',
+      streamdefs: [
+        {
+          name: '',
+          def: 'time  > :abc'
+        }
+      ],
+      nodes: [
+        {
+          id: 0,
+          name: 'time',
+          'stream-id': 1,
+          label: undefined,
+          range: {
+            start: {
+              ch: 0,
+              line: 0
+            },
+            end: {
+              ch: 4,
+              line: 0
+            }
+          }
+        },
+        {
+          id: 1,
+          name: 'destination',
+          properties: {
+            name: 'abc'
+          }
+        }
+      ],
+      links: [
+        {from: 0, to: 1}
+      ]
+    })).toBeTruthy();
     expect(graph.format).toEqual('scdf');
     expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(2);

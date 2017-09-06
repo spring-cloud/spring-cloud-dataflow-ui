@@ -305,9 +305,6 @@ class Tokenizer {
                 case '"':
                     this.lexDoubleQuotedStringLiteral();
                     break;
-                // case '@':
-                // 	this.pushCharToken(TokenKind.REFERENCE);
-                // 	break;
                 case '\0':
                     // hit sentinel at end of char data
                     this.pos++; // will take us to the end
