@@ -1,0 +1,30 @@
+<label class="control">Update [seconds]:
+  <input type="text" class="input" [(ngModel)]="refreshRate">
+</label>
+<button type="button" (click)="changeRefreshRate()"
+class="btn btn-default">Update <span class="glyphicon glyphicon-arrow-right"></span></button>
+<div *ngIf="!counters || counters.items.length === 0">No counters available.</div>
+<table *ngIf="counters?.items && counters.items.length > 0" class="table table-hover">
+  <thead>
+    <tr>
+        <th style="width: 100px">Stream</th>
+        <th style="width: 100px">Value</th>
+        <th style="width: 100px">Latest [counts/second]</th>
+        <th style="width: 300px">Rate [counts/second]</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of counters.items | paginate: counters.getPaginationInstance(); index as i;">
+    <td>{{item.name}}</td>
+    <td>{{item.value}}</td>
+    <td>{{item.latestRate}}</td>
+    <td>
+      <app-graph-chart [chartData]="item.rates" [height]="140" [total]="totalCacheSize()"
+      [reverse]="true" [axisUnitsX]="'seconds ago'" [axisUnitsY]="'counts'"
+      [unitsPerTickX]="refreshRate"></app-graph-chart>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<pagination-controls *ngIf="counters?.items && counters?.items.length > 0" (pageChange)="getPage($event)"></pagination-controls>
+

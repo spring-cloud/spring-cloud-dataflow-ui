@@ -1,0 +1,20 @@
+.d3-chart {
+
+  .axis {
+
+    path, line {
+      stroke: #999;
+    }
+
+    text {
+      fill: #999;
+    }
+  }
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
