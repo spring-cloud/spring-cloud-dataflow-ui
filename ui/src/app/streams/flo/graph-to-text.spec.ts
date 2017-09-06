@@ -98,7 +98,7 @@ describe('graph-to-text', () => {
         target: {'id': to.id, 'port': 'input', 'selector': '.input-port'}
       };
       const link = Shapes.Factory.createLink(linkParams);
-      link.attr('props/isTapLink', isTapLink ? 'true' : 'false');
+      link.attr('props/isTapLink', isTapLink ? true : false);
       graph.addCell(link);
       return link;
     }
