@@ -21,7 +21,7 @@ import { ApplicationType } from '../../shared/model/application-type';
 import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../shared/model/detailed-app-registration.model';
 import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
-import { OTHER_GROUP_TYPE } from './shapes';
+import { OTHER_GROUP_TYPE } from './support/shapes';
 import { Observable} from 'rxjs/Observable';
 
 /**
@@ -59,7 +59,7 @@ class StreamAppMetadata implements Flo.ElementMetadata {
             const propertyMetadata: Flo.PropertyMetadata = {
               id: o.id,
               name: o.name,
-              description: o.description,
+              description: o.description || o.shortDescription,
               defaultValue: o.defaultValue,
               type: o.type
             };
@@ -95,7 +95,7 @@ class StreamAppMetadata implements Flo.ElementMetadata {
   }
 
   description(): Promise<string> {
-    return Promise.resolve(this._name);
+    return /*this.dataPromise.then((data: DetailedAppRegistration) => data.description)*/Promise.resolve('');
   }
 
   get(property: string): Promise<Flo.PropertyMetadata> {

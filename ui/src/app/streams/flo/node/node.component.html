@@ -1,0 +1,28 @@
+<svg:g class="stream-module">
+  <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
+    <svg:rect class="box"/>
+    <svg:text class="label1"/>
+    <svg:text class="label2"/>
+   </svg:g>
+  <svg:text class="stream-label"/>
+  <svg:rect class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+  <svg:rect class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+</svg:g>
+
+<template #canvasNodeTooltip>
+  <div ng-if="cell.attr('metadata/name')">
+    <span><strong>{{metaName | uppercase}}</strong></span>
+    <span><strong>{{'(' + (metaGroup | capitalize) + ')'}}</strong></span>
+  </div>
+  <div *ngIf="description">
+    <span>{{description}}</span>
+  </div>
+  <table class="table-condensed" *ngIf="allProperties && isPropertiesShown">
+    <tbody>
+    <tr *ngFor="let property of keys(allProperties).sort()">
+      <td class="tooltip-property-key"><strong>{{property}}</strong></td>
+      <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">{{getPropertyValue(property)}}</td>
+    </tr>
+    </tbody>
+  </table>
+</template>

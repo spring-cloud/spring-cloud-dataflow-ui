@@ -19,6 +19,10 @@ import { EditorService } from './flo/editor.service';
 import { StreamCreateDialogComponent } from './stream-create/stream-create-dialog.component';
 import { PropertiesDialogComponent } from './flo/properties/properties-dialog.component';
 import { ContentAssistService } from './flo/content-assist.service';
+import { TooltipModule } from 'ngx-bootstrap';
+import { NodeComponent } from './flo/node/node.component';
+import { DecorationComponent } from './flo/decoration/decoration.component';
+import { HandleComponent } from './flo/handle/handle.component';
 
 @NgModule({
   imports: [
@@ -31,7 +35,8 @@ import { ContentAssistService } from './flo/content-assist.service';
     PopoverModule.forRoot(),
     FloModule,
     AuthModule,
-    ProgressbarModule
+    ProgressbarModule,
+    TooltipModule.forRoot()
   ],
   declarations: [
     StreamsComponent,
@@ -40,11 +45,17 @@ import { ContentAssistService } from './flo/content-assist.service';
     StreamDetailsComponent,
     StreamDeployComponent,
     StreamCreateDialogComponent,
-    PropertiesDialogComponent
+    PropertiesDialogComponent,
+    NodeComponent,
+    DecorationComponent,
+    HandleComponent
   ],
   entryComponents: [
     StreamCreateDialogComponent,
-    PropertiesDialogComponent
+    PropertiesDialogComponent,
+    NodeComponent,
+    DecorationComponent,
+    HandleComponent
   ],
   providers: [
     StreamsService,
