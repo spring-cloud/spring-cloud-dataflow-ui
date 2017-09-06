@@ -9,53 +9,12 @@ import { Subscription } from 'rxjs/Subscription';
 import { ApplicationType } from '../../../shared/model/application-type';
 
 
-@Component({
-  selector: 'app-properties-dialog-content',
-  templateUrl: 'properties-dialog.component.html',
-  styleUrls: [ 'properties-dialog.component.scss' ],
-  encapsulation: ViewEncapsulation.None
-})
-export class PropertiesDialogComponent implements OnInit {
-
-  public title: string;
-
-  propertiesGroupModel: Properties.PropertiesGroupModel;
-
-  propertiesFormGroup: FormGroup;
-
-  busy: Subscription;
-
-  constructor(private bsModalRef: BsModalRef,
-      private streamService: StreamsService
-  ) {
-    this.propertiesFormGroup = new FormGroup({});
-  }
-
-  handleOk() {
-    this.propertiesGroupModel.applyChanges();
-    this.bsModalRef.hide();
-  }
-
-  handleCancel() {
-    this.bsModalRef.hide();
-  }
-
-  get okDisabled() {
-    return !this.propertiesGroupModel || !this.propertiesFormGroup || !this.propertiesFormGroup.valid;
-  }
-
-  ngOnInit() {
-  }
-
-  setData(c: dia.Cell, graph: dia.Graph) {
-    const streamHeads = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
-    this.propertiesGroupModel = new PropertiesGroupModel(c, streamHeads,
-      (<Array<dia.Cell>>streamHeads).indexOf(c) >= 0, this.streamService);
-    this.propertiesGroupModel.load();
-  }
-
-}
-
+/**
+ * Utility class for working with Properties.
+ *
+ * @author Alex Boyko
+ * @author Andy Clement
+ */
 class PropertiesGroupModel extends Properties.PropertiesGroupModel {
 
   constructor(cell: dia.Cell,
@@ -86,11 +45,11 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
           if (Array.isArray(property.metadata.options)) {
             return new Properties.SelectControlModel(property,
               Properties.InputType.SELECT, (<Array<string>> property.metadata.options).map(o => {
-              return {
-                name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
-                value: o === property.defaultValue ? undefined : o
-              };
-            }));
+                return {
+                  name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
+                  value: o === property.defaultValue ? undefined : o
+                };
+              }));
           } else if (property.metadata.name === 'password') {
             inputType = Properties.InputType.PASSWORD;
           } else if (property.metadata.name === 'e-mail' || property.metadata.name === 'email') {
@@ -169,7 +128,7 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     if (this.isStreamHead) {
       notationalProperties.push({
         id: 'stream-name',
-          name: 'stream name',
+        name: 'stream name',
         value: this.cell.attr('stream-name'),
         defaultValue: '',
         description: 'The name of the stream started by this app',
@@ -179,4 +138,57 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     }
     return notationalProperties;
   }
+}
+
+/**
+ * Component for displaying application properties and capturing their values.
+ *
+ * @author Alex Boyko
+ * @author Andy Clement
+ */
+@Component({
+  selector: 'app-properties-dialog-content',
+  templateUrl: 'properties-dialog.component.html',
+  styleUrls: [ 'properties-dialog.component.scss' ],
+  encapsulation: ViewEncapsulation.None
+})
+export class PropertiesDialogComponent implements OnInit {
+
+  public title: string;
+
+  propertiesGroupModel: Properties.PropertiesGroupModel;
+
+  propertiesFormGroup: FormGroup;
+
+  busy: Subscription;
+
+  constructor(private bsModalRef: BsModalRef,
+      private streamService: StreamsService
+  ) {
+    this.propertiesFormGroup = new FormGroup({});
+  }
+
+  handleOk() {
+    this.propertiesGroupModel.applyChanges();
+    this.bsModalRef.hide();
+  }
+
+  handleCancel() {
+    this.bsModalRef.hide();
+  }
+
+  get okDisabled() {
+    return !this.propertiesGroupModel || !this.propertiesFormGroup || !this.propertiesFormGroup.valid;
+  }
+
+  ngOnInit() {
+  }
+
+  setData(c: dia.Cell, graph: dia.Graph) {
+    const streamHeads = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
+    this.propertiesGroupModel = new PropertiesGroupModel(c, streamHeads,
+      (<Array<dia.Cell>>streamHeads).indexOf(c) >= 0, this.streamService);
+    this.propertiesGroupModel.load();
+  }
+
 }
