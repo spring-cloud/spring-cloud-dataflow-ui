@@ -32,9 +32,9 @@
 <table *ngIf="streamDefinitions?.items" class="table table-hover" id="streamDefinitionsTable">
   <thead>
     <tr>
-      <th style="width: 20px"></th>
+      <th style="width: 32px"></th>
       <th style="width: 70px"><a (click)="toggleDefinitionNameSort()"><span style="margin-right: 5px">Name</span></a><i class="fa" [ngClass]="{'fa-sort': definitionNameSort === undefined, 'fa-sort-asc': definitionNameSort === false, 'fa-sort-desc': definitionNameSort === true }" aria-hidden="true"></i></th>
-      <th style="width: 300px"><a (click)="toggleDefinitionSort()"><span style="margin-right: 5px">Definitions</span></a><i class="fa" [ngClass]="{'fa-sort': definitionSort === undefined, 'fa-sort-asc': definitionSort === false, 'fa-sort-desc': definitionSort === true }" aria-hidden="true"></i></th>
+      <th><a (click)="toggleDefinitionSort()"><span style="margin-right: 5px">Definitions</span></a><i class="fa" [ngClass]="{'fa-sort': definitionSort === undefined, 'fa-sort-asc': definitionSort === false, 'fa-sort-desc': definitionSort === true }" aria-hidden="true"></i></th>
       <th style="width: 50px">Status
         <a #childPopover="bs-popover"
         [popover]="popTemplate"
@@ -42,7 +42,7 @@
         (appClickOutside)="closePopOver()"
         title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a>
       </th>
-      <th style="width: 240px" colspan="1" class="text-center">Actions</th>
+      <th style="width: 240px" class="text-center">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -60,22 +60,18 @@
           <button type="button" (click)="details(item)"
                   class="btn btn-default" title="Details">
             <span class="glyphicon glyphicon-info-sign"></span>
-            Details
           </button>
           <button type="button" [appRoles]="['ROLE_CREATE']" [disabled]="(item.status==='undeployed' || item.status==='failed' || item.status==='incomplete')" (click)="undeploy(item)"
-                  class="btn btn-default" title="Undeploy">
+                  class="btn btn-default" style="margin-left: 0;" title="Undeploy">
             <span class="glyphicon glyphicon-stop"></span>
-            Undeploy
           </button>
           <button type="button" [appRoles]="['ROLE_CREATE']" [disabled]="(item.status==='deployed' || item.status==='deploying')" (click)="deploy(item)"
-                  class="btn btn-default" title="Deploy">
+                  class="btn btn-default" style="margin-left: 0;" title="Deploy">
             <span class="glyphicon glyphicon-play"></span>
-            Deploy
           </button>
           <button type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(item)"
-                  class="btn btn-default" title="Destroy">
+                  class="btn btn-default" style="margin-left: 0;" title="Destroy">
             <span class="glyphicon glyphicon-remove"></span>
-            Destroy
           </button>
         </td>
       </tr>
