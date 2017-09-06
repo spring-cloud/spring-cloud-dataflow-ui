@@ -7,9 +7,27 @@ import { StreamsService } from '../streams.service';
 import { ToastyService } from 'ng2-toasty';
 import { Properties } from 'spring-flo';
 
+/**
+ * Stores progress percentage.
+ *
+ * @author Alex Boyko
+ * @author Andy Clement
+ */
+class ProgressData {
+  constructor(public count, public total) {}
+  get percent(): number {
+    return Math.round(this.count / this.total * 100);
+  }
+}
 
 const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 
+/**
+ * Component to display dialog to allow user to name and deploy (if selected) a stream.
+ *
+ * @author Alex Boyko
+ * @author Andy Clement
+ */
 @Component({
   selector: 'app-stream-create-dialog-content',
   templateUrl: 'stream-create-dialog.component.html',
@@ -230,9 +248,3 @@ export class StreamCreateDialogComponent implements OnInit {
 
 }
 
-class ProgressData {
-  constructor(public count, public total) {}
-  get percent(): number {
-    return Math.round(this.count / this.total * 100);
-  }
-}
