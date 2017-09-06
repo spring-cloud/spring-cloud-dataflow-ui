@@ -26,13 +26,13 @@ export class AnalyticsService {
   constructor(private http: Http, private errorHandler: ErrorHandler) {
   }
 
-  set counterIntervall(rate: number) {
+  set counterInterval(rate: number) {
     if (rate && !isNaN(rate)) {
       if (rate < 0.01) {
           rate = 0;
           this.stopPollingForCounters();
       } else {
-        console.log('Setting intervall to ' + rate);
+        console.log('Setting interval to ' + rate);
         this._counterInterval = rate;
         if (this.counterPoller && !this.counterPoller.closed) {
           this.stopPollingForCounters();
@@ -42,7 +42,7 @@ export class AnalyticsService {
     }
   }
 
-  get counterIntervall(): number {
+  get counterInterval(): number {
     return this._counterInterval;
   }
 

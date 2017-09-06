@@ -42,7 +42,7 @@ export class CountersComponent implements OnInit {
    */
   ngOnInit() {
     this.startPollingForCounters();
-    this.refreshRate = this.analyticsService.counterIntervall;
+    this.refreshRate = this.analyticsService.counterInterval;
   }
 
   /**
@@ -70,6 +70,6 @@ export class CountersComponent implements OnInit {
 
   public changeRefreshRate() {
     console.log('Changing refreshrate to ...' + this.refreshRate);
-    this.analyticsService.counterIntervall = this.refreshRate;
+    this.analyticsService.counterInterval = this.refreshRate;
   }
 }
