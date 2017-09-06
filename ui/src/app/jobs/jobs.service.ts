@@ -92,7 +92,13 @@ export class JobsService {
       .map(this.extractStepExecutionProgressData.bind(this))
       .catch(this.errorHandler.handleError);
   }
-  private extractStepExecutionProgressData(response: Response): StepExecutionProgress {
+
+  /**
+   * Creates a StepExecutionProgress instance with the contents of the response.json.
+   * @param {Response} response instance that contains the json.
+   * @returns {StepExecutionProgress} instance of StepExecutionProgress.
+   */
+  extractStepExecutionProgressData(response: Response): StepExecutionProgress {
     const stepExecutionProgress: StepExecutionProgress = new StepExecutionProgress();
     const body = response.json();
     stepExecutionProgress.percentageComplete = body.percentageComplete;
@@ -209,7 +215,12 @@ export class JobsService {
     return stepExecutionProgress;
   }
 
-  private extractStepExecutionData(response: Response): StepExecutionResource {
+  /**
+   * Creates a StepExecutionResource instance with the contents of the response.json.
+   * @param {Response} response instance that contains the json.
+   * @returns {StepExecutionResource} instance of StepExecutionResource.
+   */
+  extractStepExecutionData(response: Response): StepExecutionResource {
     const body = response.json();
     const stepExecutionItem = body.stepExecution;
     const stepExecutionResource: StepExecutionResource = new StepExecutionResource();
@@ -250,7 +261,12 @@ export class JobsService {
     return stepExecutionResource;
   }
 
-  private extractJobExecutionData(response: Response): JobExecution {
+  /**
+   * Creates a JobExecution instance with the contents of the response.json.
+   * @param {Response} response instance that contains the json.
+   * @returns {JobExecution} instance of JobExecution.
+   */
+  extractJobExecutionData(response: Response): JobExecution {
     const jsonItem = response.json();
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.name = jsonItem.name;
@@ -292,7 +308,12 @@ export class JobsService {
     return jobExecution;
   }
 
-  private extractData(response: Response): Page<JobExecution> {
+  /**
+   * Creates a page instance containing JobExecutions with the contents of the response.json.
+   * @param {Response} response instance that contains the json.
+   * @returns {Page<JobExecution>} instance of Page containing JobExecutions.
+   */
+  extractData(response: Response): Page<JobExecution> {
     const body = response.json();
     const items: JobExecution[] = [];
 

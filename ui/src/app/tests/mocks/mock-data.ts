@@ -335,6 +335,220 @@ export const JOBS_EXECUTIONS = [
   }
 ];
 
+export const JOB_EXECUTIONS_WITH_PAGINATION = {
+  _embedded: {
+    jobExecutionResourceList: [
+      {
+        executionId: 2,
+        stepExecutionCount: 1,
+        jobId: 2,
+        taskExecutionId: 95,
+        name: 'job2',
+        startDate: '2017-09-06',
+        startTime: '00:54:46',
+        duration: '00:00:00',
+        jobExecution: {
+          id: 2,
+          version: 2,
+          jobParameters: {
+            parameters: {},
+            empty: true
+          },
+          jobInstance: {
+            id: 2,
+            version: null,
+            jobName: 'job2',
+            instanceId: 2
+          },
+          stepExecutions: [
+            {
+              id: 2,
+              version: 3,
+              stepName: 'job2step1',
+              status: 'COMPLETED',
+              readCount: 0,
+              writeCount: 0,
+              commitCount: 1,
+              rollbackCount: 0,
+              readSkipCount: 0,
+              processSkipCount: 0,
+              writeSkipCount: 0,
+              startTime: '2017-09-06T00:54:46.000Z',
+              endTime: '2017-09-06T00:54:46.000Z',
+              lastUpdated: '2017-09-06T00:54:46.000Z',
+              executionContext: {
+                dirty: false,
+                empty: true,
+                values: []
+              },
+              exitStatus: {
+                exitCode: 'COMPLETED',
+                exitDescription: '',
+                running: false
+              },
+              terminateOnly: false,
+              filterCount: 0,
+              failureExceptions: [],
+              jobExecutionId: 2,
+              jobParameters: {
+                parameters: {},
+                empty: true
+              },
+              skipCount: 0,
+              summary: 'StepExecution: id=2, version=3, name=job2step1, status=COMPLETED, exitStatus=COMPLETED, ' +
+              'readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0,' +
+              ' commitCount=1, rollbackCount=0'
+            }
+          ],
+          status: 'COMPLETED',
+          startTime: '2017-09-06T00:54:46.000Z',
+          createTime: '2017-09-06T00:54:46.000Z',
+          endTime: '2017-09-06T00:54:46.000Z',
+          lastUpdated: '2017-09-06T00:54:46.000Z',
+          exitStatus: {
+            exitCode: 'COMPLETED',
+            exitDescription: '',
+            running: false
+          },
+          executionContext: {
+            dirty: false,
+            empty: true,
+            values: []
+          },
+          failureExceptions: [],
+          jobConfigurationName: null,
+          running: false,
+          jobId: 2,
+          stopping: false,
+          allFailureExceptions: []
+        },
+        jobParameters: {},
+        jobParametersString: '',
+        restartable: false,
+        abandonable: false,
+        stoppable: false,
+        defined: false,
+        timeZone: 'UTC',
+        _links: {
+          self: {
+            href: 'http://localhost:9393/jobs/executions/2'
+          }
+        }
+      },
+      {
+        executionId: 1,
+        stepExecutionCount: 1,
+        jobId: 1,
+        taskExecutionId: 95,
+        name: 'job1',
+        startDate: '2017-09-06',
+        startTime: '00:54:46',
+        duration: '00:00:00',
+        jobExecution: {
+          id: 1,
+          version: 2,
+          jobParameters: {
+            parameters: {},
+            empty: true
+          },
+          jobInstance: {
+            id: 1,
+            version: null,
+            jobName: 'job1',
+            instanceId: 1
+          },
+          stepExecutions: [
+            {
+              id: 1,
+              version: 3,
+              stepName: 'job1step1',
+              status: 'COMPLETED',
+              readCount: 0,
+              writeCount: 0,
+              commitCount: 1,
+              rollbackCount: 0,
+              readSkipCount: 0,
+              processSkipCount: 0,
+              writeSkipCount: 0,
+              startTime: '2017-09-06T00:54:46.000Z',
+              endTime: '2017-09-06T00:54:46.000Z',
+              lastUpdated: '2017-09-06T00:54:46.000Z',
+              executionContext: {
+                dirty: false,
+                empty: true,
+                values: []
+              },
+              exitStatus: {
+                exitCode: 'COMPLETED',
+                exitDescription: '',
+                running: false
+              },
+              terminateOnly: false,
+              filterCount: 0,
+              failureExceptions: [],
+              jobExecutionId: 1,
+              jobParameters: {
+                parameters: {},
+                empty: true
+              },
+              skipCount: 0,
+              summary: 'StepExecution: id=1, version=3, name=job1step1, status=COMPLETED, exitStatus=COMPLETED, ' +
+              'readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0, ' +
+              'commitCount=1, rollbackCount=0'
+            }
+          ],
+          status: 'COMPLETED',
+          startTime: '2017-09-06T00:54:46.000Z',
+          createTime: '2017-09-06T00:54:46.000Z',
+          endTime: '2017-09-06T00:54:46.000Z',
+          lastUpdated: '2017-09-06T00:54:46.000Z',
+          exitStatus: {
+            exitCode: 'COMPLETED',
+            exitDescription: '',
+            running: false
+          },
+          executionContext: {
+            dirty: false,
+            empty: true,
+            values: []
+          },
+          failureExceptions: [],
+          jobConfigurationName: null,
+          running: false,
+          jobId: 1,
+          stopping: false,
+          allFailureExceptions: []
+        },
+        jobParameters: {},
+        jobParametersString: '',
+        restartable: false,
+        abandonable: false,
+        stoppable: false,
+        defined: false,
+        timeZone: 'UTC',
+        _links: {
+          self: {
+            href: 'http://localhost:9393/jobs/executions/1'
+          }
+        }
+      }
+    ]
+  },
+  _links: {
+    self: {
+      href: 'http://localhost:9393/jobs/executions?page=0&size=20'
+    }
+  },
+  page: {
+    size: 10,
+    totalElements: 2,
+    totalPages: 1,
+    number: 0
+  }
+};
+
+
+
 export const JOBS_EXECUTIONS_1_STEPS_1 = {
   jobExecutionId: 1,
   stepExecution: {
