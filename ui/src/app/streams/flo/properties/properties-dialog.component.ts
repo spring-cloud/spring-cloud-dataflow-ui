@@ -105,7 +105,8 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
       id: metadata.id,
       name: metadata.name,
       defaultValue: metadata.defaultValue,
-      attr: `props/${metadata.name}`,
+      // For something in the other group (like tap) use the id not the name of the property
+      attr: `props/${this.cell.attr('metadata/group') === 'other' ? metadata.id : metadata.name}`,
       value: this.cell.attr(`props/${metadata.name}`) || this.cell.attr(`props/${metadata.id}`),
       description: metadata.description,
       metadata: metadata

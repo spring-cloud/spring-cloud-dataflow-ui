@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import { Flo } from 'spring-flo';
 import { dia } from 'jointjs';
 import * as _ from 'lodash';
 import { Parser } from '../../shared/services/parser';
 import { MetamodelService } from './metamodel.service';
-
 
 /**
  * Build a graph representation from text dsl.
@@ -29,63 +27,26 @@ import { MetamodelService } from './metamodel.service';
  */
 class TextToGraphConverter {
 
+    static DEBUG = false;
+
     constructor(private dsl: string, private floEditorContext: Flo.EditorContext,
                 private metamodel:  Map<string, Map<string, Flo.ElementMetadata>>) {
     }
 
-    // private parseToJson(definitionsText, updateGraphFn, updateErrorsFn) {
-    // 	updateErrorsFn(null);
-    // 	if (definitionsText.trim().length === 0) {
-    // 		console.log('UpdateGraphFn: no definition');
-    // 		updateGraphFn({'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []});
-    // 		return;
-    // 	}
-    // 	var lines: Lines = parse(this.dsl, 'stream');
-
-    // 	var parsedStreamData = ParserService.parse(definitionsText);
-    // 	var graphAndErrors = convertParseResponseToGraph(definitionsText, parsedStreamData);
-    // 	if (graphAndErrors.errors.length !== 0) {
-    // 		updateErrorsFn(graphAndErrors.errors);
-    // 	}
-    // 	if (graphAndErrors.graph) {
-    // 		console.log('UpdateGraphFn: Computed graph is ' + JSON.stringify(graphAndErrors.graph));
-    // 		updateGraphFn(graphAndErrors.graph);
-    // 	} else {
-    // 		// Not doing anything here means the existing graph stays around even though there is
-    // 		// a problem with the text right now. If they fix the text then a proper graph will
-    // 		// get displayed.
-    // 	}
-    // }
     static parseToJsonGraph(dsl: string): JsonGraph.Graph {
         if (!dsl || dsl.trim().length === 0) {
-            console.log('parseToJson: no text to parse');
-            return {'errors': null, 'format': 'xd', 'streamdefs': [], 'nodes': [], 'links': []};
+            return {'errors': null, 'format': 'scdf', 'streamdefs': [], 'nodes': [], 'links': []};
         } else {
             const parsedStreams: Parser.ParseResult = Parser.parse(dsl, 'stream');
             return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;
         }
     }
 
-
-    // var graphAndErrors = convertParseResponseToGraph(definitionsText, parsedStreamData);
-    // if (graphAndErrors.errors.length !== 0) {
-    // 	updateErrorsFn(graphAndErrors.errors);
-    // }
-    // if (graphAndErrors.graph) {
-    // 	console.log('UpdateGraphFn: Computed graph is ' + JSON.stringify(graphAndErrors.graph));
-    // 	updateGraphFn(graphAndErrors.graph);
-    // } else {
-    // 	// Not doing anything here means the existing graph stays around even though there is
-    // 	// a problem with the text right now. If they fix the text then a proper graph will
-    // 	// get displayed.
-    // }
-
-
-    static findExistingDestinationNode(nodes, name) {
+    static findExistingDestinationNode(nodes: JsonGraph.Node[], name): JsonGraph.Node {
         for (let n = 0; n < nodes.length; n++) {
             const node = nodes[n];
-            if (node.name && node.name === 'destination') {
-                if (node.properties && node.properties.name && node.properties.name === name) {
+            if (node.name === 'destination') {
+                if (node.properties && node.properties.get('name') === name) {
                     return node;
                 }
             }
@@ -94,28 +55,32 @@ class TextToGraphConverter {
     }
 
     static convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
+
         // Compute line breaks
         const linebreaks = [0];
         let pos = 0;
-        // TODO windows LF handling?
         while ((pos = dsl.indexOf('\n', pos)) !== -1) {
             linebreaks.push(++pos);
         }
+
         const streamAppsToIds = {}; // foo.bar=99
 
-        // The result should look like this:
+        // The overall result should look like this:
         // {errors:[...], graph:{format:.., streamdefs:[...], nodes:[...], links:[...]}
 
         const errors = [];
 
-        // streamdefs look like this: {"name":"foo","def":" mail | transform --expression=payload.toString() | log"},
+        // streamdefs look like this:
+        // {"name":"foo","def":" mail | transform --expression=payload.toString() | log"},
         const streamdefs = [];
 
-        // nodes look like this: {"id":0,"name":"mail","stream-name":"foo","stream-id":1},
-        const nodes = [];
+        // nodes look like this:
+        // {"id":0,"name":"mail","stream-name":"foo","stream-id":1},
+        const nodes: JsonGraph.Node[] = [];
 
-        // links look like this: {"from":0,"to":1},
-        const links = [];
+        // links look like this:
+        // {"from":0,"to":1},
+        const links: JsonGraph.Link[] = [];
 
         let nodeId = 0;
         let streamNumber = 1;
@@ -124,26 +89,32 @@ class TextToGraphConverter {
         while (parsedStreams.lines && parsedStreams.lines.length !== 0) {
             // Process a line
             const lineText = dsl.substring(linebreaks[lineNumber], linebreaks[lineNumber + 1]);
-            // Example line: {"errors":null,"success":[{"label":"mail","type":"source","name":"mail",
-            //                "options":{},"sourceChannelName":null,"sinkChannelName":null},
-            //               {"label":"log","type":"sink","name":"log","options":{},"sourceChannelName":null,"sinkChannelName":null}]}
+            // Example line:
+            // {"errors":null,
+            //  "success":[{"label":"mail","type":"source","name":"mail",
+            //              "options":{},"sourceChannelName":null,"sinkChannelName":null},
+            //             {"label":"log","type":"sink","name":"log",
+            //              "options":{},"sourceChannelName":null,"sinkChannelName":null}]}
             const line = parsedStreams.lines.shift();
             let streamName = '';
             let streamdef = '';
             // var streamStartNodeId = nodeId;
             let nameSet = false;
-            console.log('convertParseResponseToJsonGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
+            if (TextToGraphConverter.DEBUG) {
+                console.log('convertParseResponseToJsonGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
+            }
 
             // Build the graph/links if there was successfully parsed output
-            const parsedNodes = line.nodes;
+            const parsedNodes = <Parser.StreamApp[]>line.nodes;
             if (parsedNodes) {
                 let linkFrom = -1;
                 for (let n = 0; n < parsedNodes.length; n++) {
                     let linkType = null;
                     // Example node:
-                    // {"label":"mail","type":"source","name":"mail","options":{},"sourceChannelName":null,"sinkChannelName":null}
+                    // {"label":"mail","type":"source","name":"mail","options":{},
+                    //  "sourceChannelName":null,"sinkChannelName":null}
                     const parsedNode = parsedNodes[n];
-                    let graphNode = null;
+                    let graphNode: JsonGraph.Node = null;
                     let channelText;
                     let newlink;
                     // check for sourceChannelName
@@ -151,10 +122,7 @@ class TextToGraphConverter {
                         channelText = parsedNode.sourceChannelName;
                         if (channelText.startsWith('tap:')) { // TAP SOURCE
                             const tappedDestination = channelText.substring(4);
-                            // Is it a tap on a stream already seen?
                             const alreadyAllocated = streamAppsToIds[tappedDestination];
-                            console.log('Processing tap: ' + channelText + ' alreadyAllocated=' + alreadyAllocated);
-                            console.log(JSON.stringify(streamAppsToIds));
                             if (typeof alreadyAllocated !== 'undefined') {
                                 // No node for this tap, link from the already existing app to the next node
                                 linkFrom = alreadyAllocated;
@@ -162,7 +130,11 @@ class TextToGraphConverter {
                             } else {
                                 // Create new node
                                 const tapName = parsedNode.sourceChannelName.substring(4);
-                                graphNode = {'id': nodeId++, 'name': 'tap', 'properties': {'name': tapName}};
+                                graphNode = {
+                                    'id': nodeId++,
+                                    'name': 'tap',
+                                    'properties': new Map([['name', tapName]])
+                                };
                                 nodes.push(graphNode);
                                 linkFrom = graphNode.id;
                             }
@@ -172,22 +144,12 @@ class TextToGraphConverter {
                                 graphNode = {
                                     'id': nodeId++,
                                     'name': 'destination',
-                                    'properties': {'name': parsedNode.sourceChannelName}
+                                    'properties': new Map([['name', parsedNode.sourceChannelName]])
                                 };
                                 nodes.push(graphNode);
                             }
                             linkFrom = graphNode.id;
                         }
-                        // if (graphNode) {
-                        //     if (parsedNode.group) {
-                        //         nameSet = true;
-                        //         streamName = parsedNode.group;
-                        //         if (!streamName.startsWith('UNKNOWN_')) {
-                        //             graphNode['stream-name'] = parsedNode.group;
-                        //         }
-                        //         graphNode['stream-id'] = streamNumber++;
-                        //     }
-                        // }
                         if (channelText.startsWith('tap:')) {
                             channelText = channelText.substring(3); // TODO tidy up - do it here or sooner?
                         } else {
@@ -198,14 +160,19 @@ class TextToGraphConverter {
 
                     // Definitions like ":foo > :bar" results in a bridge node with channels set - do not create
                     // a node for the bridge.
-                    // Constructs like 'tap:stream:foo >' use a app with undefined name to hang the channel
-                    // off (the node isn't real, don't build graph elements for it)
-                    if (!(parsedNode.sourceChannelName && parsedNode.sinkChannelName && parsedNode.name === 'bridge') &&
+                    if (!(parsedNode.sourceChannelName &&
+                          parsedNode.sinkChannelName &&
+                          parsedNode.name === 'bridge') &&
                         parsedNode.name) {
                         if (n > 0) {
                             streamdef = streamdef + '| ';
                         }
-                        graphNode = {'id': nodeId++, 'label': parsedNode.label, 'name': parsedNode.name};
+                        graphNode = {
+                            'id': nodeId++,
+                            'label': parsedNode.label,
+                            'name': parsedNode.name,
+                            'range': parsedNode.range
+                            };
                         if (linkFrom !== -1) {
                             newlink = {'from': linkFrom, 'to': graphNode.id};
                             if (linkType) {
@@ -229,13 +196,11 @@ class TextToGraphConverter {
                             streamdef = streamdef + parsedNode.label + ': ';
                         }
                         streamdef = streamdef + graphNode.name + ' ';
-                        if (!_.isEmpty(parsedNode.options)) {
+                        if (parsedNode.options.size !== 0) {
                             graphNode.properties = parsedNode.options;
                             graphNode.propertiesranges = parsedNode.optionsranges;
-                            for (const key in graphNode.properties) {
-                                if (graphNode.properties.hasOwnProperty(key)) {
-                                    streamdef = streamdef + '--' + key + '=' + graphNode.properties[key] + ' ';
-                                }
+                            for (const key of Array.from(graphNode.properties.keys())) {
+                                streamdef = streamdef + '--' + key + '=' + graphNode.properties.get(key) + ' ';
                             }
                         }
                         if (parsedNode.range) {
@@ -252,7 +217,7 @@ class TextToGraphConverter {
                             graphNode = {
                                 'id': nodeId++,
                                 'name': 'destination',
-                                'properties': {'name': channelText}
+                                'properties': new Map([['name', channelText]])
                             };
                             nodes.push(graphNode);
                         }
@@ -274,7 +239,7 @@ class TextToGraphConverter {
                         linkFrom = graphNode.id;
                         if (!parsedNode.sourceChannelName || parsedNode.name !== 'bridge') {
                             // if it is a bridge then the source channel already added a '>'
-                            streamdef = streamdef + ' > ';
+                            streamdef = streamdef + '> ';
                         }
                         streamdef = streamdef + ':' + channelText;
                     }
@@ -284,9 +249,7 @@ class TextToGraphConverter {
                 if (streamName.startsWith('UNKNOWN_')) {
                     streamName = '';
                 }
-                // Create streamdef
                 streamdefs.push({'name': streamName, 'def': streamdef.trim()});
-
                 // Create links
 //    				for (var l=streamStartNodeId;l<(nodeId-1);l++) {
 //    					links.push({'from':l,'to':(l+1)});
@@ -294,63 +257,12 @@ class TextToGraphConverter {
             }
 
             if (line.errors) {
-                // Example errors:
-                // VALIDATION: {"message":"Could not find app with name 'bo' and type among [processor, sink]","position":null}
-                // SEVERE: {"message":"XD112E:(pos 5): Unexpectedly ran out of input\nbar |\n   * ^\n","position":5}
-                // SEVERE: {"message":"XD100E:(pos 14): Found unexpected data after stream definition:
-                // 'log'\nmail |  wibbe log |\n             *^\n","position":14}
-                // SEVERE: {"message":"XD102E:(pos 20): No whitespace allowed after argument name and
-                //                     before =\nrofo | asdfa --name = var\n            *       ^\n","position":20}]
                 for (let e = 0; e < line.errors.length; e++) {
                     const error = line.errors[e];
-
-                    let errorToRecord = null;
-                    // let range;
-                    // let errpos;
-                    // if (error.accurate) {
-                        // If accurate is set then the message is already correct and needs no processing.
-                        // Accurate messages are produced by the local parse.
-                        errorToRecord = error;
-                    // } else if (error.msg.startsWith('Could not find app with name')) {
-                    // 	range = {'start': {'ch': 0, 'line': lineNumber}, 'end': {'ch': 0, 'line': lineNumber}};
-                    // 	// "Could not find app with name 'abcd'"
-                    // 	var appName = error.msg.substring(error.msg.indexOf('\'') + 1);
-                    // 	appName = appName.substring(0, appName.indexOf('\''));
-                    // 	errpos = lineText.indexOf(appName);
-                    // 	if (lineText.indexOf(appName, errpos + 1) !== -1) {
-                    // 		// occurring more than once, let's not be too clever for now, just mark the line
-                    // 	} else {
-                    // 		// only occurs once, this must be it!
-                    // 		range = {
-                    // 			'start': {'ch': errpos, 'line': lineNumber},
-                    // 			'end': {'ch': errpos + appName.length, 'line': lineNumber}
-                    // 		};
-                    // 	}
-                    // 	// Have a go at finding the app - if it is unique we know we can point at the
-                    // 	// right now. If it isn't unique, they probably are all wrong !
-                    // 	errorToRecord = {'message': error.msg, 'range': range};
-                    // TODO don't need this anymore with all local parsing?
-                    // } else if (error.msg.startsWith('XD112E')) {
-                    // 	errpos = error.position;
-                    // 	range = {
-                    // 		'start': {'ch': errpos - 1, 'line': lineNumber},
-                    // 		'end': {'ch': errpos, 'line': lineNumber}
-                    // 	};
-                    // 	errorToRecord = {'message': error.message, 'range': range};
-                    // } else if (error.msg.startsWith('XD1')) {
-                    // 	errpos = error.position;
-                    // 	range = {
-                    // 		'start': {'ch': errpos, 'line': lineNumber},
-                    // 		'end': {'ch': errpos + 1, 'line': lineNumber}
-                    // 	};
-                    // 	errorToRecord = {'message': error.msg, 'range': range};
-                    // } else {
-                    // 	console.log('>>>>>> Did nothing with message: ' + JSON.stringify(error));
-                    // }
-                    if (errorToRecord) {
-                        console.log('updateGraphFn: Recording error ' + JSON.stringify(errorToRecord));
-                        errors.push(errorToRecord);
+                    if (TextToGraphConverter.DEBUG) {
+                        console.log('updateGraphFn: Recording error ' + JSON.stringify(error));
                     }
+                    errors.push(error);
                 }
             }
             lineNumber++;
@@ -361,7 +273,6 @@ class TextToGraphConverter {
         }
         return jsonGraph;
     }
-
 
     private matchGroup(name: string, incoming: number, outgoing: number): string {
         let score = Number.MIN_VALUE;
@@ -453,10 +364,7 @@ class TextToGraphConverter {
             } else {
                 md = group ? this.metamodel.get(group).get(name) : null;
             }
-                  const propertiesMap = new Map<string, any>();
-                  if (inputnodes[n].properties) {
-              Object.keys(inputnodes[n].properties).forEach(k => propertiesMap.set(k, inputnodes[n].properties[k]));
-            }
+            const propertiesMap = new Map(inputnodes[n].properties);
             const newNode = this.floEditorContext.createNode(md, propertiesMap);
             // Tap and Destination names are in 'props/name' property
             if (name !== 'tap' && name !== 'destination') {
@@ -482,7 +390,7 @@ class TextToGraphConverter {
         for (let l = 0; l < inputlinksCount; l++) {
             link = inputlinks[l];
             const props: Map<string, string> = new Map();
-            props['isTapLink'] = (link.linkType && link.linkType === 'tap') ? 'true' : 'false';
+            props['isTapLink'] = (link.linkType && link.linkType === 'tap') ? true : false;
             this.floEditorContext.createLink(
                 {'id': nodesIndex[link.from], 'selector': '.output-port', 'port': 'output' },
                 {'id': nodesIndex[link.to], 'selector': '.input-port', 'port': 'input'},
@@ -494,30 +402,13 @@ class TextToGraphConverter {
         this.floEditorContext.fitToPage();
     }
 
-
     public convert() {
         const jsonGraph = TextToGraphConverter.parseToJsonGraph(this.dsl);
-        console.log('jsongraph = ' + JSON.stringify(jsonGraph));
         if (jsonGraph && jsonGraph.nodes) {
-      this.floEditorContext.clearGraph();
-      this.buildFloGraphFromJsonGraph(jsonGraph);
+            this.floEditorContext.clearGraph();
+            this.buildFloGraphFromJsonGraph(jsonGraph);
+        }
     }
-        // this.parseAndRefreshGraph(this.dsl,
-        // 	(json) => {
-        // 		// flo.getGraph().clear();
-        // 		// this.load().then((metamodel) => {
-        // 		// 	this.buildGraphFromJson(flo, json, metamodel);
-        // 		// })
-        // 		console.log("parsed: "+json);
-        // 	},
-        // 	(errors) => {
-        // 		console.log("errors: "+errors);
-        // 	});
-    }
-
-    // parseAndRefreshGraph(dsl: string, updateGraphFunction, updateErrorsFunction) {
-    //     this.parseService.parseDsl(dsl);
-    // }
 }
 
 export namespace JsonGraph {
@@ -540,8 +431,8 @@ export namespace JsonGraph {
         name: string;
         label?: string;
         group?: string;
-        'stream-id': number;
-        range: Range;
+        'stream-id'?: number;
+        range?: Range; // optional for channels
         properties?: Map<string, string>;
         propertiesranges?: Map<string, Range>;
     }
@@ -550,6 +441,7 @@ export namespace JsonGraph {
         ch: number;
         line: number;
     }
+
     export interface Range {
         start: Pos;
         end: Pos;
@@ -563,9 +455,9 @@ export namespace JsonGraph {
 }
 
 export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
-    console.log('dsl = ' + dsl + '\nmetamodel=' + metamodel);
     new TextToGraphConverter(dsl, flo, metamodel).convert();
 }
+
 export function convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
   return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
 }
