@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Http, Response, RequestOptionsArgs } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import { ErrorHandler, Page } from '../shared/model';
 import { Counter } from './counters/model/counter.model';
 import { HttpUtils } from '../shared/support/http.utils';
-
+import { ToastyService } from 'ng2-toasty';
 /**
  * @author Gunnar Hillert
  */
@@ -23,10 +23,13 @@ export class AnalyticsService {
   public counterPoller: Subscription;
   public countersCache: number[];
 
-  constructor(private http: Http, private errorHandler: ErrorHandler) {
+  constructor(
+    private http: Http,
+    private errorHandler: ErrorHandler,
+    private toastyService: ToastyService) {
   }
 
-  set counterInterval(rate: number) {
+  public set counterInterval(rate: number) {
     if (rate && !isNaN(rate)) {
       if (rate < 0.01) {
           rate = 0;
@@ -42,7 +45,7 @@ export class AnalyticsService {
     }
   }
 
-  get counterInterval(): number {
+  public get counterInterval(): number {
     return this._counterInterval;
   }
 
@@ -50,20 +53,39 @@ export class AnalyticsService {
     return Math.max(Math.ceil(60 / this._counterInterval), 20);
   }
 
-  startPollingForCounters() {
+  /**
+   * Starts the polling process for counters. Method
+   * will check if the poller is already running and will
+   * start the poller only if the poller is undefined or
+   * stopped.
+   */
+  public startPollingForCounters() {
     if (!this.counterPoller || this.counterPoller.closed) {
       this.counterPoller = Observable.interval(this._counterInterval * 1000)
-        .switchMap(() => this.getAllCounters(true)).subscribe();
+        .switchMap(() => this.getAllCounters(true)).subscribe(
+          result => {},
+          error => {
+            this.toastyService.error(error);
+        });
     }
   }
 
-  stopPollingForCounters() {
+  /**
+   * Stops the polling process for counters if the poller
+   * is running and is defined.
+   */
+  public stopPollingForCounters() {
     if (this.counterPoller && !this.counterPoller.closed) {
       this.counterPoller.unsubscribe();
     }
   }
 
-  getAllCounters(detailed = false): Observable<Page<Counter>> {
+  /**
+   * Retrieves all counters. Will take pagination into account.
+   *
+   * @param detailed If true will request additional counter values from the REST endpoint
+   */
+  public getAllCounters(detailed = false): Observable<Page<Counter>> {
 
       if (!this.counters) {
         this.counters = new Page<Counter>();

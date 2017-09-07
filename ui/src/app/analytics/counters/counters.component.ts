@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -22,7 +22,7 @@ import { Counter } from './model/counter.model';
 @Component({
   templateUrl: './counters.component.html'
 })
-export class CountersComponent implements OnInit {
+export class CountersComponent implements OnInit, OnDestroy {
 
   public refreshRate: number;
 
@@ -43,6 +43,10 @@ export class CountersComponent implements OnInit {
   ngOnInit() {
     this.startPollingForCounters();
     this.refreshRate = this.analyticsService.counterInterval;
+  }
+
+  ngOnDestroy() {
+    this.analyticsService.stopPollingForCounters();
   }
 
   /**
