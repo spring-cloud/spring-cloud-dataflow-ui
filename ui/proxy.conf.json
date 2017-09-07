@@ -24,6 +24,11 @@
         "secure": false,
         "logLevel": "debug"
     },
+    "/metrics" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
     "/security/info" : {
         "target": "http://localhost:9393/",
         "secure": false,
