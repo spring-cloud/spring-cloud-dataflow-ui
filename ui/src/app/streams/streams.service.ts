@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import { StreamDefinition } from './model/stream-definition';
 import { Page } from '../shared/model/page';
 import { ErrorHandler } from '../shared/model/error-handler';
-import { HttpUtils } from '../shared/support/http.utils';
+import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -85,7 +85,7 @@ export class StreamsService {
   }
 
   createDefinition(name: string, dsl: string, deploy?: boolean): Observable<Response> {
-    const params =  new URLSearchParams();
+    const params =  new URLSearchParams('', URL_QUERY_ENCODER);
     params.append('name', name);
     params.append('definition', dsl);
     if (deploy) {

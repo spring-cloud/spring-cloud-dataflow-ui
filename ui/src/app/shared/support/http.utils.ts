@@ -1,4 +1,4 @@
-import { Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { Headers, RequestOptions, URLSearchParams, QueryEncoder } from '@angular/http';
 
 /**
  * Contains common HTTP-related helper methods.
@@ -25,3 +25,17 @@ export class HttpUtils {
     return params;
   }
 }
+
+class UrlQueryEncoder extends QueryEncoder {
+
+  encodeKey(k: string): string {
+    return super.encodeKey(k).replace(/\+/gi, '%2B');
+  }
+
+  encodeValue(v: string): string {
+    return super.encodeValue(v).replace(/\+/gi, '%2B');
+  }
+
+}
+
+export const URL_QUERY_ENCODER = new UrlQueryEncoder();
