@@ -257,17 +257,6 @@ export class RenderService implements Flo.Renderer {
     initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor) {
         link.set('smooth', true);
         link.attr('metadata/metadata/unselectable', true);
-        // var isTapLink = link.attr('props/isTapLink');
-        // if (isTapLink) {
-        //     var linkView = paperAndGraph.paper.findViewByModel(link);
-        //     _.each(linkView.el.querySelectorAll('.connection, .marker-source, .marker-target'), function(connection) {
-        //         joint.V(connection).addClass('tapped-output-from-app');
-        //     });
-        // }
-        // TODO remove this on link delete !!
-        // paperAndGraph.paper.findViewByModel(link).on('switch',function() {
-        //     handleLinkEvent(paperAndGraph.paper, 'switch', link);
-        // });
     }
 
     isSemanticProperty(propertyPath: string): boolean {
@@ -547,21 +536,6 @@ export class RenderService implements Flo.Renderer {
             link.attr('props/isTapLink', true);
         }
         this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
-        // if (source) {
-        //     var outputLinks = graph.getConnectedLinks(source, {outbound: true});
-        //     var isPrimaryLink = true;
-        //     for (var i=0;i<outputLinks.length;i++) {
-        //         var ol = outputLinks[i];
-        //         if (ol === link || (ol.attr('props/isTapLink'))) {
-        //             continue;
-        //         }
-        //         isPrimaryLink = false;
-        //         break;
-        //     }
-        //     console.log("marking primary? "+isPrimaryLink);
-        //     link.attr('props/isTapLink',isPrimaryLink?false:true);
-        //     refreshVisuals(link, 'props/isTapLink', paper);
-        // }
     }
 
     handleLinkAdded(link: dia.Link, flo: Flo.EditorContext) {
