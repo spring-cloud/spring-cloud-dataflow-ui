@@ -45,8 +45,10 @@ export class GraphChartComponent implements OnInit {
 
   constructor() { }
 
+  /**
+   * Initialize the component and trigger the rendering of the chart.
+   */
   ngOnInit() {
-    console.log('this.data', this.chartData);
     if (this.chartData) {
       this.renderChart();
     }
@@ -63,7 +65,7 @@ export class GraphChartComponent implements OnInit {
     this.renderChart();
   }
 
-  renderChart() {
+  private renderChart() {
     const chartElement = this.chartContainer.nativeElement;
     const parentElement = chartElement.parentElement.parentElement;
     const computedStyle = getComputedStyle(parentElement);

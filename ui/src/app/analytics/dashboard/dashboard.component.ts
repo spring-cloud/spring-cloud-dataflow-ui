@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 /**
- * Main entry point to the Analytics Module. Provides
- * the ability to register various counters.
+ * The dashboard component provides
+ * the ability to register various types of counters.
  *
  * @author Gunnar Hillert
  */

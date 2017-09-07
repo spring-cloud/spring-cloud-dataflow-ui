@@ -1,15 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
-
 import { AnalyticsService } from '../analytics.service';
 import { Page } from '../../shared/model';
-
-import { ToastyService } from 'ng2-toasty';
-
 import { ModalDirective } from 'ngx-bootstrap/modal';
-
 import { Counter } from './model/counter.model';
 
 /**
@@ -30,11 +24,7 @@ export class CountersComponent implements OnInit, OnDestroy {
     return this.analyticsService.counters;
   }
 
-  constructor(
-    public analyticsService: AnalyticsService,
-    private toastyService: ToastyService,
-    private router: Router ) {
-    }
+  constructor(public analyticsService: AnalyticsService) {}
 
   /**
    * As soon as the page loads we start the process of polling
@@ -45,6 +35,10 @@ export class CountersComponent implements OnInit, OnDestroy {
     this.refreshRate = this.analyticsService.counterInterval;
   }
 
+  /**
+   * When the component is destroyed, make sure the poller is
+   * stopped also.
+   */
   ngOnDestroy() {
     this.analyticsService.stopPollingForCounters();
   }
@@ -68,12 +62,20 @@ export class CountersComponent implements OnInit, OnDestroy {
     this.analyticsService.counters.pageNumber = page - 1;
   }
 
+  /**
+   * Returns the size of the rate-cache from the underlying
+   * {@link AnalyticsService}.
+   */
   public totalCacheSize(): number {
     return this.analyticsService.totalCacheSize();
   }
 
+  /**
+   * Changes the refresh rate of the poller to the value
+   * specified in "this.refreshRate".
+   */
   public changeRefreshRate() {
-    console.log('Changing refreshrate to ...' + this.refreshRate);
+    console.log('Changing refresh rate to ...' + this.refreshRate);
     this.analyticsService.counterInterval = this.refreshRate;
   }
 }
