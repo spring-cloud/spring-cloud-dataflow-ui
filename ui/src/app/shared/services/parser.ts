@@ -13,22 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 import { TokenKind } from './tokenizer';
 import { Token } from './tokenizer';
 import { tokenize } from './tokenizer';
 
-interface Ugly {
-    group: string;
-    label?: string;
-    type: string;
-    name: string;
-    range: Parser.Range;
-    options?;
-    optionsranges?: Parser.Range[];
-    sourceChannelName?: string;
-    sinkChannelName?: string;
-}
 /**
  * Parse a textual stream definition.
  *
@@ -36,6 +24,8 @@ interface Ugly {
  * @author Alex Boyko
  */
 class InternalParser {
+
+    static DEBUG = false;
 
     private lines: Parser.Line[] = [];
     private mode: string; // stream or task, defaults to stream
@@ -106,10 +96,8 @@ class InternalParser {
         return false;
     }
 
-    private noMorePipes(tp?: number): boolean {
-        if (!tp) {
-            tp = this.tokenStreamPointer;
-        }
+    private noMorePipes(): boolean {
+        let tp = this.tokenStreamPointer;
         while (tp < this.tokenStreamLength) {
             if (this.tokenStream[tp++].kind === TokenKind.PIPE) {
                 return false;
@@ -253,19 +241,13 @@ class InternalParser {
     }
 
     // argValue: identifier | literal_string
-    private eatArgValue() {
+    private eatArgValue(): string {
         const t = this.nextToken();
-        let argValue = null;
-        if (this.isKind(t, TokenKind.IDENTIFIER)) {
-            argValue = t.data;
-        } else if (this.isKind(t, TokenKind.LITERAL_STRING)) {
-            argValue = t.data;
-            // var quotesUsed = t.data.substring(0, 1);
-            // argValue = t.data.substring(1, t.data.length - 1).replace(quotesUsed + quotesUsed, quotesUsed);
+        if (this.isKind(t, TokenKind.IDENTIFIER) || this.isKind(t, TokenKind.LITERAL_STRING)) {
+            return t.data;
         } else {
             throw {'msg': 'expected argument value', 'start': t.start};
         }
-        return argValue;
     }
 
     /**
@@ -275,7 +257,7 @@ class InternalParser {
      */
     private eatDottedName(errorMessage?: string): Token[] {
         if (!errorMessage) {
-            errorMessage = 'not expected token';
+            errorMessage = 'expected identifier';
         }
         const result: Token[] = [];
         const name = this.nextToken();
@@ -297,12 +279,8 @@ class InternalParser {
     }
 
     // appArguments : DOUBLE_MINUS identifier(name) EQUALS identifier(value)
-    private maybeEatAppArgs() {
-        let args = null;
-        // TODO not entirely sure this first problem can happen since dashes can now be in the app names
-        if (this.peekToken(TokenKind.DOUBLE_MINUS) && this.isNextTokenAdjacent()) {
-            throw {'msg': 'Expected whitespace after app name before option', 'start': this.peekAtToken().start};
-        }
+    private maybeEatAppArgs(): Parser.Option[] {
+        let args: Parser.Option[] = null;
         while (this.peekToken(TokenKind.DOUBLE_MINUS)) {
             const dashDash = this.nextToken(); // skip the '--'
             if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
@@ -318,7 +296,6 @@ class InternalParser {
             if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
                 throw {'msg': 'No whitespace allowed before option value', 'start': equalsToken.end, 'end': this.peekAtToken().start};
             }
-            // Process argument value:
             const t = this.peekAtToken();
             const argValue = this.eatArgValue();
             if (args === null) {
@@ -345,7 +322,7 @@ class InternalParser {
             name = this.eatToken(TokenKind.IDENTIFIER);
         }
         const appNameToken = name;
-        const args = this.maybeEatAppArgs();
+        const args: Parser.Option[] = this.maybeEatAppArgs();
         const startpos = label !== null ? label.start : appNameToken.start;
         const appNode: Parser.AppNode = {'name': appNameToken.data, 'start': startpos, 'end': appNameToken.end};
         if (label) {
@@ -354,7 +331,6 @@ class InternalParser {
         if (args) {
             appNode.options = args;
         }
-
         return appNode;
     }
 
@@ -381,10 +357,7 @@ class InternalParser {
         if (token.data) {
             return token.data;
         }
-        if (token.kind) {
-            return token.kind;
-        }
-        return JSON.stringify(token);
+        return token.kind;
     }
 
     // (name =)
@@ -453,7 +426,7 @@ class InternalParser {
 
         const sourceChannelNode = this.maybeEatSourceChannel();
 
-        // the construct queue:foo > topic:bar is a source then a sink with no app. Special handling for
+        // the construct :foo > :bar is a source then a sink with no app. Special handling for
         // that is right here
         let bridge = false;
         if (sourceChannelNode) { // so if we are just after a '>'
@@ -471,12 +444,11 @@ class InternalParser {
             return streamNode;
         }
 
-        let appNodes = null;
+        let appNodes: Parser.AppNode[] = null;
         if (bridge) {
             // Create a bridge app to hang the source/sink channels off
             this.tokenStreamPointer--; // Rewind so we can nicely eat the sink channel
-            appNodes = [];
-            appNodes.push({'name': 'bridge', 'start': this.peekAtToken().start, 'end': this.peekAtToken().end});
+            appNodes = [{'name': 'bridge', 'start': this.peekAtToken().start, 'end': this.peekAtToken().end}];
         } else {
             appNodes = this.eatAppList();
         }
@@ -494,24 +466,25 @@ class InternalParser {
         return streamNode;
     }
 
-    // TODO switch to the var x= (function() {... return yyy; })(); model
-    // mode may be 'task' or 'stream' - will default to 'stream'
-    public parse() {
+    public parse(): Parser.ParseResult {
         let start, end, errorToRecord;
         let line: Parser.Line;
         for (let lineNumber = 0; lineNumber < this.textlines.length; lineNumber++) {
             try {
                 line = {};
                 line.errors = null;
-
                 this.text = this.textlines[lineNumber];
                 if (this.text.trim().length === 0) {
                     this.lines.push({'nodes': [], 'errors': []});
                     continue;
                 }
-                console.log('JSParse: processing ' + this.text);
+                if (InternalParser.DEBUG) {
+                    console.log('JSParse: processing ' + this.text);
+                }
                 this.tokenStream = tokenize(this.text);
-                console.log('JSParse: tokenized to ' + JSON.stringify(this.tokenStream));
+                if (InternalParser.DEBUG) {
+                    console.log('JSParse: tokenized to ' + JSON.stringify(this.tokenStream));
+                }
                 this.tokenStreamPointer = 0;
                 this.tokenStreamLength = this.tokenStream.length;
                 // time | log
@@ -521,27 +494,26 @@ class InternalParser {
 
                 let errorsToProcess: Parser.Error[] = [];
                 const success = [];
-                let app;
+                let app: Parser.AppNode;
                 let option;
-                let options;
-                let optionsranges;
+                let options: Map<string, string>;
+                let optionsranges: Map<string, Parser.Range>;
                 if (this.mode === 'task') {
                     const taskdef = this.eatTaskDefinition(lineNumber);
-                    // $log.info('JSParse: parsed to task definition: '+JSON.stringify(taskdef));
                     app = taskdef.app;
                     if (app) {
-                        options = {};
-                        optionsranges = {};
+                        options = new Map();
+                        optionsranges = new Map();
                         if (app.options) {
                             for (let o1 = 0; o1 < app.options.length; o1++) {
                                 option = app.options[o1];
-                                options[option.name] = option.value;
-                                optionsranges[option.name] = {
+                                options.set(option.name, option.value);
+                                optionsranges.set(option.name, {
                                      'start': {'ch': option.start, 'line': lineNumber},
-                                     'end': {'ch': option.end, 'line': lineNumber}};
+                                     'end': {'ch': option.end, 'line': lineNumber}});
                             }
                         }
-                        const taskObject: Parser.ParsedTask = {
+                        const taskObject: Parser.TaskApp = {
                             group: taskdef.name,
                             grouprange: taskdef.namerange,
                             type: 'task',
@@ -557,7 +529,6 @@ class InternalParser {
                     }
                 } else {
                     const streamdef = this.eatStream(lineNumber);
-                    console.log('JSParse: parsed to stream definition: ' + JSON.stringify(streamdef));
                     // streamDef = {"apps":[{"name":"time","start":0,"end":4},{"name":"log","start":7,"end":10}]}
 
                     // {"lines":[{"errors":null,"success":
@@ -565,7 +536,9 @@ class InternalParser {
                     //   "sourceChannelName":null,"sinkChannelName":null},{"group":"UNKNOWN_1","label":"log","type":"sink","name":"log",
                     //   "options":{},"sourceChannelName":null,"sinkChannelName":null}]
                     // }],"links":[]}
-
+                    if (InternalParser.DEBUG) {
+                        console.log('JSParse: parsed to stream definition: ' + JSON.stringify(streamdef));
+                    }
                     const streamName = streamdef.name ? streamdef.name : 'UNKNOWN_' + lineNumber;
                     if (streamdef.apps) {
                         const alreadySeen = {};
@@ -589,18 +562,17 @@ class InternalParser {
                                 sinkChannelName = streamdef.sinkChannel.channel.name;
                             }
                             app = streamdef.apps[m];
-
-                            options = {};
-                            optionsranges = {};
+                            options = new Map();
+                            optionsranges = new Map();
                             if (app.options) {
                                 for (let o2 = 0; o2 < app.options.length; o2++) {
                                     option = app.options[o2];
-                                    options[option.name] = option.value;
-                                    optionsranges[option.name] = {'start': {'ch': option.start, 'line': lineNumber},
-                                      'end': {'ch': option.end, 'line': lineNumber}};
+                                    options.set(option.name, option.value);
+                                    optionsranges.set(option.name, {'start': {'ch': option.start, 'line': lineNumber},
+                                      'end': {'ch': option.end, 'line': lineNumber}});
                                 }
                             }
-                            const uglyObject: Ugly = {
+                            const streamObject: Parser.StreamApp = {
                                 group: streamName,
                                 type: expectedType,
                                 name: app.name,
@@ -609,13 +581,13 @@ class InternalParser {
                                 range: {'start': {'ch': app.start, 'line': lineNumber}, 'end': {'ch': app.end, 'line': lineNumber}}
                             };
                             if (app.label) {
-                                uglyObject.label = app.label;
+                                streamObject.label = app.label;
                             }
-                            uglyObject.sourceChannelName = sourceChannelName;
-                            uglyObject.sinkChannelName = sinkChannelName;
-                            success.push(uglyObject);
+                            streamObject.sourceChannelName = sourceChannelName;
+                            streamObject.sinkChannelName = sinkChannelName;
+                            success.push(streamObject);
 
-                            const nameToCheck = uglyObject.label ? uglyObject.label : uglyObject.name;
+                            const nameToCheck = streamObject.label ? streamObject.label : streamObject.name;
                             // Check that each app has a unique label (either explicit or implicit)
                             const previous = alreadySeen[nameToCheck];
                             if (typeof previous === 'number') {
@@ -626,7 +598,7 @@ class InternalParser {
                                         '\' (at app position ' + previous + ') both use it'
                                         : 'App \'' + app.name +
                                         '\' should be unique within the stream, use a label to differentiate multiple occurrences',
-                                    'range': uglyObject.range
+                                    'range': streamObject.range
                                 });
                             } else {
                                 alreadySeen[nameToCheck] = m;
@@ -656,87 +628,93 @@ class InternalParser {
                         errorToRecord = {};
                         errorToRecord.accurate = true;
                         errorToRecord.message = error.message;
-                        if (error.range) {
-                            errorToRecord.range = error.range;
-                        } else {
-                            console.error('ERROR: WHAT ARE WE DEALING WITH HERE?');
-                            // start = error.start;
-                            // end = typeof error.end === 'number' ? error.end : start+1;
-                            // errorToRecord.range = {'start':{'ch':start,'line':lineNumber},'end':{'ch':end,'line':lineNumber}};
-                        }
+                        errorToRecord.range = error.range;
                         line.errors.push(errorToRecord);
                     }
                 }
-                    // $log.info('JSParse: translated to '+JSON.stringify(line));
-                    this.lines.push(line);
-                } catch (err) {
+                this.lines.push(line);
+            } catch (err) {
+                if (InternalParser.DEBUG) {
                     console.log('ERROR PROCESSING: ' + JSON.stringify(err));
-                    if (typeof err === 'object' && err.msg) {
-                        if (!line.errors) {
-                            line.errors = [];
-                        }
-                        errorToRecord = {};
-                        errorToRecord.accurate = true;
-                        errorToRecord.message = err.msg;
-                        if (err.range) {
-                            errorToRecord.range = err.range;
-                        } else {
-                            start = err.start;
-                            end = typeof err.end === 'number' ? err.end : start + 1;
-                            errorToRecord.range = {'start': {'ch': start, 'line': lineNumber}, 'end': {'ch': end, 'line': lineNumber}};
-                        }
-                        line.errors.push(errorToRecord);
-                        this.lines.push(line);
-
-                        let str = '';
-                        for (let i = 0; i < err.start; i++) {
-                            str += ' ';
-                        }
-                        str += '^';
-                        console.error(str);
-                        console.error(err.msg);
-                    } else {
-                        console.error(err);
+                }
+                if (typeof err === 'object' && err.msg) {
+                    if (!line.errors) {
+                        line.errors = [];
                     }
+                    errorToRecord = {};
+                    errorToRecord.accurate = true;
+                    errorToRecord.message = err.msg;
+                    if (err.range) {
+                        errorToRecord.range = err.range;
+                    } else {
+                        start = err.start;
+                        end = typeof err.end === 'number' ? err.end : start + 1;
+                        errorToRecord.range = {'start': {'ch': start, 'line': lineNumber}, 'end': {'ch': end, 'line': lineNumber}};
+                    }
+                    line.errors.push(errorToRecord);
+                    this.lines.push(line);
+
+                    let str = '';
+                    for (let i = 0; i < err.start; i++) {
+                        str += ' ';
+                    }
+                    str += '^';
+                    console.error(str);
+                    console.error(err.msg);
                 }
             }
-            return {'lines': this.lines};
         }
+        return {'lines': this.lines};
+    }
 }
 
 
 export namespace Parser {
+
     export interface Pos {
         ch: number;
         line: number;
     }
+
     export interface Range {
         start: Pos;
         end: Pos;
     }
+
     export interface Error {
         message: String;
         range: Range;
     }
+
     export interface DestinationReference {
         type: string;
         name: string;
         start: number;
         end: number;
     }
+
     export interface TaskNode {
         app?: AppNode;
         name?: string;
         namerange?: Range;
         errors?: Error[];
     }
+
     export interface AppNode {
         label?: string;
         name: string;
-        options?;
+        options?: Parser.Option[];
         start: number;
         end: number;
     }
+
+    export interface Option {
+        name: string;
+        value: string;
+        start: number;
+        end: number;
+    }
+
     export interface StreamDef {
         name?: string;
         apps?: AppNode[];
@@ -744,35 +722,34 @@ export namespace Parser {
         sinkChannel?: ChannelReference;
         errors?: Error[];
     }
+
     export interface ChannelReference {
         channel: DestinationReference;
         start?: number;
         end?: number;
     }
-    export interface ParsedTask {
+
+    export interface Node {
         group: string;
-        grouprange: Range;
         type: string;
         name: string;
-        range: Range;
-        options;
-        optionsranges: Range[];
+        range: Parser.Range;
+        options?: Map<string, string>;
+        optionsranges?: Map<string, Parser.Range>;
+    }
+
+    export interface StreamApp extends Node {
+        label?: string;
+        sourceChannelName?: string;
+        sinkChannelName?: string;
+    }
+
+    export interface TaskApp extends Node {
+        grouprange: Range;
     }
 
     export interface ParseResult {
         lines: Line[];
-    }
-
-    export interface Node {
-        group: string;
-        label?: string;
-        type: string;
-        name: string;
-        range: Parser.Range;
-        options?;
-        optionsranges?: Parser.Range[];
-        sourceChannelName?: string;
-        sinkChannelName?: string;
     }
 
     export interface Line {
