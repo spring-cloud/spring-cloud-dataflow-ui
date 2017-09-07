@@ -13,11 +13,13 @@ import * as d3 from 'd3';
   styleUrls: ['./graph-chart.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphChartComponent implements OnInit {
+export class GraphChartComponent implements OnInit, DoCheck {
   @ViewChild('chart') private chartContainer: ElementRef;
 
   @Input()
   private chartData: Array<number>;
+
+  private chartDataCopy: Array<number>;
 
   @Input()
   private width: number;
@@ -36,6 +38,7 @@ export class GraphChartComponent implements OnInit {
 
   @Input()
   private unitsPerTickX: number;
+  private unitsPerTickXCopy: number;
 
   @Input()
   private axisUnitsY: string;
@@ -50,8 +53,39 @@ export class GraphChartComponent implements OnInit {
    */
   ngOnInit() {
     if (this.chartData) {
+      this.chartDataCopy = this.chartData.slice();
+      this.unitsPerTickXCopy = this.unitsPerTickX;
       this.renderChart();
     }
+  }
+
+  /**
+   * Check if array data has changed. If it did change, render the chart.
+   */
+  ngDoCheck() {
+    if (this.unitsPerTickXCopy !== this.unitsPerTickX
+        || !this.isArraySame(this.chartDataCopy, this.chartData)) {
+      this.chartDataCopy = this.chartData.slice();
+      this.unitsPerTickXCopy = this.unitsPerTickX;
+      this.renderChart();
+    }
+  }
+
+  private isArraySame(array1: number[], array2: number[]): boolean {
+    if ((!array1 && array2) || (array2 && !array2)) {
+      return false;
+    }
+
+    if (array1.length !== array2.length) {
+      return false;
+    }
+
+    for (let i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) {
+          return false;
+      }
+    }
+    return true;
   }
 
   /**

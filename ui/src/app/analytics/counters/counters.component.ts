@@ -19,6 +19,7 @@ import { Counter } from './model/counter.model';
 export class CountersComponent implements OnInit, OnDestroy {
 
   public refreshRate: number;
+  public refreshRateFormField: number;
 
   get counters() {
     return this.analyticsService.counters;
@@ -33,6 +34,7 @@ export class CountersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.startPollingForCounters();
     this.refreshRate = this.analyticsService.counterInterval;
+    this.refreshRateFormField = this.analyticsService.counterInterval;
   }
 
   /**
@@ -42,6 +44,8 @@ export class CountersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.analyticsService.stopPollingForCounters();
   }
+
+  trackByIndex(index: number, data: any) { return index; }
 
   /**
    * Load a paginated list of {@link Counter}s.
@@ -75,7 +79,8 @@ export class CountersComponent implements OnInit, OnDestroy {
    * specified in "this.refreshRate".
    */
   public changeRefreshRate() {
-    console.log('Changing refresh rate to ...' + this.refreshRate);
-    this.analyticsService.counterInterval = this.refreshRate;
+    console.log('Changing refresh rate to ...' + this.refreshRateFormField);
+    this.analyticsService.counterInterval = this.refreshRateFormField;
+    this.refreshRate = this.analyticsService.counterInterval;
   }
 }

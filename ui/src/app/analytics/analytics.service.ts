@@ -34,12 +34,17 @@ export class AnalyticsService {
       if (rate < 0.01) {
           rate = 0;
           this.stopPollingForCounters();
+          this.toastyService.success(`Polling stopped.`);
       } else {
         console.log('Setting interval to ' + rate);
         this._counterInterval = rate;
         if (this.counterPoller && !this.counterPoller.closed) {
           this.stopPollingForCounters();
           this.startPollingForCounters();
+          this.toastyService.success(`Polling interval changed to ${rate}s.`);
+        } else {
+          this.startPollingForCounters();
+          this.toastyService.success(`Polling started with interval of ${rate}s.`);
         }
       }
     }

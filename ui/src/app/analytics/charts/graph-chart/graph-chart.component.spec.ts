@@ -16,7 +16,6 @@ describe('GraphChartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GraphChartComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should be created', () => {
