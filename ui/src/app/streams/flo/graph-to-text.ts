@@ -102,7 +102,7 @@ class GraphToTextConverter {
     }
 
     private isTapLink(link): boolean {
-        return link.attr('props/isTapLink') === 'true';
+        return link.attr('props/isTapLink');
     }
 
     private printStream(stream): void {

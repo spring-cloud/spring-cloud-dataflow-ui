@@ -256,18 +256,7 @@ export class RenderService implements Flo.Renderer {
 
     initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor) {
         link.set('smooth', true);
-        link.attr('metadata/metadata/unselectable', 'true');
-        // var isTapLink = link.attr('props/isTapLink');
-        // if (isTapLink === 'true') {
-        //     var linkView = paperAndGraph.paper.findViewByModel(link);
-        //     _.each(linkView.el.querySelectorAll('.connection, .marker-source, .marker-target'), function(connection) {
-        //         joint.V(connection).addClass('tapped-output-from-app');
-        //     });
-        // }
-        // TODO remove this on link delete !!
-        // paperAndGraph.paper.findViewByModel(link).on('switch',function() {
-        //     handleLinkEvent(paperAndGraph.paper, 'switch', link);
-        // });
+        link.attr('metadata/metadata/unselectable', true);
     }
 
     isSemanticProperty(propertyPath: string): boolean {
@@ -312,9 +301,9 @@ export class RenderService implements Flo.Renderer {
             if (changedPropertyPath === 'props/isTapLink') {
                 const isTapLink = link.attr('props/isTapLink');
                 const linkView = paper.findViewByModel(link);
-                console.log('Adjusting link class isTapLink?' + isTapLink);
+                console.log('Adjusting link class isTapLink? ' + isTapLink);
                 // TODO: Check if need to switch bacl to _.each(...)
-                if (isTapLink === 'true') {
+                if (isTapLink) {
                     linkView.el.querySelectorAll('.connection, .marker-source, .marker-target')
                       .forEach(connection => joint.V(connection).addClass('tapped-output-from-app'));
                 } else {
@@ -356,8 +345,8 @@ export class RenderService implements Flo.Renderer {
         return Promise.resolve(layout(paper));
     }
 
-    handleLinkSourceChanged(link: dia.Link, paper: dia.Paper) {
-        const graph = paper.model;
+    handleLinkSourceChanged(link: dia.Link, flo: Flo.EditorContext) {
+        const graph = flo.getGraph();
         const newSourceId = link.get('source').id;
         const oldSourceId = link.previous('source').id;
         const targetId = link.get('target').id;
@@ -365,6 +354,16 @@ export class RenderService implements Flo.Renderer {
             const newSource = graph.getCell(newSourceId);
             const oldSource = graph.getCell(oldSourceId);
             const target = graph.getCell(targetId);
+
+            // If reconnecting source anchor to a shape with existing primary link switch the link to tap link
+            if (newSource) {
+              const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
+              const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
+
+              link.attr('props/isTapLink', primaryLink ? true : false);
+              this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
+            }
+
             // Show input port for 'destination' if outgoing links are gone
             if (oldSource && oldSource.attr('metadata/name') === 'destination'
               /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
@@ -385,20 +384,19 @@ export class RenderService implements Flo.Renderer {
             }
 
             // If tap link has been reconnected update the stream-label for the target if necessary
-            // TODO: Isn't tap port removed?
             if (target) {
-                if (link.previous('source').port === 'tap') {
+                if (link.attr('props/isTapLink')) {
                     target.attr('.stream-label/display', 'none');
                 }
-                if (link.get('source').port === 'tap') {
+                if (link.attr('props/isTapLink')) {
                     target.attr('.stream-label/display', 'block');
                 }
             }
         }
     }
 
-    handleLinkTargetChanged(link: dia.Link, paper: dia.Paper) {
-        const graph = paper.model;
+    handleLinkTargetChanged(link: dia.Link, flo: Flo.EditorContext) {
+        const graph = flo.getGraph();
         const newTargetId = link.get('target').id;
         const oldTargetId = link.previous('target').id;
         if (newTargetId !== oldTargetId) {
@@ -428,8 +426,7 @@ export class RenderService implements Flo.Renderer {
             }
 
             // If tap link has been reconnected update the stream-label for the new target and old target
-            // TODO: Isn't tap port removed?
-            if (link.get('source').port === 'tap') {
+            if (link.attr('props/isTapLink')) {
                 if (oldTarget) {
                     oldTarget.attr('.stream-label/display', 'none');
                 }
@@ -441,8 +438,8 @@ export class RenderService implements Flo.Renderer {
         }
     }
 
-    handleLinkRemoved(link: dia.Link, paper: dia.Paper) {
-        const graph = paper.model;
+    handleLinkRemoved(link: dia.Link, flo: Flo.EditorContext) {
+        const graph = flo.getGraph();
         const source = graph.getCell(link.get('source').id);
         const target = graph.getCell(link.get('target').id);
         let view: dia.CellView;
@@ -452,7 +449,7 @@ export class RenderService implements Flo.Renderer {
             // Set silently, last attr call would refresh the view
             (<any>source).attr('.stream-label/display', 'none', {silent: true});
             source.removeAttr('.input-port/display');
-            view = paper.findViewByModel(source);
+            view = flo.getPaper().findViewByModel(source);
             if (view) {
                 (<any>view).update();
             }
@@ -463,14 +460,13 @@ export class RenderService implements Flo.Renderer {
             // Set silently, last attr call would refresh the view
             (<any>target).attr('.stream-label/display', 'none', {silent: true});
             target.removeAttr('.output-port/display');
-            view = paper.findViewByModel(target);
+            view = flo.getPaper().findViewByModel(target);
             if (view) {
                 (<any>view).update();
             }
         }
         // If tap link is removed update stream-name value for the target, i.e. don't display stream anymore
-        // TODO: Isn't tap port removed?
-        if (link.get('source').port === 'tap' && target) {
+        if (link.attr('props/isTapLink') && target) {
             target.attr('.stream-label/display', 'none');
         }
     }
@@ -481,115 +477,78 @@ export class RenderService implements Flo.Renderer {
         return `${source ? source.attr('metadata/name') : '?'} -> ${target ? target.attr('metadata/name') : '?'}`;
     }
 
-    // TODO: Rewrite this! Should be creating elements on the graph manually!
     // Should pass use Flo.EditorContext and pass metadata, props etc.
-    handleLinkInsertChannel(link: dia.Link, paper: dia.Paper) {
-        const graph = paper.model;
+    handleLinkInsertChannel(link: dia.Link, flo: Flo.EditorContext) {
+        const graph = flo.getGraph();
         const source = graph.getCell(link.get('source').id);
         const target = graph.getCell(link.get('target').id);
         // Create a node
         this.metamodelService.load().then(mm => {
-            const metadata = Flo.getMetadata(mm, 'destination', 'other');
-            const newDestinationNode = new joint.shapes.flo.Destination(
-                joint.util.deepSupplement({
-                    attrs: {
-                        '.box': {
-                            'fill': '#eeeeff',
-                            'stroke': '#0000ff'
-                        },
-                        '.label1': {
-                            'text': metadata.name
-                        },
-                        '.label2': {
-                            'text': metadata.metadata.unicodeChar
-                        }
-                    }
-                }, joint.shapes.flo.Destination.prototype.defaults)
-            );
 
             let sourceName = source.attr('metadata/name');
             if (sourceName === 'destination') {
-                sourceName = source.attr('props/name');
+              sourceName = source.attr('props/name');
             }
             let targetName = target.attr('metadata/name');
             if (targetName === 'destination') {
-                targetName = target.attr('props/name');
+              targetName = target.attr('props/name');
             }
 
-            newDestinationNode.set('type', joint.shapes.flo.NODE_TYPE);
-            newDestinationNode.attr('props', {'name': sourceName + '-' + targetName});
-            newDestinationNode.attr('metadata', metadata);
-            graph.addCell(newDestinationNode);
-            const nodeView = paper.findViewByModel(newDestinationNode);
-            this.initializeNewNode(<dia.Element>nodeView.model, {'paper': paper, 'graph': graph});
+            const newDestinationNode = flo.createNode(Flo.getMetadata(mm, 'destination', 'other'),
+              new Map<string, any>().set('name', sourceName + '-' + targetName));
 
             // Adjust existing link to hit this channel
             const previousSource = link.get('source');
-            const existingIsTap = (link.attr('props/isTapLink') === 'true');
-            link.set('source', {'id': newDestinationNode.id, 'port': 'output', 'selector': '.output-port'});
+            const existingIsTap = link.attr('props/isTapLink');
+            link.set('source', {
+              id: newDestinationNode.id,
+              port: 'output',
+              selector: '.output-port'
+            });
 
             // New link to connect original source to new target
-            const newlink = this.createLink(null, null);
-            newlink.set('target', {'id': newDestinationNode.id, 'port': 'input', 'selector': '.input-port'});
-            newlink.set('source', previousSource);
-            newlink.set('type', joint.shapes.flo.LINK_TYPE);
-            newlink.attr('metadata', {});
-            graph.addCell(newlink);
-            newlink.attr('.marker-vertices/display', 'none');
-            newlink.attr('props/isTapLink', existingIsTap ? 'true' : 'false');
-            this.initializeNewLink(newlink, {'paper': paper, 'graph': graph});
-            this.layout(paper);
+            flo.createLink(previousSource,
+              {'id': newDestinationNode.id, 'port': 'input', 'selector': '.input-port'},
+              null,
+              new Map<string, any>().set('isTapLink', existingIsTap ? true : false));
+
+            flo.performLayout();
         });
     }
 
-    handleLinkSwitch(link: dia.Link, paper: dia.Paper) {
-        const graph = paper.model;
+    handleLinkSwitch(link: dia.Link, flo: Flo.EditorContext) {
+        const graph = flo.getGraph();
         const source = graph.getCell(link.get('source').id);
         // var target = graph.getCell(link.get('target').id);
-        const isTapLink = (link.attr('props/isTapLink') === 'true');
+        const isTapLink = link.attr('props/isTapLink');
         if (isTapLink) {
             console.log(`Converting link ${this.toLinkString(graph, link)} into a primary link`);
-            link.attr('props/isTapLink', 'false');
+            link.attr('props/isTapLink', false);
             // Need to ensure no other links are still primary, that isn't allowed
             const primaryLink = graph.getConnectedLinks(source, {outbound: true})
-                .find(l => l !== link && l.attr('props/isTapLink') !== 'true');
+                .find(l => l !== link && l.attr('props/isTapLink'));
             if (primaryLink) {
-                primaryLink.attr('props/isTapLink', 'true');
-                this.refreshVisuals(primaryLink, 'props/isTapLink', paper);
+                primaryLink.attr('props/isTapLink', true);
+                this.refreshVisuals(primaryLink, 'props/isTapLink', flo.getPaper());
             }
         } else {
             console.log(`Converting link ${this.toLinkString(graph, link)} into a tap link`);
-            link.attr('props/isTapLink', 'true');
+            link.attr('props/isTapLink', true);
         }
-        this.refreshVisuals(link, 'props/isTapLink', paper);
-        // if (source) {
-        //     var outputLinks = graph.getConnectedLinks(source, {outbound: true});
-        //     var isPrimaryLink = true;
-        //     for (var i=0;i<outputLinks.length;i++) {
-        //         var ol = outputLinks[i];
-        //         if (ol === link || (ol.attr('props/isTapLink')==='true')) {
-        //             continue;
-        //         }
-        //         isPrimaryLink = false;
-        //         break;
-        //     }
-        //     console.log("marking primary? "+isPrimaryLink);
-        //     link.attr('props/isTapLink',isPrimaryLink?'false':'true');
-        //     refreshVisuals(link, 'props/isTapLink', paper);
-        // }
+        this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
     }
 
-    handleLinkAdded(link: dia.Link, paper: dia.Paper) {
-        const graph = paper.model;
+    handleLinkAdded(link: dia.Link, flo: Flo.EditorContext) {
+        const graph = flo.getGraph();
         const source = graph.getCell(link.get('source').id);
         const target = graph.getCell(link.get('target').id);
         console.log('render-service.handleLinkAdded');
         if (source) {
-            const nonPrimaryLink = graph.getConnectedLinks(source, {outbound: true})
-                .find(ol => ol !== link && ol.attr('props/isTapLink') !== 'true');
+            const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
+            const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
 
-            link.attr('props/isTapLink', nonPrimaryLink ? 'true' : 'false');
-            this.refreshVisuals(link, 'props/isTapLink', paper);
+            link.attr('props/isTapLink', primaryLink ? true : false);
+            this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
         }
         if (source && source.attr('metadata/name') === 'destination' && target) {
             // A link is added from a source destination to a target. In these cases the
@@ -605,27 +564,26 @@ export class RenderService implements Flo.Renderer {
             // XXX target.attr('.output-port/display', 'none');
         }
         // If tap link has been added update the stream-label for the target
-        // TODO: Tap port? Isn't it removed?
-        if (link.get('source').port === 'tap' && target) {
+        if (link.attr('props/isTapLink') && target) {
             target.attr('.stream-label/display', 'block');
         }
     }
 
-    handleLinkEvent(paper: dia.Paper, event: string, link: dia.Link) {
+    handleLinkEvent(flo: Flo.EditorContext, event: string, link: dia.Link) {
         if (event === 'change:source') {
-            this.handleLinkSourceChanged(link, paper);
+            this.handleLinkSourceChanged(link, flo);
         } else if (event === 'change:target') {
-            this.handleLinkTargetChanged(link, paper);
+            this.handleLinkTargetChanged(link, flo);
         } else if (event === 'remove') {
-            this.handleLinkRemoved(link, paper);
+            this.handleLinkRemoved(link, flo);
         } else if (event === 'add') {
-            this.handleLinkAdded(link, paper);
-            paper.findViewByModel(link).on('switch', () => this.handleLinkEvent(paper, 'switch', link));
-            paper.findViewByModel(link).on('insert-channel', () => this.handleLinkEvent(paper, 'insert-channel', link));
+            this.handleLinkAdded(link, flo);
+            flo.getPaper().findViewByModel(link).on('switch', () => this.handleLinkEvent(flo, 'switch', link));
+            flo.getPaper().findViewByModel(link).on('insert-channel', () => this.handleLinkEvent(flo, 'insert-channel', link));
         } else if (event === 'switch') {
-            this.handleLinkSwitch(link, paper);
+            this.handleLinkSwitch(link, flo);
         } else if (event === 'insert-channel') {
-            this.handleLinkInsertChannel(link, paper);
+            this.handleLinkInsertChannel(link, flo);
         }
     }
 

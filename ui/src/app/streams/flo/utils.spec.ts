@@ -71,7 +71,7 @@ describe('utils', () => {
       },
       renderer: RENDER_SERVICE,
       graph: graph,
-      props: new Map<string, any>().set('isTapLink', 'true')
+      props: new Map<string, any>().set('isTapLink', true)
     });
     expect(Utils.canBeHeadOfStream(graph, transform)).toEqual(true);
     link.remove();

@@ -29,7 +29,7 @@ export class Utils {
            return true;
          } else {
            const incoming = graph.getConnectedLinks(element, { inbound: true });
-           const tapLink = incoming.find(l => l.attr('props/isTapLink') === 'true');
+           const tapLink = incoming.find(l => l.attr('props/isTapLink'));
            if (tapLink) {
              return true;
            }
