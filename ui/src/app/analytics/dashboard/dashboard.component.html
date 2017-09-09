@@ -1,4 +1,90 @@
-<h1 [ngBusy]="busy">Dashboard</h1>
-<p>
-  This is in under development. We would love to hear feedback on the other available tabs/views.
-</p>
+<div [ngBusy]="busy"></div>
+<button type="button" (click)="resetDashboard()"
+        class="btn btn-default">Reset <span class="glyphicon glyphicon-trash"></span></button>
+<form #dashboardForm="ngForm" name="dashboardForm" role="form" novalidate>
+  <table *ngIf="dashboardItems && dashboardItems.length > 0" class="table table-hover">
+    <thead>
+      <tr>
+          <th style="width: 200px">Metric Type</th>
+          <th style="width: 200px">Counter Name</th>
+          <th>Visualization</th>
+          <th style="width: 100px">Refresh (in Seconds)</th>
+          <th style="width: 250px" class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let item of dashboardItems; index as index; let first = first; let last = last">
+    <tr>
+      <td [class.has-error]="metricType.invalid && metricType.touched">
+        <select #metricType="ngModel" name="metricType_{{item.id}}" [(ngModel)]="item.metricType" required (ngModelChange)="onMetricTypeChange($event, item)">
+          <option [ngValue]="undefined" disabled="disabled">Please select a type...</option>
+          <option *ngFor="let metricType of metricTypes"
+                  [ngValue]="metricType">{{metricType.name}}</option>
+        </select>
+        <span class="help-block" *ngIf="metricType.invalid && metricType.touched">Please provide a valid metric type.</span>
+      </td>
+      <td [class.has-error]="counterName.invalid && counterName.touched">
+        <select #counterName="ngModel" name="counterName_{{item.id}}" [(ngModel)]="item.counter"
+                [compareWith]="compareCounter" required (ngModelChange)="onCounterNameChange(item)">
+            <option [ngValue]="undefined" disabled="disabled">Please select a counter...</option>
+            <option *ngFor="let counter of counters"
+                    [ngValue]="counter">{{counter.name}}</option>
+          </select>
+          <span class="help-block" *ngIf="counterName.invalid && counterName.touched">Please select a counter.</span>
+      </td>
+      <td [class.has-error]="visualization.invalid && visualization.touched">
+          <select #visualization="ngModel" name="visualization_{{item.id}}" [(ngModel)]="item.visualization" required (ngModelChange)="onVisualizationChange($event)">
+            <option [ngValue]="item.visualization" disabled="disabled">Please select a visualization...</option>
+            <ng-container *ngIf="item.metricType">
+              <option *ngFor="let visualization of item.metricType.supportedVisualizations"
+                      [selected]="visualization == item.visualization" [ngValue]="visualization">{{visualization}}</option>
+            </ng-container>
+            </select>
+          <span class="help-block" *ngIf="visualization.invalid && visualization.touched">Please provide a valid visualization.</span>
+      </td>
+      <td [class.has-error]="refreshRate.invalid && refreshRate.touched">
+          <input #refreshRate="ngModel" type="number" name="refreshRate_{{item.id}}" [(ngModel)]="item.refreshRate" required
+                 (ngModelChange)="onRefreshRateChange($event, item)"
+                 class="form-control">
+          <span class="help-block" *ngIf="refreshRate.invalid && refreshRate.touched">Please provide a valid refresh rate (seconds)</span>
+      </td>
+      <td class="action-column">
+          <button type="button" (click)="moveUpItem(item, index)" [disabled]="first"
+          class="btn btn-default" title="Details"
+          ><span class="glyphicon glyphicon-arrow-up"></span>
+          </button>
+          <button type="button" (click)="moveDownItem(item, index)" [disabled]="last"
+                  class="btn btn-default" style="margin-left: 0;" title="Details"
+          ><span class="glyphicon glyphicon-arrow-down"></span>
+          </button>
+          <button type="button" (click)="addNewDashboardItem(index)"
+          class="btn btn-default" style="margin-left: 0;" title="Unregister"
+          ><span class="glyphicon glyphicon-plus"></span>
+          </button>
+          <button type="button" (click)="removeDashboardItem(index)" [disabled]="dashboardItems.length <= 1"
+                  class="btn btn-default" style="margin-left: 0;" title="Unregister"
+          ><span class="glyphicon glyphicon-trash"></span>
+          </button>
+      </td>
+    </tr>
+    <tr *ngIf="item.counter">
+      <td colspan="5">
+        <app-counter-header [counter]="item.counter"></app-counter-header>
+        <div *ngIf="item.visualization === 'Bar-Chart' && item.counter">
+            <div class="chart-slider">
+                <label>Bar-Size: </label>
+                <input type="range" #barSize="ngModel" name="barSize_{{item.id}}" [(ngModel)]="item.barSize" step="1" max="50" min="2"/>
+            </div>
+            <app-bar-chart [chartData]="item.counter.rates" class="bar-chart" [barSize]="20"></app-bar-chart>
+        </div>
+        <div class="graph-chart" *ngIf="item.visualization === 'Graph-Chart' && item.counter">
+          <app-graph-chart [chartData]="item.counter.rates" [height]="item.chartHeight" [total]="item.totalCacheSize()"
+                     [reverse]="true" [axisUnitsX]="'seconds ago'" [axisUnitsY]="'counts'"
+                     [unitsPerTickX]="item.refreshRate"></app-graph-chart>
+        </div>
+      </td>
+    </tr>
+    </ng-container>
+    </tbody>
+  </table>
+</form>
