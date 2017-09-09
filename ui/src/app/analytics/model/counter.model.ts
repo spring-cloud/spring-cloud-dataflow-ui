@@ -1,4 +1,4 @@
-import { Serializable } from '../../../shared/model';
+import { Serializable } from '../../shared/model';
 
 /**
  * Counter model object for the Analytics module.
