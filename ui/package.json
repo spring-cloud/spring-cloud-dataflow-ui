@@ -34,7 +34,6 @@
     "ngx-bootstrap": "^1.8.1",
     "ngx-clipboard": "^8.0.2",
     "ngx-pagination": "^3.0.1",
-    "pui-css-variables-and-mixins": "^8.1.0",
     "rxjs": "^5.4.2",
     "sockjs-client": "^1.1.4",
     "spring-flo": "git://github.com/spring-projects/spring-flo.git#b4e20eb9cd31764e2f96b178d03500c7d7d6628f",
