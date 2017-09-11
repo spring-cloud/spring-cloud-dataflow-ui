@@ -63,17 +63,9 @@ The following instructions can be used to do this:
 
 ## Unit Tests
 
-	$ ng test
+	$ ng test --browsers PhantomJS --single-run
 
-## E2E Tests
-
-In order to also execute the End-to-End (E2E) tests, please execute the UI build using:
-
-	$ ng e2e
-
-Please ensure that a *Spring Cloud Data Flow* server instance is running at `http://localhost:9393/`.
-
-## Development
+# Development
 
 For development, please ensure that a *Spring Cloud Data Flow* server instance is running at `http://localhost:9393/`.
 
@@ -83,17 +75,32 @@ The execute:
 
 The Dashboard will be running at `http://localhost:4200/`. The browser will automatically reload upon saving any changes to the application sources.
 
-## Dependency Management using Bower
+# Dependency Management using Bower
 
 [npm][] is used for managing UI dependencies.
 
-### Install Build Dependency
+## Install Build Dependency
 
 	$ npm install --save-dev my-dependency
 
 ## How to Update Node.js dependencies in package.json
 
 Use [https://github.com/tjunnone/npm-check-updates](https://github.com/tjunnone/npm-check-updates)
+
+# Project Analytics
+
+## Web Pack Bundle Analyzer
+Produces analysis report on the project webpack bundles.
+
+    $ ng build --prod --stats-json
+    $ npm run bundle-report
+
+You can view the results via your browser at: http://127.0.0.1:8888/
+
+## Code Coverage Report
+Produces code coverage report.
+
+    $ ng test --browsers PhantomJS --single-run --code-coverage  --reporters=coverage-istanbul
 
 [Angular]: http://angular.io/
 [Angular CLI]: https://cli.angular.io/
@@ -104,12 +111,3 @@ Use [https://github.com/tjunnone/npm-check-updates](https://github.com/tjunnone/
 [npm]: https://www.npmjs.com/
 [Protractor]: https://github.com/angular/protractor
 
-## Project Analytics
-
-### Web Pack Bundle Analyzer
-Produces analysis report on the project webpack bundles.
-
-    $ ng build --prod --stats-json
-    $ npm run bundle-report
-
-You can view the results via your browser at: http://127.0.0.1:8888/
