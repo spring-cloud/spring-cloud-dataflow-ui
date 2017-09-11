@@ -103,3 +103,13 @@ Use [https://github.com/tjunnone/npm-check-updates](https://github.com/tjunnone/
 [Node.js]: http://nodejs.org/
 [npm]: https://www.npmjs.com/
 [Protractor]: https://github.com/angular/protractor
+
+## Project Analytics
+
+### Web Pack Bundle Analyzer
+Produces analysis report on the project webpack bundles.
+
+    $ ng build --prod --stats-json
+    $ npm run bundle-report
+
+You can view the results via your browser at: http://127.0.0.1:8888/
