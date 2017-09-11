@@ -86,6 +86,7 @@ describe('text-to-graph', () => {
         graph = getGraph(':aaaa.time>log');
         expect(graph.streamdefs[0].def).toEqual(':aaaa.time > log');
         expect(graph.nodes[0].name).toEqual('tap');
+        expect(graph.nodes[0].properties.get('name')).toEqual('aaaa.time');
         expect(graph.nodes[0]['stream-id']).toBeUndefined();
         expect(graph.nodes[1].name).toEqual('log');
         expect(graph.nodes[1]['stream-id']).toEqual(1);

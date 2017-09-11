@@ -218,6 +218,8 @@ class GraphToTextConverter {
                     } else {
                         text += ' | ';
                     }
+                } else if (node.attr('metadata/name') === 'tap') {
+                    text += ' >'; // the graph isn't well formed but convenient to put this on end of DSL
                 }
             }
         }
@@ -345,8 +347,8 @@ class GraphToTextConverter {
     private createTextForNode(node: dia.Cell): string {
         let text = '';
         const props = node.attr('props');
-        if (// 'tap' === element.attr('metadata/name') ||  // TODO huh?
-            'destination' === node.attr('metadata/name')) {
+        // Tap nodes less likely when fan-in/fan-out supported but may still occur
+        if ('tap' === node.attr('metadata/name') || 'destination' === node.attr('metadata/name')) {
             if (props && props.name) {
                 text += GraphToTextConverter.DESTINATION_DSL_PREFIX + props.name;
             } else {

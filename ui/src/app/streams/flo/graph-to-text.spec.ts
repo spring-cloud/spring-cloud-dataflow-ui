@@ -107,12 +107,25 @@ describe('graph-to-text', () => {
         expect(dsl).toEqual('banana: time | log');
     });
 
-    it('tapping an unamed stream forces it to get a name', () => {
+    it('tapping an un-named stream forces it to get a name', () => {
         const timeSource = createSource('time');
         createLink(timeSource, createSink('logA'));
         createTap(timeSource, createSink('logB'));
         dsl = convertGraphToText(graph);
         expect(dsl).toEqual('STREAM_1=time | logA\n:STREAM_1.time > logB');
+    });
+
+    it('tap node (tapping something not on the graph)', () => {
+        const tapSource = createTapNode('aaaa.time');
+        createLink(tapSource, createSink('log'));
+        dsl = convertGraphToText(graph);
+        expect(dsl).toEqual(':aaaa.time > log');
+    });
+
+    it('just a tap node (tapping something not on the graph)', () => {
+        const tapSource = createTapNode('aaaa.time');
+        dsl = convertGraphToText(graph);
+        expect(dsl).toEqual(':aaaa.time >');
     });
 
     it('multiple streams getting names', () => {
@@ -466,6 +479,12 @@ describe('graph-to-text', () => {
       const newDestinationNode: dia.Element = createNode('destination', 'destination');
       newDestinationNode.attr('props/name', destinationname);
       return newDestinationNode;
+    }
+
+    function createTapNode(tappedStreamAndApp: string): dia.Element {
+        const newTapNode: dia.Element = createNode('tap', 'tap');
+        newTapNode.attr('props/name', tappedStreamAndApp);
+        return newTapNode;
     }
 
     function createSource(appname: string): dia.Element {
