@@ -201,7 +201,6 @@ describe('graph-to-text', () => {
 
     // A > :B      :B > C | D     :XX.C > E
     it('does the right node get named for the tap', () => {
-        console.log('wibble');
         const a = createSource('A');
         const b = createDestination('B');
         const c = createProcessor('C');
