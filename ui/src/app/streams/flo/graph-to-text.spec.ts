@@ -379,6 +379,18 @@ describe('graph-to-text', () => {
         expect(dsl).toEqual('foo=time | file\n:foo.time > :intermediate\n:intermediate > log');
     });
 
+    it('building a stream then a separate tap', () => {
+        const timeSource = createSource('time');
+        createLink(timeSource, createSink('log'));
+        expect(convertGraphToText(graph)).toEqual('time | log');
+        setStreamName(timeSource, 'foo');
+        expect(convertGraphToText(graph)).toEqual('foo=time | log');
+        const tapNode = createTapNode('foo.time');
+        expect(convertGraphToText(graph)).toEqual('foo=time | log\n:foo.time >');
+        createLink(tapNode, createSink('log'));
+        expect(convertGraphToText(graph)).toEqual('foo=time | log\n:foo.time > log');
+    });
+
     it('fanout - destination source to two sinks', () => {
         const d1 = createDestination('d1');
         const logSink = createSink('log');
