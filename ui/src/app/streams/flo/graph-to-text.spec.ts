@@ -76,11 +76,6 @@ describe('graph-to-text', () => {
         expect(dsl).toEqual('time | log');
     });
 
-    it('verify direct call without dsl', () => {
-        createLink(createSource('time'), createSink('log'));
-        expect(convertGraphToText(graph)).toEqual('time | log');
-    });
-
     it('basic - one simple stream with props', () => {
         const timeSource = createSource('time');
         setProperties(timeSource, new Map([['aaa', 'bbb']]));
@@ -141,7 +136,6 @@ describe('graph-to-text', () => {
 
     it('finding names further away', () => {
         const timeSource1 = createSource('timeA');
-        // const timeSource2 = createSource('timeB');
         const transformProcessor = createProcessor('transform');
         const logSink1 = createSink('logA');
         const logSink2 = createSink('logB');
@@ -229,7 +223,6 @@ describe('graph-to-text', () => {
 
     it('ensuring name set on correct element', () => {
         const timeSource1 = createSource('timeA');
-        // const timeSource2 = createSource('timeB');
         const transformProcessor = createProcessor('transform');
         const logSink1 = createSink('logA');
         const logSink2 = createSink('logB');
@@ -264,7 +257,6 @@ describe('graph-to-text', () => {
             target: {'id': 'not-exist', 'port': 'input', 'selector': '.input-port'}
         };
         const link = Shapes.Factory.createLink(linkParams);
-        console.log('wible');
         graph.addCell(link);
         dsl = convertGraphToText(graph);
         expect(dsl).toEqual('time');
@@ -277,7 +269,6 @@ describe('graph-to-text', () => {
             target: {'id': null, 'port': 'input', 'selector': '.input-port'}
         };
         const link = Shapes.Factory.createLink(linkParams);
-        console.log('wible');
         graph.addCell(link);
         dsl = convertGraphToText(graph);
         expect(dsl).toEqual('time');
@@ -413,7 +404,7 @@ describe('graph-to-text', () => {
     // builds on the last). The final graph should be:
     // a time source connected to four things. A cassandra sink, tapped to a jdbc
     // sink, tapped to a websocket sink and tapped to a time-log destination. The
-    // time-log destinatino is tapped to a log sink and attached to a throughput sink.
+    // time-log destination is tapped to a log sink and attached to a throughput sink.
 
     // stage 1: just the time | cassandra stream (named foo)
     it('fanout - building up complex graph - stage 1', () => {

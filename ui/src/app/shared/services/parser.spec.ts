@@ -169,7 +169,6 @@ describe('parser:', () => {
         expect(parseResult.lines.length).toEqual(1);
         node = parseResult.lines[0].nodes[0];
         expect(node.name).toEqual('aaa');
-        Array.from(node.options.keys()).forEach((k)=>console.log('key is '+k));
         expect(node.options.get('bbb.ccc.ddd')).toEqual('eee');
     });
 
