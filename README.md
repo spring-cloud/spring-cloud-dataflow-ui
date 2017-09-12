@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui.png?branch=angular)](https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui)
 [![Build status](https://ci.appveyor.com/api/projects/status/7pqco2aqjyaphp36/branch/master?svg=true)](https://ci.appveyor.com/project/ghillert/spring-cloud-dataflow-ui/branch/master)
-[![Code Coverage](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow/branch/master/graph/badge.svg)](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/angular)
+[![Code Coverage](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master)
 [![Dependency Status](https://www.versioneye.com/user/projects/5982002b0fb24f003b1f7de1/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5982002b0fb24f003b1f7de1)
 
 This is the *Spring Cloud Data Flow Dashboard* user interface (UI). The UI uses [Angular][]. Source code documentation is available at http://cloud.spring.io/spring-cloud-dataflow-ui/.
