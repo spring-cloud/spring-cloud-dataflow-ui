@@ -291,7 +291,7 @@ class GraphToTextConverter {
     }
 
     private isTapLink(link): boolean {
-        return link.attr('props/isTapLink') === 'true';
+        return link.attr('props/isTapLink') === true;
     }
 
     private getName(node: dia.Cell): string {
