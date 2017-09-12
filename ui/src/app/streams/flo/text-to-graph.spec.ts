@@ -95,6 +95,20 @@ describe('text-to-graph', () => {
         expect(graph.links[0].to).toEqual(1);
     });
 
+    it('jsongraph: incomplete stream with tap', () => {
+        graph = getGraph('STREAM_1=time\n:STREAM_1.time > log');
+        expect(graph.streamdefs[0].def).toEqual('time');
+        expect(graph.streamdefs[1].def).toEqual(':STREAM_1.time > log');
+        expect(graph.nodes[0].name).toEqual('time');
+        expect(graph.nodes[0]['stream-id']).toEqual(1);
+        expect(graph.nodes[1].name).toEqual('log');
+        expect(graph.nodes[1]['stream-id']).toEqual(2);
+        expect(graph.links.length).toEqual(1);
+        expect(graph.links[0].from).toEqual(0);
+        expect(graph.links[0].to).toEqual(1);
+        expect(graph.links[0].linkType).toEqual('tap');
+    });
+
     it('jsongraph: name set on sink channel in some cases', () => {
         graph = getGraph(':aaa > :foo\n:aaa > :bar');
         expect(graph.streamdefs[0].def).toEqual(':aaa > :foo');
