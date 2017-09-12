@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Flo } from 'spring-flo';
+import { ParserService } from '../../shared/services/parser.service';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { EditorService } from '../flo/editor.service';
@@ -25,16 +26,31 @@ export class StreamCreateComponent implements OnInit {
 
   hintOptions: any;
 
+  lintOptions: CodeMirror.LintOptions;
+
+  validationMarkers: Map<string, Flo.Marker[]>;
+
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,
               public editorService: EditorService,
               private bsModalService: BsModalService,
-              private contentAssistService: ContentAssistService) {
-    console.log('Building');
+              private contentAssistService: ContentAssistService,
+              private parserService: ParserService) {
+
+    this.validationMarkers = new Map();
 
     this.hintOptions = {
       async: true,
       hint: (doc: CodeMirror.EditorFromTextArea) => this.contentAssist(doc)
+    };
+
+    this.lintOptions = {
+      async: true,
+      hasGutters: true,
+      getAnnotations: (content: string,
+                       updateLintingCallback: CodeMirror.UpdateLintingCallback,
+                       options: CodeMirror.LintStateOptions,
+                       editor: CodeMirror.Editor) => this.lint(content, updateLintingCallback, editor)
     };
   }
 
@@ -84,6 +100,31 @@ export class StreamCreateComponent implements OnInit {
       });
     });
 
+  }
+
+  lint(dsl: string, updateLintingCallback: CodeMirror.UpdateLintingCallback, editor: CodeMirror.Editor): void {
+    const result = this.parserService.parseDsl(dsl, 'stream');
+    const annotations: CodeMirror.Annotation[] = [];
+    Array.from(this.validationMarkers.values())
+      .filter(markers => Array.isArray(markers))
+      .forEach(markers => markers
+        .filter(m => m.range && m.severity)
+        .forEach(m => annotations.push({
+          message: m.message,
+          from: m.range.start,
+          to: m.range.end,
+          severity: Flo.Severity[m.severity].toLowerCase()
+        }))
+      );
+    if (result.lines) {
+      result.lines.filter(l => Array.isArray(l.errors)).forEach(l => l.errors.forEach(e => annotations.push({
+        from: e.range.start,
+        to: e.range.end,
+        message: e.message,
+        severity: 'error'
+      })));
+    }
+    updateLintingCallback(editor, annotations);
   }
 
   /**

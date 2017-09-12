@@ -514,7 +514,7 @@ export class EditorService implements Flo.Editor {
         this.validateProperties(element, errors);
     }
 
-    validate(graph: dia.Graph): Promise<Map<string, Array<Flo.Marker>>> {
+    validate(graph: dia.Graph, dsl: string, flo: Flo.EditorContext): Promise<Map<string, Flo.Marker[]>> {
         return new Promise(resolve => {
             const allMarkers: Map<string, Array<Flo.Marker>> = new Map();
             graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
