@@ -1,9 +1,7 @@
 <div id="flo-container" class="stream-editor">
   <flo-editor (floApi)="editorContext = $event" [metamodel]="metamodelService" [renderer]="renderService"
               [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="20">
-    <button (click)="createStreamDefs()" class="btn btn-default" type="button" [disabled]="!dsl">Create
-      Stream
-    </button>
+    <button (click)="createStreamDefs()" class="btn btn-default" type="button" [disabled]="!dsl">Create Stream</button>
     <button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>
     <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
     <button class="btn" (click)="editorContext.autolink = !editorContext.autolink"
