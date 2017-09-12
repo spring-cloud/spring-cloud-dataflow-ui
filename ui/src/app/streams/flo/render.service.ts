@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-import './shapes';
-import { IMAGE_W, HORIZONTAL_PADDING } from './shapes';
-import { Injectable } from '@angular/core';
+import './support/shapes';
+import { IMAGE_W, HORIZONTAL_PADDING } from './support/shapes';
+import {
+  Injectable, ComponentFactoryResolver, ComponentFactory, Injector, ApplicationRef, Type,
+  ComponentRef
+} from '@angular/core';
 import { ApplicationType } from '../../shared/model/application-type';
 import { MetamodelService } from './metamodel.service';
 import { Flo, Constants } from 'spring-flo';
+import { NodeComponent } from './node/node.component';
+import { DecorationComponent } from './decoration/decoration.component';
+import { HandleComponent } from './handle/handle.component';
+import { ShapeComponent } from './support/shape-component';
 import { dia } from 'jointjs';
-import { Utils } from './utils';
-import { layout } from './layout';
+import { Utils } from './support/utils';
+import { layout } from './support/layout';
 import * as _joint from 'jointjs';
 const joint: any = _joint;
 
@@ -48,7 +55,10 @@ const GROUP_ICONS = new Map<string, string>()
         .set('tap', '⦂') // 2982
     ;
 
-
+const SHAPE_TYPE_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()
+  .set(joint.shapes.flo.NODE_TYPE, NodeComponent)
+  .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
+  .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent);
 
 /**
  * Render Service for Flo based Stream Definition graph editor
@@ -59,8 +69,14 @@ const GROUP_ICONS = new Map<string, string>()
 @Injectable()
 export class RenderService implements Flo.Renderer {
 
-    constructor(private metamodelService: MetamodelService) {
-    }
+    private nodeComponentFactory: ComponentFactory<NodeComponent>;
+
+    constructor(
+      private metamodelService: MetamodelService,
+      private componentFactoryResolver?: ComponentFactoryResolver,
+      private injector?: Injector,
+      private applicationRef?: ApplicationRef
+    ) {}
 
     createHandle(kind: string, parent: dia.Cell) {
         return new joint.shapes.flo.ErrorDecoration({
@@ -602,5 +618,55 @@ export class RenderService implements Flo.Renderer {
             return reference;
         }
     }
+
+  getNodeView?(): dia.ElementView {
+
+      const self = this;
+
+      return joint.dia.ElementView.extend({
+          options: joint.util.deepSupplement({}, joint.dia.ElementView.prototype.options),
+
+          renderMarkup: function () {
+            // Not called often. It's fine to destro old component and create the new one, because old DOM
+            // may have been aletered by JointJS updates
+            if (self.componentFactoryResolver && SHAPE_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
+
+              if (this._angularComponentRef) {
+                this._angularComponentRef.destroy();
+              }
+
+              const nodeComponentFactory = self.componentFactoryResolver
+                .resolveComponentFactory(SHAPE_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
+
+              const componentRef: ComponentRef<ShapeComponent> = nodeComponentFactory.create(self.injector);
+              self.applicationRef.attachView(componentRef.hostView);
+              componentRef.instance.view = this;
+              this._angularComponentRef = componentRef;
+              const nodes = [];
+              for (let i = 0; i < this._angularComponentRef.location.nativeElement.children.length; i++) {
+                nodes.push(this._angularComponentRef.location.nativeElement.children.item(i));
+              }
+
+              const vNodes = nodes.map(childNode => new joint.V(childNode));
+              this.vel.append(vNodes);
+
+              this._angularComponentRef.changeDetectorRef.markForCheck();
+              this._angularComponentRef.changeDetectorRef.detectChanges();
+            } else {
+              joint.dia.ElementView.prototype.renderMarkup.apply(this, arguments);
+            }
+          },
+
+          onRemove: function() {
+            if (this._angularComponentRef) {
+              this._angularComponentRef.destroy();
+            }
+            joint.dia.ElementView.prototype.onRemove.apply(this, arguments);
+          },
+
+    });
+
+  }
+
 
 }

@@ -354,6 +354,7 @@ class TextToGraphConverter {
                 md = {
                     'group': group,
                     'name': name,
+                    unresolved: true,
                     get(property: String): Promise<Flo.PropertyMetadata> {
                         return Promise.resolve(null);
                     },

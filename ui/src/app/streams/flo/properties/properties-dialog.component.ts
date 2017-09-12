@@ -4,7 +4,7 @@ import { Flo, Properties } from 'spring-flo';
 import { FormGroup, Validators } from '@angular/forms';
 import { dia } from 'jointjs';
 import { StreamsService } from '../../streams.service';
-import { Utils } from '../utils';
+import { Utils } from '../support/utils';
 import { Subscription } from 'rxjs/Subscription';
 import { ApplicationType } from '../../../shared/model/application-type';
 
@@ -179,7 +179,10 @@ export class PropertiesDialogComponent implements OnInit {
   }
 
   get okDisabled() {
-    return !this.propertiesGroupModel || !this.propertiesFormGroup || !this.propertiesFormGroup.valid;
+    return !this.propertiesGroupModel
+      || !this.propertiesFormGroup
+      || this.propertiesFormGroup.invalid
+      || !this.propertiesFormGroup.dirty;
   }
 
   ngOnInit() {

@@ -20,7 +20,7 @@ import { ApplicationType } from '../../shared/model/application-type';
 import { Flo, Constants } from 'spring-flo';
 import { dia } from 'jointjs';
 import { PropertiesDialogComponent } from './properties/properties-dialog.component';
-import { Utils } from './utils';
+import { Utils } from './support/utils';
 import * as _joint from 'jointjs';
 const joint: any = _joint;
 
