@@ -420,7 +420,7 @@ export namespace JsonGraph {
     }
 
     export interface Graph {
-        errors: {}[];
+        errors: Parser.Error[];
         format: string;
         streamdefs;
         nodes: Node[];

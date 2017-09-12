@@ -671,7 +671,7 @@ export namespace Parser {
     }
 
     export interface Error {
-        message: String;
+        message: string;
         range: Range;
     }
 

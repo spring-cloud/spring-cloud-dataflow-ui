@@ -138,9 +138,11 @@ export class MetamodelService implements Flo.Metamodel {
       private appsService: SharedAppsService,
     ) {}
 
-    textToGraph(flo: Flo.EditorContext, dsl: string): void {
+    textToGraph(flo: Flo.EditorContext, dsl: string): Promise<any> {
         console.log('> textToGraph ' + dsl);
-        this.load().then((metamodel) => { convertTextToGraph(dsl, flo, metamodel); });
+        return new Promise(resolve => {
+          this.load().then((metamodel) => resolve(convertTextToGraph(dsl, flo, metamodel)));
+        });
     }
 
     graphToText(flo: Flo.EditorContext): Promise<string> {

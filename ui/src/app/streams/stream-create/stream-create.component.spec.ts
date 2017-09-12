@@ -12,6 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 import { FloModule} from 'spring-flo';
 import {ModalModule, BsModalService} from 'ngx-bootstrap';
 import { ContentAssistService } from '../flo/content-assist.service';
+import { ParserService } from '../../shared/services/parser.service';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -25,6 +26,8 @@ describe('StreamCreateComponent', () => {
   const streamsService = new MockStreamsService();
   const metamodelService = new MockMetamodelService();
   const renderService = new RenderService(metamodelService);
+  const parserService = new ParserService();
+
   // const editorService = new EditorService(null);
   const commonTestParams = { id: '1' };
 
@@ -48,6 +51,7 @@ describe('StreamCreateComponent', () => {
         {provide: ContentAssistService},
         {provide: BsModalService},
         {provide: ActivatedRoute, useValue: activeRoute },
+        {provide: ParserService, useValue: parserService}
       ]
     })
       .compileComponents();
