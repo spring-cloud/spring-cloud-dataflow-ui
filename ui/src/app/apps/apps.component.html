@@ -44,7 +44,7 @@
     </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let item of appRegistrations.items | searchFilter: appRegistrations.filter | paginate: appRegistrations.getPaginationInstance(); index as i">
+  <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance(); index as i">
     <td><input type="checkbox" [(ngModel)]="item.isSelected"  /></td>
     <td>{{item.name}}</td>
     <td>{{item.type}}</td>
