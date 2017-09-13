@@ -10,7 +10,7 @@ $btn-default-bg: #607580;
 $flo-shape-fill-color: #eeeeee;
 $spring-grey: $gray;
 
-#flow-view {
+.stream-editor #flow-view {
   height:625px;
   font-family: inherit;
 }
@@ -168,7 +168,7 @@ $spring-grey: $gray;
   z-index: 2000;
 }
 
-.stream-editor .canvas {
+.dataflow-main-container .canvas {
   border-color: $btn-default-border;
 }
 
@@ -185,7 +185,7 @@ $spring-grey: $gray;
   background-color: $spring-light-grey;
 }
 
-.stream-editor .palette-filter {
+.dataflow-main-container .palette-filter {
   border-color: $btn-default-border;
 }
 
@@ -194,7 +194,7 @@ $spring-grey: $gray;
   stroke: $btn-default-border;
 }
 
-.stream-editor #sidebar-resizer {
+.dataflow-main-container #sidebar-resizer {
   background-color: $btn-default-bg;
 }
 
@@ -224,7 +224,7 @@ $spring-grey: $gray;
 }
 
 .table .flow-view {
-  height: 225px;
+  height: 200px;
 }
 
 .undeployed .canvas {
@@ -399,7 +399,21 @@ $spring-grey: $gray;
   fill: 'transparent';
 }
 
-.stream-editor .zoom-canvas-input {
+table.zoom-canvas-control {
+  tr {
+    border: 0px;
+  }
+  tr:last-child {
+    border: 0px;
+  }
+  td {
+    border: 0px;
+    padding: 0px;
+  }
+}
+
+
+.dataflow-main-container .zoom-canvas-input {
   border: 0px;
   padding: 0px;
   font-size: 11px;

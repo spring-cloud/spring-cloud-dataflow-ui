@@ -76,9 +76,9 @@
         </td>
       </tr>
       <tr *ngIf="item.isExpanded">
-        <td colspan="4">
-          <div>This is in under development. We would love to hear feedback on the other available tabs/views.</div>
-        <td>
+        <td colspan="5">
+          <app-stream-graph-view [dsl]="item.dslText"></app-stream-graph-view>
+        </td>
       </tr>
     </ng-template>
   </tbody>
