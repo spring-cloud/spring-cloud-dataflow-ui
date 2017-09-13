@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { dia } from 'jointjs';
+import {dia} from 'jointjs';
 
 /**
  * Utilities for Flo based Stream Definition graph editor.
@@ -23,37 +23,53 @@ import { dia } from 'jointjs';
  */
 export class Utils {
 
-     static canBeHeadOfStream(graph: dia.Graph, element: dia.Element): boolean {
-       if (element.attr('metadata')) {
-         if (!element.attr('.input-port') || element.attr('.input-port/display') === 'none') {
-           return true;
-         } else {
-           const incoming = graph.getConnectedLinks(element, { inbound: true });
-           const tapLink = incoming.find(l => l.attr('props/isTapLink'));
-           if (tapLink) {
-             return true;
-           }
-         }
-       }
-       return false;
+  static canBeHeadOfStream(graph: dia.Graph, element: dia.Element): boolean {
+    if (element.attr('metadata')) {
+      if (!element.attr('.input-port') || element.attr('.input-port/display') === 'none') {
+        return true;
+      } else {
+        const incoming = graph.getConnectedLinks(element, {inbound: true});
+        const tapLink = incoming.find(l => l.attr('props/isTapLink'));
+        if (tapLink) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static generateStreamName(graph: dia.Graph, element: dia.Element) {
+    const streamNames: Array<string> = graph.getElements()
+      .filter(e => element !== e && e.attr('stream-name') && this.canBeHeadOfStream(graph, e))
+      .map(e => e.attr('stream-name'));
+
+    // Check if current element stream name is unique
+    if (element && element.attr('stream-name') && streamNames.indexOf(element.attr('stream-name')) === -1) {
+      return element.attr('stream-name');
     }
 
-    static generateStreamName(graph: dia.Graph, element: dia.Element) {
-        const streamNames: Array<string> = graph.getElements()
-            .filter(e => element !== e && e.attr('stream-name') && this.canBeHeadOfStream(graph, e))
-            .map(e => e.attr('stream-name'));
-
-        // Check if current element stream name is unique
-        if (element && element.attr('stream-name') && streamNames.indexOf(element.attr('stream-name')) === -1) {
-            return element.attr('stream-name');
-        }
-
-        const name = 'STREAM_';
-        let index = 1;
-        while (streamNames.indexOf(name + index) >= 0) {
-            index++;
-        }
-        return name + index;
+    const name = 'STREAM_';
+    let index = 1;
+    while (streamNames.indexOf(name + index) >= 0) {
+      index++;
     }
+    return name + index;
+  }
+
+  static findDuplicates<T>(elements: T[]): T[] {
+    const duplicates: T[] = [];
+    while (elements.length !== 0) {
+      const e = elements.pop();
+      let idx = elements.indexOf(e);
+      if (idx >= 0) {
+        duplicates.push(e);
+      }
+      while (idx >= 0) {
+        elements.splice(idx, 1);
+        idx = elements.indexOf(e);
+      }
+    }
+    return duplicates;
+  }
 
 }

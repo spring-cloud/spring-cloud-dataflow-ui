@@ -7,8 +7,7 @@
 <div class="modal-body" [formGroup]="form">
   <div *ngIf="errors && errors.length > 0" class="dialog-validation">
     <div *ngFor="let error of errors">
-      <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign"></label>
-      <label>{{error}}</label>
+      <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign">{{error}}</label>
     </div>
   </div>
   <div *ngIf="!(errors && errors.length) && warnings && warnings.length > 0" class="dialog-validation">
@@ -18,30 +17,36 @@
     </div>
   </div>
   <p>This action will create stream(s):</p>
-  <table class="table table-striped table-hover table-fixed table-compact">
-    <!--<col width="300px"/>-->
-    <!--<col width="auto"/>-->
-    <tbody>
-      <tr *ngFor="let def of streamDefsToCreate()" [ngClass]="{'has-warning': !getControl(def.index.toString()).valid}">
-        <td>
-          <input [disabled]="isStreamCreationInProgress()" class="form-control" [id]="def.index.toString()" [name]="def.index.toString()" [formControlName]="def.index.toString()"
-                 type="text" placeholder="<Stream Name>" [ngModel]="def.name" (ngModelChange)="changeStreamName(def.index, $event)"/>
-          <p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required" class="help-block validation-block">Stream name is required!</p>
-          <p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource" class="help-block validation-block">Stream name is already taken!</p>
-          <p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern" class="help-block validation-block">Invalid stream name!</p>
-          <!--<p *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueFieldValues" class="help-block validation-block">Duplicate stream name on the form!</p>-->
-        </td>
-        <td>
-          <label class="control-label">{{def.def}}</label>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <label class="dialog-control"><input [disabled]="isStreamCreationInProgress()" type="checkbox" [(ngModel)]="deploy" [ngModelOptions]="{standalone: true}"/>Deploy stream(s)</label>
+  <tbody>
+    <tr *ngFor="let def of streamDefsToCreate()" [ngClass]="{'has-warning': invalidStreamRow(def)}">
+      <td class="stream-name-form-control-cell">
+        <input [disabled]="isStreamCreationInProgress()" class="form-control" [id]="def.index.toString()"
+               [name]="def.index.toString()" [formControlName]="def.index.toString()"
+               type="text" placeholder="<Stream Name>" [ngModel]="def.name"
+               (ngModelChange)="changeStreamName(def.index, $event)"/>
+        <p>
+          <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
+             class="help-block validation-block">Stream name is required!</span>
+          <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource"
+             class="help-block validation-block">Stream name is already taken!</span>
+          <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern"
+             class="help-block validation-block">Invalid stream name!</span>
+          <span *ngIf="hasDuplicateName(def)"
+             class="help-block validation-block">Duplicate stream name on the form</span>
+        </p>
+      </td>
+      <td class="stream-definition-label-cell">
+        <label class="control-label">{{def.def}}</label>
+      </td>
+    </tr>
+  </tbody>
+  <label class="dialog-control"><input [disabled]="isStreamCreationInProgress()" type="checkbox" [(ngModel)]="deploy"
+                                       [ngModelOptions]="{standalone: true}"/>Deploy stream(s)</label>
   <div *ngIf="progressData">
     <hr/>
     <div>Creating Streams...</div>
-    <progressbar animate="true" [value]="progressData.percent" type="success"><b>{{progressData.percent}}%</b></progressbar>
+    <progressbar animate="true" [value]="progressData.percent" type="success"><b>{{progressData.percent}}%</b>
+    </progressbar>
   </div>
 </div>
 <div class="modal-footer">

@@ -139,4 +139,19 @@ describe('utils', () => {
     expect(Utils.generateStreamName(graph, http)).toEqual('unique-name');
   });
 
+  it('find duplicates: no elements', () => {
+    expect(Utils.findDuplicates([])).toEqual([]);
+  });
+
+  it('find duplicates: no duplicates', () => {
+    expect(Utils.findDuplicates(['1', '2', '3'])).toEqual([]);
+  });
+
+  it('find duplicates: multiple duplicates', () => {
+    expect(Utils.findDuplicates(['1', '2', '1', '3', '2'])).toEqual(['2', '1']);
+  });
+
+  it('find duplicates: multiple duplicates numbers', () => {
+    expect(Utils.findDuplicates([1, 2, 1, 3, 2])).toEqual([2, 1]);
+  });
 });

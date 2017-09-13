@@ -3,6 +3,7 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { ParserService } from '../../shared/services/parser.service';
 import { convertParseResponseToJsonGraph } from '../flo/text-to-graph';
+import { Utils } from '../flo/support/utils';
 import { StreamsService } from '../streams.service';
 import { ToastyService } from 'ng2-toasty';
 import { Properties } from 'spring-flo';
@@ -31,12 +32,13 @@ const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 @Component({
   selector: 'app-stream-create-dialog-content',
   templateUrl: 'stream-create-dialog.component.html',
+  styleUrls: [ 'stream-create-dialog.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
 export class StreamCreateDialogComponent implements OnInit {
 
   form: FormGroup;
-  streamDefs: Array<any>;
+  streamDefs: Array<any> = [];
   errors: Array<string>;
   warnings: Array<string>;
   dependencies: Map<number, Array<number>>;
@@ -53,7 +55,7 @@ export class StreamCreateDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.form = new FormGroup({});
+    this.form = new FormGroup({}, this.uniqueStreamNames());
   }
 
 
@@ -74,7 +76,7 @@ export class StreamCreateDialogComponent implements OnInit {
       // TODO: Adopt to parser types once they are available
       const graphAndErrors = convertParseResponseToJsonGraph(text, this.parserService.parseDsl(text));
       if (graphAndErrors.graph) {
-        this.streamDefs = graphAndErrors.graph.streamdefs;
+        this.streamDefs.push(...graphAndErrors.graph.streamdefs);
         this.streamDefs.forEach((streamDef, i) => {
           streamDef.created = false;
           streamDef.index = i;
@@ -108,6 +110,22 @@ export class StreamCreateDialogComponent implements OnInit {
         this.errors = graphAndErrors.errors.map(e => e.message);
       }
     }
+  }
+
+  uniqueStreamNames() {
+    const streamDefs = this.streamDefs;
+    return (control: AbstractControl): { [key: string]: any } => {
+      const duplicates = Utils.findDuplicates(streamDefs.filter(s => s.name).map(s => s.name));
+      return duplicates.length === 0 ? null : {'uniqueStreamNames': duplicates};
+    };
+  }
+
+  invalidStreamRow(def: any): boolean {
+    return this.getControl(def.index.toString()).invalid || this.hasDuplicateName(def);
+  }
+
+  hasDuplicateName(def: any): boolean {
+    return this.form.errors && this.form.errors.uniqueStreamNames && this.form.errors.uniqueStreamNames.indexOf(def.name) >= 0;
   }
 
   getControl(id: string): AbstractControl {
