@@ -26,6 +26,7 @@ export class GraphChartComponent implements OnInit, DoCheck {
 
   @Input()
   private height: number;
+  private heightCopy: number;
 
   @Input()
   private reverse: boolean;
@@ -64,9 +65,11 @@ export class GraphChartComponent implements OnInit, DoCheck {
    */
   ngDoCheck() {
     if (this.unitsPerTickXCopy !== this.unitsPerTickX
-        || !this.isArraySame(this.chartDataCopy, this.chartData)) {
+        || !this.isArraySame(this.chartDataCopy, this.chartData)
+        || this.heightCopy !== this.height) {
       this.chartDataCopy = this.chartData.slice();
       this.unitsPerTickXCopy = this.unitsPerTickX;
+      this.heightCopy = this.height;
       this.renderChart();
     }
   }
@@ -179,7 +182,11 @@ export class GraphChartComponent implements OnInit, DoCheck {
             return xScale(d[0]);
         })
         .y(function(d) {
+          if (d[1]) {
             return yScale(d[1]);
+          } else {
+            return 0;
+          }
         })
       .curve(d3.curveBasis);
 

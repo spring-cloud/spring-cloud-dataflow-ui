@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AnalyticsService } from '../analytics.service';
 import { Page } from '../../shared/model';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Counter } from './model/counter.model';
+import { Counter } from '../model/counter.model';
 
 /**
  * Main entry point to the Apps Module. Provides
