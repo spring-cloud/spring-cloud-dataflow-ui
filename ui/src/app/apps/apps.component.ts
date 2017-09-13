@@ -56,7 +56,7 @@ export class AppsComponent implements OnInit {
    * @param reload
    */
   public loadAppRegistrations(reload: boolean) {
-    this.busy = this.appsService.getApps(reload).subscribe(
+    this.busy = this.appsService.getApps(reload, this.getFilter()).subscribe(
       data => {
         if (!this.appRegistrations) {
           this.appRegistrations = data;
@@ -128,7 +128,7 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        this.busy = this.appsService.getApps(true).subscribe(
+        this.busy = this.appsService.getApps(true, this.getFilter()).subscribe(
           appRegistrations => {}
         );
       },
@@ -154,7 +154,7 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        this.busy = this.appsService.getApps(true).subscribe(
+        this.busy = this.appsService.getApps(true, this.getFilter()).subscribe(
           appRegistrationsResult => {}
         );
       }
@@ -201,5 +201,13 @@ export class AppsComponent implements OnInit {
     console.log(`Getting page ${page}.`);
     this.appsService.appRegistrations.pageNumber = page - 1;
     this.loadAppRegistrations(true);
+  }
+
+  private getFilter(): string {
+    let search: string;
+    if (this.appRegistrations) {
+      search = this.appRegistrations.filter;
+    }
+    return search;
   }
 }

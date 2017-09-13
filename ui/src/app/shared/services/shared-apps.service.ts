@@ -23,12 +23,15 @@ export class SharedAppsService {
   /**
    * Returns a paged list of {@link AppRegistrations}s.
    */
-  getApps(pageRequest: PageRequest, type?: ApplicationType): Observable<Page<AppRegistration>> {
+  getApps(pageRequest: PageRequest, type?: ApplicationType, search?: string): Observable<Page<AppRegistration>> {
       const params = HttpUtils.getPaginationParams(pageRequest.page, pageRequest.size);
       const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
       if (type) {
         params.append('type', ApplicationType[type]);
+      }
+      if (search) {
+        params.append('search', search);
       }
       requestOptionsArgs.search = params;
       return this.http.get(SharedAppsService.appsUrl, requestOptionsArgs)

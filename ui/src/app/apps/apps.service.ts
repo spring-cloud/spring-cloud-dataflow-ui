@@ -32,7 +32,7 @@ export class AppsService {
     console.log('constructing');
   }
 
-  getApps(reload?: boolean): Observable<Page<AppRegistration>> {
+  getApps(reload?: boolean, search?: string): Observable<Page<AppRegistration>> {
     console.log(`Get apps - reload ${reload}`, this.appRegistrations);
     if (!this.appRegistrations || reload) {
       if (!this.appRegistrations) {
@@ -42,7 +42,7 @@ export class AppsService {
       this.remotelyLoaded = true;
 
       return this.sharedAppsService.getApps(
-        new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize))
+        new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize), undefined, search)
           .map(page => {
             this.appRegistrations.update(page);
             return this.appRegistrations;
