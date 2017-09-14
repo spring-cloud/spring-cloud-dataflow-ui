@@ -1,6 +1,12 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FloModule, EditorComponent } from 'spring-flo';
+import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
+import { MetamodelService } from '../flo/metamodel.service';
+import { RenderService } from '../flo/render.service';
+
 import { dia } from 'jointjs';
 import * as _ from 'lodash';
-import { Flo } from 'spring-flo';
+import { Flo, Constants } from 'spring-flo';
 import { convertGraphToText } from './graph-to-text';
 import { Shapes } from 'spring-flo';
 import * as _joint from 'jointjs';
@@ -9,12 +15,11 @@ const joint: any = _joint;
 import { EditorService } from './editor.service';
 
 describe('editor.service', () => {
+    const editorService = new EditorService(null);
 
     let graph: dia.Graph;
-    let editorService: EditorService;
 
     beforeEach(() => {
-        editorService = new EditorService(null);
         graph = new dia.Graph();
     });
 
@@ -374,5 +379,142 @@ describe('editor.service', () => {
         newDestinationNode.attr('props/name', destinationname);
         return newDestinationNode;
     }
+
+});
+
+describe('editor.service : Auto-Link', () => {
+  let component: EditorComponent;
+  let fixture: ComponentFixture<EditorComponent>;
+  const metamodelService = new MockMetamodelService();
+  const renderService = new RenderService(metamodelService);
+  const editorService = new EditorService(null);
+
+  let flo: Flo.EditorContext;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FloModule
+      ],
+      providers: [
+        {provide: MetamodelService, useValue: metamodelService},
+        {provide: RenderService, useValue: renderService},
+        {provide: EditorService, useValue: editorService}
+      ]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditorComponent);
+    component = fixture.componentInstance;
+    component.metamodel = metamodelService;
+    component.renderer = renderService;
+    component.editor = editorService;
+    const subscription = component.floApi.subscribe((f) => {
+      subscription.unsubscribe();
+      flo = f;
+    });
+    fixture.detectChanges();
+  });
+
+  function dropOnCanvas(metadata: Flo.ElementMetadata, location?: dia.Point): void {
+    const node = flo.createNode(metadata, null, location);
+    component.setDragDescriptor({
+      sourceComponent: Constants.PALETTE_CONTEXT,
+      source: {
+        view: flo.getPaper().findViewByModel(node)
+      }
+    });
+    component.handleNodeDropping();
+  }
+
+  it('DnD on empty canvas', () => {
+    dropOnCanvas(metamodelService.data.get('source').get('http'));
+    expect(flo.getGraph().getElements().length).toEqual(1);
+    expect(flo.getGraph().getElements()[0].attr('metadata/name')).toEqual('http');
+  });
+
+  it('Auto-Link: OFF. Drop processor with available source port', () => {
+    flo.createNode(metamodelService.data.get('source').get('http'));
+    expect(flo.getGraph().getElements().length).toEqual(1);
+    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    expect(flo.getGraph().getElements().length).toEqual(2);
+    expect(flo.getGraph().getLinks().length).toEqual(0);
+  });
+
+  it('Auto-Link: ON. Drop processor with available source port', () => {
+    flo.autolink = true;
+    flo.createNode(metamodelService.data.get('source').get('http'));
+    expect(flo.getGraph().getElements().length).toEqual(1);
+    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    expect(flo.getGraph().getElements().length).toEqual(2);
+    expect(flo.getGraph().getLinks().length).toEqual(1);
+  });
+
+  it('Auto-Link: ON. Drop processor with sink on canvas', () => {
+    flo.autolink = true;
+    const sinkNode = flo.createNode(metamodelService.data.get('sink').get('null'));
+    expect(flo.getGraph().getElements().length).toEqual(1);
+    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    expect(flo.getGraph().getElements().length).toEqual(2);
+    expect(flo.getGraph().getLinks().length).toEqual(1);
+    const l = flo.getGraph().getLinks()[0];
+    expect(l.get('target').id).toEqual(sinkNode.id);
+    expect(l.get('target').port).toEqual('input');
+  });
+
+  it('Auto-Link: ON. Drop processor but no available ports', () => {
+    flo.autolink = true;
+    const httpNode = flo.createNode(metamodelService.data.get('source').get('http'));
+    const nullNode = flo.createNode(metamodelService.data.get('sink').get('null'));
+    flo.createLink({
+      id: httpNode.id,
+      selector: '.output-port',
+      port: 'output'
+    }, {
+      id: nullNode.id,
+      selector: '.input-port',
+      port: 'input'
+    }, null, null);
+    expect(flo.getGraph().getElements().length).toEqual(2);
+    expect(flo.getGraph().getLinks().length).toEqual(1);
+    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    expect(flo.getGraph().getElements().length).toEqual(3);
+    expect(flo.getGraph().getLinks().length).toEqual(1);
+  });
+
+  it('Auto-Link: ON. Drop processor available port has tap-link', () => {
+    flo.autolink = true;
+    const httpNode = flo.createNode(metamodelService.data.get('source').get('http'));
+    const nullNode = flo.createNode(metamodelService.data.get('sink').get('null'));
+    flo.createLink({
+      id: httpNode.id,
+      selector: '.output-port',
+      port: 'output'
+    }, {
+      id: nullNode.id,
+      selector: '.input-port',
+      port: 'input'
+    }, null, new Map<string, any>().set('isTapLink', true));
+    expect(flo.getGraph().getElements().length).toEqual(2);
+    expect(flo.getGraph().getLinks().length).toEqual(1);
+    expect(flo.getGraph().getLinks().filter(l => l.attr('props/isTapLink')).length).toEqual(1);
+    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    expect(flo.getGraph().getElements().length).toEqual(3);
+    expect(flo.getGraph().getLinks().length).toEqual(2);
+    expect(flo.getGraph().getLinks().filter(l => !l.attr('props/isTapLink')).length).toEqual(1);
+  });
+
+  it('Auto-Link: ON. More than one port available', () => {
+    flo.autolink = true;
+    flo.createNode(metamodelService.data.get('source').get('http'));
+    flo.createNode(metamodelService.data.get('processor').get('filter'));
+    expect(flo.getGraph().getElements().length).toEqual(2);
+    expect(flo.getGraph().getLinks().length).toEqual(0);
+    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    expect(flo.getGraph().getElements().length).toEqual(3);
+    expect(flo.getGraph().getLinks().length).toEqual(0);
+  });
 
 });
