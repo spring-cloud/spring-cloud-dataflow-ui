@@ -174,7 +174,7 @@ export class EditorService implements Flo.Editor {
     private getOutgoingStreamLinks(graph: dia.Graph, node: dia.Element): Array<dia.Link> {
         // !node only possible if call is occurring during link drawing (one end connected but not the other)
         return node ? graph.getConnectedLinks(node, {outbound: true})
-            .filter(link => link.get('source') && link.get('source').port === 'output') : [];
+            .filter(l => l.get('source') && l.get('source').port === 'output' && !l.attr('props/isTapLink')) : [];
     }
 
     calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,
@@ -795,87 +795,85 @@ export class EditorService implements Flo.Editor {
         } else if (target instanceof joint.dia.Link && type !== 'tap' && type !== 'destination') {
             this.moveNodeOnLink(flo, <dia.Element> source, <dia.Link> target);
         } else if (flo.autolink && relinking) {
-            // Search the graph for open ports - if only 1 is found, and it matches what
-            // the dropped node needs, join it up!
-            const group = source.attr('metadata/group');
-            let wantOpenInputPort = false; // want something with an open input port
-            let wantOpenOutputPort = false; // want something with an open output port
-            if (group === ApplicationType[ApplicationType.source]) {
-                wantOpenInputPort = true;
-            } else if (group === ApplicationType[ApplicationType.sink]) {
-                wantOpenOutputPort = true;
-            } else if (group === ApplicationType[ApplicationType.processor]) {
-                wantOpenInputPort = true;
-                wantOpenOutputPort = true;
-            }
-            const openPorts = [];
-            const elements = graph.getElements();
-            let linksIn, linksOut;
-
-            graph.getElements().filter(e => e.id !== source.id && e.attr('metadata/name')).forEach(element => {
-               switch (element.attr('metadata/group')) {
-                   case ApplicationType[ApplicationType.source]:
-                       if (wantOpenOutputPort) {
-                           linksOut = this.getOutgoingStreamLinks(graph, element);
-                           if (linksOut.length === 0) {
-                               openPorts.push({'node': element, 'openPort': 'output'});
-                           }
-                       }
-                       break;
-                   case ApplicationType[ApplicationType.sink]:
-                       if (wantOpenInputPort) {
-                           linksIn = graph.getConnectedLinks(element, {inbound: true});
-                           if (linksIn.length === 0) {
-                               openPorts.push({'node': element, 'openPort': 'input'});
-                           }
-                       }
-                       break;
-                   case ApplicationType[ApplicationType.processor]:
-                       if (wantOpenOutputPort) {
-                           linksOut = this.getOutgoingStreamLinks(graph, element);
-                           if (linksOut.length === 0) {
-                               openPorts.push({'node': element, 'openPort': 'output'});
-                           }
-                       }
-                       if (wantOpenInputPort) {
-                           linksIn = graph.getConnectedLinks(element, {inbound: true});
-                           if (linksIn.length === 0) {
-                               openPorts.push({'node': element, 'openPort': 'input'});
-                           }
-                       }
-                       break;
-                   default:
-               }
-            });
-
-            if (openPorts.length === 1) {
-                // One candidate match!
-                const match = openPorts.shift();
-                // TODO: replace selector CSS class with the result of view.getSelector(...)
-                if (match.openPort === 'input') {
-                    flo.createLink({
-                        'id': source.id,
-                        'selector': '.output-port', // /.output-port/.input-port
-                        'port': 'output' // input/output
-                    }, {
-                        'id': match.node.id,
-                        'selector': '.input-port',
-                        'port': 'input'
-                    });
-                } else { // match.openPort === 'output'
-                    flo.createLink({
-                        'id': match.node.id,
-                        'selector': '.output-port', // /.output-port/.input-port
-                        'port': 'output' // input/output
-                    }, {
-                        'id': source.id,
-                        'selector': '.input-port',
-                        'port': 'input'
-                    });
-                }
-            }
-
+            this.performAutoLinking(flo, dragDescriptor.source.view);
         }
+    }
+
+    private performAutoLinking(flo: Flo.EditorContext, view: dia.CellView) {
+      // Search the graph for open ports - if only 1 is found, and it matches what
+      // the dropped node needs, join it up!
+      const group = view.model.attr('metadata/group');
+      const graph = flo.getGraph();
+      let wantOpenInputPort = false; // want something with an open input port
+      let wantOpenOutputPort = false; // want something with an open output port
+      if (group === ApplicationType[ApplicationType.source]) {
+        wantOpenInputPort = true;
+      } else if (group === ApplicationType[ApplicationType.sink]) {
+        wantOpenOutputPort = true;
+      } else if (group === ApplicationType[ApplicationType.processor]) {
+        wantOpenInputPort = true;
+        wantOpenOutputPort = true;
+      }
+      const openPorts = [];
+      let linksIn;
+
+      graph.getElements().filter(e => e.id !== view.model.id && e.attr('metadata/name')).forEach(element => {
+        switch (element.attr('metadata/group')) {
+          case ApplicationType[ApplicationType.source]:
+            if (wantOpenOutputPort) {
+              const primaryLink = graph.getConnectedLinks(element, {outbound: true}).find(l => !l.attr('props/isTapLink'));
+              if (!primaryLink) {
+                openPorts.push({'node': element, 'openPort': 'output'});
+              }
+            }
+            break;
+          case ApplicationType[ApplicationType.sink]:
+            if (wantOpenInputPort) {
+              linksIn = graph.getConnectedLinks(element, {inbound: true});
+              if (linksIn.length === 0) {
+                openPorts.push({'node': element, 'openPort': 'input'});
+              }
+            }
+            break;
+          case ApplicationType[ApplicationType.processor]:
+            if (wantOpenOutputPort) {
+              const primaryLink = graph.getConnectedLinks(element, {outbound: true}).find(l => !l.attr('props/isTapLink'));
+              if (!primaryLink) {
+                openPorts.push({'node': element, 'openPort': 'output'});
+              }
+            }
+            if (wantOpenInputPort) {
+              linksIn = graph.getConnectedLinks(element, {inbound: true});
+              if (linksIn.length === 0) {
+                openPorts.push({'node': element, 'openPort': 'input'});
+              }
+            }
+            break;
+          default:
+        }
+      });
+
+      if (openPorts.length === 1) {
+        // One candidate match!
+        const match = openPorts.shift();
+        let sourceView: dia.CellView, targetView: dia.CellView;
+        if (match.openPort === 'input') {
+          sourceView = view;
+          targetView = flo.getPaper().findViewByModel(match.node);
+        } else {
+          sourceView = flo.getPaper().findViewByModel(match.node);
+          targetView = view;
+        }
+        flo.createLink({
+          id: sourceView.model.id,
+          selector: sourceView.getSelector(Flo.findMagnetByClass(sourceView, '.output-port' ), null),
+          port: 'output'
+        }, {
+          id: targetView.model.id,
+          selector: targetView.getSelector(Flo.findMagnetByClass(targetView, '.input-port'), null),
+          port: 'input'
+        });
+      }
     }
 
     get allowLinkVertexEdit() {

@@ -16,7 +16,7 @@ import { ProgressbarModule } from 'ngx-bootstrap';
 import { MetamodelService } from './flo/metamodel.service';
 import { RenderService } from './flo/render.service';
 import { EditorService } from './flo/editor.service';
-import { StreamCreateDialogComponent } from './stream-create/stream-create-dialog.component';
+import { StreamCreateDialogComponent } from './stream-create-dialog/stream-create-dialog.component';
 import { PropertiesDialogComponent } from './flo/properties/properties-dialog.component';
 import { ContentAssistService } from './flo/content-assist.service';
 import { TooltipModule } from 'ngx-bootstrap';

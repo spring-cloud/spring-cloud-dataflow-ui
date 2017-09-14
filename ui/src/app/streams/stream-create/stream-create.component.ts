@@ -5,7 +5,7 @@ import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { EditorService } from '../flo/editor.service';
 import { BsModalService } from 'ngx-bootstrap';
-import { StreamCreateDialogComponent } from './stream-create-dialog.component';
+import { StreamCreateDialogComponent } from '../stream-create-dialog/stream-create-dialog.component';
 import { ContentAssistService } from '../flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
 
