@@ -58,6 +58,16 @@ describe('graph-to-text', () => {
         }
     });
 
+    it('incorrect graph - single node tapped into', () => {
+        const timeSource = createSource('time');
+        const logSink = createSink('log');
+        createTap(timeSource, logSink);
+        // 'timeSource' is missing a real connected (not via tap) sink
+        dsl = convertGraphToText(graph);
+        console.log('DSL is ... ' + dsl);
+        expect(dsl).toEqual('STREAM_1=time\n:STREAM_1.time > log');
+    });
+
     it('incorrect graph - no tap links from channels', () => {
         const d = createDestination('d');
         createLink(createSource('time'), d);

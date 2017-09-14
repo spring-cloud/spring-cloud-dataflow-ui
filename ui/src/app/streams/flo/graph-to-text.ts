@@ -71,6 +71,12 @@ class GraphToTextConverter {
                     // Isolated node, let's put it in the DSL so it is not lost, the graph is a work in progress.
                     streams.push([node]);
                 } else {
+                    if (this.areAllTapLinks(linksOut)) {
+                        // Special case, a bit like above it is an isolated node (the stream is actually
+                        // in error because a source must have an input) but for now create a solo node just
+                        // to produce slightly better (although invalid) DSL.
+                        streams.push([node]);
+                    }
                     // Only outgoing links. This is the head of a stream.
                     for (let l = 0; l < linksOut.length; l++) {
                         const link = linksOut[l];
@@ -292,6 +298,15 @@ class GraphToTextConverter {
 
     private isTapLink(link): boolean {
         return link.attr('props/isTapLink') === true;
+    }
+
+    private areAllTapLinks(links: dia.Link[]): boolean {
+        for (let i = 0; i < links.length; i++) {
+            if (!this.isTapLink(links[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private getName(node: dia.Cell): string {
