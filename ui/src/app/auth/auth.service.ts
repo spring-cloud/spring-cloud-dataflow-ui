@@ -107,9 +107,7 @@ export class AuthService {
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.get(this.logoutUrl, options)
                     .map(response => {
-                      this.securityInfo.reset();
-                      const o: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
-                      o.xAuthToken = null;
+                      this.clearLocalSecurity();
                       return response;
                     })
                     .flatMap((response: Response) => {
@@ -117,6 +115,20 @@ export class AuthService {
                       return this.loadSecurityInfo();
                     })
                     .catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Clears all security-relevant information from the local application:
+   *
+   * - Calls `securityInfo.reset()`
+   * - Deletes a persisted XAuthToken (Session Storage)
+   *
+   */
+  public clearLocalSecurity() {
+    this.securityInfo.reset();
+    const o: SecurityAwareRequestOptions = this.options as SecurityAwareRequestOptions;
+    o.xAuthToken = null;
+    this.deletePersistedXAuthToken();
   }
 
   private retrievePersistedXAuthToken(): string {
