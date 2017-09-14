@@ -70,13 +70,17 @@ export class StreamsService {
     if (this.streamDefinitions.filter && this.streamDefinitions.filter.length > 0) {
       params.append('search', this.streamDefinitions.filter);
     }
-    return this.http.get(this.streamDefinitionsUrl, {search: params})
+
+    const options = HttpUtils.getDefaultRequestOptions();
+    options.params = params;
+    return this.http.get(this.streamDefinitionsUrl, options)
       .map(this.extractData.bind(this))
       .catch(this.errorHandler.handleError);
   }
 
   getDefinition(name: string): Observable<StreamDefinition> {
-    return this.http.get(`${this.streamDefinitionsUrl}/${name}`)
+    const options = HttpUtils.getDefaultRequestOptions();
+    return this.http.get(`${this.streamDefinitionsUrl}/${name}`, options)
       .map(res => {
         const json = res.json();
         return new StreamDefinition(json.name, json.dslText, json.status);
@@ -85,13 +89,15 @@ export class StreamsService {
   }
 
   createDefinition(name: string, dsl: string, deploy?: boolean): Observable<Response> {
+    const options = HttpUtils.getDefaultRequestOptions();
     const params =  new URLSearchParams('', URL_QUERY_ENCODER);
     params.append('name', name);
     params.append('definition', dsl);
     if (deploy) {
       params.set('deploy', deploy.toString());
     }
-    return this.http.post(this.streamDefinitionsUrl, null, {params: params});
+    options.search = params;
+    return this.http.post(this.streamDefinitionsUrl, null, options);
   }
 
   /**
@@ -101,8 +107,7 @@ export class StreamsService {
    */
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> {
     console.log('Destroying...', streamDefinition);
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
+    const options = HttpUtils.getDefaultRequestOptions();
     return this.http.delete('/streams/definitions/' + streamDefinition.name, options)
       .map(data => {
         this.streamDefinitions.items = this.streamDefinitions.items.filter(item => item.name !== streamDefinition.name);
@@ -117,8 +122,7 @@ export class StreamsService {
    */
   undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> {
     console.log('Undeploying...', streamDefinition);
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
+    const options = HttpUtils.getDefaultRequestOptions();
     return this.http.delete('/streams/deployments/' + streamDefinition.name, options)
       .catch(this.errorHandler.handleError);
   }
@@ -131,8 +135,7 @@ export class StreamsService {
    */
   deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> {
     console.log('Deploying...', streamDefinitionName);
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
+    const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
       .catch(this.errorHandler.handleError);
   }
