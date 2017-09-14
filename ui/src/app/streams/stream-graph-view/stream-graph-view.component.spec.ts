@@ -52,11 +52,12 @@ describe('StreamGraphViewComponent', () => {
   });
 
   it('check stream in the view', (done) => {
-    component.dsl = 'http';
+    component.dsl = 'http | filter | null';
     fixture.detectChanges();
     const subscription = component.flo.textToGraphConversionSubject.subscribe(() => {
       subscription.unsubscribe();
-      expect(component.flo.getGraph().getElements().length).toEqual(1);
+      expect(component.flo.getGraph().getElements().length).toEqual(3);
+      expect(component.flo.getGraph().getLinks().length).toEqual(2);
       done();
     });
   });
