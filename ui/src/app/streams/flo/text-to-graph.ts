@@ -390,8 +390,8 @@ class TextToGraphConverter {
         const inputlinksCount = inputlinks ? inputlinks.length : 0;
         for (let l = 0; l < inputlinksCount; l++) {
             link = inputlinks[l];
-            const props: Map<string, string> = new Map();
-            props['isTapLink'] = (link.linkType && link.linkType === 'tap') ? true : false;
+            const props: Map<string, any> = new Map();
+            props.set('isTapLink', (link.linkType && link.linkType === 'tap') ? true : false);
             this.floEditorContext.createLink(
                 {'id': nodesIndex[link.from], 'selector': '.output-port', 'port': 'output' },
                 {'id': nodesIndex[link.to], 'selector': '.input-port', 'port': 'input'},

@@ -35,6 +35,17 @@ const NODE_DROPPING = false;
 @Injectable()
 export class EditorService implements Flo.Editor {
 
+    static VALMSG_NEEDS_OUTPUT_CONNECTION = 'Should direct its output to an app';
+    static VALMSG_NEEDS_INPUT_CONNECTION = 'Should have an input connection from an app';
+    static VALMSG_DESTINATION_SHOULD_BE_NAMED = 'Destination should be named';
+    static VALMSG_DESTINATION_CANNOT_BE_TAPPED = 'Cannot tap into a destination app';
+    static VALMSG_TAPSOURCE_CANNOT_BE_TAPPED = 'Cannot tap into a tap source';
+    static VALMSG_SOURCES_MUST_BE_AT_START = 'Sources must appear at the start of a stream';
+    static VALMSG_SINK_SHOULD_BE_AT_END = 'Sink should be at the end of a stream';
+    static VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE = 'Only one non-tap link allowed from source';
+    static VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR = 'Only one non-tap link allowed from processor';
+    static VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION = 'Element needs exactly one non-tapping output connection';
+
     constructor(private bsModalService: BsModalService) {}
 
     createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
@@ -272,17 +283,43 @@ export class EditorService implements Flo.Editor {
         if (incoming.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: 'Sources must appear at the start of a stream',
+                message: EditorService.VALMSG_SOURCES_MUST_BE_AT_START,
                 range: element.attr('range')
             });
         }
         if (outgoing.length === 0) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: 'Should direct its output to an app',
+                message: EditorService.VALMSG_NEEDS_OUTPUT_CONNECTION,
                 range: element.attr('range')
             });
+        } else {
+            const nontaplinks = this.countNonTapLinks(outgoing);
+            if (nontaplinks === 0) {
+                errors.push({
+                    severity: Flo.Severity.Error,
+                    message: EditorService.VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION,
+                    range: element.attr('range')
+                });
+            } else if (nontaplinks > 1) {
+                errors.push({
+                    severity: Flo.Severity.Error,
+                    message: EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE,
+                    range: element.attr('range')
+                });
+            }
         }
+    }
+
+    private countNonTapLinks(links: Array<dia.Link>): number {
+        let nonTapLinkCount = 0;
+        for (let l = 0; l < links.length; l++) {
+            const link = links[l];
+            if (!this.isTapLink(link)) {
+                nonTapLinkCount++;
+            }
+        }
+        return nonTapLinkCount;
     }
 
     private validateProcessor(element: dia.Element, incoming: Array<dia.Link>,
@@ -290,16 +327,31 @@ export class EditorService implements Flo.Editor {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: incoming.length === 0 ? 'Should have an input from an app' : 'Input should come from one app only',
+                message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
                 range: element.attr('range')
             });
         }
         if (outgoing.length === 0) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: 'Should direct its output to an app',
+                message: EditorService.VALMSG_NEEDS_OUTPUT_CONNECTION,
                 range: element.attr('range')
             });
+        } else {
+            const nontaplinks = this.countNonTapLinks(outgoing);
+            if (nontaplinks === 0) {
+                errors.push({
+                    severity: Flo.Severity.Error,
+                    message: EditorService.VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION,
+                    range: element.attr('range')
+                });
+            } else if (nontaplinks > 1) {
+                errors.push({
+                    severity: Flo.Severity.Error,
+                    message: EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR,
+                    range: element.attr('range')
+                });
+            }
         }
     }
 
@@ -308,21 +360,14 @@ export class EditorService implements Flo.Editor {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: incoming.length === 0 ? 'Should have an input from an app' : 'Input should come from one app only',
+                message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
                 range: element.attr('range')
             });
         }
         if (outgoing.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: 'Sink should be at the end of a stream',
-                range: element.attr('range')
-            });
-        }
-        if (tap.length !== 0) {
-            errors.push({
-                severity: Flo.Severity.Error,
-                message: 'Cannot tap into a sink app',
+                message: EditorService.VALMSG_SINK_SHOULD_BE_AT_END,
                 range: element.attr('range')
             });
         }
@@ -333,7 +378,7 @@ export class EditorService implements Flo.Editor {
         if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: incoming.length === 0 ? 'Should have an input from an app' : 'Input should come from one app only',
+                message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
                 range: element.attr('range')
             });
         }
@@ -365,29 +410,39 @@ export class EditorService implements Flo.Editor {
         if (outgoing.length === 0) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: 'Should direct its output to an app',
+                message: EditorService.VALMSG_NEEDS_OUTPUT_CONNECTION,
                 range: element.attr('range')
             });
         }
         if (tap.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: 'Cannot tap into a tap app',
+                message: EditorService.VALMSG_TAPSOURCE_CANNOT_BE_TAPPED,
                 range: element.attr('range')
             });
         }
     }
 
     private validateDestination(element: dia.Element, incoming: Array<dia.Link>,
-                                outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        // TODO: no 'tap' port anymore hence no more such links
-        if (tap.length !== 0) {
+                                outgoing: Array<dia.Link>, tapLinks: Array<dia.Link>, errors: Array<Flo.Marker>) {
+        if (tapLinks.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
-                message: 'Cannot tap into a destination app',
+                message: EditorService.VALMSG_DESTINATION_CANNOT_BE_TAPPED,
                 range: element.attr('range')
             });
         }
+        if (!element.attr('props/name')) {
+            errors.push({
+                severity: Flo.Severity.Error,
+                message: EditorService.VALMSG_DESTINATION_SHOULD_BE_NAMED,
+                range: element.attr('range')
+            });
+        }
+    }
+
+    private isTapLink(link): boolean {
+        return link.attr('props/isTapLink') === true;
     }
 
     private validateConnectedLinks(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
@@ -405,10 +460,11 @@ export class EditorService implements Flo.Editor {
                 port = link.get('source').port;
                 if (port === 'output') {
                     outgoing.push(link);
-                } else if (port === 'tap') {
-                    tap.push(link);
                 } else {
                     invalidOutgoing.push(link);
+                }
+                if (this.isTapLink(link)) {
+                    tap.push(link);
                 }
             } else if (link.get('target').id === element.id) {
                 port = link.get('target').port;
@@ -458,39 +514,38 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateProperties(element: dia.Element, errors: Array<Flo.Marker>) {
-        // If possible, verify the properties specified match those allowed on this type of element
-        // propertiesRanges are the ranges for each property included the entire '--name=value'.
-        // The format of a range is {'start':{'ch':NNNN,'line':NNNN},'end':{'ch':NNNN,'line':NNNN}}
-        const propertiesRanges = element.attr('propertiesranges');
-        if (propertiesRanges) {
-            const appSchema = element.attr('metadata');
-            // Grab the list of supported properties for this app type
-            appSchema.properties().then(appSchemaProperties => {
-                if (!appSchemaProperties) {
-                    appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
-                }
-                // Example appSchemaProperties:
-                // {"host":{"name":"host","type":"String",
-                // "description":"the hostname of the mail server","defaultValue":"localhost","hidden":false},
-                //  "password":{"name":"password","type":"String",
-                //  "description":"the password to use to connect to the mail server ","defaultValue":null,"hidden":false}
-                const specifiedProperties = element.attr('props');
-                Object.keys(specifiedProperties).forEach(propertyName => {
-                    if (!appSchemaProperties.has(propertyName)) {
-                        // The schema does not mention that property
-                        const propertyRange = propertiesRanges[propertyName];
-                        if (propertyRange) {
-                            errors.push({
+    /**
+     * Verify any supplied properties are allowed according to the metadata specification
+     * for the element.
+     */
+    private validateProperties(element: dia.Element, markers: Array<Flo.Marker>): Promise<void> {
+        return new Promise((resolve) => {
+            const specifiedProperties = element.attr('props');
+            if (specifiedProperties) {
+                const propertiesRanges = element.attr('propertiesranges');
+                const appSchema = element.attr('metadata');
+                appSchema.properties().then(appSchemaProperties => {
+                    if (!appSchemaProperties) {
+                        appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
+                    }
+                    Object.keys(specifiedProperties).forEach(propertyName => {
+                        if (!appSchemaProperties.has(propertyName)) {
+                            const range = propertiesRanges ? propertiesRanges[propertyName] : null;
+                            markers.push({
                                 severity: Flo.Severity.Error,
-                                message: 'unrecognized option \'' + propertyName + '\' for app \'' + element.attr('metadata/name') + '\'',
-                                range: propertyRange
+                                message: 'unrecognized option \'' + propertyName + '\' for app \'' +
+                                            element.attr('metadata/name') + '\'',
+                                range: range
                             });
                         }
-                    }
+                    });
+                    resolve();
                 });
-            });
-        }
+            } else {
+                // nothing to check, simply resolve the promise
+                resolve();
+            }
+        });
     }
 
     private validateMetadata(element: dia.Cell, errors: Array<Flo.Marker>) {
@@ -508,21 +563,32 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateNode(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
-        this.validateMetadata(element, errors);
-        this.validateConnectedLinks(graph, element, errors);
-        this.validateProperties(element, errors);
+    private validateNode(graph: dia.Graph, element: dia.Element): Promise<Array<Flo.Marker>> {
+        return new Promise((resolve) => {
+            const markers: Array<Flo.Marker> = [];
+            this.validateMetadata(element, markers);
+            this.validateConnectedLinks(graph, element, markers);
+            this.validateProperties(element, markers).then(() => {
+                resolve(markers);
+            });
+        });
     }
 
     validate(graph: dia.Graph, dsl: string, flo: Flo.EditorContext): Promise<Map<string, Flo.Marker[]>> {
         return new Promise(resolve => {
-            const allMarkers: Map<string, Array<Flo.Marker>> = new Map();
+            const markers: Map<string, Array<Flo.Marker>> = new Map();
+            const promises: Promise<void>[] = [];
             graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
-                const markers: Array<Flo.Marker> = [];
-                this.validateNode(graph, e, markers);
-                allMarkers.set(e.id, markers);
+                promises.push(new Promise<void>((nodeFinished) => {
+                    this.validateNode(graph, e).then((result) => {
+                        markers.set(e.id, result);
+                        nodeFinished();
+                    });
+                }));
             });
-            resolve(allMarkers);
+            Promise.all(promises).then(() => {
+                resolve(markers);
+            });
         });
     }
 

@@ -319,7 +319,7 @@ export class RenderService implements Flo.Renderer {
                 const linkView = paper ? paper.findViewByModel(link) : undefined;
                 if (linkView) {
                   // TODO: Check if need to switch bacl to _.each(...)
-                  if (isTapLink) {
+                  if (isTapLink === true) {
                     linkView.el.querySelectorAll('.connection, .marker-source, .marker-target')
                       .forEach(connection => joint.V(connection).addClass('tapped-output-from-app'));
                   } else {
@@ -533,12 +533,20 @@ export class RenderService implements Flo.Renderer {
         });
     }
 
+    isChannel(e: dia.Cell): boolean {
+        return e && (e.attr('metadata/name') === 'tap' || e.attr('metadata/name') === 'destination');
+    }
+
     handleLinkSwitch(link: dia.Link, flo: Flo.EditorContext) {
         const graph = flo.getGraph();
         const source = graph.getCell(link.get('source').id);
         // var target = graph.getCell(link.get('target').id);
         const isTapLink = link.attr('props/isTapLink');
-        if (isTapLink) {
+        // This does nothing if the source is a destination/tap - there are no tap links allowed from destinations
+        if (this.isChannel(source)) {
+            return;
+        }
+        if (isTapLink === true) {
             console.log(`Converting link ${this.toLinkString(graph, link)} into a primary link`);
             link.attr('props/isTapLink', false);
             // Need to ensure no other links are still primary, that isn't allowed
@@ -560,11 +568,14 @@ export class RenderService implements Flo.Renderer {
         const source = graph.getCell(link.get('source').id);
         const target = graph.getCell(link.get('target').id);
         console.log('render-service.handleLinkAdded');
-        if (source) {
+        if (!target && source && !this.isChannel(source)) {
+            // this is a new link being drawn in the UI (it is not connected to anything yet).
+            // Need to decide whether to make it a tap link
             const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
-            const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
-
-            link.attr('props/isTapLink', primaryLink ? true : false);
+            const primaryLinkExists = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink')) ? true : false;
+            link.attr('props/isTapLink', primaryLinkExists ? true : false);
+        }
+        if (link.attr('props/isTapLink') === true) {
             this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
         }
         if (source && source.attr('metadata/name') === 'destination' && target) {
