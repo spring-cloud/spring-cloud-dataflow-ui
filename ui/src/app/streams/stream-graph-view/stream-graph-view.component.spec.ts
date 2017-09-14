@@ -54,7 +54,7 @@ describe('StreamGraphViewComponent', () => {
   it('check stream in the view', (done) => {
     component.dsl = 'http';
     fixture.detectChanges();
-    let subscription = component.flo.textToGraphConversionSubject.subscribe(() => {
+    const subscription = component.flo.textToGraphConversionSubject.subscribe(() => {
       subscription.unsubscribe();
       expect(component.flo.getGraph().getElements().length).toEqual(1);
       done();
