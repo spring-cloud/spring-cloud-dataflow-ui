@@ -23,6 +23,7 @@ import { TooltipModule } from 'ngx-bootstrap';
 import { NodeComponent } from './flo/node/node.component';
 import { DecorationComponent } from './flo/decoration/decoration.component';
 import { HandleComponent } from './flo/handle/handle.component';
+import { StreamGraphViewComponent } from './stream-graph-view/stream-graph-view.component';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { HandleComponent } from './flo/handle/handle.component';
     PropertiesDialogComponent,
     NodeComponent,
     DecorationComponent,
-    HandleComponent
+    HandleComponent,
+    StreamGraphViewComponent
   ],
   entryComponents: [
     StreamCreateDialogComponent,

@@ -316,15 +316,16 @@ export class RenderService implements Flo.Renderer {
             const link = <dia.Link> cell;
             if (changedPropertyPath === 'props/isTapLink') {
                 const isTapLink = link.attr('props/isTapLink');
-                const linkView = paper.findViewByModel(link);
-                console.log('Adjusting link class isTapLink? ' + isTapLink);
-                // TODO: Check if need to switch bacl to _.each(...)
-                if (isTapLink) {
+                const linkView = paper ? paper.findViewByModel(link) : undefined;
+                if (linkView) {
+                  // TODO: Check if need to switch bacl to _.each(...)
+                  if (isTapLink) {
                     linkView.el.querySelectorAll('.connection, .marker-source, .marker-target')
                       .forEach(connection => joint.V(connection).addClass('tapped-output-from-app'));
-                } else {
+                  } else {
                     linkView.el.querySelectorAll('.connection, .marker-source, .marker-target')
                       .forEach(connection => joint.V(connection).removeClass('tapped-output-from-app'));
+                  }
                 }
             }
             console.log('link being refreshed');

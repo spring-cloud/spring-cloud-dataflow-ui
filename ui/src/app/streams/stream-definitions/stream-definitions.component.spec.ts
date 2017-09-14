@@ -19,6 +19,8 @@ import {StreamDefinition} from '../model/stream-definition';
 import { RolesDirective } from '../../auth/directives/roles.directive';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
+import { StreamGraphViewComponent } from '../stream-graph-view/stream-graph-view.component';
+import { FloModule } from 'spring-flo';
 
 /**
  * Test {@link StreamDefinitionsComponent}.
@@ -40,6 +42,7 @@ describe('StreamDefinitionsComponent', () => {
       declarations: [
         KeyValuePipe,
         RolesDirective,
+        StreamGraphViewComponent,
         StreamDefinitionsComponent,
       ],
       imports: [
@@ -48,6 +51,7 @@ describe('StreamDefinitionsComponent', () => {
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
         FormsModule,
+        FloModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([])
       ],
