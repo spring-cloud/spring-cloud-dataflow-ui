@@ -188,6 +188,7 @@ export class AnalyticsService {
     if (!this.dashboardItems || this.dashboardItems.length === 0) {
       return;
     }
+    this.stopPollingOfSingleDashboardItem(this.dashboardItems[index]);
     this.dashboardItems.splice(index, 1);
   }
 
@@ -216,6 +217,9 @@ export class AnalyticsService {
   }
 
   resetDashboard() {
+    for (const dashboardItemToDisable of this.dashboardItems) {
+      this.stopPollingOfSingleDashboardItem(dashboardItemToDisable);
+    }
     this.dashboardItems.length = 0;
     this.addNewDashboardItem();
   }
