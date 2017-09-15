@@ -18,7 +18,6 @@ import { Counter } from './../model/counter.model';
 export class DashboardComponent implements OnInit {
 
   busy: Subscription;
-  public counters: Counter[] = [];
 
   public get dashboardItems() {
     return this.analyticsService.dashboardItems;
@@ -78,10 +77,11 @@ export class DashboardComponent implements OnInit {
    * Retrieves metrics for specific type.
    * @param {MetricType} metricType to retrieve.
    */
-  onMetricTypeChange(metricType: MetricType) {
+  onMetricTypeChange(metricType: MetricType, dashBoardItem: DashboardItem) {
     console.log('Selected Metric Type:', metricType);
+    dashBoardItem.counters = [];
     this.analyticsService.getStreamsForMetricType(metricType).subscribe(result => {
-      this.counters = result.items;
+      dashBoardItem.counters = result.items;
     });
   }
 

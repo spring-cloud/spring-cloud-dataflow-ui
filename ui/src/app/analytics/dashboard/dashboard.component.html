@@ -27,7 +27,7 @@
         <select #counterName="ngModel" name="counterName_{{item.id}}" [(ngModel)]="item.counter"
                 [compareWith]="compareCounter" required (ngModelChange)="onCounterNameChange(item)">
             <option [ngValue]="undefined" disabled="disabled">Please select a counter...</option>
-            <option *ngFor="let counter of counters"
+            <option *ngFor="let counter of item.counters"
                     [ngValue]="counter">{{counter.name}}</option>
           </select>
           <span class="help-block" *ngIf="counterName.invalid && counterName.touched">Please select a counter.</span>

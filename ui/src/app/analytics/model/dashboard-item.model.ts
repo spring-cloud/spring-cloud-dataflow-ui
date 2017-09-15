@@ -1,6 +1,7 @@
 import { Serializable } from '../../shared/model';
 import { MetricType } from './metric-type.model';
 import { Counter } from './counter.model';
+import { Page } from '../../shared/model';
 import { Subscription } from 'rxjs/Subscription';
 
 /**
@@ -19,6 +20,8 @@ export class DashboardItem implements Serializable<DashboardItem> {
   public counterPoller: Subscription;
   public chartHeight = 140;
   public barSize = 2;
+
+  public counters: Counter[] = [];
 
   constructor(
   ) { }
