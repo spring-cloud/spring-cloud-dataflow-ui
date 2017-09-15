@@ -1,7 +1,7 @@
 import {ErrorHandler} from '../shared/model/error-handler';
 import {StreamsService} from './streams.service';
 import {Observable} from 'rxjs/Observable';
-import {HttpUtils} from '../shared/support/http.utils';
+import {HttpUtils, URL_QUERY_ENCODER} from '../shared/support/http.utils';
 import {StreamDefinition} from './model/stream-definition';
 import {Headers, RequestOptions, URLSearchParams} from '@angular/http';
 import {MockResponse} from '../tests/mocks/response';
@@ -137,6 +137,32 @@ describe('StreamsService', () => {
         streamDefinitions = this.streamsService.extractData(response);
         expect(streamDefinitions.items.length).toBe(0);
       });
+    });
+
+    describe('relatedStreamDefinitions', () => {
+
+      it('should call the streams service to get related stream definitions no nesting', () => {
+        this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+
+        expect(this.streamsService.getRelatedDefinitions).toBeDefined();
+
+        this.streamsService.getRelatedDefinitions('test');
+        expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions/test/related', HttpUtils.getDefaultRequestOptions());
+      });
+
+      it('should call the streams service to get related stream definitions with nesting', () => {
+        this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+
+        expect(this.streamsService.getRelatedDefinitions).toBeDefined();
+
+        this.streamsService.getRelatedDefinitions('test', true);
+        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+        const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+        params.append('nested', 'true');
+        requestOptionsArgs.params = params;
+        expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions/test/related', requestOptionsArgs);
+      });
+
     });
   });
 });

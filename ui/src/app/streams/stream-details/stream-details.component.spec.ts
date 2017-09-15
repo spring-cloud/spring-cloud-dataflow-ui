@@ -7,6 +7,15 @@ import {MockActivatedRoute} from '../../tests/mocks/activated-route';
 import {RouterTestingModule} from '@angular/router/testing';
 import {StreamsService} from '../streams.service';
 import {ActivatedRoute} from '@angular/router';
+import {StreamGraphViewComponent} from '../stream-graph-view/stream-graph-view.component';
+import { FloModule } from 'spring-flo';
+import {MockToastyService} from '../../tests/mocks/toasty';
+import {ToastyService} from 'ng2-toasty';
+import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
+import { MetamodelService } from '../flo/metamodel.service';
+import { RenderService } from '../flo/render.service';
+
+
 
 /**
  * Test {@link StreamDetailsComponent}.
@@ -19,20 +28,28 @@ describe('StreamDetailsComponent', () => {
   let activeRoute: MockActivatedRoute;
   const streamsService = new MockStreamsService();
   const commonTestParams = { id: '1' };
+  const toastyService = new MockToastyService();
+  const metamodelService = new MockMetamodelService();
+  const renderService = new RenderService(metamodelService);
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
 
     TestBed.configureTestingModule({
       declarations: [
-        StreamDetailsComponent
+        StreamDetailsComponent,
+        StreamGraphViewComponent
       ],
       imports: [
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        FloModule
       ],
       providers: [
         {provide: StreamsService, useValue: streamsService},
         {provide: ActivatedRoute, useValue: activeRoute },
+        {provide: ToastyService, useValue: toastyService},
+        {provide: MetamodelService, useValue: metamodelService},
+        {provide: RenderService, useValue: renderService}
       ]
     })
       .compileComponents();

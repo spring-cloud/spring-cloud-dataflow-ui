@@ -96,7 +96,7 @@ export class StreamsService {
     if (deploy) {
       params.set('deploy', deploy.toString());
     }
-    options.search = params;
+    options.params = params;
     return this.http.post(this.streamDefinitionsUrl, null, options);
   }
 
@@ -137,6 +137,18 @@ export class StreamsService {
     console.log('Deploying...', streamDefinitionName);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
+      .catch(this.errorHandler.handleError);
+  }
+
+  getRelatedDefinitions(streamName: string, nested?: boolean): Observable<StreamDefinition[]> {
+    const options = HttpUtils.getDefaultRequestOptions();
+    if (nested) {
+      const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+      params.append('nested', nested.toString());
+      options.params = params;
+    }
+    return this.http.get(`/streams/definitions/${streamName}/related`, options)
+      .map(res => this.extractData(res).items)
       .catch(this.errorHandler.handleError);
   }
 

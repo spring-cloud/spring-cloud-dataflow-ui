@@ -1,1 +1,6 @@
-<div>This is in under development. We would love to hear feedback on the other available tabs/views.</div>
+<h1>Detailed view of stream <strong>'{{id}}'</strong></h1>
+<app-stream-graph-view [dsl]="dsl" [paperPadding]="20" class="stream-details"></app-stream-graph-view>
+<div class="row">
+  <div class="col-md-12 text-right"><button id="back-button"
+                                            type="button" class="btn btn-default" (click)="goBack()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>Back</button></div>
+</div>

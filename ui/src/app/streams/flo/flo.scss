@@ -8,7 +8,7 @@ $spring-light-grey: #EEEEEE;
 $btn-default-color: white;
 $btn-default-bg: #607580;
 $flo-shape-fill-color: #eeeeee;
-$spring-grey: $gray;
+$spring-grey: #DFE5E8;
 
 .stream-editor #flow-view {
   height:625px;
@@ -227,10 +227,6 @@ $spring-grey: $gray;
   height: 200px;
 }
 
-.undeployed .canvas {
-  border-color: $spring-grey;
-}
-
 .CodeMirror pre.CodeMirror-placeholder {
   color: $spring-grey;
 }
@@ -411,7 +407,6 @@ table.zoom-canvas-control {
     padding: 0px;
   }
 }
-
 
 .dataflow-main-container .zoom-canvas-input {
   border: 0px;

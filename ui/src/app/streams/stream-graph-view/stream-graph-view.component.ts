@@ -6,13 +6,16 @@ import { RenderService } from '../flo/render.service';
 @Component({
   selector: 'app-stream-graph-view',
   templateUrl: './stream-graph-view.component.html',
-  styleUrls: [ '../flo/flo.scss' ],
+  styleUrls: [ '../flo/flo.scss', './stream-graph-view.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
 export class StreamGraphViewComponent {
 
   @Input()
   dsl: string;
+
+  @Input()
+  paperPadding = 5;
 
   private editorContext: Flo.EditorContext;
 
