@@ -56,7 +56,7 @@ export class LogoutComponent implements OnInit {
       console.log(`Logging out user ${this.authService.securityInfo.username} (OAuth)`);
       this.authService.clearLocalSecurity();
 
-      var logoutUrl = '//' + window.location.host + '/logout';
+      const logoutUrl = '//' + window.location.host + '/logout';
       console.log('Redirecting to ' + logoutUrl);
       window.open(logoutUrl, '_self');
     }

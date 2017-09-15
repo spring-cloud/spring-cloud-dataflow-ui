@@ -61,4 +61,8 @@ export class MockStreamsService {
   deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response>|Observable<any> {
     return Observable.of({});
   }
+
+  getRelatedDefinitions(streamDefinitionName: String, nested?: boolean): Observable<StreamDefinition[]> {
+    return Observable.of([]);
+  }
 }

@@ -42,6 +42,7 @@ describe('StreamGraphViewComponent', () => {
     expect(component).toBeTruthy();
     expect(component.dsl).toBeUndefined();
     expect(component.flo).toBeDefined();
+    expect(component.paperPadding).toEqual(5);
   });
 
   it('check empty read-only view', () => {
