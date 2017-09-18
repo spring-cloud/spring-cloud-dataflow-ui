@@ -61,7 +61,7 @@
                   class="btn btn-default" title="Details">
             <span class="glyphicon glyphicon-info-sign"></span>
           </button>
-          <button type="button" [appRoles]="['ROLE_CREATE']" [disabled]="(item.status==='undeployed' || item.status==='failed' || item.status==='incomplete')" (click)="undeploy(item)"
+          <button type="button" [appRoles]="['ROLE_CREATE']" [disabled]="(item.status==='undeployed'  || item.status==='incomplete')" (click)="undeploy(item)"
                   class="btn btn-default" style="margin-left: 0;" title="Undeploy">
             <span class="glyphicon glyphicon-stop"></span>
           </button>
