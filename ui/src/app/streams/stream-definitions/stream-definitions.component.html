@@ -77,7 +77,7 @@
       </tr>
       <tr *ngIf="item.isExpanded">
         <td colspan="5">
-          <app-stream-graph-view [dsl]="item.dslText" [ngClass]="item.status ? [item.status] : []"></app-stream-graph-view>
+          <app-stream-graph-definition [stream]="item"></app-stream-graph-definition>
         </td>
       </tr>
     </ng-template>
