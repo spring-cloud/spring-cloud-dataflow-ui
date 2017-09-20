@@ -25,6 +25,7 @@ import { DecorationComponent } from './flo/decoration/decoration.component';
 import { HandleComponent } from './flo/handle/handle.component';
 import { StreamGraphViewComponent } from './stream-graph-view/stream-graph-view.component';
 import { StreamGraphDefinitionComponent } from './stream-graph-definition/stream-graph-definition.component';
+import { InstanceDotComponent } from './flo/instance-dot/instance-dot.component';
 
 @NgModule({
   imports: [
@@ -52,14 +53,16 @@ import { StreamGraphDefinitionComponent } from './stream-graph-definition/stream
     DecorationComponent,
     HandleComponent,
     StreamGraphViewComponent,
-    StreamGraphDefinitionComponent
+    StreamGraphDefinitionComponent,
+    InstanceDotComponent
   ],
   entryComponents: [
     StreamCreateDialogComponent,
     PropertiesDialogComponent,
     NodeComponent,
     DecorationComponent,
-    HandleComponent
+    HandleComponent,
+    InstanceDotComponent
   ],
   providers: [
     StreamsService,

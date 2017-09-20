@@ -153,7 +153,7 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
-  metrics(streamNames?: string[]): Observable<StreamMetrics[]> {
+  metrics(streamNames?: string[]): Observable<StreamMetrics.Stream[]> {
     const options = HttpUtils.getDefaultRequestOptions();
     if (streamNames) {
       const params =  new URLSearchParams('', URL_QUERY_ENCODER);

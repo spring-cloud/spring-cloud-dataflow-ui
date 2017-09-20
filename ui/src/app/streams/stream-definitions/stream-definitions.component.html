@@ -77,7 +77,7 @@
       </tr>
       <tr *ngIf="item.isExpanded">
         <td colspan="5">
-          <app-stream-graph-definition [stream]="item"></app-stream-graph-definition>
+          <app-stream-graph-definition [stream]="item" [metrics]="metricsForStream(item.name)"></app-stream-graph-definition>
         </td>
       </tr>
     </ng-template>

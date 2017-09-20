@@ -29,6 +29,8 @@ import { HandleComponent } from './handle/handle.component';
 import { ShapeComponent } from './support/shape-component';
 import { dia } from 'jointjs';
 import { Utils } from './support/utils';
+import { TYPE_INSTANCE_LABEL, TYPE_INSTANCE_DOT } from './support/shapes';
+import { InstanceDotComponent } from './instance-dot/instance-dot.component';
 import { layout } from './support/layout';
 import * as _joint from 'jointjs';
 const joint: any = _joint;
@@ -58,7 +60,8 @@ const GROUP_ICONS = new Map<string, string>()
 const SHAPE_TYPE_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, NodeComponent)
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
-  .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent);
+  .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
+  .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
 
 /**
  * Render Service for Flo based Stream Definition graph editor
@@ -638,6 +641,7 @@ export class RenderService implements Flo.Renderer {
           options: joint.util.deepSupplement({}, joint.dia.ElementView.prototype.options),
 
           renderMarkup: function () {
+            console.log('RENDERING: ' + this.model.get('type'));
             // Not called often. It's fine to destro old component and create the new one, because old DOM
             // may have been aletered by JointJS updates
             if (self.componentFactoryResolver && SHAPE_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {

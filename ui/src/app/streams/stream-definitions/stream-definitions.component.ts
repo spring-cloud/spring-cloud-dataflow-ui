@@ -33,7 +33,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   metricsSubscription: Subscription;
   definitionNameSort: boolean = undefined;
   definitionSort: boolean = undefined;
-  metrics: StreamMetrics[];
+  metrics: StreamMetrics.Stream[];
 
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
@@ -79,9 +79,13 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    * Loads streams metrics data
    */
   loadStreamMetrics() {
-    const streamNames = this.streamDefinitions && Array.isArray(this.streamDefinitions.items) ? this.streamDefinitions.items.map(s => s.name) : [];
+    const streamNames = this.streamDefinitions && Array.isArray(this.streamDefinitions.items) ?
+      this.streamDefinitions.items
+        .filter(i => i.status === 'deployed')
+        .map(s => s.name.toString())
+      : [];
     if (streamNames.length) {
-      this.streamsService.metrics().subscribe(metrics => this.metrics = metrics);
+      this.streamsService.metrics(streamNames).subscribe(metrics => this.metrics = metrics);
     } else {
       this.metrics = [];
     }
@@ -239,5 +243,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   closePopOver() {
     this.childPopover.hide();
+  }
+
+  metricsForStream(name: string) {
+    return this.metrics.find(m => m.name === name);
   }
 }
