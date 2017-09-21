@@ -1,11 +1,11 @@
-<svg:g class="rotatable" [tooltip]="dotTooltip" placement="bottom" container="body" [ngClass]="{deployed: moduleInstanceData}">
+<svg:g class="rotatable" [tooltip]="dotTooltip" placement="bottom" container="body" [ngClass]="{deployed: instance}">
   <svg:g class="scalable">
     <svg:circle class="instance-dot"/>
   </svg:g>
 </svg:g>
 
 <template #dotTooltip>
-  <table *ngIf="moduleInstanceData; else noData" class="table-hover table-condensed container-details-table">
+  <table *ngIf="instance; else noData" class="table-hover table-condensed container-details-table">
     <tbody>
     <tr>
       <td nowrap class="text-left tooltip-property-key"><strong>Guid</strong></td>

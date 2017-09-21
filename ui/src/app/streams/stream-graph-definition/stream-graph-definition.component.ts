@@ -137,7 +137,7 @@ export class StreamGraphDefinitionComponent {
 
           for (let lane = 0; lane < lanesNeeded; lane++) {
             const numberOfDots = (lane === lanesNeeded - 1) ? instanceCount - lane * maxDotsPerLine : maxDotsPerLine;
-            let even = numberOfDots % 2 === 0;
+            const even = numberOfDots % 2 === 0;
             let dotX = x - (Math.floor(numberOfDots / 2) * (diameter + padding) + (even ? -padding / 2 : diameter / 2));
             for (let i = 0; i < numberOfDots; i++) {
               const idx = lane * maxDotsPerLine + i/* + 1*/;

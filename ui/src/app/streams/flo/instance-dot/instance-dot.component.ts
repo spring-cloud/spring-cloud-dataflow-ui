@@ -17,13 +17,13 @@ import { ApplicationType } from '../../../shared/model/application-type';
 })
 export class InstanceDotComponent extends BaseShapeComponent {
 
-  get moduleInstanceData(): StreamMetrics.Instance {
+  get instance(): StreamMetrics.Instance {
     return this.view ? this.view.model.attr('instance') : undefined;
   }
 
   get inputMean(): string {
-    if (this.moduleInstanceData && !this.isSource) {
-      const metric = this.moduleInstanceData.metrics.find(m => m.name === StreamMetrics.INPUT_CHANNEL_MEAN);
+    if (this.instance && !this.isSource) {
+      const metric = this.instance.metrics.find(m => m.name === StreamMetrics.INPUT_CHANNEL_MEAN);
       if (metric && typeof metric.value === 'number') {
         return metric.value.toFixed(3);
       }
@@ -32,8 +32,8 @@ export class InstanceDotComponent extends BaseShapeComponent {
   }
 
   get outputMean(): string {
-    if (this.moduleInstanceData && !this.isSink) {
-      const metric = this.moduleInstanceData.metrics.find(m => m.name === StreamMetrics.OUTPUT_CHANNEL_MEAN);
+    if (this.instance && !this.isSink) {
+      const metric = this.instance.metrics.find(m => m.name === StreamMetrics.OUTPUT_CHANNEL_MEAN);
       if (metric && typeof metric.value === 'number') {
         return metric.value.toFixed(3);
       }
@@ -42,15 +42,15 @@ export class InstanceDotComponent extends BaseShapeComponent {
   }
 
   get isSource(): boolean {
-    return this.moduleInstanceData ? this.moduleInstanceData.properties[StreamMetrics.TYPE] === ApplicationType[ApplicationType.source] : false;
+    return this.instance ? this.instance.properties[StreamMetrics.TYPE] === ApplicationType[ApplicationType.source] : false;
   }
 
   get isSink(): boolean {
-    return this.moduleInstanceData ? this.moduleInstanceData.properties[StreamMetrics.TYPE] === ApplicationType[ApplicationType.sink] : false;
+    return this.instance ? this.instance.properties[StreamMetrics.TYPE] === ApplicationType[ApplicationType.sink] : false;
   }
 
   get guid(): string {
-    return this.moduleInstanceData ? this.moduleInstanceData.properties[StreamMetrics.GUID] : '';
+    return this.instance ? this.instance.guid : '';
   }
 
 }

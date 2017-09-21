@@ -7,7 +7,6 @@
 export namespace StreamMetrics {
 
   export const TYPE = 'spring.cloud.dataflow.stream.app.type';
-  export const GUID = 'spring.cloud.application.guid';
   export const INSTANCE_COUNT = 'spring.cloud.stream.instanceCount';
   export const INPUT_CHANNEL_MEAN = 'integration.channel.input.send.mean';
   export const OUTPUT_CHANNEL_MEAN = 'integration.channel.output.send.mean';
