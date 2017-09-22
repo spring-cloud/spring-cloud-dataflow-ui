@@ -121,8 +121,6 @@ describe('StreamGraphDefinitionComponent', () => {
     });
   });
 
-
-
   function createAppMetrics(group: string, name: string, numberOfInstances: number,
                             inRate: number, outRate: number): StreamMetrics.Application {
     const instances: StreamMetrics.Instance[] = [];

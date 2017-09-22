@@ -26,7 +26,7 @@ import { Flo, Constants } from 'spring-flo';
 import { NodeComponent } from './node/node.component';
 import { DecorationComponent } from './decoration/decoration.component';
 import { HandleComponent } from './handle/handle.component';
-import { ShapeComponent } from './support/shape-component';
+import { ElementComponent } from './support/shape-component';
 import { dia } from 'jointjs';
 import { Utils } from './support/utils';
 import { TYPE_INSTANCE_LABEL, TYPE_INSTANCE_DOT } from './support/shapes';
@@ -57,7 +57,7 @@ const GROUP_ICONS = new Map<string, string>()
         .set('tap', '⦂') // 2982
     ;
 
-const SHAPE_TYPE_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()
+const SHAPE_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, NodeComponent)
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
   .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
@@ -653,7 +653,7 @@ export class RenderService implements Flo.Renderer {
               const nodeComponentFactory = self.componentFactoryResolver
                 .resolveComponentFactory(SHAPE_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
 
-              const componentRef: ComponentRef<ShapeComponent> = nodeComponentFactory.create(self.injector);
+              const componentRef: ComponentRef<ElementComponent> = nodeComponentFactory.create(self.injector);
               self.applicationRef.attachView(componentRef.hostView);
               componentRef.instance.view = this;
               this._angularComponentRef = componentRef;

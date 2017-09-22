@@ -12,6 +12,8 @@ export const OTHER_GROUP_TYPE = 'other';
 
 export const TYPE_INSTANCE_LABEL = 'dataflow.InstanceLabel';
 export const TYPE_INSTANCE_DOT = 'dataflow.InstanceDot';
+export const TYPE_INCOMING_MESSAGE_RATE = 'dataflow.incoming-rate';
+export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow.outgoing-rate';
 
 joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
 

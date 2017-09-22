@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { BaseShapeComponent } from '../support/shape-component';
+import { ElementComponent } from '../support/shape-component';
 import { StreamMetrics } from '../../model/stream-metrics';
 import { ApplicationType } from '../../../shared/model/application-type';
 
@@ -15,7 +15,7 @@ import { ApplicationType } from '../../../shared/model/application-type';
   styleUrls: [ 'instance-dot.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class InstanceDotComponent extends BaseShapeComponent {
+export class InstanceDotComponent extends ElementComponent {
 
   get instance(): StreamMetrics.Instance {
     return this.view ? this.view.model.attr('instance') : undefined;
