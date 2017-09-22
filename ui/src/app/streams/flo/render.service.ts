@@ -26,12 +26,15 @@ import { Flo, Constants } from 'spring-flo';
 import { NodeComponent } from './node/node.component';
 import { DecorationComponent } from './decoration/decoration.component';
 import { HandleComponent } from './handle/handle.component';
-import { ElementComponent } from './support/shape-component';
+import { BaseShapeComponent, ElementComponent } from './support/shape-component';
 import { dia } from 'jointjs';
 import { Utils } from './support/utils';
-import { TYPE_INSTANCE_LABEL, TYPE_INSTANCE_DOT } from './support/shapes';
+import { TYPE_INSTANCE_DOT, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from './support/shapes';
 import { InstanceDotComponent } from './instance-dot/instance-dot.component';
+import { MessageRateComponent } from './message-rate/message-rate.component';
 import { layout } from './support/layout';
+import * as _ from 'underscore';
+import * as $ from 'jquery';
 import * as _joint from 'jointjs';
 const joint: any = _joint;
 
@@ -62,6 +65,10 @@ const SHAPE_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
   .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
   .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
+
+const LINK_LABEL_COMPONENT_TYPE = new Map<string, Type<BaseShapeComponent>>()
+  .set(TYPE_INCOMING_MESSAGE_RATE, MessageRateComponent)
+  .set(TYPE_OUTGOING_MESSAGE_RATE, MessageRateComponent);
 
 /**
  * Render Service for Flo based Stream Definition graph editor
@@ -633,11 +640,11 @@ export class RenderService implements Flo.Renderer {
         }
     }
 
-  getNodeView?(): dia.ElementView {
+  getNodeView(): dia.ElementView {
 
       const self = this;
 
-      return joint.dia.ElementView.extend({
+      return joint.shapes.flo.ElementView.extend({
           options: joint.util.deepSupplement({}, joint.dia.ElementView.prototype.options),
 
           renderMarkup: function () {
@@ -681,6 +688,136 @@ export class RenderService implements Flo.Renderer {
 
     });
 
+  }
+
+  getLinkView(): dia.LinkView {
+      const self = this;
+
+      const V = joint.V;
+      const g = joint.g;
+
+      return joint.shapes.flo.LinkView.extend({
+
+        renderLabels: function() {
+
+          if (!this._V.labels) {
+            return this;
+          }
+
+          if (this._angularComponentRef) {
+            Object.keys(this._angularComponentRef).forEach(k => this._angularComponentRef[k].destroy());
+            this._angularComponentRef = {};
+          }
+
+          this._labelCache = {};
+          const $labels = $(this._V.labels.node).empty();
+
+          const labels = this.model.get('labels') || [];
+          if (!labels.length) {
+            return this;
+          }
+
+          const labelTemplate = joint.util.template(this.model.get('labelMarkup') || this.model.labelMarkup);
+          // This is a prepared instance of a vectorized SVGDOM node for the label element resulting from
+          // compilation of the labelTemplate. The purpose is that all labels will just `clone()` this
+          // node to create a duplicate.
+          const labelNodeInstance = V(labelTemplate());
+
+          const canLabelMove = this.can('labelMove');
+
+          _.each(labels, function(label: any, idx) {
+
+            let labelNode;
+
+            if (self.componentFactoryResolver && LINK_LABEL_COMPONENT_TYPE.has(label.type)) {
+              // Inject link label component and take its DOM
+              if (this._angularComponentRef && this._angularComponentRef[idx]) {
+                this._angularComponentRef[idx].destroy();
+              }
+
+              const nodeComponentFactory = self.componentFactoryResolver
+                .resolveComponentFactory(LINK_LABEL_COMPONENT_TYPE.get(label.type));
+
+              const componentRef: ComponentRef<BaseShapeComponent> = nodeComponentFactory.create(self.injector);
+
+              if (!this._angularComponentRef) {
+                this._angularComponentRef = {};
+              }
+
+              this._angularComponentRef[idx] = componentRef;
+              this._angularComponentRef[idx].changeDetectorRef.markForCheck();
+
+              self.applicationRef.attachView(componentRef.hostView);
+              componentRef.instance.data = label;
+              this._angularComponentRef[idx].changeDetectorRef.detectChanges();
+
+              labelNode = this._angularComponentRef[idx].location.nativeElement.children.item(0);
+            } else {
+              // Default JointJS behaviour
+              labelNode = labelNodeInstance.clone().node;
+            }
+
+            V(labelNode).attr('label-idx', idx);
+            if (canLabelMove) {
+              V(labelNode).attr('cursor', 'move');
+            }
+
+            // Cache label nodes so that the `updateLabels()` can just update the label node positions.
+            this._labelCache[idx] = V(labelNode);
+
+            const $text = $(labelNode).find('text');
+            const $rect = $(labelNode).find('rect');
+
+            // Text attributes with the default `text-anchor` and font-size set.
+            const textAttributes = _.extend({ 'text-anchor': 'middle', 'font-size': 14 }, joint.util.getByPath(label, 'attrs/text', '/'));
+
+            $text.attr(_.omit(textAttributes, 'text'));
+
+            if (!_.isUndefined(textAttributes.text)) {
+
+              V($text[0]).text(textAttributes.text + '', { annotations: textAttributes.annotations });
+
+            }
+
+            // Note that we first need to append the `<text>` element to the DOM in order to
+            // get its bounding box.
+            $labels.append(labelNode);
+
+            // `y-alignment` - center the text element around its y coordinate.
+            const textBbox = V($text[0]).bbox(true, $labels[0]);
+            V($text[0]).translate(0, -textBbox.height / 2);
+
+            // Add default values.
+            const rectAttributes = _.extend({
+
+              fill: 'white',
+              rx: 3,
+              ry: 3
+
+            }, joint.util.getByPath(label, 'attrs/rect', '/'));
+
+            const padding = 1;
+
+            $rect.attr(_.extend(rectAttributes, {
+              x: textBbox.x - padding,
+              y: textBbox.y - padding - textBbox.height / 2,  // Take into account the y-alignment translation.
+              width: textBbox.width + 2 * padding,
+              height: textBbox.height + 2 * padding
+            }));
+
+          }, this);
+
+          return this;
+        },
+
+        onRemove: function() {
+          if (this._angularComponentRef) {
+            Object.keys(this._angularComponentRef).forEach(k => this._angularComponentRef[k].destroy());
+          }
+          joint.dia.LinkView.prototype.onRemove.apply(this, arguments);
+        },
+
+      });
   }
 
 

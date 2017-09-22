@@ -39,6 +39,13 @@ export class MessageRateComponent extends BaseShapeComponent {
     return 'top';
   }
 
+  get cssClasses(): string[] {
+    if (this.data && this.data.type) {
+      return [ this.data.type ];
+    }
+    return [];
+  }
+
   get rateLabel(): string {
     let postFix, division, index = -1, fixed = 3;
     do {
@@ -50,7 +57,7 @@ export class MessageRateComponent extends BaseShapeComponent {
     } else {
       postFix = MAGNITUDE_LITERALS[index];
     }
-    for (let decimal = 1; decimal <= 100 && Math.floor(division / decimal); decimal*=10) {
+    for (let decimal = 1; decimal <= 100 && Math.floor(division / decimal); decimal *= 10) {
       fixed--;
     }
     return division.toFixed(fixed) + postFix;

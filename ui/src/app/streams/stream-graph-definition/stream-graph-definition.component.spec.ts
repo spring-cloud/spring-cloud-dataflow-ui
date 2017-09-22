@@ -8,7 +8,7 @@ import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { StreamMetrics } from '../model/stream-metrics';
 import { dia } from 'jointjs';
-import { TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL } from '../flo/support/shapes';
+import {TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE, TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL} from '../flo/support/shapes';
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -41,17 +41,16 @@ describe('StreamGraphDefinitionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamGraphDefinitionComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should be created', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(component.dsl).toBeUndefined();
     expect(component.flo).toBeDefined();
   });
 
   it('check empty read-only view', () => {
-    fixture.detectChanges();
     expect(component.flo.noPalette).toBeTruthy();
     expect(component.flo.readOnlyCanvas).toBeTruthy();
     expect(component.flo.getGraph().getCells().length).toEqual(0);
@@ -59,39 +58,40 @@ describe('StreamGraphDefinitionComponent', () => {
 
   it('check stream in the view', (done) => {
     component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'deployed');
-    fixture.detectChanges();
-    const subscription = component.flo.textToGraphConversionSubject.subscribe(() => {
+    const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
       subscription.unsubscribe();
       expect(component.flo.getGraph().getElements().length).toEqual(3);
       expect(component.flo.getGraph().getLinks().length).toEqual(2);
       done();
     });
+    // Subscribe to graph changes before running angular change/update cycle
+    fixture.detectChanges();
   });
 
-  it('check dots in the view', (done) => {
+  it('verify dots in the view', (done) => {
     component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'deployed');
-    fixture.detectChanges();
-    const subscription = component.flo.textToGraphConversionSubject.subscribe(() => {
+
+    const httpMetrics = createAppMetrics('source', 'http', 2, 0, 3.4562243);
+    const filterMetrics = createAppMetrics('processor', 'filter', 40, 4.68954, 2.93718423);
+    const nullMetrics = createAppMetrics('sink', 'null', 3, 4.3124, 0);
+
+    // Remove 3 instances to have 37/40 label
+    filterMetrics.instances.pop();
+    filterMetrics.instances.pop();
+    filterMetrics.instances.pop();
+    filterMetrics.instances[0].properties[StreamMetrics.INSTANCE_COUNT] = 40;
+
+    component.metrics = {
+      name: 'test-stream',
+      applications: [
+        httpMetrics,
+        filterMetrics,
+        nullMetrics
+      ]
+    };
+
+    const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
       subscription.unsubscribe();
-
-      const httpMetrics = createAppMetrics('source', 'http', 2, 0, 3.4562243);
-      const filterMetrics = createAppMetrics('processor', 'filter', 40, 4.68954, 2.93718423);
-      const nullMetrics = createAppMetrics('sink', 'null', 3, 4.3124, 0);
-
-      // Remove 3 instances to have 37/40 label
-      filterMetrics.instances.pop();
-      filterMetrics.instances.pop();
-      filterMetrics.instances.pop();
-      filterMetrics.instances[0].properties[StreamMetrics.INSTANCE_COUNT] = 40;
-
-      component.metrics = {
-        name: 'test-stream',
-        applications: [
-          httpMetrics,
-          filterMetrics,
-          nullMetrics
-        ]
-      };
 
       // verify http dots
       const http = <dia.Element> component.flo.getGraph().getElements().find(e => e.attr('metadata/name') === 'http');
@@ -116,9 +116,60 @@ describe('StreamGraphDefinitionComponent', () => {
       expect(nullApp.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_LABEL)).toBeUndefined();
       expect(nullEmbeds.length).toEqual(3);
       nullMetrics.instances.forEach((instance, i) => expect(nullEmbeds[i].attr('instance')).toEqual(instance));
+
       done();
 
     });
+    // Subscribe to graph changes before running angular change/update cycle
+    fixture.detectChanges();
+  });
+
+  it('verify message rate labels in the view', (done) => {
+    component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'deployed');
+
+    const httpMetrics = createAppMetrics('source', 'http', 1, 0, 3.4562243);
+    const filterMetrics = createAppMetrics('processor', 'filter', 1, 4.68954, 2.93718423);
+    const nullMetrics = createAppMetrics('sink', 'null', 1, 4.3124, 0);
+
+    component.metrics = {
+      name: 'test-stream',
+      applications: [
+        httpMetrics,
+        filterMetrics,
+        nullMetrics
+      ]
+    };
+
+    const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
+      subscription.unsubscribe();
+
+      // verify http dots
+      const link1 = component.flo.getGraph().getLinks()[0];
+      let labels = link1.get('labels');
+      expect(Array.isArray(labels)).toBeTruthy();
+      let incomingRate = labels.filter(l => l.type === TYPE_INCOMING_MESSAGE_RATE);
+      expect(incomingRate.length).toEqual(1);
+      expect(incomingRate[0].rate).toEqual(4.68954);
+      let outgoingRate = labels.filter(l => l.type === TYPE_OUTGOING_MESSAGE_RATE);
+      expect(outgoingRate.length).toEqual(1);
+      expect(outgoingRate[0].rate).toEqual(3.4562243);
+
+
+      const link2 = component.flo.getGraph().getLinks()[1];
+      labels = link2.get('labels');
+      expect(Array.isArray(labels)).toBeTruthy();
+      incomingRate = labels.filter(l => l.type === TYPE_INCOMING_MESSAGE_RATE);
+      expect(incomingRate.length).toEqual(1);
+      expect(incomingRate[0].rate).toEqual(4.3124);
+      outgoingRate = labels.filter(l => l.type === TYPE_OUTGOING_MESSAGE_RATE);
+      expect(outgoingRate.length).toEqual(1);
+      expect(outgoingRate[0].rate).toEqual(2.93718423);
+
+      done();
+
+    });
+    // Subscribe to graph changes before running angular change/update cycle
+    fixture.detectChanges();
   });
 
   function createAppMetrics(group: string, name: string, numberOfInstances: number,
@@ -140,8 +191,11 @@ describe('StreamGraphDefinitionComponent', () => {
     return {
       name: name,
       instances: instances,
-      aggregateMetrics: []
-    }
+      aggregateMetrics: [
+        {name: StreamMetrics.INPUT_CHANNEL_MEAN, value: inRate},
+        {name: StreamMetrics.OUTPUT_CHANNEL_MEAN, value: outRate}
+      ]
+    };
   }
 
 });

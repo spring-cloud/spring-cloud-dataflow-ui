@@ -246,6 +246,8 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   metricsForStream(name: string) {
-    return this.metrics.find(m => m.name === name);
+    if (Array.isArray(this.metrics)) {
+      return this.metrics.find(m => m.name === name);
+    }
   }
 }

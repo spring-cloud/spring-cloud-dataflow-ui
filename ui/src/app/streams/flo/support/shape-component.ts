@@ -26,7 +26,7 @@ export class BaseShapeComponent extends ShapeComponent {
 
 }
 
-export class ElementComponent extends ShapeComponent{
+export class ElementComponent extends ShapeComponent {
 
   public view: dia.ElementView;
 

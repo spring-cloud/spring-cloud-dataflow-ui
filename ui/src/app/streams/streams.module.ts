@@ -26,6 +26,7 @@ import { HandleComponent } from './flo/handle/handle.component';
 import { StreamGraphViewComponent } from './stream-graph-view/stream-graph-view.component';
 import { StreamGraphDefinitionComponent } from './stream-graph-definition/stream-graph-definition.component';
 import { InstanceDotComponent } from './flo/instance-dot/instance-dot.component';
+import { MessageRateComponent } from './flo/message-rate/message-rate.component';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { InstanceDotComponent } from './flo/instance-dot/instance-dot.component'
     HandleComponent,
     StreamGraphViewComponent,
     StreamGraphDefinitionComponent,
-    InstanceDotComponent
+    InstanceDotComponent,
+    MessageRateComponent
   ],
   entryComponents: [
     StreamCreateDialogComponent,
@@ -62,7 +64,8 @@ import { InstanceDotComponent } from './flo/instance-dot/instance-dot.component'
     NodeComponent,
     DecorationComponent,
     HandleComponent,
-    InstanceDotComponent
+    InstanceDotComponent,
+    MessageRateComponent
   ],
   providers: [
     StreamsService,

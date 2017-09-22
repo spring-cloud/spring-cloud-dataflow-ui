@@ -1,0 +1,25 @@
+.joint-link {
+  .label.dataflow-outgoing-rate {
+    text {
+      fill: black;
+      stroke: none;
+      font-size: 8px;
+    }
+    rect {
+      stroke: black;
+      stroke-width: 1px;
+      fill: #CFE2F3;
+    }
+  }
+  .label.dataflow-incoming-rate {
+    text {
+      fill: white;
+      stroke: none;
+      font-size: 8px;
+    }
+    rect {
+      stroke: #3498DB;
+      fill: #3498DB;
+    }
+  }
+}
