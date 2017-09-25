@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+import { FloModule } from 'spring-flo';
 import { TasksComponent } from './tasks.component';
 import { TaskAppsComponent } from './task-apps/task-apps.component';
 import { TaskDefinitionsComponent } from './task-definitions/task-definitions.component';
@@ -15,8 +16,13 @@ import { TaskLaunchComponent } from './task-launch/task-launch.component';
 import { TasksService } from './tasks.service';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { AuthModule } from '../auth/auth.module';
+import { TaskGraphViewComponent } from './flo/task-graph-view/task-graph-view.component';
+import { MetamodelService } from './flo/metamodel.service';
+import { RenderService } from './flo/render.service';
+import { EditorService } from './flo/editor.service';
+import { NodeComponent } from './flo/node/node.component';
 
 @NgModule({
   imports: [
@@ -26,7 +32,9 @@ import { AuthModule } from '../auth/auth.module';
     ReactiveFormsModule,
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
-    AuthModule
+    AuthModule,
+    FloModule,
+    TooltipModule.forRoot()
   ],
   declarations: [
     TasksComponent,
@@ -38,10 +46,18 @@ import { AuthModule } from '../auth/auth.module';
     TaskAppDetailsComponent,
     TaskCreateComponent,
     TaskBulkDefineComponent,
-    TaskLaunchComponent
+    TaskLaunchComponent,
+    TaskGraphViewComponent,
+    NodeComponent,
+  ],
+  entryComponents: [
+    NodeComponent
   ],
   providers: [
-    TasksService
+    TasksService,
+    MetamodelService,
+    RenderService,
+    EditorService
   ]
 })
 export class TasksModule { }

@@ -1,0 +1,56 @@
+<svg:g [ngSwitch]="metaName">
+
+  <svg:g *ngSwitchCase="'START'" class="composed-task">
+    <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
+      <svg:circle class="border"/>
+      <svg:text class="label"/>
+    </svg:g>
+    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+  </svg:g>
+
+  <svg:g *ngSwitchCase="'END'" class="composed-task">
+    <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
+      <svg:circle class="inner"/>
+      <svg:circle class="outer"/>
+      <svg:text class="label"/>
+    </svg:g>
+    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+  </svg:g>
+
+  <svg:g *ngSwitchCase="'sync'" class="composed-task">
+    <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
+      <svg:circle class="border"/>
+      <svg:text class="label"/>
+    </svg:g>
+    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+  </svg:g>
+
+  <svg:g *ngSwitchDefault class="composed-task">
+    <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
+      <svg:rect class="border"/>
+      <svg:text class="label"/>
+    </svg:g>
+    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+  </svg:g>
+
+</svg:g>
+
+<template #canvasNodeTooltip>
+  <div ng-if="cell.attr('metadata/name')">
+    <span><strong>{{metaName | uppercase}}</strong></span>
+    <span><strong>{{'(' + (metaGroup | capitalize) + ')'}}</strong></span>
+  </div>
+  <div *ngIf="description">
+    <span>{{description}}</span>
+  </div>
+  <table class="table-condensed" *ngIf="allProperties && isPropertiesShown">
+    <tbody>
+    <tr *ngFor="let property of keys(allProperties).sort()">
+      <td class="tooltip-property-key"><strong>{{property}}</strong></td>
+      <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">{{getPropertyValue(property)}}</td>
+    </tr>
+    </tbody>
+  </table>
+</template>
