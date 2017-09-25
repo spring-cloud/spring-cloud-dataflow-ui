@@ -1,3 +1,15 @@
-<p>
-  This is in under development. We would love to hear feedback on the other available tabs/views.
-</p>
+<div id="flo-container" class="stream-editor">
+  <flo-editor (floApi)="editorContext = $event" [metamodel]="metamodelService" [renderer]="renderService"
+              [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="20" [(dsl)]="dsl">
+    <button (click)="createTaskDefs()" class="btn btn-default" type="button">Create</button>
+    <button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>
+    <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
+    <button class="btn" (click)="gridOn = !gridOn"
+            [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid</button>
+    <div class="flow-definition-container">
+      <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true" (blur)="editorContext.graphToTextSync=true"
+                  (focus)="editorContext.graphToTextSync=false" placeholder="Enter Composed Task definition here..."
+      ></dsl-editor>
+    </div>
+  </flo-editor>
+</div>
