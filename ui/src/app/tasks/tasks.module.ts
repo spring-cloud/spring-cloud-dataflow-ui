@@ -23,6 +23,7 @@ import { MetamodelService } from './flo/metamodel.service';
 import { RenderService } from './flo/render.service';
 import { EditorService } from './flo/editor.service';
 import { NodeComponent } from './flo/node/node.component';
+import { ToolsService } from './flo/tools.service';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { NodeComponent } from './flo/node/node.component';
     TasksService,
     MetamodelService,
     RenderService,
-    EditorService
+    EditorService,
+    ToolsService
   ]
 })
 export class TasksModule { }

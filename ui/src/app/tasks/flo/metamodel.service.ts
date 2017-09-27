@@ -3,9 +3,8 @@ import { Injectable } from '@angular/core';
 import { ApplicationType } from '../../shared/model/application-type';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { CONTROLNODES_GROUP_TYPE } from './support/shapes';
-import { Http } from '@angular/http';
-import { HttpUtils } from '../../shared/support/http.utils';
-import { Observable } from 'rxjs/Observable';
+import { ToolsService } from './tools.service';
+import { Graph, Link, Node } from './model/models';
 
 class TaskAppMetadata implements Flo.ElementMetadata {
 
@@ -39,61 +38,77 @@ class TaskAppMetadata implements Flo.ElementMetadata {
 
 }
 
+/**
+ * Flo service class for its Metamodel used for composed tasks.
+ *
+ * @author Janne Valkealahti
+ */
 @Injectable()
 export class MetamodelService implements Flo.Metamodel {
 
   private COMPOSED_TASK_LABEL = 'label';
 
-  private request: Promise<Map<string, Map<string, Flo.ElementMetadata>>>;
-
   constructor(
     private appsService: SharedAppsService,
-    private http: Http
+    private toolsService: ToolsService
   ) {}
 
-  textToGraph(flo: Flo.EditorContext, dsl: string): Promise<any> {
+  /**
+   * Converts text dsl into flo graph representation.
+   *
+   * @param {Flo.EditorContext} flo the flo editor context
+   * @param {string} dsl the dsl
+   * @returns {Promise<any>} a promise when conversion has happened
+   */
+  textToGraph(flo: Flo.EditorContext, dsl: string = ''): Promise<any> {
     flo.getGraph().clear();
-
-    const options = HttpUtils.getDefaultRequestOptions();
-    const json: Observable<any> = this.http.post('/tools/parseTaskTextToGraph',
-        JSON.stringify({ dsl: dsl || ' ', name: 'unknown' }), options)
-      .map(data => {
-        console.log('graphToText4', data);
-        return data.json();
+    return this.toolsService.parseTaskTextToGraph(dsl).toPromise()
+      .then(taskConversion => {
+        this.load().then(metamodel => {
+          this.buildGraphFromJson(flo, taskConversion.graph, metamodel);
+        });
       });
-
-
-    return new Promise(resolve => {
-      json.toPromise().then(
-        (jsondata) => this.load().then(
-          (metamodel) => resolve(this.buildGraphFromJson(flo, jsondata.graph, metamodel))));
-    });
   }
 
+  /**
+   * Converts graph in editor context into dsl. Return a dsl within a
+   * promise.
+   *
+   * @param {Flo.EditorContext} flo the flo editor context
+   * @returns {Promise<string>} a promise when conversion has happened
+   */
   graphToText(flo: Flo.EditorContext): Promise<string> {
     const graphInInternalFormat = flo.getGraph();
-    const graphInCommonFormat = this.toCommonGraphFormat(graphInInternalFormat);
-    console.log('graphToText1', graphInCommonFormat);
-    console.log('graphToText2', JSON.stringify(graphInCommonFormat));
-
-    const options = HttpUtils.getDefaultRequestOptions();
-    const dsl: Observable<any> = this.http.post('/tools/convertTaskGraphToText',
-        JSON.stringify(graphInCommonFormat), options)
-      .map(data => {
-        console.log('graphToText3', data);
-        return data.json().dsl;
-      });
-    return dsl.toPromise();
+    const graphInCommonFormat = this.toGraph(graphInInternalFormat);
+    return this.toolsService.convertTaskGraphToText(graphInCommonFormat)
+      .map(taskConversion => {
+        return taskConversion.dsl;
+      }).toPromise();
   }
 
+  /**
+   * Loads element metadata. For now just delegates to refresh.
+   *
+   * @returns {Promise<Map<string, Map<string, Flo.ElementMetadata>>>}
+   */
   load(): Promise<Map<string, Map<string, Flo.ElementMetadata>>> {
     return this.refresh();
   }
 
+  /**
+   * Gets a supported group types in a palette.
+   *
+   * @returns {Array<string>} a group types
+   */
   groups(): Array<string> {
     return [CONTROLNODES_GROUP_TYPE, 'task'];
   }
 
+  /**
+   * Refresh element metadata.
+   *
+   * @returns {Promise<Map<string, Map<string, Flo.ElementMetadata>>>} a promise for metamodel
+   */
   refresh(): Promise<Map<string, Map<string, Flo.ElementMetadata>>> {
     const metamodel = new Map<string, Map<string, Flo.ElementMetadata>>();
     this.addOtherGroup(metamodel);
@@ -173,117 +188,64 @@ export class MetamodelService implements Flo.Metamodel {
 
   }
 
-  private toCommonGraphFormat(graphInInternalFormat) {
+  private toGraph(graphInInternalFormat): Graph {
     const elements = graphInInternalFormat.attributes.cells.models;
-    const nodes = [];
-    const links = [];
-    let globalOptions;
+
+    const nodes: Array<Node> = new Array();
+    const links: Array<Link> = new Array();
+
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i];
       if (element.attributes.type === 'sinspctr.IntNode') {
         const attrs = element.attributes.attrs;
-        const newNode = {};
-        newNode['name'] = attrs.metadata.name;
-        newNode['id'] = element.attributes.id;
-        if (element.attributes.attrs.props) {
-          if (newNode['name'] === 'START') {
-            // Global options are held on the START node during graph editing
-            globalOptions = element.attributes.attrs.props;
-          } else {
-            newNode['properties'] = element.attributes.attrs.props;
-            if (element.attr('node-label')) {
-              newNode['metadata'] = {};
-              newNode['metadata'][this.COMPOSED_TASK_LABEL] = element.attr('node-label');
-            }
-          }
+        const metadata = new Map<string, string>();
+        if (element.attr('node-label')) {
+          metadata.set(this.COMPOSED_TASK_LABEL, element.attr('node-label'));
         }
-        nodes.push(newNode);
+        nodes.push(new Node(element.attributes.id, attrs.metadata.name, element.attributes.attrs.props, metadata));
       } else if (element.attributes.type === 'sinspctr.Link' || element.attributes.type === 'link') {
-        const newlink = {'from': element.attributes.source.id, 'to': element.attributes.target.id};
+        const properties = new Map<string, string>();
         if (element.attributes.attrs.metadata && element.attributes.attrs.props &&
           element.attributes.attrs.props.ExitStatus) {
-          newlink['properties'] = {'transitionName': element.attributes.attrs.props.ExitStatus};
+          properties.set('transitionName', element.attributes.attrs.props.ExitStatus);
         }
-        links.push(newlink);
+        links.push(new Link(element.attributes.source.id, element.attributes.target.id));
       }
     }
-    const graph = {'nodes': nodes, 'links': links};
-    if (globalOptions) {
-      graph['properties'] = globalOptions;
-    }
-    return graph;
+    return new Graph(nodes, links);
   }
 
-  private buildGraphFromJson(flo, jsonFormatData, metamodel) {
-    if (jsonFormatData === undefined || jsonFormatData === null) {
+  private buildGraphFromJson(flo, graph: Graph, metamodel) {
+    if (graph === undefined || graph === null) {
       // TODO handle this better when we have service for metadata
       return;
     }
-    const inputnodes = jsonFormatData.nodes;
-    const inputlinks = jsonFormatData.links;
-
-    const incoming = {};
-    const outgoing = {};
-    let link;
-    for (let i = 0; i < inputlinks.length; i++) {
-      link = inputlinks[i];
-      if (typeof link.from === 'number') {
-        if (typeof outgoing[link.from] !== 'number') {
-          outgoing[link.from] = 0;
-        }
-        outgoing[link.from]++;
-      }
-      if (typeof link.to === 'number') {
-        if (typeof incoming[link.to] !== 'number') {
-          incoming[link.to] = 0;
-        }
-        incoming[link.to]++;
-      }
-    }
+    const inputnodes = graph.nodes;
+    const inputlinks = graph.links;
 
     const inputnodesCount = inputnodes ? inputnodes.length : 0;
     const nodesIndex = [];
     const builtNodesMap = {};
     for (let n = 0; n < inputnodesCount; n++) {
       const name = inputnodes[n].name;
-      const label = inputnodes[n].label || inputnodes[n].name;
-      let group = inputnodes[n].group;
-      if (!group) {
-        // TODO matchGroup port as is doesn't work
-        // group = this.matchGroup(metamodel, name, incoming[n], outgoing[n]);
-        if (name === 'START' || name === 'END' || name === 'SYNC') {
-          group = 'control nodes';
-        } else {
-          group = 'task';
-        }
+
+      // It makes more sense to hardcode these than create
+      // more complex logic by trying to parse from metadata
+      const label = inputnodes[n].name;
+      let group;
+      if (name === 'START' || name === 'END' || name === 'SYNC') {
+        group = 'control nodes';
+      } else {
+        group = 'task';
       }
-      // TODO fix this metadata usage
-      // var metadata = metamodelUtils.getMetadata(metamodel, name, group);
-      // if (metadata.unresolved) {
-      //   metadata.metadata = {
-      //     titleProperty: 'metadata/name'
-      //   };
-      // }
+
       const metadata = this.createMetadata(name, group, '', new Map<string, Flo.PropertyMetadata>());
 
-      let nodeProperties = inputnodes[n].properties;
+      const nodeProperties = inputnodes[n].properties;
       const metadataProperties = inputnodes[n].metadata;
-      // Put the global properties onto the start node if there are any
-      if (n === 0 && name === 'START' && jsonFormatData.properties) {
-        nodeProperties = jsonFormatData.properties;
-      }
       const newNode = flo.createNode(metadata, nodeProperties);
-      // Hang the properties off the start node!
+
       newNode.attr('.label/text', label);
-      if (inputnodes[n].range) {
-        newNode.attr('range', inputnodes[n].range);
-      }
-      if (inputnodes[n].propertiesranges) {
-        newNode.attr('propertiesranges', inputnodes[n].propertiesranges);
-      }
-      if (inputnodes[n]['stream-id']) {
-        newNode.attr('stream-id', inputnodes[n]['stream-id']);
-      }
       if (metadataProperties && metadataProperties[this.COMPOSED_TASK_LABEL]) {
         newNode.attr('node-label', metadataProperties[this.COMPOSED_TASK_LABEL]);
       }
@@ -291,22 +253,24 @@ export class MetamodelService implements Flo.Metamodel {
       builtNodesMap[inputnodes[n].id] = newNode.id;
     }
 
+    let link;
     const inputlinksCount = inputlinks ? inputlinks.length : 0;
     for (let l = 0; l < inputlinksCount; l++) {
       link = inputlinks[l];
-      const props = {};
+      const props = new Map<string, any>();
       if (link.properties) {
         // TODO fix when properties supported
         // Copy the transitionName from the properties in the JSON form
         // as task exit status in the built link
         // props.ExitStatus = link.properties.transitionName;
+        props.set('ExitStatus', link.properties.transitionName);
       }
       // TODO safe to delete from/to/nodesIndex now?
       const otherfrom = { 'id': builtNodesMap[link.from], 'selector': '.output-port'};
       const otherto = { 'id': builtNodesMap[link.to], 'selector': '.input-port'};
 
       const metadata2 = this.createMetadata('link', 'links', '', new Map<string, Flo.PropertyMetadata>());
-      flo.createLink(otherfrom, otherto, metadata2, new Map<string, any>());
+      flo.createLink(otherfrom, otherto, metadata2, props);
     }
 
     flo.performLayout();
@@ -322,51 +286,5 @@ export class MetamodelService implements Flo.Metamodel {
       flo.fitToPage();
     }
 
-  }
-
-  private matchGroup(metamodel, type, incoming, outgoing) {
-    // TODO simple port of this function doesn't work
-    console.log('matchGroup', type, incoming, outgoing);
-    incoming = typeof incoming === 'number' ? incoming : 0;
-    outgoing = typeof outgoing === 'number' ? outgoing : 0;
-    const matches = [];
-    let i;
-    if (type) {
-      for (i in metamodel) {
-        if (metamodel[i][type]) {
-          matches.push(metamodel[i][type]);
-        }
-      }
-    }
-    let group;
-    let score = Number.MIN_VALUE;
-    for (i = 0; i < matches.length; i++) {
-      const constraints = matches[i].constraints;
-      if (constraints) {
-        let failedConstraintsNumber = 0;
-        if (typeof constraints.maxOutgoingLinksNumber === 'number' && constraints.maxOutgoingLinksNumber < outgoing) {
-          failedConstraintsNumber++;
-        }
-        if (typeof constraints.minOutgoingLinksNumber === 'number' && constraints.minOutgoingLinksNumber > outgoing) {
-          failedConstraintsNumber++;
-        }
-        if (typeof constraints.maxIncomingLinksNumber === 'number' && constraints.maxIncomingLinksNumber < incoming) {
-          failedConstraintsNumber++;
-        }
-        if (typeof constraints.minIncomingLinksNumber === 'number' && constraints.minIncomingLinksNumber > incoming) {
-          failedConstraintsNumber++;
-        }
-
-        if (failedConstraintsNumber === 0) {
-          return matches[i].group;
-        } else if (failedConstraintsNumber > score) {
-          score = failedConstraintsNumber;
-          group = matches[i].group;
-        }
-      } else {
-        return matches[i].group;
-      }
-    }
-    return group;
   }
 }

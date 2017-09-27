@@ -8,6 +8,11 @@ import { PropertiesDialogComponent } from '../../streams/flo/properties/properti
 
 const joint: any = _joint;
 
+/**
+ * Flo service class for its Editor used for composed tasks.
+ *
+ * @author Janne Valkealahti
+ */
 @Injectable()
 export class EditorService implements Flo.Editor {
 
@@ -15,6 +20,13 @@ export class EditorService implements Flo.Editor {
     private bsModalService: BsModalService
   ) {}
 
+  /**
+   * Creates cell handles.
+   *
+   * @param {Flo.EditorContext} flo the flo editor context
+   * @param {(owner: dia.CellView, kind: string, action: () => void, location: dia.Point) => void} createHandle the create function
+   * @param {dia.CellView} owner the owner cell
+   */
   createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
                                                        action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
     if (owner.model instanceof joint.dia.Link) {
@@ -39,6 +51,13 @@ export class EditorService implements Flo.Editor {
     }
   }
 
+  /**
+   * Creates a default content for flo editor. These are outside of what
+   * is in dsl and i.e. composed tasks always need to create start and end nodes.
+   *
+   * @param {Flo.EditorContext} editorContext the flo editor context
+   * @param {Map<string, Map<string, Flo.ElementMetadata>>} elementMetadata the element metadata
+   */
   setDefaultContent(editorContext: Flo.EditorContext,
                     elementMetadata: Map<string, Map<string, Flo.ElementMetadata>>): void {
     editorContext.createNode(this.createMetadata('START',
