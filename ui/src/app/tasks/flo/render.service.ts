@@ -4,7 +4,7 @@ import { dia } from 'jointjs';
 import { defaultsDeep } from 'lodash';
 import { TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape } from './support/shapes';
 import { layout } from '../../streams/flo/support/layout';
-import { ShapeComponent } from '../../streams/flo/support/shape-component';
+import { ElementComponent } from '../../streams/flo/support/shape-component';
 import { NodeComponent } from './node/node.component';
 import { DecorationComponent } from '../../streams/flo/decoration/decoration.component';
 import { HandleComponent } from '../../streams/flo/handle/handle.component';
@@ -22,7 +22,7 @@ const HANDLE_ICON_SIZE = new Map<string, dia.Size>()
 const DECORATION_ICON_MAP = new Map<string, string>()
   .set(Constants.ERROR_DECORATION_KIND, 'assets/img/error.svg');
 
-const SHAPE_TYPE_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()
+const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, NodeComponent)
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
   .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent);
@@ -123,14 +123,14 @@ export class RenderService implements Flo.Renderer {
       renderMarkup: function () {
         // Not called often. It's fine to destro old component and create the new one, because old DOM
         // may have been aletered by JointJS updates
-        if (self.componentFactoryResolver && SHAPE_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
+        if (self.componentFactoryResolver && ELEMENT_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
           if (this._angularComponentRef) {
             this._angularComponentRef.destroy();
           }
           const nodeComponentFactory = self.componentFactoryResolver
-            .resolveComponentFactory(SHAPE_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
+            .resolveComponentFactory(ELEMENT_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
 
-          const componentRef: ComponentRef<ShapeComponent> = nodeComponentFactory.create(self.injector);
+          const componentRef: ComponentRef<ElementComponent> = nodeComponentFactory.create(self.injector);
           self.applicationRef.attachView(componentRef.hostView);
           componentRef.instance.view = this;
           this._angularComponentRef = componentRef;

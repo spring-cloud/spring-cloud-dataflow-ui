@@ -60,7 +60,7 @@ const GROUP_ICONS = new Map<string, string>()
         .set('tap', '⦂') // 2982
     ;
 
-const SHAPE_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
+const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, NodeComponent)
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
   .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
@@ -650,14 +650,14 @@ export class RenderService implements Flo.Renderer {
           renderMarkup: function () {
             // Not called often. It's fine to destro old component and create the new one, because old DOM
             // may have been aletered by JointJS updates
-            if (self.componentFactoryResolver && SHAPE_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
+            if (self.componentFactoryResolver && ELEMENT_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
 
               if (this._angularComponentRef) {
                 this._angularComponentRef.destroy();
               }
 
               const nodeComponentFactory = self.componentFactoryResolver
-                .resolveComponentFactory(SHAPE_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
+                .resolveComponentFactory(ELEMENT_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
 
               const componentRef: ComponentRef<ElementComponent> = nodeComponentFactory.create(self.injector);
               self.applicationRef.attachView(componentRef.hostView);
