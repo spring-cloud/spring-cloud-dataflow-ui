@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AnalyticsService } from '../analytics.service';
-import { DashboardItem } from './../model/dashboard-item.model';
-import { MetricType } from './../model/metric-type.model';
-import { Counter } from './../model/counter.model';
+
+import {
+  AggregateCounter, AggregateCounterResolutionType, BaseCounter,
+  DashboardItem, FieldValueCounterValue, MetricType
+} from '../model';
 
 /**
  * The dashboard component provides
@@ -15,25 +17,47 @@ import { Counter } from './../model/counter.model';
 @Component({
   templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   busy: Subscription;
-
+  busyCounters: Subscription;
+  /**
+   * Returns the {@link DashboardItem}s from the
+   * {@link AnalyticsService}.
+   */
   public get dashboardItems() {
     return this.analyticsService.dashboardItems;
   }
 
+  /**
+   * Returns all supported {@link MetricType}s.
+   */
   public get metricTypes() {
     return this.analyticsService.metricTypes;
   }
 
   constructor(public analyticsService: AnalyticsService) {}
+
+  /**
+   * Called upon initialization of the component.
+   * Will initialize the array of {@link DashboardItem}s that
+   * is part of {@link AnalyticsService#dashboardItems} with 1
+   * {@link DashboardItem}.
+   */
   ngOnInit() {
-    this.analyticsService.getAllDashboardItems();
+    this.analyticsService.initializeDashboardItems();
   }
 
   /**
-   * Removes a dashboard item
+   * When the component is destroyed, make sure all pollers are
+   * stopped also.
+   */
+  ngOnDestroy() {
+    this.analyticsService.stopAllDashboardPollers();
+  }
+
+  /**
+   * Removes a dashboard item.
    *
    * @param index Index of the entry
    */
@@ -68,31 +92,56 @@ export class DashboardComponent implements OnInit {
 
   /**
    * Empties dashboard array and inserts a single dashboard item.
+   * All pollers are stopped.
    */
   resetDashboard() {
     this.analyticsService.resetDashboard();
   }
 
   /**
-   * Retrieves metrics for specific type.
-   * @param {MetricType} metricType to retrieve.
+   * Called once the user selects a {@link MetricType}.
+   * @param {MetricType} metricType that was selected
+   * @param {DashboardItem} dashBoardItem for which the {@link MetricType} was selected
    */
   onMetricTypeChange(metricType: MetricType, dashBoardItem: DashboardItem) {
     console.log('Selected Metric Type:', metricType);
-    dashBoardItem.counters = [];
-    this.analyticsService.getStreamsForMetricType(metricType).subscribe(result => {
+    this.analyticsService.stopPollingOfSingleDashboardItem(dashBoardItem);
+    dashBoardItem.visualization = undefined;
+    dashBoardItem.counters = undefined;
+    dashBoardItem.counter = undefined;
+
+    dashBoardItem.countersIsLoading = this.analyticsService.getCountersForMetricType(metricType).subscribe(result => {
       dashBoardItem.counters = result.items;
     });
   }
 
+  isCountersDropDownEnabled(dashboardItem: DashboardItem): boolean {
+    if ( !dashboardItem.metricType
+      || (dashboardItem.countersIsLoading
+      && !dashboardItem.countersIsLoading.closed)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isVisualizationDropDownEnabled(dashboardItem: DashboardItem): boolean {
+    if (!dashboardItem.metricType
+      || !dashboardItem.counter) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   /**
-   * Starts polling for the specific dashboardItem.
+   * Starts polling for the specific dashboardItem up selection of the respective counter.
    * @param {DashboardItem} dashBoardItem that polling should occur on.
    */
   onCounterNameChange(dashBoardItem: DashboardItem) {
     console.log('Selected counter:', dashBoardItem.counter);
     console.log('Time to start polling for dashBoardItem:', dashBoardItem);
-    this.analyticsService.startPollingForSingleDashboardItem(dashBoardItem);
+    this.analyticsService.restartPollingOfSingleDashboardItem(dashBoardItem);
   }
 
   /**
@@ -115,17 +164,52 @@ export class DashboardComponent implements OnInit {
   }
 
   /**
-   * returns true if both counter names are the same or if counters are undefined.
-   * @param {Counter} counter1 the first counter in the set to compare.
-   * @param {Counter} counter2 the second counter in the set to compare.
+   * Returns true if both counter names are the same or if counters are undefined.
+   * @param {BaseCounter} counter1 the first counter in the set to compare.
+   * @param {BaseCounter} counter2 the second counter in the set to compare.
    * @returns {boolean} true if counter names are the same or both are undefined.
    */
-  compareCounter(counter1: Counter, counter2: Counter) {
+  compareCounter(counter1: BaseCounter, counter2: BaseCounter) {
     if (counter1 && counter2) {
-      console.log(`Comparing counter1 ${counter1} and counter2 ${counter2}`);
       return counter1.name === counter2.name;
     } else {
       return true;
     }
+  }
+
+  /**
+   * Returns all AggregateCounterResolutionTypes.
+   */
+  getAllAggregateCounterResolutionTypes(): AggregateCounterResolutionType[] {
+    return AggregateCounterResolutionType.getAggregateCounterResolutionTypes();
+  }
+
+  /**
+   * Executed if the {@link AggregateCounterResolutionType} value is changed.
+   * Only used when dealing with {@link AggregateCounter}s. Upon change,
+   * will also make a reasonable adjustment to the number of bars that are
+   * shown for the bar chart.
+   *
+   * @param {AggregateCounterResolutionType} resolutionType which the user has selected
+   * @param {DashboardItem} dashboardItem for which the {@link ResolutionType} was selected
+   */
+  onResolutionTypeChange(resolutionType: AggregateCounterResolutionType, dashboardItem: DashboardItem) {
+    console.log('Selected Resolution Type:', resolutionType);
+
+    if (AggregateCounterResolutionType.MINUTE === resolutionType) {
+      dashboardItem.numberOfBars = 60;
+    } else if (AggregateCounterResolutionType.HOUR === resolutionType) {
+      dashboardItem.numberOfBars = 24;
+    } else if (AggregateCounterResolutionType.DAY === resolutionType) {
+      dashboardItem.numberOfBars = 7;
+    } else if (AggregateCounterResolutionType.MONTH === resolutionType) {
+      dashboardItem.numberOfBars = 12;
+    } else if (AggregateCounterResolutionType.YEAR === resolutionType) {
+      dashboardItem.numberOfBars = 10;
+    } else {
+      console.log(`Unsupported AggregateCounterResolutionType '${resolutionType}'.`);
+    }
+
+    this.analyticsService.restartPollingOfSingleDashboardItem(dashboardItem);
   }
 }

@@ -1,0 +1,11 @@
+@import '~pivotal-ui-git-clone/src/css/pui-variables';
+
+.d3-chart {
+  .bar {
+    fill: $blue-1;
+
+    &:hover {
+      fill: $blue-3;
+    }
+  }
+}

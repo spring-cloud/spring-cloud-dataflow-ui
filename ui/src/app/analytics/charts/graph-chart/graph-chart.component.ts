@@ -141,8 +141,9 @@ export class GraphChartComponent implements OnInit, DoCheck {
 
       const margin = {top: 10, right: 10, bottom: 10, left: 10};
 
-      const xScale = d3.scaleLinear().range([margin.left, width - margin.right]).domain(xValuesRange);
-      const yScale = d3.scaleLinear().range([height - margin.top, margin.bottom]).domain([minY - padding, maxY + padding]);
+      const xScale = d3.scaleLinear().rangeRound([margin.left, width - margin.right]).domain(xValuesRange);
+      const yScale = d3.scaleLinear().rangeRound([height - margin.top, 0]).domain([minY - padding, maxY + padding]);
+
       const xAxis = d3.axisBottom(xScale).tickSizeInner(-height + margin.top + margin.bottom)
           .tickPadding(10)
           .ticks(xTicksNumber);
@@ -185,7 +186,7 @@ export class GraphChartComponent implements OnInit, DoCheck {
           if (d[1]) {
             return yScale(d[1]);
           } else {
-            return 0;
+            return yScale(0);
           }
         })
       .curve(d3.curveBasis);
@@ -200,7 +201,7 @@ export class GraphChartComponent implements OnInit, DoCheck {
       .attr('shape-rendering', 'crispEdges')
       .call(xAxis);
 
-      const yAxisGroup = svg.append('svg:g')
+      const yAxisGroup = svg.append('g')
       .attr('class', 'y axis')
       .attr('transform', 'translate(' + (margin.left) + ',0)')
       .attr('fill', 'none')

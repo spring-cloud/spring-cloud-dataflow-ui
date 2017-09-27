@@ -1,5 +1,7 @@
 import {
-  Component, OnInit, DoCheck, HostListener, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+  OnChanges, ChangeDetectionStrategy, Component,
+  OnInit, HostListener, ViewChild,
+  ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 
 /**
@@ -13,7 +15,7 @@ import * as d3 from 'd3';
   styleUrls: ['./bar-chart.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class BarChartComponent implements OnInit, DoCheck {
+export class BarChartComponent implements OnInit, OnChanges {
   @ViewChild('chart') private chartContainer: ElementRef;
 
   @Input()
@@ -25,32 +27,86 @@ export class BarChartComponent implements OnInit, DoCheck {
   private widthCopy: number;
 
   @Input()
-  private barSize: number;
-  private barSizeCopy: number;
+  private reverse = false;
+
+  @Input()
+  private numberOfBars = 5;
+  private numberOfBarsCopy: number;
+
+  @Input()
+  private height = 300;
+  private heightCopy: number;
+
+  private chartDataToUse: Array<number>;
+  private chart: any;
+  private xScale: any;
+  private yScale: any;
+  private xAxis: any;
 
   /**
    * Initialize the component and trigger the rendering of the chart.
    */
   ngOnInit() {
     if (this.chartData) {
-      this.chartDataCopy = this.chartData.slice();
-      this.widthCopy = this.width;
-      this.barSizeCopy = this.barSize;
+      this.copyInputParameterData();
+      this.updateData();
       this.createChart();
     }
   }
 
+  constructor() {
+
+  }
+  private copyInputParameterData() {
+    this.chartDataCopy = this.chartData.slice();
+    this.widthCopy = this.width;
+    this.heightCopy = this.height;
+    this.numberOfBarsCopy = this.numberOfBars;
+  }
+
+  private updateData() {
+    this.chartDataToUse = this.chartData.slice();
+    if (this.reverse) {
+      this.chartDataToUse.reverse();
+    }
+    this.chartDataToUse = this.chartDataToUse.slice(0, this.numberOfBars);
+    if (this.chartDataToUse.length < this.numberOfBars) {
+      const numberOfZeroItemsNeeded = this.numberOfBars - this.chartDataToUse.length;
+      for (let i = 1; i <= numberOfZeroItemsNeeded; i++) {
+        this.chartDataToUse.push(0);
+      }
+      this.chartDataToUse.push();
+    }
+  }
+
   /**
-   * Check if array data has changed. If it did change, render the chart.
+   * Check if array data has changed. If it did change, update the chart.
    */
-  ngDoCheck() {
+  ngOnChanges() {
+
+    if (!this.chartData) {
+      return;
+    }
+
     if (!this.isArraySame(this.chartDataCopy, this.chartData)
-          || this.widthCopy !== this.width
-          || this.barSizeCopy !== this.barSize) {
-      this.chartDataCopy = this.chartData.slice();
-      this.widthCopy = this.width;
-      this.barSizeCopy = this.barSize;
-      this.createChart();
+        || this.widthCopy !== this.width
+        || this.heightCopy !== this.height
+        || this.numberOfBarsCopy !== this.numberOfBars) {
+
+      let update = false;
+
+      if (this.widthCopy === this.width && this.heightCopy === this.height
+        && this.numberOfBarsCopy === this.numberOfBars) {
+          update = true;
+      }
+
+      this.copyInputParameterData();
+      this.updateData();
+      if (update) {
+        this.updateChart();
+      } else {
+        this.createChart();
+      }
     }
   }
 
@@ -84,15 +140,16 @@ export class BarChartComponent implements OnInit, DoCheck {
 
   private createChart() {
     const chartElement = this.chartContainer.nativeElement;
+    d3.select(chartElement).selectAll('svg').remove();
+
     const parentElement = chartElement.parentElement.parentElement;
     const computedStyle = getComputedStyle(parentElement);
     const elementWidth = parentElement.clientWidth;
 
-    const barSizeToUse = this.barSize ? this.barSize : 10;
-    const heightWithoutPadding = barSizeToUse * Math.max(5, this.chartData.length);
     const widthToUse = this.width || elementWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
-    const heightToUse =
-      heightWithoutPadding - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom) + 20;
+    const heightToUse = this.height;
+
+    const localThis = this;
 
     if (!this.chartData) {
       return;
@@ -100,90 +157,168 @@ export class BarChartComponent implements OnInit, DoCheck {
       console.log(`Render Chart - width=${widthToUse}, height=${heightToUse}, data: ${this.chartData} - ` + Array.isArray(this.chartData));
     }
 
-    const reversedChartData = this.chartData.slice();
-    reversedChartData.reverse();
+    const xValuesRange = [0, d3.max(localThis.chartDataToUse)];
+    localThis.xScale = d3.scaleLinear().rangeRound([0, widthToUse]).domain(xValuesRange);
 
-    const xValuesRange = [0, d3.max(reversedChartData)];
-    const xScale = d3.scaleLinear().range([0, widthToUse]).domain(xValuesRange);
+    localThis.yScale = d3.scaleBand()
+      .domain(d3.range(localThis.chartDataToUse.length).map(d => d.toString()))
+      .range([heightToUse, 0 + 20])
+      .round(true)
+      .paddingInner(0.05);
 
-    d3.select(chartElement).selectAll('svg').remove();
-    const chart = d3.select(chartElement).append('svg')
+    localThis.chart = d3.select(chartElement).append('svg')
         .attr('width', widthToUse)
         .attr('height',  heightToUse);
 
-    const lines = chart.append('g').attr('class', 'axis-lines-group')
-      .selectAll('line')
-      .data(xScale.ticks(10))
-      .enter()
-      .append('line')
-      .style('stroke', '#ccc')
-      .attr('y1', function(d) {
-        if (d === 0) {
-          return 0;
-        } else {
-          return 18;
-        }
-      })
-      .attr('y2', heightToUse)
-      .attr('x1', xScale)
-      .attr('x2', xScale);
+    /**
+     * Define x-axis
+     */
+    localThis.xAxis = d3.axisTop(localThis.xScale)
+      .ticks(10);
 
-    const barGroups = chart
+    /**
+     * Add x-axis
+     */
+    localThis.chart.append('g')
+      .attr('class', 'x axis')
+      .attr('transform', 'translate(0,' + 18 + ')')
+      .call(localThis.xAxis);
+
+    /**
+     * In order to create a cleaner SVG, we will wrap each bar with a
+     * group element, so we can easily see which bar-rectangle and text label
+     * belong together.
+     */
+    const barGroups = localThis.chart
       .append('g').attr('class', 'bars-group')
       .selectAll('g')
-      .data(reversedChartData)
+      .data(localThis.chartDataToUse)
       .enter()
       .append('g')
-      .attr('transform', function(d, i) { return 'translate(0,' + (20 + i * barSizeToUse) + ')'; });
+      .attr('class', (d, i) => `bar-group-${i}`);
 
-    barGroups.append('rect')
+    /**
+     * Add the actual bar (the reactangle)
+     */
+    barGroups
+      .append('rect')
       .attr('class', 'bar')
+      .attr('x', function(d, i) {
+        return localThis.xScale(0);
+      })
+      .attr('y', function(d, i) {
+        return localThis.yScale(i.toString());
+      })
       .attr('width', function(d) {
         if (d > 0) {
-          return xScale(d);
+          return localThis.xScale(d);
         } else {
           return 1;
         }
       })
-      .attr('height', barSizeToUse - 2);
+      .attr('height', localThis.yScale.bandwidth());
 
+    /**
+     * Add common properties to all bars
+     */
     barGroups.append('text')
-      .filter(function(d){ return d > 2; })
-      .attr('x', function(d) { return xScale(d) - 30; })
-      .attr('y', (barSizeToUse - 2) / 2)
-      .attr('text-anchor', 'right')
-      .attr('alignment-baseline', 'central')
-      .style('font-size', barSizeToUse - 4)
-      .style('fill', '#eeeeee')
-      .text(function(d) { return d; });
+    .attr('y', function(d, i) {
+      return localThis.yScale(i.toString()) + (localThis.yScale.bandwidth() / 2);
+    })
+    .attr('text-anchor', 'end')
+    .attr('alignment-baseline', 'central')
+    .style('font-size', localThis.yScale.bandwidth() - 2)
+    .style('fill', '#eeeeee')
+    .text(function(d) {
+      return d;
+    });
 
-    barGroups.append('text')
-      .filter(function(d){ return d === 0; })
-      .attr('x', function(d) { return xScale(d) + 10; })
-      .attr('y', (barSizeToUse - 2) / 2)
-      .attr('text-anchor', 'right')
-      .attr('alignment-baseline', 'central')
-      .style('font-size', barSizeToUse - 4)
-      .style('fill', '#aaa')
-      .text(function(d) { return d; });
-
-    const lineLabels = chart.append('g').attr('class', 'axis-line-labels-group')
-      .selectAll('text')
-      .data(xScale.ticks(10))
-      .enter().append('text')
-      .filter(function(d, i, list) {
-        if (i !== list.length - 1 && d > 0) {
-          return true;
+    /**
+     * Add the text label for bars that have a value > 2
+     */
+    barGroups
+      .select(function(d) { // like .filter() but preserving index
+        if (localThis.xScale(d) > localThis.yScale.bandwidth()) {
+          return this;
+        } else {
+          return null;
         }
-        return false;
       })
-      .style('fill', '#000000')
-      .attr('class', 'line-label')
-      .attr('y', 0)
-      .attr('dy', -3)
-      .attr('text-anchor', 'middle')
-      .attr('alignment-baseline', 'hanging')
-      .attr('x', xScale)
-      .text(d => d);
+      .attr('class', 'text-inside-bar')
+      .attr('x', function(d) { return localThis.xScale(d) - (localThis.yScale.bandwidth() - 2); });
+
+    /**
+     * Add the text label for bars that have a value <= 2
+     */
+    barGroups
+      .select(function(d) { // like .filter() but preserving index
+        if (localThis.xScale(d) <= localThis.yScale.bandwidth()) {
+          return this;
+        } else {
+          return null;
+        }
+      })
+      .attr('class', 'text-outside-bar')
+      .attr('x', function(d) { return localThis.xScale(d) + (localThis.yScale.bandwidth() + 2); });
+  }
+
+  private updateChart() {
+
+    const localThis = this;
+    const duration = localThis.chartDataToUse.length ? (500 / localThis.chartDataToUse.length) : 0;
+
+    const xValuesRange = [0, d3.max(localThis.chartDataToUse)];
+    localThis.xScale.domain(xValuesRange);
+
+    localThis.chart.selectAll('.bars-group g rect')
+      .data(localThis.chartDataToUse)
+      .transition()
+    .delay(function(d, i) {
+      return (localThis.chartDataToUse.length - (i - 1)) * 100;
+    })
+    .duration(duration)
+    .attr('width', function(d) {
+      if (d > 0) {
+        return localThis.xScale(d);
+      } else {
+        return 1;
+      }
+    });
+
+    const textItemsToUpdate = localThis.chart.selectAll('.bars-group g text')
+    .data(localThis.chartDataToUse)
+    .transition()
+    .delay(function(d, i) {
+      return (localThis.chartDataToUse.length - (i - 1)) * 100;
+    })
+    .duration(500)
+    .text(d => d);
+
+    textItemsToUpdate.select(function(d, i) {
+      return localThis.xScale(d) <= localThis.yScale.bandwidth() ? this : null;
+    })
+    .attr('x', function(d) {
+      return localThis.xScale(d) + (localThis.yScale.bandwidth() + 2);
+    })
+    .attr('y', function(d, i) {
+      return localThis.yScale(i.toString()) + (localThis.yScale.bandwidth() / 2);
+    })
+    .style('fill', '#aaa');
+
+    textItemsToUpdate.select(function(d, i) {
+      return localThis.xScale(d) > localThis.yScale.bandwidth() ? this : null;
+    })
+    .attr('x', function(d) {
+      return localThis.xScale(d) - (localThis.yScale.bandwidth() - 2);
+    })
+    .attr('y', function(d, i) {
+      return localThis.yScale(i.toString()) + (localThis.yScale.bandwidth() / 2);
+    })
+    .style('fill', '#eeeeee');
+
+    localThis.chart.select('.x.axis')
+      .transition()
+      .duration(1000)
+      .call(localThis.xAxis);
   }
 }
