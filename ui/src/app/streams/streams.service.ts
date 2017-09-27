@@ -153,7 +153,7 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
-  metrics(streamNames?: string[]): Observable<StreamMetrics.Stream[]> {
+  metrics(streamNames?: string[]): Observable<StreamMetrics[]> {
     const options = HttpUtils.getDefaultRequestOptions();
     if (streamNames) {
       const params =  new URLSearchParams('', URL_QUERY_ENCODER);
@@ -161,7 +161,14 @@ export class StreamsService {
       options.params = params;
     }
     return this.http.get('/metrics/streams', options)
-      .map(res => res.json());
+      .map(res => {
+        const data = res.json();
+        if (Array.isArray(data)) {
+          return data.map(entry => new StreamMetrics().deserialize(entry));
+        } else {
+          return [];
+        }
+      });
   }
 
   extractData(res: Response): Page<StreamDefinition> {

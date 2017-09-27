@@ -1,6 +1,6 @@
 import { InstanceDotComponent } from './instance-dot.component';
 import '../support/shapes';
-import { StreamMetrics } from '../../model/stream-metrics';
+import { InstanceMetrics, TYPE, INPUT_CHANNEL_MEAN, OUTPUT_CHANNEL_MEAN } from '../../model/stream-metrics';
 
 import * as _joint from 'jointjs';
 const joint: any = _joint;
@@ -29,16 +29,16 @@ describe('InstanceDotComponent', () => {
 
   it('source input', () => {
     const properties = {};
-    properties[StreamMetrics.TYPE] = 'source';
-    component.view = createView({
+    properties[TYPE] = 'source';
+    component.view = createView(new InstanceMetrics().deserialize({
       guid: 'my-guid',
       index: 0,
       properties: properties,
       metrics: [
-        {name: StreamMetrics.INPUT_CHANNEL_MEAN, value: 5},
-        {name: StreamMetrics.OUTPUT_CHANNEL_MEAN, value: 3.33433}
+        {name: INPUT_CHANNEL_MEAN, value: 5},
+        {name: OUTPUT_CHANNEL_MEAN, value: 3.33433}
       ]
-    });
+    }));
 
     expect(component.instance).toBeDefined();
     expect(component.isSource).toBeTruthy();
@@ -50,16 +50,16 @@ describe('InstanceDotComponent', () => {
 
   it('sink input', () => {
     const properties = {};
-    properties[StreamMetrics.TYPE] = 'sink';
-    component.view = createView({
+    properties[TYPE] = 'sink';
+    component.view = createView(new InstanceMetrics().deserialize({
       guid: 'my-guid',
       index: 0,
       properties: properties,
       metrics: [
-        {name: StreamMetrics.INPUT_CHANNEL_MEAN, value: 5.6758398},
-        {name: StreamMetrics.OUTPUT_CHANNEL_MEAN, value: 3.33433211}
+        {name: INPUT_CHANNEL_MEAN, value: 5.6758398},
+        {name: OUTPUT_CHANNEL_MEAN, value: 3.33433211}
       ]
-    });
+    }));
 
     expect(component.instance).toBeDefined();
     expect(component.isSource).toBeFalsy();
@@ -71,16 +71,16 @@ describe('InstanceDotComponent', () => {
 
   it('processor input', () => {
     const properties = {};
-    properties[StreamMetrics.TYPE] = 'processor';
-    component.view = createView({
+    properties[TYPE] = 'processor';
+    component.view = createView(new InstanceMetrics().deserialize({
       guid: 'my-guid',
       index: 0,
       properties: properties,
       metrics: [
-        {name: StreamMetrics.INPUT_CHANNEL_MEAN, value: 5.6758398},
-        {name: StreamMetrics.OUTPUT_CHANNEL_MEAN, value: 3.33433211}
+        {name: INPUT_CHANNEL_MEAN, value: 5.6758398},
+        {name: OUTPUT_CHANNEL_MEAN, value: 3.33433211}
       ]
-    });
+    }));
 
     expect(component.instance).toBeDefined();
     expect(component.isSource).toBeFalsy();
@@ -90,7 +90,7 @@ describe('InstanceDotComponent', () => {
     expect(component.outputMean).toEqual('3.334');
   });
 
-  function createView(instance: StreamMetrics.Instance): any {
+  function createView(instance: InstanceMetrics): any {
     return {
       model: new joint.shapes.flo.InstanceDot({
         attrs: {

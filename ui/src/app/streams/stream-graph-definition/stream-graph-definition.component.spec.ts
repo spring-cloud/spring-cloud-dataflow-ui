@@ -6,7 +6,7 @@ import { FloModule } from 'spring-flo';
 import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
-import { StreamMetrics } from '../model/stream-metrics';
+import { StreamMetrics, ApplicationMetrics, INSTANCE_COUNT, INPUT_CHANNEL_MEAN, OUTPUT_CHANNEL_MEAN, TYPE } from '../model/stream-metrics';
 import { dia } from 'jointjs';
 import {TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE, TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL} from '../flo/support/shapes';
 
@@ -79,16 +79,16 @@ describe('StreamGraphDefinitionComponent', () => {
     filterMetrics.instances.pop();
     filterMetrics.instances.pop();
     filterMetrics.instances.pop();
-    filterMetrics.instances[0].properties[StreamMetrics.INSTANCE_COUNT] = 40;
+    filterMetrics.instances[0].properties[INSTANCE_COUNT] = 40;
 
-    component.metrics = {
-      name: 'test-stream',
-      applications: [
-        httpMetrics,
-        filterMetrics,
-        nullMetrics
-      ]
-    };
+    const streamMetrics = new StreamMetrics();
+    streamMetrics.name = 'test-stream';
+    streamMetrics.applications = [
+      httpMetrics,
+      filterMetrics,
+      nullMetrics
+    ];
+    component.metrics = streamMetrics;
 
     const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
       subscription.unsubscribe();
@@ -131,14 +131,14 @@ describe('StreamGraphDefinitionComponent', () => {
     const filterMetrics = createAppMetrics('processor', 'filter', 1, 4.68954, 2.93718423);
     const nullMetrics = createAppMetrics('sink', 'null', 1, 4.3124, 0);
 
-    component.metrics = {
-      name: 'test-stream',
-      applications: [
-        httpMetrics,
-        filterMetrics,
-        nullMetrics
-      ]
-    };
+    const streamMetrics = new StreamMetrics();
+    streamMetrics.name = 'test-stream';
+    streamMetrics.applications = [
+      httpMetrics,
+      filterMetrics,
+      nullMetrics
+    ];
+    component.metrics = streamMetrics;
 
     const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
       subscription.unsubscribe();
@@ -173,29 +173,29 @@ describe('StreamGraphDefinitionComponent', () => {
   });
 
   function createAppMetrics(group: string, name: string, numberOfInstances: number,
-                            inRate: number, outRate: number): StreamMetrics.Application {
-    const instances: StreamMetrics.Instance[] = [];
+                            inRate: number, outRate: number): ApplicationMetrics {
+    const instances = [];
     for (let index = 0; index < numberOfInstances; index++) {
       const properties = {};
-      properties[StreamMetrics.TYPE] = group;
+      properties[TYPE] = group;
       instances.push({
         guid: `${name}-${index}`,
         index: index,
         properties: properties,
         metrics: [
-          {name: StreamMetrics.INPUT_CHANNEL_MEAN, value: inRate},
-          {name: StreamMetrics.OUTPUT_CHANNEL_MEAN, value: outRate}
+          {name: INPUT_CHANNEL_MEAN, value: inRate},
+          {name: OUTPUT_CHANNEL_MEAN, value: outRate}
         ]
       });
     }
-    return {
+    return new ApplicationMetrics().deserialize({
       name: name,
       instances: instances,
       aggregateMetrics: [
-        {name: StreamMetrics.INPUT_CHANNEL_MEAN, value: inRate},
-        {name: StreamMetrics.OUTPUT_CHANNEL_MEAN, value: outRate}
+        {name: INPUT_CHANNEL_MEAN, value: inRate},
+        {name: OUTPUT_CHANNEL_MEAN, value: outRate}
       ]
-    };
+    });
   }
 
 });

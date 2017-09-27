@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, Input, OnDestroy } from '@angular/core';
 import { Flo } from 'spring-flo';
 import { StreamDefinition } from '../model/stream-definition';
-import { StreamMetrics } from '../model/stream-metrics';
+import { StreamMetrics, ApplicationMetrics, INPUT_CHANNEL_MEAN, OUTPUT_CHANNEL_MEAN, INSTANCE_COUNT } from '../model/stream-metrics';
 import { ApplicationType } from '../../shared/model/application-type';
 import { dia } from 'jointjs';
 import { TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from '../flo/support/shapes';
@@ -20,30 +20,30 @@ const joint: any = _joint;
 export class StreamGraphDefinitionComponent implements OnDestroy {
 
   flo: Flo.EditorContext;
-  private _metrics: StreamMetrics.Stream;
+  private _metrics: StreamMetrics;
   private _subscriptionToGraphUpdates: Subscription;
 
   @Input()
   stream: StreamDefinition;
 
   @Input()
-  set metrics(m: StreamMetrics.Stream) {
+  set metrics(m: StreamMetrics) {
     this._metrics = m;
     this.update();
   }
 
-  static getInputRate(app: StreamMetrics.Application): number {
+  static getInputRate(app: ApplicationMetrics): number {
     if (app && app.aggregateMetrics) {
-      const metric = app.aggregateMetrics.find(m => m.name === StreamMetrics.INPUT_CHANNEL_MEAN);
+      const metric = app.aggregateMetrics.find(m => m.name === INPUT_CHANNEL_MEAN);
       if (metric) {
         return metric.value;
       }
     }
   }
 
-  static getOutputRate(app: StreamMetrics.Application): number {
+  static getOutputRate(app: ApplicationMetrics): number {
     if (app && app.aggregateMetrics) {
-      const metric = app.aggregateMetrics.find(m => m.name === StreamMetrics.OUTPUT_CHANNEL_MEAN);
+      const metric = app.aggregateMetrics.find(m => m.name === OUTPUT_CHANNEL_MEAN);
       if (metric) {
         return metric.value;
       }
@@ -58,7 +58,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     }
   }
 
-  get metrics(): StreamMetrics.Stream {
+  get metrics(): StreamMetrics {
     return this._metrics;
   }
 
@@ -78,7 +78,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     this._subscriptionToGraphUpdates = this.flo.textToGraphConversionObservable.subscribe(() => this.update());
   }
 
-  private findModuleMetrics(label: string) {
+  private findModuleMetrics(label: string): ApplicationMetrics {
     return this.metrics && Array.isArray(this.metrics.applications) ? this.metrics.applications.find(app => app.name === label) : undefined;
   }
 
@@ -110,7 +110,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     }
   }
 
-  private updateInstanceDecorations(cell: dia.Element, moduleMetrics: StreamMetrics.Application) {
+  private updateInstanceDecorations(cell: dia.Element, moduleMetrics: ApplicationMetrics) {
     let label: dia.Cell;
     let dots: dia.Cell[] = [];
     // Find label or dots currently painted
@@ -123,7 +123,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     });
 
     if (moduleMetrics && Array.isArray(moduleMetrics.instances) && moduleMetrics.instances.length > 0) {
-      let instanceCount = Number(moduleMetrics.instances[0].properties[StreamMetrics.INSTANCE_COUNT]);
+      let instanceCount = Number(moduleMetrics.instances[0].properties[INSTANCE_COUNT]);
       if (!instanceCount) {
         instanceCount = moduleMetrics.instances.length;
       }
@@ -211,7 +211,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
 
   private updateMessageRatesForLink(link: dia.Link) {
     let outgoingIndex: number, incomingIndex: number;
-    let moduleMetrics: StreamMetrics.Application;
+    let moduleMetrics: ApplicationMetrics;
     let labels: any[] = link.get('labels') || [];
 
     // Find incoming and outgoing message rates labels

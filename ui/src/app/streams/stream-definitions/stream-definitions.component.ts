@@ -33,7 +33,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   metricsSubscription: Subscription;
   definitionNameSort: boolean = undefined;
   definitionSort: boolean = undefined;
-  metrics: StreamMetrics.Stream[];
+  metrics: StreamMetrics[];
 
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
@@ -245,7 +245,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
     this.childPopover.hide();
   }
 
-  metricsForStream(name: string) {
+  metricsForStream(name: string): StreamMetrics {
     if (Array.isArray(this.metrics)) {
       return this.metrics.find(m => m.name === name);
     }

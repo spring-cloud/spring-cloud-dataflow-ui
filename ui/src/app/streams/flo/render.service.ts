@@ -648,7 +648,6 @@ export class RenderService implements Flo.Renderer {
           options: joint.util.deepSupplement({}, joint.dia.ElementView.prototype.options),
 
           renderMarkup: function () {
-            console.log('RENDERING: ' + this.model.get('type'));
             // Not called often. It's fine to destro old component and create the new one, because old DOM
             // may have been aletered by JointJS updates
             if (self.componentFactoryResolver && SHAPE_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
