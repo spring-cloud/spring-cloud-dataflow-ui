@@ -1,0 +1,9 @@
+@import '~pivotal-ui-git-clone/src/css/pui-variables';
+
+.d3-chart {
+  .arc {
+    &:hover {
+      opacity: .8;
+    }
+  }
+}

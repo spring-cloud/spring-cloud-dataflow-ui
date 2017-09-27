@@ -1,17 +1,30 @@
 import { Serializable } from '../../shared/model';
-
+import { BaseCounter } from './base-counter.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 /**
  * Counter model object for the Analytics module.
  *
  * @author Gunnar Hillert
  */
-export class Counter implements Serializable<Counter> {
-  public rates: number[] = [];
+export class Counter extends BaseCounter implements Serializable<Counter> {
+  public _rates: number[] = [];
+  public ratesObservable = new BehaviorSubject(this._rates);
 
   constructor(
-    public name?: string,
+    name?: string,
     public value?: number
-  ) { }
+  ) {
+    super(name);
+   }
+
+  set rates(rates: number[]) {
+    this._rates = rates;
+    this.ratesObservable.next(this._rates);
+  }
+  get rates() {
+    return this._rates;
+  }
 
   get latestRate(): number {
     return this.rates.length ? this.rates[this.rates.length - 1] : undefined;
@@ -25,7 +38,7 @@ export class Counter implements Serializable<Counter> {
    * @param input JSON input data
    */
   public deserialize(input) {
-    this.name = input.name;
+    super.deserialize(input);
     this.value = input.value;
     return this;
   }

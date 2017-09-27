@@ -67,20 +67,61 @@
           </button>
       </td>
     </tr>
-    <tr *ngIf="item.counter">
+    <tr *ngIf="item.counter && (item.visualization || item.metricType?.name === 'Counters')">
       <td colspan="5">
-        <app-counter-header [counter]="item.counter"></app-counter-header>
+        <app-counter-header *ngIf="item.metricType?.name === 'Counters' && item.counter" [counter]="item.counter"></app-counter-header>
         <div *ngIf="item.visualization === 'Bar-Chart' && item.counter">
-            <div class="chart-slider">
-                <label>Bar-Size: </label>
-                <input type="range" #barSize="ngModel" name="barSize_{{item.id}}" [(ngModel)]="item.barSize" step="1" max="50" min="2"/>
+            <div class="row" style="margin-bottom: 2em;">
+              <div class="col-md-12 chart-slider">
+                  <label>Number of Bars: {{item.numberOfBars}}</label>
+                  <input type="range" #numberOfBars="ngModel" name="numberOfBars_{{item.id}}" [(ngModel)]="item.numberOfBars" step="1" max="50" min="2"/>
+              </div>
+              <div class="col-md-12 chart-slider" style="margin-bottom: 2em;">
+                  <label>Height: {{item.chartHeight}}</label>
+                  <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="500" min="40"/>
+              </div>
             </div>
-            <app-bar-chart [chartData]="item.counter.rates" class="bar-chart" [barSize]="20"></app-bar-chart>
+            <app-bar-chart [chartData]="item.counter.rates" class="bar-chart" [height]="item.chartHeight" [numberOfBars]="item.numberOfBars"></app-bar-chart>
         </div>
         <div class="graph-chart" *ngIf="item.visualization === 'Graph-Chart' && item.counter">
           <app-graph-chart [chartData]="item.counter.rates" [height]="item.chartHeight" [total]="item.totalCacheSize()"
                      [reverse]="true" [axisUnitsX]="'seconds ago'" [axisUnitsY]="'counts'"
                      [unitsPerTickX]="item.refreshRate"></app-graph-chart>
+        </div>
+        <div class="graph-chart" *ngIf="item.visualization === 'Bubble-Chart' && item.counter">
+          <div class="row">
+            <div class="col-md-24 chart-slider">
+              <label>Height: {{item.chartHeight}}</label>
+              <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="800" min="100"/>
+            </div>
+          </div>
+          <app-bubble-chart [chartData]="item.counter.values" [height]="item.chartHeight"></app-bubble-chart>
+        </div>
+        <div class="graph-chart" *ngIf="item.visualization === 'Pie-Chart' && item.counter">
+          <div class="row">
+            <div class="col col-md-12">
+              <div class="form-group">
+                <label>Height: {{item.chartHeight}}</label>
+                <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="1000" min="40"/>
+              </div>
+            </div>
+            <div class="col col-md-4">
+              <div class="form-group">
+                <label>Use All Data?</label>
+                <input type="checkbox" #useAllData="ngModel" name="useAllData_{{item.id}}" [(ngModel)]="item.useAllData"/>
+              </div>
+            </div>
+            <div class="col col-md-8">
+              <div class="form-group">
+                <label>Max # of slices: {{item.maxNumberOfSlices}}</label>
+                <input type="number" #maxNumberOfSlices="ngModel" name="maxNumberOfSlices_{{item.id}}" [(ngModel)]="item.maxNumberOfSlices"/>
+              </div>
+            </div>
+          </div>
+          <app-pie-chart [chartData]="item.counter.values"
+                         [height]="item.chartHeight"
+                         [maxNumberOfSlices]="item.maxNumberOfSlices"
+                         [useAllData]="item.useAllData"></app-pie-chart>
         </div>
       </td>
     </tr>
@@ -88,3 +129,15 @@
     </tbody>
   </table>
 </form>
+
+<hr/>
+<!-- <div>
+<app-bar-chart [chartData]="[4, 7, 10, 2, 0]" class="bar-chart" [numberOfBars]="10" [height]="200"></app-bar-chart>
+</div> -->
+
+<!-- <div>Bubble
+    <app-bubble-chart [chartData]="test" [height]="300"></app-bubble-chart>
+  </div> -->
+<!-- <div>PIE
+  <app-pie-chart [chartData]="test" [height]="300"></app-pie-chart>
+</div> -->

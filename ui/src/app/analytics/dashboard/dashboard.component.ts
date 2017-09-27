@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { AnalyticsService } from '../analytics.service';
 import { DashboardItem } from './../model/dashboard-item.model';
 import { MetricType } from './../model/metric-type.model';
-import { Counter } from './../model/counter.model';
+import { BaseCounter } from './../model/base-counter.model';
+import { FieldValueCounterValue } from '../model/field-value-counter-value.model';
 
 /**
  * The dashboard component provides
@@ -18,6 +19,13 @@ import { Counter } from './../model/counter.model';
 export class DashboardComponent implements OnInit {
 
   busy: Subscription;
+
+  test: FieldValueCounterValue[] = [
+    new FieldValueCounterValue('en', 4613),
+    new FieldValueCounterValue('es', 1842),
+    new FieldValueCounterValue('ja', 1693),
+    new FieldValueCounterValue('pt', 1400),
+    new FieldValueCounterValue('und', 883)];
 
   public get dashboardItems() {
     return this.analyticsService.dashboardItems;
@@ -80,7 +88,9 @@ export class DashboardComponent implements OnInit {
   onMetricTypeChange(metricType: MetricType, dashBoardItem: DashboardItem) {
     console.log('Selected Metric Type:', metricType);
     dashBoardItem.counters = [];
-    this.analyticsService.getStreamsForMetricType(metricType).subscribe(result => {
+    dashBoardItem.visualization = undefined;
+
+    this.analyticsService.getCountersForMetricType(metricType).subscribe(result => {
       dashBoardItem.counters = result.items;
     });
   }
@@ -92,7 +102,8 @@ export class DashboardComponent implements OnInit {
   onCounterNameChange(dashBoardItem: DashboardItem) {
     console.log('Selected counter:', dashBoardItem.counter);
     console.log('Time to start polling for dashBoardItem:', dashBoardItem);
-    this.analyticsService.startPollingForSingleDashboardItem(dashBoardItem);
+    dashBoardItem.visualization = undefined;
+    this.analyticsService.restartPollingOfSingleDashboardItem(dashBoardItem);
   }
 
   /**
@@ -116,11 +127,11 @@ export class DashboardComponent implements OnInit {
 
   /**
    * returns true if both counter names are the same or if counters are undefined.
-   * @param {Counter} counter1 the first counter in the set to compare.
-   * @param {Counter} counter2 the second counter in the set to compare.
+   * @param {BaseCounter} counter1 the first counter in the set to compare.
+   * @param {BaseCounter} counter2 the second counter in the set to compare.
    * @returns {boolean} true if counter names are the same or both are undefined.
    */
-  compareCounter(counter1: Counter, counter2: Counter) {
+  compareCounter(counter1: BaseCounter, counter2: BaseCounter) {
     if (counter1 && counter2) {
       console.log(`Comparing counter1 ${counter1} and counter2 ${counter2}`);
       return counter1.name === counter2.name;
