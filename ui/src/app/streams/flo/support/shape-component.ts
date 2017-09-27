@@ -1,13 +1,8 @@
 import { OnInit, OnDestroy } from '@angular/core';
 import { dia } from 'jointjs';
 
-export interface ShapeComponent {
-  view: dia.ElementView;
-}
+export class ShapeComponent implements OnInit, OnDestroy {
 
-export class BaseShapeComponent implements ShapeComponent, OnInit, OnDestroy {
-
-  public view: dia.ElementView;
   public cannotShowToolTip = false;
 
   private _handleCannotShowTooltipOn = () => this.cannotShowToolTip = true;
@@ -22,5 +17,17 @@ export class BaseShapeComponent implements ShapeComponent, OnInit, OnDestroy {
     document.removeEventListener('mousedown', this._handleCannotShowTooltipOn);
     document.removeEventListener('mouseup', this._handleCannotShowTooltipOff);
   }
+
+}
+
+export class BaseShapeComponent extends ShapeComponent {
+
+  public data: any;
+
+}
+
+export class ElementComponent extends ShapeComponent {
+
+  public view: dia.ElementView;
 
 }

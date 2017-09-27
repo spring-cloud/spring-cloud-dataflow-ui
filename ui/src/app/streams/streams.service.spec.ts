@@ -164,5 +164,31 @@ describe('StreamsService', () => {
       });
 
     });
+
+    describe('metrics', () => {
+
+      it('should call the streams metrics service no stream names specified', () => {
+        this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+
+        expect(this.streamsService.metrics).toBeDefined();
+
+        this.streamsService.metrics();
+        expect(this.mockHttp.get).toHaveBeenCalledWith('/metrics/streams', HttpUtils.getDefaultRequestOptions());
+      });
+
+      it('should call the streams metrics service with stream names specified', () => {
+        this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+
+        expect(this.streamsService.metrics).toBeDefined();
+
+        this.streamsService.metrics(['test1', 'test2']);
+        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+        const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+        params.append('names', 'test1,test2');
+        requestOptionsArgs.params = params;
+        expect(this.mockHttp.get).toHaveBeenCalledWith('/metrics/streams', requestOptionsArgs);
+      });
+
+    });
   });
 });

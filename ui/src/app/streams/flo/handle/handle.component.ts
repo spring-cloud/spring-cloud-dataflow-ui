@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Constants } from 'spring-flo';
-import { BaseShapeComponent } from '../support/shape-component';
+import { ElementComponent } from '../support/shape-component';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -13,7 +13,7 @@ import { BaseShapeComponent } from '../support/shape-component';
   templateUrl: 'handle.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class HandleComponent extends BaseShapeComponent {
+export class HandleComponent extends ElementComponent {
 
   get tooltipText(): string {
     if (this.view) {

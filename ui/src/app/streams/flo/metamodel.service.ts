@@ -185,7 +185,7 @@ export class MetamodelService implements Flo.Metamodel {
     refresh(): Promise<Map<string, Map<string, Flo.ElementMetadata>>> {
         const metamodel = new Map<string, Map<string, Flo.ElementMetadata>>();
         this.addOtherGroup(metamodel);
-        return new Promise(resolve => {
+        this.request = new Promise(resolve => {
             this.appsService.getApps({page: 0, size: 1000}).subscribe(
                 data => {
                     data.items.filter(item => {
@@ -212,6 +212,7 @@ export class MetamodelService implements Flo.Metamodel {
                 }
             );
         });
+        return this.request;
     }
 
     private createEntry(type: ApplicationType, name: string, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {

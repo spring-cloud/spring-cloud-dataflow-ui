@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
 import { ModalDirective} from 'ngx-bootstrap/modal';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { Subscription } from 'rxjs/Subscription';
+import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
+import { StreamMetrics } from '../model/stream-metrics';
 
 import { ToastyService} from 'ng2-toasty';
 import { Router } from '@angular/router';
@@ -23,13 +25,15 @@ import { Router } from '@angular/router';
  * @author Gunnar Hillert
  * @author Glenn Renfro
  */
-export class StreamDefinitionsComponent implements OnInit {
+export class StreamDefinitionsComponent implements OnInit, OnDestroy {
 
   streamDefinitions: Page<StreamDefinition>;
   streamDefinitionToDestroy: StreamDefinition;
   busy: Subscription;
+  metricsSubscription: Subscription;
   definitionNameSort: boolean = undefined;
   definitionSort: boolean = undefined;
+  metrics: StreamMetrics[];
 
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
@@ -48,6 +52,13 @@ export class StreamDefinitionsComponent implements OnInit {
    */
   ngOnInit() {
     this.loadStreamDefinitions();
+    this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
+  }
+
+  ngOnDestroy() {
+    if (this.metricsSubscription) {
+      this.metricsSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -62,6 +73,22 @@ export class StreamDefinitionsComponent implements OnInit {
         this.toastyService.success('Stream definitions loaded.');
       }
     );
+  }
+
+  /**
+   * Loads streams metrics data
+   */
+  loadStreamMetrics() {
+    const streamNames = this.streamDefinitions && Array.isArray(this.streamDefinitions.items) ?
+      this.streamDefinitions.items
+        .filter(i => i.status === 'deployed')
+        .map(s => s.name.toString())
+      : [];
+    if (streamNames.length) {
+      this.streamsService.metrics(streamNames).subscribe(metrics => this.metrics = metrics);
+    } else {
+      this.metrics = [];
+    }
   }
 
   /**
@@ -216,5 +243,11 @@ export class StreamDefinitionsComponent implements OnInit {
    */
   closePopOver() {
     this.childPopover.hide();
+  }
+
+  metricsForStream(name: string): StreamMetrics {
+    if (Array.isArray(this.metrics)) {
+      return this.metrics.find(m => m.name === name);
+    }
   }
 }
