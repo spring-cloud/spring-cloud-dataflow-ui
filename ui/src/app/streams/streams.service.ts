@@ -168,7 +168,8 @@ export class StreamsService {
         } else {
           return [];
         }
-      });
+      })
+      .catch(this.errorHandler.handleError);
   }
 
   extractData(res: Response): Page<StreamDefinition> {
