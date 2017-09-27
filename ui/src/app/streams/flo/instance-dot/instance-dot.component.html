@@ -1,0 +1,28 @@
+<svg:g class="rotatable" [tooltip]="dotTooltip" placement="bottom" container="body" [ngClass]="{deployed: instance}">
+  <svg:g class="scalable">
+    <svg:circle class="instance-dot"/>
+  </svg:g>
+</svg:g>
+
+<template #dotTooltip>
+  <table *ngIf="instance; else noData" class="table-hover table-condensed container-details-table">
+    <tbody>
+    <tr>
+      <td nowrap class="text-left tooltip-property-key"><strong>Guid</strong></td>
+      <td class="text-left tooltip-property-value">{{guid}}</td>
+    </tr>
+    <tr *ngIf="!isSource">
+      <td nowrap class="text-left tooltip-property-key"><strong>Incoming</strong></td>
+      <td class="text-left tooltip-property-value">{{inputMean}}</td>
+    </tr>
+    <tr *ngIf="!isSink">
+      <td nowrap class="text-left tooltip-property-key"><strong>Outgoing</strong></td>
+      <td class="text-left tooltip-property-value">{{outputMean}}</td>
+    </tr>
+    </tbody>
+  </table>
+</template>
+
+<ng-template #noData>
+  <span>App instance either is down or not deployed</span>
+</ng-template>

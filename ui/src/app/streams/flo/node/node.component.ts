@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { dia } from 'jointjs';
 import { Flo, Constants } from 'spring-flo';
-import { BaseShapeComponent } from '../support/shape-component';
+import { ElementComponent } from '../support/shape-component';
 
 /**
 * Component for displaying application properties and capturing their values.
@@ -15,7 +15,7 @@ import { BaseShapeComponent } from '../support/shape-component';
   styleUrls: [ './node.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class NodeComponent extends BaseShapeComponent {
+export class NodeComponent extends ElementComponent {
 
   _description: string;
 

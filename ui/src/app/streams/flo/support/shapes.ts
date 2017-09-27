@@ -10,6 +10,11 @@ export const HORIZONTAL_PADDING = 5;
 
 export const OTHER_GROUP_TYPE = 'other';
 
+export const TYPE_INSTANCE_LABEL = 'dataflow-InstanceLabel';
+export const TYPE_INSTANCE_DOT = 'dataflow-InstanceDot';
+export const TYPE_INCOMING_MESSAGE_RATE = 'dataflow-incoming-rate';
+export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
+
 joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
 
     markup:
@@ -226,4 +231,41 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
         },
     }, joint.dia.Link.prototype.defaults)
 });
+
+joint.shapes.flo.InstanceLabel = joint.shapes.basic.Generic.extend({
+
+  markup: '<text class="label"/>',
+
+  defaults: joint.util.deepSupplement({
+
+    type: TYPE_INSTANCE_LABEL,
+    attrs: {
+      '.': { magnet: false },
+      '.label': {
+        'text-anchor': 'middle',
+        fill: 'black',
+        'font-size': 8
+      }
+    }
+  }, joint.shapes.basic.Generic.prototype.defaults)
+});
+
+joint.shapes.flo.InstanceDot = joint.shapes.basic.Generic.extend({
+
+  markup: '<g class="rotatable"><g class="scalable"><circle class="instance-dot"/></g></g>',
+
+  defaults: joint.util.deepSupplement({
+    type: TYPE_INSTANCE_DOT,
+    size: { width: 60, height: 60 },
+    attrs: {
+      'circle': { r: 30, transform: 'translate(30, 30)' }
+    }
+  }, joint.shapes.basic.Generic.prototype.defaults)
+});
+
+
+
+
+
+
 

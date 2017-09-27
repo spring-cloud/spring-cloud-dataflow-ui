@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { dia } from 'jointjs';
-import { BaseShapeComponent } from '../support/shape-component';
+import { ElementComponent } from '../support/shape-component';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -14,7 +14,7 @@ import { BaseShapeComponent } from '../support/shape-component';
   styleUrls: [ 'decoration.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class DecorationComponent extends BaseShapeComponent {
+export class DecorationComponent extends ElementComponent {
 
   getMessages(): Array<string> {
     return this.view && Array.isArray(this.view.model.attr('messages')) ? this.view.model.attr('messages') : [];
