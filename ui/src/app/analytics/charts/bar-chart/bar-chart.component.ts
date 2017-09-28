@@ -62,11 +62,6 @@ export class BarChartComponent implements OnInit, OnChanges {
     this.widthCopy = this.width;
     this.heightCopy = this.height;
     this.numberOfBarsCopy = this.numberOfBars;
-
-    console.log(`${this.chartDataCopy} - ${this.chartData}`);
-    console.log(`${this.widthCopy} - ${this.width}`);
-    console.log(`${this.heightCopy} - ${this.height}`);
-    console.log(`${this.numberOfBarsCopy} - ${this.numberOfBars}`);
   }
 
   private updateData() {

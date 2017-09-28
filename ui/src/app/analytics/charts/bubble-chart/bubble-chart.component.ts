@@ -52,8 +52,6 @@ export class BubbleChartComponent implements OnInit, OnChanges {
     private copyInputParameterData() {
       this.chartDataCopy = this.chartData.slice();
       this.heightCopy = this.height;
-      console.log(`# of chart data items: ${this.chartDataCopy.length} - ${this.chartData.length}`);
-      console.log(`Height: ${this.heightCopy} - ${this.height}`);
     }
 
     private updateData() {

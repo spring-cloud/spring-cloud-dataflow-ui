@@ -125,9 +125,7 @@ export class AnalyticsService {
   }
 
   /**
-   * Retrieves all field-value-counters. Will take pagination into account.
-   *
-   * @param detailed If true will request additional counter values from the REST endpoint
+   * Retrieves all field-value-counters.
    */
   private  getAllFieldValueCounters(): Observable<Page<FieldValueCounter>> {
     const params = HttpUtils.getPaginationParams(0, 100);
@@ -140,9 +138,7 @@ export class AnalyticsService {
   }
 
   /**
-   * Retrieves all aggregate counters. Will take pagination into account.
-   *
-   * @param detailed If true will request additional counter values from the REST endpoint
+   * Retrieves all aggregate counters.
    */
   private  getAllAggregateCounters(): Observable<Page<AggregateCounter>> {
     const params = HttpUtils.getPaginationParams(0, 100);
