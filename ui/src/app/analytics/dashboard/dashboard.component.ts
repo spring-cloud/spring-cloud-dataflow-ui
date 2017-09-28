@@ -133,7 +133,6 @@ export class DashboardComponent implements OnInit {
    */
   compareCounter(counter1: BaseCounter, counter2: BaseCounter) {
     if (counter1 && counter2) {
-      console.log(`Comparing counter1 ${counter1} and counter2 ${counter2}`);
       return counter1.name === counter2.name;
     } else {
       return true;

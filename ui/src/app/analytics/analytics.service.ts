@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Http, Response, RequestOptionsArgs } from '@angular/http';
+import { Http, Response, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -129,13 +129,8 @@ export class AnalyticsService {
    *
    * @param detailed If true will request additional counter values from the REST endpoint
    */
-  private  getAllFieldValueCounters(): Observable<Page<Counter>> {
-    if (!this.counters) {
-      this.counters = new Page<Counter>();
-      this.counters.pageSize = 50;
-    }
-
-    const params = HttpUtils.getPaginationParams(this.counters.pageNumber, this.counters.pageSize);
+  private  getAllFieldValueCounters(): Observable<Page<FieldValueCounter>> {
+    const params = HttpUtils.getPaginationParams(0, 100);
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
     requestOptionsArgs.search = params;
@@ -149,12 +144,8 @@ export class AnalyticsService {
    *
    * @param detailed If true will request additional counter values from the REST endpoint
    */
-  private  getAllAggregateCounters(): Observable<Page<Counter>> {
-    if (!this.counters) {
-      this.counters = new Page<Counter>();
-      this.counters.pageSize = 50;
-    }
-    const params = HttpUtils.getPaginationParams(this.counters.pageNumber, this.counters.pageSize);
+  private  getAllAggregateCounters(): Observable<Page<AggregateCounter>> {
+    const params = HttpUtils.getPaginationParams(0, 100);
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
     requestOptionsArgs.search = params;
@@ -165,8 +156,8 @@ export class AnalyticsService {
 
   private extractData(response: Response, handleRates: boolean): Page<BaseCounter> {
     const body = response.json();
-    const items: Counter[] = [];
-    const cache: Counter[] = [];
+    const items: BaseCounter[] = [];
+    const cache: BaseCounter[] = [];
 
     if (handleRates) {
       for (const oldCounter of this.counters.items) {
@@ -193,19 +184,19 @@ export class AnalyticsService {
         }
       } else if (body._embedded && body._embedded.aggregateCounterResourceList) {
         for (const aggregateCounterResourceListItems of body._embedded.aggregateCounterResourceList) {
-          const counter = new Counter().deserialize(aggregateCounterResourceListItems);
+          const counter = new AggregateCounter().deserialize(aggregateCounterResourceListItems);
           items.push(counter);
         }
       }
     }
 
-    const page = new Page<Counter>();
+    const page = new Page<BaseCounter>();
     page.items = items;
     page.totalElements = body.page.totalElements;
     page.pageNumber = body.page.number;
     page.pageSize = body.page.size;
     page.totalPages = body.page.totalPages;
-    this.counters.update(page);
+    // this.counters.update(page);
     return page;
   }
 
@@ -259,7 +250,7 @@ export class AnalyticsService {
    * @param {MetricType} metricType the specific metric type to retrieve.
    * @returns {Observable<Page<Counter>>} Page containing the metrics.
    */
-  getCountersForMetricType(metricType: MetricType) {
+  getCountersForMetricType(metricType: MetricType): Observable<Page<BaseCounter>> {
     if (MetricType.COUNTER === metricType) {
       return this.getAllCounters();
     } else if (MetricType.AGGREGATE_COUNTER === metricType) {
@@ -268,6 +259,7 @@ export class AnalyticsService {
       return this.getAllFieldValueCounters();
     } else {
       this.toastyService.error(`Metric type ${metricType.name} is not supported.`);
+      return undefined;
     }
   }
 
@@ -311,8 +303,15 @@ export class AnalyticsService {
       } else if (dashboardItem.metricType === MetricType.FIELD_VALUE_COUNTER) {
         counterServiceCall = this.getSingleFieldValueCounter(dashboardItem.counter.name);
         resultProcessor = function(result: FieldValueCounter) {
+          dashboardItem.counter = result;
           const counter = dashboardItem.counter as FieldValueCounter;
           counter.values = result.values.slice();
+        };
+      } else if (dashboardItem.metricType === MetricType.AGGREGATE_COUNTER) {
+        counterServiceCall = this.getSingleAggregateCounter(dashboardItem.counter.name);
+        resultProcessor = function(result: AggregateCounter) {
+          const counter = dashboardItem.counter as AggregateCounter;
+          counter.counts = result.counts.slice();
         };
       }
 
@@ -377,8 +376,26 @@ export class AnalyticsService {
     return this.http.get(this.metricsFieldValueCountersUrl + '/' + counterName, requestOptionsArgs)
                     .map(response => {
                       const body = response.json();
-                      console.log('body', body);
                       return new FieldValueCounter().deserialize(body);
+                    })
+                    .catch(this.errorHandler.handleError);
+    }
+
+  /**
+   * Retrieves a single Aggregate Counter.
+   *
+   * @param counterName Name of the counter for which to retrieve details
+   */
+  private getSingleAggregateCounter(counterName: string): Observable<Counter> {
+    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+    const params = new URLSearchParams();
+    params.append('resolution', 'minute');
+    requestOptionsArgs.params = params;
+
+    return this.http.get(this.metricsAggregateCountersUrl + '/' + counterName, requestOptionsArgs)
+                    .map(response => {
+                      const body = response.json();
+                      return new AggregateCounter().deserialize(body);
                     })
                     .catch(this.errorHandler.handleError);
   }

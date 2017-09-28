@@ -1,5 +1,7 @@
 import { Serializable } from '../../shared/model';
 import { BaseCounter } from './base-counter.model';
+import { AggregateCounterValue } from './aggregate-counter-value';
+import * as moment from 'moment';
 
 /**
  * Aggregate Counter model object for the Analytics module.
@@ -8,7 +10,7 @@ import { BaseCounter } from './base-counter.model';
  */
 export class AggregateCounter extends BaseCounter implements Serializable<AggregateCounter> {
 
-  public counts: [Date, number];
+  public counts: AggregateCounterValue[];
 
   constructor(
     public name?: string
@@ -25,8 +27,18 @@ export class AggregateCounter extends BaseCounter implements Serializable<Aggreg
    */
   public deserialize(input) {
     super.deserialize(input);
-    this.counts = input.counts;
+    this.counts = [];
+    for (const key of Object.keys(input.counts)) {
+      const fvc = new AggregateCounterValue(moment(key), input.counts[key]);
+      this.counts.push(fvc);
+    }
     return this;
   }
 
+  /**
+   * Return the values of the {@link AggregateCounterValue} array.
+   */
+  public getValues(): number[] {
+    return this.counts.map(value => value.value);
+  }
 }

@@ -15,7 +15,7 @@ export class DashboardItem implements Serializable<DashboardItem> {
   public metricType: MetricType;
   public counter: BaseCounter;
   public visualization: string;
-  public refreshRate: number;
+  public refreshRate  = 5;
 
   public counterPoller: Subscription;
   public chartHeight = 140;

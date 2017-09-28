@@ -27,6 +27,9 @@ export class BarChartComponent implements OnInit, OnChanges {
   private widthCopy: number;
 
   @Input()
+  private reverse = false;
+
+  @Input()
   private numberOfBars = 5;
   private numberOfBarsCopy: number;
 
@@ -67,7 +70,10 @@ export class BarChartComponent implements OnInit, OnChanges {
   }
 
   private updateData() {
-    this.chartDataToUse = this.chartData.slice().reverse();
+    this.chartDataToUse = this.chartData.slice();
+    if (this.reverse) {
+      this.chartDataToUse.reverse();
+    }
     this.chartDataToUse = this.chartDataToUse.slice(0, this.numberOfBars);
     if (this.chartDataToUse.length < this.numberOfBars) {
       const numberOfZeroItemsNeeded = this.numberOfBars - this.chartDataToUse.length;

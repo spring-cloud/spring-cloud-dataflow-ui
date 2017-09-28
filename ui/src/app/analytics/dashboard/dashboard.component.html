@@ -81,7 +81,8 @@
                   <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="500" min="40"/>
               </div>
             </div>
-            <app-bar-chart [chartData]="item.counter.rates" class="bar-chart" [height]="item.chartHeight" [numberOfBars]="item.numberOfBars"></app-bar-chart>
+            <app-bar-chart *ngIf="item.metricType.name === 'Aggregate-Counters'" [chartData]="item.counter.getValues()" [reverse]="false" class="bar-chart" [height]="item.chartHeight" [numberOfBars]="item.numberOfBars"></app-bar-chart>
+            <app-bar-chart *ngIf="item.metricType.name === 'Counters'"           [chartData]="item.counter.rates"  [reverse]="true" class="bar-chart" [height]="item.chartHeight" [numberOfBars]="item.numberOfBars"></app-bar-chart>
         </div>
         <div class="graph-chart" *ngIf="item.visualization === 'Graph-Chart' && item.counter">
           <app-graph-chart [chartData]="item.counter.rates" [height]="item.chartHeight" [total]="item.totalCacheSize()"
