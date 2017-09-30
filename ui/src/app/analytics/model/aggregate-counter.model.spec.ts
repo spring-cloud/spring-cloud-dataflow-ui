@@ -4,7 +4,7 @@ import { Moment } from 'moment';
 
 describe('AggregateCounter', () => {
   describe('deserialize', () => {
-    fit('should deserialize a json object into an AggregateCounter object', () => {
+    it('should deserialize a json object into an AggregateCounter object', () => {
       const jsonCounter = JSON.parse(`
           {
             "name": "aggregate-counter-sink",
@@ -42,7 +42,7 @@ describe('AggregateCounter', () => {
     });
   });
   describe('getValues', () => {
-    fit('should deserialize a json object into an AggregateCounter object and return only the values', () => {
+    it('should deserialize a json object into an AggregateCounter object and return only the values', () => {
       const jsonCounter = JSON.parse(`
           {
             "name": "aggregate-counter-sink",

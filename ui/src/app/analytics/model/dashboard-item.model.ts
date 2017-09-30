@@ -22,6 +22,7 @@ export class DashboardItem implements Serializable<DashboardItem> {
   public numberOfBars = 5;
 
   public counters: BaseCounter[] = [];
+  public countersIsLoading: Subscription;
 
   public maxNumberOfSlices = 20;
   public useAllData = true;

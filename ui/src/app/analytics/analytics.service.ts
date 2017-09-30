@@ -8,13 +8,8 @@ import 'rxjs/add/operator/map';
 
 import { ErrorHandler, Page } from '../shared/model';
 
-import { BaseCounter } from './model/base-counter.model';
-import { Counter } from './model/counter.model';
-import { FieldValueCounter } from './model/field-value-counter.model';
-import { AggregateCounter } from './model/aggregate-counter.model';
-
-import { DashboardItem } from './model/dashboard-item.model';
-import { MetricType } from './model/metric-type.model';
+import { AggregateCounter, AggregateCounterResolutionType, BaseCounter,
+         Counter, DashboardItem, FieldValueCounter, MetricType } from './model';
 
 import { HttpUtils } from '../shared/support/http.utils';
 import { ToastyService } from 'ng2-toasty';
@@ -28,8 +23,19 @@ export class AnalyticsService {
   private metricsFieldValueCountersUrl = '/metrics/field-value-counters';
   private metricsAggregateCountersUrl = '/metrics/aggregate-counters';
 
+  /**
+   * For Counter Tab.
+   */
   public counters: Page<Counter>;
+
+  /**
+   * For Counter Tab.
+   */
   public _counterInterval = 2;
+
+  /**
+   * For Counter Tab.
+   */
   public counterPoller: Subscription;
 
   public metricTypes: MetricType[] = MetricType.getMetricTypes();
@@ -73,7 +79,7 @@ export class AnalyticsService {
   }
 
   /**
-   * Starts the polling process for counters. Method
+   * Starts the polling process for ALL counters. Method
    * will check if the poller is already running and will
    * start the poller only if the poller is undefined or
    * stopped.
@@ -192,7 +198,10 @@ export class AnalyticsService {
     page.pageNumber = body.page.number;
     page.pageSize = body.page.size;
     page.totalPages = body.page.totalPages;
-    // this.counters.update(page);
+
+    if (handleRates) {
+      this.counters.update(page as Page<Counter>);
+    }
     return page;
   }
 
@@ -205,10 +214,9 @@ export class AnalyticsService {
     if (!this.dashboardItems) {
       this.dashboardItems = [];
     }
+
     const dashboardItem = new DashboardItem();
     dashboardItem.id = this.rowId++;
-    dashboardItem.refreshRate = 2;
-    dashboardItem.visualization = '';
 
     if (index) {
       this.dashboardItems.splice(index, 0, dashboardItem);
@@ -231,14 +239,18 @@ export class AnalyticsService {
   }
 
   /**
-   * Retrieve a list of all dashboardItems.
-   * @returns {Observable<DashboardItem>} observable of dashboard items.
+   * Initialize the array of {@link dashboardItem}s. Will add 1 new
+   * {@link DashboardItem} as starting point.
    */
-  getAllDashboardItems(): Observable<DashboardItem> {
+  initializeDashboardItems() {
     if (!this.dashboardItems) {
       this.addNewDashboardItem();
+    } else {
+      for (const dashboardItem of this.dashboardItems) {
+        console.log(`Start polling for dashboard item`, dashboardItem);
+        this.startPollingForSingleDashboardItem(dashboardItem);
+      }
     }
-    return Observable.from(this.dashboardItems);
   }
 
   /**
@@ -259,10 +271,21 @@ export class AnalyticsService {
     }
   }
 
-  resetDashboard() {
+  /**
+   * All pollers of all {@link DashboarItem}s are stopped.
+   */
+  stopAllDashboardPollers() {
     for (const dashboardItemToDisable of this.dashboardItems) {
       this.stopPollingOfSingleDashboardItem(dashboardItemToDisable);
     }
+  }
+
+  /**
+   * Empties dashboard array and inserts a single dashboard item.
+   * All pollers are stopped.
+   */
+  resetDashboard() {
+    this.stopAllDashboardPollers();
     this.dashboardItems.length = 0;
     this.addNewDashboardItem();
   }
@@ -299,12 +322,11 @@ export class AnalyticsService {
       } else if (dashboardItem.metricType === MetricType.FIELD_VALUE_COUNTER) {
         counterServiceCall = this.getSingleFieldValueCounter(dashboardItem.counter.name);
         resultProcessor = function(result: FieldValueCounter) {
-          dashboardItem.counter = result;
           const counter = dashboardItem.counter as FieldValueCounter;
           counter.values = result.values.slice();
         };
       } else if (dashboardItem.metricType === MetricType.AGGREGATE_COUNTER) {
-        counterServiceCall = this.getSingleAggregateCounter(dashboardItem.counter.name);
+        counterServiceCall = this.getSingleAggregateCounter(dashboardItem.counter as AggregateCounter);
         resultProcessor = function(result: AggregateCounter) {
           const counter = dashboardItem.counter as AggregateCounter;
           counter.counts = result.counts.slice();
@@ -382,13 +404,15 @@ export class AnalyticsService {
    *
    * @param counterName Name of the counter for which to retrieve details
    */
-  private getSingleAggregateCounter(counterName: string): Observable<Counter> {
+  private getSingleAggregateCounter(counter: AggregateCounter): Observable<Counter> {
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
     const params = new URLSearchParams();
-    params.append('resolution', 'minute');
+
     requestOptionsArgs.params = params;
 
-    return this.http.get(this.metricsAggregateCountersUrl + '/' + counterName, requestOptionsArgs)
+    params.append('resolution', counter.resolutionType.name.toLowerCase());
+
+    return this.http.get(this.metricsAggregateCountersUrl + '/' + counter.name, requestOptionsArgs)
                     .map(response => {
                       const body = response.json();
                       return new AggregateCounter().deserialize(body);

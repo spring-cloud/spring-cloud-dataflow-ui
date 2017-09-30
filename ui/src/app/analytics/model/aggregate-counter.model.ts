@@ -1,7 +1,8 @@
 import { Serializable } from '../../shared/model';
 import { BaseCounter } from './base-counter.model';
-import { AggregateCounterValue } from './aggregate-counter-value';
+import { AggregateCounterValue } from './aggregate-counter-value.model';
 import * as moment from 'moment';
+import { AggregateCounterResolutionType } from './aggregate-counter-resolution-type.model';
 
 /**
  * Aggregate Counter model object for the Analytics module.
@@ -11,6 +12,7 @@ import * as moment from 'moment';
 export class AggregateCounter extends BaseCounter implements Serializable<AggregateCounter> {
 
   public counts: AggregateCounterValue[];
+  public resolutionType = AggregateCounterResolutionType.MINUTE;
 
   constructor(
     public name?: string
