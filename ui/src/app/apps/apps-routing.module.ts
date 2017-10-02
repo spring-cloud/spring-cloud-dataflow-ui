@@ -18,8 +18,22 @@ const appsRoutes: Routes = [
     },
     children: [
       { path: '', component: AppsComponent },
-      { path: 'bulk-import-apps', component: AppsBulkImportComponent },
-      { path: 'register-apps', component: AppsRegisterComponent },
+      {
+        path: 'bulk-import-apps', component: AppsBulkImportComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authenticate: true,
+          roles: ['ROLE_CREATE']
+        },
+      },
+      {
+        path: 'register-apps', component: AppsRegisterComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authenticate: true,
+          roles: ['ROLE_CREATE']
+        },
+      },
       { path: ':appType/:appName', component: AppDetailsComponent }
     ]
   }

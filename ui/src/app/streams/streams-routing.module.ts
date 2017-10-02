@@ -6,11 +6,13 @@ import { StreamDefinitionsComponent } from './stream-definitions/stream-definiti
 import { StreamDetailsComponent } from './stream-details/stream-details.component';
 import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { StreamDeployComponent } from './stream-deploy/stream-deploy.component';
+import { AuthGuard } from '../auth/support/auth.guard';
 
 const streamRoutes: Routes = [
   {
     path: 'streams',
     component: StreamsComponent,
+    canActivate: [AuthGuard],
     data: {
       authenticate: true,
       roles: ['ROLE_VIEW'],
@@ -33,6 +35,11 @@ const streamRoutes: Routes = [
       {
         path: 'definitions/:id/deploy',
         component: StreamDeployComponent,
+        canActivate: [AuthGuard],
+        data: {
+          authenticate: true,
+          roles: ['ROLE_CREATE']
+        },
       },
       {
         path: 'create',
