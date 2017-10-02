@@ -1,18 +1,14 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptionsArgs, URLSearchParams } from '@angular/http';
-
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-
 import { ErrorHandler, Page } from '../shared/model';
-
-import { AggregateCounter, AggregateCounterResolutionType, BaseCounter,
-         Counter, DashboardItem, FieldValueCounter, MetricType } from './model';
-
+import { AggregateCounter, BaseCounter, Counter, DashboardItem, FieldValueCounter, MetricType } from './model';
 import { HttpUtils } from '../shared/support/http.utils';
 import { ToastyService } from 'ng2-toasty';
+
 /**
  * @author Gunnar Hillert
  */
@@ -50,7 +46,7 @@ export class AnalyticsService {
   }
 
   public set counterInterval(rate: number) {
-    if (rate && !isNaN(rate)) {
+    if (rate !== undefined && !isNaN(rate)) {
       if (rate < 0.01) {
           rate = 0;
           this.stopPollingForCounters();
