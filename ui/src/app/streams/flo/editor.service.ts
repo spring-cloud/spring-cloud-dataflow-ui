@@ -529,8 +529,10 @@ export class EditorService implements Flo.Editor {
                         appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
                     }
                     Object.keys(specifiedProperties).forEach(propertyName => {
-                        if (!appSchemaProperties.has(propertyName)) {
-                            const range = propertiesRanges ? propertiesRanges.get(propertyName) : null;
+                        const allProperties: Flo.PropertyMetadata[] = Array.from(appSchemaProperties.values());
+                        const property = allProperties.find(p => p.name === propertyName || p.id === propertyName);
+                        if (!property) {
+                            const range = propertiesRanges ? propertiesRanges[propertyName] : null;
                             markers.push({
                                 severity: Flo.Severity.Error,
                                 message: 'unrecognized option \'' + propertyName + '\' for app \'' +

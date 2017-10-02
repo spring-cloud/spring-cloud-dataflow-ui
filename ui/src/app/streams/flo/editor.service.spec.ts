@@ -230,6 +230,19 @@ describe('editor.service', () => {
         });
     });
 
+    it('property validation - long names', (done) => {
+        const formatPropertySpec = toPropertyMetadata('foobar.format', 'format', 'Format of the time', 'HHMM', 'string');
+        const timeMetadata = toMetadataWithCustomProperties('time', 'source', new Map([['foobar.format', formatPropertySpec]]));
+        const timeSource = createNodeFromMetadata(timeMetadata);
+        createLink(timeSource, createSink('log'));
+        // Both forms valid (short form 'format' and long form 'foobar.format')
+        setProperties(timeSource, new Map([['format', 'anyoldvalue'], ['foobar.format', 'anyoldvalue2']]));
+        editorService.validate(graph, null, null).then((markers) => {
+            expectMarkerCount(markers, 0);
+            done();
+        });
+    });
+
     function expectMarker(marker: Flo.Marker, severity: number, message: string) {
         if (!marker) {
             fail('missing marker');
