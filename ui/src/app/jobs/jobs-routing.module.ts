@@ -5,23 +5,26 @@ import { JobsComponent } from './jobs.component';
 import { JobExecutionDetailsComponent } from './job-execution-details/job-execution-details.component';
 import { StepExecutionDetailsComponent } from './step-execution-details/step-execution-details.component';
 import { StepExecutionProgressComponent } from './step-execution-progress/step-execution-progress.component';
+import { AuthGuard } from '../auth/support/auth.guard';
 
 @NgModule({
   imports: [RouterModule.forChild([
     {
       path: 'jobs',
-      pathMatch: 'full',
-      redirectTo: 'jobs/executions',
+      canActivate: [AuthGuard],
       data: {
         authenticate: true,
         roles: ['ROLE_VIEW'],
         feature: 'tasksEnabled'
-      }
-    },
-    { path: 'jobs/executions', component: JobsComponent },
-    { path: 'jobs/executions/:id', component: JobExecutionDetailsComponent },
-    { path: 'jobs/executions/:jobid/:stepid', component: StepExecutionDetailsComponent },
-    { path: 'jobs/executions/:jobid/:stepid/progress', component: StepExecutionProgressComponent }
+      },
+      children: [
+        { path: '', pathMatch: 'full', redirectTo: 'executions' },
+        { path: 'executions', component: JobsComponent },
+        { path: 'executions/:id', component: JobExecutionDetailsComponent },
+        { path: 'executions/:jobid/:stepid', component: StepExecutionDetailsComponent },
+        { path: 'executions/:jobid/:stepid/progress', component: StepExecutionProgressComponent }
+      ]
+    }
   ])],
   exports: [RouterModule]
 })

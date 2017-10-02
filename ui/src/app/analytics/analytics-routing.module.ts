@@ -4,11 +4,13 @@ import { RouterModule } from '@angular/router';
 import { AnalyticsComponent } from './analytics.component';
 import { CountersComponent } from './counters/counters.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AuthGuard } from '../auth/support/auth.guard';
 
 @NgModule({
   imports: [RouterModule.forChild([
     {
       path: 'analytics',
+      canActivate: [AuthGuard],
       component: AnalyticsComponent,
       data: {
         authenticate: true,
