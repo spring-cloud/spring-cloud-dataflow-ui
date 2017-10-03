@@ -523,13 +523,19 @@ export class EditorService implements Flo.Editor {
             const specifiedProperties = element.attr('props');
             if (specifiedProperties) {
                 const propertiesRanges = element.attr('propertiesranges');
-                const appSchema = element.attr('metadata');
+                const appSchema: Flo.ElementMetadata = element.attr('metadata');
                 appSchema.properties().then(appSchemaProperties => {
                     if (!appSchemaProperties) {
                         appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
                     }
                     Object.keys(specifiedProperties).forEach(propertyName => {
-                        if (!appSchemaProperties.has(propertyName)) {
+                        let validPropertyName = false;
+                        appSchemaProperties.forEach((value: Flo.PropertyMetadata, key) => {
+                            if (key === propertyName || value.name === propertyName) {
+                                validPropertyName = true;
+                            }
+                        });
+                        if (!validPropertyName) {
                             const range = propertiesRanges ? propertiesRanges[propertyName] : null;
                             markers.push({
                                 severity: Flo.Severity.Error,
