@@ -100,14 +100,29 @@ class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     });
   }
 
+  private determineAttributeName(metadata: Flo.PropertyMetadata): string {
+    const nameAttr = `props/${metadata.name}`;
+    const idAttr = `props/${metadata.id}`;
+    if (this.cell.attr('metadata/group') === 'other') {
+      // For something in the other group (like tap) use the id not the name of the property
+      return idAttr;
+    }
+    const valueFromName = this.cell.attr(nameAttr);
+    const valueFromId = this.cell.attr(idAttr);
+    if (valueFromName === undefined || valueFromName === null && !(valueFromId === undefined || valueFromId === null)) {
+      return idAttr;
+    } else {
+      return nameAttr;
+    }
+  }
+
   protected createProperty(metadata: Flo.PropertyMetadata): Properties.Property {
     return {
       id: metadata.id,
       name: metadata.name,
       defaultValue: metadata.defaultValue,
-      // For something in the other group (like tap) use the id not the name of the property
-      attr: `props/${this.cell.attr('metadata/group') === 'other' ? metadata.id : metadata.name}`,
-      value: this.cell.attr(`props/${metadata.name}`) || this.cell.attr(`props/${metadata.id}`),
+      attr: this.determineAttributeName(metadata),
+      value: this.cell.attr(this.determineAttributeName(metadata)),
       description: metadata.description,
       metadata: metadata
     };

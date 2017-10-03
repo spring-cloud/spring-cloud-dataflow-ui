@@ -27,8 +27,8 @@ describe('StreamCreateComponent', () => {
   const metamodelService = new MockMetamodelService();
   const renderService = new RenderService(metamodelService);
   const parserService = new ParserService();
+  const editorService = new EditorService(null);
 
-  // const editorService = new EditorService(null);
   const commonTestParams = { id: '1' };
 
   beforeEach(async () => {
@@ -47,11 +47,11 @@ describe('StreamCreateComponent', () => {
         {provide: StreamsService, useValue: streamsService},
         {provide: MetamodelService, useValue: metamodelService},
         {provide: RenderService, useValue: renderService},
-        {provide: EditorService},
         {provide: ContentAssistService},
         {provide: BsModalService},
-        {provide: ActivatedRoute, useValue: activeRoute },
-        {provide: ParserService, useValue: parserService}
+        {provide: ActivatedRoute, useValue: activeRoute},
+        {provide: ParserService, useValue: parserService},
+        {provide: EditorService, useValue: editorService}
       ]
     })
       .compileComponents();
@@ -67,4 +67,63 @@ describe('StreamCreateComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
+
+  it('disable stream creation for empty streams', () => {
+    fixture.detectChanges();
+    expect(component.dsl).toBeUndefined();
+    expect(component.isCreateStreamsDisabled).toBeTruthy();
+  });
+
+  it('enable stream creation for valid stream', (done) => {
+    fixture.detectChanges();
+    expect(component.isCreateStreamsDisabled).toBeTruthy();
+    component.dsl = 'http | ftp';
+    fixture.detectChanges();
+    // Validation is performed after a delay, hence the wait
+    setTimeout(() => {
+      expect(component.dsl).toEqual('http | ftp');
+      expect(component.parseErrors).toEqual([]);
+      const allMarkers = [];
+      Array.from(component.validationMarkers.values()).forEach(markers => allMarkers.push(...markers));
+      expect(allMarkers.length).toEqual(0);
+      expect(component.isCreateStreamsDisabled).toBeFalsy();
+      done();
+    }, 1000);
+  });
+
+  it('disable stream creation for parse error', (done) => {
+    fixture.detectChanges();
+    expect(component.isCreateStreamsDisabled).toBeTruthy();
+    component.dsl = 'http -ghdfv | ftp';
+    fixture.detectChanges();
+    // Validation is performed after a delay, hence the wait
+    setTimeout(() => {
+      expect(component.dsl).toEqual('http -ghdfv | ftp');
+      expect(component.parseErrors.length).toEqual(1);
+      const allMarkers = [];
+      Array.from(component.validationMarkers.values()).forEach(markers => allMarkers.push(...markers));
+      expect(allMarkers.length).toEqual(0);
+      expect(component.isCreateStreamsDisabled).toBeTruthy();
+      done();
+    }, 1000);
+  });
+
+  it('disable stream creation for graph validation error marker', (done) => {
+    fixture.detectChanges();
+    expect(component.isCreateStreamsDisabled).toBeTruthy();
+    component.dsl = 'http';
+    fixture.detectChanges();
+    // Validation is performed after a delay, hence the wait
+    // Should trigger source no connected to anything kind of validation error marker
+    setTimeout(() => {
+      expect(component.dsl).toEqual('http');
+      expect(component.parseErrors.length).toEqual(0);
+      const allMarkers = [];
+      Array.from(component.validationMarkers.values()).forEach(markers => allMarkers.push(...markers));
+      expect(allMarkers.length).toEqual(1);
+      expect(component.isCreateStreamsDisabled).toBeTruthy();
+      done();
+    }, 1000);
+  });
+
 });
