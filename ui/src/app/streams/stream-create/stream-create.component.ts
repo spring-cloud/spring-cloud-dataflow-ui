@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Flo } from 'spring-flo';
 import { ParserService } from '../../shared/services/parser.service';
+import { Parser } from '../../shared/services/parser';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { EditorService } from '../flo/editor.service';
@@ -29,6 +30,8 @@ export class StreamCreateComponent implements OnInit {
   lintOptions: CodeMirror.LintOptions;
 
   validationMarkers: Map<string, Flo.Marker[]>;
+
+  parseErrors: Parser.Error[] = [];
 
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,
@@ -117,12 +120,15 @@ export class StreamCreateComponent implements OnInit {
         }))
       );
     if (result.lines) {
-      result.lines.filter(l => Array.isArray(l.errors)).forEach(l => l.errors.forEach(e => annotations.push({
+      const newParseErrors = [];
+      result.lines.filter(l => Array.isArray(l.errors)).forEach(l => newParseErrors.push(...l.errors));
+      this.parseErrors = newParseErrors;
+      newParseErrors.forEach(e => annotations.push({
         from: e.range.start,
         to: e.range.end,
         message: e.message,
         severity: 'error'
-      })));
+      }));
     }
     updateLintingCallback(editor, annotations);
   }
@@ -150,6 +156,15 @@ export class StreamCreateComponent implements OnInit {
       pos--;
     }
     return pos;
+  }
+
+  get isCreateStreamsDisabled(): boolean {
+    if (this.dsl && this.parseErrors.length === 0) {
+      return Array.from(this.validationMarkers.values())
+        .find(markers => markers
+          .find(m => m.severity === Flo.Severity.Error) !== undefined) !== undefined;
+    }
+    return true;
   }
 
 }
