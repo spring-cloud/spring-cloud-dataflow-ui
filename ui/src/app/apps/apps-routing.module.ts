@@ -7,6 +7,7 @@ import { AppsRegisterComponent } from './apps-register/apps-register.component';
 import { AppDetailsComponent } from './app-details/app-details.component';
 import { AuthGuard } from '../auth/support/auth.guard';
 
+
 const appsRoutes: Routes = [
   {
     path: 'apps',
