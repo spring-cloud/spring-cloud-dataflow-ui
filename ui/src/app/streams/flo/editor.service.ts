@@ -530,7 +530,7 @@ export class EditorService implements Flo.Editor {
                     }
                     Object.keys(specifiedProperties).forEach(propertyName => {
                         if (!appSchemaProperties.has(propertyName)) {
-                            const range = propertiesRanges ? propertiesRanges[propertyName] : null;
+                            const range = propertiesRanges ? propertiesRanges.get(propertyName) : null;
                             markers.push({
                                 severity: Flo.Severity.Error,
                                 message: 'unrecognized option \'' + propertyName + '\' for app \'' +

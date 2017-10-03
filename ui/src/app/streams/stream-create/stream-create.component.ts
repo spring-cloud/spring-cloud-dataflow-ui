@@ -108,7 +108,7 @@ export class StreamCreateComponent implements OnInit {
     Array.from(this.validationMarkers.values())
       .filter(markers => Array.isArray(markers))
       .forEach(markers => markers
-        .filter(m => m.range && m.severity)
+        .filter(m => m.range && m.hasOwnProperty('severity'))
         .forEach(m => annotations.push({
           message: m.message,
           from: m.range.start,

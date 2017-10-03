@@ -3,6 +3,7 @@ import { dia } from 'jointjs';
 import * as _ from 'lodash';
 import { Flo } from 'spring-flo';
 import { convertGraphToText } from './graph-to-text';
+import { JsonGraph } from './text-to-graph';
 
 import { Shapes } from 'spring-flo';
 
@@ -102,6 +103,86 @@ describe('graph-to-text', () => {
         createLink(timeSource, logSink);
         dsl = convertGraphToText(graph);
         expect(dsl).toEqual('time --aaa=bbb --ccc=ddd | log --eee=fff');
+    });
+
+    it('basic - multiple properties - ranges', () => {
+        const timeSource = createSource('time');
+        setProperties(timeSource, new Map([['aaa', 'bbb'], ['ccc', 'ddd']]));
+        const logSink = createSink('log');
+        setProperties(logSink, new Map([['eee', 'fff']]));
+        createLink(timeSource, logSink);
+        dsl = convertGraphToText(graph);
+        expect(dsl).toEqual('time --aaa=bbb --ccc=ddd | log --eee=fff');
+
+
+        const timeSourceRange: JsonGraph.Range = timeSource.attr('range');
+        expect(timeSourceRange).toBeDefined();
+        expect(timeSourceRange.start.ch).toEqual(0);
+        expect(timeSourceRange.start.line).toEqual(0);
+        expect(timeSourceRange.end.ch).toEqual(24);
+        expect(timeSourceRange.end.line).toEqual(0);
+
+        const logSinkRange: JsonGraph.Range = logSink.attr('range');
+        expect(logSinkRange).toBeDefined();
+        expect(logSinkRange.start.ch).toEqual(27);
+        expect(logSinkRange.start.line).toEqual(0);
+        expect(logSinkRange.end.ch).toEqual(40);
+        expect(logSinkRange.end.line).toEqual(0);
+
+        const properties = timeSource.attr('props');
+        expect(properties['aaa']).toEqual('bbb');
+        expect(logSink.attr('props')['eee']).toEqual('fff');
+
+        let propertiesRanges: Map<string, JsonGraph.Range> = timeSource.attr('propertiesranges');
+        expect(propertiesRanges).toBeDefined();
+        let propRange: JsonGraph.Range = propertiesRanges.get('aaa');
+        expect(propRange.start.ch).toEqual(5);
+        expect(propRange.start.line).toEqual(0);
+        expect(propRange.end.ch).toEqual(14);
+        expect(propRange.end.line).toEqual(0);
+        propRange = propertiesRanges.get('ccc');
+        expect(propRange.start.ch).toEqual(15);
+        expect(propRange.start.line).toEqual(0);
+        expect(propRange.end.ch).toEqual(24);
+        expect(propRange.end.line).toEqual(0);
+
+        propertiesRanges = logSink.attr('propertiesranges');
+        expect(propertiesRanges).toBeDefined();
+        propRange = propertiesRanges.get('eee');
+        expect(propRange.start.ch).toEqual(31);
+        expect(propRange.start.line).toEqual(0);
+        expect(propRange.end.ch).toEqual(40);
+        expect(propRange.end.line).toEqual(0);
+    });
+
+    it('basic - multiple properties - multiple lines - ranges', () => {
+        const timeSource = createSource('time');
+        setProperties(timeSource, new Map([['aaa', 'bbb']]));
+        const logSink = createSink('log');
+        createLink(timeSource, logSink);
+        const timeSource2 = createSource('time');
+        setProperties(timeSource2, new Map([['xxxxx', 'yy']]));
+        const logSink2 = createSink('log');
+        createLink(timeSource2, logSink2);
+        dsl = convertGraphToText(graph);
+        expect(dsl).toEqual('time --aaa=bbb | log\ntime --xxxxx=yy | log');
+
+        const timeSource2Range: JsonGraph.Range = timeSource2.attr('range');
+        expect(timeSource2Range).toBeDefined();
+        expect(timeSource2Range.start.ch).toEqual(0);
+        expect(timeSource2Range.start.line).toEqual(1);
+        expect(timeSource2Range.end.ch).toEqual(15);
+        expect(timeSource2Range.end.line).toEqual(1);
+
+        expect(timeSource2.attr('props')['xxxxx']).toEqual('yy');
+
+        const propertiesRanges: Map<string, JsonGraph.Range> = timeSource2.attr('propertiesranges');
+        expect(propertiesRanges).toBeDefined();
+        const propRange: JsonGraph.Range = propertiesRanges.get('xxxxx');
+        expect(propRange.start.ch).toEqual(5);
+        expect(propRange.start.line).toEqual(1); // should be line 1
+        expect(propRange.end.ch).toEqual(15);
+        expect(propRange.end.line).toEqual(1);
     });
 
     it('labels', () => {

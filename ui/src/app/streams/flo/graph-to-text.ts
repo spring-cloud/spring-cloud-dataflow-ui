@@ -16,6 +16,7 @@
 
 import { dia } from 'jointjs';
 import * as _ from 'lodash';
+import { JsonGraph } from './text-to-graph';
 
 /**
  * Create the text representation of a graph.
@@ -204,15 +205,9 @@ class GraphToTextConverter {
                         continue;
                     }
                 }
-                const nodeText = this.createTextForNode(node);
 
-                // Set text range for the graph node
                 const startCh = text.length - lineStartIndex;
-                const endCh = startCh + nodeText.length;
-                node.attr('range', {
-                    start: {ch: startCh, line: s},
-                    end: {ch: endCh, line: s}
-                });
+                const nodeText = this.createTextForNode(node, startCh, s);
 
                 // Append textual representation of the node
                 text += nodeText;
@@ -359,7 +354,7 @@ class GraphToTextConverter {
         return nameNode.attr('stream-name');
     }
 
-    private createTextForNode(node: dia.Cell): string {
+    private createTextForNode(node: dia.Cell, startCh: number, lineNo: number): string {
         let text = '';
         const props = node.attr('props');
         // Tap nodes less likely when fan-in/fan-out supported but may still occur
@@ -377,11 +372,24 @@ class GraphToTextConverter {
             }
             text += node.attr('metadata/name');
             if (props) {
+                const propertiesRanges: Map<string, JsonGraph.Range> = new Map();
+                let propertyStart = startCh + text.length;
                 Object.keys(props).forEach(propertyName => {
-                    text += ' --' + propertyName + '=' + props[propertyName];
+                    const propertyText = ' --' + propertyName + '=' + props[propertyName];
+                    text += propertyText;
+                    propertiesRanges.set(propertyName,
+                        { start: {ch: propertyStart + 1, line: lineNo},
+                            end: {ch: propertyStart + propertyText.length, line: lineNo}});
+                    propertyStart += propertyText.length;
                 });
+                node.attr('propertiesranges', propertiesRanges);
             }
         }
+        const endCh = startCh + text.length;
+        node.attr('range', {
+            start: {ch: startCh, line: lineNo},
+            end: {ch: endCh, line: lineNo}
+        });
         return text;
     }
 
