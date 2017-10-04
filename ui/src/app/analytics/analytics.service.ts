@@ -293,8 +293,8 @@ export class AnalyticsService {
    * stopped. The subscription is store on the {@link DashboardItem}.
    */
   public startPollingForSingleDashboardItem(dashboardItem: DashboardItem) {
-    console.log(dashboardItem);
-    if (!dashboardItem.counterPoller || dashboardItem.counterPoller.closed) {
+    if ((!dashboardItem.counterPoller || dashboardItem.counterPoller.closed)
+        && dashboardItem.counter) {
 
       let counterServiceCall: Observable<any>;
       let resultProcessor: Function;
@@ -359,7 +359,7 @@ export class AnalyticsService {
    */
   public restartPollingOfSingleDashboardItem(dashboardItem: DashboardItem) {
     this.stopPollingOfSingleDashboardItem(dashboardItem);
-    if (dashboardItem.refreshRate > 0 ) {
+    if (dashboardItem.refreshRate > 0 && dashboardItem.counter) {
       this.startPollingForSingleDashboardItem(dashboardItem);
     }
   }

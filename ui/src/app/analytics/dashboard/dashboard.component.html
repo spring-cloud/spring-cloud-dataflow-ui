@@ -26,7 +26,7 @@
       <td [class.has-error]="counterName.invalid && counterName.touched">
         <select #counterName="ngModel" name="counterName_{{item.id}}" [(ngModel)]="item.counter"
                 [disabled]="isCountersDropDownEnabled(item)"
-                [compareWith]="compareCounter" required (ngModelChange)="onCounterNameChange(item)">
+                required (ngModelChange)="onCounterNameChange(item)">
             <option [ngValue]="undefined" disabled="disabled">Please select a counter...</option>
             <option *ngFor="let counter of item.counters"
                     [ngValue]="counter">{{counter.name}}</option>
@@ -36,11 +36,12 @@
       <td [class.has-error]="visualization.invalid && visualization.touched">
           <select #visualization="ngModel" name="visualization_{{item.id}}" [(ngModel)]="item.visualization"
                   [disabled]="isVisualizationDropDownEnabled(item)"
+                  [compareWith]="compareVisualization"
                   required (ngModelChange)="onVisualizationChange($event)">
-            <option [ngValue]="item.visualization" disabled="disabled">Please select a visualization...</option>
+            <option [ngValue]="undefined" disabled="disabled">Please select a visualization...</option>
             <ng-container *ngIf="item.metricType">
               <option *ngFor="let visualization of item.metricType.supportedVisualizations"
-                      [selected]="visualization == item.visualization" [ngValue]="visualization">{{visualization}}</option>
+                [ngValue]="visualization">{{visualization}}</option>
             </ng-container>
             </select>
           <span class="help-block" *ngIf="visualization.invalid && visualization.touched">Please provide a valid visualization.</span>
