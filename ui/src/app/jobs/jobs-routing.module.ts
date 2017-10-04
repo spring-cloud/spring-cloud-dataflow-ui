@@ -18,6 +18,7 @@ import { AuthGuard } from '../auth/support/auth.guard';
         feature: 'tasksEnabled'
       },
       children: [
+        { path: '', pathMatch: 'full', redirectTo: 'executions' },
         { path: 'executions', component: JobsComponent },
         { path: 'executions/:id', component: JobExecutionDetailsComponent },
         { path: 'executions/:jobid/:stepid', component: StepExecutionDetailsComponent },
