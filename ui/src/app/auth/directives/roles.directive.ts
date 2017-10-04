@@ -24,9 +24,7 @@ export class RolesDirective implements AfterViewInit, DoCheck {
   private checkRoles() {
     const found = this.authService.securityInfo.canAccess(this.appRoles);
 
-    if (found) {
-      this.renderer.setStyle(this.elem.nativeElement, 'display', 'inherit');
-    } else {
+    if (!found) {
       this.renderer.setStyle(this.elem.nativeElement, 'display', 'none');
     }
   }

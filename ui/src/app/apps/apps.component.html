@@ -30,7 +30,6 @@
         class="btn btn-default"
 ><span class="glyphicon glyphicon-refresh"></span></button>
 
-<div *ngIf="!appRegistrations || appRegistrations.items.length === 0">No apps available.</div>
 <table *ngIf="appRegistrations?.items && appRegistrations.items.length > 0" class="table table-hover">
   <thead>
     <tr>
@@ -64,6 +63,21 @@
 </table>
 <pagination-controls *ngIf="appRegistrations?.items && appRegistrations.items.length > 0" (pageChange)="getPage($event)"></pagination-controls>
 
+<div class="row" *ngIf="!appRegistrations || appRegistrations.items.length === 0" style="margin-top: 1em;">
+  <div class="text-center col-md-14 col-md-offset-5">
+    <p><strong>No registered apps.</strong></p>
+    <div [appRoles]="['ROLE_CREATE']">
+      <p>You can register apps by clicking:</p>
+      <button type="button" (click)="registerApps()"
+              class="btn btn-default" style="margin-bottom: 1em;"
+      ><span class="glyphicon glyphicon-plus"></span>
+          Register Application(s)
+      </button>
+      <p>Alternatively, using the <i>Data Flow Shell</i> application,
+      you can register new apps with the <strong>app register</strong> and <strong>app import</strong> commands.</p>
+    </div>
+  </div>
+</div>
 <div bsModal #unregisterSingleAppModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
