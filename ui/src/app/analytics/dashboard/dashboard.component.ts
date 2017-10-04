@@ -163,18 +163,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     console.log('A visualization was selected:', selectedVisualization);
   }
 
-  /**
-   * Returns true if both counter names are the same or if counters are undefined.
-   * @param {BaseCounter} counter1 the first counter in the set to compare.
-   * @param {BaseCounter} counter2 the second counter in the set to compare.
-   * @returns {boolean} true if counter names are the same or both are undefined.
-   */
-  compareCounter(counter1: BaseCounter, counter2: BaseCounter) {
-    if (counter1 && counter2) {
-      return counter1.name === counter2.name;
-    } else {
-      return true;
-    }
+  compareVisualization(visualization1, visualization2) {
+    return visualization1 === visualization2;
   }
 
   /**

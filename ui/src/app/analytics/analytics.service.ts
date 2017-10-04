@@ -359,7 +359,7 @@ export class AnalyticsService {
    */
   public restartPollingOfSingleDashboardItem(dashboardItem: DashboardItem) {
     this.stopPollingOfSingleDashboardItem(dashboardItem);
-    if (dashboardItem.refreshRate > 0 ) {
+    if (dashboardItem.refreshRate > 0 && dashboardItem.counter) {
       this.startPollingForSingleDashboardItem(dashboardItem);
     }
   }
