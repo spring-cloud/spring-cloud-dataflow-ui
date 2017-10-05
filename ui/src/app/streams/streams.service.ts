@@ -116,6 +116,14 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
+  destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Response[]> {
+    const observables: Observable<Response>[] = [];
+    for (const streamDefinition of streamDefinitions) {
+      observables.push(this.destroyDefinition(streamDefinition));
+    }
+    return Observable.forkJoin(observables);
+  }
+
   /**
    * Calls the Spring Cloud Data Flow server to undeploy the {@link StreamDefinition}.
    * @param streamDefinition
@@ -128,6 +136,15 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
+  undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Response[]> {
+    const observables: Observable<Response>[] = [];
+    for (const streamDefinition of streamDefinitions) {
+      observables.push(this.undeployDefinition(streamDefinition));
+    }
+    return Observable.forkJoin(observables);
+  }
+
+
   /**
    * Posts a request to the data flow server to deploy the stream associated with the streamDefinitionName.
    * @param streamDefinitionName the name of the stream to deploy.
@@ -139,6 +156,14 @@ export class StreamsService {
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
       .catch(this.errorHandler.handleError);
+  }
+
+  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[], propertiesAsMap: any): Observable<Response[]> {
+    const observables: Observable<Response>[] = [];
+    for (const streamDefinition of streamDefinitions) {
+      observables.push(this.deployDefinition(streamDefinition.name, propertiesAsMap));
+    }
+    return Observable.forkJoin(observables);
   }
 
   getRelatedDefinitions(streamName: string, nested?: boolean): Observable<StreamDefinition[]> {

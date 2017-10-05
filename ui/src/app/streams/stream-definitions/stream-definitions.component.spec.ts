@@ -22,6 +22,8 @@ import { AuthService } from '../../auth/auth.service';
 import { StreamGraphViewComponent } from '../stream-graph-view/stream-graph-view.component';
 import { FloModule } from 'spring-flo';
 import { StreamGraphDefinitionComponent } from '../stream-graph-definition/stream-graph-definition.component';
+import {TriStateButtonComponent} from '../../shared/components/tri-state-button.component';
+import {TriStateCheckboxComponent} from '../../shared/components/tri-state-checkbox.component';
 
 /**
  * Test {@link StreamDefinitionsComponent}.
@@ -46,6 +48,8 @@ describe('StreamDefinitionsComponent', () => {
         StreamGraphViewComponent,
         StreamGraphDefinitionComponent,
         StreamDefinitionsComponent,
+        TriStateButtonComponent,
+        TriStateCheckboxComponent
       ],
       imports: [
         BusyModule,
@@ -82,10 +86,10 @@ describe('StreamDefinitionsComponent', () => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
     fixture.detectChanges();
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=streamDefinitionsTable] td'));
-    expect(des.length).toBe(5);
-    expect(des[1].nativeElement.textContent).toContain('foo2');
-    expect(des[2].nativeElement.textContent).toContain('time |log');
-    expect(des[3].nativeElement.textContent).toContain('undeployed');
+    expect(des.length).toBe(6);
+    expect(des[2].nativeElement.textContent).toContain('foo2');
+    expect(des[3].nativeElement.textContent).toContain('time |log');
+    expect(des[4].nativeElement.textContent).toContain('undeployed');
   });
 
   it('Should navigate to the details page.', () => {

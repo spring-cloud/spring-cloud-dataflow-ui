@@ -3,7 +3,7 @@ import {StreamsService} from './streams.service';
 import {Observable} from 'rxjs/Observable';
 import {HttpUtils, URL_QUERY_ENCODER} from '../shared/support/http.utils';
 import {StreamDefinition} from './model/stream-definition';
-import {Headers, RequestOptions, URLSearchParams} from '@angular/http';
+import {URLSearchParams} from '@angular/http';
 import {MockResponse} from '../tests/mocks/response';
 import {STREAM_DEFINITIONS} from '../tests/mocks/mock-data';
 
@@ -190,5 +190,54 @@ describe('StreamsService', () => {
       });
 
     });
+
+    describe('destroyMultipleStreamDefinitions', () => {
+      it('should call the stream definition service with the right url to destroy multiple stream definitions', () => {
+        const options = HttpUtils.getDefaultRequestOptions();
+        this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+        expect(this.streamsService.streamDefinitions).toBeDefined();
+        const streamDefinitions = [
+          new StreamDefinition('stream1', 'file|filter|ftp', 'deployed'),
+          new StreamDefinition('stream2', 'ftp|filter|file', 'deployed')
+        ];
+        this.streamsService.destroyMultipleStreamDefinitions(streamDefinitions);
+        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/definitions/stream1', options);
+        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/definitions/stream2', options);
+        expect(this.mockHttp.delete).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('deployMultipleStreamDefinitions', () => {
+      it('should call the stream definition service with the right url to deploy multiple stream definitions', () => {
+        const options = HttpUtils.getDefaultRequestOptions();
+        this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
+        expect(this.streamsService.streamDefinitions).toBeDefined();
+        const streamDefinitions = [
+          new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed'),
+          new StreamDefinition('stream2', 'ftp|filter|file', 'undeployed')
+        ];
+        this.streamsService.deployMultipleStreamDefinitions(streamDefinitions, {});
+        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream1', {}, options);
+        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream2', {}, options);
+        expect(this.mockHttp.post).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('undeployMultipleStreamDefinitions', () => {
+      it('should call the stream definition service with the right url to undeploy multiple stream definitions', () => {
+        const options = HttpUtils.getDefaultRequestOptions();
+        this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+        expect(this.streamsService.streamDefinitions).toBeDefined();
+        const streamDefinitions = [
+          new StreamDefinition('stream1', 'file|filter|ftp', 'deployed'),
+          new StreamDefinition('stream2', 'ftp|filter|file', 'deployed')
+        ];
+        this.streamsService.undeployMultipleStreamDefinitions(streamDefinitions);
+        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/deployments/stream1', options);
+        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/deployments/stream2', options);
+        expect(this.mockHttp.delete).toHaveBeenCalledTimes(2);
+      });
+    });
+
   });
 });

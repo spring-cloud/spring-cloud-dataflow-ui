@@ -35,6 +35,19 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   definitionSort: boolean = undefined;
   metrics: StreamMetrics[];
 
+  streamDefinitionsToDestroy: StreamDefinition[];
+  streamDefinitionsToDeploy: StreamDefinition[];
+  streamDefinitionsToUndeploy: StreamDefinition[];
+
+  @ViewChild('destroyMultipleStreamDefinitionsModal')
+  public destroyMultipleStreamDefinitionsModal: ModalDirective;
+
+  @ViewChild('deployMultipleStreamDefinitionsModal')
+  public deployMultipleStreamDefinitionsModal: ModalDirective;
+
+  @ViewChild('undeployMultipleStreamDefinitionsModal')
+  public undeployMultipleStreamDefinitionsModal: ModalDirective;
+
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
 
@@ -217,6 +230,30 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   };
 
   /**
+   * Close the confirmation modal dialog for
+   * destroy multiple Stream Definitions {@link StreamDefinition}s.
+   */
+  public cancelDestroyMultipleStreamDefinitions() {
+    this.destroyMultipleStreamDefinitionsModal.hide();
+  }
+
+  /**
+   * Close the confirmation modal dialog for
+   * deploy multiple Stream Definitions {@link StreamDefinition}s.
+   */
+  public cancelDeployMultipleStreamDefinitions() {
+    this.deployMultipleStreamDefinitionsModal.hide();
+  }
+
+  /**
+   * Close the confirmation modal dialog for
+   * undeploy multiple Stream Definitions {@link StreamDefinition}s.
+   */
+  public cancelUndeployMultipleStreamDefinitions() {
+    this.undeployMultipleStreamDefinitionsModal.hide();
+  }
+
+  /**
    * Expands all definition entries to show flo diagram on list page.
    */
   expandPage() {
@@ -236,6 +273,112 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
       console.log(x);
       x.isExpanded = false;
     });
+  }
+
+  /**
+   * Starts the destroy process of multiple {@link StreamDefinition}s
+   * by opening a confirmation modal dialog.
+   *
+   * @param streamDefinitions An array of StreamDefinition to destroy
+   */
+  destroyMultipleStreams(streamDefinitions: StreamDefinition[]) {
+    this.streamDefinitionsToDestroy = streamDefinitions.filter(item => item.isSelected);
+    console.log(`Destroy ${this.streamDefinitionsToDestroy.length} stream definition(s).`, this.streamDefinitionsToDestroy);
+    this.destroyMultipleStreamDefinitionsModal.show();
+  }
+
+  /**
+   * Starts the deploy process of multiple {@link StreamDefinition}s
+   * by opening a confirmation modal dialog.
+   *
+   * @param streamDefinitions An array of StreamDefinition to deploy
+   */
+  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
+    this.streamDefinitionsToDeploy = streamDefinitions
+      .filter(item => item.isSelected && this.filterDeployable(item));
+    console.log(`Deploy ${this.streamDefinitionsToDeploy.length} stream definition(s).`, this.streamDefinitionsToDeploy);
+    this.deployMultipleStreamDefinitionsModal.show();
+  }
+
+  /**
+   * Starts the undeploy process of multiple {@link StreamDefinition}s
+   * by opening a confirmation modal dialog.
+   *
+   * @param streamDefinitions An array of StreamDefinition to undeploy
+   */
+  undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
+    this.streamDefinitionsToUndeploy = streamDefinitions
+      .filter(item => item.isSelected && this.filterUndeployable(item));
+    console.log(`Undeploy ${this.streamDefinitionsToUndeploy.length} stream definition(s).`, this.streamDefinitionsToUndeploy);
+    this.undeployMultipleStreamDefinitionsModal.show();
+  }
+
+  /**
+   * Applies the destroy process of multiple {@link StreamDefinition}s
+   *
+   * @param streamDefinitions An array of StreamDefinition to destroy
+   */
+  proceedToDestroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
+    console.log(`Proceeding to destroy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
+    const subscription = this.streamsService.destroyMultipleStreamDefinitions(streamDefinitions).subscribe(
+      data => {
+        this.toastyService.success(`${data.length} stream definition(s) destroy.`);
+        if (this.streamsService.streamDefinitions.items.length === 0 && this.streamsService.streamDefinitions.pageNumber > 0) {
+          this.streamDefinitions.pageNumber = this.streamDefinitions.pageNumber - 1;
+        }
+        this.busy = this.streamsService
+          .getDefinitions(this.definitionNameSort, this.definitionSort)
+          .subscribe(data => {});
+      }
+    );
+    this.busy = subscription;
+    this.cancelDestroyMultipleStreamDefinitions();
+  }
+
+  /**
+   * Applies the deploy process of multiple {@link StreamDefinition}s
+   *
+   * @param streamDefinitions An array of StreamDefinition to deploy
+   */
+  proceedToDeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
+    console.log(`Proceeding to deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
+    const subscription = this.streamsService.deployMultipleStreamDefinitions(streamDefinitions, null).subscribe(
+      data => {
+        this.toastyService.success(`${data.length} stream definition(s) deploy.`);
+        this.busy = this.streamsService
+          .getDefinitions(this.definitionNameSort, this.definitionSort)
+          .subscribe(data => {});
+      }
+    );
+    this.busy = subscription;
+    this.cancelDeployMultipleStreamDefinitions();
+  }
+
+  /**
+   * Applies the undeploy process of multiple {@link StreamDefinition}s
+   *
+   * @param streamDefinitions An array of StreamDefinition to undeploy
+   */
+  proceedToUndeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
+    console.log(`Proceeding to undeploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
+    const subscription = this.streamsService.undeployMultipleStreamDefinitions(streamDefinitions).subscribe(
+      data => {
+        this.toastyService.success(`${data.length} stream definition(s) undeploy.`);
+        this.busy = this.streamsService
+          .getDefinitions(this.definitionNameSort, this.definitionSort)
+          .subscribe(data => {});
+      }
+    );
+    this.busy = subscription;
+    this.cancelUndeployMultipleStreamDefinitions();
+  }
+
+  filterUndeployable(item: any) {
+    return !(item.status === 'undeployed' || item.status === 'incomplete')
+  }
+
+  filterDeployable(item: any) {
+    return !(item.status === 'deployed' || item.status === 'deploying')
   }
 
   /**
