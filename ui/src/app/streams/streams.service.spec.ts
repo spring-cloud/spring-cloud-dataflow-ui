@@ -11,6 +11,7 @@ import {STREAM_DEFINITIONS} from '../tests/mocks/mock-data';
  * Test Streams Services.
  *
  * @author Glenn Renfro
+ * @author Damien Vitrac
  */
 describe('StreamsService', () => {
 
@@ -212,12 +213,11 @@ describe('StreamsService', () => {
         const options = HttpUtils.getDefaultRequestOptions();
         this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
         expect(this.streamsService.streamDefinitions).toBeDefined();
-        const streamDefinitions = [
-          new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed'),
-          new StreamDefinition('stream2', 'ftp|filter|file', 'undeployed')
-        ];
-        this.streamsService.deployMultipleStreamDefinitions(streamDefinitions, {});
-        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream1', {}, options);
+        const stream1 = new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed');
+        const stream2 = new StreamDefinition('stream2', 'file|filter|ftp', 'undeployed');
+        stream1.deploymentProperties = {a: 'a'};
+        this.streamsService.deployMultipleStreamDefinitions([stream1, stream2]);
+        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream1', {a: 'a'}, options);
         expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream2', {}, options);
         expect(this.mockHttp.post).toHaveBeenCalledTimes(2);
       });

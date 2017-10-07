@@ -17,6 +17,7 @@ import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
  * @author Janne Valkealahti
  * @author Gunnar Hillert
  * @author Glenn Renfro
+ * @author Damien Vitrac
  *
  */
 @Injectable()
@@ -158,10 +159,10 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
-  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[], propertiesAsMap: any): Observable<Response[]> {
+  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Response[]> {
     const observables: Observable<Response>[] = [];
     for (const streamDefinition of streamDefinitions) {
-      observables.push(this.deployDefinition(streamDefinition.name, propertiesAsMap));
+      observables.push(this.deployDefinition(streamDefinition.name, streamDefinition.deploymentProperties));
     }
     return Observable.forkJoin(observables);
   }

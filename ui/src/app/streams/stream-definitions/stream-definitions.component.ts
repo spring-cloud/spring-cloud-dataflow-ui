@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
  * @author Janne Valkealahti
  * @author Gunnar Hillert
  * @author Glenn Renfro
+ * @author Damien Vitrac
  */
 export class StreamDefinitionsComponent implements OnInit, OnDestroy {
 
@@ -38,6 +39,8 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   streamDefinitionsToDestroy: StreamDefinition[];
   streamDefinitionsToDeploy: StreamDefinition[];
   streamDefinitionsToUndeploy: StreamDefinition[];
+
+  selectStreamDefinition: StreamDefinition;
 
   @ViewChild('destroyMultipleStreamDefinitionsModal')
   public destroyMultipleStreamDefinitionsModal: ModalDirective;
@@ -283,6 +286,8 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   destroyMultipleStreams(streamDefinitions: StreamDefinition[]) {
     this.streamDefinitionsToDestroy = streamDefinitions.filter(item => item.isSelected);
+    if (this.streamDefinitionsToDestroy.length == 0)
+      return;
     console.log(`Destroy ${this.streamDefinitionsToDestroy.length} stream definition(s).`, this.streamDefinitionsToDestroy);
     this.destroyMultipleStreamDefinitionsModal.show();
   }
@@ -294,8 +299,16 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    * @param streamDefinitions An array of StreamDefinition to deploy
    */
   deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
+    this.selectStreamDefinition = null;
     this.streamDefinitionsToDeploy = streamDefinitions
-      .filter(item => item.isSelected && this.filterDeployable(item));
+      .filter(item => item.isSelected && this.filterDeployable(item))
+      .map(item => {
+        item.deploymentProperties = {};
+        return item;
+      });
+    if (this.streamDefinitionsToDeploy.length == 0)
+      return;
+
     console.log(`Deploy ${this.streamDefinitionsToDeploy.length} stream definition(s).`, this.streamDefinitionsToDeploy);
     this.deployMultipleStreamDefinitionsModal.show();
   }
@@ -309,6 +322,10 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
     this.streamDefinitionsToUndeploy = streamDefinitions
       .filter(item => item.isSelected && this.filterUndeployable(item));
+
+    if (this.streamDefinitionsToUndeploy.length == 0)
+      return;
+
     console.log(`Undeploy ${this.streamDefinitionsToUndeploy.length} stream definition(s).`, this.streamDefinitionsToUndeploy);
     this.undeployMultipleStreamDefinitionsModal.show();
   }
@@ -342,7 +359,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   proceedToDeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
     console.log(`Proceeding to deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
-    const subscription = this.streamsService.deployMultipleStreamDefinitions(streamDefinitions, null).subscribe(
+    const subscription = this.streamsService.deployMultipleStreamDefinitions(streamDefinitions).subscribe(
       data => {
         this.toastyService.success(`${data.length} stream definition(s) deploy.`);
         this.busy = this.streamsService
@@ -393,4 +410,21 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
       return this.metrics.find(m => m.name === name);
     }
   }
+
+  /**
+   * Start the process to add deployment properties to a stream definition
+   *
+   * @param streamDefinition
+   */
+  deployAddDeploymentProperties(streamDefinition: StreamDefinition) {
+    this.selectStreamDefinition = streamDefinition;
+  }
+
+  /**
+   * Back to the stream definitions to deploy modal
+   */
+  backDeployMultipleStreamDefinitions() {
+    this.selectStreamDefinition = null;
+  }
+
 }

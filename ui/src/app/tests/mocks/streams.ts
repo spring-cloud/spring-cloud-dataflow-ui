@@ -18,6 +18,7 @@ import {StreamDefinition} from '../../streams/model/stream-definition';
  * runtimeAppsService._testRuntimeApps = STREAM_DEFINITIONS;//Stream Definitions json
  *
  * @author Glenn Renfro
+ * @author Damien Vitrac
  */
 export class MockStreamsService {
 
@@ -54,12 +55,24 @@ export class MockStreamsService {
     return Observable.of({});
   }
 
+  undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<any>[] {
+    return [Observable.of({})];
+  }
+
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response>|Observable<any> {
     return Observable.of({});
   }
 
+  destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<any>[] {
+    return [Observable.of({})];
+  }
+
   deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response>|Observable<any> {
     return Observable.of({});
+  }
+
+  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<any>[] {
+    return [Observable.of({})];
   }
 
   getRelatedDefinitions(streamDefinitionName: String, nested?: boolean): Observable<StreamDefinition[]> {

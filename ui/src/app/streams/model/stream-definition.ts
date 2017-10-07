@@ -5,6 +5,7 @@ import { Expandable } from './../../shared/model/expandable';
  *
  * @author Janne Valkealahti
  * @author Gunnar Hillert
+ * @author Damien Vitrac
  */
 export class StreamDefinition implements Expandable {
 
@@ -12,7 +13,9 @@ export class StreamDefinition implements Expandable {
   public dslText: String;
   public status: String;
   public isExpanded = false;
-  public force: boolean;
+  public force: boolean = false;
+
+  public deploymentProperties: any = {};
 
   constructor(
       name: String,

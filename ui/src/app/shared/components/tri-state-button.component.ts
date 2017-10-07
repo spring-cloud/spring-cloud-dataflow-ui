@@ -13,6 +13,7 @@ import { Selectable } from '../../shared/model/selectable';
  * @author Gunnar Hillert
  * @author Janne Valkealahti
  * @author Glenn Renfro
+ * @author Damien Vitrac
  */
 @Component({
   selector: 'app-tri-state-button',
