@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Confirm Composed Task Creation</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="handleCancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" [formGroup]="form">
+  <div *ngIf="errors && errors.length > 0" class="dialog-validation">
+    <div *ngFor="let error of errors">
+      <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign">{{error}}</label>
+    </div>
+  </div>
+  <div *ngIf="!(errors && errors.length) && warnings && warnings.length > 0" class="dialog-validation">
+    <div *ngFor="let warning of warnings">
+      <label class="glyphicon glyphicon-warning-sign dialog-warning-sign"></label>
+      <label>{{warning}}</label>
+    </div>
+  </div>
+  <p>This action will create composed task:</p>
+  <tbody>
+    <tr>
+      <td class="task-name-form-control-cell">
+        <input type="text" placeholder="<Composed Task Name>" class="form-control" id="taskName" name="taskName" formControlName="taskName"/>
+        <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="form.controls.taskName.errors"></span>
+        <p class="help-block" *ngIf="form.controls.taskName.errors">The format of your task name is invalid. {{form.controls.taskName.errors.validateTaskName.reason}}</p>
+      </td>
+      <td class="task-definition-label-cell">
+        <label class="control-label">{{dsl}}</label>
+      </td>
+    </tr>
+  </tbody>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="handleCancel()">Cancel</button>
+  <button type="button" class="btn btn-default" (click)="handleCreate()" [disabled]="!canSubmit()">Create</button>
+</div>

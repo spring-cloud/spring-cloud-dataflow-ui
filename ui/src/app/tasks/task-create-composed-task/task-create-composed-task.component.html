@@ -2,7 +2,7 @@
   <flo-editor (floApi)="editorContext = $event" [metamodel]="metamodelService" [renderer]="renderService"
               [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="20" [(dsl)]="dsl">
     <button (click)="createTaskDefs()" class="btn btn-default" type="button">Create</button>
-    <button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>
+    <button (click)="clearGraph()" class="btn btn-default" type="button">Clear</button>
     <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
     <button class="btn" (click)="gridOn = !gridOn"
             [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid</button>

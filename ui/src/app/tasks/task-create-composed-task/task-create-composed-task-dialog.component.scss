@@ -1,0 +1,25 @@
+.modal-body {
+  tbody {
+    width: 100%;
+    display: inline-table;
+  }
+  tr {
+    width: 100%;
+    display: inline-table;
+  }
+  .task-definition-label-cell {
+    vertical-align: top;
+    padding: 4px 8px;
+  }
+  .task-name-form-control-cell {
+    width: 50%;
+  }
+  .dialog-error-sign {
+    color: red;
+  }
+  .dialog-validation {
+    margin-bottom: 4px;
+    font-size: smaller;
+    line-height: 1em;
+  }
+}
