@@ -24,6 +24,7 @@ import { RenderService } from './flo/render.service';
 import { EditorService } from './flo/editor.service';
 import { NodeComponent } from './flo/node/node.component';
 import { ToolsService } from './flo/tools.service';
+import { TaskCreateComposedTaskDialogComponent } from './task-create-composed-task/task-create-composed-task-dialog.component';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { ToolsService } from './flo/tools.service';
     TaskAppsComponent,
     TaskDefinitionsComponent,
     TaskCreateComposedTaskComponent,
+    TaskCreateComposedTaskDialogComponent,
     TaskExecutionsComponent,
     TaskExecutionsDetailsComponent,
     TaskAppDetailsComponent,
@@ -50,9 +52,11 @@ import { ToolsService } from './flo/tools.service';
     TaskLaunchComponent,
     TaskGraphViewComponent,
     NodeComponent,
+    TaskCreateComposedTaskDialogComponent,
   ],
   entryComponents: [
-    NodeComponent
+    NodeComponent,
+    TaskCreateComposedTaskDialogComponent
   ],
   providers: [
     TasksService,

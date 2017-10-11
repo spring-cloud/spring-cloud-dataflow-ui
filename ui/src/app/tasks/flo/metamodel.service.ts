@@ -206,7 +206,7 @@ export class MetamodelService implements Flo.Metamodel {
           metadata.set(this.COMPOSED_TASK_LABEL, element.attr('node-label'));
         }
         nodes.push(new Node(element.attributes.id, attrs.metadata.name, element.attributes.attrs.props, metadata));
-      } else if (element.get('type') === joint.shapes.flo.LINK_TYPE
+      } else if ((element.get('type') === joint.shapes.flo.LINK_TYPE || element.attributes.type === 'link')
         && element.get('source').id && element.get('target').id) {
         const properties = new Map<string, string>();
         if (element.attr('metadata') && element.attr('props/ExitStatus')) {
