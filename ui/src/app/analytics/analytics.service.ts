@@ -293,8 +293,8 @@ export class AnalyticsService {
    * stopped. The subscription is store on the {@link DashboardItem}.
    */
   public startPollingForSingleDashboardItem(dashboardItem: DashboardItem) {
-    console.log(dashboardItem);
-    if (!dashboardItem.counterPoller || dashboardItem.counterPoller.closed) {
+    if ((!dashboardItem.counterPoller || dashboardItem.counterPoller.closed)
+        && dashboardItem.counter) {
 
       let counterServiceCall: Observable<any>;
       let resultProcessor: Function;

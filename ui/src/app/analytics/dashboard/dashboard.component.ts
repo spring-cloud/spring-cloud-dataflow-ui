@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
+import { ToastyService } from 'ng2-toasty';
 import { AnalyticsService } from '../analytics.service';
 
 import {
@@ -36,7 +37,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.analyticsService.metricTypes;
   }
 
-  constructor(public analyticsService: AnalyticsService) {}
+  constructor(
+    public analyticsService: AnalyticsService,
+    private toastyService: ToastyService,
+  ) {}
 
   /**
    * Called upon initialization of the component.
@@ -110,9 +114,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashBoardItem.counters = undefined;
     dashBoardItem.counter = undefined;
 
-    dashBoardItem.countersIsLoading = this.analyticsService.getCountersForMetricType(metricType).subscribe(result => {
-      dashBoardItem.counters = result.items;
-    });
+    dashBoardItem.countersIsLoading = this.analyticsService.getCountersForMetricType(metricType)
+      .subscribe(result => {
+        dashBoardItem.counters = result.items;
+      },
+      error => {
+        this.toastyService.error(error);
+      });
   }
 
   isCountersDropDownEnabled(dashboardItem: DashboardItem): boolean {
