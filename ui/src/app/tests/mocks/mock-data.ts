@@ -877,9 +877,22 @@ export const STREAM_DEFINITIONS = {
         dslText: 'time |log ',
         status: 'undeployed',
         statusDescription: 'The app or group is known to the system, but is not currently deployed',
+        force: false,
         _links: {
           self: {
             href: 'http://localhost:9393/streams/definitions/foo2'
+          }
+        }
+      },
+      {
+        name: 'foo3',
+        dslText: 'time |log ',
+        status: 'undeployed',
+        statusDescription: 'The app or group is known to the system, but is currently deployed',
+        force: false,
+        _links: {
+          self: {
+            href: 'http://localhost:9393/streams/definitions/foo3'
           }
         }
       }

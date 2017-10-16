@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Add deployment properties for <strong>{{stream.name}}</strong></h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="cancelDeployment()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<form novalidate [formGroup]="form" (ngSubmit)="deployDefinition()">
+  <div class="modal-body">
+
+    <p class="index-page--subtitle">
+      Please specify any <strong>optional</strong> deployment properties.
+      You can either enter deployment properties directly into the text-area
+      field below or alternatively, you can point to an external properties file,
+      which will be used to populate the text-area field.<br><br>
+      For more information please see the
+      <a href="http://docs.spring.io/spring-cloud-dataflow/docs/current-SNAPSHOT/reference/htmlsingle/#_passing_application_properties_when_deploying_stream"
+         target="_blank">Technical Documentation</a>.
+    </p>
+
+      <div class="form-group" [ngClass]="form.controls.deploymentProperties.errors ? 'has-warning has-feedback' : ''">
+        <label for="deploymentProperties" class="control-label">Deployment Properties</label>
+        <div>
+          <textarea class="form-control" id="deploymentProperties" name="deploymentProperties"
+                    formControlName="deploymentProperties" autofocus rows="5"
+                    placeholder="Enter optional deployment properties.
+    1 line per property e.g.:
+    property1=Spring
+    property2=Data Flow"></textarea>
+          <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="form.controls.deploymentProperties.errors"></span>
+          <p class="help-block" *ngIf="form.controls.deploymentProperties.errors">The format of your deployment properties is invalid. {{form.controls.deploymentProperties.errors.validateDeploymentProperties.reason}}</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label">Select Properties File</label>
+        <div>
+          <input type="file" (change)="displayFileContents($event)"/>
+          <p class="help-block">Please provide a text file containing deployment properties. This will be used to populate the text area above.</p>
+        </div>
+      </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="cancelDeployment()">Back</button>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </div>
+</form>
