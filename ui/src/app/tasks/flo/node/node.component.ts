@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { dia } from 'jointjs';
 import { Flo, Constants } from 'spring-flo';
-import { ElementComponent } from '../../../streams/flo/support/shape-component';
+import { ElementComponent } from '../../../shared/flo/support/shape-component';
 
 /**
 * Component for displaying application properties and capturing their values.

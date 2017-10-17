@@ -119,6 +119,22 @@ export class TasksService {
         });
   }
 
+  getDefinition(taskname: string): Observable<TaskDefinition> {
+    const headers = new Headers({'Content-Type': 'application/json'});
+    const options = new RequestOptions({headers: headers});
+    return this.http.get(`${this.taskDefinitionsUrl}/${taskname}`, options)
+      .map(res => {
+        const json = res.json();
+        return new TaskDefinition(
+          json.name,
+          json.dslText,
+          json.composed,
+          json.status
+        );
+      })
+      .catch(this.errorHandler.handleError);
+  }
+
   /**
    * Calls the Spring Cloud Data Flow server to get task definitions the specified {@link TaskDefinition}.
    *

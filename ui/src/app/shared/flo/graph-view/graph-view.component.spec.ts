@@ -1,40 +1,38 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import { StreamGraphViewComponent } from '../stream-graph-view/stream-graph-view.component';
+import { GraphViewComponent } from './graph-view.component';
 import { FloModule } from 'spring-flo';
-import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
-import { MetamodelService } from '../flo/metamodel.service';
-import { RenderService } from '../flo/render.service';
+import { MockMetamodelService } from '../../../streams/flo/mocks/mock-metamodel.service';
+import { RenderService } from '../../../streams/flo/render.service';
 
 /**
- * Test {@link StreamGraphViewComponent}.
+ * Test {@link GraphViewComponent}.
  *
  * @author Alex Boyko
  */
 describe('StreamGraphViewComponent', () => {
-  let component: StreamGraphViewComponent;
-  let fixture: ComponentFixture<StreamGraphViewComponent>;
-  const metamodelService = new MockMetamodelService();
-  const renderService = new RenderService(metamodelService);
+  let component: GraphViewComponent;
+  let fixture: ComponentFixture<GraphViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        StreamGraphViewComponent
+        GraphViewComponent
       ],
       imports: [
         FloModule
       ],
       providers: [
-        { provide: MetamodelService, useValue: metamodelService },
-        { provide: RenderService, useValue: renderService }
       ]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StreamGraphViewComponent);
+    fixture = TestBed.createComponent(GraphViewComponent);
     component = fixture.componentInstance;
+    const metamodel = new MockMetamodelService();
+    component.metamodel = metamodel;
+    component.renderer = new RenderService(metamodel);
   });
 
   it('should be created', () => {

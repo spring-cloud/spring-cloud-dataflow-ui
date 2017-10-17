@@ -18,99 +18,10 @@ import { Flo } from 'spring-flo';
 import { Injectable } from '@angular/core';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { ApplicationType } from '../../shared/model/application-type';
-import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../shared/model/detailed-app-registration.model';
 import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './support/shapes';
-import { Observable} from 'rxjs/Observable';
-
-/**
- * Class containing metadata for a stream application.
- *
- * @author Alex Boyko
- * @author Andy Clement
- */
-class StreamAppMetadata implements Flo.ElementMetadata {
-
-  private _dataPromise: Promise<DetailedAppRegistration>;
-
-  private _propertiesPromise: Promise<Map<string, Flo.PropertyMetadata>>;
-
-  constructor(
-    private _group: string,
-    private _name: string,
-    private _dataObs: Observable<DetailedAppRegistration>,
-    private _metadata?: Flo.ExtraMetadata
-  ) {}
-
-  get dataPromise(): Promise<DetailedAppRegistration> {
-    if (!this._dataPromise) {
-      this._dataPromise = new Promise(resolve => this._dataObs.subscribe(data => resolve(data), () => resolve(null)));
-    }
-    return this._dataPromise;
-  }
-
-  get propertiesPromise(): Promise<Map<string, Flo.PropertyMetadata>> {
-    if (!this._propertiesPromise) {
-      this._propertiesPromise = new Promise(resolve => this.dataPromise.then((data: DetailedAppRegistration) => {
-        const properties = new Map<string, Flo.PropertyMetadata>();
-        if (data) {
-          data.options.map((o: ConfigurationMetadataProperty) => {
-            const propertyMetadata: Flo.PropertyMetadata = {
-              id: o.id,
-              name: o.name,
-              description: o.description || o.shortDescription,
-              defaultValue: o.defaultValue,
-              type: o.type
-            };
-            if (o.type) {
-              switch (o.type) {
-                case 'java.util.concurrent.TimeUnit':
-                  propertyMetadata.options = [
-                    'NANOSECONDS',
-                    'MICROSECONDS',
-                    'MILLISECONDS',
-                    'SECONDS',
-                    'MINUTES',
-                    'HOURS',
-                    'DAYS'
-                  ];
-              }
-            }
-            properties.set(o.id, propertyMetadata);
-          });
-        }
-        resolve(properties);
-      }));
-    }
-    return this._propertiesPromise;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  get group(): string {
-    return this._group;
-  }
-
-  description(): Promise<string> {
-    return Promise.resolve('');
-  }
-
-  get(property: string): Promise<Flo.PropertyMetadata> {
-    return this.propertiesPromise.then(properties => properties.get(property));
-  }
-
-  properties(): Promise<Map<string, Flo.PropertyMetadata>> {
-    return this.propertiesPromise;
-  }
-
-  get metadata(): Flo.ExtraMetadata {
-    return this._metadata;
-  }
-
-}
+import { AppMetadata} from '../../shared/flo/support/app-metadata';
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -120,10 +31,6 @@ class StreamAppMetadata implements Flo.ElementMetadata {
  */
 @Injectable()
 export class MetamodelService implements Flo.Metamodel {
-
-    static DEBUG = false;
-
-    static keepAllProperties = false; // TODO address when whitelisting properties fixed in SCDF
 
     private listeners: Array<Flo.MetamodelListener> = [];
 
@@ -216,7 +123,7 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     private createEntry(type: ApplicationType, name: string, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
-      return new StreamAppMetadata(
+      return new AppMetadata(
         type.toString(),
         name,
         this.appsService.getAppInfo(type, name),

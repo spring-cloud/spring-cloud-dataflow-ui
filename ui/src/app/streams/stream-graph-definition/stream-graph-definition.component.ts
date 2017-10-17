@@ -6,6 +6,8 @@ import { ApplicationType } from '../../shared/model/application-type';
 import { dia } from 'jointjs';
 import { TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from '../flo/support/shapes';
 import { Subscription } from 'rxjs/Subscription';
+import { MetamodelService } from '../flo/metamodel.service';
+import { RenderService } from '../flo/render.service';
 
 import * as _joint from 'jointjs';
 const joint: any = _joint;
@@ -14,7 +16,7 @@ const joint: any = _joint;
 @Component({
   selector: 'app-stream-graph-definition',
   templateUrl: './stream-graph-definition.component.html',
-  styleUrls: [ '../flo/flo.scss', './stream-graph-definition.component.scss' ],
+  styleUrls: [ '../../shared/flo/flo.scss', './stream-graph-definition.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
 export class StreamGraphDefinitionComponent implements OnDestroy {
@@ -50,7 +52,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     }
   }
 
-  constructor() {}
+  constructor(public metamodel: MetamodelService, public renderer: RenderService) {}
 
   ngOnDestroy() {
     if (this._subscriptionToGraphUpdates) {

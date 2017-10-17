@@ -5,7 +5,12 @@ const joint: any = _joint;
 
 export const IMAGE_W = 120;
 export const IMAGE_H = 40;
-export const CONTROLNODES_GROUP_TYPE = 'control nodes';
+export const CONTROL_GROUP_TYPE = 'control nodes';
+export const TASK_GROUP_TYPE = 'task';
+
+export const START_NODE_TYPE = 'START';
+export const END_NODE_TYPE = 'END';
+export const SYNC_NODE_TYPE = 'sync';
 
 const CONTROL_NODE_SIZE = {
   width: 40,
@@ -45,6 +50,7 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         r: 7,
         type: 'input',
         magnet: true,
+        port: 'input',
         fill: '#5fa134',
         'ref-x': 0.5,
         'ref-y': 0,
@@ -55,6 +61,7 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         r: 7,
         type: 'output',
         magnet: true,
+        port: 'output',
         fill: '#5fa134',
         'ref-x': 0.5,
         'ref-y': 0.99999999,
@@ -93,6 +100,7 @@ export const BatchStartShape = joint.shapes.basic.Generic.extend({
         r: 7,
         type: 'output',
         magnet: true,
+        port: 'output',
         fill: '#5fa134',
         'ref-x': 0.5,
         'ref-y': 0.99999999,
@@ -153,6 +161,7 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
         r: 7,
         type: 'input',
         magnet: true,
+        port: 'input',
         fill: '#5fa134',
         'ref-x': 0.5,
         'ref-y': 0,
@@ -195,6 +204,7 @@ export const BatchSyncShape = joint.shapes.basic.Generic.extend({
         r: 7,
         type: 'input',
         magnet: true,
+        port: 'input',
         fill: '#5fa134',
         'ref-x': 0.5,
         'ref-y': 0,
@@ -205,6 +215,7 @@ export const BatchSyncShape = joint.shapes.basic.Generic.extend({
         r: 7,
         type: 'output',
         magnet: true,
+        port: 'output',
         fill: '#5fa134',
         'ref-x': 0.5,
         'ref-y': 0.99999999,
@@ -234,7 +245,7 @@ export const BatchSyncShape = joint.shapes.basic.Generic.extend({
   }, joint.shapes.basic.Generic.prototype.defaults)
 });
 
-export const BatchLink = joint.dia.Link.extend({
+export const BatchLink = joint.shapes.flo.Link.extend({
   toolMarkup: [
     '<g class="link-tool composed-task">',
       '<g class="tool-remove" event="remove">',
@@ -288,5 +299,5 @@ export const BatchLink = joint.dia.Link.extend({
       '.marker-target': { d: 'M 5 0 L 0.67, 2.5 L 5 5 z', 'stroke-width' : 3},
       'props': {}
     }
-  }, joint.dia.Link.prototype.defaults)
+  }, joint.shapes.flo.Link.prototype.defaults)
 });

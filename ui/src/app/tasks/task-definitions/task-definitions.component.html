@@ -29,7 +29,7 @@
   <tr>
     <th style="width: 70px"><a (click)="toggleDefinitionNameSort()"><span style="margin-right: 5px">Name</span></a><i class="fa" [ngClass]="{'fa-sort': definitionNameSort === undefined, 'fa-sort-asc': definitionNameSort === false, 'fa-sort-desc': definitionNameSort === true }" aria-hidden="true"></i></th>
     <th><a (click)="toggleDefinitionSort()"><span style="margin-right: 5px">Definitions</span></a><i class="fa" [ngClass]="{'fa-sort': definitionSort === undefined, 'fa-sort-asc': definitionSort === false, 'fa-sort-desc': definitionSort === true }" aria-hidden="true"></i></th>
-    <th style="width: 126px" class="text-center">Actions</th>
+    <th style="width: 185px" class="text-center">Actions</th>
   </tr>
   </thead>
 
@@ -39,8 +39,12 @@
       <td>{{item.name}}</td>
       <td>{{item.dslText}}</td>
       <td class="action-column">
+        <button type="button" (click)="details(item)"
+                class="btn btn-default" style="margin-left: 0;" title="Details" [disabled]="!item.dslText || !item.composed">
+          <span class="glyphicon glyphicon-info-sign"></span>
+        </button>
         <button type="button" (click)="launchTask(item)"
-                class="btn btn-default" title="Launch">
+                class="btn btn-default" style="margin-left: 0;" title="Launch">
           <span class="glyphicon glyphicon-play"></span>
         </button>
         <button type="button" [appRoles]="['ROLE_CREATE']" (click)="destroyTask(item)"

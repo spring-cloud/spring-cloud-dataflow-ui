@@ -7,7 +7,7 @@ import {MockActivatedRoute} from '../../tests/mocks/activated-route';
 import {RouterTestingModule} from '@angular/router/testing';
 import {StreamsService} from '../streams.service';
 import {ActivatedRoute} from '@angular/router';
-import {StreamGraphViewComponent} from '../stream-graph-view/stream-graph-view.component';
+import {GraphViewComponent} from '../../shared/flo/graph-view/graph-view.component';
 import { FloModule } from 'spring-flo';
 import {MockToastyService} from '../../tests/mocks/toasty';
 import {ToastyService} from 'ng2-toasty';
@@ -38,7 +38,7 @@ describe('StreamDetailsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         StreamDetailsComponent,
-        StreamGraphViewComponent
+        GraphViewComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([]),

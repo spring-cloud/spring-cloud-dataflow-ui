@@ -19,7 +19,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { ApplicationType } from '../../shared/model/application-type';
 import { Flo, Constants } from 'spring-flo';
 import { dia } from 'jointjs';
-import { PropertiesDialogComponent } from './properties/properties-dialog.component';
+import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 import { Utils } from './support/utils';
 import * as _joint from 'jointjs';
 const joint: any = _joint;
@@ -64,7 +64,7 @@ export class EditorService implements Flo.Editor {
             if (!element.attr('metadata/unresolved')) {
                 pt = (<any>bbox).origin().offset(-14, bbox.height + 3);
                 createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
-                    const modalRef = this.bsModalService.show(PropertiesDialogComponent);
+                    const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
                     modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
                     modalRef.content.setData(element, flo.getGraph());
                 }, pt);

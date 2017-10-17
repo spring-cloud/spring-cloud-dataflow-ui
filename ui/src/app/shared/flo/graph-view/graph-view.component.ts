@@ -1,15 +1,15 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import { Flo } from 'spring-flo';
-import { MetamodelService } from '../flo/metamodel.service';
-import { RenderService } from '../flo/render.service';
+import { MetamodelService } from '../../../streams/flo/metamodel.service';
+import { RenderService } from '../../../streams/flo/render.service';
 
 @Component({
-  selector: 'app-stream-graph-view',
-  templateUrl: './stream-graph-view.component.html',
-  styleUrls: [ '../flo/flo.scss' ],
+  selector: 'app-graph-view',
+  templateUrl: './graph-view.component.html',
+  styleUrls: [ '../flo.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class StreamGraphViewComponent {
+export class GraphViewComponent {
 
   @Input()
   dsl: string;
@@ -17,15 +17,18 @@ export class StreamGraphViewComponent {
   @Input()
   paperPadding = 5;
 
+  @Input()
+  metamodel: Flo.Metamodel;
+
+  @Input()
+  renderer: Flo.Renderer;
+
   @Output()
   floApi = new EventEmitter<Flo.EditorContext>();
 
   private editorContext: Flo.EditorContext;
 
-  constructor(
-    public metamodelService: MetamodelService,
-    public renderService: RenderService
-  ) {}
+  constructor() {}
 
   setEditorContext(editorContext: Flo.EditorContext) {
     this.editorContext = editorContext;
