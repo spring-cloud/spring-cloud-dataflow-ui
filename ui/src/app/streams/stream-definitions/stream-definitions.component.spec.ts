@@ -24,7 +24,7 @@ import { FloModule } from 'spring-flo';
 import { StreamGraphDefinitionComponent } from '../stream-graph-definition/stream-graph-definition.component';
 import {TriStateButtonComponent} from '../../shared/components/tri-state-button.component';
 import {TriStateCheckboxComponent} from '../../shared/components/tri-state-checkbox.component';
-import {DeploymentPropertiesComponent} from "./deployment-properties/deployment-properties.component";
+import {DeploymentPropertiesComponent} from './deployment-properties/deployment-properties.component';
 
 /**
  * Test {@link StreamDefinitionsComponent}.
@@ -173,12 +173,12 @@ describe('StreamDefinitionsComponent', () => {
 
   it('Should display the multi deploy modal for each selected stream definitions', (done) => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = "undeployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = 'undeployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = "deployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = 'deployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
-    const elModal: HTMLElement = fixture.debugElement.query(By.css("div[id=deployMultipleStreamDefinitionsModal]")).nativeElement;
+    const elModal: HTMLElement = fixture.debugElement.query(By.css('div[id=deployMultipleStreamDefinitionsModal]')).nativeElement;
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
     const el: HTMLElement = de[0].nativeElement;
     el.click();
@@ -194,14 +194,15 @@ describe('StreamDefinitionsComponent', () => {
 
   it('Should call the right Stream Service method when the multi deploy modal is validated', (done) => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = "undeployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = 'undeployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = "deployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = 'deployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
     const el: HTMLElement = de[0].nativeElement;
-    const bt: HTMLElement = fixture.debugElement.queryAll(By.css('div[id=deployMultipleStreamDefinitionsModal] .modal-footer .btn'))[1].nativeElement;
+    const bt: HTMLElement = fixture.debugElement.queryAll(
+      By.css('div[id=deployMultipleStreamDefinitionsModal] .modal-footer .btn'))[1].nativeElement;
     const deployMultipleStreamDefinitions = spyOn(streamsService, 'deployMultipleStreamDefinitions');
     el.click();
     fixture.detectChanges();
@@ -215,9 +216,9 @@ describe('StreamDefinitionsComponent', () => {
 
   it('Should not display the multi deploy modal if no stream definition is selected ', () => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = "deployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = 'deployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = "deployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = 'deployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
@@ -230,12 +231,12 @@ describe('StreamDefinitionsComponent', () => {
 
   it('Should display the multi undeploy modal when the stream definitions are selected', (done) => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = "undeployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = 'undeployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = "deployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = 'deployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
-    const elModal: HTMLElement = fixture.debugElement.query(By.css("div[id=undeployMultipleStreamDefinitionsModal]")).nativeElement;
+    const elModal: HTMLElement = fixture.debugElement.query(By.css('div[id=undeployMultipleStreamDefinitionsModal]')).nativeElement;
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
     const el: HTMLElement = de[1].nativeElement;
     el.click();
@@ -250,14 +251,15 @@ describe('StreamDefinitionsComponent', () => {
 
   it('Should call the right Stream Service method when the multi undeploy is validated', (done) => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = "undeployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = 'undeployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = "deployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = 'deployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
     const el: HTMLElement = de[1].nativeElement;
-    const bt: HTMLElement = fixture.debugElement.queryAll(By.css('div[id=undeployMultipleStreamDefinitionsModal] .modal-footer .btn'))[1].nativeElement;
+    const bt: HTMLElement = fixture.debugElement.queryAll(
+      By.css('div[id=undeployMultipleStreamDefinitionsModal] .modal-footer .btn'))[1].nativeElement;
     const undeployMultipleStreamDefinitions = spyOn(streamsService, 'undeployMultipleStreamDefinitions');
     el.click();
     fixture.detectChanges();
@@ -271,9 +273,9 @@ describe('StreamDefinitionsComponent', () => {
 
   it('Should not display the multi undeploy modal if no stream definition is selected', () => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = "undeployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = 'undeployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = "undeployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = 'undeployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
@@ -289,7 +291,7 @@ describe('StreamDefinitionsComponent', () => {
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
-    const elModal: HTMLElement = fixture.debugElement.query(By.css("div[id=destroyMultipleStreamDefinitionsModal]")).nativeElement;
+    const elModal: HTMLElement = fixture.debugElement.query(By.css('div[id=destroyMultipleStreamDefinitionsModal]')).nativeElement;
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
     const el: HTMLElement = de[2].nativeElement;
     el.click();
@@ -304,14 +306,15 @@ describe('StreamDefinitionsComponent', () => {
 
   it('Should call the right Stream Service method when the multi destroy is validated', (done) => {
     streamsService.streamDefinitions = STREAM_DEFINITIONS;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = "undeployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].status = 'undeployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0].isSelected = true;
-    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = "deployed";
+    streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].status = 'deployed';
     streamsService.streamDefinitions._embedded.streamDefinitionResourceList[1].isSelected = true;
     fixture.detectChanges();
     const de: DebugElement[] = fixture.debugElement.queryAll(By.css('.col-actions .btn'));
     const el: HTMLElement = de[2].nativeElement;
-    const bt: HTMLElement = fixture.debugElement.queryAll(By.css('div[id=destroyMultipleStreamDefinitionsModal] .modal-footer .btn'))[1].nativeElement;
+    const bt: HTMLElement = fixture.debugElement.queryAll(
+      By.css('div[id=destroyMultipleStreamDefinitionsModal] .modal-footer .btn'))[1].nativeElement;
     const destroyMultipleStreamDefinitions = spyOn(streamsService, 'destroyMultipleStreamDefinitions');
     el.click();
     fixture.detectChanges();

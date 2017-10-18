@@ -1,7 +1,7 @@
-import {TestBed, async, ComponentFixture} from "@angular/core/testing";
-import {DeploymentPropertiesComponent} from "./deployment-properties.component";
-import {ReactiveFormsModule, FormsModule} from "@angular/forms";
-import {StreamDefinition} from "../../model/stream-definition";
+import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import {DeploymentPropertiesComponent} from './deployment-properties.component';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {StreamDefinition} from '../../model/stream-definition';
 
 /**
  * Test {@link DeploymentPropertiesComponent}.

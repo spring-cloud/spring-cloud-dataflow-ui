@@ -27,7 +27,7 @@ import { StreamGraphViewComponent } from './stream-graph-view/stream-graph-view.
 import { StreamGraphDefinitionComponent } from './stream-graph-definition/stream-graph-definition.component';
 import { InstanceDotComponent } from './flo/instance-dot/instance-dot.component';
 import { MessageRateComponent } from './flo/message-rate/message-rate.component';
-import {DeploymentPropertiesComponent} from "./stream-definitions/deployment-properties/deployment-properties.component";
+import {DeploymentPropertiesComponent} from './stream-definitions/deployment-properties/deployment-properties.component';
 
 @NgModule({
   imports: [

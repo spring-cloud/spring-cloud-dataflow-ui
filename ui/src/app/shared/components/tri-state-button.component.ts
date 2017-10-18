@@ -72,7 +72,7 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck {
    * @type {string}
    */
   @Input()
-  icon: string = 'trash';
+  icon = 'trash';
 
   /**
    * Optional Function to filter items, should return a Boolean.

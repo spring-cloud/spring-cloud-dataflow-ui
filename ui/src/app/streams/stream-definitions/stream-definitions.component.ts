@@ -286,8 +286,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   destroyMultipleStreams(streamDefinitions: StreamDefinition[]) {
     this.streamDefinitionsToDestroy = streamDefinitions.filter(item => item.isSelected);
-    if (this.streamDefinitionsToDestroy.length == 0)
+    if (this.streamDefinitionsToDestroy.length === 0) {
       return;
+    }
     console.log(`Destroy ${this.streamDefinitionsToDestroy.length} stream definition(s).`, this.streamDefinitionsToDestroy);
     this.destroyMultipleStreamDefinitionsModal.show();
   }
@@ -306,8 +307,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
         item.deploymentProperties = {};
         return item;
       });
-    if (this.streamDefinitionsToDeploy.length == 0)
+    if (this.streamDefinitionsToDeploy.length === 0) {
       return;
+    }
 
     console.log(`Deploy ${this.streamDefinitionsToDeploy.length} stream definition(s).`, this.streamDefinitionsToDeploy);
     this.deployMultipleStreamDefinitionsModal.show();
@@ -323,9 +325,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
     this.streamDefinitionsToUndeploy = streamDefinitions
       .filter(item => item.isSelected && this.filterUndeployable(item));
 
-    if (this.streamDefinitionsToUndeploy.length == 0)
+    if (this.streamDefinitionsToUndeploy.length === 0) {
       return;
-
+    }
     console.log(`Undeploy ${this.streamDefinitionsToUndeploy.length} stream definition(s).`, this.streamDefinitionsToUndeploy);
     this.undeployMultipleStreamDefinitionsModal.show();
   }
@@ -345,7 +347,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
         }
         this.busy = this.streamsService
           .getDefinitions(this.definitionNameSort, this.definitionSort)
-          .subscribe(data => {});
+          .subscribe();
       }
     );
     this.busy = subscription;
@@ -361,10 +363,13 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
     console.log(`Proceeding to deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
     const subscription = this.streamsService.deployMultipleStreamDefinitions(streamDefinitions).subscribe(
       data => {
-        this.toastyService.success(`${data.length} stream definition(s) deploy.`);
+        this.toastyService.success(`${data.length} stream definition(s) deployed.`);
         this.busy = this.streamsService
           .getDefinitions(this.definitionNameSort, this.definitionSort)
-          .subscribe(data => {});
+          .subscribe();
+      },
+      error => {
+        this.toastyService.error(error);
       }
     );
     this.busy = subscription;
@@ -383,7 +388,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
         this.toastyService.success(`${data.length} stream definition(s) undeploy.`);
         this.busy = this.streamsService
           .getDefinitions(this.definitionNameSort, this.definitionSort)
-          .subscribe(data => {});
+          .subscribe();
       }
     );
     this.busy = subscription;
@@ -391,11 +396,11 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   filterUndeployable(item: any) {
-    return !(item.status === 'undeployed' || item.status === 'incomplete')
+    return !(item.status === 'undeployed' || item.status === 'incomplete');
   }
 
   filterDeployable(item: any) {
-    return !(item.status === 'deployed' || item.status === 'deploying')
+    return !(item.status === 'deployed' || item.status === 'deploying');
   }
 
   /**

@@ -1,7 +1,7 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import {validateDeploymentProperties} from "../../stream-deploy/stream-deploy-validators";
-import {StreamDefinition} from "../../model/stream-definition";
+import {validateDeploymentProperties} from '../../stream-deploy/stream-deploy-validators';
+import {StreamDefinition} from '../../model/stream-definition';
 
 @Component({
   selector: 'app-stream-deployment-properties',
@@ -26,7 +26,7 @@ export class DeploymentPropertiesComponent implements OnInit {
   public submit = new EventEmitter();
 
   @Input()
-  public stream:StreamDefinition;
+  public stream: StreamDefinition;
 
   /**
    * Adds deployment properties to the FormBuilder
@@ -44,7 +44,7 @@ export class DeploymentPropertiesComponent implements OnInit {
     if (this.stream.deploymentProperties instanceof Object) {
       this.deploymentProperties.setValue(Object.keys(this.stream.deploymentProperties)
         .map(a => {
-          return a + '=' + this.stream.deploymentProperties[a]
+          return a + '=' + this.stream.deploymentProperties[a];
         }).join('\n'));
     }
   }

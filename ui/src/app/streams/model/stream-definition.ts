@@ -13,7 +13,7 @@ export class StreamDefinition implements Expandable {
   public dslText: String;
   public status: String;
   public isExpanded = false;
-  public force: boolean = false;
+  public force = false;
 
   public deploymentProperties: any = {};
 

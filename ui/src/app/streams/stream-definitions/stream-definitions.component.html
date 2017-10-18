@@ -206,17 +206,16 @@
 
     <div class="modal-content" *ngIf="!selectStreamDefinition">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">Confirm Deploy Stream Definitions</h4>
+        <h4 class="modal-title pull-left">Confirm Deployment of Stream Definitions</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="cancelDeployMultipleStreamDefinitions()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" *ngIf="streamDefinitionsToDeploy">
         <p>
-          This action will deploy the {{streamDefinitionsToDeploy.length}}
-          stream definition{{streamDefinitionsToDeploy.length > 1 ? 's' : ''}} listed below.<br />
-          Are you sure?<br />
-          You can add deployment properties for each stream definition.
+          This action will deploy the <strong>{{streamDefinitionsToDeploy.length}}
+          stream definition{{streamDefinitionsToDeploy.length > 1 ? 's' : ''}}</strong> listed below.
+          Optionally, you can add deployment properties for each stream definition.
         </p>
         <br/>
         <table class="table table-striped">
@@ -232,14 +231,14 @@
             <td>{{item.name}}</td>
             <td>{{item.dslText}}</td>
             <td width="10" nowrap="">
-              <div *ngIf="(item.deploymentProperties | keyvalues).length > 0">
-                <p style="padding-bottom: 6px"><strong>{{(item.deploymentProperties | keyvalues).length}} propert{{(item.deploymentProperties | keyvalues).length > 1 ? 'ies' : 'y'}}</strong></p>
+              <div *ngIf="(item.deploymentProperties | keyvalues)?.length > 0">
+                <p style="padding-bottom: 6px"><strong>{{(item.deploymentProperties | keyvalues)?.length}} propert{{(item.deploymentProperties | keyvalues)?.length > 1 ? 'ies' : 'y'}}</strong></p>
                 <a class="btn btn-sm btn-default" (click)="deployAddDeploymentProperties(item)">
                   <span class="glyphicon glyphicon-edit"></span>
                   Edit deployment properties
                 </a>
               </div>
-              <div *ngIf="(item.deploymentProperties | keyvalues).length == 0">
+              <div *ngIf="(item.deploymentProperties | keyvalues)?.length == 0">
                 <a class="btn btn-sm btn-default" (click)="deployAddDeploymentProperties(item)">
                   <span class="glyphicon glyphicon-plus"></span>
                   Add deployment properties
@@ -251,8 +250,8 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="cancelDeployMultipleStreamDefinitions()">No</button>
-        <button type="button" class="btn btn-primary" (click)="proceedToDeployMultipleStreamDefinitions(streamDefinitionsToDeploy)">Yes</button>
+        <button type="button" class="btn btn-default" (click)="cancelDeployMultipleStreamDefinitions()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="proceedToDeployMultipleStreamDefinitions(streamDefinitionsToDeploy)">Deploy</button>
       </div>
     </div>
 
