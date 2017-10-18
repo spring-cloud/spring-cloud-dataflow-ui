@@ -5,6 +5,7 @@ import { Expandable } from './../../shared/model/expandable';
  *
  * @author Janne Valkealahti
  * @author Gunnar Hillert
+ * @author Damien Vitrac
  */
 export class StreamDefinition implements Expandable {
 
@@ -12,6 +13,9 @@ export class StreamDefinition implements Expandable {
   public dslText: String;
   public status: String;
   public isExpanded = false;
+  public force = false;
+
+  public deploymentProperties: any = {};
 
   constructor(
       name: String,
@@ -20,6 +24,13 @@ export class StreamDefinition implements Expandable {
     this.name = name;
     this.dslText = dslText;
     this.status = status;
+  }
+
+  get isSelected(): boolean {
+    return this.force;
+  }
+  set isSelected(isSelected: boolean) {
+    this.force = isSelected;
   }
 
   /**

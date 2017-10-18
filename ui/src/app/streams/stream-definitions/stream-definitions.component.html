@@ -24,6 +24,43 @@
               <span class="glyphicon glyphicon-refresh"></span></button>
           </td>
         </tr>
+        <tr>
+          <td colspan="2" class="col-xs-12 col-actions" height="45px">
+            <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
+                                  [items]="streamDefinitions.getItemsAsObservable()"
+                                  (eventHandler)="deployMultipleStreamDefinitions(streamDefinitions.items)"
+                                  noneSelectedLabel="No stream selected to deploy"
+                                  oneSelectedLabel="Deploy {selectedCount} selected stream"
+                                  manySelectedLabel="Deploy {selectedCount} selected streams"
+                                  allSelectedLabel="Deploy all {selectedCount} selected streams"
+                                  icon="play"
+                                  [filter]="filterDeployable"
+            ></app-tri-state-button>
+
+            <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
+                                  [items]="streamDefinitions.getItemsAsObservable()"
+                                  (eventHandler)="undeployMultipleStreamDefinitions(streamDefinitions.items)"
+                                  noneSelectedLabel="No stream selected to undeploy"
+                                  oneSelectedLabel="Undeploy {selectedCount} selected stream"
+                                  manySelectedLabel="Undeploy {selectedCount} selected streams"
+                                  allSelectedLabel="Undeploy all {selectedCount} selected streams"
+                                  icon="stop"
+                                  [filter]="filterUndeployable"
+            ></app-tri-state-button>
+
+            <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
+                                  [items]="streamDefinitions.getItemsAsObservable()"
+                                  (eventHandler)="destroyMultipleStreams(streamDefinitions.items)"
+                                  noneSelectedLabel="No stream selected to destroy"
+                                  oneSelectedLabel="Destroy {selectedCount} selected stream"
+                                  manySelectedLabel="Destroy {selectedCount} selected streams"
+                                  allSelectedLabel="Destroy all {selectedCount} selected streams"
+                                  icon="remove"
+            ></app-tri-state-button>
+
+          </td>
+
+        </tr>
       </table>
     </div>
   </div>
@@ -32,10 +69,14 @@
 <table *ngIf="streamDefinitions?.items" class="table table-hover" id="streamDefinitionsTable">
   <thead>
     <tr>
+      <th style="width: 30px">
+        <app-tri-state-checkbox *ngIf="streamDefinitions?.items" [appRoles]="['ROLE_CREATE']" class="toggle-all" [items]="streamDefinitions.getItemsAsObservable()"></app-tri-state-checkbox>
+      </th>
+
       <th style="width: 32px"></th>
       <th style="width: 70px"><a (click)="toggleDefinitionNameSort()"><span style="margin-right: 5px">Name</span></a><i class="fa" [ngClass]="{'fa-sort': definitionNameSort === undefined, 'fa-sort-asc': definitionNameSort === false, 'fa-sort-desc': definitionNameSort === true }" aria-hidden="true"></i></th>
       <th><a (click)="toggleDefinitionSort()"><span style="margin-right: 5px">Definitions</span></a><i class="fa" [ngClass]="{'fa-sort': definitionSort === undefined, 'fa-sort-asc': definitionSort === false, 'fa-sort-desc': definitionSort === true }" aria-hidden="true"></i></th>
-      <th style="width: 50px">Status
+      <th style="width: 50px" nowrap="">Status
         <a #childPopover="bs-popover"
         [popover]="popTemplate"
         placement="bottom"
@@ -48,6 +89,7 @@
   <tbody>
     <ng-template ngFor let-item [ngForOf]="streamDefinitions.items | paginate: streamDefinitions.getPaginationInstance()">
       <tr>
+        <td><input type="checkbox" [(ngModel)]="item.isSelected"/></td>
         <td>
           <button class="glyphicon glyphicon-expand"
                   (click)="item.toggleIsExpanded()"
@@ -76,7 +118,7 @@
         </td>
       </tr>
       <tr *ngIf="item.isExpanded">
-        <td colspan="5">
+        <td colspan="6">
           <app-stream-graph-definition [stream]="item" [metrics]="metricsForStream(item.name)"></app-stream-graph-definition>
         </td>
       </tr>
@@ -120,3 +162,142 @@
     </table>
   </div>
 </ng-template>
+
+<div id="destroyMultipleStreamDefinitionsModal" bsModal #destroyMultipleStreamDefinitionsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirm Destroy Stream Definitions</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelDestroyMultipleStreamDefinitions()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="streamDefinitionsToDestroy">
+        <p>
+          This action will destroy the {{streamDefinitionsToDestroy.length}}
+          stream definition{{streamDefinitionsToDestroy.length > 1 ? 's' : ''}} listed below. Are you sure?
+        </p>
+        <br/>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Definition</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of streamDefinitionsToDestroy">
+            <td>{{item.name}}</td>
+            <td>{{item.dslText}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancelDestroyMultipleStreamDefinitions()">No</button>
+        <button type="button" class="btn btn-primary" (click)="proceedToDestroyMultipleStreamDefinitions(streamDefinitionsToDestroy)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deployMultipleStreamDefinitionsModal" bsModal #deployMultipleStreamDefinitionsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content" *ngIf="!selectStreamDefinition">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirm Deployment of Stream Definitions</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelDeployMultipleStreamDefinitions()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="streamDefinitionsToDeploy">
+        <p>
+          This action will deploy the <strong>{{streamDefinitionsToDeploy.length}}
+          stream definition{{streamDefinitionsToDeploy.length > 1 ? 's' : ''}}</strong> listed below.
+          Optionally, you can add deployment properties for each stream definition.
+        </p>
+        <br/>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Definition</th>
+            <th>Deployment properties</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of streamDefinitionsToDeploy">
+            <td>{{item.name}}</td>
+            <td>{{item.dslText}}</td>
+            <td width="10" nowrap="">
+              <div *ngIf="(item.deploymentProperties | keyvalues)?.length > 0">
+                <p style="padding-bottom: 6px"><strong>{{(item.deploymentProperties | keyvalues)?.length}} propert{{(item.deploymentProperties | keyvalues)?.length > 1 ? 'ies' : 'y'}}</strong></p>
+                <a class="btn btn-sm btn-default" (click)="deployAddDeploymentProperties(item)">
+                  <span class="glyphicon glyphicon-edit"></span>
+                  Edit deployment properties
+                </a>
+              </div>
+              <div *ngIf="(item.deploymentProperties | keyvalues)?.length == 0">
+                <a class="btn btn-sm btn-default" (click)="deployAddDeploymentProperties(item)">
+                  <span class="glyphicon glyphicon-plus"></span>
+                  Add deployment properties
+                </a>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancelDeployMultipleStreamDefinitions()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="proceedToDeployMultipleStreamDefinitions(streamDefinitionsToDeploy)">Deploy</button>
+      </div>
+    </div>
+
+    <div class="modal-content" *ngIf="selectStreamDefinition">
+        <app-stream-deployment-properties [stream]="selectStreamDefinition"
+          (submit)="backDeployMultipleStreamDefinitions()" (cancel)="backDeployMultipleStreamDefinitions()">
+        </app-stream-deployment-properties>
+    </div>
+
+  </div>
+</div>
+
+<div id="undeployMultipleStreamDefinitionsModal" bsModal #undeployMultipleStreamDefinitionsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Confirm Undeploy Stream Definitions</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelUndeployMultipleStreamDefinitions()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" *ngIf="streamDefinitionsToUndeploy">
+        <p>
+          This action will undeploy the {{streamDefinitionsToUndeploy.length}}
+          stream definition{{streamDefinitionsToUndeploy.length > 1 ? 's' : ''}} listed below. Are you sure?
+        </p>
+        <br/>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>Name</th>
+            <th>Definition</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of streamDefinitionsToUndeploy">
+            <td>{{item.name}}</td>
+            <td>{{item.dslText}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancelUndeployMultipleStreamDefinitions()">No</button>
+        <button type="button" class="btn btn-primary" (click)="proceedToUndeployMultipleStreamDefinitions(streamDefinitionsToUndeploy)">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

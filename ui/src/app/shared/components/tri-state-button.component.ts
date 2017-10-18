@@ -13,12 +13,13 @@ import { Selectable } from '../../shared/model/selectable';
  * @author Gunnar Hillert
  * @author Janne Valkealahti
  * @author Glenn Renfro
+ * @author Damien Vitrac
  */
 @Component({
   selector: 'app-tri-state-button',
   template:
   `<button #theButton name="topLevel" type="button" (click)="onClick()"
-         class="btn btn-default"><span class="glyphicon glyphicon-trash"></span>
+         class="btn btn-default"><span class="glyphicon glyphicon-{{icon}}"></span>
     <span class="hidden-xs">{{label}}</span>
   </button>`
 })
@@ -66,6 +67,21 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck {
   allSelectedLabel: string;
 
   /**
+   * The icon displayed inside the button
+   * Trash by default
+   * @type {string}
+   */
+  @Input()
+  icon = 'trash';
+
+  /**
+   * Optional Function to filter items, should return a Boolean.
+   * @type {Function}
+   */
+  @Input()
+  filter: Function;
+
+  /**
    * The button label.
    * @type {string}
    */
@@ -101,7 +117,9 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck {
     }
     let count = 0;
     for (let i = 0; i < this._items.length; i++) {
-      count += this._items[i].isSelected ? 1 : 0;
+      if (this._items[i].isSelected) {
+        count += this.filter ? this.filter(this._items[i]) : 1;
+      }
     }
 
     if (count > 0 && count < this._items.length) {
