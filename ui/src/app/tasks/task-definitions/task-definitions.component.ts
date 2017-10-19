@@ -115,6 +115,14 @@ export class TaskDefinitionsComponent implements OnInit {
   }
 
   /**
+   * Route to {@link TaskDefinition} details page.
+   * @param item the task definition to be displayed.
+   */
+  details(taskDefinition: TaskDefinition) {
+    this.router.navigate(['tasks/definitions/' + taskDefinition.name]);
+  }
+
+  /**
    * Displays modal dialog box that confirms the user wants to destroy a {@link TaskDefinition}.
    */
   public showChildModal(): void {

@@ -1,19 +1,19 @@
 import {Component, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {StreamsService} from '../streams.service';
+import {TasksService} from '../tasks.service';
 import {ToastyService} from 'ng2-toasty';
 import {Subscription} from 'rxjs/Subscription';
 import {MetamodelService} from '../flo/metamodel.service';
 import {RenderService} from '../flo/render.service';
 
 @Component({
-  selector: 'app-stream-details',
-  templateUrl: 'stream-details.component.html',
-  styleUrls: [ 'stream-details.component.scss' ],
+  selector: 'app-composed-task-details',
+  templateUrl: 'composed-task-details.component.html',
+  styleUrls: [ 'composed-task-details.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
 
-export class StreamDetailsComponent implements OnInit, OnDestroy {
+export class ComposedTaskDetailsComponent implements OnInit, OnDestroy {
 
   id: string;
   dsl = '';
@@ -22,7 +22,7 @@ export class StreamDetailsComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private streamsService: StreamsService,
+              private tasksService: TasksService,
               private toastyService: ToastyService,
               public metamodelService: MetamodelService,
               public renderService: RenderService) {
@@ -31,8 +31,8 @@ export class StreamDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.busy = this.streamsService.getRelatedDefinitions(this.id, true).subscribe(streams => {
-        this.dsl = streams.map(s => `${s.name}=${s.dslText}`).join('\n');
+      this.busy = this.tasksService.getDefinition(this.id).subscribe(taskDef => {
+        this.dsl = taskDef.dslText;
       }, error => {
         this.toastyService.error(error);
       });
@@ -45,7 +45,7 @@ export class StreamDetailsComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.router.navigate(['streams/definitions']);
+    this.router.navigate(['tasks/definitions']);
   }
 
 }

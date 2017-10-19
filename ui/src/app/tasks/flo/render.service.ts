@@ -3,14 +3,18 @@ import { Constants, Flo } from 'spring-flo';
 import { dia } from 'jointjs';
 import { defaultsDeep } from 'lodash';
 import { BsModalService } from 'ngx-bootstrap';
-import { TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape } from './support/shapes';
-import { layout } from '../../streams/flo/support/layout';
-import { ElementComponent } from '../../streams/flo/support/shape-component';
+import { MetamodelService} from './metamodel.service';
+import {
+  TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape,
+  CONTROL_GROUP_TYPE, IMAGE_W
+} from './support/shapes';
+import { layout } from './support/layout';
+import { ElementComponent } from '../../shared/flo/support/shape-component';
 import { NodeComponent } from './node/node.component';
-import { DecorationComponent } from '../../streams/flo/decoration/decoration.component';
-import { HandleComponent } from '../../streams/flo/handle/handle.component';
+import { DecorationComponent } from '../../shared/flo/decoration/decoration.component';
+import { HandleComponent } from '../../shared/flo/handle/handle.component';
 import * as _joint from 'jointjs';
-import { PropertiesDialogComponent } from '../../streams/flo/properties/properties-dialog.component';
+import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 const joint: any = _joint;
 
 const HANDLE_ICON_MAP = new Map<string, string>()
@@ -29,15 +33,19 @@ const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
   .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent);
 
+const HORIZONTAL_PADDING = 5;
+
 /**
  * Flo service class for its Renderer used for composed tasks.
  *
  * @author Janne Valkealahti
+ * @author Alex Boyko
  */
 @Injectable()
 export class RenderService implements Flo.Renderer {
 
   constructor(
+    private metamodelService: MetamodelService,
     private bsModalService: BsModalService,
     private componentFactoryResolver?: ComponentFactoryResolver,
     private injector?: Injector,
@@ -88,18 +96,7 @@ export class RenderService implements Flo.Renderer {
    * @returns {dia.Element} the created element
    */
   createNode(metadata: Flo.ElementMetadata): dia.Element {
-    console.log('createNode', metadata.group, metadata.name);
-    if (metadata.group === 'task') {
-      return new TaskAppShape(
-        defaultsDeep({
-          attrs: {
-            '.label': {
-              'text': metadata.name
-            }
-          }
-        }, TaskAppShape.prototype.defaults)
-      );
-    } else if (metadata.name === 'START') {
+    if (metadata.name === 'START') {
       return new BatchStartShape(
         defaultsDeep({
           attrs: {
@@ -129,6 +126,16 @@ export class RenderService implements Flo.Renderer {
           }
         }, BatchSyncShape.prototype.defaults)
       );
+    } else {
+      return new TaskAppShape(
+        defaultsDeep({
+          attrs: {
+            '.label': {
+              'text': metadata.name
+            }
+          }
+        }, TaskAppShape.prototype.defaults)
+      );
     }
   }
 
@@ -137,7 +144,27 @@ export class RenderService implements Flo.Renderer {
    * only have one node link type.
    */
   createLink() {
-    return new BatchLink();
+    const link = new BatchLink();
+    this.metamodelService.load().then(function(metamodel) {
+      link.attr('metadata', metamodel.get('links').get('transition'));
+    });
+    return link;
+  }
+
+  fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string) {
+    const view = paper.findViewByModel(node);
+    if (view) {
+      (<any>view).update();
+      const textView = view.findBySelector(labelPath.substr(0, labelPath.indexOf('/')))[0];
+      let width = joint.V(textView).bbox(false, paper.viewport).width;
+      const label = node.attr(labelPath);
+      const threshold = IMAGE_W - HORIZONTAL_PADDING - HORIZONTAL_PADDING;
+      for (let i = 1; i < label.length && width > threshold; i++) {
+        (<any>node).attr(labelPath, label.substr(0, label.length - i) + '\u2026', {silent: true});
+        (<any>view).update();
+        width = joint.V(textView).bbox(false, paper.viewport).width;
+      }
+    }
   }
 
   /**
@@ -152,10 +179,86 @@ export class RenderService implements Flo.Renderer {
   handleLinkEvent(context: Flo.EditorContext, event: string, link: dia.Link): void {
     if (event === 'options') {
       // TODO, doesn't really work, maybe flo issue
-      const modalRef = this.bsModalService.show(PropertiesDialogComponent);
-      modalRef.content.title = `Properties for LINK`;
+      const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
+      modalRef.content.title = `Properties for ${link.attr('metadata/name').toUpperCase()}`;
       modalRef.content.setData(link, context.getGraph());
     }
+  }
+
+  initializeNewNode(node: dia.Element, viewerDescriptor: Flo.ViewerDescriptor) {
+    const metadata: Flo.ElementMetadata = node.attr('metadata');
+    if (metadata) {
+      if (metadata.group === CONTROL_GROUP_TYPE) {
+        // nothing to do here yet for control nodes
+      } else {
+        node.attr('.image/xlink:href', metadata && metadata.icon ? metadata.icon : 'icons/xd/unknown.png');
+        if (viewerDescriptor.paper) {
+          this.fitLabel(viewerDescriptor.paper, node, '.label/text');
+        }
+      }
+    }
+  }
+
+  refreshVisuals(element: dia.Cell, changedPropertyPath: string, paper: dia.Paper) {
+    if (element instanceof joint.dia.Element && element.attr('metadata')) {
+      if (changedPropertyPath === 'node-label') {
+        const nodeLabel = element.attr('node-label');
+        // fitLabel() calls update as necessary, so set label text silently
+        element.attr('.label/text', nodeLabel ? nodeLabel : element.attr('metadata/name'));
+        this.fitLabel(paper, <dia.Element> element, '.label/text');
+      }
+    }
+
+    if (element instanceof joint.dia.Link && element.attr('metadata')) {
+      if (changedPropertyPath === 'props/ExitStatus') {
+        element.set('labels', [
+          {
+            position: 0.5,
+            attrs: {
+              text: {
+                text: element.attr('props/ExitStatus') || '',
+                'stroke': 'black',
+                'stroke-width': 1,
+                'fill': 'black'
+              },
+              rect: {
+                'fill': 'transparent',
+                'stroke-width': 0
+              }
+            }
+          }
+        ]);
+        const view = paper.findViewByModel(element);
+        if (element.attr('props/ExitStatus')) {
+          view.$('.connection, .marker-source, .marker-target').toArray()
+            .forEach(c => joint.V(c).addClass('composed-task-graph-transition'));
+        } else {
+          view.$('.connection, .marker-source, .marker-target').toArray()
+            .forEach(c => joint.V(c).removeClass('composed-task-graph-transition'));
+        }
+      }
+    }
+  }
+
+  /**
+   * After a link is constructed it is initialized, this is a chance to fill in the label for it
+   * (which is used as the title in the properties view for it).
+   */
+  initializeNewLink(link: dia.Link, context: Flo.ViewerDescriptor) { // context contains paper and graph
+    const paper = context.paper;
+    const sourceId = link.get('source');
+    const targetId = link.get('target');
+    const sourceElement = paper.findViewByModel(sourceId);
+    const targetElement = paper.findViewByModel(targetId);
+    const sourceLabel = sourceElement.model.attr('.label/text');
+    const targetLabel = targetElement.model.attr('.label/text');
+    link.attr('.label/text', `Link from '${sourceLabel}' to '${targetLabel}'`);
+    this.refreshVisuals(link, 'props/ExitStatus', paper); // TODO this was set early on, why is this call required here?
+  }
+
+  isSemanticProperty(propertyPath: string, element: dia.Cell) {
+    return /.label*\/text/.test(propertyPath) ||
+      propertyPath === 'node-label';
   }
 
   /**

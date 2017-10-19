@@ -1,7 +1,7 @@
 import { Shapes } from 'spring-flo';
 import { dia } from 'jointjs';
-import { RenderService } from '../render.service';
-import { MockMetamodelService } from '../mocks/mock-metamodel.service';
+import { RenderService } from '../../../streams/flo/render.service';
+import { MockMetamodelService } from '../../../streams/flo/mocks/mock-metamodel.service';
 import { HandleComponent } from './handle.component';
 import { Constants } from 'spring-flo';
 

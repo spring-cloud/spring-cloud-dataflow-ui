@@ -6,7 +6,7 @@ import * as _joint from 'jointjs';
 const joint: any = _joint;
 
 /**
- * Test {@link StreamGraphViewComponent}.
+ * Test {@link GraphViewComponent}.
  *
  * @author Alex Boyko
  */

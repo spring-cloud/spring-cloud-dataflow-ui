@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { BaseShapeComponent } from '../support/shape-component';
+import { BaseShapeComponent } from '../../../shared/flo/support/shape-component';
 import { TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE} from '../support/shapes';
 
 const MAGNITUDE_NUMBERS = [ 1000000000, 1000000, 1000];

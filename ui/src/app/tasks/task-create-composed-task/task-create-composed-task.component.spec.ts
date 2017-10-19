@@ -8,6 +8,7 @@ import { MockMetamodelService } from '../../streams/flo/mocks/mock-metamodel.ser
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { EditorService } from '../flo/editor.service';
+import { ContentAssistService } from '../flo/content-assist.service';
 
 /**
  * Test {@link TaskCreateComposedTaskComponent}.
@@ -38,7 +39,8 @@ describe('TaskCreateComposedTaskComponent', () => {
         {provide: MetamodelService, useValue: metamodelService},
         {provide: RenderService},
         {provide: EditorService},
-        {provide: BsModalService}
+        {provide: BsModalService},
+        {provide: ContentAssistService}
       ]
     })
       .compileComponents();

@@ -14,7 +14,7 @@ import * as CodeMirror from 'codemirror';
 @Component({
   selector: 'app-stream-create',
   templateUrl: './stream-create.component.html',
-  styleUrls: [ '../flo/flo.scss' ],
+  styleUrls: [ '../../shared/flo/flo.scss' ],
   encapsulation: ViewEncapsulation.None
 })
 export class StreamCreateComponent implements OnInit {

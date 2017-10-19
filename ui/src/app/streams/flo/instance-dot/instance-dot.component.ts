@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { ElementComponent } from '../support/shape-component';
+import { ElementComponent } from '../../../shared/flo/support/shape-component';
 import { InstanceMetrics, INPUT_CHANNEL_MEAN, OUTPUT_CHANNEL_MEAN, TYPE } from '../../model/stream-metrics';
 import { ApplicationType } from '../../../shared/model/application-type';
 

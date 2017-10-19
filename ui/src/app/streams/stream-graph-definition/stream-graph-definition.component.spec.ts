@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { StreamDefinition } from '../model/stream-definition';
-import { StreamGraphViewComponent } from '../stream-graph-view/stream-graph-view.component';
+import { GraphViewComponent } from '../../shared/flo/graph-view/graph-view.component';
 import { StreamGraphDefinitionComponent } from './stream-graph-definition.component';
 import { FloModule } from 'spring-flo';
 import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
@@ -24,7 +24,7 @@ describe('StreamGraphDefinitionComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        StreamGraphViewComponent,
+        GraphViewComponent,
         StreamGraphDefinitionComponent
       ],
       imports: [
