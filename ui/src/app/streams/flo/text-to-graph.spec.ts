@@ -248,6 +248,33 @@ describe('text-to-graph', () => {
         expect(link.to).toEqual(1);
     });
 
+    it('incorrect tap link - gh514', () => {
+        graph = getGraph('STREAM_1=ftp | filter > :foo\n' +
+                         'STREAM_2=:STREAM_1.ftp > splitter > :foo\n' +
+                         'STREAM_3=:foo > log');
+        expect(graph.format).toEqual('scdf');
+        expect(graph.errors).toBeUndefined();
+        expect(graph.nodes.length).toEqual(5);
+        expect(graph.links.length).toEqual(5);
+
+        expect(graph.nodes[0].name).toEqual('ftp');
+        expect(graph.nodes[1].name).toEqual('filter');
+        expect(graph.nodes[2].name).toEqual('destination');
+        expect(graph.nodes[2].properties.get('name')).toEqual('foo');
+        expect(graph.nodes[3].name).toEqual('splitter');
+        expect(graph.nodes[4].name).toEqual('log');
+
+        expect(toString(graph.links[0])).toEqual('0 -> 1');
+        expect(toString(graph.links[1])).toEqual('1 -> 2');
+        expect(toString(graph.links[2])).toEqual('0 -> 3 [tap]');
+        expect(toString(graph.links[3])).toEqual('3 -> 2');
+        expect(toString(graph.links[4])).toEqual('2 -> 4');
+    });
+
+    function toString(aLink: JsonGraph.Link): string {
+        return aLink.from + ' -> ' + aLink.to + (aLink.linkType === 'tap' ? ' [tap]' : '');
+    }
+
     it('jsongraph: sink channel', () => {
         graph = getGraph('time > :abc');
         expect(graph.format).toEqual('scdf');

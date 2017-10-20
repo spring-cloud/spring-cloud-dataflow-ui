@@ -110,6 +110,7 @@ class TextToGraphConverter {
                 let linkFrom = -1;
                 for (let n = 0; n < parsedNodes.length; n++) {
                     let linkType = null;
+                    let linkCount = 0; // Only first link should be a tap link
                     // Example node:
                     // {"label":"mail","type":"source","name":"mail","options":{},
                     //  "sourceChannelName":null,"sinkChannelName":null}
@@ -175,10 +176,11 @@ class TextToGraphConverter {
                             };
                         if (linkFrom !== -1) {
                             newlink = {'from': linkFrom, 'to': graphNode.id};
-                            if (linkType) {
+                            if (linkCount === 0 && linkType) {
                                 newlink.linkType = linkType;
                             }
                             links.push(newlink);
+                            linkCount++;
                         }
                         linkFrom = graphNode.id;
                         if (!nameSet && parsedNode.group) {
@@ -223,10 +225,11 @@ class TextToGraphConverter {
                         }
                         if (linkFrom !== -1) {
                             newlink = {'from': linkFrom, 'to': graphNode.id};
-                            if (linkType) {
+                            if (linkCount === 0 && linkType) {
                                 newlink.linkType = linkType;
                             }
                             links.push(newlink);
+                            linkCount++;
                         }
                         if (!nameSet && parsedNode.group) {
                             nameSet = true;
