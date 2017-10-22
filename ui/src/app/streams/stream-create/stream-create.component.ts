@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { Flo } from 'spring-flo';
 import { ParserService } from '../../shared/services/parser.service';
 import { Parser } from '../../shared/services/parser';
@@ -9,6 +10,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { StreamCreateDialogComponent } from '../stream-create-dialog/stream-create-dialog.component';
 import { ContentAssistService } from '../flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -17,7 +19,7 @@ import * as CodeMirror from 'codemirror';
   styleUrls: [ '../../shared/flo/flo.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class StreamCreateComponent implements OnInit {
+export class StreamCreateComponent implements OnInit, OnDestroy {
 
   dsl: string;
 
@@ -32,6 +34,12 @@ export class StreamCreateComponent implements OnInit {
   validationMarkers: Map<string, Flo.Marker[]>;
 
   parseErrors: Parser.Error[] = [];
+
+  contentValidated = false;
+
+  busy: Subscription;
+
+  initSubject: Subject<void>;
 
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,
@@ -55,9 +63,30 @@ export class StreamCreateComponent implements OnInit {
                        options: CodeMirror.LintStateOptions,
                        editor: CodeMirror.Editor) => this.lint(content, updateLintingCallback, editor)
     };
+
+    this.initSubject = new Subject();
+    this.busy = this.initSubject.subscribe();
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    // Invalidate cached metamodel, thus it's reloaded next time page is opened
+    this.metamodelService.clearCachedData();
+  }
+
+  setEditorContext(editorContext: Flo.EditorContext) {
+    this.editorContext = editorContext;
+    if (this.editorContext) {
+      const subscription = this.editorContext.paletteReady.subscribe(ready => {
+        if (ready) {
+          subscription.unsubscribe();
+          this.initSubject.next();
+          this.initSubject.complete();
+        }
+      });
+    }
   }
 
   get gridOn(): boolean {
@@ -159,7 +188,7 @@ export class StreamCreateComponent implements OnInit {
   }
 
   get isCreateStreamsDisabled(): boolean {
-    if (this.dsl && this.parseErrors.length === 0) {
+    if (this.dsl && this.contentValidated && this.parseErrors.length === 0) {
       return Array.from(this.validationMarkers.values())
         .find(markers => markers
           .find(m => m.severity === Flo.Severity.Error) !== undefined) !== undefined;

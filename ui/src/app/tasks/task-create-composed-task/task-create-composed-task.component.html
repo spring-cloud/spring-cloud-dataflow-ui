@@ -1,5 +1,5 @@
-<div id="flo-container" class="stream-editor">
-  <flo-editor (floApi)="editorContext = $event" [metamodel]="metamodelService" [renderer]="renderService"
+<div id="flo-container" class="stream-editor" [ngBusy]="busy">
+  <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
               [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="20" [(dsl)]="dsl"
               (validationMarkers)="validationMarkers = $event">
     <button (click)="createTaskDefs()" class="btn btn-default" type="button" [disabled]="isCreateComposedTaskDisabled">Create</button>
@@ -10,7 +10,7 @@
     <div class="flow-definition-container">
       <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true" (blur)="editorContext.graphToTextSync=true"
                   (focus)="editorContext.graphToTextSync=false" placeholder="Enter Composed Task definition here..."
-                  [hintOptions]="hintOptions" [lintOptions]="lintOptions"
+                  [lintOptions]="lintOptions"
       ></dsl-editor>
     </div>
   </flo-editor>

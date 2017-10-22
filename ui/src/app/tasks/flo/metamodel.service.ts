@@ -4,7 +4,7 @@ import { ApplicationType } from '../../shared/model/application-type';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
 import { ToolsService } from './tools.service';
-import { Graph, Link, Node } from './model/models';
+import {Graph, Link, Node, TaskConversion} from './model/models';
 import { AppMetadata } from '../../shared/flo/support/app-metadata';
 
 import * as _joint from 'jointjs';
@@ -41,7 +41,7 @@ export class MetamodelService implements Flo.Metamodel {
     return this.toolsService.parseTaskTextToGraph(dsl).toPromise()
       .then(taskConversion => {
         this.load().then(metamodel => {
-          this.buildGraphFromJson(flo, taskConversion.graph, metamodel);
+          this.buildGraphFromJson(flo, taskConversion, metamodel);
         });
       });
   }
@@ -205,32 +205,37 @@ export class MetamodelService implements Flo.Metamodel {
       const element = elements[i];
       if (element.get('type') === joint.shapes.flo.NODE_TYPE) {
         const attrs = element.attributes.attrs;
-        const metadata = new Map<string, string>();
+        const metadata = {};
         if (element.attr('node-label')) {
-          metadata.set(this.COMPOSED_TASK_LABEL, element.attr('node-label'));
+          metadata[this.COMPOSED_TASK_LABEL] = element.attr('node-label');
         }
         nodes.push(new Node(element.attributes.id, attrs.metadata.name, element.attributes.attrs.props, metadata));
       } else if ((element.get('type') === joint.shapes.flo.LINK_TYPE)
         && element.get('source').id && element.get('target').id) {
-        const properties = new Map<string, string>();
+        const properties = {};
         if (element.attr('metadata') && element.attr('props/ExitStatus')) {
-          properties.set('transitionName', element.attr('props/ExitStatus'));
+          properties['transitionName'] = element.attr('props/ExitStatus');
         }
-        links.push(new Link(element.get('source').id, element.get('target').id));
+        links.push(new Link(element.get('source').id, element.get('target').id, properties));
       }
     }
     return new Graph(nodes, links);
   }
 
-  private buildGraphFromJson(flo: Flo.EditorContext, graph: Graph, metamodel: Map<string, Map<string, Flo.ElementMetadata>>) {
-    if (graph === undefined || graph === null) {
+  private buildGraphFromJson(flo: Flo.EditorContext, conversion: TaskConversion, metamodel: Map<string, Map<string, Flo.ElementMetadata>>) {
+    if (conversion.graph === undefined || conversion.graph === null) {
       // TODO handle this better when we have service for metadata
-      flo.clearGraph();
+      if (!conversion.errors || conversion.errors.length === 0) {
+        // There is some text but with errors it may produce invalid graph. Keep the graph as is since it might be work in progress
+        flo.clearGraph();
+      }
       return;
     }
 
     // Clear the graph completely including start and end node (they'll be re-created
     flo.getGraph().clear();
+
+    const graph = conversion.graph;
 
     const inputnodes = graph.nodes;
     const inputlinks = graph.links;
@@ -259,7 +264,6 @@ export class MetamodelService implements Flo.Metamodel {
         metadata.unresolved = true;
       }
 
-      const nodeProperties = inputnodes[n].properties;
       const properties = new Map<string, any>();
       if (inputnodes[n].properties) {
         Object.keys(inputnodes[n].properties).forEach(k => properties.set(k, inputnodes[n].properties[k]));
@@ -308,4 +312,9 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
   }
+
+  clearCachedData() {
+    this.request = undefined;
+  }
+
 }

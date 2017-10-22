@@ -175,4 +175,8 @@ export class MetamodelService implements Flo.Metamodel {
 
     }
 
+    clearCachedData() {
+      this.request = undefined;
+    }
+
 }
