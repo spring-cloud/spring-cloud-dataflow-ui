@@ -34,7 +34,7 @@
     "ng2-toasty": "^4.0.0",
     "ngx-bootstrap": "^1.8.1",
     "ngx-clipboard": "^8.0.2",
-    "ngx-pagination": "^3.0.1",
+    "ngx-pagination": "3.0.1",
     "rxjs": "^5.4.2",
     "sockjs-client": "^1.1.4",
     "spring-flo": "git://github.com/spring-projects/spring-flo.git#2cc5e215aa023996bce2402867cd299eb599020e",
