@@ -41,10 +41,10 @@ export class Node {
 
   public id: string;
   public name: string;
-  public properties: Map<string, string>;
-  public metadata: Map<string, string>;
+  public properties: {};
+  public metadata: {};
 
-  constructor(id: string, name: string, properties?: Map<string, string>, metadata?: Map<string, string>) {
+  constructor(id: string, name: string, properties?: {}, metadata?: {}) {
     this.id = id;
     this.name = name;
     this.properties = properties;
@@ -59,9 +59,9 @@ export class Link {
 
   public from: string;
   public to: string;
-  public properties: Map<string, string>;
+  public properties: {};
 
-  constructor(from: string, to: string, properties?: Map<string, string>) {
+  constructor(from: string, to: string, properties?: {}) {
     this.from = from;
     this.to = to;
     this.properties = properties;

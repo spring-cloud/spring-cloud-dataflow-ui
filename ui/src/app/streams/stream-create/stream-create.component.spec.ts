@@ -1,5 +1,7 @@
 import {StreamCreateComponent} from './stream-create.component';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {BusyModule} from 'tixif-ngx-busy';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MockActivatedRoute} from '../../tests/mocks/activated-route';
 import {MockStreamsService} from '../../tests/mocks/streams';
 import {MockMetamodelService} from '../flo/mocks/mock-metamodel.service';
@@ -41,7 +43,9 @@ describe('StreamCreateComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([]),
         ModalModule,
-        FloModule
+        FloModule,
+        BusyModule,
+        NoopAnimationsModule
       ],
       providers: [
         {provide: StreamsService, useValue: streamsService},

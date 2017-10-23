@@ -42,6 +42,8 @@ export class ComposedTaskDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.busy.unsubscribe();
+    // Invalidate cached metamodel, thus it's reloaded next time page is opened
+    this.metamodelService.clearCachedData();
   }
 
   goBack() {

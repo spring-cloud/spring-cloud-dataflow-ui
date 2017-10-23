@@ -9,6 +9,8 @@ import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { EditorService } from '../flo/editor.service';
 import { ContentAssistService } from '../flo/content-assist.service';
+import { BusyModule } from 'tixif-ngx-busy';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link TaskCreateComposedTaskComponent}.
@@ -33,7 +35,9 @@ describe('TaskCreateComposedTaskComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([]),
         ModalModule,
-        FloModule
+        FloModule,
+        BusyModule,
+        NoopAnimationsModule
       ],
       providers: [
         {provide: MetamodelService, useValue: metamodelService},
