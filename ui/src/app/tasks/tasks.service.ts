@@ -197,9 +197,6 @@ export class TasksService {
     const headers = new Headers({'Content-Type': 'application/json'});
     const options = new RequestOptions({headers: headers});
     return this.http.delete('/tasks/definitions/' + name, options)
-      .map(data => {
-        this.taskDefinitions.items = this.taskDefinitions.items.filter(item => item.name !== name);
-      })
       .catch(this.errorHandler.handleError);
   }
 

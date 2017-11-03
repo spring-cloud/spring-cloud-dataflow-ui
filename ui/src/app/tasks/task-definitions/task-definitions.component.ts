@@ -107,6 +107,7 @@ export class TaskDefinitionsComponent implements OnInit {
         this.cancel();
         this.toastyService.success('Successfully destroyed task definition "'
           + taskDefinition.name + '"');
+        this.loadTaskDefinitions();
       },
       error => {
         this.toastyService.error(error);
