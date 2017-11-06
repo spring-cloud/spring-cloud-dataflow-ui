@@ -1,8 +1,15 @@
 <h1 [ngBusy]="busy">Task Executions</h1>
-<p>
-  This section lists all the available task executions.
-</p>
-
+<table>
+<tr>
+  <th style="font-weight: normal; width: 765px">
+    This section lists all the available task executions.
+  </th>
+<th>
+  <button id="refreshTaskExecutionsButton" type="button" (click)="loadTaskExecutions()"
+          class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+</th>
+</tr>
+</table>
 <div *ngIf="!taskExecutions">No task executions available.</div>
 <table *ngIf="taskExecutions?.items" class="table table-hover">
   <thead>
