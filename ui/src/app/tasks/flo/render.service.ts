@@ -6,7 +6,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { MetamodelService} from './metamodel.service';
 import {
   TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape,
-  CONTROL_GROUP_TYPE, IMAGE_W
+  CONTROL_GROUP_TYPE, IMAGE_W, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE
 } from './support/shapes';
 import { layout } from './support/layout';
 import { ElementComponent } from '../../shared/flo/support/shape-component';
@@ -96,46 +96,47 @@ export class RenderService implements Flo.Renderer {
    * @returns {dia.Element} the created element
    */
   createNode(metadata: Flo.ElementMetadata): dia.Element {
-    if (metadata.name === 'START') {
-      return new BatchStartShape(
-        defaultsDeep({
-          attrs: {
-            '.label': {
-              'text': metadata.name
+    switch (metadata.name) {
+      case START_NODE_TYPE:
+        return new BatchStartShape(
+          defaultsDeep({
+            attrs: {
+              '.label': {
+                'text': metadata.name
+              }
             }
-          }
-        }, BatchStartShape.prototype.defaults)
-      );
-    } else if (metadata.name === 'END') {
-      return new BatchEndShape(
-        defaultsDeep({
-          attrs: {
-            '.label': {
-              'text': metadata.name
+          }, BatchStartShape.prototype.defaults)
+        );
+      case END_NODE_TYPE:
+        return new BatchEndShape(
+          defaultsDeep({
+            attrs: {
+              '.label': {
+                'text': metadata.name
+              }
             }
-          }
-        }, BatchEndShape.prototype.defaults)
-      );
-    } else if (metadata.name === 'sync') {
-      return new BatchSyncShape(
-        defaultsDeep({
-          attrs: {
-            '.label': {
-              'text': metadata.name
+          }, BatchEndShape.prototype.defaults)
+        );
+      case SYNC_NODE_TYPE:
+        return new BatchSyncShape(
+          defaultsDeep({
+            attrs: {
+              '.label': {
+                'text': metadata.name
+              }
             }
-          }
-        }, BatchSyncShape.prototype.defaults)
-      );
-    } else {
-      return new TaskAppShape(
-        defaultsDeep({
-          attrs: {
-            '.label': {
-              'text': metadata.name
+          }, BatchSyncShape.prototype.defaults)
+        );
+      default:
+        return new TaskAppShape(
+          defaultsDeep({
+            attrs: {
+              '.label': {
+                'text': metadata.name
+              }
             }
-          }
-        }, TaskAppShape.prototype.defaults)
-      );
+          }, TaskAppShape.prototype.defaults)
+        );
     }
   }
 

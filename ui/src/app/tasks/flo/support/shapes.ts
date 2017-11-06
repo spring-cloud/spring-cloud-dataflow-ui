@@ -10,7 +10,7 @@ export const TASK_GROUP_TYPE = 'task';
 
 export const START_NODE_TYPE = 'START';
 export const END_NODE_TYPE = 'END';
-export const SYNC_NODE_TYPE = 'sync';
+export const SYNC_NODE_TYPE = 'SYNC';
 
 const CONTROL_NODE_SIZE = {
   width: 40,

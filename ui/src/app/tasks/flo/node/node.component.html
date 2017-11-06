@@ -17,7 +17,7 @@
     <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
   </svg:g>
 
-  <svg:g *ngSwitchCase="'sync'" class="composed-task">
+  <svg:g *ngSwitchCase="'SYNC'" class="composed-task">
     <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
       <svg:circle class="border"/>
       <svg:text class="label"/>
