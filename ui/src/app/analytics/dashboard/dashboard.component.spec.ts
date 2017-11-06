@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import {BusyModule} from 'tixif-ngx-busy';
+import {BusyModule} from 'angular2-busy';
 import {AnalyticsModule} from '../analytics.module';
 
 describe('DashboardComponent', () => {

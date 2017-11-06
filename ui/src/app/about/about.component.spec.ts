@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {BusyModule} from 'tixif-ngx-busy';
+import {BusyModule} from 'angular2-busy';
 import { AboutComponent } from './about.component';
 import {ToastyService} from 'ng2-toasty';
 import {MockToastyService} from '../tests/mocks/toasty';

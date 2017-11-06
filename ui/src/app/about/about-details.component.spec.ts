@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {BusyModule} from 'tixif-ngx-busy';
+import {BusyModule} from 'angular2-busy';
 import {ToastyService} from 'ng2-toasty';
 import {MockToastyService} from '../tests/mocks/toasty';
 import {MockActivatedRoute} from '../tests/mocks/activated-route';
@@ -10,6 +10,7 @@ import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AboutDetailsComponent} from './about-details.component';
+import {KeyValuePipe} from '../shared/pipes/key-value-filter.pipe';
 import {ClipboardModule} from 'ngx-clipboard/dist';
 import { MapValuesPipe } from '../shared/pipes/map-values-pipe.pipe';
 

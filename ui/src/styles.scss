@@ -48,7 +48,7 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 //   @include make-grid(xl);
 // }
 
-@import '../node_modules/tixif-ngx-busy/build/style/busy.css';
+@import '../node_modules/angular2-busy/build/style/busy.css';
 
 @import '../node_modules/ng2-toasty/bundles/style.css';
 @import '../node_modules/ng2-toasty/bundles/style-bootstrap.css';

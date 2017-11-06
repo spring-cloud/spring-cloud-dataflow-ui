@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { JobsService } from './jobs.service';
 import { HttpUtils } from '../shared/support/http.utils';

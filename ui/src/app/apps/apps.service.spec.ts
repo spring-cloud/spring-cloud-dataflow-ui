@@ -1,5 +1,5 @@
 import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { AppsService } from './apps.service';
 import { HttpUtils } from '../shared/support/http.utils';

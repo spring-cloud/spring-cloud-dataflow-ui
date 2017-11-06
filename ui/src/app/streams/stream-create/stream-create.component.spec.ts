@@ -1,5 +1,5 @@
 import {StreamCreateComponent} from './stream-create.component';
-import {BusyModule} from 'tixif-ngx-busy';
+import {BusyModule} from 'angular2-busy';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MockActivatedRoute} from '../../tests/mocks/activated-route';
