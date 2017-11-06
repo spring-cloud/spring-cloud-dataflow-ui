@@ -24,7 +24,7 @@
 
 </svg:g>
 
-<template #canvasNodeTooltip>
+<ng-template #canvasNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
     <span><strong>{{metaName | uppercase}}</strong></span>
     <span><strong>{{'(' + (metaGroup | capitalize) + ')'}}</strong></span>
@@ -40,4 +40,4 @@
     </tr>
     </tbody>
   </table>
-</template>
+</ng-template>

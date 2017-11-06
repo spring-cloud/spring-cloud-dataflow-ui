@@ -1,5 +1,5 @@
 import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { SecurityInfo } from './security-info.model';
 

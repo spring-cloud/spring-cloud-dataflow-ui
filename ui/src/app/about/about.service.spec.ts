@@ -1,5 +1,5 @@
 import { AboutService } from './about.service';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { Response, ResponseOptions } from '@angular/http';
 import { SharedAboutService } from '../shared/services/shared-about.service';

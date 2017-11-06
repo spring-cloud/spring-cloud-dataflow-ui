@@ -4,7 +4,7 @@
   </svg:g>
 </svg:g>
 
-<template #dotTooltip>
+<ng-template #dotTooltip>
   <table *ngIf="instance; else noData" class="table-hover table-condensed container-details-table">
     <tbody>
     <tr>
@@ -21,7 +21,7 @@
     </tr>
     </tbody>
   </table>
-</template>
+</ng-template>
 
 <ng-template #noData>
   <span>App instance either is down or not deployed</span>

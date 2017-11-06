@@ -5,6 +5,7 @@ import { ToastyService } from 'ng2-toasty';
 import { Subscription } from 'rxjs/Subscription';
 import { TasksService } from '../tasks.service';
 import { AppInfo } from '../model/app-info';
+import 'rxjs/add/operator/do';
 
 @Component({
   selector: 'app-task-create',

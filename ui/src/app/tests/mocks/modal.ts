@@ -15,5 +15,5 @@ import {TemplateRef} from '@angular/core';
  * @author Damien Vitrac
  */
 export class MockBsModalRef extends BsModalRef {
-  hide() {}
+  hide = Function
 }

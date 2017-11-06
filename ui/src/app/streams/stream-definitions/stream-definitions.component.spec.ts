@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
-import {BusyModule} from 'tixif-ngx-busy';
+import {BusyModule} from 'angular2-busy';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {ToastyService} from 'ng2-toasty';
 import {BsModalRef, ModalModule, PopoverModule} from 'ngx-bootstrap';

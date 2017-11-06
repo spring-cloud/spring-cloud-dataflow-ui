@@ -1,5 +1,5 @@
 import { URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 import { HttpUtils } from '../shared/support/http.utils';
 import { ErrorHandler } from '../shared/model';

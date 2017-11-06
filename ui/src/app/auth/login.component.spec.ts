@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BusyModule } from 'tixif-ngx-busy';
+import { BusyModule } from 'angular2-busy';
 import { FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login.component';

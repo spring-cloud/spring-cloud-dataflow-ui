@@ -4,6 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/interval';
+
+import 'rxjs/add/operator/switchMap';
+
 import { ErrorHandler, Page } from '../shared/model';
 import { AggregateCounter, BaseCounter, Counter, DashboardItem, FieldValueCounter, MetricType } from './model';
 import { HttpUtils } from '../shared/support/http.utils';
