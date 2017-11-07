@@ -7,16 +7,12 @@ import { FormControl } from '@angular/forms';
  */
 export function validateDeploymentProperties(formControl: FormControl) {
   const properties = formControl.value.split('\n');
-  let propertiesAsMap = null;
 
   if (properties) {
-    propertiesAsMap = {};
     for (const prop of properties) {
       if (prop && prop.length > 0 && !prop.startsWith('#')) {
         const keyValue = prop.split('=');
-        if (keyValue.length === 2) {
-          propertiesAsMap[keyValue[0]] = keyValue[1];
-        } else {
+        if (keyValue.length < 2) {
           return {
             validateDeploymentProperties: {
               reason: `Invalid deployment property "${prop}" must contain a single "=".`
