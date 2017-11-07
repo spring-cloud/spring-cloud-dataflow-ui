@@ -57,9 +57,9 @@ export class DeploymentPropertiesComponent implements OnInit {
     if (this.deploymentProperties.value) {
       for (const prop of this.deploymentProperties.value.split('\n')) {
         if (prop && prop.length > 0 && !prop.startsWith('#')) {
-          const keyValue = prop.split('=');
-          if (keyValue.length === 2) {
-            propertiesAsMap[keyValue[0]] = keyValue[1];
+          const index = prop.indexOf('=');
+          if (index > 0) {
+            propertiesAsMap[prop.substr(0, index)] = prop.substr(index + 1);
           }
         }
       }

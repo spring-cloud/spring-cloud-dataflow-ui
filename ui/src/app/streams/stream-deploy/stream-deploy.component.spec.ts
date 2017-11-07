@@ -80,8 +80,11 @@ describe('StreamDeployComponent', () => {
     const de: DebugElement = fixture.debugElement.query(By.css('button[id=deployBtn]'));
     const el: HTMLElement = de.nativeElement;
     const navigate = spyOn((<any>component).router, 'navigate');
-    component.deploymentProperties.setValue('app.bar=foo');
+    component.deploymentProperties.setValue('app.bar=foo\napp.aaa=bbb=ccc\napp.ddd=eee');
     el.click();
+    expect(component.propertiesAsMap['app.bar']).toBe('foo');
+    expect(component.propertiesAsMap['app.aaa']).toBe('bbb=ccc');
+    expect(component.propertiesAsMap['app.ddd']).toBe('eee');
 
     expect(navigate).toHaveBeenCalledWith(['streams/definitions']);
     expect(toastyService.testSuccess).toContain('Successfully deployed stream definition "1"');

@@ -76,4 +76,17 @@ describe('DeploymentPropertiesComponent', () => {
     expect(submitEvent).toHaveBeenCalled();
   });
 
+  it('should update the stream definition to deploy with multiple properties and emit event Submit on submit', () => {
+    component.stream = new StreamDefinition('foo2', 'time |log', 'undeployed');
+    fixture.detectChanges();
+    const submitEvent = spyOn(component.submit, 'emit');
+    component.deploymentProperties.setValue('a=a\nb=c=d\ne=f');
+    component.deployDefinition();
+    expect(component.stream.deploymentProperties.a).toBe('a');
+    expect(component.stream.deploymentProperties.b).toBe('c=d');
+    expect(component.stream.deploymentProperties.e).toBe('f');
+
+    expect(submitEvent).toHaveBeenCalled();
+  });
+
 });

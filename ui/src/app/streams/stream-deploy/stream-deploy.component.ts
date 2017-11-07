@@ -22,6 +22,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   private sub: any;
   form: FormGroup;
   deploymentProperties = new FormControl('', validateDeploymentProperties);
+  propertiesAsMap = {};
 
   /**
    * Adds deployment properties to the FormBuilder
@@ -69,19 +70,19 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   deployDefinition() {
     console.log('deployDefinition ' + this.deploymentProperties.value);
 
-    const propertiesAsMap = {};
+    this.propertiesAsMap = {};
     if (this.deploymentProperties.value) {
       for (const prop of this.deploymentProperties.value.split('\n')) {
         if (prop && prop.length > 0 && !prop.startsWith('#')) {
-          const keyValue = prop.split('=');
-          if (keyValue.length === 2) {
-            propertiesAsMap[keyValue[0]] = keyValue[1];
+          const index = prop.indexOf('=');
+          if (index > 0) {
+            this.propertiesAsMap[prop.substr(0, index)] = prop.substr(index + 1);
           }
         }
       }
     }
 
-    this.streamsService.deployDefinition(this.id, propertiesAsMap).subscribe(
+    this.streamsService.deployDefinition(this.id, this.propertiesAsMap).subscribe(
       data => {
         this.toastyService.success('Successfully deployed stream definition "'
           + this.id + '"');
