@@ -8,7 +8,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
+    "e2e": "ng e2e --proxy-config proxy.conf.json",
     "install": "napa pivotal-cf/pivotal-ui:pivotal-ui-git-clone",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json -n \"Spring Cloud Data Flow Dashboard Documentation\"",
     "mavenbuild": "node ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers PhantomJS && node ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../src/main/resources/public/dashboard --base-href /dashboard/",
