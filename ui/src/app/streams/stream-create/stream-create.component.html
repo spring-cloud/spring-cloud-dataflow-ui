@@ -10,7 +10,7 @@
     <button class="btn" (click)="gridOn = !gridOn"
             [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid</button>
     <div class="flow-definition-container">
-      <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true" (blur)="editorContext.graphToTextSync=true"
+      <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
                   (focus)="editorContext.graphToTextSync=false" placeholder="Enter stream definition..."
                   [hintOptions]="hintOptions" [lintOptions]="lintOptions"></dsl-editor>
     </div>
