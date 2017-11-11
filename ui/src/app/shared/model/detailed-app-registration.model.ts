@@ -38,6 +38,7 @@ export class ConfigurationMetadataProperty implements Serializable<Configuration
   public shortDescription: string;
   public defaultValue: string;
   public deprecation: Deprecation;
+  public sourceType: string;
   public isDeprecated: boolean;
 
   /**
@@ -55,6 +56,7 @@ export class ConfigurationMetadataProperty implements Serializable<Configuration
     this.shortDescription = input.shortDescription ? input.shortDescription : undefined;
     this.defaultValue = input.defaultValue ? input.defaultValue : undefined;
     this.deprecation = input.deprecation ? new Deprecation().deserialize(input.deprecation) : undefined;
+    this.sourceType = input.sourceType ? input.sourceType : undefined;
     this.isDeprecated = input.deprecated ? input.deprecated : false;
     return this;
   }

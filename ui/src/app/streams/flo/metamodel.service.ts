@@ -21,7 +21,7 @@ import { ApplicationType } from '../../shared/model/application-type';
 import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './support/shapes';
-import { AppMetadata} from '../../shared/flo/support/app-metadata';
+import { AppMetadata } from '../../shared/flo/support/app-metadata';
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -67,20 +67,6 @@ export class MetamodelService implements Flo.Metamodel {
         }
     }
 
-    encodeTextToDSL(text: string): string {
-        const retval = '\"' + text.replace(/(?:\r\n|\r|\n)/g, '\\n').replace(/"/g, '""') + '\"';
-        return retval;
-    }
-
-    decodeTextFromDSL(dsl: string): string {
-        if (dsl.charAt(0) === '\"' && dsl.charAt(dsl.length - 1) === '\"') {
-            dsl = dsl.substr(1, dsl.length - 2);
-        }
-        const retval = dsl.replace(/\\n/g, '\n').replace(/\"\"/g, '"');
-        return retval;
-    }
-
-
     groups(): Array<string> {
         return ['source', 'processor', 'sink', 'other'];
     }
@@ -102,7 +88,7 @@ export class MetamodelService implements Flo.Metamodel {
                     }).forEach(item => {
 
                         if (!metamodel.has(item.type.toString())) {
-                            metamodel.set(item.type.toString(), new Map<string, Flo.ElementMetadata>());
+                            metamodel.set(item.type.toString(), new Map<string, AppMetadata>());
                         }
                         const group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
                         if (group.has(item.name)) {
@@ -122,7 +108,7 @@ export class MetamodelService implements Flo.Metamodel {
         return this.request;
     }
 
-    private createEntry(type: ApplicationType, name: string, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
+    private createEntry(type: ApplicationType, name: string, metadata?: Flo.ExtraMetadata): AppMetadata {
       return new AppMetadata(
         type.toString(),
         name,

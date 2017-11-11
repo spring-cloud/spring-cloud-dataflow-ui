@@ -4,8 +4,23 @@
 
 .tooltip-property-value {
   word-break: break-all;
+  max-width: 390px;
+  white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: left;
 }
 
 .tooltip-property-key {
+  text-align: left;
   vertical-align: top;
+  max-width: 200px;
+  vertical-align: top;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tooltip-property-value-code {
+  font-family: monospace;
+  font-size: 85%;
 }

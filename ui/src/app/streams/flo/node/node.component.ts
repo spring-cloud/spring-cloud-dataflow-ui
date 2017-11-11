@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { dia } from 'jointjs';
 import { Flo, Constants } from 'spring-flo';
 import { ElementComponent } from '../../../shared/flo/support/shape-component';
+import { Utils } from '../../../shared/flo/support/utils';
 
 /**
 * Component for displaying application properties and capturing their values.
@@ -24,7 +25,14 @@ export class NodeComponent extends ElementComponent {
   }
 
   getPropertyValue(property: string): any {
-    return this.view ? this.view.model.attr(`props/${property}`) : '';
+    if (this.view) {
+      const value = this.view.model.attr(`props/${property}`);
+      if (this.isCode(property)) {
+        return Utils.decodeTextFromDSL(value);
+      }
+      return value;
+    }
+    return '';
   }
 
   isCanvas(): boolean {
@@ -69,7 +77,7 @@ export class NodeComponent extends ElementComponent {
   }
 
   isCode(property: string): boolean {
-    return false;
+    return Utils.isCodeTypeProperty(this.metadata, property);
   }
 
   keys(o: any): Array<string> {
