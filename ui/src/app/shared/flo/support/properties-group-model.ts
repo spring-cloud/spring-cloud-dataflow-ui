@@ -1,6 +1,7 @@
 import { Flo, Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import { dia } from 'jointjs';
+import { Utils } from './utils';
 
 /**
  * Utility class for working with Properties.
@@ -31,11 +32,19 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
           inputType = Properties.InputType.CHECKBOX;
           break;
         default:
-          if (Array.isArray(property.metadata.options)) {
+          if (property.metadata.code) {
+            if (property.metadata.code.langPropertyName) {
+              return new Properties.CodeControlModelWithDynamicLanguageProperty(property,
+                property.metadata.code.langPropertyName, this, Utils.encodeTextToDSL, Utils.decodeTextFromDSL);
+            } else {
+              return new Properties.GenericCodeControlModel(property, property.metadata.code.language,
+                Utils.encodeTextToDSL, Utils.decodeTextFromDSL);
+            }
+          } else if (Array.isArray(property.metadata.options)) {
             return new Properties.SelectControlModel(property,
               Properties.InputType.SELECT, (<Array<string>> property.metadata.options).map(o => {
                 return {
-                  name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
+                  name: o ? o.charAt(0).toUpperCase() + o.substr(1).toLowerCase() : '< SELECT >',
                   value: o === property.defaultValue ? undefined : o
                 };
               }));
@@ -73,7 +82,7 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     }
     const valueFromName = this.cell.attr(nameAttr);
     const valueFromId = this.cell.attr(idAttr);
-    if (valueFromName === undefined || valueFromName === null && !(valueFromId === undefined || valueFromId === null)) {
+    if ((valueFromName === undefined || valueFromName === null) && !(valueFromId === undefined || valueFromId === null)) {
       return idAttr;
     } else {
       return nameAttr;

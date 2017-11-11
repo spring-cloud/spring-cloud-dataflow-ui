@@ -11,6 +11,11 @@ import { ApplicationType } from '../../../shared/model/application-type';
 import { PropertiesDialogComponent } from '../../../shared/flo/properties/properties-dialog.component';
 import { PropertiesGroupModel } from '../../../shared/flo/support/properties-group-model';
 
+// Workaround to load jshint to have linting working for JS snippet inside the props dialog
+import { JSHINT } from 'jshint';
+if (!(<any>window).JSHINT) {
+  (<any>window).JSHINT = JSHINT;
+}
 
 /**
  * Utility class for working with Properties.
