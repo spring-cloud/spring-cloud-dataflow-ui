@@ -3,32 +3,38 @@
   This section lists all the available applications and provides the control to register/unregister them (if applicable).
 </p>
 
-<button id="registerApplicationButton" type="button" (click)="registerApps()"
-        class="btn btn-default" [appRoles]="['ROLE_CREATE']"
-><span class="glyphicon glyphicon-plus"></span>
-  <span class="hidden-xs">Register Application(s)</span>
-</button>
+<div class="row">
+  <div class="col-md-18">
+      <button id="registerApplicationButton" type="button" (click)="registerApps()"
+      class="btn btn-default" [appRoles]="['ROLE_CREATE']"
+      ><span class="glyphicon glyphicon-plus"></span>
+      <span class="hidden-xs">Register Applicati18on(s)</span>
+      </button>
 
-<app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
-                      [items]="appRegistrations.getItemsAsObservable()"
-                      (eventHandler)="unregisterMultipleApps(appRegistrations.items)"
-                      noneSelectedLabel="No app selected to unregister"
-                      oneSelectedLabel="Unregister {selectedCount} selected app"
-                      manySelectedLabel="Unregister {selectedCount} selected apps"
-                      allSelectedLabel="Unregister all {selectedCount} selected apps"
-></app-tri-state-button>
+      <app-tri-state-button *ngIf="appRegistrations?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
+                          [items]="appRegistrations.getItemsAsObservable()"
+                          (eventHandler)="unregisterMultipleApps(appRegistrations.items)"
+                          noneSelectedLabel="No app selected to unregister"
+                          oneSelectedLabel="Unregister {selectedCount} selected app"
+                          manySelectedLabel="Unregister {selectedCount} selected apps"
+                          allSelectedLabel="Unregister all {selectedCount} selected apps"
+      ></app-tri-state-button>
 
-<button id="bulkImportAppsButton" type="button" (click)="bulkImportApps()" [appRoles]="['ROLE_CREATE']"
-        class="btn btn-default"
-><span class="glyphicon glyphicon-import"></span>
-  <span class="hidden-xs">Bulk Import Applications</span>
-</button>
-<label *ngIf="appRegistrations" class="control">
-  <input type="text" class="input" placeholder="Filter items" [(ngModel)]="appRegistrations.filter" >
-</label>
-<button id="refreshAppRegistrationsButton" type="button" (click)="loadAppRegistrations(true)"
-        class="btn btn-default"
-><span class="glyphicon glyphicon-refresh"></span></button>
+      <button id="bulkImportAppsButton" type="button" (click)="bulkImportApps()" [appRoles]="['ROLE_CREATE']"
+            class="btn btn-default"
+      ><span class="glyphicon glyphicon-import"></span>
+      <span class="hidden-xs">Bulk Import Applications</span>
+      </button>
+  </div>
+  <div class="col-md-6 text-right">
+      <label *ngIf="appRegistrations" class="control">
+          <input type="text" class="input" placeholder="Filter items" [(ngModel)]="appRegistrations.filter" >
+        </label>
+        <button id="refreshAppRegistrationsButton" type="button" (click)="loadAppRegistrations(true)"
+                class="btn btn-default"
+        ><span class="glyphicon glyphicon-refresh"></span></button>
+  </div>
+</div>
 
 <table *ngIf="appRegistrations?.items && appRegistrations.items.length > 0" class="table table-hover">
   <thead>

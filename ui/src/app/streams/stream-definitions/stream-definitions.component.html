@@ -1,68 +1,59 @@
-<div class="row">
+<ng-template [ngBusy]="{busy: busy, wrapperClass: 'ng-busy ng-busy-no-margin', minDuration: 2000}"></ng-template>
+<div class="row" style="margin-bottom: 5px;">
   <div class="col-md-24">
-    <div class="col-md-24 table-filter">
-      <table class="col-lg-24 tab-content-header" [ngBusy]="busy">
-        <tr>
-          <td class="col-xs-12">
-            <button type="button" (click)="expandPage()"
-                    class="btn btn-default"  id="expandAll">
-              <span class="glyphicon glyphicon-collapse-down"></span>
-              <span class="hidden-xs">Expand All</span>
-            </button>
-            <button type="button" (click)="collapsePage()"
-                    class="btn btn-default"  id="collapseAll">
-              <span class="glyphicon glyphicon-expand"></span>
-              <span class="hidden-xs">Collapse All</span>
-            </button>
-          </td>
-          <td>
-            <label *ngIf="streamDefinitions" class="control">Filter Stream Definitions
-              <input type="text" class="input" placeholder="Filter definitions" [(ngModel)]="streamDefinitions.filter">
-            </label>
-            <button *ngIf="streamDefinitions" type="button" (click)="loadStreamDefinitions()"
-                    class="btn btn-default">
-              <span class="glyphicon glyphicon-refresh"></span></button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" class="col-xs-12 col-actions" height="45px">
-            <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
-                                  [items]="streamDefinitions.getItemsAsObservable()"
-                                  (eventHandler)="deployMultipleStreamDefinitions(streamDefinitions.items)"
-                                  noneSelectedLabel="No stream selected to deploy"
-                                  oneSelectedLabel="Deploy {selectedCount} selected stream"
-                                  manySelectedLabel="Deploy {selectedCount} selected streams"
-                                  allSelectedLabel="Deploy all {selectedCount} selected streams"
-                                  icon="play"
-                                  [filter]="filterDeployable"
-            ></app-tri-state-button>
+    <button type="button" (click)="expandPage()"
+            class="btn btn-default"  id="expandAll">
+    <span class="glyphicon glyphicon-collapse-down"></span>
+    <span class="hidden-xs">Expand All</span>
+    </button>
+    <button type="button" (click)="collapsePage()"
+            class="btn btn-default"  id="collapseAll">
+    <span class="glyphicon glyphicon-expand"></span>
+    <span class="hidden-xs">Collapse All</span>
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-19">
+    <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
+      [items]="streamDefinitions.getItemsAsObservable()"
+      (eventHandler)="deployMultipleStreamDefinitions(streamDefinitions.items)"
+      noneSelectedLabel="No stream selected to deploy"
+      oneSelectedLabel="Deploy {selectedCount} selected stream"
+      manySelectedLabel="Deploy {selectedCount} selected streams"
+      allSelectedLabel="Deploy all {selectedCount} selected streams"
+      icon="play"
+      [filter]="filterDeployable"
+    ></app-tri-state-button>
 
-            <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
-                                  [items]="streamDefinitions.getItemsAsObservable()"
-                                  (eventHandler)="undeployMultipleStreamDefinitions(streamDefinitions.items)"
-                                  noneSelectedLabel="No stream selected to undeploy"
-                                  oneSelectedLabel="Undeploy {selectedCount} selected stream"
-                                  manySelectedLabel="Undeploy {selectedCount} selected streams"
-                                  allSelectedLabel="Undeploy all {selectedCount} selected streams"
-                                  icon="stop"
-                                  [filter]="filterUndeployable"
-            ></app-tri-state-button>
+    <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
+      [items]="streamDefinitions.getItemsAsObservable()"
+      (eventHandler)="undeployMultipleStreamDefinitions(streamDefinitions.items)"
+      noneSelectedLabel="No stream selected to undeploy"
+      oneSelectedLabel="Undeploy {selectedCount} selected stream"
+      manySelectedLabel="Undeploy {selectedCount} selected streams"
+      allSelectedLabel="Undeploy all {selectedCount} selected streams"
+      icon="stop"
+      [filter]="filterUndeployable"
+    ></app-tri-state-button>
 
-            <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
-                                  [items]="streamDefinitions.getItemsAsObservable()"
-                                  (eventHandler)="destroyMultipleStreams(streamDefinitions.items)"
-                                  noneSelectedLabel="No stream selected to destroy"
-                                  oneSelectedLabel="Destroy {selectedCount} selected stream"
-                                  manySelectedLabel="Destroy {selectedCount} selected streams"
-                                  allSelectedLabel="Destroy all {selectedCount} selected streams"
-                                  icon="remove"
-            ></app-tri-state-button>
-
-          </td>
-
-        </tr>
-      </table>
-    </div>
+    <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
+      [items]="streamDefinitions.getItemsAsObservable()"
+      (eventHandler)="destroyMultipleStreams(streamDefinitions.items)"
+      noneSelectedLabel="No stream selected to destroy"
+      oneSelectedLabel="Destroy {selectedCount} selected stream"
+      manySelectedLabel="Destroy {selectedCount} selected streams"
+      allSelectedLabel="Destroy all {selectedCount} selected streams"
+      icon="remove"
+    ></app-tri-state-button>
+  </div>
+  <div class="col-md-5 text-right" style="padding-left: 0;">
+    <label *ngIf="streamDefinitions" class="control">
+      <input type="text" class="input" placeholder="Filter definitions" [(ngModel)]="streamDefinitions.filter">
+    </label>
+    <button *ngIf="streamDefinitions" type="button" (click)="loadStreamDefinitions()"
+            class="btn btn-default">
+      <span class="glyphicon glyphicon-refresh"></span></button>
   </div>
 </div>
 <div *ngIf="!streamDefinitions">No streams available.</div>
