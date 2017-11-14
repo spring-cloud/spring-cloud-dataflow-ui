@@ -28,7 +28,7 @@ Using [Maven][] is also the easiest route for Java developers to get started, as
 	$ cd spring-cloud-dataflow-ui
 	$ mvn clean install
 
-This will create `target/spring-cloud-dataflow-ui-2.0.0.BUILD-SNAPSHOT.jar` and also install the build artifact into the local Maven repository.
+This will create `target/spring-cloud-dataflow-ui-1.3.0.BUILD-SNAPSHOT.jar` and also install the build artifact into the local Maven repository.
 
 ## Building the Project using npm
 
@@ -41,7 +41,8 @@ For UI development purposes, we recommend using [npm][] directly. Please ensure 
 
 **NOTE:** Before building be sure that the `ng-serve` development server has been shutdown.
 
-### Build fails after merging a branch or changing branches.
+### Build fails after merging a branch or changing branches
+
 In some cases the npm-modules or other dependencies may become inconsistent during branch changes.
 In order to resolve the problem we need to clean out inconsistent dependencies.
 The following instructions can be used to do this:
@@ -65,6 +66,10 @@ The following instructions can be used to do this:
 
 	$ ng test --browsers PhantomJS --single-run
 
+## E2E Tests
+
+	$ npm run e2e
+
 # Development
 
 For development, please ensure that a *Spring Cloud Data Flow* server instance is running at `http://localhost:9393/`.
@@ -75,7 +80,7 @@ The execute:
 
 The Dashboard will be running at `http://localhost:4200/`. The browser will automatically reload upon saving any changes to the application sources.
 
-# Dependency Management using Bower
+# Dependency Management
 
 [npm][] is used for managing UI dependencies.
 
