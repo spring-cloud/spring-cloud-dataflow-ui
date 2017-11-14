@@ -1,5 +1,15 @@
 <h1 class="no-user-selection">Runtime applications</h1>
-<p> This section shows the list of all running apps.</p>
+<p>
+  This section shows the list of all running apps.
+</p>
+
+<div class="row">
+  <div class="col-md-24 text-right">
+    <button id="refreshTaskExecutionsButton" type="button" (click)="getPage($event)"
+    class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+  </div>
+</div>
+
 <div *ngIf="runtimeApps?.items.length == 0">No applications are running.</div>
 <table *ngIf="runtimeApps?.items.length > 0" class="table table-hover">
     <thead>

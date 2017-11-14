@@ -3,6 +3,12 @@
   This section lists all the available task executions.
 </p>
 
+<div class="row">
+  <div class="col-md-24 text-right">
+    <button id="refreshTaskExecutionsButton" type="button" (click)="loadTaskExecutions()"
+            class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+  </div>
+</div>
 <div *ngIf="!taskExecutions">No task executions available.</div>
 <table *ngIf="taskExecutions?.items" class="table table-hover">
   <thead>
