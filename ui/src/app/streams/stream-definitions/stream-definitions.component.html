@@ -14,7 +14,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-19">
+  <div class="col-md-19 col-actions">
     <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
       [items]="streamDefinitions.getItemsAsObservable()"
       (eventHandler)="deployMultipleStreamDefinitions(streamDefinitions.items)"
