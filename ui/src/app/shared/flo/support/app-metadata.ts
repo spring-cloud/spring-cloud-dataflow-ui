@@ -40,7 +40,7 @@ export class AppMetadata implements Flo.ElementMetadata {
               switch (o.name.toLowerCase()) {
                 case 'language':
                   propertyMetadata.options = [
-                    undefined, 'groovy', 'javascript', 'ruby', 'python'
+                    'groovy', 'javascript', 'ruby', 'python'
                   ];
                   break;
                 case 'script':

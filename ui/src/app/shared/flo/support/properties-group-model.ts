@@ -29,8 +29,7 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
           inputType = Properties.InputType.URL;
           break;
         case 'java.lang.Boolean':
-          inputType = Properties.InputType.CHECKBOX;
-          break;
+          return new Properties.CheckBoxControlModel(property);
         default:
           if (property.metadata.code) {
             if (property.metadata.code.langPropertyName) {
@@ -42,9 +41,9 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
             }
           } else if (Array.isArray(property.metadata.options)) {
             return new Properties.SelectControlModel(property,
-              Properties.InputType.SELECT, (<Array<string>> property.metadata.options).map(o => {
+              Properties.InputType.SELECT, (<Array<string>> property.metadata.options).filter(o => o.length > 0).map(o => {
                 return {
-                  name: o ? o.charAt(0).toUpperCase() + o.substr(1).toLowerCase() : '< SELECT >',
+                  name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
                   value: o === property.defaultValue ? undefined : o
                 };
               }));
