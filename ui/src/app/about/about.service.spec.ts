@@ -14,20 +14,33 @@ describe('AboutService', () => {
       },
       'versionInfo':
       {
-          'implementation':
+          'implementationDependency':
           {
               'name': 'spring-cloud-dataflow-server-local',
-              'version': '1.2.3.BUILD-SNAPSHOT'
+              'version': '1.2.3.BUILD-SNAPSHOT',
+              'checksumSha1': 'checksumSample1',
+              'checksumSha256': 'checksumSample256'
           },
-          'core':
+          'coreDependency':
           {
               'name': 'Spring Cloud Data Flow Core',
-              'version': '1.2.3.BUILD-SNAPSHOT'
+              'version': '1.2.3.BUILD-SNAPSHOT',
+              'checksumSha1': 'checksumSample1',
+              'checksumSha256': 'checksumSample256'
           },
-          'dashboard':
+          'dashboardDependency':
           {
               'name': 'Spring Cloud Dataflow UI',
-              'version': '1.2.1.RELEASE'
+              'version': '1.2.3.RELEASE',
+              'checksumSha1': 'checksumSample1',
+              'checksumSha256': 'checksumSample256'
+          },
+        'shellDependency':
+          {
+            'name': 'Spring Cloud Dataflow Shell',
+            'version': '1.2.3.RELEASE',
+            'checksumSha1': 'checksumSample1',
+            'checksumSha256': 'checksumSample256'
           }
       },
       'securityInfo':

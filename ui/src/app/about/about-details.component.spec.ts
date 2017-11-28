@@ -54,8 +54,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // verify Data Flow Server Implementation
-    validateColumnValues('dataFlowVersionTable', ['Name', 'Version'], 0);
-    validateColumnValues('dataFlowVersionTable', ['FOO', 'BAR'], 1);
+    validateColumnValues('dataFlowVersionTable', ['Name', 'Version', 'Checksum Sha1', 'Checksum Sha256'], 0);
+    validateColumnValues('dataFlowVersionTable', ['FOO', 'BAR', '', '' ], 1);
 
     // Verify Enabled Features
     validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks'], 0);
@@ -69,8 +69,12 @@ describe('AboutDetailsComponent', () => {
     validateTdValue('roles', 'base_role');
 
     // Starting Version
-    validateColumnValues('versionInformationTable', ['Implementation', 'Core', 'Dashboard'], 0);
-    validateColumnValues('versionInformationTable', ['BAR (FOO)', 'BOO (BAZ)', 'QIX (QUE)'], 1);
+    validateColumnValues('versionInformationTable', ['Implementation', 'Implementation Checksum Sha1',
+      'Implementation Checksum Sha256', 'Core', 'Core Checksum Sha1', 'Core Checksum Sha256', 'Dashboard',
+      'Dashboard Checksum Sha1', 'Dashboard Checksum Sha256', 'Shell', 'Shell Checksum Sha1', 'Shell Checksum Sha256'], 0);
+    validateColumnValues('versionInformationTable', ['BAR (FOO)', 'checksumSample1',
+      'checksumSample256', 'BOO (BAZ)', 'checksumSample1', 'checksumSample256', 'QIX (QUE)', 'checksumSample1',
+      'checksumSample256', 'QUUX (QUX)', 'checksumSample1', 'checksumSample256'], 1);
 
     // App Deployer Table
     validateColumnValues('appDeployerTable', ['Implementation Version', 'Name', 'Spi Version',
