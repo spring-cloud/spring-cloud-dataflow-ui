@@ -9,6 +9,9 @@ import { LoginRequest } from './model/login-request.model';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';
 import { SecurityAwareRequestOptions } from './support/security-aware-request-options';
+import { Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The AuthService deals with all security-related services:
@@ -29,6 +32,7 @@ export class AuthService {
   private readonly xAuthTokenKeyName = 'xAuthToken';
 
   public securityInfo: SecurityInfo;
+  public securityInfoSubject = new Subject<SecurityInfo>();
 
   constructor(
     private http: Http,
@@ -60,8 +64,8 @@ export class AuthService {
                     .map(response => {
                       const body = response.json();
                       this.securityInfo = new SecurityInfo().deserialize(body);
+                      this.securityInfoSubject.next(this.securityInfo);
                       console.log('SecurityInfo:', this.securityInfo);
-
                       if (!this.securityInfo.isAuthenticationEnabled
                         && requestOptions.xAuthToken) {
                         requestOptions.xAuthToken = undefined;

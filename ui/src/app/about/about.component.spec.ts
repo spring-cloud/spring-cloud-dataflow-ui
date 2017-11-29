@@ -46,7 +46,7 @@ describe('AboutComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     let des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=dataFlowVersionTable] td'));
-    expect(des.length).toBe(4);
+    expect(des.length).toBe(8);
     expect(des[0].nativeElement.textContent).toContain('Name');
     expect(des[1].nativeElement.textContent).toContain('FOO');
     expect(des[2].nativeElement.textContent).toContain('Version');
@@ -77,7 +77,7 @@ describe('AboutComponent', () => {
 
     de = fixture.debugElement.query(By.css('h2[id=serverWarningError]'));
     el = de.nativeElement;
-    expect(el.textContent).toContain('Error occurred when attempting to obtain about info from server.');
+    expect(el.textContent).toContain('Obtaining about info from server.');
   });
 
   it('Should navigate to the details page.', () => {
