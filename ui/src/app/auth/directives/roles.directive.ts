@@ -1,7 +1,8 @@
 import { AfterViewInit, Directive, ElementRef, Input, Output, EventEmitter, HostListener,
-DoCheck, Renderer2 } from '@angular/core';
+Renderer2 } from '@angular/core';
 
 import { AuthService } from '../auth.service';
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 /**
  * This directive will show or hide the element depending whether
@@ -13,19 +14,25 @@ import { AuthService } from '../auth.service';
 @Directive({
     selector: '[appRoles]'
 })
-export class RolesDirective implements AfterViewInit, DoCheck {
+export class RolesDirective implements AfterViewInit, OnInit {
 
   @Input()
   public appRoles: string[];
 
+  private existingDisplayPropertyValue: string;
   constructor(private authService: AuthService, private elem: ElementRef, private renderer: Renderer2) {
   }
 
   private checkRoles() {
     const found = this.authService.securityInfo.canAccess(this.appRoles);
-
     if (!found) {
       this.renderer.setStyle(this.elem.nativeElement, 'display', 'none');
+    } else {
+      if (this.existingDisplayPropertyValue) {
+        this.renderer.setStyle(this.elem.nativeElement, 'display', this.existingDisplayPropertyValue);
+      } else {
+        this.renderer.removeStyle(this.elem.nativeElement, 'display');
+      }
     }
   }
 
@@ -33,14 +40,13 @@ export class RolesDirective implements AfterViewInit, DoCheck {
    * Initializes the state element and calls checkRoles().
    */
   ngAfterViewInit() {
+    this.existingDisplayPropertyValue = this.elem.nativeElement.style.display;
     this.checkRoles();
   }
 
-  /**
-   * Called when Angular dirty checks a directive.
-   * Will in return call checkRoles().
-   */
-  ngDoCheck() {
-    this.checkRoles();
+  ngOnInit() {
+    this.authService.securityInfoSubject.forEach(event => {
+      this.checkRoles();
+    });
   }
 }
