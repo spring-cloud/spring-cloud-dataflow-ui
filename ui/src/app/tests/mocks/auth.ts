@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 import { SecurityInfo } from '../../auth/model/security-info.model';
 import { LoginRequest } from '../../auth/model/login-request.model';
@@ -11,6 +12,7 @@ import { LoginRequest } from '../../auth/model/login-request.model';
 export class MockAuthService {
 
   public securityInfo = new SecurityInfo();
+  public securityInfoSubject = new Subject<SecurityInfo>();
 
   login(loginRequest: LoginRequest): Observable<SecurityInfo> {
 
