@@ -29,7 +29,7 @@
     "core-js": "^2.5.1",
     "d3": "4.11.0",
     "dagre": "0.7.4",
-    "moment": "2.19.1",
+    "moment": "2.19.3",
     "ng2-stomp-service": "1.2.2",
     "ng2-toasty": "4.0.3",
     "ngx-bootstrap": "1.9.3",
