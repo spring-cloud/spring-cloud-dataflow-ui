@@ -2,7 +2,7 @@
 
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { Properties } from 'spring-flo';
+import { Flo, Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import { dia } from 'jointjs';
 import { ApplicationType } from '../../../shared/model/application-type';
@@ -56,6 +56,15 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
     }
     return notationalProperties;
   }
+
+  protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
+    if (this.cell instanceof dia.Link) {
+      // For links properties are always id based
+      return `props/${metadata.id}`;
+    }
+    return super.determineAttributeName(metadata);
+  }
+
 }
 
 /**

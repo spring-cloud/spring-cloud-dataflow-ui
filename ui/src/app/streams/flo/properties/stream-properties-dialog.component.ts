@@ -2,7 +2,7 @@
 
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { Properties } from 'spring-flo';
+import { Flo, Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import { dia } from 'jointjs';
 import { StreamsService } from '../../streams.service';
@@ -93,6 +93,15 @@ class StreamPropertiesGroupModel extends PropertiesGroupModel {
     }
     return notationalProperties;
   }
+
+  protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
+    if (this.cell.attr('metadata/group') === 'other') {
+      // For something in the other group (like tap) use the id not the name of the property
+      return `props/${metadata.id}`;
+    }
+    return super.determineAttributeName(metadata);
+  }
+
 }
 
 /**
