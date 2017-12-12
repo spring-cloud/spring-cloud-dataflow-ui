@@ -72,13 +72,9 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     });
   }
 
-  private determineAttributeName(metadata: Flo.PropertyMetadata): string {
+  protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
     const nameAttr = `props/${metadata.name}`;
     const idAttr = `props/${metadata.id}`;
-    if (this.cell.attr('metadata/group') === 'other') {
-      // For something in the other group (like tap) use the id not the name of the property
-      return idAttr;
-    }
     const valueFromName = this.cell.attr(nameAttr);
     const valueFromId = this.cell.attr(idAttr);
     if ((valueFromName === undefined || valueFromName === null) && !(valueFromId === undefined || valueFromId === null)) {
