@@ -13,11 +13,11 @@
       <div id="navbar" class="collapse navbar-collapse" [ngClass]="{'in': !isCollapsed}">
         <ul class="nav navbar-nav navbar-right" (click)="collapse()">
           <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="apps">Apps</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="runtime/apps">Runtime</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="streams">Streams</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="tasks">Tasks</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="jobs">Jobs</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="analytics">Analytics</a></li>
+          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled"><a routerLink="runtime/apps">Runtime</a></li>
+          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled"><a routerLink="streams">Streams</a></li>
+          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled"><a routerLink="tasks">Tasks</a></li>
+          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled"><a routerLink="jobs">Jobs</a></li>
+          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="analyticsEnabled"><a routerLink="analytics">Analytics</a></li>
           <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="about">About</a></li>
           <li *ngIf="securityInfo.isAuthenticationEnabled"
               dropdown

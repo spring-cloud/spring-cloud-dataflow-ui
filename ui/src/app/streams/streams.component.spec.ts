@@ -10,6 +10,8 @@ import {BsModalService} from 'ngx-bootstrap';
 import { RolesDirective } from '../auth/directives/roles.directive';
 import { MockAuthService } from '../tests/mocks/auth';
 import { AuthService } from '../auth/auth.service';
+import { MocksSharedAboutService } from '../tests/mocks/shared-about';
+import { SharedAboutService } from '../shared/services/shared-about.service';
 /**
  * Test {@link StreamsComponent}.
  *
@@ -21,6 +23,7 @@ describe('StreamsComponent', () => {
   const streamsService = new MockStreamsService();
   const authService = new MockAuthService();
   let activeRoute: MockActivatedRoute;
+  const aboutService = new MocksSharedAboutService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -34,6 +37,7 @@ describe('StreamsComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
+        { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },

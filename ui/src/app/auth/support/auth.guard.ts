@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 /**
  * A guard used by the router in order to check whether a the user has
@@ -13,7 +14,11 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private sharedAboutService: SharedAboutService
+  ) { }
 
   /**
    * If true the user has access to the route, if false, the user will
@@ -25,8 +30,14 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
     const securityInfo = this.authService.securityInfo;
-    const routeNeedsAuthentication = route.data.authenticate;
+    const featureInfo = this.sharedAboutService.featureInfo;
     const rolesNeeded: string[] = route.data.roles;
+
+    const featureNeeded: string = route.data.feature;
+
+    if (featureNeeded && featureInfo && !featureInfo.isFeatureEnabled(featureNeeded)) {
+      this.router.navigate(['feature-disabled']);
+    }
 
     if (securityInfo.isAuthenticationEnabled) {
       console.log(`Determining authorizations ... ` +

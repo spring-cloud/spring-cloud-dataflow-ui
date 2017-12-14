@@ -3,6 +3,7 @@ import { AppInfo } from '../../tasks/model/app-info';
 import { Page} from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { TaskExecution } from '../../tasks/model/task-execution';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 
 /**
  * Mock for AboutService.
@@ -18,13 +19,6 @@ import { TaskExecution } from '../../tasks/model/task-execution';
  * @author Glenn Renfro
  */
 
-
-export class FeatureInfo {
-  public analyticsEnabled = true;
-  public streamsEnabled = true;
-  public tasksEnabled = true;
-}
-
 export class SecurityInfo {
   public authenticationEnabled = true;
   public authorizationEnabled = true;
@@ -37,8 +31,6 @@ export class SecurityInfo {
 export class Dashboard {
   public name = 'QUE';
   public version = 'QIX';
-  public checksumSha1 = 'checksumSample1';
-  public checksumSha256 = 'checksumSample256';
   public url = '';
 }
 
@@ -53,24 +45,20 @@ export class Shell {
 export class Implementation {
   public name = 'FOO';
   public version = 'BAR';
-  public checksumSha1 = 'checksumSample1';
-  public checksumSha256 = 'checksumSample256';
   public url = '';
 }
 
 export class Core {
   public name = 'BAZ';
   public version = 'BOO';
-  public checksumSha1 = 'checksumSample1';
-  public checksumSha256 = 'checksumSample256';
   public url = '';
 }
 
 export class VersionInfo {
-  public implementationDependency: Implementation = new Implementation();
-  public coreDependency = new Core;
-  public dashboardDependency = new Dashboard();
-  public shellDependency = new Shell();
+  public implementation = new Implementation();
+  public core = new Core;
+  public dashboard = new Dashboard();
+  public shell = new Shell();
 }
 
 export class AppDeployer {
@@ -112,6 +100,12 @@ export class DataflowVersionInfo {
   public featureInfo = new FeatureInfo();
   public securityInfo = new SecurityInfo();
   public runtimeEnvironment = new RuntimeEnvironment();
+
+  constructor() {
+    this.featureInfo.analyticsEnabled = true;
+    this.featureInfo.streamsEnabled = true;
+    this.featureInfo.tasksEnabled = true;
+  }
 }
 
 export class MockAboutService {
@@ -142,6 +136,10 @@ export class MockAboutService {
 
   set isPlatformSpecificInformationAvailable(value: boolean) {
     this._isPlatformSpecificInformationAvailable = value;
+  }
+
+  get featureInfo(): FeatureInfo {
+    return new FeatureInfo();
   }
 
   getAboutInfo(): Observable<DataflowVersionInfo> {

@@ -25,6 +25,8 @@ import { StreamGraphDefinitionComponent } from '../stream-graph-definition/strea
 import {TriStateButtonComponent} from '../../shared/components/tri-state-button.component';
 import {TriStateCheckboxComponent} from '../../shared/components/tri-state-checkbox.component';
 import {DeploymentPropertiesComponent} from './deployment-properties/deployment-properties.component';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 /**
  * Test {@link StreamDefinitionsComponent}.
@@ -43,6 +45,7 @@ describe('StreamDefinitionsComponent', () => {
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
+    const aboutService = new MocksSharedAboutService();
 
     TestBed.configureTestingModule({
       declarations: [
@@ -66,6 +69,7 @@ describe('StreamDefinitionsComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
+        { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },

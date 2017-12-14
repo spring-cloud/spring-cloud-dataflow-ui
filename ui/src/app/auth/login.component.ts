@@ -7,6 +7,7 @@ import { SecurityInfo } from './model/security-info.model';
 
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
+import { AboutService } from '../about/about.service';
 
 /**
  * Handles application logins.
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private aboutService: AboutService,
     private router: Router,
     private toastyService: ToastyService,
     private route: ActivatedRoute) {
@@ -46,10 +48,18 @@ export class LoginComponent implements OnInit {
     this.busy = this.authService.login(this.user).subscribe(
       result => {
         if (result.isAuthenticated) {
-          console.log(`Login successful, using return Url: ${returnUrl}`);
-          this.router.navigate([returnUrl]);
+          this.aboutService.getAboutInfo().subscribe(
+            aboutInfo => {
+              console.log(`Login successful, using return Url: ${returnUrl}`);
+              this.router.navigate([returnUrl]);
+            },
+            error => {
+              console.error('User was not logged in because:', error);
+              this.toastyService.error(error);
+            }
+          );
         } else {
-          console.error('Something went wrong.', result);
+          console.error('The following error occurred:', result);
           this.toastyService.error('Not logged in.');
         }
       },
