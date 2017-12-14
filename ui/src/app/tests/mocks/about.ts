@@ -3,6 +3,7 @@ import { AppInfo } from '../../tasks/model/app-info';
 import { Page} from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { TaskExecution } from '../../tasks/model/task-execution';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 
 /**
  * Mock for AboutService.
@@ -17,13 +18,6 @@ import { TaskExecution } from '../../tasks/model/task-execution';
  *
  * @author Glenn Renfro
  */
-
-
-export class FeatureInfo {
-  public analyticsEnabled = true;
-  public streamsEnabled = true;
-  public tasksEnabled = true;
-}
 
 export class SecurityInfo {
   public authenticationEnabled = true;
@@ -112,6 +106,12 @@ export class DataflowVersionInfo {
   public featureInfo = new FeatureInfo();
   public securityInfo = new SecurityInfo();
   public runtimeEnvironment = new RuntimeEnvironment();
+
+  constructor() {
+    this.featureInfo.analyticsEnabled = true;
+    this.featureInfo.streamsEnabled = true;
+    this.featureInfo.tasksEnabled = true;
+  }
 }
 
 export class MockAboutService {
@@ -142,6 +142,10 @@ export class MockAboutService {
 
   set isPlatformSpecificInformationAvailable(value: boolean) {
     this._isPlatformSpecificInformationAvailable = value;
+  }
+
+  get featureInfo(): FeatureInfo {
+    return new FeatureInfo();
   }
 
   getAboutInfo(): Observable<DataflowVersionInfo> {

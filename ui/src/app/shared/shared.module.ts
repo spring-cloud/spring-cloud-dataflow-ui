@@ -37,6 +37,7 @@ import { HandleComponent } from './flo/handle/handle.component';
 import { DecorationComponent } from './flo/decoration/decoration.component';
 import { PropertiesDialogComponent } from './flo/properties/properties-dialog.component';
 import { GraphViewComponent } from './flo/graph-view/graph-view.component';
+import { SharedAboutService } from './services/shared-about.service';
 
 const busyConfig: BusyConfig = {
     message: 'Processing..',
@@ -89,6 +90,7 @@ const busyConfig: BusyConfig = {
   providers: [
     StompService,
     SharedAppsService,
+    SharedAboutService,
     ParserService,
     ErrorHandler
   ],

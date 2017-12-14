@@ -2,6 +2,7 @@ import { AboutService } from './about.service';
 import { Observable } from 'rxjs/Rx';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { Response, ResponseOptions } from '@angular/http';
+import { SharedAboutService } from '../shared/services/shared-about.service';
 
 describe('AboutService', () => {
 
@@ -101,7 +102,8 @@ describe('AboutService', () => {
   beforeEach(() => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
     const errorHandler = new ErrorHandler();
-    this.aboutService = new AboutService(this.mockHttp, errorHandler);
+    this.sharedAboutService = new SharedAboutService(this.mockHttp, errorHandler);
+    this.aboutService = new AboutService(this.sharedAboutService, this.mockHttp, errorHandler);
   });
 
   it('should call the about service with the right url', () => {

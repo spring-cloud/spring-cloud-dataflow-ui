@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ToastyService } from 'ng2-toasty';
 import { AuthService } from './auth.service';
+import { AboutService } from '../about/about.service';
 
 /**
  * Handles logouts. Logouts are handled differently depending on whether
@@ -22,6 +23,7 @@ export class LogoutComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private aboutService: AboutService,
     private toastyService: ToastyService,
     private router: Router) {
   }
@@ -41,10 +43,10 @@ export class LogoutComponent implements OnInit {
     }
 
     console.log('Logging out ...');
-
     if (this.authService.securityInfo.isFormLogin) {
       this.authService.logout().subscribe(
         result => {
+          this.aboutService.featureInfo.reset();
           this.toastyService.success('Logged out.');
           this.router.navigate(['login']);
         },
@@ -55,6 +57,7 @@ export class LogoutComponent implements OnInit {
     } else {
       console.log(`Logging out user ${this.authService.securityInfo.username} (OAuth)`);
       this.authService.clearLocalSecurity();
+      this.aboutService.featureInfo.reset();
 
       const logoutUrl = '//' + window.location.host + '/logout';
       console.log('Redirecting to ' + logoutUrl);

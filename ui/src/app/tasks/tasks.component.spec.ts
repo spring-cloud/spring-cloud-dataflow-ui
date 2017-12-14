@@ -6,6 +6,8 @@ import { By } from '@angular/platform-browser';
 import { RolesDirective } from '../auth/directives/roles.directive';
 import { MockAuthService } from '../tests/mocks/auth';
 import { AuthService } from '../auth/auth.service';
+import { SharedAboutService } from '../shared/services/shared-about.service';
+import { MocksSharedAboutService } from '../tests/mocks/shared-about';
 
 describe('TasksComponent', () => {
   let component: TasksComponent;
@@ -14,13 +16,15 @@ describe('TasksComponent', () => {
   let el: HTMLElement;
 
   const authService = new MockAuthService();
+  const aboutService = new MocksSharedAboutService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ TasksComponent, RolesDirective ],
       imports: [AppRoutingModule],
       providers: [
-        { provide: AuthService, useValue: authService }
+        { provide: AuthService, useValue: authService },
+        { provide: SharedAboutService, useValue: aboutService }
       ]
     })
       .compileComponents();

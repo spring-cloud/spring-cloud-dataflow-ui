@@ -14,6 +14,8 @@ import { MockTasksService } from '../../tests/mocks/tasks';
 import { RolesDirective } from '../../auth/directives/roles.directive';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 describe('TaskAppsComponent', () => {
   let component: TaskAppsComponent;
@@ -23,7 +25,7 @@ describe('TaskAppsComponent', () => {
   const toastyService = new MockToastyService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
-
+  const aboutService = new MocksSharedAboutService();
   beforeEach(async(() => {
     const routerStub = {};
     TestBed.configureTestingModule({
@@ -35,6 +37,7 @@ describe('TaskAppsComponent', () => {
         NgxPaginationModule
       ],
       providers: [
+        { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: TasksService, useValue: tasksService },
         { provide: ToastyService, useValue: toastyService },

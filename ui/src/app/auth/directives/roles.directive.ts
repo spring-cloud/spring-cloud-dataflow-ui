@@ -3,6 +3,7 @@ Renderer2 } from '@angular/core';
 
 import { AuthService } from '../auth.service';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 /**
  * This directive will show or hide the element depending whether
@@ -19,13 +20,30 @@ export class RolesDirective implements AfterViewInit, OnInit {
   @Input()
   public appRoles: string[];
 
+  @Input()
+  public appFeature: string;
+
   private existingDisplayPropertyValue: string;
-  constructor(private authService: AuthService, private elem: ElementRef, private renderer: Renderer2) {
+  constructor(
+    private authService: AuthService,
+    private sharedAboutService: SharedAboutService,
+    private elem: ElementRef, private renderer: Renderer2) {
   }
 
   private checkRoles() {
-    const found = this.authService.securityInfo.canAccess(this.appRoles);
-    if (!found) {
+    if (this.appFeature) {
+      this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
+        const featureEnabled = this.appFeature ? featureInfo.isFeatureEnabled(this.appFeature) : true;
+        this.checkRoleAccess(featureEnabled);
+      });
+    } else {
+      this.checkRoleAccess(true);
+    }
+  }
+
+  private checkRoleAccess(featureEnabled: boolean) {
+    const hasRoleAccess = this.authService.securityInfo.canAccess(this.appRoles);
+    if (!featureEnabled || !hasRoleAccess) {
       this.renderer.setStyle(this.elem.nativeElement, 'display', 'none');
     } else {
       if (this.existingDisplayPropertyValue) {
@@ -46,6 +64,9 @@ export class RolesDirective implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.authService.securityInfoSubject.forEach(event => {
+      this.checkRoles();
+    });
+    this.sharedAboutService.featureInfoSubject.forEach(event => {
       this.checkRoles();
     });
   }

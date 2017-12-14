@@ -14,8 +14,7 @@ const appsRoutes: Routes = [
     canActivate: [AuthGuard],
     data: {
       authenticate: true,
-      roles: ['ROLE_VIEW'],
-      feature: 'appsEnabled'
+      roles: ['ROLE_VIEW']
     },
     children: [
       { path: '', component: AppsComponent },
