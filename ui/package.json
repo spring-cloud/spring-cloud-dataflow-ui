@@ -37,7 +37,7 @@
     "ngx-pagination": "3.0.1",
     "rxjs": "5.5.2",
     "sockjs-client": "1.1.4",
-    "spring-flo": "0.7.0-beta",
+    "spring-flo": "git://github.com/spring-projects/spring-flo#0ee041142d50044512b091b504e9ab9df3ffcd48",
     "stompjs": "2.3.3",
     "tixif-ngx-busy": "0.0.5",
     "zone.js": "0.8.18",

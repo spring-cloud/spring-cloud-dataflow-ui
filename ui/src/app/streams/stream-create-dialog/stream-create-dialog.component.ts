@@ -7,6 +7,8 @@ import { Utils } from '../flo/support/utils';
 import { StreamsService } from '../streams.service';
 import { ToastyService } from 'ng2-toasty';
 import { Properties } from 'spring-flo';
+import { Router } from '@angular/router';
+
 
 /**
  * Stores progress percentage.
@@ -51,7 +53,8 @@ export class StreamCreateDialogComponent implements OnInit {
     private bsModalRef: BsModalRef,
     private toastyService: ToastyService,
     private parserService: ParserService,
-    private streamService: StreamsService
+    private streamService: StreamsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -235,6 +238,7 @@ export class StreamCreateDialogComponent implements OnInit {
             this.bsModalRef.hide();
             this.toastyService.success('Stream(s) have been created successfully');
           }, PROGRESS_BAR_WAIT_TIME);
+          this.router.navigate(['streams/definitions']);
         } else {
           // There are more streams to create, so create the next one
           this.waitForStreamDef(def.name, 0).then(() => {
