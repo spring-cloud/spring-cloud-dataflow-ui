@@ -51,6 +51,7 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
         }
       }
     } else {
+      console.error('Feature string parameter was not there.');
       return false;
     }
   }

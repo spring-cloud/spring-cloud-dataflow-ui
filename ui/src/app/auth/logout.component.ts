@@ -51,6 +51,7 @@ export class LogoutComponent implements OnInit {
           this.router.navigate(['login']);
         },
         error => {
+          this.aboutService.featureInfo.reset();
           this.toastyService.error(error);
         },
       );

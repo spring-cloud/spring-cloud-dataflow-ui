@@ -54,12 +54,12 @@ export class LoginComponent implements OnInit {
               this.router.navigate([returnUrl]);
             },
             error => {
-              console.error('Something went wrong.', error);
+              console.error('User was not logged in because:', error);
               this.toastyService.error(error);
             }
           );
         } else {
-          console.error('Something went wrong.', result);
+          console.error('The following error occurred:', result);
           this.toastyService.error('Not logged in.');
         }
       },

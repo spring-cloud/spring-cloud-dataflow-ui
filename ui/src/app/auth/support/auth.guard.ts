@@ -31,7 +31,6 @@ export class AuthGuard implements CanActivate {
 
     const securityInfo = this.authService.securityInfo;
     const featureInfo = this.sharedAboutService.featureInfo;
-    const routeNeedsAuthentication = route.data.authenticate;
     const rolesNeeded: string[] = route.data.roles;
 
     const featureNeeded: string = route.data.feature;

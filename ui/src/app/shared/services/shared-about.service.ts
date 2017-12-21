@@ -8,12 +8,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
 
-import { AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page } from '../model';
-import { PageRequest } from '../model/pagination/page-request.model';
-import { HttpUtils } from '../support/http.utils';
+import { ErrorHandler } from '../model';
 import { FeatureInfo } from '../model/about/feature-info.model';
 import { Subject } from 'rxjs/Subject';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Injectable()
 export class SharedAboutService {

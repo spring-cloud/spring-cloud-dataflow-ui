@@ -11,11 +11,8 @@ import { MockAboutService } from '../tests/mocks/about';
 import { MockAuthService } from '../tests/mocks/auth';
 
 import { AuthService } from './auth.service';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
-import { Router } from '@angular/router';
 import { AboutService } from '../about/about.service';
 
 describe('LogoutComponent', () => {
