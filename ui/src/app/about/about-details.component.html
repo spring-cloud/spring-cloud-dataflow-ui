@@ -12,13 +12,6 @@
   <tr>
     <td class="col-xs-6">Version</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}}</td>
   </tr>
-  <tr>
-    <td class="col-xs-6">Checksum Sha1</td><td>{{dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.checksumSha1 ? dataflowVersionInfo.versionInfo.implementation.checksumSha1 : 'N/A' : 'N/A'}}</td>
-  </tr>
-  <tr>
-    <td class="col-xs-6">Checksum Sha256</td><td>{{dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.checksumSha256 ? dataflowVersionInfo.versionInfo.implementation.checksumSha256 : 'N/A' : 'N/A'}}</td>
-  </tr>
-
   </tbody>
 </table>
 
@@ -102,45 +95,21 @@
     <td>{{dataflowVersionInfo.versionInfo.implementation.version}} ({{dataflowVersionInfo.versionInfo.implementation.name}})</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Implementation Checksum Sha1</td>
-    <td>{{dataflowVersionInfo.versionInfo.implementation.checksumSha1 ? dataflowVersionInfo.versionInfo.implementation.checksumSha1 : 'N/A'}}</td>
-  </tr>
-  <tr>
-    <td class="col-xs-6">Implementation Checksum Sha256</td>
-    <td>{{dataflowVersionInfo.versionInfo.implementation.checksumSha256 ? dataflowVersionInfo.versionInfo.implementation.checksumSha256 : 'N/A'}}</td>
-  </tr>
-  <tr>
     <td class="col-xs-6">Core</td><td>{{dataflowVersionInfo.versionInfo.core.version}} ({{dataflowVersionInfo.versionInfo.core.name}})</td>
-  </tr>
-  <tr>
-    <td class="col-xs-6">Core Checksum Sha1</td>
-    <td>{{dataflowVersionInfo.versionInfo.core.checksumSha1 ? dataflowVersionInfo.versionInfo.core.checksumSha1 : 'N/A'}}</td>
-  </tr>
-  <tr>
-    <td class="col-xs-6">Core Checksum Sha256</td>
-    <td>{{dataflowVersionInfo.versionInfo.core.checksumSha256 ? dataflowVersionInfo.versionInfo.core.checksumSha256 : 'N/A'}}</td>
   </tr>
   <tr>
     <td class="col-xs-6">Dashboard</td><td>{{dataflowVersionInfo.versionInfo.dashboard.version}} ({{dataflowVersionInfo.versionInfo.dashboard.name}})</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Dashboard Checksum Sha1</td>
-    <td>{{dataflowVersionInfo.versionInfo.dashboard.checksumSha1 ? dataflowVersionInfo.versionInfo.dashboard.checksumSha1 : 'N/A'}}</td>
-  </tr>
-  <tr>
-    <td class="col-xs-6">Dashboard Checksum Sha256</td>
-    <td>{{dataflowVersionInfo.versionInfo.dashboard.checksumSha256 ? dataflowVersionInfo.versionInfo.dashboard.checksumSha256 : 'N/A'}}</td>
-  </tr>
-  <tr>
     <td class="col-xs-6">Shell</td><td>{{dataflowVersionInfo.versionInfo.shell.version}} ({{dataflowVersionInfo.versionInfo.shell.name}})</td>
   </tr>
-  <tr>
+  <tr *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha1">
     <td class="col-xs-6">Shell Checksum Sha1</td>
-    <td>{{dataflowVersionInfo.versionInfo.shell.checksumSha1 ? dataflowVersionInfo.versionInfo.shell.checksumSha1 : 'N/A'}}</td>
+    <td>{{dataflowVersionInfo.versionInfo.shell.checksumSha1}}</td>
   </tr>
-  <tr>
+  <tr *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha256">
     <td class="col-xs-6">Shell Checksum Sha256</td>
-    <td>{{dataflowVersionInfo.versionInfo.shell.checksumSha256 ? dataflowVersionInfo.versionInfo.shell.checksumSha256 : 'N/A'}}</td>
+    <td>{{dataflowVersionInfo.versionInfo.shell.checksumSha256}}</td>
   </tr>
   </tbody>
 </table>
