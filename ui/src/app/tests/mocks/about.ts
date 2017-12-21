@@ -31,8 +31,6 @@ export class SecurityInfo {
 export class Dashboard {
   public name = 'QUE';
   public version = 'QIX';
-  public checksumSha1 = 'checksumSample1';
-  public checksumSha256 = 'checksumSample256';
   public url = '';
 }
 
@@ -47,24 +45,20 @@ export class Shell {
 export class Implementation {
   public name = 'FOO';
   public version = 'BAR';
-  public checksumSha1 = 'checksumSample1';
-  public checksumSha256 = 'checksumSample256';
   public url = '';
 }
 
 export class Core {
   public name = 'BAZ';
   public version = 'BOO';
-  public checksumSha1 = 'checksumSample1';
-  public checksumSha256 = 'checksumSample256';
   public url = '';
 }
 
 export class VersionInfo {
-  public implementationDependency: Implementation = new Implementation();
-  public coreDependency = new Core;
-  public dashboardDependency = new Dashboard();
-  public shellDependency = new Shell();
+  public implementation = new Implementation();
+  public core = new Core;
+  public dashboard = new Dashboard();
+  public shell = new Shell();
 }
 
 export class AppDeployer {

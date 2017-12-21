@@ -41,7 +41,7 @@ export class AboutService {
     return this.sharedAboutService.getAboutInfo();
   }
 
-  getDetails(): Observable<any[]> {
+  getDetails(): Observable<any> {
     return this.http.get(this.sharedAboutService.aboutUrl)
                     .map(this.sharedAboutService.extractData.bind(this))
                     .catch(this.errorHandler.handleError);
