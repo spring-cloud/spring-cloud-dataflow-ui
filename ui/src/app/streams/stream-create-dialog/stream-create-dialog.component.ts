@@ -7,6 +7,7 @@ import { Utils } from '../flo/support/utils';
 import { StreamsService } from '../streams.service';
 import { ToastyService } from 'ng2-toasty';
 import { Properties } from 'spring-flo';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Stores progress percentage.
@@ -46,6 +47,7 @@ export class StreamCreateDialogComponent implements OnInit {
   deploy = false;
   successCallback: () => void;
 
+  busy: Subscription;
 
   constructor(
     private bsModalRef: BsModalRef,
@@ -220,7 +222,7 @@ export class StreamCreateDialogComponent implements OnInit {
     } else {
       // Send the request to create a stream
       const def = this.streamDefs[index];
-      this.streamService.createDefinition(def.name, def.def, this.deploy).subscribe(() => {
+      this.busy = this.streamService.createDefinition(def.name, def.def, this.deploy).subscribe(() => {
         console.log('Stream ' + def.name + ' created OK');
         // Stream created successfully, mark it as created
         def.created = true;

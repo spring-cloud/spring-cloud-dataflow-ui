@@ -4,7 +4,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" [formGroup]="form">
+<div class="modal-body" [formGroup]="form" [ngBusy]="busy">
   <div *ngIf="errors && errors.length > 0" class="dialog-validation">
     <div *ngFor="let error of errors">
       <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign">{{error}}</label>
