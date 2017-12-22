@@ -27,7 +27,6 @@ describe('StreamDeployComponent', () => {
   let activeRoute: MockActivatedRoute;
   const commonTestParams = { id: '1' };
 
-
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
 
