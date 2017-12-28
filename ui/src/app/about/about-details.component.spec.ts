@@ -72,7 +72,8 @@ describe('AboutDetailsComponent', () => {
     validateColumnValues('versionInformationTable', ['Implementation',
       'Core', 'Dashboard',
       'Shell', 'Shell Checksum Sha1', 'Shell Checksum Sha256'], 0);
-    validateColumnValues('versionInformationTable', ['BAR (FOO)', 'BOO (BAZ)', 'QIX (QUE)', 'QUUX (QUX)', 'checksumSample1', 'checksumSample256'], 1);
+    validateColumnValues('versionInformationTable',
+      ['BAR (FOO)', 'BOO (BAZ)', 'QIX (QUE)', 'QUUX (QUX)', 'checksumSample1', 'checksumSample256'], 1);
 
     // App Deployer Table
     validateColumnValues('appDeployerTable', ['Implementation Version', 'Name', 'Spi Version',
