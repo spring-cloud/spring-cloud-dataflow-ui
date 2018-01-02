@@ -38,8 +38,8 @@ export class DefinitionStatusComponent implements AfterContentInit, DoCheck {
     if (this.jobExecution) {
 
       if (!this.jobExecution.defined) {
-        this.labelClass = 'danger';
-        this.label = 'Deleted';
+        this.labelClass = 'info';
+        this.label = 'No Task Definition';
       }
     }
   }
