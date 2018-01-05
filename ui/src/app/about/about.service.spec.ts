@@ -11,7 +11,8 @@ describe('AboutService', () => {
       {
           'analyticsEnabled': true,
           'streamsEnabled': true,
-          'tasksEnabled': true
+          'tasksEnabled': true,
+          'skipperEnabled': true
       },
       'versionInfo':
       {

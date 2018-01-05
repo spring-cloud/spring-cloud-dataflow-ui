@@ -58,8 +58,8 @@ describe('AboutDetailsComponent', () => {
     validateColumnValues('dataFlowVersionTable', ['FOO', 'BAR'], 1);
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks'], 0);
-    validateSpansExists(['analyticsEnabled', 'streamsEnabled', 'streamsEnabled']);
+    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Skipper Mode'], 0);
+    validateSpansExists(['analyticsEnabled', 'streamsEnabled', 'tasksEnabled', 'skipperEnabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',
@@ -105,8 +105,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks'], 0);
-    validateSpansExists(['analyticsDisabled', 'streamsDisabled', 'streamsDisabled']);
+    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Skipper Mode'], 0);
+    validateSpansExists(['analyticsDisabled', 'streamsDisabled', 'tasksDisabled', 'skipperDisabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',

@@ -105,6 +105,7 @@ export class DataflowVersionInfo {
     this.featureInfo.analyticsEnabled = true;
     this.featureInfo.streamsEnabled = true;
     this.featureInfo.tasksEnabled = true;
+    this.featureInfo.skipperEnabled = true;
   }
 }
 
@@ -162,6 +163,7 @@ export class MockAboutService {
         dataFlowVersion.featureInfo.analyticsEnabled = false;
         dataFlowVersion.featureInfo.streamsEnabled = false;
         dataFlowVersion.featureInfo.tasksEnabled = false;
+        dataFlowVersion.featureInfo.skipperEnabled = false;
       }
       if (!this.isPlatformSpecificInformationAvailable) {
         dataFlowVersion.runtimeEnvironment.taskLauncher.platformSpecificInfo = {};
