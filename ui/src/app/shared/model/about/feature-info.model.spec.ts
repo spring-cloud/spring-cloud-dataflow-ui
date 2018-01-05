@@ -24,20 +24,24 @@ describe('FeatureInfo', () => {
       expect(featureInfo.analyticsEnabled).toBe(false);
       expect(featureInfo.streamsEnabled).toBe(false);
       expect(featureInfo.tasksEnabled).toBe(false);
+      expect(featureInfo.skipperEnabled).toBe(false);
 
       featureInfo.analyticsEnabled = true;
       featureInfo.streamsEnabled = true;
       featureInfo.tasksEnabled = true;
+      featureInfo.skipperEnabled = true;
 
       expect(featureInfo.analyticsEnabled).toBe(true);
       expect(featureInfo.streamsEnabled).toBe(true);
       expect(featureInfo.tasksEnabled).toBe(true);
+      expect(featureInfo.skipperEnabled).toBe(true);
 
       featureInfo.reset();
 
       expect(featureInfo.analyticsEnabled).toBe(false);
       expect(featureInfo.streamsEnabled).toBe(false);
       expect(featureInfo.tasksEnabled).toBe(false);
+      expect(featureInfo.skipperEnabled).toBe(false);
     });
   });
   describe('isFeatureEnabled', () => {
@@ -47,16 +51,19 @@ describe('FeatureInfo', () => {
       featureInfo.analyticsEnabled = true;
       featureInfo.streamsEnabled = true;
       featureInfo.tasksEnabled = true;
+      featureInfo.skipperEnabled = true;
 
       expect(featureInfo.isFeatureEnabled('analyticsEnabled')).toBe(true);
       expect(featureInfo.isFeatureEnabled('streamsEnabled')).toBe(true);
       expect(featureInfo.isFeatureEnabled('tasksEnabled')).toBe(true);
+      expect(featureInfo.isFeatureEnabled('skipperEnabled')).toBe(true);
     });
     it('should show that the standard features are disabled by default', () => {
       const featureInfo = new FeatureInfo();
       expect(featureInfo.isFeatureEnabled('analyticsEnabled')).toBe(false);
       expect(featureInfo.isFeatureEnabled('streamsEnabled')).toBe(false);
       expect(featureInfo.isFeatureEnabled('tasksEnabled')).toBe(false);
+      expect(featureInfo.isFeatureEnabled('skipperEnabled')).toBe(false);
     });
     it('should show that unsupported features return false', () => {
       const featureInfo = new FeatureInfo();

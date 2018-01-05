@@ -40,6 +40,13 @@
       <span *ngIf="!dataflowVersionInfo.featureInfo.tasksEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="tasksDisabled"></span>
     </td>
   </tr>
+  <tr>
+    <td class="col-xs-6">Skipper Mode</td>
+    <td>
+      <span *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled" class="glyphicon glyphicon-ok text-success" aria-label="true" id="skipperEnabled"></span>
+      <span *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled" class="glyphicon glyphicon-remove text-danger" aria-label="false" id="skipperDisabled"></span>
+    </td>
+  </tr>
   </tbody>
 </table>
 

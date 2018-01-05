@@ -10,6 +10,7 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
   public analyticsEnabled = false;
   public streamsEnabled = false;
   public tasksEnabled = false;
+  public skipperEnabled = false;
 
   /**
    * Set the FeatureInfo object to default values.
@@ -18,12 +19,14 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
     this.analyticsEnabled = false;
     this.streamsEnabled = false;
     this.tasksEnabled = false;
+    this.skipperEnabled = false;
   }
 
   public deserialize(input) {
     this.analyticsEnabled = input.analyticsEnabled;
     this.streamsEnabled = input.streamsEnabled;
     this.tasksEnabled = input.tasksEnabled;
+    this.skipperEnabled = input.skipperEnabled;
     return this;
   }
 
@@ -44,6 +47,9 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
         }
         case 'tasksEnabled': {
           return this.tasksEnabled;
+        }
+        case 'skipperEnabled': {
+          return this.skipperEnabled;
         }
         default: {
           console.error(`Unsupported feature parameter '${feature}'.`);
