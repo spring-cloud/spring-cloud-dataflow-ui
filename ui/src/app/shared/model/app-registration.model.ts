@@ -15,6 +15,10 @@ export class AppRegistration implements Selectable, Serializable<AppRegistration
   public metaDataUri: string;
   public force: boolean;
 
+  public version: string;
+  public defaultVersion: boolean;
+
+
   constructor(
     name?: string,
     type?: ApplicationType,
@@ -41,6 +45,8 @@ export class AppRegistration implements Selectable, Serializable<AppRegistration
     this.name = input.name;
     this.type = input.type as ApplicationType;
     this.uri = input.uri;
+    this.version = input.version;
+    this.defaultVersion = input.defaultVersion;
     return this;
   }
 

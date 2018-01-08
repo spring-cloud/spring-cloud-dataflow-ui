@@ -10,6 +10,10 @@ import { StreamMetrics } from '../model/stream-metrics';
 
 import { ToastyService} from 'ng2-toasty';
 import { Router } from '@angular/router';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { Observable } from 'rxjs/Observable';
+import { share } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stream-definitions',
@@ -42,6 +46,8 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
 
   selectStreamDefinition: StreamDefinition;
 
+  featureInfo: Observable<FeatureInfo>;
+
   @ViewChild('destroyMultipleStreamDefinitionsModal')
   public destroyMultipleStreamDefinitionsModal: ModalDirective;
 
@@ -60,6 +66,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   constructor(
     public streamsService: StreamsService,
     private toastyService: ToastyService,
+    private aboutService: SharedAboutService,
     private router: Router) {
   }
 
@@ -69,6 +76,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadStreamDefinitions();
     this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
+    this.featureInfo = this.aboutService.getFeatureInfo().pipe(share());
   }
 
   ngOnDestroy() {

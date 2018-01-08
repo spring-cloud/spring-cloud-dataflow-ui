@@ -9,6 +9,10 @@ import { ToastyService } from 'ng2-toasty';
 import { Properties } from 'spring-flo';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { Observable } from 'rxjs/Observable';
+import { share } from 'rxjs/operators';
 
 /**
  * Stores progress percentage.
@@ -47,6 +51,7 @@ export class StreamCreateDialogComponent implements OnInit {
   progressData: ProgressData;
   deploy = false;
   successCallback: () => void;
+  featureInfo: Observable<FeatureInfo>;
 
   busy: Subscription;
 
@@ -55,13 +60,14 @@ export class StreamCreateDialogComponent implements OnInit {
     private toastyService: ToastyService,
     private parserService: ParserService,
     private streamService: StreamsService,
-    private router: Router
+    private router: Router,
+    private aboutService: SharedAboutService
   ) {}
 
   ngOnInit() {
     this.form = new FormGroup({}, this.uniqueStreamNames());
+    this.featureInfo = this.aboutService.getFeatureInfo().pipe(share());
   }
-
 
   setDsl(dsl: string) {
     // Remove empty lines from text definition and strip off white space
