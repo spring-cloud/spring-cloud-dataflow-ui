@@ -14,13 +14,24 @@ export class MocksSharedAboutService {
   public featureInfo = new FeatureInfo();
   public featureInfoSubject = new Subject<FeatureInfo>();
 
-  getAboutInfo(): Observable<any> {
-    const dataflowVersionInfo = new DataflowVersionInfo();
+  private dataflowVersionInfo: DataflowVersionInfo;
 
-    this.aboutInfo = dataflowVersionInfo;
-    this.featureInfo = new FeatureInfo().deserialize(dataflowVersionInfo.featureInfo);
+  constructor(dataflowVersionInfo?: DataflowVersionInfo) {
+    this.dataflowVersionInfo = dataflowVersionInfo ? dataflowVersionInfo : new DataflowVersionInfo();
+  }
+
+  getAboutInfo(): Observable<any> {
+    this.aboutInfo = this.dataflowVersionInfo;
+    this.featureInfo = new FeatureInfo().deserialize(this.dataflowVersionInfo.featureInfo);
     this.featureInfoSubject.next(this.featureInfo);
 
-    return Observable.of(dataflowVersionInfo);
+    return Observable.of(this.dataflowVersionInfo);
   }
+
+  getFeatureInfo(): Observable<FeatureInfo> {
+    return this.getAboutInfo().map(result => {
+      return new FeatureInfo().deserialize(result.featureInfo);
+    });
+  }
+
 }

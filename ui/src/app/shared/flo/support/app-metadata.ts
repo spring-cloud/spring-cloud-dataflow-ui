@@ -18,6 +18,7 @@ export class AppMetadata implements Flo.ElementMetadata {
   constructor(
     private _group: string,
     private _name: string,
+    private _version: string,
     private _dataObs: Observable<DetailedAppRegistration>,
     private _metadata?: Flo.ExtraMetadata
   ) {}
@@ -101,6 +102,10 @@ export class AppMetadata implements Flo.ElementMetadata {
 
   get metadata(): Flo.ExtraMetadata {
     return this._metadata;
+  }
+
+  get version(): string {
+    return this._version;
   }
 
 }
