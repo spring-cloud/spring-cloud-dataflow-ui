@@ -11,9 +11,9 @@ import {GraphViewComponent} from '../../shared/flo/graph-view/graph-view.compone
 import { FloModule } from 'spring-flo';
 import {MockToastyService} from '../../tests/mocks/toasty';
 import {ToastyService} from 'ng2-toasty';
-import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
+import {MockSharedAppService} from '../../tests/mocks/shared-app';
 
 
 
@@ -29,7 +29,7 @@ describe('StreamDetailsComponent', () => {
   const streamsService = new MockStreamsService();
   const commonTestParams = { id: '1' };
   const toastyService = new MockToastyService();
-  const metamodelService = new MockMetamodelService();
+  const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
 
   beforeEach(async(() => {

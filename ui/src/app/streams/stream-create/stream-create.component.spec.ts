@@ -4,7 +4,6 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MockActivatedRoute} from '../../tests/mocks/activated-route';
 import {MockStreamsService} from '../../tests/mocks/streams';
-import {MockMetamodelService} from '../flo/mocks/mock-metamodel.service';
 import {RouterTestingModule} from '@angular/router/testing';
 import {StreamsService} from '../streams.service';
 import {MetamodelService} from '../flo/metamodel.service';
@@ -15,6 +14,7 @@ import { FloModule} from 'spring-flo';
 import {ModalModule, BsModalService} from 'ngx-bootstrap';
 import { ContentAssistService } from '../flo/content-assist.service';
 import { ParserService } from '../../shared/services/parser.service';
+import {MockSharedAppService} from '../../tests/mocks/shared-app';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -26,7 +26,7 @@ describe('StreamCreateComponent', () => {
   let fixture: ComponentFixture<StreamCreateComponent>;
   let activeRoute: MockActivatedRoute;
   const streamsService = new MockStreamsService();
-  const metamodelService = new MockMetamodelService();
+  const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
   const parserService = new ParserService();
   const editorService = new EditorService(null);

@@ -1,7 +1,9 @@
-import { Shapes } from 'spring-flo';
+import { Flo, Shapes } from 'spring-flo';
 import { dia } from 'jointjs';
 import { RenderService } from '../render.service';
-import { MockMetamodelService } from '../mocks/mock-metamodel.service';
+import { MetamodelService } from '../metamodel.service';
+import { MockSharedAppService } from '../../../tests/mocks/shared-app';
+import { async } from '@angular/core/testing';
 import { Utils } from './utils';
 
 import * as _joint from 'jointjs';
@@ -10,18 +12,20 @@ const joint: any = _joint;
 
 describe('utils', () => {
 
-  const MOCK_METAMODEL_SERVICE = new MockMetamodelService();
-  const RENDER_SERVICE = new RenderService(MOCK_METAMODEL_SERVICE);
+  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
+  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
 
   let graph: dia.Graph;
+  let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     graph = new joint.dia.Graph();
-  });
+    METAMODEL_SERVICE.load().then(data => metamodel = data);
+  }));
 
   it('source can be head of stream', () => {
     const node = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('http'),
+      metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
       graph: graph
     });
@@ -30,7 +34,7 @@ describe('utils', () => {
 
   it('processor cannot be head of stream', () => {
     const node = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('processor').get('transform'),
+      metadata: metamodel.get('processor').get('transform'),
       renderer: RENDER_SERVICE,
       graph: graph
     });
@@ -39,7 +43,7 @@ describe('utils', () => {
 
   it('sink cannot be head of stream', () => {
     const node = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('sink').get('console'),
+      metadata: metamodel.get('sink').get('console'),
       renderer: RENDER_SERVICE,
       graph: graph
     });
@@ -48,12 +52,12 @@ describe('utils', () => {
 
   it('tap processor can be head of stream', () => {
     const http = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('http'),
+      metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
       graph: graph
     });
     const transform = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('processor').get('transform'),
+      metadata: metamodel.get('processor').get('transform'),
       renderer: RENDER_SERVICE,
       graph: graph
     });
@@ -80,12 +84,12 @@ describe('utils', () => {
 
   it('generate stream name when no other streams present', () => {
     const http = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('http'),
+      metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
       graph: graph
     });
     const transform = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('processor').get('transform'),
+      metadata: metamodel.get('processor').get('transform'),
       renderer: RENDER_SERVICE,
       graph: graph
     });
@@ -94,12 +98,12 @@ describe('utils', () => {
 
   it('generate stream name when the same stream name is not active', () => {
     const http = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('http'),
+      metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
       graph: graph,
     });
     const transform = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('processor').get('transform'),
+      metadata: metamodel.get('processor').get('transform'),
       renderer: RENDER_SERVICE,
       graph: graph,
     });
@@ -109,13 +113,13 @@ describe('utils', () => {
 
   it('generate stream name when the same stream name is active', () => {
     const http = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('http'),
+      metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
       graph: graph,
     });
     http.attr('stream-name', 'STREAM_1');
     const filewatch = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('filewatch'),
+      metadata: metamodel.get('source').get('filewatch'),
       renderer: RENDER_SERVICE,
       graph: graph,
     });
@@ -125,13 +129,13 @@ describe('utils', () => {
 
   it('stream already have unique name', () => {
     const http = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('http'),
+      metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
       graph: graph,
     });
     http.attr('stream-name', 'unique-name');
     const filewatch = Shapes.Factory.createNode({
-      metadata: MOCK_METAMODEL_SERVICE.data.get('source').get('filewatch'),
+      metadata: metamodel.get('source').get('filewatch'),
       renderer: RENDER_SERVICE,
       graph: graph,
     });

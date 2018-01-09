@@ -4,13 +4,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FloModule } from 'spring-flo';
 import { ModalModule, BsModalService} from 'ngx-bootstrap';
 import { TaskCreateComposedTaskComponent } from './task-create-composed-task.component';
-import { MockMetamodelService } from '../../streams/flo/mocks/mock-metamodel.service';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { EditorService } from '../flo/editor.service';
 import { ContentAssistService } from '../flo/content-assist.service';
 import { BusyModule } from 'tixif-ngx-busy';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MockSharedAppService } from '../../tests/mocks/shared-app';
+import { MockToolsService } from '../../tests/mocks/mock-tools';
 
 /**
  * Test {@link TaskCreateComposedTaskComponent}.
@@ -21,7 +22,7 @@ describe('TaskCreateComposedTaskComponent', () => {
   let component: TaskCreateComposedTaskComponent;
   let fixture: ComponentFixture<TaskCreateComposedTaskComponent>;
   let activeRoute: MockActivatedRoute;
-  const metamodelService = new MockMetamodelService();
+  const metamodelService = new MetamodelService(new MockSharedAppService(), new MockToolsService());
 
   const commonTestParams = { id: '1' };
 
