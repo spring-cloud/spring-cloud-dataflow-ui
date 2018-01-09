@@ -3,12 +3,12 @@ import { StreamDefinition } from '../model/stream-definition';
 import { GraphViewComponent } from '../../shared/flo/graph-view/graph-view.component';
 import { StreamGraphDefinitionComponent } from './stream-graph-definition.component';
 import { FloModule } from 'spring-flo';
-import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import { StreamMetrics, ApplicationMetrics, INSTANCE_COUNT, INPUT_CHANNEL_MEAN, OUTPUT_CHANNEL_MEAN, TYPE } from '../model/stream-metrics';
 import { dia } from 'jointjs';
 import {TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE, TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL} from '../flo/support/shapes';
+import {MockSharedAppService} from '../../tests/mocks/shared-app';
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -18,7 +18,7 @@ import {TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE, TYPE_INSTANCE_DO
 describe('StreamGraphDefinitionComponent', () => {
   let component: StreamGraphDefinitionComponent;
   let fixture: ComponentFixture<StreamGraphDefinitionComponent>;
-  const metamodelService = new MockMetamodelService();
+  const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
 
   beforeEach(async(() => {

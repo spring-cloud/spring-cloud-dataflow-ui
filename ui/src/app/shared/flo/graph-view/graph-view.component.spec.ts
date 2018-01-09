@@ -1,8 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { GraphViewComponent } from './graph-view.component';
 import { FloModule } from 'spring-flo';
-import { MockMetamodelService } from '../../../streams/flo/mocks/mock-metamodel.service';
 import { RenderService } from '../../../streams/flo/render.service';
+import { MockSharedAppService } from '../../../tests/mocks/shared-app';
+import { MetamodelService } from '../../../streams/flo/metamodel.service';
 
 /**
  * Test {@link GraphViewComponent}.
@@ -30,7 +31,7 @@ describe('StreamGraphViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GraphViewComponent);
     component = fixture.componentInstance;
-    const metamodel = new MockMetamodelService();
+    const metamodel = new MetamodelService(new MockSharedAppService());
     component.metamodel = metamodel;
     component.renderer = new RenderService(metamodel);
   });

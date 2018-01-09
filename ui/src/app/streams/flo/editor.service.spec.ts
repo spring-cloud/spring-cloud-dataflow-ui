@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FloModule, EditorComponent } from 'spring-flo';
-import { MockMetamodelService } from '../flo/mocks/mock-metamodel.service';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 
@@ -13,6 +12,7 @@ import * as _joint from 'jointjs';
 const joint: any = _joint;
 
 import { EditorService } from './editor.service';
+import {MockSharedAppService} from '../../tests/mocks/shared-app';
 
 describe('editor.service', () => {
     const editorService = new EditorService(null);
@@ -398,13 +398,15 @@ describe('editor.service', () => {
 describe('editor.service : Auto-Link', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
-  const metamodelService = new MockMetamodelService();
+  const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
   const editorService = new EditorService(null);
+  let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
   let flo: Flo.EditorContext;
 
   beforeEach(async(() => {
+    metamodelService.load().then(data => metamodel = data);
     TestBed.configureTestingModule({
       imports: [
         FloModule
@@ -443,33 +445,33 @@ describe('editor.service : Auto-Link', () => {
   }
 
   it('DnD on empty canvas', () => {
-    dropOnCanvas(metamodelService.data.get('source').get('http'));
+    dropOnCanvas(metamodel.get('source').get('http'));
     expect(flo.getGraph().getElements().length).toEqual(1);
     expect(flo.getGraph().getElements()[0].attr('metadata/name')).toEqual('http');
   });
 
   it('Auto-Link: OFF. Drop processor with available source port', () => {
-    flo.createNode(metamodelService.data.get('source').get('http'));
+    flo.createNode(metamodel.get('source').get('http'));
     expect(flo.getGraph().getElements().length).toEqual(1);
-    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    dropOnCanvas(metamodel.get('processor').get('filter'));
     expect(flo.getGraph().getElements().length).toEqual(2);
     expect(flo.getGraph().getLinks().length).toEqual(0);
   });
 
   it('Auto-Link: ON. Drop processor with available source port', () => {
     flo.autolink = true;
-    flo.createNode(metamodelService.data.get('source').get('http'));
+    flo.createNode(metamodel.get('source').get('http'));
     expect(flo.getGraph().getElements().length).toEqual(1);
-    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    dropOnCanvas(metamodel.get('processor').get('filter'));
     expect(flo.getGraph().getElements().length).toEqual(2);
     expect(flo.getGraph().getLinks().length).toEqual(1);
   });
 
   it('Auto-Link: ON. Drop processor with sink on canvas', () => {
     flo.autolink = true;
-    const sinkNode = flo.createNode(metamodelService.data.get('sink').get('null'));
+    const sinkNode = flo.createNode(metamodel.get('sink').get('null'));
     expect(flo.getGraph().getElements().length).toEqual(1);
-    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    dropOnCanvas(metamodel.get('processor').get('filter'));
     expect(flo.getGraph().getElements().length).toEqual(2);
     expect(flo.getGraph().getLinks().length).toEqual(1);
     const l = flo.getGraph().getLinks()[0];
@@ -479,8 +481,8 @@ describe('editor.service : Auto-Link', () => {
 
   it('Auto-Link: ON. Drop processor but no available ports', () => {
     flo.autolink = true;
-    const httpNode = flo.createNode(metamodelService.data.get('source').get('http'));
-    const nullNode = flo.createNode(metamodelService.data.get('sink').get('null'));
+    const httpNode = flo.createNode(metamodel.get('source').get('http'));
+    const nullNode = flo.createNode(metamodel.get('sink').get('null'));
     flo.createLink({
       id: httpNode.id,
       selector: '.output-port',
@@ -492,15 +494,15 @@ describe('editor.service : Auto-Link', () => {
     }, null, null);
     expect(flo.getGraph().getElements().length).toEqual(2);
     expect(flo.getGraph().getLinks().length).toEqual(1);
-    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    dropOnCanvas(metamodel.get('processor').get('filter'));
     expect(flo.getGraph().getElements().length).toEqual(3);
     expect(flo.getGraph().getLinks().length).toEqual(1);
   });
 
   it('Auto-Link: ON. Drop processor available port has tap-link', () => {
     flo.autolink = true;
-    const httpNode = flo.createNode(metamodelService.data.get('source').get('http'));
-    const nullNode = flo.createNode(metamodelService.data.get('sink').get('null'));
+    const httpNode = flo.createNode(metamodel.get('source').get('http'));
+    const nullNode = flo.createNode(metamodel.get('sink').get('null'));
     flo.createLink({
       id: httpNode.id,
       selector: '.output-port',
@@ -513,7 +515,7 @@ describe('editor.service : Auto-Link', () => {
     expect(flo.getGraph().getElements().length).toEqual(2);
     expect(flo.getGraph().getLinks().length).toEqual(1);
     expect(flo.getGraph().getLinks().filter(l => l.attr('props/isTapLink')).length).toEqual(1);
-    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    dropOnCanvas(metamodel.get('processor').get('filter'));
     expect(flo.getGraph().getElements().length).toEqual(3);
     expect(flo.getGraph().getLinks().length).toEqual(2);
     expect(flo.getGraph().getLinks().filter(l => !l.attr('props/isTapLink')).length).toEqual(1);
@@ -521,11 +523,11 @@ describe('editor.service : Auto-Link', () => {
 
   it('Auto-Link: ON. More than one port available', () => {
     flo.autolink = true;
-    flo.createNode(metamodelService.data.get('source').get('http'));
-    flo.createNode(metamodelService.data.get('processor').get('filter'));
+    flo.createNode(metamodel.get('source').get('http'));
+    flo.createNode(metamodel.get('processor').get('filter'));
     expect(flo.getGraph().getElements().length).toEqual(2);
     expect(flo.getGraph().getLinks().length).toEqual(0);
-    dropOnCanvas(metamodelService.data.get('processor').get('filter'));
+    dropOnCanvas(metamodel.get('processor').get('filter'));
     expect(flo.getGraph().getElements().length).toEqual(3);
     expect(flo.getGraph().getLinks().length).toEqual(0);
   });

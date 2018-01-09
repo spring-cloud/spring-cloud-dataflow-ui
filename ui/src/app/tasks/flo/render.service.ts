@@ -155,15 +155,50 @@ export class RenderService implements Flo.Renderer {
   fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string) {
     const view = paper.findViewByModel(node);
     if (view) {
-      (<any>view).update();
+      // (<any>view).update();
       const textView = view.findBySelector(labelPath.substr(0, labelPath.indexOf('/')))[0];
       let width = joint.V(textView).bbox(false, paper.viewport).width;
       const label = node.attr(labelPath);
       const threshold = IMAGE_W - HORIZONTAL_PADDING - HORIZONTAL_PADDING;
-      for (let i = 1; i < label.length && width > threshold; i++) {
-        (<any>node).attr(labelPath, label.substr(0, label.length - i) + '\u2026', {silent: true});
-        (<any>view).update();
-        width = joint.V(textView).bbox(false, paper.viewport).width;
+
+      if (width > threshold) {
+        const styles = getComputedStyle(textView);
+        const stylesObj: {} = {};
+        for (let i = 0; i < styles.length; i++) {
+          const property = styles.item(i);
+          if (!property.startsWith('-')) {
+            stylesObj[property] = styles.getPropertyValue(property);
+          }
+        }
+
+        const svgDocument = joint.V('svg').node;
+        const textSpan = joint.V('tspan').node;
+        const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
+        const textNode = document.createTextNode(label);
+
+        // Prevent flickering
+        textElement.style.opacity = 0;
+        // Prevent FF from throwing an uncaught exception when `getBBox()`
+        // called on element that is not in the render tree (is not measurable).
+        // <tspan>.getComputedTextLength() returns always 0 in this case.
+        // Note that the `textElement` resp. `textSpan` can become hidden
+        // when it's appended to the DOM and a `display: none` CSS stylesheet
+        // rule gets applied.
+        textElement.style.display = 'block';
+        textSpan.style.display = 'block';
+
+        textSpan.appendChild(textNode);
+        svgDocument.appendChild(textElement);
+
+        document.body.appendChild(svgDocument);
+
+        width = textSpan.getComputedTextLength();
+        for (let i = 1; i < width && width > threshold; i++) {
+          textNode.data = label.substr(0, label.length - i) + '\u2026';
+          width = textSpan.getComputedTextLength();
+        }
+
+        (<any>node).attr(labelPath, textNode.data);
       }
     }
   }
