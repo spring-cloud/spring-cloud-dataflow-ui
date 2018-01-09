@@ -37,7 +37,7 @@
                 class="btn btn-default" style="margin-left: 0;" title="Details" [disabled]="!item.dslText || !item.composed">
           <span class="glyphicon glyphicon-info-sign"></span>
         </button>
-        <button type="button" (click)="launchTask(item)"
+        <button type="button" [appRoles]="['ROLE_CREATE']" (click)="launchTask(item)"
                 class="btn btn-default" style="margin-left: 0;" title="Launch">
           <span class="glyphicon glyphicon-play"></span>
         </button>
