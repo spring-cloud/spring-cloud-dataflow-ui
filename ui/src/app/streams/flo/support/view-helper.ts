@@ -61,7 +61,14 @@ export class ViewHelper {
     const V = joint.V;
 
     return joint.shapes.flo.LinkView.extend({
-
+      options: {
+        shortLinkLength: 0,
+        doubleLinkTools: false,
+        longLinkLength: 160,
+        linkToolsOffset: 30,
+        doubleLinkToolsOffset: 60,
+        sampleInterval: 50
+      },
       renderLabels: function () {
 
         if (!this._V.labels) {
@@ -173,7 +180,6 @@ export class ViewHelper {
           }));
 
         }, this);
-
         return this;
       }
     });
