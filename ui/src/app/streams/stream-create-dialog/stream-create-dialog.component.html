@@ -40,8 +40,10 @@
       </td>
     </tr>
   </tbody>
-  <label class="dialog-control"><input [disabled]="isStreamCreationInProgress()" type="checkbox" [(ngModel)]="deploy"
-                                       [ngModelOptions]="{standalone: true}"/>Deploy stream(s)</label>
+  <label class="dialog-control" *ngIf="(featureInfo | async) && !(featureInfo | async)?.skipperEnabled">
+    <input [disabled]="isStreamCreationInProgress()" type="checkbox" [(ngModel)]="deploy"
+                                       [ngModelOptions]="{standalone: true}"/>Deploy stream(s)
+  </label>
   <div *ngIf="progressData">
     <hr/>
     <div>Creating Streams...</div>

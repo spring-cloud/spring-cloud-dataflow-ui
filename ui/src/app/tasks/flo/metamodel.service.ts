@@ -114,7 +114,7 @@ export class MetamodelService implements Flo.Metamodel {
             if (group.has(item.name)) {
               console.error(`Group '${item.type}' has duplicate element '${item.name}'`);
             } else {
-              group.set(item.name, this.createEntry(item.type, item.name));
+              group.set(item.name, this.createEntry(item.type, item.name, item.version));
             }
           });
           resolve(metamodel);
@@ -173,10 +173,11 @@ export class MetamodelService implements Flo.Metamodel {
     metamodel.set(metadata.group, new Map<string, Flo.ElementMetadata>().set(metadata.name, metadata));
   }
 
-  private createEntry(type: ApplicationType, name: string, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
+  private createEntry(type: ApplicationType, name: string, version: string, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
     return new AppMetadata(
       type.toString(),
       name,
+      version,
       this.appsService.getAppInfo(type, name),
       metadata
     );

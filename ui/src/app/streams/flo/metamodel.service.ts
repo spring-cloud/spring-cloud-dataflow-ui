@@ -42,7 +42,7 @@ export class MetamodelService implements Flo.Metamodel {
      * @param errorHandler used to generate the error messages.
      */
     constructor(
-      private appsService: SharedAppsService,
+      private appsService: SharedAppsService
     ) {}
 
     textToGraph(flo: Flo.EditorContext, dsl: string): Promise<any> {
@@ -94,7 +94,7 @@ export class MetamodelService implements Flo.Metamodel {
                         if (group.has(item.name)) {
                             console.error(`Group '${item.type}' has duplicate element '${item.name}'`);
                         } else {
-                            group.set(item.name, this.createEntry(item.type, item.name));
+                            group.set(item.name, this.createEntry(item.type, item.name, item.version));
                         }
                     });
                     resolve(metamodel);
@@ -108,10 +108,11 @@ export class MetamodelService implements Flo.Metamodel {
         return this.request;
     }
 
-    private createEntry(type: ApplicationType, name: string, metadata?: Flo.ExtraMetadata): AppMetadata {
+    private createEntry(type: ApplicationType, name: string, version: string, metadata?: Flo.ExtraMetadata): AppMetadata {
       return new AppMetadata(
         type.toString(),
         name,
+        version,
         this.appsService.getAppInfo(type, name),
         metadata
       );
