@@ -9,6 +9,7 @@ import {
 } from '../tests/mocks/mock-data';
 import {Page} from '../shared/model/page';
 import {JobExecution} from './model/job-execution.model';
+import {RequestOptionsArgs} from '@angular/http';
 
 export class MockResponse {
 
@@ -30,7 +31,7 @@ export class MockResponse {
 describe('JobsService', () => {
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
+    this.mockHttp = jasmine.createSpyObj('mockHttp', ['get', 'put']);
     this.jsonData = { };
     const errorHandler = new ErrorHandler();
     this.jobsService = new JobsService(this.mockHttp, errorHandler);
@@ -93,6 +94,30 @@ describe('JobsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       this.jobsService.getStepExecutionProgress('1', '1');
       expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1/steps/1/progress', {});
+    });
+  });
+
+  describe('restartJobExecution', () => {
+    it('should execute a PUT command to restart a job', () => {
+      const jobExecution: JobExecution = new JobExecution();
+      jobExecution.jobExecutionId = 1;
+      jobExecution.name = 'foo';
+      this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
+      this.jobsService.restartJob(jobExecution);
+      const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+      expect(this.mockHttp.put).toHaveBeenCalledWith('/jobs/executions/1?restart=true', options);
+    });
+  });
+
+  describe('stopJobExecution', () => {
+    it('should execute a PUT command to stop a job', () => {
+      const jobExecution: JobExecution = new JobExecution();
+      jobExecution.jobExecutionId = 1;
+      jobExecution.name = 'foo';
+      this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
+      this.jobsService.stopJob(jobExecution);
+      const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+      expect(this.mockHttp.put).toHaveBeenCalledWith('/jobs/executions/1?stop=true', options);
     });
   });
 

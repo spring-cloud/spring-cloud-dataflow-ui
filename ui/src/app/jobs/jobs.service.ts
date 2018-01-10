@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptionsArgs } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -346,5 +346,29 @@ export class JobsService {
 
     this.jobExecutions.update(page);
     return this.jobExecutions;
+  }
+
+  /**
+   * Restarts a job if the job failed.
+   * @param {JobExecution} item JobExecution to restart.
+   * @returns {Observable<any | any>} with the state of the restart.
+   */
+  restartJob(item: JobExecution) {
+    const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+
+    return this.http.put(this.jobExecutionsUrl + '/' + item.jobExecutionId + '?restart=true', options)
+      .catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Stops a running JobExecution.
+   * @param {JobExecution} item the JobExecution to stop
+   * @returns {Observable<any | any>} state of the job execution stop event.
+   */
+  stopJob(item: JobExecution) {
+    const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+
+    return this.http.put(this.jobExecutionsUrl + '/' + item.jobExecutionId + '?stop=true', options)
+      .catch(this.errorHandler.handleError);
   }
 }
