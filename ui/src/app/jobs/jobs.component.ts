@@ -64,11 +64,27 @@ export class JobsComponent implements OnInit {
   }
 
   restartJob(item: JobExecution) {
-    console.log('Restart Job');
+    console.log('Restart Job ' + item.jobExecutionId);
+    this.jobsService.restartJob(item).subscribe(
+      data => {
+        this.toastyService.success('Successfully restarted job "' + item.name + '"');
+      },
+      error => {
+        this.toastyService.error(error);
+      }
+    );
   }
 
   stopJob(item: JobExecution) {
-    console.log('Stop Job');
+    console.log('Stop Job' + item.jobExecutionId);
+    this.jobsService.stopJob(item).subscribe(
+      data => {
+        this.toastyService.success('Successfully stopped job "' + item.name + '"');
+      },
+      error => {
+        this.toastyService.error(error);
+      }
+    );
   }
 
   viewJobExecutionDetails(item: JobExecution) {
