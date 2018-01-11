@@ -99,12 +99,8 @@
             <span class="glyphicon glyphicon-stop"></span>
           </button>
 
-          <button *ngIf="!(featureInfo | async)?.skipperEnabled" type="button" [appRoles]="['ROLE_CREATE']" [disabled]="(item.status==='deployed' || item.status==='deploying')" (click)="deploy(item)"
+          <button type="button" [appRoles]="['ROLE_CREATE']" [disabled]="(item.status==='deployed' || item.status==='deploying')" (click)="deploy(item)"
                   class="btn btn-default" style="margin-left: 0;" title="Deploy">
-            <span class="glyphicon glyphicon-play"></span>
-          </button>
-          <button *ngIf="(featureInfo | async)?.skipperEnabled" type="button" [appRoles]="['ROLE_CREATE']" class="btn btn-default" style="margin-left: 0;"
-                  popover="Switch to the Shell to deploy a stream using Skipper. The Dashboard support for it is under development" popoverTitle="Unsupported" placement="bottom" triggers="focus">
             <span class="glyphicon glyphicon-play"></span>
           </button>
 
