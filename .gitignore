@@ -6,6 +6,8 @@ ui/app/lib/
 ui/app/styles/main.css
 ui/app/styles/main.css.map
 ui/.tmp
+ui/documentation/
+ui/package-lock.json
 src/main/resources/public/dashboard
 target/
 .classpath
