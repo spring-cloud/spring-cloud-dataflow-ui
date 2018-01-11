@@ -88,7 +88,11 @@
         </td>
         <td>{{item.name}}</td>
         <td>{{item.dslText}}</td>
-        <td>{{item.status}}</td>
+        <td *ngIf="canShowDeploymentInfo(item); else deployment_status_only_content">
+          <a href="" (click)="false" [popover]="stream_info" placement="bottom" triggers="focus" containerClass="deployment-info-popup">{{item.status}}</a>
+        </td>
+        <ng-template #deployment_status_only_content><td>{{item.status ? item.status : 'unknown'}}</td></ng-template>
+        <ng-template #stream_info><app-stream-deployment-properties-info [streamDefinition]="item"></app-stream-deployment-properties-info></ng-template>
         <td class="action-column">
           <button type="button" (click)="details(item)"
                   class="btn btn-default" title="Details">

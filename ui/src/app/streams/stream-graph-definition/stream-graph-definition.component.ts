@@ -69,7 +69,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
   }
 
   get status(): string[] {
-    return this.stream ? [ this.stream.status.toString() ] : [];
+    return this.stream && this.stream.status ? [ this.stream.status.toString() ] : [ 'unknown' ];
   }
 
   setEditorContext(editorContext: Flo.EditorContext) {

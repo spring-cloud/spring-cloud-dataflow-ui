@@ -125,6 +125,18 @@ describe('StreamsService', () => {
       });
     });
 
+    describe('deploymentInfo', () => {
+      it('should call the streams service to get deployment info', () => {
+        this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+
+        expect(this.streamsService.getDeploymentInfo).toBeDefined();
+
+        this.streamsService.getDeploymentInfo('test');
+        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+        expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/deployments/test', requestOptionsArgs);
+      });
+    });
+
     describe('extractDefinition', () => {
       it('should call the streams service to extract stream definition', () => {
         const response = new MockResponse();

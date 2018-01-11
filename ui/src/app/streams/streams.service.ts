@@ -152,7 +152,7 @@ export class StreamsService {
    * @param propertiesAsMap the application or deployment properties to be used for stream deployment.
    * @returns {Observable<R|T>} that will call the subscribed functions to handle the resut of the deploy.
    */
-  deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> {
+  deployDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<Response> {
     console.log('Deploying...', streamDefinitionName);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
@@ -165,6 +165,17 @@ export class StreamsService {
       observables.push(this.deployDefinition(streamDefinition.name, streamDefinition.deploymentProperties));
     }
     return Observable.forkJoin(observables);
+  }
+
+  getDeploymentInfo(streamDefinitionName: string): Observable<StreamDefinition> {
+    const options = HttpUtils.getDefaultRequestOptions();
+    return this.http.get(`/streams/deployments/${streamDefinitionName}`, options).map(res => {
+      const json = res.json();
+      const streamDef = new StreamDefinition(json.streamName, json.dslText, json.status);
+      // deploymentProperties come as json string -> turn the string into object
+      streamDef.deploymentProperties = JSON.parse(json.deploymentProperties);
+      return streamDef;
+    }).catch(this.errorHandler.handleError);
   }
 
   getRelatedDefinitions(streamName: string, nested?: boolean): Observable<StreamDefinition[]> {

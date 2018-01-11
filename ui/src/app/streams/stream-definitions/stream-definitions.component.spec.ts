@@ -27,7 +27,7 @@ import {TriStateCheckboxComponent} from '../../shared/components/tri-state-check
 import {DeploymentPropertiesComponent} from './deployment-properties/deployment-properties.component';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { DataflowVersionInfo } from '../../tests/mocks/about';
+import { DeploymentPropertiesInfoComponent } from './deployment-properties-info/deployment-properties-info.component';
 
 /**
  * Test {@link StreamDefinitionsComponent}.
@@ -46,11 +46,7 @@ describe('StreamDefinitionsComponent', () => {
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
-
-    // Disable skipper mode initially to get Deploy UI tests to pass
-    const info = new DataflowVersionInfo();
-    info.featureInfo.skipperEnabled = false;
-    const aboutService = new MocksSharedAboutService(info);
+    const aboutService = new MocksSharedAboutService();
 
     TestBed.configureTestingModule({
       declarations: [
@@ -61,7 +57,8 @@ describe('StreamDefinitionsComponent', () => {
         StreamDefinitionsComponent,
         TriStateButtonComponent,
         TriStateCheckboxComponent,
-        DeploymentPropertiesComponent
+        DeploymentPropertiesComponent,
+        DeploymentPropertiesInfoComponent
       ],
       imports: [
         BusyModule,
@@ -352,6 +349,32 @@ describe('StreamDefinitionsComponent', () => {
     expect(show).not.toHaveBeenCalled();
     expect(show1).not.toHaveBeenCalled();
     expect(show2).not.toHaveBeenCalled();
+  });
+
+  it('can show deployment info', () => {
+    const stream = new StreamDefinition('test', 'time | log', 'unknown');
+    expect(component.canShowDeploymentInfo(stream)).toBeFalsy();
+
+    stream.status = undefined;
+    expect(component.canShowDeploymentInfo(stream)).toBeFalsy();
+
+    stream.status = 'undeployed';
+    expect(component.canShowDeploymentInfo(stream)).toBeFalsy();
+
+    stream.status = 'deployed';
+    expect(component.canShowDeploymentInfo(stream)).toBeTruthy();
+
+    stream.status = 'deploying';
+    expect(component.canShowDeploymentInfo(stream)).toBeTruthy();
+
+    stream.status = 'failed';
+    expect(component.canShowDeploymentInfo(stream)).toBeTruthy();
+
+    stream.status = 'incomplete';
+    expect(component.canShowDeploymentInfo(stream)).toBeTruthy();
+
+    stream.status = 'foo';
+    expect(component.canShowDeploymentInfo(stream)).toBeFalsy();
   });
 
 });

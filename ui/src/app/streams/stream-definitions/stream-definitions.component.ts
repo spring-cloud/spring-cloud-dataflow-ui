@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation} from '@angular/core';
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
@@ -10,14 +10,12 @@ import { StreamMetrics } from '../model/stream-metrics';
 
 import { ToastyService} from 'ng2-toasty';
 import { Router } from '@angular/router';
-import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { FeatureInfo } from '../../shared/model/about/feature-info.model';
-import { Observable } from 'rxjs/Observable';
-import { share } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stream-definitions',
   templateUrl: './stream-definitions.component.html',
+  styleUrls: [ './stream-definitions.component.scss' ],
+  encapsulation: ViewEncapsulation.None
 })
 
 /**
@@ -46,8 +44,6 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
 
   selectStreamDefinition: StreamDefinition;
 
-  featureInfo: Observable<FeatureInfo>;
-
   @ViewChild('destroyMultipleStreamDefinitionsModal')
   public destroyMultipleStreamDefinitionsModal: ModalDirective;
 
@@ -66,7 +62,6 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   constructor(
     public streamsService: StreamsService,
     private toastyService: ToastyService,
-    private aboutService: SharedAboutService,
     private router: Router) {
   }
 
@@ -76,7 +71,6 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadStreamDefinitions();
     this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
-    this.featureInfo = this.aboutService.getFeatureInfo().pipe(share());
   }
 
   ngOnDestroy() {
@@ -438,6 +432,13 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   backDeployMultipleStreamDefinitions() {
     this.selectStreamDefinition = null;
+  }
+
+  canShowDeploymentInfo(item: StreamDefinition) {
+    return item.status === 'deployed'
+      || item.status === 'deploying'
+      || item.status === 'failed'
+      || item.status === 'incomplete';
   }
 
 }

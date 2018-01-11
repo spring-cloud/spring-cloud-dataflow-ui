@@ -20,7 +20,7 @@ describe('StreamsDefinition', () => {
       expect(streamDefinition.isExpanded).toBe(true);
       streamDefinition.isSelected = true;
       expect(streamDefinition.force).toBe(true);
-      expect(Object.keys(streamDefinition.deploymentProperties).length).toBe(0);
+      expect(streamDefinition.deploymentProperties).toBeUndefined();
     });
   });
 });

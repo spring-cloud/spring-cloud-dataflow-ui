@@ -9,6 +9,40 @@ import { Utils } from './utils';
  * @author Alex Boyko
  * @author Andy Clement
  */
+export class AppPropertyMetadata implements Flo.PropertyMetadata {
+
+  public options: string[];
+
+  public code: CodeOptions;
+
+  constructor(private metadata: ConfigurationMetadataProperty) {}
+
+  get id(): string {
+    return this.metadata.id;
+  }
+
+  get name(): string {
+    return this.metadata.name;
+  }
+
+  get description(): string {
+    return this.metadata.description || this.metadata.shortDescription;
+  }
+
+  get defaultValue() {
+    return this.metadata.defaultValue;
+  }
+
+  get type(): string {
+    return this.metadata.type;
+  }
+
+  get sourceType(): string {
+    return this.metadata.sourceType;
+  }
+
+}
+
 export class AppMetadata implements Flo.ElementMetadata {
 
   private _dataPromise: Promise<DetailedAppRegistration>;
@@ -113,38 +147,4 @@ export class AppMetadata implements Flo.ElementMetadata {
 export interface CodeOptions {
   readonly language?: string;
   readonly langPropertyName?: string;
-}
-
-export class AppPropertyMetadata implements Flo.PropertyMetadata {
-
-  public options: string[];
-
-  public code: CodeOptions;
-
-  constructor(private metadata: ConfigurationMetadataProperty) {}
-
-  get id(): string {
-    return this.metadata.id;
-  }
-
-  get name(): string {
-    return this.metadata.name;
-  }
-
-  get description(): string {
-    return this.metadata.description || this.metadata.shortDescription;
-  }
-
-  get defaultValue() {
-    return this.metadata.defaultValue;
-  }
-
-  get type(): string {
-    return this.metadata.type;
-  }
-
-  get sourceType(): string {
-    return this.metadata.sourceType;
-  }
-
 }

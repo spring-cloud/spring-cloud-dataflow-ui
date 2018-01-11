@@ -15,7 +15,7 @@ export class StreamDefinition implements Expandable {
   public isExpanded = false;
   public force = false;
 
-  public deploymentProperties: any = {};
+  public deploymentProperties: any;
 
   constructor(
       name: String,

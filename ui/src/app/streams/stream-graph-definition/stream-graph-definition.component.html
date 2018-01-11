@@ -1,1 +1,1 @@
-<app-graph-view [dsl]="dsl" [ngClass]="status" (floApi)="setEditorContext($event)" [metamodel]="metamodel" [renderer]="renderer"></app-graph-view>
+<app-graph-view [dsl]="dsl" [ngClass]="status ? status : 'undeployed'" (floApi)="setEditorContext($event)" [metamodel]="metamodel" [renderer]="renderer"></app-graph-view>
