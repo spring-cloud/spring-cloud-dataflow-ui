@@ -49,10 +49,10 @@
                            class="form-control" placeholder="&lt;maven://io.spring.cloud:scdf-sample-app:jar:1.0.0&gt;" [pattern]="uriPattern">
                     <span class="help-block" *ngIf="uri.invalid && uri.touched">Please provide a valid URI pointing to the respective properties file.</span>
                   </div>
-                  <div [class.has-error]="metadataUri.invalid && metadataUri.touched">
-                    <input #metadataUri="ngModel" type="text" name="metadataUri_{{index}}" [(ngModel)]="item.metadataUri"
+                  <div [class.has-error]="metaDataUri.invalid && metaDataUri.touched">
+                    <input #metaDataUri="ngModel" type="text" name="metaDataUri_{{index}}" [(ngModel)]="item.metaDataUri"
                            class="form-control" placeholder="&lt;maven://io.spring.cloud:scdf-sample-app:jar:metadata:1.0.0&gt; [OPTIONAL]" [pattern]="uriPattern">
-                    <span class="help-block" *ngIf="metadataUri.invalid && metadataUri.touched">Please provide a valid URI pointing to the respective properties file.</span>
+                    <span class="help-block" *ngIf="metaDataUri.invalid && metaDataUri.touched">Please provide a valid URI pointing to the respective properties file.</span>
                   </div>
                 </td>
                 <td>
