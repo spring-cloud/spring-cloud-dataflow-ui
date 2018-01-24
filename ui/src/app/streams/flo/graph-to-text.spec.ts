@@ -398,6 +398,16 @@ describe('graph-to-text', () => {
         expect(dsl).toEqual('aaa=time | logA\n:aaa.time > logB');
     });
 
+    it('tapped simple stream 2', () => {
+        const timeSource = createSource('time');
+        timeSource.attr('stream-name', 'aaa');
+        // Now the tap is the first one, not the second one
+        createTap(timeSource, createSink('logA'));
+        createLink(timeSource, createSink('logB'));
+        dsl = convertGraphToText(graph);
+        expect(dsl).toEqual(':aaa.time > logA\naaa=time | logB');
+    });
+
     it('tap into processor', () => {
         const timeSource = createSource('time');
         timeSource.attr('stream-name', 'aaa');

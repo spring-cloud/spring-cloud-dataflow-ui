@@ -186,7 +186,7 @@ class GraphToTextConverter {
 
             for (let i = 0; i < stream.length; i++) {
                 const node = stream[i];
-                const isTapStream = tapStreams.find(ts => ts === s);
+                const isTapStream = typeof tapStreams.find(ts => ts === s) !== 'undefined';
                 if (i === 0) { // If first node, special handling...
                     // For a tap the name is on the 2nd element
                     const nameIndex = (isTapStream || this.isChannel(node)) ? 1 : 0;
