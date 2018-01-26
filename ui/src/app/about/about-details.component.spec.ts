@@ -10,9 +10,8 @@ import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
 import {AboutDetailsComponent} from './about-details.component';
-import {StompService} from 'ng2-stomp-service';
-import {KeyValuePipe} from '../shared/pipes/key-value-filter.pipe';
 import {ClipboardModule} from 'ngx-clipboard/dist';
+import { MapValuesPipe } from '../shared/pipes/map-values-pipe.pipe';
 
 describe('AboutDetailsComponent', () => {
   let component: AboutDetailsComponent;
@@ -20,11 +19,10 @@ describe('AboutDetailsComponent', () => {
   const toastyService = new MockToastyService();
   let activeRoute: MockActivatedRoute;
   const aboutService = new MockAboutService();
-  const stompService = new StompService();
 
   beforeEach(async(() => {
     aboutService.isAboutInfoAvailable = true;
-    aboutService.isFeatureEnabled = true;
+    aboutService.featureEnabled = true;
     aboutService.isPlatformSpecificInformationAvailable = true;
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
@@ -33,12 +31,11 @@ describe('AboutDetailsComponent', () => {
         RouterTestingModule.withRoutes([]),
         ClipboardModule
       ],
-      declarations: [AboutDetailsComponent, KeyValuePipe],
+      declarations: [AboutDetailsComponent, MapValuesPipe],
       providers: [
         {provide: AboutService, useValue: aboutService},
         {provide: ToastyService, useValue: toastyService},
-        {provide: ActivatedRoute, useValue: activeRoute},
-        {provide: StompService, useValue: stompService}
+        {provide: ActivatedRoute, useValue: activeRoute}
       ]
     })
       .compileComponents();
@@ -100,7 +97,7 @@ describe('AboutDetailsComponent', () => {
   });
 
   it('Should display base information and services are disabled.', () => {
-    aboutService.isFeatureEnabled = false;
+    aboutService.featureEnabled = false;
     fixture.detectChanges();
     expect(component).toBeTruthy();
 

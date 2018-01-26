@@ -42,7 +42,6 @@ export class MockJobsService {
 
   getStepExecutionProgress(jobid: string, stepid: string): Observable<StepExecutionProgress> {
     let stepExecutionProgress: StepExecutionProgress = null;
-    console.log('XXX1', this.testStepExecutionProgress);
     if (this.testStepExecutionProgress) {
       stepExecutionProgress = new StepExecutionProgress();
       const body = this.testStepExecutionProgress;

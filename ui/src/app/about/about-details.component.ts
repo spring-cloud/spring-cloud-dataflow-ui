@@ -1,44 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AboutService } from './about.service';
-import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
-import { StompService } from 'ng2-stomp-service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { AboutInfo } from '../shared/model/about/about-info.model';
 
 @Component({
   templateUrl: './about-details.component.html'
 })
 export class AboutDetailsComponent implements OnInit {
 
-  dataflowVersionInfo;
-  busy: Subscription;
-  websocketData;
-
-  private subscription: any;
+  public dataflowVersionInfo$: Observable<AboutInfo>;
 
   constructor(
     private aboutService: AboutService,
     private toastyService: ToastyService,
-    private stomp: StompService,
     private router: Router) {
   }
 
   ngOnInit() {
     console.log('Getting about details...');
-    this.getAboutDetails();
-  }
-
-  getAboutDetails(): void {
-    this.busy = this.aboutService.getDetails().subscribe(
-      data => {
-        this.dataflowVersionInfo = data;
-        this.toastyService.success('About details data loaded.');
-      },
-      error => {
-        this.toastyService.error(error);
-      }
-    );
+    this.dataflowVersionInfo$ = this.aboutService.getDetails();
   }
 
   goBack() {

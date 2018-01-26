@@ -5,7 +5,7 @@ import { HttpUtils } from '../shared/support/http.utils';
 import { ErrorHandler } from '../shared/model';
 
 import { AuthService } from './auth.service';
-import { SecurityInfo } from './model/security-info.model';
+import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { LoginRequest } from './model/login-request.model';
 import { SecurityAwareRequestOptions } from './support/security-aware-request-options';
 
