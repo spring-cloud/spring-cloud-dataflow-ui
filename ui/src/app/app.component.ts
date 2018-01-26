@@ -1,9 +1,13 @@
 import { Component, DoCheck } from '@angular/core';
 import { ToastyConfig } from 'ng2-toasty';
 import { AuthService } from './auth/auth.service';
-import { SecurityInfo } from './auth/model/security-info.model';
 import { Renderer2 } from '@angular/core';
 import { OnInit } from '@angular/core';
+
+import { SecurityInfo } from './shared/model/about/security-info.model';
+import { SharedAboutService } from './shared/services/shared-about.service';
+import { Observable } from 'rxjs/Observable';
+import { AboutInfo } from './shared/model/about/about-info.model';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +16,14 @@ import { OnInit } from '@angular/core';
 export class AppComponent implements DoCheck, OnInit {
 
   public securityInfo: SecurityInfo;
+  public dataflowVersionInfo$: Observable<AboutInfo>;
+
   public isCollapsed = true;
 
   constructor(private toastyConfig: ToastyConfig,
       private renderer: Renderer2,
-      private authService: AuthService) {
+      private authService: AuthService,
+      private sharedAboutService: SharedAboutService) {
     this.toastyConfig.theme = 'bootstrap';
     this.toastyConfig.limit = 5;
     this.toastyConfig.showClose = true;
@@ -31,6 +38,7 @@ export class AppComponent implements DoCheck, OnInit {
   }
 
   ngOnInit() {
+    this.dataflowVersionInfo$ = this.sharedAboutService.getAboutInfo();
     this.renderer.listen('document', 'scroll', (evt) => {
       this.updateToasty();
     });

@@ -9,6 +9,7 @@ import {ErrorHandler} from '../shared/model/error-handler';
 
 import { SharedAboutService } from '../shared/services/shared-about.service';
 import { FeatureInfo } from '../shared/model/about/feature-info.model';
+import { AboutInfo } from '../shared/model/about/about-info.model';
 
 @Injectable()
 export class AboutService {
@@ -17,12 +18,8 @@ export class AboutService {
     private sharedAboutService: SharedAboutService,
     private http: Http, private errorHandler: ErrorHandler) {}
 
-  public get aboutInfo(): any {
+  public get aboutInfo(): AboutInfo {
     return this.sharedAboutService.aboutInfo;
-  }
-
-  public set aboutInfo(aboutInfo) {
-    this.sharedAboutService.aboutInfo = aboutInfo;
   }
 
   public get featureInfo(): FeatureInfo {
@@ -37,13 +34,14 @@ export class AboutService {
     return this.sharedAboutService.featureInfoSubject;
   }
 
-  getAboutInfo(): Observable<any> {
+  getAboutInfo(reload?: boolean): Observable<AboutInfo> {
+    if (reload) {
+      this.sharedAboutService.loadAboutInfo(reload);
+    }
     return this.sharedAboutService.getAboutInfo();
   }
 
-  getDetails(): Observable<any> {
-    return this.http.get(this.sharedAboutService.aboutUrl)
-                    .map(this.sharedAboutService.extractData.bind(this))
-                    .catch(this.errorHandler.handleError);
+  getDetails(): Observable<AboutInfo> {
+    return this.sharedAboutService.getAboutInfo();
   }
 }

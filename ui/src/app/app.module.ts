@@ -20,6 +20,7 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AuthService } from './auth/auth.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { SharedAboutService } from './shared/services/shared-about.service';
 
 /**
  * Executed when the app starts up. Will load the security
@@ -29,9 +30,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
  *
  * @param authService
  */
-export function init(authService: AuthService) {
+export function init(authService: AuthService, sharedAboutService: SharedAboutService) {
   return () => {
-    return authService.loadSecurityInfo(true).toPromise();
+    return authService.loadSecurityInfo(true).map(securityInfo => {
+      if (securityInfo.isAuthenticated || !securityInfo.isAuthenticationEnabled) {
+        sharedAboutService.loadAboutInfo();
+      }
+    }).toPromise();
   };
 }
 
@@ -58,7 +63,7 @@ export function init(authService: AuthService) {
     {
       'provide': APP_INITIALIZER,
       'useFactory': init,
-      'deps': [ AuthService ],
+      'deps': [ AuthService, SharedAboutService ],
       'multi': true
     },
     {

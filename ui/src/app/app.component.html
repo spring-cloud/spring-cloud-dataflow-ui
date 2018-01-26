@@ -54,7 +54,7 @@
         <h3 class='h4 type-neutral-11 em-alt mbs'>Project</h3>
         <ul class='list-unstyled'>
           <li>
-            <a class='link-lowlight-alt' target="_blank" href='http://cloud.spring.io/spring-cloud-dataflow/'>Project Page</a>
+            <a class='link-lowlight-alt' target="_blank" href='https://cloud.spring.io/spring-cloud-dataflow/'>Project Page</a>
           </li>
           <li>
             <a class='link-lowlight-alt' target="_blank" href='https://github.com/spring-cloud/spring-cloud-dataflow/issues'>Issue Tracker</a>
@@ -64,14 +64,14 @@
       <div class='col-sm-4'>
         <h3 class='h4 type-neutral-11 em-alt mbs'>Documentation</h3>
         <ul class='list-unstyled'>
-          <li>
-            <a class='link-lowlight-alt' target="_blank" href='http://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/'>Docs</a>
+          <li *ngIf="dataflowVersionInfo$ | async as aboutInfo">
+            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{aboutInfo.versionInfo.core.version}}/reference/htmlsingle/'>Docs</a>
           </li>
           <li>
             <a class='link-lowlight-alt' target="_blank" href='https://github.com/spring-cloud/spring-cloud-dataflow'>Sources</a>
           </li>
-          <li>
-            <a class='link-lowlight-alt' target="_blank" href='http://docs.spring.io/spring-cloud-dataflow/docs/current/api/'>Api Docs</a>
+          <li *ngIf="dataflowVersionInfo$ | async as aboutInfo">
+            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{aboutInfo.versionInfo.core.version}}/api/'>Api Docs</a>
           </li>
         </ul>
       </div>
@@ -80,11 +80,10 @@
         <ul class='list-unstyled'>
           <li class='type-neutral-11'>
             For questions + support:
-            <a class='link-lowlight-alt' target="_blank" href='http://stackoverflow.com/questions/tagged/spring-cloud-dataflow'>Stackoverflow</a>
+            <a class='link-lowlight-alt' target="_blank" href='https://stackoverflow.com/questions/tagged/spring-cloud-dataflow'>Stackoverflow</a>
           </li>
         </ul>
       </div>
     </div>
   </div>
 </div>
-

@@ -1,4 +1,4 @@
-import { Serializable } from '../../shared/model';
+import { Serializable } from '../serialization/serializable.model';
 /**
  * Contains meta data about the state of security.
  *

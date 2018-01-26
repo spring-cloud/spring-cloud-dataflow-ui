@@ -1,37 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { AboutService } from './about.service';
-import { Subscription } from 'rxjs/Subscription';
-import { ToastyService} from 'ng2-toasty';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { AboutInfo } from '../shared/model/about/about-info.model';
 
 @Component({
   templateUrl: './about.component.html',
 })
 export class AboutComponent implements OnInit {
 
-  dataflowVersionInfo;
-  busy: Subscription;
+  public dataflowVersionInfo$: Observable<AboutInfo>;
 
-  private subscription: any;
-
-  constructor(private aboutService: AboutService, private toastyService: ToastyService,
+  constructor(private aboutService: AboutService,
     private router: Router) {
   }
 
   ngOnInit() {
-    this.getVersionInfo();
-  }
-
-  getVersionInfo(): void {
-    this.busy = this.aboutService.getAboutInfo().subscribe(
-      data => {
-        this.dataflowVersionInfo = data;
-        this.toastyService.success('About data loaded.');
-      },
-      error => {
-        this.toastyService.error(error);
-      }
-    );
+    this.dataflowVersionInfo$ = this.aboutService.getAboutInfo();
   }
 
   goToDetails() {
