@@ -67,16 +67,6 @@ table.table {
   position: unset;
 }
 
-@keyframes fade {
-  0%  { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-.fade {
-  animation: fade ease-in-out 1s;
-  animation-fill-mode: forwards;
-}
-
 .vertical-center {
   background-color: #232b2f;
   min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
