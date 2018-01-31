@@ -14,7 +14,7 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-19 col-actions">
+  <div class="col-xs-10 col-md-19 col-actions">
     <app-tri-state-button *ngIf="streamDefinitions?.items" class="toggle-all" [appRoles]="['ROLE_CREATE']"
       [items]="streamDefinitions.getItemsAsObservable()"
       (eventHandler)="deployMultipleStreamDefinitions(streamDefinitions.items)"
@@ -47,9 +47,9 @@
       icon="remove"
     ></app-tri-state-button>
   </div>
-  <div class="col-md-5 text-right" style="padding-left: 0;">
+  <div class="col-xs-14 col-md-5 text-right" style="padding-left: 0;">
     <label *ngIf="streamDefinitions" class="control">
-      <input type="text" class="input" placeholder="Filter definitions" [(ngModel)]="streamDefinitions.filter">
+      <input type="text" class="input filter-input" placeholder="Filter definitions" [(ngModel)]="streamDefinitions.filter">
     </label>
     <button *ngIf="streamDefinitions" type="button" (click)="loadStreamDefinitions()"
             class="btn btn-default">

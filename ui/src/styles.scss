@@ -100,10 +100,6 @@ body {
   margin-right: 2px;
 }
 
-#toasty {
-  top: unset !important;
-}
-
 .navbar {
 
   .container {
@@ -152,6 +148,10 @@ body {
 
 .form-control-feedback {
   top: 5px;
+}
+
+.filter-input {
+  max-width: 125px;
 }
 // ~~~~ responsive
 

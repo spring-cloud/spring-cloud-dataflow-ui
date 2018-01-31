@@ -1,16 +1,16 @@
 
 <ng-template [ngBusy]="{busy: busy, wrapperClass: 'ng-busy ng-busy-no-margin', minDuration: 2000}"></ng-template>
 <div class="row">
-  <div class="col-md-19">
+  <div class="col-xs-8">
     <button type="button" [appRoles]="['ROLE_CREATE']" (click)="bulkDefineTasks()"
             class="btn btn-default">
       <span class="glyphicon glyphicon-import"></span>
       <span class="hidden-xs">Bulk Define Tasks</span>
     </button>
   </div>
-  <div class="col-md-5 text-right" style="padding-left: 0;">
+  <div class="col-xs-16 text-right" style="padding-left: 0;">
     <label *ngIf="taskDefinitions" class="control">
-      <input type="text" class="input" placeholder="Filter definitions" [(ngModel)]="taskDefinitions.filter">
+      <input type="text" class="input filter-input" placeholder="Filter definitions" [(ngModel)]="taskDefinitions.filter">
     </label>
     <button *ngIf="taskDefinitions" type="button" (click)="loadTaskDefinitions()"
             class="btn btn-default">
