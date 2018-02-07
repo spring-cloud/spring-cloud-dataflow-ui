@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http, Response, Headers, RequestOptions, URLSearchParams} from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { StreamDefinition } from './model/stream-definition';
-import { StreamMetrics } from './model/stream-metrics';
-import { Page } from '../shared/model/page';
-import { ErrorHandler } from '../shared/model/error-handler';
-import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
+import {StreamDefinition} from './model/stream-definition';
+import {StreamMetrics} from './model/stream-metrics';
+import {Page} from '../shared/model/page';
+import {ErrorHandler} from '../shared/model/error-handler';
+import {HttpUtils, URL_QUERY_ENCODER} from '../shared/support/http.utils';
+import {Platform} from './model/platform';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -92,7 +93,7 @@ export class StreamsService {
 
   createDefinition(name: string, dsl: string, deploy?: boolean): Observable<Response> {
     const options = HttpUtils.getDefaultRequestOptions();
-    const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+    const params = new URLSearchParams('', URL_QUERY_ENCODER);
     params.append('name', name);
     params.append('definition', dsl);
     if (deploy) {
@@ -181,7 +182,7 @@ export class StreamsService {
   getRelatedDefinitions(streamName: string, nested?: boolean): Observable<StreamDefinition[]> {
     const options = HttpUtils.getDefaultRequestOptions();
     if (nested) {
-      const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+      const params = new URLSearchParams('', URL_QUERY_ENCODER);
       params.append('nested', nested.toString());
       options.params = params;
     }
@@ -193,7 +194,7 @@ export class StreamsService {
   metrics(streamNames?: string[]): Observable<StreamMetrics[]> {
     const options = HttpUtils.getDefaultRequestOptions();
     if (streamNames) {
-      const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+      const params = new URLSearchParams('', URL_QUERY_ENCODER);
       params.append('names', streamNames.join(','));
       options.params = params;
     }
@@ -214,7 +215,7 @@ export class StreamsService {
     let items: StreamDefinition[];
     if (body._embedded && body._embedded.streamDefinitionResourceList) {
       items = body._embedded.streamDefinitionResourceList.map(jsonItem => {
-        const streamDefinition: StreamDefinition  = new StreamDefinition(
+        const streamDefinition: StreamDefinition = new StreamDefinition(
           jsonItem.name,
           jsonItem.dslText,
           jsonItem.status
@@ -238,4 +239,22 @@ export class StreamsService {
     console.log('Extracted Stream Definitions:', this.streamDefinitions);
     return this.streamDefinitions;
   }
+
+  platforms(): Observable<Platform[]> {
+    const options = HttpUtils.getDefaultRequestOptions();
+    const params = new URLSearchParams('', URL_QUERY_ENCODER);
+    params.append('page', '0');
+    params.append('size', '1000');
+    options.params = params;
+    return this.http.get(`/streams/deployments/platform/list`, options)
+      .map(res => {
+        const data = res.json();
+        if (data && Array.isArray(data)) {
+          return data.map(entry => new Platform().deserialize(entry));
+        }
+        return [];
+      })
+      .catch(this.errorHandler.handleError);
+  }
+
 }

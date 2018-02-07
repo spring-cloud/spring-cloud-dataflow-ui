@@ -14,7 +14,7 @@ export class MocksSharedAboutService {
   public featureInfo = new FeatureInfo();
   public featureInfoSubject = new Subject<FeatureInfo>();
 
-  private dataflowVersionInfo: DataflowVersionInfo;
+  public dataflowVersionInfo: DataflowVersionInfo;
 
   constructor(dataflowVersionInfo?: DataflowVersionInfo) {
     this.dataflowVersionInfo = dataflowVersionInfo ? dataflowVersionInfo : new DataflowVersionInfo();

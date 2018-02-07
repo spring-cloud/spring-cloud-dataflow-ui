@@ -1,7 +1,11 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import {validateDeploymentProperties} from '../../stream-deploy/stream-deploy-validators';
 import {StreamDefinition} from '../../model/stream-definition';
+import {Subscription} from 'rxjs/Subscription';
+import {Platform} from '../../model/platform';
+import {SharedAboutService} from '../../../shared/services/shared-about.service';
+import {StreamsService} from '../../streams.service';
 
 @Component({
   selector: 'app-stream-deployment-properties',
@@ -18,6 +22,13 @@ export class DeploymentPropertiesComponent implements OnInit {
   id: String;
   form: FormGroup;
   deploymentProperties = new FormControl('', validateDeploymentProperties);
+  deploymentPlatform = new FormControl('');
+
+  platforms: Platform[];
+
+  subscriptionPlatforms: Subscription;
+  subscriptionFeatureInfo: Subscription;
+  skipperEnabled = false;
 
   @Output()
   public cancel = new EventEmitter();
@@ -31,18 +42,39 @@ export class DeploymentPropertiesComponent implements OnInit {
   /**
    * Adds deployment properties to the FormBuilder
    * @param fb used establish the deployment properties as a part of the form.
+   * @param sharedAboutService used to check if skipper is enable
+   * @param streamsService The service used to deploy the stream.
    */
-  constructor(
-    fb: FormBuilder
-  ) {
-     this.form = fb.group({
-       'deploymentProperties': this.deploymentProperties
-     });
+  constructor(private fb: FormBuilder,
+              private sharedAboutService: SharedAboutService,
+              private streamsService: StreamsService) {
+    this.form = fb.group({
+      'deploymentProperties': this.deploymentProperties,
+      'deploymentPlatform': this.deploymentPlatform
+    });
   }
 
+  /**
+   * Initialize states
+   * Load platforms if skipper is enabled
+   * Parse the current parameters and populate fields
+   */
   ngOnInit() {
+    this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
+      this.skipperEnabled = featureInfo.skipperEnabled;
+      if (this.skipperEnabled) {
+        this.subscriptionPlatforms = this.streamsService.platforms().subscribe((platforms: Platform[]) => {
+          this.platforms = platforms;
+        });
+      }
+    });
+    this.deploymentPlatform.setValue('default');
     if (this.stream.deploymentProperties instanceof Object) {
+      if (this.stream.deploymentProperties.platformName) {
+        this.deploymentPlatform.setValue(this.stream.deploymentProperties.platformName);
+      }
       this.deploymentProperties.setValue(Object.keys(this.stream.deploymentProperties)
+        .filter(a => a !== 'spring.cloud.dataflow.skipper.platformName')
         .map(a => {
           return a + '=' + this.stream.deploymentProperties[a];
         }).join('\n'));
@@ -50,7 +82,7 @@ export class DeploymentPropertiesComponent implements OnInit {
   }
 
   /**
-   * Deploy the definition and submit the event
+   * Deploy the definition and emit on submit event
    */
   deployDefinition() {
     const propertiesAsMap = {};
@@ -64,10 +96,16 @@ export class DeploymentPropertiesComponent implements OnInit {
         }
       }
     }
+    if (this.skipperEnabled) {
+      propertiesAsMap['spring.cloud.dataflow.skipper.platformName'] = this.deploymentPlatform.value;
+    }
     this.stream.deploymentProperties = propertiesAsMap;
     this.submit.emit();
   }
 
+  /**
+   * Fire cancel event
+   */
   cancelDeployment() {
     this.cancel.emit();
   }
@@ -80,7 +118,7 @@ export class DeploymentPropertiesComponent implements OnInit {
     const file: File = event.target.files[0];
     const reader: FileReader = new FileReader();
     const _form = this.form;
-    reader.onloadend = function(e){
+    reader.onloadend = function (e) {
       _form.patchValue({deploymentProperties: reader.result});
     };
     reader.readAsText(file);

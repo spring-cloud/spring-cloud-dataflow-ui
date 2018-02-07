@@ -198,69 +198,6 @@
   </div>
 </div>
 
-<div id="deployMultipleStreamDefinitionsModal" bsModal #deployMultipleStreamDefinitionsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-
-    <div class="modal-content" *ngIf="!selectStreamDefinition">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Confirm Deployment of Stream Definitions</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelDeployMultipleStreamDefinitions()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" *ngIf="streamDefinitionsToDeploy">
-        <p>
-          This action will deploy the <strong>{{streamDefinitionsToDeploy.length}}
-          stream definition{{streamDefinitionsToDeploy.length > 1 ? 's' : ''}}</strong> listed below.
-          Optionally, you can add deployment properties for each stream definition.
-        </p>
-        <br/>
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Definition</th>
-            <th>Deployment properties</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let item of streamDefinitionsToDeploy">
-            <td>{{item.name}}</td>
-            <td>{{item.dslText}}</td>
-            <td width="10" nowrap="">
-              <div *ngIf="(item.deploymentProperties | keyvalues)?.length > 0">
-                <p style="padding-bottom: 6px"><strong>{{(item.deploymentProperties | keyvalues)?.length}} propert{{(item.deploymentProperties | keyvalues)?.length > 1 ? 'ies' : 'y'}}</strong></p>
-                <a class="btn btn-sm btn-default" (click)="deployAddDeploymentProperties(item)">
-                  <span class="glyphicon glyphicon-edit"></span>
-                  Edit deployment properties
-                </a>
-              </div>
-              <div *ngIf="(item.deploymentProperties | keyvalues)?.length == 0">
-                <a class="btn btn-sm btn-default" (click)="deployAddDeploymentProperties(item)">
-                  <span class="glyphicon glyphicon-plus"></span>
-                  Add deployment properties
-                </a>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="cancelDeployMultipleStreamDefinitions()">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="proceedToDeployMultipleStreamDefinitions(streamDefinitionsToDeploy)">Deploy</button>
-      </div>
-    </div>
-
-    <div class="modal-content" *ngIf="selectStreamDefinition">
-        <app-stream-deployment-properties [stream]="selectStreamDefinition"
-          (submit)="backDeployMultipleStreamDefinitions()" (cancel)="backDeployMultipleStreamDefinitions()">
-        </app-stream-deployment-properties>
-    </div>
-
-  </div>
-</div>
-
 <div id="undeployMultipleStreamDefinitionsModal" bsModal #undeployMultipleStreamDefinitionsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

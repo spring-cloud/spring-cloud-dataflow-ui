@@ -28,6 +28,7 @@ import { InstanceDotComponent } from './flo/instance-dot/instance-dot.component'
 import { MessageRateComponent } from './flo/message-rate/message-rate.component';
 import {DeploymentPropertiesComponent} from './stream-definitions/deployment-properties/deployment-properties.component';
 import {DeploymentPropertiesInfoComponent} from './stream-definitions/deployment-properties-info/deployment-properties-info.component';
+import {StreamDeployMultiComponent} from './stream-deploy-multi/stream-deploy-multi.component';
 
 @NgModule({
   imports: [
@@ -56,12 +57,14 @@ import {DeploymentPropertiesInfoComponent} from './stream-definitions/deployment
     InstanceDotComponent,
     MessageRateComponent,
     DeploymentPropertiesComponent,
-    DeploymentPropertiesInfoComponent
+    DeploymentPropertiesInfoComponent,
+    StreamDeployMultiComponent,
   ],
   entryComponents: [
     StreamCreateDialogComponent,
     StreamPropertiesDialogComponent,
     NodeComponent,
+    StreamDeployMultiComponent,
     DecorationComponent,
     HandleComponent,
     InstanceDotComponent,

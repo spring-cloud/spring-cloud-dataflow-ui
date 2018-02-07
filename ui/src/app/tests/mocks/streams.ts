@@ -2,6 +2,8 @@ import {Observable} from 'rxjs/Observable';
 import {PageInfo} from '../../shared/model/pageInfo';
 import {Page} from '../../shared/model/page';
 import {StreamDefinition} from '../../streams/model/stream-definition';
+import {Platform} from '../../streams/model/platform';
+import {StreamMetrics} from '../../streams/model/stream-metrics';
 
 /**
  * Mock for StreamsService.
@@ -76,6 +78,17 @@ export class MockStreamsService {
   }
 
   getRelatedDefinitions(streamDefinitionName: String, nested?: boolean): Observable<StreamDefinition[]> {
+    return Observable.of([]);
+  }
+
+  platforms(): Observable<Platform[]> {
+    return Observable.of([
+      new Platform('default', 'local'),
+      new Platform('foo', 'bar', 'foobar')
+    ]);
+  }
+
+  metrics(streamNames?: string[]): Observable<StreamMetrics[]> {
     return Observable.of([]);
   }
 }

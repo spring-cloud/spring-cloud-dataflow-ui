@@ -1,7 +1,13 @@
-import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import {TestBed, async, ComponentFixture, tick, fakeAsync} from '@angular/core/testing';
 import {DeploymentPropertiesComponent} from './deployment-properties.component';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {StreamDefinition} from '../../model/stream-definition';
+import {By} from '@angular/platform-browser';
+import {DebugElement} from '@angular/core';
+import {SharedAboutService} from '../../../shared/services/shared-about.service';
+import {MocksSharedAboutService} from '../../../tests/mocks/shared-about';
+import {MockStreamsService} from '../../../tests/mocks/streams';
+import {StreamsService} from '../../streams.service';
 
 /**
  * Test {@link DeploymentPropertiesComponent}.
@@ -12,6 +18,8 @@ describe('DeploymentPropertiesComponent', () => {
 
   let component: DeploymentPropertiesComponent;
   let fixture: ComponentFixture<DeploymentPropertiesComponent>;
+  const sharedAboutService = new MocksSharedAboutService();
+  const streamsService = new MockStreamsService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,7 +30,10 @@ describe('DeploymentPropertiesComponent', () => {
         FormsModule,
         ReactiveFormsModule,
       ],
-      providers: []
+      providers: [
+        {provide: StreamsService, useValue: streamsService},
+        {provide: SharedAboutService, useValue: sharedAboutService}
+      ]
     })
       .compileComponents();
   }));
@@ -49,6 +60,27 @@ describe('DeploymentPropertiesComponent', () => {
     component.stream = new StreamDefinition('foo2', 'time |log', 'undeployed');
     fixture.detectChanges();
     expect(component.deploymentProperties.value).toBe('');
+  });
+
+  it('should display the platform input (skipper enabled)', () => {
+    component.stream = new StreamDefinition('foo2', 'time |log', 'undeployed');
+    component.stream.deploymentProperties = {};
+    sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
+    fixture.detectChanges();
+    const de: DebugElement = fixture.debugElement.query(By.css('#groupPlatform'));
+    const el: HTMLElement = fixture.debugElement.query(By.css('#deploymentPlatform')).nativeElement;
+    expect(de == null).not.toBeTruthy();
+    expect(el.innerHTML.indexOf('foo (bar)') !== -1).toBe(true);
+    expect(el.innerHTML.indexOf('default (local)') !== -1).toBe(true);
+  });
+
+  it('should not display the platform input (skipper disabled)', () => {
+    component.stream = new StreamDefinition('foo2', 'time |log', 'undeployed');
+    component.stream.deploymentProperties = {};
+    sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = false;
+    fixture.detectChanges();
+    const de: DebugElement = fixture.debugElement.query(By.css('#groupPlatform'));
+    expect(de == null).toBeTruthy();
   });
 
   it('should not populate properties input (invalid data)', () => {

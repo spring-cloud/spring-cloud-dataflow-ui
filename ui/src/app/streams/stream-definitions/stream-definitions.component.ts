@@ -1,20 +1,22 @@
 import {Component, OnInit, OnDestroy, ViewChild, ViewEncapsulation} from '@angular/core';
-import { Page } from '../../shared/model';
-import { StreamDefinition } from '../model/stream-definition';
-import { StreamsService } from '../streams.service';
-import { ModalDirective} from 'ngx-bootstrap/modal';
-import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { Subscription } from 'rxjs/Subscription';
-import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
-import { StreamMetrics } from '../model/stream-metrics';
+import {Page} from '../../shared/model';
+import {StreamDefinition} from '../model/stream-definition';
+import {StreamsService} from '../streams.service';
+import {ModalDirective} from 'ngx-bootstrap/modal';
+import {PopoverDirective} from 'ngx-bootstrap/popover';
+import {Subscription} from 'rxjs/Subscription';
+import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
+import {StreamMetrics} from '../model/stream-metrics';
 
-import { ToastyService} from 'ng2-toasty';
-import { Router } from '@angular/router';
+import {ToastyService} from 'ng2-toasty';
+import {Router} from '@angular/router';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {StreamDeployMultiComponent} from '../stream-deploy-multi/stream-deploy-multi.component';
 
 @Component({
   selector: 'app-stream-definitions',
   templateUrl: './stream-definitions.component.html',
-  styleUrls: [ './stream-definitions.component.scss' ],
+  styleUrls: ['./stream-definitions.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -47,9 +49,6 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   @ViewChild('destroyMultipleStreamDefinitionsModal')
   public destroyMultipleStreamDefinitionsModal: ModalDirective;
 
-  @ViewChild('deployMultipleStreamDefinitionsModal')
-  public deployMultipleStreamDefinitionsModal: ModalDirective;
-
   @ViewChild('undeployMultipleStreamDefinitionsModal')
   public undeployMultipleStreamDefinitionsModal: ModalDirective;
 
@@ -59,10 +58,12 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   @ViewChild('childModal')
   public childModal: ModalDirective;
 
-  constructor(
-    public streamsService: StreamsService,
-    private toastyService: ToastyService,
-    private router: Router) {
+  modal: BsModalRef;
+
+  constructor(public streamsService: StreamsService,
+              private toastyService: ToastyService,
+              private modalService: BsModalService,
+              private router: Router) {
   }
 
   /**
@@ -230,9 +231,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   /**
    * Hides the modal dialog box.
    */
-  public cancel = function() {
+  public cancel() {
     this.hideChildModal();
-  };
+  }
 
   /**
    * Close the confirmation modal dialog for
@@ -240,14 +241,6 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   public cancelDestroyMultipleStreamDefinitions() {
     this.destroyMultipleStreamDefinitionsModal.hide();
-  }
-
-  /**
-   * Close the confirmation modal dialog for
-   * deploy multiple Stream Definitions {@link StreamDefinition}s.
-   */
-  public cancelDeployMultipleStreamDefinitions() {
-    this.deployMultipleStreamDefinitionsModal.hide();
   }
 
   /**
@@ -314,7 +307,15 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
     }
 
     console.log(`Deploy ${this.streamDefinitionsToDeploy.length} stream definition(s).`, this.streamDefinitionsToDeploy);
-    this.deployMultipleStreamDefinitionsModal.show();
+
+    this.modal = this.modalService.show(StreamDeployMultiComponent);
+    this.modal.content.streamDefinitions = this.streamDefinitionsToDeploy;
+    this.modal.content.confirm.subscribe((data) => {
+      this.toastyService.success(`${data.length} stream definition(s) deployed.`);
+      this.busy = this.streamsService
+        .getDefinitions(this.definitionNameSort, this.definitionSort)
+        .subscribe();
+    });
   }
 
   /**
@@ -357,28 +358,6 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Applies the deploy process of multiple {@link StreamDefinition}s
-   *
-   * @param streamDefinitions An array of StreamDefinition to deploy
-   */
-  proceedToDeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
-    console.log(`Proceeding to deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
-    const subscription = this.streamsService.deployMultipleStreamDefinitions(streamDefinitions).subscribe(
-      data => {
-        this.toastyService.success(`${data.length} stream definition(s) deployed.`);
-        this.busy = this.streamsService
-          .getDefinitions(this.definitionNameSort, this.definitionSort)
-          .subscribe();
-      },
-      error => {
-        this.toastyService.error(error);
-      }
-    );
-    this.busy = subscription;
-    this.cancelDeployMultipleStreamDefinitions();
-  }
-
-  /**
    * Applies the undeploy process of multiple {@link StreamDefinition}s
    *
    * @param streamDefinitions An array of StreamDefinition to undeploy
@@ -416,22 +395,6 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
     if (Array.isArray(this.metrics)) {
       return this.metrics.find(m => m.name === name);
     }
-  }
-
-  /**
-   * Start the process to add deployment properties to a stream definition
-   *
-   * @param streamDefinition
-   */
-  deployAddDeploymentProperties(streamDefinition: StreamDefinition) {
-    this.selectStreamDefinition = streamDefinition;
-  }
-
-  /**
-   * Back to the stream definitions to deploy modal
-   */
-  backDeployMultipleStreamDefinitions() {
-    this.selectStreamDefinition = null;
   }
 
   canShowDeploymentInfo(item: StreamDefinition) {

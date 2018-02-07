@@ -1,16 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { StreamsService } from '../streams.service';
-import { ToastyService } from 'ng2-toasty';
-import { validateDeploymentProperties } from './stream-deploy-validators';
-import { Subscription } from 'rxjs/Subscription';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
+import {StreamsService} from '../streams.service';
+import {ToastyService} from 'ng2-toasty';
+import {validateDeploymentProperties} from './stream-deploy-validators';
+import {Subscription} from 'rxjs/Subscription';
+import {Platform} from '../model/platform';
+import {SharedAboutService} from '../../shared/services/shared-about.service';
 
 /**
  * Component used to deploy stream definitions.
  *
  * @author Janne Valkealahti
  * @author Glenn Renfro
+ * @author Damien Vitrac
  */
 @Component({
   selector: 'app-stream-deploy',
@@ -21,9 +24,18 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   id: String;
   private sub: any;
   form: FormGroup;
+
   deploymentProperties = new FormControl('', validateDeploymentProperties);
+  deploymentPlatform = new FormControl('');
+
   propertiesAsMap = {};
+  platforms: Platform[];
+
+  subscriptionPlatforms: Subscription;
+  subscriptionFeatureInfo: Subscription;
   busy: Subscription;
+
+  skipperEnabled = false;
 
   /**
    * Adds deployment properties to the FormBuilder
@@ -31,18 +43,20 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * @param route used to subscribe to the id param
    * @param router used to navigate back to the home page
    * @param toastyService used to display the status of a deployment
+   * @param sharedAboutService used to check if skipper is enable
    * @param fb used establish the deployment properties as a part of the form.
    */
-  constructor(
-    private streamsService: StreamsService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private toastyService: ToastyService,
-    fb: FormBuilder
-  ) {
-     this.form = fb.group({
-       'deploymentProperties': this.deploymentProperties
-     });
+  constructor(private streamsService: StreamsService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private toastyService: ToastyService,
+              private sharedAboutService: SharedAboutService,
+              fb: FormBuilder) {
+
+    this.form = fb.group({
+      'deploymentProperties': this.deploymentProperties,
+      'deploymentPlatform': this.deploymentPlatform
+    });
   }
 
   /**
@@ -50,12 +64,25 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-       this.id = params['id'];
+      this.id = params['id'];
+    });
+    this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
+      this.skipperEnabled = featureInfo.skipperEnabled;
+      if (this.skipperEnabled) {
+        this.subscriptionPlatforms = this.streamsService.platforms().subscribe((platforms: Platform[]) => {
+          this.platforms = platforms;
+          this.deploymentPlatform.setValue('default');
+        });
+      }
     });
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.subscriptionFeatureInfo.unsubscribe();
+    if (this.subscriptionPlatforms) {
+      this.subscriptionPlatforms.unsubscribe();
+    }
   }
 
   /**
@@ -83,6 +110,10 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (this.skipperEnabled) {
+      this.propertiesAsMap['spring.cloud.dataflow.skipper.platformName'] = this.deploymentPlatform.value;
+    }
+
     this.busy = this.streamsService.deployDefinition(this.id, this.propertiesAsMap).subscribe(
       data => {
         this.toastyService.success('Successfully deployed stream definition "'
@@ -107,7 +138,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     const file: File = event.target.files[0];
     const reader: FileReader = new FileReader();
     const _form = this.form;
-    reader.onloadend = function(e){
+    reader.onloadend = () => {
       _form.patchValue({deploymentProperties: reader.result});
     };
     reader.readAsText(file);

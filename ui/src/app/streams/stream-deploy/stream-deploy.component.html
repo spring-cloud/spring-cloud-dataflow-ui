@@ -6,11 +6,23 @@
   field below or alternatively, you can point to an external properties file,
   which will be used to populate the text-area field.<br><br>
   For more information please see the
-  <a href="http://docs.spring.io/spring-cloud-dataflow/docs/current-SNAPSHOT/reference/htmlsingle/#_passing_application_properties_when_deploying_stream"
-     target="_blank">Technical Documentation</a>.
+  <a
+    href="http://docs.spring.io/spring-cloud-dataflow/docs/current-SNAPSHOT/reference/htmlsingle/#_passing_application_properties_when_deploying_stream"
+    target="_blank">Technical Documentation</a>.
 </p>
 
 <form class="form-horizontal" novalidate [formGroup]="form" (ngSubmit)="deployDefinition()">
+
+  <div class="form-group" *ngIf="skipperEnabled">
+    <label for="deploymentPlatform" class="col-sm-4 control-label">Platform</label>
+    <div class="col-sm-18">
+      <select id="deploymentPlatform" name="deploymentPlatform" formControlName="deploymentPlatform">
+        <option *ngFor="let p of platforms" [value]="p.name">{{p.name}} ({{ p.type }})</option>
+      </select>
+      <p class="help-block">You can specify the platform for the deployment.</p>
+    </div>
+  </div>
+
   <div class="form-group" [ngClass]="form.controls.deploymentProperties.errors ? 'has-warning has-feedback' : ''">
     <label for="deploymentProperties" class="col-sm-4 control-label">Deployment Properties</label>
     <div class="col-sm-18">
@@ -20,15 +32,18 @@
 1 line per property e.g.:
 property1=Spring
 property2=Data Flow"></textarea>
-      <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="form.controls.deploymentProperties.errors"></span>
-      <p class="help-block" *ngIf="form.controls.deploymentProperties.errors">The format of your deployment properties is invalid. {{form.controls.deploymentProperties.errors.validateDeploymentProperties.reason}}</p>
+      <span class="glyphicon glyphicon-warning-sign form-control-feedback"
+            *ngIf="form.controls.deploymentProperties.errors"></span>
+      <p class="help-block" *ngIf="form.controls.deploymentProperties.errors">The format of your deployment properties
+        is invalid. {{form.controls.deploymentProperties.errors.validateDeploymentProperties.reason}}</p>
     </div>
   </div>
   <div class="form-group">
     <label class="col-sm-4 control-label">Select Properties File</label>
     <div class="col-sm-14">
       <input type="file" (change)="displayFileContents($event)"/>
-      <p class="help-block">Please provide a text file containing deployment properties. This will be used to populate the text area above.</p>
+      <p class="help-block">Please provide a text file containing deployment properties. This will be used to populate
+        the text area above.</p>
     </div>
   </div>
   <div class="row">

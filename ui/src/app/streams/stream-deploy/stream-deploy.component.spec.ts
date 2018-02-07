@@ -13,6 +13,8 @@ import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {StreamDeployComponent} from './stream-deploy.component';
 import {MockComponent} from '../../tests/mocks/mock-component';
+import {MocksSharedAboutService} from '../../tests/mocks/shared-about';
+import {SharedAboutService} from '../../shared/services/shared-about.service';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -24,6 +26,7 @@ describe('StreamDeployComponent', () => {
   let fixture: ComponentFixture<StreamDeployComponent>;
   const toastyService = new MockToastyService();
   const streamsService = new MockStreamsService();
+  const sharedAboutService = new MocksSharedAboutService();
   let activeRoute: MockActivatedRoute;
   const commonTestParams = { id: '1' };
 
@@ -43,6 +46,7 @@ describe('StreamDeployComponent', () => {
       providers: [
         {provide: StreamsService, useValue: streamsService},
         {provide: ActivatedRoute, useValue: activeRoute },
+        {provide: SharedAboutService, useValue: sharedAboutService },
         {provide: ToastyService, useValue: toastyService}
       ]
     })
