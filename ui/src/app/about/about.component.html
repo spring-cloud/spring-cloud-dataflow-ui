@@ -1,15 +1,14 @@
-<h1 [ngBusy]="busy">About</h1>
+<h1>About</h1>
 <p>
   Spring Cloud Data Flow is a unified, distributed, and extensible system for data ingestion,
   real time analytics, batch processing, and data export. The project's goal is to
   simplify the development of big data applications.
 </p>
 
-<h2 *ngIf="dataflowVersionInfo">Data Flow Server Implementation</h2>
+<ng-container *ngIf="dataflowVersionInfo$ | async as dataflowVersionInfo else loading">
+<h2>Data Flow Server Implementation</h2>
 
-<h2 *ngIf="!dataflowVersionInfo" class="text-warning" id="serverWarningError">Obtaining about info from server.</h2>
-
-<table id="dataFlowVersionTable" class="table table-hover" *ngIf="dataflowVersionInfo">
+<table id="dataFlowVersionTable" class="table table-hover">
   <tbody>
   <tr>
     <td>Name</td><td>{{dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.name : 'N/A'}}</td>
@@ -20,7 +19,7 @@
   </tbody>
 </table>
 
-<button id="showAboutDetailsButton" type="button" (click)="goToDetails() " *ngIf="dataflowVersionInfo"
+<button id="showAboutDetailsButton" type="button" (click)="goToDetails() "
         class="btn btn-default"
 ><span class="glyphicon glyphicon-search"></span>
     Show Details
@@ -28,13 +27,13 @@
 
 <h2 style="margin-top: 1em;" *ngIf="dataflowVersionInfo">Get the Spring Cloud Data Flow Shell</h2>
 
-<p *ngIf="dataflowVersionInfo" class="index-page--subtitle">As an alternative to the Dashboard UI, you can also
+<p class="index-page--subtitle">As an alternative to the Dashboard UI, you can also
    <a href="{{dataflowVersionInfo.versionInfo.shell.url}}"
       target="_blank">download the compatible version of the Shell</a> ({{dataflowVersionInfo.versionInfo.shell.version}}).</p>
 
-<h2 *ngIf="dataflowVersionInfo">Need Help or Found an Issue?</h2>
+<h2>Need Help or Found an Issue?</h2>
 
-<table id="dataFlowVersionLinksTable" class="table table-hover" *ngIf="dataflowVersionInfo">
+<table id="dataFlowVersionLinksTable" class="table table-hover">
   <tbody>
     <tr>
       <td>Project Page</td><td><a target="_blank" href="http://cloud.spring.io/spring-cloud-dataflow/">http://cloud.spring.io/spring-cloud-dataflow/</a></td>
@@ -56,3 +55,9 @@
     </tr>
   </tbody>
 </table>
+
+</ng-container>
+
+<ng-template #loading>
+  <h2 class="text-warning" id="serverWarningError">Obtaining about info from server.</h2>
+</ng-template>

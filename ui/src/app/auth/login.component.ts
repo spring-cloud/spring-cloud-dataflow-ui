@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
 import { LoginRequest } from './model/login-request.model';
-import { SecurityInfo } from './model/security-info.model';
+import { SecurityInfo } from '../shared/model/about/security-info.model';
 
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     this.busy = this.authService.login(this.user).subscribe(
       result => {
         if (result.isAuthenticated) {
-          this.aboutService.getAboutInfo().subscribe(
+          this.aboutService.getAboutInfo(true).subscribe(
             aboutInfo => {
               console.log(`Login successful, using return Url: ${returnUrl}`);
               this.router.navigate([returnUrl]);

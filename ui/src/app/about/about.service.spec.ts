@@ -16,28 +16,28 @@ describe('AboutService', () => {
       },
       'versionInfo':
       {
-          'implementationDependency':
+          'implementation':
           {
               'name': 'spring-cloud-dataflow-server-local',
               'version': '1.2.3.BUILD-SNAPSHOT',
               'checksumSha1': 'checksumSample1',
               'checksumSha256': 'checksumSample256'
           },
-          'coreDependency':
+          'core':
           {
               'name': 'Spring Cloud Data Flow Core',
               'version': '1.2.3.BUILD-SNAPSHOT',
               'checksumSha1': 'checksumSample1',
               'checksumSha256': 'checksumSample256'
           },
-          'dashboardDependency':
+          'dashboard':
           {
               'name': 'Spring Cloud Dataflow UI',
               'version': '1.2.3.RELEASE',
               'checksumSha1': 'checksumSample1',
               'checksumSha256': 'checksumSample256'
           },
-        'shellDependency':
+        'shell':
           {
             'name': 'Spring Cloud Dataflow Shell',
             'version': '1.2.3.RELEASE',
@@ -102,25 +102,22 @@ describe('AboutService', () => {
 
   beforeEach(() => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
+    const mockResponse = new Response(new ResponseOptions({
+      body: JSON.stringify(jsonData)
+    }));
+    this.mockHttp.get.and.returnValue(Observable.of(mockResponse));
+
     const errorHandler = new ErrorHandler();
     this.sharedAboutService = new SharedAboutService(this.mockHttp, errorHandler);
     this.aboutService = new AboutService(this.sharedAboutService, this.mockHttp, errorHandler);
   });
 
   it('should call the about service with the right url', () => {
-    this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-    this.aboutService.getAboutInfo();
+    this.aboutService.getAboutInfo(true);
     expect(this.mockHttp.get).toHaveBeenCalledWith('/about');
   });
 
   it('should return the correct json data', () => {
-
-    const mockResponse = new Response(new ResponseOptions({
-      body: JSON.stringify(jsonData)
-    }));
-
-    this.mockHttp.get.and.returnValue(Observable.of(mockResponse));
-
     this.aboutService.getAboutInfo().toPromise().then(result => {
       expect(JSON.stringify(result)).toBe(JSON.stringify(jsonData));
     },

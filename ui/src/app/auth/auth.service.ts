@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { SecurityInfo } from './model/security-info.model';
+import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { LoginRequest } from './model/login-request.model';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';

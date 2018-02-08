@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { SecurityInfo } from '../../auth/model/security-info.model';
+import { SecurityInfo } from '../../shared/model/about/security-info.model';
 import { LoginRequest } from '../../auth/model/login-request.model';
 
 /**

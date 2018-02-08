@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
-import { DataflowVersionInfo } from './about';
+import { AboutInfo } from '../../shared/model/about/about-info.model';
 
 /**
  * Mock for SharedAboutService.
@@ -14,10 +14,10 @@ export class MocksSharedAboutService {
   public featureInfo = new FeatureInfo();
   public featureInfoSubject = new Subject<FeatureInfo>();
 
-  public dataflowVersionInfo: DataflowVersionInfo;
+  public dataflowVersionInfo: AboutInfo;
 
-  constructor(dataflowVersionInfo?: DataflowVersionInfo) {
-    this.dataflowVersionInfo = dataflowVersionInfo ? dataflowVersionInfo : new DataflowVersionInfo();
+  constructor(dataflowVersionInfo?: AboutInfo) {
+    this.dataflowVersionInfo = dataflowVersionInfo ? dataflowVersionInfo : new AboutInfo();
   }
 
   getAboutInfo(): Observable<any> {
@@ -27,6 +27,7 @@ export class MocksSharedAboutService {
 
     return Observable.of(this.dataflowVersionInfo);
   }
+
 
   getFeatureInfo(): Observable<FeatureInfo> {
     return this.getAboutInfo().map(result => {
