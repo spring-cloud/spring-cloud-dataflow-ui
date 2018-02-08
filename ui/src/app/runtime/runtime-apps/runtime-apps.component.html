@@ -1,0 +1,75 @@
+<div style="min-height: 300px" id="page">
+
+  <div class="heading">
+    <div class="description">
+      <h1>Runtime applications</h1>
+      <p>
+        This section shows the list of all running apps.
+      </p>
+    </div>
+    <div class="actions text-right">
+      <button [disabled]="!(runtimeApps$ | async)" name="refresh" type="button" (click)="loadRuntimeApps()"
+              class="btn btn-default btn-icon" style="padding:0 10px;">
+        <span class="glyphicon glyphicon-refresh"></span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="runtimeApps$ | async as runtimeApps; else loading">
+
+    <div id="no-result" *ngIf="runtimeApps.items.length == 0">
+      No applications are running.
+    </div>
+
+    <table id="table" *ngIf="runtimeApps.items.length > 0" class="table table-actions table-hover">
+      <thead>
+      <tr>
+        <th>App Id</th>
+        <th>State</th>
+        <th># of Instances</th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-template ngFor let-runtimeApp [ngForOf]="runtimeApps.items | paginate: runtimeApps.getPaginationInstance()">
+        <tr>
+          <td>
+            <a style="cursor: pointer" (click)="view(runtimeApp)">{{runtimeApp.deploymentId}}</a>
+          </td>
+          <td>
+            <app-runtime-state [runtimeApp]="runtimeApp"></app-runtime-state>
+          </td>
+          <td>
+            {{runtimeApp.instances._embedded.appInstanceStatusResourceList.length}}
+            <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length == 1">
+              instance
+            </span>
+            <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length > 1">
+              instances
+            </span>
+          </td>
+          <td class="table-actions" width="10px" nowrap="">
+            <div class="actions">
+              <button type="button" (click)="view(runtimeApp)"
+                      class="btn btn-default" title="Details">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      </tbody>
+    </table>
+
+    <div id="pagination" *ngIf="runtimeApps.items.length > 0 && runtimeApps.totalPages > 1">
+      <pagination-controls (pageChange)="getPage($event)" [id]="runtimeApps.getPaginationInstance().id">
+      </pagination-controls>
+    </div>
+
+  </div>
+
+  <ng-template #loading>
+    <div>Loading...</div>
+  </ng-template>
+
+</div>

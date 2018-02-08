@@ -8,7 +8,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {StreamDeployMultiComponent} from './stream-deploy-multi.component';
 import {DeploymentPropertiesComponent} from '../stream-definitions/deployment-properties/deployment-properties.component';
 import {BsModalRef, ModalModule} from 'ngx-bootstrap';
-import {MockBsModalRef} from '../../tests/mocks/modal';
 import {By} from '@angular/platform-browser';
 import {StreamDefinition} from '../model/stream-definition';
 import {MocksSharedAboutService} from '../../tests/mocks/shared-about';
@@ -26,7 +25,7 @@ describe('StreamDeployMultiComponent', () => {
   const toastyService = new MockToastyService();
   const streamsService = new MockStreamsService();
   const sharedAboutService = new MocksSharedAboutService();
-  const bsModalRef = new MockBsModalRef();
+  const bsModalRef = new BsModalRef();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
