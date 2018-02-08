@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { PageInfo } from '../../shared/model/pageInfo';
 import { Page } from '../../shared/model/page';
 import { RuntimeApp } from '../../runtime/model/runtime-app';
 
@@ -31,7 +30,7 @@ export class MockRuntimeAppsService {
     this._testRuntimeApps = params;
   }
 
-  public getRuntimeApps(pageInfo: PageInfo): Observable<Page<RuntimeApp>> {
+  public getRuntimeApps(pagination: { page: number, size: number }): Observable<Page<RuntimeApp>> {
     const page = new Page<RuntimeApp>();
     if (this.testRuntimeApps) {
       const response = this.testRuntimeApps;
