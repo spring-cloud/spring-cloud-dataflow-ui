@@ -64,7 +64,7 @@ The following instructions can be used to do this:
 
 ## Unit Tests
 
-	$ ng test --browsers PhantomJS --single-run
+	$ ng test --browsers ChromeHeadless --single-run
 
 ## E2E Tests
 
@@ -105,7 +105,7 @@ You can view the results via your browser at: http://127.0.0.1:8888/
 ## Code Coverage Report
 Produces code coverage report.
 
-    $ ng test --browsers PhantomJS --single-run --code-coverage  --reporters=coverage-istanbul
+    $ ng test --browsers ChromeHeadless --single-run --code-coverage  --reporters=coverage-istanbul
 
 [Angular]: http://angular.io/
 [Angular CLI]: https://cli.angular.io/
