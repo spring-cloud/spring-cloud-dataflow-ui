@@ -17,6 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { AboutService } from '../about/about.service';
+import { BusyService } from '../shared/services/busy.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -25,6 +26,7 @@ describe('LoginComponent', () => {
   let activeRoute: MockActivatedRoute;
   const authService = new MockAuthService();
   const aboutService = new MockAboutService();
+  const busyService = new BusyService();
 
   beforeEach( async(() => {
     activeRoute = new MockActivatedRoute();
@@ -37,6 +39,7 @@ describe('LoginComponent', () => {
       declarations:   [ LoginComponent ],
       providers: [
         { provide: AuthService, useValue: authService },
+        { provide: BusyService, useValue: busyService },
         { provide: AboutService, useValue: aboutService },
         { provide: ToastyService, useValue: toastyService },
         { provide: ActivatedRoute, useValue: {

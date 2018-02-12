@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { TasksService } from '../tasks.service';
 import { AppInfo } from '../model/app-info';
 import 'rxjs/add/operator/do';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-create',
@@ -13,11 +15,11 @@ import 'rxjs/add/operator/do';
 })
 export class TaskCreateComponent implements OnInit, OnDestroy {
 
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   id: string;
-  private sub: any;
   mainForm: FormGroup;
   includeForm: FormGroup;
-  busy: Subscription;
   definitionName = new FormControl('', (c: FormControl) => this.validateDefinitionName(c));
   appInfo: AppInfo;
   definition: string;
@@ -37,21 +39,29 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.definitionName.valueChanges.do(next => {
       this.calculateDefinition();
-    }).subscribe();
-    this.sub = this.route.params.subscribe(params => {
+    })
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe();
+    this.route.params.subscribe(params => {
         this.id = params['id'];
-        this.busy = this.tasksService.getAppInfo(this.id).subscribe(
+        this.tasksService.getAppInfo(this.id)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
           data => {
             for (const o of data.options) {
               const control: FormControl = new FormControl(o.defaultValue);
               control.valueChanges.do(next => {
                 this.calculateDefinition();
-              }).subscribe();
+              })
+              .pipe(takeUntil(this.ngUnsubscribe$))
+              .subscribe();
               this.mainForm.addControl(o.id, control);
               const icontrol: FormControl = new FormControl(false);
               icontrol.valueChanges.do(next => {
                 this.calculateDefinition();
-              }).subscribe();
+              })
+              .pipe(takeUntil(this.ngUnsubscribe$))
+              .subscribe();
               this.includeForm.addControl(o.id + '.include', icontrol);
             }
             this.appInfo = data;
@@ -62,8 +72,13 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
      });
   }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   back() {
@@ -72,7 +87,9 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
 
   submitTaskDefinition() {
     const def = this.calculateDefinition();
-    this.tasksService.createDefinition(def, this.definitionName.value).subscribe(
+    this.tasksService.createDefinition(def, this.definitionName.value)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.toastyService.success('Task definition create requested');
         this.router.navigate(['tasks/definitions']);

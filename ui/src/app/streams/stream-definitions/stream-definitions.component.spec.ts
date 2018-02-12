@@ -29,6 +29,7 @@ import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { DeploymentPropertiesInfoComponent } from './deployment-properties-info/deployment-properties-info.component';
 import {StreamDeployMultiComponent} from '../stream-deploy-multi/stream-deploy-multi.component';
+import { BusyService } from '../../shared/services/busy.service';
 
 /**
  * Test {@link StreamDefinitionsComponent}.
@@ -73,6 +74,7 @@ describe('StreamDefinitionsComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
+        { provide: BusyService, useValue: new BusyService()},
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: StreamsService, useValue: streamsService },

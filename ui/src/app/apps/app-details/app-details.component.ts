@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AppsService } from '../apps.service';
@@ -8,6 +8,9 @@ import { ApplicationType, DetailedAppRegistration } from '../../shared/model';
 
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/of';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Provides details for an App Registration
@@ -17,13 +20,14 @@ import 'rxjs/add/observable/of';
 @Component({
   templateUrl: './app-details.component.html'
 })
-export class AppDetailsComponent implements OnInit {
+export class AppDetailsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   public detailedAppRegistration: DetailedAppRegistration;
 
-  busy: Subscription;
-
   constructor(
+    private busyService: BusyService,
     private route: ActivatedRoute,
     private appsService: AppsService,
     private toastyService: ToastyService,
@@ -39,13 +43,27 @@ export class AppDetailsComponent implements OnInit {
       const appType: ApplicationType = params['appType'] as ApplicationType;
 
       console.log(`Retrieving app registration details for ${appName} (${appType}).`);
-      this.busy = this.appsService.getAppInfo(appType, appName).subscribe(data => {
+      const busy = this.appsService.getAppInfo(appType, appName)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(data => {
         this.detailedAppRegistration = data;
       },
       error => {
         this.toastyService.error(error);
       });
+      setTimeout(()=>{
+        this.busyService.addSubscription(busy);
+      });
     });
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   goBack() {

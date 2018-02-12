@@ -8,6 +8,7 @@ import { SecurityInfo } from './shared/model/about/security-info.model';
 import { SharedAboutService } from './shared/services/shared-about.service';
 import { Observable } from 'rxjs/Observable';
 import { AboutInfo } from './shared/model/about/about-info.model';
+import { BusyService } from './shared/services/busy.service';
 
 @Component({
   selector: 'app-root',
@@ -19,10 +20,12 @@ export class AppComponent implements DoCheck, OnInit {
   public dataflowVersionInfo$: Observable<AboutInfo>;
 
   public isCollapsed = true;
+  public busy: any = [];
 
   constructor(private toastyConfig: ToastyConfig,
       private renderer: Renderer2,
       private authService: AuthService,
+      private busyService: BusyService,
       private sharedAboutService: SharedAboutService) {
     this.toastyConfig.theme = 'bootstrap';
     this.toastyConfig.limit = 5;
@@ -46,6 +49,26 @@ export class AppComponent implements DoCheck, OnInit {
       this.updateToasty();
     });
     this.updateToasty();
+
+    this.busyService.busyObjects$.forEach(busyObject => {
+      if (busyObject) {
+        while(busyObject.length > 0) {
+          /*
+           * Unfortunately, Angular2 Busy does not support
+           * "Overlapping Subscriptions" and does not work
+           * with mutable arrays. Ideally, good Spinner solution
+           * would be able to accept a BehaviorSubject<boolean> as input,
+           * so that we could manage the on/off state of the spinner on
+           * our end.
+           *
+           * see: https://github.com/devyumao/angular2-busy/issues/77
+           */
+          this.busy = [];
+          this.busy.push(busyObject.pop());
+        }
+      }
+    });
+
   }
 
   private updateToasty() {

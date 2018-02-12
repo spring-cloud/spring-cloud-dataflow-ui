@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { TasksService } from '../tasks.service';
 import { PropertyTableComponent } from '../../shared/components/property-table/property-table.component';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-task-launch',
@@ -10,8 +12,9 @@ import { PropertyTableComponent } from '../../shared/components/property-table/p
 })
 export class TaskLaunchComponent implements OnInit, OnDestroy {
 
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   id: string;
-  private sub: any;
   @ViewChildren(PropertyTableComponent) propertyTables;
 
   constructor(
@@ -22,13 +25,18 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.id = params['id'];
     });
    }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   back() {
@@ -50,7 +58,9 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.tasksService.launchDefinition(name, taskArguments.join(','), taskProperties.join(',')).subscribe(
+    this.tasksService.launchDefinition(name, taskArguments.join(','), taskProperties.join(','))
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.toastyService.success('Successfully launched task "' + name + '"');
       },

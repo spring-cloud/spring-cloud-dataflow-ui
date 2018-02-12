@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input, OnDestroy} from '@angular/core';
 import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
 import {validateDeploymentProperties} from '../../stream-deploy/stream-deploy-validators';
 import {StreamDefinition} from '../../model/stream-definition';
@@ -6,6 +6,8 @@ import {Subscription} from 'rxjs/Subscription';
 import {Platform} from '../../model/platform';
 import {SharedAboutService} from '../../../shared/services/shared-about.service';
 import {StreamsService} from '../../streams.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-stream-deployment-properties',
@@ -16,8 +18,11 @@ import {StreamsService} from '../../streams.service';
  * Component used to deploy stream definitions.
  *
  * @author Damien Vitrac
+ * @author Gunnar Hillert
  */
-export class DeploymentPropertiesComponent implements OnInit {
+export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   id: String;
   form: FormGroup;
@@ -60,10 +65,14 @@ export class DeploymentPropertiesComponent implements OnInit {
    * Parse the current parameters and populate fields
    */
   ngOnInit() {
-    this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
+    this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo()
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(featureInfo => {
       this.skipperEnabled = featureInfo.skipperEnabled;
       if (this.skipperEnabled) {
-        this.subscriptionPlatforms = this.streamsService.platforms().subscribe((platforms: Platform[]) => {
+        this.subscriptionPlatforms = this.streamsService.platforms()
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe((platforms: Platform[]) => {
           this.platforms = platforms;
         });
       }
@@ -79,6 +88,15 @@ export class DeploymentPropertiesComponent implements OnInit {
           return a + '=' + this.stream.deploymentProperties[a];
         }).join('\n'));
     }
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**

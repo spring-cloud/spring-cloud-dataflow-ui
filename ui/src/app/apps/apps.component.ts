@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -9,6 +9,9 @@ import { AppRegistration, Page } from '../shared/model';
 import { ToastyService } from 'ng2-toasty';
 
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { BusyService } from '../shared/services/busy.service';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -21,10 +24,11 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   selector: 'app-apps',
   templateUrl: './apps.component.html'
 })
-export class AppsComponent implements OnInit {
+export class AppsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   appRegistrations: Page<AppRegistration>;
-  busy: Subscription;
 
   appRegistrationToUnregister: AppRegistration;
   appRegistrationsToUnregister: AppRegistration[];
@@ -38,6 +42,7 @@ export class AppsComponent implements OnInit {
 
   constructor(
     public appsService: AppsService,
+    private busyService: BusyService,
     private toastyService: ToastyService,
     private router: Router ) {
     }
@@ -51,12 +56,23 @@ export class AppsComponent implements OnInit {
   }
 
   /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
+  /**
    * Load a paginated list of {@link AppRegistration}s.
    *
    * @param reload
    */
   public loadAppRegistrations(reload: boolean) {
-    this.busy = this.appsService.getApps(reload, this.getFilter()).subscribe(
+    const busy = this.appsService.getApps(reload, this.getFilter())
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         if (!this.appRegistrations) {
           this.appRegistrations = data;
@@ -67,6 +83,7 @@ export class AppsComponent implements OnInit {
         this.toastyService.error(error);
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -119,7 +136,9 @@ export class AppsComponent implements OnInit {
   public proceedToUnregisterSingleAppRegistration(appRegistration: AppRegistration): void {
     console.log('Proceeding to unregister application...', appRegistration);
 
-    this.busy = this.appsService.unregisterApp(appRegistration).subscribe(
+    const busy = this.appsService.unregisterApp(appRegistration)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.unregisterSingleAppModal.hide();
         this.toastyService.success('Successfully removed app "'
@@ -128,14 +147,18 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        this.busy = this.appsService.getApps(true, this.getFilter()).subscribe(
+        const busyForAppsSubscription = this.appsService.getApps(true, this.getFilter())
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
           appRegistrations => {}
         );
+        this.busyService.addSubscription(busyForAppsSubscription);
       },
       error => {
         this.toastyService.error(error);
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -146,7 +169,9 @@ export class AppsComponent implements OnInit {
    */
   public proceedToUnregisterMultipleAppRegistrations(appRegistrations: AppRegistration[]): void {
     console.log(`Proceeding to unregister ${appRegistrations.length} application(s).`, appRegistrations);
-    const subscription = this.appsService.unregisterMultipleApps(appRegistrations).subscribe(
+    const subscription = this.appsService.unregisterMultipleApps(appRegistrations)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         console.log(data);
         this.toastyService.success(`${data.length} app(s) unregistered.`);
@@ -154,12 +179,16 @@ export class AppsComponent implements OnInit {
         if (this.appsService.appRegistrations.items.length === 0 && this.appsService.appRegistrations.pageNumber > 0) {
           this.appRegistrations.pageNumber = this.appRegistrations.pageNumber - 1;
         }
-        this.busy = this.appsService.getApps(true, this.getFilter()).subscribe(
-          appRegistrationsResult => {}
+        this.busyService.addSubscription(
+          this.appsService.getApps(true, this.getFilter())
+          .pipe(takeUntil(this.ngUnsubscribe$))
+          .subscribe(
+            appRegistrationsResult => {}
+          )
         );
       }
     );
-    this.busy = subscription;
+    this.busyService.addSubscription(subscription);
 
     this.unregisterMultipleAppsModal.hide();
   }

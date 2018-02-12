@@ -11,8 +11,12 @@ import { StreamCreateDialogComponent } from '../stream-create-dialog/stream-crea
 import { ContentAssistService } from '../flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
 import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 
+/**
+ *  @author Gunnar Hillert 
+ */
 @Component({
   selector: 'app-stream-create',
   templateUrl: './stream-create.component.html',
@@ -20,6 +24,8 @@ import { Subject } from 'rxjs/Subject';
   encapsulation: ViewEncapsulation.None
 })
 export class StreamCreateComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   dsl: string;
 
@@ -65,21 +71,33 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     };
 
     this.initSubject = new Subject();
-    this.busy = this.initSubject.subscribe();
+    this.busy = this.initSubject
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe();
   }
 
   ngOnInit() {
   }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
   ngOnDestroy() {
     // Invalidate cached metamodel, thus it's reloaded next time page is opened
     this.metamodelService.clearCachedData();
+
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
+
 
   setEditorContext(editorContext: Flo.EditorContext) {
     this.editorContext = editorContext;
     if (this.editorContext) {
-      const subscription = this.editorContext.paletteReady.subscribe(ready => {
+      const subscription = this.editorContext.paletteReady
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(ready => {
         if (ready) {
           subscription.unsubscribe();
           this.initSubject.next();
@@ -119,7 +137,9 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     const prefix = (<any>doc).getRange(startOfLine, cursor);
 
     return new Promise((resolve) => {
-      this.contentAssistService.getProposals(prefix).subscribe(completions => {
+      this.contentAssistService.getProposals(prefix)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(completions => {
         const chopAt = this.interestingPrefixStart(prefix, completions);
         const finalProposals = completions.map((longCompletion: any) => {
           const text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;

@@ -7,6 +7,9 @@ import {validateDeploymentProperties} from './stream-deploy-validators';
 import {Subscription} from 'rxjs/Subscription';
 import {Platform} from '../model/platform';
 import {SharedAboutService} from '../../shared/services/shared-about.service';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Component used to deploy stream definitions.
@@ -14,6 +17,7 @@ import {SharedAboutService} from '../../shared/services/shared-about.service';
  * @author Janne Valkealahti
  * @author Glenn Renfro
  * @author Damien Vitrac
+ * @author Gunnar Hillert
  */
 @Component({
   selector: 'app-stream-deploy',
@@ -21,8 +25,9 @@ import {SharedAboutService} from '../../shared/services/shared-about.service';
 })
 export class StreamDeployComponent implements OnInit, OnDestroy {
 
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   id: String;
-  private sub: any;
   form: FormGroup;
 
   deploymentProperties = new FormControl('', validateDeploymentProperties);
@@ -30,11 +35,6 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
 
   propertiesAsMap = {};
   platforms: Platform[];
-
-  subscriptionPlatforms: Subscription;
-  subscriptionFeatureInfo: Subscription;
-  busy: Subscription;
-
   skipperEnabled = false;
 
   /**
@@ -46,7 +46,9 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * @param sharedAboutService used to check if skipper is enable
    * @param fb used establish the deployment properties as a part of the form.
    */
-  constructor(private streamsService: StreamsService,
+  constructor(
+              private busyService: BusyService,
+              private streamsService: StreamsService,
               private route: ActivatedRoute,
               private router: Router,
               private toastyService: ToastyService,
@@ -63,13 +65,17 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * Establishes the stream name for the deployment as obtained from the URL.
    */
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.id = params['id'];
     });
-    this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
+    this.sharedAboutService.getFeatureInfo()
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(featureInfo => {
       this.skipperEnabled = featureInfo.skipperEnabled;
       if (this.skipperEnabled) {
-        this.subscriptionPlatforms = this.streamsService.platforms().subscribe((platforms: Platform[]) => {
+        this.streamsService.platforms()
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe((platforms: Platform[]) => {
           this.platforms = platforms;
           this.deploymentPlatform.setValue('default');
         });
@@ -77,12 +83,13 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
   ngOnDestroy() {
-    this.sub.unsubscribe();
-    this.subscriptionFeatureInfo.unsubscribe();
-    if (this.subscriptionPlatforms) {
-      this.subscriptionPlatforms.unsubscribe();
-    }
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -114,7 +121,9 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       this.propertiesAsMap['spring.cloud.dataflow.skipper.platformName'] = this.deploymentPlatform.value;
     }
 
-    this.busy = this.streamsService.deployDefinition(this.id, this.propertiesAsMap).subscribe(
+    const busy = this.streamsService.deployDefinition(this.id, this.propertiesAsMap)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.toastyService.success('Successfully deployed stream definition "'
           + this.id + '"');
@@ -128,6 +137,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         }
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
   /**

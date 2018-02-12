@@ -36,6 +36,7 @@
 <div class="container dataflow-main-container">
   <div class='row'>
     <div class='col-sm-24'><ng2-toasty></ng2-toasty>
+      <ng-template [ngBusy]="{busy: busy, minDuration: 500}"></ng-template>
       <router-outlet></router-outlet>
     </div>
   </div>

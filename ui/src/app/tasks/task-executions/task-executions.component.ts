@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
 import { TasksService } from '../tasks.service';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-executions',
   templateUrl: './task-executions.component.html',
 })
-export class TaskExecutionsComponent implements OnInit {
+export class TaskExecutionsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   taskExecutions: Page<TaskExecution>;
-  busy: Subscription;
   executionIdSort: boolean = undefined;
   taskNameSort: boolean = undefined;
   startTimeSort: boolean = undefined;
@@ -21,6 +25,7 @@ export class TaskExecutionsComponent implements OnInit {
   exitCodeSort: boolean = undefined;
 
   constructor(
+    private busyService: BusyService,
     public tasksService: TasksService,
     private toastyService: ToastyService,
     private router: Router
@@ -31,14 +36,26 @@ export class TaskExecutionsComponent implements OnInit {
     this.loadTaskExecutions();
   }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
   loadTaskExecutions() {
-    this.busy = this.tasksService.getExecutions(this.executionIdSort, this.taskNameSort, this.startTimeSort,
-        this.endTimeSort, this.exitCodeSort).subscribe(
+    const busy = this.tasksService.getExecutions(this.executionIdSort, this.taskNameSort, this.startTimeSort,
+        this.endTimeSort, this.exitCodeSort)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
       data => {
         this.taskExecutions = data;
         this.toastyService.success('Task Executions loaded.');
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
   getPage(page: number) {

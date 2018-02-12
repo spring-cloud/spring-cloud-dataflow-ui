@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { AuthService } from './auth.service';
 import { AboutService } from '../about/about.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * Handles logouts. Logouts are handled differently depending on whether
@@ -17,9 +19,9 @@ import { AboutService } from '../about/about.service';
 @Component({
   template: ''
 })
-export class LogoutComponent implements OnInit {
+export class LogoutComponent implements OnInit, OnDestroy {
 
-  public busy: Subscription;
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   constructor(
     private authService: AuthService,
@@ -44,7 +46,9 @@ export class LogoutComponent implements OnInit {
 
     console.log('Logging out ...');
     if (this.authService.securityInfo.isFormLogin) {
-      this.authService.logout().subscribe(
+      this.authService.logout()
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
         result => {
           this.aboutService.featureInfo.reset();
           this.toastyService.success('Logged out.');
@@ -64,5 +68,14 @@ export class LogoutComponent implements OnInit {
       console.log('Redirecting to ' + logoutUrl);
       window.open(logoutUrl, '_self');
     }
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 }

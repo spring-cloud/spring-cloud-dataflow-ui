@@ -10,6 +10,8 @@ import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 
 import * as _joint from 'jointjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 const joint: any = _joint;
 
 
@@ -20,6 +22,8 @@ const joint: any = _joint;
   encapsulation: ViewEncapsulation.None
 })
 export class StreamGraphDefinitionComponent implements OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   flo: Flo.EditorContext;
   private _metrics: StreamMetrics;
@@ -58,6 +62,8 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     if (this._subscriptionToGraphUpdates) {
       this._subscriptionToGraphUpdates.unsubscribe();
     }
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   get metrics(): StreamMetrics {
@@ -77,7 +83,9 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     if (this._subscriptionToGraphUpdates) {
       this._subscriptionToGraphUpdates.unsubscribe();
     }
-    this._subscriptionToGraphUpdates = this.flo.textToGraphConversionObservable.subscribe(() => this.update());
+    this._subscriptionToGraphUpdates = this.flo.textToGraphConversionObservable
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(() => this.update());
   }
 
   private findModuleMetrics(label: string): ApplicationMetrics {

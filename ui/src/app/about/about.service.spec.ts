@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { Response, ResponseOptions } from '@angular/http';
 import { SharedAboutService } from '../shared/services/shared-about.service';
+import { BusyService } from '../shared/services/busy.service';
 
 describe('AboutService', () => {
 
@@ -106,9 +107,8 @@ describe('AboutService', () => {
       body: JSON.stringify(jsonData)
     }));
     this.mockHttp.get.and.returnValue(Observable.of(mockResponse));
-
     const errorHandler = new ErrorHandler();
-    this.sharedAboutService = new SharedAboutService(this.mockHttp, errorHandler);
+    this.sharedAboutService = new SharedAboutService(new BusyService(), this.mockHttp, errorHandler);
     this.aboutService = new AboutService(this.sharedAboutService, this.mockHttp, errorHandler);
   });
 

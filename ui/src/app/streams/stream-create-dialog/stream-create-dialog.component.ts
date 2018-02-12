@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { ParserService } from '../../shared/services/parser.service';
@@ -12,13 +12,15 @@ import { Router } from '@angular/router';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { Observable } from 'rxjs/Observable';
-import { share } from 'rxjs/operators';
+import { share, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * Stores progress percentage.
  *
  * @author Alex Boyko
  * @author Andy Clement
+ * @author Gunnar Hillert
  */
 class ProgressData {
   constructor(public count, public total) {}
@@ -41,7 +43,9 @@ const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
   styleUrls: [ 'stream-create-dialog.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class StreamCreateDialogComponent implements OnInit {
+export class StreamCreateDialogComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   form: FormGroup;
   streamDefs: Array<any> = [];
@@ -67,6 +71,15 @@ export class StreamCreateDialogComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({}, this.uniqueStreamNames());
     this.featureInfo = this.aboutService.getFeatureInfo().pipe(share());
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   setDsl(dsl: string) {
@@ -179,7 +192,9 @@ export class StreamCreateDialogComponent implements OnInit {
         console.error('Aborting after 10 attempts, cannot find the stream: ' + streamDefNameToWaitFor);
         resolve();
       }
-      this.streamService.getDefinition(streamDefNameToWaitFor).subscribe(() => {
+      this.streamService.getDefinition(streamDefNameToWaitFor)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
         console.log('Stream ' + streamDefNameToWaitFor + ' is ok!');
         resolve();
       }, () => {
@@ -230,7 +245,9 @@ export class StreamCreateDialogComponent implements OnInit {
     } else {
       // Send the request to create a stream
       const def = this.streamDefs[index];
-      this.busy = this.streamService.createDefinition(def.name, def.def, this.deploy).subscribe(() => {
+      this.busy = this.streamService.createDefinition(def.name, def.def, this.deploy)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
         console.log('Stream ' + def.name + ' created OK');
         // Stream created successfully, mark it as created
         def.created = true;

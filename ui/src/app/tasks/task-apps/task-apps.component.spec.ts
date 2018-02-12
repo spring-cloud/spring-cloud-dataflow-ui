@@ -16,6 +16,7 @@ import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { BusyService } from '../../shared/services/busy.service';
 
 describe('TaskAppsComponent', () => {
   let component: TaskAppsComponent;
@@ -37,6 +38,7 @@ describe('TaskAppsComponent', () => {
         NgxPaginationModule
       ],
       providers: [
+        { provide: BusyService, useValue: new BusyService()},
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: TasksService, useValue: tasksService },

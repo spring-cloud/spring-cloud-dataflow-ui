@@ -1,18 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { JobsService } from '../jobs.service';
 import { StepExecutionResource } from '../model/step-execution-resource.model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
+/**
+ * @author Glenn Renfro
+ * @author Gunnar Hillert 
+ */
 @Component({
   selector: 'app-step-execution-details',
   templateUrl: './step-execution-details.component.html'
 })
-export class StepExecutionDetailsComponent implements OnInit {
+export class StepExecutionDetailsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   jobid: string;
   stepid: string;
-  private sub: any;
   stepExecutionResource: StepExecutionResource;
   percentageComplete = 0;
 
@@ -24,11 +31,20 @@ export class StepExecutionDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.jobid = params['jobid'];
       this.stepid = params['stepid'];
       this.loadData();
     });
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   refresh() {
@@ -50,7 +66,9 @@ export class StepExecutionDetailsComponent implements OnInit {
   }
 
   private loadData() {
-    this.jobsService.getStepExecution(this.jobid, this.stepid).subscribe(
+    this.jobsService.getStepExecution(this.jobid, this.stepid)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.stepExecutionResource = data;
       },
@@ -58,7 +76,9 @@ export class StepExecutionDetailsComponent implements OnInit {
         console.log('error while loading Step Execution Details', error);
         this.toastyService.error(error);
       });
-    this.jobsService.getStepExecutionProgress(this.jobid, this.stepid).subscribe(
+    this.jobsService.getStepExecutionProgress(this.jobid, this.stepid)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.percentageComplete = data.percentageComplete * 100;
       },

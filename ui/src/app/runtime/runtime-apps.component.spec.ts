@@ -11,6 +11,7 @@ import { KeyValuePipe } from '../shared/pipes/key-value-filter.pipe';
 import { MockRuntimeAppsService } from '../tests/mocks/runtime';
 import { RuntimeAppsService } from './runtime-apps.service';
 import { RUNTIME_APPS } from '../tests/mocks/mock-data';
+import { BusyService } from '../shared/services/busy.service';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
@@ -30,6 +31,7 @@ describe('RuntimeAppsComponent', () => {
         ModalModule.forRoot()
       ],
       providers: [
+        { provide: BusyService, useValue: new BusyService()},
         { provide: RuntimeAppsService, useValue: runtimeAppsService },
         { provide: ToastyService, useValue: toastyService }
       ]

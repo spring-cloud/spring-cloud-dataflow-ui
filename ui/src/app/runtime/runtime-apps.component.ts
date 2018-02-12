@@ -6,6 +6,8 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { RuntimeAppsService } from './runtime-apps.service';
 import { Subscription } from 'rxjs/Subscription';
 import { PageInfo } from '../shared/model/pageInfo';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../shared/services/busy.service';
 
 /**
  * Component that loads Runtime applications.
@@ -18,7 +20,7 @@ import { PageInfo } from '../shared/model/pageInfo';
 })
 export class RuntimeAppsComponent implements OnInit {
 
-    private busy: Subscription;
+    private ngUnsubscribe$: Subject<any> = new Subject();
 
     @ViewChild('childModal')
     private childModal: ModalDirective;
@@ -27,21 +29,33 @@ export class RuntimeAppsComponent implements OnInit {
 
     public runtimeApp: RuntimeApp;
 
-    constructor(private runtimeAppsService: RuntimeAppsService,
-                private toastyService: ToastyService) {
+    constructor(
+        private busyService: BusyService,
+        private runtimeAppsService: RuntimeAppsService,
+        private toastyService: ToastyService) {
     }
 
     public ngOnInit() {
         this.loadRuntimeApps(new PageInfo());
     }
 
+    /**
+     * Will cleanup any {@link Subscription}s to prevent
+     * memory leaks.  
+     */
+    ngOnDestroy() {
+      this.ngUnsubscribe$.next();
+      this.ngUnsubscribe$.complete();
+    }
+
     private loadRuntimeApps(pageInfo: PageInfo) {
-        this.busy = this.runtimeAppsService.getRuntimeApps(pageInfo).subscribe(
+        const busy = this.runtimeAppsService.getRuntimeApps(pageInfo).subscribe(
             data => {
                 this.runtimeApps = data;
                 this.toastyService.success('Runtime applications loaded.');
             }
         );
+        this.busyService.addSubscription(busy);
     }
 
     public getPage(page: number) {

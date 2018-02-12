@@ -10,6 +10,7 @@ import { JobsService } from './jobs.service';
 import { MockToastyService } from '../tests/mocks/toasty';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockJobsService } from '../tests/mocks/jobs';
+import { BusyService } from '../shared/services/busy.service';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -31,6 +32,7 @@ describe('JobsComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
+        { provide: BusyService, useValue: new BusyService()},
         { provide: JobsService, useValue: jobsService},
         { provide: ToastyService, useValue: toastyService }
       ]

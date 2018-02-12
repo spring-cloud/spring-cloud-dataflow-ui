@@ -13,6 +13,7 @@ import { FeatureInfo } from '../model/about/feature-info.model';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AboutInfo } from '../model/about/about-info.model';
+import { BusyService } from './busy.service';
 
 /**
  * Common service used by multiple modules such as
@@ -32,7 +33,9 @@ export class SharedAboutService {
   public aboutInfo: AboutInfo;
   public aboutInfo$ = new BehaviorSubject<AboutInfo>(undefined);
 
-  constructor(private http: Http, private errorHandler: ErrorHandler) {
+  constructor(
+    private busyService: BusyService,
+    private http: Http, private errorHandler: ErrorHandler) {
   }
 
   getAboutInfo(): Observable<AboutInfo> {
@@ -50,10 +53,10 @@ export class SharedAboutService {
 
   loadAboutInfo(reload?: boolean): Observable<AboutInfo> {
     if (!this.aboutInfo || reload) {
-      this.http.get(this.aboutUrl)
+      this.busyService.addSubscription(this.http.get(this.aboutUrl)
         .map(this.extractData.bind(this))
         .catch(this.errorHandler.handleError)
-        .subscribe();
+        .subscribe());
     }
     return Observable.of(this.aboutInfo);
   }
