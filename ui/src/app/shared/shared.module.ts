@@ -37,9 +37,10 @@ import { DecorationComponent } from './flo/decoration/decoration.component';
 import { PropertiesDialogComponent } from './flo/properties/properties-dialog.component';
 import { GraphViewComponent } from './flo/graph-view/graph-view.component';
 import { SharedAboutService } from './services/shared-about.service';
+import { BusyService } from './services/busy.service';
 
 const busyConfig: BusyConfig = {
-    message: 'Processing..',
+    message: 'Processing…',
     delay: 0,
     template: BUSY_CONFIG_DEFAULTS.template,
     minDuration: 1000,
@@ -87,6 +88,7 @@ const busyConfig: BusyConfig = {
     GraphViewComponent
   ],
   providers: [
+    BusyService,
     SharedAppsService,
     SharedAboutService,
     ParserService,

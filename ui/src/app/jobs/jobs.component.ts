@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -8,16 +8,21 @@ import { JobsService } from './jobs.service';
 import { JobExecution } from './model/job-execution.model';
 
 import { ToastyService } from 'ng2-toasty';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   templateUrl: './jobs.component.html',
 })
-export class JobsComponent implements OnInit {
+export class JobsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   public jobExecutions: Page<JobExecution>;
-  public busy: Subscription;
 
   constructor(
+    private busyService: BusyService,
     private jobsService: JobsService,
     private toastyService: ToastyService,
     private router: Router
@@ -32,12 +37,23 @@ export class JobsComponent implements OnInit {
   }
 
   /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
+  /**
    * Load a paginated list of {@link JobExecution}s.
    *
    * @param reload
    */
   public loadJobExecutions(reload: boolean) {
-    this.busy = this.jobsService.getJobExecutions(reload).subscribe(
+    const busy = this.jobsService.getJobExecutions(reload)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         if (!this.jobExecutions) {
           this.jobExecutions = data;
@@ -48,6 +64,7 @@ export class JobsComponent implements OnInit {
         this.toastyService.error(error);
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -65,7 +82,9 @@ export class JobsComponent implements OnInit {
 
   restartJob(item: JobExecution) {
     console.log('Restart Job ' + item.jobExecutionId);
-    this.jobsService.restartJob(item).subscribe(
+    this.jobsService.restartJob(item)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.toastyService.success('Successfully restarted job "' + item.name + '"');
       },
@@ -77,7 +96,9 @@ export class JobsComponent implements OnInit {
 
   stopJob(item: JobExecution) {
     console.log('Stop Job' + item.jobExecutionId);
-    this.jobsService.stopJob(item).subscribe(
+    this.jobsService.stopJob(item)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.toastyService.success('Successfully stopped job "' + item.name + '"');
       },

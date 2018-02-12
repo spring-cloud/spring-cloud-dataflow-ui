@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ToastyService } from 'ng2-toasty';
 import { TasksService } from '../tasks.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * Component to display dialog to allow user to name and deploy a task.
@@ -14,7 +16,9 @@ import { TasksService } from '../tasks.service';
   templateUrl: './task-create-composed-task-dialog.component.html',
   styleUrls: ['./task-create-composed-task-dialog.component.scss']
 })
-export class TaskCreateComposedTaskDialogComponent implements OnInit {
+export class TaskCreateComposedTaskDialogComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Shown and used dsl for task.
@@ -65,6 +69,15 @@ export class TaskCreateComposedTaskDialogComponent implements OnInit {
   }
 
   /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
+  /**
    * Sets a dsl used to create a task.
    * @param {string} the task dsl
    */
@@ -86,7 +99,9 @@ export class TaskCreateComposedTaskDialogComponent implements OnInit {
    * actions, i.e. clearing a flo graph.
    */
   handleCreate() {
-    this.tasksService.createDefinition(this.dsl, this.taskName.value).subscribe(
+    this.tasksService.createDefinition(this.dsl, this.taskName.value)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       () => {
         console.log('Succesfully created task', this.taskName.value, this.dsl);
         if (this.successCallback) {

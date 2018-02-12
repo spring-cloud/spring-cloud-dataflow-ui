@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
@@ -7,15 +7,19 @@ import { Page } from '../../shared/model/page';
 import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
+import { BusyService } from '../../shared/services/busy.service';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-task-definition',
   templateUrl: './task-definitions.component.html',
 })
-export class TaskDefinitionsComponent implements OnInit {
+export class TaskDefinitionsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   taskDefinitions: Page<TaskDefinition>;
-  busy: Subscription;
   taskDefinitionToDestroy: TaskDefinition;
 
   // undefined indicates that order is not selected
@@ -32,6 +36,7 @@ export class TaskDefinitionsComponent implements OnInit {
   public childModal: ModalDirective;
 
   constructor(
+    private busyService: BusyService,
     private tasksService: TasksService,
     private toastyService: ToastyService,
     private router: Router
@@ -39,6 +44,15 @@ export class TaskDefinitionsComponent implements OnInit {
 
   ngOnInit() {
     this.loadTaskDefinitions();
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -57,12 +71,15 @@ export class TaskDefinitionsComponent implements OnInit {
   loadTaskDefinitions() {
     console.log('Loading Task Definitions...', this.taskDefinitions);
 
-    this.busy = this.tasksService.getDefinitions(this.definitionNameSort, this.definitionSort).subscribe(
+    const busy = this.tasksService.getDefinitions(this.definitionNameSort, this.definitionSort)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.taskDefinitions = data;
         this.toastyService.success('Task definitions loaded.');
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
   bulkDefineTasks() {
@@ -102,7 +119,9 @@ export class TaskDefinitionsComponent implements OnInit {
 
   public proceed(taskDefinition: TaskDefinition): void {
     console.log('Proceeding to destroy definition...', taskDefinition);
-    this.tasksService.destroyDefinition(taskDefinition.name).subscribe(
+    this.tasksService.destroyDefinition(taskDefinition.name)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.cancel();
         this.toastyService.success('Successfully destroyed task definition "'

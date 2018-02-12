@@ -4,17 +4,22 @@ import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { TasksService } from '../tasks.service';
 import { AppInfo } from '../model/app-info';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
+/**
+ *  @author Glenn Renfro
+ *  @author Gunnar Hillert 
+ */
 @Component({
   selector: 'app-task-app-details',
   templateUrl: './task-app-details.component.html',
 })
-
 export class TaskAppDetailsComponent implements OnInit, OnDestroy {
 
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   id: string;
-  private sub: any;
-  busy: Subscription;
   appInfo: AppInfo;
 
   constructor(
@@ -26,10 +31,12 @@ export class TaskAppDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
        this.id = params['id'];
 
-       this.busy = this.tasksService.getAppInfo(this.id).subscribe(
+       this.tasksService.getAppInfo(this.id)
+       .pipe(takeUntil(this.ngUnsubscribe$))
+       .subscribe(
          data => {
            this.appInfo = data;
            this.toastyService.success('App info loaded.');
@@ -38,8 +45,13 @@ export class TaskAppDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   back() {

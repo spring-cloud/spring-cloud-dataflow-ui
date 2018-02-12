@@ -1,25 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { JobsService } from '../jobs.service';
 import { JobExecution } from '../model/job-execution.model';
 import { StepExecution } from '../model/step-execution.model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 
 /**
  * Displays a job's execution detail information based on the job execution id that is passed in via params on the URI.
  *
  * @author Janne Valkealahti
+ * @author Gunnar Hillert
  */
 @Component({
   selector: 'app-job-execution-details',
   templateUrl: './job-execution-details.component.html'
 })
-export class JobExecutionDetailsComponent implements OnInit {
+export class JobExecutionDetailsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   id: string;
   jobExecution: JobExecution;
-  private sub: any;
 
   constructor(
     private jobsService: JobsService,
@@ -32,9 +36,11 @@ export class JobExecutionDetailsComponent implements OnInit {
    * Retrieves the JobExecutionId from the JobService.
    */
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.id = params['id'];
-      this.jobsService.getJobExecution(this.id).subscribe(
+      this.jobsService.getJobExecution(this.id)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
         data => {
         this.jobExecution = data;
         },
@@ -44,6 +50,15 @@ export class JobExecutionDetailsComponent implements OnInit {
         }
       );
     });
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**

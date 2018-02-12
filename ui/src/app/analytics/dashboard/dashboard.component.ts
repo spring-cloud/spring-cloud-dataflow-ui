@@ -1,6 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-
 import { ToastyService } from 'ng2-toasty';
 import { AnalyticsService } from '../analytics.service';
 
@@ -8,6 +6,8 @@ import {
   AggregateCounter, AggregateCounterResolutionType, BaseCounter,
   DashboardItem, FieldValueCounterValue, MetricType
 } from '../model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The dashboard component provides
@@ -20,8 +20,8 @@ import {
 })
 export class DashboardComponent implements OnInit, OnDestroy {
 
-  busy: Subscription;
-  busyCounters: Subscription;
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   /**
    * Returns the {@link DashboardItem}s from the
    * {@link AnalyticsService}.
@@ -54,10 +54,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   /**
    * When the component is destroyed, make sure all pollers are
-   * stopped also.
+   * stopped also. Will also cleanup any {@link Subscription}s to prevent
+   * memory leaks. 
    */
   ngOnDestroy() {
     this.analyticsService.stopAllDashboardPollers();
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -115,6 +118,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashBoardItem.counter = undefined;
 
     dashBoardItem.countersIsLoading = this.analyticsService.getCountersForMetricType(metricType)
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(result => {
         dashBoardItem.counters = result.items;
       },

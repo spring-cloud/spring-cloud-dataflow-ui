@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
@@ -8,12 +8,16 @@ import { TasksService } from '../tasks.service';
 import { ToastyService } from 'ng2-toasty';
 
 import { validateBulkTaskDefinitions } from './task-bulk-define-validators';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-task-bulk-define',
   templateUrl: './task-bulk-define.component.html',
 })
-export class TaskBulkDefineComponent implements OnInit {
+export class TaskBulkDefineComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   form: FormGroup;
   definitions = new FormControl('', validateBulkTaskDefinitions);
@@ -30,6 +34,15 @@ export class TaskBulkDefineComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   cancelBulkDefineTasks() {
@@ -59,7 +72,9 @@ export class TaskBulkDefineComponent implements OnInit {
         }
       }
     }
-    Observable.forkJoin(observables).subscribe(
+    Observable.forkJoin(observables)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         let completed = 0;
         let failed = 0;

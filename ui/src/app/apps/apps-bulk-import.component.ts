@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Subscription} from 'rxjs/Subscription';
 import { AppsService } from './apps.service';
 import { ToastyService } from 'ng2-toasty';
@@ -6,12 +6,17 @@ import { Router } from '@angular/router';
 
 import { AppRegistrationImport } from './model/app-registration-import';
 import { PopoverDirective } from 'ngx-bootstrap/popover';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-apps',
   templateUrl: './apps-bulk-import.component.html'
 })
-export class AppsBulkImportComponent implements OnInit, OnChanges {
+export class AppsBulkImportComponent implements OnInit, OnChanges, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   @ViewChild('childPopover')
   public childPopover: PopoverDirective;
@@ -19,13 +24,13 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
   public model = new AppRegistrationImport(false, [], '');
 
   apps: any;
-  busy: Subscription;
 
   contents: any;
   uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
 
   constructor(
     private appsService: AppsService,
+    private busyService: BusyService,
     private toastyService: ToastyService,
     private router: Router,
     private elementRef: ElementRef) { }
@@ -33,6 +38,15 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log('App Service Registrations', this.appsService.appRegistrations);
     console.log(this.appsService.appRegistrations);
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   goBack() {
@@ -86,17 +100,21 @@ export class AppsBulkImportComponent implements OnInit, OnChanges {
           console.log('Importing apps using textarea values:\n' + this.model.appsProperties + ' (force: ' + this.model.force + ')');
       }
 
-      this.busy = this.appsService.bulkImportApps(this.model).subscribe(
+      const busy = this.appsService.bulkImportApps(this.model).subscribe(
         data => {
           console.log(data);
           this.toastyService.success('Apps Imported.');
-          this.busy = this.appsService.getApps(true).subscribe(
+          this.busyService.addSubscription(
+          this.appsService.getApps(true)
+          .pipe(takeUntil(this.ngUnsubscribe$))
+          .subscribe(
             appRegistrations => {
               console.log('Back to about page ...');
               this.router.navigate(['apps']);
             }
-          );
+          ));
         }
       );
+      this.busyService.addSubscription(busy);
   }
 }

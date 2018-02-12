@@ -12,6 +12,9 @@ import {ToastyService} from 'ng2-toasty';
 import {Router} from '@angular/router';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {StreamDeployMultiComponent} from '../stream-deploy-multi/stream-deploy-multi.component';
+import { BusyService } from '../../shared/services/busy.service';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stream-definitions',
@@ -32,9 +35,10 @@ import {StreamDeployMultiComponent} from '../stream-deploy-multi/stream-deploy-m
  */
 export class StreamDefinitionsComponent implements OnInit, OnDestroy {
 
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   streamDefinitions: Page<StreamDefinition>;
   streamDefinitionToDestroy: StreamDefinition;
-  busy: Subscription;
   metricsSubscription: Subscription;
   definitionNameSort: boolean = undefined;
   definitionSort: boolean = undefined;
@@ -61,6 +65,7 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
   modal: BsModalRef;
 
   constructor(public streamsService: StreamsService,
+              private busyService: BusyService,
               private toastyService: ToastyService,
               private modalService: BsModalService,
               private router: Router) {
@@ -71,13 +76,18 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.loadStreamDefinitions();
-    this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
+    this.metricsSubscription = IntervalObservable.create(2000)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => this.loadStreamMetrics());
   }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
   ngOnDestroy() {
-    if (this.metricsSubscription) {
-      this.metricsSubscription.unsubscribe();
-    }
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -85,13 +95,15 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   loadStreamDefinitions() {
     console.log('Loading Stream Definitions...', this.streamDefinitions);
-
-    this.busy = this.streamsService.getDefinitions(this.definitionNameSort, this.definitionSort).subscribe(
+    const subscription = this.streamsService.getDefinitions(this.definitionNameSort, this.definitionSort)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
       data => {
         this.streamDefinitions = data;
         this.toastyService.success('Stream definitions loaded.');
       }
     );
+    this.busyService.addSubscription(subscription);
   }
 
   /**
@@ -104,7 +116,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
         .map(s => s.name.toString())
       : [];
     if (streamNames.length) {
-      this.streamsService.metrics(streamNames).subscribe(metrics => this.metrics = metrics);
+      this.streamsService.metrics(streamNames)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(metrics => this.metrics = metrics);
     } else {
       this.metrics = [];
     }
@@ -136,7 +150,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    * @param item the stream definition to be undeployed.
    */
   undeploy(item: StreamDefinition) {
-    this.streamsService.undeployDefinition(item).subscribe(
+    this.streamsService.undeployDefinition(item)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.cancel();
         this.toastyService.success('Successfully undeployed stream definition "'
@@ -216,7 +232,9 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   public proceed(streamDefinition: StreamDefinition): void {
     console.log('Proceeding to destroy definition...', streamDefinition);
-    this.streamsService.destroyDefinition(streamDefinition).subscribe(
+    this.streamsService.destroyDefinition(streamDefinition)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.cancel();
         this.toastyService.success('Successfully destroyed stream definition "'
@@ -310,11 +328,15 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
 
     this.modal = this.modalService.show(StreamDeployMultiComponent);
     this.modal.content.streamDefinitions = this.streamDefinitionsToDeploy;
-    this.modal.content.confirm.subscribe((data) => {
+    this.modal.content.confirm
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe((data) => {
       this.toastyService.success(`${data.length} stream definition(s) deployed.`);
-      this.busy = this.streamsService
+      const busy = this.streamsService
         .getDefinitions(this.definitionNameSort, this.definitionSort)
+        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe();
+      this.busyService.addSubscription(busy);
     });
   }
 
@@ -342,18 +364,22 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
    */
   proceedToDestroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]) {
     console.log(`Proceeding to destroy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
-    const subscription = this.streamsService.destroyMultipleStreamDefinitions(streamDefinitions).subscribe(
+    const subscription = this.streamsService.destroyMultipleStreamDefinitions(streamDefinitions)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.toastyService.success(`${data.length} stream definition(s) destroy.`);
         if (this.streamsService.streamDefinitions.items.length === 0 && this.streamsService.streamDefinitions.pageNumber > 0) {
           this.streamDefinitions.pageNumber = this.streamDefinitions.pageNumber - 1;
         }
-        this.busy = this.streamsService
+        const busy = this.streamsService
           .getDefinitions(this.definitionNameSort, this.definitionSort)
+          .pipe(takeUntil(this.ngUnsubscribe$))
           .subscribe();
+        this.busyService.addSubscription(busy);
       }
     );
-    this.busy = subscription;
+    this.busyService.addSubscription(subscription);
     this.cancelDestroyMultipleStreamDefinitions();
   }
 
@@ -367,12 +393,14 @@ export class StreamDefinitionsComponent implements OnInit, OnDestroy {
     const subscription = this.streamsService.undeployMultipleStreamDefinitions(streamDefinitions).subscribe(
       data => {
         this.toastyService.success(`${data.length} stream definition(s) undeploy.`);
-        this.busy = this.streamsService
+        const busy = this.streamsService
           .getDefinitions(this.definitionNameSort, this.definitionSort)
+          .pipe(takeUntil(this.ngUnsubscribe$))
           .subscribe();
+        this.busyService.addSubscription(busy);
       }
     );
-    this.busy = subscription;
+    this.busyService.addSubscription(subscription);
     this.cancelUndeployMultipleStreamDefinitions();
   }
 

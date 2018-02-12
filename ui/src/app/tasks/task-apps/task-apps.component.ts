@@ -1,21 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { Page } from '../../shared/model/page';
 import { TasksService } from '../tasks.service';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
+/**
+ * @author Glenn Renfro
+ * @author Gunnar Hillert 
+ */
 @Component({
   selector: 'app-task-app',
   templateUrl: './task-apps.component.html',
 })
-export class TaskAppsComponent implements OnInit {
+export class TaskAppsComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   appRegistrations: Page<AppRegistration>;
-  busy: Subscription;
 
   constructor(
+    private busyService: BusyService,
     private tasksService: TasksService,
     private toastyService: ToastyService,
     private router: Router) {
@@ -23,6 +32,15 @@ export class TaskAppsComponent implements OnInit {
 
   ngOnInit() {
     this.loadAppRegistrations();
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -50,7 +68,9 @@ export class TaskAppsComponent implements OnInit {
 
   loadAppRegistrations() {
     console.log('loadAppRegistrations', this.tasksService);
-    this.busy = this.tasksService.getTaskAppRegistrations().subscribe(
+    const busy = this.tasksService.getTaskAppRegistrations()
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.appRegistrations = data;
         this.toastyService.success('Task apps loaded.');
@@ -59,6 +79,7 @@ export class TaskAppsComponent implements OnInit {
         this.toastyService.error(error);
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from './auth.service';
@@ -8,6 +8,9 @@ import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { AboutService } from '../about/about.service';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Handles application logins.
@@ -17,15 +20,17 @@ import { AboutService } from '../about/about.service';
 @Component({
   templateUrl: './login.component.html',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   public user = new LoginRequest('', '');
   public securityInfo: SecurityInfo;
-  public busy: Subscription;
 
   constructor(
     private authService: AuthService,
     private aboutService: AboutService,
+    private busyService: BusyService,
     private router: Router,
     private toastyService: ToastyService,
     private route: ActivatedRoute) {
@@ -33,6 +38,15 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit() {
     this.securityInfo = this.authService.securityInfo;
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -45,10 +59,14 @@ export class LoginComponent implements OnInit {
     } else {
       returnUrl = '';
     }
-    this.busy = this.authService.login(this.user).subscribe(
+    const busy = this.authService.login(this.user)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       result => {
         if (result.isAuthenticated) {
-          this.aboutService.getAboutInfo(true).subscribe(
+          this.aboutService.getAboutInfo(true)
+          .pipe(takeUntil(this.ngUnsubscribe$))
+          .subscribe(
             aboutInfo => {
               console.log(`Login successful, using return Url: ${returnUrl}`);
               this.router.navigate([returnUrl]);
@@ -66,5 +84,6 @@ export class LoginComponent implements OnInit {
       error => {
         this.toastyService.error(error);
       });
+    this.busyService.addSubscription(busy);
   }
 }

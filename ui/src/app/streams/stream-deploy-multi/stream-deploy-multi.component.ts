@@ -1,20 +1,25 @@
-import {Component, Output, EventEmitter} from '@angular/core';
+import {Component, Output, EventEmitter, OnDestroy} from '@angular/core';
 import {StreamsService} from '../streams.service';
 import {ToastyService} from 'ng2-toasty';
 import {Subscription} from 'rxjs/Subscription';
 import {StreamDefinition} from '../model/stream-definition';
 import {BsModalRef} from 'ngx-bootstrap';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Component used to deploy stream definitions.
  *
  * @author Damien Vitrac
+ * @author Gunnar Hillert
  */
 @Component({
   selector: 'app-stream-deploy-multi',
   templateUrl: './stream-deploy-multi.component.html'
 })
-export class StreamDeployMultiComponent {
+export class StreamDeployMultiComponent implements OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Subscription used for the busy component.
@@ -49,6 +54,15 @@ export class StreamDeployMultiComponent {
   }
 
   /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
+  /**
    * Close the modal
    */
   cancel() {
@@ -60,7 +74,9 @@ export class StreamDeployMultiComponent {
    */
   deployDefinitions() {
     console.log(`Proceeding to deploy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
-    this.busy = this.streamsService.deployMultipleStreamDefinitions(this.streamDefinitions).subscribe(
+    this.busy = this.streamsService.deployMultipleStreamDefinitions(this.streamDefinitions)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.confirm.emit(data);
         this.cancel();
@@ -86,6 +102,4 @@ export class StreamDeployMultiComponent {
   back() {
     this.selectStreamDefinition = null;
   }
-
-
 }

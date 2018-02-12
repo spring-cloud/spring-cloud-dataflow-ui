@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { AppsService } from '../apps.service';
 import { ToastyService } from 'ng2-toasty';
@@ -10,12 +10,17 @@ import { ApplicationType } from '../../shared/model/application-type';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import { Subject } from 'rxjs/Subject';
+import { BusyService } from '../../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-apps',
   templateUrl: './apps-register.component.html'
 })
-export class AppsRegisterComponent implements OnInit, OnChanges {
+export class AppsRegisterComponent implements OnInit, OnChanges, OnDestroy {
+
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   // App name validation RegEx pattern
   public static namePattern = '[\\w_]+[\\w_-]*';
@@ -29,13 +34,12 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
 
   public model = [new AppRegistration()];
 
-  busy: Subscription;
-
   contents: any;
   uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
 
   constructor(
     private appsService: AppsService,
+    private busyService: BusyService,
     private toastyService: ToastyService,
     private router: Router) {
     }
@@ -43,6 +47,15 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log('App Service Registrations', this.appsService.appRegistrations);
     console.log(this.appsService.appRegistrations);
+  }
+
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   goBack() {
@@ -66,20 +79,26 @@ export class AppsRegisterComponent implements OnInit, OnChanges {
    */
   register() {
     console.log(`Register ${this.model.length} app(s).`);
-    this.busy = this.appsService.registerMultipleApps(this.model).subscribe(
+    const busy = this.appsService.registerMultipleApps(this.model)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.toastyService.success(`${data.length} App(s) registered.`);
-        this.busy = this.appsService.getApps(true).subscribe(
+        this.busyService.addSubscription(
+        this.appsService.getApps(true)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
           appRegistrations => {
             console.log('Back to apps page ...');
             this.router.navigate(['apps']);
           }
-        );
+        ));
       },
       error => {
         this.toastyService.error(error);
       }
     );
+    this.busyService.addSubscription(busy);
   }
 
   /**

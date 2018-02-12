@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { JobsService } from '../jobs.service';
 import { StepExecutionProgress } from '../model/step-execution-progress.model';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-step-execution-progress',
@@ -10,9 +12,10 @@ import { StepExecutionProgress } from '../model/step-execution-progress.model';
 })
 export class StepExecutionProgressComponent implements OnInit, OnDestroy {
 
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   jobid: string;
   stepid: string;
-  private sub: any;
   stepExecutionProgress: StepExecutionProgress;
   percentageComplete = 0;
 
@@ -24,15 +27,20 @@ export class StepExecutionProgressComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.jobid = params['jobid'];
       this.stepid = params['stepid'];
       this.loadProgressData();
     });
   }
 
+  /**
+   * Will cleanup any {@link Subscription}s to prevent
+   * memory leaks.  
+   */
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
   refresh() {
@@ -44,7 +52,9 @@ export class StepExecutionProgressComponent implements OnInit, OnDestroy {
   }
 
   private loadProgressData() {
-    this.jobsService.getStepExecutionProgress(this.jobid, this.stepid).subscribe(
+    this.jobsService.getStepExecutionProgress(this.jobid, this.stepid)
+    .pipe(takeUntil(this.ngUnsubscribe$))
+    .subscribe(
       data => {
         this.stepExecutionProgress = data;
         this.percentageComplete = data.percentageComplete * 100;
