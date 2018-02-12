@@ -6,6 +6,9 @@ import { FormControl } from '@angular/forms';
  * @returns {any} null if successful or reason of the failure.
  */
 export function validateDeploymentProperties(formControl: FormControl) {
+
+  const uriRegex = /^(app.|deployer.)([a-zA-Z0-9-]+)$/;
+
   const properties = formControl.value.split('\n');
 
   if (properties) {
@@ -16,6 +19,15 @@ export function validateDeploymentProperties(formControl: FormControl) {
           return {
             validateDeploymentProperties: {
               reason: `Invalid deployment property "${prop}" must contain a single "=".`
+            }
+          };
+        }
+        if (!uriRegex.test(keyValue[0])) {
+          const message = `Invalid deployment property "${keyValue[0]}" must start with "app." or "deployer." and  `
+            + ` contain only alphanumeric characters.`;
+          return {
+            validateDeploymentProperties: {
+              reason: message
             }
           };
         }
