@@ -140,7 +140,11 @@ export class BubbleChartComponent implements OnInit, OnChanges {
         return b.value - a.value;
       });
 
-      const colors = d3.schemeCategory20c;
+      /**
+       * 'schemeCategory20c' does not exist in the type definition file but does
+       * in D3 itself.
+       */
+      const colors = (<any> d3).schemeCategory20c;
 
       const bubble = d3.pack()
         .size([widthToUse, heightToUse])
