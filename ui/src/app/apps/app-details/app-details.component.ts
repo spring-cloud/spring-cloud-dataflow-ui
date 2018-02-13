@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { AppsService } from '../apps.service';
@@ -20,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   templateUrl: './app-details.component.html'
 })
-export class AppDetailsComponent implements OnInit {
+export class AppDetailsComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -51,8 +51,9 @@ export class AppDetailsComponent implements OnInit {
       error => {
         this.toastyService.error(error);
       });
-
-      this.busyService.addSubscription(busy);
+      setTimeout(()=>{
+        this.busyService.addSubscription(busy);
+      });
     });
   }
 
