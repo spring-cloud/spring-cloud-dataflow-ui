@@ -16,8 +16,8 @@ import {BsModalRef} from 'ngx-bootstrap';
         <p [innerHtml]="description"></p>
       </div>
       <div class="modal-footer">
-        <button (click)="bsModalRef.hide()" class="btn btn-default">{{buttonCancel}}</button>
-        <button (click)="validate()" class="btn btn-primary">{{buttonConfirm}}</button>
+        <button (click)="bsModalRef.hide()" class="btn btn-default">{{ buttonCancel }}</button>
+        <button (click)="validate()" class="btn btn-primary">{{ buttonConfirm }}</button>
       </div>
     </div>
   `

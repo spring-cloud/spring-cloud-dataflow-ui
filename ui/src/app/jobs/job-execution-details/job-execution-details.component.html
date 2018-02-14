@@ -1,4 +1,4 @@
-<h1>Job Execution Details - Execution ID: {{id}}</h1>
+<h1>Job Execution Details - Execution ID: {{ id }}</h1>
 
 <div *ngIf="!jobExecution">No Job Execution available.</div>
 <table id="jobExecution" *ngIf="jobExecution" class="table table-hover">
@@ -11,35 +11,35 @@
   <tbody>
     <tr>
       <td>Id</td>
-      <td>{{jobExecution.jobExecutionId}}</td>
+      <td>{{ jobExecution.jobExecutionId }}</td>
     </tr>
     <tr>
       <td>Job Name</td>
-      <td>{{jobExecution.name}}</td>
+      <td>{{ jobExecution.name }}</td>
     </tr>
     <tr>
       <td>Job Instance</td>
-      <td>{{jobExecution.jobInstanceId}}</td>
+      <td>{{ jobExecution.jobInstanceId }}</td>
     </tr>
     <tr>
       <td>Task Execution Id</td>
-      <td>{{jobExecution.taskExecutionId}}</td>
+      <td>{{ jobExecution.taskExecutionId }}</td>
     </tr>
     <tr>
       <td>Job Parameters</td>
-      <td>{{jobExecution.jobParametersString}}</td>
+      <td>{{ jobExecution.jobParametersString }}</td>
     </tr>
     <tr>
       <td>Start Time</td>
-      <td>{{jobExecution.startTime | dataflowDateTime}}</td>
+      <td>{{ jobExecution.startTime | dataflowDateTime }}</td>
     </tr>
     <tr>
       <td>End Time</td>
-      <td>{{jobExecution.endTime | dataflowDateTime}}</td>
+      <td>{{ jobExecution.endTime | dataflowDateTime }}</td>
     </tr>
     <tr>
       <td>Duration</td>
-      <td>{{jobExecution.startTime | dataflowDuration: jobExecution.endTime}}</td>
+      <td>{{ jobExecution.startTime | dataflowDuration: jobExecution.endTime }}</td>
     </tr>
     <tr>
       <td>Status</td>
@@ -51,11 +51,11 @@
     </tr>
     <tr>
       <td>Exit Message</td>
-      <td>{{jobExecution.exitMessage}}</td>
+      <td>{{ jobExecution.exitMessage }}</td>
     </tr>
     <tr>
       <td>Step Execution Count</td>
-      <td>{{jobExecution.stepExecutionCount}}</td>
+      <td>{{ jobExecution.stepExecutionCount }}</td>
     </tr>
   </tbody>
 </table>
@@ -77,13 +77,13 @@
   </thead>
   <tbody>
     <tr *ngFor="let stepExecution of jobExecution.stepExecutions">
-      <td>{{stepExecution.id}}</td>
-      <td>{{stepExecution.name}}</td>
-      <td>{{stepExecution.readCount}}</td>
-      <td>{{stepExecution.writeCount}}</td>
-      <td>{{stepExecution.commitCount}}</td>
-      <td>{{stepExecution.rollbackCount}}</td>
-      <td>{{stepExecution.startTime | dataflowDuration: stepExecution.endTime}}</td>
+      <td>{{ stepExecution.id }}</td>
+      <td>{{ stepExecution.name }}</td>
+      <td>{{ stepExecution.readCount }}</td>
+      <td>{{ stepExecution.writeCount }}</td>
+      <td>{{ stepExecution.commitCount }}</td>
+      <td>{{ stepExecution.rollbackCount }}</td>
+      <td>{{ stepExecution.startTime | dataflowDuration: stepExecution.endTime }}</td>
       <td><app-job-execution-status [status]="stepExecution.status"></app-job-execution-status></td>
       <td>
         <button type="button" (click)="viewStepExecutionDetails(stepExecution)"

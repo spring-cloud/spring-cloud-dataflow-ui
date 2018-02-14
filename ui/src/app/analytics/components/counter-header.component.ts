@@ -9,8 +9,8 @@ import { Counter } from '../model/counter.model';
 @Component({
   selector: 'app-counter-header',
   template: `
-  <h2>Value: {{counter.value}} | Latest Rate:
-    {{counter.rates && counter.rates.length ? counter.rates[counter.rates.length - 1] + " counts/second" : "--N/A--"}}</h2>
+  <h2>Value: {{ counter.value }} | Latest Rate:
+    {{ counter.rates && counter.rates.length ? counter.rates[counter.rates.length - 1] + " counts/second" : "--N/A--" }}</h2>
   `
 })
 export class CounterHeaderComponent {

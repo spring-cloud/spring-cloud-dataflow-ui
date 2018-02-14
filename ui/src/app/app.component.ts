@@ -52,7 +52,7 @@ export class AppComponent implements DoCheck, OnInit {
 
     this.busyService.busyObjects$.forEach(busyObject => {
       if (busyObject) {
-        while(busyObject.length > 0) {
+        while (busyObject.length > 0) {
           /*
            * Unfortunately, Angular2 Busy does not support
            * "Overlapping Subscriptions" and does not work

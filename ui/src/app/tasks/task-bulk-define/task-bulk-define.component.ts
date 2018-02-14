@@ -38,7 +38,7 @@ export class TaskBulkDefineComponent implements OnInit, OnDestroy {
 
   /**
    * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.  
+   * memory leaks.
    */
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
@@ -106,7 +106,7 @@ export class TaskBulkDefineComponent implements OnInit, OnDestroy {
     const file: File = event.target.files[0];
     const reader: FileReader = new FileReader();
     const _form = this.form;
-    reader.onloadend = function(e){
+    reader.onloadend = function(e) {
       _form.patchValue({definitions: reader.result});
     };
     reader.readAsText(file);

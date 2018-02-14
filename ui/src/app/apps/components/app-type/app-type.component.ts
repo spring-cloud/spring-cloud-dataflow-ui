@@ -8,7 +8,7 @@ import {AppRegistration} from '../../../shared/model/app-registration.model';
  */
 @Component({
   selector: 'app-type',
-  template: `<span class="label label-apptype label-{{labelClass}}">{{label}}</span>`
+  template: `<span class="label label-apptype label-{{ labelClass }}">{{ label }}</span>`
 })
 export class AppTypeComponent implements AfterContentInit, DoCheck {
 

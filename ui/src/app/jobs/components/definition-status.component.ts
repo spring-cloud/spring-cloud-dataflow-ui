@@ -12,7 +12,7 @@ import { JobExecution } from '../model/job-execution.model';
 @Component({
   selector: 'app-definition-status',
   template: `
-    <span class="label label-{{labelClass}}">{{label}}</span>
+    <span class="label label-{{ labelClass }}">{{ label }}</span>
   `
 })
 export class DefinitionStatusComponent implements AfterContentInit, DoCheck {

@@ -23,7 +23,7 @@
               dropdown
               class="dropdown"><a class="dropdown-toggle" dropdownToggle (click)="false"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
             <ul *dropdownMenu class="dropdown-menu">
-              <li *ngIf="securityInfo.isAuthenticated">{{securityInfo.username}}</li>
+              <li *ngIf="securityInfo.isAuthenticated">{{ securityInfo.username }}</li>
               <li *ngIf="!securityInfo.isAuthenticated">Not logged in.</li>
               <li *ngIf="securityInfo.isAuthenticated"><a  routerLink="logout">Logout</a></li>
               <li *ngIf="!securityInfo.isAuthenticated"><a routerLink="login">Login</a></li>
@@ -66,13 +66,13 @@
         <h3 class='h4'>Documentation</h3>
         <ul class='list-unstyled'>
           <li *ngIf="dataflowVersionInfo$ | async as aboutInfo">
-            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{aboutInfo.versionInfo.core.version}}/reference/htmlsingle/'>Docs</a>
+            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{ aboutInfo.versionInfo.core.version }}/reference/htmlsingle/'>Docs</a>
           </li>
           <li>
             <a class='link-lowlight-alt' target="_blank" href='https://github.com/spring-cloud/spring-cloud-dataflow'>Sources</a>
           </li>
           <li *ngIf="dataflowVersionInfo$ | async as aboutInfo">
-            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{aboutInfo.versionInfo.core.version}}/api/'>Api Docs</a>
+            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{ aboutInfo.versionInfo.core.version }}/api/'>Api Docs</a>
           </li>
         </ul>
       </div>

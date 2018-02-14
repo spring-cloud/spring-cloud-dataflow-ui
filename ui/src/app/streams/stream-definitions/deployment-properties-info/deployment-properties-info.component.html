@@ -1,11 +1,11 @@
 <div *ngIf="deploymentProperties | async as appsProperties; else loading">
   <div *ngFor="let app of appsProperties" class="panel panel-default">
-    <div class="panel-heading"><label>{{getAppTitle(app)}}</label></div>
+    <div class="panel-heading"><label>{{ getAppTitle(app) }}</label></div>
     <div class="table-responsive">
       <table *ngIf="app.props.length" class="table table-bordered">
         <tr *ngFor="let pair of app.props">
-          <td class="deployment-properties-key">{{pair.key}}</td>
-          <td class="deployment-properties-value">{{pair.value}}</td>
+          <td class="deployment-properties-key">{{ pair.key }}</td>
+          <td class="deployment-properties-value">{{ pair.value }}</td>
         </tr>
       </table>
     </div>

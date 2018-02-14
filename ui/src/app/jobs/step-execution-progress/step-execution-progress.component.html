@@ -1,8 +1,8 @@
-<h1>Step Execution Progress for Step '{{stepExecutionProgress?.stepExecutionHistory?.stepName}}'</h1>
+<h1>Step Execution Progress for Step '{{ stepExecutionProgress?.stepExecutionHistory?.stepName }}'</h1>
 
 <div *ngIf="stepExecutionProgress">
   <h4>Percentage Complete</h4>
-  <progressbar [animate]="false" max="100" [value]="percentageComplete" type="success"><b>{{percentageComplete}}%</b></progressbar>
+  <progressbar [animate]="false" max="100" [value]="percentageComplete" type="success"><b>{{ percentageComplete }}%</b></progressbar>
 </div>
 
 <h4>Step Execution History</h4>
@@ -21,83 +21,83 @@
   <tbody>
     <tr>
       <td>Commit Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.commitCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.commitCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.commitCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.commitCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.commitCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.commitCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.commitCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.commitCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.commitCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.commitCount.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Duration</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.duration.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.duration.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.duration.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.duration.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.duration.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.duration.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.duration.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.duration.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.duration.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.duration.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Duration per Read</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.durationPerRead.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.durationPerRead.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.durationPerRead.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.durationPerRead.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.durationPerRead.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.durationPerRead.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.durationPerRead.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.durationPerRead.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.durationPerRead.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.durationPerRead.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Filter Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.filterCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.filterCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.filterCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.filterCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.filterCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.filterCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.filterCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.filterCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.filterCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.filterCount.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Process Skip Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.processSkipCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.processSkipCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.processSkipCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.processSkipCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.processSkipCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.processSkipCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.processSkipCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.processSkipCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.processSkipCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.processSkipCount.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Read Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readCount.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Read Skip Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readSkipCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readSkipCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readSkipCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readSkipCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.readSkipCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readSkipCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readSkipCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readSkipCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readSkipCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.readSkipCount.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Rollback Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.rollbackCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.rollbackCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.rollbackCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.rollbackCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.rollbackCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.rollbackCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.rollbackCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.rollbackCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.rollbackCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.rollbackCount.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Write Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeCount.standardDeviation }}</td>
     </tr>
     <tr>
       <td>Write Skip Count</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeSkipCount.count}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeSkipCount.min}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeSkipCount.max}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeSkipCount.mean}}</td>
-      <td>{{stepExecutionProgress.stepExecutionHistory.writeSkipCount.standardDeviation}}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeSkipCount.count }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeSkipCount.min }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeSkipCount.max }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeSkipCount.mean }}</td>
+      <td>{{ stepExecutionProgress.stepExecutionHistory.writeSkipCount.standardDeviation }}</td>
     </tr>
   </tbody>
 </table>

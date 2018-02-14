@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 
 /**
  * @author Glenn Renfro
- * @author Gunnar Hillert 
+ * @author Gunnar Hillert
  */
 @Component({
   selector: 'app-step-execution-details',
@@ -40,7 +40,7 @@ export class StepExecutionDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.  
+   * memory leaks.
    */
   ngOnDestroy() {
     this.ngUnsubscribe$.next();

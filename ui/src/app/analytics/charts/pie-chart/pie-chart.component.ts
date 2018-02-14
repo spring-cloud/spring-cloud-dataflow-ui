@@ -235,7 +235,7 @@ export class PieChartComponent implements OnInit, OnChanges {
       .attr('d', path)
       .attr('fill', function(d, i) { return colors[i]; });
 
-    slice.on('mousemove', function(d){
+    slice.on('mousemove', function(d) {
       console.log('mouse move');
         // div.style('left', d3.event.pageX+10+'px');
         // div.style('top', d3.event.pageY-25+'px');

@@ -11,7 +11,7 @@ import {AppVersionsComponent} from '../app-versions/app-versions.component';
 import {AppsWorkaroundService} from '../apps.workaround.service';
 import {AppListParams} from '../components/apps.interface';
 import {OrderParams, SortParams} from '../../shared/components/shared.interface';
-import {Subject} from 'rxjs';
+import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/operators';
 import {BusyService} from '../../shared/services/busy.service';
 

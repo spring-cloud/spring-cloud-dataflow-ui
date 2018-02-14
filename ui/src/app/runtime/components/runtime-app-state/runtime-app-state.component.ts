@@ -8,7 +8,7 @@ import {Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges} fro
 @Component({
   selector: 'app-runtime-state',
   styleUrls: ['./styles.scss'],
-  template: `<span *ngIf="state" class="label label-{{className}}">{{ state | uppercase }}</span>`,
+  template: `<span *ngIf="state" class="label label-{{ className }}">{{ state | uppercase }}</span>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RuntimeAppStateComponent implements OnChanges {

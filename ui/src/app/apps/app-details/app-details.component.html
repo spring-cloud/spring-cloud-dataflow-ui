@@ -2,7 +2,7 @@
 
   <div class="heading">
     <h1>
-      Application <strong>{{application.name}}</strong>
+      Application <strong>{{ application.name }}</strong>
       <span style="position: relative">
         <span style="position: absolute;top:0;left:10px;white-space: nowrap;">
           <app-type [application]="application"></app-type>
@@ -72,15 +72,15 @@
         <tbody>
         <tr *ngFor="let property of detailedAppRegistration.options | orderby:sort.sort:sort.order">
           <td>
-            <strong>{{property.name}}</strong>
+            <strong>{{ property.name }}</strong>
             <div *ngIf="property.isDeprecated">
-              <span class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
+              <span class="label label-warning">Deprecation level: {{ property.deprecation.level }}</span>
             </div>
           </td>
           <td>
-            <p>{{property.description ? property.description : '(No Description Available)'}}</p>
-            <p class="type-block"><code>{{property.type}}</code> <span
-              *ngIf="property.defaultValue">(Default value: <code>{{property.defaultValue}}</code>)</span></p>
+            <p>{{ property.description ? property.description : '(No Description Available)' }}</p>
+            <p class="type-block"><code>{{ property.type }}</code> <span
+              *ngIf="property.defaultValue">(Default value: <code>{{ property.defaultValue }}</code>)</span></p>
           </td>
         </tr>
         </tbody>

@@ -41,7 +41,7 @@ export class TabComponent {
     <div class="tab-simple">
       <ul class="nav nav-tabs">
         <li *ngFor="let tab of tabs" (click)="selectTab(tab)" role="presentation" [class.active]="tab.active">
-          <a>{{tab.tabTitle}}</a>
+          <a>{{ tab.tabTitle }}</a>
         </li>
       </ul>
       <ng-content></ng-content>

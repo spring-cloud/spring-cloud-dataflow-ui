@@ -7,13 +7,13 @@
 <form name="form-creation" (submit)="handleOk()" class="modal-body" [formGroup]="form" [ngBusy]="busy">
   <div *ngIf="errors && errors.length > 0" class="dialog-validation">
     <div *ngFor="let error of errors">
-      <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign">{{error}}</label>
+      <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign">{{ error }}</label>
     </div>
   </div>
   <div *ngIf="!(errors && errors.length) && warnings && warnings.length > 0" class="dialog-validation">
     <div *ngFor="let warning of warnings">
       <label class="glyphicon glyphicon-warning-sign dialog-warning-sign"></label>
-      <label>{{warning}}</label>
+      <label>{{ warning }}</label>
     </div>
   </div>
   <p>This action will create stream(s):</p>
@@ -36,7 +36,7 @@
         </p>
       </td>
       <td class="stream-definition-label-cell">
-        <label class="control-label">{{def.def}}</label>
+        <label class="control-label">{{ def.def }}</label>
       </td>
     </tr>
   </tbody>
@@ -47,7 +47,7 @@
   <div *ngIf="progressData">
     <hr/>
     <div>Creating Streams...</div>
-    <progressbar animate="true" [value]="progressData.percent" type="success"><b>{{progressData.percent}}%</b>
+    <progressbar animate="true" [value]="progressData.percent" type="success"><b>{{ progressData.percent }}%</b>
     </progressbar>
   </div>
   <div class="modal-footer">

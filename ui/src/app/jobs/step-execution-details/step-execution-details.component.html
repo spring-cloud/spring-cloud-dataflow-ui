@@ -1,8 +1,8 @@
-<h1>Step Execution Details - Step Execution ID: {{stepid}}</h1>
+<h1>Step Execution Details - Step Execution ID: {{ stepid }}</h1>
 
 <div *ngIf="stepExecutionResource">
   <h4>Step Execution Progress</h4>
-  <progressbar [animate]="false" max="100" [value]="percentageComplete" type="success"><b>{{percentageComplete}}%</b></progressbar>
+  <progressbar [animate]="false" max="100" [value]="percentageComplete" type="success"><b>{{ percentageComplete }}%</b></progressbar>
 </div>
 
 <div id="nostepexecution" *ngIf="!stepExecutionResource">No Step Execution available.</div>
@@ -16,19 +16,19 @@
   <tbody>
     <tr>
       <td>Step Execution Id</td>
-      <td>{{stepExecutionResource.stepExecution.id}}</td>
+      <td>{{ stepExecutionResource.stepExecution.id }}</td>
     </tr>
     <tr>
       <td>Job Execution Id</td>
-      <td>{{stepExecutionResource.jobExecutionId}}</td>
+      <td>{{ stepExecutionResource.jobExecutionId }}</td>
     </tr>
     <tr>
       <td>Step Name</td>
-      <td>{{stepExecutionResource.stepExecution.name}}</td>
+      <td>{{ stepExecutionResource.stepExecution.name }}</td>
     </tr>
     <tr>
       <td>Step Type</td>
-      <td>{{stepExecutionResource.stepType}}</td>
+      <td>{{ stepExecutionResource.stepType }}</td>
     </tr>
     <tr>
       <td>Status</td>
@@ -36,49 +36,49 @@
     </tr>
     <tr>
       <td>Commits</td>
-      <td>{{stepExecutionResource.stepExecution.commitCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.commitCount }}</td>
     </tr>
     <tr>
       <td>Duration</td>
-      <td>{{stepExecutionResource.stepExecution.startTime | dataflowDuration: stepExecutionResource.stepExecution.endTime}}</td>
+      <td>{{ stepExecutionResource.stepExecution.startTime | dataflowDuration: stepExecutionResource.stepExecution.endTime }}</td>
     </tr>
     <tr>
       <td>Filter Count</td>
-      <td>{{stepExecutionResource.stepExecution.filterCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.filterCount }}</td>
     </tr>
     <tr>
       <td>Process Skips</td>
-      <td>{{stepExecutionResource.stepExecution.processSkipCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.processSkipCount }}</td>
     </tr>
     <tr>
       <td>Reads</td>
-      <td>{{stepExecutionResource.stepExecution.readCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.readCount }}</td>
     </tr>
     <tr>
       <td>Read Skips</td>
-      <td>{{stepExecutionResource.stepExecution.readSkipCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.readSkipCount }}</td>
     </tr>
     <tr>
       <td>Rollbacks</td>
-      <td>{{stepExecutionResource.stepExecution.rollbackCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.rollbackCount }}</td>
     </tr>
     <tr>
       <td>Skips</td>
-      <td>{{stepExecutionResource.stepExecution.skipCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.skipCount }}</td>
     </tr>
     <tr>
       <td>Writes</td>
-      <td>{{stepExecutionResource.stepExecution.writeCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.writeCount }}</td>
     </tr>
     <tr>
       <td>Write Skips</td>
-      <td>{{stepExecutionResource.stepExecution.writeSkipCount}}</td>
+      <td>{{ stepExecutionResource.stepExecution.writeSkipCount }}</td>
     </tr>
   </tbody>
 </table>
 
 <h4 *ngIf="stepExecutionResource">Exit Description</h4>
-<pre *ngIf="stepExecutionResource">{{stepExecutionResource?.stepExecution?.exitMessage || 'N/A'}}</pre>
+<pre *ngIf="stepExecutionResource">{{ stepExecutionResource?.stepExecution?.exitMessage || 'N/A' }}</pre>
 
 <h4 *ngIf="stepExecutionResource">Step Execution Context</h4>
 <table id="stepExecutionContext" *ngIf="stepExecutionResource?.stepExecution" class="table table-hover">
@@ -91,8 +91,8 @@
   <tbody>
     <ng-template ngFor let-item [ngForOf]="stepExecutionResource.stepExecution.executionContext.values | mapValuesPipe">
       <tr>
-        <td>{{item.key}}</td>
-        <td>{{item.value}}</td>
+        <td>{{ item.key }}</td>
+        <td>{{ item.value }}</td>
       </tr>
     </ng-template>
   </tbody>

@@ -20,9 +20,9 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of counters.items | paginate: counters.getPaginationInstance(); index as i; trackBy: trackByIndex">
-    <td>{{item.name}}</td>
-    <td>{{item.value}}</td>
-    <td>{{item.latestRate}}</td>
+    <td>{{ item.name }}</td>
+    <td>{{ item.value }}</td>
+    <td>{{ item.latestRate }}</td>
     <td>
       <app-graph-chart [chartData]="item.rates" [height]="140" [total]="totalCacheSize()"
       [reverse]="true" [axisUnitsX]="'seconds ago'" [axisUnitsY]="'counts'"

@@ -29,8 +29,8 @@
   <tbody>
   <ng-template ngFor let-item [ngForOf]="taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance()">
     <tr>
-      <td>{{item.name}}</td>
-      <td>{{item.dslText}}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.dslText }}</td>
       <td class="action-column">
         <button type="button" (click)="details(item)"
                 class="btn btn-default" style="margin-left: 0;" title="Details" [disabled]="!item.dslText || !item.composed">
@@ -62,7 +62,7 @@
       </div>
       <div class="modal-body" *ngIf="taskDefinitionToDestroy">
         <p>This action will delete definition
-          <u><strong>{{taskDefinitionToDestroy.name}}</strong></u>.
+          <u><strong>{{ taskDefinitionToDestroy.name }}</strong></u>.
           Are you sure?</p>
       </div>
       <div class="modal-footer">
