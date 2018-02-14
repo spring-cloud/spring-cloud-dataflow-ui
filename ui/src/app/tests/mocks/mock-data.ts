@@ -823,7 +823,7 @@ export const RUNTIME_APPS = {
       },
       {
         deploymentId: 'foostream.time',
-        state: 'deployed',
+        state: 'deploying',
         instances: {
           _embedded: {
             appInstanceStatusResourceList: [

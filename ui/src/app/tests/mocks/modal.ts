@@ -2,18 +2,22 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {TemplateRef} from '@angular/core';
 
 /**
- * Mock for BsModalRef.
+ * Mock for BsModalService.
  *
  * Provide mocked service to testbed:
- * const bsModalRef = new MockBsModalRef();
+ * const modalService = new MockModalService();
  * TestBed.configureTestingModule({
  *   providers: [
- *     { provide: BsModalRef, useValue: bsModalRef }
+ *     { provide: BsModalService, useValue: modalService }
  *   ]
  * }).compileComponents();
  *
  * @author Damien Vitrac
  */
-export class MockBsModalRef extends BsModalRef {
-  hide = Function
+export class MockModalService {
+
+  content;
+
+  show(instance) {}
+
 }

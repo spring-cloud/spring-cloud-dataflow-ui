@@ -1,0 +1,36 @@
+<div *ngIf="runtimeApp$ | async as runtimeApp; else loading" id="page">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Instances for app <strong>{{runtimeApp.deploymentId}}</strong></h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <ng-template ngFor let-item [ngForOf]="runtimeApp.appInstances">
+      <div class="panel">
+        <div class="panel-heading">
+          Instance
+          <strong>{{item.instanceId}}</strong>
+          <app-runtime-state [runtimeApp]="item"></app-runtime-state>
+        </div>
+        <div class="panel-content">
+          <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalues">
+            <div class="row row-key-value">
+              <div class="col-md-4">
+                <strong>{{item.key}}</strong>
+              </div>
+              <div class="col-md-20">
+                <span class="form-control input-sm">{{item.value}}</span>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+  </div>
+</div>
+
+<ng-template #loading><div>Loading...</div></ng-template>

@@ -190,3 +190,12 @@ body {
     }
   }
 }
+
+
+@media (min-width: 992px) {
+  .modal-xl {
+    width: auto;
+    min-width: 900px;
+    max-width: 1100px;
+  }
+}
