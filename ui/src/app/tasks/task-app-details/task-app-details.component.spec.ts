@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { BusyModule } from 'angular2-busy';
+import { NgBusyModule } from 'ng-busy';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TasksService } from '../tasks.service';
@@ -28,7 +28,7 @@ describe('TaskAppDetailsComponent', () => {
         TaskAppDetailsComponent
       ],
       imports: [
-        BusyModule
+        NgBusyModule
       ],
       providers: [
         { provide: TasksService, useValue: tasksService },

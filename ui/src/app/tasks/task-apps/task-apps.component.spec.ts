@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { BusyModule } from 'angular2-busy';
+import { NgBusyModule } from 'ng-busy';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
@@ -34,7 +34,7 @@ describe('TaskAppsComponent', () => {
         TaskAppsComponent, RolesDirective
       ],
       imports: [
-        BusyModule,
+        NgBusyModule,
         NgxPaginationModule
       ],
       providers: [

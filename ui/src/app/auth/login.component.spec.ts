@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BusyModule } from 'angular2-busy';
+import { NgBusyModule } from 'ng-busy';
 import { FormsModule } from '@angular/forms';
 
 import { LoginComponent } from './login.component';
@@ -32,7 +32,7 @@ describe('LoginComponent', () => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       imports: [
-        BusyModule,
+        NgBusyModule,
         FormsModule,
         RouterTestingModule.withRoutes([])
       ],

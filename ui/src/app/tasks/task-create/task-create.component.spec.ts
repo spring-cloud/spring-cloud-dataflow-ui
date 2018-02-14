@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { BusyModule } from 'angular2-busy';
+import { NgBusyModule } from 'ng-busy';
 import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -35,7 +35,7 @@ describe('TaskCreateComponent', () => {
         TaskCreateComponent
       ],
       imports: [
-        BusyModule,
+        NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([])

@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {BusyModule} from 'angular2-busy';
+import {NgBusyModule} from 'ng-busy';
 import {ToastyService} from 'ng2-toasty';
 import {MockToastyService} from '../../tests/mocks/toasty';
 import {MockStreamsService} from '../../tests/mocks/streams';
@@ -39,7 +39,7 @@ describe('StreamDeployComponent', () => {
         StreamDeployComponent
       ],
       imports: [
-        BusyModule,
+        NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([{ path: 'streams/definitions', component: MockComponent }])

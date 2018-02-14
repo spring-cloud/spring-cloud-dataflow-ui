@@ -1,5 +1,5 @@
 import {StreamCreateComponent} from './stream-create.component';
-import {BusyModule} from 'angular2-busy';
+import {NgBusyModule} from 'ng-busy';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {MockActivatedRoute} from '../../tests/mocks/activated-route';
@@ -44,7 +44,7 @@ describe('StreamCreateComponent', () => {
         RouterTestingModule.withRoutes([]),
         ModalModule,
         FloModule,
-        BusyModule,
+        NgBusyModule,
         NoopAnimationsModule
       ],
       providers: [

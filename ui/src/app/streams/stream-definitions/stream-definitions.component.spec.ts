@@ -1,5 +1,5 @@
 import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
-import {BusyModule} from 'angular2-busy';
+import {NgBusyModule} from 'ng-busy';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {ToastyService} from 'ng2-toasty';
 import {BsModalRef, ModalModule, PopoverModule} from 'ngx-bootstrap';
@@ -64,7 +64,7 @@ describe('StreamDefinitionsComponent', () => {
         StreamDeployMultiComponent
       ],
       imports: [
-        BusyModule,
+        NgBusyModule,
         NgxPaginationModule,
         ModalModule.forRoot(),
         PopoverModule.forRoot(),

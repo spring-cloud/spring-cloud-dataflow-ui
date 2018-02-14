@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import {BusyModule} from 'angular2-busy';
+import {NgBusyModule} from 'ng-busy';
 import {AnalyticsModule} from '../analytics.module';
 
 describe('DashboardComponent', () => {
@@ -10,7 +10,7 @@ describe('DashboardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ],
-      imports: [BusyModule, AnalyticsModule]
+      imports: [NgBusyModule, AnalyticsModule]
     })
       .compileComponents();
   }));

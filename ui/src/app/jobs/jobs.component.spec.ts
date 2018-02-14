@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BusyModule } from 'angular2-busy';
+import { NgBusyModule } from 'ng-busy';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ToastyService } from 'ng2-toasty';
 import { JobsComponent } from './jobs.component';
@@ -27,7 +27,7 @@ describe('JobsComponent', () => {
         DefinitionStatusComponent
       ],
       imports: [
-        BusyModule,
+        NgBusyModule,
         NgxPaginationModule,
         RouterTestingModule.withRoutes([])
       ],
