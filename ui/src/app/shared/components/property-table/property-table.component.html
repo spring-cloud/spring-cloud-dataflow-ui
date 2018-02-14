@@ -1,6 +1,6 @@
 <div class="row" style="margin-top: 1em;">
   <div class="col-xs-12 text-left">
-    <h2>{{titleText}}</h2>
+    <h2>{{ titleText }}</h2>
   </div>
 </div>
 <div class="row">
@@ -21,19 +21,19 @@
   <tbody>
     <tr *ngFor="let property of getProperties()">
       <td><input type="checkbox" [(ngModel)]="property.isSelected"/></td>
-      <td>{{property.key}}</td>
-      <td>{{property.value}}</td>
+      <td>{{ property.key }}</td>
+      <td>{{ property.value }}</td>
     </tr>
   </tbody>
 </table>
 <div class="row" *ngIf="getProperties().length === 0">
   <div class="col-xs-24 text-left">
-    {{emptyText}}
+    {{ emptyText }}
   </div>
 </div>
 <div class="row">
   <div class="col-md-12 text-left">
-    <button type="button" class="btn btn-default" (click)="addProperty()">{{addText}}</button>
+    <button type="button" class="btn btn-default" (click)="addProperty()">{{ addText }}</button>
     <app-tri-state-button *ngIf="getProperties().length > 0"class="toggle-all"
                           [items]="getPropertiesAsObservable()"
                           (eventHandler)="removeSelectedItems()"
@@ -49,7 +49,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">{{addText}}</h4>
+        <h4 class="modal-title pull-left">{{ addText }}</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -64,7 +64,7 @@
                 <div class="col-sm-18">
                   <input id="singlePropertyKey" name="singlePropertyKey" formControlName="singlePropertyKey">
                   <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="singleForm.controls.singlePropertyKey.errors"></span>
-                  <p class="help-block" *ngIf="singleForm.controls.singlePropertyKey.errors">The format is invalid. {{singleForm.controls.singlePropertyKey.errors.validateKeyOrValue.reason}}</p>
+                  <p class="help-block" *ngIf="singleForm.controls.singlePropertyKey.errors">The format is invalid. {{ singleForm.controls.singlePropertyKey.errors.validateKeyOrValue.reason }}</p>
                 </div>
               </div>
               <div class="form-group" [ngClass]="singleForm.controls.singlePropertyValue.errors ? 'has-warning has-feedback' : ''">
@@ -72,7 +72,7 @@
                 <div class="col-sm-18">
                   <input id="singlePropertyValue" name="singlePropertyValue" formControlName="singlePropertyValue">
                   <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="singleForm.controls.singlePropertyValue.errors"></span>
-                  <p class="help-block" *ngIf="singleForm.controls.singlePropertyValue.errors">The format is invalid. {{singleForm.controls.singlePropertyValue.errors.validateKeyOrValue.reason}}</p>
+                  <p class="help-block" *ngIf="singleForm.controls.singlePropertyValue.errors">The format is invalid. {{ singleForm.controls.singlePropertyValue.errors.validateKeyOrValue.reason }}</p>
                 </div>
               </div>
             </div>
@@ -91,14 +91,14 @@
                   <textarea class="form-control" id="bulkProperties" name="bulkProperties" formControlName="bulkProperties"
                             autofocus rows="5"></textarea>
                   <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="bulkForm.controls.bulkProperties.errors"></span>
-                  <p class="help-block" *ngIf="bulkForm.controls.bulkProperties.errors">The format of your {{titleText}} is invalid. {{bulkForm.controls.bulkProperties.errors.validateProperties.reason}}</p>
+                  <p class="help-block" *ngIf="bulkForm.controls.bulkProperties.errors">The format of your {{ titleText }} is invalid. {{ bulkForm.controls.bulkProperties.errors.validateProperties.reason }}</p>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-6 control-label">Select Properties File</label>
                 <div class="col-sm-14">
                   <input type="file" (change)="displayFileContents($event)" formControlName="bulkFile"/>
-                  <p class="help-block">Please provide a text file containing {{titleText}}. This will be used to populate the text area above.</p>
+                  <p class="help-block">Please provide a text file containing {{ titleText }}. This will be used to populate the text area above.</p>
                 </div>
               </div>
             </div>

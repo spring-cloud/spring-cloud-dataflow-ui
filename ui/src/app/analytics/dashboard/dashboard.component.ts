@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /**
    * When the component is destroyed, make sure all pollers are
    * stopped also. Will also cleanup any {@link Subscription}s to prevent
-   * memory leaks. 
+   * memory leaks.
    */
   ngOnDestroy() {
     this.analyticsService.stopAllDashboardPollers();

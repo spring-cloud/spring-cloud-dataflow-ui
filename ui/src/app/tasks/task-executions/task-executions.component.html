@@ -23,11 +23,11 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of taskExecutions.items | paginate: taskExecutions.getPaginationInstance()">
-    <td>{{item.executionId}}</td>
-    <td>{{item.taskName}}</td>
-    <td>{{item.startTime}}</td>
-    <td>{{item.endTime}}</td>
-    <td>{{item.exitCode}}</td>
+    <td>{{ item.executionId }}</td>
+    <td>{{ item.taskName }}</td>
+    <td>{{ item.startTime }}</td>
+    <td>{{ item.endTime }}</td>
+    <td>{{ item.exitCode }}</td>
     <td class="action-column">
         <button type="button" (click)="details(item)"
                 class="btn btn-default" title="Details"

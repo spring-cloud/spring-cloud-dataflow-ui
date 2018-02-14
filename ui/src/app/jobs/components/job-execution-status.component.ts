@@ -10,7 +10,7 @@ import {
 @Component({
   selector: 'app-job-execution-status',
   template: `
-    <span [class]="cssClass">{{status}}</span>
+    <span [class]="cssClass">{{ status }}</span>
   `
 })
 export class JobExecutionStatusComponent implements AfterContentInit, DoCheck {

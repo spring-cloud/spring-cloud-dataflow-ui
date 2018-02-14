@@ -26,17 +26,17 @@
 
 <ng-template #canvasNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
-    <span><strong>{{metaName | uppercase}}</strong></span>
-    <span><strong>{{'(' + (metaGroup | capitalize) + ')'}}</strong></span>
+    <span><strong>{{ metaName | uppercase }}</strong></span>
+    <span><strong>{{ '(' + (metaGroup | capitalize) + ')' }}</strong></span>
   </div>
   <div *ngIf="description">
-    <span>{{description}}</span>
+    <span>{{ description }}</span>
   </div>
   <table class="table-condensed" *ngIf="allProperties && isPropertiesShown">
     <tbody>
     <tr *ngFor="let property of keys(allProperties).sort()">
-      <td class="tooltip-property-key"><strong>{{property}}</strong></td>
-      <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">{{getPropertyValue(property)}}</td>
+      <td class="tooltip-property-key"><strong>{{ property }}</strong></td>
+      <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">{{ getPropertyValue(property) }}</td>
     </tr>
     </tbody>
   </table>

@@ -200,7 +200,7 @@ export class PropertyTableComponent {
     const file: File = event.target.files[0];
     const reader: FileReader = new FileReader();
     const _form = this.bulkForm;
-    reader.onloadend = function(e){
+    reader.onloadend = function(e) {
       _form.patchValue({bulkProperties: reader.result});
     };
     reader.readAsText(file);

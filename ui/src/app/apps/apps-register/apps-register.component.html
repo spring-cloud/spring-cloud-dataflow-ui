@@ -56,7 +56,7 @@
             <select formControlName="type" name="type{{i}}" id="type{{i}}">
               <option value="">Please select a type...</option>
               <option *ngFor="let typeKey of applicationTypes.getKeys()" value="{{ typeKey }}">
-                {{applicationTypes[typeKey] | capitalize}}
+                {{ applicationTypes[typeKey] | capitalize }}
               </option>
             </select>
             <span class="help-block" *ngIf="form.get('type').invalid && !isFormEmpty(form)">Please provide a valid
@@ -121,4 +121,3 @@
 <ng-template #popTemplate>By checking <strong>force</strong>, the applications will be imported and installed
   even if it already exists but only if not being used already.
 </ng-template>
-

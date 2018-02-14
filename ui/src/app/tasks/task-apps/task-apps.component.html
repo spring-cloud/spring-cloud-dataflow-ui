@@ -14,8 +14,8 @@
   </thead>
   <tbody>
   <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance()">
-    <td>{{item.name}}</td>
-    <td>{{item.uri}}</td>
+    <td>{{ item.name }}</td>
+    <td>{{ item.uri }}</td>
     <td class="action-column">
         <button type="button" (click)="details(item)"
                 class="btn btn-default" title="Details"

@@ -1,5 +1,5 @@
 <svg:g class="rotatable" [tooltip]="markerTooltip" placement="right"
-       containerClass="{{kind + '-marker-tooltip'}}" container="body">
+       containerClass="{{ kind + '-marker-tooltip' }}" container="body">
   <svg:g class="scalable">
     <svg:image/>
   </svg:g>
@@ -7,6 +7,6 @@
 
 <ng-template #markerTooltip>
   <ul class="marker-tooltip">
-    <li *ngFor="let msg of getMessages()">{{msg}}</li>
+    <li *ngFor="let msg of getMessages()">{{ msg }}</li>
   </ul>
 </ng-template>

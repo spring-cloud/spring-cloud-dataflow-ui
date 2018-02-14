@@ -8,7 +8,7 @@ import 'rxjs/add/observable/of';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AppsRegisterValidator} from './apps-register.validator';
 import {AppRegisterParams} from '../components/apps.interface';
-import {Subject} from 'rxjs';
+import {Subject} from 'rxjs/Subject';
 import {BusyService} from '../../shared/services/busy.service';
 import {takeUntil} from 'rxjs/operators';
 

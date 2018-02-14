@@ -13,7 +13,7 @@
                 formControlName="definitions" autofocus rows="5"
                 placeholder="Please enter one or more definitions in the format: mytask=taskapp --option1=value1 --option2=value2"></textarea>
       <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="form.controls.definitions.errors"></span>
-      <p class="help-block" *ngIf="form.controls.definitions.errors">The format of your task definitions are invalid. {{form.controls.definitions.errors.validateBulkTaskDefinitions.reason}}</p>
+      <p class="help-block" *ngIf="form.controls.definitions.errors">The format of your task definitions are invalid. {{ form.controls.definitions.errors.validateBulkTaskDefinitions.reason }}</p>
     </div>
   </div>
   <div class="form-group">

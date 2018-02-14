@@ -14,7 +14,7 @@ import { Subject } from 'rxjs/Subject';
 
 export class TaskExecutionsDetailsComponent implements OnInit, OnDestroy {
 
-  private ngUnsubscribe$: Subject<any> = new Subject();Z
+  private ngUnsubscribe$: Subject<any> = new Subject();
 
   id: string;
   taskExecution: TaskExecution;
@@ -46,7 +46,7 @@ export class TaskExecutionsDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.  
+   * memory leaks.
    */
   ngOnDestroy() {
     this.ngUnsubscribe$.next();

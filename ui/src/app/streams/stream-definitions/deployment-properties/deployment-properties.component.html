@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Deployment properties for <strong>{{stream.name}}</strong></h4>
+  <h4 class="modal-title pull-left">Deployment properties for <strong>{{ stream.name }}</strong></h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="cancelDeployment()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -23,7 +23,7 @@
       <label for="deploymentPlatform" class="control-label">Platform</label>
       <div>
         <select id="deploymentPlatform" name="deploymentPlatform" formControlName="deploymentPlatform">
-          <option *ngFor="let p of platforms" [value]="p.name">{{p.name}} ({{ p.type }})</option>
+          <option *ngFor="let p of platforms" [value]="p.name">{{ p.name }} ({{ p.type }})</option>
         </select>
         <p class="help-block">You can specify the platform for the deployment.</p>
       </div>
@@ -41,7 +41,7 @@
         <span class="glyphicon glyphicon-warning-sign form-control-feedback"
               *ngIf="form.controls.deploymentProperties.errors"></span>
         <p class="help-block" *ngIf="form.controls.deploymentProperties.errors">The format of your deployment properties
-          is invalid. {{form.controls.deploymentProperties.errors.validateDeploymentProperties.reason}}</p>
+          is invalid. {{ form.controls.deploymentProperties.errors.validateDeploymentProperties.reason }}</p>
       </div>
     </div>
     <div class="form-group">

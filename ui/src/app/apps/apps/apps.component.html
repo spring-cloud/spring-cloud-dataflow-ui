@@ -126,7 +126,7 @@
                [(ngModel)]="form.checkboxes[i]"/>
       </td>
       <td>
-        <a style="cursor: pointer" (click)="view(item)">{{item.name}}</a>
+        <a style="cursor: pointer" (click)="view(item)">{{ item.name }}</a>
       </td>
       <td>
         <app-type [application]="item"></app-type>
@@ -144,7 +144,7 @@
           <button name="app-view{{i}}" type="button" (click)="view(item)" class="btn btn-default" title="Details">
             <span class="glyphicon glyphicon-search"></span>
           </button>
-          <button name="app-remove{{i}}" roles="['ROLE_CREATE']" type="button" (click)="unregisterApps([item])"
+          <button name="app-remove{{ i }}" roles="['ROLE_CREATE']" type="button" (click)="unregisterApps([item])"
                   [appRoles]="['ROLE_CREATE']"
                   class="btn btn-default" title="Unregister" [disabled]="skipperEnabled && !item.defaultVersion">
             <span class="glyphicon glyphicon-trash"></span>
@@ -184,9 +184,9 @@
           <div style="padding-bottom: 8px">
             <span>
               No result find for
-              <strong *ngIf="params.q != ''">'{{params.q}}'</strong>
+              <strong *ngIf="params.q != ''">'{{ params.q }}'</strong>
               <span *ngIf="params.q != '' && params.type"> in </span>
-              <span *ngIf="params.type"><strong>'{{params.type}}'</strong> type</span>
+              <span *ngIf="params.type"><strong>'{{ params.type }}'</strong> type</span>
             </span>
           </div>
           <div>

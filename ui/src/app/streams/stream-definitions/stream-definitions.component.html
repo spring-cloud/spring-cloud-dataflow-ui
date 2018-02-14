@@ -85,12 +85,12 @@
                   (click)="item.toggleIsExpanded()"
                   [ngClass]="{'glyphicon-expand': !item.isExpanded, 'glyphicon-collapse-down': item.isExpanded}"></button>
         </td>
-        <td>{{item.name}}</td>
-        <td>{{item.dslText}}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.dslText }}</td>
         <td *ngIf="canShowDeploymentInfo(item); else deployment_status_only_content">
-          <a href="" (click)="false" [popover]="stream_info" placement="bottom" triggers="focus" containerClass="deployment-info-popup">{{item.status}}</a>
+          <a href="" (click)="false" [popover]="stream_info" placement="bottom" triggers="focus" containerClass="deployment-info-popup">{{ item.status }}</a>
         </td>
-        <ng-template #deployment_status_only_content><td>{{item.status ? item.status : 'unknown'}}</td></ng-template>
+        <ng-template #deployment_status_only_content><td>{{ item.status ? item.status : 'unknown' }}</td></ng-template>
         <ng-template #stream_info><app-stream-deployment-properties-info [streamDefinition]="item"></app-stream-deployment-properties-info></ng-template>
         <td class="action-column">
           <button type="button" (click)="details(item)"
@@ -134,7 +134,7 @@
       </div>
       <div class="modal-body" *ngIf="streamDefinitionToDestroy">
           <p>This action will undeploy and delete the stream
-            <strong>{{streamDefinitionToDestroy.name}}</strong>.
+            <strong>{{ streamDefinitionToDestroy.name }}</strong>.
             Are you sure?</p>
       </div>
       <div class="modal-footer">
@@ -170,8 +170,8 @@
       </div>
       <div class="modal-body" *ngIf="streamDefinitionsToDestroy">
         <p>
-          This action will destroy the {{streamDefinitionsToDestroy.length}}
-          stream definition{{streamDefinitionsToDestroy.length > 1 ? 's' : ''}} listed below. Are you sure?
+          This action will destroy the {{ streamDefinitionsToDestroy.length }}
+          stream definition{{ streamDefinitionsToDestroy.length > 1 ? 's' : '' }} listed below. Are you sure?
         </p>
         <br/>
         <table class="table table-striped">
@@ -183,8 +183,8 @@
           </thead>
           <tbody>
           <tr *ngFor="let item of streamDefinitionsToDestroy">
-            <td>{{item.name}}</td>
-            <td>{{item.dslText}}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.dslText }}</td>
           </tr>
           </tbody>
         </table>
@@ -208,8 +208,8 @@
       </div>
       <div class="modal-body" *ngIf="streamDefinitionsToUndeploy">
         <p>
-          This action will undeploy the {{streamDefinitionsToUndeploy.length}}
-          stream definition{{streamDefinitionsToUndeploy.length > 1 ? 's' : ''}} listed below. Are you sure?
+          This action will undeploy the {{ streamDefinitionsToUndeploy.length }}
+          stream definition{{ streamDefinitionsToUndeploy.length > 1 ? 's' : '' }} listed below. Are you sure?
         </p>
         <br/>
         <table class="table table-striped">
@@ -221,8 +221,8 @@
           </thead>
           <tbody>
           <tr *ngFor="let item of streamDefinitionsToUndeploy">
-            <td>{{item.name}}</td>
-            <td>{{item.dslText}}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.dslText }}</td>
           </tr>
           </tbody>
         </table>

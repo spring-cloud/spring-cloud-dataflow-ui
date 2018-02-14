@@ -1,4 +1,4 @@
-<div>Task Execution Details - Execution ID: {{id}}</div>
+<div>Task Execution Details - Execution ID: {{ id }}</div>
 
 <table *ngIf="taskExecution" class="table table-hover">
   <thead>
@@ -10,27 +10,27 @@
   <tbody>
     <tr>
       <td>Execution Id</td>
-      <td>{{taskExecution.executionId}}</td>
+      <td>{{ taskExecution.executionId }}</td>
     </tr>
     <tr>
       <td>Task Name</td>
-      <td>{{taskExecution.taskName}}</td>
+      <td>{{ taskExecution.taskName }}</td>
     </tr>
     <tr>
       <td>Arguments</td>
-      <td>{{taskExecution.arguments || 'N/A'}}</td>
+      <td>{{ taskExecution.arguments || 'N/A' }}</td>
     </tr>
     <tr>
       <td>External Execution Id</td>
-      <td>{{taskExecution.externalExecutionId || 'N/A'}}</td>
+      <td>{{ taskExecution.externalExecutionId || 'N/A' }}</td>
     </tr>
     <tr>
       <td>Start Time</td>
-      <td>{{taskExecution.startTime | dataflowDateTime}}</td>
+      <td>{{ taskExecution.startTime | dataflowDateTime }}</td>
     </tr>
     <tr>
       <td>End Time</td>
-      <td>{{taskExecution.endTime | dataflowDateTime}}</td>
+      <td>{{ taskExecution.endTime | dataflowDateTime }}</td>
     </tr>
     <tr>
       <td>Batch Job</td>
@@ -45,23 +45,23 @@
     </tr>
     <tr>
       <td>Start Time</td>
-      <td>{{taskExecution.startTime | dataflowDateTime}}</td>
+      <td>{{ taskExecution.startTime | dataflowDateTime }}</td>
     </tr>
     <tr>
       <td>End Time</td>
-      <td>{{taskExecution.endTime | dataflowDateTime}}</td>
+      <td>{{ taskExecution.endTime | dataflowDateTime }}</td>
     </tr>
     <tr>
       <td>Duration</td>
-      <td>{{taskExecution.startTime | dataflowDuration: taskExecution.endTime}}</td>
+      <td>{{ taskExecution.startTime | dataflowDuration: taskExecution.endTime }}</td>
     </tr>
     <tr>
       <td>Exit Code</td>
-      <td>{{taskExecution.exitCode}}</td>
+      <td>{{ taskExecution.exitCode }}</td>
     </tr>
     <tr>
       <td>Exit Message</td>
-      <td>{{taskExecution.errorMessage || 'N/A'}}</td>
+      <td>{{ taskExecution.errorMessage || 'N/A' }}</td>
     </tr>
   </tbody>
 </table>

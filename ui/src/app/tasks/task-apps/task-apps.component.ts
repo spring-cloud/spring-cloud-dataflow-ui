@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 
 /**
  * @author Glenn Renfro
- * @author Gunnar Hillert 
+ * @author Gunnar Hillert
  */
 @Component({
   selector: 'app-task-app',
@@ -36,7 +36,7 @@ export class TaskAppsComponent implements OnInit, OnDestroy {
 
   /**
    * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.  
+   * memory leaks.
    */
   ngOnDestroy() {
     this.ngUnsubscribe$.next();

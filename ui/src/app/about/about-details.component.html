@@ -7,10 +7,10 @@
 <table class="table table-hover" id="dataFlowVersionTable">
   <tbody>
   <tr>
-    <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.versionInfo.implementation.name}}</td>
+    <td class="col-xs-6">Name</td><td>{{ dataflowVersionInfo.versionInfo.implementation.name }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Version</td><td>{{dataflowVersionInfo.versionInfo.implementation.version}}</td>
+    <td class="col-xs-6">Version</td><td>{{ dataflowVersionInfo.versionInfo.implementation.version }}</td>
   </tr>
   </tbody>
 </table>
@@ -84,11 +84,11 @@
   </tr>
   <tr>
     <td class="col-xs-6">Username</td>
-    <td id="username">{{dataflowVersionInfo.securityInfo.username || 'N/A'}}</td>
+    <td id="username">{{ dataflowVersionInfo.securityInfo.username || 'N/A' }}</td>
   </tr>
   <tr>
     <td class="col-xs-6">Roles</td>
-    <td id="roles">{{dataflowVersionInfo.securityInfo.roles}}</td>
+    <td id="roles">{{ dataflowVersionInfo.securityInfo.roles }}</td>
   </tr>
   </tbody>
 </table>
@@ -99,24 +99,24 @@
   <tbody>
   <tr>
     <td class="col-xs-6">Implementation Version</td>
-    <td>{{dataflowVersionInfo.versionInfo.implementation.version}} ({{dataflowVersionInfo.versionInfo.implementation.name}})</td>
+    <td>{{ dataflowVersionInfo.versionInfo.implementation.version }} ({{ dataflowVersionInfo.versionInfo.implementation.name }})</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Core</td><td>{{dataflowVersionInfo.versionInfo.core.version}} ({{dataflowVersionInfo.versionInfo.core.name}})</td>
+    <td class="col-xs-6">Core</td><td>{{ dataflowVersionInfo.versionInfo.core.version }} ({{ dataflowVersionInfo.versionInfo.core.name }})</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Dashboard</td><td>{{dataflowVersionInfo.versionInfo.dashboard.version}} ({{dataflowVersionInfo.versionInfo.dashboard.name}})</td>
+    <td class="col-xs-6">Dashboard</td><td>{{ dataflowVersionInfo.versionInfo.dashboard.version }} ({{ dataflowVersionInfo.versionInfo.dashboard.name }})</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Shell</td><td>{{dataflowVersionInfo.versionInfo.shell.version}} ({{dataflowVersionInfo.versionInfo.shell.name}})</td>
+    <td class="col-xs-6">Shell</td><td>{{ dataflowVersionInfo.versionInfo.shell.version }} ({{ dataflowVersionInfo.versionInfo.shell.name }})</td>
   </tr>
   <tr *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha1">
     <td class="col-xs-6">Shell Checksum Sha1</td>
-    <td>{{dataflowVersionInfo.versionInfo.shell.checksumSha1}}</td>
+    <td>{{ dataflowVersionInfo.versionInfo.shell.checksumSha1 }}</td>
   </tr>
   <tr *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha256">
     <td class="col-xs-6">Shell Checksum Sha256</td>
-    <td>{{dataflowVersionInfo.versionInfo.shell.checksumSha256}}</td>
+    <td>{{ dataflowVersionInfo.versionInfo.shell.checksumSha256 }}</td>
   </tr>
   </tbody>
 </table>
@@ -127,34 +127,34 @@
 <table class="table table-hover"  id="appDeployerTable">
   <tbody>
   <tr>
-    <td class="col-xs-6">Implementation Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerImplementationVersion}}</td>
+    <td class="col-xs-6">Implementation Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerImplementationVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerName}}</td>
+    <td class="col-xs-6">Name</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerName }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Spi Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerSpiVersion}}</td>
+    <td class="col-xs-6">Spi Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerSpiVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Java Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.javaVersion}}</td>
+    <td class="col-xs-6">Java Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.javaVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Api Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformApiVersion}}</td>
+    <td class="col-xs-6">Platform Api Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformApiVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Client Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformClientVersion}}</td>
+    <td class="col-xs-6">Platform Client Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformClientVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Host Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformHostVersion}}</td>
+    <td class="col-xs-6">Platform Host Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformHostVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Type</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.platformType}}</td>
+    <td class="col-xs-6">Platform Type</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformType }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Spring Boot Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.springBootVersion}}</td>
+    <td class="col-xs-6">Spring Boot Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.springBootVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Spring Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.appDeployer.springVersion}}</td>
+    <td class="col-xs-6">Spring Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.springVersion }}</td>
   </tr>
   </tbody>
 </table>
@@ -167,7 +167,7 @@
     <ng-template *ngIf="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo.size > 0"
       ngFor let-item [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | mapValuesPipe">
       <tr>
-        <td class="col-xs-6">{{item.key}}</td><td>{{item.value}}</td>
+        <td class="col-xs-6">{{ item.key }}</td><td>{{ item.value }}</td>
       </tr>
     </ng-template>
     <tr *ngIf="!dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo || dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo.size == 0">
@@ -183,34 +183,34 @@
   <table class="table table-hover" *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)" id="taskLauncherTable">
   <tbody>
   <tr>
-    <td class="col-xs-6">Implementation Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion}}</td>
+    <td class="col-xs-6">Implementation Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Name</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerName}}</td>
+    <td class="col-xs-6">Name</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerName }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Spi Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerSpiVersion}}</td>
+    <td class="col-xs-6">Spi Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerSpiVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Java Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.javaVersion}}</td>
+    <td class="col-xs-6">Java Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.javaVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Api Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformApiVersion}}</td>
+    <td class="col-xs-6">Platform Api Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformApiVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Client Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformClientVersion}}</td>
+    <td class="col-xs-6">Platform Client Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformClientVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Host Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformHostVersion}}</td>
+    <td class="col-xs-6">Platform Host Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformHostVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Platform Type</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformType}}</td>
+    <td class="col-xs-6">Platform Type</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformType }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Spring Boot Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.springBootVersion}}</td>
+    <td class="col-xs-6">Spring Boot Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springBootVersion }}</td>
   </tr>
   <tr>
-    <td class="col-xs-6">Spring Version</td><td>{{dataflowVersionInfo.runtimeEnvironment.taskLauncher.springVersion}}</td>
+    <td class="col-xs-6">Spring Version</td><td>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springVersion }}</td>
   </tr>
   </tbody>
 </table>
@@ -222,7 +222,7 @@
   <ng-template *ngIf="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo.size > 0"
       ngFor let-item [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | mapValuesPipe">
       <tr>
-        <td class="col-xs-6">{{item.key}}</td><td>{{item.value}}</td>
+        <td class="col-xs-6">{{ item.key }}</td><td>{{ item.value }}</td>
       </tr>
   </ng-template>
   <tr *ngIf="!dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo || dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo.size == 0">

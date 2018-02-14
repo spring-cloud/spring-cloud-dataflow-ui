@@ -34,13 +34,13 @@
       <ng-template ngFor let-runtimeApp [ngForOf]="runtimeApps.items | paginate: runtimeApps.getPaginationInstance()">
         <tr>
           <td>
-            <a style="cursor: pointer" (click)="view(runtimeApp)">{{runtimeApp.deploymentId}}</a>
+            <a style="cursor: pointer" (click)="view(runtimeApp)">{{ runtimeApp.deploymentId }}</a>
           </td>
           <td>
             <app-runtime-state [runtimeApp]="runtimeApp"></app-runtime-state>
           </td>
           <td>
-            {{runtimeApp.instances._embedded.appInstanceStatusResourceList.length}}
+            {{ runtimeApp.instances._embedded.appInstanceStatusResourceList.length }}
             <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length == 1">
               instance
             </span>

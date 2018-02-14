@@ -11,10 +11,10 @@
 <table id="dataFlowVersionTable" class="table table-hover">
   <tbody>
   <tr>
-    <td>Name</td><td>{{dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.name : 'N/A'}}</td>
+    <td>Name</td><td>{{ dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.name : 'N/A' }}</td>
   </tr>
   <tr>
-    <td>Version</td><td>{{dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.version : 'N/A'}}</td>
+    <td>Version</td><td>{{ dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.version : 'N/A' }}</td>
   </tr>
   </tbody>
 </table>
@@ -28,8 +28,8 @@
 <h2 style="margin-top: 1em;" *ngIf="dataflowVersionInfo">Get the Spring Cloud Data Flow Shell</h2>
 
 <p class="index-page--subtitle">As an alternative to the Dashboard UI, you can also
-   <a href="{{dataflowVersionInfo.versionInfo.shell.url}}"
-      target="_blank">download the compatible version of the Shell</a> ({{dataflowVersionInfo.versionInfo.shell.version}}).</p>
+   <a href="{{ dataflowVersionInfo.versionInfo.shell.url }}"
+      target="_blank">download the compatible version of the Shell</a> ({{ dataflowVersionInfo.versionInfo.shell.version }}).</p>
 
 <h2>Need Help or Found an Issue?</h2>
 
@@ -42,10 +42,10 @@
       <td>Sources</td><td><a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow">https://github.com/spring-cloud/spring-cloud-dataflow</a></td>
     </tr>
     <tr>
-      <td>Documentation</td><td><a target="_blank" href="http://docs.spring.io/spring-cloud-dataflow/docs/{{dataflowVersionInfo.versionInfo.core.version}}/reference/htmlsingle/">http://docs.spring.io/spring-cloud-dataflow/docs/{{dataflowVersionInfo.versionInfo.core.version}}/reference/htmlsingle/</a></td>
+      <td>Documentation</td><td><a target="_blank" href="http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/reference/htmlsingle/">http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/reference/htmlsingle/</a></td>
     </tr>
     <tr>
-      <td>API Docs</td><td><a target="_blank" href="http://docs.spring.io/spring-cloud-dataflow/docs/{{dataflowVersionInfo.versionInfo.core.version}}/api/">http://docs.spring.io/spring-cloud-dataflow/docs/{{dataflowVersionInfo.versionInfo.core.version}}/api/</a></td>
+      <td>API Docs</td><td><a target="_blank" href="http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/api/">http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/api/</a></td>
     </tr>
     <tr>
       <td>Support Forum</td><td><a target="_blank" href="http://stackoverflow.com/questions/tagged/spring-cloud-dataflow">http://stackoverflow.com/questions/tagged/spring-cloud-dataflow</a></td>

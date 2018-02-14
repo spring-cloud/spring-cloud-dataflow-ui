@@ -15,38 +15,38 @@
     <ng-container *ngFor="let item of dashboardItems; index as index; let first = first; let last = last">
     <tr>
       <td [class.has-error]="metricType.invalid && metricType.touched">
-        <select #metricType="ngModel" name="metricType_{{item.id}}" [(ngModel)]="item.metricType" required (ngModelChange)="onMetricTypeChange($event, item)">
+        <select #metricType="ngModel" name="metricType_{{ item.id }}" [(ngModel)]="item.metricType" required (ngModelChange)="onMetricTypeChange($event, item)">
           <option [ngValue]="undefined" disabled="disabled">Please select a type...</option>
           <option *ngFor="let metricType of metricTypes"
-                  [ngValue]="metricType">{{metricType.name}}</option>
+                  [ngValue]="metricType">{{ metricType.name }}</option>
         </select>
         <span class="help-block" *ngIf="metricType.invalid && metricType.touched">Please provide a valid metric type.</span>
       </td>
       <td [class.has-error]="counterName.invalid && counterName.touched">
-        <select #counterName="ngModel" name="counterName_{{item.id}}" [(ngModel)]="item.counter"
+        <select #counterName="ngModel" name="counterName_{{ item.id }}" [(ngModel)]="item.counter"
                 [disabled]="isCountersDropDownEnabled(item)"
                 required (ngModelChange)="onCounterNameChange(item)">
             <option [ngValue]="undefined" disabled="disabled">Please select a counter...</option>
             <option *ngFor="let counter of item.counters"
-                    [ngValue]="counter">{{counter.name}}</option>
+                    [ngValue]="counter">{{ counter.name }}</option>
           </select>
           <span class="help-block" *ngIf="counterName.invalid && counterName.touched">Please select a counter.</span>
       </td>
       <td [class.has-error]="visualization.invalid && visualization.touched">
-          <select #visualization="ngModel" name="visualization_{{item.id}}" [(ngModel)]="item.visualization"
+          <select #visualization="ngModel" name="visualization_{{ item.id }}" [(ngModel)]="item.visualization"
                   [disabled]="isVisualizationDropDownEnabled(item)"
                   [compareWith]="compareVisualization"
                   required (ngModelChange)="onVisualizationChange($event)">
             <option [ngValue]="undefined" disabled="disabled">Please select a visualization...</option>
             <ng-container *ngIf="item.metricType">
               <option *ngFor="let visualization of item.metricType.supportedVisualizations"
-                [ngValue]="visualization">{{visualization}}</option>
+                [ngValue]="visualization">{{ visualization }}</option>
             </ng-container>
             </select>
           <span class="help-block" *ngIf="visualization.invalid && visualization.touched">Please provide a valid visualization.</span>
       </td>
       <td [class.has-error]="refreshRate.invalid && refreshRate.touched">
-          <input #refreshRate="ngModel" type="number" name="refreshRate_{{item.id}}" [(ngModel)]="item.refreshRate" required
+          <input #refreshRate="ngModel" type="number" name="refreshRate_{{ item.id }}" [(ngModel)]="item.refreshRate" required
                  (ngModelChange)="onRefreshRateChange($event, item)"
                  class="form-control">
           <span class="help-block" *ngIf="refreshRate.invalid && refreshRate.touched">Please provide a valid refresh rate (seconds)</span>
@@ -76,12 +76,12 @@
         <div *ngIf="item.visualization === 'Bar-Chart' && item.counter && item.metricType.name === 'Counters'">
             <div class="row" style="margin-bottom: 2em;">
               <div class="col-md-12 chart-slider">
-                  <label>Number of Bars: {{item.numberOfBars}}</label>
-                  <input type="range" #numberOfBars="ngModel" name="numberOfBars_{{item.id}}" [(ngModel)]="item.numberOfBars" step="1" max="50" min="2"/>
+                  <label>Number of Bars: {{ item.numberOfBars }}</label>
+                  <input type="range" #numberOfBars="ngModel" name="numberOfBars_{{ item.id }}" [(ngModel)]="item.numberOfBars" step="1" max="50" min="2"/>
               </div>
               <div class="col-md-12 chart-slider" style="margin-bottom: 2em;">
-                  <label>Height: {{item.chartHeight}}</label>
-                  <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="500" min="40"/>
+                  <label>Height: {{ item.chartHeight }}</label>
+                  <input type="range" #chartHeight="ngModel" name="chartHeight_{{ item.id }}" [(ngModel)]="item.chartHeight" step="20" max="500" min="40"/>
               </div>
             </div>
             <app-bar-chart [chartData]="item.counter.rates"  [reverse]="true" class="bar-chart" [height]="item.chartHeight" [numberOfBars]="item.numberOfBars"></app-bar-chart>
@@ -90,18 +90,18 @@
             <div class="row" style="margin-bottom: 2em;">
               <div class="col-md-8 chart-slider">
                   <label>Time Resolution:</label>
-                  <select #resolutionType="ngModel" name="resolutionType_{{item.id}}" [(ngModel)]="item.counter.resolutionType" required (ngModelChange)="onResolutionTypeChange($event, item)">
+                  <select #resolutionType="ngModel" name="resolutionType_{{ item.id }}" [(ngModel)]="item.counter.resolutionType" required (ngModelChange)="onResolutionTypeChange($event, item)">
                     <option *ngFor="let resolutionType of getAllAggregateCounterResolutionTypes()"
-                                [ngValue]="resolutionType">{{resolutionType.name}}</option>
+                                [ngValue]="resolutionType">{{ resolutionType.name }}</option>
                   </select>
               </div>
               <div class="col-md-8 chart-slider">
-                  <label>Number of Bars: {{item.numberOfBars}}</label>
-                  <input type="range" #numberOfBars="ngModel" name="numberOfBars_{{item.id}}" [(ngModel)]="item.numberOfBars" step="1" max="50" min="2"/>
+                  <label>Number of Bars: {{ item.numberOfBars }}</label>
+                  <input type="range" #numberOfBars="ngModel" name="numberOfBars_{{ item.id }}" [(ngModel)]="item.numberOfBars" step="1" max="50" min="2"/>
               </div>
               <div class="col-md-8 chart-slider" style="margin-bottom: 2em;">
-                  <label>Height: {{item.chartHeight}}</label>
-                  <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="500" min="40"/>
+                  <label>Height: {{ item.chartHeight }}</label>
+                  <input type="range" #chartHeight="ngModel" name="chartHeight_{{ item.id }}" [(ngModel)]="item.chartHeight" step="20" max="500" min="40"/>
               </div>
             </div>
             <app-bar-chart [chartData]="item.counter.getValues()" [reverse]="false" class="bar-chart" [height]="item.chartHeight" [numberOfBars]="item.numberOfBars"></app-bar-chart>
@@ -114,8 +114,8 @@
         <div class="graph-chart" *ngIf="item.visualization === 'Bubble-Chart' && item.counter">
           <div class="row">
             <div class="col-md-24 chart-slider">
-              <label>Height: {{item.chartHeight}}</label>
-              <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="800" min="100"/>
+              <label>Height: {{ item.chartHeight }}</label>
+              <input type="range" #chartHeight="ngModel" name="chartHeight_{{ item.id }}" [(ngModel)]="item.chartHeight" step="20" max="800" min="100"/>
             </div>
           </div>
           <app-bubble-chart [chartData]="item.counter.values" [height]="item.chartHeight"></app-bubble-chart>
@@ -124,20 +124,20 @@
           <div class="row">
             <div class="col col-md-12">
               <div class="form-group">
-                <label>Height: {{item.chartHeight}}</label>
-                <input type="range" #chartHeight="ngModel" name="chartHeight_{{item.id}}" [(ngModel)]="item.chartHeight" step="20" max="1000" min="40"/>
+                <label>Height: {{ item.chartHeight }}</label>
+                <input type="range" #chartHeight="ngModel" name="chartHeight_{{ item.id }}" [(ngModel)]="item.chartHeight" step="20" max="1000" min="40"/>
               </div>
             </div>
             <div class="col col-md-4">
               <div class="form-group">
                 <label>Use All Data?</label>
-                <input type="checkbox" #useAllData="ngModel" name="useAllData_{{item.id}}" [(ngModel)]="item.useAllData"/>
+                <input type="checkbox" #useAllData="ngModel" name="useAllData_{{ item.id }}" [(ngModel)]="item.useAllData"/>
               </div>
             </div>
             <div class="col col-md-8">
               <div class="form-group">
-                <label>Max # of slices: {{item.maxNumberOfSlices}}</label>
-                <input type="number" #maxNumberOfSlices="ngModel" name="maxNumberOfSlices_{{item.id}}" [(ngModel)]="item.maxNumberOfSlices"/>
+                <label>Max # of slices: {{ item.maxNumberOfSlices }}</label>
+                <input type="number" #maxNumberOfSlices="ngModel" name="maxNumberOfSlices_{{ item.id }}" [(ngModel)]="item.maxNumberOfSlices"/>
               </div>
             </div>
           </div>

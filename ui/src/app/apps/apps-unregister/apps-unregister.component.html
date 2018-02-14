@@ -8,14 +8,14 @@
   </div>
   <div class="modal-body" *ngIf="applications.length == 1">
     <p>This action will unregister and delete application
-      <u><strong>{{applications[0].name}}</strong></u>
+      <u><strong>{{ applications[0].name }}</strong></u>
       of type <app-type [application]="applications[0]"></app-type>.
       Are you sure?</p>
   </div>
   <div class="modal-body" *ngIf="applications.length > 1">
     <p>
-      This action will unregister and delete the <u><strong>{{applications.length}}
-      application{{applications.length > 1 ? 's' : ''}}</strong></u> listed below.<br />Are you sure?
+      This action will unregister and delete the <u><strong>{{ applications.length }}
+      application{{ applications.length > 1 ? 's' : '' }}</strong></u> listed below.<br />Are you sure?
     </p>
     <br/>
     <table class="table table-striped">
@@ -27,7 +27,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let item of applications">
-        <td>{{item.name}}</td>
+        <td>{{ item.name }}</td>
         <td><app-type [application]="item"></app-type></td>
       </tr>
       </tbody>

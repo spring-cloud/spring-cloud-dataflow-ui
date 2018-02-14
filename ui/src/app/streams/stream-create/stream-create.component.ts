@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 
 /**
- *  @author Gunnar Hillert 
+ *  @author Gunnar Hillert
  */
 @Component({
   selector: 'app-stream-create',
@@ -81,7 +81,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   /**
    * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.  
+   * memory leaks.
    */
   ngOnDestroy() {
     // Invalidate cached metamodel, thus it's reloaded next time page is opened

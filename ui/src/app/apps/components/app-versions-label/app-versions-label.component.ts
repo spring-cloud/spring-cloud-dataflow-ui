@@ -16,7 +16,7 @@ import {AppVersion} from '../../../shared/model/app-version';
       </a>
       <span *ngIf="!simple">
         <a (click)="click()" [tooltip]="tooltipTemplate" tooltipPlacement="left">
-          <span>{{ versionLabel }}</span><span>{{ versions.length}}</span>
+          <span>{{ versionLabel }}</span><span>{{ versions.length }}</span>
         </a>
         <ng-template #tooltipTemplate>
           <div class="tooltip-version">
