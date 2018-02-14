@@ -1,27 +1,39 @@
 import {NgModule} from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
+import {SharedModule} from '../shared/shared.module';
 
-import { AppsComponent } from './apps.component';
-import { AppsBulkImportComponent } from './apps-bulk-import.component';
-import { AppsRegisterComponent } from './apps-register/apps-register.component';
-import { AppDetailsComponent } from './app-details/app-details.component';
+import {AppsComponent} from './apps/apps.component';
+import {AppsBulkImportComponent} from './apps-bulk-import/apps-bulk-import.component';
+import {AppsRegisterComponent} from './apps-register/apps-register.component';
+import {AppDetailsComponent} from './app-details/app-details.component';
 
-import { AppsService } from './apps.service';
-import { AppsRoutingModule } from './apps-routing.module';
+import {AppsService} from './apps.service';
+import {AppsRoutingModule} from './apps-routing.module';
 
-import { AlertModule, ModalModule, PopoverModule } from 'ngx-bootstrap';
-import { AuthModule } from '../auth/auth.module';
+import {AlertModule, BsDropdownModule, ModalModule, PopoverModule, TooltipModule} from 'ngx-bootstrap';
+import {AuthModule} from '../auth/auth.module';
+import {AppsUnregisterComponent} from './apps-unregister/apps-unregister.component';
+import {AppTypeComponent} from './components/app-type/app-type.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AppVersionLabelComponent} from './components/app-versions-label/app-versions-label.component';
+import {AppVersionsComponent} from './app-versions/app-versions.component';
+import {AppsWorkaroundService} from './apps.workaround.service';
 
 @NgModule({
-  imports:      [
+  imports: [
     AppsRoutingModule, SharedModule, AuthModule,
-    AlertModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot()
+    AlertModule.forRoot(), ModalModule.forRoot(), PopoverModule.forRoot(), BsDropdownModule.forRoot(),
+    FormsModule, ReactiveFormsModule, TooltipModule.forRoot()
   ],
   declarations: [
-    AppsComponent, AppsBulkImportComponent, AppsRegisterComponent, AppDetailsComponent
+    AppsComponent, AppsBulkImportComponent, AppsRegisterComponent, AppDetailsComponent, AppsUnregisterComponent,
+    AppTypeComponent, AppVersionLabelComponent, AppVersionsComponent
   ],
-  providers:    [
-    AppsService
+  entryComponents: [
+    AppsUnregisterComponent, AppDetailsComponent, AppVersionsComponent
+  ],
+  providers: [
+    AppsService, AppsWorkaroundService
   ]
 })
-export class AppsModule { }
+export class AppsModule {
+}

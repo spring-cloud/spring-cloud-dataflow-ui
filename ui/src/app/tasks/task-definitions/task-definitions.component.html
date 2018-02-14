@@ -9,7 +9,7 @@
   </div>
   <div class="col-xs-16 text-right" style="padding-left: 0;">
     <label *ngIf="taskDefinitions" class="control">
-      <input type="text" class="input filter-input" placeholder="Filter definitions" [(ngModel)]="taskDefinitions.filter">
+      <input type="text" class="input filter-input" placeholder="Filter definitions" [(ngModel)]="taskDefinitions.filter['q']">
     </label>
     <button *ngIf="taskDefinitions" type="button" (click)="loadTaskDefinitions()"
             class="btn btn-default">

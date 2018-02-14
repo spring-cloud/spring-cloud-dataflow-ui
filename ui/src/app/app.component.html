@@ -41,18 +41,18 @@
     </div>
   </div>
 </div>
-<div class='pane footer bg-dark-1'>
+<div class='pane footer' id="footer">
   <div class='container'>
     <div class='row'>
       <div class='col-sm-12'>
-        <p id="copyright-notice" class='type-neutral-4 mtxl'>
+        <p id="copyright-notice">
           © 2017&ndash;2018 <a target="_blank" href="https://pivotal.io/">Pivotal Software</a>, Inc.
           <br>
           All Rights Reserved.
         </p>
       </div>
       <div class='col-sm-4'>
-        <h3 class='h4 type-neutral-11 em-alt mbs'>Project</h3>
+        <h3 class='h4'>Project</h3>
         <ul class='list-unstyled'>
           <li>
             <a class='link-lowlight-alt' target="_blank" href='https://cloud.spring.io/spring-cloud-dataflow/'>Project Page</a>
@@ -63,7 +63,7 @@
         </ul>
       </div>
       <div class='col-sm-4'>
-        <h3 class='h4 type-neutral-11 em-alt mbs'>Documentation</h3>
+        <h3 class='h4'>Documentation</h3>
         <ul class='list-unstyled'>
           <li *ngIf="dataflowVersionInfo$ | async as aboutInfo">
             <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{aboutInfo.versionInfo.core.version}}/reference/htmlsingle/'>Docs</a>
@@ -77,9 +77,9 @@
         </ul>
       </div>
       <div class='col-sm-5 col-md-4'>
-        <h3 class='h4 type-neutral-11 em-alt mbs'>Need Help?</h3>
+        <h3 class='h4'>Need Help?</h3>
         <ul class='list-unstyled'>
-          <li class='type-neutral-11'>
+          <li>
             For questions + support:
             <a class='link-lowlight-alt' target="_blank" href='https://stackoverflow.com/questions/tagged/spring-cloud-dataflow'>Stackoverflow</a>
           </li>

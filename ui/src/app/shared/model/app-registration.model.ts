@@ -1,6 +1,7 @@
-import { Selectable } from '../../shared/model/selectable';
-import { ApplicationType } from './application-type';
-import { Serializable } from '../../shared/model';
+import {Selectable} from '../../shared/model/selectable';
+import {ApplicationType} from './application-type';
+import {Serializable} from '../../shared/model';
+import {AppVersion} from './app-version';
 
 /**
  * Represents an App Registration and implements Selectable
@@ -18,20 +19,32 @@ export class AppRegistration implements Selectable, Serializable<AppRegistration
   public version: string;
   public defaultVersion: boolean;
 
+  public versions: AppVersion[] = [];
 
-  constructor(
-    name?: string,
-    type?: ApplicationType,
-    uri?: string ) {
-      this.name = name;
-      this.type = type;
-      this.uri = uri;
-    }
+  constructor(name?: string,
+              type?: ApplicationType,
+              uri?: string, metaDataUri?: string) {
+    this.name = name;
+    this.type = type;
+    this.uri = uri;
+    this.metaDataUri = metaDataUri;
+  }
+
   get isSelected(): boolean {
     return this.force;
   }
+
   set isSelected(isSelected: boolean) {
     this.force = isSelected;
+  }
+
+  versionOnError(): boolean {
+    for (let i = 0; i < this.versions.length; i++) {
+      if (this.versions[i].defaultVersion) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**

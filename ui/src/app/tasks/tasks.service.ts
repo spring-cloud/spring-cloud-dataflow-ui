@@ -88,8 +88,8 @@ export class TasksService {
       }
     }
 
-    if (this.taskExecutions.filter && this.taskExecutions.filter.length > 0) {
-      params.append('search', this.taskExecutions.filter);
+    if (this.taskExecutions.filter['q'] && this.taskExecutions.filter['q'].length > 0) {
+      params.append('search', this.taskExecutions.filter['q']);
     }
     return this.http.get(this.taskExecutionsUrl, {search: params})
       .map(this.extractPagedData.bind(this))
@@ -111,8 +111,9 @@ export class TasksService {
   }
 
   getTaskAppRegistrations(): Observable<Page<AppRegistration>> {
+    const type = ApplicationType[ApplicationType.task.toString()];
     return this.sharedAppsService.getApps(
-      new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize), ApplicationType.task).map(
+      new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize), type).map(
         appRegistrations => {
           this.appRegistrations = appRegistrations;
           return appRegistrations;
@@ -172,8 +173,8 @@ export class TasksService {
       }
     }
 
-    if (this.taskDefinitions.filter && this.taskDefinitions.filter.length > 0) {
-      params.append('search', this.taskDefinitions.filter);
+    if (this.taskDefinitions.filter['q'] && this.taskDefinitions.filter['q'].length > 0) {
+      params.append('search', this.taskDefinitions.filter['q']);
     }
     return this.http.get(this.taskDefinitionsUrl, {search: params})
       .map(this.extractDefinitionsData.bind(this))

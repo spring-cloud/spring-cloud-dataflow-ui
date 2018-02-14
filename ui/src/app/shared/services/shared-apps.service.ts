@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs } from '@angular/http';
+import {Injectable} from '@angular/core';
+import {Http, Response, RequestOptionsArgs} from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs/Observable';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
 
-import { AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page } from '../model';
-import { PageRequest } from '../model/pagination/page-request.model';
-import { HttpUtils } from '../support/http.utils';
+import {AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page} from '../model';
+import {PageRequest} from '../model/pagination/page-request.model';
+import {HttpUtils} from '../support/http.utils';
 
 @Injectable()
 export class SharedAppsService {
@@ -23,26 +23,36 @@ export class SharedAppsService {
   /**
    * Returns a paged list of {@link AppRegistrations}s.
    */
-  getApps(pageRequest: PageRequest, type?: ApplicationType, search?: string): Observable<Page<AppRegistration>> {
-      const params = HttpUtils.getPaginationParams(pageRequest.page, pageRequest.size);
-      const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+  getApps(pageRequest: PageRequest, type?: any, search?: string,
+          sort?: Array<{ sort: string, order: string }>): Observable<Page<AppRegistration>> {
+    const params = HttpUtils.getPaginationParams(pageRequest.page, pageRequest.size);
+    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
-      if (type) {
-        params.append('type', ApplicationType[type]);
-      }
-      if (search) {
-        params.append('search', search);
-      }
-      requestOptionsArgs.search = params;
-      return this.http.get(SharedAppsService.appsUrl, requestOptionsArgs)
-                      .map(this.extractData.bind(this))
-                      .catch(this.errorHandler.handleError);
+    if (type) {
+      params.append('type', type);
+    }
+    if (search) {
+      params.append('search', search);
+    }
+    if (sort) {
+      sort.forEach((value) => {
+        params.append('sort', `${value.sort},${value.order}`);
+      });
+    }
+
+    requestOptionsArgs.search = params;
+    return this.http.get(SharedAppsService.appsUrl, requestOptionsArgs)
+      .map(this.extractData.bind(this))
+      .catch(this.errorHandler.handleError);
   }
 
-  getAppInfo(appType: ApplicationType, appName: string): Observable<DetailedAppRegistration> {
+  getAppInfo(appType: ApplicationType, appName: string, appVersion?: string): Observable<DetailedAppRegistration> {
     const options = HttpUtils.getDefaultRequestOptions();
-
-    return this.http.get(SharedAppsService.appsUrl + '/' + appType + '/' + appName, options)
+    let url = `${SharedAppsService.appsUrl}/${appType}/${appName}`;
+    if (appVersion) {
+      url = `${SharedAppsService.appsUrl}/${appType}/${appName}/${appVersion}`;
+    }
+    return this.http.get(url, options)
       .map(data => {
         console.log('Returned App Registration Detail:', data);
         const body = data.json();

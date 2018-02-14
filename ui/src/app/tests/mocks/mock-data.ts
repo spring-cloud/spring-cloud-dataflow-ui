@@ -1,114 +1,114 @@
 export const JOBS_EXECUTIONS_1 = {
-    executionId: 1,
-    stepExecutionCount: 1,
-    jobId: 1,
-    taskExecutionId: 2,
-    name: 'job1',
-    startDate: '2017-08-11',
-    startTime: '06:15:50',
-    duration: '00:00:00',
-    jobExecution: {
-      id: 1,
-      version: 2,
-      jobParameters: {
-        parameters: {
-          '-spring.cloud.task.executionid': {
-            identifying: false,
-            value: '2',
-            type: 'STRING'
-          }
-        },
-        empty: false
-      },
-      jobInstance: {
-        id: 1,
-        version: 0,
-        jobName: 'job1',
-        instanceId: 1
-      },
-      stepExecutions: [
-        {
-          id: 1,
-          version: 3,
-          stepName: 'job1step1',
-          status: 'COMPLETED',
-          readCount: 0,
-          writeCount: 0,
-          commitCount: 1,
-          rollbackCount: 0,
-          readSkipCount: 0,
-          processSkipCount: 0,
-          writeSkipCount: 0,
-          startTime: '2017-08-11T06:15:50.046Z',
-          endTime: '2017-08-11T06:15:50.064Z',
-          lastUpdated: '2017-08-11T06:15:50.064Z',
-          executionContext: {
-            dirty: false,
-            empty: true,
-            values: []
-          },
-          exitStatus: {
-            exitCode: 'COMPLETED',
-            exitDescription: '',
-            running: false
-          },
-          terminateOnly: false,
-          filterCount: 0,
-          failureExceptions: [],
-          skipCount: 0,
-          summary: 'StepExecution: id=1, version=3, name=job1step1, status=COMPLETED,'
-          + ' exitStatus=COMPLETED, readCount=0, filterCount=0, writeCount=0 '
-          + 'readSkipCount=0, writeSkipCount=0, processSkipCount=0, commitCount=1, rollbackCount=0',
-          jobParameters: {
-            parameters: {
-              '-spring.cloud.task.executionid': {
-                identifying: false,
-                value: '2',
-                type: 'STRING'
-              }
-            },
-            empty: false
-          },
-          jobExecutionId: 1
-        }
-      ],
-      status: 'COMPLETED',
-      startTime: '2017-08-11T06:15:50.027Z',
-      createTime: '2017-08-11T06:15:49.989Z',
-      endTime: '2017-08-11T06:15:50.067Z',
-      lastUpdated: '2017-08-11T06:15:50.067Z',
-      exitStatus: {
-        exitCode: 'COMPLETED',
-        exitDescription: '',
-        running: false
-      },
-      executionContext: {
-        dirty: false,
-        empty: true,
-        values: []
-      },
-      failureExceptions: [],
-      jobConfigurationName: null,
-      allFailureExceptions: [],
-      running: false,
-      stopping: false,
-      jobId: 1
-    },
+  executionId: 1,
+  stepExecutionCount: 1,
+  jobId: 1,
+  taskExecutionId: 2,
+  name: 'job1',
+  startDate: '2017-08-11',
+  startTime: '06:15:50',
+  duration: '00:00:00',
+  jobExecution: {
+    id: 1,
+    version: 2,
     jobParameters: {
-      '--spring.cloud.task.executionid': '2'
+      parameters: {
+        '-spring.cloud.task.executionid': {
+          identifying: false,
+          value: '2',
+          type: 'STRING'
+        }
+      },
+      empty: false
     },
-    jobParametersString: '--spring.cloud.task.executionid=2',
-    restartable: false,
-    abandonable: false,
-    stoppable: false,
-    defined: true,
-    timeZone: 'UTC',
-    _links: {
-      self: {
-        href: 'http://localhost:9393/jobs/executions/1'
+    jobInstance: {
+      id: 1,
+      version: 0,
+      jobName: 'job1',
+      instanceId: 1
+    },
+    stepExecutions: [
+      {
+        id: 1,
+        version: 3,
+        stepName: 'job1step1',
+        status: 'COMPLETED',
+        readCount: 0,
+        writeCount: 0,
+        commitCount: 1,
+        rollbackCount: 0,
+        readSkipCount: 0,
+        processSkipCount: 0,
+        writeSkipCount: 0,
+        startTime: '2017-08-11T06:15:50.046Z',
+        endTime: '2017-08-11T06:15:50.064Z',
+        lastUpdated: '2017-08-11T06:15:50.064Z',
+        executionContext: {
+          dirty: false,
+          empty: true,
+          values: []
+        },
+        exitStatus: {
+          exitCode: 'COMPLETED',
+          exitDescription: '',
+          running: false
+        },
+        terminateOnly: false,
+        filterCount: 0,
+        failureExceptions: [],
+        skipCount: 0,
+        summary: 'StepExecution: id=1, version=3, name=job1step1, status=COMPLETED,'
+        + ' exitStatus=COMPLETED, readCount=0, filterCount=0, writeCount=0 '
+        + 'readSkipCount=0, writeSkipCount=0, processSkipCount=0, commitCount=1, rollbackCount=0',
+        jobParameters: {
+          parameters: {
+            '-spring.cloud.task.executionid': {
+              identifying: false,
+              value: '2',
+              type: 'STRING'
+            }
+          },
+          empty: false
+        },
+        jobExecutionId: 1
       }
+    ],
+    status: 'COMPLETED',
+    startTime: '2017-08-11T06:15:50.027Z',
+    createTime: '2017-08-11T06:15:49.989Z',
+    endTime: '2017-08-11T06:15:50.067Z',
+    lastUpdated: '2017-08-11T06:15:50.067Z',
+    exitStatus: {
+      exitCode: 'COMPLETED',
+      exitDescription: '',
+      running: false
+    },
+    executionContext: {
+      dirty: false,
+      empty: true,
+      values: []
+    },
+    failureExceptions: [],
+    jobConfigurationName: null,
+    allFailureExceptions: [],
+    running: false,
+    stopping: false,
+    jobId: 1
+  },
+  jobParameters: {
+    '--spring.cloud.task.executionid': '2'
+  },
+  jobParametersString: '--spring.cloud.task.executionid=2',
+  restartable: false,
+  abandonable: false,
+  stoppable: false,
+  defined: true,
+  timeZone: 'UTC',
+  _links: {
+    self: {
+      href: 'http://localhost:9393/jobs/executions/1'
     }
-  };
+  }
+};
 
 export const JOBS_EXECUTIONS = [
   {
@@ -548,7 +548,6 @@ export const JOB_EXECUTIONS_WITH_PAGINATION = {
 };
 
 
-
 export const JOBS_EXECUTIONS_1_STEPS_1 = {
   jobExecutionId: 1,
   stepExecution: {
@@ -862,11 +861,74 @@ export const RUNTIME_APPS = {
     }
   },
   page: {
-    size: 10,
-    totalElements: 2,
+    size: 2,
+    totalElements: 1,
     totalPages: 1,
     number: 0
   }
+};
+
+export const APPS = {
+  items: [
+    {
+      name: 'foo',
+      type: 'source',
+      uri: 'http://foo.bar:1.0.0',
+      version: '1.0.0',
+      defaultVersion: true,
+      versions: [
+        {
+          version: '0.0.1',
+          uri: 'http://foo.bar:0.0.1',
+          defaultVersion: false,
+          metadata: [
+            {name: 'foo1', description: 'bar1'},
+            {name: 'foo2', description: 'bar2'}
+          ]
+        },
+        {
+          version: '0.0.2',
+          uri: 'http://foo.bar:0.0.2',
+          defaultVersion: false,
+          metadata: [
+            {name: 'lorem1', description: 'ipsum1'},
+            {name: 'lorem2', description: 'ipsum2'}
+          ]
+        },
+        {
+          version: '1.0.0',
+          uri: 'http://foo.bar:1.0.0',
+          defaultVersion: true,
+          metadata: [
+            {name: 'set1', description: 'set1'},
+            {name: 'dolor1', description: 'dolor1'}
+          ]
+        },
+      ]
+    },
+    {
+      name: 'bar',
+      type: 'processor',
+      uri: 'http://bar.foo:0.0.1 ',
+      version: '0.0.1',
+      defaultVersion: true,
+      versions: [
+        {
+          version: '0.0.1',
+          uri: 'http://foo.bar:0.0.1',
+          defaultVersion: true,
+          metadata: [
+            {name: 'foo1', description: 'bar1'},
+            {name: 'foo2', description: 'bar2'}
+          ]
+        }
+      ]
+    }
+  ],
+  size: 20,
+  totalElements: 2,
+  totalPages: 1,
+  number: 0
 };
 
 export const STREAM_DEFINITIONS = {

@@ -24,6 +24,8 @@ import {StreamMetrics} from '../../streams/model/stream-metrics';
  */
 export class MockStreamsService {
 
+  public _streamDefinitions;
+
   get streamDefinitions(): any {
     return this._streamDefinitions;
   }
@@ -31,8 +33,6 @@ export class MockStreamsService {
   set streamDefinitions(value: any) {
     this._streamDefinitions = value;
   }
-
-  private _streamDefinitions: any;
 
   getDefinitions(): Observable<Page<StreamDefinition>> {
     const page = new Page<StreamDefinition>();

@@ -18,7 +18,8 @@ export class Page<T> {
   pageNumber = 0;
   pageSize = 10;
   items: T[] = [];
-  filter = '';
+  filter = {};
+  sort = {};
   paginationId: 'pagination-instance';
 
   /**
@@ -55,4 +56,5 @@ export class Page<T> {
     this.totalElements = page.totalElements;
     this.totalPages = page.totalPages;
   }
+
 }

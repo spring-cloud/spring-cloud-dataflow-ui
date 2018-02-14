@@ -1,0 +1,75 @@
+$radius: 3px;
+
+span {
+  display: inline-block;
+}
+
+a {
+  cursor: auto;
+  display: inline-block;
+  line-height: 20px;
+  span {
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: bold;
+    &:last-child {
+      background-color: #a7aeb6;
+      color: #fff;
+      border-top-right-radius: $radius;
+      border-bottom-right-radius: $radius;
+    }
+    &:first-child {
+      background-color: #e6e8ea;
+      color: #243641;
+      border-top-left-radius: $radius;
+      border-bottom-left-radius: $radius;
+    }
+  }
+}
+
+.hover {
+  a {
+    cursor: pointer;
+    &:hover {
+      span {
+        &:last-child {
+          background-color: #87939f;
+          color: #fff;
+        }
+        &:first-child {
+          background-color: #dde0e3;
+          color: #243641;
+        }
+      }
+    }
+  }
+}
+
+.error {
+  a {
+    span {
+      &:last-child {
+        background-color: #ff5151;
+        color: #fff;
+      }
+      &:first-child {
+        background-color: #e6e8ea;
+        color: #243641;
+      }
+    }
+  }
+  &.hover {
+    a:hover {
+      span {
+        &:last-child {
+          background-color: #ff2e2e;
+          color: #fff;
+        }
+        &:first-child {
+          background-color: #e6e8ea;
+          color: #243641;
+        }
+      }
+    }
+  }
+}

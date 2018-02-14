@@ -6,6 +6,7 @@ import {BsModalService, BsModalRef} from 'ngx-bootstrap';
 import {Observable} from 'rxjs/Observable';
 import {RuntimeAppComponent} from '../runtime-app/runtime-app.component';
 import {Subscription} from 'rxjs/Subscription';
+import {PaginationParams} from '../../shared/components/shared.interface';
 
 /**
  * Component that loads Runtime applications.
@@ -31,9 +32,8 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
 
   /**
    * Pagination state
-   * @type {{page: number; size: number}}
    */
-  pagination = {page: 0, size: 10};
+  pagination: PaginationParams = {page: 0, size: 10};
 
   /**
    * Modal reference

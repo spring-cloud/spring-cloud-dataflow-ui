@@ -48,7 +48,7 @@
   </div>
   <div class="col-xs-14 col-md-5 text-right" style="padding-left: 0;">
     <label *ngIf="streamDefinitions" class="control">
-      <input type="text" class="input filter-input" placeholder="Filter definitions" [(ngModel)]="streamDefinitions.filter">
+      <input type="text" class="input filter-input" placeholder="Filter definitions" [(ngModel)]="streamDefinitions.filter['q']">
     </label>
     <button *ngIf="streamDefinitions" type="button" (click)="loadStreamDefinitions()"
             class="btn btn-default">

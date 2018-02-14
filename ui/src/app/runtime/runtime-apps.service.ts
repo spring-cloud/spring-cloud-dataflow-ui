@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import {Page} from '../shared/model/page';
 import {RuntimeApp} from './model/runtime-app';
 import {ErrorHandler} from '../shared/model/error-handler';
+import {PaginationParams} from '../shared/components/shared.interface';
 
 /**
  * Service to interact with the SCDF server on Runtime applications queries.
@@ -36,7 +37,7 @@ export class RuntimeAppsService {
    * @returns {Observable<R|T>} the Promise that returns the paged result of Runtime applications.
    * @param pagination
    */
-  public getRuntimeApps(pagination: { page: number, size: number }): Observable<Page<RuntimeApp>> {
+  public getRuntimeApps(pagination: PaginationParams): Observable<Page<RuntimeApp>> {
     return this.http.get(this.runtimeServiceURL, {params: pagination})
       .map(this.extractData)
       .catch(this.errorHandler.handleError);

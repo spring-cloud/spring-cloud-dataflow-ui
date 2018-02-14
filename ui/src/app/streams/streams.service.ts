@@ -70,8 +70,8 @@ export class StreamsService {
       }
     }
 
-    if (this.streamDefinitions.filter && this.streamDefinitions.filter.length > 0) {
-      params.append('search', this.streamDefinitions.filter);
+    if (this.streamDefinitions.filter['q'] && this.streamDefinitions.filter['q'].length > 0) {
+      params.append('search', this.streamDefinitions.filter['q']);
     }
 
     const options = HttpUtils.getDefaultRequestOptions();

@@ -1,0 +1,25 @@
+
+
+.input-file {
+  position: relative;
+  display: block;
+  clear: both;
+  margin-left: auto;
+  width: 220px;
+  .btn-file {
+    height: 36px;
+    margin-right: 0;
+    margin-top: 8px;
+    input {
+      display: none;
+    }
+  }
+}
+
+.checkbox-inline {
+  font-size: 16px;
+}
+.checkbox-description {
+  padding-left: 20px;
+  font-size: 12px;
+}

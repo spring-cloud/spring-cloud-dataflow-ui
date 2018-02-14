@@ -1,0 +1,84 @@
+<div *ngIf="application" id="app-versions">
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">
+      Manage versions of the application
+      <strong>{{ application.name}}
+        <app-type [application]="application"></app-type>
+      </strong>
+    </h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <p>This section lists all the available <strong>versions of the application</strong> and provides the control of
+      <strong>unregister</strong> them
+      and <strong>make a default version</strong>.</p>
+
+    <div style="text-align: center" *ngIf="application.versionOnError()">
+      <div class="alert alert-danger" style="display: inline-block">
+        <strong>Application unavailable.</strong><br>
+        You have to set a default version for this application.
+      </div>
+    </div>
+
+    <table id="table-versions" class="table table-checkbox table-hover" *ngIf="application.versions">
+      <thead>
+      <tr>
+        <th width="10px">&nbsp;</th>
+        <th>
+          <app-sort id="sort-version" [indeterminate]="false" (change)="applySort($event)" [value]="'version'"
+                    [sort]="sort">
+            Version
+          </app-sort>
+        <th>
+        <app-sort id="sort-uri" [indeterminate]="false" (change)="applySort($event)" [value]="'uri'" [sort]="sort">
+          Uri
+        </app-sort>
+        </th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let version of application.versions | orderby:sort.sort:sort.order"
+          [class.active]="version.defaultVersion">
+        <td>
+          <strong *ngIf="version.defaultVersion">
+            <span placement="bottom" tooltip="Default version"
+                  class="ico-current-version glyphicon glyphicon-star"></span>
+          </strong>
+        </td>
+        <td nowrap="">
+          <app-version-label [version]="version"></app-version-label>
+        </td>
+        <td>
+          <code>{{ version?.uri }}</code>
+        </td>
+        <td class="table-actions" width="10px" nowrap="">
+          <div class="actions" role="group">
+            <button roles="['ROLE_CREATE']" type="button" (click)="makeDefaultVersion(version)"
+                    [appRoles]="['ROLE_CREATE']"
+                    [disabled]="version.defaultVersion"
+                    class="btn btn-default" title="Make default version">
+              <span class="glyphicon glyphicon-star"></span>
+            </button>
+            <button roles="['ROLE_CREATE']" type="button" (click)="unregisterVersion(version)"
+                    [appRoles]="['ROLE_CREATE']"
+                    class="btn btn-default" title="Unregister">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="close()">Cancel</button>
+  </div>
+
+</div>

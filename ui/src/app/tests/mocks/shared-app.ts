@@ -109,9 +109,12 @@ export class MockSharedAppService extends SharedAppsService {
     super(null, null);
   }
 
-  getApps(pageRequest: PageRequest, type?: ApplicationType, search?: string): Observable<Page<AppRegistration>> {
+  getApps(pageRequest: PageRequest, type?: any, search?: string,
+          sort?: Array<{ sort: string, order: string }>): Observable<Page<AppRegistration>> {
+
     const page = new Page<AppRegistration>();
-    const apps = METAMODEL_DATA.filter(d => !type || d.type === ApplicationType[type]).map(d => new AppRegistration().deserialize(d));
+    const apps = METAMODEL_DATA.filter(d => !type || d.type === ApplicationType[type])
+      .map(d => new AppRegistration().deserialize(d));
     page.items = apps;
     page.pageNumber = 0;
     page.pageSize = apps.length;
@@ -120,7 +123,7 @@ export class MockSharedAppService extends SharedAppsService {
     return Observable.of(page);
   }
 
-  getAppInfo(appType: ApplicationType, appName: string): Observable<DetailedAppRegistration> {
+  getAppInfo(appType: ApplicationType, appName: string, appVersion?: string): Observable<DetailedAppRegistration> {
     const rawData = METAMODEL_DATA.find(d => d.name === appName && (!appType || d.type === ApplicationType[appType]));
     if (rawData) {
       return Observable.of(new DetailedAppRegistration().deserialize(rawData));

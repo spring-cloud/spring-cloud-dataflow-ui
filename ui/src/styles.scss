@@ -3,7 +3,7 @@ $icon-font-path: '../node_modules/bootstrap-sass/assets/fonts/bootstrap/';
 @import '../node_modules/pivotal-ui-git-clone/src/css/pui-variables';
 @import '../node_modules/pivotal-ui-git-clone/src/css/mixins';
 
-$state-success-text:   $success-1;
+$state-success-text: $success-1;
 $navbar-inverse-bg: $navy-2;
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
@@ -68,8 +68,12 @@ table.table {
 }
 
 @keyframes fade-index-spinner {
-  0%  { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .fade-index-spinner {
@@ -79,7 +83,7 @@ table.table {
 
 .vertical-center {
   background-color: #232b2f;
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100%; /* Fallback for browsers do NOT support vh unit */
   min-height: 100vh; /* These two lines are counted as one :-)       */
 
   display: flex;
@@ -87,14 +91,14 @@ table.table {
 }
 
 body {
-  background-color: #232b2f;
+  background-color: #fff;
 }
 
 .ng-busy {
   margin-top: -20px;
 }
 
-.ng-busy-no-margin  {
+.ng-busy-no-margin {
   position: absolute;
   margin-top: 30px;
 }
@@ -117,26 +121,29 @@ body {
   }
 
   a.navbar-brand {
-    background: url('assets/img/spring-logo-dataflow.png') -1px -1px no-repeat;
+    background: url('assets/img/spring-logo-dataflow.png') 0 0 no-repeat;
     display: inline-block;
-    height: 46px;
-    margin: 12px 0 6px;
+    margin: 16px 0 0;
     padding: 0;
     text-decoration: none;
-    width: 229px;
 
     span {
       -moz-transition: opacity .12s ease-in-out;
       -o-transition: opacity .12s ease-in-out;
       -webkit-transition: opacity .12s ease-in-out;
-      background: url('assets/img/spring-logo-dataflow.png') -1px -48px no-repeat;
+      background: url('assets/img/spring-logo-dataflow.png') 0 -40px no-repeat;
       display: block;
-      height: 46px;
       opacity: 0;
       transition: opacity .12s ease-in-out;
-      width: 229px;
     }
   }
+
+  a.navbar-brand, a.navbar-brand span {
+    height: 40px;
+    width: 195px;
+    background-size: 195px 80px;
+  }
+
   a:hover.navbar-brand span {
     opacity: 1;
   }
@@ -163,6 +170,7 @@ body {
 .filter-input {
   max-width: 125px;
 }
+
 // ~~~~ responsive
 
 @media (max-width: 768px) {
@@ -191,6 +199,229 @@ body {
   }
 }
 
+.btn-dropdown {
+  padding-right: 30px;
+  .caret {
+    position: absolute;
+    top: 13px;
+    right: 15px;
+  }
+}
+
+.pui-filter {
+  position: relative;
+  margin: 2.5rem 0 2rem;
+  .form-control, .btn {
+    height: 34px;
+  }
+  .input-group-filter {
+    .btn {
+      padding: 0 10px;
+    }
+  }
+  .pui-filter-center {
+    margin: 0 auto;
+    max-width: 500px;
+  }
+  .pui-filter-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    .pui-filter-left, .pui-filter-right {
+      position: absolute;
+      top: 0;
+    }
+    .pui-filter-left {
+      left: 0;
+      width: 50%;
+    }
+    .pui-filter-right {
+      right: 0;
+      width: 50%;
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .pui-filter {
+    .pui-filter-center {
+      margin: 0 auto;
+      max-width: 100%;
+    }
+    .pui-filter-actions {
+      position: relative;
+      height: 35px;
+      margin-top: 1rem;
+    }
+  }
+}
+
+.heading {
+  position: relative;
+  padding-right: 100px;
+  .actions {
+    position: absolute;
+    right: 0px;
+    top: 20px;
+  }
+  .description {
+    h1 {
+      padding-bottom: 8px;
+    }
+  }
+}
+
+table.table-checkbox {
+  tbody tr td {
+    vertical-align: middle;
+  }
+  thead tr th:first-child, tbody tr td:first-child {
+    border-right: 0 none;
+    padding-right: 0.2rem;
+    padding-left: 1.5rem;
+  }
+  td.table-actions {
+    padding: 4px;
+    text-align: center;
+    div.actions {
+      white-space: nowrap;
+      .btn {
+        margin: 0;
+        padding: 0 10px;
+      }
+    }
+  }
+}
+
+.btn.btn-icon {
+  margin: 0;
+  padding: 0 10px;
+}
+
+.btn-line {
+  margin: 0;
+  padding: 0 10px;
+}
+
+.tooltip {
+  position: absolute;
+}
+
+#footer {
+  background-color: #f5f6f7;
+}
+
+.label-apptype, .label-stream-status {
+  border-radius: 12px;
+  font-size: 11px;
+  padding: .2em 1em .3em;
+  &.label-default {
+    background-color: #87939f;
+  }
+}
+
+.modal-confirm {
+  .modal-body {
+    padding: 2rem;
+    margin: 0;
+    p {
+      margin: 0;
+    }
+    h4 {
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
+  }
+  .modal-footer {
+    padding: 1rem;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.filter-dropdown {
+  display: table-cell;
+  position: relative;
+  height: 34px;;
+  vertical-align: top;
+  .filter-dropdown-toggle {
+    background: white;
+    border-top: 1px solid #DFE5E8;
+    border-bottom: 1px solid #DFE5E8;
+    display: block;
+    height: 34px;
+    line-height: 30px;
+    font-size: 15px;
+    cursor: pointer;
+    color: #3d4b53;
+    position: relative;
+    padding-left: 15px;
+    padding-right: 30px;
+    &:hover {
+      background: #f5f6f7;
+      text-decoration: none;
+      color: #232b2f;
+    }
+    .caret {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+  }
+  &.open {
+    .filter-dropdown-toggle {
+      background: #f5f6f7;
+    }
+  }
+  ul li a {
+    cursor: pointer;
+  }
+}
+
+.ico-current-version {
+  color: #ff7e00;
+  margin-left: 5px;
+}
+
+@media (min-width: 1600px) {
+  .container {
+    width: 1400px;
+  }
+}
+
+.modal-content {
+  border: 0 none;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, .2);
+  .modal-footer {
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+  .modal-body {
+    padding: 2rem;
+  }
+  .modal-header {
+    padding: 1.5rem 2rem;
+  }
+}
+
+.modal.fade .modal-dialog, .modal.in .modal-dialog, .modal {
+  transition: opacity 0.2s;
+  transform: none;
+  background: rgba(36, 54, 65, .8);
+}
+
+.modal-backdrop.in, .modal-backdrop.fade, .modal-backdrop.in.fade {
+  opacity: 0;
+}
+
+div.tooltip-version {
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
 
 @media (min-width: 992px) {
   .modal-xl {
@@ -199,3 +430,8 @@ body {
     max-width: 1100px;
   }
 }
+
+.input-sm, .input-group-sm > .form-control, .input-group-sm > .input-group-addon, .input-group-sm > .input-group-btn > .btn {
+  height: 32px;
+}
+

@@ -1,123 +1,172 @@
-import { Component, OnInit, OnChanges, ViewChild, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { AppsService } from '../apps.service';
-import { ToastyService } from 'ng2-toasty';
-import { Router } from '@angular/router';
-
-import { AppRegistration } from '../../shared/model/app-registration.model';
-import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { ApplicationType } from '../../shared/model/application-type';
-
-import { Observable } from 'rxjs/Observable';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
+import {AppsService} from '../apps.service';
+import {ToastyService} from 'ng2-toasty';
+import {Router} from '@angular/router';
+import {ApplicationType} from '../../shared/model/application-type';
 import 'rxjs/add/observable/of';
-import { Subject } from 'rxjs/Subject';
-import { BusyService } from '../../shared/services/busy.service';
-import { takeUntil } from 'rxjs/operators';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AppsRegisterValidator} from './apps-register.validator';
+import {AppRegisterParams} from '../components/apps.interface';
+import {Subject} from 'rxjs';
+import {BusyService} from '../../shared/services/busy.service';
+import {takeUntil} from 'rxjs/operators';
 
+/**
+ * Applications Register
+ * Provide forms to register application
+ *
+ * @author Gunnar Hillert
+ * @author Damien Vitrac
+ */
 @Component({
   selector: 'app-apps',
+  styleUrls: ['./styles.scss'],
   templateUrl: './apps-register.component.html'
 })
-export class AppsRegisterComponent implements OnInit, OnChanges, OnDestroy {
+export class AppsRegisterComponent implements OnInit, OnDestroy {
 
+  /**
+   * Busy Subscriptions
+   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
-  // App name validation RegEx pattern
-  public static namePattern = '[\\w_]+[\\w_-]*';
-  // Basic URI validation RegEx pattern
-  public static uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
+  /**
+   * Array of forms registration
+   * @type {Array}
+   */
+  forms: FormGroup[] = [];
 
-  @ViewChild('childPopover')
-  public childPopover: PopoverDirective;
+  /**
+   * Application types
+   * @type {ApplicationType}
+   */
+  applicationTypes = ApplicationType;
 
-  public applicationType = ApplicationType;
-
-  public model = [new AppRegistration()];
-
-  contents: any;
-  uriPattern = '^([a-z0-9-]+:\/\/)([\\w\\.:-]+)(\/[\\w\\.:-]+)*$';
-
-  constructor(
-    private appsService: AppsService,
-    private busyService: BusyService,
-    private toastyService: ToastyService,
-    private router: Router) {
-    }
-
-  ngOnInit() {
-    console.log('App Service Registrations', this.appsService.appRegistrations);
-    console.log(this.appsService.appRegistrations);
+  /**
+   * Constructor
+   *
+   * @param {AppsService} appsService
+   * @param {ToastyService} toastyService
+   * @param {FormBuilder} fb
+   * @param {BusyService} busyService
+   * @param {Router} router
+   */
+  constructor(private appsService: AppsService,
+              private toastyService: ToastyService,
+              private fb: FormBuilder,
+              private busyService: BusyService,
+              private router: Router) {
   }
 
   /**
    * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.  
+   * memory leaks.
    */
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
 
-  goBack() {
-    console.log('Back to apps page ...');
-    this.router.navigate(['apps']);
-  }
 
-  ngOnChanges(changes) {
-      console.log(changes);
-  }
-
-  closePopOver() {
-    this.childPopover.hide();
-  }
-
-  public getItemsAsObservable(): Observable<AppRegistration[]> {
-    return Observable.of(this.model);
-  }
   /**
-   * Register the app.
+   * Initialize by creating the first form registration
+   */
+  ngOnInit() {
+    this.newForm();
+  }
+
+  /**
+   * Collect the filled forms and submit them to the service
    */
   register() {
-    console.log(`Register ${this.model.length} app(s).`);
-    const busy = this.appsService.registerMultipleApps(this.model)
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe(
-      data => {
-        this.toastyService.success(`${data.length} App(s) registered.`);
-        this.busyService.addSubscription(
-        this.appsService.getApps(true)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(
-          appRegistrations => {
-            console.log('Back to apps page ...');
-            this.router.navigate(['apps']);
-          }
-        ));
-      },
-      error => {
-        this.toastyService.error(error);
+    const applications: AppRegisterParams[] = this.forms.map((form: FormGroup) => {
+      if (!form.invalid && !this.isFormEmpty(form)) {
+        return {
+          name: form.get('name').value,
+          type: form.get('type').value as ApplicationType,
+          uri: form.get('uri').value,
+          metaDataUri: form.get('metaDataUri').value,
+          force: form.get('force').value
+        };
       }
-    );
+    }).filter((a) => a != null);
+    const busy = this.appsService.registerApps(applications)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
+        data => {
+          this.toastyService.success(`${data.length} App(s) registered.`);
+          this.cancel();
+        },
+        error => {
+          this.toastyService.error(error);
+        }
+      );
+
     this.busyService.addSubscription(busy);
   }
 
   /**
-   * Removes app comntroller entry
-   * @param index Index of the entry
+   * Return true if no form is invalid and at least one form is fill correctly
+   *
+   * @returns {boolean}
    */
-  removeApp(index) {
-    this.model.splice(index, 1);
+  isValid(): boolean {
+    let count = 0;
+    for (let i = 0; i < this.forms.length; i++) {
+      if (this.isFormEmpty(this.forms[i])) {
+        continue;
+      }
+      if (this.forms[i].invalid) {
+        return false;
+      }
+      count++;
+    }
+    return (count > 0);
   }
 
   /**
-   * Adds app entry at the specified index
-   * @param index Insertion index
+   * State of a form (is empty)
+   *
+   * @param {FormGroup} form
+   * @returns {boolean}
    */
-  addApp(index) {
-    this.model.splice(index + 1, 0, new AppRegistration());
+  isFormEmpty(form: FormGroup) {
+    return (form.get('uri').hasError('required') && form.get('name').hasError('required')
+      && form.get('metaDataUri').value === '' && form.get('type').hasError('required'));
   }
 
-  trackModel(index, appRegistration) {
-    return index;
+  /**
+   * Adds form with the default values
+   * @param index Insertion index
+   */
+  newForm(index?: number) {
+    index = index || this.forms.length;
+    const form = this.fb.group({
+      name: new FormControl('', [AppsRegisterValidator.appName, Validators.required]),
+      type: new FormControl('', Validators.required),
+      uri: new FormControl('', [AppsRegisterValidator.uri, Validators.required]),
+      metaDataUri: new FormControl('', AppsRegisterValidator.uri),
+      force: new FormControl(false)
+    });
+
+    this.forms.splice(index + 1, 0, form);
   }
+
+  /**
+   * Removes form
+   * @param {number} index Index of the entry
+   */
+  removeForm(index: number) {
+    this.forms.splice(index, 1);
+  }
+
+  /**
+   * Navigate to the applications list
+   */
+  cancel() {
+    console.log('Back to apps page ...');
+    this.router.navigate(['apps']);
+  }
+
 }

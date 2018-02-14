@@ -1,5 +1,4 @@
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {TemplateRef} from '@angular/core';
+import {BsModalRef} from 'ngx-bootstrap';
 
 /**
  * Mock for BsModalService.
