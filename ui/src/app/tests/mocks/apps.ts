@@ -24,16 +24,6 @@ import {AppVersion} from '../../shared/model/app-version';
  */
 export class MockAppsService {
 
-  applicationsContext = {
-    q: '',
-    type: null,
-    sort: 'name',
-    order: 'ASC',
-    page: 0,
-    size: 30,
-    itemsSelected: []
-  };
-
   mock: {
     items: Array<any>,
     size: number,
