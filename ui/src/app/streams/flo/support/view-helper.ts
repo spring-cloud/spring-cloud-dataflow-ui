@@ -280,16 +280,20 @@ export class ViewHelper {
 
         document.body.appendChild(svgDocument);
 
-        width = textSpan.getComputedTextLength();
-        for (let i = 1; i < width && width > threshold; i++) {
-          textNode.data = label.substr(0, label.length - i) + '\u2026';
+        try {
           width = textSpan.getComputedTextLength();
-        }
+          for (let i = 1; i < width && width > threshold; i++) {
+            textNode.data = label.substr(0, label.length - i) + '\u2026';
+            width = textSpan.getComputedTextLength();
+          }
 
-        if (offset) {
-          (<any>node).attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5), {silent: true});
+          if (offset) {
+            (<any>node).attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5), {silent: true});
+          }
+          (<any>node).attr(labelPath, textNode.data);
+        } finally {
+          document.body.removeChild(svgDocument);
         }
-        (<any>node).attr(labelPath, textNode.data);
       } else {
         (<any>node).attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5));
       }
