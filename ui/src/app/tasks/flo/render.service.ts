@@ -192,13 +192,16 @@ export class RenderService implements Flo.Renderer {
 
         document.body.appendChild(svgDocument);
 
-        width = textSpan.getComputedTextLength();
-        for (let i = 1; i < width && width > threshold; i++) {
-          textNode.data = label.substr(0, label.length - i) + '\u2026';
+        try {
           width = textSpan.getComputedTextLength();
+          for (let i = 1; i < width && width > threshold; i++) {
+            textNode.data = label.substr(0, label.length - i) + '\u2026';
+            width = textSpan.getComputedTextLength();
+          }
+          (<any>node).attr(labelPath, textNode.data);
+        } finally {
+          document.body.removeChild(svgDocument);
         }
-
-        (<any>node).attr(labelPath, textNode.data);
       }
     }
   }

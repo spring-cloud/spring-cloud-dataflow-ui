@@ -110,7 +110,7 @@ export class MockSharedAppService extends SharedAppsService {
     super(null, null);
   }
 
-  getApps(pageRequest: PageRequest, type?: any, search?: string,
+  getApps(pageRequest: PageRequest, type?: ApplicationType, search?: string,
           sort?: Array<{ sort: string, order: string }>): Observable<Page<AppRegistration>> {
 
     const page = new Page<AppRegistration>();

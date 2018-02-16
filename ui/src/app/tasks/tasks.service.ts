@@ -111,9 +111,8 @@ export class TasksService {
   }
 
   getTaskAppRegistrations(): Observable<Page<AppRegistration>> {
-    const type = ApplicationType[ApplicationType.task.toString()];
     return this.sharedAppsService.getApps(
-      new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize), type).map(
+      new PageRequest(this.appRegistrations.pageNumber, this.appRegistrations.pageSize), ApplicationType.task).map(
         appRegistrations => {
           this.appRegistrations = appRegistrations;
           return appRegistrations;
