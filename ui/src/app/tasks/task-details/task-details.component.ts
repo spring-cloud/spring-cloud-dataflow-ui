@@ -56,4 +56,14 @@ export class TaskExecutionsDetailsComponent implements OnInit, OnDestroy {
   back() {
     this.router.navigate(['tasks/executions']);
   }
+
+  /**
+   * Redirect user to the page for the provided Job Execution Id.
+   *
+   * @param jobExecutionId Id of the Job Execution
+   */
+  goToJobExecution(jobExecutionId: number) {
+    this.router.navigate(['jobs/executions/' + jobExecutionId]);
+  }
+
 }
