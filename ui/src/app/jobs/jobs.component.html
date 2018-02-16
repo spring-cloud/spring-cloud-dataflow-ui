@@ -27,11 +27,11 @@
     </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let item of jobExecutions.items | searchFilter: jobExecutions.filter | paginate: jobExecutions.getPaginationInstance(); index as i">
+  <tr *ngFor="let item of jobExecutions.items | paginate: jobExecutions.getPaginationInstance(); index as i">
     <td>{{ item.name }} <app-definition-status [jobExecution]="item"></app-definition-status></td>
     <td><a href="javascript:void(0);" (click)="viewTaskExecutionDetails(item)">{{ item.taskExecutionId }}</a></td>
     <td>{{ item.jobInstanceId }}</td>
-    <td>{{ item.taskExecutionId }}</td>
+    <td>{{ item.jobExecutionId }}</td>
     <td>{{ item.startTimeFormatted }}</td>
     <td>{{ item.stepExecutionCount }}</td>
     <td><app-job-execution-status [status]="item.status"></app-job-execution-status></td>
