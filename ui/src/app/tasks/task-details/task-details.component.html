@@ -36,12 +36,20 @@
       <td>Batch Job</td>
       <td>
         <span *ngIf="taskExecution.jobExecutionIds.length > 0" class="glyphicon glyphicon-ok text-info"></span>
-        <span *ngIf="taskExecution.jobExecutionIds.length == 0" class="glyphicon glyphicon-remove"></span>
+        <span *ngIf="taskExecution.jobExecutionIds.length == 0" class="glyphicon glyphicon-remove text-danger"></span>
       </td>
     </tr>
     <tr>
       <td>Job Execution Ids</td>
-      <td></td>
+      <td *ngIf="taskExecution.jobExecutionIds.length > 0" id="jobExecutionIds">
+        <button class="btn btn-default" type="button" (click)="goToJobExecution(jobExecutionId)"
+          *ngFor="let jobExecutionId of taskExecution.jobExecutionIds">
+          {{ jobExecutionId }}
+        </button>
+      </td>
+      <td *ngIf="taskExecution.jobExecutionIds.length == 0">
+          N/A
+      </td>
     </tr>
     <tr>
       <td>Start Time</td>
