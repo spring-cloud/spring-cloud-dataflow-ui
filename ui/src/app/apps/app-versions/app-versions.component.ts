@@ -10,6 +10,7 @@ import {SortParams, OrderParams} from '../../shared/components/shared.interface'
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/operators';
 import {BusyService} from '../../shared/services/busy.service';
+import {ApplicationType} from '../../shared/model/application-type';
 
 /**
  * Provides versions for an App Registration
@@ -93,7 +94,8 @@ export class AppVersionsComponent implements OnDestroy {
    */
   refresh() {
     console.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
-    const busy = this.appsService.getAppVersions(this.application.type, this.application.name)
+    const busy = this.appsService
+      .getAppVersions(ApplicationType[this.application.type.toString()], this.application.name)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: any) => {
           this.application.versions = data;

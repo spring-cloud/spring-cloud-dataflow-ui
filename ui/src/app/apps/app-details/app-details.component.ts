@@ -149,7 +149,8 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   loadVersions() {
     console.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
-    const busy = this.appsService.getAppVersions(this.application.type, this.application.name)
+    const busy = this.appsService
+      .getAppVersions(ApplicationType[this.application.type.toString()], this.application.name)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: any) => {
           this.application.versions = data;
