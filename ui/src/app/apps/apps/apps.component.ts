@@ -14,6 +14,7 @@ import {OrderParams, SortParams} from '../../shared/components/shared.interface'
 import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/operators';
 import {BusyService} from '../../shared/services/busy.service';
+import {CacheService} from '../../shared/services/cache.service';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -31,14 +32,32 @@ import {BusyService} from '../../shared/services/busy.service';
 export class AppsComponent implements OnInit, OnDestroy {
 
   /**
-   * Current applications items
+   * Cache Parameters
+   * Define the key of the cache
+   * Describe the default value of the context
    */
-  appRegistrations: Page<AppRegistration>;
+  static cacheParams = {
+    key: 'applications',
+    defaultValue: {
+      sort: 'name',
+      order: OrderParams.ASC,
+      page: 0,
+      size: 30,
+      q: '',
+      type: null,
+      itemsSelected: []
+    }
+  };
 
   /**
    * Busy Subscriptions
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
+
+  /**
+   * Current applications items
+   */
+  appRegistrations: Page<AppRegistration>;
 
   /**
    * Modal
@@ -69,25 +88,13 @@ export class AppsComponent implements OnInit, OnDestroy {
    * State of App List Params
    * @type {SortParams}
    */
-  params: AppListParams = {
-    sort: 'name',
-    order: OrderParams.ASC,
-    page: 0,
-    size: 30,
-    q: '',
-    type: null
-  };
+  params: AppListParams;
 
   /**
    * Contain a key application of each selected application
    * @type {Array}
    */
   itemsSelected: Array<string> = [];
-
-  /**
-   * Storage context
-   */
-  context: any;
 
   /**
    * Constructor
@@ -97,6 +104,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param {SharedAboutService} sharedAboutService
    * @param {BsModalService} modalService
    * @param {BusyService} busyService
+   * @param {CacheService} cacheService
    * @param {Router} router
    */
   constructor(public appsService: AppsService,
@@ -104,6 +112,7 @@ export class AppsComponent implements OnInit, OnDestroy {
               private sharedAboutService: SharedAboutService,
               private modalService: BsModalService,
               private busyService: BusyService,
+              private cacheService: CacheService,
               private router: Router) {
   }
 
@@ -112,10 +121,10 @@ export class AppsComponent implements OnInit, OnDestroy {
    * after init the context.
    */
   ngOnInit() {
-    this.context = this.appsService.applicationsContext;
-    this.params = {...this.context};
-    this.form = {q: this.context.q, type: this.context.type, checkboxes: []};
-    this.itemsSelected = this.context.itemsSelected || [];
+    const context = this.cacheService.get(AppsComponent.cacheParams.key, AppsComponent.cacheParams.defaultValue);
+    this.params = {...context};
+    this.form = {q: context.q, type: context.type, checkboxes: []};
+    this.itemsSelected = context.itemsSelected || [];
     this.loadAppRegistrations();
     this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
       this.skipperEnabled = featureInfo.skipperEnabled;
@@ -135,28 +144,31 @@ export class AppsComponent implements OnInit, OnDestroy {
   /**
    * Load a paginated list of {@link AppRegistration}s.
    * Build the form checkboxes (persist selection)
+   * If the result has no items and the page is not the first, reload the first page.
    */
   loadAppRegistrations() {
-    const busy = this.appsService.getApps(this.params).map((page: Page<AppRegistration>) => {
-      this.form.checkboxes = page.items.map((app) => {
-        return this.itemsSelected.indexOf(`${app.name}#${app.type}`) > -1;
-      });
-      return page;
-    }).pipe(takeUntil(this.ngUnsubscribe$))
+    const busy = this.appsService.getApps(this.params)
+      .map((page: Page<AppRegistration>) => {
+        this.form.checkboxes = page.items.map((app) => {
+          return this.itemsSelected.indexOf(`${app.name}#${app.type}`) > -1;
+        });
+        return page;
+      })
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((page: Page<AppRegistration>) => {
-        if (page.items.length === 0 && this.params.page > 0) {
-          this.params.page = 0;
-          this.loadAppRegistrations();
-          return;
+          if (page.items.length === 0 && this.params.page > 0) {
+            this.params.page = 0;
+            this.loadAppRegistrations();
+            return;
+          }
+          this.appRegistrations = page;
+          this.changeCheckboxes();
+          this.updateContext();
+        },
+        error => {
+          this.toastyService.error(error);
         }
-        this.appRegistrations = page;
-        this.changeCheckboxes();
-        this.updateContext();
-      },
-      error => {
-        this.toastyService.error(error);
-      }
-    );
+      );
 
     this.busyService.addSubscription(busy);
   }
@@ -171,16 +183,10 @@ export class AppsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Write the context in the service.
+   * Write the context.
    */
   updateContext() {
-    this.context.q = this.params.q;
-    this.context.type = this.params.type;
-    this.context.sort = this.params.sort;
-    this.context.order = this.params.order;
-    this.context.page = this.params.page;
-    this.context.size = this.params.size;
-    this.context.itemsSelected = this.itemsSelected;
+    this.cacheService.set(AppsComponent.cacheParams.key, this.params, {itemsSelected: this.itemsSelected});
   }
 
   /**

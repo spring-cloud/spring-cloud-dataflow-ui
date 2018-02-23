@@ -26,6 +26,8 @@ import {AppsUnregisterComponent} from '../apps-unregister/apps-unregister.compon
 import {tick} from '@angular/core/testing';
 import {AppVersionsComponent} from '../app-versions/app-versions.component';
 import {BusyService} from '../../shared/services/busy.service';
+import {CacheService} from '../../shared/services/cache.service';
+import {OrderParams} from '../../shared/components/shared.interface';
 
 describe('AppsComponent', () => {
   let component: AppsComponent;
@@ -35,6 +37,7 @@ describe('AppsComponent', () => {
   const sharedAboutService = new MocksSharedAboutService();
   const authService = new MockAuthService();
   const modalService = new MockModalService();
+  const cacheService = new CacheService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -60,6 +63,7 @@ describe('AppsComponent', () => {
         {provide: AppsService, useValue: appsService},
         {provide: AuthService, useValue: authService},
         {provide: BsModalService, useValue: modalService},
+        {provide: CacheService, useValue: cacheService},
         {provide: BusyService, useValue: new BusyService()},
         {provide: SharedAboutService, useValue: sharedAboutService},
         {provide: ToastyService, useValue: toastyService}
@@ -302,7 +306,15 @@ describe('AppsComponent', () => {
   describe('Application action', () => {
 
     beforeEach(() => {
-      appsService.applicationsContext.page = 0;
+      cacheService.set(AppsComponent.cacheParams.key, {
+        sort: 'name',
+        order: OrderParams.ASC,
+        page: 0,
+        size: 30,
+        q: '',
+        type: null,
+        itemsSelected: []
+      });
       appsService.mock = JSON.parse(JSON.stringify(APPS));
       fixture.detectChanges();
     });

@@ -44,6 +44,7 @@ import {OrderByPipe} from './pipes/orderby.pipe';
 import {ConfirmService} from './components/confirm/confirm.service';
 import {ConfirmComponent} from './components/confirm/confirm.component';
 import {BusyService} from './services/busy.service';
+import {CacheService} from './services/cache.service';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -107,7 +108,8 @@ const busyConfig: BusyConfig = {
     ParserService,
     ErrorHandler,
     ConfirmService,
-    BusyService
+    BusyService,
+    CacheService
   ],
   exports: [
     NgBusyModule,

@@ -29,19 +29,6 @@ export class AppsService {
   private static appsUrl = '/apps';
 
   /**
-   * Store the state of the applications list params
-   */
-  applicationsContext = {
-    q: '',
-    type: null,
-    sort: 'name',
-    order: 'ASC',
-    page: 0,
-    size: 30,
-    itemsSelected: []
-  };
-
-  /**
    * Constructor
    *
    * @param {Http} http
