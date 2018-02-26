@@ -1,13 +1,13 @@
 
 
 // Set PUI variables
-@import 'assets/scss/pui-variables';
+@import 'scss/pui-variables';
 
 // Bootstrap
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 
 // PUI
-@import 'assets/scss/pui';
+@import 'scss/pui';
 
 // Busy
 @import '../node_modules/ng-busy/src/style/busy.css';
@@ -20,4 +20,4 @@
 @import '../node_modules/@compodoc/compodoc/src/resources/styles/font-awesome.min.css';
 
 // Application styles
-@import 'assets/scss/styles';
+@import 'scss/styles';
