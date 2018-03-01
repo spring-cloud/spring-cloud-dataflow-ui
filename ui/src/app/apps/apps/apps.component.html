@@ -19,8 +19,7 @@
     <div class="description">
       <h1>Apps</h1>
       <p>
-        This section lists all the available applications and provides the control to register/unregister them (if
-        applicable).
+        This section lists all the available applications. You can <strong>register</strong> or <strong>unregister</strong> applications.
       </p>
       <div class="hidden visible-xs-block visible-sm-block" *ngIf="!isAppsEmpty()" [appRoles]="['ROLE_CREATE']">
         <a class="btn btn-primary" (click)="registerApps()">Register application(s)</a>
