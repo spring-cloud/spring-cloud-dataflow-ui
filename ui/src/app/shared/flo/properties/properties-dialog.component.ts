@@ -3,7 +3,8 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { PropertiesGroupModel } from '../support/properties-group-model';
-import { dia } from 'jointjs';
+import {Properties} from 'spring-flo';
+import PropertiesSource = Properties.PropertiesSource;
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -51,9 +52,10 @@ export class PropertiesDialogComponent implements OnInit {
   ngOnInit() {
   }
 
-  setData(c: dia.Cell, graph: dia.Graph) {
-    this.propertiesGroupModel = new PropertiesGroupModel(c);
+  setData(propertiesSource: PropertiesSource) {
+    this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
+    this.busy = this.propertiesGroupModel.loadedSubject.subscribe();
   }
 
 }

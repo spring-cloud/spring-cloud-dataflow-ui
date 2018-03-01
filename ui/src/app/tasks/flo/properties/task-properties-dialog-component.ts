@@ -2,12 +2,12 @@
 
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { Flo, Properties } from 'spring-flo';
+import { Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
-import { dia } from 'jointjs';
-import { ApplicationType } from '../../../shared/model/application-type';
 import { PropertiesDialogComponent } from '../../../shared/flo/properties/properties-dialog.component';
 import { PropertiesGroupModel } from '../../../shared/flo/support/properties-group-model';
+import {AppUiProperty} from '../../../shared/flo/support/app-ui-property';
+import PropertiesSource = Properties.PropertiesSource;
 
 
 /**
@@ -18,14 +18,10 @@ import { PropertiesGroupModel } from '../../../shared/flo/support/properties-gro
  */
 class TaskPropertiesGroupModel extends PropertiesGroupModel {
 
-  constructor(cell: dia.Cell) {
-    super(cell);
-  }
-
-  protected createControlModel(property: Properties.Property): Properties.ControlModel<any> {
+  protected createControlModel(property: AppUiProperty): Properties.ControlModel<any> {
     const inputType = Properties.InputType.TEXT;
     let validation: Properties.Validation;
-    if (property.metadata) {
+    if (property.isSemantic) {
       return super.createControlModel(property);
     } else {
       // Notational properties
@@ -39,30 +35,6 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
       }
     }
     return new Properties.GenericControlModel(property, inputType, validation);
-  }
-
-  protected createNotationalProperties(): Array<Properties.Property> {
-    const notationalProperties = [];
-    if (typeof ApplicationType[this.cell.attr('metadata/group')] === 'number') {
-      notationalProperties.push({
-        id: 'label',
-        name: 'label',
-        defaultValue: this.cell.attr('metadata/name'),
-        attr: 'node-label',
-        value: this.cell.attr('node-label'),
-        description: 'Label of the task',
-        metadata: null
-      });
-    }
-    return notationalProperties;
-  }
-
-  protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
-    if (this.cell instanceof dia.Link) {
-      // For links properties are always id based
-      return `props/${metadata.id}`;
-    }
-    return super.determineAttributeName(metadata);
   }
 
 }
@@ -87,8 +59,8 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent {
     super(bsModalRef);
   }
 
-  setData(c: dia.Cell, graph: dia.Graph) {
-    this.propertiesGroupModel = new TaskPropertiesGroupModel(c);
+  setData(propertiesSource: PropertiesSource) {
+    this.propertiesGroupModel = new TaskPropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
   }
 
