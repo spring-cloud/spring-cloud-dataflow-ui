@@ -135,8 +135,8 @@ export class GraphChartComponent implements OnInit, DoCheck {
       const yTicksNumber = Math.floor(height / 25);
       const xTicksNumber = Math.floor(width / 25);
 
-      const minY: number = Number(d3.min(dataItemsToUse, function(d) { return d[1]; }));
-      const maxY: number = Number(d3.max(dataItemsToUse, function(d) { return d[1]; }));
+      const minY: number = Number(d3.min(dataItemsToUse, function(d) { return d[1] as number; }));
+      const maxY: number = Number(d3.max(dataItemsToUse, function(d) { return d[1] as number; }));
       const padding = Math.max((maxY - minY) / 10.0, maxY / 4.0);
 
       const margin = {top: 10, right: 10, bottom: 10, left: 10};
