@@ -22,6 +22,7 @@ import { dia } from 'jointjs';
 import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 import { Utils } from './support/utils';
 import * as _joint from 'jointjs';
+import {StreamGraphPropertiesSource, StreamHead} from "./properties/stream-properties-source";
 const joint: any = _joint;
 
 const NODE_DROPPING = false;
@@ -69,7 +70,20 @@ export class EditorService implements Flo.Editor {
                     if (element.attr('metadata/version')) {
                       modalRef.content.title += ` (${element.attr('metadata/version')})`;
                     }
-                    modalRef.content.setData(element, flo.getGraph());
+                  // const streamHeads: dia.Cell[] = flo.getGraph().getElements().filter(e => Utils.canBeHeadOfStream(flo.getGraph(), e));
+                  // const streamNames = streamHeads
+                  //   .filter(e => e.attr('stream-name') && e !== c)
+                  //   .map(e => e.attr('stream-name'));
+
+                  const graph = flo.getGraph();
+                  const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
+
+                  const streamHead: StreamHead = streamHeads.indexOf(element) >= 0 ? {
+                      presentStreamNames: streamHeads
+                        .filter(e => e.attr('stream-name') && e !== element)
+                        .map(e => e.attr('stream-name'))
+                    } : undefined;
+                  modalRef.content.setData(new StreamGraphPropertiesSource(element, streamHead));
                 }, pt);
             }
         }

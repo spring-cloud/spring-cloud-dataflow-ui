@@ -5,6 +5,7 @@ import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE } fr
 import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
+import {TaskGraphPropertiesSource} from './properties/task-properties-source';
 
 const joint: any = _joint;
 
@@ -58,7 +59,7 @@ export class EditorService implements Flo.Editor {
         createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
           const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
           modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
-          modalRef.content.setData(element, flo.getGraph());
+          modalRef.content.setData(new TaskGraphPropertiesSource(element));
         }, pt);
       }
     }

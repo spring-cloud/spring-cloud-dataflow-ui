@@ -2,14 +2,13 @@
 
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { Flo, Properties } from 'spring-flo';
+import { Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
-import { dia } from 'jointjs';
 import { StreamsService } from '../../streams.service';
-import { Utils } from '../support/utils';
-import { ApplicationType } from '../../../shared/model/application-type';
 import { PropertiesDialogComponent } from '../../../shared/flo/properties/properties-dialog.component';
 import { PropertiesGroupModel } from '../../../shared/flo/support/properties-group-model';
+import {AppUiProperty} from '../../../shared/flo/support/app-ui-property';
+import {StreamAppPropertiesSource} from './stream-properties-source';
 
 // Workaround to load jshint to have linting working for JS snippet inside the props dialog
 import { JSHINT } from 'jshint';
@@ -23,20 +22,18 @@ if (!(<any>window).JSHINT) {
  * @author Alex Boyko
  * @author Andy Clement
  */
-class StreamPropertiesGroupModel extends PropertiesGroupModel {
+export class StreamPropertiesGroupModel extends PropertiesGroupModel {
 
-  constructor(cell: dia.Cell,
-              private streamHeads: Array<dia.Cell>,
-              private isStreamHead: boolean,
+  constructor(propertiesSource: StreamAppPropertiesSource,
               private streamService: StreamsService
   ) {
-    super(cell);
+    super(propertiesSource);
   }
 
-  protected createControlModel(property: Properties.Property): Properties.ControlModel<any> {
+  protected createControlModel(property: AppUiProperty): Properties.ControlModel<any> {
     const inputType = Properties.InputType.TEXT;
     let validation: Properties.Validation;
-    if (property.metadata) {
+    if (property.isSemantic) {
       return super.createControlModel(property);
     } else {
       // Notational properties
@@ -51,9 +48,7 @@ class StreamPropertiesGroupModel extends PropertiesGroupModel {
         validation = {
           validator: [
             Validators.pattern(/^[\w_]+[\w_-]*$/),
-            Properties.Validators.noneOf(this.streamHeads
-              .filter(e => e.attr('stream-name') && e !== this.cell)
-              .map(e => e.attr('stream-name')))
+            Properties.Validators.noneOf((<StreamAppPropertiesSource>this.propertiesSource).getStreamHead().presentStreamNames)
           ],
           asyncValidator: Properties.Validators.uniqueResource((value) => this.streamService.getDefinition(value), 500),
           errorData: [
@@ -65,41 +60,6 @@ class StreamPropertiesGroupModel extends PropertiesGroupModel {
       }
     }
     return new Properties.GenericControlModel(property, inputType, validation);
-  }
-
-  protected createNotationalProperties(): Array<Properties.Property> {
-    const notationalProperties = [];
-    if (typeof ApplicationType[this.cell.attr('metadata/group')] === 'number') {
-      notationalProperties.push({
-        id: 'label',
-        name: 'label',
-        defaultValue: this.cell.attr('metadata/name'),
-        attr: 'node-name',
-        value: this.cell.attr('node-name'),
-        description: 'Label of the app',
-        metadata: null
-      });
-    }
-    if (this.isStreamHead) {
-      notationalProperties.push({
-        id: 'stream-name',
-        name: 'stream name',
-        value: this.cell.attr('stream-name'),
-        defaultValue: '',
-        description: 'The name of the stream started by this app',
-        attr: 'stream-name',
-        metadata: null
-      });
-    }
-    return notationalProperties;
-  }
-
-  protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
-    if (this.cell.attr('metadata/group') === 'other') {
-      // For something in the other group (like tap) use the id not the name of the property
-      return `props/${metadata.id}`;
-    }
-    return super.determineAttributeName(metadata);
   }
 
 }
@@ -126,10 +86,10 @@ export class StreamPropertiesDialogComponent extends PropertiesDialogComponent {
     super(bsModalRef);
   }
 
-  setData(c: dia.Cell, graph: dia.Graph) {
-    const streamHeads = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
-    this.propertiesGroupModel = new StreamPropertiesGroupModel(c, streamHeads,
-      (<Array<dia.Cell>>streamHeads).indexOf(c) >= 0, this.streamService);
+  setData(propertiesSource: StreamAppPropertiesSource) {
+    this.propertiesGroupModel = new StreamPropertiesGroupModel(
+      propertiesSource,
+      this.streamService);
     this.propertiesGroupModel.load();
   }
 
