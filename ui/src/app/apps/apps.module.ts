@@ -33,6 +33,10 @@ import {AppsWorkaroundService} from './apps.workaround.service';
   ],
   providers: [
     AppsService, AppsWorkaroundService
+  ],
+  exports: [
+    AppTypeComponent,
+    AppVersionLabelComponent
   ]
 })
 export class AppsModule {

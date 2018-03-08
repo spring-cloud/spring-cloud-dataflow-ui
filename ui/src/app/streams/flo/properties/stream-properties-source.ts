@@ -6,7 +6,7 @@ import {dia} from 'jointjs';
 import PropertiesSource = Properties.PropertiesSource;
 
 export interface StreamHead {
-  presentStreamNames: string[]
+  presentStreamNames: string[];
 }
 
 export interface StreamAppPropertiesSource extends PropertiesSource {

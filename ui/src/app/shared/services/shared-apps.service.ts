@@ -28,10 +28,10 @@ export class SharedAppsService {
     const params = HttpUtils.getPaginationParams(pageRequest.page, pageRequest.size);
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
-    if (type) {
+    if (type !== null) {
       params.append('type', ApplicationType[type]);
     }
-    if (search) {
+    if (search !== null) {
       params.append('search', search);
     }
     if (sort) {

@@ -1,0 +1,12 @@
+<div *ngIf="raw && raw.length > 0" class="properties-box">
+  <div class="property" *ngFor="let val of raw" [class.invalid]="val.status == 'invalid'">
+    <span *ngIf="val.status == 'invalid'" class="fa fa-warning">
+    </span>
+    <span class="key">{{ val.key }}</span>
+    <span class="equal"> = </span>
+    <span class="value">{{ val.value }}</span>
+  </div>
+</div>
+<div class="alert alert-info" style="display: inline-block" *ngIf="raw && raw.length == 0">
+  No properties defined
+</div>
