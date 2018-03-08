@@ -1,13 +1,13 @@
 import {Component, OnInit, Output, EventEmitter, Input, OnDestroy} from '@angular/core';
 import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
-import {validateDeploymentProperties} from '../../stream-deploy/stream-deploy-validators';
 import {StreamDefinition} from '../../model/stream-definition';
 import {Subscription} from 'rxjs/Subscription';
 import {Platform} from '../../model/platform';
 import {SharedAboutService} from '../../../shared/services/shared-about.service';
 import {StreamsService} from '../../streams.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs/Subject';
+import {StreamDeployValidator} from '../../stream-deploy/stream-deploy.validator';
 
 @Component({
   selector: 'app-stream-deployment-properties',
@@ -26,7 +26,7 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
 
   id: String;
   form: FormGroup;
-  deploymentProperties = new FormControl('', validateDeploymentProperties);
+  deploymentProperties = new FormControl('', StreamDeployValidator.validateDeploymentProperties);
   deploymentPlatform = new FormControl('');
 
   platforms: Platform[];
@@ -66,17 +66,17 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo()
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe(featureInfo => {
-      this.skipperEnabled = featureInfo.skipperEnabled;
-      if (this.skipperEnabled) {
-        this.subscriptionPlatforms = this.streamsService.platforms()
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe((platforms: Platform[]) => {
-          this.platforms = platforms;
-        });
-      }
-    });
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(featureInfo => {
+        this.skipperEnabled = featureInfo.skipperEnabled;
+        if (this.skipperEnabled) {
+          this.subscriptionPlatforms = this.streamsService.platforms()
+            .pipe(takeUntil(this.ngUnsubscribe$))
+            .subscribe((platforms: Platform[]) => {
+              this.platforms = platforms;
+            });
+        }
+      });
     this.deploymentPlatform.setValue('default');
     if (this.stream.deploymentProperties instanceof Object) {
       if (this.stream.deploymentProperties.platformName) {
