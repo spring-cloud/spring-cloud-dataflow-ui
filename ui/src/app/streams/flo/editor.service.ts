@@ -22,7 +22,7 @@ import { dia } from 'jointjs';
 import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 import { Utils } from './support/utils';
 import * as _joint from 'jointjs';
-import {StreamGraphPropertiesSource, StreamHead} from "./properties/stream-properties-source";
+import {StreamGraphPropertiesSource, StreamHead} from './properties/stream-properties-source';
 const joint: any = _joint;
 
 const NODE_DROPPING = false;
