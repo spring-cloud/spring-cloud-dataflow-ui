@@ -24,6 +24,8 @@ describe('StreamsDefinitionValidator', () => {
     it('invalid', () => {
       [
         '1 ',
+        '0',
+        '-1',
         ' 1',
         '012z',
         '012.9'
@@ -60,6 +62,34 @@ describe('StreamsDefinitionValidator', () => {
       ].forEach((mock) => {
         const control: FormControl = new FormControl(mock);
         expect(StreamDeployValidator.key(control).invalid).toBeTruthy();
+      });
+    });
+  });
+
+  describe('keyProperty', () => {
+    it('valid', () => {
+      [
+        'app.*.foo',
+        'app.file.foo',
+        'version.file',
+        'deployer.*.foo',
+        'deployer.file.foo',
+        'spring.cloud.dataflow.skipper.platformName'
+      ].forEach((mock) => {
+        const control: FormControl = new FormControl(mock);
+        expect(StreamDeployValidator.keyProperty(control)).toBeNull();
+      });
+    });
+    it('invalid', () => {
+      [
+        'aa.aa',
+        'aaa',
+        'aaa111',
+        'aaa111.121321aaa',
+        'aaaa.aaaa.aaaa'
+      ].forEach((mock) => {
+        const control: FormControl = new FormControl(mock);
+        expect(StreamDeployValidator.keyProperty(control).invalid).toBeTruthy();
       });
     });
   });
