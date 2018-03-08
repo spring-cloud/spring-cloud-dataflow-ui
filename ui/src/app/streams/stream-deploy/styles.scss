@@ -172,3 +172,15 @@ $border-separator-color: #637885;
     }
   }
 }
+
+.input-file-right {
+  margin-left: auto;
+  .btn-file {
+    height: 36px;
+    margin-right: 0;
+    margin-top: 8px;
+    input {
+      display: none;
+    }
+  }
+}

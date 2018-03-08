@@ -144,7 +144,7 @@ export class StreamDeployService {
             type: 'java.lang.Integer',
             value: null,
             defaultValue: null,
-            suffix: 'Mb'
+            suffix: 'MB'
           },
           {
             id: 'cpu',
@@ -153,7 +153,7 @@ export class StreamDeployService {
             type: 'java.lang.Integer',
             value: null,
             defaultValue: null,
-            suffix: 'Core'
+            suffix: 'Core(s)'
           },
           {
             id: 'disk',
@@ -162,7 +162,7 @@ export class StreamDeployService {
             type: 'java.lang.Integer',
             value: null,
             defaultValue: null,
-            suffix: 'Mb'
+            suffix: 'MB'
           },
           {
             id: 'count',

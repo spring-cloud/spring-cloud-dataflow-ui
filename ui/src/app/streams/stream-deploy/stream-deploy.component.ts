@@ -45,6 +45,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     builder: FormGroup,
     builderAppsProperties: {},
     file: FormGroup,
+    free: FormGroup,
     config: StreamDeployConfig
   }>;
 
@@ -56,7 +57,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     deployer: true,
     app: true,
     specificPlatform: true,
-    view: 'builder'
+    view: 'file'
   };
 
   /**
@@ -95,7 +96,8 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * Build a form group which contains all the controls
    */
   buildForm(config: StreamDeployConfig): {
-    builder: FormGroup, builderAppsProperties: {}, file: FormGroup, config: StreamDeployConfig
+    builder: FormGroup, builderAppsProperties: {}, free: FormGroup, file: FormGroup,
+    config: StreamDeployConfig
   } {
     const groups = new FormGroup({});
     const getValue = (defaultValue) => !defaultValue ? '' : defaultValue;
@@ -192,8 +194,14 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     groups.addControl('global', globalControls);
     groups.addControl('specificPlatform', specificPlatformControls);
 
-    // Free Text
+    // Free File Text
     const fileGroup = new FormGroup({
+      file: new FormControl(),
+      properties: new FormControl('', StreamDeployValidator.properties)
+    });
+
+    // Free Text
+    const freeGroup = new FormGroup({
       file: new FormControl(),
       properties: new FormControl('', StreamDeployValidator.properties)
     });
@@ -201,6 +209,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     return {
       builder: groups,
       builderAppsProperties: builderAppsProperties,
+      free: freeGroup,
       file: fileGroup,
       config: config
     };
@@ -212,120 +221,138 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * @param value
    */
   toRaw(value: {
-    builder: FormGroup, builderAppsProperties: {}, file: FormGroup,
+    builder: FormGroup, builderAppsProperties: {}, free: FormGroup, file: FormGroup,
     config: StreamDeployConfig
   }): Array<{ key: string, value: string, status: string }> {
-    const result = [];
+
+    let result = [];
     const isEmpty = (control: AbstractControl) => !control || (control.value === '' || control.value === null);
     const status = (controls: AbstractControl[]): string =>
       controls.every((a) => !a.invalid) ? 'valid' : 'invalid';
 
-    if (this.state.view === 'builder') {
-      const deployers: FormArray = value.builder.get('deployers') as FormArray;
-      const appsVersion: FormGroup = value.builder.get('appsVersion') as FormGroup;
-      const global: FormArray = value.builder.get('global') as FormArray;
-      const specificPlatform: FormArray = value.builder.get('specificPlatform') as FormArray;
-
-      // Platform
-      if (!isEmpty(value.builder.get('platform'))) {
-        result.push({
-          key: 'spring.cloud.dataflow.skipper.platformName',
-          value: value.builder.get('platform').value,
-          status: 'valid'
+    if (!value.config.skipper) {
+      result = value.free.get('properties').value
+        .toString()
+        .split('\n')
+        .map((line) => {
+          return line.split('=')
+            .map((arr) => {
+              return (arr.length == 2) ? {
+                key: arr[0],
+                value: arr[1],
+                status: 'valid'
+              } : null;
+            }).filter((a) => a != null);
         });
-      }
+    } else {
 
-      // Deployers
-      value.config.deployers.forEach((deployer, index) => {
-        if (!isEmpty(deployers.controls[index].get('global'))) {
+      if (this.state.view === 'builder') {
+        const deployers: FormArray = value.builder.get('deployers') as FormArray;
+        const appsVersion: FormGroup = value.builder.get('appsVersion') as FormGroup;
+        const global: FormArray = value.builder.get('global') as FormArray;
+        const specificPlatform: FormArray = value.builder.get('specificPlatform') as FormArray;
+
+        // Platform
+        if (!isEmpty(value.builder.get('platform'))) {
           result.push({
-            key: `deployer.*.${deployer.id}`,
-            value: deployers.controls[index].get('global').value,
-            status: status([deployers.controls[index].get('global')])
+            key: 'spring.cloud.dataflow.skipper.platformName',
+            value: value.builder.get('platform').value,
+            status: 'valid'
           });
         }
-        value.config.apps.forEach((app) => {
-          if (!isEmpty(deployers.controls[index].get(app.name))) {
+
+        // Deployers
+        value.config.deployers.forEach((deployer, index) => {
+          if (!isEmpty(deployers.controls[index].get('global'))) {
             result.push({
-              key: `deployer.${app.name}.${deployer.id}`,
-              value: deployers.controls[index].get(app.name).value,
-              status: status([deployers.controls[index].get(app.name)])
+              key: `deployer.*.${deployer.id}`,
+              value: deployers.controls[index].get('global').value,
+              status: status([deployers.controls[index].get('global')])
+            });
+          }
+          value.config.apps.forEach((app) => {
+            if (!isEmpty(deployers.controls[index].get(app.name))) {
+              result.push({
+                key: `deployer.${app.name}.${deployer.id}`,
+                value: deployers.controls[index].get(app.name).value,
+                status: status([deployers.controls[index].get(app.name)])
+              });
+            }
+          });
+        });
+
+        // Dynamic Form
+        [specificPlatform, global].forEach((arr, index) => {
+          const keyStart = (!index) ? 'deployer' : 'app';
+          arr.controls.forEach((line: FormGroup) => {
+            if (!isEmpty(line.get('property'))) {
+              const key = line.get('property').value;
+              if (!isEmpty(line.get('global'))) {
+                result.push({
+                  key: `${keyStart}.*.${key}`,
+                  value: line.get('global').value,
+                  status: status([line.get('property'), line.get('global')])
+                });
+              }
+              value.config.apps.forEach((app) => {
+                if (!isEmpty(line.get(app.name))) {
+                  result.push({
+                    key: `${keyStart}.${app.name}.${key}`,
+                    value: line.get(app.name).value,
+                    status: status([line.get('property'), line.get(app.name)])
+                  });
+                }
+              });
+            }
+          });
+        });
+
+        // Apps Version (appsVersion)
+        value.config.apps.forEach((app) => {
+          if (!isEmpty(appsVersion.get(app.name))) {
+            result.push({
+              key: `version.${app.name}`,
+              value: appsVersion.get(app.name).value,
+              status: 'valid'
             });
           }
         });
-      });
 
-      // Dynamic Form
-      [specificPlatform, global].forEach((arr, index) => {
-        const keyStart = (!index) ? 'deployer' : 'app';
-        arr.controls.forEach((line: FormGroup) => {
-          if (!isEmpty(line.get('property'))) {
-            const key = line.get('property').value;
-            if (!isEmpty(line.get('global'))) {
-              result.push({
-                key: `${keyStart}.*.${key}`,
-                value: line.get('global').value,
-                status: status([line.get('property'), line.get('global')])
-              });
-            }
-            value.config.apps.forEach((app) => {
-              if (!isEmpty(line.get(app.name))) {
+        // Apps Properties
+        Object.keys(value.builderAppsProperties).forEach((key: string) => {
+          this.getAppProperties(value.builderAppsProperties, key).forEach((keyValue) => {
+            result.push({
+              key: `app.${key}.${keyValue.key}`,
+              value: keyValue.value,
+              status: 'valid'
+            });
+          });
+        });
+
+      } else {
+        if (!isEmpty(value.file.get('properties'))) {
+          value.file.get('properties').value
+            .toString()
+            .split('\n')
+            .map((a) => a.trim())
+            .filter((a) => a.toString())
+            .map((a: String) => {
+              const tmp = a.split('=');
+              if (tmp.length === 2) {
+                const control = new FormControl(tmp[0]);
                 result.push({
-                  key: `${keyStart}.${app.name}.${key}`,
-                  value: line.get(app.name).value,
-                  status: status([line.get('property'), line.get(app.name)])
+                  key: tmp[0],
+                  value: tmp[1],
+                  status: (StreamDeployValidator.keyProperty(control) === null) ? 'valid' : 'invalid'
+                });
+              } else {
+                result.push({
+                  key: a,
+                  status: 'invalid'
                 });
               }
             });
-          }
-        });
-      });
-
-      // Apps Version (appsVersion)
-      value.config.apps.forEach((app) => {
-        if (!isEmpty(appsVersion.get(app.name))) {
-          result.push({
-            key: `version.${app.name}`,
-            value: appsVersion.get(app.name).value,
-            status: 'valid'
-          });
         }
-      });
-
-      // Apps Properties
-      Object.keys(value.builderAppsProperties).forEach((key: string) => {
-        this.getAppProperties(value.builderAppsProperties, key).forEach((keyValue) => {
-          result.push({
-            key: `app.${key}.${keyValue.key}`,
-            value: keyValue.value,
-            status: 'valid'
-          });
-        });
-      });
-
-    } else {
-      if (!isEmpty(value.file.get('properties'))) {
-        value.file.get('properties').value
-          .toString()
-          .split('\n')
-          .map((a) => a.trim())
-          .filter((a) => a.toString())
-          .map((a: String) => {
-            const tmp = a.split('=');
-            if (tmp.length === 2) {
-              const control = new FormControl(tmp[0]);
-              result.push({
-                key: tmp[0],
-                value: tmp[1],
-                status: (StreamDeployValidator.keyProperty(control) === null) ? 'valid' : 'invalid'
-              });
-            } else {
-              result.push({
-                key: a,
-                status: 'invalid'
-              });
-            }
-          });
       }
     }
 
@@ -389,7 +416,10 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    *
    * @param value
    */
-  deployDefinition(value: { builder: FormGroup, builderAppsProperties: any, file: FormGroup, config: StreamDeployConfig }) {
+  deployDefinition(value: {
+    builder: FormGroup, builderAppsProperties: any, file: FormGroup,
+    free: FormGroup, config: StreamDeployConfig
+  }) {
     const propertiesMap = {};
     this.toRaw(value).forEach((line) => {
       propertiesMap[line.key] = line.value;
@@ -450,7 +480,10 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    *
    * @param value
    */
-  exportBuilderToFile(value: { builder: FormGroup, builderAppsProperties: any, file: FormGroup, config: StreamDeployConfig }) {
+  exportBuilderToFile(value: {
+    builder: FormGroup, builderAppsProperties: any,
+    free: FormGroup, file: FormGroup, config: StreamDeployConfig
+  }) {
     const propertiesString = this.toRaw(value).map((a) => `${a.key}=${a.value}`).join('\n');
     const filename = `${value.config.id}.${new Date().getTime()}.txt`;
     const blob = new Blob([propertiesString], {type: 'text/plain'});

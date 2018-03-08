@@ -99,8 +99,10 @@ export class StreamDeployValidator {
           if (tmp.length !== 2) {
             throw new Error();
           }
-          if (!StreamDeployValidator.propertyKeyRegex.test(tmp[0])) {
-            throw new Error();
+          if (!StreamDeployValidator.propertyPlatformRegex.test(tmp[0])) {
+            if (!StreamDeployValidator.propertyKeyRegex.test(tmp[0])) {
+              throw new Error();
+            }
           }
         });
     } catch (e) {
