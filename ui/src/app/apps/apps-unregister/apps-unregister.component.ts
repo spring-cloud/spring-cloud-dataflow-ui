@@ -3,6 +3,7 @@ import {BsModalRef} from 'ngx-bootstrap';
 import {AppRegistration} from '../../shared/model/app-registration.model';
 import {AppsService} from '../apps.service';
 import {ToastyService} from 'ng2-toasty';
+import 'rxjs/add/observable/throw';
 
 /**
  * Applications Unregister modal
@@ -66,8 +67,10 @@ export class AppsUnregisterComponent {
         }
         this.event.emit(data);
         this.close();
-      }
-    );
+      }, error => {
+        this.toastyService.error(error);
+        this.close();
+      });
   }
 
   /**
