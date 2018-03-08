@@ -3,7 +3,7 @@
   <div>
     <div class="description">
       <h1>Deploy Stream Definition {{ config.config.id }}</h1>
-      <p >
+      <p>
         Please specify any <strong>optional</strong> deployment properties.
         You can either enter deployment properties directly into the text-area
         field below or alternatively, you can point to an external properties file,
@@ -21,15 +21,19 @@
 
     <div *ngIf="!config.config.skipper" [formGroup]="config.free">
 
-      <div class="form-group">
+      <div class="form-group" [ngClass]="config.free.get('properties').invalid ? 'has-warning has-feedback' : ''">
         <label for="deploymentProperties" class="col-sm-4 control-label">Deployment Properties</label>
         <div class="col-sm-18">
-            <textarea formControlName="properties" class="form-control" id="deploymentProperties" name="deploymentProperties" autofocus rows="10"
-                placeholder="Enter optional deployment properties.
+            <textarea formControlName="properties" class="form-control" id="deploymentProperties"
+                      name="deploymentProperties" autofocus rows="10"
+                      placeholder="Enter optional deployment properties.
 1 line per property e.g.:
 app.*.bar=foo
 deployer.*.bar=foo"></textarea>
 
+          <span class="glyphicon glyphicon-warning-sign form-control-feedback"
+                *ngIf="config.free.get('properties').invalid"></span>
+          
           <span class="help-block" *ngIf="config.free.get('properties').invalid">
             Please provide a valid properties where the keys are formatted as
             <strong>type.name</strong> and the values are the URIs of the apps.

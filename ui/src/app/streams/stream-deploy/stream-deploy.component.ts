@@ -234,16 +234,18 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       result = value.free.get('properties').value
         .toString()
         .split('\n')
+        .filter((a) => a)
         .map((line) => {
-          return line.split('=')
-            .map((arr) => {
-              return (arr.length == 2) ? {
-                key: arr[0],
-                value: arr[1],
-                status: 'valid'
-              } : null;
-            }).filter((a) => a != null);
-        });
+          const arr = line
+            .toString()
+            .split('=');
+
+          return (arr.length === 2) ? {
+            key: arr[0],
+            value: arr[1],
+            status: 'valid'
+          } : null;
+        }).filter((a) => a);
     } else {
 
       if (this.state.view === 'builder') {
