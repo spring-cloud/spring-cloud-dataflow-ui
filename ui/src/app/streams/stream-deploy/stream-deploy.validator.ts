@@ -13,7 +13,7 @@ export class StreamDeployValidator {
   /**
    * Key regex
    */
-  static keyRegex = /^([a-zA-Z0-9]{2,50})([.][a-zA-Z0-9]{2,50}?)*$/;
+  static keyRegex = /^([a-zA-Z0-9]{2,50})([.][a-zA-Z0-9-\-\_]{2,50}?)*$/;
 
   /**
    * PropertyKey regex

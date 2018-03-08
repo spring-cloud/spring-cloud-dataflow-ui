@@ -2,7 +2,7 @@
 
   <div>
     <div class="description">
-      <h1>Deploy Stream Definition {{ config.config.id }}</h1>
+      <h1 style="margin-bottom: 10px">Deploy Stream Definition {{ config.config.id }}</h1>
       <p>
         Please specify any <strong>optional</strong> deployment properties.
         You can either enter deployment properties directly into the text-area
@@ -33,7 +33,7 @@ deployer.*.bar=foo"></textarea>
 
           <span class="glyphicon glyphicon-warning-sign form-control-feedback"
                 *ngIf="config.free.get('properties').invalid"></span>
-          
+
           <span class="help-block" *ngIf="config.free.get('properties').invalid">
             Please provide a valid properties where the keys are formatted as
             <strong>type.name</strong> and the values are the URIs of the apps.
@@ -386,6 +386,7 @@ deployer.*.bar=foo"></textarea>
 
         <button *ngIf="state.view == 'builder'" id="btn-export" type="button" class="btn btn-primary"
                 (click)="exportBuilderToFile(config)" [disabled]="!(toRaw(config).length > 0)">
+          <span style="line-height: 30px;margin-right: 10px" class="fa fa-download"></span>
           Export
         </button>
 

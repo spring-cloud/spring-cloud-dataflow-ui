@@ -43,6 +43,8 @@ describe('StreamsDefinitionValidator', () => {
         'aaa',
         'aaa111',
         'aaa111.121321aaa',
+        'aaa111.1213_21aaa',
+        'aaa111.1213-21aaa',
         'aaaa.aaaa.aaaa'
       ].forEach((mock) => {
         const control: FormControl = new FormControl(mock);
