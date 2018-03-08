@@ -229,7 +229,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       // Platform
       if (!isEmpty(value.builder.get('platform'))) {
         result.push({
-          key: 'deployer.platform',
+          key: 'spring.cloud.dataflow.skipper.platformName',
           value: value.builder.get('platform').value,
           status: 'valid'
         });

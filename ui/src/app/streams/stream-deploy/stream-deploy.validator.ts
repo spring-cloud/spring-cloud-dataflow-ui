@@ -19,6 +19,10 @@ export class StreamDeployValidator {
    * PropertyKey regex
    */
   static propertyKeyRegex = /^(deployer|app|version)(\.\*)?([.][a-zA-Z0-9]{2,50}?)*$/;
+  /**
+   * PropertyKey regex
+   */
+  static propertyPlatformRegex = /^(spring.cloud.dataflow.skipper.platformName)$/;
 
   /**
    * Number validator
@@ -66,8 +70,10 @@ export class StreamDeployValidator {
     if (!formControl.value) {
       return null;
     }
-    if (!StreamDeployValidator.propertyKeyRegex.test(formControl.value)) {
-      return {invalid: true};
+    if (!StreamDeployValidator.propertyPlatformRegex.test(formControl.value)) {
+      if (!StreamDeployValidator.propertyKeyRegex.test(formControl.value)) {
+        return {invalid: true};
+      }
     }
     return null;
   }
