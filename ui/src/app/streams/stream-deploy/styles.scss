@@ -44,23 +44,24 @@ $border-separator-color: #637885;
 }
 
 .properties-resume {
-  padding-left: 35px;
   padding-bottom: 20px;
 }
 
 .fromFile {
-  padding-left: 35px;
   padding-bottom: 20px;
   p {
     margin-bottom: 1rem;
   }
 }
 
+.tab-pane {
+  background: #fff;
+}
+
 .builder {
   display: flex;
   padding-bottom: 20px;
   padding-top: 10px;
-  padding-left: 35px;
   .col-fixed {
     flex: 0 0 250px;
     border-right: 1px solid $border-color;
