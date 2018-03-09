@@ -65,243 +65,171 @@ deployer.*.bar=foo"></textarea>
 
     </div>
 
-    <div *ngIf="config.config.skipper">
-      <div class="line-box">
-        <label class="radio-inline">
-          <input [(ngModel)]="state.view" name="mode" value="file" type="radio">
-          Load from a file
-        </label>
-      </div>
+    <div *ngIf="config.config.skipper" class="tab-simple">
 
-      <div class="fromFile" *ngIf="state.view == 'file'">
-        <p>Please provide a text file containing properties. This will be used to populate the text area above.</p>
-        <div class="input-file" [formGroup]="config.file">
-          <label class="btn-file btn btn-primary">
-            <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
-                   (change)="fileChange(config.file, $event)"/>
-            Import a local file
-          </label>
-        </div>
-      </div>
+      <ul class="nav nav-tabs">
+        <li [class.active]="state.view == 'file'"><a (click)="state.view = 'file'">File</a></li>
+        <li [class.active]="state.view == 'builder'"><a (click)="state.view = 'builder'">Form Builder</a></li>
+      </ul>
 
-      <div class="line-box">
-        <label class="radio-inline">
-          <input [(ngModel)]="state.view" name="mode" value="builder" type="radio">
-          Builder
-        </label>
-      </div>
-
-      <div class="builder" [formGroup]="config.builder" *ngIf="state.view == 'builder'">
-
-        <div class="col-fixed">
-
-          <!-- 0 -->
-          <div class="line-head">
+      <div class="tab-pane">
+        <div class="fromFile" *ngIf="state.view == 'file'">
+          <p>Please provide a text file containing properties. This will be used to populate the text area above.</p>
+          <div class="input-file" [formGroup]="config.file">
+            <label class="btn-file btn btn-primary">
+              <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
+                     (change)="fileChange(config.file, $event)"/>
+              Import a local file
+            </label>
           </div>
+        </div>
 
-          <!-- 1 -->
-          <div class="line-toggle">
-            <a class="toggle" (click)="state.platform = !state.platform">
+        <div class="builder" [formGroup]="config.builder" *ngIf="state.view == 'builder'">
+
+          <div class="col-fixed">
+
+            <!-- 0 -->
+            <div class="line-head">
+            </div>
+
+            <!-- 1 -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.platform = !state.platform">
               <span class="fa" [class.fa-chevron-down]="state.platform"
                     [class.fa-chevron-right]="!state.platform"></span>
-              Platform
-            </a>
-          </div>
-
-          <!-- 2 -->
-          <div class="line-body" *ngIf="state.platform">
-            <div class="form-control form-control-label">
-              Platform
+                Platform
+              </a>
             </div>
-          </div>
 
-          <!-- 3 -->
-          <div class="line-toggle">
-            <a class="toggle" (click)="state.deployer = !state.deployer">
+            <!-- 2 -->
+            <div class="line-body" *ngIf="state.platform">
+              <div class="form-control form-control-label">
+                Platform
+              </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.deployer = !state.deployer">
               <span class="fa" [class.fa-chevron-down]="state.deployer"
                     [class.fa-chevron-right]="!state.deployer"></span>
-              Generic Deployer Properties
-            </a>
-          </div>
-
-          <!-- 4 -->
-          <div *ngIf="state.deployer">
-            <div class="line-body" *ngFor="let deployer of config.config.deployers;let i = index">
-
-              <div class="status" *ngIf="config.builder.get('deployers').controls[i].invalid">
-                <div tooltipPlacement="right"
-                     [tooltip]="tooltipTemplate"
-                     class="fa fa-warning"></div>
-
-                <ng-template #tooltipTemplate>
-                  <div [innerHtml]="tooltip(config.config, config.builder.get('deployers').controls[i])"></div>
-                </ng-template>
-              </div>
-
-              <div class="form-control form-control-label">
-                {{ deployer.name }}
-              </div>
+                Generic Deployer Properties
+              </a>
             </div>
-          </div>
 
-          <!-- 5 -->
-          <div *ngIf="config.builder.get('platform').value" class="line-toggle">
-            <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
-            <span class="fa" [class.fa-chevron-down]="state.specificPlatform"
-                  [class.fa-chevron-right]="!state.specificPlatform"></span>
-              Deployment Platform ({{ config.builder.get('platform').value }})
-            </a>
-          </div>
+            <!-- 4 -->
+            <div *ngIf="state.deployer">
+              <div class="line-body" *ngFor="let deployer of config.config.deployers;let i = index">
 
-          <!-- 6 -->
-          <div *ngIf="config.builder.get('platform').value && state.specificPlatform" formArrayName="specificPlatform">
-            <div class="line-body" *ngFor="let f of config.builder.get('specificPlatform').controls;let i = index"
-                 [formGroupName]="i"
-                 [class.has-error]="config.builder.get('specificPlatform').controls[i].get('property').invalid">
-              <div class="status" *ngIf="config.builder.get('specificPlatform').controls[i].invalid">
-                <div tooltipPlacement="right"
-                     [tooltip]="tooltipTemplate"
-                     class="fa fa-warning"></div>
-
-                <ng-template #tooltipTemplate>
-                  <div
-                    [innerHtml]="tooltip(config.config, config.builder.get('specificPlatform').controls[i])"></div>
-                </ng-template>
-              </div>
-
-              <input placeholder="Enter a value" class="form-control" formControlName="property" type="text"/>
-            </div>
-          </div>
-
-          <!-- 7 -->
-          <div class="line-toggle">
-            <a class="toggle" (click)="state.app = !state.app">
-              <span class="fa" [class.fa-chevron-down]="state.app" [class.fa-chevron-right]="!state.app"></span>
-              Applications Properties
-            </a>
-          </div>
-
-          <!-- 8 -->
-          <div *ngIf="state.app">
-            <div class="line-body">
-              <div class="form-control form-control-label">
-                Version
-              </div>
-            </div>
-            <div class="line-body">
-              <div class="form-control form-control-label">
-                Properties
-              </div>
-            </div>
-            <div formArrayName="global">
-              <div class="line-body" *ngFor="let f of config.builder.get('global').controls;let i = index"
-                   [formGroupName]="i"
-                   [class.has-error]="config.builder.get('global').controls[i].get('property').invalid">
-
-                <div class="status" *ngIf="config.builder.get('global').controls[i].invalid">
-
+                <div class="status" *ngIf="config.builder.get('deployers').controls[i].invalid">
                   <div tooltipPlacement="right"
                        [tooltip]="tooltipTemplate"
                        class="fa fa-warning"></div>
 
                   <ng-template #tooltipTemplate>
-                    <div [innerHtml]="tooltip(config.config, config.builder.get('global').controls[i])"></div>
+                    <div [innerHtml]="tooltip(config.config, config.builder.get('deployers').controls[i])"></div>
+                  </ng-template>
+                </div>
+
+                <div class="form-control form-control-label">
+                  {{ deployer.name }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 5 -->
+            <div *ngIf="config.builder.get('platform').value" class="line-toggle">
+              <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
+            <span class="fa" [class.fa-chevron-down]="state.specificPlatform"
+                  [class.fa-chevron-right]="!state.specificPlatform"></span>
+                Deployment Platform ({{ config.builder.get('platform').value }})
+              </a>
+            </div>
+
+            <!-- 6 -->
+            <div *ngIf="config.builder.get('platform').value && state.specificPlatform"
+                 formArrayName="specificPlatform">
+              <div class="line-body" *ngFor="let f of config.builder.get('specificPlatform').controls;let i = index"
+                   [formGroupName]="i"
+                   [class.has-error]="config.builder.get('specificPlatform').controls[i].get('property').invalid">
+                <div class="status" *ngIf="config.builder.get('specificPlatform').controls[i].invalid">
+                  <div tooltipPlacement="right"
+                       [tooltip]="tooltipTemplate"
+                       class="fa fa-warning"></div>
+
+                  <ng-template #tooltipTemplate>
+                    <div
+                      [innerHtml]="tooltip(config.config, config.builder.get('specificPlatform').controls[i])"></div>
                   </ng-template>
                 </div>
 
                 <input placeholder="Enter a value" class="form-control" formControlName="property" type="text"/>
               </div>
             </div>
-          </div>
 
-        </div>
-
-        <div class="col-fixed global">
-
-          <!-- 0 -->
-          <div class="line-head">
-            Global
-          </div>
-
-          <!-- 1 -->
-          <div class="line-toggle"></div>
-
-          <!-- 2 -->
-          <div class="line-body" *ngIf="state.platform">
-            <select formControlName="platform">
-              <option value="">Select a value</option>
-              <option *ngFor="let platform of config.config.platform.values" [value]="platform.key">
-                {{ platform.name }}
-                ({{ platform.type }})
-              </option>
-            </select>
-          </div>
-
-          <!-- 3 -->
-          <div class="line-toggle"></div>
-
-          <!-- 4 -->
-          <div formArrayName="deployers" *ngIf="state.deployer">
-            <div [formGroupName]="i" class="line-body" *ngFor="let deployer of config.config.deployers; let i = index"
-                 [class.has-error]="config.builder.get('deployers').controls[i].get('global').invalid">
-
-              <input placeholder="Enter a number" formControlName="global" class="form-control"
-                     [class.form-control-number]="deployer.suffix" type="number"/>
-              <span class="placeholder-unit">{{ deployer.suffix }}</span>
+            <!-- 7 -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.app = !state.app">
+                <span class="fa" [class.fa-chevron-down]="state.app" [class.fa-chevron-right]="!state.app"></span>
+                Applications Properties
+              </a>
             </div>
-          </div>
 
-          <!-- 5 -->
-          <div *ngIf="config.builder.get('platform').value" class="line-toggle"></div>
+            <!-- 8 -->
+            <div *ngIf="state.app">
+              <div class="line-body">
+                <div class="form-control form-control-label">
+                  Version
+                </div>
+              </div>
+              <div class="line-body">
+                <div class="form-control form-control-label">
+                  Properties
+                </div>
+              </div>
+              <div formArrayName="global">
+                <div class="line-body" *ngFor="let f of config.builder.get('global').controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="config.builder.get('global').controls[i].get('property').invalid">
 
-          <!-- 6 -->
-          <div *ngIf="config.builder.get('platform').value && state.specificPlatform" formArrayName="specificPlatform">
-            <div class="line-body" *ngFor="let f of config.builder.get('specificPlatform').controls;let i = index"
-                 [formGroupName]="i"
-                 [class.has-error]="config.builder.get('specificPlatform').controls[i].get('global').invalid">
-              <input placeholder="Enter a value" class="form-control" formControlName="global" type="text"/>
-            </div>
-          </div>
+                  <div class="status" *ngIf="config.builder.get('global').controls[i].invalid">
 
-          <!-- 7 -->
-          <div class="line-toggle"></div>
+                    <div tooltipPlacement="right"
+                         [tooltip]="tooltipTemplate"
+                         class="fa fa-warning"></div>
 
-          <!-- 8 -->
-          <div *ngIf="state.app">
-            <div class="line-body"></div>
-            <div class="line-body"></div>
-            <div formArrayName="global">
-              <div class="line-body" *ngFor="let f of config.builder.get('global').controls;let i = index"
-                   [formGroupName]="i"
-                   [class.has-error]="config.builder.get('global').controls[i].get('global').invalid">
-                <input placeholder="Enter a value" class="form-control" formControlName="global" type="text"/>
+                    <ng-template #tooltipTemplate>
+                      <div [innerHtml]="tooltip(config.config, config.builder.get('global').controls[i])"></div>
+                    </ng-template>
+                  </div>
+
+                  <input placeholder="Enter a value" class="form-control" formControlName="property" type="text"/>
+                </div>
               </div>
             </div>
+
           </div>
 
-
-        </div>
-
-        <div class="scroll">
-
-          <div class="col" *ngFor="let app of config.config.apps">
+          <div class="col-fixed global">
 
             <!-- 0 -->
             <div class="line-head">
-              <span *ngIf="app.origin != app.name">
-                <strong>{{ app.name }}</strong>
-                ({{ app.origin }})
-              </span>
-              <strong *ngIf="app.origin == app.name">{{ app.name }}</strong>
-              <br/>
-              <app-type [application]="app"></app-type>
+              Global
             </div>
 
             <!-- 1 -->
             <div class="line-toggle"></div>
 
             <!-- 2 -->
-            <div class="line-body" *ngIf="state.platform"></div>
+            <div class="line-body" *ngIf="state.platform">
+              <select formControlName="platform">
+                <option value="">Select a value</option>
+                <option *ngFor="let platform of config.config.platform.values" [value]="platform.key">
+                  {{ platform.name }}
+                  ({{ platform.type }})
+                </option>
+              </select>
+            </div>
 
             <!-- 3 -->
             <div class="line-toggle"></div>
@@ -309,8 +237,9 @@ deployer.*.bar=foo"></textarea>
             <!-- 4 -->
             <div formArrayName="deployers" *ngIf="state.deployer">
               <div [formGroupName]="i" class="line-body" *ngFor="let deployer of config.config.deployers; let i = index"
-                   [class.has-error]="config.builder.get('deployers').controls[i].get(app.name).invalid">
-                <input placeholder="Enter a number" [formControlName]="app.name" class="form-control"
+                   [class.has-error]="config.builder.get('deployers').controls[i].get('global').invalid">
+
+                <input placeholder="Enter a number" formControlName="global" class="form-control"
                        [class.form-control-number]="deployer.suffix" type="number"/>
                 <span class="placeholder-unit">{{ deployer.suffix }}</span>
               </div>
@@ -324,8 +253,8 @@ deployer.*.bar=foo"></textarea>
                  formArrayName="specificPlatform">
               <div class="line-body" *ngFor="let f of config.builder.get('specificPlatform').controls;let i = index"
                    [formGroupName]="i"
-                   [class.has-error]="config.builder.get('specificPlatform').controls[i].get(app.name).invalid">
-                <input placeholder="Enter a value" class="form-control" [formControlName]="app.name" type="text"/>
+                   [class.has-error]="config.builder.get('specificPlatform').controls[i].get('global').invalid">
+                <input placeholder="Enter a value" class="form-control" formControlName="global" type="text"/>
               </div>
             </div>
 
@@ -334,78 +263,146 @@ deployer.*.bar=foo"></textarea>
 
             <!-- 8 -->
             <div *ngIf="state.app">
-              <div class="line-body">
-
-                <div formGroupName="appsVersion">
-                  <div class="cell">
-                    <select [formControlName]="app.name">
-                      <option value="">Default version ({{ app.version }})</option>
-                      <option *ngFor="let version of app.versions" [value]="version.version">
-                        {{ version.version }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="line-body">
-                <div *ngIf="app.options && !app.optionsState.isLoading" class="form-control form-control-label">
-                  <div *ngIf="app.options.length > 0">
-                    <strong>{{ getAppProperties(config.builderAppsProperties, app.name).length }}</strong>
-                    <span> /</span> {{ app.options.length }} properties
-                    <button type="button" (click)="setAppProperties(config, app)" class="btn btn-primary">
-                      <span class="fa fa-pencil"></span>
-                    </button>
-                  </div>
-                  <div *ngIf="app.options.length == 0">
-                    <strong>No properties</strong>
-                  </div>
-                </div>
-                <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">
-                  Loading ...
-                </div>
-                <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">
-                  Error
-                </div>
-              </div>
+              <div class="line-body"></div>
+              <div class="line-body"></div>
               <div formArrayName="global">
                 <div class="line-body" *ngFor="let f of config.builder.get('global').controls;let i = index"
                      [formGroupName]="i"
-                     [class.has-error]="config.builder.get('global').controls[i].get(app.name).invalid">
-                  <input placeholder="Enter a value" class="form-control" [formControlName]="app.name" type="text"/>
+                     [class.has-error]="config.builder.get('global').controls[i].get('global').invalid">
+                  <input placeholder="Enter a value" class="form-control" formControlName="global" type="text"/>
                 </div>
               </div>
             </div>
 
+
+          </div>
+
+          <div class="scroll">
+
+            <div class="col" *ngFor="let app of config.config.apps">
+
+              <!-- 0 -->
+              <div class="line-head">
+              <span *ngIf="app.origin != app.name">
+                <strong>{{ app.name }}</strong>
+                ({{ app.origin }})
+              </span>
+                <strong *ngIf="app.origin == app.name">{{ app.name }}</strong>
+                <br/>
+                <app-type [application]="app"></app-type>
+              </div>
+
+              <!-- 1 -->
+              <div class="line-toggle"></div>
+
+              <!-- 2 -->
+              <div class="line-body" *ngIf="state.platform"></div>
+
+              <!-- 3 -->
+              <div class="line-toggle"></div>
+
+              <!-- 4 -->
+              <div formArrayName="deployers" *ngIf="state.deployer">
+                <div [formGroupName]="i" class="line-body"
+                     *ngFor="let deployer of config.config.deployers; let i = index"
+                     [class.has-error]="config.builder.get('deployers').controls[i].get(app.name).invalid">
+                  <input placeholder="Enter a number" [formControlName]="app.name" class="form-control"
+                         [class.form-control-number]="deployer.suffix" type="number"/>
+                  <span class="placeholder-unit">{{ deployer.suffix }}</span>
+                </div>
+              </div>
+
+              <!-- 5 -->
+              <div *ngIf="config.builder.get('platform').value" class="line-toggle"></div>
+
+              <!-- 6 -->
+              <div *ngIf="config.builder.get('platform').value && state.specificPlatform"
+                   formArrayName="specificPlatform">
+                <div class="line-body" *ngFor="let f of config.builder.get('specificPlatform').controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="config.builder.get('specificPlatform').controls[i].get(app.name).invalid">
+                  <input placeholder="Enter a value" class="form-control" [formControlName]="app.name" type="text"/>
+                </div>
+              </div>
+
+              <!-- 7 -->
+              <div class="line-toggle"></div>
+
+              <!-- 8 -->
+              <div *ngIf="state.app">
+                <div class="line-body">
+
+                  <div formGroupName="appsVersion">
+                    <div class="cell">
+                      <select [formControlName]="app.name">
+                        <option value="">Default version ({{ app.version }})</option>
+                        <option *ngFor="let version of app.versions" [value]="version.version">
+                          {{ version.version }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="line-body">
+                  <div *ngIf="app.options && !app.optionsState.isLoading" class="form-control form-control-label">
+                    <div *ngIf="app.options.length > 0">
+                      <strong>{{ getAppProperties(config.builderAppsProperties, app.name).length }}</strong>
+                      <span> /</span> {{ app.options.length }} properties
+                      <button type="button" (click)="setAppProperties(config, app)" class="btn btn-primary">
+                        <span class="fa fa-pencil"></span>
+                      </button>
+                    </div>
+                    <div *ngIf="app.options.length == 0">
+                      <strong>No properties</strong>
+                    </div>
+                  </div>
+                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">
+                    Loading ...
+                  </div>
+                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">
+                    Error
+                  </div>
+                </div>
+                <div formArrayName="global">
+                  <div class="line-body" *ngFor="let f of config.builder.get('global').controls;let i = index"
+                       [formGroupName]="i"
+                       [class.has-error]="config.builder.get('global').controls[i].get(app.name).invalid">
+                    <input placeholder="Enter a value" class="form-control" [formControlName]="app.name" type="text"/>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="line-box">
-        <div class="line-box-title">Properties Resume</div>
-        <div class="properties-resume">
-          <app-stream-deploy-properties-debug [raw]="toRaw(config)"></app-stream-deploy-properties-debug>
+        <div class="line-box">
+          <div class="line-box-title">Properties Resume</div>
+          <div class="properties-resume">
+            <app-stream-deploy-properties-debug [raw]="toRaw(config)"></app-stream-deploy-properties-debug>
+          </div>
         </div>
-      </div>
 
-      <div class="footer-actions" style="text-align: center;padding:1rem 0;">
-        <a id="btn-cancel" class="btn btn-default" routerLink="/streams/definitions">Cancel</a>
+        <div class="footer-actions" style="text-align: center;padding:1rem 0;">
+          <a id="btn-cancel" class="btn btn-default" routerLink="/streams/definitions">Cancel</a>
 
-        <button *ngIf="state.view == 'builder'" id="btn-export" type="button" class="btn btn-primary"
-                (click)="exportBuilderToFile(config)" [disabled]="!(toRaw(config).length > 0)">
-          <span style="line-height: 30px;margin-right: 10px" class="fa fa-download"></span>
-          Export
-        </button>
+          <button *ngIf="state.view == 'builder'" id="btn-export" type="button" class="btn btn-primary"
+                  (click)="exportBuilderToFile(config)" [disabled]="!(toRaw(config).length > 0)">
+            <span style="line-height: 30px;margin-right: 10px" class="fa fa-download"></span>
+            Export
+          </button>
 
-        <button *ngIf="state.view == 'builder'" id="btn-deploy-builder" type="submit" class="btn btn-primary"
-                [disabled]="!config.builder.valid">
-          Deploy the stream
-        </button>
+          <button *ngIf="state.view == 'builder'" id="btn-deploy-builder" type="submit" class="btn btn-primary"
+                  [disabled]="!config.builder.valid">
+            Deploy the stream
+          </button>
 
-        <button *ngIf="state.view == 'file'" id="btn-deploy-file" type="submit" class="btn btn-primary"
-                [disabled]="!config.file.valid">
-          Deploy the stream
-        </button>
+          <button *ngIf="state.view == 'file'" id="btn-deploy-file" type="submit" class="btn btn-primary"
+                  [disabled]="!config.file.valid">
+            Deploy the stream
+          </button>
 
+        </div>
       </div>
 
     </div>
