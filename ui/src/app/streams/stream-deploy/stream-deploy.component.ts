@@ -16,7 +16,7 @@ import {saveAs} from 'file-saver/FileSaver';
 import {BsModalService} from 'ngx-bootstrap';
 import {AppPropertiesSource, StreamDeployAppPropertiesComponent} from './app-properties/app-properties.component';
 import {Properties} from 'spring-flo';
-import moment = require('moment');
+import * as moment from 'moment';
 
 /**
  * Component used to deploy stream definitions.
@@ -488,8 +488,8 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     free: FormGroup, file: FormGroup, config: StreamDeployConfig
   }) {
     const propertiesString = this.toRaw(value).map((a) => `${a.key}=${a.value}`).join('\n');
-    const date = moment().format('YYYY-MM-DDTHms');
-    const filename = `${value.config.id}.${date}.txt`;
+    const date = moment().format('YYYY-MM-HHmmss');
+    const filename = `${value.config.id}_${date}.txt`;
     const blob = new Blob([propertiesString], {type: 'text/plain'});
     saveAs(blob, filename);
   }
