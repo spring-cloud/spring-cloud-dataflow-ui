@@ -55,67 +55,101 @@ describe('AppsBulkImportComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should disabled the import action', () => {
-    fixture.detectChanges();
-    const bt = fixture.debugElement.query(By.css('.footer-actions .btn-primary')).nativeElement;
-    const inputs = {
-      uri: fixture.debugElement.query(By.css('#uriInput')).nativeElement,
-      properties: fixture.debugElement.query(By.css('#propertiesInput')).nativeElement,
-      force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
-    };
-    [
-      {uri: '', properties: '', force: true},
-      {uri: 'http://foo.ly/foo-bar-foo', properties: 'a=a', force: false},
-      {uri: 'bar', properties: 'bar', force: false},
-      {uri: 'foo@bar.com', properties: 'bar', force: true},
-      {uri: '', properties: 'bar', force: false},
-      {uri: '', properties: 'foo=bar=bar', force: false},
-      {uri: '', properties: 'foo=bar\nbar', force: false}
-    ].forEach((a) => {
-      component.form.get('uri').setValue(a.uri);
-      component.form.get('properties').setValue(a.properties);
-      component.form.get('force').setValue(a.force);
+  describe('URI', () => {
+    it('should disabled the import action', () => {
       fixture.detectChanges();
-      if (a.uri) {
-        expect(inputs.uri.value).toContain(a.uri);
-      }
-      if (a.properties) {
-        expect(inputs.properties.value).toContain(a.properties);
-      }
-      expect(inputs.force.checked).toBe(a.force);
-      expect(bt.disabled).toBeTruthy();
+      const bt = fixture.debugElement.query(By.css('.footer-actions .btn-primary')).nativeElement;
+      const inputs = {
+        uri: fixture.debugElement.query(By.css('#uriInput')).nativeElement,
+        force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
+      };
+      [
+        {uri: '', force: true},
+        {uri: 'bar', force: false},
+        {uri: 'foo@bar.com', force: true}
+      ].forEach((a) => {
+        component.form.get('uri').setValue(a.uri);
+        component.form.get('force').setValue(a.force);
+        fixture.detectChanges();
+        expect(inputs.uri.value).toBe(a.uri);
+        expect(inputs.force.checked).toBe(a.force);
+        expect(bt.disabled).toBeTruthy();
+      });
+    });
+
+    it('should enable the import action and call the appService.bulkImportApps method', () => {
+      fixture.detectChanges();
+      const bt = fixture.debugElement.query(By.css('.footer-actions .btn-primary')).nativeElement;
+      const inputs = {
+        uri: fixture.debugElement.query(By.css('#uriInput')).nativeElement,
+        force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
+      };
+      const spy = spyOn(appsService, 'bulkImportApps');
+      [
+        {uri: 'http://foo.ly/foo-bar-foo', force: false}
+      ].forEach((a) => {
+        component.form.get('uri').setValue(a.uri);
+        component.form.get('force').setValue(a.force);
+        fixture.detectChanges();
+        expect(bt.disabled).not.toBeTruthy();
+        expect(inputs.uri.value).toBe(a.uri);
+        expect(inputs.force.checked).toBe(a.force);
+        bt.click();
+      });
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
-  it('should enable the import action and call the appService.bulkImportApps method', () => {
-    fixture.detectChanges();
-    const bt = fixture.debugElement.query(By.css('.footer-actions .btn-primary')).nativeElement;
-    const inputs = {
-      uri: fixture.debugElement.query(By.css('#uriInput')).nativeElement,
-      properties: fixture.debugElement.query(By.css('#propertiesInput')).nativeElement,
-      force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
-    };
-    const spy = spyOn(appsService, 'bulkImportApps');
-    [
-      {uri: 'http://foo.ly/foo-bar-foo', properties: '', force: false},
-      {uri: '', properties: 'foo=http://foo.ly/foo-bar-foo', force: true},
-      {uri: '', properties: 'foo=http://foo.ly/foo-bar-foo\nbar=http://foo.ly/foo-bar-foo', force: true}
-    ].forEach((a) => {
-      component.form.get('uri').setValue(a.uri);
-      component.form.get('properties').setValue(a.properties);
-      component.form.get('force').setValue(a.force);
+  describe('Properties', () => {
+    it('should disabled the import action', () => {
+      component.changeTab('properties');
       fixture.detectChanges();
-      expect(bt.disabled).not.toBeTruthy();
-      if (a.uri) {
-        expect(inputs.uri.value).toContain(a.uri);
-      }
-      if (a.properties) {
-        expect(inputs.properties.value).toContain(a.properties);
-      }
-      expect(inputs.force.checked).toBe(a.force);
-      bt.click();
+      const bt = fixture.debugElement.query(By.css('.footer-actions .btn-primary')).nativeElement;
+      const inputs = {
+        properties: fixture.debugElement.query(By.css('#propertiesInput')).nativeElement,
+        force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
+      };
+      [
+        {properties: '', force: true},
+        {properties: 'a=a', force: false},
+        {properties: 'bar', force: false},
+        {properties: 'bar', force: true},
+        {properties: 'bar', force: false},
+        {properties: 'foo=bar=bar', force: false},
+        {properties: 'foo=bar\nbar', force: false}
+      ].forEach((a) => {
+        component.form.get('properties').setValue(a.properties);
+        component.form.get('force').setValue(a.force);
+        fixture.detectChanges();
+        expect(inputs.properties.value).toBe(a.properties);
+        expect(inputs.force.checked).toBe(a.force);
+        expect(bt.disabled).toBeTruthy();
+      });
     });
-    expect(spy).toHaveBeenCalledTimes(3);
+
+    it('should enable the import action and call the appService.bulkImportApps method', () => {
+      component.changeTab('properties');
+      fixture.detectChanges();
+      const bt = fixture.debugElement.query(By.css('.footer-actions .btn-primary')).nativeElement;
+      const inputs = {
+        properties: fixture.debugElement.query(By.css('#propertiesInput')).nativeElement,
+        force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
+      };
+      const spy = spyOn(appsService, 'bulkImportApps');
+      [
+        {properties: 'foo=http://foo.ly/foo-bar-foo', force: true},
+        {properties: 'foo=http://foo.ly/foo-bar-foo\nbar=http://foo.ly/foo-bar-foo', force: true}
+      ].forEach((a) => {
+        component.form.get('properties').setValue(a.properties);
+        component.form.get('force').setValue(a.force);
+        fixture.detectChanges();
+        expect(bt.disabled).not.toBeTruthy();
+        expect(inputs.properties.value).toBe(a.properties);
+        expect(inputs.force.checked).toBe(a.force);
+        bt.click();
+      });
+      expect(spy).toHaveBeenCalledTimes(2);
+    });
   });
 
   it('should display a toast after a success import', () => {

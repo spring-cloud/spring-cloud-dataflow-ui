@@ -34,6 +34,13 @@ export class AppsBulkImportComponent implements OnDestroy {
   form: FormGroup;
 
   /**
+   * State component
+   */
+  state = {
+    tab: 'uri'
+  };
+
+  /**
    * Constructor
    *
    * @param {AppsService} appsService
@@ -80,6 +87,21 @@ export class AppsBulkImportComponent implements OnDestroy {
       };
       reader.readAsText(contents.target.files[0]);
     } catch (e) {
+    }
+  }
+
+  /**
+   * Change tab and remove values of previous form.
+   *
+   * @param {string} tab
+   */
+  changeTab(tab: string) {
+    if (tab === 'properties') {
+      this.form.get('uri').setValue('');
+      this.state.tab = tab;
+    } else {
+      this.form.get('properties').setValue('');
+      this.state.tab = 'uri';
     }
   }
 

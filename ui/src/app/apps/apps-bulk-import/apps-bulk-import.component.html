@@ -12,29 +12,57 @@
   </div>
   <hr/>
   <form [formGroup]="form" class="form-horizontal" role="form" (ngSubmit)="bulkImportApps()" novalidate>
-    <fieldset id="importAppsViaUri">
-      <div class="form-group" [class.has-error]="form.get('uri').invalid">
-        <label for="uriInput" class="col-sm-6 control-label">Uri</label>
-        <div class="col-sm-14">
-          <input type="text" id="uriInput" name="uri" autofocus formControlName="uri" class="form-control"
-                 placeholder="http://url.to.properties">
-          <span class="help-block" *ngIf="form.get('uri').invalid">Please provide a valid URI pointing to the respective properties file.</span>
+
+    <div class="tab-simple">
+      <ul class="nav nav-tabs">
+        <li [class.active]="state.tab == 'uri'">
+          <a (click)="changeTab('uri')">From HTTP</a>
+        </li>
+        <li [class.active]="state.tab == 'properties'">
+          <a (click)="changeTab('properties')">From Properties</a>
+        </li>
+      </ul>
+
+      <div class="tab-content">
+
+        <div *ngIf="state.tab == 'uri'">
+
+          <div class="row">
+            <div class="col-md-12 col-md-offset-6">
+              <div style="padding: 1.5em 0 0.5rem 0.5rem;">
+                <div class="alert alert-info">Provide a URI that points to the location of the properties file</div>
+              </div>
+            </div>
+          </div>
+
+          <fieldset id="importAppsViaUri">
+            <div class="form-group" [class.has-error]="form.get('uri').invalid">
+              <label for="uriInput" class="col-sm-6 control-label">Uri</label>
+              <div class="col-sm-14">
+                <input type="text" id="uriInput" name="uri" autofocus formControlName="uri" class="form-control"
+                       placeholder="http://url.to.properties">
+                <span class="help-block" *ngIf="form.get('uri').invalid">Please provide a valid URI pointing to the respective properties file.</span>
+              </div>
+            </div>
+          </fieldset>
+
         </div>
-      </div>
-    </fieldset>
-    <h2 class="text-center">OR</h2>
-    <div class="row" style="margin-bottom: 1em;">
-      <div class="col-md-12 col-md-offset-6">
-        <p>
-          Enter the list of properties into the text area field below. Alternatively, you can also select a
-          file in your local file system, which is used to populate the text area field.
-        </p>
-      </div>
-    </div>
-    <fieldset id="importAppsViaUpload">
-      <div class="form-group" [class.has-error]="form.get('properties').invalid">
-        <label for="propertiesInput" class="col-sm-6 control-label">Apps as Properties</label>
-        <div class="col-sm-14">
+
+        <div *ngIf="state.tab == 'properties'">
+          <div class="row">
+            <div class="col-md-12 col-md-offset-6">
+              <div style="padding: 1.5em 0 0.5rem 0.5rem;">
+                <div class="alert alert-info">
+                  Enter the list of properties into the text area field below. Alternatively, you can also select a
+                  file in your local file system, which is used to populate the text area field.
+                </div>
+              </div>
+            </div>
+          </div>
+          <fieldset id="importAppsViaUpload">
+            <div class="form-group" [class.has-error]="form.get('properties').invalid">
+              <label for="propertiesInput" class="col-sm-6 control-label">Apps as Properties</label>
+              <div class="col-sm-14">
               <textarea id="propertiesInput" name="properties" autofocus
                         formControlName="properties"
                         rows="5"
@@ -43,45 +71,47 @@
   task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE"
               ></textarea>
 
-          <span class="help-block" *ngIf="form.get('properties').invalid">Please provide a valid properties where the keys are formatted as
+                <span class="help-block" *ngIf="form.get('properties').invalid">Please provide a valid properties where the keys are formatted as
             <strong>type.name</strong> and the values are the URIs of the apps.</span>
 
-          <div class="input-file">
-            <label class="btn-file btn btn-primary" placement="bottom"
-                   tooltip="Please provide a text file containing properties. This will be used to populate the text area above.">
-              <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
-                     (change)="fileChange($event)"/>
-              Import a local file
+                <div class="input-file">
+                  <label class="btn-file btn btn-default" placement="bottom"
+                         tooltip="Please provide a text file containing properties. This will be used to populate the text area above.">
+                    <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
+                           (change)="fileChange($event)"/>
+                    Import a local file
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-14 col-sm-offset-6">
+            <hr/>
+            <label class="checkbox-inline">
+              <input formControlName="force" id="forceInput" name="force" type="checkbox"/>
+              Force
             </label>
+            <p class="checkbox-description">
+              By checking <strong>force</strong>, the applications will be imported and installed
+              even if it already exists but only if not being used already.
+            </p>
           </div>
         </div>
+
+        <div class="footer-actions row" style="padding-bottom: 2em;text-align: center">
+          <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+            Import the application(s)
+          </button>
+        </div>
       </div>
-    </fieldset>
 
-    <div class="form-group">
-      <div class="col-sm-14 col-sm-offset-6">
-        <hr />
-        <label class="checkbox-inline">
-          <input formControlName="force" id="forceInput" name="force" type="checkbox" />
-          Force
-        </label>
-        <p class="checkbox-description">
-          By checking <strong>force</strong>, the applications will be imported and installed
-          even if it already exists but only if not being used already.
-        </p>
-      </div>
     </div>
 
-    <div *ngIf="form.invalid && form.hasError('both')" class="alert alert-danger" style="width: 350px;margin: 0 auto 2rem;">
-      Please provide only a URI or Properties not both.
-    </div>
-
-    <div class="footer-actions row" style="margin-bottom: 2em;text-align: center">
-      <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
-        Import the application(s)
-      </button>
-    </div>
   </form>
 
 </div>
