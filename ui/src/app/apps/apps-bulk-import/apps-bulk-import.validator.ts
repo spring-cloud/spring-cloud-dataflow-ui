@@ -15,26 +15,6 @@ export class AppsBulkImportValidator {
   static uriRegex = /^([a-zA-Z0-9-]+:\/\/)([\\w\\.:-]+)?([a-zA-Z0-9-\/.:-]+)*$/;
 
   /**
-   * Validate the conditions: uri or properties value
-   *
-   * @param {FormGroup} control
-   * @returns {any} An object error
-   */
-  static form(control: FormGroup): any {
-    const uri = control.get('uri');
-    const properties = control.get('properties');
-
-    if (!uri.value && !properties.value) {
-      return {invalid: true};
-    }
-    if (uri.value && properties.value) {
-      return {both: true};
-    }
-
-    return null;
-  }
-
-  /**
    * Validate the uri conditions
    *
    * @param {FormControl} formControl
@@ -82,6 +62,6 @@ export class AppsBulkImportValidator {
       return {invalid: true};
     }
     return null;
-
   }
+
 }

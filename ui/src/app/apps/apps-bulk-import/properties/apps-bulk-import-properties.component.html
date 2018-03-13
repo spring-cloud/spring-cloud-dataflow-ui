@@ -1,0 +1,64 @@
+<form [formGroup]="form" class="form-horizontal" role="form" (ngSubmit)="submit()" novalidate>
+
+  <div class="row">
+    <div class="col-md-14 col-sm-offset-6">
+      <div style="padding: 1.5em 0 0.5rem 1rem;">
+        <div class="alert alert-info">
+          Enter the list of properties into the text area field below. Alternatively, you can also select a
+          file in your local file system, which is used to populate the text area field.
+        </div>
+      </div>
+    </div>
+  </div>
+  <fieldset id="importAppsViaUpload">
+    <div class="form-group" [class.has-error]="form.get('properties').invalid && form.get('properties').dirty">
+      <label for="propertiesInput" class="col-sm-6 control-label">Apps as Properties</label>
+      <div class="col-sm-14">
+        <textarea id="propertiesInput" name="properties" autofocus
+                  formControlName="properties"
+                  rows="5"
+                  class="form-control" placeholder="Example:
+  task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE
+  task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE">
+        </textarea>
+
+        <span class="help-block" *ngIf="form.get('properties').invalid && form.get('properties').dirty">
+          Please provide a valid properties where the keys are formatted as
+            <strong>type.name</strong> and the values are the URIs of the apps.
+        </span>
+
+        <div class="input-file">
+          <label class="btn-file btn btn-default" placement="bottom"
+                 tooltip="Please provide a text file containing properties. This will be used to populate the text area above.">
+            <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
+                   (change)="fileChange($event)"/>
+            Import a local file
+          </label>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <div class="col-sm-14 col-sm-offset-6">
+      <hr/>
+      <label class="checkbox-inline">
+        <input formControlName="force" id="forceInput" name="force" type="checkbox"/>
+        Force
+      </label>
+      <p class="checkbox-description">
+        By checking <strong>force</strong>, the applications will be imported and installed
+        even if it already exists but only if not being used already.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-actions row" style="padding-bottom: 2em;text-align: center">
+    <button type="button" class="btn btn-default" routerLink="/apps">Cancel</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      Import the application(s)
+    </button>
+  </div>
+
+</form>
+

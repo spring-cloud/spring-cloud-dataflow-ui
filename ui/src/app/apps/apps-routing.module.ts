@@ -6,6 +6,8 @@ import {AppsBulkImportComponent} from './apps-bulk-import/apps-bulk-import.compo
 import {AppsRegisterComponent} from './apps-register/apps-register.component';
 import {AppDetailsComponent} from './app-details/app-details.component';
 import {AuthGuard} from '../auth/support/auth.guard';
+import {AppsBulkImportUriComponent} from './apps-bulk-import/uri/apps-bulk-import-uri.component';
+import {AppsBulkImportPropertiesComponent} from './apps-bulk-import/properties/apps-bulk-import-properties.component';
 
 
 const appsRoutes: Routes = [
@@ -22,16 +24,28 @@ const appsRoutes: Routes = [
         component: AppsComponent,
       },
       {
-        path: ':appType/:appName',
-        component: AppDetailsComponent
-      },
-      {
-        path: 'bulk-import-apps', component: AppsBulkImportComponent,
+        path: 'bulk-import-apps',
+        component: AppsBulkImportComponent,
         canActivate: [AuthGuard],
         data: {
           authenticate: true,
           roles: ['ROLE_CREATE']
         },
+        children: [
+          {
+            path: '',
+            redirectTo: 'uri',
+            pathMatch: 'full'
+          },
+          {
+            path: 'uri',
+            component: AppsBulkImportUriComponent
+          },
+          {
+            path: 'properties',
+            component: AppsBulkImportPropertiesComponent
+          }
+        ]
       },
       {
         path: 'register-apps', component: AppsRegisterComponent,
@@ -41,6 +55,10 @@ const appsRoutes: Routes = [
           roles: ['ROLE_CREATE']
         },
       },
+      {
+        path: ':appType/:appName',
+        component: AppDetailsComponent
+      }
     ]
   }
 ];
