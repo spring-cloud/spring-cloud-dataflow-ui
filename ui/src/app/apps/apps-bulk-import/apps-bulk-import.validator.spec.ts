@@ -8,39 +8,12 @@ import {AppsBulkImportValidator} from './apps-bulk-import.validator';
  */
 describe('AppsBulkImportValidator', () => {
 
-  describe('form', () => {
-
-    it('invalid: empty or 2 values set', () => {
-      const form: FormGroup = new FormGroup({
-        'properties': new FormControl(''),
-        'uri': new FormControl('')
-      });
-      expect(AppsBulkImportValidator.form(form).invalid).toBeTruthy();
-      form.get('uri').setValue('http://foo.ly/foo-bar-foo');
-      form.get('properties').setValue('foo=bar');
-      expect(AppsBulkImportValidator.form(form).both).toBeTruthy();
-    });
-
-    it('valid', () => {
-      [
-        {properties: '', uri: 'http://foo.ly/foo-bar-foo'},
-        {properties: 'foo=http://foo.ly/foo-bar-foo', uri: ''},
-      ].forEach((mock) => {
-        const form: FormGroup = new FormGroup({
-          'properties': new FormControl(mock.properties),
-          'uri': new FormControl(mock.uri)
-        });
-        expect(AppsBulkImportValidator.form(form)).toBeNull();
-      });
-    });
-
-  });
-
   describe('uri', () => {
     it('invalid', () => {
       [
         ' ',
         'bb',
+        ' http://foo.ly/foo',
         'b b'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
