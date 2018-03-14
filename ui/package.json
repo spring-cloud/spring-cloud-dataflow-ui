@@ -35,7 +35,7 @@
     "moment": "2.19.3",
     "ng2-stomp-service": "1.2.2",
     "ng2-toasty": "4.0.3",
-    "ngx-bootstrap": "2.0.0-beta.9",
+    "ngx-bootstrap": "2.0.3",
     "ngx-clipboard": "9.0.0",
     "ngx-pagination": "3.0.3",
     "sockjs-client": "1.1.4",
