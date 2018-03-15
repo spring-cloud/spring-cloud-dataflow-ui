@@ -45,7 +45,9 @@ describe('StreamsDefinitionValidator', () => {
         'aaa111.121321aaa',
         'aaa111.1213_21aaa',
         'aaa111.1213-21aaa',
-        'aaaa.aaaa.aaaa'
+        'aaaa.aaaa.aaaa',
+        'metrics.schedule-interval',
+        'applicationMetrics.destination'
       ].forEach((mock) => {
         const control: FormControl = new FormControl(mock);
         expect(StreamDeployValidator.key(control)).toBeNull();
@@ -76,7 +78,9 @@ describe('StreamsDefinitionValidator', () => {
         'version.file',
         'deployer.*.foo',
         'deployer.file.foo',
-        'spring.cloud.dataflow.skipper.platformName'
+        'spring.cloud.dataflow.skipper.platformName',
+        'app.*.spring.cloud.stream.bindings.applicationMetrics.destination',
+        'app.*.spring.cloud.stream.metrics.schedule-interval'
       ].forEach((mock) => {
         const control: FormControl = new FormControl(mock);
         expect(StreamDeployValidator.keyProperty(control)).toBeNull();
@@ -105,6 +109,14 @@ describe('StreamsDefinitionValidator', () => {
       expect(result).toBe(undefined);
 
       formControl.setValue('bar=baz');
+      result = StreamDeployValidator.validateDeploymentProperties(formControl);
+      expect(result).toBe(undefined);
+
+      formControl.setValue('app.*.spring.cloud.stream.bindings.applicationMetrics.destination=metrics');
+      result = StreamDeployValidator.validateDeploymentProperties(formControl);
+      expect(result).toBe(undefined);
+
+      formControl.setValue('app.*.spring.cloud.stream.metrics.schedule-interval=PT10S');
       result = StreamDeployValidator.validateDeploymentProperties(formControl);
       expect(result).toBe(undefined);
 

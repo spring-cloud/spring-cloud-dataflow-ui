@@ -18,7 +18,7 @@ export class StreamDeployValidator {
   /**
    * PropertyKey regex
    */
-  static propertyKeyRegex = /^(deployer|app|version)(\.\*)?([.][a-zA-Z0-9]{2,50}?)*$/;
+  static propertyKeyRegex = /^(deployer|app|version)(\.\*)?([.][a-zA-Z0-9-\-\_]{2,50}?)*$/;
   /**
    * PropertyKey regex
    */
