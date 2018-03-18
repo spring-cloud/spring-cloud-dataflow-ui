@@ -5,7 +5,6 @@ import {RuntimeAppsService} from '../runtime-apps.service';
 import {BsModalService, BsModalRef} from 'ngx-bootstrap';
 import {Observable} from 'rxjs/Observable';
 import {RuntimeAppComponent} from '../runtime-app/runtime-app.component';
-import {Subscription} from 'rxjs/Subscription';
 import {PaginationParams} from '../../shared/components/shared.interface';
 
 /**
@@ -18,17 +17,12 @@ import {PaginationParams} from '../../shared/components/shared.interface';
   selector: 'app-runtime-apps',
   templateUrl: './runtime-apps.component.html',
 })
-export class RuntimeAppsComponent implements OnInit, OnDestroy {
+export class RuntimeAppsComponent implements OnInit {
 
   /**
    * Observable of a runtime applications page
    */
   runtimeApps$: Observable<Page<RuntimeApp>>;
-
-  /**
-   * Subscription of Runtime Apps
-   */
-  subscriptionRuntimeApps: Subscription;
 
   /**
    * Pagination state
@@ -58,23 +52,10 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Initialize
-   */
-  ngOnDestroy() {
-    if (this.subscriptionRuntimeApps) {
-      this.subscriptionRuntimeApps.unsubscribe();
-    }
-  }
-
-  /**
    * Load runtime applications, request the dedicate service
    */
   loadRuntimeApps() {
-    if (this.subscriptionRuntimeApps) {
-      this.subscriptionRuntimeApps.unsubscribe();
-    }
     this.runtimeApps$ = this.runtimeAppsService.getRuntimeApps(this.pagination);
-    this.subscriptionRuntimeApps = this.runtimeApps$.subscribe();
   }
 
   /**
