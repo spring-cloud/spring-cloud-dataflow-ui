@@ -224,6 +224,9 @@ table.table-checkbox {
     padding-right: 0.2rem;
     padding-left: 1.5rem;
   }
+}
+
+table.table-actions, table.table-checkbox {
   td.table-actions {
     padding: 4px;
     text-align: center;
@@ -233,6 +236,14 @@ table.table-checkbox {
         margin: 0;
         padding: 0 10px;
       }
+    }
+  }
+}
+
+table.table {
+  tr.align-middle {
+    td {
+      vertical-align: middle;
     }
   }
 }

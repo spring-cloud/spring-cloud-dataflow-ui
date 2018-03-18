@@ -18,7 +18,9 @@
   <div *ngIf="runtimeApps$ | async as runtimeApps; else loading">
 
     <div id="no-result" *ngIf="runtimeApps.items.length == 0">
-      No applications are running.
+      <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
+        No applications are running.
+      </div>
     </div>
 
     <table id="table" *ngIf="runtimeApps.items.length > 0" class="table table-actions table-hover">
@@ -32,7 +34,7 @@
       </thead>
       <tbody>
       <ng-template ngFor let-runtimeApp [ngForOf]="runtimeApps.items | paginate: runtimeApps.getPaginationInstance()">
-        <tr>
+        <tr class="align-middle">
           <td>
             <a style="cursor: pointer" (click)="view(runtimeApp)">{{ runtimeApp.deploymentId }}</a>
           </td>
