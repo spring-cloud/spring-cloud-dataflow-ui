@@ -191,7 +191,7 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
 
     toolMarkup: [
         '<g class="link-tool create-stream">',
-        '<rect class="link-tools-container" width="22" height="47" transform="translate(-11 -11)"/>',
+        '<rect class="link-tools-container" width="28" height="28" transform="translate(-20 -20)"/>',
         '<g class="tool-remove" event="remove">',
         '<circle r="11" transform="scale(.7)"/>',
         '<path transform="scale(.6) translate(-16, -16)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585' +
