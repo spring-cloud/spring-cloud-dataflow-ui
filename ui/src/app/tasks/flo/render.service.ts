@@ -15,6 +15,7 @@ import { DecorationComponent } from '../../shared/flo/decoration/decoration.comp
 import { HandleComponent } from '../../shared/flo/handle/handle.component';
 import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
+import {TaskGraphPropertiesSource} from './properties/task-properties-source';
 const joint: any = _joint;
 
 const HANDLE_ICON_MAP = new Map<string, string>()
@@ -217,10 +218,9 @@ export class RenderService implements Flo.Renderer {
    */
   handleLinkEvent(context: Flo.EditorContext, event: string, link: dia.Link): void {
     if (event === 'options') {
-      // TODO, doesn't really work, maybe flo issue
       const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
       modalRef.content.title = `Properties for ${link.attr('metadata/name').toUpperCase()}`;
-      modalRef.content.setData(link, context.getGraph());
+      modalRef.content.setData(new TaskGraphPropertiesSource(link));
     }
   }
 
