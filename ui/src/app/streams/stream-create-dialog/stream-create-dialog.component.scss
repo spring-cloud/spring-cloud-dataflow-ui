@@ -22,6 +22,9 @@
     font-size: smaller;
     line-height: 1em;
   }
+  .dialog-control input[type="checkbox"] {
+    margin-right: 5px;
+  }
 }
 
 .ng-busy {
