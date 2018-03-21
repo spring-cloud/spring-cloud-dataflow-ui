@@ -1,9 +1,9 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import { GraphViewComponent } from './graph-view.component';
 import { FloModule } from 'spring-flo';
-import { RenderService } from '../../../streams/flo/render.service';
+import { RenderService } from '../../../streams/components/flo/render.service';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
-import { MetamodelService } from '../../../streams/flo/metamodel.service';
+import { MetamodelService } from '../../../streams/components/flo/metamodel.service';
 
 /**
  * Test {@link GraphViewComponent}.

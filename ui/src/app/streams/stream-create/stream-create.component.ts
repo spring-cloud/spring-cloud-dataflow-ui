@@ -1,17 +1,18 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Flo } from 'spring-flo';
-import { ParserService } from '../../shared/services/parser.service';
-import { Parser } from '../../shared/services/parser';
-import { MetamodelService } from '../flo/metamodel.service';
-import { RenderService } from '../flo/render.service';
-import { EditorService } from '../flo/editor.service';
-import { BsModalService } from 'ngx-bootstrap';
-import { StreamCreateDialogComponent } from '../stream-create-dialog/stream-create-dialog.component';
-import { ContentAssistService } from '../flo/content-assist.service';
+import {Subscription} from 'rxjs/Subscription';
+import {Flo} from 'spring-flo';
+import {ParserService} from '../../shared/services/parser.service';
+import {Parser} from '../../shared/services/parser';
+import {MetamodelService} from '../components/flo/metamodel.service';
+import {RenderService} from '../components/flo/render.service';
+import {EditorService} from '../components/flo/editor.service';
+import {BsModalService} from 'ngx-bootstrap';
+import {StreamCreateDialogComponent} from './create-dialog/create-dialog.component';
+import {ContentAssistService} from '../components/flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
-import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import {Subject} from 'rxjs/Subject';
+import {takeUntil} from 'rxjs/operators';
+import {BusyService} from '../../shared/services/busy.service';
 
 
 /**
@@ -20,7 +21,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-stream-create',
   templateUrl: './stream-create.component.html',
-  styleUrls: [ '../../shared/flo/flo.scss' ],
+  styleUrls: ['../../shared/flo/flo.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class StreamCreateComponent implements OnInit, OnDestroy {
@@ -43,14 +44,13 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   contentValidated = false;
 
-  busy: Subscription;
-
   initSubject: Subject<void>;
 
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,
               public editorService: EditorService,
               private bsModalService: BsModalService,
+              private busyService: BusyService,
               private contentAssistService: ContentAssistService,
               private parserService: ParserService) {
 
@@ -71,9 +71,11 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     };
 
     this.initSubject = new Subject();
-    this.busy = this.initSubject
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe();
+    const busy = this.initSubject
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe();
+
+    this.busyService.addSubscription(busy);
   }
 
   ngOnInit() {
@@ -96,14 +98,14 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     this.editorContext = editorContext;
     if (this.editorContext) {
       const subscription = this.editorContext.paletteReady
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(ready => {
-        if (ready) {
-          subscription.unsubscribe();
-          this.initSubject.next();
-          this.initSubject.complete();
-        }
-      });
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(ready => {
+          if (ready) {
+            subscription.unsubscribe();
+            this.initSubject.next();
+            this.initSubject.complete();
+          }
+        });
     }
   }
 
@@ -138,23 +140,23 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
     return new Promise((resolve) => {
       this.contentAssistService.getProposals(prefix)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(completions => {
-        const chopAt = this.interestingPrefixStart(prefix, completions);
-        const finalProposals = completions.map((longCompletion: any) => {
-          const text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;
-          return text.substring(chopAt);
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(completions => {
+          const chopAt = this.interestingPrefixStart(prefix, completions);
+          const finalProposals = completions.map((longCompletion: any) => {
+            const text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;
+            return text.substring(chopAt);
+          });
+          console.log(JSON.stringify(finalProposals));
+          resolve({
+            list: finalProposals,
+            from: {line: startOfLine.line, ch: chopAt},
+            to: cursor
+          });
+        }, err => {
+          console.error(err);
+          resolve();
         });
-        console.log(JSON.stringify(finalProposals));
-        resolve({
-          list: finalProposals,
-          from: {line: startOfLine.line, ch: chopAt},
-          to: cursor
-        });
-      }, err => {
-        console.error(err);
-        resolve();
-      });
     });
 
   }

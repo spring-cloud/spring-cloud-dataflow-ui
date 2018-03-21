@@ -1,0 +1,90 @@
+.deployment-info-popup {
+  max-width: 500px;
+}
+
+.graph {
+  padding: 0;
+  .canvas {
+    border: 0 none;
+    margin: 0;
+  }
+}
+
+.popover {
+  max-width: 500px;
+}
+
+table.status-help-content-table {
+  border: 0 none;
+  tr {
+    border-left: 0 none;
+    border-right: 0 none;
+    &:first-child {
+      border-top: 0 none;
+    }
+    &:last-child {
+      border-bottom: 0 none;
+    }
+  }
+}
+
+
+.link-expand {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+  .glyphicon {
+    position: absolute;
+    left: 6px;
+    top: 1px;
+    color: #232b2f;
+    &.glyphicon-chevron-right {
+      left: 3px;
+      top: 0;
+    }
+  }
+  &:hover {
+    .glyphicon {
+      color: #1B78B3;
+    }
+    text-decoration: none;
+  }
+}
+
+.head-dsl {
+  position: relative;
+  padding-left: 25px;
+  .dropdown {
+    position: absolute;
+    left: 2px;
+    padding-left: 0;
+    .btn-dropdown {
+      padding-right: 0;
+      text-decoration: none;
+      color: #232b2f;
+      cursor: pointer;
+      &:hover {
+        .glyphicon {
+          color: #1B78B3;
+        }
+      }
+    }
+    .glyphicon-chevron-right {
+      display: block;
+    }
+    .glyphicon-chevron-down {
+      display: none;
+    }
+    &.open {
+      .glyphicon-chevron-right {
+        display: none;
+      }
+      .glyphicon-chevron-down {
+        margin-top: 1px;
+        margin-left: 3px;
+        display: block;
+      }
+    }
+  }
+}

@@ -9,18 +9,18 @@ import { Expandable } from './../../shared/model/expandable';
  */
 export class StreamDefinition implements Expandable {
 
-  public name: String;
-  public dslText: String;
-  public status: String;
+  public name: string;
+  public dslText: string;
+  public status: string;
   public isExpanded = false;
   public force = false;
 
   public deploymentProperties: any;
 
   constructor(
-      name: String,
-      dslText: String,
-      status: String) {
+      name: string,
+      dslText: string,
+      status: string) {
     this.name = name;
     this.dslText = dslText;
     this.status = status;

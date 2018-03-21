@@ -1,0 +1,40 @@
+<div *ngIf="streamDefinitions">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm Undeploy Stream Definition(s)</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="streamDefinitions.length == 1">
+    <p>This action will undeploy the stream <strong>{{ streamDefinitions[0].name }}</strong>. Are you sure?</p>
+  </div>
+  <div class="modal-body" *ngIf="streamDefinitions.length > 1">
+    <p>
+      This action will undeploy the <strong>{{ streamDefinitions.length }} stream definitions</strong> listed below.
+      Are you sure?
+    </p>
+    <br/>
+    <table id="table-streams" class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Definition</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of streamDefinitions">
+        <td>{{ item.name }}</td>
+        <td>
+          <app-stream-dsl>{{ item.dslText | truncate: 95 }}</app-stream-dsl>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer" style="text-align:center">
+    <button id="btn-cancel" type="button" class="btn btn-default" (click)="cancel()">No</button>
+    <button id="btn-undeploy" type="button" class="btn btn-primary" (click)="undeploy()">
+      Undeploy Stream Definition(s)
+    </button>
+  </div>
+</div>

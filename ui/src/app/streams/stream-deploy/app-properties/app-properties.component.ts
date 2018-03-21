@@ -2,8 +2,8 @@ import {Component, EventEmitter, ViewEncapsulation} from '@angular/core';
 import {PropertiesDialogComponent} from '../../../shared/flo/properties/properties-dialog.component';
 import {BsModalRef} from 'ngx-bootstrap';
 import {StreamsService} from '../../streams.service';
-import {StreamAppPropertiesSource, StreamHead} from '../../flo/properties/stream-properties-source';
-import {StreamPropertiesGroupModel} from '../../flo/properties/stream-properties-dialog.component';
+import {StreamAppPropertiesSource, StreamHead} from '../../components/flo/properties/stream-properties-source';
+import {StreamPropertiesGroupModel} from '../../components/flo/properties/stream-properties-dialog.component';
 import {Observable} from 'rxjs/Observable';
 import {Properties} from 'spring-flo';
 

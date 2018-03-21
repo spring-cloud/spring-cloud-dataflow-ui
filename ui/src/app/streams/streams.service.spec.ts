@@ -28,18 +28,11 @@ describe('StreamsService', () => {
 
       expect(this.streamsService.streamDefinitions).toBeDefined();
 
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
+      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 30);
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
-      this.streamsService.getDefinitions()  ;
-
-      const defaultPageNumber: number = this.streamsService.streamDefinitions.pageNumber;
-      const defaultPageSize: number = this.streamsService.streamDefinitions.pageSize;
-
-      expect(defaultPageNumber).toBe(0);
-      expect(defaultPageSize).toBe(10);
+      this.streamsService.getDefinitions();
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
-
       this.streamsService.streamDefinitions.filter = 'testFilter';
       this.streamsService.getDefinitions();
       expect(this.streamsService.streamDefinitions.filter).toBe('testFilter');
@@ -49,7 +42,7 @@ describe('StreamsService', () => {
     it('should call the definitions service with the right url [no sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
 
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
+      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 30);
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
       this.streamsService.getDefinitions();
@@ -58,30 +51,28 @@ describe('StreamsService', () => {
 
     it('should call the definitions service with the right url [null sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
+      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 30);
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
-      this.streamsService.getDefinitions(undefined, undefined);
+      this.streamsService.getDefinitions(null);
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
     });
 
-    it('should call the definitions service with the right url [desc asc sort]', () => {
+    it('should call the definitions service with the right url [asc sort]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
       params.append('sort', 'DEFINITION,ASC');
-      params.append('sort', 'DEFINITION_NAME,DESC');
-      this.streamsService.getDefinitions(true, false);
+      this.streamsService.getDefinitions({q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'ASC'});
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
     });
 
-    it('should call the definitions service with the right url [asc desc sort]', () => {
+    it('should call the definitions service with the right url [desc sort]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
       params.append('sort', 'DEFINITION,DESC');
-      params.append('sort', 'DEFINITION_NAME,ASC');
-      this.streamsService.getDefinitions(false, true);
+      this.streamsService.getDefinitions({q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC'});
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
@@ -100,7 +91,7 @@ describe('StreamsService', () => {
       expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/definitions/test', requestOptionsArgs);
     });
 
-   describe('undeployDefinition', () => {
+    describe('undeployDefinition', () => {
       it('should call the streams service to undeploy stream definition', () => {
         this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
 
@@ -170,7 +161,7 @@ describe('StreamsService', () => {
 
         this.streamsService.getRelatedDefinitions('test', true);
         const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-        const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+        const params = new URLSearchParams('', URL_QUERY_ENCODER);
         params.append('nested', 'true');
         requestOptionsArgs.params = params;
         expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions/test/related', requestOptionsArgs);
@@ -196,7 +187,7 @@ describe('StreamsService', () => {
 
         this.streamsService.metrics(['test1', 'test2']);
         const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-        const params =  new URLSearchParams('', URL_QUERY_ENCODER);
+        const params = new URLSearchParams('', URL_QUERY_ENCODER);
         params.append('names', 'test1,test2');
         requestOptionsArgs.params = params;
         expect(this.mockHttp.get).toHaveBeenCalledWith('/metrics/streams', requestOptionsArgs);

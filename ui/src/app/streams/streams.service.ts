@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers, RequestOptions, URLSearchParams} from '@angular/http';
-
+import {Http, Response, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-
 import {StreamDefinition} from './model/stream-definition';
 import {StreamMetrics} from './model/stream-metrics';
 import {Page} from '../shared/model/page';
 import {ErrorHandler} from '../shared/model/error-handler';
 import {HttpUtils, URL_QUERY_ENCODER} from '../shared/support/http.utils';
 import {Platform} from './model/platform';
+import {StreamListParams} from './components/streams.interface';
+import {OrderParams} from '../shared/components/shared.interface';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -23,6 +23,16 @@ import {Platform} from './model/platform';
  */
 @Injectable()
 export class StreamsService {
+
+  public streamsContext = {
+    q: '',
+    page: 0,
+    size: 30,
+    sort: 'DEFINITION_NAME',
+    order: OrderParams.ASC,
+    itemsSelected: [],
+    itemsExpanded: []
+  };
 
   /** Will never be null. */
   public streamDefinitions: Page<StreamDefinition>;
@@ -41,37 +51,27 @@ export class StreamsService {
   /**
    * Retrieves the {@link StreamDefinition}s based on the page requested.
    *
-   * @param definitionNameSort the sort for DEFINITION_NAME
-   * @param definitionSort the sort for DEFINITION
    * @returns {Observable<R|T>} that will call the subscribed funtions to handle
    * the results when returned from the Spring Cloud Data Flow server.
    */
-  getDefinitions(definitionNameSort?: boolean, definitionSort?: boolean): Observable<Page<StreamDefinition>> {
-
-    console.log('Getting paged stream definitions', this.streamDefinitions);
-    console.log(this.streamDefinitions.getPaginationInstance());
-
+  getDefinitions(streamListParams: StreamListParams): Observable<Page<StreamDefinition>> {
+    streamListParams = streamListParams || {
+      q: '',
+      page: 0,
+      size: 30,
+      sort: null,
+      order: null
+    };
+    console.log('Getting paged stream definitions', streamListParams);
     const params = HttpUtils.getPaginationParams(
-      this.streamDefinitions.pageNumber,
-      this.streamDefinitions.pageSize
+      streamListParams.page,
+      streamListParams.size
     );
-    if (definitionSort !== undefined) {
-      if (definitionSort) {
-        params.append('sort', 'DEFINITION,DESC');
-      } else {
-        params.append('sort', 'DEFINITION,ASC');
-      }
+    if (streamListParams.q) {
+      params.append('search', streamListParams.q);
     }
-    if (definitionNameSort !== undefined) {
-      if (definitionNameSort) {
-        params.append('sort', 'DEFINITION_NAME,DESC');
-      } else {
-        params.append('sort', 'DEFINITION_NAME,ASC');
-      }
-    }
-
-    if (this.streamDefinitions.filter['q'] && this.streamDefinitions.filter['q'].length > 0) {
-      params.append('search', this.streamDefinitions.filter['q']);
+    if (streamListParams.sort && streamListParams.order) {
+      params.append('sort', `${streamListParams.sort},${streamListParams.order}`);
     }
 
     const options = HttpUtils.getDefaultRequestOptions();

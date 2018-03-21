@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 /**
  * Mock for angular ActivatedRoute.
@@ -19,6 +19,9 @@ export class MockActivatedRoute {
   private subject = new BehaviorSubject(this.testParams);
   params = this.subject.asObservable();
   snapshot = {};
+  parent = {
+    params: this.subject.asObservable()
+  };
 
   get testParams() {
     return this._testParams;
