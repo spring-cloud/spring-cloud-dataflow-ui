@@ -1,0 +1,58 @@
+<div *ngIf="streamDefinitions">
+  <div class="modal-content" *ngIf="!selectStreamDefinition" id="panel-stream">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Confirm Deployment of Stream Definitions</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="streamDefinitions">
+      <p>
+        This action will deploy the <strong>{{ streamDefinitions.length }}
+        stream definition{{ streamDefinitions.length > 1 ? 's' : '' }}</strong> listed below.
+        Optionally, you can add deployment properties for each stream definition.
+      </p>
+      <br/>
+      <table id="table-stream" class="table table-striped">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Definition</th>
+          <th>Deployment properties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of streamDefinitions">
+          <td>{{ item.name }}</td>
+          <td>
+            <app-stream-dsl>{{ item.dslText | truncate: 90 }}</app-stream-dsl>
+          </td>
+          <td width="10" nowrap="">
+            <div *ngIf="item.deploymentProperties && (item.deploymentProperties | keyvalues)?.length > 0">
+              <p style="padding-bottom: 6px">
+                <strong>{{ (item.deploymentProperties | keyvalues)?.length }}
+                  propert{{ (item.deploymentProperties | keyvalues)?.length > 1 ? 'ies' : 'y' }}</strong>
+              </p>
+            </div>
+            <div>
+              <a class="btn btn-sm btn-default" (click)="viewDeploymentProperties(item)">
+                Edit deployment properties
+              </a>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="deployDefinitions()">Deploy</button>
+    </div>
+  </div>
+
+  <div class="modal-content" *ngIf="selectStreamDefinition" id="panel-parameters">
+    <app-stream-deployment-properties [stream]="selectStreamDefinition" (submit)="back()" (cancel)="back()">
+    </app-stream-deployment-properties>
+  </div>
+
+</div>

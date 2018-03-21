@@ -1,4 +1,4 @@
-import {StreamDefinition} from './stream-definition';
+import { StreamDefinition } from './stream-definition';
 
 /**
  * Test {@link StreamDefinition} model.

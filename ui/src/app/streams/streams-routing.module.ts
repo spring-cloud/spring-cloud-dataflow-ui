@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { StreamsComponent } from './streams.component';
-import { StreamDefinitionsComponent } from './stream-definitions/stream-definitions.component';
-import { StreamDetailsComponent } from './stream-details/stream-details.component';
+import { StreamsComponent } from './streams/streams.component';
 import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { StreamDeployComponent } from './stream-deploy/stream-deploy.component';
 import { AuthGuard } from '../auth/support/auth.guard';
+import { StreamComponent } from './stream/stream.component';
+import { StreamGraphComponent } from './stream/graph/stream-graph.component';
+import { StreamSummaryComponent } from './stream/summary/stream-summary.component';
 
 const streamRoutes: Routes = [
   {
     path: 'streams',
-    component: StreamsComponent,
     canActivate: [AuthGuard],
     data: {
       authenticate: true,
@@ -20,17 +19,27 @@ const streamRoutes: Routes = [
     },
     children: [
       {
-          path: '',
-          pathMatch: 'full',
-          redirectTo: 'definitions'
-      },
-      {
-        path: 'definitions',
-        component: StreamDefinitionsComponent,
+        path: '',
+        component: StreamsComponent,
       },
       {
         path: 'definitions/:id',
-        component: StreamDetailsComponent,
+        component: StreamComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'summary',
+            pathMatch: 'full'
+          },
+          {
+            path: 'graph',
+            component: StreamGraphComponent,
+          },
+          {
+            path: 'summary',
+            component: StreamSummaryComponent,
+          }
+        ]
       },
       {
         path: 'definitions/:id/deploy',
@@ -53,4 +62,5 @@ const streamRoutes: Routes = [
   imports: [RouterModule.forChild(streamRoutes)],
   exports: [RouterModule]
 })
-export class StreamsRoutingModule {}
+export class StreamsRoutingModule {
+}

@@ -73,6 +73,7 @@ deployer.*.bar=foo"></textarea>
       </ul>
 
       <div class="tab-pane">
+
         <div class="fromFile" *ngIf="state.view == 'file'">
           <p>Please provide a text file containing properties. This will be used to populate the text area above.</p>
           <div class="input-file" [formGroup]="config.file">
@@ -384,7 +385,7 @@ deployer.*.bar=foo"></textarea>
         </div>
 
         <div class="footer-actions" style="text-align: center;padding:1rem 0;">
-          <a id="btn-cancel" class="btn btn-default" routerLink="/streams/definitions">Cancel</a>
+          <a id="btn-cancel" class="btn btn-default" routerLink="/streams">Cancel</a>
 
           <button *ngIf="state.view == 'builder'" id="btn-export" type="button" class="btn btn-primary"
                   (click)="exportBuilderToFile(config)" [disabled]="!(toRaw(config).length > 0)">

@@ -4,6 +4,7 @@ import {Page} from '../../shared/model/page';
 import {StreamDefinition} from '../../streams/model/stream-definition';
 import {Platform} from '../../streams/model/platform';
 import {StreamMetrics} from '../../streams/model/stream-metrics';
+import {OrderParams} from '../../shared/components/shared.interface';
 
 /**
  * Mock for StreamsService.
@@ -23,6 +24,16 @@ import {StreamMetrics} from '../../streams/model/stream-metrics';
  * @author Damien Vitrac
  */
 export class MockStreamsService {
+
+  public streamsContext = {
+    q: '',
+    page: 0,
+    size: 30,
+    sort: 'DEFINITION_NAME',
+    order: OrderParams.ASC,
+    itemsSelected: [],
+    itemsExpanded: []
+  };
 
   public _streamDefinitions;
 
@@ -53,28 +64,32 @@ export class MockStreamsService {
     return Observable.of(page);
   }
 
-  undeployDefinition(streamDefinition: StreamDefinition): Observable<Response>|Observable<any> {
+  getDefinition(name: string): Observable<any> {
+    return Observable.of(this.streamDefinitions._embedded.streamDefinitionResourceList[0]);
+  }
+
+  undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> | Observable<any> {
     return Observable.of({});
   }
 
-  undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<any>[] {
-    return [Observable.of({})];
+  undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
+    return Observable.of(Array.from({length: streamDefinitions.length}));
   }
 
-  destroyDefinition(streamDefinition: StreamDefinition): Observable<Response>|Observable<any> {
+  destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> | Observable<any> {
     return Observable.of({});
   }
 
-  destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<any>[] {
-    return [Observable.of({})];
+  destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
+    return Observable.of(Array.from({length: streamDefinitions.length}));
   }
 
-  deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response>|Observable<any> {
+  deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> | Observable<any> {
     return Observable.of({});
   }
 
-  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<any>[] {
-    return [Observable.of({})];
+  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
+    return Observable.of(Array.from({length: streamDefinitions.length}));
   }
 
   getRelatedDefinitions(streamDefinitionName: String, nested?: boolean): Observable<StreamDefinition[]> {

@@ -1,10 +1,10 @@
 import { Shapes } from 'spring-flo';
 import { dia } from 'jointjs';
-import { RenderService } from '../../../streams/flo/render.service';
+import { RenderService } from '../../../streams/components/flo/render.service';
 import { HandleComponent } from './handle.component';
 import { Constants } from 'spring-flo';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
-import { MetamodelService } from '../../../streams/flo/metamodel.service';
+import { MetamodelService } from '../../../streams/components/flo/metamodel.service';
 import { async } from '@angular/core/testing';
 
 import * as _joint from 'jointjs';
