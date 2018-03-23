@@ -8,7 +8,7 @@ import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} fro
 @Component({
   selector: 'app-stream-deploy-properties-debug',
   templateUrl: 'properties-debug.component.html',
-  styleUrls: ['../styles.scss'],
+  styleUrls: ['../builder/styles.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StreamDeployPropertiesDebugComponent implements OnChanges {

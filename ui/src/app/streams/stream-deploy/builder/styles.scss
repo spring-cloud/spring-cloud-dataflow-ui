@@ -1,17 +1,6 @@
 $border-color: #CCC;
 $border-separator-color: #637885;
 
-.line-box {
-  padding-bottom: 0.5rem;
-  .radio-inline, .line-box-title {
-    display: block;
-    border-bottom: 1px solid $border-color;
-    padding: 1rem .7em;
-    margin: 0 0 1rem;
-    font-weight: bold;
-  }
-}
-
 .properties-box {
   border-left: 3px solid $border-color;
   padding: 1rem;
@@ -40,17 +29,6 @@ $border-separator-color: #637885;
     span.key {
       color: #3777ae;
     }
-  }
-}
-
-.properties-resume {
-  padding-bottom: 20px;
-}
-
-.fromFile {
-  padding-bottom: 20px;
-  p {
-    margin-bottom: 1rem;
   }
 }
 
@@ -127,6 +105,13 @@ $border-separator-color: #637885;
     }
   }
 
+  .col-key {
+    .form-control-label {
+      background: #f9f9f9;
+      color: rgba(0, 0, 0, .65);
+    }
+  }
+
   .form-control-label {
     position: relative;
     .btn {
@@ -136,6 +121,12 @@ $border-separator-color: #637885;
       padding: 5px 8px;
       height: auto;
     }
+  }
+
+  select {
+    height: 36px;
+    font-size: 16px;
+    padding-left: 12px;
   }
 
   .toggle {
@@ -159,29 +150,3 @@ $border-separator-color: #637885;
   }
 }
 
-.input-file {
-  position: relative;
-  display: block;
-  clear: both;
-  width: 220px;
-  .btn-file {
-    height: 32px;
-    margin-right: 0;
-    margin-top: 0;
-    input {
-      display: none;
-    }
-  }
-}
-
-.input-file-right {
-  margin-left: auto;
-  .btn-file {
-    height: 36px;
-    margin-right: 0;
-    margin-top: 8px;
-    input {
-      display: none;
-    }
-  }
-}

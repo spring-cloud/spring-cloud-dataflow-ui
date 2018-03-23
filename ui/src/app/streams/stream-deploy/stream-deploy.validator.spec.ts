@@ -40,6 +40,9 @@ describe('StreamsDefinitionValidator', () => {
     it('valid', () => {
       [
         'aa.aa',
+        'aa.a',
+        'a',
+        'a.a',
         'aaa',
         'aaa111',
         'aaa111.121321aaa',
@@ -55,9 +58,8 @@ describe('StreamsDefinitionValidator', () => {
     });
     it('invalid', () => {
       [
-        'a',
-        'a.aaa',
-        'aa.a',
+        'a.',
+        'aa.',
         '.aaaa',
         'aaa.%aa',
         '  aaa.aaa',
@@ -90,6 +92,10 @@ describe('StreamsDefinitionValidator', () => {
       [
         'aa.aa',
         'aaa',
+        'app',
+        'app.',
+        'deployer',
+        'version',
         'aaa111',
         'aaa111.121321aaa',
         'aaaa.aaaa.aaaa'

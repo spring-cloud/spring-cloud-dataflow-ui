@@ -1,0 +1,23 @@
+
+.alert-danger {
+  border: 1px solid #ddacac;
+  padding: 2px 10px;
+  div.alert-line {
+    vertical-align: middle;
+    border-bottom: 1px solid #ddacac;
+    padding: 5px 0;
+    a.trash {
+      color: #a34a49;
+      display: inline-block;
+      float: right;
+      padding: 2px 10px;
+      cursor: pointer;
+      &:hover {
+        color: #8d2624;
+      }
+    }
+    &:last-child {
+      border-bottom: 0 none;
+    }
+  }
+}

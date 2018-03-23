@@ -19,14 +19,4 @@ export class StreamDeployConfig {
 
   }
 
-  platformExist(key: string): boolean {
-    if (!key) {
-      return true;
-    }
-    if (this.platform) {
-      return this.platform.values.filter((a) => a.key === key).length > 0;
-    }
-    return false;
-  }
-
 }
