@@ -1,4 +1,4 @@
-import {Serializable} from '../../shared/model/serialization/serializable.model';
+import { Serializable } from '../../shared/model/serialization/serializable.model';
 
 /**
  * Represents a Platform.

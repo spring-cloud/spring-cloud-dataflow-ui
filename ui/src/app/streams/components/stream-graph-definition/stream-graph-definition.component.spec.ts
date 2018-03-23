@@ -1,10 +1,10 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {StreamDefinition} from '../../model/stream-definition';
-import {GraphViewComponent} from '../../../shared/flo/graph-view/graph-view.component';
-import {StreamGraphDefinitionComponent} from './stream-graph-definition.component';
-import {FloModule} from 'spring-flo';
-import {MetamodelService} from '../flo/metamodel.service';
-import {RenderService} from '../flo/render.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { StreamDefinition } from '../../model/stream-definition';
+import { GraphViewComponent } from '../../../shared/flo/graph-view/graph-view.component';
+import { StreamGraphDefinitionComponent } from './stream-graph-definition.component';
+import { FloModule } from 'spring-flo';
+import { MetamodelService } from '../flo/metamodel.service';
+import { RenderService } from '../flo/render.service';
 import {
   StreamMetrics,
   ApplicationMetrics,
@@ -13,14 +13,14 @@ import {
   OUTPUT_CHANNEL_MEAN,
   TYPE
 } from '../../model/stream-metrics';
-import {dia} from 'jointjs';
+import { dia } from 'jointjs';
 import {
   TYPE_INCOMING_MESSAGE_RATE,
   TYPE_OUTGOING_MESSAGE_RATE,
   TYPE_INSTANCE_DOT,
   TYPE_INSTANCE_LABEL
 } from '../flo/support/shapes';
-import {MockSharedAppService} from '../../../tests/mocks/shared-app';
+import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -43,8 +43,8 @@ describe('StreamGraphDefinitionComponent', () => {
         FloModule
       ],
       providers: [
-        {provide: MetamodelService, useValue: metamodelService},
-        {provide: RenderService, useValue: renderService}
+        { provide: MetamodelService, useValue: metamodelService },
+        { provide: RenderService, useValue: renderService }
       ]
     })
       .compileComponents();
@@ -195,8 +195,8 @@ describe('StreamGraphDefinitionComponent', () => {
         index: index,
         properties: properties,
         metrics: [
-          {name: INPUT_CHANNEL_MEAN, value: inRate},
-          {name: OUTPUT_CHANNEL_MEAN, value: outRate}
+          { name: INPUT_CHANNEL_MEAN, value: inRate },
+          { name: OUTPUT_CHANNEL_MEAN, value: outRate }
         ]
       });
     }
@@ -204,8 +204,8 @@ describe('StreamGraphDefinitionComponent', () => {
       name: name,
       instances: instances,
       aggregateMetrics: [
-        {name: INPUT_CHANNEL_MEAN, value: inRate},
-        {name: OUTPUT_CHANNEL_MEAN, value: outRate}
+        { name: INPUT_CHANNEL_MEAN, value: inRate },
+        { name: OUTPUT_CHANNEL_MEAN, value: outRate }
       ]
     });
   }

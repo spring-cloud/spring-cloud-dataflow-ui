@@ -17,10 +17,9 @@ export class StreamDefinition implements Expandable {
 
   public deploymentProperties: any;
 
-  constructor(
-      name: string,
-      dslText: string,
-      status: string) {
+  constructor(name: string,
+              dslText: string,
+              status: string) {
     this.name = name;
     this.dslText = dslText;
     this.status = status;
@@ -29,6 +28,7 @@ export class StreamDefinition implements Expandable {
   get isSelected(): boolean {
     return this.force;
   }
+
   set isSelected(isSelected: boolean) {
     this.force = isSelected;
   }

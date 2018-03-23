@@ -1,14 +1,13 @@
-import {Component, EventEmitter, OnDestroy} from '@angular/core';
-import {ToastyService} from 'ng2-toasty';
-import {BsModalRef} from 'ngx-bootstrap';
-import {StreamDefinition} from '../model/stream-definition';
-import {StreamsService} from '../streams.service';
-import {Subscription} from 'rxjs/Subscription';
-import {Modal} from '../../shared/components/modal/modal-abstract';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {BusyService} from '../../shared/services/busy.service';
+import { Component, EventEmitter, OnDestroy } from '@angular/core';
+import { ToastyService } from 'ng2-toasty';
+import { BsModalRef } from 'ngx-bootstrap';
+import { StreamDefinition } from '../model/stream-definition';
+import { StreamsService } from '../streams.service';
+import { Modal } from '../../shared/components/modal/modal-abstract';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BusyService } from '../../shared/services/busy.service';
 
 @Component({
   selector: 'app-stream-destroy',

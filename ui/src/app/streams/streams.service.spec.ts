@@ -1,11 +1,11 @@
-import {ErrorHandler} from '../shared/model/error-handler';
-import {StreamsService} from './streams.service';
-import {Observable} from 'rxjs/Observable';
-import {HttpUtils, URL_QUERY_ENCODER} from '../shared/support/http.utils';
-import {StreamDefinition} from './model/stream-definition';
-import {URLSearchParams} from '@angular/http';
-import {MockResponse} from '../tests/mocks/response';
-import {STREAM_DEFINITIONS} from '../tests/mocks/mock-data';
+import { ErrorHandler } from '../shared/model/error-handler';
+import { StreamsService } from './streams.service';
+import { Observable } from 'rxjs/Observable';
+import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
+import { StreamDefinition } from './model/stream-definition';
+import { URLSearchParams } from '@angular/http';
+import { MockResponse } from '../tests/mocks/response';
+import { STREAM_DEFINITIONS } from '../tests/mocks/mock-data';
 
 /**
  * Test Streams Services.
@@ -49,12 +49,12 @@ describe('StreamsService', () => {
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
     });
 
-    it('should call the definitions service with the right url [null sort params]', () => {
+    it('should call the definitions service with the right url [undefined sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       const params: URLSearchParams = HttpUtils.getPaginationParams(0, 30);
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
-      this.streamsService.getDefinitions(null);
+      this.streamsService.getDefinitions(undefined);
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
     });
 
@@ -62,7 +62,7 @@ describe('StreamsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
       params.append('sort', 'DEFINITION,ASC');
-      this.streamsService.getDefinitions({q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'ASC'});
+      this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'ASC' });
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
@@ -72,7 +72,7 @@ describe('StreamsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
       params.append('sort', 'DEFINITION,DESC');
-      this.streamsService.getDefinitions({q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC'});
+      this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC' });
       const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       requestOptionsArgs.search = params;
       expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
@@ -218,9 +218,9 @@ describe('StreamsService', () => {
         expect(this.streamsService.streamDefinitions).toBeDefined();
         const stream1 = new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed');
         const stream2 = new StreamDefinition('stream2', 'file|filter|ftp', 'undeployed');
-        stream1.deploymentProperties = {a: 'a'};
+        stream1.deploymentProperties = { a: 'a' };
         this.streamsService.deployMultipleStreamDefinitions([stream1, stream2]);
-        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream1', {a: 'a'}, options);
+        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream1', { a: 'a' }, options);
         expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream2', {}, options);
         expect(this.mockHttp.post).toHaveBeenCalledTimes(2);
       });

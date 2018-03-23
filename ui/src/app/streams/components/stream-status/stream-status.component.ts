@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {StreamDefinition} from '../../model/stream-definition';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { StreamDefinition } from '../../model/stream-definition';
 
 /**
  * Component used to format the type of Application.

@@ -1,13 +1,13 @@
-import {Component, OnInit, Output, EventEmitter, Input, OnDestroy} from '@angular/core';
-import {FormGroup, FormControl, FormBuilder} from '@angular/forms';
-import {StreamDefinition} from '../../model/stream-definition';
-import {Subscription} from 'rxjs/Subscription';
-import {Platform} from '../../model/platform';
-import {SharedAboutService} from '../../../shared/services/shared-about.service';
-import {StreamsService} from '../../streams.service';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs/Subject';
-import {StreamDeployValidator} from '../../stream-deploy/stream-deploy.validator';
+import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { StreamDefinition } from '../../model/stream-definition';
+import { Subscription } from 'rxjs/Subscription';
+import { Platform } from '../../model/platform';
+import { SharedAboutService } from '../../../shared/services/shared-about.service';
+import { StreamsService } from '../../streams.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
+import { StreamDeployValidator } from '../../stream-deploy/stream-deploy.validator';
 
 @Component({
   selector: 'app-stream-deployment-properties',
@@ -137,7 +137,7 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
     const reader: FileReader = new FileReader();
     const _form = this.form;
     reader.onloadend = function (e) {
-      _form.patchValue({deploymentProperties: reader.result});
+      _form.patchValue({ deploymentProperties: reader.result });
     };
     reader.readAsText(file);
   }

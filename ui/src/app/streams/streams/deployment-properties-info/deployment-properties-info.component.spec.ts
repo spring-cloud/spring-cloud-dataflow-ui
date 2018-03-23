@@ -1,8 +1,8 @@
-import {DeployedAppProperties, DeploymentPropertiesInfoComponent} from './deployment-properties-info.component';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MockStreamsService} from '../../../tests/mocks/streams';
-import {StreamsService} from '../../streams.service';
-import {StreamDefinition} from '../../model/stream-definition';
+import { DeployedAppProperties, DeploymentPropertiesInfoComponent } from './deployment-properties-info.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockStreamsService } from '../../../tests/mocks/streams';
+import { StreamsService } from '../../streams.service';
+import { StreamDefinition } from '../../model/stream-definition';
 
 /**
  * Test {@link DeploymentPropertiesInfoComponent}.
@@ -35,7 +35,7 @@ describe('DeploymentPropertiesInfoComponent', () => {
       ],
       imports: [],
       providers: [
-        {provide: StreamsService, useValue: streamsService}
+        { provide: StreamsService, useValue: streamsService }
       ]
     })
       .compileComponents();

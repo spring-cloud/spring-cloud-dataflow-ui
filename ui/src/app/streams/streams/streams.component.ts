@@ -1,21 +1,21 @@
-import {Component, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
-import {Page} from '../../shared/model';
-import {StreamDefinition} from '../model/stream-definition';
-import {StreamsService} from '../streams.service';
-import {Subscription} from 'rxjs/Subscription';
-import {StreamMetrics} from '../model/stream-metrics';
-import {Router} from '@angular/router';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {StreamsDeployComponent} from '../streams-deploy/streams-deploy.component';
-import {StreamsUndeployComponent} from '../streams-undeploy/streams-undeploy.component';
-import {StreamsDestroyComponent} from '../streams-destroy/streams-destroy.component';
-import {ToastyService} from 'ng2-toasty';
-import {SortParams, OrderParams} from '../../shared/components/shared.interface';
-import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
-import {StreamListParams} from '../components/streams.interface';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {BusyService} from '../../shared/services/busy.service';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Page } from '../../shared/model';
+import { StreamDefinition } from '../model/stream-definition';
+import { StreamsService } from '../streams.service';
+import { Subscription } from 'rxjs/Subscription';
+import { StreamMetrics } from '../model/stream-metrics';
+import { Router } from '@angular/router';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { StreamsDeployComponent } from '../streams-deploy/streams-deploy.component';
+import { StreamsUndeployComponent } from '../streams-undeploy/streams-undeploy.component';
+import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
+import { ToastyService } from 'ng2-toasty';
+import { SortParams, OrderParams } from '../../shared/components/shared.interface';
+import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
+import { StreamListParams } from '../components/streams.interface';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BusyService } from '../../shared/services/busy.service';
 
 @Component({
   selector: 'app-streams',
@@ -120,8 +120,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.context = this.streamsService.streamsContext;
-    this.params = {...this.context};
-    this.form = {q: this.context.q, checkboxes: [], checkboxesExpand: []};
+    this.params = { ...this.context };
+    this.form = { q: this.context.q, checkboxes: [], checkboxesExpand: [] };
     this.itemsSelected = this.context.itemsSelected || [];
     this.itemsExpanded = this.context.itemsExpanded || [];
     this.refresh();
@@ -423,8 +423,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
     }
     console.log(`Destroy ${streamDefinitions} stream definition(s).`, streamDefinitions);
     const className = streamDefinitions.length > 1 ? 'modal-lg' : 'modal-md';
-    this.modal = this.modalService.show(StreamsDestroyComponent, {class: className});
-    this.modal.content.open({streamDefinitions: streamDefinitions}).subscribe(() => {
+    this.modal = this.modalService.show(StreamsDestroyComponent, { class: className });
+    this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
       if (this.streamsService.streamDefinitions.items.length === 0 &&
         this.streamsService.streamDefinitions.pageNumber > 0) {
         this.streamDefinitions.pageNumber = this.streamDefinitions.pageNumber - 1;
@@ -442,8 +442,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
       return;
     }
     console.log(`Deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
-    this.modal = this.modalService.show(StreamsDeployComponent, {class: 'modal-xl'});
-    this.modal.content.open({streamDefinitions: streamDefinitions}).subscribe(() => {
+    this.modal = this.modalService.show(StreamsDeployComponent, { class: 'modal-xl' });
+    this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
       this.refresh();
     });
   }
@@ -457,8 +457,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
       return;
     }
     console.log(`Undeploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
-    this.modal = this.modalService.show(StreamsUndeployComponent, {class: 'modal-lg'});
-    this.modal.content.open({streamDefinitions: streamDefinitions}).subscribe(() => {
+    this.modal = this.modalService.show(StreamsUndeployComponent, { class: 'modal-lg' });
+    this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
       this.refresh();
     });
   }

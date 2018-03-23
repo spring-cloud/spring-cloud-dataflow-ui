@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {StreamsService} from '../../streams.service';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {mergeMap} from 'rxjs/operators';
-import {StreamDefinition} from '../../model/stream-definition';
-import {Observable} from 'rxjs/Observable';
-import {Parser} from '../../../shared/services/parser';
-import {StreamsDestroyComponent} from '../../streams-destroy/streams-destroy.component';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {ToastyService} from 'ng2-toasty';
+import { Component, OnInit } from '@angular/core';
+import { StreamsService } from '../../streams.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { mergeMap } from 'rxjs/operators';
+import { StreamDefinition } from '../../model/stream-definition';
+import { Observable } from 'rxjs/Observable';
+import { Parser } from '../../../shared/services/parser';
+import { StreamsDestroyComponent } from '../../streams-destroy/streams-destroy.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { ToastyService } from 'ng2-toasty';
 
 /**
- * Component that show the summary details of a Stream Definition
+ * Component that shows the summary details of a Stream Definition
  *
  * @author Damien Vitrac
  */
@@ -23,7 +23,7 @@ export class StreamSummaryComponent implements OnInit {
 
   /**
    * Observable of stream information
-   * Contain the stream definition, a list of the streams"s apps
+   * Contains the stream definition, a list of the streams"s apps
    */
   stream$: Observable<any>;
 
@@ -57,7 +57,7 @@ export class StreamSummaryComponent implements OnInit {
 
   /**
    * Refresh
-   * Create an observable which provide the required data
+   * Create an observable which provides the required data
    */
   refresh() {
     this.stream$ = this.route.parent.params
@@ -112,8 +112,8 @@ export class StreamSummaryComponent implements OnInit {
    */
   destroy(streamDefinition: StreamDefinition) {
     console.log(`Destroy ${name} stream definition.`, name);
-    this.modal = this.modalService.show(StreamsDestroyComponent, {class: 'modal-md'});
-    this.modal.content.open({streamDefinitions: [streamDefinition]}).subscribe(() => {
+    this.modal = this.modalService.show(StreamsDestroyComponent, { class: 'modal-md' });
+    this.modal.content.open({ streamDefinitions: [streamDefinition] }).subscribe(() => {
       this.router.navigate([`streams`]);
     });
   }

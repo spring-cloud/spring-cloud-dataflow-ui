@@ -1,13 +1,13 @@
-import {TestBed, async, ComponentFixture, tick, fakeAsync} from '@angular/core/testing';
-import {DeploymentPropertiesComponent} from './deployment-properties.component';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {StreamDefinition} from '../../model/stream-definition';
-import {By} from '@angular/platform-browser';
-import {DebugElement} from '@angular/core';
-import {SharedAboutService} from '../../../shared/services/shared-about.service';
-import {MocksSharedAboutService} from '../../../tests/mocks/shared-about';
-import {MockStreamsService} from '../../../tests/mocks/streams';
-import {StreamsService} from '../../streams.service';
+import { TestBed, async, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
+import { DeploymentPropertiesComponent } from './deployment-properties.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { StreamDefinition } from '../../model/stream-definition';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
+import { SharedAboutService } from '../../../shared/services/shared-about.service';
+import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
+import { MockStreamsService } from '../../../tests/mocks/streams';
+import { StreamsService } from '../../streams.service';
 
 /**
  * Test {@link DeploymentPropertiesComponent}.
@@ -31,8 +31,8 @@ describe('DeploymentPropertiesComponent', () => {
         ReactiveFormsModule,
       ],
       providers: [
-        {provide: StreamsService, useValue: streamsService},
-        {provide: SharedAboutService, useValue: sharedAboutService}
+        { provide: StreamsService, useValue: streamsService },
+        { provide: SharedAboutService, useValue: sharedAboutService }
       ]
     })
       .compileComponents();
@@ -51,7 +51,7 @@ describe('DeploymentPropertiesComponent', () => {
 
   it('should populate properties input', () => {
     component.stream = new StreamDefinition('foo2', 'time |log', 'undeployed');
-    component.stream.deploymentProperties = {a: 'a', b: 'b'};
+    component.stream.deploymentProperties = { a: 'a', b: 'b' };
     fixture.detectChanges();
     expect(component.deploymentProperties.value).toBe('a=a\nb=b');
   });

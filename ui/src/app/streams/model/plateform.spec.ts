@@ -4,7 +4,7 @@
  * @author Damien Vitrac
  */
 
-import {Platform} from './platform';
+import { Platform } from './platform';
 
 describe('Platform', () => {
 

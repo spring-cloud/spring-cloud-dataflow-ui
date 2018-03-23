@@ -1,6 +1,6 @@
-import {Component, ViewEncapsulation, Input, OnDestroy} from '@angular/core';
-import {Flo} from 'spring-flo';
-import {StreamDefinition} from '../../model/stream-definition';
+import { Component, ViewEncapsulation, Input, OnDestroy } from '@angular/core';
+import { Flo } from 'spring-flo';
+import { StreamDefinition } from '../../model/stream-definition';
 import {
   StreamMetrics,
   ApplicationMetrics,
@@ -8,21 +8,21 @@ import {
   OUTPUT_CHANNEL_MEAN,
   INSTANCE_COUNT
 } from '../../model/stream-metrics';
-import {ApplicationType} from '../../../shared/model/application-type';
-import {dia} from 'jointjs';
+import { ApplicationType } from '../../../shared/model/application-type';
+import { dia } from 'jointjs';
 import {
   TYPE_INSTANCE_DOT,
   TYPE_INSTANCE_LABEL,
   TYPE_INCOMING_MESSAGE_RATE,
   TYPE_OUTGOING_MESSAGE_RATE
 } from '../flo/support/shapes';
-import {Subscription} from 'rxjs/Subscription';
-import {MetamodelService} from '../flo/metamodel.service';
-import {RenderService} from '../flo/render.service';
+import { Subscription } from 'rxjs/Subscription';
+import { MetamodelService } from '../flo/metamodel.service';
+import { RenderService } from '../flo/render.service';
 
 import * as _joint from 'jointjs';
-import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/Subject';
 
 const joint: any = _joint;
 
@@ -175,7 +175,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
         if (!label) {
           // Create label if it's not on the graph yet
           label = new joint.shapes.flo.InstanceLabel({
-            position: {x: x, y: y}
+            position: { x: x, y: y }
           });
           this.flo.getGraph().addCell(label);
           cell.embed(label);
@@ -202,8 +202,8 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
               const idx = lane * maxDotsPerLine + i/* + 1*/;
               const data = idx < moduleMetrics.instances.length ? moduleMetrics.instances[idx] : undefined;
               const dot = new joint.shapes.flo.InstanceDot({
-                position: {x: dotX, y: dotY},
-                size: {width: diameter, height: diameter},
+                position: { x: dotX, y: dotY },
+                size: { width: diameter, height: diameter },
                 attrs: {
                   instance: data
                 }

@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Http, Response, URLSearchParams} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Http, Response, URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {StreamDefinition} from './model/stream-definition';
-import {StreamMetrics} from './model/stream-metrics';
-import {Page} from '../shared/model/page';
-import {ErrorHandler} from '../shared/model/error-handler';
-import {HttpUtils, URL_QUERY_ENCODER} from '../shared/support/http.utils';
-import {Platform} from './model/platform';
-import {StreamListParams} from './components/streams.interface';
-import {OrderParams} from '../shared/components/shared.interface';
+import { StreamDefinition } from './model/stream-definition';
+import { StreamMetrics } from './model/stream-metrics';
+import { Page } from '../shared/model/page';
+import { ErrorHandler } from '../shared/model/error-handler';
+import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
+import { Platform } from './model/platform';
+import { StreamListParams } from './components/streams.interface';
+import { OrderParams } from '../shared/components/shared.interface';
 
 /**
  * Provides {@link StreamDefinition} related services.

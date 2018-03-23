@@ -1,18 +1,18 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
-import {Flo} from 'spring-flo';
-import {ParserService} from '../../shared/services/parser.service';
-import {Parser} from '../../shared/services/parser';
-import {MetamodelService} from '../components/flo/metamodel.service';
-import {RenderService} from '../components/flo/render.service';
-import {EditorService} from '../components/flo/editor.service';
-import {BsModalService} from 'ngx-bootstrap';
-import {StreamCreateDialogComponent} from './create-dialog/create-dialog.component';
-import {ContentAssistService} from '../components/flo/content-assist.service';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Flo } from 'spring-flo';
+import { ParserService } from '../../shared/services/parser.service';
+import { Parser } from '../../shared/services/parser';
+import { MetamodelService } from '../components/flo/metamodel.service';
+import { RenderService } from '../components/flo/render.service';
+import { EditorService } from '../components/flo/editor.service';
+import { BsModalService } from 'ngx-bootstrap';
+import { StreamCreateDialogComponent } from './create-dialog/create-dialog.component';
+import { ContentAssistService } from '../components/flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {BusyService} from '../../shared/services/busy.service';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BusyService } from '../../shared/services/busy.service';
 
 
 /**
@@ -135,7 +135,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   contentAssist(doc: CodeMirror.EditorFromTextArea) {
     const cursor = (<any>doc).getCursor();
-    const startOfLine = {line: cursor.line, ch: 0};
+    const startOfLine = { line: cursor.line, ch: 0 };
     const prefix = (<any>doc).getRange(startOfLine, cursor);
 
     return new Promise((resolve) => {
@@ -150,7 +150,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
           console.log(JSON.stringify(finalProposals));
           resolve({
             list: finalProposals,
-            from: {line: startOfLine.line, ch: chopAt},
+            from: { line: startOfLine.line, ch: chopAt },
             to: cursor
           });
         }, err => {

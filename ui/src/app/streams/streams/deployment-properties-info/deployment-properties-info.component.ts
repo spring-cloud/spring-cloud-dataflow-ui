@@ -1,31 +1,29 @@
-import {Component, Input} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {share} from 'rxjs/operators';
-import {StreamDefinition} from '../../model/stream-definition';
-import {StreamsService} from '../../streams.service';
+import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { share } from 'rxjs/operators';
+import { StreamDefinition } from '../../model/stream-definition';
+import { StreamsService } from '../../streams.service';
 
 const VERSION_PROPERTY_KEY_PREFIX = 'maven://';
 
 export class KeyValuePair {
-  constructor(
-    public key: string,
-    public value: string
-  ) {}
+  constructor(public key: string,
+              public value: string) {
+  }
 }
 
 export class DeployedAppProperties {
-  constructor(
-    public name: string,
-    public version: string,
-    public props: KeyValuePair[]
-  ) {}
+  constructor(public name: string,
+              public version: string,
+              public props: KeyValuePair[]) {
+  }
 }
 
 
 @Component({
   selector: 'app-stream-deployment-properties-info',
   templateUrl: './deployment-properties-info.component.html',
-  styleUrls: [ './deployment-properties-info.component.scss' ],
+  styleUrls: ['./deployment-properties-info.component.scss'],
 })
 /**
  * Component that shows stream deployment info.
@@ -36,7 +34,8 @@ export class DeploymentPropertiesInfoComponent {
 
   public deploymentProperties: Observable<DeployedAppProperties[]>;
 
-  constructor(private streamsService: StreamsService) {}
+  constructor(private streamsService: StreamsService) {
+  }
 
   @Input()
   set streamDefinition(streamDef: StreamDefinition) {

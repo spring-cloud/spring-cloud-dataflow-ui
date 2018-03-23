@@ -1,14 +1,14 @@
-import {Component, Output, EventEmitter, OnDestroy} from '@angular/core';
-import {StreamsService} from '../streams.service';
-import {ToastyService} from 'ng2-toasty';
-import {Subscription} from 'rxjs/Subscription';
-import {StreamDefinition} from '../model/stream-definition';
-import {BsModalRef} from 'ngx-bootstrap';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {BusyService} from '../../shared/services/busy.service';
-import {Modal} from '../../shared/components/modal/modal-abstract';
-import {Observable} from 'rxjs/Observable';
+import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { StreamsService } from '../streams.service';
+import { ToastyService } from 'ng2-toasty';
+import { Subscription } from 'rxjs/Subscription';
+import { StreamDefinition } from '../model/stream-definition';
+import { BsModalRef } from 'ngx-bootstrap';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BusyService } from '../../shared/services/busy.service';
+import { Modal } from '../../shared/components/modal/modal-abstract';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Component used to deploy stream definitions.

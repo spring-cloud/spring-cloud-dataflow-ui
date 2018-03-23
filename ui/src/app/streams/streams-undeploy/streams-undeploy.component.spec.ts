@@ -1,21 +1,21 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockAuthService} from '../../tests/mocks/auth';
-import {BsModalRef, ModalModule, TooltipModule} from 'ngx-bootstrap';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterTestingModule} from '@angular/router/testing';
-import {AuthService} from '../../auth/auth.service';
-import {ToastyService} from 'ng2-toasty';
-import {By} from '@angular/platform-browser';
-import {StreamDefinition} from '../model/stream-definition';
-import {DebugElement} from '@angular/core';
-import {MockStreamsService} from '../../tests/mocks/streams';
-import {StreamsService} from '../streams.service';
-import {StreamsUndeployComponent} from './streams-undeploy.component';
-import {BusyService} from '../../shared/services/busy.service';
-import {StreamDslComponent} from '../../shared/components/dsl/dsl.component';
-import {TruncatePipe} from '../../shared/pipes/truncate.pipe';
-import {RolesDirective} from '../../auth/directives/roles.directive';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { BsModalRef, ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService } from '../../auth/auth.service';
+import { ToastyService } from 'ng2-toasty';
+import { By } from '@angular/platform-browser';
+import { StreamDefinition } from '../model/stream-definition';
+import { DebugElement } from '@angular/core';
+import { MockStreamsService } from '../../tests/mocks/streams';
+import { StreamsService } from '../streams.service';
+import { StreamsUndeployComponent } from './streams-undeploy.component';
+import { BusyService } from '../../shared/services/busy.service';
+import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
+import { RolesDirective } from '../../auth/directives/roles.directive';
 
 /**
  * Test {@link StreamsUndeployComponent}.
@@ -47,11 +47,11 @@ describe('StreamsUndeployComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        {provide: AuthService, useValue: authService},
-        {provide: BsModalRef, useValue: bsModalRef},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: ToastyService, useValue: toastyService},
-        {provide: StreamsService, useValue: streamsService}
+        { provide: AuthService, useValue: authService },
+        { provide: BsModalRef, useValue: bsModalRef },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: ToastyService, useValue: toastyService },
+        { provide: StreamsService, useValue: streamsService }
       ]
     }).compileComponents();
   }));
@@ -69,7 +69,7 @@ describe('StreamsUndeployComponent', () => {
     ];
 
     beforeEach(() => {
-      component.open({streamDefinitions: mock});
+      component.open({ streamDefinitions: mock });
       fixture.detectChanges();
     });
 
@@ -111,7 +111,7 @@ describe('StreamsUndeployComponent', () => {
     ];
 
     beforeEach(() => {
-      component.open({streamDefinitions: mock});
+      component.open({ streamDefinitions: mock });
       fixture.detectChanges();
     });
 

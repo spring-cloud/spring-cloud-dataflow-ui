@@ -1,15 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {ActivatedRoute} from '@angular/router';
-import {StreamsService} from '../../streams.service';
-import {ToastyService} from 'ng2-toasty';
-import {BusyService} from '../../../shared/services/busy.service';
-import {takeUntil} from 'rxjs/operators';
-import {RenderService} from '../../components/flo/render.service';
-import {MetamodelService} from '../../components/flo/metamodel.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { ActivatedRoute } from '@angular/router';
+import { StreamsService } from '../../streams.service';
+import { ToastyService } from 'ng2-toasty';
+import { BusyService } from '../../../shared/services/busy.service';
+import { takeUntil } from 'rxjs/operators';
+import { RenderService } from '../../components/flo/render.service';
+import { MetamodelService } from '../../components/flo/metamodel.service';
 
 /**
- * Component that show the details of a Stream Definition
+ * Component that shows the details of a Stream Definition
  *
  * @author Janne Valkealahti
  * @author Gunnar Hillert

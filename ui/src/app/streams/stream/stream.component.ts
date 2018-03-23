@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 /**
- * Component that show the details of a Stream Definition
+ * Component that shows the details of a Stream Definition
  *
  * @author Janne Valkealahti
  * @author Gunnar Hillert

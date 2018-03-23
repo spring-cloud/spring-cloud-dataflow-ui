@@ -1,40 +1,40 @@
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {ToastyService} from 'ng2-toasty';
-import {BsDropdownModule, BsModalService, ModalModule, PopoverModule} from 'ngx-bootstrap';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {KeyValuePipe} from '../../shared/pipes/key-value-filter.pipe';
-import {MockStreamsService} from '../../tests/mocks/streams';
-import {STREAM_DEFINITIONS} from '../../tests/mocks/mock-data';
-import {StreamsComponent} from './streams.component';
-import {StreamsService} from '../streams.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterTestingModule} from '@angular/router/testing';
-import {DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {StreamDefinition} from '../model/stream-definition';
-import {RolesDirective} from '../../auth/directives/roles.directive';
-import {MockAuthService} from '../../tests/mocks/auth';
-import {AuthService} from '../../auth/auth.service';
-import {GraphViewComponent} from '../../shared/flo/graph-view/graph-view.component';
-import {FloModule} from 'spring-flo';
-import {TriStateButtonComponent} from '../../shared/components/tri-state-button.component';
-import {TriStateCheckboxComponent} from '../../shared/components/tri-state-checkbox.component';
-import {DeploymentPropertiesComponent} from './deployment-properties/deployment-properties.component';
-import {MocksSharedAboutService} from '../../tests/mocks/shared-about';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {DeploymentPropertiesInfoComponent} from './deployment-properties-info/deployment-properties-info.component';
-import {StreamsDeployComponent} from '../streams-deploy/streams-deploy.component';
-import {StreamStatusComponent} from '../components/stream-status/stream-status.component';
-import {SortComponent} from '../../shared/components/sort/sort.component';
-import {StreamDslComponent} from '../../shared/components/dsl/dsl.component';
-import {StreamsDestroyComponent} from '../streams-destroy/streams-destroy.component';
-import {StreamsUndeployComponent} from '../streams-undeploy/streams-undeploy.component';
-import {MasterCheckboxComponent} from '../../shared/components/master-checkbox.component';
-import {StreamGraphDefinitionComponent} from '../components/stream-graph-definition/stream-graph-definition.component';
-import {TruncatePipe} from '../../shared/pipes/truncate.pipe';
-import {BusyService} from '../../shared/services/busy.service';
-import {MockModalService} from '../../tests/mocks/modal';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ToastyService } from 'ng2-toasty';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { MockToastyService } from '../../tests/mocks/toasty';
+import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
+import { MockStreamsService } from '../../tests/mocks/streams';
+import { STREAM_DEFINITIONS } from '../../tests/mocks/mock-data';
+import { StreamsComponent } from './streams.component';
+import { StreamsService } from '../streams.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { StreamDefinition } from '../model/stream-definition';
+import { RolesDirective } from '../../auth/directives/roles.directive';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { AuthService } from '../../auth/auth.service';
+import { GraphViewComponent } from '../../shared/flo/graph-view/graph-view.component';
+import { FloModule } from 'spring-flo';
+import { TriStateButtonComponent } from '../../shared/components/tri-state-button.component';
+import { TriStateCheckboxComponent } from '../../shared/components/tri-state-checkbox.component';
+import { DeploymentPropertiesComponent } from './deployment-properties/deployment-properties.component';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { DeploymentPropertiesInfoComponent } from './deployment-properties-info/deployment-properties-info.component';
+import { StreamsDeployComponent } from '../streams-deploy/streams-deploy.component';
+import { StreamStatusComponent } from '../components/stream-status/stream-status.component';
+import { SortComponent } from '../../shared/components/sort/sort.component';
+import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
+import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
+import { StreamsUndeployComponent } from '../streams-undeploy/streams-undeploy.component';
+import { MasterCheckboxComponent } from '../../shared/components/master-checkbox.component';
+import { StreamGraphDefinitionComponent } from '../components/stream-graph-definition/stream-graph-definition.component';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
+import { BusyService } from '../../shared/services/busy.service';
+import { MockModalService } from '../../tests/mocks/modal';
 
 /**
  * Test {@link StreamsComponent}.
@@ -84,12 +84,12 @@ describe('StreamsComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        {provide: SharedAboutService, useValue: aboutService},
-        {provide: AuthService, useValue: authService},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: StreamsService, useValue: streamsService},
-        {provide: BsModalService, useValue: modalService},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: SharedAboutService, useValue: aboutService },
+        { provide: AuthService, useValue: authService },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: StreamsService, useValue: streamsService },
+        { provide: BsModalService, useValue: modalService },
+        { provide: ToastyService, useValue: toastyService }
       ]
     })
       .compileComponents();
@@ -211,7 +211,7 @@ describe('StreamsComponent', () => {
 
       streamsService.streamDefinitions = {
         _embedded: {
-          streamDefinitionResourceList: Array.from({length: 20}).map((a, i) => {
+          streamDefinitionResourceList: Array.from({ length: 20 }).map((a, i) => {
             return {
               name: `foo${i}`,
               dslText: 'time |log ',
@@ -289,7 +289,7 @@ describe('StreamsComponent', () => {
     it('should apply a search', () => {
       streamsService.streamDefinitions = {
         _embedded: {
-          streamDefinitionResourceList: Array.from({length: 12}).map((a, i) => {
+          streamDefinitionResourceList: Array.from({ length: 12 }).map((a, i) => {
             return {
               name: `foo${i}`,
               dslText: 'time |log ',
@@ -316,11 +316,11 @@ describe('StreamsComponent', () => {
       const sortName: HTMLElement = fixture.debugElement.query(By.css('#sort-name a')).nativeElement;
       const sortDsl: HTMLElement = fixture.debugElement.query(By.css('#sort-dsl a')).nativeElement;
       [
-        {click: sortName, nameDesc: true, sort: 'DEFINITION_NAME', order: 'DESC'},
-        {click: sortDsl, dslAsc: true, sort: 'DEFINITION', order: 'ASC'},
-        {click: sortDsl, dslDesc: true, sort: 'DEFINITION', order: 'DESC'},
-        {click: sortName, nameAsc: true, sort: 'DEFINITION_NAME', order: 'ASC'},
-        {click: sortDsl, dslAsc: true, sort: 'DEFINITION', order: 'ASC'}
+        { click: sortName, nameDesc: true, sort: 'DEFINITION_NAME', order: 'DESC' },
+        { click: sortDsl, dslAsc: true, sort: 'DEFINITION', order: 'ASC' },
+        { click: sortDsl, dslDesc: true, sort: 'DEFINITION', order: 'DESC' },
+        { click: sortName, nameAsc: true, sort: 'DEFINITION_NAME', order: 'ASC' },
+        { click: sortDsl, dslAsc: true, sort: 'DEFINITION', order: 'ASC' }
       ].forEach((test) => {
         test.click.click();
         fixture.detectChanges();
@@ -430,7 +430,7 @@ describe('StreamsComponent', () => {
       fixture.debugElement.query(By.css('#destroy-streams')).nativeElement.click();
       fixture.detectChanges();
 
-      expect(spy).toHaveBeenCalledWith(StreamsDestroyComponent, {class: 'modal-lg'});
+      expect(spy).toHaveBeenCalledWith(StreamsDestroyComponent, { class: 'modal-lg' });
     }));
 
     it('should call the deploy modal', fakeAsync(() => {
@@ -448,7 +448,7 @@ describe('StreamsComponent', () => {
       fixture.debugElement.query(By.css('#deploy-streams')).nativeElement.click();
       fixture.detectChanges();
 
-      expect(spy).toHaveBeenCalledWith(StreamsDeployComponent, {class: 'modal-xl'});
+      expect(spy).toHaveBeenCalledWith(StreamsDeployComponent, { class: 'modal-xl' });
     }));
 
     it('should call the undeploy modal', fakeAsync(() => {
@@ -466,7 +466,7 @@ describe('StreamsComponent', () => {
       fixture.debugElement.query(By.css('#undeploy-streams')).nativeElement.click();
       fixture.detectChanges();
 
-      expect(spy).toHaveBeenCalledWith(StreamsUndeployComponent, {class: 'modal-lg'});
+      expect(spy).toHaveBeenCalledWith(StreamsUndeployComponent, { class: 'modal-lg' });
     }));
 
   });

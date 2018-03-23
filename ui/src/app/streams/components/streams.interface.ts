@@ -1,4 +1,4 @@
-import {ListParams} from '../../shared/components/shared.interface';
+import { ListParams } from '../../shared/components/shared.interface';
 
 export interface StreamListParams extends ListParams {
   q: string;

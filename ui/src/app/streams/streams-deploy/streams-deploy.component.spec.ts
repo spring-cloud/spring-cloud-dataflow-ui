@@ -1,23 +1,23 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {NgBusyModule} from 'ng-busy';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockStreamsService} from '../../tests/mocks/streams';
-import {StreamsService} from '../streams.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {StreamsDeployComponent} from './streams-deploy.component';
-import {DeploymentPropertiesComponent} from '../streams/deployment-properties/deployment-properties.component';
-import {BsModalRef, ModalModule} from 'ngx-bootstrap';
-import {By} from '@angular/platform-browser';
-import {StreamDefinition} from '../model/stream-definition';
-import {MocksSharedAboutService} from '../../tests/mocks/shared-about';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {KeyValuePipe} from '../../shared/pipes/key-value-filter.pipe';
-import {BusyService} from '../../shared/services/busy.service';
-import {MockAuthService} from '../../tests/mocks/auth';
-import {AuthService} from '../../auth/auth.service';
-import {TruncatePipe} from '../../shared/pipes/truncate.pipe';
-import {StreamDslComponent} from '../../shared/components/dsl/dsl.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgBusyModule } from 'ng-busy';
+import { ToastyService } from 'ng2-toasty';
+import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockStreamsService } from '../../tests/mocks/streams';
+import { StreamsService } from '../streams.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StreamsDeployComponent } from './streams-deploy.component';
+import { DeploymentPropertiesComponent } from '../streams/deployment-properties/deployment-properties.component';
+import { BsModalRef, ModalModule } from 'ngx-bootstrap';
+import { By } from '@angular/platform-browser';
+import { StreamDefinition } from '../model/stream-definition';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
+import { BusyService } from '../../shared/services/busy.service';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { AuthService } from '../../auth/auth.service';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
+import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 
 /**
  * Test {@link StreamsDeployComponent}.
@@ -50,12 +50,12 @@ describe('StreamsDeployComponent', () => {
         ReactiveFormsModule
       ],
       providers: [
-        {provide: AuthService, useValue: authService},
-        {provide: StreamsService, useValue: streamsService},
-        {provide: BsModalRef, useValue: bsModalRef},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: SharedAboutService, useValue: sharedAboutService},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: AuthService, useValue: authService },
+        { provide: StreamsService, useValue: streamsService },
+        { provide: BsModalRef, useValue: bsModalRef },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: SharedAboutService, useValue: sharedAboutService },
+        { provide: ToastyService, useValue: toastyService }
       ]
     })
       .compileComponents();

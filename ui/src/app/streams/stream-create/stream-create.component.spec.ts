@@ -1,21 +1,21 @@
-import {StreamCreateComponent} from './stream-create.component';
-import {NgBusyModule} from 'ng-busy';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {MockActivatedRoute} from '../../tests/mocks/activated-route';
-import {MockStreamsService} from '../../tests/mocks/streams';
-import {RouterTestingModule} from '@angular/router/testing';
-import {StreamsService} from '../streams.service';
-import {MetamodelService} from '../components/flo/metamodel.service';
-import {EditorService} from '../components/flo/editor.service';
-import {RenderService} from '../components/flo/render.service';
-import {ActivatedRoute} from '@angular/router';
-import { FloModule} from 'spring-flo';
-import {ModalModule, BsModalService} from 'ngx-bootstrap';
+import { StreamCreateComponent } from './stream-create.component';
+import { NgBusyModule } from 'ng-busy';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockActivatedRoute } from '../../tests/mocks/activated-route';
+import { MockStreamsService } from '../../tests/mocks/streams';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StreamsService } from '../streams.service';
+import { MetamodelService } from '../components/flo/metamodel.service';
+import { EditorService } from '../components/flo/editor.service';
+import { RenderService } from '../components/flo/render.service';
+import { ActivatedRoute } from '@angular/router';
+import { FloModule } from 'spring-flo';
+import { ModalModule, BsModalService } from 'ngx-bootstrap';
 import { ContentAssistService } from '../components/flo/content-assist.service';
 import { ParserService } from '../../shared/services/parser.service';
-import {MockSharedAppService} from '../../tests/mocks/shared-app';
-import {BusyService} from '../../shared/services/busy.service';
+import { MockSharedAppService } from '../../tests/mocks/shared-app';
+import { BusyService } from '../../shared/services/busy.service';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -49,15 +49,15 @@ describe('StreamCreateComponent', () => {
         NoopAnimationsModule
       ],
       providers: [
-        {provide: StreamsService, useValue: streamsService},
-        {provide: MetamodelService, useValue: metamodelService},
-        {provide: RenderService, useValue: renderService},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: ContentAssistService},
-        {provide: BsModalService},
-        {provide: ActivatedRoute, useValue: activeRoute},
-        {provide: ParserService, useValue: parserService},
-        {provide: EditorService, useValue: editorService}
+        { provide: StreamsService, useValue: streamsService },
+        { provide: MetamodelService, useValue: metamodelService },
+        { provide: RenderService, useValue: renderService },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: ContentAssistService },
+        { provide: BsModalService },
+        { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: ParserService, useValue: parserService },
+        { provide: EditorService, useValue: editorService }
       ]
     })
       .compileComponents();

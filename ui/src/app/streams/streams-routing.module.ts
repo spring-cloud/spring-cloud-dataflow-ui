@@ -1,12 +1,12 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {StreamsComponent} from './streams/streams.component';
-import {StreamCreateComponent} from './stream-create/stream-create.component';
-import {StreamDeployComponent} from './stream-deploy/stream-deploy.component';
-import {AuthGuard} from '../auth/support/auth.guard';
-import {StreamComponent} from './stream/stream.component';
-import {StreamGraphComponent} from './stream/graph/stream-graph.component';
-import {StreamSummaryComponent} from './stream/summary/stream-summary.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { StreamsComponent } from './streams/streams.component';
+import { StreamCreateComponent } from './stream-create/stream-create.component';
+import { StreamDeployComponent } from './stream-deploy/stream-deploy.component';
+import { AuthGuard } from '../auth/support/auth.guard';
+import { StreamComponent } from './stream/stream.component';
+import { StreamGraphComponent } from './stream/graph/stream-graph.component';
+import { StreamSummaryComponent } from './stream/summary/stream-summary.component';
 
 const streamRoutes: Routes = [
   {
