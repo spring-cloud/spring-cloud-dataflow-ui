@@ -18,6 +18,9 @@ import { ActivatedRoute } from '@angular/router';
 
 export class StreamComponent implements OnInit {
 
+  /**
+   * Stream ID
+   */
   id: string;
 
   /**

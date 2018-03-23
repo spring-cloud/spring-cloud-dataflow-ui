@@ -29,6 +29,7 @@ describe('StreamComponent', () => {
   const toastyService = new MockToastyService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
+  const busyService = new BusyService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -45,7 +46,7 @@ describe('StreamComponent', () => {
       providers: [
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: BusyService, useValue: new BusyService() },
+        { provide: BusyService, useValue: busyService },
         { provide: ToastyService, useValue: toastyService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: RenderService, useValue: renderService }

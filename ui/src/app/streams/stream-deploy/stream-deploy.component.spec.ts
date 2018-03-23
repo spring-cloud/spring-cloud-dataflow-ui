@@ -30,6 +30,7 @@ xdescribe('StreamDeployComponent', () => {
   const toastyService = new MockToastyService();
   const streamsService = new MockStreamsService();
   const sharedAboutService = new MocksSharedAboutService();
+  const busyService = new BusyService();
   let activeRoute: MockActivatedRoute;
   const commonTestParams = { id: '1' };
 
@@ -50,7 +51,7 @@ xdescribe('StreamDeployComponent', () => {
         RouterTestingModule.withRoutes([{ path: 'streams/definitions', component: MockComponent }])
       ],
       providers: [
-        {provide: BusyService, useValue: new BusyService()},
+        {provide: BusyService, useValue: busyService},
         {provide: StreamsService, useValue: streamsService},
         {provide: ActivatedRoute, useValue: activeRoute },
         {provide: SharedAboutService, useValue: sharedAboutService },

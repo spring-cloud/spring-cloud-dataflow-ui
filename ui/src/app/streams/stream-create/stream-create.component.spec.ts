@@ -31,6 +31,7 @@ describe('StreamCreateComponent', () => {
   const renderService = new RenderService(metamodelService);
   const parserService = new ParserService();
   const editorService = new EditorService(null);
+  const busyService = new BusyService();
 
   const commonTestParams = { id: '1' };
 
@@ -52,7 +53,7 @@ describe('StreamCreateComponent', () => {
         { provide: StreamsService, useValue: streamsService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: RenderService, useValue: renderService },
-        { provide: BusyService, useValue: new BusyService() },
+        { provide: BusyService, useValue: busyService },
         { provide: ContentAssistService },
         { provide: BsModalService },
         { provide: ActivatedRoute, useValue: activeRoute },

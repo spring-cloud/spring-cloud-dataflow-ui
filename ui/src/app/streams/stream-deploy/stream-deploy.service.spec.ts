@@ -24,8 +24,9 @@ describe('StreamDeployService', () => {
     this.mockHttpAppsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
 
     const errorHandler = new ErrorHandler();
+    const busyService = new BusyService();
 
-    const sharedAboutService = new SharedAboutService(new BusyService(), this.mockHttpSharedAboutService, errorHandler);
+    const sharedAboutService = new SharedAboutService(busyService, this.mockHttpSharedAboutService, errorHandler);
     const sharedAppsService = new SharedAppsService(this.mockHttpSharedAppsService, errorHandler);
     const workAroundService = new AppsWorkaroundService(sharedAppsService);
     const streamsService = new StreamsService(this.mockHttpStreamsService, errorHandler);

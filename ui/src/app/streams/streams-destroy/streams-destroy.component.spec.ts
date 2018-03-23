@@ -30,6 +30,7 @@ describe('StreamsDestroyComponent', () => {
   const authService = new MockAuthService();
   const bsModalRef = new BsModalRef();
   const streamsService = new MockStreamsService();
+  const busyService = new BusyService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -49,7 +50,7 @@ describe('StreamsDestroyComponent', () => {
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: BsModalRef, useValue: bsModalRef },
-        { provide: BusyService, useValue: new BusyService() },
+        { provide: BusyService, useValue: busyService },
         { provide: ToastyService, useValue: toastyService },
         { provide: StreamsService, useValue: streamsService }
       ]
