@@ -1,0 +1,369 @@
+<div *ngIf="builder$ | async as builder; else loading">
+  <form class="form-horizontal" novalidate (ngSubmit)="deployStream()">
+    <div>
+      <div class="tab-pane">
+        <app-stream-deploy-builder-errors [errors]="builder.errors" (removeError)="removeError($event)">
+        </app-stream-deploy-builder-errors>
+        <div class="builder" [formGroup]="builder.formGroup">
+
+          <div class="col-fixed col-key">
+
+            <!-- 0 -->
+            <div class="line-head">
+            </div>
+
+            <!-- 1 -->
+            <div class="line-toggle" *ngIf="skipper">
+
+              <a class="toggle" (click)="state.platform = !state.platform">
+                <span class="fa" [class.fa-chevron-down]="state.platform"
+                      [class.fa-chevron-right]="!state.platform"></span>
+                Platform
+              </a>
+            </div>
+
+            <!-- 2 -->
+            <div class="line-body" *ngIf="skipper && state.platform">
+              <div class="status" *ngIf="builder.formGroup.get('platform').invalid">
+                <div tooltipPlacement="right"
+                     [tooltip]="tooltipTemplate"
+                     class="fa fa-warning"></div>
+                <ng-template #tooltipTemplate>
+                  <div [innerHtml]="'The define platform is not valid (unknown)'"></div>
+                </ng-template>
+              </div>
+              <div class="form-control form-control-label">
+                Platform
+              </div>
+            </div>
+
+            <!-- 3 -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.deployer = !state.deployer">
+                <span class="fa" [class.fa-chevron-down]="state.deployer"
+                      [class.fa-chevron-right]="!state.deployer"></span>
+                Generic Deployer Properties
+              </a>
+            </div>
+
+            <!-- 4 -->
+            <div *ngIf="state.deployer">
+              <div class="line-body" *ngFor="let deployer of builder.streamDeployConfig.deployers;let i = index">
+
+                <div class="status" *ngIf="builder.formGroup.get('deployers').controls[i].invalid">
+                  <div tooltipPlacement="right"
+                       [tooltip]="tooltipTemplate"
+                       class="fa fa-warning"></div>
+
+                  <ng-template #tooltipTemplate>
+                    <div
+                      [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('deployers').controls[i])"></div>
+                  </ng-template>
+                </div>
+
+                <div class="form-control form-control-label">
+                  {{ deployer.name }}
+                </div>
+              </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
+              <span class="fa" [class.fa-chevron-down]="state.specificPlatform"
+                    [class.fa-chevron-right]="!state.specificPlatform"></span>
+                <span *ngIf="skipper">
+                  Deployment Platform
+                </span>
+                <span *ngIf="!skipper">
+                  Deployer Properties
+                </span>
+                <span *ngIf="skipper && builder.formGroup.get('platform').value">
+                  ({{ builder.formGroup.get('platform').value }})
+                </span>
+              </a>
+            </div>
+
+            <!-- 6 -->
+            <div *ngIf="state.specificPlatform"
+                 formArrayName="specificPlatform">
+              <div class="line-body" *ngFor="let f of builder.formGroup.get('specificPlatform').controls;let i = index"
+                   [formGroupName]="i"
+                   [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get('property').invalid">
+                <div class="status" *ngIf="builder.formGroup.get('specificPlatform').controls[i].invalid">
+                  <div tooltipPlacement="right"
+                       [tooltip]="tooltipTemplate"
+                       class="fa fa-warning"></div>
+
+                  <ng-template #tooltipTemplate>
+                    <div
+                      [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('specificPlatform').controls[i])"></div>
+                  </ng-template>
+                </div>
+
+                <input tabindex="{{ 50 + i }}" placeholder="Enter a value" class="form-control"
+                       formControlName="property" type="text"/>
+              </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.app = !state.app">
+                <span class="fa" [class.fa-chevron-down]="state.app" [class.fa-chevron-right]="!state.app"></span>
+                Applications Properties
+              </a>
+            </div>
+
+            <!-- 8 -->
+            <div *ngIf="state.app">
+              <div class="line-body" *ngIf="skipper">
+
+                <div class="status" *ngIf="builder.formGroup.get('appsVersion').invalid">
+                  <div tooltipPlacement="right"
+                       [tooltip]="tooltipTemplate"
+                       class="fa fa-warning"></div>
+                  <ng-template #tooltipTemplate>
+                    <div
+                      [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('appsVersion'))"></div>
+                  </ng-template>
+                </div>
+
+                <div class="form-control form-control-label">
+                  Version
+                </div>
+              </div>
+              <div class="line-body">
+                <div class="form-control form-control-label">
+                  Properties
+                </div>
+              </div>
+              <div formArrayName="global">
+                <div class="line-body" *ngFor="let f of builder.formGroup.get('global').controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="builder.formGroup.get('global').controls[i].get('property').invalid">
+
+                  <div class="status" *ngIf="builder.formGroup.get('global').controls[i].invalid">
+
+                    <div tooltipPlacement="right"
+                         [tooltip]="tooltipTemplate"
+                         class="fa fa-warning"></div>
+
+                    <ng-template #tooltipTemplate>
+                      <div
+                        [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('global').controls[i])"></div>
+                    </ng-template>
+                  </div>
+
+                  <input tabindex="{{ 102 + i }}" placeholder="Enter a value" class="form-control"
+                         formControlName="property" type="text"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-fixed global">
+
+            <!-- 0 -->
+            <div class="line-head">
+              Global
+            </div>
+
+            <!-- 1 -->
+            <div class="line-toggle" *ngIf="skipper"></div>
+
+            <!-- 2 -->
+            <div class="line-body" *ngIf="skipper && state.platform"
+                 [class.has-error]="isErrorPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)">
+              <select tabindex="1" formControlName="platform">
+                <option value="">Select a value</option>
+                <option *ngFor="let platform of builder.streamDeployConfig.platform.values" [value]="platform.key">
+                  {{ platform.name }}
+                  ({{ platform.type }})
+                </option>
+                <option
+                  *ngIf="isErrorPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)"
+                  [value]="builder.formGroup.get('platform').value">
+                  {{ builder.formGroup.get('platform').value }} (invalid)
+                </option>
+              </select>
+            </div>
+
+            <!-- 3 -->
+            <div class="line-toggle"></div>
+
+            <!-- 4 -->
+            <div formArrayName="deployers" *ngIf="state.deployer">
+              <div [formGroupName]="i" class="line-body"
+                   *ngFor="let deployer of builder.streamDeployConfig.deployers; let i = index"
+                   [class.has-error]="builder.formGroup.get('deployers').controls[i].get('global').invalid">
+
+                <input tabindex="{{ 2 + i }}" placeholder="Enter a number" formControlName="global" class="form-control"
+                       [class.form-control-number]="deployer.suffix" type="text"/>
+                <span class="placeholder-unit">{{ deployer.suffix }}</span>
+              </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="line-toggle"></div>
+
+            <!-- 6 -->
+            <div *ngIf="state.specificPlatform"
+                 formArrayName="specificPlatform">
+              <div class="line-body" *ngFor="let f of builder.formGroup.get('specificPlatform').controls;let i = index"
+                   [formGroupName]="i"
+                   [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get('global').invalid">
+                <input tabindex="{{ 50 + i }}" placeholder="Enter a value" class="form-control" formControlName="global"
+                       type="text"/>
+              </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="line-toggle"></div>
+
+            <!-- 8 -->
+            <div *ngIf="state.app">
+              <div class="line-body" *ngIf="skipper"></div>
+              <div class="line-body"></div>
+              <div formArrayName="global">
+                <div class="line-body" *ngFor="let f of builder.formGroup.get('global').controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="builder.formGroup.get('global').controls[i].get('global').invalid">
+                  <input tabindex="{{ 102 + i }}" placeholder="Enter a value" class="form-control"
+                         formControlName="global" type="text"/>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="scroll">
+
+            <div class="col" *ngFor="let app of builder.streamDeployConfig.apps">
+
+              <!-- 0 -->
+              <div class="line-head">
+                <span *ngIf="app.origin != app.name">
+                  <strong>{{ app.name }}</strong>
+                  ({{ app.origin }})
+                </span>
+                <strong *ngIf="app.origin == app.name">{{ app.name }}</strong>
+                <br/>
+                <app-type [application]="app"></app-type>
+              </div>
+
+              <!-- 1 -->
+              <div class="line-toggle" *ngIf="skipper"></div>
+
+              <!-- 2 -->
+              <div class="line-body" *ngIf="skipper && state.platform"></div>
+
+              <!-- 3 -->
+              <div class="line-toggle"></div>
+
+              <!-- 4 -->
+              <div formArrayName="deployers" *ngIf="state.deployer">
+                <div [formGroupName]="i" class="line-body"
+                     *ngFor="let deployer of builder.streamDeployConfig.deployers; let i = index"
+                     [class.has-error]="builder.formGroup.get('deployers').controls[i].get(app.name).invalid">
+                  <input tabindex="{{ 2 + i }}" placeholder="Enter a number" [formControlName]="app.name"
+                         class="form-control"
+                         [class.form-control-number]="deployer.suffix" type="text"/>
+                  <span class="placeholder-unit">{{ deployer.suffix }}</span>
+                </div>
+              </div>
+
+              <!-- 5 -->
+              <div class="line-toggle"></div>
+
+              <!-- 6 -->
+              <div *ngIf="state.specificPlatform"
+                   formArrayName="specificPlatform">
+                <div class="line-body"
+                     *ngFor="let f of builder.formGroup.get('specificPlatform').controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get(app.name).invalid">
+                  <input tabindex="{{ 50 + i }}" placeholder="Enter a value" class="form-control"
+                         [formControlName]="app.name" type="text"/>
+                </div>
+              </div>
+
+              <!-- 7 -->
+              <div class="line-toggle"></div>
+
+              <!-- 8 -->
+              <div *ngIf="state.app">
+                <div *ngIf="skipper" class="line-body" [class.has-error]="app.optionsState.isInvalid">
+                  <div formGroupName="appsVersion">
+                    <div class="cell">
+                      <select tabindex="{{ 100 }}" [formControlName]="app.name">
+                        <option value="">Default version ({{ app.version }})</option>
+                        <option *ngFor="let version of app.versions" [value]="version.version">
+                          {{ version.version }}
+                        </option>
+                        <option *ngIf="app.optionsState.isInvalid"
+                                [value]="builder.formGroup.get('appsVersion').get(app.name).value">
+                          {{ builder.formGroup.get('appsVersion').get(app.name).value }} (invalid)
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="line-body" [class.has-error]="app.optionsState.isInvalid">
+                  <div
+                    *ngIf="app.options && !app.optionsState.isLoading && !app.optionsState.isOnError && !app.optionsState.isInvalid"
+                    class="form-control form-control-label">
+                    <div *ngIf="app.options.length > 0">
+                      <strong>{{ getAppProperties(builder.builderAppsProperties, app.name).length }}</strong>
+                      <span> /</span> {{ app.options.length }} properties
+                      <button tabindex="{{ 101 }}" type="button" (click)="openApp(builder, app)"
+                              class="btn btn-primary">
+                        <span class="fa fa-pencil"></span>
+                      </button>
+                    </div>
+                    <div *ngIf="app.options.length == 0">
+                      <strong>No properties</strong>
+                    </div>
+                  </div>
+                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">
+                    Loading ...
+                  </div>
+                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">
+                    Error loading
+                  </div>
+                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label">
+                    Invalid version
+                  </div>
+                </div>
+                <div formArrayName="global">
+                  <div class="line-body" *ngFor="let f of builder.formGroup.get('global').controls;let i = index"
+                       [formGroupName]="i"
+                       [class.has-error]="builder.formGroup.get('global').controls[i].get(app.name).invalid">
+                    <input tabindex="{{ 102 + i }}" placeholder="Enter a value" class="form-control"
+                           [formControlName]="app.name" type="text"/>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="footer-actions" style="text-align: center;padding:1rem 0;">
+          <a tabindex="200" id="btn-cancel" class="btn btn-default" routerLink="/streams">Cancel</a>
+          <button tabindex="200" id="btn-export" type="button" class="btn btn-primary" (click)="exportProps()">
+            Export
+          </button>
+          <button tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary"
+                  [disabled]="!isSubmittable(builder)">
+            Deploy the stream
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<ng-template #loading>
+  <div>
+    Loading ...
+  </div>
+</ng-template>

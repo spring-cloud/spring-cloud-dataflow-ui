@@ -1,20 +1,20 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Platform} from '../model/platform';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {StreamsService} from '../streams.service';
-import {mergeMap} from 'rxjs/operators';
-import {Parser} from '../../shared/services/parser';
-import {ApplicationType} from '../../shared/model/application-type';
-import {SharedAppsService} from '../../shared/services/shared-apps.service';
-import {AppVersion} from '../../shared/model/app-version';
-import {AppsService} from '../../apps/apps.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Platform } from '../model/platform';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { StreamsService } from '../streams.service';
+import { mergeMap } from 'rxjs/operators';
+import { Parser } from '../../shared/services/parser';
+import { ApplicationType } from '../../shared/model/application-type';
+import { SharedAppsService } from '../../shared/services/shared-apps.service';
+import { AppVersion } from '../../shared/model/app-version';
+import { AppsService } from '../../apps/apps.service';
 import {
   DetailedAppRegistration,
   ConfigurationMetadataProperty
 } from '../../shared/model/detailed-app-registration.model';
-import {StreamDeployConfig} from '../model/stream-deploy-config';
-import {Utils} from '../../shared/flo/support/utils';
+import { StreamDeployConfig } from '../model/stream-deploy-config';
+import { Utils } from '../../shared/flo/support/utils';
 
 
 /**
@@ -26,15 +26,57 @@ import {Utils} from '../../shared/flo/support/utils';
 export class StreamDeployService {
 
   /**
+   * Platform key validation
+   */
+  public static platform = {
+    is: (key: string): boolean => {
+      return /^(spring.cloud.dataflow.skipper.platformName)$/.test(key);
+    }
+  };
+
+  /**
+   * Deployer key validation
+   */
+  public static deployer = {
+    is: (key: string): boolean => {
+      return /^(deployer)((\.\*)|([.][a-zA-Z0-9]{1,50})?)+([.][a-zA-Z0-9]{1,50})$/.test(key);
+    },
+    extract: (key: string): string => {
+      const result = key.match(/^deployer\.[\w\*]+.(.*)$/);
+      return result.length > 1 ? result[1] : '';
+    },
+  };
+
+  /**
+   * Version key validation
+   */
+  public static version = {
+    is: (key: string): boolean => {
+      return /^(version)+([.][a-zA-Z0-9]{2,50})$/.test(key);
+    }
+  };
+
+  /**
+   * App key validation
+   */
+  public static app = {
+    is: (key: string): boolean => {
+      return /^(app)((\.\*)|([.][a-zA-Z0-9-\-]{1,50})?)+([.][a-zA-Z0-9-\-]{1,50})$/.test(key);
+    },
+    extract: (key: string): string => {
+      const result = key.match(/^app\.[\w\*]+.(.*)$/);
+      return result.length > 1 ? result[1] : '';
+    }
+  };
+
+  /**
    * Constructor
    *
-   * @param {SharedAboutService} sharedAboutService
    * @param {StreamsService} streamsService
    * @param {SharedAppsService} sharedAppsService
    * @param {AppsService} appsService
    */
-  constructor(private sharedAboutService: SharedAboutService,
-              private streamsService: StreamsService,
+  constructor(private streamsService: StreamsService,
               private sharedAppsService: SharedAppsService,
               private appsService: AppsService) {
   }
@@ -43,32 +85,23 @@ export class StreamDeployService {
    * Provide an observable of {@link StreamDeployConfig} for an ID stream passed in parameter
    *
    * @param {string} id Stream ID
+   * @param {boolean} skipper
    * @returns {Observable<StreamDeployConfig>}
    */
-  config(id: string): Observable<StreamDeployConfig> {
-    return this.sharedAboutService
-      .getFeatureInfo()
-      .debounceTime(100)
+  config(id: string, skipper: boolean): Observable<StreamDeployConfig> {
+    return this.streamsService.getDefinition(id)
       .pipe(
         mergeMap(
-          val => this.streamsService.getDefinition(id),
-          (val1, val2) => {
-            return {
-              feature: val1,
-              streamDefinition: val2,
-            };
-          })
-      ).pipe(
-        mergeMap(
           val => {
-            const observablesApplications = Parser.parse(val.streamDefinition.dslText as string, 'stream')
+            const observablesApplications = Parser.parse(val.dslText as string, 'stream')
               .lines[0].nodes
               .map((node) => {
                   return Observable.of({
                     origin: node['name'],
                     name: node['label'] || node['name'],
                     type: node.type.toString(),
-                    version: null
+                    version: null,
+                    options: null
                   })
                     .pipe(
                       mergeMap(
@@ -86,19 +119,18 @@ export class StreamDeployService {
                 }
               );
 
-            if (val.feature.skipperEnabled) {
+            if (skipper) {
               return Observable.forkJoin(this.streamsService.platforms(), ...observablesApplications);
             }
             return Observable.forkJoin(...observablesApplications);
           },
           (val, val2) => ({
-            feature: val.feature,
-            streamDefinition: val.streamDefinition,
+            streamDefinition: val,
             args: val2,
           }))
       ).map(result => {
         const config = new StreamDeployConfig();
-        config.skipper = result.feature.skipperEnabled;
+        config.skipper = skipper;
         config.id = id;
 
         // Platform
@@ -131,7 +163,8 @@ export class StreamDeployService {
           options: null,
           optionsState: {
             isLoading: false,
-            isOnError: false
+            isOnError: false,
+            isInvalid: false
           }
         }));
 
@@ -186,7 +219,7 @@ export class StreamDeployService {
    * @param {string} version
    * @returns {Observable<Array<any>>}
    */
-  app(type: ApplicationType, name: string, version: string): Observable<Array<any>> {
+  appDetails(type: ApplicationType, name: string, version: string): Observable<Array<any>> {
     return this.sharedAppsService.getAppInfo(type, name, version)
       .map((app: DetailedAppRegistration) => {
         return app.options
@@ -241,5 +274,6 @@ export class StreamDeployService {
           });
       });
   }
+
 
 }

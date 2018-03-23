@@ -173,8 +173,9 @@ export class StreamsService {
     return this.http.get(`/streams/deployments/${streamDefinitionName}`, options).map(res => {
       const json = res.json();
       const streamDef = new StreamDefinition(json.streamName, json.dslText, json.status);
+      console.log(json.deploymentProperties);
       // deploymentProperties come as json string -> turn the string into object
-      streamDef.deploymentProperties = JSON.parse(json.deploymentProperties);
+      streamDef.deploymentProperties = json.deploymentProperties ? JSON.parse(json.deploymentProperties) : [];
       return streamDef;
     }).catch(this.errorHandler.handleError);
   }

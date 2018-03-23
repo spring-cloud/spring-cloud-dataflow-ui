@@ -2,7 +2,7 @@
 
   <div class="heading">
     <div class="actions hidden visible-md-block visible-lg-block" *ngIf="!isStreamsEmpty()" [appRoles]="['ROLE_CREATE']">
-      <a class="btn btn-primary" routerLink="create">Create Stream(s)</a>
+      <a class="btn btn-primary" routerLink="/streams/create">Create Stream(s)</a>
     </div>
     <div class="description">
       <h1 class="no-user-selection">Streams</h1>
@@ -183,7 +183,7 @@
         <strong>No Streams exist, yet.</strong>
         <div [appRoles]="['ROLE_CREATE']">
           <p>You can create streams by clicking:</p>
-          <a routerLink="create" class="btn btn-primary">
+          <a routerLink="/streams/create" class="btn btn-primary">
             Create a stream
           </a>
         </div>

@@ -1,0 +1,8 @@
+<div class="alert alert-danger" *ngIf="errors?.app?.length > 0 || errors?.global?.length > 0">
+  <div *ngFor="let line of getErrors()" class="alert-line">
+    {{ line.property }}
+    <a class="trash" (click)="removeProperty(line.type, line.index)">
+      <span class="fa fa-trash"></span>
+    </a>
+  </div>
+</div>
