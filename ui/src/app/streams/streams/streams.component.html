@@ -1,7 +1,7 @@
 <div id="streams-list">
 
   <div class="heading">
-    <div class="actions hidden visible-md-block visible-lg-block" *ngIf="!isAppsEmpty()" [appRoles]="['ROLE_CREATE']">
+    <div class="actions hidden visible-md-block visible-lg-block" *ngIf="!isStreamsEmpty()" [appRoles]="['ROLE_CREATE']">
       <a class="btn btn-primary" routerLink="create">Create Stream(s)</a>
     </div>
     <div class="description">
@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div id="filters" class="pui-filter" *ngIf="!isAppsEmpty()">
+  <div id="filters" class="pui-filter" *ngIf="!isStreamsEmpty()">
     <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
 
       <div class="pui-filter-center">
@@ -178,20 +178,32 @@
 
   <div *ngIf="streamDefinitions" id="empty">
 
-    <div *ngIf="isAppsEmpty()" class="text-center">
-      <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
-        <strong>No registered apps.</strong>
+    <div *ngIf="isStreamsEmpty()" class="text-center">
+      <div class="alert alert-warning" style="display:inline-block;margin:0 auto" *ngIf="!noApplicationRegister">
+        <strong>No Streams exist, yet.</strong>
         <div [appRoles]="['ROLE_CREATE']">
-          <p>You can register apps by clicking:</p>
+          <p>You can create streams by clicking:</p>
           <a routerLink="create" class="btn btn-primary">
             Create a stream
+          </a>
+        </div>
+      </div>
+      <div class="alert alert-warning" style="display:inline-block;margin:0 auto" *ngIf="noApplicationRegister">
+        <strong>No Streams exist and no registered apps.</strong>
+        <div [appRoles]="['ROLE_CREATE']">
+          <p>You can register apps by clicking:</p>
+          <a routerLink="/apps/register-apps" class="btn btn-primary">
+            Register Application(s)
+          </a>
+          <a routerLink="/apps/bulk-import-apps" class="btn btn-primary">
+            Bulk Import Application(s)
           </a>
         </div>
       </div>
     </div>
 
     <div id="no-result" class="row"
-         *ngIf="!isAppsEmpty() && streamDefinitions.totalPages < 2 && streamDefinitions.items.length == 0">
+         *ngIf="!isStreamsEmpty() && streamDefinitions.totalPages < 2 && streamDefinitions.items.length == 0">
       <div class="col-md-8"></div>
       <div class="col-md-8">
         <div class="alert alert-warning" style="border:0 none;padding: 1.5rem 2rem;">

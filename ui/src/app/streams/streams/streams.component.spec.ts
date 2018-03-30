@@ -35,6 +35,8 @@ import { StreamGraphDefinitionComponent } from '../components/stream-graph-defin
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { BusyService } from '../../shared/services/busy.service';
 import { MockModalService } from '../../tests/mocks/modal';
+import { AppsService } from '../../apps/apps.service';
+import { MockAppsService } from '../../tests/mocks/apps';
 
 /**
  * Test {@link StreamsComponent}.
@@ -49,6 +51,7 @@ describe('StreamsComponent', () => {
   const streamsService = new MockStreamsService();
   const authService = new MockAuthService();
   const modalService = new MockModalService();
+  const appsService = new MockAppsService();
 
   beforeEach(async(() => {
     const aboutService = new MocksSharedAboutService();
@@ -85,6 +88,7 @@ describe('StreamsComponent', () => {
       ],
       providers: [
         { provide: SharedAboutService, useValue: aboutService },
+        { provide: AppsService, useValue: appsService },
         { provide: AuthService, useValue: authService },
         { provide: BusyService, useValue: new BusyService() },
         { provide: StreamsService, useValue: streamsService },

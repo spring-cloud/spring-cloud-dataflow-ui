@@ -14,8 +14,10 @@ import { SortParams, OrderParams } from '../../shared/components/shared.interfac
 import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 import { StreamListParams } from '../components/streams.interface';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
+import { AppsService } from '../../apps/apps.service';
+import { AppRegistration } from '../../shared/model/app-registration.model';
 
 @Component({
   selector: 'app-streams',
@@ -83,6 +85,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
   };
 
   /**
+   * State of application register empty
+   */
+  noApplicationRegister: boolean;
+
+  /**
    * Contain a key application of each selected application
    * @type {Array}
    */
@@ -104,12 +111,14 @@ export class StreamsComponent implements OnInit, OnDestroy {
    *
    * @param {StreamsService} streamsService
    * @param {BsModalService} modalService
+   * @param {AppsService} appsService
    * @param {BusyService} busyService
    * @param {ToastyService} toastyService
    * @param {Router} router
    */
   constructor(public streamsService: StreamsService,
               private modalService: BsModalService,
+              private appsService: AppsService,
               private busyService: BusyService,
               private toastyService: ToastyService,
               private router: Router) {
@@ -146,7 +155,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
   refresh() {
     console.log('Loading Stream Definitions...', this.params);
     const busy = this.streamsService
-      .getDefinitions(this.params).map((page: Page<StreamDefinition>) => {
+      .getDefinitions(this.params)
+      .map((page: Page<StreamDefinition>) => {
         this.form.checkboxes = page.items.map((stream) => {
           return this.itemsSelected.indexOf(stream.name) > -1;
         });
@@ -155,14 +165,32 @@ export class StreamsComponent implements OnInit, OnDestroy {
         });
         return page;
       })
+      .pipe(
+        mergeMap(
+          val => this.appsService.getApps({
+            q: '',
+            type: null,
+            page: 0,
+            size: 1,
+            order: 'name',
+            sort: OrderParams.ASC
+          }),
+          (val1, val2) => {
+            return {
+              streams: val1,
+              apps: val2,
+            };
+          })
+      )
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((page: Page<StreamDefinition>) => {
-          if (page.items.length === 0 && this.params.page > 0) {
+      .subscribe((value: { streams: Page<StreamDefinition>, apps: Page<AppRegistration> }) => {
+          if (value.streams.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
             this.refresh();
             return;
           }
-          this.streamDefinitions = page;
+          this.noApplicationRegister = !(value.apps.totalElements > 0);
+          this.streamDefinitions = value.streams;
           this.changeExpand();
           this.changeCheckboxes();
           this.updateContext();
@@ -229,7 +257,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
   /**
    * Determine if there is no application
    */
-  isAppsEmpty(): boolean {
+  isStreamsEmpty(): boolean {
     if (this.streamDefinitions) {
       if (this.streamDefinitions.totalPages < 2) {
         return (this.params.q === '' && this.streamDefinitions.items.length === 0);
