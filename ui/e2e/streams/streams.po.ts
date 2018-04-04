@@ -13,7 +13,7 @@ export class StreamsPage {
    */
   navigateTo() {
     browser.waitForAngularEnabled(false);
-    return browser.get('#/streams/definitions', 60000);
+    return browser.get('#/streams');
   }
 
   /**

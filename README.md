@@ -60,15 +60,78 @@ The following instructions can be used to do this:
 * **pom.xml** Maven config file
 * ui/**package.json** Node dependencies
 
-# Running Tests
+# Running Tests - Locally
 
 ## Unit Tests
 
-	$ ng test --browsers PhantomJS --single-run
+```bash
+	$ ng test --single-run
+```
 
 ## E2E Tests
 
+```bash
 	$ npm run e2e
+```
+
+# Running Tests - SauceLabs
+
+Before you can run tests using SauceLabs, please setup your username and password:
+
+```bash
+    $ export SAUCE_USERNAME=your-username
+    $ export SAUCE_ACCESS_KEY=your-access-key
+```
+
+## Unit Tests
+
+```bash
+	$ npm run test-saucelabs-local
+```
+
+## E2E Tests
+
+For E2E tests, developers should refrain from using `localhost`. Instead, add `dataflow.local` to your local DNS hosts file.
+
+```bash
+	$ npm run e2e-saucelabs-local
+```
+
+## Thank You
+
+![SauceLabs Logo](master-ui-assets/images/saucelabs-logo-600x315.png)
+
+Cross-browser Testing provided by [SauceLabs](https://saucelabs.com).
+
+# Running Tests - BrowserStack
+
+Before you can run tests using BrowserStack, please setup your username and password:
+
+```bash
+    $ export BROWSER_STACK_USERNAME=your-username
+    $ export BROWSER_STACK_ACCESS_KEY=your-access-key
+```
+
+## Unit Tests
+
+```bash
+	$ npm run test-browserstack-local
+```
+
+## E2E Tests
+
+For E2E tests, developers should refrain from using `localhost`. Instead, add `dataflow.local` to your local DNS hosts file.
+
+```bash
+	$ npm run e2e-browserstack-local
+```
+
+## Big Thanks
+
+![BrowserStack Logo](master-ui-assets/images/browserstack-logo-600x315.png)
+
+
+Cross-browser Testing Platform provided by [BrowserStack](https://browserstack.com).
 
 # Development
 
