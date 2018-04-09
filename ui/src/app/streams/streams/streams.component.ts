@@ -453,8 +453,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
     const className = streamDefinitions.length > 1 ? 'modal-lg' : 'modal-md';
     this.modal = this.modalService.show(StreamsDestroyComponent, { class: className });
     this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
-      if (this.streamsService.streamDefinitions.items.length === 0 &&
-        this.streamsService.streamDefinitions.pageNumber > 0) {
+      if (this.streamDefinitions.items.length === 0 &&
+        this.streamDefinitions.pageNumber > 0) {
         this.streamDefinitions.pageNumber = this.streamDefinitions.pageNumber - 1;
       }
       this.refresh();

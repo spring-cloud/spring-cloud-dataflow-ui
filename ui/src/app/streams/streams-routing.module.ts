@@ -20,6 +20,11 @@ const streamRoutes: Routes = [
     children: [
       {
         path: '',
+        pathMatch: 'full',
+        redirectTo: 'definitions'
+      },
+      {
+        path: 'definitions',
         component: StreamsComponent,
       },
       {
