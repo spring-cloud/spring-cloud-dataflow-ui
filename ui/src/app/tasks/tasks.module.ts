@@ -1,35 +1,36 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
-
 import { FloModule } from 'spring-flo';
-import { TasksComponent } from './tasks.component';
-import { TaskAppsComponent } from './task-apps/task-apps.component';
-import { TaskDefinitionsComponent } from './task-definitions/task-definitions.component';
-import { TaskCreateComposedTaskComponent } from './task-create-composed-task/task-create-composed-task.component';
 import { TaskExecutionsComponent } from './task-executions/task-executions.component';
-import { TaskExecutionsDetailsComponent } from './task-details/task-details.component';
-import { TaskAppDetailsComponent } from './task-app-details/task-app-details.component';
-import { TaskCreateComponent } from './task-create/task-create.component';
-import { TaskBulkDefineComponent } from './task-bulk-define/task-bulk-define.component';
 import { TaskLaunchComponent } from './task-launch/task-launch.component';
 import { TasksService } from './tasks.service';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { AuthModule } from '../auth/auth.module';
-import { TaskGraphViewComponent } from './flo/task-graph-view/task-graph-view.component';
-import { MetamodelService } from './flo/metamodel.service';
-import { RenderService } from './flo/render.service';
-import { EditorService } from './flo/editor.service';
-import { NodeComponent } from './flo/node/node.component';
-import { ToolsService } from './flo/tools.service';
-import { TaskCreateComposedTaskDialogComponent } from './task-create-composed-task/task-create-composed-task-dialog.component';
-import { TaskPropertiesDialogComponent } from './flo/properties/task-properties-dialog-component';
+import { TaskGraphViewComponent } from './components/flo/task-graph-view/task-graph-view.component';
+import { MetamodelService } from './components/flo/metamodel.service';
+import { RenderService } from './components/flo/render.service';
+import { EditorService } from './components/flo/editor.service';
+import { NodeComponent } from './components/flo/node/node.component';
+import { ToolsService } from './components/flo/tools.service';
+import { TaskPropertiesDialogComponent } from './components/flo/properties/task-properties-dialog-component';
 import { DecorationComponent } from '../shared/flo/decoration/decoration.component';
 import { HandleComponent } from '../shared/flo/handle/handle.component';
-import { ContentAssistService } from './flo/content-assist.service';
-import { ComposedTaskDetailsComponent } from './composed-task-details/composed-task-details.component';
+import { ContentAssistService } from './components/flo/content-assist.service';
+import { TasksComponent } from './tasks/tasks.components';
+import { TaskDefinitionCreateComponent } from './task-definition-create/task-definition-create.component';
+import { TaskDefinitionCreateDialogComponent } from './task-definition-create/create-dialog/create-dialog.component';
+import { TaskExecutionComponent } from './task-execution/task-execution.component';
+import { TaskDefinitionComponent } from './task-definition/task-definition.component';
+import { TaskStatusComponent } from './components/task-status/task-status.component';
+import { TaskDefinitionsDestroyComponent } from './task-definitions-destroy/task-definitions-destroy.component';
+import { TaskDefinitionsComponent } from './task-definitions/task-definitions.component';
+import { TaskGraphComponent } from './task-definition/graph/task-graph.component';
+import { TaskSummaryComponent } from './task-definition/summary/task-summary.component';
+import { AppsModule } from '../apps/apps.module';
+import { TasksTabulationComponent } from './components/tasks-tabulation/tasks-tabulation.component';
 
 @NgModule({
   imports: [
@@ -39,34 +40,37 @@ import { ComposedTaskDetailsComponent } from './composed-task-details/composed-t
     ReactiveFormsModule,
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
+    TooltipModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    AppsModule,
     AuthModule,
-    FloModule,
-    TooltipModule.forRoot()
+    FloModule
   ],
   declarations: [
     TasksComponent,
-    TaskAppsComponent,
-    TaskDefinitionsComponent,
-    TaskCreateComposedTaskComponent,
-    TaskCreateComposedTaskDialogComponent,
+    TaskDefinitionCreateComponent,
+    TaskDefinitionCreateDialogComponent,
     TaskExecutionsComponent,
-    TaskExecutionsDetailsComponent,
-    TaskAppDetailsComponent,
-    TaskCreateComponent,
-    TaskBulkDefineComponent,
+    TaskExecutionComponent,
     TaskLaunchComponent,
     TaskGraphViewComponent,
     NodeComponent,
-    TaskCreateComposedTaskDialogComponent,
     TaskPropertiesDialogComponent,
-    ComposedTaskDetailsComponent
+    TaskDefinitionComponent,
+    TaskStatusComponent,
+    TaskDefinitionsDestroyComponent,
+    TaskDefinitionsComponent,
+    TaskSummaryComponent,
+    TaskGraphComponent,
+    TasksTabulationComponent
   ],
   entryComponents: [
     NodeComponent,
-    TaskCreateComposedTaskDialogComponent,
+    TaskDefinitionCreateDialogComponent,
     TaskPropertiesDialogComponent,
     DecorationComponent,
-    HandleComponent
+    HandleComponent,
+    TaskDefinitionsDestroyComponent
   ],
   providers: [
     TasksService,
@@ -77,4 +81,5 @@ import { ComposedTaskDetailsComponent } from './composed-task-details/composed-t
     ContentAssistService
   ]
 })
-export class TasksModule { }
+export class TasksModule {
+}

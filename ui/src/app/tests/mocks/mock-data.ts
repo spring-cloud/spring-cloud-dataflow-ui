@@ -882,8 +882,8 @@ export const APPS = {
           uri: 'http://foo.bar:0.0.1',
           defaultVersion: false,
           metadata: [
-            {name: 'foo1', description: 'bar1'},
-            {name: 'foo2', description: 'bar2'}
+            { name: 'foo1', description: 'bar1' },
+            { name: 'foo2', description: 'bar2' }
           ]
         },
         {
@@ -891,8 +891,8 @@ export const APPS = {
           uri: 'http://foo.bar:0.0.2',
           defaultVersion: false,
           metadata: [
-            {name: 'lorem1', description: 'ipsum1'},
-            {name: 'lorem2', description: 'ipsum2'}
+            { name: 'lorem1', description: 'ipsum1' },
+            { name: 'lorem2', description: 'ipsum2' }
           ]
         },
         {
@@ -900,8 +900,8 @@ export const APPS = {
           uri: 'http://foo.bar:1.0.0',
           defaultVersion: true,
           metadata: [
-            {name: 'set1', description: 'set1'},
-            {name: 'dolor1', description: 'dolor1'}
+            { name: 'set1', description: 'set1' },
+            { name: 'dolor1', description: 'dolor1' }
           ]
         },
       ]
@@ -918,8 +918,8 @@ export const APPS = {
           uri: 'http://foo.bar:0.0.1',
           defaultVersion: true,
           metadata: [
-            {name: 'foo1', description: 'bar1'},
-            {name: 'foo2', description: 'bar2'}
+            { name: 'foo1', description: 'bar1' },
+            { name: 'foo2', description: 'bar2' }
           ]
         }
       ]
@@ -968,6 +968,107 @@ export const STREAM_DEFINITIONS = {
   page: {
     size: 1,
     totalElements: 1,
+    totalPages: 1,
+    number: 0
+  }
+};
+
+export const TASK_DEFINITIONS = {
+  _embedded: {
+    taskDefinitionResourceList: [
+      {
+        name: 'foo',
+        dslText: 'bar',
+        composed: true,
+        status: 'unknown',
+        _links: {
+          self: {
+            href: 'http://localhost:4200/tasks/definitions/foo'
+          }
+        }
+      },
+      {
+        name: 'bar2',
+        dslText: 'task1',
+        composed: false,
+        status: 'unknown',
+        _links: {
+          self: {
+            href: 'http://localhost:4200/tasks/definitions/bar'
+          }
+        }
+      }
+    ]
+  },
+  _links: {
+    self: {
+      href: 'http://localhost:4200/tasks/definitions?page=0&size=20&sort=DEFINITION_NAME,asc'
+    }
+  },
+  page: {
+    size: 20,
+    totalElements: 2,
+    totalPages: 1,
+    number: 0
+  }
+};
+
+export const TASK_EXECUTIONS = {
+  _embedded: {
+    taskExecutionResourceList: [
+      {
+        executionId: 2,
+        exitCode: 0,
+        taskName: 'foo1',
+        startTime: null,
+        endTime: null,
+        exitMessage: null,
+        arguments: [],
+        jobExecutionIds: [],
+        errorMessage: null,
+        externalExecutionId: null,
+        _links: {
+          self: {
+            href: 'http://localhost:4200/tasks/executions/2'
+          }
+        }
+      },
+      {
+        executionId: 1,
+        exitCode: 0,
+        taskName: 'foo2 && foo3',
+        startTime: null,
+        endTime: null,
+        exitMessage: null,
+        arguments: [],
+        jobExecutionIds: [],
+        errorMessage: null,
+        externalExecutionId: null,
+        _links: {
+          self: {
+            href: 'http://localhost:4200/tasks/executions/1'
+          }
+        }
+      }
+    ]
+  },
+  _links: {
+    first: {
+      href: 'http://localhost:4200/tasks/executions?page=0&size=10&sort=TASK_EXECUTION_ID,desc'
+    },
+    self: {
+      href: 'http://localhost:4200/tasks/executions?page=0&size=10&sort=TASK_EXECUTION_ID,desc'
+    },
+    next: {
+      href: 'http://localhost:4200/tasks/executions?page=1&size=10&sort=TASK_EXECUTION_ID,desc'
+    },
+    last: {
+      href: 'http://localhost:4200/tasks/executions?page=1&size=10&sort=TASK_EXECUTION_ID,desc'
+    }
+  },
+  page: {
+    size: 10,
+    totalElements: 2,
     totalPages: 1,
     number: 0
   }

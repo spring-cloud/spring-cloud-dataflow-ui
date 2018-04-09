@@ -45,6 +45,7 @@ import { ConfirmService } from './components/confirm/confirm.service';
 import { ConfirmComponent } from './components/confirm/confirm.component';
 import { BusyService } from './services/busy.service';
 import { AutoResizeDirective } from './directives/auto-resize.directive';
+import { StreamDslComponent } from './components/dsl/dsl.component';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -96,6 +97,7 @@ const busyConfig: BusyConfig = {
     HandleComponent,
     PropertiesDialogComponent,
     GraphViewComponent,
+    StreamDslComponent,
     TruncatePipe,
     OrderByPipe,
     ConfirmComponent
@@ -112,6 +114,7 @@ const busyConfig: BusyConfig = {
     BusyService
   ],
   exports: [
+    StreamDslComponent,
     NgBusyModule,
     ClickOutsideDirective,
     CommonModule,

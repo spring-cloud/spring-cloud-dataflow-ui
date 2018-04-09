@@ -1,75 +1,168 @@
-
-<div class="row">
-  <div class="col-xs-8">
-    <button type="button" [appRoles]="['ROLE_CREATE']" (click)="bulkDefineTasks()"
-            class="btn btn-default">
-      <span class="glyphicon glyphicon-import"></span>
-      <span class="hidden-xs">Bulk Define Tasks</span>
-    </button>
+<div class="heading">
+  <div class="actions hidden visible-md-block visible-lg-block" [appRoles]="['ROLE_CREATE']" *ngIf="!isTasksEmpty()">
+    <a class="btn btn-primary" routerLink="/tasks/create">Create Task(s)</a>
   </div>
-  <div class="col-xs-16 text-right" style="padding-left: 0;">
-    <label *ngIf="taskDefinitions" class="control">
-      <input type="text" class="input filter-input" placeholder="Filter definitions" [(ngModel)]="taskDefinitions.filter['q']">
-    </label>
-    <button *ngIf="taskDefinitions" type="button" (click)="loadTaskDefinitions()"
-            class="btn btn-default">
-      <span class="glyphicon glyphicon-refresh"></span></button>
+  <div class="description">
+    <h1 class="no-user-selection">Tasks</h1>
+    <p>
+      This section lists all the task definitions and provides the ability to run or schedule tasks.
+    </p>
   </div>
 </div>
-<div *ngIf="!taskDefinitions">No tasks available.</div>
-<table *ngIf="taskDefinitions?.items" class="table table-hover">
-  <thead>
-  <tr>
-    <th style="width: 70px"><a (click)="toggleDefinitionNameSort()"><span style="margin-right: 5px">Name</span></a><i class="fa" [ngClass]="{'fa-sort': definitionNameSort === undefined, 'fa-sort-asc': definitionNameSort === false, 'fa-sort-desc': definitionNameSort === true }" aria-hidden="true"></i></th>
-    <th><a (click)="toggleDefinitionSort()"><span style="margin-right: 5px">Definitions</span></a><i class="fa" [ngClass]="{'fa-sort': definitionSort === undefined, 'fa-sort-asc': definitionSort === false, 'fa-sort-desc': definitionSort === true }" aria-hidden="true"></i></th>
-    <th style="width: 185px" class="text-center">Actions</th>
-  </tr>
-  </thead>
 
-  <tbody>
-  <ng-template ngFor let-item [ngForOf]="taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance()">
-    <tr>
-      <td>{{ item.name }}</td>
-      <td>{{ item.dslText }}</td>
-      <td class="action-column">
-        <button type="button" (click)="details(item)"
-                class="btn btn-default" style="margin-left: 0;" title="Details" [disabled]="!item.dslText || !item.composed">
-          <span class="glyphicon glyphicon-info-sign"></span>
-        </button>
-        <button type="button" [appRoles]="['ROLE_CREATE']" (click)="launchTask(item)"
-                class="btn btn-default" style="margin-left: 0;" title="Launch">
-          <span class="glyphicon glyphicon-play"></span>
-        </button>
-        <button type="button" [appRoles]="['ROLE_CREATE']" (click)="destroyTask(item)"
-                class="btn btn-default" style="margin-left: 0;" title="Destroy">
-          <span class="glyphicon glyphicon-remove"></span>
-        </button>
-      </td>
-    </tr>
-  </ng-template>
-  </tbody>
-</table>
-<pagination-controls *ngIf="taskDefinitions?.items" (pageChange)="getPage($event)" [id]="taskDefinitions.getPaginationInstance().id"></pagination-controls>
+<app-tasks-tabulation>
 
-<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Confirm Destroy Action</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="hideChildModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+  <div id="tasks-list">
+
+    <div id="filters" class="pui-filter" *ngIf="!isTasksEmpty()">
+      <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
+
+        <div class="pui-filter-center">
+          <div class="input-group input-group-filter">
+            <input type="text" name="q" class="form-control sm" placeholder="Filter items" [(ngModel)]="form.q">
+            <div class="input-group-btn">
+              <button [disabled]="!isSearchActive()" type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pui-filter-actions">
+          <div class="pui-filter-left">
+            <div id="dropdown-actions" class="dropdown" *ngIf="countSelected() > 0" dropdown>
+              <button dropdownToggle type="button" class="btn btn-default btn-dropdown" data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false">
+                <span *ngIf="countSelected() == 1">Action (1)</span>
+                <span *ngIf="countSelected() > 1">Actions ({{ countSelected() }})</span>
+                <span class="caret"></span>
+              </button>
+              <ul *dropdownMenu class="dropdown-menu">
+                <li>
+                  <a id="destroy-tasks" style="cursor: pointer" (click)="destroySelectedTasks()">
+                    <span *ngIf="countSelected() == 1">Destroy task</span>
+                    <span *ngIf="countSelected() > 1">Destroy tasks</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="pui-filter-right" style="text-align: right">
+            <button (click)="refresh()" name="app-refresh" type="button" class="btn btn-default btn-icon"
+                    title="Refresh">
+              <span class="glyphicon glyphicon-refresh"></span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <table *ngIf="taskDefinitions?.items && taskDefinitions.items.length > 0"
+           class="table table-hover table-checkbox" id="taskDefinitionsTable">
+      <thead>
+      <tr>
+        <th style="width: 30px">
+          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [appRoles]="['ROLE_CREATE']"
+                               [items]="form.checkboxes"></app-master-checkbox>
+        </th>
+        <th style="width: 70px">
+          <app-sort id="sort-name" (change)="applySort($event)" [value]="'DEFINITION_NAME'" [sort]="params">
+            Name
+          </app-sort>
+        <th>
+          <div class="head-dsl">
+            <app-sort id="sort-dsl" (change)="applySort($event)" [value]="'DEFINITION'" [sort]="params">
+              Definitions
+            </app-sort>
+          </div>
+        </th>
+        <th nowrap="" style="width: 120px">
+          Status
+        </th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container
+        *ngFor="let item of taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance(); index as i">
+        <tr>
+          <td class="cell-checkbox">
+            <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
+                   [(ngModel)]="form.checkboxes[i]"/>
+          </td>
+          <td width="200px">
+            <a style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">{{ item.name }}</a>
+          </td>
+          <td>
+            <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
+          </td>
+          <td>
+            <app-task-status [taskDefinition]="item"></app-task-status>
+          </td>
+          <td class="table-actions" width="10px" nowrap="">
+            <div class="actions" role="group">
+              <button type="button" name="task-details{{ i }}" (click)="details(item)" class="btn btn-default"
+                      title="Details">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+              <button type="button" name="task-launch{{ i }}" (click)="launch(item)" [appRoles]="['ROLE_CREATE']"
+                      class="btn btn-default" style="margin-left: 0;" title="Destroy">
+                <span class="glyphicon glyphicon-play"></span>
+              </button>
+              <button name="task-destroy{{ i }}" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(item)"
+                      class="btn btn-default" style="margin-left: 0;" title="Destroy">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+
+    <div id="pagination" *ngIf="taskDefinitions && taskDefinitions.totalPages > 1">
+      <pagination-controls *ngIf="taskDefinitions.items.length > 0 "
+                           (pageChange)="getPage($event)"></pagination-controls>
+    </div>
+
+    <div *ngIf="taskDefinitions" id="empty" style="padding-top:1.5rem">
+
+      <div *ngIf="isTasksEmpty()" class="text-center">
+        <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
+          <strong>No task.</strong>
+          <div [appRoles]="['ROLE_CREATE']">
+            <p>You can create a task by clicking:</p>
+            <a routerLink="/tasks/create" class="btn btn-primary">
+              Create a task
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="modal-body" *ngIf="taskDefinitionToDestroy">
-        <p>This action will delete definition
-          <u><strong>{{ taskDefinitionToDestroy.name }}</strong></u>.
-          Are you sure?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="cancel()">No</button>
-        <button type="button" class="btn btn-primary" (click)="proceed(taskDefinitionToDestroy)">Yes</button>
+
+      <div id="no-result" class="row"
+           *ngIf="!isTasksEmpty() && taskDefinitions.totalPages < 2 && taskDefinitions.items.length == 0">
+        <div class="col-md-8"></div>
+        <div class="col-md-8">
+          <div class="alert alert-warning" style="border:0 none;padding: 1.5rem 2rem;">
+            <div style="padding-bottom: 8px">
+            <span>
+              No results found for
+              <strong>'{{ params.q }}'</strong>
+            </span>
+            </div>
+            <div>
+              <button type="button" style="cursor: pointer;" (click)="clearSearch()" class="btn btn-primary">
+                <span class="glyphicon glyphicon-remove"></span>
+                Clear the search
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
+  </div>
+
+</app-tasks-tabulation>

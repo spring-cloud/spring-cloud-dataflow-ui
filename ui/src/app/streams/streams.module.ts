@@ -36,7 +36,6 @@ import { EditorService } from './components/flo/editor.service';
 import { ContentAssistService } from './components/flo/content-assist.service';
 import { StreamGraphComponent } from './stream/graph/stream-graph.component';
 import { StreamSummaryComponent } from './stream/summary/stream-summary.component';
-import { StreamDslComponent } from '../shared/components/dsl/dsl.component';
 import { StreamStatusComponent } from './components/stream-status/stream-status.component';
 import { StreamDeployBuilderErrorsComponent } from './stream-deploy/builder/errors/errors.component';
 import { StreamsUndeployComponent } from './streams-undeploy/streams-undeploy.component';
@@ -78,7 +77,6 @@ import { StreamsDestroyComponent } from './streams-destroy/streams-destroy.compo
     StreamDeployBuilderComponent,
     StreamGraphComponent,
     StreamSummaryComponent,
-    StreamDslComponent,
     StreamStatusComponent,
     StreamDeployBuilderErrorsComponent,
     StreamsUndeployComponent,
