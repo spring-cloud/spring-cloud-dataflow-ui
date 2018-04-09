@@ -1,0 +1,37 @@
+<div>
+
+  <div class="heading">
+    <div class="description">
+      <h1 class="no-user-selection">Create a task</h1>
+      <p> Create a task using text based input or the visual editor.</p>
+    </div>
+  </div>
+
+  <div id="flo-container" class="stream-editor" [ngBusy]="busy">
+    <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
+                [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="20" [(dsl)]="dsl"
+                (validationMarkers)="validationMarkers = $event">
+      <button (click)="createTaskDefs()" class="btn btn-default" type="button"
+              [disabled]="isCreateComposedTaskDisabled">Create Task
+      </button>
+      <button (click)="clearGraph()" class="btn btn-default" type="button">Clear</button>
+      <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
+      <button class="btn" (click)="gridOn = !gridOn"
+              [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid
+      </button>
+      <div class="flow-definition-container">
+        <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true" (blur)="editorContext.graphToTextSync=true"
+                    (focus)="editorContext.graphToTextSync=false" placeholder="Enter Composed Task definition here..."
+                    [lintOptions]="lintOptions"
+        ></dsl-editor>
+      </div>
+    </flo-editor>
+  </div>
+
+  <div class="footer-actions" style="text-align: center;padding:2rem 0 1rem 0">
+    <button id="back-button" type="button" class="btn btn-default" routerLink="/tasks">
+      Cancel
+    </button>
+  </div>
+
+</div>

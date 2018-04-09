@@ -1,0 +1,41 @@
+<div *ngIf="taskDefinitions">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm Destroy Task Definitions</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="taskDefinitions.length == 1">
+    <p>This action will destroy and delete the task <strong>{{ taskDefinitions[0].name }}</strong>.
+      Are you sure?</p>
+  </div>
+  <div class="modal-body" *ngIf="taskDefinitions.length > 1">
+    <p>
+      This action will destroy the <strong>{{ taskDefinitions.length }} task definitions</strong> listed below.
+      Are you sure?
+    </p>
+    <br/>
+    <table id="table-tasks" class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Definition</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of taskDefinitions">
+        <td>{{ item.name }}</td>
+        <td>
+          <app-stream-dsl>{{ item.dslText | truncate: 95 }}</app-stream-dsl>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer" style="text-align:center">
+    <button id="btn-cancel" type="button" class="btn btn-default" (click)="cancel()">No</button>
+    <button id="btn-destroy" type="button" class="btn btn-primary" (click)="destroy(taskDefinitions)">
+      Destroy Task Definition(s)
+    </button>
+  </div>
+</div>

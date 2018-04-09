@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 import { Page } from '../../shared/model/page';
@@ -8,118 +7,166 @@ import { TasksService } from '../tasks.service';
 import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
+import { TaskListParams } from '../components/tasks.interface';
+import { OrderParams, SortParams } from '../../shared/components/shared.interface';
 
+/**
+ * Component that display the Task Executions.
+ *
+ * @author Janne Valkealahti
+ * @author Gunnar Hillert
+ * @author Damien Vitrac
+ */
 @Component({
   selector: 'app-task-executions',
   templateUrl: './task-executions.component.html',
+  styleUrls: ['./../task-definitions/styles.scss']
 })
 export class TaskExecutionsComponent implements OnInit, OnDestroy {
 
+  /**
+   * Current page of Stream definitions
+   */
+  taskExecutions: Page<TaskExecution>;
+
+  /**
+   * Busy Subscriptions
+   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
-  taskExecutions: Page<TaskExecution>;
-  executionIdSort: boolean = undefined;
-  taskNameSort: boolean = undefined;
-  startTimeSort: boolean = undefined;
-  endTimeSort: boolean = undefined;
-  exitCodeSort: boolean = undefined;
+  /**
+   * Current forms value
+   */
+  form: any = {
+    q: ''
+  };
 
-  constructor(
-    private busyService: BusyService,
-    public tasksService: TasksService,
-    private toastyService: ToastyService,
-    private router: Router
-  ) {
-  }
+  /**
+   * State of App List Params
+   */
+  params: TaskListParams = {
+    sort: 'TASK_EXECUTION_ID',
+    order: OrderParams.ASC,
+    page: 0,
+    size: 30,
+    q: ''
+  };
 
-  ngOnInit() {
-    this.loadTaskExecutions();
+  /**
+   * Storage context
+   */
+  context: any;
+
+  /**
+   * Constructor
+   *
+   * @param {BusyService} busyService
+   * @param {TasksService} tasksService
+   * @param {ToastyService} toastyService
+   * @param {Router} router
+   */
+  constructor(private busyService: BusyService,
+              public tasksService: TasksService,
+              public toastyService: ToastyService,
+              private router: Router) {
   }
 
   /**
-   * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.
+   * Retrieves the {@link TaskDefinition}s to be displayed on the page.
+   */
+  ngOnInit() {
+    this.context = this.tasksService.executionsContext;
+    this.params = { ...this.context };
+    this.form = { q: this.context.q };
+    this.refresh();
+  }
+
+  /**
+   * Close subscription
    */
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
 
-  loadTaskExecutions() {
-    const busy = this.tasksService.getExecutions(this.executionIdSort, this.taskNameSort, this.startTimeSort,
-        this.endTimeSort, this.exitCodeSort)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(
-      data => {
-        this.taskExecutions = data;
-        this.toastyService.success('Task Executions loaded.');
-      }
-    );
+  /**
+   * Initializes the taskDefinitions attribute with the results from Spring Cloud Data Flow server.
+   */
+  refresh() {
+    const busy = this.tasksService
+      .getExecutions(this.params)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((page: Page<TaskExecution>) => {
+          if (page.items.length === 0 && this.params.page > 0) {
+            this.params.page = 0;
+            this.refresh();
+            return;
+          }
+          this.taskExecutions = page;
+          this.updateContext();
+        },
+        error => {
+          this.toastyService.error(error);
+        }
+      );
+
     this.busyService.addSubscription(busy);
   }
 
+  /**
+   * Write the context in the service.
+   */
+  updateContext() {
+    this.context.q = this.params.q;
+    this.context.sort = this.params.sort;
+    this.context.order = this.params.order;
+    this.context.page = this.params.page;
+    this.context.size = this.params.size;
+  }
+
+  /**
+   * Apply sort
+   * Triggered on column header click
+   *
+   * @param {SortParams} sort
+   */
+  applySort(sort: SortParams) {
+    this.params.sort = sort.sort;
+    this.params.order = sort.order;
+    this.refresh();
+  }
+
+  /**
+   * Determine if there is no application
+   */
+  isExecutionsEmpty(): boolean {
+    if (this.taskExecutions) {
+      if (this.taskExecutions.totalPages < 2) {
+        return this.taskExecutions.items.length === 0;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Used for requesting a new page. The past is page number is
+   * 1-index-based. It will be converted to a zero-index-based
+   * page number under the hood.
+   *
+   * @param page 1-index-based
+   */
   getPage(page: number) {
     console.log(`Getting page ${page}.`);
-    this.tasksService.taskExecutions.pageNumber = page - 1;
-    this.loadTaskExecutions();
+    this.params.page = page - 1;
+    this.refresh();
   }
 
-  details(item: TaskExecution) {
-    this.router.navigate(['tasks/executions/' + item.executionId]);
+  /**
+   * Route to {@link TaskExecution} details page.
+   * @param {TaskExecution} taskExecution
+   */
+  details(taskExecution: TaskExecution) {
+    this.router.navigate([`tasks/executions/${taskExecution.executionId}`]);
   }
 
-  toggleExecutionIdSort() {
-    if (this.executionIdSort === undefined) {
-      this.executionIdSort = true;
-    } else if (this.executionIdSort) {
-      this.executionIdSort = false;
-    } else {
-      this.executionIdSort = undefined;
-    }
-    this.loadTaskExecutions();
-  }
-
-  toggleTaskNameSort() {
-    if (this.taskNameSort === undefined) {
-      this.taskNameSort = true;
-    } else if (this.taskNameSort) {
-      this.taskNameSort = false;
-    } else {
-      this.taskNameSort = undefined;
-    }
-    this.loadTaskExecutions();
-  }
-
-  toggleStartTimeSort() {
-    if (this.startTimeSort === undefined) {
-      this.startTimeSort = true;
-    } else if (this.startTimeSort) {
-      this.startTimeSort = false;
-    } else {
-      this.startTimeSort = undefined;
-    }
-    this.loadTaskExecutions();
-  }
-
-  toggleEndTimeSort() {
-    if (this.endTimeSort === undefined) {
-      this.endTimeSort = true;
-    } else if (this.endTimeSort) {
-      this.endTimeSort = false;
-    } else {
-      this.endTimeSort = undefined;
-    }
-    this.loadTaskExecutions();
-  }
-
-  toggleExitCodeSort() {
-    if (this.exitCodeSort === undefined) {
-      this.exitCodeSort = true;
-    } else if (this.exitCodeSort) {
-      this.exitCodeSort = false;
-    } else {
-      this.exitCodeSort = undefined;
-    }
-    this.loadTaskExecutions();
-  }
 }

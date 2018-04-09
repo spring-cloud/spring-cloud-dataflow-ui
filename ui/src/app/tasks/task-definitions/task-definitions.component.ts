@@ -1,8 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { PopoverDirective } from 'ngx-bootstrap/popover';
-import { Subscription } from 'rxjs/Subscription';
 import { ToastyService } from 'ng2-toasty';
-import { ModalDirective} from 'ngx-bootstrap/modal';
 import { Page } from '../../shared/model/page';
 import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
@@ -10,49 +7,214 @@ import { TasksService } from '../tasks.service';
 import { BusyService } from '../../shared/services/busy.service';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { TaskListParams } from '../components/tasks.interface';
+import { OrderParams, SortParams } from '../../shared/components/shared.interface';
+import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
 
+/**
+ * Provides {@link TaskDefinition} related services.
+ *
+ * @author Janne Valkealahti
+ * @author Gunnar Hillert
+ * @author Glenn Renfro
+ * @author Damien Vitrac
+ *
+ */
 @Component({
-  selector: 'app-task-definition',
+  selector: 'app-tasks-definitions',
   templateUrl: './task-definitions.component.html',
+  styleUrls: ['styles.scss']
 })
 export class TaskDefinitionsComponent implements OnInit, OnDestroy {
 
+  /**
+   * Current page of task definitions
+   */
+  taskDefinitions: Page<TaskDefinition>;
+
+  /**
+   * Busy Subscriptions
+   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
-  taskDefinitions: Page<TaskDefinition>;
-  taskDefinitionToDestroy: TaskDefinition;
+  /**
+   * Modal reference
+   */
+  modal: BsModalRef;
 
-  // undefined indicates that order is not selected
-  // thus we simply show double arrow.
-  // for sorting toggles, we just switch
-  // and first sort with true which equals desc
-  definitionNameSort: boolean = undefined;
-  definitionSort: boolean = undefined;
+  /**
+   * Current forms value
+   */
+  form: any = {
+    q: '',
+    type: '',
+    checkboxes: []
+  };
 
-  @ViewChild('childPopover')
-  public childPopover: PopoverDirective;
+  /**
+   * State of App List Params
+   */
+  params: TaskListParams = {
+    sort: 'name',
+    order: OrderParams.ASC,
+    page: 0,
+    size: 30,
+    q: ''
+  };
 
-  @ViewChild('childModal')
-  public childModal: ModalDirective;
+  /**
+   * Contain a key application of each selected application
+   * @type {Array}
+   */
+  itemsSelected: Array<string> = [];
 
-  constructor(
-    private busyService: BusyService,
-    private tasksService: TasksService,
-    private toastyService: ToastyService,
-    private router: Router
-  ) { }
+  /**
+   * Storage context
+   */
+  context: any;
 
-  ngOnInit() {
-    this.loadTaskDefinitions();
+  constructor(public tasksService: TasksService,
+              private modalService: BsModalService,
+              private busyService: BusyService,
+              private router: Router,
+              private toastyService: ToastyService) {
+
   }
 
   /**
-   * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.
+   * Retrieves the {@link TaskDefinition}s to be displayed on the page.
+   */
+  ngOnInit() {
+    this.context = this.tasksService.tasksContext;
+    this.params = { ...this.context };
+    this.form = { q: this.context.q, checkboxes: [] };
+    this.itemsSelected = this.context.itemsSelected || [];
+    this.refresh();
+  }
+
+  /**
+   * Close subscription
    */
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
+  }
+
+  /**
+   * Initializes the taskDefinitions attribute with the results from Spring Cloud Data Flow server.
+   */
+  refresh() {
+    const busy = this.tasksService
+      .getDefinitions(this.params).map((page: Page<TaskDefinition>) => {
+        this.form.checkboxes = page.items.map((task) => {
+          return this.itemsSelected.indexOf(task.name) > -1;
+        });
+        return page;
+      })
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((page: Page<TaskDefinition>) => {
+          if (page.items.length === 0 && this.params.page > 0) {
+            this.params.page = 0;
+            this.refresh();
+            return;
+          }
+          this.taskDefinitions = page;
+          this.changeCheckboxes();
+          this.updateContext();
+        },
+        error => {
+          this.toastyService.error(error);
+        }
+      );
+
+    this.busyService.addSubscription(busy);
+  }
+
+  /**
+   * Write the context in the service.
+   */
+  updateContext() {
+    this.context.q = this.params.q;
+    this.context.sort = this.params.sort;
+    this.context.order = this.params.order;
+    this.context.page = this.params.page;
+    this.context.size = this.params.size;
+    this.context.itemsSelected = this.itemsSelected;
+  }
+
+  /**
+   * Apply sort
+   * Triggered on column header click
+   *
+   * @param {SortParams} sort
+   */
+  applySort(sort: SortParams) {
+    this.params.sort = sort.sort;
+    this.params.order = sort.order;
+    this.refresh();
+  }
+
+  /**
+   * Run the search
+   */
+  search() {
+    this.params.q = this.form.q;
+    this.params.page = 0;
+    this.refresh();
+  }
+
+  /**
+   * Used to determinate the state of the query parameters
+   *
+   * @returns {boolean} Search is active
+   */
+  isSearchActive() {
+    return (this.form.q !== this.params.q);
+  }
+
+  /**
+   * Reset the search parameters and run the search
+   */
+  clearSearch() {
+    this.form.q = '';
+    this.search();
+  }
+
+  /**
+   * Determine if there is no application
+   */
+  isTasksEmpty(): boolean {
+    if (this.taskDefinitions) {
+      if (this.taskDefinitions.totalPages < 2) {
+        return (this.params.q === '' && this.taskDefinitions.items.length === 0);
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Update the list of selected checkbox
+   */
+  changeCheckboxes() {
+    if (!this.taskDefinitions || (this.taskDefinitions.items.length !== this.form.checkboxes.length)) {
+      return;
+    }
+    const value: Array<string> = this.taskDefinitions.items.map((app, index) => {
+      if (this.form.checkboxes[index]) {
+        return app.name;
+      }
+    }).filter((a) => a != null);
+    this.itemsSelected = value;
+    this.updateContext();
+  }
+
+  /**
+   * Number of selected task definitions
+   * @returns {number}
+   */
+  countSelected(): number {
+    return this.form.checkboxes.filter((a) => a).length;
   }
 
   /**
@@ -64,103 +226,65 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   getPage(page: number) {
     console.log(`Getting page ${page}.`);
-    this.tasksService.taskDefinitions.pageNumber = page - 1;
-    this.loadTaskDefinitions();
+    this.params.page = page - 1;
+    this.refresh();
   }
 
-  loadTaskDefinitions() {
-    console.log('Loading Task Definitions...', this.taskDefinitions);
-
-    const busy = this.tasksService.getDefinitions(this.definitionNameSort, this.definitionSort)
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe(
-      data => {
-        this.taskDefinitions = data;
-        this.toastyService.success('Task definitions loaded.');
-      }
-    );
-    this.busyService.addSubscription(busy);
+  /**
+   * Removes the {@link TaskDefinition} from the repository.  Shows modal dialog
+   * prior to deletion to verify if user wants to destroy definition.
+   * @param item the task definition to be removed.
+   */
+  destroy(item: TaskDefinition) {
+    this.destroyTasks([item]);
   }
 
-  bulkDefineTasks() {
-    this.router.navigate(['tasks/bulk-define-tasks']);
+  /**
+   * Starts the destroy process of multiple {@link TaskDefinition}s
+   * by opening a confirmation modal dialog.
+   */
+  destroySelectedTasks() {
+    const taskDefinitions = this.taskDefinitions.items
+      .filter((item) => this.itemsSelected.indexOf(item.name) > -1);
+    this.destroyTasks(taskDefinitions);
   }
 
-  launchTask(item: TaskDefinition) {
-    this.router.navigate(['tasks/definitions/launch/' + item.name]);
-  }
 
-  destroyTask(item: TaskDefinition) {
-    this.taskDefinitionToDestroy = item;
-    this.showChildModal();
-  }
-
-  toggleDefinitionNameSort() {
-    if (this.definitionNameSort === undefined) {
-      this.definitionNameSort = true;
-    } else if (this.definitionNameSort) {
-      this.definitionNameSort = false;
-    } else {
-      this.definitionNameSort = undefined;
+  /**
+   * Starts the destroy the {@link TaskDefinition}s in parameter
+   * by opening a confirmation modal dialog.
+   * @param {TaskDefinition[]} taskDefinitions
+   */
+  destroyTasks(taskDefinitions: TaskDefinition[]) {
+    if (taskDefinitions.length === 0) {
+      return;
     }
-    this.loadTaskDefinitions();
-  }
-
-  toggleDefinitionSort() {
-    if (this.definitionSort === undefined) {
-      this.definitionSort = true;
-    } else if (this.definitionSort) {
-      this.definitionSort = false;
-    } else {
-      this.definitionSort = undefined;
-    }
-    this.loadTaskDefinitions();
-  }
-
-  public proceed(taskDefinition: TaskDefinition): void {
-    console.log('Proceeding to destroy definition...', taskDefinition);
-    this.tasksService.destroyDefinition(taskDefinition.name)
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe(
-      data => {
-        this.cancel();
-        this.toastyService.success('Successfully destroyed task definition "'
-          + taskDefinition.name + '"');
-        this.loadTaskDefinitions();
-      },
-      error => {
-        this.toastyService.error(error);
+    console.log(`Destroy ${taskDefinitions} task definition(s).`, taskDefinitions);
+    const className = taskDefinitions.length > 1 ? 'modal-lg' : 'modal-md';
+    this.modal = this.modalService.show(TaskDefinitionsDestroyComponent, { class: className });
+    this.modal.content.open({ taskDefinitions: taskDefinitions }).subscribe(() => {
+      if (this.taskDefinitions.items.length === 0 &&
+        this.taskDefinitions.pageNumber > 0) {
+        this.taskDefinitions.pageNumber = this.taskDefinitions.pageNumber - 1;
       }
-    );
+      this.refresh();
+    });
   }
 
   /**
    * Route to {@link TaskDefinition} details page.
-   * @param item the task definition to be displayed.
+   * @param {TaskDefinition} taskDefinition
    */
   details(taskDefinition: TaskDefinition) {
-    this.router.navigate(['tasks/definitions/' + taskDefinition.name]);
+    this.router.navigate([`tasks/definitions/${taskDefinition.name}`]);
   }
 
   /**
-   * Displays modal dialog box that confirms the user wants to destroy a {@link TaskDefinition}.
+   * Route to {@link TaskDefinition} launch page.
+   * @param {TaskDefinition} taskDefinition
    */
-  public showChildModal(): void {
-    this.childModal.show();
+  launch(taskDefinition: TaskDefinition) {
+    this.router.navigate([`tasks/definitions/launch/${taskDefinition.name}`]);
   }
 
-  /**
-   *  Hides the modal dialog box that confirms whether the user wants to
-   *  destroy a {@link TaskDefinition}.
-   */
-  public hideChildModal(): void {
-    this.childModal.hide();
-  }
-
-  /**
-   * Hides the modal dialog box.
-   */
-  public cancel = function() {
-    this.hideChildModal();
-  };
 }

@@ -1,0 +1,21 @@
+<div class="tab-simple">
+  <ul class="nav nav-tabs" *ngIf="counters$ | async as counters;">
+    <li role="presentation" routerLinkActive="active">
+      <a routerLink="/tasks/definitions">
+        Tasks
+        <span class="label label-count label-primary" *ngIf="counters.definitions">{{counters.definitions}}</span>
+      </a>
+    </li>
+    <li role="presentation" routerLinkActive="active">
+      <a routerLink="/tasks/executions">
+        Executions
+        <span class="label label-count label-primary" *ngIf="counters.executions">{{counters.executions}}</span>
+      </a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane in active">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

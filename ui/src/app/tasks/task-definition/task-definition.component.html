@@ -1,0 +1,31 @@
+<div *ngIf="taskDefinition$ | async as taskDefinition; else loading">
+
+  <div class="heading">
+    <div class="description">
+      <h1>Task <strong>{{ taskDefinition.name }}</strong></h1>
+    </div>
+  </div>
+
+  <div class="tab-simple">
+    <ul class="nav nav-tabs">
+      <li role="presentation" routerLinkActive="active"><a routerLink="summary">Summary</a></li>
+      <li role="presentation" routerLinkActive="active"><a routerLink="graph">Graph</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane in active">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center;padding-top:2rem">
+    <a id="back-button" class="btn btn-default" routerLink="/tasks/definitions">
+      Back
+    </a>
+  </div>
+
+</div>
+
+<ng-template #loading>
+  <div>Loading...</div>
+</ng-template>
