@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import {StreamDeployService} from './stream-deploy.service';
 import {StreamDefinition} from '../model/stream-definition';
-import {map, takeUntil} from 'rxjs/operators';
+import {catchError, map, takeUntil} from 'rxjs/operators';
 import {StreamDeployValidator} from './stream-deploy.validator';
 import {StreamDeployConfig} from '../model/stream-deploy-config';
 import {StreamsService} from '../streams.service';
@@ -89,6 +89,12 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params: Params) => {
       this.config$ = this.streamDeployService
         .config(params.id)
+        .pipe(catchError(val => {
+          if (val === `Could not find stream definition named ${params.id}`) {
+            this.router.navigate(['streams/definitions']);
+          }
+          return Observable.of(val);
+        }))
         .pipe(map((value) => this.buildForm(value)));
     });
   }
