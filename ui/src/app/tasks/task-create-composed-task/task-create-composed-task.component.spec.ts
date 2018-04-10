@@ -12,8 +12,9 @@ import { NgBusyModule } from 'ng-busy';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { MockToolsService } from '../../tests/mocks/mock-tools';
+import { ToolsService } from '../flo/tools.service';
 
-/**
+/**cc
  * Test {@link TaskCreateComposedTaskComponent}.
  *
  * @author Janne Valkealahti
@@ -23,6 +24,7 @@ describe('TaskCreateComposedTaskComponent', () => {
   let fixture: ComponentFixture<TaskCreateComposedTaskComponent>;
   let activeRoute: MockActivatedRoute;
   const metamodelService = new MetamodelService(new MockSharedAppService(), new MockToolsService());
+  const toolsService = new MockToolsService();
 
   const commonTestParams = { id: '1' };
 
@@ -45,7 +47,8 @@ describe('TaskCreateComposedTaskComponent', () => {
         {provide: RenderService},
         {provide: EditorService},
         {provide: BsModalService},
-        {provide: ContentAssistService}
+        {provide: ContentAssistService},
+        {provide: ToolsService, useValue: toolsService}
       ]
     })
       .compileComponents();

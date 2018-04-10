@@ -8,6 +8,7 @@ import { RenderService } from '../flo/render.service';
 import { EditorService } from '../flo/editor.service';
 import { TaskCreateComposedTaskDialogComponent } from './task-create-composed-task-dialog.component';
 import * as CodeMirror from 'codemirror';
+import {ToolsService} from "../flo/tools.service";
 
 /**
  * Component handling a creation of a composed task.
@@ -35,7 +36,8 @@ export class TaskCreateComposedTaskComponent implements OnInit, OnDestroy {
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,
               public editorService: EditorService,
-              private bsModalService: BsModalService) {
+              private bsModalService: BsModalService,
+              private toolsService: ToolsService) {
 
     this.validationMarkers = new Map();
 
@@ -101,7 +103,34 @@ export class TaskCreateComposedTaskComponent implements OnInit, OnDestroy {
           severity: Flo.Severity[m.severity].toLowerCase()
         }))
       );
-    updateLintingCallback(editor, annotations);
+      const dslText = this.dsl;
+      this.toolsService.parseTaskTextToGraph(dslText).toPromise().then(taskConversion => {
+        if (taskConversion.errors) {
+          taskConversion.errors.forEach(e => annotations.push({
+            from: this.getPosition(dslText, e['position']),
+            to: e['length'] ? this.getPosition(dslText, e['position'] + e['length'])
+              : this.getPosition(dslText, e['position'] + 1),
+            message: e['message'],
+            severity: 'error'
+          }));
+        }
+        updateLintingCallback(editor, annotations);
+      }).catch(error => updateLintingCallback(editor, annotations));
+  }
+
+  getPosition(text: string, offset: number): CodeMirror.Position {
+    let lineStartPosition = 0;
+    let lineNumber = 0;
+    for (let p = 0; p < offset; p++) {
+      if (text.charAt(p) === '\n') {
+        lineNumber++;
+        lineStartPosition = p + 1;
+      }
+    }
+    return {
+      line: lineNumber,
+      ch: offset - lineStartPosition
+    };
   }
 
   get isCreateComposedTaskDisabled(): boolean {

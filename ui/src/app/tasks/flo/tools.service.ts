@@ -80,7 +80,7 @@ export class ToolsService {
       graph = new Graph(nodes, links);
     }
 
-    return new TaskConversion(body.dsl, null, graph);
+    return new TaskConversion(body.dsl, body.errors, graph);
   }
 
 }
