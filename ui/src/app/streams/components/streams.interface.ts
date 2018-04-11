@@ -7,3 +7,8 @@ export interface StreamListParams extends ListParams {
   sort: string;
   order: string;
 }
+
+export interface StreamBuilderError {
+  global: Array<string>;
+  app: Array<string>;
+}

@@ -44,7 +44,7 @@ import { OrderByPipe } from './pipes/orderby.pipe';
 import { ConfirmService } from './components/confirm/confirm.service';
 import { ConfirmComponent } from './components/confirm/confirm.component';
 import { BusyService } from './services/busy.service';
-import { AutosizeDirective } from './directives/autosize.directive';
+import { AutoResizeDirective } from './directives/auto-resize.directive';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -85,7 +85,7 @@ const busyConfig: BusyConfig = {
     MasterCheckboxComponent,
     SortComponent,
     ClickOutsideDirective,
-    AutosizeDirective,
+    AutoResizeDirective,
     PropertyTableComponent,
     TabsComponent,
     TabComponent,
@@ -98,8 +98,7 @@ const busyConfig: BusyConfig = {
     GraphViewComponent,
     TruncatePipe,
     OrderByPipe,
-    ConfirmComponent,
-    AutosizeDirective
+    ConfirmComponent
   ],
   entryComponents: [
     ConfirmComponent
@@ -138,7 +137,7 @@ const busyConfig: BusyConfig = {
     TruncatePipe,
     OrderByPipe,
     ConfirmComponent,
-    AutosizeDirective
+    AutoResizeDirective
   ]
 })
 export class SharedModule {
