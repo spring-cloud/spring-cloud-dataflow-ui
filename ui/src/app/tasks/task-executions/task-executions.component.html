@@ -1,40 +1,119 @@
-<h1>Task Executions</h1>
-<p>
-  This section lists all the available task executions.
-</p>
-
-<div class="row">
-  <div class="col-md-24 text-right">
-    <button id="refreshTaskExecutionsButton" type="button" (click)="loadTaskExecutions()"
-            class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span></button>
+<div class="heading">
+  <div class="actions hidden visible-md-block visible-lg-block" [appRoles]="['ROLE_CREATE']">
+    <a class="btn btn-primary" routerLink="/tasks/create">Create Task(s)</a>
+  </div>
+  <div class="description">
+    <h1 class="no-user-selection">Tasks</h1>
+    <p>
+      This section lists all the task definitions and provides the ability to run or schedule tasks.
+    </p>
   </div>
 </div>
-<div *ngIf="!taskExecutions">No task executions available.</div>
-<table *ngIf="taskExecutions?.items" class="table table-hover">
-  <thead>
-    <tr>
-      <th style="width: 200px"><a (click)="toggleExecutionIdSort()"><span style="margin-right: 5px">Execution Id</span></a><i class="fa" [ngClass]="{'fa-sort': executionIdSort === undefined, 'fa-sort-asc': executionIdSort === false, 'fa-sort-desc': executionIdSort === true }" aria-hidden="true"></i></th>
-      <th style="width: 100px"><a (click)="toggleTaskNameSort()"><span style="margin-right: 5px">Task Name</span></a><i class="fa" [ngClass]="{'fa-sort': taskNameSort === undefined, 'fa-sort-asc': taskNameSort === false, 'fa-sort-desc': taskNameSort === true }" aria-hidden="true"></i></th>
-      <th style="width: 100px"><a (click)="toggleStartTimeSort()"><span style="margin-right: 5px">Start Time</span></a><i class="fa" [ngClass]="{'fa-sort': startTimeSort === undefined, 'fa-sort-asc': startTimeSort === false, 'fa-sort-desc': startTimeSort === true }" aria-hidden="true"></i></th>
-      <th style="width: 100px"><a (click)="toggleEndTimeSort()"><span style="margin-right: 5px">End Time</span></a><i class="fa" [ngClass]="{'fa-sort': endTimeSort === undefined, 'fa-sort-asc': endTimeSort === false, 'fa-sort-desc': endTimeSort === true }" aria-hidden="true"></i></th>
-      <th style="width: 100px"><a (click)="toggleExitCodeSort()"><span style="margin-right: 5px">Exit Code</span></a><i class="fa" [ngClass]="{'fa-sort': exitCodeSort === undefined, 'fa-sort-asc': exitCodeSort === false, 'fa-sort-desc': exitCodeSort === true }" aria-hidden="true"></i></th>
-        <th style="width: 130px" class="text-center">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let item of taskExecutions.items | paginate: taskExecutions.getPaginationInstance()">
-    <td>{{ item.executionId }}</td>
-    <td>{{ item.taskName }}</td>
-    <td>{{ item.startTime }}</td>
-    <td>{{ item.endTime }}</td>
-    <td>{{ item.exitCode }}</td>
-    <td class="action-column">
-        <button type="button" (click)="details(item)"
-                class="btn btn-default" title="Details"
-        ><span class="glyphicon glyphicon-search"></span>
-        </button>
-    </td>
-  </tr>
-  </tbody>
-</table>
-<pagination-controls *ngIf="taskExecutions?.items" (pageChange)="getPage($event)" [id]="taskExecutions.getPaginationInstance().id"></pagination-controls>
+
+<app-tasks-tabulation>
+  <div id="executions-list">
+
+    <div id="filters" class="pui-filter" *ngIf="!isExecutionsEmpty()">
+      <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
+
+        <div class="pui-filter-center">
+          <div style="height: 34px">
+            &nbsp;
+          </div>
+        </div>
+
+        <div class="pui-filter-actions">
+          <div class="pui-filter-right" style="text-align: right">
+            <button (click)="refresh()" name="app-refresh" type="button" class="btn btn-default btn-icon"
+                    title="Refresh">
+              <span class="glyphicon glyphicon-refresh"></span>
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <table *ngIf="taskExecutions?.items && taskExecutions.items.length > 0"
+           class="table table-hover table-actions" id="taskExecutionsTable">
+      <thead>
+      <tr>
+        <th style="width: 140px">
+          <app-sort id="sort-id" (change)="applySort($event)" [value]="'TASK_EXECUTION_ID'" [sort]="params">
+            Execution Id
+          </app-sort>
+        <th>
+          <app-sort id="sort-task" (change)="applySort($event)" [value]="'TASK_NAME'" [sort]="params">
+            Task Name
+          </app-sort>
+        </th>
+        <th nowrap="" style="width: 120px">
+          <app-sort id="sort-startdate" (change)="applySort($event)" [value]="'START_TIME'" [sort]="params">
+            Start Date
+          </app-sort>
+        </th>
+        <th nowrap="" style="width: 120px">
+          <app-sort id="sort-enddate" (change)="applySort($event)" [value]="'END_TIME'" [sort]="params">
+            End Date
+          </app-sort>
+        </th>
+        <th nowrap="" style="width: 120px">
+          <app-sort id="sort-exitcode" (change)="applySort($event)" [value]="'EXIT_CODE'" [sort]="params">
+            Exit Code
+          </app-sort>
+        </th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container
+        *ngFor="let item of taskExecutions.items | paginate: taskExecutions.getPaginationInstance(); index as i">
+        <tr>
+          <td>
+            <a [routerLink]="'/tasks/executions/' + item.executionId">
+              #{{ item.executionId }}
+            </a>
+          </td>
+          <td>
+            <a [routerLink]="'/tasks/definitions/' + item.taskName">{{ item.taskName }}</a>
+          </td>
+          <td>
+            {{ item.startTime }}
+          </td>
+          <td>
+            {{ item.endTime }}
+          </td>
+          <td>
+            {{ item.exitCode }}
+          </td>
+          <td class="table-actions" width="10px" nowrap="">
+            <div class="actions" role="group">
+              <button type="button" name="task-details{{ i }}" (click)="details(item)" class="btn btn-default"
+                      title="Details">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+
+    <div id="pagination" *ngIf="taskExecutions && taskExecutions.totalPages > 1">
+      <pagination-controls *ngIf="taskExecutions.items.length > 0 "
+                           (pageChange)="getPage($event)"></pagination-controls>
+    </div>
+
+    <div *ngIf="taskExecutions" id="empty" style="padding-top:1.5rem">
+
+      <div *ngIf="isExecutionsEmpty()" class="text-center">
+        <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
+          <strong>No execution.</strong>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</app-tasks-tabulation>

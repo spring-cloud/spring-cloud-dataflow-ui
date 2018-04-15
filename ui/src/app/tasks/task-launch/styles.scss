@@ -1,0 +1,36 @@
+
+table.table-form {
+  border: 0 none;
+  tr {
+    border: 0 none;
+    td {
+      padding: 4px;
+      border: 0 none;
+      input {
+        height: 36px;
+        padding: 4px 10px;
+      }
+    }
+    td.table-actions {
+      padding-top: 6px
+    }
+    th {
+      border-right: 0 none;
+    }
+  }
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.col-1-layout, .col-2-layout {
+  padding: 0 1rem;
+}
+
+.builder {
+  background-color: #f5f6f7;
+  padding: 2rem;
+  margin: 2rem 0;
+}

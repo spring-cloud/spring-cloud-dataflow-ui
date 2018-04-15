@@ -1,36 +1,103 @@
-import { Component, OnInit, OnDestroy, ViewChildren } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { TasksService } from '../tasks.service';
-import { PropertyTableComponent } from '../../shared/components/property-table/property-table.component';
-import { takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { TaskDefinition } from '../model/task-definition';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { BusyService } from '../../shared/services/busy.service';
+import { TaskLaunchValidator } from './task-launch.validator';
 
+/**
+ * Component that provides a launcher of task.
+ *
+ * @author Janne Valkealahti
+ * @author Gunnar Hillert
+ * @author Damien Vitrac
+ */
 @Component({
   selector: 'app-task-launch',
   templateUrl: './task-launch.component.html',
+  styleUrls: ['./styles.scss']
 })
 export class TaskLaunchComponent implements OnInit, OnDestroy {
 
+  /**
+   * Busy Subscriptions
+   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
-  id: string;
-  @ViewChildren(PropertyTableComponent) propertyTables;
-
-  constructor(
-    private tasksService: TasksService,
-    private toastyService: ToastyService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = params['id'];
-    });
-   }
+  /**
+   * Observable of Task Definition
+   */
+  taskDefinition$: Observable<TaskDefinition>;
 
   /**
+   * Form
+   */
+  form: FormGroup;
+
+  /**
+   * Constructor
+   *
+   * @param {TasksService} tasksService
+   * @param {ToastyService} toastyService
+   * @param {BusyService} busyService
+   * @param {ActivatedRoute} route
+   * @param {Router} router
+   */
+  constructor(private tasksService: TasksService,
+              private toastyService: ToastyService,
+              private busyService: BusyService,
+              private route: ActivatedRoute,
+              private router: Router) {
+  }
+
+  /**
+   * Initialize
+   */
+  ngOnInit() {
+    this.buildForm();
+    this.taskDefinition$ = this.route.params
+      .pipe(mergeMap(
+        val => this.tasksService.getDefinition(val.id),
+        (val1, val2) => val2
+      ));
+  }
+
+  /**
+   * Build the form
+   */
+  buildForm() {
+    this.form = new FormGroup({
+      'params': new FormArray([]),
+      'args': new FormArray([])
+    });
+    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
+    const clean = (array: FormArray, addFunc) => {
+      if (!isEmpty(array.controls[array.controls.length - 1].value)) {
+        return addFunc(array);
+      }
+    };
+    const add = (arr: FormArray) => {
+      const group = new FormGroup({
+        'key': new FormControl(''),
+        'val': new FormControl('')
+      }, { validators: TaskLaunchValidator.keyRequired });
+      group.valueChanges.subscribe(() => {
+        clean(arr, add);
+      });
+      arr.push(group);
+    };
+    add(this.form.get('params') as FormArray);
+    add(this.form.get('args') as FormArray);
+  }
+
+  /**
+   * Destroy
+   *
    * Will cleanup any {@link Subscription}s to prevent
    * memory leaks.
    */
@@ -39,35 +106,36 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
-  back() {
-    this.router.navigate(['tasks/definitions']);
-  }
-
-  launch(name: string) {
-    const taskArguments = [];
-    const taskProperties = [];
-    this.propertyTables.toArray().forEach(t => {
-      if (t.id === 'arguments') {
-        t.getProperties().forEach(item => {
-          taskArguments.push(item.key + '=' + item.value);
-        });
-      }
-      if (t.id === 'properties') {
-        t.getProperties().forEach(item => {
-          taskProperties.push(item.key + '=' + item.value);
-        });
-      }
-    });
-    this.tasksService.launchDefinition(name, taskArguments.join(','), taskProperties.join(','))
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe(
-      data => {
-        this.toastyService.success('Successfully launched task "' + name + '"');
-      },
-      error => {
-        this.toastyService.error(error);
-      }
-    );
-    this.router.navigate(['tasks/definitions']);
+  /**
+   * Launch the task
+   *
+   * @param {string} name
+   */
+  submit(name: string) {
+    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
+    const getClean = (arr: FormArray): Array<string> => {
+      return arr.controls.map((group) => {
+        return !isEmpty(group.value)
+          ? `${group.get('key').value}=${group.get('val').value}`
+          : '';
+      }).filter((a) => a !== '');
+    };
+    const taskArguments = getClean(this.form.get('args') as FormArray);
+    const taskProperties = getClean(this.form.get('params') as FormArray);
+    const busy = this.tasksService.launchDefinition({
+      name: name,
+      args: taskArguments.join(','),
+      props: taskProperties.join(',')
+    }).pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(
+        data => {
+          this.toastyService.success('Successfully launched task "' + name + '"');
+          this.router.navigate(['/tasks/definitions']);
+        },
+        error => {
+          this.toastyService.error(error);
+        }
+      );
+    this.busyService.addSubscription(busy);
   }
 }

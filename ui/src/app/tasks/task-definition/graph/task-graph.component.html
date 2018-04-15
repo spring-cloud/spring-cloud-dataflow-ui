@@ -1,0 +1,11 @@
+<div *ngIf="taskDefinition$ | async as taskDefinition; else loading">
+
+  <app-graph-view [dsl]="taskDefinition.dslText" [paperPadding]="20" class="composed-task-details"
+                  [metamodel]="metamodelService" [renderer]="renderService">
+  </app-graph-view>
+
+</div>
+
+<ng-template #loading>
+  <div>Loading...</div>
+</ng-template>

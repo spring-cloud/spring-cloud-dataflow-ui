@@ -1,18 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { TasksComponent } from './tasks.component';
-import { TaskAppsComponent } from './task-apps/task-apps.component';
-import { TaskDefinitionsComponent } from './task-definitions/task-definitions.component';
-import { TaskCreateComposedTaskComponent } from './task-create-composed-task/task-create-composed-task.component';
 import { TaskExecutionsComponent } from './task-executions/task-executions.component';
-import { TaskExecutionsDetailsComponent } from './task-details/task-details.component';
-import { TaskAppDetailsComponent } from './task-app-details/task-app-details.component';
-import { TaskCreateComponent } from './task-create/task-create.component';
-import { TaskBulkDefineComponent } from './task-bulk-define/task-bulk-define.component';
 import { TaskLaunchComponent } from './task-launch/task-launch.component';
 import { AuthGuard } from '../auth/support/auth.guard';
-import { ComposedTaskDetailsComponent } from './composed-task-details/composed-task-details.component';
+import { TaskExecutionComponent } from './task-execution/task-execution.component';
+import { TasksComponent } from './tasks/tasks.components';
+import { TaskDefinitionCreateComponent } from './task-definition-create/task-definition-create.component';
+import { TaskDefinitionComponent } from './task-definition/task-definition.component';
+import { TaskDefinitionsComponent } from './task-definitions/task-definitions.component';
+import { TaskGraphComponent } from './task-definition/graph/task-graph.component';
+import { TaskSummaryComponent } from './task-definition/summary/task-summary.component';
 
 const taskRoutes: Routes = [
   {
@@ -26,42 +23,21 @@ const taskRoutes: Routes = [
     },
     children: [
       {
-          path: '',
-          pathMatch: 'full',
-          redirectTo: 'definitions'
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'definitions'
       },
       {
-          path: 'apps',
-          component: TaskAppsComponent,
+        path: 'executions',
+        component: TaskExecutionsComponent,
       },
       {
-          path: 'apps/:id',
-          component: TaskAppDetailsComponent,
+        path: 'executions/:id',
+        component: TaskExecutionComponent,
       },
       {
-          path: 'apps/:id/task-create',
-          component: TaskCreateComponent,
-          canActivate: [AuthGuard],
-          data: {
-            authenticate: true,
-            roles: ['ROLE_CREATE']
-          },
-      },
-      {
-          path: 'executions',
-          component: TaskExecutionsComponent,
-      },
-      {
-          path: 'executions/:id',
-          component: TaskExecutionsDetailsComponent,
-      },
-      {
-          path: 'create-composed-task',
-          component: TaskCreateComposedTaskComponent
-      },
-      {
-        path: 'bulk-define-tasks',
-        component: TaskBulkDefineComponent,
+        path: 'create',
+        component: TaskDefinitionCreateComponent
       },
       {
         path: 'definitions',
@@ -73,7 +49,22 @@ const taskRoutes: Routes = [
       },
       {
         path: 'definitions/:id',
-        component: ComposedTaskDetailsComponent,
+        component: TaskDefinitionComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'summary',
+            pathMatch: 'full'
+          },
+          {
+            path: 'graph',
+            component: TaskGraphComponent,
+          },
+          {
+            path: 'summary',
+            component: TaskSummaryComponent,
+          }
+        ]
       }
     ]
   }
@@ -83,4 +74,5 @@ const taskRoutes: Routes = [
   imports: [RouterModule.forChild(taskRoutes)],
   exports: [RouterModule]
 })
-export class TasksRoutingModule {}
+export class TasksRoutingModule {
+}

@@ -3,6 +3,8 @@ import { AppInfo } from '../../tasks/model/app-info';
 import { Page} from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { TaskExecution } from '../../tasks/model/task-execution';
+import { TaskDefinition } from '../../tasks/model/task-definition';
+import { OrderParams } from '../../shared/components/shared.interface';
 
 /**
  * Mock for TasksService.
@@ -27,9 +29,50 @@ import { TaskExecution } from '../../tasks/model/task-execution';
  */
 export class MockTasksService {
 
+  public tasksContext = {
+    q: '',
+    page: 0,
+    size: 20,
+    sort: 'DEFINITION_NAME',
+    order: OrderParams.ASC,
+    itemsSelected: [],
+    itemsExpanded: []
+  };
+
+  public executionsContext = {
+    q: '',
+    page: 0,
+    size: 10,
+    sort: 'TASK_EXECUTION_ID',
+    order: OrderParams.DESC,
+    itemsSelected: [],
+    itemsExpanded: []
+  };
+
   private _testAppInfos: {};
   private _testTaskAppRegistrations: AppRegistration[];
   private _testExecutionDetails: {};
+
+  public _taskDefinitions;
+
+  get taskDefinitions(): any {
+    return this._taskDefinitions;
+  }
+
+  set taskDefinitions(value: any) {
+    this._taskDefinitions = value;
+  }
+
+  public _taskExecutions;
+
+  get taskExecutions(): any {
+    return this._taskExecutions;
+  }
+
+  set taskExecutions(value: any) {
+    this._taskExecutions = value;
+  }
+
 
   get testAppInfos() {
     return this._testAppInfos;
@@ -81,4 +124,55 @@ export class MockTasksService {
   getExecution(id: string): Observable<TaskExecution> {
     return Observable.of(this.testExecutionDetails[id]);
   }
+
+  destroyDefinition(taskDefinition: TaskDefinition): Observable<Response> | Observable<any> {
+    return Observable.of({});
+  }
+
+  destroyDefinitions(taskDefinitions: TaskDefinition[]): Observable<Response> | Observable<any> {
+    return Observable.of(Array.from({length: taskDefinitions.length}));
+  }
+
+  getExecutions(): Observable<Page<TaskExecution>> {
+    const page = new Page<TaskExecution>();
+    if (this.taskExecutions) {
+      const response = this.taskExecutions;
+      let items: TaskExecution[];
+      if (response._embedded && response._embedded.taskExecutionResourceList) {
+        items = response._embedded.taskExecutionResourceList as TaskExecution[];
+      } else {
+        items = [];
+      }
+      page.items = items;
+      page.totalElements = response.page.totalElements;
+      page.totalPages = response.page.totalPages;
+      page.pageNumber = response.page.number;
+      page.pageSize = response.page.size;
+    }
+    return Observable.of(page);
+  }
+
+  getDefinitions(): Observable<Page<TaskDefinition>> {
+    const page = new Page<TaskDefinition>();
+    if (this.taskDefinitions) {
+      const response = this.taskDefinitions;
+      let items: TaskDefinition[];
+      if (response._embedded && response._embedded.taskDefinitionResourceList) {
+        items = response._embedded.taskDefinitionResourceList as TaskDefinition[];
+      } else {
+        items = [];
+      }
+      page.items = items;
+      page.totalElements = response.page.totalElements;
+      page.totalPages = response.page.totalPages;
+      page.pageNumber = response.page.number;
+      page.pageSize = response.page.size;
+    }
+    return Observable.of(page);
+  }
+
+  getDefinition(name: string): Observable<any> {
+    return Observable.of(this.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+  }
+
 }

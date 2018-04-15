@@ -266,7 +266,7 @@ table.table {
   background-color: #f5f6f7;
 }
 
-.label-apptype, .label-stream-status {
+.label-apptype, .label-stream-status, .label-task-status {
   border-radius: 12px;
   font-size: 11px;
   padding: .2em 1em .3em;
@@ -397,4 +397,10 @@ div.tooltip-version {
       text-align: left;
     }
   }
+}
+
+.label-count {
+  border-radius: 10px;
+  margin-left: 6px;
+  vertical-align: top;
 }
