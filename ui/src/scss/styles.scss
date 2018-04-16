@@ -405,3 +405,14 @@ div.tooltip-version {
   margin-left: 6px;
   vertical-align: top;
 }
+
+
+/*
+ * Used in conjunction with the
+ * TruncatorWidthProviderDirective. Particularly relevant for Firefox
+ * (Does not seem apply word breaks correctly for span elements).
+ */
+.dataflow-truncator-width {
+  overflow-wrap: break-word;
+  word-break: break-all;
+}

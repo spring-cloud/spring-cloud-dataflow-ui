@@ -17,7 +17,7 @@
           <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalues">
             <div class="row row-key-value">
               <div class="col-md-8">
-                <strong>{{ item.key }}</strong>
+                <strong><dataflow-truncator [input]="item.key" trailPosition="start" trail="…"></dataflow-truncator></strong>
               </div>
               <div class="col-md-16">
                 <input type="text" readonly [value]="item.value" class="form-control input-sm">

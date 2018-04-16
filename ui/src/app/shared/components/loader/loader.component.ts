@@ -29,6 +29,6 @@ export class LoaderComponent {
   /**
    * Text display
    */
-  @Input() text: string = 'Loading…';
+  @Input() text = 'Loading…';
 
 }
