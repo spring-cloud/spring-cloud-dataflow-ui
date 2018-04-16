@@ -21,6 +21,7 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AuthService } from './auth/auth.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SharedAboutService } from './shared/services/shared-about.service';
+import { LayoutModule } from './layout/layout.module';
 
 /**
  * Executed when the app starts up. Will load the security
@@ -57,6 +58,7 @@ export function init(authService: AuthService, sharedAboutService: SharedAboutSe
     SharedModule,
     StreamsModule,
     TasksModule,
+    LayoutModule,
     BsDropdownModule.forRoot()
   ],
   providers: [

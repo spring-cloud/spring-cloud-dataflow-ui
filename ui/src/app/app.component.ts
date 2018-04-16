@@ -1,47 +1,28 @@
-import { Component, DoCheck } from '@angular/core';
+import { Component } from '@angular/core';
 import { ToastyConfig } from 'ng2-toasty';
-import { AuthService } from './auth/auth.service';
 import { Renderer2 } from '@angular/core';
 import { OnInit } from '@angular/core';
-
-import { SecurityInfo } from './shared/model/about/security-info.model';
-import { SharedAboutService } from './shared/services/shared-about.service';
-import { Observable } from 'rxjs/Observable';
-import { AboutInfo } from './shared/model/about/about-info.model';
 import { BusyService } from './shared/services/busy.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent implements DoCheck, OnInit {
+export class AppComponent implements OnInit {
 
-  public securityInfo: SecurityInfo;
-  public dataflowVersionInfo$: Observable<AboutInfo>;
-
-  public isCollapsed = true;
   public busy: any = [];
 
   constructor(private toastyConfig: ToastyConfig,
-      private renderer: Renderer2,
-      private authService: AuthService,
-      private busyService: BusyService,
-      private sharedAboutService: SharedAboutService) {
+              private renderer: Renderer2,
+              private busyService: BusyService) {
     this.toastyConfig.theme = 'bootstrap';
     this.toastyConfig.limit = 5;
     this.toastyConfig.showClose = true;
-    this.toastyConfig.position  =  'top-right';
-    this.toastyConfig.timeout   = 3000;
-
-    this.securityInfo = authService.securityInfo;
-  }
-
-  ngDoCheck() {
-    this.securityInfo = this.authService.securityInfo;
+    this.toastyConfig.position = 'top-right';
+    this.toastyConfig.timeout = 3000;
   }
 
   ngOnInit() {
-    this.dataflowVersionInfo$ = this.sharedAboutService.getAboutInfo();
     this.renderer.listen('document', 'scroll', (evt) => {
       this.updateToasty();
     });
@@ -76,11 +57,9 @@ export class AppComponent implements DoCheck, OnInit {
     const navHeight = document.getElementsByTagName('nav')[0].offsetHeight;
     let marginToParent = 10;
     const toastyElement = document.getElementById('toasty');
-
     if (window.outerWidth <= 768) {
       marginToParent = 0;
     }
-
     if (bodyScrollTop > navHeight) {
       toastyElement.style.top = marginToParent + 'px';
     } else if (bodyScrollTop >= 0) {
@@ -89,13 +68,4 @@ export class AppComponent implements DoCheck, OnInit {
     }
   }
 
-  public toggleCollapse(): void {
-    this.isCollapsed = !this.isCollapsed;
-  }
-
-  public collapse(): void {
-    if (!this.isCollapsed) {
-      this.isCollapsed = true;
-    }
-  }
 }

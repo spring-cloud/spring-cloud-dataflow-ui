@@ -1,90 +1,9 @@
-<nav class="navbar navbar-inverse navbar-static-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-          [attr.aria-expanded]="!isCollapsed" (click)="toggleCollapse()" [ngClass]="{'collapsed': isCollapsed}">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" routerLink="apps"><span></span></a>
-      </div>
-      <div id="navbar" class="collapse navbar-collapse" [ngClass]="{'in': !isCollapsed}">
-        <ul class="nav navbar-nav navbar-right" (click)="collapse()">
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="apps">Apps</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled"><a routerLink="runtime/apps">Runtime</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled"><a routerLink="streams">Streams</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled"><a routerLink="tasks">Tasks</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled"><a routerLink="jobs">Jobs</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="analyticsEnabled"><a routerLink="analytics">Analytics</a></li>
-          <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="about">About</a></li>
-          <li *ngIf="securityInfo.isAuthenticationEnabled"
-              dropdown
-              class="dropdown"><a class="dropdown-toggle" dropdownToggle (click)="false"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
-            <ul *dropdownMenu class="dropdown-menu">
-              <li *ngIf="securityInfo.isAuthenticated">{{ securityInfo.username }}</li>
-              <li *ngIf="!securityInfo.isAuthenticated">Not logged in.</li>
-              <li *ngIf="securityInfo.isAuthenticated"><a  routerLink="logout">Logout</a></li>
-              <li *ngIf="!securityInfo.isAuthenticated"><a routerLink="login">Login</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-</nav>
-<div class="container dataflow-main-container">
-  <div class='row'>
-    <div class='col-sm-24'><ng2-toasty></ng2-toasty>
-      <ng-template [ngBusy]="{busy: busy, minDuration: 500}"></ng-template>
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
-<div class='pane footer' id="footer">
-  <div class='container'>
-    <div class='row'>
-      <div class='col-sm-12'>
-        <p id="copyright-notice">
-          © 2017&ndash;2018 <a target="_blank" href="https://pivotal.io/">Pivotal Software</a>, Inc.
-          <br>
-          All Rights Reserved.
-        </p>
-      </div>
-      <div class='col-sm-4'>
-        <h3 class='h4'>Project</h3>
-        <ul class='list-unstyled'>
-          <li>
-            <a class='link-lowlight-alt' target="_blank" href='https://cloud.spring.io/spring-cloud-dataflow/'>Project Page</a>
-          </li>
-          <li>
-            <a class='link-lowlight-alt' target="_blank" href='https://github.com/spring-cloud/spring-cloud-dataflow/issues'>Issue Tracker</a>
-          </li>
-        </ul>
-      </div>
-      <div class='col-sm-4'>
-        <h3 class='h4'>Documentation</h3>
-        <ul class='list-unstyled'>
-          <li *ngIf="dataflowVersionInfo$ | async as aboutInfo">
-            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{ aboutInfo.versionInfo.core.version }}/reference/htmlsingle/'>Docs</a>
-          </li>
-          <li>
-            <a class='link-lowlight-alt' target="_blank" href='https://github.com/spring-cloud/spring-cloud-dataflow'>Sources</a>
-          </li>
-          <li *ngIf="dataflowVersionInfo$ | async as aboutInfo">
-            <a class='link-lowlight-alt' target="_blank" href='https://docs.spring.io/spring-cloud-dataflow/docs/{{ aboutInfo.versionInfo.core.version }}/api/'>Api Docs</a>
-          </li>
-        </ul>
-      </div>
-      <div class='col-sm-5 col-md-4'>
-        <h3 class='h4'>Need Help?</h3>
-        <ul class='list-unstyled'>
-          <li>
-            For questions + support:
-            <a class='link-lowlight-alt' target="_blank" href='https://stackoverflow.com/questions/tagged/spring-cloud-dataflow'>Stackoverflow</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+<app-navigation></app-navigation>
+
+<app-body>
+  <ng2-toasty></ng2-toasty>
+  <ng-template [ngBusy]="{busy: busy, minDuration: 500}"></ng-template>
+  <router-outlet></router-outlet>
+</app-body>
+
+<app-footer></app-footer>
