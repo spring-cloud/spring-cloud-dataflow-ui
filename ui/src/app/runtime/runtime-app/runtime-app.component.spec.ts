@@ -14,6 +14,8 @@ import {KeyValuePipe} from '../../shared/pipes/key-value-filter.pipe';
 import {RuntimeAppInstance} from '../model/runtime-app-instance';
 import {NgBusyModule} from 'ng-busy';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
+import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 
 describe('RuntimeAppComponent', () => {
   let component: RuntimeAppComponent;
@@ -29,7 +31,9 @@ describe('RuntimeAppComponent', () => {
         RuntimeAppComponent,
         KeyValuePipe,
         RuntimeAppStateComponent,
-        LoaderComponent
+        LoaderComponent,
+        TruncatorComponent,
+        TruncatorWidthProviderDirective
       ],
       imports: [
         NgBusyModule,

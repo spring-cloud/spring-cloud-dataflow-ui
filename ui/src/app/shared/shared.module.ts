@@ -39,6 +39,8 @@ import { BusyService } from './services/busy.service';
 import { AutoResizeDirective } from './directives/auto-resize.directive';
 import { StreamDslComponent } from './components/dsl/dsl.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { TruncatorComponent } from './components/truncator/truncator.component';
+import { TruncatorWidthProviderDirective } from './components/truncator/truncator-width-provider.directive';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -92,6 +94,8 @@ const busyConfig: BusyConfig = {
     GraphViewComponent,
     StreamDslComponent,
     TruncatePipe,
+    TruncatorComponent,
+    TruncatorWidthProviderDirective,
     OrderByPipe,
     ConfirmComponent,
     LoaderComponent
@@ -132,6 +136,8 @@ const busyConfig: BusyConfig = {
     PropertiesDialogComponent,
     GraphViewComponent,
     TruncatePipe,
+    TruncatorComponent,
+    TruncatorWidthProviderDirective,
     OrderByPipe,
     ConfirmComponent,
     AutoResizeDirective,

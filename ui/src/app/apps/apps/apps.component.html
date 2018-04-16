@@ -130,10 +130,10 @@
       <td>
         <app-type [application]="item"></app-type>
       </td>
-      <td>
-        <div *ngIf="!skipperEnabled || (skipperEnabled && !item.versionOnError())">
-          <code style="font-size: 11px" *ngIf="item.uri">{{ item.uri | truncate: -60 }}</code>
-        </div>
+      <td class="dataflow-truncator-width">
+        <code style="font-size: 11px" *ngIf="item.uri">
+          <dataflow-truncator [input]="item.uri" trailPosition="start" trail="…"></dataflow-truncator>
+        </code>
       </td>
       <td class="cell-version" *ngIf="skipperEnabled">
         <app-version-label [isClickable]="true" (labelClick)="versions(item)" [application]="item"></app-version-label>

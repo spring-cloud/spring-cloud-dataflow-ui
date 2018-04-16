@@ -26,6 +26,8 @@ import {AppsUnregisterComponent} from '../apps-unregister/apps-unregister.compon
 import {tick} from '@angular/core/testing';
 import {AppVersionsComponent} from '../app-versions/app-versions.component';
 import {BusyService} from '../../shared/services/busy.service';
+import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
+import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 
 describe('AppsComponent', () => {
   let component: AppsComponent;
@@ -44,6 +46,8 @@ describe('AppsComponent', () => {
         AppTypeComponent,
         SortComponent,
         TruncatePipe,
+        TruncatorComponent,
+        TruncatorWidthProviderDirective,
         MasterCheckboxComponent,
         RolesDirective
       ],
