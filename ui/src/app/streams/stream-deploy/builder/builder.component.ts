@@ -233,7 +233,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
           if (appNames.indexOf(appKey) > -1) {
             const appProperties = builder.streamDeployConfig.apps[appNames.indexOf(appKey)];
             if (appProperties.options && !appProperties.optionsState.isInvalid) {
-              const option = builder.builderAppsProperties[appKey].find(opt => opt.name === keyReduce);
+              const option = builder.builderAppsProperties[appKey].find(opt => {
+                return opt.name === keyReduce || opt.id === keyReduce;
+              });
               if (option) {
                 option.value = value;
                 free = false;
@@ -502,7 +504,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
     }
     return appProperties.map((property: Properties.Property) => {
       return (property.value !== undefined && property.value.toString() !== '' && property.value !== property.defaultValue) ? ({
-        key: `${property.name}`,
+        key: `${property.id}`,
         value: property.value
       }) : null;
     }).filter((app) => app !== null);

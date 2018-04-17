@@ -150,7 +150,7 @@
               <span class="glyphicon glyphicon-stop"></span>
             </button>
             <button name="stream-deploy{{ i }}" type="button" [appRoles]="['ROLE_CREATE']"
-                    [disabled]="(item.status==='deployed' || item.status==='deploying')" (click)="deploy(item)"
+                    [disabled]="(item.status==='deploying')" (click)="deploy(item)"
                     class="btn btn-default" style="margin-left: 0;" title="Deploy">
               <span class="glyphicon glyphicon-play"></span>
             </button>

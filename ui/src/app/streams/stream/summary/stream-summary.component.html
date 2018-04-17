@@ -10,8 +10,7 @@
       Undeploy
     </button>
     <button name="stream-deploy" type="button" [appRoles]="['ROLE_CREATE']"
-            [disabled]="(stream.streamDefinition.status === 'deployed'
-            || stream.streamDefinition.status==='deploying')" (click)="deploy(stream.streamDefinition)"
+            (click)="deploy(stream.streamDefinition)"
             class="btn btn-default" style="margin-left: 0;" title="Deploy">
       <span class="glyphicon glyphicon-play"></span>
       Deploy

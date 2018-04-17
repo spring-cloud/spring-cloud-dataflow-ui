@@ -10,6 +10,9 @@ import { StreamsService } from '../streams.service';
 import { Subject } from 'rxjs/Subject';
 import { ToastyService } from 'ng2-toasty';
 import { BusyService } from '../../shared/services/busy.service';
+import { StreamDefinition } from '../model/stream-definition';
+import { Parser } from '../../shared/services/parser';
+import { StreamDeployService } from './stream-deploy.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -89,6 +92,51 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
           };
         }
       ))
+      .pipe(mergeMap(
+        val => this.streamsService.getDeploymentInfo(val.id),
+        (config: any, deploymentInfo: StreamDefinition) => {
+          const properties = [];
+
+          // Deployer properties
+          Object.keys(deploymentInfo.deploymentProperties).map(app => {
+            Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
+              const value = deploymentInfo.deploymentProperties[app][key];
+              if (key === StreamDeployService.version.keyEdit) {
+                properties.push(`version.${app}=${value}`);
+              } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
+                const keyShort = key.substring(StreamDeployService.deployer.keyEdit.length, key.length);
+                if (keyShort !== 'group') {
+                  properties.push(`deployer.${app}.${keyShort}=${value}`);
+                } else {
+                  console.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+                }
+              } else {
+                console.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+              }
+            });
+          });
+
+          // Application properties
+          const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
+          dslTextParsed.lines[0].nodes.forEach((node) => {
+            const app = node['label'] || node['name'];
+            const appType = node['name'];
+            if (node['options']) {
+              node.options.forEach((value, key) => {
+                let keyShort = key;
+                if (key.startsWith(`${appType}.`)) {
+                  keyShort = key.substring(`${appType}.`.length, key.length);
+                }
+                properties.push(`app.${app}.${keyShort}=${value}`);
+              });
+            }
+          });
+
+          this.properties = properties;
+          config.streamDefinition = deploymentInfo;
+          return config;
+        }
+      ))
       .pipe(map((config) => {
         this.refConfig = config;
         return config;
@@ -140,7 +188,15 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         propertiesMap[arr[0]] = arr[1];
       }
     });
-    const busy = this.streamsService.deployDefinition(this.refConfig.id, propertiesMap)
+
+    let obs = Observable.of({});
+    if (['deployed', 'deploying'].indexOf(this.refConfig.streamDefinition.status) > -1) {
+      obs = this.streamsService.undeployDefinition(this.refConfig.streamDefinition);
+    }
+    const busy = obs.pipe(mergeMap(
+        val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap),
+        (val1, val2) => val2
+      ))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         data => {
@@ -148,13 +204,12 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
           this.router.navigate(['streams']);
         },
         error => {
-          console.log(error);
-          console.log(error.message);
           this.toastyService.error(`${error.message ? error.message : error.toString()}`);
         }
       );
 
     this.busyService.addSubscription(busy);
+
   }
 
 }

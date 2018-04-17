@@ -36,12 +36,17 @@ export class StreamDeployService {
    * Deployer key validation
    */
   public static deployer = {
+    keyEdit: 'spring.cloud.deployer.',
     is: (key: string): boolean => {
       return /^(deployer.)/.test(key);
     },
     extract: (key: string): string => {
       const result = key.split('.');
-      return result.length > 2 ? result[2] : '';
+      if (result.length < 3) {
+        return '';
+      }
+      return result.slice(2, result.length)
+        .join('.');
     },
   };
 
@@ -49,6 +54,7 @@ export class StreamDeployService {
    * Version key validation
    */
   public static version = {
+    keyEdit: 'version',
     is: (key: string): boolean => {
       return /^(version.)/.test(key);
     }
@@ -63,7 +69,11 @@ export class StreamDeployService {
     },
     extract: (key: string): string => {
       const result = key.split('.');
-      return result.length > 2 ? result[2] : '';
+      if (result.length < 3) {
+        return '';
+      }
+      return result.slice(2, result.length)
+        .join('.');
     }
   };
 
