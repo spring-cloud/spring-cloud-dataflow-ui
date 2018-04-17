@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStreamsService } from '../../../tests/mocks/streams';
 import { StreamsService } from '../../streams.service';
 import { StreamDefinition } from '../../model/stream-definition';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 /**
  * Test {@link DeploymentPropertiesInfoComponent}.
@@ -31,7 +32,8 @@ describe('DeploymentPropertiesInfoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DeploymentPropertiesInfoComponent
+        DeploymentPropertiesInfoComponent,
+        LoaderComponent
       ],
       imports: [],
       providers: [

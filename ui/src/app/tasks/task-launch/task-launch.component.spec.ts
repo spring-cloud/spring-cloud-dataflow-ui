@@ -13,6 +13,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
 import { TaskLaunchComponent } from './task-launch.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -34,7 +35,8 @@ describe('TaskLaunchComponent', () => {
       declarations: [
         TaskLaunchComponent,
         DataflowDateTimePipe,
-        DataflowDurationPipe
+        DataflowDurationPipe,
+        LoaderComponent
       ],
       imports: [
         NgBusyModule,

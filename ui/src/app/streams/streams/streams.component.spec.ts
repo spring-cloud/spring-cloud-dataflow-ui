@@ -37,6 +37,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { MockModalService } from '../../tests/mocks/modal';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 /**
  * Test {@link StreamsComponent}.
@@ -74,7 +75,8 @@ describe('StreamsComponent', () => {
         StreamDslComponent,
         MasterCheckboxComponent,
         StreamGraphDefinitionComponent,
-        TruncatePipe
+        TruncatePipe,
+        LoaderComponent
       ],
       imports: [
         NgxPaginationModule,

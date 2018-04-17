@@ -14,6 +14,7 @@ import {RuntimeAppStateComponent} from '../components/runtime-app-state/runtime-
 import {RuntimeAppComponent} from '../runtime-app/runtime-app.component';
 import {NgBusyModule} from 'ng-busy';
 import {MockModalService} from '../../tests/mocks/modal';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
@@ -27,7 +28,8 @@ describe('RuntimeAppsComponent', () => {
       declarations: [
         RuntimeAppsComponent,
         KeyValuePipe,
-        RuntimeAppStateComponent
+        RuntimeAppStateComponent,
+        LoaderComponent
       ],
       imports: [
         NgBusyModule,

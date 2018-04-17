@@ -23,6 +23,7 @@ import { RolesDirective } from '../../../auth/directives/roles.directive';
 import { AuthService } from '../../../auth/auth.service';
 import { MockModalService } from '../../../tests/mocks/modal';
 import { BsModalService } from 'ngx-bootstrap';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 /**
  * Test {@link TaskSummaryComponent}.
@@ -51,7 +52,8 @@ describe('TaskSummaryComponent', () => {
         DataflowDurationPipe,
         AppTypeComponent,
         TaskStatusComponent,
-        StreamDslComponent
+        StreamDslComponent,
+        LoaderComponent
       ],
       imports: [
         NgBusyModule,

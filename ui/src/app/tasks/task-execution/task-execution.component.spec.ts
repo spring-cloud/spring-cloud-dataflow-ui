@@ -14,6 +14,7 @@ import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe
 import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe';
 import * as moment from 'moment';
 import { TaskExecutionComponent } from './task-execution.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 describe('TaskExecutionsDetailsComponent', () => {
   let component: TaskExecutionComponent;
@@ -57,7 +58,8 @@ describe('TaskExecutionsDetailsComponent', () => {
       declarations: [
         TaskExecutionComponent,
         DataflowDateTimePipe,
-        DataflowDurationPipe
+        DataflowDurationPipe,
+        LoaderComponent
       ],
       imports: [
         NgBusyModule,
