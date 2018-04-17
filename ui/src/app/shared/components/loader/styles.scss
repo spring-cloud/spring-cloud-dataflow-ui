@@ -1,0 +1,14 @@
+
+:host {
+  padding: 1rem 0;
+  color: #939da2;
+  >div {
+    padding-left: 30px;
+    position: relative;
+    .icon {
+      position: absolute;
+      top: 4px;
+      left: 2px;
+    }
+  }
+}

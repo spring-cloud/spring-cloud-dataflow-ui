@@ -13,6 +13,7 @@ import {RuntimeApp} from '../model/runtime-app';
 import {KeyValuePipe} from '../../shared/pipes/key-value-filter.pipe';
 import {RuntimeAppInstance} from '../model/runtime-app-instance';
 import {NgBusyModule} from 'ng-busy';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 describe('RuntimeAppComponent', () => {
   let component: RuntimeAppComponent;
@@ -27,7 +28,8 @@ describe('RuntimeAppComponent', () => {
       declarations: [
         RuntimeAppComponent,
         KeyValuePipe,
-        RuntimeAppStateComponent
+        RuntimeAppStateComponent,
+        LoaderComponent
       ],
       imports: [
         NgBusyModule,

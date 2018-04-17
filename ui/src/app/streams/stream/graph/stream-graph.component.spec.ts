@@ -13,6 +13,7 @@ import { RenderService } from '../../components/flo/render.service';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { BusyService } from '../../../shared/services/busy.service';
 import { StreamGraphComponent } from './stream-graph.component';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 
 /**
@@ -38,7 +39,8 @@ describe('StreamGraphComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         StreamGraphComponent,
-        GraphViewComponent
+        GraphViewComponent,
+        LoaderComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([]),

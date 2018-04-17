@@ -19,6 +19,7 @@ import { MockAuthService } from '../../../tests/mocks/auth';
 import { AuthService } from '../../../auth/auth.service';
 import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
+import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 
 /**
  * Test {@link StreamSummaryComponent}.
@@ -45,7 +46,8 @@ describe('StreamSummaryComponent', () => {
         StreamStatusComponent,
         AppTypeComponent,
         StreamDslComponent,
-        RolesDirective
+        RolesDirective,
+        LoaderComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([]),

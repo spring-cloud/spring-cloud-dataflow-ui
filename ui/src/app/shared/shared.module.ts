@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { HttpModule } from '@angular/http';
-
 import { ToastyModule } from 'ng2-toasty';
-
 import { NgBusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'ng-busy';
 import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
@@ -13,19 +10,14 @@ import { TriStateCheckboxComponent } from './components/tri-state-checkbox.compo
 import { TriStateButtonComponent } from './components/tri-state-button.component';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { SearchfilterPipe } from './pipes/search-filter.pipe';
-
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
-
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PropertyTableComponent } from './components/property-table/property-table.component';
-
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-
 import { TabComponent, TabsComponent } from './components/tabs.component';
-
 import { ParserService } from './services/parser.service';
 import { SharedAppsService } from './services/shared-apps.service';
 import { DataflowDateTimePipe } from './pipes/dataflow-date-time.pipe';
@@ -46,6 +38,7 @@ import { ConfirmComponent } from './components/confirm/confirm.component';
 import { BusyService } from './services/busy.service';
 import { AutoResizeDirective } from './directives/auto-resize.directive';
 import { StreamDslComponent } from './components/dsl/dsl.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -100,7 +93,8 @@ const busyConfig: BusyConfig = {
     StreamDslComponent,
     TruncatePipe,
     OrderByPipe,
-    ConfirmComponent
+    ConfirmComponent,
+    LoaderComponent
   ],
   entryComponents: [
     ConfirmComponent
@@ -140,7 +134,8 @@ const busyConfig: BusyConfig = {
     TruncatePipe,
     OrderByPipe,
     ConfirmComponent,
-    AutoResizeDirective
+    AutoResizeDirective,
+    LoaderComponent
   ]
 })
 export class SharedModule {
