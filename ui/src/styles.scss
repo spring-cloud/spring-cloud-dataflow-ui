@@ -13,8 +13,7 @@
 @import '../node_modules/ng-busy/src/style/busy.css';
 
 // Ng Toasty
-@import '../node_modules/ng2-toasty/bundles/style.css';
-@import '../node_modules/ng2-toasty/bundles/style-bootstrap.css';
+@import 'scss/toasty';
 
 // Font awesome
 @import '../node_modules/@compodoc/compodoc/src/resources/styles/font-awesome.min.css';
