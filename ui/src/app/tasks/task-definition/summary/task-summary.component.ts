@@ -66,14 +66,7 @@ export class TaskSummaryComponent implements OnInit {
         val => Observable.of(Parser.parse(val.dslText as string, 'task')),
         (val1: TaskDefinition, val2: any) => ({
           taskDefinition: val1,
-          apps: val2.lines[0].nodes
-            .map((node) => (
-              {
-                origin: node['name'],
-                name: node['label'] || node['name'],
-                type: node.type.toString()
-              }
-            ))
+          apps: []
         })
       ));
   }

@@ -32,7 +32,7 @@
         <app-task-status [taskDefinition]="task.taskDefinition"></app-task-status>
       </div>
     </div>
-    <div class="row task-summary-row">
+    <div class="row task-summary-row" *ngIf="task.apps.length > 0">
       <div class="col-md-3">
         <strong>Applications:</strong>
       </div>
