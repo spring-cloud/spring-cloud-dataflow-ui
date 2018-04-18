@@ -260,7 +260,7 @@ export class TasksService {
    */
   launchDefinition(taskLaunchParams: TaskLaunchParams) {
     const params = new URLSearchParams();
-    params.append('name', name);
+    params.append('name', taskLaunchParams.name);
     if (taskLaunchParams.args) {
       params.append('arguments', taskLaunchParams.args);
     }
