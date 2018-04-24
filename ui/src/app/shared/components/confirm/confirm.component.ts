@@ -10,7 +10,7 @@ import {BsModalRef} from 'ngx-bootstrap';
 @Component({
   selector: 'app-modal-confirm',
   template: `
-    <div class="modal-confirm">
+    <div class="modal-confirm" id="modal-confirm">
       <div class="modal-body">
         <h4 [innerHtml]="title"></h4>
         <p [innerHtml]="description"></p>

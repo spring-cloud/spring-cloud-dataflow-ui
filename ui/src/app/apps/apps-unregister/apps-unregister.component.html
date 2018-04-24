@@ -35,7 +35,9 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" (click)="close()">Cancel</button>
-    <button *ngIf="applications.length == 1" type="button" class="btn btn-primary" (click)="unregister()">Unregister the application</button>
-    <button *ngIf="applications.length > 1" type="button" class="btn btn-primary" (click)="unregister()">Unregister the applications</button>
+    <button name="app-unregister" type="button" class="btn btn-primary" (click)="unregister()">
+      <span *ngIf="applications.length == 1">Unregister the application</span>
+      <span *ngIf="applications.length > 1">Unregister the applications</span>
+    </button>
   </div>
 </div>

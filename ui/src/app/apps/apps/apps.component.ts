@@ -1,19 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {AppsService} from '../apps.service';
-import {AppRegistration, Page} from '../../shared/model';
-import {ToastyService} from 'ng2-toasty';
-import {AppsUnregisterComponent} from '../apps-unregister/apps-unregister.component';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {AppVersionsComponent} from '../app-versions/app-versions.component';
-import {AppsWorkaroundService} from '../apps.workaround.service';
-import {AppListParams} from '../components/apps.interface';
-import {OrderParams, SortParams} from '../../shared/components/shared.interface';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {BusyService} from '../../shared/services/busy.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { AppsService } from '../apps.service';
+import { AppRegistration, Page } from '../../shared/model';
+import { ToastyService } from 'ng2-toasty';
+import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { AppVersionsComponent } from '../app-versions/app-versions.component';
+import { AppsWorkaroundService } from '../apps.workaround.service';
+import { AppListParams } from '../components/apps.interface';
+import { OrderParams, SortParams } from '../../shared/components/shared.interface';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BusyService } from '../../shared/services/busy.service';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -113,8 +113,8 @@ export class AppsComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.context = this.appsService.applicationsContext;
-    this.params = {...this.context};
-    this.form = {q: this.context.q, type: this.context.type, checkboxes: []};
+    this.params = { ...this.context };
+    this.form = { q: this.context.q, type: this.context.type, checkboxes: [] };
     this.itemsSelected = this.context.itemsSelected || [];
     this.loadAppRegistrations();
     this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
@@ -144,19 +144,19 @@ export class AppsComponent implements OnInit, OnDestroy {
       return page;
     }).pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((page: Page<AppRegistration>) => {
-        if (page.items.length === 0 && this.params.page > 0) {
-          this.params.page = 0;
-          this.loadAppRegistrations();
-          return;
+          if (page.items.length === 0 && this.params.page > 0) {
+            this.params.page = 0;
+            this.loadAppRegistrations();
+            return;
+          }
+          this.appRegistrations = page;
+          this.changeCheckboxes();
+          this.updateContext();
+        },
+        error => {
+          this.toastyService.error(error);
         }
-        this.appRegistrations = page;
-        this.changeCheckboxes();
-        this.updateContext();
-      },
-      error => {
-        this.toastyService.error(error);
-      }
-    );
+      );
 
     this.busyService.addSubscription(busy);
   }
@@ -229,7 +229,8 @@ export class AppsComponent implements OnInit, OnDestroy {
   isAppsEmpty(): boolean {
     if (this.appRegistrations) {
       if (this.appRegistrations.totalPages < 2) {
-        return (this.params.q === '' && this.params.type === null && this.appRegistrations.items.length === 0);
+        return (this.params.q === '' && (this.params.type === null || this.params.type.toString() === '')
+          && this.appRegistrations.items.length === 0);
       }
     }
     return false;
@@ -330,7 +331,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    */
   versions(appRegistration: AppRegistration) {
     console.log(`Manage versions ${appRegistration.name} app.`, appRegistration);
-    this.modal = this.modalService.show(AppVersionsComponent, {class: 'modal-xl'});
+    this.modal = this.modalService.show(AppVersionsComponent, { class: 'modal-xl' });
     this.modal.content.open(appRegistration).subscribe(() => {
       this.loadAppRegistrations();
     });
