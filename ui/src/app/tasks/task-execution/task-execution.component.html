@@ -50,7 +50,7 @@
     <tr>
       <td>Job Execution Ids</td>
       <td *ngIf="taskExecution.jobExecutionIds.length > 0" id="jobExecutionIds">
-        <a class="btn btn-default" type="button" [routerLink]="'jobs/executions/' + jobExecutionId"
+        <a [routerLink]="'/jobs/executions/' + jobExecutionId"
            *ngFor="let jobExecutionId of taskExecution.jobExecutionIds">
           {{ jobExecutionId }}
         </a>
