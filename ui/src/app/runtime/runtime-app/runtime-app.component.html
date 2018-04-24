@@ -16,11 +16,11 @@
         <div class="panel-content">
           <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalues">
             <div class="row row-key-value">
-              <div class="col-md-4">
+              <div class="col-md-8">
                 <strong>{{ item.key }}</strong>
               </div>
-              <div class="col-md-20">
-                <span class="form-control input-sm">{{ item.value }}</span>
+              <div class="col-md-16">
+                <input type="text" readonly [value]="item.value" class="form-control input-sm">
               </div>
             </div>
           </ng-template>
