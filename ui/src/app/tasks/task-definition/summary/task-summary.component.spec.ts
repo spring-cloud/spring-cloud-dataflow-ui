@@ -24,6 +24,8 @@ import { AuthService } from '../../../auth/auth.service';
 import { MockModalService } from '../../../tests/mocks/modal';
 import { BsModalService } from 'ngx-bootstrap';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
+import { MockToolsService } from '../../../tests/mocks/mock-tools';
+import { ToolsService } from '../../components/flo/tools.service';
 
 /**
  * Test {@link TaskSummaryComponent}.
@@ -40,6 +42,7 @@ describe('TaskSummaryComponent', () => {
   const aboutService = new MocksSharedAboutService();
   const modalService = new MockModalService();
   const busyService = new BusyService();
+  const toolsService = new MockToolsService();
   const commonTestParams = { id: 'foo' };
 
   beforeEach(async(() => {
@@ -67,6 +70,7 @@ describe('TaskSummaryComponent', () => {
         { provide: TasksService, useValue: tasksService },
         { provide: BsModalService, useValue: modalService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: ToolsService, useValue: toolsService },
         { provide: BusyService, useValue: busyService },
         { provide: ToastyService, useValue: toastyService }
       ]

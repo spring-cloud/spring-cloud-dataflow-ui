@@ -7,6 +7,8 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TasksService } from '../../tasks.service';
 import { TaskDefinition } from '../../model/task-definition';
 import { TaskDefinitionsDestroyComponent } from '../../task-definitions-destroy/task-definitions-destroy.component';
+import { ToolsService } from '../../components/flo/tools.service';
+import { TaskConversion } from '../../components/flo/model/models';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -37,11 +39,13 @@ export class TaskSummaryComponent implements OnInit {
    * @param {ActivatedRoute} route
    * @param {BsModalService} modalService
    * @param {Router} router
+   * @param {ToolsService} toolsService
    * @param {TasksService} tasksService
    */
   constructor(private route: ActivatedRoute,
               private modalService: BsModalService,
               private router: Router,
+              private toolsService: ToolsService,
               private tasksService: TasksService) {
   }
 
@@ -63,11 +67,30 @@ export class TaskSummaryComponent implements OnInit {
         (val1: Params, val2: TaskDefinition) => val2
       ))
       .pipe(mergeMap(
-        val => Observable.of(Parser.parse(val.dslText as string, 'task')),
-        (val1: TaskDefinition, val2: any) => ({
-          taskDefinition: val1,
-          apps: []
-        })
+        val => this.toolsService.parseTaskTextToGraph(val.dslText, val.name),
+        (val1: TaskDefinition, val2: TaskConversion) => {
+          let apps = [];
+          if (val2.graph && val2.graph.nodes) {
+            apps = val2.graph.nodes.map((node) => {
+              if (node.name === 'START' || node.name === 'END') {
+                return null;
+              }
+              const item = {
+                name: node.name,
+                origin: node.name,
+                type: 'task'
+              };
+              if (node.metadata && node.metadata['label']) {
+                item.name = node.metadata['label'];
+              }
+              return item;
+            }).filter((app) => app !== null);
+          }
+          return {
+            taskDefinition: val1,
+            apps: apps
+          };
+        }
       ));
   }
 
