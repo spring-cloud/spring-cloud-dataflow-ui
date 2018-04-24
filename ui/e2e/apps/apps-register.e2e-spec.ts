@@ -1,15 +1,16 @@
-import {AppRegisterPage} from './app-register.po';
-
 /**
  * E2E spec for app registration page.
  *
  * @author Glenn Renfro
  */
+
+import { AppsRegisterPage } from './apps-register.po';
+
 describe('E2E spec for app registration page', () => {
-  let page: AppRegisterPage;
+  let page: AppsRegisterPage;
 
   beforeEach(() => {
-    page = new AppRegisterPage();
+    page = new AppsRegisterPage();
   });
 
   it('should display app registration title', () => {
