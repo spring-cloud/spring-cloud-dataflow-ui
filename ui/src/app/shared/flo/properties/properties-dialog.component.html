@@ -4,11 +4,11 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body app-properties">
+<form name="app-properties" (submit)="handleOk()" class="modal-body app-properties">
   <properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
                     [form]="propertiesFormGroup" [ngBusy]="busy"></properties-group>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="handleCancel()">Close</button>
-  <button type="button" class="btn btn-default" (click)="handleOk()" [disabled]="okDisabled">OK</button>
-</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="handleCancel()">Close</button>
+    <button type="submit" class="btn btn-default" [disabled]="okDisabled">OK</button>
+  </div>
+</form>
