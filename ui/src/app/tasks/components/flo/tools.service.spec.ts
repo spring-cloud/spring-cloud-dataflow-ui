@@ -64,6 +64,28 @@ describe('ToolsService', () => {
       expect(this.mockHttp.post).toHaveBeenCalledWith('/tools/parseTaskTextToGraph',
         '{"dsl":"fakedsl","name":"unknown"}', requestOptionsArgs);
     });
+    it('empty DSL case', (done) => {
+      this.toolsService.parseTaskTextToGraph('').toPromise().then(result => {
+        expect(result.errors).toEqual([]);
+        expect(result.dsl).toEqual('');
+        expect(result.graph).toBeDefined();
+        expect(result.graph.nodes).toEqual([]);
+        expect(result.graph.links).toEqual([]);
+        done();
+      });
+    });
+    it('Multi-line DSL case', (done) => {
+      const dsl = 'task ||\nanothertask';
+      this.toolsService.parseTaskTextToGraph(dsl).toPromise().then(result => {
+        expect(result.errors).toBeDefined();
+        expect(result.errors.length).toBe(1);
+        expect(result.errors[0].position).toBe(0);
+        expect(result.errors[0].length).toBe(dsl.length);
+        expect(result.dsl).toEqual(dsl);
+        expect(result.graph).toBeNull();
+        done();
+      });
+    });
   });
 
   describe('convertTaskGraphToText', () => {

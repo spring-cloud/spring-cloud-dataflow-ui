@@ -72,6 +72,8 @@ export class EditorService implements Flo.Editor {
    * @param {Map<string, Map<string, Flo.ElementMetadata>>} elementMetadata the element metadata
    */
   setDefaultContent(editorContext: Flo.EditorContext, data: Map<string, Map<string, Flo.ElementMetadata>>): void {
+    // Make sure context is clear before anything default content is created
+    editorContext.getGraph().clear();
     editorContext.createNode(data.get(CONTROL_GROUP_TYPE).get(START_NODE_TYPE));
     editorContext.createNode(data.get(CONTROL_GROUP_TYPE).get(END_NODE_TYPE));
     editorContext.performLayout();
