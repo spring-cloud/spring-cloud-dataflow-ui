@@ -28,8 +28,10 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   paletteSize = 170;
   editorContext: Flo.EditorContext;
 
+  contentValidated = false;
   lintOptions: CodeMirror.LintOptions;
   validationMarkers: Map<string, Flo.Marker[]>;
+  parseErrors: any[];
 
   initSubject: Subject<void>;
   busy: Subscription;
@@ -42,6 +44,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
               private router: Router) {
 
     this.validationMarkers = new Map();
+    this.parseErrors = [];
 
     this.lintOptions = {
       async: true,
@@ -107,38 +110,31 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
           severity: Flo.Severity[m.severity].toLowerCase()
         }))
       );
-      const dslText = this.dsl;
+    const doc = editor.getDoc();
+    const dslText = this.dsl;
+    this.parseErrors = [];
+    if (dslText) {
       this.toolsService.parseTaskTextToGraph(dslText).toPromise().then(taskConversion => {
         if (taskConversion.errors) {
+          this.parseErrors = taskConversion.errors;
           taskConversion.errors.forEach(e => annotations.push({
-            from: this.getPosition(dslText, e['position']),
-            to: e['length'] ? this.getPosition(dslText, e['position'] + e['length'])
-              : this.getPosition(dslText, e['position'] + 1),
-            message: e['message'],
+            from: doc.posFromIndex(e.position),
+            to: e['length'] ? doc.posFromIndex(e.position + e.length)
+              : doc.posFromIndex(e.position + 1),
+            message: e.message,
             severity: 'error'
           }));
         }
         updateLintingCallback(editor, annotations);
       }).catch(error => updateLintingCallback(editor, annotations));
-  }
-
-  getPosition(text: string, offset: number): CodeMirror.Position {
-    let lineStartPosition = 0;
-    let lineNumber = 0;
-    for (let p = 0; p < offset; p++) {
-      if (text.charAt(p) === '\n') {
-        lineNumber++;
-        lineStartPosition = p + 1;
-      }
+    } else {
+      // Don't parse empty DSL. It'll produce an error: "Ran out of input"
+      updateLintingCallback(editor, annotations);
     }
-    return {
-      line: lineNumber,
-      ch: offset - lineStartPosition
-    };
   }
 
   get isCreateComposedTaskDisabled(): boolean {
-    if (this.dsl) {
+    if (this.dsl && this.contentValidated && this.parseErrors.length === 0) {
       return Array.from(this.validationMarkers.values())
         .find(markers => markers
           .find(m => m.severity === Flo.Severity.Error) !== undefined) !== undefined;

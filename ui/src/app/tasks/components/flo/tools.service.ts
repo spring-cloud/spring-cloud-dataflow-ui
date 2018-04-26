@@ -29,13 +29,38 @@ export class ToolsService {
    * @param {string} name the optional name, defaults to 'unknown'
    * @returns {Observable<TaskConversion>}
    */
-  parseTaskTextToGraph(dsl: string, name: string = 'unknown'): Observable<TaskConversion> {
-    const options = HttpUtils.getDefaultRequestOptions();
-    const body = '{"dsl":"' + dsl + '","name":"' + name + '"}';
-
-    return this.http.post(this.parseTaskTextToGraphUrl, body, options)
-      .map(this.extractConversionData.bind(this))
-      .catch(this.errorHandler.handleError);
+  parseTaskTextToGraph(dsl: string = '', name: string = 'unknown'): Observable<TaskConversion> {
+    if (!dsl) {
+      // Server parser service gives error for empty DSL
+      // Workaround: produce empty graph thus START and END node can be created
+      return Observable.of({
+        dsl: '',
+        graph: new Graph([], []),
+        errors: []
+      });
+    } else {
+      // Multi-line task definitions are not supported
+      if (dsl.indexOf('\n') >= 0) {
+        return Observable.of({
+          dsl: dsl,
+          graph: null,
+          errors: [
+            {
+              position: 0,
+              length: dsl.length,
+              message: 'Multi-line task definitions are not supported'
+            }
+          ]
+        });
+      } else {
+        // Invoke server parser service for non-empty one line DSL
+        const options = HttpUtils.getDefaultRequestOptions();
+        const body = '{"dsl":"' + dsl + '","name":"' + name + '"}';
+        return this.http.post(this.parseTaskTextToGraphUrl, body, options)
+          .map(this.extractConversionData.bind(this))
+          .catch(this.errorHandler.handleError);
+      }
+    }
   }
 
   /**
