@@ -5,7 +5,7 @@ export class TaskConversion {
 
   public graph: Graph;
   public dsl: string;
-  public errors: Array<Map<string, any>> = new Array();
+  public errors: Array<any> = new Array();
 
   constructor(dsl: string, errors?: Array<Map<string, any>>, graph?: Graph) {
     this.dsl = dsl;
