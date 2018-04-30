@@ -1,6 +1,6 @@
 <div *ngIf="deploymentProperties | async as appsProperties; else loading">
-  <div *ngFor="let app of appsProperties" class="panel panel-default">
-    <div class="panel-heading"><label>{{ getAppTitle(app) }}</label></div>
+  <div *ngFor="let app of appsProperties">
+    <div class="deployment-properties-app"><strong>{{ getAppTitle(app) }}</strong></div>
     <div class="table-responsive">
       <table *ngIf="app.props.length" class="table table-bordered">
         <tr *ngFor="let pair of app.props">

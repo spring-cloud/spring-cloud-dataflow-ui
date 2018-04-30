@@ -118,4 +118,17 @@ export class StreamSummaryComponent implements OnInit {
     });
   }
 
+  /**
+   * Determine show deployment info
+   *
+   * @param {StreamDefinition} streamDefinition
+   * @returns {boolean} more info is required
+   */
+  canShowDeploymentInfo(streamDefinition: StreamDefinition) {
+    return streamDefinition.status === 'deployed'
+      || streamDefinition.status === 'deploying'
+      || streamDefinition.status === 'failed'
+      || streamDefinition.status === 'incomplete';
+  }
+
 }
