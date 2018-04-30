@@ -1,11 +1,20 @@
 .deployment-properties-key {
-  width: 70%;
 }
 
 .deployment-properties-value {
-  width: 30%;
+}
+
+.deployment-properties-app {
+  padding-bottom: 0.6rem;
 }
 
 .deployment-properties-container {
   display: inline-table;
+}
+
+.table {
+  background: white;
+  td {
+    padding: 5px 10px;
+  }
 }

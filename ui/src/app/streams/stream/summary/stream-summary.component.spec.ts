@@ -20,6 +20,7 @@ import { AuthService } from '../../../auth/auth.service';
 import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
+import { DeploymentPropertiesInfoComponent } from '../../streams/deployment-properties-info/deployment-properties-info.component';
 
 /**
  * Test {@link StreamSummaryComponent}.
@@ -47,6 +48,7 @@ describe('StreamSummaryComponent', () => {
         AppTypeComponent,
         StreamDslComponent,
         RolesDirective,
+        DeploymentPropertiesInfoComponent,
         LoaderComponent
       ],
       imports: [

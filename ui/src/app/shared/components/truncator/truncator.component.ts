@@ -77,7 +77,7 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit {
     }
   }
   ngAfterContentInit() {
-    this.input = this.input.replace(/\-/g, "\u2011");
+    this.input = this.input.replace(/\-/g, '\u2011');
     this.output = this.input;
   }
   /**
