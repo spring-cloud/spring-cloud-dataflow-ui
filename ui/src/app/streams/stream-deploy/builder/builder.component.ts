@@ -445,9 +445,6 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @returns {boolean}
    */
   isSubmittable(builder): boolean {
-    if ((builder.errors.app.length + builder.errors.global.length) > 0) {
-      return false;
-    }
     return builder.formGroup.valid;
   }
 
