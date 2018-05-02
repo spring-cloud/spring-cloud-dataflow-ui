@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Platform } from '../model/platform';
-import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { StreamsService } from '../streams.service';
 import { mergeMap } from 'rxjs/operators';
 import { Parser } from '../../shared/services/parser';
@@ -15,7 +14,6 @@ import {
 } from '../../shared/model/detailed-app-registration.model';
 import { StreamDeployConfig } from '../model/stream-deploy-config';
 import { Utils } from '../../shared/flo/support/utils';
-
 
 /**
  * Provides {@link StreamDeployConfig} related services.
@@ -39,11 +37,11 @@ export class StreamDeployService {
    */
   public static deployer = {
     is: (key: string): boolean => {
-      return /^(deployer)((\.\*)|([.][a-zA-Z0-9]{1,50})?)+([.][a-zA-Z0-9]{1,50})$/.test(key);
+      return /^(deployer.)/.test(key);
     },
     extract: (key: string): string => {
-      const result = key.match(/^deployer\.[\w\*]+.(.*)$/);
-      return result.length > 1 ? result[1] : '';
+      const result = key.split('.');
+      return result.length > 2 ? result[2] : '';
     },
   };
 
@@ -52,7 +50,7 @@ export class StreamDeployService {
    */
   public static version = {
     is: (key: string): boolean => {
-      return /^(version)+([.][a-zA-Z0-9]{2,50})$/.test(key);
+      return /^(version.)/.test(key);
     }
   };
 
@@ -61,11 +59,11 @@ export class StreamDeployService {
    */
   public static app = {
     is: (key: string): boolean => {
-      return /^(app)((\.\*)|([.][a-zA-Z0-9-\-]{1,50})?)+([.][a-zA-Z0-9-\-]{1,50})$/.test(key);
+      return /^(app.)/.test(key);
     },
     extract: (key: string): string => {
-      const result = key.match(/^app\.[\w\*]+.(.*)$/);
-      return result.length > 1 ? result[1] : '';
+      const result = key.split('.');
+      return result.length > 2 ? result[2] : '';
     }
   };
 
@@ -274,6 +272,5 @@ export class StreamDeployService {
           });
       });
   }
-
 
 }
