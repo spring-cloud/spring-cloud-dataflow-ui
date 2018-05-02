@@ -406,7 +406,6 @@ div.tooltip-version {
   vertical-align: top;
 }
 
-
 /*
  * Used in conjunction with the
  * TruncatorWidthProviderDirective. Particularly relevant for Firefox
@@ -414,5 +413,10 @@ div.tooltip-version {
  */
 .dataflow-truncator-width {
   overflow-wrap: break-word;
-  word-break: break-all;
+  word-break: break-  all;
+}
+
+.ngx-pagination {
+  margin: 0;
+  padding: 0;
 }

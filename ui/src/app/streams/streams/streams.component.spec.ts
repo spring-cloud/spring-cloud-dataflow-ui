@@ -38,6 +38,7 @@ import { MockModalService } from '../../tests/mocks/modal';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
 
 /**
  * Test {@link StreamsComponent}.
@@ -76,6 +77,7 @@ describe('StreamsComponent', () => {
         MasterCheckboxComponent,
         StreamGraphDefinitionComponent,
         TruncatePipe,
+        PagerComponent,
         LoaderComponent
       ],
       imports: [

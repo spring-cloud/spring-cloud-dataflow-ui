@@ -162,6 +162,18 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Changes items per page
+   * Reset the pagination (first page)
+   * @param {number} size
+   */
+  changeSize(size: number) {
+    this.params.size = size;
+    this.params.page = 0;
+    this.updateContext();
+    this.refresh();
+  }
+
+  /**
    * Route to {@link TaskExecution} details page.
    * @param {TaskExecution} taskExecution
    */

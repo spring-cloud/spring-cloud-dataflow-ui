@@ -1,0 +1,28 @@
+
+.app-pager {
+  vertical-align: top;
+  text-align: right;
+
+  .dropdown-menu {
+    min-width: 70px;
+  }
+}
+
+.app-pager-divider {
+  display: inline-block;
+  height: 22px;
+  vertical-align: top;
+  margin: 2px 10px;
+  border-left: 1px solid #ccc;
+  width: 1px;
+}
+
+.app-pager-text {
+  display: inline-block;
+  height: 22px;
+  vertical-align: top;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}

@@ -231,6 +231,18 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Changes items per page
+   * Reset the pagination (first page)
+   * @param {number} size
+   */
+  changeSize(size: number) {
+    this.params.size = size;
+    this.params.page = 0;
+    this.updateContext();
+    this.refresh();
+  }
+
+  /**
    * Removes the {@link TaskDefinition} from the repository.  Shows modal dialog
    * prior to deletion to verify if user wants to destroy definition.
    * @param item the task definition to be removed.

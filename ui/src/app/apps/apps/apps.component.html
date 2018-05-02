@@ -19,7 +19,8 @@
     <div class="description">
       <h1>Apps</h1>
       <p>
-        This section lists all the available applications. You can <strong>register</strong> or <strong>unregister</strong> applications.
+        This section lists all the available applications. You can <strong>register</strong> or
+        <strong>unregister</strong> applications.
       </p>
       <div class="hidden visible-xs-block visible-sm-block" *ngIf="!isAppsEmpty()" [appRoles]="['ROLE_CREATE']">
         <a class="btn btn-primary" (click)="registerApps()">Register application(s)</a>
@@ -154,25 +155,34 @@
     </tbody>
   </table>
 
-  <div id="pagination" *ngIf="appRegistrations && appRegistrations.totalPages > 1">
-    <pagination-controls *ngIf="appRegistrations.items.length > 0 "
-                         (pageChange)="getPage($event)"></pagination-controls>
+  <div class="row">
+    <div class="col-xs-12">
+      <div id="pagination" *ngIf="appRegistrations && appRegistrations.totalPages > 1">
+        <pagination-controls *ngIf="appRegistrations.items.length > 0 "
+                             (pageChange)="getPage($event)"></pagination-controls>
+      </div>
+    </div>
+    <div class="col-xs-12" *ngIf="appRegistrations && appRegistrations?.totalElements > 0">
+      <app-pager [page]="params.page" [total]="appRegistrations.totalElements" [size]="params.size"
+       (onSizeChange)="changeSize($event)">
+      </app-pager>
+    </div>
   </div>
 
   <div *ngIf="appRegistrations" id="empty">
     <div *ngIf="isAppsEmpty()" class="text-center">
       <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
         <strong>No registered apps.</strong>
-      <div [appRoles]="['ROLE_CREATE']">
-        <p>You can register apps by clicking:</p>
-        <button type="button" (click)="registerApps()" class="btn btn-primary">
-          Register Application(s)
-        </button>
-        <button type="button" (click)="bulkImportApps()" class="btn btn-primary">
-          Bulk Import Application(s)
-        </button>
+        <div [appRoles]="['ROLE_CREATE']">
+          <p>You can register apps by clicking:</p>
+          <button type="button" (click)="registerApps()" class="btn btn-primary">
+            Register Application(s)
+          </button>
+          <button type="button" (click)="bulkImportApps()" class="btn btn-primary">
+            Bulk Import Application(s)
+          </button>
+        </div>
       </div>
-    </div>
     </div>
 
     <div id="no-result" class="row"

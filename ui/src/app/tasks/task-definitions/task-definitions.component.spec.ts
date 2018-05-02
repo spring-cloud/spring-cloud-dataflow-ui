@@ -29,6 +29,7 @@ import { MockTasksService } from '../../tests/mocks/tasks';
 import { TaskStatusComponent } from '../components/task-status/task-status.component';
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
 
 /**
  * Test {@link TaskDefinitionsComponent}.
@@ -58,6 +59,7 @@ describe('TaskDefinitionsComponent', () => {
         SortComponent,
         StreamDslComponent,
         MasterCheckboxComponent,
+        PagerComponent,
         TruncatePipe,
         TaskStatusComponent,
         TasksTabulationComponent

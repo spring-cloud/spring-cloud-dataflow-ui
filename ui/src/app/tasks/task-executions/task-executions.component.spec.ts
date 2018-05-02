@@ -29,6 +29,7 @@ import { TaskStatusComponent } from '../components/task-status/task-status.compo
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
 import { TaskExecutionsComponent } from './task-executions.component';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -55,6 +56,7 @@ describe('TaskExecutionsComponent', () => {
         TaskDefinitionsDestroyComponent,
         TriStateButtonComponent,
         TriStateCheckboxComponent,
+        PagerComponent,
         SortComponent,
         StreamDslComponent,
         MasterCheckboxComponent,
