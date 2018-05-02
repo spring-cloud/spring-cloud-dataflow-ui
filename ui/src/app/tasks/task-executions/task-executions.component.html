@@ -99,9 +99,18 @@
       </tbody>
     </table>
 
-    <div id="pagination" *ngIf="taskExecutions && taskExecutions.totalPages > 1">
-      <pagination-controls *ngIf="taskExecutions.items.length > 0 "
-                           (pageChange)="getPage($event)"></pagination-controls>
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="pagination" *ngIf="taskExecutions && taskExecutions.totalPages > 1">
+          <pagination-controls *ngIf="taskExecutions.items.length > 0 "
+                               (pageChange)="getPage($event)"></pagination-controls>
+        </div>
+      </div>
+      <div class="col-xs-12" *ngIf="taskExecutions && taskExecutions?.totalElements > 0">
+        <app-pager [page]="params.page" [total]="taskExecutions.totalElements" [size]="params.size"
+                   (onSizeChange)="changeSize($event)">
+        </app-pager>
+      </div>
     </div>
 
     <div *ngIf="taskExecutions" id="empty" style="padding-top:1.5rem">

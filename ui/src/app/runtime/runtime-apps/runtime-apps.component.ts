@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RuntimeApp} from '../model/runtime-app';
-import {Page} from '../../shared/model/page';
-import {RuntimeAppsService} from '../runtime-apps.service';
-import {BsModalService, BsModalRef} from 'ngx-bootstrap';
-import {Observable} from 'rxjs/Observable';
-import {RuntimeAppComponent} from '../runtime-app/runtime-app.component';
-import {PaginationParams} from '../../shared/components/shared.interface';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { RuntimeApp } from '../model/runtime-app';
+import { Page } from '../../shared/model/page';
+import { RuntimeAppsService } from '../runtime-apps.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { Observable } from 'rxjs/Observable';
+import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
+import { PaginationParams } from '../../shared/components/shared.interface';
 
 /**
  * Component that loads Runtime applications.
@@ -27,7 +27,7 @@ export class RuntimeAppsComponent implements OnInit {
   /**
    * Pagination state
    */
-  pagination: PaginationParams = {page: 0, size: 10};
+  pagination: PaginationParams = { page: 0, size: 30 };
 
   /**
    * Modal reference
@@ -71,10 +71,21 @@ export class RuntimeAppsComponent implements OnInit {
   }
 
   /**
+   * Changes items per page
+   * Reset the pagination (first page)
+   * @param {number} size
+   */
+  changeSize(size: number) {
+    this.pagination.size = size;
+    this.pagination.page = 0;
+    this.loadRuntimeApps();
+  }
+
+  /**
    * View a runtime application in a dedicate modal
    */
   view(runtimeApp: RuntimeApp): void {
-    this.modal = this.modalService.show(RuntimeAppComponent, {class: 'modal-xl'});
+    this.modal = this.modalService.show(RuntimeAppComponent, { class: 'modal-xl' });
     this.modal.content.open(runtimeApp);
   }
 

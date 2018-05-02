@@ -273,6 +273,18 @@ export class AppsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Changes items per page
+   * Reset the pagination (first page)
+   * @param {number} size
+   */
+  changeSize(size: number) {
+    this.params.size = size;
+    this.params.page = 0;
+    this.updateContext();
+    this.loadAppRegistrations();
+  }
+
+  /**
    * Starts the unregistration process {@link AppRegistration}s
    * by opening a confirmation modal dialog.
    */

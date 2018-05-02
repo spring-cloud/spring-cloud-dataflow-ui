@@ -41,6 +41,7 @@ import { StreamDslComponent } from './components/dsl/dsl.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { TruncatorComponent } from './components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from './components/truncator/truncator-width-provider.directive';
+import { PagerComponent } from './components/pager/pager.component';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -98,7 +99,8 @@ const busyConfig: BusyConfig = {
     TruncatorWidthProviderDirective,
     OrderByPipe,
     ConfirmComponent,
-    LoaderComponent
+    LoaderComponent,
+    PagerComponent
   ],
   entryComponents: [
     ConfirmComponent
@@ -141,7 +143,8 @@ const busyConfig: BusyConfig = {
     OrderByPipe,
     ConfirmComponent,
     AutoResizeDirective,
-    LoaderComponent
+    LoaderComponent,
+    PagerComponent
   ]
 })
 export class SharedModule {

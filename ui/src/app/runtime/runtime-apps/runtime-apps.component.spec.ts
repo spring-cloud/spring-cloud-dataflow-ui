@@ -15,6 +15,7 @@ import {RuntimeAppComponent} from '../runtime-app/runtime-app.component';
 import {NgBusyModule} from 'ng-busy';
 import {MockModalService} from '../../tests/mocks/modal';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
@@ -29,7 +30,8 @@ describe('RuntimeAppsComponent', () => {
         RuntimeAppsComponent,
         KeyValuePipe,
         RuntimeAppStateComponent,
-        LoaderComponent
+        LoaderComponent,
+        PagerComponent
       ],
       imports: [
         NgBusyModule,
@@ -123,14 +125,14 @@ describe('RuntimeAppsComponent', () => {
       const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
       fixture.debugElement.query(By.css('button[name=refresh]')).nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith({ page: 0, size: 10});
+      expect(spy).toHaveBeenCalledWith({ page: 0, size: 30});
     });
 
     it('should navigation to the page 2', () => {
       const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
       fixture.debugElement.queryAll(By.css('#pagination a'))[0].nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith({ page: 1, size: 10});
+      expect(spy).toHaveBeenCalledWith({ page: 1, size: 30});
     });
 
   });

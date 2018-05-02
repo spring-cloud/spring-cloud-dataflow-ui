@@ -122,9 +122,19 @@
       </tbody>
     </table>
 
-    <div id="pagination" *ngIf="taskDefinitions && taskDefinitions.totalPages > 1">
-      <pagination-controls *ngIf="taskDefinitions.items.length > 0 "
-                           (pageChange)="getPage($event)"></pagination-controls>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="pagination" *ngIf="taskDefinitions && taskDefinitions.totalPages > 1">
+          <pagination-controls *ngIf="taskDefinitions.items.length > 0 "
+                               (pageChange)="getPage($event)"></pagination-controls>
+        </div>
+      </div>
+      <div class="col-xs-12" *ngIf="taskDefinitions && taskDefinitions?.totalElements > 0">
+        <app-pager [page]="params.page" [total]="taskDefinitions.totalElements" [size]="params.size"
+                   (onSizeChange)="changeSize($event)">
+        </app-pager>
+      </div>
     </div>
 
     <div *ngIf="taskDefinitions" id="empty" style="padding-top:1.5rem">

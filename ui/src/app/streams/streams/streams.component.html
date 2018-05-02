@@ -171,9 +171,18 @@
     </tbody>
   </table>
 
-  <div id="pagination" *ngIf="streamDefinitions && streamDefinitions.totalPages > 1">
-    <pagination-controls *ngIf="streamDefinitions.items.length > 0 "
-                         (pageChange)="getPage($event)"></pagination-controls>
+  <div class="row">
+    <div class="col-xs-12">
+      <div id="pagination" *ngIf="streamDefinitions && streamDefinitions.totalPages > 1">
+        <pagination-controls *ngIf="streamDefinitions.items.length > 0 "
+                             (pageChange)="getPage($event)"></pagination-controls>
+      </div>
+    </div>
+    <div class="col-xs-12" *ngIf="streamDefinitions && streamDefinitions?.totalElements > 0">
+      <app-pager [page]="params.page" [total]="streamDefinitions.totalElements" [size]="params.size"
+                 (onSizeChange)="changeSize($event)">
+      </app-pager>
+    </div>
   </div>
 
   <div *ngIf="streamDefinitions" id="empty">

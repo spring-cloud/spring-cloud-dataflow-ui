@@ -28,6 +28,7 @@ import {AppVersionsComponent} from '../app-versions/app-versions.component';
 import {BusyService} from '../../shared/services/busy.service';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
 
 describe('AppsComponent', () => {
   let component: AppsComponent;
@@ -49,6 +50,7 @@ describe('AppsComponent', () => {
         TruncatorComponent,
         TruncatorWidthProviderDirective,
         MasterCheckboxComponent,
+        PagerComponent,
         RolesDirective
       ],
       imports: [

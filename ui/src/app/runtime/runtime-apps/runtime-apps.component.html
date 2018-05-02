@@ -63,9 +63,18 @@
       </tbody>
     </table>
 
-    <div id="pagination" *ngIf="runtimeApps.items.length > 0 && runtimeApps.totalPages > 1">
-      <pagination-controls (pageChange)="getPage($event)" [id]="runtimeApps.getPaginationInstance().id">
-      </pagination-controls>
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="pagination" *ngIf="runtimeApps && runtimeApps.totalPages > 1">
+          <pagination-controls (pageChange)="getPage($event)" [id]="runtimeApps.getPaginationInstance().id">
+          </pagination-controls>
+        </div>
+      </div>
+      <div class="col-xs-12" *ngIf="runtimeApps && runtimeApps?.totalElements > 0">
+        <app-pager [page]="pagination.page" [total]="runtimeApps.totalElements" [size]="pagination.size"
+                   (onSizeChange)="changeSize($event)">
+        </app-pager>
+      </div>
     </div>
 
   </div>
