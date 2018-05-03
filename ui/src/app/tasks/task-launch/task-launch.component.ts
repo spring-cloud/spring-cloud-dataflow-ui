@@ -9,6 +9,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { BusyService } from '../../shared/services/busy.service';
 import { TaskLaunchValidator } from './task-launch.validator';
 import { NotificationService } from '../../shared/services/notification.service';
+import { AppError, HttpAppError } from '../../shared/model/error.model';
 
 /**
  * Component that provides a launcher of task.
@@ -133,7 +134,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
           this.router.navigate(['/tasks/definitions']);
         },
         error => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
     this.busyService.addSubscription(busy);

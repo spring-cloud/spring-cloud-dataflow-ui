@@ -6,6 +6,9 @@ import { StepExecution } from '../model/step-execution.model';
 import { mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { NotificationService } from '../../shared/services/notification.service';
+import { AppError, HttpAppError } from '../../shared/model/error.model';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Displays a job's execution detail information based on the job execution id that is passed in via params on the URI.
@@ -29,13 +32,19 @@ export class JobExecutionDetailsComponent implements OnInit {
    * Constructor
    *
    * @param {JobsService} jobsService
+   * @param {NotificationService} notificationService
    * @param {ActivatedRoute} route
+   * @param {LoggerService} loggerService
+   * @param {RoutingStateService} routingStateService
    * @param {Router} router
    */
   constructor(private jobsService: JobsService,
               private notificationService: NotificationService,
               private route: ActivatedRoute,
+              private loggerService: LoggerService,
+              private routingStateService: RoutingStateService,
               private router: Router) {
+
   }
 
   /**
@@ -46,7 +55,14 @@ export class JobExecutionDetailsComponent implements OnInit {
       .pipe(mergeMap(
         val => this.jobsService.getJobExecution(val.id),
         (val1: Params, val2: JobExecution) => val2
-      ));
+      )).catch((error) => {
+        if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
+          this.back();
+        }
+        this.loggerService.log('error while loading Job Execution Details', error);
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        return Observable.throw(error);
+      });
   }
 
   /**
@@ -61,6 +77,6 @@ export class JobExecutionDetailsComponent implements OnInit {
   }
 
   back() {
-    this.router.navigate(['jobs/executions']);
+    this.routingStateService.back('/jobs/executions', /^(\/jobs\/executions\/)/);
   }
 }

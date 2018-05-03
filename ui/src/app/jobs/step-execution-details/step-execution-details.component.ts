@@ -5,6 +5,10 @@ import { StepExecutionResource } from '../model/step-execution-resource.model';
 import { Observable } from 'rxjs/Observable';
 import { mergeMap, map } from 'rxjs/operators';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { HttpAppError, AppError } from '../../shared/model/error.model';
+import { LoggerService } from '../../shared/services/logger.service';
+import { NotificationService } from '../../shared/services/notification.service';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 /**
  * Step Execution Details
@@ -26,14 +30,25 @@ export class StepExecutionDetailsComponent implements OnInit {
   stepExecutionDetails$: Observable<any>;
 
   /**
+   * Job ID
+   */
+  jobId: number;
+
+  /**
    * Constructor
    *
    * @param {JobsService} jobsService
    * @param {ActivatedRoute} route
+   * @param {LoggerService} loggerService
+   * @param {RoutingStateService} routingStateService
+   * @param {NotificationService} notificationService
    * @param {Router} router
    */
   constructor(private jobsService: JobsService,
               private route: ActivatedRoute,
+              private loggerService: LoggerService,
+              private routingStateService: RoutingStateService,
+              private notificationService: NotificationService,
               private router: Router) {
   }
 
@@ -55,11 +70,21 @@ export class StepExecutionDetailsComponent implements OnInit {
           this.jobsService.getStepExecution(val.jobid, val.stepid),
           this.jobsService.getStepExecutionProgress(val.jobid, val.stepid)
         ]),
-        (val1: Params, val2: any) => val2
+        (val1: Params, val2: any) => {
+          this.jobId = val1.jobid;
+          return val2;
+        }
       ))
       .pipe(map(
         val => ({ jobExecution: val[0], stepExecution: val[1], stepExecutionProgress: val[2] })
-      ));
+      )).catch((error) => {
+        if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
+          this.routingStateService.back(`/jobs/executions/`);
+        }
+        this.loggerService.log('error while loading Step Execution Progress', error);
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        return Observable.throw(error);
+      });
   }
 
   /**
@@ -75,7 +100,8 @@ export class StepExecutionDetailsComponent implements OnInit {
   /**
    * Navigate to the previous page
    */
-  back(jobid) {
-    this.router.navigate([`jobs/executions/${jobid}`]);
+  back() {
+    this.routingStateService.back(`jobs/executions/${this.jobId}`);
   }
+
 }

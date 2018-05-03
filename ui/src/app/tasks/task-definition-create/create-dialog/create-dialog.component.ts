@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
+import { AppError } from '../../../shared/model/error.model';
 
 /**
  * Component to display dialog to allow user to name and deploy a task.
@@ -111,7 +112,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
           this.notificationService.success('Composed task created for ' + this.taskName.value);
         },
         (error) => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
           this.bsModalRef.hide();
         }
       );

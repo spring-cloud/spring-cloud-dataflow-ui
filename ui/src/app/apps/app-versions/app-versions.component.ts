@@ -1,17 +1,18 @@
-import {Component, EventEmitter, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
-import {AppRegistration} from '../../shared/model/app-registration.model';
-import {AppsService} from '../apps.service';
-import {ConfirmService} from '../../shared/components/confirm/confirm.service';
-import {BsModalRef} from 'ngx-bootstrap';
-import {AppVersion} from '../../shared/model/app-version';
-import {SortParams, OrderParams} from '../../shared/components/shared.interface';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {BusyService} from '../../shared/services/busy.service';
-import {ApplicationType} from '../../shared/model/application-type';
+import { Component, EventEmitter, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { AppRegistration } from '../../shared/model/app-registration.model';
+import { AppsService } from '../apps.service';
+import { ConfirmService } from '../../shared/components/confirm/confirm.service';
+import { BsModalRef } from 'ngx-bootstrap';
+import { AppVersion } from '../../shared/model/app-version';
+import { SortParams, OrderParams } from '../../shared/components/shared.interface';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BusyService } from '../../shared/services/busy.service';
+import { ApplicationType } from '../../shared/model/application-type';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Provides versions for an App Registration
@@ -172,7 +173,7 @@ export class AppVersionsComponent implements OnDestroy {
         `of the application <strong>${this.application.name}</strong> (${this.application.type}). This version ` +
         ` is the <strong>default version</strong>. Are you sure?`;
     }
-    this.confirmService.open(title, description, {confirm: 'Unregister version'}).subscribe(() => {
+    this.confirmService.open(title, description, { confirm: 'Unregister version' }).subscribe(() => {
       this.appsService.unregisterAppVersion(this.application, version.version).subscribe(() => {
           this.notificationService.success(`The version <strong>${version.version}</strong> of the application ` +
             `<strong>${this.application.name}</strong> (${this.application.type}) has been unregister.`);
@@ -185,7 +186,7 @@ export class AppVersionsComponent implements OnDestroy {
           this.event.emit(true);
         },
         error => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
     });
   }

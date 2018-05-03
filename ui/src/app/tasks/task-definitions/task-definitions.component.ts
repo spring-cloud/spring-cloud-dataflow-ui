@@ -12,6 +12,7 @@ import { OrderParams, SortParams } from '../../shared/components/shared.interfac
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -126,7 +127,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
 

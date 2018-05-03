@@ -15,6 +15,8 @@ import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 
 describe('JobExecutionDetailsComponent', () => {
   let component: JobExecutionDetailsComponent;
@@ -25,6 +27,7 @@ describe('JobExecutionDetailsComponent', () => {
   let jobsService: MockJobsService;
   const notificationService = new MockNotificationService();
   const loggerService = new LoggerService();
+  const routingStateService = new MockRoutingStateService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -43,6 +46,7 @@ describe('JobExecutionDetailsComponent', () => {
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
       ]
@@ -114,13 +118,14 @@ describe('JobExecutionDetailsComponent', () => {
     activeRoute.testParams = { id: '1' };
     jobsService.testJobExecutions = JOBS_EXECUTIONS;
     fixture.detectChanges();
-    de = fixture.debugElement.query(By.css('button[type=button]'));
+    de = fixture.debugElement.query(By.css('#button-back'));
     el = de.nativeElement;
-    const navigate = spyOn((<any>component).router, 'navigate');
+
+    const navigate = spyOn(routingStateService, 'back');
     fixture.detectChanges();
     el.click();
 
-    expect(navigate).toHaveBeenCalledWith(['jobs/executions/1/1']);
+    expect(navigate).toHaveBeenCalled();
   });
 
   /*

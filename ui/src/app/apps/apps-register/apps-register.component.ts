@@ -12,6 +12,7 @@ import {BusyService} from '../../shared/services/busy.service';
 import {takeUntil} from 'rxjs/operators';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Applications Register
@@ -102,7 +103,7 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
           this.cancel();
         },
         error => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
 

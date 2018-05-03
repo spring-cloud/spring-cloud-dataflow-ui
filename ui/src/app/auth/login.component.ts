@@ -10,6 +10,7 @@ import { BusyService } from '../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../shared/services/notification.service';
 import { LoggerService } from '../shared/services/logger.service';
+import { AppError } from '../shared/model/error.model';
 
 /**
  * Handles application logins.
@@ -73,7 +74,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             },
             error => {
               this.loggerService.error('User was not logged in because:', error);
-              this.notificationService.error(error);
+              this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
             }
           );
         } else {
@@ -82,7 +83,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       },
       error => {
-        this.notificationService.error(error);
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
       });
     this.busyService.addSubscription(busy);
   }
