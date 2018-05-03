@@ -15,6 +15,8 @@ import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe'
 import * as moment from 'moment';
 import { TaskExecutionComponent } from './task-execution.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 describe('TaskExecutionsDetailsComponent', () => {
   let component: TaskExecutionComponent;
@@ -22,6 +24,7 @@ describe('TaskExecutionsDetailsComponent', () => {
   let activeRoute: MockActivatedRoute;
   const toastyService = new MockToastyService();
   const tasksService = new MockTasksService();
+  const routingStateService = new MockRoutingStateService();
   const commonTestParams = { id: '1' };
   const commonTestExecutionDetails = {
     1: {
@@ -69,6 +72,7 @@ describe('TaskExecutionsDetailsComponent', () => {
       ],
       providers: [
         { provide: TasksService, useValue: tasksService },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: ToastyService, useValue: toastyService }
       ]

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 /**
  * Component that shows the details of a Stream Definition
@@ -26,8 +27,10 @@ export class StreamComponent implements OnInit {
   /**
    * Constructor
    * @param {ActivatedRoute} route
+   * @param {RoutingStateService} routingStateService
    */
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute,
+              private routingStateService: RoutingStateService) {
   }
 
   /**
@@ -38,6 +41,14 @@ export class StreamComponent implements OnInit {
       this.id = params.id;
       // TODO: check if stream exist
     });
+  }
+
+  /**
+   * Back action
+   * Navigate to the previous URL or /streams/definitions
+   */
+  cancel() {
+    this.routingStateService.back('/streams/definitions', /^(\/streams\/definitions\/)/);
   }
 
 }

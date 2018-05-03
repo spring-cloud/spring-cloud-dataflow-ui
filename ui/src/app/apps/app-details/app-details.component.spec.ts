@@ -1,31 +1,33 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule, TooltipModule} from 'ngx-bootstrap';
-import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockAppsService} from '../../tests/mocks/apps';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {AppDetailsComponent} from './app-details.component';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {AppTypeComponent} from '../components/app-type/app-type.component';
-import {RolesDirective} from '../../auth/directives/roles.directive';
-import {MockActivatedRoute} from '../../tests/mocks/activated-route';
-import {MocksSharedAboutService} from '../../tests/mocks/shared-about';
-import {ActivatedRoute} from '@angular/router';
-import {MockAuthService} from '../../tests/mocks/auth';
-import {AuthService} from '../../auth/auth.service';
-import {By} from '@angular/platform-browser';
-import {DebugElement} from '@angular/core';
-import {APPS} from '../../tests/mocks/mock-data';
-import {MockConfirmService} from '../../tests/mocks/confirm';
-import {ConfirmService} from '../../shared/components/confirm/confirm.service';
-import {AppVersionLabelComponent} from '../components/app-versions-label/app-versions-label.component';
-import {SortComponent} from '../../shared/components/sort/sort.component';
-import {OrderByPipe} from '../../shared/pipes/orderby.pipe';
-import {MockModalService} from '../../tests/mocks/modal';
-import {AppVersionsComponent} from '../app-versions/app-versions.component';
-import {BusyService} from '../../shared/services/busy.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import { AppsService } from '../apps.service';
+import { ToastyService } from 'ng2-toasty';
+import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AppDetailsComponent } from './app-details.component';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { AppTypeComponent } from '../components/app-type/app-type.component';
+import { RolesDirective } from '../../auth/directives/roles.directive';
+import { MockActivatedRoute } from '../../tests/mocks/activated-route';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { ActivatedRoute } from '@angular/router';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { AuthService } from '../../auth/auth.service';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
+import { APPS } from '../../tests/mocks/mock-data';
+import { MockConfirmService } from '../../tests/mocks/confirm';
+import { ConfirmService } from '../../shared/components/confirm/confirm.service';
+import { AppVersionLabelComponent } from '../components/app-versions-label/app-versions-label.component';
+import { SortComponent } from '../../shared/components/sort/sort.component';
+import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
+import { MockModalService } from '../../tests/mocks/modal';
+import { AppVersionsComponent } from '../app-versions/app-versions.component';
+import { BusyService } from '../../shared/services/busy.service';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 
 /**
  * Test {@link AppDetailsComponent}.
@@ -41,9 +43,10 @@ describe('AppDetailsComponent', () => {
   const sharedAboutService = new MocksSharedAboutService();
   const modalService = new MockModalService();
   const confirmService = new MockConfirmService();
+  const routingStateService = new MockRoutingStateService();
   let activeRoute: MockActivatedRoute;
 
-  const commonTestParams = {appName: 'foo', appType: 'source'};
+  const commonTestParams = { appName: 'foo', appType: 'source' };
 
   const sourceMock = JSON.parse(JSON.stringify(APPS));
   const appMock = sourceMock.items[0];
@@ -69,14 +72,15 @@ describe('AppDetailsComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        {provide: AppsService, useValue: appsService},
-        {provide: AuthService, useValue: authService},
-        {provide: ActivatedRoute, useValue: activeRoute},
-        {provide: BsModalService, useValue: modalService},
-        {provide: ConfirmService, useValue: confirmService},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: SharedAboutService, useValue: sharedAboutService},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: AppsService, useValue: appsService },
+        { provide: AuthService, useValue: authService },
+        { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: BsModalService, useValue: modalService },
+        { provide: ConfirmService, useValue: confirmService },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: RoutingStateService, useValue: routingStateService },
+        { provide: SharedAboutService, useValue: sharedAboutService },
+        { provide: ToastyService, useValue: toastyService }
       ]
     })
       .compileComponents();
@@ -99,11 +103,11 @@ describe('AppDetailsComponent', () => {
 
     it('Should cancel (footer close)', () => {
       fixture.detectChanges();
-      const navigate = spyOn((<any>component).router, 'navigate');
+      const navigate = spyOn(routingStateService, 'back');
       const bt: HTMLElement = fixture.debugElement.query(By.css('.footer-actions .btn-default')).nativeElement;
       bt.click();
       fixture.detectChanges();
-      expect(navigate).toHaveBeenCalledWith(['apps']);
+      expect(navigate).toHaveBeenCalled();
     });
 
   });
@@ -140,9 +144,9 @@ describe('AppDetailsComponent', () => {
     it('should apply a sort on name and uri', () => {
       const sortProperty: HTMLElement = fixture.debugElement.query(By.css('#sort-name a')).nativeElement;
       [
-        {click: sortProperty, nameAsc: true, sort: 'name', order: 'ASC'},
-        {click: sortProperty, nameDesc: true, sort: 'name', order: 'DESC'},
-        {click: sortProperty, sort: '', order: ''},
+        { click: sortProperty, nameAsc: true, sort: 'name', order: 'ASC' },
+        { click: sortProperty, nameDesc: true, sort: 'name', order: 'DESC' },
+        { click: sortProperty, sort: '', order: '' },
       ].forEach((test) => {
         test.click.click();
         fixture.detectChanges();
@@ -270,7 +274,7 @@ describe('AppDetailsComponent', () => {
         const spy = spyOn(modalService, 'show');
         fixture.debugElement.query(By.css('#no-default-version a')).nativeElement.click();
         fixture.detectChanges();
-        expect(spy).toHaveBeenCalledWith(AppVersionsComponent, {class: 'modal-xl'});
+        expect(spy).toHaveBeenCalledWith(AppVersionsComponent, { class: 'modal-xl' });
       });
 
       // Note: have to be review (related to the workaround #1871)
