@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { Subscription } from 'rxjs/Subscription';
 import { mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { TaskDefinition } from '../model/task-definition';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 /**
  * @author Glenn Renfro
@@ -28,9 +28,11 @@ export class TaskDefinitionComponent implements OnInit {
    * Constructor
    *
    * @param {ActivatedRoute} route
+   * @param {RoutingStateService} routingStateService
    * @param {TasksService} tasksService
    */
   constructor(private route: ActivatedRoute,
+              private routingStateService: RoutingStateService,
               private tasksService: TasksService) {
   }
 
@@ -43,6 +45,14 @@ export class TaskDefinitionComponent implements OnInit {
         val => this.tasksService.getDefinition(val.id),
         (val1, val2) => val2
       ));
+  }
+
+  /**
+   * Back action
+   * Navigate to the previous URL or /tasks/definitions
+   */
+  cancel() {
+    this.routingStateService.back('/tasks/definitions', /^(\/tasks\/definitions\/)/);
   }
 
 }

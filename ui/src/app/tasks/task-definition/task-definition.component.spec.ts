@@ -13,6 +13,8 @@ import { TaskDefinitionComponent } from './task-definition.component';
 import { BusyService } from '../../shared/services/busy.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 /**
  * Test {@link TaskDefinitionComponent}.
@@ -27,6 +29,7 @@ describe('TaskDefinitionComponent', () => {
   const tasksService = new MockTasksService();
   const busyService = new BusyService();
   const commonTestParams = { id: 'foo' };
+  const routingStateService = new MockRoutingStateService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -45,6 +48,7 @@ describe('TaskDefinitionComponent', () => {
       providers: [
         { provide: TasksService, useValue: tasksService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: BusyService, useValue: busyService },
         { provide: ToastyService, useValue: toastyService }
       ]

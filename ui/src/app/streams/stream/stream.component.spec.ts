@@ -13,6 +13,8 @@ import { RenderService } from '../components/flo/render.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { BusyService } from '../../shared/services/busy.service';
 import { StreamComponent } from './stream.component';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 
 
 /**
@@ -30,6 +32,7 @@ describe('StreamComponent', () => {
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
   const busyService = new BusyService();
+  const routingStateService = new MockRoutingStateService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -48,6 +51,7 @@ describe('StreamComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: BusyService, useValue: busyService },
         { provide: ToastyService, useValue: toastyService },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: RenderService, useValue: renderService }
       ]

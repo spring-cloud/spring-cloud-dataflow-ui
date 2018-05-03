@@ -42,6 +42,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { TruncatorComponent } from './components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from './components/truncator/truncator-width-provider.directive';
 import { PagerComponent } from './components/pager/pager.component';
+import { RoutingStateService } from './services/routing-state.service';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -111,7 +112,8 @@ const busyConfig: BusyConfig = {
     ParserService,
     ErrorHandler,
     ConfirmService,
-    BusyService
+    BusyService,
+    RoutingStateService
   ],
   exports: [
     StreamDslComponent,
