@@ -1,19 +1,21 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute, Params} from '@angular/router';
-import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {ApplicationType, DetailedAppRegistration} from '../../shared/model';
-import {Subscription} from 'rxjs/Subscription';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {AppRegistration} from '../../shared/model/app-registration.model';
-import {FeatureInfo} from '../../shared/model/about/feature-info.model';
-import {AppVersionsComponent} from '../app-versions/app-versions.component';
-import {BsModalService} from 'ngx-bootstrap';
-import {SortParams} from '../../shared/components/shared.interface';
-import {combineLatest} from 'rxjs/operators/combineLatest';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {BusyService} from '../../shared/services/busy.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { AppsService } from '../apps.service';
+import { ToastyService } from 'ng2-toasty';
+import { ApplicationType, DetailedAppRegistration } from '../../shared/model';
+import { Subscription } from 'rxjs/Subscription';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { AppRegistration } from '../../shared/model/app-registration.model';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { AppVersionsComponent } from '../app-versions/app-versions.component';
+import { BsModalService } from 'ngx-bootstrap';
+import { SortParams } from '../../shared/components/shared.interface';
+import { combineLatest } from 'rxjs/operators/combineLatest';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { BusyService } from '../../shared/services/busy.service';
+import { Location } from '@angular/common';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 /**
  * Provides details for an App Registration
@@ -74,15 +76,15 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * @param {SharedAboutService} sharedAboutService
    * @param {ToastyService} toastyService
    * @param {ActivatedRoute} route
-   * @param {Router} router
+   * @param {RoutingStateService} routingStateService
    * @param {BusyService} busyService
    * @param {BsModalService} modalService
    */
   constructor(private appsService: AppsService,
               private sharedAboutService: SharedAboutService,
               private toastyService: ToastyService,
-              private router: Router,
               private route: ActivatedRoute,
+              private routingStateService: RoutingStateService,
               private busyService: BusyService,
               private modalService: BsModalService) {
 
@@ -188,7 +190,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   versions(appRegistration: AppRegistration) {
     console.log(`Manage versions ${appRegistration.name} app.`, appRegistration);
-    const modal = this.modalService.show(AppVersionsComponent, {class: 'modal-xl'});
+    const modal = this.modalService.show(AppVersionsComponent, { class: 'modal-xl' });
     modal.content.open(appRegistration).subscribe(() => {
       this.loadVersions();
     });
@@ -208,9 +210,10 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Back to the applications list
+   * Back action
+   * Navigate to the previous URL or /apps
    */
   cancel() {
-    this.router.navigate(['apps']);
+    this.routingStateService.back('/apps', /^(\/apps\/)/);
   }
 }

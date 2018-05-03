@@ -3,6 +3,7 @@ import { ToastyConfig } from 'ng2-toasty';
 import { Renderer2 } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { BusyService } from './shared/services/busy.service';
+import { RoutingStateService } from './shared/services/routing-state.service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent implements OnInit {
 
   constructor(private toastyConfig: ToastyConfig,
               private renderer: Renderer2,
+              private routingStateService: RoutingStateService,
               private busyService: BusyService) {
     this.toastyConfig.theme = 'bootstrap';
     this.toastyConfig.limit = 5;
@@ -23,6 +25,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.routingStateService.watchRouting();
     this.renderer.listen('document', 'scroll', (evt) => {
       this.updateToasty();
     });
