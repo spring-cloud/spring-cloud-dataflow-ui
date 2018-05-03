@@ -11,6 +11,7 @@ import { AggregateCounter, BaseCounter, Counter, DashboardItem, FieldValueCounte
 import { HttpUtils } from '../shared/support/http.utils';
 import { NotificationService } from '../shared/services/notification.service';
 import { LoggerService } from '../shared/services/logger.service';
+import { AppError } from '../shared/model/error.model';
 
 /**
  * @author Gunnar Hillert
@@ -90,7 +91,7 @@ export class AnalyticsService {
           result => {
           },
           error => {
-            this.notificationService.error(error);
+            this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
           });
     }
   }
@@ -338,9 +339,8 @@ export class AnalyticsService {
           result => resultProcessor(result),
           error => {
             this.loggerService.log('error', error);
-            this.notificationService.error(error);
-          }
-        );
+            this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          });
     }
   }
 

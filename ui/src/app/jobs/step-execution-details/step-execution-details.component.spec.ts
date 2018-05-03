@@ -19,6 +19,8 @@ import {
 } from '../../tests/mocks/mock-data';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MockNotificationService } from '../../tests/mocks/notification';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 describe('StepExecutionDetailsComponent', () => {
   let component: StepExecutionDetailsComponent;
@@ -29,6 +31,7 @@ describe('StepExecutionDetailsComponent', () => {
   let jobsService: MockJobsService;
   const notificationService = new MockNotificationService();
   const loggerService = new LoggerService();
+  const routingStateService = new MockRoutingStateService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -47,6 +50,7 @@ describe('StepExecutionDetailsComponent', () => {
       ],
       providers: [
         { provide: JobsService, useValue: jobsService },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
@@ -136,11 +140,10 @@ describe('StepExecutionDetailsComponent', () => {
     fixture.detectChanges();
     de = fixture.debugElement.query(By.css('button[id=back]'));
     el = de.nativeElement;
-    const navigate = spyOn((<any>component).router, 'navigate');
+    const navigate = spyOn(routingStateService, 'back');
     fixture.detectChanges();
     el.click();
-
-    expect(navigate).toHaveBeenCalledWith(['jobs/executions/1']);
+    expect(navigate).toHaveBeenCalled();
   });
 
   it('stats should navigate to step execution progress', () => {
@@ -154,7 +157,6 @@ describe('StepExecutionDetailsComponent', () => {
     const navigate = spyOn((<any>component).router, 'navigate');
     fixture.detectChanges();
     el.click();
-
     expect(navigate).toHaveBeenCalledWith(['jobs/executions/1/1/progress']);
   });
 

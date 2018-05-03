@@ -1,6 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { ActivatedRoute } from '@angular/router';
+import { mergeMap } from 'rxjs/operators';
+import { StreamsService } from '../streams.service';
+import { Observable } from 'rxjs/Observable';
+import { StreamDefinition } from '../model/stream-definition';
+import { AppError, HttpAppError } from '../../shared/model/error.model';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component that shows the details of a Stream Definition
@@ -25,11 +31,20 @@ export class StreamComponent implements OnInit {
   id: string;
 
   /**
+   * Observable of StreamDefinition
+   */
+  streamDefinitions$: Observable<StreamDefinition>;
+
+  /**
    * Constructor
    * @param {ActivatedRoute} route
+   * @param {StreamsService} streamsService
+   * @param {NotificationService} notificationService
    * @param {RoutingStateService} routingStateService
    */
   constructor(private route: ActivatedRoute,
+              private streamsService: StreamsService,
+              private notificationService: NotificationService,
               private routingStateService: RoutingStateService) {
   }
 
@@ -37,10 +52,17 @@ export class StreamComponent implements OnInit {
    * Initialiaze component
    */
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = params.id;
-      // TODO: check if stream exist
-    });
+    this.streamDefinitions$ = this.route.params
+      .pipe(mergeMap(
+        (val) => this.streamsService.getDefinition(val.id),
+        (val1, val2) => val2
+      )).catch((error) => {
+        if (HttpAppError.is404(error)) {
+          this.cancel();
+        }
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        return Observable.throw(error);
+      });
   }
 
   /**

@@ -19,6 +19,7 @@ import { AppsService } from '../../apps/apps.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 @Component({
   selector: 'app-streams',
@@ -199,9 +200,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.notificationService.error(error);
-        }
-      );
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        });
 
     this.busyService.addSubscription(busy);
   }

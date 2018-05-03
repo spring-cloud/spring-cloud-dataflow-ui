@@ -15,6 +15,8 @@ import { StreamComponent } from './stream.component';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { STREAM_DEFINITIONS } from '../../tests/mocks/mock-data';
 
 
 /**
@@ -40,7 +42,8 @@ describe('StreamComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         StreamComponent,
-        GraphViewComponent
+        GraphViewComponent,
+        LoaderComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([]),
@@ -63,6 +66,7 @@ describe('StreamComponent', () => {
     activeRoute.testParams = commonTestParams;
     fixture = TestBed.createComponent(StreamComponent);
     component = fixture.componentInstance;
+    streamsService.streamDefinitions = STREAM_DEFINITIONS;
   });
 
   it('should be created', () => {

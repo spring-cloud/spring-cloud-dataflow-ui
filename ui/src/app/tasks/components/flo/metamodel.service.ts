@@ -122,7 +122,7 @@ export class MetamodelService implements Flo.Metamodel {
           resolve(metamodel);
         },
         error => {
-          this.loggerService.error(error);
+          this.loggerService.error(error.toString());
           resolve(metamodel);
         }
       );
