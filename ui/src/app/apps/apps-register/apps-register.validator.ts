@@ -11,7 +11,7 @@ export class AppsRegisterValidator {
   /**
    * Name regex
    */
-  static nameRegex = /^[a-zA-Z0-9]{2,50}$/;
+  static nameRegex = /^.{2,250}$/;
 
   /**
    * Uri regex

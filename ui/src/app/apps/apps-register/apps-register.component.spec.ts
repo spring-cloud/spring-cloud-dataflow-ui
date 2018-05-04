@@ -92,7 +92,7 @@ describe('AppsRegisterComponent', () => {
     it('should display an error if no the name is invalid', () => {
       const tests = [
         {name: '', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false},
-        {name: 'foo bar', type: 'sink', uri: 'http://foo.bar', metaDataUri: '', force: false}
+        {name: 'd', type: 'sink', uri: 'http://foo.bar', metaDataUri: '', force: false}
       ];
       const form = component.forms[0];
       tests.forEach((test) => {

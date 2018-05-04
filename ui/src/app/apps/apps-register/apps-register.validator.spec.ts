@@ -11,8 +11,7 @@ describe('AppsRegisterValidator', () => {
   describe('appName', () => {
 
     it('invalid', () => {
-      [' ', 'f', 'fo ', 'foo>', 'foo.', 'foo/', 'foo?', 'foo{', 'foo}', 'foo^', 'foo$', 'foo#', 'foo@', 'foo*',
-        'foo(', 'foo)', 'foo[', 'foo]', 'foo<', 'foo>', 'foo,', 'foo!', 'foo|', 'foo bar'].forEach((mock) => {
+      [' ', 'f'].forEach((mock) => {
         const appName: FormControl = new FormControl(mock);
         const result = AppsRegisterValidator.appName(appName);
         expect(result.invalid).toBeTruthy();
@@ -20,7 +19,9 @@ describe('AppsRegisterValidator', () => {
     });
 
     it('valid', () => {
-      [null, 'fo', 'foo', 'f12', 'foo12', 'foooooooooooooooooooooooooo'].forEach((mock) => {
+      [null, 'fo', 'foo', 'f12', 'foo12', 'foooooooooooooooooooooooooo', 'fo ', 'foo>', 'foo.', 'foo/', 'foo?', 'foo-',
+        'foo{', 'foo}', 'foo^', 'foo$', 'foo#', 'foo@', 'foo*', 'foo(', 'foo)', 'foo[', 'foo]', 'foo<', 'foo>',
+        'foo,', 'foo!', 'foo|', 'foo bar'].forEach((mock) => {
         const appName: FormControl = new FormControl(mock);
         const result = AppsRegisterValidator.appName(appName);
         expect(result).toBeNull();
