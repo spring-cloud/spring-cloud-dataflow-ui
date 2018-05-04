@@ -127,9 +127,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     bsModalRef.content.setDsl(this.dsl);
     bsModalRef.content.successCallback = () => {
       this.editorContext.clearGraph();
-      // At this moment graph <-> dsl syncing is off because neither DSL editor nor graph editor has focus on
-      // Therefore, kick off the text update manually.
-      this.editorContext.updateText();
     };
   }
 

@@ -409,7 +409,7 @@ class TextToGraphConverter {
     public convert() {
         const jsonGraph = TextToGraphConverter.parseToJsonGraph(this.dsl);
         if (jsonGraph && jsonGraph.nodes) {
-            this.floEditorContext.clearGraph();
+            this.floEditorContext.getGraph().clear();
             this.buildFloGraphFromJsonGraph(jsonGraph);
         }
     }
