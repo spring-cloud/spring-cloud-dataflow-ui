@@ -35,9 +35,9 @@ export class TruncatorWidthProviderDirective implements OnDestroy {
       value => {
         if (value) {
           const localThis = this;
-          setTimeout(function() {
+          setTimeout(function () {
             if (!localThis.destroyed) {
-              localThis.updateWidthValue()
+              localThis.updateWidthValue();
             }
           }, 500);
         }
@@ -49,7 +49,7 @@ export class TruncatorWidthProviderDirective implements OnDestroy {
    * On Destroy operations
    */
   ngOnDestroy() {
-    this.destroyed=true;
+    this.destroyed = true;
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }

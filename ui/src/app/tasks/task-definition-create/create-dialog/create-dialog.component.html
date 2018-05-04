@@ -4,33 +4,55 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" [formGroup]="form">
-  <div *ngIf="errors && errors.length > 0" class="dialog-validation">
-    <div *ngFor="let error of errors">
-      <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign">{{ error }}</label>
+
+
+<form (submit)="handleCreate()" class="form-horizontal" [formGroup]="form">
+
+  <div class="modal-body">
+
+    <div *ngIf="errors && errors.length > 0" class="alert alert-error">
+      <div *ngFor="let error of errors">• {{ error }}</div>
     </div>
-  </div>
-  <div *ngIf="!(errors && errors.length) && warnings && warnings.length > 0" class="dialog-validation">
-    <div *ngFor="let warning of warnings">
-      <label class="glyphicon glyphicon-warning-sign dialog-warning-sign"></label>
-      <label>{{ warning }}</label>
+
+    <div *ngIf="!(errors && errors.length) && warnings && warnings.length > 0" class="alert alert-warning">
+      <div *ngFor="let warning of warnings">{{ warning }}</div>
     </div>
+
+    <p>This action will create a task:</p>
+
+    <div class="row-task">
+      <div class="form-group">
+        <label class="control-label col-sm-4">Definition</label>
+        <div class="col-sm-18">
+          <div class="control-empty">
+            <app-stream-dsl>{{ dsl }}</app-stream-dsl>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" [class.has-error]="form.controls.taskName.errors">
+        <label for="name" class="control-label col-sm-4 control-label-sm">
+          Name <em class="required">*</em>
+        </label>
+        <div class="col-sm-16">
+          <input class="form-control input-sm" id="name"
+                 name="name" formControlName="taskName"
+                 type="text" placeholder="<Task Name>"
+                 [dataflowFocus]="true"/>
+          <span *ngIf="form.controls.taskName.errors"
+                class="help-block validation-block">
+            The format of your task name is invalid. {{ form.controls.taskName.errors.validateTaskName.reason }}
+          </span>
+        </div>
+      </div>
+
+    </div>
+
   </div>
-  <p>This action will create a task:</p>
-  <tbody>
-    <tr>
-      <td class="task-name-form-control-cell">
-        <input type="text" placeholder="<Task Name>" class="form-control" id="taskName" name="taskName" formControlName="taskName"/>
-        <span class="glyphicon glyphicon-warning-sign form-control-feedback" *ngIf="form.controls.taskName.errors"></span>
-        <p class="help-block" *ngIf="form.controls.taskName.errors">The format of your task name is invalid. {{ form.controls.taskName.errors.validateTaskName.reason }}</p>
-      </td>
-      <td class="task-definition-label-cell">
-        <label class="control-label">{{ dsl }}</label>
-      </td>
-    </tr>
-  </tbody>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="handleCancel()">Cancel</button>
-  <button type="button" class="btn btn-default" (click)="handleCreate()" [disabled]="!canSubmit()">Create</button>
-</div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="handleCancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary">Create the task</button>
+  </div>
+
+</form>

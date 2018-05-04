@@ -65,6 +65,7 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
       const busy = this.streamsService.getRelatedDefinitions(this.id, true)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(streams => {
+          console.log(streams);
           this.dsl = streams.map(s => `${s.name}=${s.dslText}`).join('\n');
         }, (error) => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);

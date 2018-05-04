@@ -1,213 +1,101 @@
-<div id="applications-list">
+<app-page id="applications-list">
 
-  <div class="heading">
-    <div class="actions hidden visible-md-block visible-lg-block" *ngIf="!isAppsEmpty()" [appRoles]="['ROLE_CREATE']">
+  <app-page-head>
+    <app-page-head-title><strong>Applications</strong></app-page-head-title>
+    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+      <button class="btn btn-primary btn-fa" (click)="addApps()">
+        <span class="fa fa-plus"></span>
+        Add Application(s)
+      </button>
+    </app-page-head-actions>
+  </app-page-head>
 
-      <div class="dropdown" dropdown id="add">
-        <button dropdownToggle type="button" class="btn btn-primary btn-dropdown" data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-          Add Application(s)
-          <span class="caret"></span>
-        </button>
-        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
-          <li><a style="cursor: pointer" (click)="registerApps()">Register application(s)</a></li>
-          <li><a style="cursor: pointer" (click)="bulkImportApps()">Bulk import application(s)</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="description">
-      <h1>Apps</h1>
-      <p>
-        This section lists all the available applications. You can <strong>register</strong> or
-        <strong>unregister</strong> applications.
+  <div dataflowLayoutType type="full">
+    <p>
+      This section lists all the available applications and provides the control to register/unregister them (if
+      applicable).
+    </p>
+
+    <app-list-bar-app [params]="params" [page]="appRegistrations" [countSelected]="countSelected()" #listBar
+                      (refresh)="refresh()" (search)="search($event)" [actions]="applicationsActions()"
+                      (action)="applyAction($event.action)">
+    </app-list-bar-app>
+
+    <table id="table" *ngIf="appRegistrations?.items && appRegistrations.items.length > 0"
+           class="table-checkbox table table-hover">
+      <thead>
+      <tr>
+        <th style="width: 30px" [appRoles]="['ROLE_CREATE']">
+          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
+                               [items]="form.checkboxes"></app-master-checkbox>
+        </th>
+        <th style="width: 200px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'name'" [sort]="params"
+                    id="sort-name">Name
+          </app-sort>
+        </th>
+        <th style="width: 100px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'type'" [sort]="params"
+                    id="sort-type">Type
+          </app-sort>
+        </th>
+        <th>
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'uri'" [sort]="params"
+                    id="sort-uri">Uri
+          </app-sort>
+        </th>
+        <th *ngIf="skipperEnabled">Versions</th>
+        <th class="text-center">&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance(); index as i">
+        <td class="cell-checkbox" [appRoles]="['ROLE_CREATE']">
+          <input type="checkbox" (change)="changeCheckboxes()"
+                 [(ngModel)]="form.checkboxes[i]"/>
+        </td>
+        <td>
+          <a style="cursor: pointer" (click)="view(item)">{{ item.name }}</a>
+        </td>
+        <td>
+          <app-type [application]="item"></app-type>
+        </td>
+        <td class="dataflow-truncator-width">
+          {{ item.uri }}
+        </td>
+        <td class="cell-version" *ngIf="skipperEnabled">
+          <app-version-label [isClickable]="true" (labelClick)="versions(item)"
+                             [application]="item"></app-version-label>
+        </td>
+        <td class="table-actions" width="10px" nowrap="">
+          <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
+                                [actions]="applicationActions(i)"></app-list-row-actions>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <app-list-pagination [page]="appRegistrations" [params]="params" (changed)="changePaginationPager($event)"
+                         [item]="'application'" [items]="'applications'">
+    </app-list-pagination>
+
+    <app-list-empty [page]="appRegistrations" [filters]="[params.q, params.type]">
+      <p>There is <strong>no application registered</strong>, yet.</p>
+      <p [appRoles]="['ROLE_CREATE']">
+        You can: <a (click)="addApps()">Add Application(s)</a> or <a (click)="refresh()">Refresh</a> the page.
       </p>
-      <div class="hidden visible-xs-block visible-sm-block" *ngIf="!isAppsEmpty()" [appRoles]="['ROLE_CREATE']">
-        <a class="btn btn-primary" (click)="registerApps()">Register application(s)</a>
-        <a class="btn btn-primary" (click)="bulkImportApps()">Bulk import application(s)</a>
-      </div>
-    </div>
+    </app-list-empty>
+
+    <app-list-no-result [page]="appRegistrations" [filters]="[params.q, params.type]">
+      <p>
+        No results found for
+        <strong *ngIf="params.q != ''">'{{ params.q }}'</strong><span *ngIf="params.q != '' && params.type">, </span>
+        <strong *ngIf="params.type">'{{ params.type }}'</strong>.
+      </p>
+      <p>
+        You can <a id="search-clear" (click)="listBar.clearSearch()">clear the search</a> or <a (click)="refresh()">Refresh</a>
+        the page.
+      </p>
+    </app-list-no-result>
   </div>
-
-  <div id="filters" class="pui-filter" *ngIf="!isAppsEmpty()">
-    <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
-
-      <div class="pui-filter-center">
-        <div class="input-group input-group-filter">
-          <input type="text" id="q" name="q" class="form-control sm" placeholder="Filter items" [(ngModel)]="form.q">
-          <div dropdown class="filter-dropdown">
-            <a class="filter-dropdown-toggle" dropdownToggle style="min-width: 170px;">
-              <span *ngIf="form.type == '' || form.type == null">
-                All types
-              </span>
-              <span *ngIf="form.type != '' && form.type!== null">
-                Type: <strong>{{ form.type }}</strong>
-              </span>
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu="">
-              <li [class.active]="form.type == '' || form.type == null"><a (click)="form.type = ''">All types</a></li>
-              <li [class.active]="form.type == 'source'"><a (click)="form.type = 'source'">Source</a></li>
-              <li [class.active]="form.type == 'processor'"><a (click)="form.type = 'processor'">Processor</a></li>
-              <li [class.active]="form.type == 'sink'"><a (click)="form.type = 'sink'">Sink</a></li>
-              <li [class.active]="form.type == 'task'"><a (click)="form.type = 'task'">Task</a></li>
-            </ul>
-          </div>
-          <div class="input-group-btn">
-            <button id="submit" [disabled]="!isSearchActive()" type="submit" class="btn btn-primary">
-              <span class="glyphicon glyphicon-search"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="pui-filter-actions">
-        <div class="pui-filter-left">
-          <div id="dropdown-actions" class="dropdown" *ngIf="countSelected() > 0" dropdown>
-            <button dropdownToggle type="button" class="btn btn-default btn-dropdown" data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-              <span *ngIf="countSelected() == 1">Action (1)</span>
-              <span *ngIf="countSelected() > 1">Actions ({{ countSelected() }})</span>
-              <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu">
-              <li>
-                <a id="unregister-apps" style="cursor: pointer" (click)="unregisterAppsSelected()">
-                  <span *ngIf="countSelected() == 1">Unregister application</span>
-                  <span *ngIf="countSelected() > 1">Unregister applications</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="pui-filter-right" style="text-align: right">
-          <button (click)="refresh()" name="app-refresh" type="button" class="btn btn-default btn-icon" title="Refresh">
-            <span class="glyphicon glyphicon-refresh"></span>
-          </button>
-        </div>
-
-      </div>
-
-    </form>
-  </div>
-
-  <table id="table" *ngIf="appRegistrations?.items && appRegistrations.items.length > 0"
-         class="table-checkbox table table-hover">
-    <thead>
-    <tr>
-      <th style="width: 30px">
-        <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [appRoles]="['ROLE_CREATE']"
-                             [items]="form.checkboxes"></app-master-checkbox>
-      </th>
-      <th style="width: 200px">
-        <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'name'" [sort]="params"
-                  id="sort-name">Name
-        </app-sort>
-      </th>
-      <th style="width: 100px">
-        <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'type'" [sort]="params"
-                  id="sort-type">Type
-        </app-sort>
-      </th>
-      <th>
-        <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'uri'" [sort]="params"
-                  id="sort-uri">Uri
-        </app-sort>
-      </th>
-      <th *ngIf="skipperEnabled">Versions</th>
-      <th class="text-center">&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance(); index as i">
-      <td class="cell-checkbox">
-        <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
-               [(ngModel)]="form.checkboxes[i]"/>
-      </td>
-      <td>
-        <a style="cursor: pointer" (click)="view(item)">{{ item.name }}</a>
-      </td>
-      <td>
-        <app-type [application]="item"></app-type>
-      </td>
-      <td class="dataflow-truncator-width">
-        <code style="font-size: 11px" *ngIf="item.uri">
-          <dataflow-truncator [input]="item.uri" trailPosition="start" trail="…"></dataflow-truncator>
-        </code>
-      </td>
-      <td class="cell-version" *ngIf="skipperEnabled">
-        <app-version-label [isClickable]="true" (labelClick)="versions(item)" [application]="item"></app-version-label>
-      </td>
-      <td class="table-actions" width="10px" nowrap="">
-        <div class="actions" role="group">
-          <button name="app-view{{i}}" type="button" (click)="view(item)" class="btn btn-default" title="Details">
-            <span class="glyphicon glyphicon-search"></span>
-          </button>
-          <button name="app-remove{{ i }}" roles="['ROLE_CREATE']" type="button" (click)="unregisterApps([item])"
-                  [appRoles]="['ROLE_CREATE']"
-                  class="btn btn-default" title="Unregister" [disabled]="skipperEnabled && !item.defaultVersion">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <div id="pagination" *ngIf="appRegistrations && appRegistrations.totalPages > 1">
-        <pagination-controls *ngIf="appRegistrations.items.length > 0 "
-                             (pageChange)="getPage($event)"></pagination-controls>
-      </div>
-    </div>
-    <div class="col-xs-12" *ngIf="appRegistrations && appRegistrations?.totalElements > 0">
-      <app-pager [page]="params.page" [total]="appRegistrations.totalElements" [size]="params.size"
-                 (sizeChange)="changeSize($event)">
-      </app-pager>
-    </div>
-  </div>
-
-  <div *ngIf="appRegistrations" id="empty">
-    <div *ngIf="isAppsEmpty()" class="text-center">
-      <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
-        <strong>No registered apps.</strong>
-        <div [appRoles]="['ROLE_CREATE']">
-          <p>You can register apps by clicking:</p>
-          <button type="button" (click)="registerApps()" class="btn btn-primary">
-            Register Application(s)
-          </button>
-          <button type="button" (click)="bulkImportApps()" class="btn btn-primary">
-            Bulk Import Application(s)
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div id="no-result" class="row"
-         *ngIf="!isAppsEmpty() && appRegistrations.totalPages < 2 && appRegistrations.items.length == 0">
-      <div class="col-md-8"></div>
-      <div class="col-md-8">
-        <div class="alert alert-warning" style="border:0 none;padding: 1.5rem 2rem;">
-          <div style="padding-bottom: 8px">
-            <span>
-              No results found for
-              <strong *ngIf="params.q != ''">'{{ params.q }}'</strong>
-              <span *ngIf="params.q != '' && params.type"> in </span>
-              <span *ngIf="params.type"><strong>'{{ params.type }}'</strong> type</span>
-            </span>
-          </div>
-          <div>
-            <button type="button" style="cursor: pointer;" (click)="clearSearch()" class="btn btn-primary">
-              <span class="glyphicon glyphicon-remove"></span>
-              Clear the search
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
+</app-page>

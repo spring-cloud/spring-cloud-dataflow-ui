@@ -5,7 +5,7 @@ import { StreamsPage } from './streams.po';
  *
  * @author Glenn Renfro
  */
-describe('E2E spec for streams page', () => {
+xdescribe('E2E spec for streams page', () => {
   let page: StreamsPage;
 
   beforeEach(() => {

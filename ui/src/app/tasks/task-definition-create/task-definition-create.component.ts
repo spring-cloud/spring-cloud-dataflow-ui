@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Flo } from 'spring-flo';
+import { Component, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { EditorComponent, Flo } from 'spring-flo';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { BsModalService } from 'ngx-bootstrap';
@@ -12,6 +12,7 @@ import { TaskDefinitionCreateDialogComponent } from './create-dialog/create-dial
 import { Router } from '@angular/router';
 import { LoggerService } from '../../shared/services/logger.service';
 import { arrangeAll } from '../components/flo/support/layout';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component handling a creation of a composed task.
@@ -38,9 +39,13 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   initSubject: Subject<void>;
   busy: Subscription;
 
+  @ViewChild(EditorComponent) flo;
+
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,
               public editorService: EditorService,
+              private renderer: Renderer2,
+              private notificationService: NotificationService,
               private bsModalService: BsModalService,
               private toolsService: ToolsService,
               private loggerService: LoggerService,
@@ -63,11 +68,27 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.resizeFloGraph();
   }
 
   ngOnDestroy() {
     // Invalidate cached metamodel, thus it's reloaded next time page is opened
     this.metamodelService.clearCachedData();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.resizeFloGraph();
+  }
+
+  resizeFloGraph(height?: number) {
+    const viewEditor = this.flo.element.nativeElement.children[2];
+    if (height) {
+      height = height - 330;
+    } else {
+      height = document.documentElement.clientHeight - 330;
+    }
+    this.renderer.setStyle(viewEditor, 'height', `${Math.max(height, 300)}px`);
   }
 
   setEditorContext(editorContext: Flo.EditorContext) {
@@ -92,12 +113,16 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   }
 
   createTaskDefs() {
-    this.loggerService.log('createTaskDefs');
-    const bsModalRef = this.bsModalService.show(TaskDefinitionCreateDialogComponent);
-    bsModalRef.content.setDsl(this.dsl);
-    bsModalRef.content.successCallback = () => {
-      this.router.navigate([`tasks/definitions`]);
-    };
+    if (this.isCreateComposedTaskDisabled) {
+      this.notificationService.error('Some field(s) are missing or invalid.');
+    } else {
+      this.loggerService.log('createTaskDefs');
+      const bsModalRef = this.bsModalService.show(TaskDefinitionCreateDialogComponent, { class: 'modal-lg' });
+      bsModalRef.content.setDsl(this.dsl);
+      bsModalRef.content.successCallback = () => {
+        this.router.navigate([`tasks/definitions`]);
+      };
+    }
   }
 
   lint(dsl: string, updateLintingCallback: CodeMirror.UpdateLintingCallback, editor: CodeMirror.Editor): void {

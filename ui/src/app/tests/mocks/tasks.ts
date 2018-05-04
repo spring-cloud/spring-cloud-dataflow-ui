@@ -4,11 +4,10 @@ import { Page } from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { TaskExecution } from '../../tasks/model/task-execution';
 import { TaskDefinition } from '../../tasks/model/task-definition';
-import { OrderParams } from '../../shared/components/shared.interface';
+import { ListDefaultParams, OrderParams } from '../../shared/components/shared.interface';
 import { TaskSchedule } from '../../tasks/model/task-schedule';
 import {
-  TaskListParams,
-  TaskScheduleListParams
+  TaskListParams
 } from '../../tasks/components/tasks.interface';
 
 /**
@@ -211,7 +210,7 @@ export class MockTasksService {
     return Observable.of(page);
   }
 
-  getScheduleByTask(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskSchedule>> {
+  getScheduleByTask(taskScheduleListParams: ListDefaultParams): Observable<Page<TaskSchedule>> {
     const page = new Page<TaskSchedule>();
     if (this.taskSchedules) {
       const response = this.taskSchedules;
@@ -246,7 +245,7 @@ export class MockTasksService {
     return Observable.of(Array.from({ length: taskSchedules.length }));
   }
 
-  getTaskExecutions(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskExecution>> {
+  getTaskExecutions(taskScheduleListParams: ListDefaultParams): Observable<Page<TaskExecution>> {
     return this.getExecutions();
   }
 

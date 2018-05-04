@@ -20,7 +20,7 @@ import { SharedAboutService } from '../../../shared/services/shared-about.servic
 import { RolesDirective } from '../../../auth/directives/roles.directive';
 import { AuthService } from '../../../auth/auth.service';
 import { MockModalService } from '../../../tests/mocks/modal';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, TooltipModule } from 'ngx-bootstrap';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { ToolsService } from '../../components/flo/tools.service';
@@ -32,6 +32,8 @@ import { SortComponent } from '../../../shared/components/sort/sort.component';
 import { TaskDefinitionExecutionsComponent } from './task-definition-executions.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
+import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 
 /**
  * Test {@link TaskDefinitionExecutionsComponent}.
@@ -66,13 +68,17 @@ describe('TaskDefinitionExecutionsComponent', () => {
         StreamDslComponent,
         PagerComponent,
         LoaderComponent,
-        SortComponent
+        SortComponent,
+        DATAFLOW_LIST,
+        DATAFLOW_PAGE
       ],
       imports: [
         NgxPaginationModule,
+        BsDropdownModule.forRoot(),
         NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
+        TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [
@@ -169,7 +175,7 @@ describe('TaskDefinitionExecutionsComponent', () => {
 
       tasksService.taskExecutions = {
         _embedded: {
-          taskExecutionResourceList: Array.from({ length: 20 }).map((a, i) => {
+          taskExecutionResourceList: Array.from({ length: 30 }).map((a, i) => {
             return {
               executionId: (i + 1),
               exitCode: 0,
@@ -185,8 +191,8 @@ describe('TaskDefinitionExecutionsComponent', () => {
           })
         },
         page: {
-          size: 20,
-          totalElements: 30,
+          size: 30,
+          totalElements: 40,
           totalPages: 2
         }
       };
@@ -277,7 +283,7 @@ describe('TaskDefinitionExecutionsComponent', () => {
     it('should navigate to the detail page', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskExecutionsTable tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');
-      line.query(By.css('.actions button[name="task-details0"]')).nativeElement.click();
+      line.query(By.css('.actions-btn button[name="task-details0"]')).nativeElement.click();
       expect(navigate).toHaveBeenCalledWith(['tasks/executions/2']);
     });
 

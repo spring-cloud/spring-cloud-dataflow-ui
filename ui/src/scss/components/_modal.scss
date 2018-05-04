@@ -1,0 +1,54 @@
+
+.modal-content {
+  border: 0 none;
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, .2);
+  .modal-footer {
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+  .modal-body {
+    padding: 2rem;
+  }
+  .modal-header {
+    padding: 1.5rem 2rem;
+  }
+}
+
+.modal.fade .modal-dialog, .modal.in .modal-dialog, .modal {
+  transition: opacity 0.2s;
+  transform: none;
+  background: rgba(36, 54, 65, .8);
+}
+
+.modal-backdrop.in, .modal-backdrop.fade, .modal-backdrop.in.fade {
+  opacity: 0;
+}
+
+@media (min-width: 992px) {
+  .modal-xl {
+    width: auto;
+    min-width: 900px;
+    max-width: 1100px;
+  }
+}
+
+.modal-confirm {
+  .modal-body {
+    padding: 2rem;
+    margin: 0;
+    p {
+      margin: 0;
+    }
+    h4 {
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
+  }
+  .modal-footer {
+    padding: 1rem;
+    margin: 0;
+    text-align: center;
+  }
+}

@@ -1,8 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import {NgBusyModule} from 'ng-busy';
-import {AnalyticsModule} from '../analytics.module';
+import { NgBusyModule } from 'ng-busy';
+import { AnalyticsModule } from '../analytics.module';
 import { LoggerService } from '../../shared/services/logger.service';
+import { BsDropdownModule } from 'ngx-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -11,8 +14,16 @@ describe('DashboardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ],
-      imports: [NgBusyModule, AnalyticsModule],
+      declarations: [
+      ],
+      imports: [
+        NgBusyModule,
+        BsDropdownModule.forRoot(),
+        NgxPaginationModule,
+        ReactiveFormsModule,
+        FormsModule,
+        AnalyticsModule
+      ],
       providers: [
         { provide: LoggerService, useValue: loggerService }
       ]

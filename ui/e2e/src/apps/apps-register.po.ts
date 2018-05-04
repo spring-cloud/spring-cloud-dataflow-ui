@@ -13,7 +13,7 @@ export class AppsRegisterPage {
    * @returns {wdpromise.Promise<any>}
    */
   navigateTo() {
-    return browser.get('#/apps/register-apps');
+    return browser.get('#/apps/add/register');
   }
 
   /**
@@ -21,7 +21,7 @@ export class AppsRegisterPage {
    * @returns {any}
    */
   getHeaderText() {
-    return element(by.css('app-root h1')).getText();
+    return element(by.css('.step2 h1')).getText();
   }
 
   /**

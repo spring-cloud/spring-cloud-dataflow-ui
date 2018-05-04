@@ -1,4 +1,4 @@
-<div *ngIf="taskDefinition$ | async as taskDefinition; else loading">
+<div *ngIf="taskDefinition$ | async as taskDefinition; else loading" dataflowLayoutType type="full">
 
   <app-graph-view [dsl]="taskDefinition.dslText" [paperPadding]="20" class="composed-task-details"
                   [metamodel]="metamodelService" [renderer]="renderService">

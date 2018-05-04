@@ -1,7 +1,13 @@
-<div class="container-fluid">
-    <div class="row">
-      <div class="col-md-8 col-md-offset-8">
-        <h1>Login</h1>
+<app-page>
+
+  <app-page-head>
+    <app-page-head-title><strong>Login</strong></app-page-head-title>
+  </app-page-head>
+
+  <form #loginForm="ngForm" name="loginForm" role="form" (ngSubmit)="login()" novalidate>
+
+    <div *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated" dataflowLayoutType type="small">
+      <div class="dataflow-alert dataflow-alert-info">
         <p *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated">
           Please sign in
         </p>
@@ -12,37 +18,45 @@
           No need to login, authentication is not enabled.
         </p>
       </div>
+
+      <div class="form-group" [class.has-error]="username.invalid && username.touched">
+        <label for="username" class="control-label">Username</label>
+        <div class="input-wrapper">
+          <input #username="ngModel" type="text" id="username" name="username" [dataflowFocus]="true"
+                 [(ngModel)]="user.username"
+                 required
+                 class="form-control" placeholder="&lt;Username&gt;">
+          <span class="help-block"
+                *ngIf="username.invalid && username.touched">Please provide a valid username.</span>
+        </div>
+      </div>
+      <div class="form-group" [class.has-error]="password.invalid && password.touched">
+        <label for="password" class="control-label">Password</label>
+        <div class="input-wrapper">
+          <input #password="ngModel" type="text" id="password" name="password" type="password"
+                 [(ngModel)]="user.password" required
+                 class="form-control" placeholder="&lt;Password&gt;">
+          <span class="glyphicon glyphicon-arrow-up form-control-feedback" appCapsLock></span>
+          <span class="help-block"
+                *ngIf="password.invalid && password.touched">Please provide a valid password.</span>
+        </div>
+      </div>
+
     </div>
 
-    <div class="row">
-      <div class="col-md-8 col-md-offset-8"
-        *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated">
-        <form #loginForm="ngForm" name="loginForm" role="form" (ngSubmit)="login()" novalidate>
-          <div class="form-group">
-            <label for="username" class="control-label">Username</label>
-            <div class="input-wrapper">
-              <input #username="ngModel" type="text" id="username" name="username" autofocus [(ngModel)]="user.username" required
-                     class="form-control" placeholder="&lt;Username&gt;">
-              <span class="help-block" *ngIf="username.invalid && username.touched">Please provide a valid username.</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="password" class="control-label">Password</label>
-            <div class="input-wrapper">
-              <input #password="ngModel" type="text" id="password" name="password" type="password" autofocus [(ngModel)]="user.password" required
-                     class="form-control" placeholder="&lt;Password&gt;">
-              <span class="glyphicon glyphicon-arrow-up form-control-feedback" appCapsLock></span>
-              <span class="help-block" *ngIf="password.invalid && password.touched">Please provide a valid password.</span>
-            </div>
-          </div>
-          <button class="btn btn-lg btn-default btn-block" id="loginButton" type="submit" [disabled]="loginForm.invalid">Sign in</button>
-        </form>
-      </div>
-      <div class="col-md-8 col-md-offset-8" *ngIf="securityInfo.isAuthenticated">
-        <a class="btn btn-lg btn-default btn-block" id="logoutButton" routerLink="../logout">Sign out</a>
-      </div>
-      <div class="col-md-8 col-md-offset-8" *ngIf="!securityInfo.isAuthenticationEnabled">
-        <a class="btn btn-lg btn-default btn-block" id="backButton" routerLink="">Back to the app</a>
-      </div>
-    </div>
-</div>
+    <app-page-actions *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated">
+      <button class="btn btn-primary" id="loginButton" type="submit" [disabled]="loginForm.invalid">
+        Sign in
+      </button>
+    </app-page-actions>
+
+    <p *ngIf="securityInfo.isAuthenticated">
+      <a class="btn btn-primary" id="logoutButton" routerLink="../logout">Sign out</a>
+    </p>
+
+    <p *ngIf="!securityInfo.isAuthenticationEnabled">
+      <a class="btn btn-default" id="backButton" routerLink="/apps">Back to the app</a>
+    </p>
+  </form>
+
+</app-page>

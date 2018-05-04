@@ -1,0 +1,43 @@
+
+.control-label-sm {
+  height: 32px;
+  line-height: 24px;
+}
+
+.form-register-app {
+  display: block;
+  border: 1px solid #e0e5e8;
+  //float: left;
+  //width: 600px;
+  margin-bottom: 1.4rem;
+  padding: 2rem 3rem;
+}
+
+.form-register-app-empty {
+  border: 0 none;
+  background-color: #F5F6F7;
+  position: relative;
+  padding: 2rem;
+  p {
+    margin: 0 auto;
+  }
+}
+
+.form-select {
+  //line-height: 32px;
+  //height: 42px;
+}
+
+
+.checkbox-inline {
+  font-size: 16px;
+  line-height: 20px;
+}
+p.checkbox-description {
+  padding-left: 20px;
+  font-size: 12px;
+}
+
+span.checkbox-description {
+  font-weight: normal;
+}

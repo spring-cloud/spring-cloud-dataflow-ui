@@ -1,86 +1,74 @@
-<div style="min-height: 300px" id="page">
+<app-page dataflowLayoutType type="full" id="page">
 
-  <div class="heading">
-    <div class="description">
-      <h1>Runtime applications</h1>
-      <p>
-        This section shows the list of all running apps.
-      </p>
-    </div>
-    <div class="actions text-right">
-      <button [disabled]="!(runtimeApps$ | async)" name="refresh" type="button" (click)="loadRuntimeApps()"
-              class="btn btn-default btn-icon" style="padding:0 10px;">
-        <span class="glyphicon glyphicon-refresh"></span>
-      </button>
-    </div>
-  </div>
+  <app-page-head>
+    <app-page-head-title><strong>Runtime applications</strong></app-page-head-title>
+  </app-page-head>
 
-  <div *ngIf="runtimeApps$ | async as runtimeApps; else loading">
+  <div dataflowLayoutType type="full">
+    <p>
+      This section shows the list of all running apps.
+    </p>
 
-    <div id="no-result" *ngIf="runtimeApps.items.length == 0">
-      <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
-        No applications are running.
+    <div *ngIf="runtimeApps$ | async as runtimeApps; else loading">
+
+      <div class="list-bar" *ngIf="!(runtimeApps?.totalPages < 2 && runtimeApps.items.length === 0)">
+        <button name="refresh" class="btn btn-default btn-fa" (click)="loadRuntimeApps()" title="Refresh" type="button">
+          <span class="fa fa-refresh"></span>
+          Refresh
+        </button>
       </div>
-    </div>
 
-    <table id="table" *ngIf="runtimeApps.items.length > 0" class="table table-actions table-hover">
-      <thead>
-      <tr>
-        <th>App Id</th>
-        <th>State</th>
-        <th># of Instances</th>
-        <th>&nbsp;</th>
-      </tr>
-      </thead>
-      <tbody>
-      <ng-template ngFor let-runtimeApp [ngForOf]="runtimeApps.items | paginate: runtimeApps.getPaginationInstance()">
-        <tr class="align-middle">
-          <td>
-            <a style="cursor: pointer" (click)="view(runtimeApp)">{{ runtimeApp.deploymentId }}</a>
-          </td>
-          <td>
-            <app-runtime-state [runtimeApp]="runtimeApp"></app-runtime-state>
-          </td>
-          <td>
-            {{ runtimeApp.instances._embedded.appInstanceStatusResourceList.length }}
-            <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length == 1">
+      <table id="table" *ngIf="runtimeApps.items.length > 0" class="table table-actions table-hover">
+        <thead>
+        <tr>
+          <th>App Id</th>
+          <th>Status</th>
+          <th># of Instances</th>
+          <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-template ngFor let-runtimeApp [ngForOf]="runtimeApps.items | paginate: runtimeApps.getPaginationInstance()">
+          <tr class="align-middle">
+            <td>
+              <a style="cursor: pointer" (click)="view(runtimeApp)">{{ runtimeApp.deploymentId }}</a>
+            </td>
+            <td>
+              <app-runtime-state [runtimeApp]="runtimeApp"></app-runtime-state>
+            </td>
+            <td>
+              {{ runtimeApp.instances._embedded.appInstanceStatusResourceList.length }}
+              <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length == 1">
               instance
             </span>
-            <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length > 1">
+              <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length > 1">
               instances
             </span>
-          </td>
-          <td class="table-actions" width="10px" nowrap="">
-            <div class="actions">
-              <button type="button" (click)="view(runtimeApp)"
-                      class="btn btn-default" title="Details">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </ng-template>
-      </tbody>
-    </table>
+            </td>
+            <td class="table-actions" width="10px" nowrap="">
+              <app-list-row-actions [item]="runtimeApp" (action)="applyAction($event.action, $event.args)"
+                                    [actions]="runtimeActions(runtimeApp, i)"></app-list-row-actions>
+            </td>
+          </tr>
+        </ng-template>
+        </tbody>
+      </table>
 
-    <div class="row">
-      <div class="col-xs-12">
-        <div id="pagination" *ngIf="runtimeApps && runtimeApps.totalPages > 1">
-          <pagination-controls (pageChange)="getPage($event)" [id]="runtimeApps.getPaginationInstance().id">
-          </pagination-controls>
-        </div>
-      </div>
-      <div class="col-xs-12" *ngIf="runtimeApps && runtimeApps?.totalElements > 0">
-        <app-pager [page]="pagination.page" [total]="runtimeApps.totalElements" [size]="pagination.size"
-                   (sizeChange)="changeSize($event)">
-        </app-pager>
-      </div>
+      <app-list-pagination [page]="runtimeApps" [params]="pagination" (changed)="changePaginationPager($event)"
+                           [item]="'application runtime'" [items]="'application runtimes'">
+      </app-list-pagination>
+
+      <app-list-empty [page]="runtimeApps" [filters]="[]">
+        <p>There are <strong>no running applications</strong> currently available.</p>
+        <p>
+          You can <a (click)="loadRuntimeApps()">Refresh</a> the page.
+        </p>
+      </app-list-empty>
+
     </div>
-
   </div>
-
   <ng-template #loading>
     <app-loader></app-loader>
   </ng-template>
 
-</div>
+</app-page>

@@ -9,6 +9,8 @@ import { TaskExecution } from '../../model/task-execution';
 import { TaskSchedule } from '../../model/task-schedule';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
+import { Router } from '@angular/router';
+import { AppsService } from '../../../apps/apps.service';
 
 /**
  * Component used to display the tabulation with counters.
@@ -26,21 +28,36 @@ export class TasksTabulationComponent implements OnInit {
 
   counters$: Observable<any>;
 
+
+  /**
+   * Apps State
+   */
+  appsState$: Observable<any>;
+
+  /**
+   * Constructor
+   *
+   * @param {TasksService} tasksService
+   * @param {SharedAboutService} sharedAboutService
+   * @param appsService
+   * @param {Router} router
+   */
   constructor(private tasksService: TasksService,
-              private sharedAboutService: SharedAboutService) {
+              private sharedAboutService: SharedAboutService,
+              private appsService: AppsService,
+              private router: Router) {
   }
 
   ngOnInit() {
+    this.appsState$ = this.appsService.appsState();
     this.refresh();
   }
 
   refresh() {
-
     this.params$ = this.sharedAboutService.getFeatureInfo()
       .pipe(map((featureInfo: FeatureInfo) => ({
         schedulerEnabled: featureInfo.schedulerEnabled
       })));
-
     this.counters$ = this.sharedAboutService.getFeatureInfo()
       .pipe(mergeMap(
         (featureInfo: FeatureInfo) => {
@@ -48,7 +65,7 @@ export class TasksTabulationComponent implements OnInit {
           arr.push(this.tasksService.getDefinitions({ q: '', size: 1, page: 0, sort: null, order: null }),
             this.tasksService.getExecutions({ q: '', size: 1, page: 0, sort: null, order: null }));
           if (featureInfo.schedulerEnabled) {
-            arr.push(this.tasksService.getSchedules({ task: '', size: 1, page: 0, sort: null, order: null }));
+            arr.push(this.tasksService.getSchedules({ q: '', size: 1, page: 0, sort: null, order: null }));
           }
           return forkJoin([...arr])
             .pipe(map((counters) => {
@@ -65,6 +82,10 @@ export class TasksTabulationComponent implements OnInit {
         }
       ))
       .pipe(share());
+  }
+
+  createTask() {
+    this.router.navigate(['/tasks/create']);
   }
 
 }

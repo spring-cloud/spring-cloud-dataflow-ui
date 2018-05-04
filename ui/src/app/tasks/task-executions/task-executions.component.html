@@ -1,27 +1,11 @@
-<app-tasks-header></app-tasks-header>
+<app-tasks-tabulation id="executions-list" *ngIf="taskExecutions">
 
-<app-tasks-tabulation>
-  <div id="executions-list">
-
-    <div id="filters" class="pui-filter" *ngIf="!isExecutionsEmpty()">
-      <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
-
-        <div class="pui-filter-center">
-          <div style="height: 34px">
-            &nbsp;
-          </div>
-        </div>
-
-        <div class="pui-filter-actions">
-          <div class="pui-filter-right" style="text-align: right">
-            <button (click)="refresh()" name="app-refresh" type="button" class="btn btn-default btn-icon"
-                    title="Refresh">
-              <span class="glyphicon glyphicon-refresh"></span>
-            </button>
-          </div>
-        </div>
-
-      </form>
+  <div dataflowLayoutType type="full">
+    <div class="list-bar" *ngIf="!(taskExecutions?.totalPages < 2 && taskExecutions.items.length === 0)">
+      <button class="btn btn-default btn-fa" (click)="refresh()" title="Refresh" type="button">
+        <span class="fa fa-refresh"></span>
+        Refresh
+      </button>
     </div>
 
     <table *ngIf="taskExecutions?.items && taskExecutions.items.length > 0"
@@ -47,7 +31,7 @@
             End Date
           </app-sort>
         </th>
-        <th nowrap="" style="width: 120px">
+        <th nowrap="">
           <app-sort id="sort-exitcode" (change)="applySort($event)" [value]="'EXIT_CODE'" [sort]="params">
             Exit Code
           </app-sort>
@@ -60,9 +44,7 @@
         *ngFor="let item of taskExecutions.items | paginate: taskExecutions.getPaginationInstance(); index as i">
         <tr>
           <td>
-            <a [routerLink]="'/tasks/executions/' + item.executionId">
-              #{{ item.executionId }}
-            </a>
+            <a (click)="details(item)" style="cursor:pointer;">#{{ item.executionId }}</a>
           </td>
           <td>
             <a [routerLink]="'/tasks/definitions/' + item.taskName">{{ item.taskName }}</a>
@@ -77,42 +59,23 @@
             {{ item.exitCode }}
           </td>
           <td class="table-actions" width="10px" nowrap="">
-            <div class="actions" role="group">
-              <button type="button" name="task-details{{ i }}" (click)="details(item)" class="btn btn-default"
-                      title="Details">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-            </div>
+            <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
+                                  [actions]="executionActions(item, i)"></app-list-row-actions>
           </td>
         </tr>
       </ng-container>
       </tbody>
     </table>
 
-    <div class="row">
-      <div class="col-xs-12">
-        <div id="pagination" *ngIf="taskExecutions && taskExecutions.totalPages > 1">
-          <pagination-controls *ngIf="taskExecutions.items.length > 0 "
-                               (pageChange)="getPage($event)"></pagination-controls>
-        </div>
-      </div>
-      <div class="col-xs-12" *ngIf="taskExecutions && taskExecutions?.totalElements > 0">
-        <app-pager [page]="params.page" [total]="taskExecutions.totalElements" [size]="params.size"
-                   (sizeChange)="changeSize($event)">
-        </app-pager>
-      </div>
-    </div>
+    <app-list-pagination [page]="taskExecutions" [params]="params" (changed)="changePaginationPager($event)"
+                         [item]="'task execution'" [items]="'task executions'">
+    </app-list-pagination>
 
-    <div *ngIf="taskExecutions" id="empty" style="padding-top:1.5rem">
-
-      <div *ngIf="isExecutionsEmpty()" class="text-center">
-        <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
-          <strong>No tasks were executed, yet.</strong>
-        </div>
-      </div>
-
-    </div>
-
+    <app-list-empty [page]="taskExecutions" [filters]="[]">
+      <p>There is <strong>no task executed</strong>, yet.</p>
+      <p>
+        You can <a (click)="refresh()">Refresh</a> the page
+      </p>
+    </app-list-empty>
   </div>
-
 </app-tasks-tabulation>

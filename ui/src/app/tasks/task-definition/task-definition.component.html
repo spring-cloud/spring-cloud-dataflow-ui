@@ -1,65 +1,63 @@
-<div *ngIf="task$ | async as task; else loading">
+<app-page *ngIf="task$ | async as task; else loading">
 
-  <div class="heading">
-    <div class="description">
-      <h1>Task <strong>{{ task.definition.name }}</strong></h1>
-      <p>This section shows the details of a task.</p>
-      <div class="actions">
-        <button id="task-launch" type="button" [appRoles]="['ROLE_CREATE']" (click)="launch(task.definition)"
-                class="btn btn-default" style="margin-left: 0;" title="Launch">
-          <span class="glyphicon glyphicon-play"></span>
-          Launch
-        </button>
-        <button *ngIf="task.schedulerEnabled" id="task-schedule" type="button" [appRoles]="['ROLE_CREATE']"
-                (click)="schedule(task.definition)" class="btn btn-default" title="Schedule">
-          <span class="glyphicon glyphicon-time"></span>
-          Schedule
-        </button>
-        <button id="task-remove" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(task.definition)"
-                class="btn btn-danger" title="Destroy">
-          <span class="glyphicon glyphicon-trash"></span>
-          Destroy
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="tab-simple">
-    <ul class="nav nav-tabs">
-      <li role="presentation" routerLinkActive="active"><a routerLink="summary">Summary</a></li>
-      <li role="presentation" routerLinkActive="active"><a routerLink="graph">Graph</a></li>
-      <li role="presentation" routerLinkActive="active">
-        <a routerLink="executions">
-          Executions
-          <span *ngIf="counters$ | async as counters;">
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/tasks/definitions'"
+                        [isNotRegex]="'^(\/tasks\/definitions\/)'"></app-page-head-back>
+    <app-page-head-title>Task <strong>{{ task.definition.name }}</strong></app-page-head-title>
+    <app-page-head-subtitle>
+      <app-task-status [taskDefinition]="task.definition"></app-task-status>
+    </app-page-head-subtitle>
+    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+      <button name="stream-stop" type="button" id="task-launch"
+              (click)="launch(task.definition)" class="btn btn-primary btn-fa" title="Undeploy">
+        <span class="fa fa-play"></span>
+        Launch task
+      </button>
+      <button *ngIf="task.schedulerEnabled" id="task-schedule" type="button" [appRoles]="['ROLE_CREATE']"
+              (click)="schedule(task.definition)" class="btn btn-primary btn-fa" title="Schedule">
+        <span class="fa fa-clock-o"></span>
+        Schedule
+      </button>
+      <button name="stream-remove" type="button" (click)="destroy(task.definition)" id="task-remove"
+              class="btn btn-danger btn-fa" title="Destroy" [appRoles]="['ROLE_CREATE']">
+        <span class="fa fa-trash"></span>
+        Destroy task
+      </button>
+    </app-page-head-actions>
+  </app-page-head>
+  <div class="page-tab">
+    <div class="page-tab-head">
+      <ul class="nav nav-tabs">
+        <li role="presentation" routerLinkActive="active"><a routerLink="summary">Summary</a></li>
+        <li role="presentation" routerLinkActive="active"><a routerLink="graph">Graph</a></li>
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="executions">
+            Executions
+            <span *ngIf="counters$ | async as counters;">
             <span class="label label-count label-primary"
-                *ngIf="counters.executions">{{counters.executions}}</span>
+                  *ngIf="counters.executions">{{counters.executions}}</span>
           </span>
-        </a>
-      </li>
-      <li role="presentation" routerLinkActive="active" *ngIf="task.schedulerEnabled">
-        <a routerLink="schedules">
-          Schedules
-          <span *ngIf="counters$ | async as counters;">
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active" *ngIf="task.schedulerEnabled">
+          <a routerLink="schedules">
+            Schedules
+            <span *ngIf="counters$ | async as counters;">
             <span class="label label-count label-primary"
                   *ngIf="counters.schedules">{{counters.schedules}}</span>
           </span>
-        </a>
-      </li>
-    </ul>
+          </a>
+        </li>
+      </ul>
+
+    </div>
     <div class="tab-content">
       <div class="tab-pane in active">
         <router-outlet></router-outlet>
       </div>
     </div>
   </div>
-
-  <div style="text-align: center;padding-top:2rem">
-    <button type="button" id="back-button" class="btn btn-default" (click)="cancel()">Back</button>
-  </div>
-
-</div>
-
+</app-page>
 <ng-template #loading>
-  <div>Loading...</div>
+  <app-loader></app-loader>
 </ng-template>

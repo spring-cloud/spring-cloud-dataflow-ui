@@ -12,7 +12,7 @@ import {
   selector: 'app-pager',
   styleUrls: ['./styles.scss'],
   template: `
-    <div class="app-pager">
+    <div class="app-pager dropup">
       <div class="app-pager-text">
         items per page:
       </div>
@@ -20,7 +20,7 @@ import {
         <button dropdownToggle type="button" class="select">
           {{ size }} <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-up" id="dropdown-basic" *dropdownMenu>
+        <ul class="dropdown-menu" id="dropdown-basic" *dropdownMenu>
           <li *ngFor="let s of SIZE_LIST" [class.active]="s === size">
             <a (click)="doSizeChange(s)" class="dropdown-item">{{ s }}</a>
           </li>
@@ -28,7 +28,9 @@ import {
       </div>
       <span class="app-pager-divider"></span>
       <div class="app-pager-text">
-        <strong>{{ values.from }}-{{ values.to }}</strong> items of <strong>{{ values.of }}</strong>
+        <strong>{{ values.from }}-{{ values.to }}</strong>
+        {{ getItemLabel(values.to - values.from + 1) }} of <strong>{{ values.of }}</strong>
+        {{ getItemLabel(values.of) }}
       </div>
     </div>
   `,
@@ -46,13 +48,22 @@ export class PagerComponent implements OnChanges {
 
   @Output() sizeChange = new EventEmitter<number>();
 
+  @Input() item = 'item';
+
+  @Input() items = 'items';
+
   values = {
     from: 0,
     to: 0,
     of: 0
   };
 
-  constructor() {}
+  getItemLabel(size) {
+    return (size > 1) ? this.items : this.item;
+  }
+
+  constructor() {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     let page = this.page;

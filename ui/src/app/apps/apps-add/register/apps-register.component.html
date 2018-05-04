@@ -1,0 +1,113 @@
+<app-page-head class="step2">
+  <app-page-head-back [defaultUrl]="'/apps/add'" [isNotRegex]="'^(\/apps\/add\/)'"></app-page-head-back>
+  <app-page-head-title><strong>Register one or more applications</strong></app-page-head-title>
+</app-page-head>
+
+<div dataflowLayoutType type="medium">
+  <div class="dataflow-alert dataflow-alert-info">
+    Register one or more applications by entering a <strong>Name</strong>,
+    <strong>Type</strong> and <strong>App URI</strong> of the application Jar.<br>
+    You can also provide an optional <strong>metadata artifact URI</strong>. <br>
+    The App <strong>URI</strong> &amp; the <strong>Metadata Artifact URI</strong> are typically provided using the Maven
+    coordinates of the Jar but can be a local file or a docker image URI.
+  </div>
+
+  <!--<p>
+    The App URI &amp; the Metadata Artifact URI are typically provided using the Maven coordinates of the Jar
+    (),
+    but can be a local file or a docker image URI.
+  </p>-->
+
+  <form name="register-apps" class="clearfix" (submit)="register()" novalidate>
+
+    <div class="form-register-app form-register-app-box" [formGroup]="forms[i]"
+         id="registerAppsForm{{i}}" *ngFor="let form of forms; let i = index">
+
+      <div [class.has-error]="submitted && form.get('name').invalid && !isFormEmpty(form)"
+           class="control-name{{i}} form-group">
+        <label class="control-label" for="name{{i}}">Name <em class="required">*</em></label>
+        <input type="text" name="name{{i}}" id="name{{i}}" autofocus formControlName="name"
+               class="form-control" placeholder="scdf-sample-app"
+               [dataflowFocus]="true"/>
+        <span class="help-block" *ngIf="submitted && form.get('name').invalid && !isFormEmpty(form)">Please provide a valid name
+              for the app.</span>
+      </div>
+
+      <div [class.has-error]="submitted && form.get('type').invalid && !isFormEmpty(form)"
+           class="control-type{{i}} form-group">
+        <label class="control-label" for="type{{i}}">Type <em class="required">*</em></label>
+        <select formControlName="type" name="type{{i}}" id="type{{i}}" class="form-select" style="width: 300px">
+          <option value="">Please select a type...</option>
+          <option *ngFor="let typeKey of applicationTypes.getKeys()" value="{{ typeKey }}">
+            {{ applicationTypes[typeKey] | capitalize }}
+          </option>
+        </select>
+        <span class="help-block" *ngIf="submitted && form.get('type').invalid && !isFormEmpty(form)">Please provide a valid type.</span>
+      </div>
+
+      <div [class.has-error]="submitted && form.get('uri').invalid && !isFormEmpty(form)"
+           class="control-uri{{i}} form-group">
+        <label class="control-label" for="uri{{i}}">URI: <em class="required">*</em></label>
+        <input type="text" name="uri{{i}}" id="uri{{i}}" formControlName="uri"
+               class="form-control" placeholder="maven://io.spring.cloud:scdf-sample-app:jar:1.0.0">
+        <span class="help-block" *ngIf="submitted && form.get('uri').invalid && !isFormEmpty(form)">Please provide a valid URI
+              pointing to the respective properties file.</span>
+        <span class="help-block">e.g. maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT</span>
+      </div>
+
+      <div [class.has-error]="submitted && form.get('metaDataUri').invalid && !isFormEmpty(form)"
+           class="control-metaDataUri{{i}} form-group">
+        <label class="control-label" for="metaDataUri{{i}}">Metadata URI:</label>
+        <input type="text" id="metaDataUri{{i}}" name="metaDataUri{{i}}" formControlName="metaDataUri"
+               class="form-control"
+               placeholder="maven://io.spring.cloud:scdf-sample-app:jar:metadata:1.0.0 [OPTIONAL]">
+        <span class="help-block" *ngIf="submitted && form.get('metaDataUri').invalid && !isFormEmpty(form)">Please provide a
+              valid URI pointing to the respective properties file.</span>
+      </div>
+
+      <div class="form-group">
+        <div style="margin-left: 8px;">
+          <label class="checkbox-inline">
+            <input type="checkbox" name="force{{i}}" id="force{{i}}" formControlName="force">
+            Force<span class="checkbox-description">, the applications will be imported and installed
+        even if it already exists but only if not being used already.</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div style="margin-left: 8px;">
+          <button type="button" (click)="removeForm(i)" [disabled]="forms.length <= 1"
+                  class="btn btn-default btn-fa btn-remove" title="Remove">
+            <span class="fa fa-trash"></span>
+            Remove
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-register-app form-register-app-empty">
+      <p>
+        <button type="button" name="add-form" (click)="newForm()" class="btn btn-primary btn-fa"
+                title="Add application">
+          <span class="fa fa-plus"></span>
+          New application
+        </button>
+      </p>
+    </div>
+
+    <app-page-actions>
+      <button name="cancel" type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+      <button name="register" type="submit" class="btn btn-primary">
+        Register the application(s)
+      </button>
+    </app-page-actions>
+
+  </form>
+
+
+  <ng-template #popTemplate>By checking <strong>force</strong>, the applications will be imported and installed
+    even if it already exists but only if not being used already.
+  </ng-template>
+</div>

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ModalModule, BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { ModalModule, BsModalService, BsModalRef, BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { RuntimeAppsComponent } from './runtime-apps.component';
@@ -16,6 +16,9 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { Observable } from 'rxjs';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { FormsModule } from '@angular/forms';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
@@ -31,11 +34,16 @@ describe('RuntimeAppsComponent', () => {
         KeyValuePipe,
         RuntimeAppStateComponent,
         LoaderComponent,
-        PagerComponent
+        PagerComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST
       ],
       imports: [
+        FormsModule,
         NgBusyModule,
         NgxPaginationModule,
+        BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         ModalModule.forRoot()
       ],
       providers: [
@@ -124,6 +132,7 @@ describe('RuntimeAppsComponent', () => {
           size: 10
         }
       };
+      component.pagination = { page: 0, size: 10 };
       fixture.detectChanges();
     });
 
@@ -131,14 +140,14 @@ describe('RuntimeAppsComponent', () => {
       const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
       fixture.debugElement.query(By.css('button[name=refresh]')).nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith({ page: 0, size: 30 });
+      expect(spy).toHaveBeenCalledWith({ page: 0, size: 10 });
     });
 
     it('should navigation to the page 2', () => {
       const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
       fixture.debugElement.queryAll(By.css('#pagination a'))[0].nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith({ page: 1, size: 30 });
+      expect(spy).toHaveBeenCalledWith({ page: 1, size: 10 });
     });
 
   });
@@ -158,7 +167,7 @@ describe('RuntimeAppsComponent', () => {
     });
 
     it('should display a message', () => {
-      expect(fixture.debugElement.query(By.css('#no-result'))).toBeTruthy();
+      expect(fixture.debugElement.query(By.css('#empty'))).toBeTruthy();
     });
 
     it('should not display the table and the pagination', () => {
@@ -168,7 +177,7 @@ describe('RuntimeAppsComponent', () => {
 
     it('should refresh the result', () => {
       const spy = spyOn(component, 'loadRuntimeApps');
-      fixture.debugElement.query(By.css('button[name=refresh]')).nativeElement.click();
+      fixture.debugElement.queryAll(By.css('#empty a'))[0].nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
     });

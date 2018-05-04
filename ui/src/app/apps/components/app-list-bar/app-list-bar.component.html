@@ -1,0 +1,57 @@
+<form id="filters" class="list-bar list-bar-app" *ngIf="page && params && !isEmpty()" #registerAppsForm="ngForm"
+      name="registerAppsForm" role="form" (ngSubmit)="doSearch()" novalidate>
+
+  <div *ngIf="hasActions()" id="dropdown-actions" class="list-bar-action dropdown" dropdown
+       [isDisabled]="!(countSelected > 0)">
+    <button dropdownToggle type="button" class="btn btn-default btn-dropdown">
+      <span>Actions</span>
+      <strong *ngIf="countSelected > 0" style="margin-left: 4px;">({{ countSelected }})</strong>
+      <span class="caret"></span>
+    </button>
+    <ul *dropdownMenu class="dropdown-menu">
+      <li *ngFor="let action of actions">
+        <a *ngIf="!action.hidden" id="{{ action.id }}" style="cursor: pointer" (click)="fire(action.action)">
+          {{ action.title }}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="list-bar-filter">
+    <input type="text" id="filter-q" name="q" class="form-control input-sm" placeholder="Filter items"
+           [(ngModel)]="form.q">
+
+    <div class="list-bar-dropdown">
+      <div dropdown class="dropdown">
+        <a class="filter-dropdown-toggle" dropdownToggle>
+              <span *ngIf="form.type == '' || form.type == null">
+                All types
+              </span>
+          <span *ngIf="!(form.type == '' || form.type == null)">
+            Type: <strong>{{ form.type }}</strong>
+          </span>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu="">
+          <li [class.active]="form.type == '' || form.type == null"><a (click)="form.type = ''">All types</a></li>
+          <li [class.active]="form.type == 'source'"><a (click)="form.type = 'source'">Source</a></li>
+          <li [class.active]="form.type == 'processor'"><a (click)="form.type = 'processor'">Processor</a></li>
+          <li [class.active]="form.type == 'sink'"><a (click)="form.type = 'sink'">Sink</a></li>
+          <li [class.active]="form.type == 'task'"><a (click)="form.type = 'task'">Task</a></li>
+        </ul>
+      </div>
+    </div>
+    <button id="search-submit" [disabled]="!isSearchActive()" type="submit" class="list-bar-submit btn btn-default">
+      <span class="fa fa-search"></span>
+    </button>
+  </div>
+  <div class="list-bar-divider"></div>
+  <div class="list-bar-right">
+    <button (click)="doRefresh()" name="app-refresh" type="button" class="btn btn-default btn-fa" title="Refresh">
+      <span class="fa fa-refresh"></span>
+      Refresh
+    </button>
+  </div>
+
+
+</form>

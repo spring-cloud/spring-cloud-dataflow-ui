@@ -15,6 +15,6 @@ describe('E2E spec for app registration page', () => {
 
   it('should display app registration title', () => {
     page.navigateTo();
-    expect(page.getHeaderText()).toEqual('Register Applications');
+    expect(page.getHeaderText()).toEqual('Register one or more applications');
   });
 });

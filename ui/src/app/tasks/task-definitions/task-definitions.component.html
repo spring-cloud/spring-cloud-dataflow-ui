@@ -1,65 +1,16 @@
-<app-tasks-header></app-tasks-header>
+<app-tasks-tabulation id="tasks-list" *ngIf="taskDefinitions">
 
-<app-tasks-tabulation>
-
-  <div id="tasks-list">
-
-    <div id="filters" class="pui-filter" *ngIf="!isTasksEmpty()">
-      <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
-
-        <div class="pui-filter-center">
-          <div class="input-group input-group-filter">
-            <input type="text" name="q" class="form-control sm" placeholder="Filter items" [(ngModel)]="form.q">
-            <div class="input-group-btn">
-              <button [disabled]="!isSearchActive()" type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="pui-filter-actions">
-          <div class="pui-filter-left">
-            <div id="dropdown-actions" class="dropdown" *ngIf="countSelected() > 0" dropdown>
-              <button dropdownToggle type="button" class="btn btn-default btn-dropdown" data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false">
-                <span *ngIf="countSelected() == 1">Action (1)</span>
-                <span *ngIf="countSelected() > 1">Actions ({{ countSelected() }})</span>
-                <span class="caret"></span>
-              </button>
-              <ul *dropdownMenu class="dropdown-menu">
-                <li>
-                  <a id="destroy-tasks" style="cursor: pointer" (click)="destroySelectedTasks()">
-                    <span *ngIf="countSelected() == 1">Destroy task</span>
-                    <span *ngIf="countSelected() > 1">Destroy tasks</span>
-                  </a>
-                </li>
-                <li *ngIf="schedulerEnabled">
-                  <a id="schedule-tasks" style="cursor: pointer" (click)="scheduleSelectedTasks()">
-                    <span *ngIf="countSelected() == 1">Schedule task</span>
-                    <span *ngIf="countSelected() > 1">Schedule tasks</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="pui-filter-right" style="text-align: right">
-            <button (click)="refresh()" name="app-refresh" type="button" class="btn btn-default btn-icon"
-                    title="Refresh">
-              <span class="glyphicon glyphicon-refresh"></span>
-            </button>
-          </div>
-        </div>
-
-      </form>
-    </div>
+  <div dataflowLayoutType type="full">
+    <app-list-bar [params]="params" [page]="taskDefinitions" [countSelected]="countSelected()" #listBar
+                  (refresh)="refresh()" (search)="search($event)" [actions]="tasksActions()"
+                  (action)="applyAction($event.action)">
+    </app-list-bar>
 
     <table *ngIf="taskDefinitions?.items && taskDefinitions.items.length > 0"
            class="table table-hover table-checkbox" id="taskDefinitionsTable">
       <thead>
       <tr>
-        <th style="width: 30px">
+        <th style="width: 30px" [appRoles]="['ROLE_CREATE']">
           <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [appRoles]="['ROLE_CREATE']"
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
@@ -67,6 +18,7 @@
           <app-sort id="sort-name" (change)="applySort($event)" [value]="'DEFINITION_NAME'" [sort]="params">
             Name
           </app-sort>
+        </th>
         <th>
           <div class="head-dsl">
             <app-sort id="sort-dsl" (change)="applySort($event)" [value]="'DEFINITION'" [sort]="params">
@@ -84,99 +36,53 @@
       <ng-container
         *ngFor="let item of taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance(); index as i">
         <tr>
-          <td class="cell-checkbox">
+          <td class="cell-checkbox" [appRoles]="['ROLE_CREATE']">
             <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
                    [(ngModel)]="form.checkboxes[i]"/>
           </td>
           <td width="200px">
             <a style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">{{ item.name }}</a>
           </td>
-          <td class="dataflow-truncator-width">
+          <td>
             <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
           </td>
           <td>
             <app-task-status [taskDefinition]="item"></app-task-status>
           </td>
           <td class="table-actions" width="10px" nowrap="">
-            <div class="actions" role="group">
-              <button type="button" name="task-details{{ i }}" (click)="details(item)" class="btn btn-default"
-                      title="Details">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-              <button type="button" name="task-launch{{ i }}" (click)="launch(item)" [appRoles]="['ROLE_CREATE']"
-                      class="btn btn-default" title="Launch task">
-                <span class="glyphicon glyphicon-play"></span>
-              </button>
-              <button *ngIf="schedulerEnabled" type="button" name="task-schedule{{ i }}" (click)="schedule(item)" [appRoles]="['ROLE_CREATE']"
-                      class="btn btn-default" title="Schedule task">
-                <span class="glyphicon glyphicon-time"></span>
-              </button>
-              <button *ngIf="schedulerEnabled" type="button" name="task-schedule-destroy{{ i }}" (click)="destroySchedules(item)"
-                      [appRoles]="['ROLE_CREATE']" class="btn btn-ico-remove-schedules btn-default" title="Delete schedule">
-                <span class="glyphicon glyphicon-time"></span>
-                <span class="glyphicon glyphicon-remove"></span>
-              </button>
-              <button name="task-destroy{{ i }}" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(item)"
-                      class="btn btn-default" title="Destroy task">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
-            </div>
+            <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
+                                  [actions]="taskActions(i)"></app-list-row-actions>
           </td>
         </tr>
       </ng-container>
       </tbody>
     </table>
 
+    <app-list-pagination [page]="taskDefinitions" [params]="params" (changed)="changePaginationPager($event)"
+                         [item]="'task definition'" [items]="'task definitions'">
+    </app-list-pagination>
 
-    <div class="row">
-      <div class="col-xs-12">
-        <div id="pagination" *ngIf="taskDefinitions && taskDefinitions.totalPages > 1">
-          <pagination-controls *ngIf="taskDefinitions.items.length > 0 "
-                               (pageChange)="getPage($event)"></pagination-controls>
-        </div>
+    <app-list-empty [page]="taskDefinitions" [filters]="[params.q]">
+      <p>There is <strong>no registered task</strong>, yet.</p>
+      <div *ngIf="appsState$ | async as appsState">
+        <p *ngIf="appsState.tasks > 0" [appRoles]="['ROLE_CREATE']">
+          You can <a (click)="createTask()">Create Task(s)</a> or <a (click)="refresh()">Refresh</a> the page
+        </p>
+        <p *ngIf="appsState.tasks == 0" [appRoles]="['ROLE_CREATE']">
+          To create task(s), you have to <a (click)="registerApps()">register Apps</a> first.<br />
+          You can <a (click)="refresh()">Refresh</a> the page.
+        </p>
       </div>
-      <div class="col-xs-12" *ngIf="taskDefinitions && taskDefinitions?.totalElements > 0">
-        <app-pager [page]="params.page" [total]="taskDefinitions.totalElements" [size]="params.size"
-                   (sizeChange)="changeSize($event)">
-        </app-pager>
-      </div>
-    </div>
-    <div *ngIf="taskDefinitions" id="empty" style="padding-top:1.5rem">
+    </app-list-empty>
 
-      <div *ngIf="isTasksEmpty()" class="text-center">
-        <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
-          <strong>No task.</strong>
-          <div [appRoles]="['ROLE_CREATE']">
-            <p>You can create a task by clicking:</p>
-            <a routerLink="/tasks/create" class="btn btn-primary">
-              Create a task
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div id="no-result" class="row"
-           *ngIf="!isTasksEmpty() && taskDefinitions.totalPages < 2 && taskDefinitions.items.length == 0">
-        <div class="col-md-8"></div>
-        <div class="col-md-8">
-          <div class="alert alert-warning" style="border:0 none;padding: 1.5rem 2rem;">
-            <div style="padding-bottom: 8px">
-            <span>
-              No results found for
-              <strong>'{{ params.q }}'</strong>
-            </span>
-            </div>
-            <div>
-              <button type="button" style="cursor: pointer;" (click)="clearSearch()" class="btn btn-primary">
-                <span class="glyphicon glyphicon-remove"></span>
-                Clear the search
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <app-list-no-result [page]="taskDefinitions" [filters]="[params.q]">
+      <p>
+        No results found for
+        <strong>'{{ params.q }}'</strong>
+      </p>
+      <p>
+        You can <a (click)="listBar.clearSearch()">clear the search</a> or <a (click)="refresh()">Refresh</a> the page.
+      </p>
+    </app-list-no-result>
   </div>
-
 </app-tasks-tabulation>

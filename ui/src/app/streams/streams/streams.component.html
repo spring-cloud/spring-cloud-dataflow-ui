@@ -1,276 +1,183 @@
-<div id="streams-list">
+<app-page *ngIf="streamDefinitions">
 
-  <div class="heading">
-    <div class="actions hidden visible-md-block visible-lg-block" *ngIf="!isStreamsEmpty()" [appRoles]="['ROLE_CREATE']">
-      <a class="btn btn-primary" routerLink="/streams/create">Create Stream(s)</a>
-    </div>
-    <div class="description">
-      <h1 class="no-user-selection">Streams</h1>
-      <p> This section
-        lists all the stream definitions and provides the ability to deploy/undeploy or destroy streams.
-      </p>
-    </div>
-  </div>
+  <app-page-head>
+    <app-page-head-title><strong>Streams</strong></app-page-head-title>
+    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+      <ng-container *ngIf="appsState$ | async as appsState;">
+        <button class="btn btn-primary btn-fa" (click)="createStream()" *ngIf="appsState.streams > 0">
+          <span class="fa fa-plus"></span>
+          Create stream(s)
+        </button>
+      </ng-container>
+    </app-page-head-actions>
+  </app-page-head>
 
-  <div id="filters" class="pui-filter" *ngIf="!isStreamsEmpty()">
-    <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
+  <div dataflowLayoutType type="full">
+    <p>This section lists all the stream definitions and provides the ability to deploy/undeploy or destroy streams.</p>
 
-      <div class="pui-filter-center">
-        <div class="input-group input-group-filter">
-          <input type="text" name="q" class="form-control sm" placeholder="Filter items" [(ngModel)]="form.q">
-          <div class="input-group-btn">
-            <button [disabled]="!isSearchActive()" type="submit" class="btn btn-primary">
-              <span class="glyphicon glyphicon-search"></span>
-            </button>
-          </div>
-        </div>
-      </div>
+    <app-list-bar [params]="params" [page]="streamDefinitions" [countSelected]="countSelected()" #listBar
+                  (refresh)="refresh()" (search)="search($event)" [actions]="streamsActions()"
+                  (action)="applyAction($event.action)">
+    </app-list-bar>
 
-      <div class="pui-filter-actions">
-        <div class="pui-filter-left">
-          <div id="dropdown-actions" class="dropdown" *ngIf="countSelected() > 0" dropdown>
-            <button dropdownToggle type="button" class="btn btn-default btn-dropdown" data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-              <span *ngIf="countSelected() == 1">Action (1)</span>
-              <span *ngIf="countSelected() > 1">Actions ({{ countSelected() }})</span>
-              <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu">
-              <li>
-                <a id="deploy-streams" style="cursor: pointer" (click)="deploySelectedStreams()">
-                  <span *ngIf="countSelected() == 1">Deploy stream</span>
-                  <span *ngIf="countSelected() > 1">Deploy streams</span>
-                </a>
-              </li>
-              <li>
-                <a id="undeploy-streams" style="cursor: pointer" (click)="undeploySelectedStreams()">
-                  <span *ngIf="countSelected() == 1">Undeploy stream</span>
-                  <span *ngIf="countSelected() > 1">Undeploy streams</span>
-                </a>
-              </li>
-              <li>
-                <a id="destroy-streams" style="cursor: pointer" (click)="destroySelectedStreams()">
-                  <span *ngIf="countSelected() == 1">Destroy stream</span>
-                  <span *ngIf="countSelected() > 1">Destroy streams</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="pui-filter-right" style="text-align: right">
-          <button (click)="refresh()" name="app-refresh" type="button" class="btn btn-default btn-icon" title="Refresh">
-            <span class="glyphicon glyphicon-refresh"></span>
-          </button>
-        </div>
-      </div>
-
-    </form>
-  </div>
-
-  <table *ngIf="streamDefinitions?.items && streamDefinitions.items.length > 0"
-         class="table table-hover table-checkbox" id="streamDefinitionsTable">
-    <thead>
-    <tr>
-      <th style="width: 30px">
-        <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [appRoles]="['ROLE_CREATE']"
-                             [items]="form.checkboxes"></app-master-checkbox>
-      </th>
-      <th style="width: 70px">
-        <app-sort id="sort-name" (change)="applySort($event)" [value]="'DEFINITION_NAME'" [sort]="params">
-          Name
-        </app-sort>
-      <th>
-        <div class="head-dsl">
-
-          <div class="dropdown" dropdown>
-            <a dropdownToggle class="btn-dropdown" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-chevron-down"></span>
-              <span class="glyphicon glyphicon-chevron-right"></span>
-            </a>
-            <ul *dropdownMenu class="dropdown-menu">
-              <li><a style="cursor: pointer" (click)="expandPage()">Expand All</a></li>
-              <li><a style="cursor: pointer" (click)="collapsePage()">Collapse All</a></li>
-            </ul>
-          </div>
-          <app-sort id="sort-dsl" (change)="applySort($event)" [value]="'DEFINITION'" [sort]="params">
-            Definitions
-          </app-sort>
-        </div>
-      </th>
-      <th nowrap="" style="width: 120px">
-        Status
-        <a #childPopover="bs-popover" [popover]="popTemplate" placement="bottom" [outsideClick]="true"
-           title="Available Deployment Statuses"><span class="glyphicon glyphicon-question-sign"></span></a>
-      </th>
-      <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-    <ng-container
-      *ngFor="let item of streamDefinitions.items | paginate: streamDefinitions.getPaginationInstance(); index as i">
+    <table *ngIf="streamDefinitions?.items && streamDefinitions.items.length > 0"
+           class="table table-hover table-checkbox" id="streamDefinitionsTable">
+      <thead>
       <tr>
-        <td class="cell-checkbox">
-          <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
-                 [(ngModel)]="form.checkboxes[i]"/>
-        </td>
-        <td>
-          <a style="cursor:pointer" (click)="details(item)">{{ item.name }}</a>
-        </td>
-        <td>
-          <a (click)="toggleExpand(i)" class="link-expand">
-            <span *ngIf="form.checkboxesExpand[i]" class="glyphicon glyphicon-chevron-down"></span>
-            <span *ngIf="!form.checkboxesExpand[i]" class="glyphicon glyphicon-chevron-right"></span>
-            <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
-          </a>
-        </td>
-        <td *ngIf="canShowDeploymentInfo(item); else deployment_status_only_content">
-          <a href="" (click)="false" [popover]="stream_info" placement="bottom" triggers="focus"
-             containerClass="deployment-info-popup">
-            <app-stream-status [streamDefinition]="item"></app-stream-status>
-          </a>
-        </td>
-        <ng-template #deployment_status_only_content>
-          <td>
-            <app-stream-status [streamDefinition]="item"></app-stream-status>
-          </td>
-        </ng-template>
-        <ng-template #stream_info>
-          <app-stream-deployment-properties-info [streamDefinition]="item"></app-stream-deployment-properties-info>
-        </ng-template>
-        <td class="table-actions" width="10px" nowrap="">
-          <div class="actions" role="group">
-            <button name="stream-details{{ i }}" type="button" (click)="details(item)" class="btn btn-default"
-                    title="Details">
-              <span class="glyphicon glyphicon-info-sign"></span>
-            </button>
-            <button name="stream-stop{{ i }}" type="button" [appRoles]="['ROLE_CREATE']"
-                    [disabled]="(item.status==='undeployed'  || item.status==='incomplete')" (click)="undeploy(item)"
-                    class="btn btn-default" title="Undeploy">
-              <span class="glyphicon glyphicon-stop"></span>
-            </button>
-            <button name="stream-deploy{{ i }}" type="button" [appRoles]="['ROLE_CREATE']"
-                    [disabled]="(item.status==='deploying')" (click)="deploy(item)"
-                    class="btn btn-default" title="Deploy">
-              <span class="glyphicon glyphicon-play"></span>
-            </button>
-            <button name="stream-remove{{ i }}" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(item)"
-                    class="btn btn-default" title="Destroy">
-              <span class="glyphicon glyphicon-trash"></span>
-            </button>
+        <th style="width: 30px" [appRoles]="['ROLE_CREATE']">
+          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
+                               [items]="form.checkboxes"></app-master-checkbox>
+        </th>
+        <th style="width: 70px">
+          <app-sort id="sort-name" (change)="applySort($event)" [value]="'DEFINITION_NAME'" [sort]="params">
+            Name
+          </app-sort>
+        <th>
+          <div class="head-dsl">
+
+            <div class="dropdown" dropdown>
+              <a dropdownToggle class="btn-dropdown" data-toggle="dropdown">
+                <span class="fa fa-chevron-down"></span>
+                <span class="fa fa-chevron-right"></span>
+              </a>
+              <ul *dropdownMenu class="dropdown-menu">
+                <li><a style="cursor: pointer" (click)="expandPage()">Expand All</a></li>
+                <li><a style="cursor: pointer" (click)="collapsePage()">Collapse All</a></li>
+              </ul>
+            </div>
+            <app-sort id="sort-dsl" (change)="applySort($event)" [value]="'DEFINITION'" [sort]="params">
+              Definitions
+            </app-sort>
           </div>
-        </td>
+        </th>
+        <th nowrap="" style="width: 120px">
+          Status
+          <a #childPopover="bs-popover" [popover]="popTemplate" placement="left" [outsideClick]="true"
+             title="Available Deployment Statuses" style="cursor: pointer">
+            <span class="fa fa-question-circle"></span></a>
+        </th>
+        <th>&nbsp;</th>
       </tr>
-      <tr *ngIf="form.checkboxesExpand[i]">
-        <td colspan="5" class="graph" style="padding:0">
-          <app-stream-graph-definition [stream]="item" [metrics]="metricsForStream(item.name)">
-          </app-stream-graph-definition>
-        </td>
-      </tr>
-    </ng-container>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      <ng-container
+        *ngFor="let item of streamDefinitions.items | paginate: streamDefinitions.getPaginationInstance(); index as i">
+        <tr>
+          <td class="cell-checkbox" [appRoles]="['ROLE_CREATE']">
+            <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
+                   [(ngModel)]="form.checkboxes[i]"/>
+          </td>
+          <td>
+            <a style="cursor:pointer" (click)="details(item)">{{ item.name }}</a>
+          </td>
+          <td>
+            <a (click)="toggleExpand(i)" class="link-expand">
+              <span *ngIf="form.checkboxesExpand[i]" class="fa fa-chevron-down" tooltip="Hide graph" delay="500"></span>
+              <span *ngIf="!form.checkboxesExpand[i]" class="fa fa-chevron-right" tooltip="Show graph"
+                    delay="500"></span>
+              <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
+            </a>
+          </td>
+          <td *ngIf="canShowDeploymentInfo(item); else deployment_status_only_content">
+            <a href="" class="stream-info-toggle" (click)="false" [popover]="stream_info" placement="left"
+               triggers="focus"
+               containerClass="deployment-info-popup">
+              <span class="ico fa fa-info-circle"></span>
+              <app-stream-status [streamDefinition]="item"></app-stream-status>
+            </a>
+          </td>
+          <ng-template #deployment_status_only_content>
+            <td>
+              <app-stream-status [streamDefinition]="item"></app-stream-status>
+            </td>
+          </ng-template>
+          <ng-template #stream_info>
+            <app-stream-deployment-properties-info [streamDefinition]="item"></app-stream-deployment-properties-info>
+          </ng-template>
+          <td class="table-actions" width="10px" nowrap="">
+            <app-list-row-actions [actions]="streamActions(item, i)" (action)="applyAction($event.action, $event.args)"
+                                  [item]="item">
+            </app-list-row-actions>
+          </td>
+        </tr>
+        <tr *ngIf="form.checkboxesExpand[i]">
+          <td colspan="5" class="graph" style="padding:0">
+            <app-stream-graph-definition [stream]="item" [metrics]="metricsForStream(item.name)">
+            </app-stream-graph-definition>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
 
-  <div class="row">
-    <div class="col-xs-12">
-      <div id="pagination" *ngIf="streamDefinitions && streamDefinitions.totalPages > 1">
-        <pagination-controls *ngIf="streamDefinitions.items.length > 0 "
-                             (pageChange)="getPage($event)"></pagination-controls>
+    <app-list-pagination [page]="streamDefinitions" [params]="params" (changed)="changePaginationPager($event)"
+                         [item]="'stream definition'" [items]="'stream definitions'">
+    </app-list-pagination>
+
+    <app-list-empty [page]="streamDefinitions" [filters]="[params.q]">
+      <p>There is <strong>no stream register</strong>.</p>
+      <div *ngIf="appsState$ | async as appsState">
+        <p *ngIf="appsState.streams > 0" [appRoles]="['ROLE_CREATE']">
+          You can <a (click)="createStream()">Create Streams(s)</a> or <a (click)="refresh()">Refresh</a> the page
+        </p>
+        <p *ngIf="appsState.streams == 0" [appRoles]="['ROLE_CREATE']">
+          To create stream(s), you have to <a (click)="registerApps()">register Apps</a> first.<br/>
+          You can <a (click)="refresh()">Refresh</a> the page.
+        </p>
       </div>
-    </div>
-    <div class="col-xs-12" *ngIf="streamDefinitions && streamDefinitions?.totalElements > 0">
-      <app-pager [page]="params.page" [total]="streamDefinitions.totalElements" [size]="params.size"
-                 (sizeChange)="changeSize($event)">
-      </app-pager>
-    </div>
+    </app-list-empty>
+
+    <app-list-no-result [page]="streamDefinitions" [filters]="[params.q]">
+      <p>
+        No results found for
+        <strong>'{{ params.q }}'</strong>
+      </p>
+      <p>
+        You can <a (click)="listBar.clearSearch()">Clear the search</a> or <a (click)="refresh()">Refresh</a> the page.
+      </p>
+    </app-list-no-result>
+
+    <ng-template #popTemplate>
+      <div class="status-help-content">
+        <table class="table-condensed status-help-content-table">
+          <tbody>
+          <tr>
+            <td>
+              <app-stream-status [streamDefinition]="{ status : 'deploying' }"></app-stream-status>
+            </td>
+            <td>Deployment has been initiated</td>
+          </tr>
+          <tr>
+            <td>
+              <app-stream-status [streamDefinition]="{ status : 'deployed' }"></app-stream-status>
+            </td>
+            <td>Fully deployed based on each of the stream's apps' count properties</td>
+          </tr>
+          <tr>
+            <td>
+              <app-stream-status [streamDefinition]="{ status : 'incomplete' }"></app-stream-status>
+            </td>
+            <td>At least 1 of each app, but 1 or more of them not at requested capacity</td>
+          </tr>
+          <tr>
+            <td>
+              <app-stream-status [streamDefinition]="{ status : 'failed' }"></app-stream-status>
+            </td>
+            <td>1 or more of the apps does not have even a single instance deployed</td>
+          </tr>
+          <tr>
+            <td>
+              <app-stream-status [streamDefinition]="{ status : 'undeployed' }"></app-stream-status>
+            </td>
+            <td>Intentionally undeployed, or created but not yet deployed</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
   </div>
+</app-page>
 
-  <div *ngIf="streamDefinitions" id="empty">
-
-    <div *ngIf="isStreamsEmpty()" class="text-center">
-      <div class="alert alert-warning" style="display:inline-block;margin:0 auto" *ngIf="!noApplicationRegister">
-        <strong>No Streams exist, yet.</strong>
-        <div [appRoles]="['ROLE_CREATE']">
-          <p>You can create streams by clicking:</p>
-          <a routerLink="/streams/create" class="btn btn-primary">
-            Create a stream
-          </a>
-        </div>
-      </div>
-      <div class="alert alert-warning" style="display:inline-block;margin:0 auto" *ngIf="noApplicationRegister">
-        <strong>No Streams exist and no registered apps.</strong>
-        <div [appRoles]="['ROLE_CREATE']">
-          <p>You can register apps by clicking:</p>
-          <a routerLink="/apps/register-apps" class="btn btn-primary">
-            Register Application(s)
-          </a>
-          <a routerLink="/apps/bulk-import-apps" class="btn btn-primary">
-            Bulk Import Application(s)
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div id="no-result" class="row"
-         *ngIf="!isStreamsEmpty() && streamDefinitions.totalPages < 2 && streamDefinitions.items.length == 0">
-      <div class="col-md-8"></div>
-      <div class="col-md-8">
-        <div class="alert alert-warning" style="border:0 none;padding: 1.5rem 2rem;">
-          <div style="padding-bottom: 8px">
-            <span>
-              No results found for
-              <strong>'{{ params.q }}'</strong>
-            </span>
-          </div>
-          <div>
-            <button type="button" style="cursor: pointer;" (click)="clearSearch()" class="btn btn-primary">
-              <span class="glyphicon glyphicon-remove"></span>
-              Clear the search
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <ng-template #popTemplate>
-    <div class="status-help-content">
-      <table class="table-condensed status-help-content-table">
-        <tbody>
-        <tr>
-          <td>
-            <app-stream-status [streamDefinition]="{ status : 'deploying' }"></app-stream-status>
-          </td>
-          <td>Deployment has been initiated</td>
-        </tr>
-        <tr>
-          <td>
-            <app-stream-status [streamDefinition]="{ status : 'deployed' }"></app-stream-status>
-          </td>
-          <td>Fully deployed based on each of the stream's apps' count properties</td>
-        </tr>
-        <tr>
-          <td>
-            <app-stream-status [streamDefinition]="{ status : 'incomplete' }"></app-stream-status>
-          </td>
-          <td>At least 1 of each app, but 1 or more of them not at requested capacity</td>
-        </tr>
-        <tr>
-          <td>
-            <app-stream-status [streamDefinition]="{ status : 'failed' }"></app-stream-status>
-          </td>
-          <td>1 or more of the apps does not have even a single instance deployed</td>
-        </tr>
-        <tr>
-          <td>
-            <app-stream-status [streamDefinition]="{ status : 'undeployed' }"></app-stream-status>
-          </td>
-          <td>Intentionally undeployed, or created but not yet deployed</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </ng-template>
-
+<div *ngIf="!streamDefinitions">
+  <app-loader></app-loader>
 </div>

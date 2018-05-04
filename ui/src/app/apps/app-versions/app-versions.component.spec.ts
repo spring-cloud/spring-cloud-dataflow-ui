@@ -26,6 +26,7 @@ import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 /**
  * Test {@link AppVersionsComponent}.
@@ -53,7 +54,8 @@ describe('AppVersionsComponent', () => {
         AppVersionLabelComponent,
         SortComponent,
         OrderByPipe,
-        RolesDirective
+        RolesDirective,
+        LoaderComponent
       ],
       imports: [
         ModalModule.forRoot(),
@@ -96,7 +98,7 @@ describe('AppVersionsComponent', () => {
     });
 
     it('should selected the current version of the application', () => {
-      const trs: DebugElement[] = fixture.debugElement.queryAll(By.css('#table-versions tbody .active'));
+      const trs: DebugElement[] = fixture.debugElement.queryAll(By.css('#table-versions tbody .activeVersion'));
       expect(trs.length).toBe(1);
       expect(trs[0].nativeElement.textContent).toContain(versionMock.version);
     });

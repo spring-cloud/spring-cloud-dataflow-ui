@@ -12,10 +12,21 @@ import { MockComponent } from '../../tests/mocks/mock-component';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { BusyService } from '../../shared/services/busy.service';
-import { ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { AppTypeComponent } from '../../apps/components/app-type/app-type.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { StreamDeployFreeTextComponent } from './free-text/free-text.component';
+import { StreamDeployBuilderComponent } from './builder/builder.component';
+import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
+import { StreamDeployBuilderErrorsComponent } from './builder/errors/errors.component';
+import { StreamDeployService } from './stream-deploy.service';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -32,6 +43,7 @@ xdescribe('StreamDeployComponent', () => {
   let activeRoute: MockActivatedRoute;
   const commonTestParams = { id: '1' };
   const loggerService = new LoggerService();
+  const routingStateService = new MockRoutingStateService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -39,7 +51,14 @@ xdescribe('StreamDeployComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         StreamDeployComponent,
-        AppTypeComponent
+        PagerComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        LoaderComponent,
+        AppTypeComponent,
+        StreamDeployFreeTextComponent,
+        StreamDeployBuilderComponent,
+        StreamDeployBuilderErrorsComponent
       ],
       imports: [
         NgBusyModule,
@@ -47,6 +66,8 @@ xdescribe('StreamDeployComponent', () => {
         ReactiveFormsModule,
         TooltipModule.forRoot(),
         ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        NgxPaginationModule,
         RouterTestingModule.withRoutes([{ path: 'streams/definitions', component: MockComponent }])
       ],
       providers: [
@@ -55,6 +76,7 @@ xdescribe('StreamDeployComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: NotificationService, useValue: notificationService },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: LoggerService, useValue: loggerService }
       ]
     })

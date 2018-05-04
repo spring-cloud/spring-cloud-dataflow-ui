@@ -1,29 +1,29 @@
 
-
-// Set PUI variables
+// Set PUI variables / Bootstrap
 @import 'scss/pui-variables';
-
-// Bootstrap
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
-
-// PUI
+@import 'scss/pui-variables';
 @import 'scss/pui';
-
-// Busy
-@import '../node_modules/ng-busy/src/style/busy.css';
-
-// Ng Toasty
-@import 'scss/toastr';
-
-// Datepicker
-@import 'scss/datepicker';
-
-// Timepicker
-@import 'scss/timepicker';
 
 // Font awesome
 @import '../node_modules/@compodoc/compodoc/src/resources/styles/font-awesome.min.css';
 
+// Components
+@import 'scss/components/busy';
+@import 'scss/components/spinner';
+@import 'scss/components/toastr';
+@import 'scss/components/modal';
+@import 'scss/components/buttons';
+@import 'scss/components/datepicker';
+@import 'scss/components/timepicker';
+
+// Layout
+@import 'scss/layout/content';
+@import 'scss/layout/footer';
+@import 'scss/layout/table';
+
 // Application styles
 @import 'scss/styles';
 
+// Sidebar
+@import 'scss/layout/sidebar';

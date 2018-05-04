@@ -1,0 +1,51 @@
+<app-page-head class="step2">
+  <app-page-head-back [defaultUrl]="'/apps/add'" [isNotRegex]="'^(\/apps\/add\/)'"></app-page-head-back>
+  <app-page-head-title><strong>Bulk import application</strong> coordinates from a properties file</app-page-head-title>
+</app-page-head>
+
+<form [formGroup]="form" role="form" (ngSubmit)="submit()" novalidate dataflowLayoutType type="large">
+  <div dataflowLayoutType type="medium">
+    <div class="dataflow-alert dataflow-alert-info">
+      Enter the <strong>list of properties</strong> into the text area field below. <br>
+      Alternatively, you can also <strong>select a file</strong> in your local file system, which is used to populate
+      the text area field.
+    </div>
+    <div class="form-group" [class.has-error]="form.get('properties').invalid && submitted">
+      <label for="propertiesInput" class="control-label">Apps as Properties: <em class="required">*</em></label>
+      <textarea id="propertiesInput" name="properties" autofocus
+                formControlName="properties"
+                rows="5"
+                [dataflowFocus]="true"
+                class="form-control" placeholder="Example:
+task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE
+task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE">
+      </textarea>
+
+      <span class="help-block" *ngIf="form.get('properties').invalid && submitted">
+        Please provide a valid properties where the keys are formatted as
+          <strong>type.name</strong> and the values are the URIs of the apps.
+      </span>
+      <div class="input-file">
+        <label class="btn-file btn btn-default" placement="top" delay="500"
+               tooltip="Please provide a text file containing properties. This will be used to populate the text area above.">
+          <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
+                 (change)="fileChange($event)"/>
+          Import a local file
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="checkbox-inline">
+        <input formControlName="force" id="forceInput" name="force" type="checkbox"/>
+        Force<span class="checkbox-description">, the applications will be imported and installed
+        even if it already exists but only if not being used already.</span>
+      </label>
+    </div>
+  </div>
+  <app-page-actions id="footer-actions">
+    <button name="cancel" type="button" class="btn btn-default" routerLink="/apps">Cancel</button>
+    <button name="submit" type="submit" class="btn btn-primary">
+      Import the application(s)
+    </button>
+  </app-page-actions>
+</form>

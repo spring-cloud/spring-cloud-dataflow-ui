@@ -38,7 +38,6 @@ import { TaskSchedulesComponent } from './task-schedules/task-schedules.componen
 import { TaskScheduleCreateComponent } from './task-schedule-create/task-schedule-create.component';
 import { TaskScheduleComponent } from './task-schedule/task-schedule.component';
 import { TaskScheduleSummaryComponent } from './task-schedule/summary/task-schedule-summary.component';
-import { TasksHeaderComponent } from './components/tasks-header/tasks-header.component';
 import { TaskSchedulesDestroyComponent } from './task-schedules-destroy/task-schedules-destroy.component';
 import { TaskDefinitionScheduleComponent } from './task-definition/schedules/task-definition-schedules.component';
 import { TaskDefinitionExecutionsComponent } from './task-definition/executions/task-definition-executions.component';
@@ -81,7 +80,6 @@ import { TaskSchedulesFilterPipe } from './task-schedules/task-schedules.filter'
     TaskScheduleCreateComponent,
     TaskScheduleComponent,
     TaskScheduleSummaryComponent,
-    TasksHeaderComponent,
     TaskSchedulesDestroyComponent,
     TaskDefinitionScheduleComponent,
     TaskDefinitionExecutionsComponent,
@@ -103,6 +101,9 @@ import { TaskSchedulesFilterPipe } from './task-schedules/task-schedules.filter'
     EditorService,
     ToolsService,
     ContentAssistService
+  ],
+  exports: [
+    TaskStatusComponent
   ]
 })
 export class TasksModule {

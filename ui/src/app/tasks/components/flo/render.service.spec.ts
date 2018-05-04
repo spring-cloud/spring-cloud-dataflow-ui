@@ -10,7 +10,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {EditorComponent, Flo, FloModule} from 'spring-flo';
 import {MockToolsService} from '../../../tests/mocks/mock-tools';
 import { LoggerService } from '../../../shared/services/logger.service';
-import * as _$ from "jquery";
+import * as _$ from 'jquery';
 
 const $: any = _$;
 

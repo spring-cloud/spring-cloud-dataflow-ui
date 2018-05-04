@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" (submit)="deployStream()">
+<form [formGroup]="formGroup" (submit)="deployStream()" dataflowLayoutType type="large">
   <p>Enter the list of properties into the text area field below. Alternatively, you can also select a file in your local file system, which is used to populate the text area field.</p>
   <div class="form-textarea">
     <div class="numbers">
@@ -11,20 +11,20 @@
     <textarea dataflowAutoResize autofocus formControlName="input"></textarea>
   </div>
   <div class="input-file">
-    <label class="btn-file btn btn-default" placement="bottom"
+    <label class="btn-file btn btn-default" placement="top" delay="500"
            tooltip="Please provide a text file containing properties. This will be used to populate the text area above.">
       <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
              (change)="fileChange($event)"/>
       Import a local file
     </label>
   </div>
-  <div class="footer-actions" style="text-align: center;padding:1rem 0;">
+  <app-page-actions>
     <a id="btn-cancel" class="btn btn-default" routerLink="/streams">Cancel</a>
-    <button id="btn-export" type="button" class="btn btn-primary" [disabled]="!isExportable" (click)="exportProps()">
+    <button id="btn-export" type="button" class="btn btn-default" [disabled]="!isExportable" (click)="exportProps()">
       Export
     </button>
     <button id="btn-deploy" type="submit" class="btn btn-primary" [disabled]="!isSubmittable">
       Deploy the stream
     </button>
-  </div>
+  </app-page-actions>
 </form>

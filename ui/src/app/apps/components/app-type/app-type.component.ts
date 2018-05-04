@@ -53,7 +53,7 @@ export class AppTypeComponent implements AfterContentInit, DoCheck {
 
       switch (this.label) {
         case 'TASK':
-          this.labelClass = 'primary';
+          this.labelClass = 'danger';
           break;
         case 'SINK':
           this.labelClass = 'warning';
