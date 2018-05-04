@@ -109,9 +109,9 @@ export class TaskDefinitionComponent implements OnInit {
       .pipe(mergeMap(
         (params: any) => {
           const arr = [];
-          arr.push(this.tasksService.getTaskExecutions({ task: params.id, size: 1, page: 0, sort: null, order: null }));
+          arr.push(this.tasksService.getTaskExecutions({ q: params.id, size: 1, page: 0, sort: null, order: null }));
           if (params.schedulerEnabled) {
-            arr.push(this.tasksService.getSchedules({ task: params.id, size: 1, page: 0, sort: null, order: null }));
+            arr.push(this.tasksService.getSchedules({ q: params.id, size: 1, page: 0, sort: null, order: null }));
           }
           return forkJoin([...arr])
             .pipe(map((forks) => {

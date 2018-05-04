@@ -61,7 +61,7 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
-      <button type="submit" class="btn btn-default" [disabled]="!canSubmit()">
+      <button type="submit" class="btn btn-primary" [disabled]="!canSubmit()">
         <span *ngIf="streamDefsToCreate().length === 1">
           <span *ngIf="deploy">Create and deploy the stream</span>
           <span *ngIf="!deploy">Create the stream</span>

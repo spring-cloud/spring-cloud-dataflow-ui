@@ -1,4 +1,4 @@
-$radius: 3px;
+$radius: 15px;
 
 span {
   display: inline-block;
@@ -7,20 +7,21 @@ span {
 a {
   cursor: auto;
   display: inline-block;
-  line-height: 20px;
+  line-height: 16px;
+  white-space: nowrap;
   span {
-    padding: 0 8px;
-    font-size: 12px;
-    font-weight: bold;
+    padding: .3em 0.8em .25em;
+    font-size: 13px;
+    //font-weight: bold;
     &:last-child {
-      background-color: #a7aeb6;
+      background-color: #777;
       color: #fff;
       border-top-right-radius: $radius;
       border-bottom-right-radius: $radius;
     }
     &:first-child {
-      background-color: #e6e8ea;
-      color: #243641;
+      background-color: #999;
+      color: #FFF;
       border-top-left-radius: $radius;
       border-bottom-left-radius: $radius;
     }
@@ -33,12 +34,12 @@ a {
     &:hover {
       span {
         &:last-child {
-          background-color: #87939f;
+          background-color: #555;
           color: #fff;
         }
         &:first-child {
-          background-color: #dde0e3;
-          color: #243641;
+          background-color: #777;
+          color: #FFF;
         }
       }
     }

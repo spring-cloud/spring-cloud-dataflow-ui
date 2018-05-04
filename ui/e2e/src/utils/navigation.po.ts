@@ -26,7 +26,7 @@ export class Navigation {
    * @returns {ElementFinder}
    */
   get() {
-    return element(by.css('#navbar'));
+    return element(by.css('#navigation'));
   }
 
   /**
@@ -34,8 +34,7 @@ export class Navigation {
    * @param {number} page
    */
   navigateTo(page: number) {
-    this.get().all(by.css('li a')).get(page).click();
+    this.get().all(by.css('.sidebar-item a')).get(page).click();
   }
-
 
 }

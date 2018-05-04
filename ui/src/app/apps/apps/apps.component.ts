@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { AppsService } from '../apps.service';
@@ -9,13 +9,14 @@ import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { AppsWorkaroundService } from '../apps.workaround.service';
 import { AppListParams } from '../components/apps.interface';
-import { OrderParams, SortParams } from '../../shared/components/shared.interface';
+import { SortParams } from '../../shared/components/shared.interface';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
+import { AppListBarComponent } from '../components/app-list-bar/app-list-bar.component';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -62,8 +63,6 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Current forms value
    */
   form: any = {
-    q: '',
-    type: '',
     checkboxes: []
   };
 
@@ -71,14 +70,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * State of App List Params
    * @type {SortParams}
    */
-  params: AppListParams = {
-    sort: 'name',
-    order: OrderParams.ASC,
-    page: 0,
-    size: 30,
-    q: '',
-    type: null
-  };
+  params: AppListParams = null;
 
   /**
    * Contain a key application of each selected application
@@ -90,6 +82,25 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Storage context
    */
   context: any;
+
+  /**
+   * List Bar Component
+   */
+  @ViewChild('listBar')
+  listBar: AppListBarComponent;
+
+  /**
+   * Applications selected actions
+   */
+  applicationsActions = [
+    {
+      id: 'unregister-apps',
+      icon: 'trash',
+      action: () => this.unregisterAppsSelected(),
+      title: 'Unregister application(s)',
+      disabled: false
+    }
+  ];
 
   /**
    * Constructor
@@ -109,6 +120,22 @@ export class AppsComponent implements OnInit, OnDestroy {
               private busyService: BusyService,
               private loggerService: LoggerService,
               private router: Router) {
+  }
+
+  /**
+   * Fire Action (row)
+   * @param action
+   * @param item
+   */
+  fireAction(action: string, item: AppRegistration) {
+    switch (action) {
+      case 'view':
+        this.view(item);
+        break;
+      case 'unregister':
+        this.unregisterApps([item]);
+        break;
+    }
   }
 
   /**
@@ -135,6 +162,35 @@ export class AppsComponent implements OnInit, OnDestroy {
     this.subscriptionFeatureInfo.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
+  }
+
+  /**
+   * Row actions
+   * @param {AppRegistration} item
+   * @param {number} index
+   */
+  applicationActions(item: AppRegistration, index: number) {
+    return [
+      {
+        id: 'view' + index,
+        icon: 'info-circle',
+        action: 'view',
+        title: 'Details',
+        disabled: false,
+        isDefault: true
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'remove' + index,
+        icon: 'trash',
+        action: 'unregister',
+        roles: ['ROLE_CREATE'],
+        title: 'Remove',
+        disabled: false
+      }
+    ];
   }
 
   /**
@@ -202,42 +258,11 @@ export class AppsComponent implements OnInit, OnDestroy {
   /**
    * Run the search
    */
-  search() {
-    this.params.q = this.form.q;
-    this.params.type = this.form.type;
+  search(value: AppListParams) {
+    this.params.q = value.q;
+    this.params.type = value.type;
     this.params.page = 0;
     this.loadAppRegistrations();
-  }
-
-  /**
-   * Used to determinate the state of the query parameters
-   *
-   * @returns {boolean} Search is active
-   */
-  isSearchActive() {
-    return (this.form.type !== this.params.type) || (this.form.q !== this.params.q);
-  }
-
-  /**
-   * Reset the search parameters and run the search
-   */
-  clearSearch() {
-    this.form.q = '';
-    this.form.type = '';
-    this.search();
-  }
-
-  /**
-   * Determine if there is no application
-   */
-  isAppsEmpty(): boolean {
-    if (this.appRegistrations) {
-      if (this.appRegistrations.totalPages < 2) {
-        return (this.params.q === '' && (this.params.type === null || this.params.type.toString() === '')
-          && this.appRegistrations.items.length === 0);
-      }
-    }
-    return false;
   }
 
   /**
@@ -265,25 +290,12 @@ export class AppsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Used for requesting a new page. The past is page number is
-   * 1-index-based. It will be converted to a zero-index-based
-   * page number under the hood.
-   *
-   * @param page 1-index-based
+   * Update event from the Paginator Pager
+   * @param params
    */
-  getPage(page: number) {
-    this.params.page = page - 1;
-    this.loadAppRegistrations();
-  }
-
-  /**
-   * Changes items per page
-   * Reset the pagination (first page)
-   * @param {number} size
-   */
-  changeSize(size: number) {
-    this.params.size = size;
-    this.params.page = 0;
+  changePaginationPager(params) {
+    this.params.page = params.page;
+    this.params.size = params.size;
     this.updateContext();
     this.loadAppRegistrations();
   }
@@ -317,17 +329,9 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Navigate to the page in order to register a new
    * {@link AppRegistration}.
    */
-  registerApps() {
-    this.loggerService.log('Go to Register page ...');
-    this.router.navigate(['apps/register-apps']);
-  }
-
-  /**
-   * Navigate to the page that allows for the bulk import of {@link AppRegistration}s.
-   */
-  bulkImportApps() {
-    this.loggerService.log('Go to Bulk Import page ...');
-    this.router.navigate(['apps/bulk-import-apps']);
+  addApps() {
+    this.loggerService.log('Go to Add Application page ...');
+    this.router.navigate(['/apps/add']);
   }
 
   /**

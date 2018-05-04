@@ -16,6 +16,11 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 import { NotificationService } from '../../shared/services/notification.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -39,12 +44,17 @@ describe('TaskLaunchComponent', () => {
         TaskLaunchComponent,
         DataflowDateTimePipe,
         DataflowDurationPipe,
-        LoaderComponent
+        LoaderComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        PagerComponent
       ],
       imports: [
         NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
+        NgxPaginationModule,
+        BsDropdownModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [

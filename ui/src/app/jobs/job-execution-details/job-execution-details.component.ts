@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { JobsService } from '../jobs.service';
 import { JobExecution } from '../model/job-execution.model';
 import { StepExecution } from '../model/step-execution.model';

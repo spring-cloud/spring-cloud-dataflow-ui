@@ -1,0 +1,407 @@
+$highlight-background-color: $navy-9;
+$sidebar-item-left-padding: 60px;
+$active-item-border-size: $base-unit / 2;
+$font-size-lg: 20px;
+$sidebar-width: 60px;
+$sidebar-width-large: 240px;
+
+#sidebar {
+  background-color: $dark-11;
+  width: $sidebar-width;
+  color: $gray-3;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 16px;
+  z-index: 888;
+  border-right: 1px solid #dfe5e8;
+  @include transition(width .1s);
+
+  .text {
+    white-space: nowrap;
+  }
+
+  .sidebar-divider {
+    border-top: 1px solid $navy-8;
+  }
+
+  .sidebar-header {
+    padding: 16px 16px 16px 6px;
+    .logo-link {
+      span {
+        display: block;
+      }
+      &:hover, &:active, &:focus, &:visited {
+        text-decoration: none;
+      }
+    }
+    .icon {
+      height: 34px;
+      width: 50px;
+      position: absolute;
+      top: 12px;
+      left: 6px;
+      svg {
+        height: 30px;
+        width: 45px;
+      }
+    }
+    .sidebar-title {
+      display: block;
+      color: $dark-1;
+      font-size: $font-size-lg - 2px;
+      align-self: center;
+      font-weight: normal;
+      padding-left: $sidebar-width;
+      padding-top: 2px;
+      white-space: nowrap;
+      strong {
+        font-weight: normal;
+        color: $brand-8;
+      }
+    }
+  }
+
+  .sidebar-item {
+    font-size: 16px;
+    border-left: $active-item-border-size solid transparent;
+
+    &.active {
+      background-color: $highlight-background-color;
+      border-left: $active-item-border-size solid $brand-8;
+      a {
+        color: $dark-1;
+        &:hover {
+          color: $dark-1;
+        }
+      }
+      .sidebar-item a {
+        color: $dark-1;
+        padding-left: $sidebar-item-left-padding;
+      }
+    }
+
+    .sidebar-item a {
+      padding-left: $sidebar-item-left-padding;
+    }
+  }
+
+  .sidebar-footer {
+    position: absolute;
+    bottom: 0;
+  }
+
+  .sidebar-item > a {
+    position: relative;
+    text-decoration: none;
+    color: $neutral-3;
+    padding: $base-unit $base-unit $base-unit $sidebar-item-left-padding;
+    display: block;
+    cursor: pointer;
+    height: 40px;
+
+    .icon-right {
+      position: absolute;
+      right: 15px;
+      top: 13px;
+      //TODO
+      display: none;
+    }
+
+    &:hover {
+      color: $neutral-3;
+      text-decoration: underline;
+    }
+  }
+
+  .sidebar-fa {
+    position: absolute;
+    top: 13px;
+    left: 0px;
+    width: $sidebar-width - 4px;
+    text-align: center;
+  }
+  .sidebar-items div.sidebar-item-copyright {
+    display: block;
+    border-top: 1px solid $highlight-background-color;
+    border-left: 0 none;
+    font-size: 13px;
+    line-height: 20px;
+    padding-bottom: 1.5rem;
+    padding-left: 20px;
+    text-decoration: none;
+    color: $neutral-4;
+  }
+
+  .sidebar-user {
+    border-bottom: 2px solid $highlight-background-color;
+    border-top: 2px solid $highlight-background-color;
+    margin-bottom: 1rem;
+    padding: 10px 0;
+    color: $dark-1;
+    .sidebar-user-info {
+      position: relative;
+      padding: 0 0 0 40px;
+      span.fa {
+        position: absolute;
+        top: 3px;
+        left: 15px;
+      }
+    }
+    ul {
+      margin: 0;
+      list-style: none;
+      padding: 0 0 0 40px;
+    }
+    .sidebar-user-login {
+      text-align: center;
+      .sidebar-user-login-text {
+        padding-bottom: 8px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .sidebar-items-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  app-navigation-search {
+    height: 54px;
+    .sidebar-quicksearch-input {
+      display: none;
+    }
+    .sidebar-button {
+      height: 32px;
+      position: relative;
+      a {
+        position: absolute;
+        text-align: center;
+        top: -6px;
+        left: -10px;
+        height: 45px;
+        width: 50px;
+        line-height: 45px;
+        cursor: pointer;
+        color: $navy-3;
+      }
+    }
+    .sidebar-quicksearch-result {
+      .sidebar-quicksearch-input {
+        display: block;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .sidebar-quicksearch {
+    position: relative;
+    margin-top: 1px;
+    margin-bottom: 5px;
+    padding: 10px 15px;
+    border-top: 1px solid $highlight-background-color;
+    border-bottom: 1px solid $highlight-background-color;
+    .sidebar-quicksearch-input {
+      position: relative;
+      .fa {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        color: $navy-8;
+      }
+      input.form-control {
+        height: 32px;
+        padding-left: 30px;
+      }
+      app-loader {
+        padding: 0;
+        position: absolute;
+        top: 4px;
+        right: 0px;
+      }
+    }
+    .sidebar-quicksearch-result {
+      position: fixed;
+      display: none;
+      top: 0px;
+      left: $sidebar-width;
+      bottom: 0;
+      background-color: white;
+      border-right: 1px solid $highlight-background-color;
+      width: 500px;
+      color: $navy-1;
+      box-shadow: 6px 0 10px rgba(0, 0, 0, .08);
+      &::after {
+        content: ' ';
+        height: 52px;
+        width: 1px;
+        background: white;
+        position: fixed;
+        top: 60px;
+        left: 239px;
+        display: none;
+      }
+      .result-content {
+        padding: 19px 2rem;
+        h1 {
+          font-size: 20px;
+          border-bottom: 1px solid $highlight-background-color;
+          padding-bottom: 20px;
+          height: 41px;
+          margin-bottom: 1rem;
+        }
+      }
+      .result-item {
+        margin-bottom: 2rem;
+        h2 {
+          font-size: 16px;
+          margin-bottom: 5px;
+          font-weight: 600;
+          //color: $brand-8;
+          border-bottom: 1px solid $highlight-background-color;
+        }
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          li {
+            padding: 0;
+            margin: 0;
+            a {
+              position: relative;
+              display: block;
+              color: $navy-3;
+              cursor: pointer;
+              margin: 0 -1.5rem;
+              padding: 0.8rem 1.5rem;
+              text-decoration: none;
+              .label {
+                margin-left: 6px;
+              }
+              &:hover {
+                color: $navy-1;
+                background: $navy-11;
+              }
+            }
+          }
+        }
+        p.more-result {
+          color: $blue-5;
+          font-size: 12px;
+          margin: 0;
+        }
+      }
+    }
+    &.open {
+      background: white;
+      .sidebar-quicksearch-input {
+        .fa {
+          color: $navy-2
+        }
+      }
+      .sidebar-quicksearch-result {
+        display: block;
+      }
+    }
+  }
+
+}
+
+#content {
+  @include transition(margin-left .1s);
+  margin-left: 60px;
+}
+
+.page-step-1 {
+  left: $sidebar-width;
+}
+
+.page-step-2 {
+  left: $sidebar-width + 500px;
+  .dataflow-page-head {
+    left: $sidebar-width + 500px -1px;
+  }
+}
+
+.page-step-1, .page-step-2, .dataflow-page-head {
+  @include transition(left .1s);
+}
+
+.sidebar-fixed {
+  #sidebar {
+    width: $sidebar-width-large;
+    app-navigation-search {
+      height: 54px;
+      .sidebar-quicksearch-input {
+        display: block;
+      }
+      .sidebar-button {
+        display: none;
+      }
+
+      .sidebar-quicksearch-result {
+        left: $sidebar-width-large;
+        &::after {
+          display: block;
+        }
+      }
+    }
+  }
+  #content {
+    margin-left: $sidebar-width-large;
+  }
+  .dataflow-page-head {
+    left: $sidebar-width-large;
+  }
+  .page-step-1 {
+    left: $sidebar-width-large;
+  }
+  .page-step-2 {
+    left: $sidebar-width-large + 500px;
+    .dataflow-page-head {
+      left: $sidebar-width-large + 500px -1px;
+      app-page-head-back {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  /*.sidebar-fixed {
+    .page-step-1 {
+      left: $sidebar-width;
+    }
+    #sidebar {
+      width: $sidebar-width;
+
+      app-navigation-search {
+        height: 54px;
+        .sidebar-quicksearch {
+          display: none;
+        }
+      }
+      .sidebar-item-collapser {
+        display: none;
+      }
+    }
+    #content {
+      margin-left: $sidebar-width;
+    }
+    .dataflow-page-head {
+      left: $sidebar-width;
+    }
+    .page-step-2 {
+      left: $sidebar-width + 500px;
+    }
+    .page-step-2-head {
+      left: $sidebar-width + 500px -1px;
+    }
+  }*/
+}

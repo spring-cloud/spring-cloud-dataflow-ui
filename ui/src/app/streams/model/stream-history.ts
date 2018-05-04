@@ -30,9 +30,6 @@ export class StreamHistory {
     let firstDeployed;
     let statusCode;
     let description;
-
-    console.log(input);
-
     if (input['info']) {
       description = input.info.description;
       firstDeployed = input.info.firstDeployed;

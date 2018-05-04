@@ -1,12 +1,15 @@
-<div *ngIf="taskDefinition$ | async as taskDefinition; else loading">
+<app-page *ngIf="taskDefinition$ | async as taskDefinition; else loading">
+
+
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/tasks/definitions/' + taskDefinition.name"></app-page-head-back>
+    <app-page-head-title>Launch task <strong>{{ taskDefinition.name }}</strong></app-page-head-title>
+  </app-page-head>
+
+  <p>This action will launch the <strong>task definition</strong>.
+    Optionally, you can add properties and arguments.</p>
+
   <form [formGroup]="form" class="form-horizontal" role="form" (ngSubmit)="submit(taskDefinition.name)" novalidate>
-    <div class="heading">
-      <div class="description">
-        <h1 class="no-user-selection">Launch task <strong>{{ taskDefinition.name }}</strong></h1>
-        <p>This action will launch the <strong>task definition</strong>.
-          Optionally, you can add properties and arguments.</p>
-      </div>
-    </div>
     <div class="builder">
       <div class="row">
         <div class="col-md-12">
@@ -44,10 +47,10 @@
                   </div>
                 </td>
                 <td class="table-actions" width="10px" nowrap="">
-                  <div class="actions" role="group">
+                  <div class="actions-btn" role="group">
                     <button [disabled]="form.get('args').controls.length == (i+1)" type="button" class="btn btn-danger"
                             (click)="form.get('args').removeAt(i)">
-                      <span class="glyphicon glyphicon-remove"></span>
+                      <span class="fa fa-times" style="margin-top: 2px"></span>
                     </button>
                   </div>
                 </td>
@@ -91,11 +94,11 @@
                   </div>
                 </td>
                 <td class="table-actions" width="10px" nowrap="">
-                  <div class="actions" role="group">
+                  <div class="actions-btn" role="group">
                     <button [disabled]="form.get('params').controls.length == (i + 1)" type="button"
                             class="btn btn-danger"
                             (click)="form.get('params').removeAt(i)">
-                      <span class="glyphicon glyphicon-remove"></span>
+                      <span class="fa fa-times" style="margin-top: 2px"></span>
                     </button>
                   </div>
                 </td>
@@ -106,16 +109,18 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;padding: 2rem 0">
+
+    <app-page-actions>
       <button type="button" class="btn btn-default" (click)="cancel(taskDefinition)">
-        Back
+        Cancel
       </button>
       <button [disabled]="form.invalid" type="submit" class="btn btn-primary">
         Launch the task
       </button>
-    </div>
+    </app-page-actions>
+
   </form>
-</div>
+</app-page>
 <ng-template #loading>
   <app-loader></app-loader>
 </ng-template>

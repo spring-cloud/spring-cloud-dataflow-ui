@@ -6,6 +6,9 @@
   .dropdown-menu {
     min-width: 70px;
   }
+  .btn-group {
+    margin-left: 10px;
+  }
 }
 
 .app-pager-divider {
@@ -26,3 +29,9 @@
 .dropdown-item {
   cursor: pointer;
 }
+
+.dropup .caret {
+  border-bottom: 0;
+  border-top: 4px dashed;
+}
+

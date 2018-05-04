@@ -1,0 +1,63 @@
+
+table.table {
+  table-layout: auto;
+}
+.table > thead > tr > th, .table > thead > tr > td, .table > tbody > tr > th, .table > tbody > tr > td, .table > tfoot > tr > th, .table > tfoot > tr > td {
+  border-right: 0 none;
+  border-left: 0 none;
+}
+
+
+table.table-actions, table.table-checkbox {
+  td.table-actions {
+    padding: 4px;
+    text-align: center;
+
+    div.actions-btn {
+      white-space: nowrap;
+      .btn {
+        padding: 0 10px;
+        .fa {
+          margin-top: 6px;
+        }
+        .fa-ellipsis-h {
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
+
+table.table {
+  border: 0 none;
+
+  tr {
+    border-left: 0 none;
+    border-right: 0 none;
+    &:first-child {
+      border-top: 0 none;
+    }
+    &:last-child {
+      border-bottom: 0 none;
+    }
+  }
+  > thead > tr > th {
+    border-bottom: 1px solid $navy-8;
+  }
+  tr.align-middle {
+    td {
+      vertical-align: middle;
+    }
+  }
+}
+
+table.table-checkbox {
+  tbody tr td {
+    vertical-align: middle;
+  }
+  thead tr th:first-child, tbody tr td:first-child {
+    border-right: 0 none;
+    padding-right: 0.2rem;
+    padding-left: 1.5rem;
+  }
+}

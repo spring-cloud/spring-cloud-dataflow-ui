@@ -22,9 +22,11 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 }
 
+
 table.table-apps {
   width: auto;
   min-width: 400px;
+  background-color: white;
 
   td.table-actions {
     padding: 4px;
@@ -39,6 +41,7 @@ table.table-apps {
   }
 
 }
+
 
 table.table {
   background: white;

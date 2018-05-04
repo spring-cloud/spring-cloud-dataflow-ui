@@ -1,28 +1,6 @@
 <div *ngIf="stream$ | async as stream; else loading">
 
-  <div class="stream-actions">
-    <button name="stream-stop" type="button" [appRoles]="['ROLE_CREATE']"
-            [disabled]="(stream.streamDefinition.status === 'undeployed'
-            || stream.streamDefinition.status === 'incomplete')"
-            (click)="undeploy(stream.streamDefinition)"
-            class="btn btn-default" title="Undeploy">
-      <span class="glyphicon glyphicon-stop"></span>
-      Undeploy
-    </button>
-    <button name="stream-deploy" type="button" [appRoles]="['ROLE_CREATE']"
-            (click)="deploy(stream.streamDefinition)"
-            class="btn btn-default" title="Deploy">
-      <span class="glyphicon glyphicon-play"></span>
-      Deploy
-    </button>
-    <button name="stream-remove" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(stream.streamDefinition)"
-            class="btn btn-danger" title="Destroy">
-      <span class="glyphicon glyphicon-trash"></span>
-      Destroy
-    </button>
-  </div>
-
-  <div>
+  <div dataflowLayoutType type="large">
     <div class="row stream-summary-row">
       <div class="col-md-3">
         <strong>Definition:</strong>
@@ -66,9 +44,9 @@
               <app-type [application]="app"></app-type>
             </td>
             <td class="table-actions" width="10px" nowrap="">
-              <div class="actions" role="group">
+              <div class="actions-btn" role="group">
                 <a routerLink="/apps/{{ app.type }}/{{ app.origin }}" class="btn btn-default" title="Details">
-                  <span class="glyphicon glyphicon-search"></span>
+                  <span class="fa fa-ellipsis-h"></span>
                 </a>
               </div>
             </td>

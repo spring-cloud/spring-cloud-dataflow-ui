@@ -34,7 +34,6 @@ export class StreamStatusComponent implements OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     if (changes.streamDefinition) {
-      console.log(changes.streamDefinition.currentValue.status);
       if (changes.streamDefinition.currentValue.status) {
         this.label = changes.streamDefinition.currentValue.status.toString().toUpperCase();
       } else {

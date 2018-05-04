@@ -6,6 +6,10 @@ import { StreamsService } from '../streams.service';
 import { Observable } from 'rxjs/Observable';
 import { StreamDefinition } from '../model/stream-definition';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
+import { Router } from '@angular/router';
+import { LoggerService } from '../../shared/services/logger.service';
+import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { NotificationService } from '../../shared/services/notification.service';
 import { EMPTY } from 'rxjs/index';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
@@ -30,20 +34,21 @@ import { FeatureInfo } from 'src/app/shared/model/about/feature-info.model';
 export class StreamComponent implements OnInit {
 
   /**
+   <<<<<<< HEAD
    * Observable of StreamDefinition
    */
   streamDefinition$: Observable<any>;
 
   /**
-   * Constructor
-   * @param {ActivatedRoute} route
-   * @param {StreamsService} streamsService
-   * @param {NotificationService} notificationService
-   * @param {SharedAboutService} sharedAboutService
-   * @param {RoutingStateService} routingStateService
+   * Modal
    */
+  modal: BsModalRef;
+
   constructor(private route: ActivatedRoute,
               private streamsService: StreamsService,
+              private loggerService: LoggerService,
+              private router: Router,
+              private modalService: BsModalService,
               private notificationService: NotificationService,
               private sharedAboutService: SharedAboutService,
               private routingStateService: RoutingStateService) {
@@ -55,10 +60,10 @@ export class StreamComponent implements OnInit {
   ngOnInit() {
     this.streamDefinition$ = this.route.params
       .pipe(mergeMap(
-        (param: Params) => this.sharedAboutService.getFeatureInfo()
-          .pipe(map((featureInfo: FeatureInfo) => {
+        (val) => this.sharedAboutService.getFeatureInfo()
+          .pipe(map((featureInfo) => {
             return {
-              id: param.id,
+              id: val.id,
               featureInfo: featureInfo
             };
           }))
@@ -82,11 +87,49 @@ export class StreamComponent implements OnInit {
   }
 
   /**
+   * Undeploy the stream
+   *
+   * @param {StreamDefinition} streamDefinition
+   */
+  undeploy(streamDefinition: StreamDefinition) {
+    this.loggerService.log(`Undeploy ${streamDefinition.name} stream definition(s).`, streamDefinition);
+    this.streamsService
+      .undeployDefinition(streamDefinition)
+      .subscribe(() => {
+        this.notificationService.success(`Successfully undeployed stream definition "${streamDefinition.name}"`);
+        this.ngOnInit();
+      });
+  }
+
+  /**
+   * Deploy the stream, navigation to the dedicate page
+   *
+   * @param {StreamDefinition} streamDefinition
+   */
+  deploy(streamDefinition: StreamDefinition) {
+    this.router.navigate([`streams/definitions/${streamDefinition.name}/deploy`]);
+  }
+
+  /**
+   * Destroy the stream
+   *
+   * @param {StreamDefinition} streamDefinition
+   */
+  destroy(streamDefinition: StreamDefinition) {
+    this.loggerService.log(`Destroy ${name} stream definition.`, name);
+    this.modal = this.modalService.show(StreamsDestroyComponent, { class: 'modal-md' });
+    this.modal.content.open({ streamDefinitions: [streamDefinition] }).subscribe(() => {
+      this.cancel();
+    });
+  }
+
+  /**
    * Back action
    * Navigate to the previous URL or /streams/definitions
    */
   cancel() {
     this.routingStateService.back('/streams/definitions', /^(\/streams\/definitions\/)/);
   }
+
 
 }

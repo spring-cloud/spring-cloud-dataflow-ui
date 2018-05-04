@@ -1,24 +1,22 @@
-<div *ngIf="stepExecutionDetails$ | async as stepExecutionDetails; else loading">
+<app-page *ngIf="stepExecutionDetails$ | async as stepExecutionDetails; else loading">
 
-  <div class="heading">
-    <div class="description">
-      <h1>
-        Step Execution Progress <strong>{{ stepExecutionDetails.stepExecution.stepExecution.name }}</strong>
-        ({{ stepExecutionDetails.stepExecution.stepExecution.id }})
-      </h1>
-      <h2>
-        Job execution <strong>{{ stepExecutionDetails.jobExecution.name }}</strong>
-        ({{ stepExecutionDetails.jobExecution.jobExecutionId }})
-      </h2>
-    </div>
-    <div class="actions">
-      <button id="refresh" class="btn btn-default" (click)="refresh()">
-        <span class="glyphicon glyphicon-refresh"></span>
-      </button>
-    </div>
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/jobs/executions/' + jobId + '/' + stepExecutionDetails.stepExecution.stepExecution.id"></app-page-head-back>
+    <app-page-head-title>
+      Step Execution Progress <strong>{{ stepExecutionDetails.stepExecution.stepExecution.name }}
+      ({{ stepExecutionDetails.stepExecution.stepExecution.id }})</strong>
+      - Job execution  <strong>{{ stepExecutionDetails.jobExecution.name }}</strong>
+      ({{ stepExecutionDetails.jobExecution.jobExecutionId }})
+    </app-page-head-title>
+  </app-page-head>
+
+  <div class="list-bar">
+    <button id="refresh" class="btn btn-default btn-fa" (click)="refresh()" title="Refresh" type="button">
+      <span class="fa fa-refresh"></span>
+      Refresh
+    </button>
   </div>
 
-  <hr>
 
   <div *ngIf="stepExecutionDetails.stepExecutionProgress.percentageComplete < 1">
     <h4>Percentage Complete</h4>
@@ -129,11 +127,7 @@
     </table>
   </div>
 
-  <div style="text-align: center;padding-top: 10px;">
-    <button id="back" class="btn btn-default" (click)="back()">Back</button>
-  </div>
-
-</div>
+</app-page>
 
 <ng-template #loading>
   <app-loader></app-loader>

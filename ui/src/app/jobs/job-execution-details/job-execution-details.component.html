@@ -1,14 +1,12 @@
-<div *ngIf="jobExecution$ | async as jobExecution; else loading">
+<app-page *ngIf="jobExecution$ | async as jobExecution; else loading">
 
-  <div class="heading">
-    <div class="description">
-      <h1>Job execution <strong>{{ jobExecution.name }}</strong>
-        ({{ jobExecution.jobExecutionId }})</h1>
-      <p>This section shows the details of the job execution.</p>
-    </div>
-  </div>
 
-  <hr>
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/jobs/executions'" [isNotRegex]="'^(\/jobs\/executions\/)'"></app-page-head-back>
+    <app-page-head-title>Job execution <strong>{{ jobExecution.name }} ({{ jobExecution.jobExecutionId }})</strong></app-page-head-title>
+  </app-page-head>
+
+  <p>This section shows the details of the job execution.</p>
 
   <div *ngIf="!jobExecution">
     No Job Execution available.
@@ -108,10 +106,10 @@
           <app-job-execution-status [status]="stepExecution.status"></app-job-execution-status>
         </td>
         <td class="table-actions" width="10px">
-          <div class="actions">
+          <div class="actions-btn">
             <button type="button" (click)="viewStep(jobExecution, stepExecution)"
                     class="btn btn-default" title="Details">
-              <span class="glyphicon glyphicon-search"></span>
+              <span class="fa fa-ellipsis-h"></span>
             </button>
           </div>
         </td>
@@ -120,11 +118,7 @@
     </table>
   </div>
 
-  <div class="text-center">
-    <button id="button-back" type="button" class="btn btn-default" (click)="back()">Back</button>
-  </div>
-
-</div>
+</app-page>
 <ng-template #loading>
   <app-loader></app-loader>
 </ng-template>

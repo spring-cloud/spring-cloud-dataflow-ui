@@ -59,6 +59,7 @@ export class JobsComponent implements OnInit, OnDestroy {
    * @param {JobsService} jobsService
    * @param {NotificationService} notificationService
    * @param {ConfirmService} confirmService
+   * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(private busyService: BusyService,
@@ -90,6 +91,57 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Job Actions
+   * @param {JobExecution} item
+   * @param {number} index
+   */
+  jobActions(item: JobExecution, index: number) {
+    return [
+      {
+        id: 'job-view' + index,
+        icon: 'info-circle',
+        action: 'view',
+        title: 'View the job',
+        disabled: false,
+        isDefault: true
+      },
+      {
+        id: 'job-restart' + index,
+        icon: 'repeat',
+        action: 'restart',
+        title: 'Restart the job',
+        disabled: false
+      },
+      {
+        id: 'job-stop' + index,
+        icon: 'stop',
+        action: 'stop',
+        title: 'Stop the job',
+        disabled: !item.stoppable
+      }
+    ];
+  }
+
+  /**
+   * Fire Action (row)
+   * @param action
+   * @param item
+   */
+  fireAction(action: string, item: JobExecution) {
+    switch (action) {
+      case 'view':
+        this.viewJob(item);
+        break;
+      case 'restart':
+        this.restartJob(item);
+        break;
+      case 'stop':
+        this.stopJob(item);
+        break;
+    }
+  }
+
+  /**
    * Load a paginated list of {@link JobExecution}s.
    */
   public loadJobExecutions() {
@@ -111,25 +163,12 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Used for requesting a new page. The past is page number is
-   * 1-index-based. It will be converted to a zero-index-based
-   * page number under the hood.
-   *
-   * @param page 1-index-based
+   * Update event from the Paginator Pager
+   * @param params
    */
-  getPage(page: number) {
-    this.params.page = page - 1;
-    this.loadJobExecutions();
-  }
-
-  /**
-   * Changes items per page
-   * Reset the pagination (first page)
-   * @param {number} size
-   */
-  changeSize(size: number) {
-    this.params.size = size;
-    this.params.page = 0;
+  changePaginationPager(params) {
+    this.params.page = params.page;
+    this.params.size = params.size;
     this.updateContext();
     this.loadJobExecutions();
   }
@@ -183,18 +222,6 @@ export class JobsComponent implements OnInit, OnDestroy {
           }
         );
     });
-  }
-
-  /**
-   * Determine if there is no job
-   */
-  isJobEmpty(): boolean {
-    if (this.jobExecutions) {
-      if (this.jobExecutions.totalPages < 2) {
-        return this.jobExecutions.items.length === 0;
-      }
-    }
-    return false;
   }
 
   /**

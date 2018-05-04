@@ -1,4 +1,7 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component, OnDestroy, OnInit, Renderer2,
+  ViewChild, ViewEncapsulation, HostListener
+} from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Flo } from 'spring-flo';
 import { ParserService } from '../../shared/services/parser.service';
@@ -11,9 +14,11 @@ import { StreamCreateDialogComponent } from './create-dialog/create-dialog.compo
 import { ContentAssistService } from '../components/flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { EditorComponent } from 'spring-flo';
+import { NotificationService } from '../../shared/services/notification.service';
 
 
 /**
@@ -47,11 +52,15 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   initSubject: Subject<void>;
 
+  @ViewChild(EditorComponent) flo;
+
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,
               public editorService: EditorService,
               private bsModalService: BsModalService,
+              private renderer: Renderer2,
               private busyService: BusyService,
+              private notificationService: NotificationService,
               private contentAssistService: ContentAssistService,
               private loggerService: LoggerService,
               private parserService: ParserService) {
@@ -81,6 +90,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.resizeFloGraph();
   }
 
   /**
@@ -95,12 +105,30 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.resizeFloGraph();
+  }
+
+  resizeFloGraph(height?: number) {
+    const viewEditor = this.flo.element.nativeElement.children[2];
+    if (height) {
+      height = height - 330;
+    } else {
+      height = document.documentElement.clientHeight - 330;
+    }
+    this.renderer.setStyle(viewEditor, 'height', `${Math.max(height, 300)}px`);
+  }
 
   setEditorContext(editorContext: Flo.EditorContext) {
     this.editorContext = editorContext;
     if (this.editorContext) {
       const subscription = this.editorContext.paletteReady
         .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(map((value) => {
+          this.resizeFloGraph();
+          return value;
+        }))
         .subscribe(ready => {
           if (ready) {
             subscription.unsubscribe();
@@ -124,12 +152,16 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   createStreamDefs() {
-    const bsModalRef = this.bsModalService
-      .show(StreamCreateDialogComponent, { class: 'modal-lg' });
+    if (this.isCreateStreamsDisabled) {
+      this.notificationService.error('Some field(s) are missing or invalid.');
+    } else {
+      const bsModalRef = this.bsModalService
+        .show(StreamCreateDialogComponent, { class: 'modal-lg' });
 
-    bsModalRef.content.open({ dsl: this.dsl }).subscribe(() => {
-      this.editorContext.clearGraph();
-    });
+      bsModalRef.content.open({ dsl: this.dsl }).subscribe(() => {
+        this.editorContext.clearGraph();
+      });
+    }
   }
 
   contentAssist(doc: CodeMirror.EditorFromTextArea) {

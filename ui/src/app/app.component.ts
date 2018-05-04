@@ -10,7 +10,6 @@ import { RoutingStateService } from './shared/services/routing-state.service';
 })
 export class AppComponent implements OnInit {
 
-
   public busy: any = [];
 
   constructor(private renderer: Renderer2,
@@ -39,6 +38,7 @@ export class AppComponent implements OnInit {
         }
       }
     });
+
   }
 
 }

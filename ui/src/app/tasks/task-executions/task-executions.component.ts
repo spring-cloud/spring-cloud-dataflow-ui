@@ -36,12 +36,6 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
-  /**
-   * Current forms value
-   */
-  form: any = {
-    q: ''
-  };
 
   /**
    * State of App List Params
@@ -81,8 +75,39 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.context = this.tasksService.executionsContext;
     this.params = { ...this.context };
-    this.form = { q: this.context.q };
     this.refresh();
+  }
+
+
+  /**
+   * Execution actions
+   * @param {TaskExecution} item
+   * @param {number} index
+   */
+  executionActions(item: TaskExecution, index: number) {
+    return [
+      {
+        id: 'details-execution' + index,
+        icon: 'info-circle',
+        action: 'details',
+        title: 'Details execution',
+        disabled: false,
+        isDefault: true
+      }
+    ];
+  }
+
+  /**
+   * Fire Action (row)
+   * @param action
+   * @param item
+   */
+  fireAction(action: string, item: TaskExecution) {
+    switch (action) {
+      case 'details':
+        this.details(item);
+        break;
+    }
   }
 
   /**
@@ -141,18 +166,6 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Determine if there is no task execution
-   */
-  isExecutionsEmpty(): boolean {
-    if (this.taskExecutions) {
-      if (this.taskExecutions.totalPages < 2) {
-        return this.taskExecutions.items.length === 0;
-      }
-    }
-    return false;
-  }
-
-  /**
    * Used for requesting a new page. The past is page number is
    * 1-index-based. It will be converted to a zero-index-based
    * page number under the hood.
@@ -166,13 +179,12 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Changes items per page
-   * Reset the pagination (first page)
-   * @param {number} size
+   * Change pagination / Pager
+   * @param params
    */
-  changeSize(size: number) {
-    this.params.size = size;
-    this.params.page = 0;
+  changePaginationPager(params) {
+    this.params.page = params.page;
+    this.params.size = params.size;
     this.updateContext();
     this.refresh();
   }

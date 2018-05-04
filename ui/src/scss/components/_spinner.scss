@@ -1,0 +1,14 @@
+
+@keyframes fade-index-spinner {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-index-spinner {
+  animation: fade-index-spinner ease-in-out 1s;
+  animation-fill-mode: forwards;
+}

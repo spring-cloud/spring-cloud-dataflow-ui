@@ -1,4 +1,4 @@
-<div *ngIf="runtimeApp$ | async as runtimeApp; else loading" id="page">
+<div dataflowLayoutType type="full" *ngIf="runtimeApp$ | async as runtimeApp; else loading" id="page">
   <div class="modal-header">
     <h4 class="modal-title pull-left">Instances for app <strong>{{ runtimeApp.deploymentId }}</strong></h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
@@ -11,7 +11,7 @@
         <div class="panel-heading">
           Instance
           <strong>{{ item.instanceId }}</strong>
-          <app-runtime-state [runtimeApp]="item"></app-runtime-state>
+          <app-runtime-state style="margin-left: 10px" [runtimeApp]="item"></app-runtime-state>
         </div>
         <div class="panel-content">
           <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalues">

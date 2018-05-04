@@ -1,4 +1,4 @@
-import { Component, ViewChild, forwardRef } from '@angular/core';
+import { Component, forwardRef, ViewChild } from '@angular/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { TimepickerValidator } from './timepicker.validator';

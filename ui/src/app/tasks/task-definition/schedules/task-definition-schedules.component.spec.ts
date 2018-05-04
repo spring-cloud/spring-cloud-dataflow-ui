@@ -20,7 +20,7 @@ import { SharedAboutService } from '../../../shared/services/shared-about.servic
 import { RolesDirective } from '../../../auth/directives/roles.directive';
 import { AuthService } from '../../../auth/auth.service';
 import { MockModalService } from '../../../tests/mocks/modal';
-import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { ToolsService } from '../../components/flo/tools.service';
@@ -34,6 +34,9 @@ import { MasterCheckboxComponent } from '../../../shared/components/master-check
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TaskSchedulesDestroyComponent } from '../../task-schedules-destroy/task-schedules-destroy.component';
+import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
+import { Observable } from 'rxjs/Rx';
 
 /**
  * Test {@link TaskDefinitionScheduleComponent}.
@@ -68,7 +71,9 @@ describe('TaskDefinitionScheduleComponent', () => {
         PagerComponent,
         LoaderComponent,
         SortComponent,
-        MasterCheckboxComponent
+        MasterCheckboxComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST
       ],
       imports: [
         NgxPaginationModule,
@@ -137,12 +142,14 @@ describe('TaskDefinitionScheduleComponent', () => {
       const message = fixture.debugElement.query(By.css('#empty')).nativeElement;
       expect(message).toBeTruthy();
     });
+
     /*
         it('should not display the search', () => {
           const search = fixture.debugElement.query(By.css('#filters'));
           expect(search).toBeNull();
         });
     */
+
     it('should not display the table', () => {
       const table = fixture.debugElement.query(By.css('#taskSchedulesTable'));
       expect(table).toBeNull();
@@ -192,16 +199,14 @@ describe('TaskDefinitionScheduleComponent', () => {
     });
 
     it('should delete a schedule', () => {
-      const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskSchedulesTable tbody tr'))[0];
       const spy = spyOn(component, 'destroySchedules');
-      line.query(By.css('.actions button[name=schedule-destroy0]')).nativeElement.click();
+      component.fireAction('destroy', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail schedule', () => {
-      const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskSchedulesTable tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');
-      line.query(By.css('.actions button[name="schedule-details0"]')).nativeElement.click();
+      component.fireAction('details', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
       expect(navigate).toHaveBeenCalledWith(['tasks/schedules/foo1']);
     });
 
@@ -228,22 +233,25 @@ describe('TaskDefinitionScheduleComponent', () => {
       });
       fixture.detectChanges();
       expect(component.countSelected()).toBe(2);
-      expect(fixture.debugElement.queryAll(By.css('#dropdown-actions'))).toBeTruthy();
     });
 
-    xit('should call the destroy modal', fakeAsync(() => {
+    /*
+    it('should call the destroy modal', fakeAsync(() => {
       fixture.debugElement.queryAll(By.css('#taskSchedulesTable tbody tr')).forEach((line) => {
         const input: HTMLInputElement = line.query(By.css('td.cell-checkbox input')).nativeElement;
         input.click();
       });
       fixture.detectChanges();
-      const spy = spyOn(modalService, 'show');
-      fixture.debugElement.query(By.css('#dropdown-actions .btn-dropdown')).nativeElement.click();
-      tick();
-      fixture.debugElement.query(By.css('#destroy-schedules')).nativeElement.click();
-      fixture.detectChanges();
+      const mockBsModalRef = new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => Observable.of('testing')
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+      component.destroySelectedSchedules();
+
       expect(spy).toHaveBeenCalledWith(TaskSchedulesDestroyComponent, { class: 'modal-lg' });
     }));
+    */
 
   });
 

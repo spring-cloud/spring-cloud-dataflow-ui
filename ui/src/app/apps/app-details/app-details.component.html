@@ -1,22 +1,24 @@
-<div *ngIf="application" id="app-details">
+<app-page *ngIf="application" id="app-details">
 
-  <div class="heading">
-    <h1>
-      Application <strong>{{ application.name }}</strong>
-      <span style="position: relative">
-        <span style="position: absolute;top:0;left:10px;white-space: nowrap;">
-          <app-type [application]="application"></app-type>
-          <app-version-label [forceSimple]="true" *ngIf="skipperEnabled && defaultVersion"
-                             [application]="application"></app-version-label>
-        </span>
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/apps'" [isNotRegex]="'^(\/apps\/)'"></app-page-head-back>
+    <app-page-head-title>Application <strong>{{ application.name }}</strong></app-page-head-title>
+    <app-page-head-subtitle>
+      <app-type [application]="application"></app-type>
+      <span *ngIf="skipperEnabled && defaultVersion" class="label label-default" style="margin-left: 5px;">
+        {{ defaultVersion.version }}
       </span>
-    </h1>
-  </div>
+    </app-page-head-subtitle>
+    <app-page-head-actions>
+      <button type="button" class="btn btn-danger btn-fa" (click)="unregisterApp()">
+        <span class="fa fa-trash"></span>
+        Remove
+      </button>
+    </app-page-head-actions>
+  </app-page-head>
 
-  <hr/>
-
-  <div id="no-default-version" *ngIf="skipperEnabled && application.versions.length > 0 && !defaultVersion">
-    <div>
+  <div dataflowLayoutType type="large">
+    <div id="no-default-version" *ngIf="skipperEnabled && application.versions.length > 0 && !defaultVersion">
       <div class="alert alert-danger" style="display: inline-block;padding:1rem 2rem;">
         <strong>Application unavailable.</strong><br>
         You have to set a default version for this application.
@@ -25,78 +27,71 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div *ngIf="detailedAppRegistration">
-    <div *ngIf="skipperEnabled && application.versions.length > 1" style="padding: 1rem 0;">
-      <div id="version-dropdown" class="dropdown" dropdown>
-        <button dropdownToggle type="button" class="btn btn-dropdown btn-primary">
-          Version: {{ versionSelect }}
-          <span *ngIf="versionSelect == defaultVersion?.version">
+    <div *ngIf="detailedAppRegistration">
+      <div *ngIf="skipperEnabled && application.versions.length > 1" style="padding: 1rem 0;">
+        <div id="version-dropdown" class="dropdown" dropdown>
+          <button dropdownToggle type="button" class="btn btn-dropdown btn-primary">
+            Version: {{ versionSelect }}
+            <span *ngIf="versionSelect == defaultVersion?.version">
           <span placement="bottom" tooltip="Default version"
-                class="ico-current-version glyphicon glyphicon-star"></span>
+                class="ico-current-version fa fa-star"></span>
         </span>
-          <span class="caret"></span>
-        </button>
-        <ul *dropdownMenu class="dropdown-menu">
-          <li *ngFor="let version of application.versions" [class.active]="versionSelect == version.version">
-            <a style="cursor: pointer" (click)="selectVersion(version.version)">
-              {{ version.version }}
-              <span *ngIf="version.defaultVersion">
+            <span class="caret"></span>
+          </button>
+          <ul *dropdownMenu class="dropdown-menu">
+            <li *ngFor="let version of application.versions" [class.active]="versionSelect == version.version">
+              <a style="cursor: pointer" (click)="selectVersion(version.version)">
+                {{ version.version }}
+                <span *ngIf="version.defaultVersion">
               <span placement="bottom" tooltip="Default version"
-                    class="ico-current-version glyphicon glyphicon-star"></span>
+                    class="ico-current-version fa fa-star"></span>
             </span>
-            </a>
-          </li>
-        </ul>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="app-details-info" style="padding: 0.5rem 0 1.5rem;">
-      <div><strong>Uri</strong>: <code>{{ detailedAppRegistration.uri }}</code></div>
-      <div *ngIf="skipperEnabled && application.versions.length == 1">
-        <strong>Version</strong>: {{ detailedAppRegistration.version }}
+      <div class="app-details-info" style="padding: 0.5rem 0 1.5rem;">
+        <div><strong>Uri</strong>: {{ detailedAppRegistration.uri }}</div>
+        <div *ngIf="skipperEnabled && application.versions.length == 1">
+          <strong>Version</strong>: {{ detailedAppRegistration.version }}
+        </div>
       </div>
-    </div>
-    <div *ngIf="detailedAppRegistration?.options && detailedAppRegistration?.options.length > 0">
-      <table id="table-properties" class="table table-hover" *ngIf="detailedAppRegistration?.options">
-        <thead>
-        <tr>
-          <th>
-            <app-sort id="sort-name" [indeterminate]="true" (change)="applySort($event)" [value]="'name'" [sort]="sort">
-              Property
-            </app-sort>
-          </th>
-          <th>Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let property of detailedAppRegistration.options | orderby:sort.sort:sort.order">
-          <td>
-            <strong>{{ property.name }}</strong>
-            <div *ngIf="property.isDeprecated">
-              <span class="label label-warning">Deprecation level: {{ property.deprecation.level }}</span>
-            </div>
-          </td>
-          <td>
-            <p>{{ property.description ? property.description : '(No Description Available)' }}</p>
-            <p class="type-block"><code>{{ property.type }}</code> <span
-              *ngIf="property.defaultValue">(Default value: <code>{{ property.defaultValue }}</code>)</span></p>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div *ngIf="!(detailedAppRegistration?.options && detailedAppRegistration?.options.length > 0)">
-      <div class="alert alert-warning" style="display: inline-block;margin-top: 5px;">
+      <div *ngIf="detailedAppRegistration?.options && detailedAppRegistration?.options.length > 0">
+        <table id="table-properties" class="table table-hover" *ngIf="detailedAppRegistration?.options">
+          <thead>
+          <tr>
+            <th>
+              <app-sort id="sort-name" [indeterminate]="true" (change)="applySort($event)" [value]="'name'"
+                        [sort]="sort">
+                Property
+              </app-sort>
+            </th>
+            <th>Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let property of detailedAppRegistration.options | orderby:sort.sort:sort.order">
+            <td>
+              <strong>{{ property.name }}</strong>
+              <div *ngIf="property.isDeprecated">
+                <span class="label label-warning">Deprecation level: {{ property.deprecation.level }}</span>
+              </div>
+            </td>
+            <td>
+              <p>{{ property.description ? property.description : '(No Description Available)' }}</p>
+              <p class="type-block"><code>{{ property.type }}</code> <span
+                *ngIf="property.defaultValue">(Default value: <code>{{ property.defaultValue }}</code>)</span></p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="!(detailedAppRegistration?.options && detailedAppRegistration?.options.length > 0)"
+           class="dataflow-alert">
         No properties available.
       </div>
     </div>
   </div>
-
-  <hr/>
-
-  <div class="footer-actions">
-    <button id="back-button" type="button" class="btn btn-default" (click)="cancel()">Back</button>
-  </div>
-
-</div>
+</app-page>

@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/Subject';
 import { map, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskListParams } from '../components/tasks.interface';
-import { OrderParams, SortParams } from '../../shared/components/shared.interface';
+import { ListDefaultParams, OrderParams, SortParams } from '../../shared/components/shared.interface';
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
@@ -18,6 +18,7 @@ import { TaskSchedulesDestroyComponent } from '../task-schedules-destroy/task-sc
 import { GroupRouteService } from '../../shared/services/group-route.service';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -46,6 +47,12 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
+   * List Bar Component
+   */
+  @ViewChild('listBar')
+  listBar: ListBarComponent;
+
+  /**
    * Modal reference
    */
   modal: BsModalRef;
@@ -54,8 +61,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * Current forms value
    */
   form: any = {
-    q: '',
-    type: '',
     checkboxes: []
   };
 
@@ -89,6 +94,21 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
 
   /**
    * Constructor
+   * Task selected actions
+   */
+  tasksActions = [
+    {
+      id: 'destroy-tasks',
+      icon: 'trash',
+      action: () => this.destroySelectedTasks(),
+      title: 'Destroy task(s)',
+      disabled: false
+    },
+  ];
+
+  /**
+   * Constructor
+   *
    * @param {TasksService} tasksService
    * @param {BsModalService} modalService
    * @param {BusyService} busyService
@@ -110,6 +130,89 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Task Actions
+   * @param {TaskDefinition} item
+   * @param {number} index
+   */
+  taskActions(item: TaskDefinition, index: number) {
+    return [
+      {
+        id: 'details-task' + index,
+        icon: 'info-circle',
+        action: 'details',
+        title: 'Details task',
+        disabled: false,
+        isDefault: true
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'launch-task' + index,
+        icon: 'play',
+        action: 'launch',
+        title: 'Launch task',
+        disabled: false
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'task-schedule' + index,
+        icon: 'clock-o',
+        action: 'schedule',
+        title: 'Schedule task',
+        disabled: !this.schedulerEnabled,
+        hidden: !this.schedulerEnabled
+      },
+      {
+        id: 'delete-schedules' + index,
+        icon: '',
+        action: 'delete-schedules',
+        title: 'Delete schedule',
+        disabled: !this.schedulerEnabled,
+        hidden: !this.schedulerEnabled
+      },
+      {
+        divider: true,
+        hidden: !this.schedulerEnabled
+      },
+      {
+        id: 'destroy-task' + index,
+        icon: 'trash',
+        action: 'destroy',
+        title: 'Destroy task',
+        disabled: false
+      },
+    ];
+  }
+
+  /**
+   * Fire Action (row)
+   * @param action
+   * @param item
+   */
+  fireAction(action: string, item: TaskDefinition) {
+    switch (action) {
+      case 'details':
+        this.details(item);
+        break;
+      case 'launch':
+        this.launch(item);
+        break;
+      case 'schedule':
+        this.schedule(item);
+        break;
+      case 'delete-schedules':
+        this.destroySchedules(item);
+        break;
+      case 'destroy':
+        this.destroy(item);
+        break;
+    }
+  }
+
+  /**
    * Retrieves the {@link TaskDefinition}s to be displayed on the page.
    */
   ngOnInit() {
@@ -120,7 +223,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
 
     this.sharedAboutService.getFeatureInfo()
       .subscribe((featureInfo: FeatureInfo) => {
-        this.schedulerEnabled = featureInfo.schedulerEnabled;
+        this.schedulerEnabled = !!featureInfo.schedulerEnabled;
         this.refresh();
       });
   }
@@ -190,39 +293,10 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   /**
    * Run the search
    */
-  search() {
-    this.params.q = this.form.q;
+  search(params: ListDefaultParams) {
+    this.params.q = params.q;
     this.params.page = 0;
     this.refresh();
-  }
-
-  /**
-   * Used to determinate the state of the query parameters
-   *
-   * @returns {boolean} Search is active
-   */
-  isSearchActive() {
-    return (this.form.q !== this.params.q);
-  }
-
-  /**
-   * Reset the search parameters and run the search
-   */
-  clearSearch() {
-    this.form.q = '';
-    this.search();
-  }
-
-  /**
-   * Determine if there is no application
-   */
-  isTasksEmpty(): boolean {
-    if (this.taskDefinitions) {
-      if (this.taskDefinitions.totalPages < 2) {
-        return (this.params.q === '' && this.taskDefinitions.items.length === 0);
-      }
-    }
-    return false;
   }
 
   /**
@@ -250,26 +324,12 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Used for requesting a new page. The past is page number is
-   * 1-index-based. It will be converted to a zero-index-based
-   * page number under the hood.
-   *
-   * @param page 1-index-based
+   * Update event from the Paginator Pager
+   * @param params
    */
-  getPage(page: number) {
-    this.loggerService.log(`Getting page ${page}.`);
-    this.params.page = page - 1;
-    this.refresh();
-  }
-
-  /**
-   * Changes items per page
-   * Reset the pagination (first page)
-   * @param {number} size
-   */
-  changeSize(size: number) {
-    this.params.size = size;
-    this.params.page = 0;
+  changePaginationPager(params) {
+    this.params.page = params.page;
+    this.params.size = params.size;
     this.updateContext();
     this.refresh();
   }
@@ -332,7 +392,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.modal = this.modalService.show(TaskSchedulesDestroyComponent, { class: 'modal-lg' });
     this.tasksService
       .getSchedules({
-        task: taskDefinition.name,
+        q: taskDefinition.name,
         sort: 'SCHEDULE_ID',
         order: OrderParams.ASC,
         page: 0,
@@ -390,6 +450,13 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   schedule(taskDefinition: TaskDefinition) {
     this.router.navigate([`tasks/schedules/create/${taskDefinition.name}`]);
+  }
+
+  /**
+   * Create task
+   */
+  createTask() {
+    this.router.navigate([`tasks/create`]);
   }
 
 }

@@ -49,6 +49,10 @@ import { GroupRouteService } from './services/group-route.service';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { TimepickerComponent } from './components/timepicker/timepicker.component';
 import { PopoverModule, TimepickerModule } from 'ngx-bootstrap';
+import { LayoutTypeDirective } from './directives/layout-type.directive';
+import { DATAFLOW_PAGE } from './components/page/page.component';
+import { DATAFLOW_LIST } from './components/list/list.component';
+import { FocusDirective } from './directives/focus.directive';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -83,7 +87,7 @@ const busyConfig: BusyConfig = {
     ProgressbarModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-right',
       preventDuplicates: true,
       maxOpened: 6,
       enableHtml: true
@@ -121,7 +125,11 @@ const busyConfig: BusyConfig = {
     ConfirmComponent,
     LoaderComponent,
     PagerComponent,
-    TimepickerComponent
+    TimepickerComponent,
+    LayoutTypeDirective,
+    FocusDirective,
+    DATAFLOW_LIST,
+    DATAFLOW_PAGE
   ],
   entryComponents: [
     ConfirmComponent
@@ -171,7 +179,11 @@ const busyConfig: BusyConfig = {
     LoaderComponent,
     PagerComponent,
     ToastContainerModule,
-    TimepickerComponent
+    TimepickerComponent,
+    LayoutTypeDirective,
+    FocusDirective,
+    DATAFLOW_LIST,
+    DATAFLOW_PAGE
   ]
 })
 export class SharedModule {

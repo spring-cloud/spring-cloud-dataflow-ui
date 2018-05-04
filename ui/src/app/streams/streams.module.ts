@@ -106,6 +106,9 @@ import { StreamHistoryStatusComponent } from './components/stream-history-status
     EditorService,
     ContentAssistService,
     StreamDeployService
+  ],
+  exports: [
+    StreamStatusComponent
   ]
 })
 export class StreamsModule {

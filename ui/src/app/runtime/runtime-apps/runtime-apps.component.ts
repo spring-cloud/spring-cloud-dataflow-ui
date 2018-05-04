@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
 import { Page } from '../../shared/model/page';
 import { RuntimeAppsService } from '../runtime-apps.service';
@@ -52,32 +52,49 @@ export class RuntimeAppsComponent implements OnInit {
   }
 
   /**
+   * Row actions
+   */
+  runtimeActions(item: RuntimeApp, index: number) {
+    return [
+      {
+        id: 'view' + index,
+        icon: 'info-circle',
+        action: 'view',
+        title: 'Details',
+        disabled: false,
+        isDefault: true
+      }
+    ];
+  }
+
+  /**
+   * Fire Action (row)
+   * @param action
+   * @param item
+   */
+  fireAction(action: string, item: RuntimeApp) {
+    switch (action) {
+      case 'view':
+        this.view(item);
+        break;
+    }
+  }
+
+  /**
    * Load runtime applications, request the dedicate service
    */
   loadRuntimeApps() {
     this.runtimeApps$ = this.runtimeAppsService.getRuntimeApps(this.pagination);
   }
 
-  /**
-   * Used for requesting a new page. The past is page number is
-   * 1-index-based. It will be converted to a zero-index-based
-   * page number under the hood.
-   *
-   * @param page 1-index-based
-   */
-  getPage(page: number) {
-    this.pagination.page = page - 1;
-    this.loadRuntimeApps();
-  }
 
   /**
-   * Changes items per page
-   * Reset the pagination (first page)
-   * @param {number} size
+   * Update event from the Paginator Pager
+   * @param params
    */
-  changeSize(size: number) {
-    this.pagination.size = size;
-    this.pagination.page = 0;
+  changePaginationPager(params) {
+    this.pagination.page = params.page;
+    this.pagination.size = params.size;
     this.loadRuntimeApps();
   }
 

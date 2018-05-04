@@ -348,16 +348,16 @@
             </div>
           </div>
         </div>
-        <div class="footer-actions" style="text-align: center;padding:1rem 0;">
+        <app-page-actions>
           <a tabindex="200" id="btn-cancel" class="btn btn-default" routerLink="/streams">Cancel</a>
-          <button tabindex="200" id="btn-export" type="button" class="btn btn-primary" (click)="exportProps()">
+          <button tabindex="200" id="btn-export" type="button" class="btn btn-default" (click)="exportProps()">
             Export
           </button>
           <button tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary"
                   [disabled]="!isSubmittable(builder)">
             Deploy the stream
           </button>
-        </div>
+        </app-page-actions>
       </div>
     </div>
   </form>

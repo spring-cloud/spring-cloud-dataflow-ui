@@ -20,7 +20,7 @@ export class TasksPage {
    * @returns {any}
    */
   getHeaderText() {
-    return element(by.css('.heading')).getText();
+    return element(by.css('app-page-head-title h1')).getText();
   }
 
 }

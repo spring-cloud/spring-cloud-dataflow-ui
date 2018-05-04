@@ -1,6 +1,6 @@
-<div class="container-fluid">
+<div dataflowLayoutType type="full">
     <div class="row">
-      <div class="col-md-8 col-md-offset-8">
+      <div class="col-md-8">
         <h1>Login</h1>
         <p *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated">
           Please sign in
@@ -15,7 +15,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-8 col-md-offset-8"
+      <div class="col-md-8"
         *ngIf="securityInfo.isAuthenticationEnabled && !securityInfo.isAuthenticated">
         <form #loginForm="ngForm" name="loginForm" role="form" (ngSubmit)="login()" novalidate>
           <div class="form-group">
@@ -38,11 +38,11 @@
           <button class="btn btn-lg btn-default btn-block" id="loginButton" type="submit" [disabled]="loginForm.invalid">Sign in</button>
         </form>
       </div>
-      <div class="col-md-8 col-md-offset-8" *ngIf="securityInfo.isAuthenticated">
-        <a class="btn btn-lg btn-default btn-block" id="logoutButton" routerLink="../logout">Sign out</a>
+      <div class="col-md-8" *ngIf="securityInfo.isAuthenticated">
+        <a class="btn btn-primary" id="logoutButton" routerLink="../logout">Sign out</a>
       </div>
-      <div class="col-md-8 col-md-offset-8" *ngIf="!securityInfo.isAuthenticationEnabled">
-        <a class="btn btn-lg btn-default btn-block" id="backButton" routerLink="">Back to the app</a>
+      <div class="col-md-8" *ngIf="!securityInfo.isAuthenticationEnabled">
+        <a class="btn btn-default" id="backButton" routerLink="">Back to the app</a>
       </div>
     </div>
 </div>

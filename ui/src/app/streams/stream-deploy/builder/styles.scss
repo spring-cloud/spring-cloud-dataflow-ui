@@ -73,7 +73,7 @@ $border-separator-color: #637885;
     text-align: center;
   }
   .line-toggle {
-    background: rgba(0, 0, 0, .03);
+    background: #F5F6F7;
     height: 42px;
     line-height: 42px;
     margin-top: 4px;
@@ -107,7 +107,7 @@ $border-separator-color: #637885;
 
   .col-key {
     .form-control-label {
-      background: #f9f9f9;
+      background: #F5F6F7;
       color: rgba(0, 0, 0, .65);
     }
   }
@@ -116,10 +116,10 @@ $border-separator-color: #637885;
     position: relative;
     .btn {
       position: absolute;
-      top: 3px;
-      right: 3px;
+      top: 2px;
+      right: 2px;
       padding: 5px 8px;
-      height: auto;
+      height: 30px;
     }
   }
 

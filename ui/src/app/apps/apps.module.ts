@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 import { AppsComponent } from './apps/apps.component';
-import { AppsBulkImportComponent } from './apps-bulk-import/apps-bulk-import.component';
-import { AppsRegisterComponent } from './apps-register/apps-register.component';
 import { AppDetailsComponent } from './app-details/app-details.component';
 import { AppsService } from './apps.service';
 import { AppsRoutingModule } from './apps-routing.module';
@@ -14,13 +12,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppVersionLabelComponent } from './components/app-versions-label/app-versions-label.component';
 import { AppVersionsComponent } from './app-versions/app-versions.component';
 import { AppsWorkaroundService } from './apps.workaround.service';
-import { AppsBulkImportPropertiesComponent } from './apps-bulk-import/properties/apps-bulk-import-properties.component';
-import { AppsBulkImportUriComponent } from './apps-bulk-import/uri/apps-bulk-import-uri.component';
+import { AppListBarComponent } from './components/app-list-bar/app-list-bar.component';
+import { AppsBulkImportPropertiesComponent } from './apps-add/properties/apps-bulk-import-properties.component';
+import { AppsBulkImportUriComponent } from './apps-add/uri/apps-bulk-import-uri.component';
+import { AppsAddComponent } from './apps-add/apps-add.component';
+import { AppsRegisterComponent } from './apps-add/register/apps-register.component';
 
 @NgModule({
   imports: [
     AppsRoutingModule,
-    SharedModule, AuthModule,
+    SharedModule,
+    AuthModule,
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
@@ -31,7 +33,7 @@ import { AppsBulkImportUriComponent } from './apps-bulk-import/uri/apps-bulk-imp
   ],
   declarations: [
     AppsComponent,
-    AppsBulkImportComponent,
+    AppsAddComponent,
     AppsRegisterComponent,
     AppDetailsComponent,
     AppsUnregisterComponent,
@@ -39,7 +41,8 @@ import { AppsBulkImportUriComponent } from './apps-bulk-import/uri/apps-bulk-imp
     AppVersionLabelComponent,
     AppVersionsComponent,
     AppsBulkImportPropertiesComponent,
-    AppsBulkImportUriComponent
+    AppsBulkImportUriComponent,
+    AppListBarComponent
   ],
   entryComponents: [
     AppsUnregisterComponent,

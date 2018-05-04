@@ -1,0 +1,72 @@
+
+$btn-default-color: $navy-11;
+$btn-default-color-focus: $navy-9;
+$btn-default-color-hover: $navy-9;
+$btn-light: $navy-1;
+
+.pui-btn, .btn {
+  text-transform: none;
+  letter-spacing: 0;
+  height: 34px;
+  font-weight: normal;
+  font-size: 15px;
+  span.fa {
+    font-size: 18px;
+  }
+}
+
+//Fa Button
+//---------------------------------------
+.pui-btn, .btn {
+  &.btn-fa {
+    position: relative;
+    padding-left: 34px;
+    span.fa {
+      position: absolute;
+      line-height: 32px;
+      left: 8px;
+      top: 0;
+      width: 20px;
+      text-align: center;
+    }
+  }
+}
+
+
+//Default Button
+//---------------------------------------
+.pui-btn.pui-btn-default, .btn.btn-default {
+  background-color: $btn-default-color;
+  color: $btn-light;
+  border-color: $btn-default-color;
+  .icon {
+    fill: $btn-light;
+  }
+
+  //Spinner
+  .icon-spinner-lg,
+  .icon-spinner-md,
+  .icon-spinner-sm {
+    .ring {
+      stroke: $btn-light;
+    }
+    .path {
+      stroke: $btn-light;
+    }
+  }
+}
+
+.pui-btn.pui-btn-default:focus, .btn.btn-default:focus {
+  background-color: $btn-default-color-focus;
+  border-color: $btn-default-color-focus;
+  outline: none;
+}
+
+.pui-btn.pui-btn-default:hover,
+.pui-btn.pui-btn-default:focus:hover,
+.btn.btn-default:hover,
+.btn.btn-default:focus:hover {
+  background-color: $btn-default-color-hover;
+  border-color: $btn-default-color-hover;
+  outline: none;
+}

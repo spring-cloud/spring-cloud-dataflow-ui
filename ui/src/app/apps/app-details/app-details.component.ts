@@ -16,6 +16,7 @@ import { RoutingStateService } from '../../shared/services/routing-state.service
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
+import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
 
 /**
  * Provides details for an App Registration
@@ -204,6 +205,17 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
     const modal = this.modalService.show(AppVersionsComponent, { class: 'modal-xl' });
     modal.content.open(appRegistration).subscribe(() => {
       this.loadVersions();
+    });
+  }
+
+  /**
+   * Starts the unregistration process {@link AppRegistration}s
+   * by opening a confirmation modal dialog.
+   */
+  unregisterApp() {
+    const modal = this.modalService.show(AppsUnregisterComponent);
+    modal.content.open([this.application]).subscribe(() => {
+      this.refresh();
     });
   }
 

@@ -1,45 +1,70 @@
-<nav class="navbar navbar-inverse navbar-static-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-              [attr.aria-expanded]="!isCollapsed" (click)="toggleCollapse()" [ngClass]="{'collapsed': isCollapsed}">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" routerLink="apps"><span></span></a>
-    </div>
-    <div id="navbar" class="collapse navbar-collapse" [ngClass]="{'in': !isCollapsed}">
-      <ul class="nav navbar-nav navbar-right" (click)="collapse()">
-        <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="apps">Apps</a></li>
-        <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled"><a
-          routerLink="runtime/apps">Runtime</a>
-        </li>
-        <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled"><a
-          routerLink="streams">Streams</a></li>
-        <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled"><a
-          routerLink="tasks">Tasks</a>
-        </li>
-        <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled"><a routerLink="jobs">Jobs</a>
-        </li>
-        <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="analyticsEnabled"><a
-          routerLink="analytics">Analytics</a>
-        </li>
-        <li routerLinkActive="active" [appRoles]="['ROLE_VIEW']"><a routerLink="about">About</a></li>
-        <li *ngIf="securityInfo.isAuthenticationEnabled"
-            dropdown
-            class="dropdown"><a class="dropdown-toggle" dropdownToggle (click)="false"><span
-          class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
-          <ul *dropdownMenu class="dropdown-menu">
-            <li *ngIf="securityInfo.isAuthenticated">{{ securityInfo.username }}</li>
-            <li *ngIf="!securityInfo.isAuthenticated">Not logged in.</li>
-            <li *ngIf="securityInfo.isAuthenticated"><a routerLink="logout">Logout</a></li>
-            <li *ngIf="!securityInfo.isAuthenticated"><a routerLink="login">Login</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
+<div class="sidebar-user" *ngIf="securityInfo.isAuthenticationEnabled">
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" *ngIf="!securityInfo.isAuthenticated">
+    <a routerLink="login">
+      <i class="sidebar-fa fa fa-sign-in"></i>
+      <span class="text">Login</span>
+    </a>
   </div>
-</nav>
+  <div class="sidebar-item" [appRoles]="['ROLE_VIEW']" *ngIf="securityInfo.isAuthenticated">
+    <a routerLink="logout">
+      <i class="sidebar-fa fa fa-sign-out"></i>
+      <span class="text">Logout</span>
+    </a>
+  </div>
+</div>
+
+<app-navigation-search [force]="!isCollapsed"></app-navigation-search>
+
+<div class="sidebar-items">
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']">
+    <a routerLink="apps">
+      <i class="sidebar-fa fa fa-tags"></i>
+      <span class="text">Apps</span>
+    </a>
+  </div>
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled">
+    <a routerLink="runtime/apps">
+      <i class="sidebar-fa fa fa-terminal"></i>
+      <span class="text">Runtime</span>
+    </a>
+  </div>
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled">
+    <a routerLink="streams">
+      <i class="sidebar-fa fa fa-cloud"></i>
+      <span class="text">Streams</span>
+    </a>
+  </div>
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled">
+    <a routerLink="tasks">
+      <i class="sidebar-fa fa fa-tasks"></i>
+      <span class="text">Tasks</span>
+    </a>
+  </div>
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled">
+    <a routerLink="jobs">
+      <i class="sidebar-fa fa fa-clock-o"></i>
+      <span class="text">Jobs</span>
+    </a>
+  </div>
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="analyticsEnabled">
+    <a routerLink="analytics">
+      <i class="sidebar-fa fa fa-filter"></i>
+      <span class="text">Analytics</span>
+    </a>
+  </div>
+</div>
+
+<div class="sidebar-items sidebar-items-bottom">
+  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']">
+    <a routerLink="about">
+      <i class="sidebar-fa fa fa-leaf"></i>
+      <span class="text">About & Docs</span>
+    </a>
+  </div>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-item sidebar-item-collapser" *ngIf="!isSm">
+    <a (click)="toggle()">
+      <i [class.fa-rotate-180]="!isCollapsed" class="sidebar-fa fa fa-chevron-left"></i>
+    </a>
+  </div>
+</div>

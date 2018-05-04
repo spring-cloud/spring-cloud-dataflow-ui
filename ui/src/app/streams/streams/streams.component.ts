@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
@@ -9,7 +9,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { StreamsDeployComponent } from '../streams-deploy/streams-deploy.component';
 import { StreamsUndeployComponent } from '../streams-undeploy/streams-undeploy.component';
 import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
-import { SortParams, OrderParams } from '../../shared/components/shared.interface';
+import { SortParams, OrderParams, ListDefaultParams } from '../../shared/components/shared.interface';
 import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 import { StreamListParams } from '../components/streams.interface';
 import { Subject } from 'rxjs/Subject';
@@ -21,6 +21,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { map } from 'rxjs/internal/operators';
+import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 
 @Component({
   selector: 'app-streams',
@@ -50,6 +51,12 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * Busy Subscriptions
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
+
+  /**
+   * List Bar Component
+   */
+  @ViewChild('listBar')
+  listBar: ListBarComponent;
 
   /**
    * Metrics Subscription
@@ -110,6 +117,33 @@ export class StreamsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * Stream selected actions
+   */
+  streamsActions = [
+    {
+      id: 'deploy-streams',
+      icon: 'play',
+      action: () => this.deploySelectedStreams(),
+      title: 'Deploy stream(s)',
+      disabled: false
+    },
+    {
+      id: 'undeploy-streams',
+      icon: 'pause',
+      action: () => this.undeploySelectedStreams(),
+      title: 'Undeploy stream(s)',
+      disabled: false
+    },
+    {
+      id: 'destroy-streams',
+      icon: 'trash',
+      action: () => this.destroySelectedStreams(),
+      title: 'Destroy stream(s)',
+      disabled: false
+    },
+  ];
+
+  /**
    * Initialize component
    *
    * @param {StreamsService} streamsService
@@ -127,6 +161,73 @@ export class StreamsComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private loggerService: LoggerService,
               private router: Router) {
+  }
+
+  /**
+   * Row actions
+   * @param {AppRegistration} item
+   * @param {number} index
+   */
+  streamActions(item: StreamDefinition, index: number) {
+    return [
+      {
+        id: 'details-stream' + index,
+        action: 'details',
+        icon: 'info-circle',
+        title: 'Details stream',
+        disabled: false,
+        isDefault: true
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'deploy-stream' + index,
+        action: 'deploy',
+        icon: 'play',
+        title: 'Deploy stream',
+        disabled: false
+      },
+      {
+        id: 'undeploy-stream' + index,
+        action: 'undeploy',
+        icon: 'pause',
+        title: 'Undeploy stream',
+        disabled: (item.status === 'undeployed')
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'destroy-stream' + index,
+        action: 'destroy',
+        icon: 'trash',
+        title: 'Destroy stream',
+        disabled: false
+      },
+    ];
+  }
+
+  /**
+   * Fire Action
+   * @param {string} action
+   * @param {StreamDefinition} item
+   */
+  fireAction(action: string, item: StreamDefinition) {
+    switch (action) {
+      case 'details':
+        this.details(item);
+        break;
+      case 'deploy':
+        this.deploy(item);
+        break;
+      case 'undeploy':
+        this.undeploy(item);
+        break;
+      case 'destroy':
+        this.destroy(item);
+        break;
+    }
   }
 
   /**
@@ -234,39 +335,10 @@ export class StreamsComponent implements OnInit, OnDestroy {
   /**
    * Run the search
    */
-  search() {
-    this.params.q = this.form.q;
+  search(params: ListDefaultParams) {
+    this.params.q = params.q;
     this.params.page = 0;
     this.refresh();
-  }
-
-  /**
-   * Used to determinate the state of the query parameters
-   *
-   * @returns {boolean} Search is active
-   */
-  isSearchActive() {
-    return (this.form.q !== this.params.q);
-  }
-
-  /**
-   * Reset the search parameters and run the search
-   */
-  clearSearch() {
-    this.form.q = '';
-    this.search();
-  }
-
-  /**
-   * Determine if there is no application
-   */
-  isStreamsEmpty(): boolean {
-    if (this.streamDefinitions) {
-      if (this.streamDefinitions.totalPages < 2) {
-        return (this.params.q === '' && this.streamDefinitions.items.length === 0);
-      }
-    }
-    return false;
   }
 
   /**
@@ -351,28 +423,13 @@ export class StreamsComponent implements OnInit, OnDestroy {
     return this.form.checkboxes.filter((a) => a).length;
   }
 
-
   /**
-   * Used for requesting a new page. The past is page number is
-   * 1-index-based. It will be converted to a zero-index-based
-   * page number under the hood.
-   *
-   * @param page 1-index-based
+   * Update event from the Paginator Pager
+   * @param params
    */
-  getPage(page: number) {
-    this.loggerService.log(`Getting page ${page}.`);
-    this.params.page = page - 1;
-    this.refresh();
-  }
-
-  /**
-   * Changes items per page
-   * Reset the pagination (first page)
-   * @param {number} size
-   */
-  changeSize(size: number) {
-    this.params.size = size;
-    this.params.page = 0;
+  changePaginationPager(params) {
+    this.params.page = params.page;
+    this.params.size = params.size;
     this.updateContext();
     this.refresh();
   }
@@ -484,11 +541,16 @@ export class StreamsComponent implements OnInit, OnDestroy {
     if (streamDefinitions.length === 0) {
       return;
     }
-    this.loggerService.log(`Deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
-    this.modal = this.modalService.show(StreamsDeployComponent, { class: 'modal-xl' });
-    this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
-      this.refresh();
-    });
+
+    if (streamDefinitions.length === 1) {
+      this.router.navigate(['streams/definitions/' + streamDefinitions[0].name + '/deploy']);
+    } else {
+      this.loggerService.log(`Deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
+      this.modal = this.modalService.show(StreamsDeployComponent, { class: 'modal-xl' });
+      this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
+        this.refresh();
+      });
+    }
   }
 
   /**
@@ -528,6 +590,10 @@ export class StreamsComponent implements OnInit, OnDestroy {
       || item.status === 'deploying'
       || item.status === 'failed'
       || item.status === 'incomplete';
+  }
+
+  createStream() {
+    this.router.navigate(['/streams/create']);
   }
 
 }

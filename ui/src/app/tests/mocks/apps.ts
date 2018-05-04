@@ -100,7 +100,7 @@ export class MockAppsService {
     return Observable.of(detailedAppRegistration);
   }
 
-  bulkImportApps(bulkImportApps: BulkImportParams): Observable<Response> | Observable<any> {
+  bulkImportApps(bulkImportApps: BulkImportParams) {
     return Observable.of({});
   }
 

@@ -29,7 +29,10 @@ import { TruncatorWidthProviderDirective } from '../../shared/components/truncat
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
-import { Observable } from 'rxjs';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { AppListBarComponent } from 'src/app/apps/components/app-list-bar/app-list-bar.component';
+import { Observable } from 'rxjs/Rx';
 
 describe('AppsComponent', () => {
 
@@ -39,8 +42,8 @@ describe('AppsComponent', () => {
   const appsService = new MockAppsService();
   const sharedAboutService = new MocksSharedAboutService();
   const authService = new MockAuthService();
-  let modalService;
   const loggerService = new LoggerService();
+  let modalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -54,7 +57,10 @@ describe('AppsComponent', () => {
         TruncatorWidthProviderDirective,
         MasterCheckboxComponent,
         PagerComponent,
-        RolesDirective
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        RolesDirective,
+        AppListBarComponent
       ],
       imports: [
         FormsModule,
@@ -66,6 +72,7 @@ describe('AppsComponent', () => {
         BsDropdownModule.forRoot()
       ],
       providers: [
+        BsModalService,
         { provide: AppsService, useValue: appsService },
         { provide: AuthService, useValue: authService },
         BsModalService,
@@ -79,6 +86,7 @@ describe('AppsComponent', () => {
   }));
 
   beforeEach(() => {
+    modalService = TestBed.get(BsModalService);
     fixture = TestBed.createComponent(AppsComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
@@ -90,18 +98,12 @@ describe('AppsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should navigate to the builk import applications page', () => {
-    fixture.detectChanges();
-    const navigate = spyOn((<any>component).router, 'navigate');
-    component.bulkImportApps();
-    expect(navigate).toHaveBeenCalledWith(['apps/bulk-import-apps']);
-  });
 
-  it('should navigate to the register application page', () => {
+  it('should navigate to the add applications page', () => {
     fixture.detectChanges();
     const navigate = spyOn((<any>component).router, 'navigate');
-    component.registerApps();
-    expect(navigate).toHaveBeenCalledWith(['apps/register-apps']);
+    component.addApps();
+    expect(navigate).toHaveBeenCalledWith(['/apps/add']);
   });
 
   describe('no application', () => {
@@ -193,6 +195,7 @@ describe('AppsComponent', () => {
       expect(pagination).toBeTruthy();
     });
 
+
     it('should display a message if no result after run a search', () => {
       appsService.mock = {
         items: [],
@@ -200,8 +203,9 @@ describe('AppsComponent', () => {
         totalElements: 0,
         totalPages: 0
       };
-      component.form.q = 'foo';
-      component.search();
+      component.listBar.form.q = 'foo';
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('#search-submit')).nativeElement.click();
       fixture.detectChanges();
       const noResult = fixture.debugElement.query(By.css('#no-result')).nativeElement;
       expect(noResult).toBeTruthy();
@@ -214,17 +218,13 @@ describe('AppsComponent', () => {
         totalElements: 0,
         totalPages: 0
       };
-      component.form.q = 'foo';
-      component.form.type = 'source';
-      component.search();
+      component.listBar.form.q = 'foo';
       fixture.detectChanges();
-      const button = fixture.debugElement.query(By.css('#no-result .btn')).nativeElement;
-
-      button.click();
+      fixture.debugElement.query(By.css('#search-submit')).nativeElement.click();
       fixture.detectChanges();
-      expect(button).toBeTruthy();
-      expect(component.form.q).toBe('');
-      expect(component.form.type).toBe('');
+      component.listBar.clearSearch();
+      fixture.detectChanges();
+      expect(component.listBar.form.q).toBe('');
     });
 
     it('should apply a search', () => {
@@ -236,8 +236,8 @@ describe('AppsComponent', () => {
         totalElements: 12,
         totalPages: 1
       };
-      component.form.q = 'foo';
-      component.search();
+      component.listBar.form.q = 'foo';
+      fixture.debugElement.query(By.css('#search-submit')).nativeElement.click();
       fixture.detectChanges();
       const noResult = fixture.debugElement.query(By.css('#table')).nativeElement;
       expect(noResult).toBeTruthy();
@@ -318,16 +318,14 @@ describe('AppsComponent', () => {
     });
 
     it('should unregister an application', () => {
-      const line: DebugElement = fixture.debugElement.queryAll(By.css('#table tbody tr'))[0];
       const spy = spyOn(component, 'unregisterApps');
-      line.query(By.css('.actions button[name=app-remove0]')).nativeElement.click();
+      component.fireAction('unregister', appsService.mock.items[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail page', () => {
-      const line: DebugElement = fixture.debugElement.queryAll(By.css('#table tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');
-      line.query(By.css('.actions button[name="app-view0"]')).nativeElement.click();
+      component.fireAction('view', appsService.mock.items[0]);
       expect(navigate).toHaveBeenCalledWith(['apps/source/foo']);
     });
 
@@ -353,24 +351,11 @@ describe('AppsComponent', () => {
     it('should call the unregister modal', fakeAsync(() => {
       const mockBsModalRef =  new BsModalRef();
       mockBsModalRef.content = {
-        open: () => {
-          return Observable.of('testing')
-        }
+        open: () => Observable.of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
-
-      fixture.debugElement.queryAll(By.css('#table tbody tr')).forEach((line) => {
-        const input: HTMLInputElement = line.query(By.css('td.cell-checkbox input')).nativeElement;
-        input.click();
-      });
+      component.unregisterAppsSelected();
       fixture.detectChanges();
-
-      fixture.debugElement.query(By.css('#dropdown-actions .btn-dropdown')).nativeElement.click();
-
-      tick();
-
-      fixture.debugElement.query(By.css('#unregister-apps')).nativeElement.click();
-
       expect(spy).toHaveBeenCalledWith(AppsUnregisterComponent);
     }));
 

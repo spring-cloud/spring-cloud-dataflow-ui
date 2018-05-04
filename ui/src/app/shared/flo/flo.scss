@@ -10,6 +10,22 @@ $btn-default-bg: #607580;
 $flo-shape-fill-color: #eeeeee;
 $spring-grey: #DFE5E8;
 
+.stream-editor {
+  position: relative;
+  .canvas-controls-container {
+    top: 12px;
+  }
+  .flow-actions {
+    position: absolute;
+    top: 110px;
+    right: 200px;
+    z-index: 2;
+    .btn {
+      margin-left: 2px;
+    }
+  }
+}
+
 .stream-editor #flow-view {
   height:625px;
   font-family: inherit;
@@ -177,6 +193,10 @@ svg * {
   border-color: $btn-default-border;
 }
 
+.flow-view .canvas {
+  border-color: $btn-default-border;
+}
+
 #palette-container {
   background-color: $spring-light-grey;
 }
@@ -192,6 +212,10 @@ svg * {
 
 .dataflow-main-container .palette-filter {
   border-color: $btn-default-border;
+}
+
+.flow-view .palette-filter {
+  border-color: #ebf0f2;
 }
 
 .joint-type-palette-groupheader rect {

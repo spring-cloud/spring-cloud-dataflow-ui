@@ -13,6 +13,12 @@ import { MapValuesPipe } from '../../../shared/pipes/map-values-pipe.pipe';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { LoggerService } from '../../../shared/services/logger.service';
+import { BsDropdownModule } from 'ngx-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DATAFLOW_PAGE } from '../../../shared/components/page/page.component';
+import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { PagerComponent } from '../../../shared/components/pager/pager.component';
 
 describe('AboutDetailsComponent', () => {
   let component: AboutDetailsComponent;
@@ -31,12 +37,19 @@ describe('AboutDetailsComponent', () => {
       imports: [
         NgBusyModule,
         RouterTestingModule.withRoutes([]),
-        ClipboardModule
+        ClipboardModule,
+        BsDropdownModule.forRoot(),
+        ReactiveFormsModule,
+        FormsModule,
+        NgxPaginationModule
       ],
       declarations: [
         AboutDetailsComponent,
         MapValuesPipe,
-        LoaderComponent
+        LoaderComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        PagerComponent
       ],
       providers: [
         { provide: AboutService, useValue: aboutService },

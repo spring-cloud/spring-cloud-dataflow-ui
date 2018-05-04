@@ -6,14 +6,13 @@ import { Page } from '../shared/model/page';
 import { TaskExecution } from './model/task-execution';
 import { TaskDefinition } from './model/task-definition';
 import * as moment from 'moment';
-import { OrderParams } from '../shared/components/shared.interface';
+import { ListDefaultParams, OrderParams } from '../shared/components/shared.interface';
 import { HttpUtils } from '../shared/support/http.utils';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../shared/services/logger.service';
 import { TaskSchedule } from './model/task-schedule';
 import {
-  TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams,
-  TaskScheduleListParams
+  TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams
 } from './components/tasks.interface';
 import { HttpResponse } from '@angular/common/http';
 
@@ -109,7 +108,7 @@ export class TasksService {
    * Persist the state of the TaskSchedulesComponent
    */
   public schedulesContext = {
-    task: '',
+    q: '',
     page: 0,
     size: 30,
     sort: 'SCHEDULE_NAME',
@@ -180,18 +179,18 @@ export class TasksService {
    * Calls the Spring Cloud Data Flow server to get paged task executions specified in {@link TaskExecution}
    * for a task.
    *
-   * @param {TaskScheduleListParams} taskScheduleListParams
+   * @param {ListDefaultParams} listParams
    * @returns {Observable<Page<TaskExecution>>} that will call the subscribed funtions to handle
    * the results when returned from the Spring Cloud Data Flow server.
    */
-  getTaskExecutions(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskExecution>> {
-    taskScheduleListParams = taskScheduleListParams || { task: '', page: 0, size: 20, sort: null, order: null };
-    let params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
-    if (taskScheduleListParams.task) {
-      params = params.append('name', taskScheduleListParams.task);
+  getTaskExecutions(listParams: ListDefaultParams): Observable<Page<TaskExecution>> {
+    listParams = listParams || { q: '', page: 0, size: 20, sort: null, order: null };
+    let params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
+    if (listParams.q) {
+      params = params.append('name', listParams.q);
     }
-    if (taskScheduleListParams.sort && taskScheduleListParams.order) {
-      params = params.append('sort', `${taskScheduleListParams.sort},${taskScheduleListParams.order}`);
+    if (listParams.sort && listParams.order) {
+      params = params.append('sort', `${listParams.sort},${listParams.order}`);
     }
     return this.httpClient.get<any>(TasksService.URL.EXECUTIONS, { params: params })
       .pipe(map((body) => {
@@ -317,13 +316,13 @@ export class TasksService {
    * the results when returned from the Spring Cloud Data Flow server.
    * @returns {Observable<Page<TaskSchedule>>}
    */
-  getSchedules(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskSchedule>> {
-    taskScheduleListParams = taskScheduleListParams || { task: '', page: 0, size: 20, sort: null, order: null };
+  getSchedules(params: ListDefaultParams): Observable<Page<TaskSchedule>> {
+    params = params || { q: '', page: 0, size: 20, sort: null, order: null };
     // const params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
     let url = TasksService.URL.SCHEDULES;
-    if (taskScheduleListParams.task) {
+    if (params.q) {
       // params.append('search', taskScheduleListParams.task);
-      url = `${url}/instances/${taskScheduleListParams.task}`;
+      url = `${url}/instances/${params.q}`;
     }
     return this.httpClient.get<any>(url)
       .pipe(map((body) => {
@@ -380,8 +379,6 @@ export class TasksService {
     // scheduler.cron.expression
     const props = ['scheduler.cron.expression=' + taskScheduleCreateParams.cronExpression];
     props.push(...taskScheduleCreateParams.props.split(','));
-
-    console.log(props);
 
     const params = new HttpParams()
       .append('scheduleName', taskScheduleCreateParams.schedulerName)

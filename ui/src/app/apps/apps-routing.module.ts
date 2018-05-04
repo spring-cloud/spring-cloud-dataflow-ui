@@ -1,14 +1,12 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-
-import {AppsComponent} from './apps/apps.component';
-import {AppsBulkImportComponent} from './apps-bulk-import/apps-bulk-import.component';
-import {AppsRegisterComponent} from './apps-register/apps-register.component';
-import {AppDetailsComponent} from './app-details/app-details.component';
-import {AuthGuard} from '../auth/support/auth.guard';
-import {AppsBulkImportUriComponent} from './apps-bulk-import/uri/apps-bulk-import-uri.component';
-import {AppsBulkImportPropertiesComponent} from './apps-bulk-import/properties/apps-bulk-import-properties.component';
-
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AppsComponent } from './apps/apps.component';
+import { AppDetailsComponent } from './app-details/app-details.component';
+import { AuthGuard } from '../auth/support/auth.guard';
+import { AppsAddComponent } from './apps-add/apps-add.component';
+import { AppsBulkImportUriComponent } from './apps-add/uri/apps-bulk-import-uri.component';
+import { AppsBulkImportPropertiesComponent } from './apps-add/properties/apps-bulk-import-properties.component';
+import { AppsRegisterComponent } from './apps-add/register/apps-register.component';
 
 const appsRoutes: Routes = [
   {
@@ -24,8 +22,8 @@ const appsRoutes: Routes = [
         component: AppsComponent,
       },
       {
-        path: 'bulk-import-apps',
-        component: AppsBulkImportComponent,
+        path: 'add',
+        component: AppsAddComponent,
         canActivate: [AuthGuard],
         data: {
           authenticate: true,
@@ -33,27 +31,18 @@ const appsRoutes: Routes = [
         },
         children: [
           {
-            path: '',
-            redirectTo: 'uri',
-            pathMatch: 'full'
+            path: 'register',
+            component: AppsRegisterComponent,
           },
           {
-            path: 'uri',
+            path: 'import-from-uri',
             component: AppsBulkImportUriComponent
           },
           {
-            path: 'properties',
+            path: 'import-from-properties',
             component: AppsBulkImportPropertiesComponent
           }
         ]
-      },
-      {
-        path: 'register-apps', component: AppsRegisterComponent,
-        canActivate: [AuthGuard],
-        data: {
-          authenticate: true,
-          roles: ['ROLE_CREATE']
-        },
       },
       {
         path: ':appType/:appName',

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -8,7 +8,6 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
 import {SharedAppsService} from '../shared/services/shared-apps.service';
 import {AppRegistration, ErrorHandler, Page, ApplicationType, DetailedAppRegistration} from '../shared/model';
-import {PageRequest} from '../shared/model/pagination/page-request.model';
 import {HttpUtils} from '../shared/support/http.utils';
 import {AppsWorkaroundService} from './apps.workaround.service';
 import {AppListParams, AppRegisterParams, BulkImportParams} from './components/apps.interface';

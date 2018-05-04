@@ -13,7 +13,7 @@ export class StreamsPage {
    */
   navigateTo() {
     browser.waitForAngularEnabled(false);
-    return browser.get('#/streams');
+    return browser.get('#/streams/definitions');
   }
 
   /**
@@ -21,7 +21,7 @@ export class StreamsPage {
    * @returns {any}
    */
   getHeaderText() {
-    return element(by.css('app-root h1')).getText();
+    return element(by.css('≈')).getText();
   }
 
 }

@@ -31,7 +31,9 @@ import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-t
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
-import { TasksHeaderComponent } from '../components/tasks-header/tasks-header.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -66,7 +68,9 @@ describe('TaskExecutionsComponent', () => {
         TruncatePipe,
         TaskStatusComponent,
         TasksTabulationComponent,
-        TasksHeaderComponent
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        LoaderComponent
       ],
       imports: [
         NgxPaginationModule,
@@ -299,11 +303,11 @@ describe('TaskExecutionsComponent', () => {
     });
 
     it('should navigate to the detail task', () => {
-      const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskExecutionsTable tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');
-      line.query(By.css('.actions button[name="task-details0"]')).nativeElement.click();
+      component.fireAction('details', tasksService.taskExecutions._embedded.taskExecutionResourceList[0]);
       expect(navigate).toHaveBeenCalledWith(['tasks/executions/2']);
     });
+
 
   });
 
