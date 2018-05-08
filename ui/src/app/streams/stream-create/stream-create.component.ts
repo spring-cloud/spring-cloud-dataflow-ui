@@ -123,11 +123,11 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   createStreamDefs() {
     const bsModalRef = this.bsModalService
-      .show(StreamCreateDialogComponent);
-    bsModalRef.content.setDsl(this.dsl);
-    bsModalRef.content.successCallback = () => {
+      .show(StreamCreateDialogComponent, { class: 'modal-lg' });
+
+    bsModalRef.content.open({ dsl: this.dsl }).subscribe(() => {
       this.editorContext.clearGraph();
-    };
+    });
   }
 
   contentAssist(doc: CodeMirror.EditorFromTextArea) {
