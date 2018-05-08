@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnDestroy } from '@angular/core';
-import { ToastyService } from 'ng2-toasty';
 import { BsModalRef } from 'ngx-bootstrap';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
@@ -8,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-streams-undeploy',
@@ -36,12 +36,12 @@ export class StreamsUndeployComponent extends Modal implements OnDestroy {
    * @param {BsModalRef} modalRef used to control the current modal
    * @param {StreamsService} streamsService
    * @param {BusyService} busyService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    */
   constructor(private modalRef: BsModalRef,
               private streamsService: StreamsService,
               private busyService: BusyService,
-              private toastyService: ToastyService) {
+              private notificationService: NotificationService) {
 
     super(modalRef);
   }
@@ -60,7 +60,7 @@ export class StreamsUndeployComponent extends Modal implements OnDestroy {
       .undeployMultipleStreamDefinitions(this.streamDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        this.toastyService.success(`${data.length} stream definition(s) undeploy.`);
+        this.notificationService.success(`${data.length} stream definition(s) undeploy.`);
         this.confirm.emit('done');
         this.cancel();
       });

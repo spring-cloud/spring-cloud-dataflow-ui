@@ -9,7 +9,6 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { StreamsDeployComponent } from '../streams-deploy/streams-deploy.component';
 import { StreamsUndeployComponent } from '../streams-undeploy/streams-undeploy.component';
 import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
-import { ToastyService } from 'ng2-toasty';
 import { SortParams, OrderParams } from '../../shared/components/shared.interface';
 import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 import { StreamListParams } from '../components/streams.interface';
@@ -18,6 +17,7 @@ import { mergeMap, takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { AppsService } from '../../apps/apps.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-streams',
@@ -113,14 +113,14 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param {BsModalService} modalService
    * @param {AppsService} appsService
    * @param {BusyService} busyService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {Router} router
    */
   constructor(public streamsService: StreamsService,
               private modalService: BsModalService,
               private appsService: AppsService,
               private busyService: BusyService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private router: Router) {
   }
 
@@ -196,7 +196,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         }
       );
 
@@ -391,7 +391,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
       .undeployDefinition(item)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(data => {
-        this.toastyService.success(`Successfully undeployed stream definition "${item.name}"`);
+        this.notificationService.success(`Successfully undeployed stream definition "${item.name}"`);
       });
 
     this.busyService.addSubscription(busy);

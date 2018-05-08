@@ -5,13 +5,11 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/interval';
-
 import 'rxjs/add/operator/switchMap';
-
 import { ErrorHandler, Page } from '../shared/model';
 import { AggregateCounter, BaseCounter, Counter, DashboardItem, FieldValueCounter, MetricType } from './model';
 import { HttpUtils } from '../shared/support/http.utils';
-import { ToastyService } from 'ng2-toasty';
+import { NotificationService } from '../shared/services/notification.service';
 
 /**
  * @author Gunnar Hillert
@@ -43,28 +41,27 @@ export class AnalyticsService {
   private rowId = 1; // For Dashboard
   public dashboardItems: DashboardItem[];
 
-  constructor(
-    private http: Http,
-    private errorHandler: ErrorHandler,
-    private toastyService: ToastyService) {
+  constructor(private http: Http,
+              private errorHandler: ErrorHandler,
+              private notificationService: NotificationService) {
   }
 
   public set counterInterval(rate: number) {
     if (rate !== undefined && !isNaN(rate)) {
       if (rate < 0.01) {
-          rate = 0;
-          this.stopPollingForCounters();
-          this.toastyService.success(`Polling stopped.`);
+        rate = 0;
+        this.stopPollingForCounters();
+        this.notificationService.success(`Polling stopped.`);
       } else {
         console.log('Setting interval to ' + rate);
         this._counterInterval = rate;
         if (this.counterPoller && !this.counterPoller.closed) {
           this.stopPollingForCounters();
           this.startPollingForCounters();
-          this.toastyService.success(`Polling interval changed to ${rate}s.`);
+          this.notificationService.success(`Polling interval changed to ${rate}s.`);
         } else {
           this.startPollingForCounters();
-          this.toastyService.success(`Polling started with interval of ${rate}s.`);
+          this.notificationService.success(`Polling started with interval of ${rate}s.`);
         }
       }
     }
@@ -88,10 +85,11 @@ export class AnalyticsService {
     if (!this.counterPoller || this.counterPoller.closed) {
       this.counterPoller = Observable.interval(this.counterInterval * 1000)
         .switchMap(() => this.getAllCounters(true)).subscribe(
-          result => {},
+          result => {
+          },
           error => {
-            this.toastyService.error(error);
-        });
+            this.notificationService.error(error);
+          });
     }
   }
 
@@ -110,50 +108,50 @@ export class AnalyticsService {
    *
    * @param detailed If true will request additional counter values from the REST endpoint
    */
-  private  getAllCounters(detailed = false): Observable<Page<Counter>> {
+  private getAllCounters(detailed = false): Observable<Page<Counter>> {
 
-      if (!this.counters) {
-        this.counters = new Page<Counter>();
-        this.counters.pageSize = 50;
-      }
+    if (!this.counters) {
+      this.counters = new Page<Counter>();
+      this.counters.pageSize = 50;
+    }
 
-      const params = HttpUtils.getPaginationParams(this.counters.pageNumber, this.counters.pageSize);
-      const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+    const params = HttpUtils.getPaginationParams(this.counters.pageNumber, this.counters.pageSize);
+    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
-      if (detailed) {
-        params.append('detailed', detailed.toString());
-      }
+    if (detailed) {
+      params.append('detailed', detailed.toString());
+    }
 
-      requestOptionsArgs.search = params;
-      return this.http.get(this.metricsCountersUrl, requestOptionsArgs)
-                      .map(response => this.extractData(response, detailed))
-                      .catch(this.errorHandler.handleError);
+    requestOptionsArgs.search = params;
+    return this.http.get(this.metricsCountersUrl, requestOptionsArgs)
+      .map(response => this.extractData(response, detailed))
+      .catch(this.errorHandler.handleError);
   }
 
   /**
    * Retrieves all field-value-counters.
    */
-  private  getAllFieldValueCounters(): Observable<Page<FieldValueCounter>> {
+  private getAllFieldValueCounters(): Observable<Page<FieldValueCounter>> {
     const params = HttpUtils.getPaginationParams(0, 100);
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
     requestOptionsArgs.search = params;
     return this.http.get(this.metricsFieldValueCountersUrl, requestOptionsArgs)
-                    .map(response => this.extractData(response, false))
-                    .catch(this.errorHandler.handleError);
+      .map(response => this.extractData(response, false))
+      .catch(this.errorHandler.handleError);
   }
 
   /**
    * Retrieves all aggregate counters.
    */
-  private  getAllAggregateCounters(): Observable<Page<AggregateCounter>> {
+  private getAllAggregateCounters(): Observable<Page<AggregateCounter>> {
     const params = HttpUtils.getPaginationParams(0, 100);
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
 
     requestOptionsArgs.search = params;
     return this.http.get(this.metricsAggregateCountersUrl, requestOptionsArgs)
-                    .map(response => this.extractData(response, false))
-                    .catch(this.errorHandler.handleError);
+      .map(response => this.extractData(response, false))
+      .catch(this.errorHandler.handleError);
   }
 
   private extractData(response: Response, handleRates: boolean): Page<BaseCounter> {
@@ -266,7 +264,7 @@ export class AnalyticsService {
     } else if (MetricType.FIELD_VALUE_COUNTER === metricType) {
       return this.getAllFieldValueCounters();
     } else {
-      this.toastyService.error(`Metric type ${metricType.name} is not supported.`);
+      this.notificationService.error(`Metric type ${metricType.name} is not supported.`);
       return undefined;
     }
   }
@@ -290,7 +288,7 @@ export class AnalyticsService {
     this.addNewDashboardItem();
   }
 
-    /**
+  /**
    * Starts the polling process for a single counters. Method
    * will check if the poller is already running and will
    * start the poller only if the poller is undefined or
@@ -298,7 +296,7 @@ export class AnalyticsService {
    */
   public startPollingForSingleDashboardItem(dashboardItem: DashboardItem) {
     if ((!dashboardItem.counterPoller || dashboardItem.counterPoller.closed)
-        && dashboardItem.counter) {
+      && dashboardItem.counter) {
 
       let counterServiceCall: Observable<any>;
       let resultProcessor: Function;
@@ -307,7 +305,7 @@ export class AnalyticsService {
 
       if (dashboardItem.metricType === MetricType.COUNTER) {
         counterServiceCall = this.getSingleCounter(dashboardItem.counter.name);
-        resultProcessor = function(result: Counter) {
+        resultProcessor = function (result: Counter) {
           const counter = dashboardItem.counter as Counter;
           if (counter.value) {
             const rates = counter.rates;
@@ -321,13 +319,13 @@ export class AnalyticsService {
         };
       } else if (dashboardItem.metricType === MetricType.FIELD_VALUE_COUNTER) {
         counterServiceCall = this.getSingleFieldValueCounter(dashboardItem.counter.name);
-        resultProcessor = function(result: FieldValueCounter) {
+        resultProcessor = function (result: FieldValueCounter) {
           const counter = dashboardItem.counter as FieldValueCounter;
           counter.values = result.values.slice();
         };
       } else if (dashboardItem.metricType === MetricType.AGGREGATE_COUNTER) {
         counterServiceCall = this.getSingleAggregateCounter(dashboardItem.counter as AggregateCounter);
-        resultProcessor = function(result: AggregateCounter) {
+        resultProcessor = function (result: AggregateCounter) {
           const counter = dashboardItem.counter as AggregateCounter;
           counter.counts = result.counts.slice();
         };
@@ -338,7 +336,7 @@ export class AnalyticsService {
           result => resultProcessor(result),
           error => {
             console.log('error', error);
-            this.toastyService.error(error);
+            this.notificationService.error(error);
           }
         );
     }
@@ -374,14 +372,14 @@ export class AnalyticsService {
    * @param counterName Name of the counter for which to retrieve details
    */
   private getSingleCounter(counterName: string): Observable<Counter> {
-          const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-          return this.http.get(this.metricsCountersUrl + '/' + counterName, requestOptionsArgs)
-                          .map(response => {
-                            const body = response.json();
-                            console.log('body', body);
-                            return new Counter().deserialize(body);
-                          })
-                          .catch(this.errorHandler.handleError);
+    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+    return this.http.get(this.metricsCountersUrl + '/' + counterName, requestOptionsArgs)
+      .map(response => {
+        const body = response.json();
+        console.log('body', body);
+        return new Counter().deserialize(body);
+      })
+      .catch(this.errorHandler.handleError);
   }
 
   /**
@@ -392,12 +390,12 @@ export class AnalyticsService {
   private getSingleFieldValueCounter(counterName: string): Observable<Counter> {
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
     return this.http.get(this.metricsFieldValueCountersUrl + '/' + counterName, requestOptionsArgs)
-                    .map(response => {
-                      const body = response.json();
-                      return new FieldValueCounter().deserialize(body);
-                    })
-                    .catch(this.errorHandler.handleError);
-    }
+      .map(response => {
+        const body = response.json();
+        return new FieldValueCounter().deserialize(body);
+      })
+      .catch(this.errorHandler.handleError);
+  }
 
   /**
    * Retrieves a single Aggregate Counter.
@@ -413,10 +411,10 @@ export class AnalyticsService {
     params.append('resolution', counter.resolutionType.name.toLowerCase());
 
     return this.http.get(this.metricsAggregateCountersUrl + '/' + counter.name, requestOptionsArgs)
-                    .map(response => {
-                      const body = response.json();
-                      return new AggregateCounter().deserialize(body);
-                    })
-                    .catch(this.errorHandler.handleError);
+      .map(response => {
+        const body = response.json();
+        return new AggregateCounter().deserialize(body);
+      })
+      .catch(this.errorHandler.handleError);
   }
 }

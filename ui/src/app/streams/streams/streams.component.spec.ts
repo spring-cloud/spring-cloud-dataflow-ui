@@ -1,8 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ToastyService } from 'ng2-toasty';
 import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { MockStreamsService } from '../../tests/mocks/streams';
 import { STREAM_DEFINITIONS } from '../../tests/mocks/mock-data';
@@ -39,6 +38,7 @@ import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link StreamsComponent}.
@@ -49,7 +49,7 @@ import { PagerComponent } from '../../shared/components/pager/pager.component';
 describe('StreamsComponent', () => {
   let component: StreamsComponent;
   let fixture: ComponentFixture<StreamsComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const streamsService = new MockStreamsService();
   const authService = new MockAuthService();
   const modalService = new MockModalService();
@@ -97,7 +97,7 @@ describe('StreamsComponent', () => {
         { provide: BusyService, useValue: new BusyService() },
         { provide: StreamsService, useValue: streamsService },
         { provide: BsModalService, useValue: modalService },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -106,7 +106,7 @@ describe('StreamsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamsComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {

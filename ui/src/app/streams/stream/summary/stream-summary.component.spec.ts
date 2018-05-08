@@ -5,8 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StreamsService } from '../../streams.service';
 import { ActivatedRoute } from '@angular/router';
 import { FloModule } from 'spring-flo';
-import { MockToastyService } from '../../../tests/mocks/toasty';
-import { ToastyService } from 'ng2-toasty';
+import { MockNotificationService } from '../../../tests/mocks/notification';
 import { StreamSummaryComponent } from './stream-summary.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { MockModalService } from '../../../tests/mocks/modal';
@@ -21,6 +20,7 @@ import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { DeploymentPropertiesInfoComponent } from '../../streams/deployment-properties-info/deployment-properties-info.component';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Test {@link StreamSummaryComponent}.
@@ -33,7 +33,7 @@ describe('StreamSummaryComponent', () => {
   let activeRoute: MockActivatedRoute;
   const streamsService = new MockStreamsService();
   const commonTestParams = { id: '1' };
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const modalService = new MockModalService();
   const authService = new MockAuthService();
   const aboutService = new MocksSharedAboutService();
@@ -61,7 +61,7 @@ describe('StreamSummaryComponent', () => {
         { provide: BsModalService, useValue: modalService },
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();

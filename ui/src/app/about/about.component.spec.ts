@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {NgBusyModule} from 'ng-busy';
 import { AboutComponent } from './about.component';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../tests/mocks/toasty';
+import {MockNotificationService} from '../tests/mocks/notification';
 import {MockActivatedRoute} from '../tests/mocks/activated-route';
 import {ActivatedRoute} from '@angular/router';
 import {MockAboutService} from '../tests/mocks/about';
@@ -10,11 +9,12 @@ import {AboutService} from './about.service';
 import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {RouterTestingModule} from '@angular/router/testing';
+import { NotificationService } from '../shared/services/notification.service';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
   let fixture: ComponentFixture<AboutComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   let activeRoute: MockActivatedRoute;
   const aboutService = new MockAboutService();
 
@@ -29,7 +29,7 @@ describe('AboutComponent', () => {
       declarations:   [ AboutComponent ],
       providers: [
         { provide: AboutService, useValue: aboutService },
-        { provide: ToastyService, useValue: toastyService },
+        { provide: NotificationService, useValue: notificationService },
         { provide: ActivatedRoute, useValue: activeRoute }
       ]
     })

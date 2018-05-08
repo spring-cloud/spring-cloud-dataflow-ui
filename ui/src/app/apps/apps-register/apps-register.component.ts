@@ -1,7 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
 import {Router} from '@angular/router';
 import {ApplicationType} from '../../shared/model/application-type';
 import 'rxjs/add/observable/of';
@@ -11,6 +10,7 @@ import {AppRegisterParams} from '../components/apps.interface';
 import {Subject} from 'rxjs/Subject';
 import {BusyService} from '../../shared/services/busy.service';
 import {takeUntil} from 'rxjs/operators';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Applications Register
@@ -47,13 +47,13 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
    * Constructor
    *
    * @param {AppsService} appsService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {FormBuilder} fb
    * @param {BusyService} busyService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private fb: FormBuilder,
               private busyService: BusyService,
               private router: Router) {
@@ -95,11 +95,11 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         data => {
-          this.toastyService.success(`${data.length} App(s) registered.`);
+          this.notificationService.success(`${data.length} App(s) registered.`);
           this.cancel();
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         }
       );
 

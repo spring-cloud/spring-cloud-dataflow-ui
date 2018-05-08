@@ -1,26 +1,26 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {ToastyService} from 'ng2-toasty';
-import {ModalModule, BsModalService} from 'ngx-bootstrap';
-import {DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {RuntimeAppsComponent} from './runtime-apps.component';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {KeyValuePipe} from '../../shared/pipes/key-value-filter.pipe';
-import {MockRuntimeAppsService} from '../../tests/mocks/runtime';
-import {RuntimeAppsService} from '../runtime-apps.service';
-import {RUNTIME_APPS} from '../../tests/mocks/mock-data';
-import {RuntimeAppStateComponent} from '../components/runtime-app-state/runtime-app-state.component';
-import {RuntimeAppComponent} from '../runtime-app/runtime-app.component';
-import {NgBusyModule} from 'ng-busy';
-import {MockModalService} from '../../tests/mocks/modal';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ModalModule, BsModalService } from 'ngx-bootstrap';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { RuntimeAppsComponent } from './runtime-apps.component';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
+import { MockRuntimeAppsService } from '../../tests/mocks/runtime';
+import { RuntimeAppsService } from '../runtime-apps.service';
+import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
+import { RuntimeAppStateComponent } from '../components/runtime-app-state/runtime-app-state.component';
+import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
+import { NgBusyModule } from 'ng-busy';
+import { MockModalService } from '../../tests/mocks/modal';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { NotificationService } from '../../shared/services/notification.service';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
   let fixture: ComponentFixture<RuntimeAppsComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const runtimeAppsService = new MockRuntimeAppsService();
   const modalService = new MockModalService();
 
@@ -39,9 +39,9 @@ describe('RuntimeAppsComponent', () => {
         ModalModule.forRoot()
       ],
       providers: [
-        {provide: RuntimeAppsService, useValue: runtimeAppsService},
-        {provide: BsModalService, useValue: modalService},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: RuntimeAppsService, useValue: runtimeAppsService },
+        { provide: BsModalService, useValue: modalService },
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -85,7 +85,7 @@ describe('RuntimeAppsComponent', () => {
       const spy = spyOn(modalService, 'show');
       des[3].query(By.css('.btn-default')).nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith(RuntimeAppComponent, {class: 'modal-xl'});
+      expect(spy).toHaveBeenCalledWith(RuntimeAppComponent, { class: 'modal-xl' });
     });
 
     it('should refresh the page', () => {
@@ -102,12 +102,12 @@ describe('RuntimeAppsComponent', () => {
     beforeEach(() => {
       runtimeAppsService.testRuntimeApps = {
         _embedded: {
-          appStatusResourceList: Array.from({length: 10}).map((a, index) => {
+          appStatusResourceList: Array.from({ length: 10 }).map((a, index) => {
             return {
-              deploymentId: `foostream${{index}}.time`,
+              deploymentId: `foostream${{ index }}.time`,
               state: `deploying`,
-              instances: {_embedded: {appInstanceStatusResourceList: []}},
-              _links: {self: {href: `http://localhost:9393/runtime/apps/foostream${{index}}.time`}}
+              instances: { _embedded: { appInstanceStatusResourceList: [] } },
+              _links: { self: { href: `http://localhost:9393/runtime/apps/foostream${{ index }}.time` } }
             };
           })
         },
@@ -125,14 +125,14 @@ describe('RuntimeAppsComponent', () => {
       const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
       fixture.debugElement.query(By.css('button[name=refresh]')).nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith({ page: 0, size: 30});
+      expect(spy).toHaveBeenCalledWith({ page: 0, size: 30 });
     });
 
     it('should navigation to the page 2', () => {
       const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
       fixture.debugElement.queryAll(By.css('#pagination a'))[0].nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith({ page: 1, size: 30});
+      expect(spy).toHaveBeenCalledWith({ page: 1, size: 30 });
     });
 
   });

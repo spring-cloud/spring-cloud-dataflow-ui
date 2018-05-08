@@ -5,14 +5,14 @@ import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { DebugElement } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ToastyService } from 'ng2-toasty';
 import { MockJobsService } from '../../tests/mocks/jobs';
 import { JobsService } from '../jobs.service';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
 import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe';
 import { JobExecutionStatusComponent } from '../components/job-execution-status.component';
 import { JOBS_EXECUTIONS } from '../../tests/mocks/mock-data';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { NotificationService } from '../../shared/services/notification.service';
 
 describe('JobExecutionDetailsComponent', () => {
   let component: JobExecutionDetailsComponent;
@@ -21,7 +21,7 @@ describe('JobExecutionDetailsComponent', () => {
   let fixture: ComponentFixture<JobExecutionDetailsComponent>;
   let activeRoute: MockActivatedRoute;
   let jobsService: MockJobsService;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -39,16 +39,16 @@ describe('JobExecutionDetailsComponent', () => {
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(JobExecutionDetailsComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Parser } from '../../../shared/services/parser';
 import { StreamsDestroyComponent } from '../../streams-destroy/streams-destroy.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { ToastyService } from 'ng2-toasty';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -37,13 +37,13 @@ export class StreamSummaryComponent implements OnInit {
    *
    * @param {ActivatedRoute} route
    * @param {BsModalService} modalService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {Router} router
    * @param {StreamsService} streamsService
    */
   constructor(private route: ActivatedRoute,
               private modalService: BsModalService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private router: Router,
               private streamsService: StreamsService) {
   }
@@ -91,7 +91,7 @@ export class StreamSummaryComponent implements OnInit {
     this.streamsService
       .undeployDefinition(streamDefinition)
       .subscribe(() => {
-        this.toastyService.success(`Successfully undeployed stream definition "${streamDefinition.name}"`);
+        this.notificationService.success(`Successfully undeployed stream definition "${streamDefinition.name}"`);
         this.refresh();
       });
   }

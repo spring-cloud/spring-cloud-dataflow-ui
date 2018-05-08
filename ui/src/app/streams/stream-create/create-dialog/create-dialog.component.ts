@@ -5,7 +5,6 @@ import { ParserService } from '../../../shared/services/parser.service';
 import { convertParseResponseToJsonGraph } from '../../components/flo/text-to-graph';
 import { Utils } from '../../components/flo/support/utils';
 import { StreamsService } from '../../streams.service';
-import { ToastyService } from 'ng2-toasty';
 import { Properties } from 'spring-flo';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
@@ -16,6 +15,7 @@ import { share, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { BusyService } from '../../../shared/services/busy.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Stores progress percentage.
@@ -102,7 +102,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    * Constructor
    *
    * @param {BsModalRef} bsModalRef
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {ParserService} parserService
    * @param {StreamsService} streamService
    * @param {BusyService} busyService
@@ -110,7 +110,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    * @param {SharedAboutService} aboutService
    */
   constructor(private bsModalRef: BsModalRef,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private parserService: ParserService,
               private streamService: StreamsService,
               private busyService: BusyService,
@@ -369,7 +369,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
             this.confirm.emit(true);
             setTimeout(() => {
               this.bsModalRef.hide();
-              this.toastyService.success('Stream(s) have been created successfully');
+              this.notificationService.success('Stream(s) have been created successfully');
             }, PROGRESS_BAR_WAIT_TIME);
             this.router.navigate(['streams']);
           } else {
@@ -393,9 +393,9 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
             this.progressData = undefined;
           }, PROGRESS_BAR_WAIT_TIME);
           if (error._body && error._body.message) {
-            this.toastyService.error(`Problem creating stream '${def.name}': ${error._body.message}`);
+            this.notificationService.error(`Problem creating stream '${def.name}': ${error._body.message}`);
           } else {
-            this.toastyService.error(`Failed to create stream '${def.name}'`);
+            this.notificationService.error(`Failed to create stream '${def.name}'`);
           }
         });
 

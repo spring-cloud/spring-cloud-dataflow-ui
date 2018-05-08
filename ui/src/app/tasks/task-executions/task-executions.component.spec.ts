@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ToastyService } from 'ng2-toasty';
 import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { TASK_EXECUTIONS } from '../../tests/mocks/mock-data';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,6 +29,7 @@ import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/tas
 import { TaskExecutionsComponent } from './task-executions.component';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -39,7 +39,7 @@ import { PagerComponent } from '../../shared/components/pager/pager.component';
 describe('TaskExecutionsComponent', () => {
   let component: TaskExecutionsComponent;
   let fixture: ComponentFixture<TaskExecutionsComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
   const modalService = new MockModalService();
@@ -80,7 +80,7 @@ describe('TaskExecutionsComponent', () => {
         { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: BsModalService, useValue: modalService },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -89,7 +89,7 @@ describe('TaskExecutionsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskExecutionsComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {

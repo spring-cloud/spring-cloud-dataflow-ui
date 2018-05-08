@@ -2,8 +2,8 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {BsModalRef} from 'ngx-bootstrap';
 import {AppRegistration} from '../../shared/model/app-registration.model';
 import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
 import 'rxjs/add/observable/throw';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Applications Unregister modal
@@ -33,11 +33,11 @@ export class AppsUnregisterComponent {
    *
    * @param {BsModalRef} modalRef used to control the current modal
    * @param {AppsService} appsService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    */
   constructor(private modalRef: BsModalRef,
               private appsService: AppsService,
-              private toastyService: ToastyService) {
+              private notificationService: NotificationService) {
 
   }
 
@@ -60,15 +60,15 @@ export class AppsUnregisterComponent {
     this.appsService.unregisterApps(this.applications).subscribe(
       data => {
         if (data.length === 1) {
-          this.toastyService.success('Successfully removed app "'
+          this.notificationService.success('Successfully removed app "'
             + this.applications[0].name + '" of type "' + this.applications[0].type.toString() + '".');
         } else {
-          this.toastyService.success(`${data.length} app(s) unregistered.`);
+          this.notificationService.success(`${data.length} app(s) unregistered.`);
         }
         this.event.emit(data);
         this.close();
       }, error => {
-        this.toastyService.error(error);
+        this.notificationService.error(error);
         this.close();
       });
   }

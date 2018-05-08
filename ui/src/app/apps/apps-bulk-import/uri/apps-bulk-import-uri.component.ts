@@ -1,13 +1,13 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
-import {ToastyService} from 'ng2-toasty';
-import {Router} from '@angular/router';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Subject} from 'rxjs/Subject';
-import {takeUntil} from 'rxjs/operators';
-import {AppsService} from '../../apps.service';
-import {AppsBulkImportValidator} from '../apps-bulk-import.validator';
-import {BusyService} from '../../../shared/services/busy.service';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
+import { takeUntil } from 'rxjs/operators';
+import { AppsService } from '../../apps.service';
+import { AppsBulkImportValidator } from '../apps-bulk-import.validator';
+import { BusyService } from '../../../shared/services/busy.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Applications Bulk Import
@@ -36,13 +36,13 @@ export class AppsBulkImportUriComponent implements OnDestroy {
    * Constructor
    *
    * @param {AppsService} appsService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {FormBuilder} fb
    * @param {BusyService} busyService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private fb: FormBuilder,
               private busyService: BusyService,
               private router: Router) {
@@ -72,7 +72,7 @@ export class AppsBulkImportUriComponent implements OnDestroy {
       uri: this.form.get('uri').value.toString()
     }).pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(data => {
-        this.toastyService.success('Apps Imported.');
+        this.notificationService.success('Apps Imported.');
         this.router.navigate(['apps']);
       });
 

@@ -2,8 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { AppsService } from '../apps.service';
-import { ToastyService } from 'ng2-toasty';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppDetailsComponent } from './app-details.component';
@@ -28,6 +27,7 @@ import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link AppDetailsComponent}.
@@ -37,7 +37,7 @@ import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 describe('AppDetailsComponent', () => {
   let component: AppDetailsComponent;
   let fixture: ComponentFixture<AppDetailsComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
   const authService = new MockAuthService();
   const sharedAboutService = new MocksSharedAboutService();
@@ -80,7 +80,7 @@ describe('AppDetailsComponent', () => {
         { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -90,7 +90,7 @@ describe('AppDetailsComponent', () => {
     activeRoute.testParams = commonTestParams;
     fixture = TestBed.createComponent(AppDetailsComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
     appsService.mock = Object.assign({}, sourceMock);
   });
 

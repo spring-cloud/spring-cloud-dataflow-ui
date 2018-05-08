@@ -1,23 +1,22 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {NgBusyModule} from 'ng-busy';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../tests/mocks/toasty';
-import {MockActivatedRoute} from '../tests/mocks/activated-route';
-import {ActivatedRoute} from '@angular/router';
-import {MockAboutService} from '../tests/mocks/about';
-import {AboutService} from './about.service';
-import {DebugElement} from '@angular/core';
-import {By} from '@angular/platform-browser';
-import {RouterTestingModule} from '@angular/router/testing';
-import {AboutDetailsComponent} from './about-details.component';
-import {KeyValuePipe} from '../shared/pipes/key-value-filter.pipe';
-import {ClipboardModule} from 'ngx-clipboard/dist';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgBusyModule } from 'ng-busy';
+import { MockNotificationService } from '../tests/mocks/notification';
+import { MockActivatedRoute } from '../tests/mocks/activated-route';
+import { ActivatedRoute } from '@angular/router';
+import { MockAboutService } from '../tests/mocks/about';
+import { AboutService } from './about.service';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AboutDetailsComponent } from './about-details.component';
+import { ClipboardModule } from 'ngx-clipboard/dist';
 import { MapValuesPipe } from '../shared/pipes/map-values-pipe.pipe';
+import { NotificationService } from '../shared/services/notification.service';
 
 describe('AboutDetailsComponent', () => {
   let component: AboutDetailsComponent;
   let fixture: ComponentFixture<AboutDetailsComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   let activeRoute: MockActivatedRoute;
   const aboutService = new MockAboutService();
 
@@ -34,9 +33,9 @@ describe('AboutDetailsComponent', () => {
       ],
       declarations: [AboutDetailsComponent, MapValuesPipe],
       providers: [
-        {provide: AboutService, useValue: aboutService},
-        {provide: ToastyService, useValue: toastyService},
-        {provide: ActivatedRoute, useValue: activeRoute}
+        { provide: AboutService, useValue: aboutService },
+        { provide: NotificationService, useValue: notificationService },
+        { provide: ActivatedRoute, useValue: activeRoute }
       ]
     })
       .compileComponents();

@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { ToastyService } from 'ng2-toasty';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { DebugElement } from '@angular/core';
@@ -13,7 +12,8 @@ import { JobExecutionStatusComponent } from '../components/job-execution-status.
 import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe';
 import { MapValuesPipe } from '../../shared/pipes/map-values-pipe.pipe';
 import { JOBS_EXECUTIONS_1_STEPS_1, JOBS_EXECUTIONS_1_STEPS_1_PROGRESS } from '../../tests/mocks/mock-data';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { NotificationService } from '../../shared/services/notification.service';
 
 describe('StepExecutionDetailsComponent', () => {
   let component: StepExecutionDetailsComponent;
@@ -22,7 +22,7 @@ describe('StepExecutionDetailsComponent', () => {
   let fixture: ComponentFixture<StepExecutionDetailsComponent>;
   let activeRoute: MockActivatedRoute;
   let jobsService: MockJobsService;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -41,7 +41,7 @@ describe('StepExecutionDetailsComponent', () => {
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
     .compileComponents();
@@ -50,7 +50,7 @@ describe('StepExecutionDetailsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StepExecutionDetailsComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {
