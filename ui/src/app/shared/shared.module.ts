@@ -44,6 +44,7 @@ import { PagerComponent } from './components/pager/pager.component';
 import { RoutingStateService } from './services/routing-state.service';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './services/notification.service';
+import { LoggerService } from './services/logger.service';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -121,7 +122,8 @@ const busyConfig: BusyConfig = {
     ConfirmService,
     BusyService,
     RoutingStateService,
-    NotificationService
+    NotificationService,
+    LoggerService
   ],
   exports: [
     StreamDslComponent,

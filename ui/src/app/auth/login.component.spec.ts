@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { AboutService } from '../about/about.service';
 import { BusyService } from '../shared/services/busy.service';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -25,6 +26,7 @@ describe('LoginComponent', () => {
   const authService = new MockAuthService();
   const aboutService = new MockAboutService();
   const busyService = new BusyService();
+  const loggerService = new LoggerService();
 
   beforeEach( async(() => {
     activeRoute = new MockActivatedRoute();
@@ -40,6 +42,7 @@ describe('LoginComponent', () => {
         { provide: BusyService, useValue: busyService },
         { provide: AboutService, useValue: aboutService },
         { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService },
         { provide: ActivatedRoute, useValue: {
             params: Observable.of({returnUrl: '/apps'})
           }

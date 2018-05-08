@@ -13,6 +13,7 @@ import { JobExecutionStatusComponent } from '../components/job-execution-status.
 import { JOBS_EXECUTIONS } from '../../tests/mocks/mock-data';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 describe('JobExecutionDetailsComponent', () => {
   let component: JobExecutionDetailsComponent;
@@ -22,6 +23,7 @@ describe('JobExecutionDetailsComponent', () => {
   let activeRoute: MockActivatedRoute;
   let jobsService: MockJobsService;
   const notificationService = new MockNotificationService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -39,7 +41,8 @@ describe('JobExecutionDetailsComponent', () => {
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

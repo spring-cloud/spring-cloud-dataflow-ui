@@ -10,6 +10,7 @@ import { ErrorHandler, Page } from '../shared/model';
 import { AggregateCounter, BaseCounter, Counter, DashboardItem, FieldValueCounter, MetricType } from './model';
 import { HttpUtils } from '../shared/support/http.utils';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * @author Gunnar Hillert
@@ -43,6 +44,7 @@ export class AnalyticsService {
 
   constructor(private http: Http,
               private errorHandler: ErrorHandler,
+              private loggerService: LoggerService,
               private notificationService: NotificationService) {
   }
 
@@ -53,7 +55,7 @@ export class AnalyticsService {
         this.stopPollingForCounters();
         this.notificationService.success(`Polling stopped.`);
       } else {
-        console.log('Setting interval to ' + rate);
+        this.loggerService.log('Setting interval to ' + rate);
         this._counterInterval = rate;
         if (this.counterPoller && !this.counterPoller.closed) {
           this.stopPollingForCounters();
@@ -245,7 +247,7 @@ export class AnalyticsService {
       this.addNewDashboardItem();
     } else {
       for (const dashboardItem of this.dashboardItems) {
-        console.log(`Start polling for dashboard item`, dashboardItem);
+        this.loggerService.log(`Start polling for dashboard item`, dashboardItem);
         this.startPollingForSingleDashboardItem(dashboardItem);
       }
     }
@@ -335,7 +337,7 @@ export class AnalyticsService {
         .switchMap(() => counterServiceCall).subscribe(
           result => resultProcessor(result),
           error => {
-            console.log('error', error);
+            this.loggerService.log('error', error);
             this.notificationService.error(error);
           }
         );
@@ -376,7 +378,7 @@ export class AnalyticsService {
     return this.http.get(this.metricsCountersUrl + '/' + counterName, requestOptionsArgs)
       .map(response => {
         const body = response.json();
-        console.log('body', body);
+        this.loggerService.log('body', body);
         return new Counter().deserialize(body);
       })
       .catch(this.errorHandler.handleError);

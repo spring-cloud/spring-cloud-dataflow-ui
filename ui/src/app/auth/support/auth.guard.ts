@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * A guard used by the router in order to check whether a the user has
@@ -17,6 +18,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private authService: AuthService,
+    private loggerService: LoggerService,
     private sharedAboutService: SharedAboutService
   ) { }
 
@@ -40,7 +42,7 @@ export class AuthGuard implements CanActivate {
     }
 
     if (securityInfo.isAuthenticationEnabled) {
-      console.log(`Determining authorizations ... ` +
+      this.loggerService.log(`Determining authorizations ... ` +
         `[authentication enabled: ${securityInfo.isAuthenticationEnabled}, ` +
         `authorization enabled: ${securityInfo.isAuthorizationEnabled}]`, route.data);
     }
@@ -51,7 +53,7 @@ export class AuthGuard implements CanActivate {
 
     if (securityInfo.isAuthenticationEnabled) {
       if (securityInfo.isAuthorizationEnabled && securityInfo.isAuthenticated) {
-        console.log('You do not have any of the necessary role(s) ' + rolesNeeded);
+        this.loggerService.log('You do not have any of the necessary role(s) ' + rolesNeeded);
         this.router.navigate(['roles-missing']);
       } else {
         this.router.navigate(['login'], { queryParams: { 'returnUrl': state.url }});

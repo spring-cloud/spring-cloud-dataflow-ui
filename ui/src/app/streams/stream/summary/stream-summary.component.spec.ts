@@ -21,6 +21,7 @@ import { SharedAboutService } from '../../../shared/services/shared-about.servic
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { DeploymentPropertiesInfoComponent } from '../../streams/deployment-properties-info/deployment-properties-info.component';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Test {@link StreamSummaryComponent}.
@@ -37,6 +38,7 @@ describe('StreamSummaryComponent', () => {
   const modalService = new MockModalService();
   const authService = new MockAuthService();
   const aboutService = new MocksSharedAboutService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -61,7 +63,8 @@ describe('StreamSummaryComponent', () => {
         { provide: BsModalService, useValue: modalService },
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

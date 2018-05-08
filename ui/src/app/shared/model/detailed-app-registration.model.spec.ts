@@ -168,7 +168,6 @@ describe('DetailedAppRegistration', () => {
       }`);
 
       const detailedAppRegistration = new DetailedAppRegistration().deserialize(jsonDetailedAppRegistration);
-      console.log(detailedAppRegistration);
       expect(detailedAppRegistration.name).toEqual('log');
       expect(detailedAppRegistration.type.toString()).toEqual(ApplicationType[ApplicationType.sink].toString());
       expect(detailedAppRegistration.uri).toEqual('maven://org.springframework.cloud.stream.app:log-sink-rabbit:1.2.0.RELEASE');

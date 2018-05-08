@@ -4,6 +4,7 @@ import {AppRegistration} from '../../shared/model/app-registration.model';
 import {AppsService} from '../apps.service';
 import 'rxjs/add/observable/throw';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Applications Unregister modal
@@ -33,10 +34,12 @@ export class AppsUnregisterComponent {
    *
    * @param {BsModalRef} modalRef used to control the current modal
    * @param {AppsService} appsService
+   * @param {LoggerService} loggerService
    * @param {NotificationService} notificationService
    */
   constructor(private modalRef: BsModalRef,
               private appsService: AppsService,
+              private loggerService: LoggerService,
               private notificationService: NotificationService) {
 
   }
@@ -56,7 +59,7 @@ export class AppsUnregisterComponent {
    * Emit confirm event if success and close the open modal dialog.
    */
   unregister() {
-    console.log(`Proceeding to unregister ${this.applications.length} application(s).`, this.applications);
+    this.loggerService.log(`Proceeding to unregister ${this.applications.length} application(s).`, this.applications);
     this.appsService.unregisterApps(this.applications).subscribe(
       data => {
         if (data.length === 1) {

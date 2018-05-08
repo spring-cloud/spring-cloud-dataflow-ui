@@ -28,6 +28,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link AppDetailsComponent}.
@@ -45,6 +46,7 @@ describe('AppDetailsComponent', () => {
   const confirmService = new MockConfirmService();
   const routingStateService = new MockRoutingStateService();
   let activeRoute: MockActivatedRoute;
+  const loggerService = new LoggerService();
 
   const commonTestParams = { appName: 'foo', appType: 'source' };
 
@@ -80,7 +82,8 @@ describe('AppDetailsComponent', () => {
         { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

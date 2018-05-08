@@ -5,15 +5,17 @@ import { ErrorHandler } from '../shared/model/error-handler';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { TasksService } from './tasks.service';
 import { HttpUtils } from '../shared/support/http.utils';
+import { LoggerService } from '../shared/services/logger.service';
 
 describe('TasksService', () => {
 
   beforeEach(() => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
     this.jsonData = {};
+    const loggerService = new LoggerService();
     const errorHandler = new ErrorHandler();
-    const sharedServices = new SharedAppsService(this.mockHttp, errorHandler);
-    this.tasksService = new TasksService(this.mockHttp, errorHandler, sharedServices);
+    const sharedServices = new SharedAppsService(this.mockHttp, loggerService, errorHandler);
+    this.tasksService = new TasksService(this.mockHttp, errorHandler, loggerService, sharedServices);
   });
 
   describe('getDefinitions', () => {

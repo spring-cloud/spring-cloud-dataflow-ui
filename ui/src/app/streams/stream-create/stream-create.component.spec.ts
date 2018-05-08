@@ -16,6 +16,7 @@ import { ContentAssistService } from '../components/flo/content-assist.service';
 import { ParserService } from '../../shared/services/parser.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { BusyService } from '../../shared/services/busy.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -32,6 +33,7 @@ describe('StreamCreateComponent', () => {
   const parserService = new ParserService();
   const editorService = new EditorService(null);
   const busyService = new BusyService();
+  const loggerService = new LoggerService();
 
   const commonTestParams = { id: '1' };
 
@@ -58,7 +60,8 @@ describe('StreamCreateComponent', () => {
         { provide: BsModalService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: ParserService, useValue: parserService },
-        { provide: EditorService, useValue: editorService }
+        { provide: EditorService, useValue: editorService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

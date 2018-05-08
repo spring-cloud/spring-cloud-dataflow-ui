@@ -11,6 +11,7 @@ import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -77,6 +78,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   constructor(public tasksService: TasksService,
               private modalService: BsModalService,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private router: Router,
               private notificationService: NotificationService) {
 
@@ -225,7 +227,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`);
+    this.loggerService.log(`Getting page ${page}.`);
     this.params.page = page - 1;
     this.refresh();
   }
@@ -271,7 +273,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     if (taskDefinitions.length === 0) {
       return;
     }
-    console.log(`Destroy ${taskDefinitions} task definition(s).`, taskDefinitions);
+    this.loggerService.log(`Destroy ${taskDefinitions} task definition(s).`, taskDefinitions);
     const className = taskDefinitions.length > 1 ? 'modal-lg' : 'modal-md';
     this.modal = this.modalService.show(TaskDefinitionsDestroyComponent, { class: className });
     this.modal.content.open({ taskDefinitions: taskDefinitions }).subscribe(() => {

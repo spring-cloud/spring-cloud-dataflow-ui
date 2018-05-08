@@ -1,6 +1,7 @@
 import {
   Component, OnInit, DoCheck, HostListener, ViewChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Line Chart Component use to display rates of counters.
@@ -47,7 +48,12 @@ export class GraphChartComponent implements OnInit, DoCheck {
   @Input()
   private unitsPerTickY: number;
 
-  constructor() { }
+  /**
+   * Constructor
+   *
+   * @param {LoggerService} loggerService
+   */
+  constructor(private loggerService: LoggerService) { }
 
   /**
    * Initialize the component and trigger the rendering of the chart.
@@ -115,7 +121,7 @@ export class GraphChartComponent implements OnInit, DoCheck {
     if (!this.chartData) {
       return;
     } else {
-      console.log(`Render Chart - width=${width}, height=${height}, data: ${this.chartData} - ` + Array.isArray(this.chartData));
+      this.loggerService.log(`Render Chart - width=${width}, height=${height}, data: ${this.chartData} - ` + Array.isArray(this.chartData));
     }
 
     const dataToUse = d3.entries(this.reverse ? this.chartData.slice().reverse() : this.chartData.slice());

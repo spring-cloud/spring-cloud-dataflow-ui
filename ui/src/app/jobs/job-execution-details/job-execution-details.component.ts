@@ -6,6 +6,7 @@ import { StepExecution } from '../model/step-execution.model';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Displays a job's execution detail information based on the job execution id that is passed in via params on the URI.
@@ -28,6 +29,7 @@ export class JobExecutionDetailsComponent implements OnInit, OnDestroy {
     private jobsService: JobsService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private loggerService: LoggerService,
     private router: Router
   ) { }
 
@@ -44,7 +46,7 @@ export class JobExecutionDetailsComponent implements OnInit, OnDestroy {
         this.jobExecution = data;
         },
         error => {
-          console.log('error while loading Job Execution Details', error);
+          this.loggerService.log('error while loading Job Execution Details', error);
           this.notificationService.error(error);
         }
       );

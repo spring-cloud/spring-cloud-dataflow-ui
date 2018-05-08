@@ -8,6 +8,7 @@ import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Component({
   selector: 'app-stream-destroy',
@@ -37,10 +38,12 @@ export class StreamsDestroyComponent extends Modal implements OnDestroy {
    * @param {StreamsService} streamsService
    * @param {BusyService} busyService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
    */
   constructor(private modalRef: BsModalRef,
               private streamsService: StreamsService,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private notificationService: NotificationService) {
     super(modalRef);
   }
@@ -57,7 +60,7 @@ export class StreamsDestroyComponent extends Modal implements OnDestroy {
    * Submit destroy stream(s)
    */
   destroy() {
-    console.log(`Proceeding to destroy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
+    this.loggerService.log(`Proceeding to destroy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
     const busy = this.streamsService.destroyMultipleStreamDefinitions(this.streamDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {

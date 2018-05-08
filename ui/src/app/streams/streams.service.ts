@@ -11,6 +11,7 @@ import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
 import { Platform } from './model/platform';
 import { StreamListParams } from './components/streams.interface';
 import { OrderParams } from '../shared/components/shared.interface';
+import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -42,9 +43,12 @@ export class StreamsService {
   /**
    * Creates the {@link Page} instance for {@link StreamDefinition} pagination support.
    * @param http handler for making calls to the data flow restful api
+   * @param loggerService used to log.
    * @param errorHandler used to generate the error messages.
    */
-  constructor(private http: Http, private errorHandler: ErrorHandler) {
+  constructor(private http: Http,
+              private loggerService: LoggerService,
+              private errorHandler: ErrorHandler) {
     this.streamDefinitions = new Page<StreamDefinition>();
   }
 
@@ -62,7 +66,7 @@ export class StreamsService {
       sort: null,
       order: null
     };
-    console.log('Getting paged stream definitions', streamListParams);
+    this.loggerService.log('Getting paged stream definitions', streamListParams);
     const params = HttpUtils.getPaginationParams(
       streamListParams.page,
       streamListParams.size
@@ -109,7 +113,7 @@ export class StreamsService {
    * @returns {Observable<R|T>} that will call the subscribed functions to handle the result of the destroy.
    */
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> {
-    console.log('Destroying...', streamDefinition);
+    this.loggerService.log('Destroying...', streamDefinition);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.delete('/streams/definitions/' + streamDefinition.name, options)
       .map(data => {
@@ -132,7 +136,7 @@ export class StreamsService {
    * @returns {Observable<R|T>} that will call subscribed functions to handle the result from the undeploy.
    */
   undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> {
-    console.log('Undeploying...', streamDefinition);
+    this.loggerService.log('Undeploying...', streamDefinition);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.delete('/streams/deployments/' + streamDefinition.name, options)
       .catch(this.errorHandler.handleError);
@@ -154,7 +158,7 @@ export class StreamsService {
    * @returns {Observable<R|T>} that will call the subscribed functions to handle the resut of the deploy.
    */
   deployDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<Response> {
-    console.log('Deploying...', streamDefinitionName);
+    this.loggerService.log('Deploying...', streamDefinitionName);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
       .catch(this.errorHandler.handleError);
@@ -169,7 +173,7 @@ export class StreamsService {
   }
 
   updateDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<Response> {
-    console.log('Updating...', streamDefinitionName, propertiesAsMap);
+    this.loggerService.log('Updating...', streamDefinitionName, propertiesAsMap);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.post(`/streams/deployments/update/${streamDefinitionName}`, {
       releaseName: streamDefinitionName,
@@ -184,7 +188,7 @@ export class StreamsService {
     return this.http.get(`/streams/deployments/${streamDefinitionName}`, options).map(res => {
       const json = res.json();
       const streamDef = new StreamDefinition(json.streamName, json.dslText, json.status);
-      console.log(json.deploymentProperties);
+      this.loggerService.log(json.deploymentProperties);
       // deploymentProperties come as json string -> turn the string into object
       streamDef.deploymentProperties = json.deploymentProperties ? JSON.parse(json.deploymentProperties) : [];
       return streamDef;
@@ -239,7 +243,7 @@ export class StreamsService {
     }
 
     if (body.page) {
-      console.log('BODY', body.page);
+      this.loggerService.log('BODY', body.page);
       this.streamDefinitions.pageNumber = body.page.number;
       this.streamDefinitions.pageSize = body.page.size;
       this.streamDefinitions.totalElements = body.page.totalElements;
@@ -248,7 +252,7 @@ export class StreamsService {
 
     this.streamDefinitions.items = items;
 
-    console.log('Extracted Stream Definitions:', this.streamDefinitions);
+    this.loggerService.log('Extracted Stream Definitions:', this.streamDefinitions);
     return this.streamDefinitions;
   }
 

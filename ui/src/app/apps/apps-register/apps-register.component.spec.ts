@@ -10,6 +10,7 @@ import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
 import { By } from '@angular/platform-browser';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link AppsRegisterComponent}.
@@ -21,6 +22,7 @@ describe('AppsRegisterComponent', () => {
   let fixture: ComponentFixture<AppsRegisterComponent>;
   const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -38,7 +40,8 @@ describe('AppsRegisterComponent', () => {
       providers: [
         { provide: AppsService, useValue: appsService },
         { provide: BusyService, useValue: new BusyService() },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

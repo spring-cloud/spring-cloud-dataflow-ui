@@ -13,6 +13,7 @@ import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { MockToolsService } from '../../tests/mocks/mock-tools';
 import { ToolsService } from '../components/flo/tools.service';
 import { TaskDefinitionCreateComponent } from './task-definition-create.component';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link TaskDefinitionCreateComponent}.
@@ -23,7 +24,8 @@ describe('TaskCreateComposedTaskComponent', () => {
   let component: TaskDefinitionCreateComponent;
   let fixture: ComponentFixture<TaskDefinitionCreateComponent>;
   let activeRoute: MockActivatedRoute;
-  const metamodelService = new MetamodelService(new MockSharedAppService(), new MockToolsService());
+  const loggerService = new LoggerService();
+  const metamodelService = new MetamodelService(new MockSharedAppService(), loggerService, new MockToolsService());
   const toolsService = new MockToolsService();
 
   const commonTestParams = { id: '1' };
@@ -48,7 +50,8 @@ describe('TaskCreateComposedTaskComponent', () => {
         {provide: EditorService},
         {provide: BsModalService},
         {provide: ContentAssistService},
-        {provide: ToolsService, useValue: toolsService}
+        {provide: ToolsService, useValue: toolsService},
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

@@ -15,6 +15,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { AppTypeComponent } from '../../apps/components/app-type/app-type.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -30,6 +31,7 @@ xdescribe('StreamDeployComponent', () => {
   const busyService = new BusyService();
   let activeRoute: MockActivatedRoute;
   const commonTestParams = { id: '1' };
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -52,7 +54,8 @@ xdescribe('StreamDeployComponent', () => {
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

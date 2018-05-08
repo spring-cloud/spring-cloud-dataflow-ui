@@ -5,6 +5,7 @@ import {
 
 import * as d3 from 'd3';
 import { FieldValueCounterValue } from '../../model/field-value-counter-value.model';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Buble Chart Component use to display rates of counters.
@@ -46,7 +47,7 @@ export class BubbleChartComponent implements OnInit, OnChanges {
       }
     }
 
-    constructor() {
+    constructor(private loggerService: LoggerService) {
     }
 
     private copyInputParameterData() {
@@ -133,7 +134,8 @@ export class BubbleChartComponent implements OnInit, OnChanges {
       if (!localThis.chartDataToUse) {
         return;
       } else {
-        console.log(`Render Chart - width=${widthToUse}, height=${heightToUse}, # of data items: ${localThis.chartDataToUse.length}`);
+        this.loggerService.log(`Render Chart - width=${widthToUse}, height=${heightToUse}, ` +
+          `# of data items: ${localThis.chartDataToUse.length}`);
       }
 
       localThis.chartDataToUse.sort((a, b) => {

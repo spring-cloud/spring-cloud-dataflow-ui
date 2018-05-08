@@ -11,13 +11,16 @@ import 'rxjs/add/observable/of';
 import {AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page} from '../model';
 import {PageRequest} from '../model/pagination/page-request.model';
 import {HttpUtils} from '../support/http.utils';
+import { LoggerService } from './logger.service';
 
 @Injectable()
 export class SharedAppsService {
 
   private static appsUrl = '/apps';
 
-  constructor(private http: Http, private errorHandler: ErrorHandler) {
+  constructor(private http: Http,
+              private loggerService: LoggerService,
+              private errorHandler: ErrorHandler) {
   }
 
   /**
@@ -54,7 +57,7 @@ export class SharedAppsService {
     }
     return this.http.get(url, options)
       .map(data => {
-        console.log('Returned App Registration Detail:', data);
+        this.loggerService.log('Returned App Registration Detail:', data);
         const body = data.json();
         const detailedAppRegistration = new DetailedAppRegistration().deserialize(body);
         return detailedAppRegistration;
@@ -78,7 +81,7 @@ export class SharedAppsService {
     page.pageSize = body.page.size;
     page.totalPages = body.page.totalPages;
 
-    console.log('page', page);
+    this.loggerService.log('page', page);
     return page;
   }
 

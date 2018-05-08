@@ -10,6 +10,7 @@ import * as CodeMirror from 'codemirror';
 import { ToolsService } from '../components/flo/tools.service';
 import { TaskDefinitionCreateDialogComponent } from './create-dialog/create-dialog.component';
 import { Router } from '@angular/router';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Component handling a creation of a composed task.
@@ -41,6 +42,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
               public editorService: EditorService,
               private bsModalService: BsModalService,
               private toolsService: ToolsService,
+              private loggerService: LoggerService,
               private router: Router) {
 
     this.validationMarkers = new Map();
@@ -89,7 +91,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   }
 
   createTaskDefs() {
-    console.log('createTaskDefs');
+    this.loggerService.log('createTaskDefs');
     const bsModalRef = this.bsModalService.show(TaskDefinitionCreateDialogComponent);
     bsModalRef.content.setDsl(this.dsl);
     bsModalRef.content.successCallback = () => {

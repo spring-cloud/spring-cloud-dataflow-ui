@@ -18,6 +18,7 @@ import { AuthService } from '../../auth/auth.service';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link StreamsDeployComponent}.
@@ -33,6 +34,7 @@ describe('StreamsDeployComponent', () => {
   const sharedAboutService = new MocksSharedAboutService();
   const bsModalRef = new BsModalRef();
   const authService = new MockAuthService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -55,7 +57,8 @@ describe('StreamsDeployComponent', () => {
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

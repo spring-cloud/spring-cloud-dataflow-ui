@@ -5,6 +5,7 @@ import { StepExecutionProgress } from '../model/step-execution-progress.model';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Component({
   selector: 'app-step-execution-progress',
@@ -23,6 +24,7 @@ export class StepExecutionProgressComponent implements OnInit, OnDestroy {
     private jobsService: JobsService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private loggerService: LoggerService,
     private router: Router
   ) { }
 
@@ -60,7 +62,7 @@ export class StepExecutionProgressComponent implements OnInit, OnDestroy {
         this.percentageComplete = data.percentageComplete * 100;
       },
       error => {
-        console.log('error while loading Step Execution Progress', error);
+        this.loggerService.log('error while loading Step Execution Progress', error);
         this.notificationService.error(error);
       });
   }

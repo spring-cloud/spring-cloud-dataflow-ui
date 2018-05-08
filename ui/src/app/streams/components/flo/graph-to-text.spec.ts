@@ -65,7 +65,6 @@ describe('graph-to-text', () => {
         createTap(timeSource, logSink);
         // 'timeSource' is missing a real connected (not via tap) sink
         dsl = convertGraphToText(graph);
-        console.log('DSL is ... ' + dsl);
         expect(dsl).toEqual('STREAM_1=time\n:STREAM_1.time > log');
     });
 

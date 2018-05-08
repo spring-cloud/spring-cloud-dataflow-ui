@@ -9,10 +9,12 @@ import {RenderService} from './render.service';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {EditorComponent, Flo, FloModule} from 'spring-flo';
 import {MockToolsService} from '../../../tests/mocks/mock-tools';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 describe('Task RenderService', () => {
 
-  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), new MockToolsService());
+  const loggerService = new LoggerService();
+  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new MockToolsService());
   const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE, null, null, null, null);
 
   let METAMODEL: Map<string, Map<string, Flo.ElementMetadata>>;

@@ -11,6 +11,7 @@ import {takeUntil} from 'rxjs/operators';
 import {BusyService} from '../../shared/services/busy.service';
 import {ApplicationType} from '../../shared/model/application-type';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Provides versions for an App Registration
@@ -59,12 +60,14 @@ export class AppVersionsComponent implements OnDestroy {
    * @param {BsModalRef} modalRef
    * @param {BusyService} busyService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
    */
   constructor(private appsService: AppsService,
               private confirmService: ConfirmService,
               private modalRef: BsModalRef,
               private busyService: BusyService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private loggerService: LoggerService) {
 
   }
 
@@ -93,7 +96,7 @@ export class AppVersionsComponent implements OnDestroy {
    * Used to load versions of an application
    */
   refresh() {
-    console.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
+    this.loggerService.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
     const busy = this.appsService
       .getAppVersions(ApplicationType[this.application.type.toString()], this.application.name)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -147,7 +150,7 @@ export class AppVersionsComponent implements OnDestroy {
         ` version for the application <strong>${this.application.name}</strong> (${this.application.type}). ` +
         `Are you sure?`;
       this.confirmService.open(title, description).subscribe(() => {
-        console.log(`Set default version application "${version}" for ${this.application.name} (${this.application.type}).`);
+        this.loggerService.log(`Set default version application "${version}" for ${this.application.name} (${this.application.type}).`);
         run();
       });
     }

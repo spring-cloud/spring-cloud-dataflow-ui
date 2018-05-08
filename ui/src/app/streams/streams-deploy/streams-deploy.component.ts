@@ -9,6 +9,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable } from 'rxjs/Observable';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -48,10 +49,12 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
    * @param streamsService The service used to deploy the stream.
    * @param busyService
    * @param notificationService used to display the status of a deployment
+   * @param loggerService
    */
   constructor(private streamsService: StreamsService,
               private modalRef: BsModalRef,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private notificationService: NotificationService) {
 
     super(modalRef);
@@ -78,7 +81,7 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
    * Applies the deploy process of multiple {@link StreamDefinition}s
    */
   deployDefinitions() {
-    console.log(`Proceeding to deploy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
+    this.loggerService.log(`Proceeding to deploy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
     const busy = this.streamsService.deployMultipleStreamDefinitions(this.streamDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {

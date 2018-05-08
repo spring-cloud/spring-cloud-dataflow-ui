@@ -11,6 +11,7 @@ import {Subject} from 'rxjs/Subject';
 import {BusyService} from '../../shared/services/busy.service';
 import {takeUntil} from 'rxjs/operators';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Applications Register
@@ -50,12 +51,14 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {FormBuilder} fb
    * @param {BusyService} busyService
+   * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
               private notificationService: NotificationService,
               private fb: FormBuilder,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private router: Router) {
   }
 
@@ -165,7 +168,7 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
    * Navigate to the applications list
    */
   cancel() {
-    console.log('Back to apps page ...');
+    this.loggerService.log('Back to apps page ...');
     this.router.navigate(['apps']);
   }
 

@@ -12,6 +12,7 @@ import { AboutDetailsComponent } from './about-details.component';
 import { ClipboardModule } from 'ngx-clipboard/dist';
 import { MapValuesPipe } from '../shared/pipes/map-values-pipe.pipe';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 describe('AboutDetailsComponent', () => {
   let component: AboutDetailsComponent;
@@ -19,6 +20,7 @@ describe('AboutDetailsComponent', () => {
   const notificationService = new MockNotificationService();
   let activeRoute: MockActivatedRoute;
   const aboutService = new MockAboutService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     aboutService.isAboutInfoAvailable = true;
@@ -35,6 +37,7 @@ describe('AboutDetailsComponent', () => {
       providers: [
         { provide: AboutService, useValue: aboutService },
         { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService },
         { provide: ActivatedRoute, useValue: activeRoute }
       ]
     })

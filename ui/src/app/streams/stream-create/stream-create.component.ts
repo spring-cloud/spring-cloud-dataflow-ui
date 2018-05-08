@@ -13,6 +13,7 @@ import * as CodeMirror from 'codemirror';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 
 /**
@@ -52,6 +53,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
               private bsModalService: BsModalService,
               private busyService: BusyService,
               private contentAssistService: ContentAssistService,
+              private loggerService: LoggerService,
               private parserService: ParserService) {
 
     this.validationMarkers = new Map();
@@ -144,14 +146,14 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
             const text = typeof longCompletion === 'string' ? longCompletion : longCompletion.text;
             return text.substring(chopAt);
           });
-          console.log(JSON.stringify(finalProposals));
+          this.loggerService.log(JSON.stringify(finalProposals));
           resolve({
             list: finalProposals,
             from: { line: startOfLine.line, ch: chopAt },
             to: cursor
           });
         }, err => {
-          console.error(err);
+          this.loggerService.error(err);
           resolve();
         });
     });

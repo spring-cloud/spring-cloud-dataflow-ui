@@ -8,6 +8,7 @@ import { Graph, Link, Node, TaskConversion } from './model/models';
 import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 
 import * as _joint from 'jointjs';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 const joint: any = _joint;
 
@@ -27,6 +28,7 @@ export class MetamodelService implements Flo.Metamodel {
   private request: Promise<Map<string, Map<string, Flo.ElementMetadata>>>;
 
   constructor(private appsService: SharedAppsService,
+              private loggerService: LoggerService,
               private toolsService: ToolsService) {
   }
 
@@ -112,7 +114,7 @@ export class MetamodelService implements Flo.Metamodel {
             }
             const group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
             if (group.has(item.name)) {
-              console.error(`Group '${item.type}' has duplicate element '${item.name}'`);
+              this.loggerService.error(`Group '${item.type}' has duplicate element '${item.name}'`);
             } else {
               group.set(item.name, this.createEntry(item.type, item.name, item.version));
             }
@@ -120,7 +122,7 @@ export class MetamodelService implements Flo.Metamodel {
           resolve(metamodel);
         },
         error => {
-          console.error(error);
+          this.loggerService.error(error);
           resolve(metamodel);
         }
       );

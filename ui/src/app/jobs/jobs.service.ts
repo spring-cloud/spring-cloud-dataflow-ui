@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { ExecutionContext } from './model/execution-context.model';
 import { StepExecutionResource } from './model/step-execution-resource.model';
 import { CountDetails, StepExecutionHistory, StepExecutionProgress } from './model/step-execution-progress.model';
+import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * Retrieves Job and Step Execution data from the Spring Cloud Data Flow server.
@@ -28,7 +29,11 @@ export class JobsService {
   public jobExecutions: Page<JobExecution>;
   public remotelyLoaded = false;
 
-  constructor(private http: Http, private errorHandler: ErrorHandler) { }
+  constructor(private http: Http,
+              private loggerService: LoggerService,
+              private errorHandler: ErrorHandler) {
+
+  }
 
   /**
    * Retrieve a paginated list of job executions from the Spring Cloud DataFlow server.
@@ -37,12 +42,12 @@ export class JobsService {
    * @returns {Observable<Page<JobExecution>>}
    */
   getJobExecutions(reload?: boolean): Observable<Page<JobExecution>> {
-    console.log(`Get Job Executions - reload ${reload}`, this.jobExecutions);
+    this.loggerService.log(`Get Job Executions - reload ${reload}`, this.jobExecutions);
     if (!this.jobExecutions || reload) {
       if (!this.jobExecutions) {
         this.jobExecutions = new Page<JobExecution>();
       }
-      console.log('Fetching Job Executions remotely.');
+      this.loggerService.log('Fetching Job Executions remotely.');
       this.remotelyLoaded = true;
 
       const params = HttpUtils.getPaginationParams(this.jobExecutions.pageNumber, this.jobExecutions.pageSize);
@@ -53,7 +58,7 @@ export class JobsService {
 
     } else {
       this.remotelyLoaded = false;
-      console.log('Fetching Job Executions from local state.', this.jobExecutions);
+      this.loggerService.log('Fetching Job Executions from local state.', this.jobExecutions);
       return Observable.of(this.jobExecutions);
     }
   }
