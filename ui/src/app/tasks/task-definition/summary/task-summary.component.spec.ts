@@ -26,6 +26,7 @@ import { LoaderComponent } from '../../../shared/components/loader/loader.compon
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { ToolsService } from '../../components/flo/tools.service';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Test {@link TaskSummaryComponent}.
@@ -44,6 +45,7 @@ describe('TaskSummaryComponent', () => {
   const busyService = new BusyService();
   const toolsService = new MockToolsService();
   const commonTestParams = { id: 'foo' };
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -72,7 +74,8 @@ describe('TaskSummaryComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: ToolsService, useValue: toolsService },
         { provide: BusyService, useValue: busyService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

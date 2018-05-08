@@ -18,6 +18,7 @@ import { dia } from 'jointjs';
 import * as _ from 'lodash';
 import { Parser } from '../../../shared/services/parser';
 import { MetamodelService } from './metamodel.service';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Build a graph representation from text dsl.
@@ -101,7 +102,7 @@ class TextToGraphConverter {
             // var streamStartNodeId = nodeId;
             let nameSet = false;
             if (TextToGraphConverter.DEBUG) {
-                console.log('convertParseResponseToJsonGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
+              LoggerService.log('convertParseResponseToJsonGraph: Line#' + streamNumber + ': ' + JSON.stringify(line));
             }
 
             // Build the graph/links if there was successfully parsed output
@@ -263,7 +264,7 @@ class TextToGraphConverter {
                 for (let e = 0; e < line.errors.length; e++) {
                     const error = line.errors[e];
                     if (TextToGraphConverter.DEBUG) {
-                        console.log('updateGraphFn: Recording error ' + JSON.stringify(error));
+                      LoggerService.log('updateGraphFn: Recording error ' + JSON.stringify(error));
                     }
                     errors.push(error);
                 }

@@ -107,7 +107,7 @@ interface RawMetadata {
 export class MockSharedAppService extends SharedAppsService {
 
   constructor() {
-    super(null, null);
+    super(null, null, null);
   }
 
   getApps(pageRequest: PageRequest, type?: ApplicationType, search?: string,

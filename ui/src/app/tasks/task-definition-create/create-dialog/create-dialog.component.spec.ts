@@ -6,6 +6,7 @@ import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockTasksService } from '../../../tests/mocks/tasks';
 import { TaskDefinitionCreateDialogComponent } from './create-dialog.component';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 describe('TaskDefinitionCreateDialogComponent', () => {
   let component: TaskDefinitionCreateDialogComponent;
@@ -13,6 +14,7 @@ describe('TaskDefinitionCreateDialogComponent', () => {
   const tasksService = new MockTasksService();
   const notificationService = new MockNotificationService();
   const bsModalRefStub = {};
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,7 +28,8 @@ describe('TaskDefinitionCreateDialogComponent', () => {
       providers: [
         { provide: TasksService, useValue: tasksService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: BsModalRef, useValue: bsModalRefStub }
+        { provide: BsModalRef, useValue: bsModalRefStub },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

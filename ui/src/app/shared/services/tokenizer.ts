@@ -235,13 +235,13 @@ class Tokenizer {
     }
 
     // private printTokenizerState() {
-    // 	console.log('Tokenizer State. Input #'+this.max);
+    // 	LoggerService.error('Tokenizer State. Input #'+this.max);
     // 	var output = '';
     // 	for (var i = 0; i < this.max; i++) {
     // 		output += this.toProcess.charAt(i) + '[' + this.toProcess.charCodeAt(i) + ']';
     // 	}
-    // 	console.log(output);
-    // 	console.log(this.pos);
+    // 	LoggerService.log(output);
+    // 	LoggerService.log(this.pos);
     // }
 
     public tokenize(): Token[] {

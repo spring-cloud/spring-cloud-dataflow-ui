@@ -6,6 +6,7 @@ import { AboutService } from '../about/about.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * Handles logouts. Logouts are handled differently depending on whether
@@ -25,6 +26,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private aboutService: AboutService,
     private notificationService: NotificationService,
+    private loggerService: LoggerService,
     private router: Router) {
   }
 
@@ -33,16 +35,16 @@ export class LogoutComponent implements OnInit, OnDestroy {
    */
   public ngOnInit() {
     if (!this.authService.securityInfo.isAuthenticationEnabled) {
-      console.log('No need to logout. Authentication is not enabled.');
+      this.loggerService.log('No need to logout. Authentication is not enabled.');
       this.router.navigate(['']);
       return;
     } else if (!this.authService.securityInfo.isAuthenticated) {
-      console.log('No need to logout. User is not authenticated.');
+      this.loggerService.log('No need to logout. User is not authenticated.');
       this.router.navigate(['']);
       return;
     }
 
-    console.log('Logging out ...');
+    this.loggerService.log('Logging out ...');
     if (this.authService.securityInfo.isFormLogin) {
       this.authService.logout()
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -58,12 +60,12 @@ export class LogoutComponent implements OnInit, OnDestroy {
         },
       );
     } else {
-      console.log(`Logging out user ${this.authService.securityInfo.username} (OAuth)`);
+      this.loggerService.log(`Logging out user ${this.authService.securityInfo.username} (OAuth)`);
       this.authService.clearLocalSecurity();
       this.aboutService.featureInfo.reset();
 
       const logoutUrl = '//' + window.location.host + '/logout';
-      console.log('Redirecting to ' + logoutUrl);
+      this.loggerService.log('Redirecting to ' + logoutUrl);
       window.open(logoutUrl, '_self');
     }
   }

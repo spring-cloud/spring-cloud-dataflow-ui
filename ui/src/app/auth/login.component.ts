@@ -9,6 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * Handles application logins.
@@ -31,6 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private busyService: BusyService,
     private router: Router,
     private notificationService: NotificationService,
+    private loggerService: LoggerService,
     private route: ActivatedRoute) {
   }
 
@@ -66,16 +68,16 @@ export class LoginComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.ngUnsubscribe$))
           .subscribe(
             aboutInfo => {
-              console.log(`Login successful, using return Url: ${returnUrl}`);
+              this.loggerService.log(`Login successful, using return Url: ${returnUrl}`);
               this.router.navigate([returnUrl]);
             },
             error => {
-              console.error('User was not logged in because:', error);
+              this.loggerService.error('User was not logged in because:', error);
               this.notificationService.error(error);
             }
           );
         } else {
-          console.error('The following error occurred:', result);
+          this.loggerService.error('The following error occurred:', result);
           this.notificationService.error('Not logged in.');
         }
       },

@@ -6,6 +6,7 @@ import {HttpUtils} from '../shared/support/http.utils';
 import {ApplicationType, AppRegistration, ErrorHandler} from '../shared/model';
 import {SharedAppsService} from '../shared/services/shared-apps.service';
 import {AppsWorkaroundService} from './apps.workaround.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 describe('AppsService', () => {
 
@@ -13,9 +14,10 @@ describe('AppsService', () => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
     this.jsonData = {};
     const errorHandler = new ErrorHandler();
-    const sharedServices = new SharedAppsService(this.mockHttp, errorHandler);
+    const loggerService = new LoggerService();
+    const sharedServices = new SharedAppsService(this.mockHttp, loggerService, errorHandler);
     const workArroundService = new AppsWorkaroundService(sharedServices);
-    this.appsService = new AppsService(this.mockHttp, errorHandler, workArroundService, sharedServices);
+    this.appsService = new AppsService(this.mockHttp, errorHandler, loggerService, workArroundService, sharedServices);
   });
 
   /*

@@ -25,6 +25,7 @@ import { SortComponent } from '../../shared/components/sort/sort.component';
 import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link AppVersionsComponent}.
@@ -41,6 +42,7 @@ describe('AppVersionsComponent', () => {
   const confirmService = new MockConfirmService();
   const bsModalRef = new BsModalRef();
   let activeRoute: MockActivatedRoute;
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -67,7 +69,8 @@ describe('AppVersionsComponent', () => {
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: BusyService, useValue: new BusyService() },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

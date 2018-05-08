@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { LoginRequest } from './model/login-request.model';
 import { SecurityAwareRequestOptions } from './support/security-aware-request-options';
+import { LoggerService } from '../shared/services/logger.service';
 
 describe('AuthService', () => {
 
@@ -33,7 +34,8 @@ describe('AuthService', () => {
 
     const errorHandler = new ErrorHandler();
     const securityAwareRequestOptions = new SecurityAwareRequestOptions();
-    this.authService = new AuthService(this.mockHttp, errorHandler, securityAwareRequestOptions);
+    const loggerService = new LoggerService();
+    this.authService = new AuthService(this.mockHttp, errorHandler, loggerService, securityAwareRequestOptions);
   });
 
   describe('loadSecurityInfo', () => {

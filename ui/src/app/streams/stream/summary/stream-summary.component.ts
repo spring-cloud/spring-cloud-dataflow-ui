@@ -8,6 +8,7 @@ import { Parser } from '../../../shared/services/parser';
 import { StreamsDestroyComponent } from '../../streams-destroy/streams-destroy.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -38,12 +39,14 @@ export class StreamSummaryComponent implements OnInit {
    * @param {ActivatedRoute} route
    * @param {BsModalService} modalService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
    * @param {Router} router
    * @param {StreamsService} streamsService
    */
   constructor(private route: ActivatedRoute,
               private modalService: BsModalService,
               private notificationService: NotificationService,
+              private loggerService: LoggerService,
               private router: Router,
               private streamsService: StreamsService) {
   }
@@ -87,7 +90,7 @@ export class StreamSummaryComponent implements OnInit {
    * @param {StreamDefinition} streamDefinition
    */
   undeploy(streamDefinition: StreamDefinition) {
-    console.log(`Undeploy ${streamDefinition.name} stream definition(s).`, streamDefinition);
+    this.loggerService.log(`Undeploy ${streamDefinition.name} stream definition(s).`, streamDefinition);
     this.streamsService
       .undeployDefinition(streamDefinition)
       .subscribe(() => {
@@ -111,7 +114,7 @@ export class StreamSummaryComponent implements OnInit {
    * @param {StreamDefinition} streamDefinition
    */
   destroy(streamDefinition: StreamDefinition) {
-    console.log(`Destroy ${name} stream definition.`, name);
+    this.loggerService.log(`Destroy ${name} stream definition.`, name);
     this.modal = this.modalService.show(StreamsDestroyComponent, { class: 'modal-md' });
     this.modal.content.open({ streamDefinitions: [streamDefinition] }).subscribe(() => {
       this.router.navigate([`streams`]);

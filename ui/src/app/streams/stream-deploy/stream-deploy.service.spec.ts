@@ -6,6 +6,7 @@ import {AppsWorkaroundService} from '../../apps/apps.workaround.service';
 import {StreamDeployService} from './stream-deploy.service';
 import {Observable} from 'rxjs/Observable';
 import {HttpUtils} from '../../shared/support/http.utils';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test Stream Deploy Services.
@@ -22,10 +23,11 @@ describe('StreamDeployService', () => {
 
     const errorHandler = new ErrorHandler();
 
-    const sharedAppsService = new SharedAppsService(this.mockHttpSharedAppsService, errorHandler);
+    const loggerService = new LoggerService();
+    const sharedAppsService = new SharedAppsService(this.mockHttpSharedAppsService, loggerService, errorHandler);
     const workAroundService = new AppsWorkaroundService(sharedAppsService);
-    const streamsService = new StreamsService(this.mockHttpStreamsService, errorHandler);
-    const appsService = new AppsService(this.mockHttpAppsService, errorHandler, workAroundService, sharedAppsService);
+    const streamsService = new StreamsService(this.mockHttpStreamsService, loggerService, errorHandler);
+    const appsService = new AppsService(this.mockHttpAppsService, errorHandler, loggerService, workAroundService, sharedAppsService);
 
     this.streamDeployService = new StreamDeployService(streamsService, sharedAppsService, appsService);
   });

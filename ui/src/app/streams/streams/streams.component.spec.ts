@@ -39,6 +39,7 @@ import { MockAppsService } from '../../tests/mocks/apps';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link StreamsComponent}.
@@ -54,6 +55,7 @@ describe('StreamsComponent', () => {
   const authService = new MockAuthService();
   const modalService = new MockModalService();
   const appsService = new MockAppsService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     const aboutService = new MocksSharedAboutService();
@@ -97,7 +99,8 @@ describe('StreamsComponent', () => {
         { provide: BusyService, useValue: new BusyService() },
         { provide: StreamsService, useValue: streamsService },
         { provide: BsModalService, useValue: modalService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

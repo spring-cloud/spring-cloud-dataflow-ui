@@ -3,6 +3,7 @@ import {
   OnInit, HostListener, ViewChild,
   ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Bar Chart Component use to display rates of counters.
@@ -54,7 +55,7 @@ export class BarChartComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor() {
+  constructor(private loggerService: LoggerService) {
 
   }
   private copyInputParameterData() {
@@ -146,7 +147,8 @@ export class BarChartComponent implements OnInit, OnChanges {
     const computedStyle = getComputedStyle(parentElement);
     const elementWidth = parentElement.clientWidth;
 
-    const widthToUse = this.width || elementWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+    const widthToUse = this.width || elementWidth - parseFloat(computedStyle.paddingLeft) -
+      parseFloat(computedStyle.paddingRight);
     const heightToUse = this.height;
 
     const localThis = this;
@@ -154,7 +156,8 @@ export class BarChartComponent implements OnInit, OnChanges {
     if (!this.chartData) {
       return;
     } else {
-      console.log(`Render Chart - width=${widthToUse}, height=${heightToUse}, data: ${this.chartData} - ` + Array.isArray(this.chartData));
+      this.loggerService.log(`Render Chart - width=${widthToUse}, height=${heightToUse}, data: ${this.chartData} - ` +
+        Array.isArray(this.chartData));
     }
 
     const xValuesRange = [0, d3.max(localThis.chartDataToUse)];

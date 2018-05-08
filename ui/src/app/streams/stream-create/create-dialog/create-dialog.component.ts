@@ -16,6 +16,7 @@ import { Subject } from 'rxjs/Subject';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Stores progress percentage.
@@ -93,9 +94,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    */
   confirm: EventEmitter<boolean> = new EventEmitter();
 
-  /**
-   * Feature Info Observable
-   */
+
   featureInfo: Observable<FeatureInfo>;
 
   /**
@@ -105,6 +104,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    * @param {NotificationService} notificationService
    * @param {ParserService} parserService
    * @param {StreamsService} streamService
+   * @param {LoggerService} loggerService
    * @param {BusyService} busyService
    * @param {Router} router
    * @param {SharedAboutService} aboutService
@@ -113,6 +113,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
               private notificationService: NotificationService,
               private parserService: ParserService,
               private streamService: StreamsService,
+              private loggerService: LoggerService,
               private busyService: BusyService,
               private router: Router,
               private aboutService: SharedAboutService) {
@@ -292,16 +293,16 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   waitForStreamDef(streamDefNameToWaitFor: string, attemptCount: number): Promise<void> {
     return new Promise(resolve => {
       if (attemptCount === 10) {
-        console.error('Aborting after 10 attempts, cannot find the stream: ' + streamDefNameToWaitFor);
+        this.loggerService.error('Aborting after 10 attempts, cannot find the stream: ' + streamDefNameToWaitFor);
         resolve();
       }
       this.streamService.getDefinition(streamDefNameToWaitFor)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
-          console.log('Stream ' + streamDefNameToWaitFor + ' is ok!');
+          this.loggerService.log('Stream ' + streamDefNameToWaitFor + ' is ok!');
           resolve();
         }, () => {
-          console.log('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
+          this.loggerService.log('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
           setTimeout(() => {
             this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
               resolve();
@@ -359,7 +360,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
       const busy = this.streamService.createDefinition(def.name, def.def, this.deploy)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
-          console.log('Stream ' + def.name + ' created OK');
+          this.loggerService.log('Stream ' + def.name + ' created OK');
           // Stream created successfully, mark it as created
           def.created = true;
           this.progressData.count++;

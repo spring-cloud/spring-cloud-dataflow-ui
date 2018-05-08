@@ -5,6 +5,7 @@ import {
 
 import * as d3 from 'd3';
 import { FieldValueCounterValue } from '../../model/field-value-counter-value.model';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Pie Chart Component use to display rates of counters.
@@ -51,7 +52,7 @@ export class PieChartComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor() {
+  constructor(private loggerService: LoggerService) {
   }
 
   private copyInputParameterData() {
@@ -60,10 +61,10 @@ export class PieChartComponent implements OnInit, OnChanges {
     this.maxNumberOfSlicesCopy = this.maxNumberOfSlices;
     this.useAllDataCopy = this.useAllDataCopy;
 
-    console.log(`# of chart data items: ${this.chartDataCopy.length} - ${this.chartData.length}`);
-    console.log(`Height: ${this.heightCopy} - ${this.height}`);
-    console.log(`Max # if Slices: ${this.maxNumberOfSlices}`);
-    console.log(`Use All Data: ${this.useAllData}`);
+    this.loggerService.log(`# of chart data items: ${this.chartDataCopy.length} - ${this.chartData.length}`);
+    this.loggerService.log(`Height: ${this.heightCopy} - ${this.height}`);
+    this.loggerService.log(`Max # if Slices: ${this.maxNumberOfSlices}`);
+    this.loggerService.log(`Use All Data: ${this.useAllData}`);
   }
 
   private updateData() {
@@ -137,7 +138,7 @@ export class PieChartComponent implements OnInit, OnChanges {
           update = true;
       }
 
-      console.log('update', update);
+      this.loggerService.log('update', update);
       this.copyInputParameterData();
       this.updateData();
       if (update) {
@@ -194,10 +195,10 @@ export class PieChartComponent implements OnInit, OnChanges {
     if (!localThis.chartDataToUse) {
       return;
     } else {
-      console.log(`Render Chart - width=${widthToUse}, height=${heightToUse}, data: ${localThis.chartDataToUse}`);
+      this.loggerService.log(`Render Chart - width=${widthToUse}, height=${heightToUse}, data: ${localThis.chartDataToUse}`);
     }
 
-    console.log('this.chartData', localThis.chartDataToUse);
+    this.loggerService.log('this.chartData', localThis.chartDataToUse);
     localThis.chartDataToUse.sort((a, b) => {
       return b.value - a.value;
     });
@@ -236,7 +237,7 @@ export class PieChartComponent implements OnInit, OnChanges {
       .attr('fill', function(d, i) { return colors[i]; });
 
     slice.on('mousemove', function(d) {
-      console.log('mouse move');
+      this.loggerService.log('mouse move');
         // div.style('left', d3.event.pageX+10+'px');
         // div.style('top', d3.event.pageY-25+'px');
         // div.style('display', 'inline-block');
