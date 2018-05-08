@@ -1,57 +1,93 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">Create Stream</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="handleCancel()">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div *ngIf="!progressData">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Create Stream</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <form name="form-creation" (submit)="submit()" class="form-horizontal" [formGroup]="form">
+    <div class="modal-body" *ngIf="!progressData">
+      <div *ngIf="errors && errors.length > 0" class="alert alert-error">
+        <div *ngFor="let error of errors">• {{ error }}</div>
+      </div>
+      <p>This action will create the following <strong>stream(s)</strong>:</p>
+      <div *ngFor="let def of streamDefsToCreate()" class="row-stream">
+        <div class="form-group">
+          <label class="control-label col-sm-4">Definition</label>
+          <div class="col-sm-18">
+            <div class="control-empty">
+              <app-stream-dsl>{{ def.def }}</app-stream-dsl>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" [class.has-error]="getControl(def.index.toString()).invalid || hasDuplicateName(def)">
+          <label [for]="def.index.toString()" class="control-label col-sm-4 control-label-sm">
+            Name <em class="required">*</em>
+          </label>
+          <div class="col-sm-16">
+            <input [disabled]="isStreamCreationInProgress()" class="form-control input-sm" [id]="def.index.toString()"
+                   [name]="def.index.toString()" [formControlName]="def.index.toString()"
+                   type="text" placeholder="<Stream Name>" [ngModel]="def.name"
+                   (ngModelChange)="changeStreamName(def.index, $event)"/>
+            <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
+                  class="help-block validation-block">
+            Stream name is required!
+          </span>
+            <span
+              *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource"
+              class="help-block validation-block">
+            Stream name is already taken!
+          </span>
+            <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern"
+                  class="help-block validation-block">
+            Invalid stream name!
+          </span>
+            <span *ngIf="hasDuplicateName(def)" class="help-block validation-block">
+            Duplicate stream name on the form
+          </span>
+          </div>
+        </div>
+      </div>
+      <div class="row row-stream-deploy">
+        <div class="col-sm-offset-4 col-sm-18">
+          <label class="checkbox-inline">
+            <input [disabled]="isStreamCreationInProgress()" type="checkbox" [(ngModel)]="deploy"
+                   [ngModelOptions]="{standalone: true}"/>
+            Deploy stream(s)
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn btn-default" [disabled]="!canSubmit()">
+        <span *ngIf="streamDefsToCreate().length === 1">
+          <span *ngIf="deploy">Create and deploy the stream</span>
+          <span *ngIf="!deploy">Create the stream</span>
+        </span>
+        <span *ngIf="streamDefsToCreate().length > 1">
+          <span *ngIf="deploy">Create and deploy the {{ streamDefsToCreate().length }} streams</span>
+          <span *ngIf="!deploy">Create the {{ streamDefsToCreate().length }} streams</span>
+        </span>
+      </button>
+    </div>
+  </form>
 </div>
-<form name="form-creation" (submit)="handleOk()" class="modal-body" [formGroup]="form" [ngBusy]="busy">
-  <div *ngIf="errors && errors.length > 0" class="dialog-validation">
-    <div *ngFor="let error of errors">
-      <label class="glyphicon glyphicon-exclamation-sign dialog-error-sign">{{ error }}</label>
-    </div>
+
+<div *ngIf="progressData">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Creating...</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-  <div *ngIf="!(errors && errors.length) && warnings && warnings.length > 0" class="dialog-validation">
-    <div *ngFor="let warning of warnings">
-      <label class="glyphicon glyphicon-warning-sign dialog-warning-sign"></label>
-      <label>{{ warning }}</label>
-    </div>
-  </div>
-  <p>This action will create stream(s):</p>
-  <tbody>
-    <tr *ngFor="let def of streamDefsToCreate()" [ngClass]="{'has-warning': invalidStreamRow(def)}">
-      <td class="stream-name-form-control-cell">
-        <input [disabled]="isStreamCreationInProgress()" class="form-control" [id]="def.index.toString()"
-               [name]="def.index.toString()" [formControlName]="def.index.toString()"
-               type="text" placeholder="<Stream Name>" [ngModel]="def.name"
-               (ngModelChange)="changeStreamName(def.index, $event)"/>
-        <p>
-          <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
-             class="help-block validation-block">Stream name is required!</span>
-          <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource"
-             class="help-block validation-block">Stream name is already taken!</span>
-          <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern"
-             class="help-block validation-block">Invalid stream name!</span>
-          <span *ngIf="hasDuplicateName(def)"
-             class="help-block validation-block">Duplicate stream name on the form</span>
-        </p>
-      </td>
-      <td class="stream-definition-label-cell">
-        <label class="control-label">{{ def.def }}</label>
-      </td>
-    </tr>
-  </tbody>
-  <label class="dialog-control">
-    <input [disabled]="isStreamCreationInProgress()" type="checkbox" [(ngModel)]="deploy"
-                                       [ngModelOptions]="{standalone: true}"/>Deploy stream(s)
-  </label>
-  <div *ngIf="progressData">
-    <hr/>
-    <div>Creating Streams...</div>
+  <div class="modal-body" *ngIf="progressData">
+    <div><strong>Creating Streams...</strong></div>
     <progressbar animate="true" [value]="progressData.percent" type="success"><b>{{ progressData.percent }}%</b>
     </progressbar>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="handleCancel()">Close</button>
-    <button type="submit" class="btn btn-default" [disabled]="!canSubmit()">OK</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">Close</button>
   </div>
-</form>
+</div>

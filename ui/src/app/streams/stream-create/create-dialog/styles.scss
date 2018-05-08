@@ -1,32 +1,26 @@
-.modal-body {
-  tbody {
-    width: 100%;
-    display: inline-table;
+
+.row-stream {
+  border-top: 1px solid #e0e5e8;
+  padding: 0.8rem 0;
+  .form-group {
+    margin-bottom: 0;
   }
-  tr {
-    width: 100%;
-    display: inline-table;
-  }
-  .stream-definition-label-cell {
-    vertical-align: top;
-    padding: 4px 8px;
-  }
-  .stream-name-form-control-cell {
-    width: 50%;
-  }
-  .dialog-error-sign {
-    color: red;
-  }
-  .dialog-validation {
-    margin-bottom: 4px;
-    font-size: smaller;
-    line-height: 1em;
-  }
-  .dialog-control input[type="checkbox"] {
-    margin-right: 5px;
+  .control-empty {
+    padding: 10px 0;
   }
 }
 
-.ng-busy {
-  margin-top: 0;
+.form-group {
+  .control-label-sm {
+    height: 32px;
+    line-height: 24px;
+  }
+}
+
+.row-stream-deploy {
+  border-top: 1px solid #e0e5e8;
+  padding: 1rem 0;
+  .checkbox-inline {
+    font-weight: bold;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { ParserService } from '../../../shared/services/parser.service';
@@ -14,6 +14,8 @@ import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Observable } from 'rxjs/Observable';
 import { share, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { Modal } from '../../../shared/components/modal/modal-abstract';
+import { BusyService } from '../../../shared/services/busy.service';
 
 /**
  * Stores progress percentage.
@@ -23,12 +25,17 @@ import { Subject } from 'rxjs/Subject';
  * @author Gunnar Hillert
  */
 class ProgressData {
-  constructor(public count, public total) {}
+  constructor(public count, public total) {
+  }
+
   get percent(): number {
     return Math.round(this.count / this.total * 100);
   }
 }
 
+/**
+ * Progress bar tick
+ */
 const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 
 /**
@@ -36,41 +43,98 @@ const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
  *
  * @author Alex Boyko
  * @author Andy Clement
+ * @author Damien Vitrac
  */
 @Component({
   selector: 'app-stream-create-dialog-content',
   templateUrl: 'create-dialog.component.html',
-  styleUrls: [ 'styles.scss' ],
+  styleUrls: ['styles.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class StreamCreateDialogComponent implements OnInit, OnDestroy {
+export class StreamCreateDialogComponent extends Modal implements OnInit, OnDestroy {
 
+  /**
+   * Busy Subscriptions
+   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
+  /**
+   * Form
+   */
   form: FormGroup;
+
+  /**
+   * Stream definitions
+   */
   streamDefs: Array<any> = [];
+
+  /**
+   * Errors
+   */
   errors: Array<string>;
-  warnings: Array<string>;
+
+  /**
+   * Dependencies Map
+   */
   dependencies: Map<number, Array<number>>;
+
+  /**
+   * Progress data
+   */
   progressData: ProgressData;
+
+  /**
+   * Form deploy
+   */
   deploy = false;
-  successCallback: () => void;
+
+  /**
+   * Emit after undeploy success
+   */
+  confirm: EventEmitter<boolean> = new EventEmitter();
+
+  /**
+   * Feature Info Observable
+   */
   featureInfo: Observable<FeatureInfo>;
 
-  busy: Subscription;
+  /**
+   * Constructor
+   *
+   * @param {BsModalRef} bsModalRef
+   * @param {ToastyService} toastyService
+   * @param {ParserService} parserService
+   * @param {StreamsService} streamService
+   * @param {BusyService} busyService
+   * @param {Router} router
+   * @param {SharedAboutService} aboutService
+   */
+  constructor(private bsModalRef: BsModalRef,
+              private toastyService: ToastyService,
+              private parserService: ParserService,
+              private streamService: StreamsService,
+              private busyService: BusyService,
+              private router: Router,
+              private aboutService: SharedAboutService) {
+    super(bsModalRef);
+  }
 
-  constructor(
-    private bsModalRef: BsModalRef,
-    private toastyService: ToastyService,
-    private parserService: ParserService,
-    private streamService: StreamsService,
-    private router: Router,
-    private aboutService: SharedAboutService
-  ) {}
-
+  /**
+   * Initialize
+   */
   ngOnInit() {
     this.form = new FormGroup({}, this.uniqueStreamNames());
     this.featureInfo = this.aboutService.getFeatureInfo().pipe(share());
+  }
+
+  /**
+   * Implement open: not used
+   * @param args
+   * @returns {Observable<any>}
+   */
+  open(args): Observable<any> {
+    this.setDsl(args.dsl);
+    return this.confirm;
   }
 
   /**
@@ -82,6 +146,11 @@ export class StreamCreateDialogComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
+  /**
+   * Set DSL
+   *
+   * @param {string} dsl
+   */
   setDsl(dsl: string) {
     // Remove empty lines from text definition and strip off white space
     let newLineNumber = 0;
@@ -116,7 +185,7 @@ export class StreamCreateDialogComponent implements OnInit, OnDestroy {
           const childLine = graphAndErrors.graph.nodes.find(n => n.id === l.to).range.start.line;
           if (parentLine !== childLine) {
             if (!this.dependencies.has(parentLine)) {
-              this.dependencies.set(parentLine, [ childLine ]);
+              this.dependencies.set(parentLine, [childLine]);
             } else {
               this.dependencies.get(parentLine).push(childLine);
             }
@@ -135,26 +204,55 @@ export class StreamCreateDialogComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Is unique Stream names
+   *
+   * @returns {(control: AbstractControl) => {[p: string]: any}}
+   */
   uniqueStreamNames() {
     const streamDefs = this.streamDefs;
     return (control: AbstractControl): { [key: string]: any } => {
       const duplicates = Utils.findDuplicates(streamDefs.filter(s => s.name).map(s => s.name));
-      return duplicates.length === 0 ? null : {'uniqueStreamNames': duplicates};
+      return duplicates.length === 0 ? null : { 'uniqueStreamNames': duplicates };
     };
   }
 
+  /**
+   * Invalid a stream row
+   *
+   * @param def
+   * @returns {boolean}
+   */
   invalidStreamRow(def: any): boolean {
     return this.getControl(def.index.toString()).invalid || this.hasDuplicateName(def);
   }
 
+  /**
+   * Has dupplicate name
+   *
+   * @param def
+   * @returns {boolean}
+   */
   hasDuplicateName(def: any): boolean {
     return this.form.errors && this.form.errors.uniqueStreamNames && this.form.errors.uniqueStreamNames.indexOf(def.name) >= 0;
   }
 
+  /**
+   * Get Control
+   *
+   * @param {string} id
+   * @returns {AbstractControl}
+   */
   getControl(id: string): AbstractControl {
     return this.form.controls[id];
   }
 
+  /**
+   * Change Stream name
+   *
+   * @param {number} index
+   * @param {string} newName
+   */
   changeStreamName(index: number, newName: string) {
     const oldName = this.streamDefs[index].name;
     this.streamDefs[index].name = newName;
@@ -166,26 +264,31 @@ export class StreamCreateDialogComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Is Stream create in progress
+   *
+   * @returns {boolean}
+   */
   isStreamCreationInProgress(): boolean {
     return this.progressData !== undefined && this.progressData !== null;
   }
 
-  handleOk() {
-    this.submitStreams();
-  }
-
-  handleCancel() {
-    this.bsModalRef.hide();
-  }
-
-  get okDisabled() {
-    return false;
-  }
-
+  /**
+   * Stream Definitions to Create
+   *
+   * @returns {Array<any>}
+   */
   streamDefsToCreate(): Array<any> {
     return this.streamDefs ? this.streamDefs.filter(d => !d.created) : [];
   }
 
+  /**
+   * Wait for Stream definition
+   *
+   * @param {string} streamDefNameToWaitFor
+   * @param {number} attemptCount
+   * @returns {Promise<void>}
+   */
   waitForStreamDef(streamDefNameToWaitFor: string, attemptCount: number): Promise<void> {
     return new Promise(resolve => {
       if (attemptCount === 10) {
@@ -193,21 +296,26 @@ export class StreamCreateDialogComponent implements OnInit, OnDestroy {
         resolve();
       }
       this.streamService.getDefinition(streamDefNameToWaitFor)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
-        console.log('Stream ' + streamDefNameToWaitFor + ' is ok!');
-        resolve();
-      }, () => {
-        console.log('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
-        setTimeout(() => {
-          this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
-            resolve();
-          });
-        }, 400);
-      });
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(() => {
+          console.log('Stream ' + streamDefNameToWaitFor + ' is ok!');
+          resolve();
+        }, () => {
+          console.log('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
+          setTimeout(() => {
+            this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
+              resolve();
+            });
+          }, 400);
+        });
     });
   }
 
+  /**
+   * Can Submit
+   *
+   * @returns {boolean}
+   */
   canSubmit(): boolean {
     return !this.isStreamCreationInProgress()
       && this.form.valid
@@ -216,7 +324,10 @@ export class StreamCreateDialogComponent implements OnInit, OnDestroy {
       && !(this.errors && this.errors.length);
   }
 
-  submitStreams() {
+  /**
+   * Submit Streams
+   */
+  submit() {
     if (this.canSubmit()) {
       // Find index of the first not yet created stream
       // Can't use Array#findIndex(...) because not all browsers support it
@@ -245,50 +356,50 @@ export class StreamCreateDialogComponent implements OnInit, OnDestroy {
     } else {
       // Send the request to create a stream
       const def = this.streamDefs[index];
-      this.busy = this.streamService.createDefinition(def.name, def.def, this.deploy)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(() => {
-        console.log('Stream ' + def.name + ' created OK');
-        // Stream created successfully, mark it as created
-        def.created = true;
-        this.progressData.count++;
-        if (this.streamDefs.length - 1 === index) {
-          // Last stream created, close the dialog
-          // Delay closing the dialog thus progress bar 100% would stay up for a short a bit
-          if (this.successCallback) {
-            this.successCallback();
+      const busy = this.streamService.createDefinition(def.name, def.def, this.deploy)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(() => {
+          console.log('Stream ' + def.name + ' created OK');
+          // Stream created successfully, mark it as created
+          def.created = true;
+          this.progressData.count++;
+          if (this.streamDefs.length - 1 === index) {
+            // Last stream created, close the dialog
+            // Delay closing the dialog thus progress bar 100% would stay up for a short a bit
+            this.confirm.emit(true);
+            setTimeout(() => {
+              this.bsModalRef.hide();
+              this.toastyService.success('Stream(s) have been created successfully');
+            }, PROGRESS_BAR_WAIT_TIME);
+            this.router.navigate(['streams']);
+          } else {
+            // There are more streams to create, so create the next one
+            this.waitForStreamDef(def.name, 0).then(() => {
+              this.progressData.count++;
+              // $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
+              this.createStreams(index + 1);
+            }, function () {
+              // Error handling
+              // Previous stream creation request was issues but the stream resource is still unavailable for some reason
+              // Never mind and keep creating the rest of the streams?
+              this.progressData.count++;
+              // $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
+              this.createStreams(index + 1);
+            });
           }
+        }, (error) => {
+          // Delay hiding the progress bar thus user can see it if operation went too fast
           setTimeout(() => {
-            this.bsModalRef.hide();
-            this.toastyService.success('Stream(s) have been created successfully');
+            this.progressData = undefined;
           }, PROGRESS_BAR_WAIT_TIME);
-          this.router.navigate(['streams']);
-        } else {
-          // There are more streams to create, so create the next one
-          this.waitForStreamDef(def.name, 0).then(() => {
-            this.progressData.count++;
-            // $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
-            this.createStreams(index + 1);
-          }, function() {
-            // Error handling
-            // Previous stream creation request was issues but the stream resource is still unavailable for some reason
-            // Never mind and keep creating the rest of the streams?
-            this.progressData.count++;
-            // $scope.createProgressData($scope.progressData.total, $scope.progressData.count + 1);
-            this.createStreams(index + 1);
-          });
-        }
-      }, (error) => {
-        // Delay hiding the progress bar thus user can see it if operation went too fast
-        setTimeout(() => {
-          this.progressData = undefined;
-        }, PROGRESS_BAR_WAIT_TIME);
-        if (error._body && error._body.message) {
-          this.toastyService.error(`Problem creating stream '${def.name}': ${error._body.message}`);
-        } else {
-          this.toastyService.error(`Failed to create stream '${def.name}'`);
-        }
-      });
+          if (error._body && error._body.message) {
+            this.toastyService.error(`Problem creating stream '${def.name}': ${error._body.message}`);
+          } else {
+            this.toastyService.error(`Failed to create stream '${def.name}'`);
+          }
+        });
+
+      this.busyService.addSubscription(busy);
     }
   }
 
