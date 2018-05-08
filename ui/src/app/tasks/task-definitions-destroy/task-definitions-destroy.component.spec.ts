@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { BsModalRef, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../../auth/auth.service';
-import { ToastyService } from 'ng2-toasty';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { BusyService } from '../../shared/services/busy.service';
@@ -16,6 +15,7 @@ import { TaskDefinitionsDestroyComponent } from './task-definitions-destroy.comp
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link TaskDefinitionsDestroyComponent}.
@@ -26,7 +26,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
 
   let component: TaskDefinitionsDestroyComponent;
   let fixture: ComponentFixture<TaskDefinitionsDestroyComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const authService = new MockAuthService();
   const bsModalRef = new BsModalRef();
   const tasksService = new MockTasksService();
@@ -51,7 +51,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
         { provide: AuthService, useValue: authService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: BusyService, useValue: busyService },
-        { provide: ToastyService, useValue: toastyService },
+        { provide: NotificationService, useValue: notificationService },
         { provide: TasksService, useValue: tasksService }
       ]
     }).compileComponents();
@@ -60,7 +60,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskDefinitionsDestroyComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   describe('1 tasks destroy', () => {
@@ -91,7 +91,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
     it('Should display a message after destroy one task', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(toastyService.testSuccess[0]).toContain('1 task definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('1 task definition(s) destroy.');
     }));
 
     it('Should close the modal after a success destroy', (() => {
@@ -138,7 +138,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
     it('Should display a message after destroy 2 tasks', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(toastyService.testSuccess[0]).toContain('2 task definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('2 task definition(s) destroy.');
     }));
 
     it('Should close the modal after a success destroy', (() => {

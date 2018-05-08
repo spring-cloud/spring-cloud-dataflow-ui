@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
@@ -9,6 +8,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component that display the Task Executions.
@@ -62,12 +62,12 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    *
    * @param {BusyService} busyService
    * @param {TasksService} tasksService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {Router} router
    */
   constructor(private busyService: BusyService,
               public tasksService: TasksService,
-              public toastyService: ToastyService,
+              public notificationService: NotificationService,
               private router: Router) {
   }
 
@@ -106,7 +106,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         }
       );
 

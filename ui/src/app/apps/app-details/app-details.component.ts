@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { AppsService } from '../apps.service';
-import { ToastyService } from 'ng2-toasty';
 import { ApplicationType, DetailedAppRegistration } from '../../shared/model';
 import { Subscription } from 'rxjs/Subscription';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
@@ -16,6 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { Location } from '@angular/common';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Provides details for an App Registration
@@ -74,7 +74,8 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    *
    * @param {AppsService} appsService
    * @param {SharedAboutService} sharedAboutService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
+   * @param {Router} router
    * @param {ActivatedRoute} route
    * @param {RoutingStateService} routingStateService
    * @param {BusyService} busyService
@@ -82,12 +83,12 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   constructor(private appsService: AppsService,
               private sharedAboutService: SharedAboutService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
+              private router: Router,
               private route: ActivatedRoute,
               private routingStateService: RoutingStateService,
               private busyService: BusyService,
               private modalService: BsModalService) {
-
   }
 
   /**
@@ -140,7 +141,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
           this.detailedAppRegistration = detailed;
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         });
 
     this.busyService.addSubscription(busy);
@@ -166,7 +167,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
           }
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         });
 
     this.busyService.addSubscription(busy);

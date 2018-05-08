@@ -1,12 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgBusyModule } from 'ng-busy';
-import { ToastyService } from 'ng2-toasty';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TaskSummaryComponent } from './task-summary.component';
 import { MockActivatedRoute } from '../../../tests/mocks/activated-route';
-import { MockToastyService } from '../../../tests/mocks/toasty';
+import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockTasksService } from '../../../tests/mocks/tasks';
 import { BusyService } from '../../../shared/services/busy.service';
 import { DataflowDateTimePipe } from '../../../shared/pipes/dataflow-date-time.pipe';
@@ -26,6 +25,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { ToolsService } from '../../components/flo/tools.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Test {@link TaskSummaryComponent}.
@@ -36,7 +36,7 @@ describe('TaskSummaryComponent', () => {
   let component: TaskSummaryComponent;
   let fixture: ComponentFixture<TaskSummaryComponent>;
   let activeRoute: MockActivatedRoute;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
   const aboutService = new MocksSharedAboutService();
@@ -72,7 +72,7 @@ describe('TaskSummaryComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: ToolsService, useValue: toolsService },
         { provide: BusyService, useValue: busyService },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -83,7 +83,7 @@ describe('TaskSummaryComponent', () => {
     activeRoute.testParams = commonTestParams;
     fixture = TestBed.createComponent(TaskSummaryComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('Component should be created', () => {

@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ToastyService } from 'ng2-toasty';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TasksService } from '../../tasks.service';
-import { MockToastyService } from '../../../tests/mocks/toasty';
+import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockTasksService } from '../../../tests/mocks/tasks';
 import { TaskDefinitionCreateDialogComponent } from './create-dialog.component';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 describe('TaskDefinitionCreateDialogComponent', () => {
   let component: TaskDefinitionCreateDialogComponent;
   let fixture: ComponentFixture<TaskDefinitionCreateDialogComponent>;
   const tasksService = new MockTasksService();
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const bsModalRefStub = {};
 
   beforeEach(async(() => {
@@ -25,11 +25,11 @@ describe('TaskDefinitionCreateDialogComponent', () => {
       ],
       providers: [
         { provide: TasksService, useValue: tasksService },
-        { provide: ToastyService, useValue: toastyService },
+        { provide: NotificationService, useValue: notificationService },
         { provide: BsModalRef, useValue: bsModalRefStub }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

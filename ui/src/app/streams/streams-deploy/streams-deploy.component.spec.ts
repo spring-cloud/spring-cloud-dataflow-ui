@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgBusyModule } from 'ng-busy';
-import { ToastyService } from 'ng2-toasty';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockStreamsService } from '../../tests/mocks/streams';
 import { StreamsService } from '../streams.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +17,7 @@ import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link StreamsDeployComponent}.
@@ -28,7 +28,7 @@ describe('StreamsDeployComponent', () => {
   let component: StreamsDeployComponent;
   let fixture: ComponentFixture<StreamsDeployComponent>;
 
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const streamsService = new MockStreamsService();
   const sharedAboutService = new MocksSharedAboutService();
   const bsModalRef = new BsModalRef();
@@ -55,7 +55,7 @@ describe('StreamsDeployComponent', () => {
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -64,7 +64,7 @@ describe('StreamsDeployComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamsDeployComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {

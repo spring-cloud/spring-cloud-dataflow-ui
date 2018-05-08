@@ -1,13 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ToastyService } from 'ng2-toasty';
 import { AnalyticsService } from '../analytics.service';
-
-import {
-  AggregateCounter, AggregateCounterResolutionType, BaseCounter,
-  DashboardItem, FieldValueCounterValue, MetricType
-} from '../model';
+import { AggregateCounter, AggregateCounterResolutionType, DashboardItem, MetricType } from '../model';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * The dashboard component provides
@@ -37,10 +33,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.analyticsService.metricTypes;
   }
 
-  constructor(
-    public analyticsService: AnalyticsService,
-    private toastyService: ToastyService,
-  ) {}
+  constructor(public analyticsService: AnalyticsService,
+              private notificationService: NotificationService,) {
+  }
 
   /**
    * Called upon initialization of the component.
@@ -120,17 +115,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dashBoardItem.countersIsLoading = this.analyticsService.getCountersForMetricType(metricType)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(result => {
-        dashBoardItem.counters = result.items;
-      },
-      error => {
-        this.toastyService.error(error);
-      });
+          dashBoardItem.counters = result.items;
+        },
+        error => {
+          this.notificationService.error(error);
+        });
   }
 
   isCountersDropDownEnabled(dashboardItem: DashboardItem): boolean {
-    if ( !dashboardItem.metricType
+    if (!dashboardItem.metricType
       || (dashboardItem.countersIsLoading
-      && !dashboardItem.countersIsLoading.closed)) {
+        && !dashboardItem.countersIsLoading.closed)) {
       return true;
     } else {
       return false;

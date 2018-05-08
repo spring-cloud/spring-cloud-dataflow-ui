@@ -1,13 +1,13 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {BsModalRef, ModalModule, PopoverModule} from 'ngx-bootstrap';
-import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockAppsService} from '../../tests/mocks/apps';
-import {AppsBulkImportComponent} from './apps-bulk-import.component';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {BusyService} from '../../shared/services/busy.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BsModalRef, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { AppsService } from '../apps.service';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { AppsBulkImportComponent } from './apps-bulk-import.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { BusyService } from '../../shared/services/busy.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link AppsBulkImportComponent}.
@@ -18,7 +18,7 @@ describe('AppsBulkImportComponent', () => {
   let component: AppsBulkImportComponent;
   let fixture: ComponentFixture<AppsBulkImportComponent>;
   const bsModalRef = new BsModalRef();
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
 
   beforeEach(async(() => {
@@ -34,10 +34,10 @@ describe('AppsBulkImportComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        {provide: AppsService, useValue: appsService},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: BsModalRef, useValue: bsModalRef},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: AppsService, useValue: appsService },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: BsModalRef, useValue: bsModalRef },
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -46,7 +46,7 @@ describe('AppsBulkImportComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsBulkImportComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {

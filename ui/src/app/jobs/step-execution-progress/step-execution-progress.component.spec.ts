@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { ToastyService } from 'ng2-toasty';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,7 +9,8 @@ import { MockJobsService } from '../../tests/mocks/jobs';
 import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { StepExecutionProgressComponent } from './step-execution-progress.component';
 import { JOBS_EXECUTIONS_1_STEPS_1_PROGRESS } from '../../tests/mocks/mock-data';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { NotificationService } from '../../shared/services/notification.service';
 
 describe('StepExecutionProgressComponent', () => {
   let component: StepExecutionProgressComponent;
@@ -19,7 +19,7 @@ describe('StepExecutionProgressComponent', () => {
   let el: HTMLElement;
   let activeRoute: MockActivatedRoute;
   let jobsService: MockJobsService;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -35,7 +35,7 @@ describe('StepExecutionProgressComponent', () => {
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: ToastyService, useValue: toastyService }
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
     .compileComponents();

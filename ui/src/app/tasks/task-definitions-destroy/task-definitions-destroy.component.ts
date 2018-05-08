@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnDestroy } from '@angular/core';
-import { ToastyService } from 'ng2-toasty';
 import { BsModalRef } from 'ngx-bootstrap';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable } from 'rxjs/Observable';
@@ -8,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component used to destroy task definitions.
@@ -41,12 +41,12 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
    * @param {BsModalRef} modalRef used to control the current modal
    * @param {TasksService} tasksService
    * @param {BusyService} busyService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    */
   constructor(private modalRef: BsModalRef,
               private tasksService: TasksService,
               private busyService: BusyService,
-              private toastyService: ToastyService) {
+              private notificationService: NotificationService) {
     super(modalRef);
   }
 
@@ -66,7 +66,7 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
     const busy = this.tasksService.destroyDefinitions(this.taskDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        this.toastyService.success(`${data.length} task definition(s) destroy.`);
+        this.notificationService.success(`${data.length} task definition(s) destroy.`);
         this.confirm.emit('done');
         this.cancel();
       });

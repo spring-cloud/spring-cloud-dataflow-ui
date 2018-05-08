@@ -1,15 +1,15 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {ModalModule, PopoverModule} from 'ngx-bootstrap';
-import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockAppsService} from '../../tests/mocks/apps';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {AppsRegisterComponent} from './apps-register.component';
-import {CapitalizePipe} from '../../shared/pipes/capitalize.pipe';
-import {By} from '@angular/platform-browser';
-import {BusyService} from '../../shared/services/busy.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { AppsService } from '../apps.service';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AppsRegisterComponent } from './apps-register.component';
+import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
+import { By } from '@angular/platform-browser';
+import { BusyService } from '../../shared/services/busy.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link AppsRegisterComponent}.
@@ -19,7 +19,7 @@ import {BusyService} from '../../shared/services/busy.service';
 describe('AppsRegisterComponent', () => {
   let component: AppsRegisterComponent;
   let fixture: ComponentFixture<AppsRegisterComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
 
   beforeEach(async(() => {
@@ -36,9 +36,9 @@ describe('AppsRegisterComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        {provide: AppsService, useValue: appsService},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: AppsService, useValue: appsService },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -47,7 +47,7 @@ describe('AppsRegisterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsRegisterComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
     fixture.detectChanges();
 
   });
@@ -91,8 +91,8 @@ describe('AppsRegisterComponent', () => {
 
     it('should display an error if no the name is invalid', () => {
       const tests = [
-        {name: '', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false},
-        {name: 'd', type: 'sink', uri: 'http://foo.bar', metaDataUri: '', force: false}
+        { name: '', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false },
+        { name: 'd', type: 'sink', uri: 'http://foo.bar', metaDataUri: '', force: false }
       ];
       const form = component.forms[0];
       tests.forEach((test) => {
@@ -111,8 +111,8 @@ describe('AppsRegisterComponent', () => {
 
     it('should display an error if no the type is invalid', () => {
       const tests = [
-        {name: 'foobar', type: '', uri: 'http://foo.bar', metaDataUri: '', force: false},
-        {name: 'foobar', type: null, uri: 'http://foo.bar', metaDataUri: '', force: false},
+        { name: 'foobar', type: '', uri: 'http://foo.bar', metaDataUri: '', force: false },
+        { name: 'foobar', type: null, uri: 'http://foo.bar', metaDataUri: '', force: false },
       ];
       const form = component.forms[0];
       tests.forEach((test) => {
@@ -131,8 +131,8 @@ describe('AppsRegisterComponent', () => {
 
     it('should display an error if no the uri is invalid', () => {
       const tests = [
-        {name: 'foobar', type: 'sink', uri: '', metaDataUri: '', force: false},
-        {name: 'foobar', type: 'processor', uri: 'a', metaDataUri: '', force: false},
+        { name: 'foobar', type: 'sink', uri: '', metaDataUri: '', force: false },
+        { name: 'foobar', type: 'processor', uri: 'a', metaDataUri: '', force: false },
       ];
       const form = component.forms[0];
       tests.forEach((test) => {
@@ -151,7 +151,7 @@ describe('AppsRegisterComponent', () => {
 
     it('should display an error if the metaDataUri is invalid', () => {
       const tests = [
-        {name: 'foobar', type: 'sink', uri: 'http://foo.bar', metaDataUri: 'a', force: false}
+        { name: 'foobar', type: 'sink', uri: 'http://foo.bar', metaDataUri: 'a', force: false }
       ];
       const form = component.forms[0];
       tests.forEach((test) => {
@@ -179,9 +179,9 @@ describe('AppsRegisterComponent', () => {
 
     it('should not submit if at least one filled form is invalid', () => {
       const tests = [
-        {name: 'foobar1', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false},
-        {name: 'foobar2', type: 'sink', uri: 'http://foo.bar', metaDataUri: '', force: false},
-        {name: 'foobar3', type: 'processor', uri: '', metaDataUri: '', force: false},
+        { name: 'foobar1', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false },
+        { name: 'foobar2', type: 'sink', uri: 'http://foo.bar', metaDataUri: '', force: false },
+        { name: 'foobar3', type: 'processor', uri: '', metaDataUri: '', force: false },
       ];
       component.newForm();
       component.newForm();
@@ -199,9 +199,9 @@ describe('AppsRegisterComponent', () => {
 
     it('should submit if at least one form is fill and all forms filled are valid', () => {
       const tests = [
-        {name: 'foobar1', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false},
-        {name: '', type: '', uri: '', metaDataUri: '', force: false},
-        {name: '', type: '', uri: '', metaDataUri: '', force: false},
+        { name: 'foobar1', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false },
+        { name: '', type: '', uri: '', metaDataUri: '', force: false },
+        { name: '', type: '', uri: '', metaDataUri: '', force: false },
       ];
       component.newForm();
       component.newForm();
@@ -220,9 +220,9 @@ describe('AppsRegisterComponent', () => {
 
     it('should display a message and navigate to the application list after register', () => {
       const tests = [
-        {name: 'foobar1', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false},
-        {name: '', type: '', uri: '', metaDataUri: '', force: false},
-        {name: '', type: '', uri: '', metaDataUri: '', force: false},
+        { name: 'foobar1', type: 'source', uri: 'http://foo.bar', metaDataUri: '', force: false },
+        { name: '', type: '', uri: '', metaDataUri: '', force: false },
+        { name: '', type: '', uri: '', metaDataUri: '', force: false },
       ];
       component.newForm();
       component.newForm();
@@ -238,7 +238,7 @@ describe('AppsRegisterComponent', () => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('button[name=register]')).nativeElement;
       bt.click();
       fixture.detectChanges();
-      expect(toastyService.testSuccess[0]).toContain('1 App(s) registered');
+      expect(notificationService.testSuccess[0]).toContain('1 App(s) registered');
       expect(navigate).toHaveBeenCalledWith(['apps']);
     });
 

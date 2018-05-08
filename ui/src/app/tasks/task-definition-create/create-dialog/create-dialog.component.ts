@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ToastyService } from 'ng2-toasty';
 import { TasksService } from '../../tasks.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Component to display dialog to allow user to name and deploy a task.
@@ -54,7 +54,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
 
   constructor(private tasksService: TasksService,
               private fb: FormBuilder,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private bsModalRef: BsModalRef) {
     this.form = fb.group({
       'taskName': this.taskName
@@ -106,10 +106,10 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
             this.successCallback();
           }
           this.bsModalRef.hide();
-          this.toastyService.success('Composed task created for ' + this.taskName.value);
+          this.notificationService.success('Composed task created for ' + this.taskName.value);
         },
         (error) => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
           this.bsModalRef.hide();
         }
       );

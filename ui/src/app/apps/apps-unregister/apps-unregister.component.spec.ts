@@ -1,16 +1,16 @@
-import {AppsUnregisterComponent} from './apps-unregister.component';
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {BsModalRef, ModalModule} from 'ngx-bootstrap';
-import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockAppsService} from '../../tests/mocks/apps';
-import {AppRegistration} from '../../shared/model/app-registration.model';
-import {ApplicationType} from '../../shared/model/application-type';
-import {By} from '@angular/platform-browser';
-import {DebugElement} from '@angular/core';
-import {AppTypeComponent} from '../components/app-type/app-type.component';
+import { AppsUnregisterComponent } from './apps-unregister.component';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BsModalRef, ModalModule } from 'ngx-bootstrap';
+import { AppsService } from '../apps.service';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { AppRegistration } from '../../shared/model/app-registration.model';
+import { ApplicationType } from '../../shared/model/application-type';
+import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
+import { AppTypeComponent } from '../components/app-type/app-type.component';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link AppsUnregisterComponent}.
@@ -21,7 +21,7 @@ describe('AppsUnregisterComponent', () => {
   let component: AppsUnregisterComponent;
   let fixture: ComponentFixture<AppsUnregisterComponent>;
   const bsModalRef = new BsModalRef();
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
 
   beforeEach(async(() => {
@@ -34,9 +34,9 @@ describe('AppsUnregisterComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        {provide: AppsService, useValue: appsService},
-        {provide: BsModalRef, useValue: bsModalRef},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: AppsService, useValue: appsService },
+        { provide: BsModalRef, useValue: bsModalRef },
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -45,7 +45,7 @@ describe('AppsUnregisterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsUnregisterComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {
@@ -102,7 +102,7 @@ describe('AppsUnregisterComponent', () => {
     fixture.detectChanges();
     const bt: HTMLElement = fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement;
     bt.click();
-    expect(toastyService.testSuccess[0]).toContain('Successfully removed app "foo" of type "sink".');
+    expect(notificationService.testSuccess[0]).toContain('Successfully removed app "foo" of type "sink".');
   }));
 
   it('Should display a message after delete at leat 2 apps)', (() => {
@@ -113,7 +113,7 @@ describe('AppsUnregisterComponent', () => {
     fixture.detectChanges();
     const bt: HTMLElement = fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement;
     bt.click();
-    expect(toastyService.testSuccess[0]).toContain('2 app(s) unregistered.');
+    expect(notificationService.testSuccess[0]).toContain('2 app(s) unregistered.');
   }));
 
   it('Should call the close action (header close)', () => {

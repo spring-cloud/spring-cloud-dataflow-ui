@@ -1,16 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { Subscription } from 'rxjs/Subscription';
-
 import { Page } from '../shared/model';
 import { JobsService } from './jobs.service';
 import { JobExecution } from './model/job-execution.model';
-
-import { ToastyService } from 'ng2-toasty';
 import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from '../shared/services/notification.service';
 
 @Component({
   templateUrl: './jobs.component.html',
@@ -24,7 +21,7 @@ export class JobsComponent implements OnInit, OnDestroy {
   constructor(
     private busyService: BusyService,
     private jobsService: JobsService,
-    private toastyService: ToastyService,
+    private notificationService: NotificationService,
     private router: Router
   ) { }
 
@@ -61,7 +58,7 @@ export class JobsComponent implements OnInit, OnDestroy {
       },
       error => {
         console.log('error while loading Job Executions', error);
-        this.toastyService.error(error);
+        this.notificationService.error(error);
       }
     );
     this.busyService.addSubscription(busy);
@@ -86,10 +83,10 @@ export class JobsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.ngUnsubscribe$))
     .subscribe(
       data => {
-        this.toastyService.success('Successfully restarted job "' + item.name + '"');
+        this.notificationService.success('Successfully restarted job "' + item.name + '"');
       },
       error => {
-        this.toastyService.error(error);
+        this.notificationService.error(error);
       }
     );
   }
@@ -100,10 +97,10 @@ export class JobsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.ngUnsubscribe$))
     .subscribe(
       data => {
-        this.toastyService.success('Successfully stopped job "' + item.name + '"');
+        this.notificationService.success('Successfully stopped job "' + item.name + '"');
       },
       error => {
-        this.toastyService.error(error);
+        this.notificationService.error(error);
       }
     );
   }

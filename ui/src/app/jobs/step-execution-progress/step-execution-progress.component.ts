@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastyService } from 'ng2-toasty';
 import { JobsService } from '../jobs.service';
 import { StepExecutionProgress } from '../model/step-execution-progress.model';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Component({
   selector: 'app-step-execution-progress',
@@ -21,7 +21,7 @@ export class StepExecutionProgressComponent implements OnInit, OnDestroy {
 
   constructor(
     private jobsService: JobsService,
-    private toastyService: ToastyService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -61,7 +61,7 @@ export class StepExecutionProgressComponent implements OnInit, OnDestroy {
       },
       error => {
         console.log('error while loading Step Execution Progress', error);
-        this.toastyService.error(error);
+        this.notificationService.error(error);
       });
   }
 }
