@@ -219,7 +219,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       array.push(group);
     };
     this.properties.forEach((line: string) => {
-      const arr = line.split('=');
+      const arr = line.split(/=(.*)/);
       const key = arr[0] as string;
       const value = arr[1] as string;
       const appKey = key.split('.')[1];
@@ -261,7 +261,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
     const deployerKeys: Array<string> = builder.streamDeployConfig.deployers.map(deployer => deployer.name);
     builder.errors.global = [];
     this.properties.forEach((line: string) => {
-      const arr = line.split('=');
+      const arr = line.split(/=(.*)/);
       const key = arr[0] as string;
       const value = arr[1] as string;
       const appKey = key.split('.')[1];

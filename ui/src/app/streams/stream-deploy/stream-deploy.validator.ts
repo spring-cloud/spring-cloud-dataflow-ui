@@ -96,8 +96,8 @@ export class StreamDeployValidator {
         .map((a) => a.trim())
         .filter((a) => a.toString())
         .map((a: String) => {
-          tmp = a.split('=');
-          if (tmp.length !== 2) {
+          tmp = a.split(/=(.*)/);
+          if (tmp.length !== 3) {
             throw new Error();
           }
           if (!StreamDeployValidator.propertyPlatformRegex.test(tmp[0])) {
@@ -123,8 +123,8 @@ export class StreamDeployValidator {
     if (value === '') {
       return true;
     }
-    const tmp = value.split('=');
-    if (tmp.length !== 2) {
+    const tmp = value.split(/=(.*)/);
+    if (tmp.length !== 3) {
       return 'Not valid';
     }
     if (!StreamDeployValidator.propertyPlatformRegex.test(tmp[0])) {
@@ -167,8 +167,8 @@ export class StreamDeployValidator {
     if (properties) {
       for (const prop of properties) {
         if (prop && prop.length > 0 && !prop.startsWith('#')) {
-          const keyValue = prop.split('=');
-          if (keyValue.length < 2) {
+          const keyValue = prop.split(/=(.*)/);
+          if (keyValue.length < 3) {
             return {
               validateDeploymentProperties: {
                 reason: `Invalid deployment property "${prop}" must contain a single "=".`
