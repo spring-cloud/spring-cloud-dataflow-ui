@@ -1,18 +1,23 @@
 sudo: required
+services:
+  - docker
 cache:
   directories:
     - $HOME/.m2
 dist: trusty
 language: java
+before_install:
+  - nvm install 9.5.0
 addons:
   chrome: stable
+  hosts:
+    - dataflow.local
 jdk:
   - oraclejdk8
 install: true
 script:
   - '[ "${TRAVIS_PULL_REQUEST}" != "false" ] || ./mvnw package'
   - '[ "${TRAVIS_PULL_REQUEST}"  = "false" ] || ./mvnw package'
-
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 deploy:
@@ -22,3 +27,18 @@ deploy:
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   on:
     branch: master
+jobs:
+  include:
+    - stage: Maven
+      script: ./run-maven-build.sh
+    - stage: Unit Tests SauceLabs + BrowserStack
+      script: ./run-npm-test-saucelabs.sh
+      if: type != pull_request
+    - script: ./run-npm-test-browserstack.sh
+      if: type != pull_request
+    - stage: E2E Local + SauceLabs + BrowserStack
+      script: ./run-npm-e2e-local.sh
+    - script: ./run-npm-e2e-saucelabs.sh
+      if: type != pull_request
+    - script: ./run-npm-e2e-browserstack.sh
+      if: type != pull_request

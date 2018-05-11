@@ -16,6 +16,13 @@ exports.config = {
     'browserstack.local': true,
     'browserstack.debug': true
   },
+  plugins: [
+    {
+      path: 'protractor-docker-plugin/index.js',
+      dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
+      useCachedoDockerComposeFile: true
+    }
+  ],
   multiCapabilities: [
     {
       os: 'Windows',
@@ -31,7 +38,7 @@ exports.config = {
       browser_version: '16.0'
     }
   ],
-
+  maxSessions: 1,
   allScriptsTimeout: 160000,
   specs: [
     './e2e/**/*.e2e-spec.ts'

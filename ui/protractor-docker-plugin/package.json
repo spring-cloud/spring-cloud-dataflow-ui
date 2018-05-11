@@ -1,0 +1,30 @@
+{
+  "name": "protractor-docker-plugin",
+  "version": "1.0.0",
+  "description": "Basic Docker Compose Plugin for starting a required backend useing Docker Compose",
+  "main": "index.js",
+  "scripts": {
+    "build": "node_modules/typescript/bin/tsc -p ./"
+  },
+  "keywords": [
+    "protractor",
+    "protractor docker",
+    "protractor docker compose",
+    "protractor tests",
+    "end-to-end tests",
+    "e2e tests"
+  ],
+  "author": "Gunnar Hillert",
+  "license": "Apache v2",
+  "devDependencies": {
+    "protractor": "5.1.2",
+    "typescript": "2.5.3",
+    "@types/request": "^2.47.1",
+    "@types/request-promise-native": "^1.0.15"
+  },
+  "dependencies": {
+    "request": "2.87.0",
+    "request-promise-native": "^1.0.5",
+    "command-exists": "^1.2.7"
+  }
+}
