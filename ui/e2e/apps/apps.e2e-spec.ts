@@ -2,7 +2,7 @@ import { AppsPage } from './apps.po';
 import { browser, by, element } from 'protractor';
 import { AppDetailsPage } from './app-details.po';
 import { Pagination } from '../utils/pagination.po';
-import { AppsRegisterPage } from './appS-register.po';
+import { AppsRegisterPage } from './apps-register.po';
 import { AppsBulkImportUriPage } from './apps-bulk-import-uri.po';
 import { AppVersionsModal } from './app-versions.po';
 import { Navigation } from '../utils/navigation.po';
@@ -21,7 +21,7 @@ import { Navigation } from '../utils/navigation.po';
  * @author Glenn Renfro
  * @author Damien Vitrac
  */
-describe('E2E spec for apps page', () => {
+xdescribe('E2E spec for apps page', () => {
 
   let pageApps: AppsPage;
 

@@ -4,12 +4,22 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
 exports.config = {
+  plugins: [
+    {
+      path: 'protractor-docker-plugin/index.js',
+      dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
+      useCachedoDockerComposeFile: true
+    }
+  ],
   allScriptsTimeout: 110000,
   specs: [
     './e2e/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    chromeOptions: {
+      args: ['--headless', '--disable-gpu', '--window-size=800,600', '--no-sandbox']
+    }
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',

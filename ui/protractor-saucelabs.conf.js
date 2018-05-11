@@ -9,11 +9,18 @@ exports.config = {
   },
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
+  plugins: [
+    {
+      path: 'protractor-docker-plugin/index.js',
+      dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
+      useCachedoDockerComposeFile: true
+    }
+  ],
   multiCapabilities: [
     {
       name: 'E2E Safari/Mac',
       browserName: 'safari',
-      platform: 'macOS 10.13',
+      platform: 'macOS 10.13'
     },
     {
       name: 'E2E Edge/Win10',
@@ -21,7 +28,7 @@ exports.config = {
       platform: 'Windows 10',
     }
   ],
-
+  maxSessions: 1,
   allScriptsTimeout: 160000,
   specs: [
     './e2e/**/*.e2e-spec.ts'
