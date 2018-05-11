@@ -521,7 +521,10 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
     const options = builder.builderAppsProperties[app.name] ? builder.builderAppsProperties[app.name] : app.options;
     const modal = this.bsModalService.show(StreamDeployAppPropertiesComponent);
 
-    modal.content.title = `Properties for ${app.name} (${version})`;
+    modal.content.title = `Properties for ${app.name}`;
+    if (version) {
+      modal.content.title += ` (${version})`;
+    }
     const appPropertiesSource = new AppPropertiesSource(Object.assign([], options
       .map((property) => Object.assign({}, property))));
 

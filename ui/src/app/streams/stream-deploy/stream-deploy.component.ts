@@ -181,11 +181,16 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     this.update(value);
     const propertiesMap = {};
     value.forEach((val) => {
-      const arr = val.split('=');
-      if (arr.length !== 2) {
+      const arr = val.split(/=(.*)/);
+      if (arr.length !== 3) {
         console.error('Split line property', val);
       } else {
-        propertiesMap[arr[0]] = arr[1];
+        // Workaround sensitive property: ignored property
+        if (arr[1] === `'******'`) {
+          console.log(`Sensitive property ${arr[0]} is ignored`);
+        } else {
+          propertiesMap[arr[0]] = arr[1];
+        }
       }
     });
 
