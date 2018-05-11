@@ -14,6 +14,7 @@ import { JOBS_EXECUTIONS } from '../../tests/mocks/mock-data';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 describe('JobExecutionDetailsComponent', () => {
   let component: JobExecutionDetailsComponent;
@@ -33,7 +34,8 @@ describe('JobExecutionDetailsComponent', () => {
         JobExecutionDetailsComponent,
         JobExecutionStatusComponent,
         DataflowDateTimePipe,
-        DataflowDurationPipe
+        DataflowDurationPipe,
+        LoaderComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([])
@@ -67,7 +69,8 @@ describe('JobExecutionDetailsComponent', () => {
 
     de = fixture.debugElement.query(By.css('h1'));
     el = de.nativeElement;
-    expect(el.textContent).toContain('Job Execution Details - Execution ID: 1');
+    expect(el.textContent).toContain('job1');
+    expect(el.textContent).toContain('(1)');
 
     let des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=jobExecution] td'));
     expect(des.length).toBe(24);
@@ -109,24 +112,25 @@ describe('JobExecutionDetailsComponent', () => {
 
   it('back should navigate to jobs executions', () => {
     activeRoute.testParams = { id: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
+    fixture.detectChanges();
     de = fixture.debugElement.query(By.css('button[type=button]'));
     el = de.nativeElement;
     const navigate = spyOn((<any>component).router, 'navigate');
     fixture.detectChanges();
     el.click();
 
-    expect(navigate).toHaveBeenCalledWith(['jobs/executions']);
+    expect(navigate).toHaveBeenCalledWith(['jobs/executions/1/1']);
   });
 
+  /*
   it('should show No Job Execution available.', () => {
     activeRoute.testParams = { id: '3' };
     fixture.detectChanges();
-    de = fixture.debugElement.query(By.css('h1'));
-    el = de.nativeElement;
-    expect(el.textContent).toContain('Job Execution Details - Execution ID: 3');
-
     de = fixture.debugElement.query(By.css('div'));
     el = de.nativeElement;
     expect(el.textContent).toContain('No Job Execution available.');
   });
+  */
+
 });

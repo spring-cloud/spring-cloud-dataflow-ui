@@ -8,10 +8,14 @@ import { JobsService } from '../jobs.service';
 import { MockJobsService } from '../../tests/mocks/jobs';
 import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { StepExecutionProgressComponent } from './step-execution-progress.component';
-import { JOBS_EXECUTIONS_1_STEPS_1_PROGRESS } from '../../tests/mocks/mock-data';
-import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import {
+  JOBS_EXECUTIONS, JOBS_EXECUTIONS_1_STEPS_1,
+  JOBS_EXECUTIONS_1_STEPS_1_PROGRESS
+} from '../../tests/mocks/mock-data';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { MockNotificationService } from '../../tests/mocks/notification';
 
 describe('StepExecutionProgressComponent', () => {
   let component: StepExecutionProgressComponent;
@@ -28,7 +32,8 @@ describe('StepExecutionProgressComponent', () => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       declarations: [
-        StepExecutionProgressComponent
+        StepExecutionProgressComponent,
+        LoaderComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([]),
@@ -41,7 +46,7 @@ describe('StepExecutionProgressComponent', () => {
         { provide: LoggerService, useValue: loggerService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -51,6 +56,8 @@ describe('StepExecutionProgressComponent', () => {
 
   it('should be created', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
+    jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
     expect(component).toBeTruthy();
@@ -58,35 +65,41 @@ describe('StepExecutionProgressComponent', () => {
 
   it('should populate execution progress', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
+    jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
 
     de = fixture.debugElement.query(By.css('h1'));
     el = de.nativeElement;
-    expect(el.textContent).toContain('Step Execution Progress for Step \'job1step1\'');
+    expect(el.textContent).toContain('job1step1');
   });
 
   it('refresh should refresh data', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
+    jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
+    fixture.detectChanges();
     de = fixture.debugElement.query(By.css('button[id=refresh]'));
     el = de.nativeElement;
     const refresh = spyOn((<any>component), 'refresh');
     fixture.detectChanges();
     el.click();
-
     expect(refresh).toHaveBeenCalled();
   });
 
   it('back should navigate to step execution details', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
+    jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
+    fixture.detectChanges();
     de = fixture.debugElement.query(By.css('button[id=back]'));
     el = de.nativeElement;
     const navigate = spyOn((<any>component).router, 'navigate');
     fixture.detectChanges();
     el.click();
-
     expect(navigate).toHaveBeenCalledWith(['jobs/executions/1/1']);
   });
 });

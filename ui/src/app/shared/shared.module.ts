@@ -76,7 +76,7 @@ const busyConfig: BusyConfig = {
     ToastContainerModule,
     ProgressbarModule.forRoot(),
     ToastrModule.forRoot({
-      timeOut: 133000,
+      timeOut: 3000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
       maxOpened: 6

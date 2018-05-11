@@ -11,10 +11,14 @@ import { StepExecutionDetailsComponent } from './step-execution-details.componen
 import { JobExecutionStatusComponent } from '../components/job-execution-status.component';
 import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe';
 import { MapValuesPipe } from '../../shared/pipes/map-values-pipe.pipe';
-import { JOBS_EXECUTIONS_1_STEPS_1, JOBS_EXECUTIONS_1_STEPS_1_PROGRESS } from '../../tests/mocks/mock-data';
-import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import {
+  JOBS_EXECUTIONS, JOBS_EXECUTIONS_1_STEPS_1,
+  JOBS_EXECUTIONS_1_STEPS_1_PROGRESS
+} from '../../tests/mocks/mock-data';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { MockNotificationService } from '../../tests/mocks/notification';
 
 describe('StepExecutionDetailsComponent', () => {
   let component: StepExecutionDetailsComponent;
@@ -34,7 +38,8 @@ describe('StepExecutionDetailsComponent', () => {
         StepExecutionDetailsComponent,
         JobExecutionStatusComponent,
         DataflowDurationPipe,
-        MapValuesPipe
+        MapValuesPipe,
+        LoaderComponent
       ],
       imports: [
         RouterTestingModule.withRoutes([]),
@@ -47,7 +52,7 @@ describe('StepExecutionDetailsComponent', () => {
         { provide: LoggerService, useValue: loggerService }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -58,6 +63,7 @@ describe('StepExecutionDetailsComponent', () => {
 
   it('should be created', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
     jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
@@ -66,13 +72,15 @@ describe('StepExecutionDetailsComponent', () => {
 
   it('should populate execution details', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
     jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
 
     de = fixture.debugElement.query(By.css('h1'));
     el = de.nativeElement;
-    expect(el.textContent).toContain('Step Execution Details - Step Execution ID: 1');
+    expect(el.textContent).toContain('job1step1');
+    expect(el.textContent).toContain('1');
 
     let des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=stepExecution] td'));
     expect(des.length).toBe(30);
@@ -117,14 +125,15 @@ describe('StepExecutionDetailsComponent', () => {
     expect(des[3].nativeElement.textContent).toContain('org.springframework.batch.core.step.tasklet.TaskletStep');
 
     de = fixture.debugElement.query(By.css('pre'));
-    el = de.nativeElement;
-    expect(el.textContent).toContain('N/A');
+    expect(de).toBeNull();
   });
 
   it('back should navigate to jobs executions', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
     jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
+    fixture.detectChanges();
     de = fixture.debugElement.query(By.css('button[id=back]'));
     el = de.nativeElement;
     const navigate = spyOn((<any>component).router, 'navigate');
@@ -136,8 +145,10 @@ describe('StepExecutionDetailsComponent', () => {
 
   it('stats should navigate to step execution progress', () => {
     activeRoute.testParams = { jobid: '1', stepid: '1' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
     jobsService.testStepExecutionResource = JOBS_EXECUTIONS_1_STEPS_1;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
+    fixture.detectChanges();
     de = fixture.debugElement.query(By.css('button[id=stats]'));
     el = de.nativeElement;
     const navigate = spyOn((<any>component).router, 'navigate');
@@ -147,8 +158,10 @@ describe('StepExecutionDetailsComponent', () => {
     expect(navigate).toHaveBeenCalledWith(['jobs/executions/1/1/progress']);
   });
 
+  /*
   it('should show No Step Execution available.', () => {
-    activeRoute.testParams = {jobid: '1', stepid: '3'};
+    activeRoute.testParams = { jobid: '1', stepid: '3' };
+    jobsService.testJobExecutions = JOBS_EXECUTIONS;
     jobsService.testStepExecutionProgress = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
     fixture.detectChanges();
     de = fixture.debugElement.query(By.css('h1'));
@@ -159,4 +172,6 @@ describe('StepExecutionDetailsComponent', () => {
     el = de.nativeElement;
     expect(el.textContent).toContain('No Step Execution available.');
   });
+  */
+
 });

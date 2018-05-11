@@ -12,6 +12,16 @@ import {
 
 export class MockJobsService {
 
+  jobsContext = {
+    sort: 'name',
+    order: 'ASC',
+    page: 0,
+    size: 30,
+    itemsSelected: []
+  };
+
+  public jobExecutionsPage: Page<JobExecution>;
+
   private _testJobExecutions: JobExecution[];
   private _testStepExecutionResource: StepExecutionResource;
   private _testStepExecutionProgress: StepExecutionProgress;
@@ -38,6 +48,34 @@ export class MockJobsService {
 
   set testStepExecutionProgress(params: any) {
     this._testStepExecutionProgress = params;
+  }
+
+  setJobExecutions(mock) {
+    const items: JobExecution[] = [];
+    if (mock._embedded && mock._embedded.jobExecutionResourceList) {
+      for (const jsonItem of mock._embedded.jobExecutionResourceList) {
+        const jobExecution: JobExecution = new JobExecution();
+        jobExecution.name = jsonItem.name;
+        jobExecution.startTime = moment(jsonItem.jobExecution.startTime);
+        jobExecution.stepExecutionCount = jsonItem.stepExecutionCount;
+        jobExecution.status = jsonItem.jobExecution.status;
+        jobExecution.jobExecutionId = jsonItem.jobExecution.id;
+        jobExecution.taskExecutionId = jsonItem.taskExecutionId;
+        jobExecution.jobInstanceId = jsonItem.jobExecution.jobInstance.id;
+        jobExecution.restartable = jsonItem.restartable;
+        jobExecution.abandonable = jsonItem.abandonable;
+        jobExecution.stoppable = jsonItem.stoppable;
+        jobExecution.defined = jsonItem.defined;
+        items.push(jobExecution);
+      }
+    }
+    const page = new Page<JobExecution>();
+    page.items = items;
+    page.totalElements = mock.page.totalElements;
+    page.pageNumber = mock.page.number;
+    page.pageSize = mock.page.size;
+    page.totalPages = mock.page.totalPages;
+    this.jobExecutionsPage = page;
   }
 
   getStepExecutionProgress(jobid: string, stepid: string): Observable<StepExecutionProgress> {
@@ -161,7 +199,7 @@ export class MockJobsService {
   }
 
   getJobExecutions() {
-    return Observable.of(new Page<JobExecution>());
+    return Observable.of(this.jobExecutionsPage);
   }
 
   getJobExecution(id: string) {
