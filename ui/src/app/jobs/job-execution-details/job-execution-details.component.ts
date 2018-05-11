@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { JobsService } from '../jobs.service';
 import { JobExecution } from '../model/job-execution.model';
 import { StepExecution } from '../model/step-execution.model';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 import { NotificationService } from '../../shared/services/notification.service';
 
 /**
@@ -12,62 +12,52 @@ import { NotificationService } from '../../shared/services/notification.service'
  *
  * @author Janne Valkealahti
  * @author Gunnar Hillert
+ * @author Damien Vitrac
  */
 @Component({
   selector: 'app-job-execution-details',
   templateUrl: './job-execution-details.component.html'
 })
-export class JobExecutionDetailsComponent implements OnInit, OnDestroy {
+export class JobExecutionDetailsComponent implements OnInit {
 
-  private ngUnsubscribe$: Subject<any> = new Subject();
+  /**
+   * Observable Jobs
+   */
+  jobExecution$: Observable<JobExecution>;
 
-  id: string;
-  jobExecution: JobExecution;
-
-  constructor(
-    private jobsService: JobsService,
-    private notificationService: NotificationService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
+  /**
+   * Constructor
+   *
+   * @param {JobsService} jobsService
+   * @param {ActivatedRoute} route
+   * @param {Router} router
+   */
+  constructor(private jobsService: JobsService,
+              private notificationService: NotificationService,
+              private route: ActivatedRoute,
+              private router: Router) {
+  }
 
   /**
    * Retrieves the JobExecutionId from the JobService.
    */
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.id = params['id'];
-      this.jobsService.getJobExecution(this.id)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(
-        data => {
-        this.jobExecution = data;
-        },
-        error => {
-          console.log('error while loading Job Execution Details', error);
-          this.notificationService.error(error);
-        }
-      );
-    });
-  }
-
-  /**
-   * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.
-   */
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    this.jobExecution$ = this.route.params
+      .pipe(mergeMap(
+        val => this.jobsService.getJobExecution(val.id),
+        (val1: Params, val2: JobExecution) => val2
+      ));
   }
 
   /**
    * Navigates to the view step execution page.
    *
+   * @param {JobExecution} jobExecution
    * @param {StepExecution} item the id of the StepExecution is used to construct the URI parameters along with the
    * JobExecutionId.
    */
-  viewStepExecutionDetails(item: StepExecution) {
-    this.router.navigate(['jobs/executions/' + this.id + '/' + item.id]);
+  viewStep(jobExecution: JobExecution, item: StepExecution) {
+    this.router.navigate([`jobs/executions/${jobExecution.jobExecutionId}/${item.id}`]);
   }
 
   back() {

@@ -339,6 +339,197 @@ export const JOB_EXECUTIONS_WITH_PAGINATION = {
   _embedded: {
     jobExecutionResourceList: [
       {
+        executionId: 4,
+        stepExecutionCount: 1,
+        jobId: 4,
+        taskExecutionId: 95,
+        name: 'job4',
+        startDate: '2017-09-06',
+        startTime: '00:54:46',
+        duration: '00:00:00',
+        jobExecution: {
+          id: 4,
+          version: 2,
+          jobParameters: {
+            parameters: {},
+            empty: true
+          },
+          jobInstance: {
+            id: 4,
+            version: null,
+            jobName: 'job4',
+            instanceId: 1
+          },
+          stepExecutions: [
+            {
+              id: 1,
+              version: 3,
+              stepName: 'job4step1',
+              status: 'COMPLETED',
+              readCount: 0,
+              writeCount: 0,
+              commitCount: 1,
+              rollbackCount: 0,
+              readSkipCount: 0,
+              processSkipCount: 0,
+              writeSkipCount: 0,
+              startTime: '2017-09-06T00:54:46.000Z',
+              endTime: '2017-09-06T00:54:46.000Z',
+              lastUpdated: '2017-09-06T00:54:46.000Z',
+              executionContext: {
+                dirty: false,
+                empty: true,
+                values: []
+              },
+              exitStatus: {
+                exitCode: 'STARTED',
+                exitDescription: '',
+                running: false
+              },
+              terminateOnly: false,
+              filterCount: 0,
+              failureExceptions: [],
+              jobExecutionId: 1,
+              jobParameters: {
+                parameters: {},
+                empty: true
+              },
+              skipCount: 0,
+              summary: 'StepExecution: id=1, version=3, name=job1step1, status=COMPLETED, exitStatus=COMPLETED, ' +
+              'readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0, ' +
+              'commitCount=1, rollbackCount=0'
+            }
+          ],
+          status: 'STARTED',
+          startTime: '2017-09-06T00:54:46.000Z',
+          createTime: '2017-09-06T00:54:46.000Z',
+          endTime: '2017-09-06T00:54:46.000Z',
+          lastUpdated: '2017-09-06T00:54:46.000Z',
+          exitStatus: {
+          },
+          executionContext: {
+            dirty: false,
+            empty: true,
+            values: []
+          },
+          failureExceptions: [],
+          jobConfigurationName: null,
+          running: false,
+          jobId: 4,
+          stopping: false,
+          allFailureExceptions: []
+        },
+        jobParameters: {},
+        jobParametersString: '',
+        restartable: true,
+        abandonable: true,
+        stoppable: true,
+        defined: false,
+        timeZone: 'UTC',
+        _links: {
+          self: {
+            href: 'http://localhost:9393/jobs/executions/1'
+          }
+        }
+      },
+      {
+        executionId: 3,
+        stepExecutionCount: 1,
+        jobId: 3,
+        taskExecutionId: 95,
+        name: 'job3',
+        startDate: '2017-09-06',
+        startTime: '00:54:46',
+        duration: '00:00:00',
+        jobExecution: {
+          id: 3,
+          version: 2,
+          jobParameters: {
+            parameters: {},
+            empty: true
+          },
+          jobInstance: {
+            id: 3,
+            version: null,
+            jobName: 'job1',
+            instanceId: 1
+          },
+          stepExecutions: [
+            {
+              id: 1,
+              version: 3,
+              stepName: 'job3step1',
+              status: 'COMPLETED',
+              readCount: 0,
+              writeCount: 0,
+              commitCount: 1,
+              rollbackCount: 0,
+              readSkipCount: 0,
+              processSkipCount: 0,
+              writeSkipCount: 0,
+              startTime: '2017-09-06T00:54:46.000Z',
+              endTime: '2017-09-06T00:54:46.000Z',
+              lastUpdated: '2017-09-06T00:54:46.000Z',
+              executionContext: {
+                dirty: false,
+                empty: true,
+                values: []
+              },
+              exitStatus: {
+                exitCode: 'FAIL',
+                exitDescription: '',
+                running: false
+              },
+              terminateOnly: false,
+              filterCount: 0,
+              failureExceptions: [],
+              jobExecutionId: 1,
+              jobParameters: {
+                parameters: {},
+                empty: true
+              },
+              skipCount: 0,
+              summary: 'StepExecution: id=1, version=3, name=job1step1, status=COMPLETED, exitStatus=COMPLETED, ' +
+              'readCount=0, filterCount=0, writeCount=0 readSkipCount=0, writeSkipCount=0, processSkipCount=0, ' +
+              'commitCount=1, rollbackCount=0'
+            }
+          ],
+          status: 'FAIL',
+          startTime: '2017-09-06T00:54:46.000Z',
+          createTime: '2017-09-06T00:54:46.000Z',
+          endTime: '2017-09-06T00:54:46.000Z',
+          lastUpdated: '2017-09-06T00:54:46.000Z',
+          exitStatus: {
+            exitCode: 'FAIL',
+            exitDescription: '',
+            running: false
+          },
+          executionContext: {
+            dirty: false,
+            empty: true,
+            values: []
+          },
+          failureExceptions: [],
+          jobConfigurationName: null,
+          running: false,
+          jobId: 3,
+          stopping: false,
+          allFailureExceptions: []
+        },
+        jobParameters: {},
+        jobParametersString: '',
+        restartable: true,
+        abandonable: true,
+        stoppable: true,
+        defined: false,
+        timeZone: 'UTC',
+        _links: {
+          self: {
+            href: 'http://localhost:9393/jobs/executions/1'
+          }
+        }
+      },
+      {
         executionId: 2,
         stepExecutionCount: 1,
         jobId: 2,
@@ -540,7 +731,7 @@ export const JOB_EXECUTIONS_WITH_PAGINATION = {
     }
   },
   page: {
-    size: 10,
+    size: 30,
     totalElements: 2,
     totalPages: 1,
     number: 0

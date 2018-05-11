@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
-
-import { JobsComponent } from './jobs.component';
+import { JobsComponent } from './jobs/jobs.component';
 import { JobsService } from './jobs.service';
 import { JobsRoutingModule } from './jobs-routing.module';
 import { JobExecutionStatusComponent } from './components/job-execution-status.component';
@@ -10,8 +9,17 @@ import { JobExecutionDetailsComponent } from './job-execution-details/job-execut
 import { StepExecutionDetailsComponent } from './step-execution-details/step-execution-details.component';
 import { StepExecutionProgressComponent } from './step-execution-progress/step-execution-progress.component';
 
+/**
+ * Jobs Module.
+ *
+ * @author Janne Valkealahti
+ * @author Gunnar Hillert
+ */
 @NgModule({
-  imports:      [ JobsRoutingModule, SharedModule ],
+  imports: [
+    JobsRoutingModule,
+    SharedModule
+  ],
   declarations: [
     JobsComponent,
     JobExecutionStatusComponent,
@@ -20,6 +28,9 @@ import { StepExecutionProgressComponent } from './step-execution-progress/step-e
     StepExecutionDetailsComponent,
     StepExecutionProgressComponent
   ],
-  providers:    [ JobsService ]
+  providers: [
+    JobsService
+  ]
 })
-export class JobsModule { }
+export class JobsModule {
+}
