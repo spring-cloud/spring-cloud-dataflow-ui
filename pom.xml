@@ -96,6 +96,7 @@
 				<executions>
 					<execution>
 						<id>install node and npm</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>install-node-and-npm</goal>
 						</goals>
@@ -105,6 +106,7 @@
 					</execution>
 					<execution>
 						<id>npm install</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>npm</goal>
 						</goals>
@@ -113,21 +115,33 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>npm build</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>run mavenbuild</arguments>
-						</configuration>
-					</execution>
-					<execution>
 						<id>npm doc</id>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>npm</goal>
 						</goals>
 						<configuration>
 							<arguments>run doc</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm build</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run mavenbuild-without-tests</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run mavenbuild-tests</arguments>
 						</configuration>
 					</execution>
 				</executions>
