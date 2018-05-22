@@ -59,6 +59,11 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   properties: Array<string> = [];
 
   /**
+   * Original properties Array
+   */
+  originalProperties: Array<string> = [];
+
+  /**
    * Constructor
    *
    * @param {ActivatedRoute} route
@@ -96,6 +101,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         val => this.streamsService.getDeploymentInfo(val.id),
         (config: any, deploymentInfo: StreamDefinition) => {
           const properties = [];
+          const originalProperties = [];
 
           // Deployer properties
           Object.keys(deploymentInfo.deploymentProperties).map(app => {
@@ -128,11 +134,12 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
                   keyShort = key.substring(`${appType}.`.length, key.length);
                 }
                 properties.push(`app.${app}.${keyShort}=${value}`);
+                originalProperties.push(`app.${app}.${keyShort}=${value}`);
               });
             }
           });
-
           this.properties = properties;
+          this.originalProperties = originalProperties;
           config.streamDefinition = deploymentInfo;
           return config;
         }
@@ -181,15 +188,17 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     this.update(value);
     const propertiesMap = {};
     value.forEach((val) => {
-      const arr = val.split(/=(.*)/);
-      if (arr.length !== 3) {
-        console.error('Split line property', val);
-      } else {
-        // Workaround sensitive property: ignored property
-        if (arr[1] === `'******'`) {
-          console.log(`Sensitive property ${arr[0]} is ignored`);
+      if (this.originalProperties.indexOf(val) === -1) {
+        const arr = val.split(/=(.*)/);
+        if (arr.length !== 3) {
+          console.error('Split line property', val);
         } else {
-          propertiesMap[arr[0]] = arr[1];
+          // Workaround sensitive property: ignored property
+          if (arr[1] === `'******'`) {
+            console.log(`Sensitive property ${arr[0]} is ignored`);
+          } else {
+            propertiesMap[arr[0]] = arr[1];
+          }
         }
       }
     });

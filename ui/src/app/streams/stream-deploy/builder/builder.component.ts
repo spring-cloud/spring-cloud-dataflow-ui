@@ -503,10 +503,21 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       return [];
     }
     return appProperties.map((property: Properties.Property) => {
-      return (property.value !== undefined && property.value.toString() !== '' && property.value !== property.defaultValue) ? ({
-        key: `${property.id}`,
-        value: property.value
-      }) : null;
+      if (property.value && property.value !== undefined && property.value.toString() !== ''
+        && property.value !== property.defaultValue) {
+        if (property.id.startsWith(`${appId}.`)) {
+          return {
+            key: `${property.name}`,
+            value: property.value
+          };
+        } else {
+          return {
+            key: `${property.id}`,
+            value: property.value
+          };
+        }
+      }
+      return null;
     }).filter((app) => app !== null);
   }
 
