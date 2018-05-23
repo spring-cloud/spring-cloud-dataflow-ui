@@ -61,7 +61,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   /**
    * Original properties Array
    */
-  originalProperties: Array<string> = [];
+  ignoreProperties: Array<string> = [];
 
   /**
    * Constructor
@@ -101,7 +101,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         val => this.streamsService.getDeploymentInfo(val.id),
         (config: any, deploymentInfo: StreamDefinition) => {
           const properties = [];
-          const originalProperties = [];
+          const ignoreProperties = [];
 
           // Deployer properties
           Object.keys(deploymentInfo.deploymentProperties).map(app => {
@@ -134,12 +134,14 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
                   keyShort = key.substring(`${appType}.`.length, key.length);
                 }
                 properties.push(`app.${app}.${keyShort}=${value}`);
-                originalProperties.push(`app.${app}.${keyShort}=${value}`);
+                ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
               });
             }
           });
           this.properties = properties;
-          this.originalProperties = originalProperties;
+          if (!config.skipper) {
+            this.ignoreProperties = ignoreProperties;
+          }
           config.streamDefinition = deploymentInfo;
           return config;
         }
@@ -188,7 +190,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     this.update(value);
     const propertiesMap = {};
     value.forEach((val) => {
-      if (this.originalProperties.indexOf(val) === -1) {
+      if (this.ignoreProperties.indexOf(val) === -1) {
         const arr = val.split(/=(.*)/);
         if (arr.length !== 3) {
           console.error('Split line property', val);
@@ -204,21 +206,39 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     });
 
     let obs = Observable.of({});
-    if (['deployed', 'deploying'].indexOf(this.refConfig.streamDefinition.status) > -1) {
-      obs = this.streamsService.undeployDefinition(this.refConfig.streamDefinition);
-    }
-    const busy = obs.pipe(mergeMap(
+    const isDeployed = (['deployed', 'deploying'].indexOf(this.refConfig.streamDefinition.status) > -1);
+    const update = this.refConfig.skipper && isDeployed;
+
+    if (update) {
+      obs = obs.pipe(mergeMap(
+        val => this.streamsService.updateDefinition(this.refConfig.id, propertiesMap),
+        (val1, val2) => val2
+      ));
+    } else {
+      if (isDeployed) {
+        obs = obs.pipe(mergeMap(
+          val => this.streamsService.undeployDefinition(this.refConfig.streamDefinition),
+          (val1, val2) => val2
+        ));
+      }
+      obs = obs.pipe(mergeMap(
         val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap),
         (val1, val2) => val2
-      ))
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(
-        data => {
-          this.toastyService.success(`Successfully deployed stream definition "${this.refConfig.id}"`);
+      ));
+    }
+
+    const busy = obs.pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(data => {
+          if (update) {
+            this.toastyService.success(`Successfully update stream definition "${this.refConfig.id}"`);
+          } else {
+            this.toastyService.success(`Successfully deployed stream definition "${this.refConfig.id}"`);
+          }
           this.router.navigate(['streams']);
         },
         error => {
-          this.toastyService.error(`${error.message ? error.message : error.toString()}`);
+          const err = error.message ? error.message : error.toString();
+          this.toastyService.error(err ? err : 'An error occurred during the stream deployment update.');
         }
       );
 

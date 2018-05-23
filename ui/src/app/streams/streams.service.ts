@@ -168,6 +168,17 @@ export class StreamsService {
     return Observable.forkJoin(observables);
   }
 
+  updateDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<Response> {
+    console.log('Updating...', streamDefinitionName, propertiesAsMap);
+    const options = HttpUtils.getDefaultRequestOptions();
+    return this.http.post(`/streams/deployments/update/${streamDefinitionName}`, {
+      releaseName: streamDefinitionName,
+      packageIdentifier: { packageName: streamDefinitionName, packageVersion: null },
+      updateProperties: propertiesAsMap
+    }, options)
+      .catch(this.errorHandler.handleError);
+  }
+
   getDeploymentInfo(streamDefinitionName: string): Observable<StreamDefinition> {
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.get(`/streams/deployments/${streamDefinitionName}`, options).map(res => {
