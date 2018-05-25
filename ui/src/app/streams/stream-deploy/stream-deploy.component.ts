@@ -102,11 +102,13 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         (config: any, deploymentInfo: StreamDefinition) => {
           const properties = [];
           const ignoreProperties = [];
+          const cleanValue = (v) => (v && v.length > 1 && v.startsWith('"') && v.endsWith('"'))
+            ? v.substring(1, v.length - 1) : v;
 
           // Deployer properties
           Object.keys(deploymentInfo.deploymentProperties).map(app => {
             Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
-              const value = deploymentInfo.deploymentProperties[app][key];
+              const value = cleanValue(deploymentInfo.deploymentProperties[app][key]);
               if (key === StreamDeployService.version.keyEdit) {
                 properties.push(`version.${app}=${value}`);
               } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
@@ -129,6 +131,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
             const appType = node['name'];
             if (node['options']) {
               node.options.forEach((value, key) => {
+                value = cleanValue(value);
                 let keyShort = key;
                 if (key.startsWith(`${appType}.`)) {
                   keyShort = key.substring(`${appType}.`.length, key.length);
@@ -139,8 +142,9 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
             }
           });
           this.properties = properties;
-          if (!config.skipper) {
-            this.ignoreProperties = ignoreProperties;
+          this.ignoreProperties = ignoreProperties;
+          if (config.skipper) {
+            this.ignoreProperties = Object.assign([], this.properties);
           }
           config.streamDefinition = deploymentInfo;
           return config;
@@ -189,6 +193,8 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   runDeploy(value: Array<string>) {
     this.update(value);
     const propertiesMap = {};
+    const cleanValue = (v) => (v && v.length > 1 && v.startsWith('"') && v.endsWith('"'))
+      ? v.substring(1, v.length - 1) : v;
     value.forEach((val) => {
       if (this.ignoreProperties.indexOf(val) === -1) {
         const arr = val.split(/=(.*)/);
@@ -199,7 +205,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
           if (arr[1] === `'******'`) {
             console.log(`Sensitive property ${arr[0]} is ignored`);
           } else {
-            propertiesMap[arr[0]] = arr[1];
+            propertiesMap[arr[0]] = cleanValue(arr[1]);
           }
         }
       }
