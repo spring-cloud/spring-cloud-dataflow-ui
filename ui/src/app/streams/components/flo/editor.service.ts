@@ -536,34 +536,35 @@ export class EditorService implements Flo.Editor {
      * for the element.
      */
     private validateProperties(element: dia.Element, markers: Array<Flo.Marker>): Promise<void> {
+        // TODO: Properties not validated until something decided about boot properties that are hidden but valid
         return new Promise((resolve) => {
-            const specifiedProperties = element.attr('props');
-            if (specifiedProperties) {
-                const propertiesRanges = element.attr('propertiesranges');
-                const appSchema = element.attr('metadata');
-                appSchema.properties().then(appSchemaProperties => {
-                    if (!appSchemaProperties) {
-                        appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
-                    }
-                    Object.keys(specifiedProperties).forEach(propertyName => {
-                        const allProperties: Flo.PropertyMetadata[] = Array.from(appSchemaProperties.values());
-                        const property = allProperties.find(p => p.name === propertyName || p.id === propertyName);
-                        if (!property) {
-                            const range = propertiesRanges ? propertiesRanges[propertyName] : null;
-                            markers.push({
-                                severity: Flo.Severity.Error,
-                                message: 'unrecognized option \'' + propertyName + '\' for app \'' +
-                                            element.attr('metadata/name') + '\'',
-                                range: range
-                            });
-                        }
-                    });
-                    resolve();
-                });
-            } else {
+            // const specifiedProperties = element.attr('props');
+            // if (specifiedProperties) {
+            //     const propertiesRanges = element.attr('propertiesranges');
+            //     const appSchema = element.attr('metadata');
+            //     appSchema.properties().then(appSchemaProperties => {
+            //         if (!appSchemaProperties) {
+            //             appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
+            //         }
+            //         Object.keys(specifiedProperties).forEach(propertyName => {
+            //             const allProperties: Flo.PropertyMetadata[] = Array.from(appSchemaProperties.values());
+            //             const property = allProperties.find(p => p.name === propertyName || p.id === propertyName);
+            //             if (!property) {
+            //                 const range = propertiesRanges ? propertiesRanges[propertyName] : null;
+            //                 markers.push({
+            //                     severity: Flo.Severity.Error,
+            //                     message: 'unrecognized option \'' + propertyName + '\' for app \'' +
+            //                                 element.attr('metadata/name') + '\'',
+            //                     range: range
+            //                 });
+            //             }
+            //         });
+            //         resolve();
+            //     });
+            // } else {
                 // nothing to check, simply resolve the promise
                 resolve();
-            }
+            // }
         });
     }
 

@@ -224,8 +224,8 @@ describe('editor.service', () => {
         createLink(timeSource, createSink('log'));
         setProperties(timeSource, new Map([['madeup', 'anyoldvalue']]));
         editorService.validate(graph, null, null).then((markers) => {
-            expectMarkerCount(markers, 1);
-            expectMarker(getMarkersOn(markers, timeSource)[0], Flo.Severity.Error, 'unrecognized option \'madeup\' for app \'time\'');
+            expectMarkerCount(markers, 0);
+            // expectMarker(getMarkersOn(markers, timeSource)[0], Flo.Severity.Error, 'unrecognized option \'madeup\' for app \'time\'');
             done();
         });
     });
