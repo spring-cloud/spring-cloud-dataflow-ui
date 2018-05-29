@@ -111,7 +111,7 @@
 							<goal>npm</goal>
 						</goals>
 						<configuration>
-							<arguments>install</arguments>
+							<arguments>install --scripts-prepend-node-path=auto</arguments>
 						</configuration>
 					</execution>
 					<execution>
