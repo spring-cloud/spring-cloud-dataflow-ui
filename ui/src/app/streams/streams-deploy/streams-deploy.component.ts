@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { StreamsService } from '../streams.service';
-import { ToastyService } from 'ng2-toasty';
 import { Subscription } from 'rxjs/Subscription';
 import { StreamDefinition } from '../model/stream-definition';
 import { BsModalRef } from 'ngx-bootstrap';
@@ -9,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable } from 'rxjs/Observable';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -47,12 +47,12 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
    * @param modalRef Modal reference
    * @param streamsService The service used to deploy the stream.
    * @param busyService
-   * @param toastyService used to display the status of a deployment
+   * @param notificationService used to display the status of a deployment
    */
   constructor(private streamsService: StreamsService,
               private modalRef: BsModalRef,
               private busyService: BusyService,
-              private toastyService: ToastyService) {
+              private notificationService: NotificationService) {
 
     super(modalRef);
   }
@@ -82,11 +82,11 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
     const busy = this.streamsService.deployMultipleStreamDefinitions(this.streamDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        this.toastyService.success(`${data.length} stream definition(s) deployed.`);
+        this.notificationService.success(`${data.length} stream definition(s) deployed.`);
         this.confirm.emit(data);
         this.cancel();
       }, (error) => {
-        this.toastyService.error(error);
+        this.notificationService.error(error);
       });
 
     this.busyService.addSubscription(busy);

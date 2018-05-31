@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { ToastyModule } from 'ng2-toasty';
 import { NgBusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'ng-busy';
 import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
@@ -43,6 +42,8 @@ import { TruncatorComponent } from './components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from './components/truncator/truncator-width-provider.directive';
 import { PagerComponent } from './components/pager/pager.component';
 import { RoutingStateService } from './services/routing-state.service';
+import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
+import { NotificationService } from './services/notification.service';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -71,8 +72,14 @@ const busyConfig: BusyConfig = {
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     NgxPaginationModule,
-    ToastyModule.forRoot(),
-    ProgressbarModule.forRoot()
+    ToastContainerModule,
+    ProgressbarModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 133000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+      maxOpened: 6
+    }),
   ],
   declarations: [
     CapitalizePipe,
@@ -113,7 +120,8 @@ const busyConfig: BusyConfig = {
     ErrorHandler,
     ConfirmService,
     BusyService,
-    RoutingStateService
+    RoutingStateService,
+    NotificationService
   ],
   exports: [
     StreamDslComponent,
@@ -122,7 +130,7 @@ const busyConfig: BusyConfig = {
     CommonModule,
     FormsModule,
     NgxPaginationModule,
-    ToastyModule,
+    ToastrModule,
     CapitalizePipe,
     DataflowDateTimePipe,
     DataflowDurationPipe,
@@ -146,7 +154,8 @@ const busyConfig: BusyConfig = {
     ConfirmComponent,
     AutoResizeDirective,
     LoaderComponent,
-    PagerComponent
+    PagerComponent,
+    ToastContainerModule
   ]
 })
 export class SharedModule {

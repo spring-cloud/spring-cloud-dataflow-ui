@@ -2,7 +2,6 @@ import {Component, EventEmitter, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {AppRegistration} from '../../shared/model/app-registration.model';
 import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
 import {ConfirmService} from '../../shared/components/confirm/confirm.service';
 import {BsModalRef} from 'ngx-bootstrap';
 import {AppVersion} from '../../shared/model/app-version';
@@ -11,6 +10,7 @@ import {Subject} from 'rxjs/Subject';
 import {takeUntil} from 'rxjs/operators';
 import {BusyService} from '../../shared/services/busy.service';
 import {ApplicationType} from '../../shared/model/application-type';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Provides versions for an App Registration
@@ -58,13 +58,13 @@ export class AppVersionsComponent implements OnDestroy {
    * @param {ConfirmService} confirmService
    * @param {BsModalRef} modalRef
    * @param {BusyService} busyService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    */
   constructor(private appsService: AppsService,
               private confirmService: ConfirmService,
               private modalRef: BsModalRef,
               private busyService: BusyService,
-              private toastyService: ToastyService) {
+              private notificationService: NotificationService) {
 
   }
 
@@ -101,7 +101,7 @@ export class AppVersionsComponent implements OnDestroy {
           this.application.versions = data;
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         });
 
     this.busyService.addSubscription(busy);
@@ -128,13 +128,13 @@ export class AppVersionsComponent implements OnDestroy {
       const busy = this.appsService.setAppDefaultVersion(this.application.type, this.application.name, version.version)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
-            this.toastyService.success(`The version <strong>${version.version}</strong> is now the default ` +
+            this.notificationService.success(`The version <strong>${version.version}</strong> is now the default ` +
               `version of the application <strong>${this.application.name}</strong> (${this.application.type}).`);
             this.refresh();
             this.event.emit(true);
           },
           error => {
-            this.toastyService.error(error);
+            this.notificationService.error(error);
           });
 
       this.busyService.addSubscription(busy);
@@ -171,7 +171,7 @@ export class AppVersionsComponent implements OnDestroy {
     }
     this.confirmService.open(title, description, {confirm: 'Unregister version'}).subscribe(() => {
       this.appsService.unregisterAppVersion(this.application, version.version).subscribe(() => {
-          this.toastyService.success(`The version <strong>${version.version}</strong> of the application ` +
+          this.notificationService.success(`The version <strong>${version.version}</strong> of the application ` +
             `<strong>${this.application.name}</strong> (${this.application.type}) has been unregister.`);
 
           if (this.application.versions.length === 1) {
@@ -182,7 +182,7 @@ export class AppVersionsComponent implements OnDestroy {
           this.event.emit(true);
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         });
     });
   }

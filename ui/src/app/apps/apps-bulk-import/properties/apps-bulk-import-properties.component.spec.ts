@@ -2,13 +2,13 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BsModalRef, ModalModule, PopoverModule} from 'ngx-bootstrap';
 import {AppsService} from '../../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../../../tests/mocks/toasty';
+import {MockNotificationService} from '../../../tests/mocks/notification';
 import {MockAppsService} from '../../../tests/mocks/apps';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {BusyService} from '../../../shared/services/busy.service';
 import {By} from '@angular/platform-browser';
 import {AppsBulkImportPropertiesComponent} from './apps-bulk-import-properties.component';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Test {@link AppsBulkImportPropertiesComponent}.
@@ -19,7 +19,7 @@ describe('AppsBulkImportPropertiesComponent', () => {
   let component: AppsBulkImportPropertiesComponent;
   let fixture: ComponentFixture<AppsBulkImportPropertiesComponent>;
   const bsModalRef = new BsModalRef();
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
 
   beforeEach(async(() => {
@@ -38,7 +38,7 @@ describe('AppsBulkImportPropertiesComponent', () => {
         {provide: AppsService, useValue: appsService},
         {provide: BusyService, useValue: new BusyService()},
         {provide: BsModalRef, useValue: bsModalRef},
-        {provide: ToastyService, useValue: toastyService}
+        {provide: NotificationService, useValue: notificationService}
       ]
     })
       .compileComponents();
@@ -47,7 +47,7 @@ describe('AppsBulkImportPropertiesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsBulkImportPropertiesComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {
@@ -109,7 +109,7 @@ describe('AppsBulkImportPropertiesComponent', () => {
     component.form.get('properties').setValue('foo=http://foo.ly/foo-bar-foo');
     component.submit();
     fixture.detectChanges();
-    expect(toastyService.testSuccess[0]).toContain('Apps Imported');
+    expect(notificationService.testSuccess[0]).toContain('Apps Imported');
   });
 
   it('should load a file in the properties input', (done) => {

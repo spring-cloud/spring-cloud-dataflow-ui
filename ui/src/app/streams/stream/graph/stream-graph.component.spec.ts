@@ -6,14 +6,14 @@ import { StreamsService } from '../../streams.service';
 import { ActivatedRoute } from '@angular/router';
 import { GraphViewComponent } from '../../../shared/flo/graph-view/graph-view.component';
 import { FloModule } from 'spring-flo';
-import { MockToastyService } from '../../../tests/mocks/toasty';
-import { ToastyService } from 'ng2-toasty';
+import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MetamodelService } from '../../components/flo/metamodel.service';
 import { RenderService } from '../../components/flo/render.service';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { BusyService } from '../../../shared/services/busy.service';
 import { StreamGraphComponent } from './stream-graph.component';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 
 /**
@@ -28,7 +28,7 @@ describe('StreamGraphComponent', () => {
   let activeRoute: MockActivatedRoute;
   const streamsService = new MockStreamsService();
   const commonTestParams = { id: '1' };
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
   const busyService = new BusyService();
@@ -50,7 +50,7 @@ describe('StreamGraphComponent', () => {
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: BusyService, useValue: busyService },
-        { provide: ToastyService, useValue: toastyService },
+        { provide: NotificationService, useValue: notificationService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: RenderService, useValue: renderService }
       ]

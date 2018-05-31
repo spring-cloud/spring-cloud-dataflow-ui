@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ActivatedRoute } from '@angular/router';
 import { StreamsService } from '../../streams.service';
-import { ToastyService } from 'ng2-toasty';
 import { BusyService } from '../../../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { RenderService } from '../../components/flo/render.service';
 import { MetamodelService } from '../../components/flo/metamodel.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Component that shows the details of a Stream Definition
@@ -42,14 +42,14 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
    *
    * @param {ActivatedRoute} route
    * @param {StreamsService} streamsService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {BusyService} busyService
    * @param {MetamodelService} metamodelService
    * @param {RenderService} renderService
    */
   constructor(private route: ActivatedRoute,
               private streamsService: StreamsService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private busyService: BusyService,
               public metamodelService: MetamodelService,
               public renderService: RenderService) {
@@ -66,7 +66,7 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
         .subscribe(streams => {
           this.dsl = streams.map(s => `${s.name}=${s.dslText}`).join('\n');
         }, (error) => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         });
 
       this.busyService.addSubscription(busy);

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { AppsService } from '../apps.service';
 import { AppRegistration, Page } from '../../shared/model';
-import { ToastyService } from 'ng2-toasty';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
@@ -14,6 +13,7 @@ import { OrderParams, SortParams } from '../../shared/components/shared.interfac
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -93,14 +93,14 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Constructor
    *
    * @param {AppsService} appsService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {SharedAboutService} sharedAboutService
    * @param {BsModalService} modalService
    * @param {BusyService} busyService
    * @param {Router} router
    */
   constructor(public appsService: AppsService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private sharedAboutService: SharedAboutService,
               private modalService: BsModalService,
               private busyService: BusyService,
@@ -120,6 +120,7 @@ export class AppsComponent implements OnInit, OnDestroy {
     this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
       this.skipperEnabled = featureInfo.skipperEnabled;
     });
+
   }
 
   /**
@@ -154,7 +155,7 @@ export class AppsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         }
       );
 

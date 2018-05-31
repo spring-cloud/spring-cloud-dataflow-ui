@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ToastyService } from 'ng2-toasty';
 import { Page } from '../../shared/model/page';
 import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
@@ -11,6 +10,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -78,7 +78,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
               private modalService: BsModalService,
               private busyService: BusyService,
               private router: Router,
-              private toastyService: ToastyService) {
+              private notificationService: NotificationService) {
 
   }
 
@@ -124,7 +124,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         }
       );
 

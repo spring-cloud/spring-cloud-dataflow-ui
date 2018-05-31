@@ -8,11 +8,11 @@ import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import * as moment from 'moment';
 import { StreamsService } from '../streams.service';
 import { Subject } from 'rxjs/Subject';
-import { ToastyService } from 'ng2-toasty';
 import { BusyService } from '../../shared/services/busy.service';
 import { StreamDefinition } from '../model/stream-definition';
 import { Parser } from '../../shared/services/parser';
 import { StreamDeployService } from './stream-deploy.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -68,14 +68,14 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    *
    * @param {ActivatedRoute} route
    * @param {StreamsService} streamsService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {BusyService} busyService
    * @param {Router} router
    * @param {SharedAboutService} sharedAboutService
    */
   constructor(private route: ActivatedRoute,
               private streamsService: StreamsService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private busyService: BusyService,
               private router: Router,
               private sharedAboutService: SharedAboutService) {
@@ -236,15 +236,15 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     const busy = obs.pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(data => {
           if (update) {
-            this.toastyService.success(`Successfully update stream definition "${this.refConfig.id}"`);
+            this.notificationService.success(`Successfully update stream definition "${this.refConfig.id}"`);
           } else {
-            this.toastyService.success(`Successfully deployed stream definition "${this.refConfig.id}"`);
+            this.notificationService.success(`Successfully deployed stream definition "${this.refConfig.id}"`);
           }
           this.router.navigate(['streams']);
         },
         error => {
           const err = error.message ? error.message : error.toString();
-          this.toastyService.error(err ? err : 'An error occurred during the stream deployment update.');
+          this.notificationService.error(err ? err : 'An error occurred during the stream deployment update.');
         }
       );
 

@@ -1,24 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgBusyModule } from 'ng-busy';
 import { FormsModule } from '@angular/forms';
-
 import { LogoutComponent } from './logout.component';
-import { ToastyService } from 'ng2-toasty';
-import { MockToastyService } from '../tests/mocks/toasty';
+import { MockNotificationService } from '../tests/mocks/notification';
 import { MockActivatedRoute } from '../tests/mocks/activated-route';
 import { ActivatedRoute } from '@angular/router';
 import { MockAboutService } from '../tests/mocks/about';
 import { MockAuthService } from '../tests/mocks/auth';
-
 import { AuthService } from './auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { AboutService } from '../about/about.service';
+import { NotificationService } from '../shared/services/notification.service';
 
 describe('LogoutComponent', () => {
   let component: LogoutComponent;
   let fixture: ComponentFixture<LogoutComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   let activeRoute: MockActivatedRoute;
   const authService = new MockAuthService();
   const aboutService = new MockAboutService();
@@ -35,7 +33,7 @@ describe('LogoutComponent', () => {
       providers: [
         { provide: AboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
-        { provide: ToastyService, useValue: toastyService },
+        { provide: NotificationService, useValue: notificationService },
         { provide: ActivatedRoute, useValue: {
             params: Observable.of({returnUrl: '/apps'})
           }

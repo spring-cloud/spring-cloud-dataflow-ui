@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AboutService } from './about.service';
-import { ToastyService } from 'ng2-toasty';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AboutInfo } from '../shared/model/about/about-info.model';
+import { NotificationService } from '../shared/services/notification.service';
 
 @Component({
   templateUrl: './about-details.component.html'
@@ -15,7 +14,7 @@ export class AboutDetailsComponent implements OnInit {
 
   constructor(
     private aboutService: AboutService,
-    private toastyService: ToastyService,
+    private notificationService: NotificationService,
     private router: Router) {
   }
 
@@ -30,7 +29,7 @@ export class AboutDetailsComponent implements OnInit {
   }
 
   onCopyToClipboardSuccess(e) {
-    this.toastyService.success('Copied About Details to Clipboard (As JSON).');
+    this.notificationService.success('Copied About Details to Clipboard (As JSON).');
     console.log(e);
   }
 

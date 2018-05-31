@@ -6,8 +6,7 @@ import { StreamsService } from '../streams.service';
 import { ActivatedRoute } from '@angular/router';
 import { GraphViewComponent } from '../../shared/flo/graph-view/graph-view.component';
 import { FloModule } from 'spring-flo';
-import { MockToastyService } from '../../tests/mocks/toasty';
-import { ToastyService } from 'ng2-toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
 import { MetamodelService } from '../components/flo/metamodel.service';
 import { RenderService } from '../components/flo/render.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
@@ -15,6 +14,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { StreamComponent } from './stream.component';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { NotificationService } from '../../shared/services/notification.service';
 
 
 /**
@@ -28,7 +28,7 @@ describe('StreamComponent', () => {
   let activeRoute: MockActivatedRoute;
   const streamsService = new MockStreamsService();
   const commonTestParams = { id: '1' };
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
   const busyService = new BusyService();
@@ -50,8 +50,8 @@ describe('StreamComponent', () => {
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: BusyService, useValue: busyService },
-        { provide: ToastyService, useValue: toastyService },
         { provide: RoutingStateService, useValue: routingStateService },
+        { provide: NotificationService, useValue: notificationService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: RenderService, useValue: renderService }
       ]

@@ -1,13 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-
-import { ToastyService } from 'ng2-toasty';
 import { AuthService } from './auth.service';
 import { AboutService } from '../about/about.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
+import { NotificationService } from '../shared/services/notification.service';
 
 /**
  * Handles logouts. Logouts are handled differently depending on whether
@@ -26,7 +24,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private aboutService: AboutService,
-    private toastyService: ToastyService,
+    private notificationService: NotificationService,
     private router: Router) {
   }
 
@@ -51,12 +49,12 @@ export class LogoutComponent implements OnInit, OnDestroy {
       .subscribe(
         result => {
           this.aboutService.featureInfo.reset();
-          this.toastyService.success('Logged out.');
+          this.notificationService.success('Logged out.');
           this.router.navigate(['login']);
         },
         error => {
           this.aboutService.featureInfo.reset();
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         },
       );
     } else {

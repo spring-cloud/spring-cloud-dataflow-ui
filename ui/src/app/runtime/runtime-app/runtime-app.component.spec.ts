@@ -1,26 +1,26 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {ToastyService} from 'ng2-toasty';
-import {ModalModule, BsModalRef} from 'ngx-bootstrap';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockRuntimeAppsService} from '../../tests/mocks/runtime';
-import {RuntimeAppsService} from '../runtime-apps.service';
-import {RuntimeAppStateComponent} from '../components/runtime-app-state/runtime-app-state.component';
-import {RuntimeAppComponent} from './runtime-app.component';
-import {By} from '@angular/platform-browser';
-import {RUNTIME_APPS} from '../../tests/mocks/mock-data';
-import {RuntimeApp} from '../model/runtime-app';
-import {KeyValuePipe} from '../../shared/pipes/key-value-filter.pipe';
-import {RuntimeAppInstance} from '../model/runtime-app-instance';
-import {NgBusyModule} from 'ng-busy';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ModalModule, BsModalRef } from 'ngx-bootstrap';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { MockRuntimeAppsService } from '../../tests/mocks/runtime';
+import { RuntimeAppsService } from '../runtime-apps.service';
+import { RuntimeAppStateComponent } from '../components/runtime-app-state/runtime-app-state.component';
+import { RuntimeAppComponent } from './runtime-app.component';
+import { By } from '@angular/platform-browser';
+import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
+import { RuntimeApp } from '../model/runtime-app';
+import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
+import { RuntimeAppInstance } from '../model/runtime-app-instance';
+import { NgBusyModule } from 'ng-busy';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
+import { NotificationService } from '../../shared/services/notification.service';
 
 describe('RuntimeAppComponent', () => {
   let component: RuntimeAppComponent;
   let fixture: ComponentFixture<RuntimeAppComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const runtimeAppsService = new MockRuntimeAppsService();
   const bsModalRef = new BsModalRef();
   const mock: any = RUNTIME_APPS;
@@ -41,9 +41,9 @@ describe('RuntimeAppComponent', () => {
         ModalModule.forRoot()
       ],
       providers: [
-        {provide: RuntimeAppsService, useValue: runtimeAppsService},
-        {provide: BsModalRef, useValue: bsModalRef},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: RuntimeAppsService, useValue: runtimeAppsService },
+        { provide: BsModalRef, useValue: bsModalRef },
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -62,8 +62,8 @@ describe('RuntimeAppComponent', () => {
         'failed',
         null,
         [
-          new RuntimeAppInstance('Instance1', 'deployed', {foo: 'bar'}),
-          new RuntimeAppInstance('Instance2', 'failed', {foo: 'bar'}),
+          new RuntimeAppInstance('Instance1', 'deployed', { foo: 'bar' }),
+          new RuntimeAppInstance('Instance2', 'failed', { foo: 'bar' }),
         ]
       ));
       fixture.detectChanges();

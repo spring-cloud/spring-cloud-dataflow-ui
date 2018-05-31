@@ -1,14 +1,14 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {BsModalRef, ModalModule, PopoverModule} from 'ngx-bootstrap';
-import {AppsService} from '../../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {MockToastyService} from '../../../tests/mocks/toasty';
-import {MockAppsService} from '../../../tests/mocks/apps';
-import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {BusyService} from '../../../shared/services/busy.service';
-import {By} from '@angular/platform-browser';
-import {AppsBulkImportUriComponent} from './apps-bulk-import-uri.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BsModalRef, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { AppsService } from '../../apps.service';
+import { MockNotificationService } from '../../../tests/mocks/notification';
+import { MockAppsService } from '../../../tests/mocks/apps';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { BusyService } from '../../../shared/services/busy.service';
+import { By } from '@angular/platform-browser';
+import { AppsBulkImportUriComponent } from './apps-bulk-import-uri.component';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Test {@link AppsBulkImportUriComponent}.
@@ -19,7 +19,7 @@ describe('AppsBulkImportUriComponent', () => {
   let component: AppsBulkImportUriComponent;
   let fixture: ComponentFixture<AppsBulkImportUriComponent>;
   const bsModalRef = new BsModalRef();
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
 
   beforeEach(async(() => {
@@ -35,10 +35,10 @@ describe('AppsBulkImportUriComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
-        {provide: AppsService, useValue: appsService},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: BsModalRef, useValue: bsModalRef},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: AppsService, useValue: appsService },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: BsModalRef, useValue: bsModalRef },
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -47,7 +47,7 @@ describe('AppsBulkImportUriComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsBulkImportUriComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {
@@ -64,9 +64,9 @@ describe('AppsBulkImportUriComponent', () => {
         force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
       };
       [
-        {uri: '', force: true},
-        {uri: 'bar', force: false},
-        {uri: 'foo@bar.com', force: true}
+        { uri: '', force: true },
+        { uri: 'bar', force: false },
+        { uri: 'foo@bar.com', force: true }
       ].forEach((a) => {
         component.form.get('uri').setValue(a.uri);
         component.form.get('force').setValue(a.force);
@@ -86,7 +86,7 @@ describe('AppsBulkImportUriComponent', () => {
       };
       const spy = spyOn(appsService, 'bulkImportApps');
       [
-        {uri: 'http://foo.ly/foo-bar-foo', force: false}
+        { uri: 'http://foo.ly/foo-bar-foo', force: false }
       ].forEach((a) => {
         component.form.get('uri').setValue(a.uri);
         component.form.get('force').setValue(a.force);
@@ -104,7 +104,7 @@ describe('AppsBulkImportUriComponent', () => {
     component.form.get('uri').setValue('http://foo.ly/foo-bar-foo');
     component.submit();
     fixture.detectChanges();
-    expect(toastyService.testSuccess[0]).toContain('Apps Imported');
+    expect(notificationService.testSuccess[0]).toContain('Apps Imported');
   });
 
 });

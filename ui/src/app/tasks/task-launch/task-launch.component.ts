@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ToastyService } from 'ng2-toasty';
 import { TasksService } from '../tasks.service';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -9,6 +8,7 @@ import { TaskDefinition } from '../model/task-definition';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { BusyService } from '../../shared/services/busy.service';
 import { TaskLaunchValidator } from './task-launch.validator';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component that provides a launcher of task.
@@ -43,13 +43,13 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * Constructor
    *
    * @param {TasksService} tasksService
-   * @param {ToastyService} toastyService
+   * @param {NotificationService} notificationService
    * @param {BusyService} busyService
    * @param {ActivatedRoute} route
    * @param {Router} router
    */
   constructor(private tasksService: TasksService,
-              private toastyService: ToastyService,
+              private notificationService: NotificationService,
               private busyService: BusyService,
               private route: ActivatedRoute,
               private router: Router) {
@@ -129,11 +129,11 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
     }).pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         data => {
-          this.toastyService.success('Successfully launched task "' + name + '"');
+          this.notificationService.success('Successfully launched task "' + name + '"');
           this.router.navigate(['/tasks/definitions']);
         },
         error => {
-          this.toastyService.error(error);
+          this.notificationService.error(error);
         }
       );
     this.busyService.addSubscription(busy);

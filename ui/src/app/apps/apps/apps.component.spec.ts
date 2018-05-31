@@ -1,39 +1,39 @@
-import {async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
-import {AppsComponent} from './apps.component';
-import {MockToastyService} from '../../tests/mocks/toasty';
-import {MockAppsService} from '../../tests/mocks/apps';
-import {BsDropdownModule, BsModalService, ModalModule, PopoverModule, TooltipModule} from 'ngx-bootstrap';
-import {FormsModule} from '@angular/forms';
-import {RouterTestingModule} from '@angular/router/testing';
-import {AppsService} from '../apps.service';
-import {ToastyService} from 'ng2-toasty';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {MocksSharedAboutService} from '../../tests/mocks/shared-about';
-import {AppVersionLabelComponent} from '../components/app-versions-label/app-versions-label.component';
-import {AppTypeComponent} from '../components/app-type/app-type.component';
-import {MockAuthService} from '../../tests/mocks/auth';
-import {AuthService} from '../../auth/auth.service';
-import {RolesDirective} from '../../auth/directives/roles.directive';
-import {By} from '@angular/platform-browser';
-import {SortComponent} from '../../shared/components/sort/sort.component';
-import {MasterCheckboxComponent} from '../../shared/components/master-checkbox.component';
-import {TruncatePipe} from '../../shared/pipes/truncate.pipe';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {APPS} from '../../tests/mocks/mock-data';
-import {DebugElement} from '@angular/core';
-import {MockModalService} from '../../tests/mocks/modal';
-import {AppsUnregisterComponent} from '../apps-unregister/apps-unregister.component';
-import {tick} from '@angular/core/testing';
-import {AppVersionsComponent} from '../app-versions/app-versions.component';
-import {BusyService} from '../../shared/services/busy.service';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { AppsComponent } from './apps.component';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppsService } from '../apps.service';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { AppVersionLabelComponent } from '../components/app-versions-label/app-versions-label.component';
+import { AppTypeComponent } from '../components/app-type/app-type.component';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { AuthService } from '../../auth/auth.service';
+import { RolesDirective } from '../../auth/directives/roles.directive';
+import { By } from '@angular/platform-browser';
+import { SortComponent } from '../../shared/components/sort/sort.component';
+import { MasterCheckboxComponent } from '../../shared/components/master-checkbox.component';
+import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { APPS } from '../../tests/mocks/mock-data';
+import { DebugElement } from '@angular/core';
+import { MockModalService } from '../../tests/mocks/modal';
+import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
+import { tick } from '@angular/core/testing';
+import { AppVersionsComponent } from '../app-versions/app-versions.component';
+import { BusyService } from '../../shared/services/busy.service';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { NotificationService } from '../../shared/services/notification.service';
 
 describe('AppsComponent', () => {
   let component: AppsComponent;
   let fixture: ComponentFixture<AppsComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
   const sharedAboutService = new MocksSharedAboutService();
   const authService = new MockAuthService();
@@ -63,12 +63,12 @@ describe('AppsComponent', () => {
         BsDropdownModule.forRoot()
       ],
       providers: [
-        {provide: AppsService, useValue: appsService},
-        {provide: AuthService, useValue: authService},
-        {provide: BsModalService, useValue: modalService},
-        {provide: BusyService, useValue: new BusyService()},
-        {provide: SharedAboutService, useValue: sharedAboutService},
-        {provide: ToastyService, useValue: toastyService}
+        { provide: AppsService, useValue: appsService },
+        { provide: AuthService, useValue: authService },
+        { provide: BsModalService, useValue: modalService },
+        { provide: BusyService, useValue: new BusyService() },
+        { provide: SharedAboutService, useValue: sharedAboutService },
+        { provide: NotificationService, useValue: notificationService }
       ]
     })
       .compileComponents();
@@ -77,7 +77,7 @@ describe('AppsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   it('should be created', () => {
@@ -163,8 +163,8 @@ describe('AppsComponent', () => {
     beforeEach(() => {
       sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = false;
       appsService.mock = {
-        items: Array.from({length: 20}).map((a, i) => {
-          return {name: 'foo' + i, type: 'source', uri: 'http://foo.bar'};
+        items: Array.from({ length: 20 }).map((a, i) => {
+          return { name: 'foo' + i, type: 'source', uri: 'http://foo.bar' };
         }),
         size: 20,
         totalElements: 30,
@@ -224,8 +224,8 @@ describe('AppsComponent', () => {
 
     it('should apply a search', () => {
       appsService.mock = {
-        items: Array.from({length: 12}).map((a, i) => {
-          return {name: 'foo' + i, type: 'task', uri: 'http://foo.bar'};
+        items: Array.from({ length: 12 }).map((a, i) => {
+          return { name: 'foo' + i, type: 'task', uri: 'http://foo.bar' };
         }),
         size: 20,
         totalElements: 12,
@@ -243,17 +243,17 @@ describe('AppsComponent', () => {
       const sortType: HTMLElement = fixture.debugElement.query(By.css('#sort-type a')).nativeElement;
       const sortUri: HTMLElement = fixture.debugElement.query(By.css('#sort-uri a')).nativeElement;
       [
-        {click: sortName, nameDesc: true, sort: 'name', order: 'DESC'},
-        {click: sortName, sort: '', order: ''},
-        {click: sortType, typeAsc: true, sort: 'type', order: 'ASC'},
-        {click: sortType, typeDesc: true, sort: 'type', order: 'DESC'},
-        {click: sortType, sort: '', order: ''},
-        {click: sortUri, uriAsc: true, sort: 'uri', order: 'ASC'},
-        {click: sortUri, uriDesc: true, sort: 'uri', order: 'DESC'},
-        {click: sortUri, sort: '', order: ''},
-        {click: sortName, nameAsc: true, sort: 'name', order: 'ASC'},
-        {click: sortType, typeAsc: true, sort: 'type', order: 'ASC'},
-        {click: sortUri, uriAsc: true, sort: 'uri', order: 'ASC'}
+        { click: sortName, nameDesc: true, sort: 'name', order: 'DESC' },
+        { click: sortName, sort: '', order: '' },
+        { click: sortType, typeAsc: true, sort: 'type', order: 'ASC' },
+        { click: sortType, typeDesc: true, sort: 'type', order: 'DESC' },
+        { click: sortType, sort: '', order: '' },
+        { click: sortUri, uriAsc: true, sort: 'uri', order: 'ASC' },
+        { click: sortUri, uriDesc: true, sort: 'uri', order: 'DESC' },
+        { click: sortUri, sort: '', order: '' },
+        { click: sortName, nameAsc: true, sort: 'name', order: 'ASC' },
+        { click: sortType, typeAsc: true, sort: 'type', order: 'ASC' },
+        { click: sortUri, uriAsc: true, sort: 'uri', order: 'ASC' }
       ].forEach((test) => {
         test.click.click();
         fixture.detectChanges();
@@ -390,7 +390,7 @@ describe('AppsComponent', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#table tbody tr'))[0];
       line.query(By.css('.cell-version a')).nativeElement.click();
       fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith(AppVersionsComponent, {class: 'modal-xl'});
+      expect(spy).toHaveBeenCalledWith(AppVersionsComponent, { class: 'modal-xl' });
     });
 
   });

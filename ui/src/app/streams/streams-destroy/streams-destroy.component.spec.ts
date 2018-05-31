@@ -1,11 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockToastyService } from '../../tests/mocks/toasty';
+import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { BsModalRef, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../../auth/auth.service';
-import { ToastyService } from 'ng2-toasty';
 import { By } from '@angular/platform-browser';
 import { StreamsDestroyComponent } from './streams-destroy.component';
 import { StreamDefinition } from '../model/stream-definition';
@@ -16,6 +15,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { RolesDirective } from '../../auth/directives/roles.directive';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Test {@link StreamsDestroyComponent}.
@@ -26,7 +26,7 @@ describe('StreamsDestroyComponent', () => {
 
   let component: StreamsDestroyComponent;
   let fixture: ComponentFixture<StreamsDestroyComponent>;
-  const toastyService = new MockToastyService();
+  const notificationService = new MockNotificationService();
   const authService = new MockAuthService();
   const bsModalRef = new BsModalRef();
   const streamsService = new MockStreamsService();
@@ -51,7 +51,7 @@ describe('StreamsDestroyComponent', () => {
         { provide: AuthService, useValue: authService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: BusyService, useValue: busyService },
-        { provide: ToastyService, useValue: toastyService },
+        { provide: NotificationService, useValue: notificationService },
         { provide: StreamsService, useValue: streamsService }
       ]
     }).compileComponents();
@@ -60,7 +60,7 @@ describe('StreamsDestroyComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamsDestroyComponent);
     component = fixture.componentInstance;
-    toastyService.clearAll();
+    notificationService.clearAll();
   });
 
   describe('1 stream destroy', () => {
@@ -91,7 +91,7 @@ describe('StreamsDestroyComponent', () => {
     it('Should display a message after destroy one stream', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(toastyService.testSuccess[0]).toContain('1 stream definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('1 stream definition(s) destroy.');
     }));
 
     it('Should close the modal after a success destroy', (() => {
@@ -138,7 +138,7 @@ describe('StreamsDestroyComponent', () => {
     it('Should display a message after destroy 2 streams', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(toastyService.testSuccess[0]).toContain('2 stream definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('2 stream definition(s) destroy.');
     }));
 
     it('Should close the modal after a success destroy', (() => {

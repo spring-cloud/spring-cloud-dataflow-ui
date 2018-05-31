@@ -1,16 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { AuthService } from './auth.service';
 import { LoginRequest } from './model/login-request.model';
 import { SecurityInfo } from '../shared/model/about/security-info.model';
-
 import { Subscription } from 'rxjs/Subscription';
-import { ToastyService } from 'ng2-toasty';
 import { AboutService } from '../about/about.service';
 import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from '../shared/services/notification.service';
 
 /**
  * Handles application logins.
@@ -32,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private aboutService: AboutService,
     private busyService: BusyService,
     private router: Router,
-    private toastyService: ToastyService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute) {
   }
 
@@ -73,16 +71,16 @@ export class LoginComponent implements OnInit, OnDestroy {
             },
             error => {
               console.error('User was not logged in because:', error);
-              this.toastyService.error(error);
+              this.notificationService.error(error);
             }
           );
         } else {
           console.error('The following error occurred:', result);
-          this.toastyService.error('Not logged in.');
+          this.notificationService.error('Not logged in.');
         }
       },
       error => {
-        this.toastyService.error(error);
+        this.notificationService.error(error);
       });
     this.busyService.addSubscription(busy);
   }
