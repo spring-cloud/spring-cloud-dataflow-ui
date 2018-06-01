@@ -1,90 +1,82 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { JobsService } from '../jobs.service';
 import { StepExecutionResource } from '../model/step-execution-resource.model';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
-import { NotificationService } from '../../shared/services/notification.service';
+import { Observable } from 'rxjs/Observable';
+import { mergeMap, map } from 'rxjs/operators';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 /**
+ * Step Execution Details
+ *
  * @author Glenn Renfro
  * @author Gunnar Hillert
+ * @author Damien Vitrac
  */
 @Component({
   selector: 'app-step-execution-details',
+  styleUrls: ['styles.scss'],
   templateUrl: './step-execution-details.component.html'
 })
-export class StepExecutionDetailsComponent implements OnInit, OnDestroy {
+export class StepExecutionDetailsComponent implements OnInit {
 
-  private ngUnsubscribe$: Subject<any> = new Subject();
+  /**
+   * Observable Step Execution Informations
+   */
+  stepExecutionDetails$: Observable<any>;
 
-  jobid: string;
-  stepid: string;
-  stepExecutionResource: StepExecutionResource;
-  percentageComplete = 0;
-
-  constructor(
-    private jobsService: JobsService,
-    private notificationService: NotificationService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) { }
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.jobid = params['jobid'];
-      this.stepid = params['stepid'];
-      this.loadData();
-    });
+  /**
+   * Constructor
+   *
+   * @param {JobsService} jobsService
+   * @param {ActivatedRoute} route
+   * @param {Router} router
+   */
+  constructor(private jobsService: JobsService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   /**
-   * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.
+   * Init component
    */
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+  ngOnInit() {
+    this.refresh();
   }
 
+  /**
+   * Refresh
+   */
   refresh() {
-    this.loadData();
+    this.stepExecutionDetails$ = this.route.params
+      .pipe(mergeMap(
+        val => forkJoin([
+          this.jobsService.getJobExecution(val.jobid),
+          this.jobsService.getStepExecution(val.jobid, val.stepid),
+          this.jobsService.getStepExecutionProgress(val.jobid, val.stepid)
+        ]),
+        (val1: Params, val2: any) => val2
+      ))
+      .pipe(map(
+        val => ({ jobExecution: val[0], stepExecution: val[1], stepExecutionProgress: val[2] })
+      ));
   }
 
   /**
    * Navigates to the step execution progress page.
    *
-   * @param {StepExecutionResource} item the id of the StepExecution is used to construct the URI parameters along with the
-   * JobExecutionId.
+   * @param {StepExecutionResource} item the id of the StepExecution is used to construct the URI parameters along
+   * with the JobExecutionId.
    */
   viewStepExecutionProgress(item: StepExecutionResource) {
-    this.router.navigate(['jobs/executions/' + item.jobExecutionId + '/' + item.stepExecution.id + '/progress']);
+    this.router.navigate([`jobs/executions/${item.jobExecutionId}/${item.stepExecution.id}/progress`]);
   }
 
-  back() {
-    this.router.navigate(['jobs/executions/' + this.jobid]);
+  /**
+   * Navigate to the previous page
+   */
+  back(jobid) {
+    this.router.navigate([`jobs/executions/${jobid}`]);
   }
 
-  private loadData() {
-    this.jobsService.getStepExecution(this.jobid, this.stepid)
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe(
-      data => {
-        this.stepExecutionResource = data;
-      },
-      error => {
-        console.log('error while loading Step Execution Details', error);
-        this.notificationService.error(error);
-      });
-    this.jobsService.getStepExecutionProgress(this.jobid, this.stepid)
-    .pipe(takeUntil(this.ngUnsubscribe$))
-    .subscribe(
-      data => {
-        this.percentageComplete = data.percentageComplete * 100;
-      },
-      error => {
-        console.log('error while loading Step Execution Progress', error);
-        this.notificationService.error(error);
-      });
-  }
- }
+}

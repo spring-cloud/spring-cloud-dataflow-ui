@@ -1,5 +1,5 @@
 <div class="heading">
-  <div class="actions hidden visible-md-block visible-lg-block" [appRoles]="['ROLE_CREATE']" *ngIf="!isTasksEmpty()">
+  <div class="actions" [appRoles]="['ROLE_CREATE']" *ngIf="!isTasksEmpty()">
     <a class="btn btn-primary" routerLink="/tasks/create">Create Task(s)</a>
   </div>
   <div class="description">

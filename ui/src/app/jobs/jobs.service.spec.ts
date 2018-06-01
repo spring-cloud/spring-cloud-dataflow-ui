@@ -1,44 +1,20 @@
 import { Observable } from 'rxjs/Observable';
-
 import { JobsService } from './jobs.service';
 import { HttpUtils } from '../shared/support/http.utils';
 import { ErrorHandler } from '../shared/model';
-import {
-  JOB_EXECUTIONS_WITH_PAGINATION, JOBS_EXECUTIONS, JOBS_EXECUTIONS_1, JOBS_EXECUTIONS_1_STEPS_1,
-  JOBS_EXECUTIONS_1_STEPS_1_PROGRESS
-} from '../tests/mocks/mock-data';
-import {Page} from '../shared/model/page';
-import {JobExecution} from './model/job-execution.model';
-import {RequestOptionsArgs} from '@angular/http';
-
-export class MockResponse {
-
-  private _body: any;
-
-  get body(): any {
-    return this._body;
-  }
-
-  set body(value: any) {
-    this._body = value;
-  }
-
-  public json(): any {
-    return this.body;
-  }
-}
+import { JobExecution } from './model/job-execution.model';
+import { RequestOptionsArgs } from '@angular/http';
 
 describe('JobsService', () => {
 
   beforeEach(() => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['get', 'put']);
-    this.jsonData = { };
+    this.jsonData = {};
     const errorHandler = new ErrorHandler();
     this.jobsService = new JobsService(this.mockHttp, errorHandler);
   });
 
   describe('getJobExecutions', () => {
-
     it('should call the jobs service with the right url to get all job executions', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
 
@@ -46,30 +22,9 @@ describe('JobsService', () => {
 
       const params = HttpUtils.getPaginationParams(0, 10);
 
-      this.jobsService.getJobExecutions();
-
-      const defaultPageNumber: number = this.jobsService.jobExecutions.pageNumber;
-      const defaultPageSize: number = this.jobsService.jobExecutions.pageSize;
-
-      expect(defaultPageNumber).toBe(0);
-      expect(defaultPageSize).toBe(10);
+      this.jobsService.getJobExecutions({ page: 0, size: 10 });
 
       expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions', { search: params });
-    });
-  });
-
-  describe('getJobExecutionsCached', () => {
-
-    it('should call the jobs service to get all cached job executions', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-
-      this.jobsService.jobExecutions = JOBS_EXECUTIONS;
-
-      const params = HttpUtils.getPaginationParams(0, 10);
-
-      this.jobsService.getJobExecutions(false);
-
-      expect(this.mockHttp.get).not.toHaveBeenCalledWith('/jobs/executions', { search: params });
     });
   });
 
@@ -121,6 +76,8 @@ describe('JobsService', () => {
     });
   });
 
+  /*
+  TODO: function deleted
   describe('extractData', () => {
     it('should call the jobs service to extract data from json', () => {
       const response = new MockResponse();
@@ -146,12 +103,14 @@ describe('JobsService', () => {
       expect(jobExecutions.items[0].defined).toBe(false);
 
     });
-  });
+  });*/
 
+  /*
+  TODO: function deleted
   describe('extractStepExecutionProgressData', () => {
     it('should call the jobs service to parse progress from json', () => {
       const response = new MockResponse();
-      response.body = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS ;
+      response.body = JOBS_EXECUTIONS_1_STEPS_1_PROGRESS;
       const stepExecutionProgress = this.jobsService.extractStepExecutionProgressData(response);
 
       expect(stepExecutionProgress.stepExecution.name).toBe('job1step1');
@@ -184,59 +143,61 @@ describe('JobsService', () => {
       expect(stepExecutionProgress.stepExecutionHistory.commitCount.max).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.commitCount.mean).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.commitCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.rollbackCount.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.rollbackCount.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.rollbackCount.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.rollbackCount.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.rollbackCount.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.rollbackCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.readCount.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.readCount.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.readCount.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.readCount.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.readCount.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.readCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.writeCount.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.writeCount.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.writeCount.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.writeCount.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.writeCount.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.writeCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.filterCount.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.filterCount.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.filterCount.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.filterCount.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.filterCount.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.filterCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.readSkipCount.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.readSkipCount.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.readSkipCount.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.readSkipCount.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.readSkipCount.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.readSkipCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.writeSkipCount.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.writeSkipCount.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.writeSkipCount.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.writeSkipCount.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.writeSkipCount.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.writeSkipCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.processSkipCount.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.processSkipCount.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.processSkipCount.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.processSkipCount.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.processSkipCount.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.processSkipCount.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.duration.count).toBe( 1);
+      expect(stepExecutionProgress.stepExecutionHistory.duration.count).toBe(1);
       expect(stepExecutionProgress.stepExecutionHistory.duration.min).toBe(13);
       expect(stepExecutionProgress.stepExecutionHistory.duration.max).toBe(13);
       expect(stepExecutionProgress.stepExecutionHistory.duration.mean).toBe(13);
       expect(stepExecutionProgress.stepExecutionHistory.duration.standardDeviation).toBe(0);
-      expect(stepExecutionProgress.stepExecutionHistory.durationPerRead.count).toBe( 0);
+      expect(stepExecutionProgress.stepExecutionHistory.durationPerRead.count).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.durationPerRead.min).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.durationPerRead.max).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.durationPerRead.mean).toBe(0);
       expect(stepExecutionProgress.stepExecutionHistory.durationPerRead.standardDeviation).toBe(0);
 
     });
-  });
+  });*/
 
+  /*
+  TODO: function deleted
   describe('extractStepExecutionData', () => {
     it('should call the jobs service to parse step execution from json', () => {
       const response = new MockResponse();
-      response.body = JOBS_EXECUTIONS_1_STEPS_1 ;
+      response.body = JOBS_EXECUTIONS_1_STEPS_1;
       const stepExecutionResource = this.jobsService.extractStepExecutionData(response);
 
       expect(stepExecutionResource.stepExecution.id).toBe(1);
@@ -255,8 +216,10 @@ describe('JobsService', () => {
       expect(stepExecutionResource.stepExecution.startTime.toISOString()).toBe('2017-08-11T06:15:50.046Z');
       expect(stepExecutionResource.stepExecution.endTime.toISOString()).toBe('2017-08-11T06:15:50.064Z');
     });
-  });
+  });*/
 
+  /*
+  TODO: function deleted
   describe('extractJobExecutionData', () => {
     it('should call the jobs service to parse job execution from json', () => {
       const response = new MockResponse();
@@ -294,6 +257,6 @@ describe('JobsService', () => {
       expect(jobExecution.stepExecutions[0].endTime.toISOString()).toBe('2017-08-11T06:15:50.064Z');
       expect(jobExecution.stepExecutions[0].status).toBe('COMPLETED');
     });
-  });
+  });*/
 
 });
