@@ -216,6 +216,15 @@ export class EditorService implements Flo.Editor {
             message: 'Must have an outgoing link',
             range: element.attr('range')
           });
+        } else {
+            link = outgoing.find(l => !l.attr('props/ExitStatus'));
+            if (!link) {
+                markers.push({
+                    severity: Flo.Severity.Error,
+                    message: 'Must have at least one outgoing link with no Exit Status condition specified',
+                    range: element.attr('range')
+                });
+            }
         }
       }
     }
