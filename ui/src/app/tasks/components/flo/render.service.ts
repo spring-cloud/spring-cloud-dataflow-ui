@@ -250,12 +250,68 @@ export class RenderService implements Flo.Renderer {
 
     if (element instanceof joint.dia.Link && element.attr('metadata')) {
       if (changedPropertyPath === 'props/ExitStatus') {
+        // If the exitstatus has been changed from blank to something then this
+        // may leave no default link from the node at the source of the link since 'element' was
+        // previously the default link. In this case add a new default link if a suitable
+        // target can be determined. If no target can be computed, a validation error will remind
+        // the user that they must add one.
+        var newExitStatus = element.attr('props/ExitStatus') || '';
+        var currentLabels = element.get('labels');
+        var currentText = '';
+        try {
+            currentText = currentLabels[0].attrs.text.text;
+        } catch (e) {
+            // Label or label value not accessible (so not set)
+        }
+        if (newExitStatus.length !== 0 && currentText.length === 0) {
+            var hasDefaultLink = false;
+            const relatedLinks = paper.model.getConnectedLinks(element.get('source'),{outbound: true});
+            for (let i = 0; i < relatedLinks.length; i++) {
+                const relatedLink = relatedLinks[i];
+                if (relatedLink === element) continue;
+                const exitStatus = relatedLink.attr('props/ExitStatus') || '';
+                if (exitStatus.length === 0) {
+                    // This is a 'default' link
+                    hasDefaultLink = true;
+                    break;
+                }
+            } 
+            if (!hasDefaultLink) {
+                // Create a new default (no specified exit status) link 
+                const newDefaultLink = this.createLink();
+                const sourceNodeId = element.get('source').id;
+                const targetNodeId = element.get('target').id;
+                const targetModel = paper.getModelById(targetNodeId);
+                const outgoingLinks = paper.model.getConnectedLinks(element.get('target'), {outbound: true});
+                const defaultLink = outgoingLinks.find(l => {
+                        var exitStatus = l.attr('props/ExitStatus');
+                        return !exitStatus || exitStatus.length === 0;
+                    });
+                if (defaultLink) {
+                    // configure link from existing source to targets target
+                    newDefaultLink.set('source', {
+                        id: sourceNodeId,
+                        port: 'output',
+                        selector: '.output-port'
+                    });
+                    newDefaultLink.set('target', {
+                        id: defaultLink.get('target').id,
+                        port: 'input',
+                        selector: '.input-port'
+                    });
+                    paper.model.addCell(newDefaultLink);
+                    newDefaultLink.attr('.marker-vertices/display','none');
+                }
+            }
+        }
+
+
         element.set('labels', [
           {
             position: 0.5,
             attrs: {
               text: {
-                text: element.attr('props/ExitStatus') || '',
+                text: newExitStatus,
                 'stroke': 'black',
                 'stroke-width': 1,
                 'fill': 'black'
