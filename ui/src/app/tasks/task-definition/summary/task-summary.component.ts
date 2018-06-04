@@ -9,6 +9,7 @@ import { TaskDefinition } from '../../model/task-definition';
 import { TaskDefinitionsDestroyComponent } from '../../task-definitions-destroy/task-definitions-destroy.component';
 import { ToolsService } from '../../components/flo/tools.service';
 import { TaskConversion } from '../../components/flo/model/models';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -40,12 +41,14 @@ export class TaskSummaryComponent implements OnInit {
    * @param {BsModalService} modalService
    * @param {Router} router
    * @param {ToolsService} toolsService
+   * @param {LoggerService} loggerService
    * @param {TasksService} tasksService
    */
   constructor(private route: ActivatedRoute,
               private modalService: BsModalService,
               private router: Router,
               private toolsService: ToolsService,
+              private loggerService: LoggerService,
               private tasksService: TasksService) {
   }
 
@@ -109,7 +112,7 @@ export class TaskSummaryComponent implements OnInit {
    * @param {TaskDefinition} taskDefinition
    */
   destroy(taskDefinition: TaskDefinition) {
-    console.log(`Destroy ${taskDefinition.name} task definition.`, taskDefinition.name);
+    this.loggerService.log(`Destroy ${taskDefinition.name} task definition.`, taskDefinition.name);
     this.modal = this.modalService.show(TaskDefinitionsDestroyComponent, { class: 'modal-md' });
     this.modal.content.open({ taskDefinitions: [taskDefinition] }).subscribe(() => {
       this.router.navigate([`/tasks/definitions`]);

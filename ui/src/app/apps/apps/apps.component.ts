@@ -14,6 +14,7 @@ import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -97,6 +98,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param {SharedAboutService} sharedAboutService
    * @param {BsModalService} modalService
    * @param {BusyService} busyService
+   * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(public appsService: AppsService,
@@ -104,6 +106,7 @@ export class AppsComponent implements OnInit, OnDestroy {
               private sharedAboutService: SharedAboutService,
               private modalService: BsModalService,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private router: Router) {
   }
 
@@ -303,7 +306,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param appRegistrations An array of AppRegistrations to unregister
    */
   unregisterApps(appRegistrations: AppRegistration[]) {
-    console.log(`Unregister ${appRegistrations.length} app(s).`, appRegistrations);
+    this.loggerService.log(`Unregister ${appRegistrations.length} app(s).`, appRegistrations);
     this.modal = this.modalService.show(AppsUnregisterComponent);
     this.modal.content.open(appRegistrations).subscribe(() => {
       this.loadAppRegistrations();
@@ -315,7 +318,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * {@link AppRegistration}.
    */
   registerApps() {
-    console.log('Go to Register page ...');
+    this.loggerService.log('Go to Register page ...');
     this.router.navigate(['apps/register-apps']);
   }
 
@@ -323,7 +326,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Navigate to the page that allows for the bulk import of {@link AppRegistration}s.
    */
   bulkImportApps() {
-    console.log('Go to Bulk Import page ...');
+    this.loggerService.log('Go to Bulk Import page ...');
     this.router.navigate(['apps/bulk-import-apps']);
   }
 
@@ -334,7 +337,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param {AppRegistration} appRegistration
    */
   view(appRegistration: AppRegistration) {
-    console.log(`View app ${appRegistration.name}.`, appRegistration);
+    this.loggerService.log(`View app ${appRegistration.name}.`, appRegistration);
     this.router.navigate(['apps/' + appRegistration.type + '/' + appRegistration.name]);
   }
 
@@ -343,7 +346,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param {AppRegistration} appRegistration
    */
   versions(appRegistration: AppRegistration) {
-    console.log(`Manage versions ${appRegistration.name} app.`, appRegistration);
+    this.loggerService.log(`Manage versions ${appRegistration.name} app.`, appRegistration);
     this.modal = this.modalService.show(AppVersionsComponent, { class: 'modal-xl' });
     this.modal.content.open(appRegistration).subscribe(() => {
       this.loadAppRegistrations();

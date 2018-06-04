@@ -8,6 +8,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Component used to destroy task definitions.
@@ -42,10 +43,12 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
    * @param {TasksService} tasksService
    * @param {BusyService} busyService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
    */
   constructor(private modalRef: BsModalRef,
               private tasksService: TasksService,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private notificationService: NotificationService) {
     super(modalRef);
   }
@@ -62,7 +65,7 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
    * Submit destroy task(s)
    */
   destroy() {
-    console.log(`Proceeding to destroy ${this.taskDefinitions.length} task definition(s).`, this.taskDefinitions);
+    this.loggerService.log(`Proceeding to destroy ${this.taskDefinitions.length} task definition(s).`, this.taskDefinitions);
     const busy = this.tasksService.destroyDefinitions(this.taskDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {

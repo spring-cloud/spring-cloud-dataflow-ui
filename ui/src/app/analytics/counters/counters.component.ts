@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { AnalyticsService } from '../analytics.service';
 import { Counter } from '../model/counter.model';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -22,7 +23,15 @@ export class CountersComponent implements OnInit, OnDestroy {
     return this.analyticsService.counters;
   }
 
-  constructor(public analyticsService: AnalyticsService) {}
+  /**
+   * Constructor
+   *
+   * @param {AnalyticsService} analyticsService
+   * @param {LoggerService} loggerService
+   */
+  constructor(public analyticsService: AnalyticsService,
+              private loggerService: LoggerService) {
+  }
 
   /**
    * As soon as the page loads we start the process of polling
@@ -42,7 +51,9 @@ export class CountersComponent implements OnInit, OnDestroy {
     this.analyticsService.stopPollingForCounters();
   }
 
-  trackByIndex(index: number, data: any) { return index; }
+  trackByIndex(index: number, data: any) {
+    return index;
+  }
 
   /**
    * Load a paginated list of {@link Counter}s.
@@ -59,7 +70,7 @@ export class CountersComponent implements OnInit, OnDestroy {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`);
+    this.loggerService.log(`Getting page ${page}.`);
     this.analyticsService.counters.pageNumber = page - 1;
   }
 
@@ -76,7 +87,7 @@ export class CountersComponent implements OnInit, OnDestroy {
    * specified in "this.refreshRate".
    */
   public changeRefreshRate() {
-    console.log('Changing refresh rate to ...' + this.refreshRateFormField);
+    this.loggerService.log('Changing refresh rate to ...' + this.refreshRateFormField);
     this.analyticsService.counterInterval = this.refreshRateFormField;
     this.refreshRate = this.analyticsService.counterInterval;
   }

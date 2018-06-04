@@ -16,6 +16,7 @@ import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link TaskDefinitionsDestroyComponent}.
@@ -31,6 +32,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
   const bsModalRef = new BsModalRef();
   const tasksService = new MockTasksService();
   const busyService = new BusyService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -52,7 +54,8 @@ describe('TaskDefinitionsDestroyComponent', () => {
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: TasksService, useValue: tasksService }
+        { provide: TasksService, useValue: tasksService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     }).compileComponents();
   }));

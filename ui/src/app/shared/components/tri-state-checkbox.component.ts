@@ -2,6 +2,7 @@ import { Component, Input, AfterViewInit, DoCheck, ViewChild } from '@angular/co
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Selectable } from '../../shared/model/selectable';
+import { LoggerService } from '../services/logger.service';
 
 /**
  * Component to be primarily used in multi-select data-grids. The component will
@@ -44,7 +45,7 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
 
   @ViewChild('theCheckbox') checkbox;
 
-  constructor() { }
+  constructor(private loggerService: LoggerService) { }
 
 
   /**
@@ -101,7 +102,7 @@ export class TriStateCheckboxComponent implements AfterViewInit, DoCheck  {
         this._items = res;
       },
       error => {
-        console.log('error', error);
+        this.loggerService.log('error', error);
         this.setState();
       },
       () => {

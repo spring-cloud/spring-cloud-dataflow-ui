@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Component that display the Task Executions.
@@ -63,11 +64,13 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {BusyService} busyService
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(private busyService: BusyService,
               public tasksService: TasksService,
               public notificationService: NotificationService,
+              public loggerService: LoggerService,
               private router: Router) {
   }
 
@@ -156,7 +159,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`);
+    this.loggerService.log(`Getting page ${page}.`);
     this.params.page = page - 1;
     this.refresh();
   }

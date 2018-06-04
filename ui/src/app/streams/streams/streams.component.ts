@@ -18,6 +18,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { AppsService } from '../../apps/apps.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Component({
   selector: 'app-streams',
@@ -114,6 +115,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param {AppsService} appsService
    * @param {BusyService} busyService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(public streamsService: StreamsService,
@@ -121,6 +123,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
               private appsService: AppsService,
               private busyService: BusyService,
               private notificationService: NotificationService,
+              private loggerService: LoggerService,
               private router: Router) {
   }
 
@@ -153,7 +156,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * Initializes the streamDefinitions attribute with the results from Spring Cloud Data Flow server.
    */
   refresh() {
-    console.log('Loading Stream Definitions...', this.params);
+    this.loggerService.log('Loading Stream Definitions...', this.params);
     const busy = this.streamsService
       .getDefinitions(this.params)
       .map((page: Page<StreamDefinition>) => {
@@ -326,7 +329,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * Expands all definition entries to show flo diagram on list page.
    */
   expandPage() {
-    console.log('Expand all.');
+    this.loggerService.log('Expand all.');
     this.form.checkboxesExpand = this.streamDefinitions.items.map(() => true);
     this.changeExpand();
   }
@@ -335,7 +338,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * Collapses all definition entries to hid the flow diagrams on list page.
    */
   collapsePage() {
-    console.log('Collapse all.');
+    this.loggerService.log('Collapse all.');
     this.form.checkboxesExpand = this.streamDefinitions.items.map(() => false);
     this.changeExpand();
   }
@@ -357,7 +360,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`);
+    this.loggerService.log(`Getting page ${page}.`);
     this.params.page = page - 1;
     this.refresh();
   }
@@ -461,7 +464,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
     if (streamDefinitions.length === 0) {
       return;
     }
-    console.log(`Destroy ${streamDefinitions} stream definition(s).`, streamDefinitions);
+    this.loggerService.log(`Destroy ${streamDefinitions} stream definition(s).`, streamDefinitions);
     const className = streamDefinitions.length > 1 ? 'modal-lg' : 'modal-md';
     this.modal = this.modalService.show(StreamsDestroyComponent, { class: className });
     this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
@@ -481,7 +484,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
     if (streamDefinitions.length === 0) {
       return;
     }
-    console.log(`Deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
+    this.loggerService.log(`Deploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
     this.modal = this.modalService.show(StreamsDeployComponent, { class: 'modal-xl' });
     this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
       this.refresh();
@@ -496,7 +499,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
     if (streamDefinitions.length === 0) {
       return;
     }
-    console.log(`Undeploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
+    this.loggerService.log(`Undeploy ${streamDefinitions.length} stream definition(s).`, streamDefinitions);
     this.modal = this.modalService.show(StreamsUndeployComponent, { class: 'modal-lg' });
     this.modal.content.open({ streamDefinitions: streamDefinitions }).subscribe(() => {
       this.refresh();

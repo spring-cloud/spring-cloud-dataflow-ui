@@ -38,6 +38,5 @@ export class StreamDefinition implements Expandable {
    */
   public toggleIsExpanded() {
     this.isExpanded = !this.isExpanded;
-    console.log(`StreamDefinition is ${this.isExpanded ? '' : 'not '}expanded`, this);
   }
 }

@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
+import { LoggerService } from '../services/logger.service';
 
 export class ErrorHandler {
 
@@ -15,7 +16,7 @@ export class ErrorHandler {
             try {
               body = error.json() || '';
             } catch (e) {
-              console.log('Unparsable json', error);
+              LoggerService.log('Unparsable json', error);
               errMsg = `${error.text()} (Status code: ${error.status})`;
             }
             if (body) {
@@ -32,7 +33,7 @@ export class ErrorHandler {
         } else {
             errMsg = error.message ? error.message : error.toString();
         }
-        console.error(errMsg);
+        LoggerService.error(errMsg);
         return Observable.throw(errMsg);
     }
 }

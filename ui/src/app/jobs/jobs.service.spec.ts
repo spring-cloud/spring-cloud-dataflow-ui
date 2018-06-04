@@ -10,6 +10,7 @@ import {
 import {Page} from '../shared/model/page';
 import {JobExecution} from './model/job-execution.model';
 import {RequestOptionsArgs} from '@angular/http';
+import { LoggerService } from '../shared/services/logger.service';
 
 export class MockResponse {
 
@@ -34,7 +35,8 @@ describe('JobsService', () => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['get', 'put']);
     this.jsonData = { };
     const errorHandler = new ErrorHandler();
-    this.jobsService = new JobsService(this.mockHttp, errorHandler);
+    const loggerService = new LoggerService();
+    this.jobsService = new JobsService(this.mockHttp, loggerService, errorHandler);
   });
 
   describe('getJobExecutions', () => {

@@ -22,6 +22,7 @@ import { convertGraphToText } from './graph-to-text';
 import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './support/shapes';
 import { AppMetadata } from '../../../shared/flo/support/app-metadata';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -46,7 +47,7 @@ export class MetamodelService implements Flo.Metamodel {
     ) {}
 
     textToGraph(flo: Flo.EditorContext, dsl: string): Promise<any> {
-        console.log('> textToGraph ' + dsl);
+        LoggerService.log('> textToGraph ' + dsl);
         return new Promise(resolve => {
           this.load().then((metamodel) => resolve(convertTextToGraph(dsl, flo, metamodel)));
         });
@@ -92,7 +93,7 @@ export class MetamodelService implements Flo.Metamodel {
                         }
                         const group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
                         if (group.has(item.name)) {
-                            console.error(`Group '${item.type}' has duplicate element '${item.name}'`);
+                            LoggerService.error(`Group '${item.type}' has duplicate element '${item.name}'`);
                         } else {
                             group.set(item.name, this.createEntry(item.type, item.name, item.version));
                         }
@@ -100,7 +101,7 @@ export class MetamodelService implements Flo.Metamodel {
                     resolve(metamodel);
                 },
                 error => {
-                    console.error(error);
+                    LoggerService.error(error);
                     resolve(metamodel);
                 }
             );

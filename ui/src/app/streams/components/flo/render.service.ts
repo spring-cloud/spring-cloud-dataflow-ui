@@ -26,6 +26,7 @@ import {ViewHelper} from './support/view-helper';
 import {NodeHelper} from './support/node-helper';
 import {layout} from './support/layout';
 import * as _joint from 'jointjs';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 const joint: any = _joint;
 
@@ -113,7 +114,7 @@ export class RenderService implements Flo.Renderer {
           }
         }
       }
-      console.log('link being refreshed');
+      LoggerService.log('link being refreshed');
     }
   }
 
@@ -332,7 +333,7 @@ export class RenderService implements Flo.Renderer {
       return;
     }
     if (isTapLink === true) {
-      console.log(`Converting link ${this.toLinkString(graph, link)} into a primary link`);
+      LoggerService.log(`Converting link ${this.toLinkString(graph, link)} into a primary link`);
       link.attr('props/isTapLink', false);
       // Need to ensure no other links are still primary, that isn't allowed
       const primaryLink = graph.getConnectedLinks(source, {outbound: true})
@@ -342,7 +343,7 @@ export class RenderService implements Flo.Renderer {
         this.refreshVisuals(primaryLink, 'props/isTapLink', flo.getPaper());
       }
     } else {
-      console.log(`Converting link ${this.toLinkString(graph, link)} into a tap link`);
+      LoggerService.log(`Converting link ${this.toLinkString(graph, link)} into a tap link`);
       link.attr('props/isTapLink', true);
     }
     this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
@@ -352,7 +353,7 @@ export class RenderService implements Flo.Renderer {
     const graph = flo.getGraph();
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
-    console.log('render-service.handleLinkAdded');
+    LoggerService.log('render-service.handleLinkAdded');
     if (!target && source && !this.isChannel(source)) {
       // this is a new link being drawn in the UI (it is not connected to anything yet).
       // Need to decide whether to make it a tap link

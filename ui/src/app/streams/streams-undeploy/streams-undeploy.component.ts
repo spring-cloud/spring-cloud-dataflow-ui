@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 @Component({
   selector: 'app-streams-undeploy',
@@ -37,12 +38,13 @@ export class StreamsUndeployComponent extends Modal implements OnDestroy {
    * @param {StreamsService} streamsService
    * @param {BusyService} busyService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
    */
   constructor(private modalRef: BsModalRef,
               private streamsService: StreamsService,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private notificationService: NotificationService) {
-
     super(modalRef);
   }
 
@@ -55,7 +57,7 @@ export class StreamsUndeployComponent extends Modal implements OnDestroy {
    * Submit undeploy stream(s)
    */
   undeploy() {
-    console.log(`Proceeding to undeploy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
+    this.loggerService.log(`Proceeding to undeploy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
     const busy = this.streamsService
       .undeployMultipleStreamDefinitions(this.streamDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))

@@ -11,6 +11,7 @@ import { OrderParams } from '../shared/components/shared.interface';
 import { TaskCreateParams, TaskLaunchParams, TaskListParams } from './components/tasks.interface';
 import { HttpUtils } from '../shared/support/http.utils';
 import { map } from 'rxjs/operators';
+import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -64,9 +65,13 @@ export class TasksService {
    *
    * @param {Http} http
    * @param {ErrorHandler} errorHandler
+   * @param {LoggerService} loggerService
    * @param {SharedAppsService} sharedAppsService
    */
-  constructor(private http: Http, private errorHandler: ErrorHandler, private sharedAppsService: SharedAppsService) {
+  constructor(private http: Http,
+              private errorHandler: ErrorHandler,
+              private loggerService: LoggerService,
+              private sharedAppsService: SharedAppsService) {
   }
 
   /**
@@ -111,7 +116,7 @@ export class TasksService {
           taskExecutions.totalElements = body.page.totalElements;
           taskExecutions.totalPages = body.page.totalPages;
         }
-        console.log('Extracted Task Executions:', taskExecutions);
+        this.loggerService.log('Extracted Task Executions:', taskExecutions);
         return taskExecutions;
       }))
       .catch(this.errorHandler.handleError);
@@ -201,7 +206,7 @@ export class TasksService {
           taskDefinitions.totalElements = body.page.totalElements;
           taskDefinitions.totalPages = body.page.totalPages;
         }
-        console.log('Extracted Task Definitions:', taskDefinitions);
+        this.loggerService.log('Extracted Task Definitions:', taskDefinitions);
         return taskDefinitions;
       }))
       .catch(this.errorHandler.handleError);
@@ -214,7 +219,7 @@ export class TasksService {
    * @param {TaskCreateParams} taskCreateParams
    */
   createDefinition(taskCreateParams: TaskCreateParams) {
-    console.log('Create task definition ' + taskCreateParams.definition + ' ' + taskCreateParams.name);
+    this.loggerService.log('Create task definition ' + taskCreateParams.definition + ' ' + taskCreateParams.name);
     const params = new URLSearchParams();
     params.append('definition', taskCreateParams.definition);
     params.append('name', taskCreateParams.name);
@@ -231,7 +236,7 @@ export class TasksService {
    * @returns {Observable<Response>}
    */
   destroyDefinition(taskDefinition: TaskDefinition): Observable<Response> {
-    console.log('Destroying...', taskDefinition.name);
+    this.loggerService.log('Destroying...', taskDefinition.name);
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers });
     return this.http.delete(TasksService.URL.DEFINITIONS + '/' + taskDefinition.name, options)

@@ -6,6 +6,7 @@ import { StreamDefinition } from './model/stream-definition';
 import { URLSearchParams } from '@angular/http';
 import { MockResponse } from '../tests/mocks/response';
 import { STREAM_DEFINITIONS } from '../tests/mocks/mock-data';
+import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * Test Streams Services.
@@ -19,7 +20,8 @@ describe('StreamsService', () => {
     this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
     this.jsonData = {};
     const errorHandler = new ErrorHandler();
-    this.streamsService = new StreamsService(this.mockHttp, errorHandler);
+    const loggerService = new LoggerService();
+    this.streamsService = new StreamsService(this.mockHttp, loggerService, errorHandler);
   });
 
   describe('getDefinitions', () => {

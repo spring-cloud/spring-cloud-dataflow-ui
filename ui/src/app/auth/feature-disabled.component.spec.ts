@@ -12,6 +12,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable } from 'rxjs/Observable';
 import { AboutService } from '../about/about.service';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 describe('LogoutComponent', () => {
   let component: LogoutComponent;
@@ -20,6 +21,7 @@ describe('LogoutComponent', () => {
   let activeRoute: MockActivatedRoute;
   const authService = new MockAuthService();
   const aboutService = new MockAboutService();
+  const loggerService = new LoggerService();
 
   beforeEach( async(() => {
     activeRoute = new MockActivatedRoute();
@@ -37,7 +39,8 @@ describe('LogoutComponent', () => {
         { provide: ActivatedRoute, useValue: {
             params: Observable.of({returnUrl: '/apps'})
           }
-        }
+        },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
     .compileComponents();

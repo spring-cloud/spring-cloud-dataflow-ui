@@ -5,6 +5,7 @@ import { TasksService } from '../../tasks.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Component to display dialog to allow user to name and deploy a task.
@@ -55,6 +56,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
   constructor(private tasksService: TasksService,
               private fb: FormBuilder,
               private notificationService: NotificationService,
+              private loggerService: LoggerService,
               private bsModalRef: BsModalRef) {
     this.form = fb.group({
       'taskName': this.taskName
@@ -80,7 +82,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
    * @param {string} the task dsl
    */
   setDsl(dsl: string) {
-    console.log('dsl', dsl);
+    this.loggerService.log('dsl', dsl);
     this.dsl = dsl;
   }
 
@@ -101,7 +103,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         () => {
-          console.log('Succesfully created task', this.taskName.value, this.dsl);
+          this.loggerService.log('Succesfully created task', this.taskName.value, this.dsl);
           if (this.successCallback) {
             this.successCallback();
           }
@@ -120,7 +122,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
    * @returns {boolean} returns true if ready to submit
    */
   canSubmit(): boolean {
-    console.log('canSubmit');
+    this.loggerService.log('canSubmit');
     return this.form.valid;
   }
 

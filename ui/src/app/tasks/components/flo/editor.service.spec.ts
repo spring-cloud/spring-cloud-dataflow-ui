@@ -7,13 +7,15 @@ import { EditorService } from './editor.service';
 import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 const joint: any = _joint;
 
 
 describe('Task RenderService', () => {
 
-  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), new MockToolsService());
+  const loggerService = new LoggerService();
+  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new MockToolsService());
   const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE, null, null, null, null);
   const EDITOR_SERVICE = new EditorService(null);
 

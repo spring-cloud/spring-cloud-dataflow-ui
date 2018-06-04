@@ -8,6 +8,7 @@ import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 @Component({
   templateUrl: './jobs.component.html',
@@ -22,6 +23,7 @@ export class JobsComponent implements OnInit, OnDestroy {
     private busyService: BusyService,
     private jobsService: JobsService,
     private notificationService: NotificationService,
+    private loggerService: LoggerService,
     private router: Router
   ) { }
 
@@ -57,7 +59,7 @@ export class JobsComponent implements OnInit, OnDestroy {
         }
       },
       error => {
-        console.log('error while loading Job Executions', error);
+        this.loggerService.log('error while loading Job Executions', error);
         this.notificationService.error(error);
       }
     );
@@ -72,13 +74,13 @@ export class JobsComponent implements OnInit, OnDestroy {
    * @param page 1-index-based
    */
   getPage(page: number) {
-    console.log(`Getting page ${page}.`);
+    this.loggerService.log(`Getting page ${page}.`);
     this.jobsService.jobExecutions.pageNumber = page - 1;
     this.loadJobExecutions(true);
   }
 
   restartJob(item: JobExecution) {
-    console.log('Restart Job ' + item.jobExecutionId);
+    this.loggerService.log('Restart Job ' + item.jobExecutionId);
     this.jobsService.restartJob(item)
     .pipe(takeUntil(this.ngUnsubscribe$))
     .subscribe(
@@ -92,7 +94,7 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   stopJob(item: JobExecution) {
-    console.log('Stop Job' + item.jobExecutionId);
+    this.loggerService.log('Stop Job' + item.jobExecutionId);
     this.jobsService.stopJob(item)
     .pipe(takeUntil(this.ngUnsubscribe$))
     .subscribe(

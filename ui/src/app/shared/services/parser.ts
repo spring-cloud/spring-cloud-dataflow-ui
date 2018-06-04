@@ -16,6 +16,7 @@
 import { TokenKind } from './tokenizer';
 import { Token } from './tokenizer';
 import { tokenize } from './tokenizer';
+import { LoggerService } from './logger.service';
 
 /**
  * Parse a textual stream definition.
@@ -479,11 +480,11 @@ class InternalParser {
                     continue;
                 }
                 if (InternalParser.DEBUG) {
-                    console.log('JSParse: processing ' + this.text);
+                  LoggerService.log('JSParse: processing ' + this.text);
                 }
                 this.tokenStream = tokenize(this.text);
                 if (InternalParser.DEBUG) {
-                    console.log('JSParse: tokenized to ' + JSON.stringify(this.tokenStream));
+                  LoggerService.log('JSParse: tokenized to ' + JSON.stringify(this.tokenStream));
                 }
                 this.tokenStreamPointer = 0;
                 this.tokenStreamLength = this.tokenStream.length;
@@ -526,7 +527,7 @@ class InternalParser {
                 } else {
                     const streamdef = this.eatStream(lineNumber);
                     if (InternalParser.DEBUG) {
-                        console.log('JSParse: parsed to stream definition: ' + JSON.stringify(streamdef));
+                      LoggerService.log('JSParse: parsed to stream definition: ' + JSON.stringify(streamdef));
                     }
                     const streamName = streamdef.name ? streamdef.name : 'UNKNOWN_' + lineNumber;
                     if (streamdef.apps) {
@@ -624,7 +625,7 @@ class InternalParser {
                 this.lines.push(line);
             } catch (err) {
                 if (InternalParser.DEBUG) {
-                    console.log('ERROR PROCESSING: ' + JSON.stringify(err));
+                  LoggerService.log('ERROR PROCESSING: ' + JSON.stringify(err));
                 }
                 if (typeof err === 'object' && err.msg) {
                     if (!line.errors) {
@@ -648,8 +649,8 @@ class InternalParser {
                         str += ' ';
                     }
                     str += '^';
-                    console.error(str);
-                    console.error(err.msg);
+                    LoggerService.error(str);
+                    LoggerService.error(err.msg);
                 }
             }
         }

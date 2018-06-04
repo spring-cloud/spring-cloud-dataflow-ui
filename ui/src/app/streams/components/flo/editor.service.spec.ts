@@ -13,6 +13,7 @@ const joint: any = _joint;
 
 import { EditorService } from './editor.service';
 import {MockSharedAppService} from '../../../tests/mocks/shared-app';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 describe('editor.service', () => {
     const editorService = new EditorService(null);
@@ -261,13 +262,13 @@ describe('editor.service', () => {
     }
 
     function printMarkers(markers: Map<string, Array<Flo.Marker>>) {
-        console.log('Markers summary: ' + markers.size + ' map entries');
+        LoggerService.log('Markers summary: ' + markers.size + ' map entries');
         Array.from(markers.keys()).forEach((k) => {
             const values = markers.get(k);
-            console.log('For ' + k + ' there are ' + values.length + ' markers');
+            LoggerService.log('For ' + k + ' there are ' + values.length + ' markers');
             for (let m = 0; m < values.length; m++) {
                 const marker = values[m];
-                console.log(' ' + m + ') ' + JSON.stringify(marker));
+                LoggerService.log(' ' + m + ') ' + JSON.stringify(marker));
             }
         });
     }

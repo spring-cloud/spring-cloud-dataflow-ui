@@ -8,6 +8,7 @@ import 'rxjs/add/operator/throttleTime';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { Selectable } from '../../shared/model/selectable';
+import { LoggerService } from '../services/logger.service';
 
 /**
  * Component that supports a button that can change its message based on count of items in a array.
@@ -96,7 +97,7 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck {
 
   @ViewChild('theButton') button;
 
-  constructor() { }
+  constructor(private loggerService: LoggerService) { }
 
   /**
    * Emits an event when click action occurs.
@@ -166,7 +167,7 @@ export class TriStateButtonComponent implements AfterViewInit, DoCheck {
         this._items = res;
       },
       error => {
-        console.log('error', error);
+        this.loggerService.log('error', error);
         this.setState();
       },
       () => {

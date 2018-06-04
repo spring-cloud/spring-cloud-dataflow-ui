@@ -4,6 +4,7 @@ import { AggregateCounter, AggregateCounterResolutionType, DashboardItem, Metric
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * The dashboard component provides
@@ -34,7 +35,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   constructor(public analyticsService: AnalyticsService,
-              private notificationService: NotificationService,) {
+              private loggerService: LoggerService,
+              private notificationService: NotificationService) {
   }
 
   /**
@@ -72,7 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param index Insertion index
    */
   addNewDashboardItem(index: number) {
-    console.log('Adding new DashboardItem after index ' + index);
+    this.loggerService.log('Adding new DashboardItem after index ' + index);
     this.analyticsService.addNewDashboardItem(index + 1);
   }
 
@@ -106,7 +108,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {DashboardItem} dashBoardItem for which the {@link MetricType} was selected
    */
   onMetricTypeChange(metricType: MetricType, dashBoardItem: DashboardItem) {
-    console.log('Selected Metric Type:', metricType);
+    this.loggerService.log('Selected Metric Type:', metricType);
     this.analyticsService.stopPollingOfSingleDashboardItem(dashBoardItem);
     dashBoardItem.visualization = undefined;
     dashBoardItem.counters = undefined;
@@ -146,8 +148,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {DashboardItem} dashBoardItem that polling should occur on.
    */
   onCounterNameChange(dashBoardItem: DashboardItem) {
-    console.log('Selected counter:', dashBoardItem.counter);
-    console.log('Time to start polling for dashBoardItem:', dashBoardItem);
+    this.loggerService.log('Selected counter:', dashBoardItem.counter);
+    this.loggerService.log('Time to start polling for dashBoardItem:', dashBoardItem);
     this.analyticsService.restartPollingOfSingleDashboardItem(dashBoardItem);
   }
 
@@ -157,7 +159,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {DashboardItem} dashboardItem the item to get the new rate.
    */
   onRefreshRateChange(newRefreshRate: number, dashboardItem: DashboardItem) {
-    console.log('New refresh rate:', newRefreshRate);
+    this.loggerService.log('New refresh rate:', newRefreshRate);
     this.analyticsService.restartPollingOfSingleDashboardItem(dashboardItem);
   }
 
@@ -167,7 +169,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {DashboardItem} dashboardItem
    */
   onVisualizationChange(selectedVisualization: string, dashboardItem: DashboardItem) {
-    console.log('A visualization was selected:', selectedVisualization);
+    this.loggerService.log('A visualization was selected:', selectedVisualization);
   }
 
   compareVisualization(visualization1, visualization2) {
@@ -191,7 +193,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param {DashboardItem} dashboardItem for which the {@link ResolutionType} was selected
    */
   onResolutionTypeChange(resolutionType: AggregateCounterResolutionType, dashboardItem: DashboardItem) {
-    console.log('Selected Resolution Type:', resolutionType);
+    this.loggerService.log('Selected Resolution Type:', resolutionType);
 
     if (AggregateCounterResolutionType.MINUTE === resolutionType) {
       dashboardItem.numberOfBars = 60;
@@ -204,7 +206,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else if (AggregateCounterResolutionType.YEAR === resolutionType) {
       dashboardItem.numberOfBars = 10;
     } else {
-      console.log(`Unsupported AggregateCounterResolutionType '${resolutionType}'.`);
+      this.loggerService.log(`Unsupported AggregateCounterResolutionType '${resolutionType}'.`);
     }
 
     this.analyticsService.restartPollingOfSingleDashboardItem(dashboardItem);

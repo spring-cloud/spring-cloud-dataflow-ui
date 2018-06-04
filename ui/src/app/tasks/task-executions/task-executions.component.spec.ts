@@ -30,6 +30,7 @@ import { TaskExecutionsComponent } from './task-executions.component';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -45,6 +46,7 @@ describe('TaskExecutionsComponent', () => {
   const modalService = new MockModalService();
   const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
 
@@ -80,7 +82,8 @@ describe('TaskExecutionsComponent', () => {
         { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: BsModalService, useValue: modalService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

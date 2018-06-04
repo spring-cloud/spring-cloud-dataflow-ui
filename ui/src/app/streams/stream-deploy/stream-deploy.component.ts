@@ -13,6 +13,7 @@ import { StreamDefinition } from '../model/stream-definition';
 import { Parser } from '../../shared/services/parser';
 import { StreamDeployService } from './stream-deploy.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -70,6 +71,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * @param {StreamsService} streamsService
    * @param {NotificationService} notificationService
    * @param {BusyService} busyService
+   * @param {LoggerService} loggerService
    * @param {Router} router
    * @param {SharedAboutService} sharedAboutService
    */
@@ -77,6 +79,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
               private streamsService: StreamsService,
               private notificationService: NotificationService,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private router: Router,
               private sharedAboutService: SharedAboutService) {
   }
@@ -116,10 +119,10 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
                 if (keyShort !== 'group') {
                   properties.push(`deployer.${app}.${keyShort}=${value}`);
                 } else {
-                  console.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+                  this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
                 }
               } else {
-                console.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+                this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
               }
             });
           });
@@ -199,11 +202,11 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       if (this.ignoreProperties.indexOf(val) === -1) {
         const arr = val.split(/=(.*)/);
         if (arr.length !== 3) {
-          console.error('Split line property', val);
+          this.loggerService.error('Split line property', val);
         } else {
           // Workaround sensitive property: ignored property
           if (arr[1] === `'******'`) {
-            console.log(`Sensitive property ${arr[0]} is ignored`);
+            this.loggerService.log(`Sensitive property ${arr[0]} is ignored`);
           } else {
             propertiesMap[arr[0]] = cleanValue(arr[1]);
           }

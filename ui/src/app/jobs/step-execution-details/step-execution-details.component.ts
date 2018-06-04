@@ -5,6 +5,7 @@ import { StepExecutionResource } from '../model/step-execution-resource.model';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * @author Glenn Renfro
@@ -27,6 +28,7 @@ export class StepExecutionDetailsComponent implements OnInit, OnDestroy {
     private jobsService: JobsService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
+    private loggerService: LoggerService,
     private router: Router
   ) { }
 
@@ -73,7 +75,7 @@ export class StepExecutionDetailsComponent implements OnInit, OnDestroy {
         this.stepExecutionResource = data;
       },
       error => {
-        console.log('error while loading Step Execution Details', error);
+        this.loggerService.log('error while loading Step Execution Details', error);
         this.notificationService.error(error);
       });
     this.jobsService.getStepExecutionProgress(this.jobid, this.stepid)
@@ -83,7 +85,7 @@ export class StepExecutionDetailsComponent implements OnInit, OnDestroy {
         this.percentageComplete = data.percentageComplete * 100;
       },
       error => {
-        console.log('error while loading Step Execution Progress', error);
+        this.loggerService.log('error while loading Step Execution Progress', error);
         this.notificationService.error(error);
       });
   }

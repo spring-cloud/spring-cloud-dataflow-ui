@@ -14,6 +14,7 @@ import { MapValuesPipe } from '../../shared/pipes/map-values-pipe.pipe';
 import { JOBS_EXECUTIONS_1_STEPS_1, JOBS_EXECUTIONS_1_STEPS_1_PROGRESS } from '../../tests/mocks/mock-data';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 describe('StepExecutionDetailsComponent', () => {
   let component: StepExecutionDetailsComponent;
@@ -23,6 +24,7 @@ describe('StepExecutionDetailsComponent', () => {
   let activeRoute: MockActivatedRoute;
   let jobsService: MockJobsService;
   const notificationService = new MockNotificationService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -41,7 +43,8 @@ describe('StepExecutionDetailsComponent', () => {
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
     .compileComponents();

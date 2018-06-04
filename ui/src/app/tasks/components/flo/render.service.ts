@@ -16,6 +16,7 @@ import { HandleComponent } from '../../../shared/flo/handle/handle.component';
 import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 const joint: any = _joint;
 
@@ -60,7 +61,7 @@ export class RenderService implements Flo.Renderer {
    * @param {dia.Cell} parent the owner
    */
   createHandle(kind: string, parent: dia.Cell) {
-    console.log('createHandle', kind);
+    LoggerService.log('createHandle', kind);
     return new joint.shapes.flo.ErrorDecoration({
       size: HANDLE_ICON_SIZE.get(kind),
       attrs: {
@@ -78,7 +79,7 @@ export class RenderService implements Flo.Renderer {
    * @param {dia.Cell} parent the owner
    */
   createDecoration(kind: string, parent: dia.Cell) {
-    console.log('createDecoration', kind);
+    LoggerService.log('createDecoration', kind);
     return new joint.shapes.flo.ErrorDecoration({
       size: { width: 16, height: 16 },
       attrs: {
@@ -371,7 +372,7 @@ export class RenderService implements Flo.Renderer {
    * @returns {dia.ElementView} a element view
    */
   getNodeView(): dia.ElementView {
-    console.log('getNodeView');
+    LoggerService.log('getNodeView');
     const self = this;
 
     return joint.dia.ElementView.extend({

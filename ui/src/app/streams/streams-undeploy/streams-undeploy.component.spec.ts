@@ -16,6 +16,7 @@ import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { RolesDirective } from '../../auth/directives/roles.directive';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Test {@link StreamsUndeployComponent}.
@@ -31,6 +32,7 @@ describe('StreamsUndeployComponent', () => {
   const bsModalRef = new BsModalRef();
   const streamsService = new MockStreamsService();
   const busyService = new BusyService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -52,7 +54,8 @@ describe('StreamsUndeployComponent', () => {
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: StreamsService, useValue: streamsService }
+        { provide: StreamsService, useValue: streamsService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     }).compileComponents();
   }));

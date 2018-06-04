@@ -11,11 +11,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockJobsService } from '../tests/mocks/jobs';
 import { BusyService } from '../shared/services/busy.service';
 import { NotificationService } from '../shared/services/notification.service';
+import { LoggerService } from '../shared/services/logger.service';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
   let fixture: ComponentFixture<JobsComponent>;
   const notificationService = new MockNotificationService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     const jobsService = new MockJobsService();
@@ -34,7 +36,8 @@ describe('JobsComponent', () => {
       providers: [
         { provide: BusyService, useValue: new BusyService()},
         { provide: JobsService, useValue: jobsService},
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
     .compileComponents();

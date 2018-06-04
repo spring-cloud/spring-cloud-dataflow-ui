@@ -13,9 +13,9 @@ import { combineLatest } from 'rxjs/operators/combineLatest';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
-import { Location } from '@angular/common';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 /**
  * Provides details for an App Registration
@@ -79,6 +79,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * @param {ActivatedRoute} route
    * @param {RoutingStateService} routingStateService
    * @param {BusyService} busyService
+   * @param {LoggerService} loggerService
    * @param {BsModalService} modalService
    */
   constructor(private appsService: AppsService,
@@ -88,6 +89,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private routingStateService: RoutingStateService,
               private busyService: BusyService,
+              private loggerService: LoggerService,
               private modalService: BsModalService) {
   }
 
@@ -95,7 +97,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * Init
    */
   ngOnInit() {
-    console.log('App Service Details');
+    this.loggerService.log('App Service Details');
     this.sharedAboutService.getFeatureInfo().pipe(combineLatest(this.route.params)).subscribe((data: any[]) => {
       const featureInfo = data[0] as FeatureInfo;
       const params = data[1] as Params;
@@ -131,7 +133,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * @param {string} version Optional version
    */
   loadProperties(version: string = '') {
-    console.log('Retrieving properties application for ' + this.application.name + ' (' +
+    this.loggerService.log('Retrieving properties application for ' + this.application.name + ' (' +
     this.application.type + ', version ' + version ? version : '/' + ').');
 
     this.versionSelect = version;
@@ -151,7 +153,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * Used to load versions of an application
    */
   loadVersions() {
-    console.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
+    this.loggerService.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
     const busy = this.appsService
       .getAppVersions(ApplicationType[this.application.type.toString()], this.application.name)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -190,7 +192,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * @param {AppRegistration} appRegistration
    */
   versions(appRegistration: AppRegistration) {
-    console.log(`Manage versions ${appRegistration.name} app.`, appRegistration);
+    this.loggerService.log(`Manage versions ${appRegistration.name} app.`, appRegistration);
     const modal = this.modalService.show(AppVersionsComponent, { class: 'modal-xl' });
     modal.content.open(appRegistration).subscribe(() => {
       this.loadVersions();

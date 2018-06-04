@@ -1,4 +1,5 @@
 import { Serializable } from '../serialization/serializable.model';
+import { LoggerService } from '../../services/logger.service';
 
 /**
  * Contains meta data about the supported features.
@@ -11,6 +12,10 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
   public streamsEnabled = false;
   public tasksEnabled = false;
   public skipperEnabled = false;
+
+  constructor() {
+
+  }
 
   /**
    * Set the FeatureInfo object to default values.
@@ -52,12 +57,12 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
           return this.skipperEnabled;
         }
         default: {
-          console.error(`Unsupported feature parameter '${feature}'.`);
+          LoggerService.error(`Unsupported feature parameter '${feature}'.`);
           return false;
         }
       }
     } else {
-      console.error('Feature string parameter was not there.');
+      LoggerService.error('Feature string parameter was not there.');
       return false;
     }
   }

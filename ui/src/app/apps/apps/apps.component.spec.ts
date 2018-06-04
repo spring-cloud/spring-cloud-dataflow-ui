@@ -29,6 +29,7 @@ import { TruncatorComponent } from '../../shared/components/truncator/truncator.
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
 
 describe('AppsComponent', () => {
   let component: AppsComponent;
@@ -38,6 +39,7 @@ describe('AppsComponent', () => {
   const sharedAboutService = new MocksSharedAboutService();
   const authService = new MockAuthService();
   const modalService = new MockModalService();
+  const loggerService = new LoggerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -68,6 +70,7 @@ describe('AppsComponent', () => {
         { provide: BsModalService, useValue: modalService },
         { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
+        { provide: LoggerService, useValue: loggerService },
         { provide: NotificationService, useValue: notificationService }
       ]
     })

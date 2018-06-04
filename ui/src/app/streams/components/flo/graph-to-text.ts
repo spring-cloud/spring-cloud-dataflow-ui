@@ -17,6 +17,7 @@
 import { dia } from 'jointjs';
 import * as _ from 'lodash';
 import { JsonGraph } from './text-to-graph';
+import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Create the text representation of a graph.
@@ -64,7 +65,7 @@ class GraphToTextConverter {
             const linksIn = this.getLinksIn(node);
             const linksOut = this.getLinksOut(node);
             if (GraphToTextConverter.DEBUG) {
-                console.log('Walking node ' + this.getName(node) + ' in=#' + linksIn.length + ' out=#' + linksOut.length);
+              LoggerService.log('Walking node ' + this.getName(node) + ' in=#' + linksIn.length + ' out=#' + linksOut.length);
             }
             // What to do depends on the combination of in/out links
             if (linksIn.length === 0) {
@@ -144,11 +145,11 @@ class GraphToTextConverter {
 
     private ensureStreamHeadsNamedWhereNecessary(streams: dia.Cell[][], tapStreams: number[]) {
         if (GraphToTextConverter.DEBUG) {
-            console.log('Ensuring streams have names where necessary');
+          LoggerService.log('Ensuring streams have names where necessary');
         }
         for (let t = 0; t < tapStreams.length; t++) {
             if (GraphToTextConverter.DEBUG) {
-                console.log('  checking tapstream ' + t + ' => ' + tapStreams[t]);
+              LoggerService.log('  checking tapstream ' + t + ' => ' + tapStreams[t]);
             }
             const tapStream = streams[tapStreams[t]];
             // the first element of the tapStream is in another stream, need to make
@@ -157,11 +158,11 @@ class GraphToTextConverter {
             const nameTarget = this.findElementThatWouldHoldStreamName(tapHead);
             if (!nameTarget.attr('stream-name')) {
                 if (GraphToTextConverter.DEBUG) {
-                    console.log('  missing name ');
+                  LoggerService.log('  missing name ');
                 }
                 const streamId = this.findStreamWithNode(streams, tapStreams, nameTarget) + 1;
                 if (GraphToTextConverter.DEBUG) {
-                    console.log('  setting stream name on ' + this.getName(nameTarget) + ' to STREAM_' + streamId);
+                  LoggerService.log('  setting stream name on ' + this.getName(nameTarget) + ' to STREAM_' + streamId);
                 }
                 nameTarget.attr('stream-name', 'STREAM_' + streamId);
             }
@@ -172,11 +173,11 @@ class GraphToTextConverter {
         let text = '';
         let lineStartIndex = 0;
         if (GraphToTextConverter.DEBUG) {
-            console.log('Producing DSL text ...');
+          LoggerService.log('Producing DSL text ...');
         }
         for (let s = 0; s < streams.length; s++) {
             if (GraphToTextConverter.DEBUG) {
-                console.log('  for stream ' + (s + 1));
+              LoggerService.log('  for stream ' + (s + 1));
             }
             if (s > 0) {
                 text += '\n';
@@ -193,7 +194,7 @@ class GraphToTextConverter {
                     if (nameIndex < stream.length) {
                         const possibleStreamName = stream[nameIndex].attr('stream-name');
                         if (GraphToTextConverter.DEBUG) {
-                            console.log('  looking for name on element at index ' + nameIndex + '(' +
+                          LoggerService.log('  looking for name on element at index ' + nameIndex + '(' +
                                         this.getName(stream[nameIndex]) + ') => ' + possibleStreamName);
                         }
                         if (possibleStreamName) {
@@ -230,7 +231,7 @@ class GraphToTextConverter {
     private produceStream(head: dia.Cell, streamNumber: number, firstLink: dia.Link): dia.Cell[] {
         const stream: dia.Cell[] = [head];
         if (GraphToTextConverter.DEBUG) {
-            console.log('  producing stream number ' + streamNumber + ' starting from ' + this.getName(head));
+          LoggerService.log('  producing stream number ' + streamNumber + ' starting from ' + this.getName(head));
         }
         let toFollow: dia.Link = firstLink;
         while (toFollow) {
@@ -250,7 +251,7 @@ class GraphToTextConverter {
             toFollow = this.findPrimaryLink(this.getLinksOut(nextNode));
         }
         if (GraphToTextConverter.DEBUG) {
-            console.log('  produced sequence: ' + this.toStringNodes(stream));
+          LoggerService.log('  produced sequence: ' + this.toStringNodes(stream));
         }
         return stream;
     }
