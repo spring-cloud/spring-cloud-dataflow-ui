@@ -52,7 +52,7 @@ export class TaskExecutionComponent implements OnInit {
    * Navigate to the previous URL or /tasks/executions
    */
   cancel() {
-    this.routingStateService.back('/tasks/executions', /^(\/tasks\/executions\/)/)
+    this.routingStateService.back('/tasks/executions', /^(\/tasks\/executions\/)/);
   }
 
 }

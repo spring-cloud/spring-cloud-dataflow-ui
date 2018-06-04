@@ -255,20 +255,22 @@ export class RenderService implements Flo.Renderer {
         // previously the default link. In this case add a new default link if a suitable
         // target can be determined. If no target can be computed, a validation error will remind
         // the user that they must add one.
-        var newExitStatus = element.attr('props/ExitStatus') || '';
-        var currentLabels = element.get('labels');
-        var currentText = '';
+        const newExitStatus = element.attr('props/ExitStatus') || '';
+        const currentLabels = element.get('labels');
+        let currentText = '';
         try {
             currentText = currentLabels[0].attrs.text.text;
         } catch (e) {
             // Label or label value not accessible (so not set)
         }
         if (newExitStatus.length !== 0 && currentText.length === 0) {
-            var hasDefaultLink = false;
-            const relatedLinks = paper.model.getConnectedLinks(element.get('source'),{outbound: true});
+            let hasDefaultLink = false;
+            const relatedLinks = paper.model.getConnectedLinks(element.get('source'), {outbound: true});
             for (let i = 0; i < relatedLinks.length; i++) {
                 const relatedLink = relatedLinks[i];
-                if (relatedLink === element) continue;
+                if (relatedLink === element) {
+                  continue;
+                }
                 const exitStatus = relatedLink.attr('props/ExitStatus') || '';
                 if (exitStatus.length === 0) {
                     // This is a 'default' link
@@ -282,7 +284,7 @@ export class RenderService implements Flo.Renderer {
                 const sourceNodeId = element.get('source').id;
                 const outgoingLinks = paper.model.getConnectedLinks(element.get('target'), {outbound: true});
                 const defaultLink = outgoingLinks.find(l => {
-                        var exitStatus = l.attr('props/ExitStatus');
+                        const exitStatus = l.attr('props/ExitStatus');
                         return !exitStatus || exitStatus.length === 0;
                     });
                 if (defaultLink) {
@@ -298,7 +300,7 @@ export class RenderService implements Flo.Renderer {
                         selector: '.input-port'
                     });
                     paper.model.addCell(newDefaultLink);
-                    newDefaultLink.attr('.marker-vertices/display','none');
+                    newDefaultLink.attr('.marker-vertices/display', 'none');
                 }
             }
         }
