@@ -1,0 +1,293 @@
+<ng-container *ngIf="dataflowVersionInfo$ | async as dataflowVersionInfo; else loading">
+
+  <div *ngIf="dataflowVersionInfo" class="infos infos-more">
+
+    <div class="actions">
+      <button id="copy-button" [ngxClipboard] [cbContent]="dataflowVersionInfo | json"
+              (cbOnSuccess)="onCopyToClipboardSuccess($event);" type="button" class="btn btn-primary">
+        <span class="glyphicon glyphicon-copy"></span>
+        <span>Copy Details to Clipboard</span>
+      </button>
+    </div>
+
+    <div class="box">
+      <span class="fa fa-cubes" aria-hidden="true"></span>
+      <h2>Enabled Features</h2>
+      <div id="enabledFeaturesTable">
+        <div class="line">
+          <span>Analytics:</span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.analyticsEnabled" id="analyticsEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.analyticsEnabled" id="analyticsDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line">
+          <span>Streams: </span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.streamsEnabled"id="streamsEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.streamsEnabled" id="streamsDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line">
+          <span>Tasks:</span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.tasksEnabled" id="tasksEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.tasksEnabled" id="tasksDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line">
+          <span>Skipper Mode:</span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled" id="skipperEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled" id="skipperDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <span class="fa fa-shield"></span>
+      <h2>Security Information</h2>
+      <div id="securityInformationTable">
+        <div class="line">
+          <span>Authentication Enabled:</span>
+          <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthenticationEnabled" id="authenticationEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.securityInfo.isAuthenticationEnabled" id="authenticationDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line">
+          <span>Authorization Enabled</span>
+          <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthorizationEnabled" id="authorizationEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.securityInfo.isAuthorizationEnabled" id="authorizationDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line">
+          <span>Form Login:</span>
+          <strong *ngIf="dataflowVersionInfo.securityInfo.isFormLogin" id="formLoginEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.securityInfo.isFormLogin" id="formLoginDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line">
+          <span>Authenticated:</span>
+          <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthenticated" id="authenticateEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.securityInfo.isAuthenticated" id="authenticateDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line" *ngIf="dataflowVersionInfo.securityInfo.username">
+          <span>Username:</span>
+          <strong id="username">{{ dataflowVersionInfo.securityInfo.username || 'N/A' }}</strong>
+        </div>
+        <div class="line" *ngIf="dataflowVersionInfo.securityInfo.roles?.length > 0">
+          <span>Roles:</span>
+          <strong id="roles">{{ dataflowVersionInfo.securityInfo.roles }}</strong>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="box">
+      <span class="fa fa-code-fork"></span>
+      <h2>Version Information</h2>
+      <div id="versionInformationTable">
+        <div class="line">
+          <span>Implementation Version:</span>
+          <strong id="implementationVersion">
+            {{ dataflowVersionInfo.versionInfo.implementation.version }} ({{ dataflowVersionInfo.versionInfo.implementation.name }})
+          </strong>
+        </div>
+        <div class="line">
+          <span>Core:</span>
+          <strong id="coreVersion">
+            {{ dataflowVersionInfo.versionInfo.core.version }} ({{ dataflowVersionInfo.versionInfo.core.name }})
+          </strong>
+        </div>
+        <div class="line">
+          <span>Dashboard:</span>
+          <strong id="dashboardVersion">
+            {{ dataflowVersionInfo.versionInfo.dashboard.version }} ({{ dataflowVersionInfo.versionInfo.dashboard.name }})
+          </strong>
+        </div>
+        <div class="line">
+          <span>Shell:</span>
+          <strong id="shellVersion">
+            {{ dataflowVersionInfo.versionInfo.shell.version }} ({{ dataflowVersionInfo.versionInfo.shell.name }})
+          </strong>
+        </div>
+        <div id="shellChecksumSha1" class="line" *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha1">
+          <span>Shell Checksum Sha1:</span>
+          <strong>{{ dataflowVersionInfo.versionInfo.shell.checksumSha1 }}</strong>
+        </div>
+        <div id="shellChecksumSha256" class="line" *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha256">
+          <span>Shell Checksum Sha256:</span> <strong>{{ dataflowVersionInfo.versionInfo.shell.checksumSha256 }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <span class="fa fa-cube"></span>
+      <h2 *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled">Runtime Environment - Skipper Deployer</h2>
+      <h2 *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled">Runtime Environment - App Deployer</h2>
+      <div id="appDeployerTable">
+        <div class="line">
+          <span>Implementation Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerImplementationVersion }}</strong>
+        </div>
+        <div class="line">
+          <span>Name:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerName || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Spi Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerSpiVersion || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Java Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.javaVersion || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Platform Api Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformApiVersion || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Platform Client Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformClientVersion || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Platform Host Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformHostVersion || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Platform Type:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformType || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Spring Boot Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.springBootVersion || 'N/A' }}</strong>
+        </div>
+        <div class="line">
+          <span>Spring Version:</span>
+          <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.springVersion || 'N/A' }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2 *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled">Platform-specific Information of the Skipper Deployer</h2>
+      <h2 *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled">Platform-specific Information of the App Deployer</h2>
+      <div id="appDeployerPlatformSpecificTable">
+        <ng-template
+          *ngIf="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo.size > 0"
+          ngFor let-item
+          [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | mapValuesPipe">
+          <div class="line">
+            <span>{{ item.key }}:</span> <strong>{{ item.value }}</strong>
+          </div>
+        </ng-template>
+        <div
+          *ngIf="!dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo || dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo.size == 0">
+          <span id="noAppDeployerPlatformMessage">
+            No platform-specific app deployer information available.
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <span class="fa fa-cube"></span>
+      <h2>Runtime Environment - Task Launcher</h2>
+      <div>
+        <div *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)">
+          <span>No Task Launcher information is available.</span>
+        </div>
+        <div *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)" id="taskLauncherTable">
+          <div class="line">
+            <span>Implementation Version:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion }}</strong>
+          </div>
+          <div class="line">
+            <span>Name:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerName }}</strong>
+          </div>
+          <div class="line">
+            <span>Spi Version:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerSpiVersion }}</strong>
+          </div>
+          <div class="line">
+            <span>Java Version:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.javaVersion }}</strong>
+          </div>
+          <div class="line">
+            <span>Platform Api Version:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformApiVersion }}</strong>
+          </div>
+          <div class="line">
+            <span>Platform Client Version:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformClientVersion }}</strong>
+          </div>
+          <div class="line">
+            <span>Platform Host Version:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformHostVersion }}</strong>
+          </div>
+          <div class="line">
+            <span>Platform Type:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformType }}</strong>
+          </div>
+          <div class="line">
+            <span>Spring Boot Version:</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springBootVersion }}</strong>
+          </div>
+          <div class="line">
+            <span>Spring Versionv</span>
+            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springVersion }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Platform-specific Information of the Task Launcher</h2>
+      <div id="appTaskLauncherPlatformSpecificTable">
+        <ng-template
+          *ngIf="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo.size > 0"
+          ngFor let-item
+          [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | mapValuesPipe">
+          <div class="line">
+            <span>{{ item.key }}:</span> <strong>{{ item.value }}</strong>
+          </div>
+        </ng-template>
+        <div
+          *ngIf="!dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo || dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo.size == 0">
+          <span id="noTaskLauncherPlatformMessage">
+            No platform-specific task launcher information available.
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</ng-container>
+
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>
