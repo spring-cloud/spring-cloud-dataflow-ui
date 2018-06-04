@@ -1,0 +1,82 @@
+
+h2 {
+  font-size: 24px;
+  margin: 3rem 0 1rem;
+  padding: 0;
+}
+
+.box {
+  position: relative;
+  padding-left: 70px;
+  margin: 1rem 0;
+  >.fa {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 60px;
+    text-align: center;
+    font-size: 36px;
+    color: #C5CED3;
+  }
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+  }
+
+  .fa-check {
+    color: green;
+  }
+
+  .fa-close {
+    color: red;
+  }
+}
+
+.infos {
+  padding: 0.2rem 3rem;
+  position: relative;
+  margin: 1rem 0 0 0;
+  .actions {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 100;
+  }
+}
+
+ul.list-icons-fa {
+  margin: 0;
+  list-style: none;
+  padding: 0 0 0 1rem;
+  li {
+    position: relative;
+    padding: 3px 0 3px 25px;
+    .fa {
+      position: absolute;
+      top: 8px;
+      left: 0;
+    }
+  }
+}
+
+.show-more {
+  padding: 0.5rem 0;
+}
+
+.infos-more {
+  border-top: 1px solid #C5CED3;
+  margin: 1rem 0;
+  padding: 0.8rem 3rem;
+}
+
+.show-more-action {
+  margin-left: 100px;
+}
+
+.properties {
+  background-color: #F5F6F7;
+  padding: 0.1rem 0 2rem;
+}
+

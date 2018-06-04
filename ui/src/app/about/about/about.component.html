@@ -1,0 +1,95 @@
+<div class="heading">
+  <div class="description">
+    <h1>About</h1>
+    <p>
+      Spring Cloud Data Flow is a toolkit for building data integration and real-time data processing pipelines.
+    </p>
+  </div>
+</div>
+
+<ng-container *ngIf="dataflowVersionInfo$ | async as dataflowVersionInfo else loading">
+
+  <div>
+    <h2>Data Flow Server Implementation</h2>
+    <div id="properties" class="properties">
+      <div class="infos">
+        <div class="box">
+          <span class="fa fa-server" aria-hidden="true"></span>
+          <div class="line">
+            Name:
+            <strong>{{ dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.name : 'N/A' }}</strong>
+          </div>
+          <div class="line">
+            Version:
+            <strong>{{ dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.version : 'N/A' }}</strong>
+          </div>
+        </div>
+      </div>
+      <div class="show-more">
+        <div *ngIf="showDetails">
+          <app-about-details></app-about-details>
+        </div>
+        <div class="show-more-action">
+          <button id="showAboutDetailsButton" type="button" (click)="toggleDetails()" class="btn btn-primary">
+            <span *ngIf="!showDetails">More info</span>
+            <span *ngIf="showDetails">Hide</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h2 *ngIf="dataflowVersionInfo">Get the Spring Cloud Data Flow Shell</h2>
+    <p class="index-page--subtitle">As an alternative to the Dashboard UI, you can also
+      <a href="{{ dataflowVersionInfo.versionInfo.shell.url }}" target="_blank">
+        download the compatible version of the Shell
+      </a> ({{ dataflowVersionInfo.versionInfo.shell.version }}).
+    </p>
+  </div>
+
+  <div>
+    <h2>Need Help or Found an Issue?</h2>
+    <ul id="dataFlowVersionLinksTable" class="list-icons-fa">
+      <li>
+        <span class="fa fa-leaf"></span>
+        <span>Project Page</span>:
+        <a target="_blank" href="http://cloud.spring.io/spring-cloud-dataflow/">http://cloud.spring.io/spring-cloud-dataflow/</a>
+      </li>
+      <li>
+        <span class="fa fa-github"></span>
+        <span>Sources</span>:
+        <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow">https://github.com/spring-cloud/spring-cloud-dataflow</a>
+      </li>
+      <li>
+        <span class="fa fa-book"></span>
+        <span>Documentation</span>:
+        <a target="_blank"
+           href="http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/reference/htmlsingle/">http://docs.spring.io/spring-cloud-dataflow/docs/{{
+          dataflowVersionInfo.versionInfo.core.version }}/reference/htmlsingle/</a>
+      </li>
+      <li>
+        <span class="fa fa-file-text"></span>
+        <span>API Docs</span>:
+        <a target="_blank"
+           href="http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/api/">http://docs.spring.io/spring-cloud-dataflow/docs/{{
+          dataflowVersionInfo.versionInfo.core.version }}/api/</a>
+      </li>
+      <li>
+        <span class="fa fa-comments"></span>
+        <span>Support Forum</span>:
+        <a target="_blank" href="http://stackoverflow.com/questions/tagged/spring-cloud-dataflow">http://stackoverflow.com/questions/tagged/spring-cloud-dataflow</a>
+      </li>
+      <li>
+        <span class="fa fa-bug"></span>
+        <span>Issue Tracker</span>:
+        <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues">https://github.com/spring-cloud/spring-cloud-dataflow/issues</a>
+      </li>
+    </ul>
+  </div>
+
+</ng-container>
+
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>
