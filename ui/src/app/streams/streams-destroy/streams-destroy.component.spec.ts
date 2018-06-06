@@ -94,7 +94,7 @@ describe('StreamsDestroyComponent', () => {
     it('Should display a message after destroy one stream', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('1 stream definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('1 stream definition was destroyed.');
     }));
 
     it('Should close the modal after a success destroy', (() => {
@@ -141,7 +141,7 @@ describe('StreamsDestroyComponent', () => {
     it('Should display a message after destroy 2 streams', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('2 stream definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('2 stream definitions were destroyed.');
     }));
 
     it('Should close the modal after a success destroy', (() => {
