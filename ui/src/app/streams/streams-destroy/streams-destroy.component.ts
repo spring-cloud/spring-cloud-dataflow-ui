@@ -64,7 +64,14 @@ export class StreamsDestroyComponent extends Modal implements OnDestroy {
     const busy = this.streamsService.destroyMultipleStreamDefinitions(this.streamDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        this.notificationService.success(`${data.length} stream definition(s) destroy.`);
+        let successMessgage: string;
+        if (data.length > 1) {
+          successMessgage = `${data.length} stream definitions were destroyed.`;
+        } else {
+          successMessgage = `${data.length} stream definition was destroyed.`;
+        }
+
+        this.notificationService.success(successMessgage);
         this.confirm.emit('done');
         this.cancel();
       });
