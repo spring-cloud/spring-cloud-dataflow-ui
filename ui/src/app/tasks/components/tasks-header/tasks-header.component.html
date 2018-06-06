@@ -1,0 +1,21 @@
+<div class="heading" *ngIf="counters$ | async as counters;">
+  <div class="actions" [appRoles]="['ROLE_CREATE']">
+    <div>
+      <a class="btn btn-primary" routerLink="/tasks/create">
+        Create Task(s)
+      </a>
+      <!--
+      <button style="margin-left:2px;" [disabled]="counters.totalElements == 0" type="button" class="btn btn-primary"
+              (click)="createSchedule()">
+        Create Schedule(s)
+      </button>
+      -->
+    </div>
+  </div>
+  <div class="description">
+    <h1 class="no-user-selection">Tasks</h1>
+    <p>
+      This section lists all the task definitions and provides the ability to run or schedule tasks.
+    </p>
+  </div>
+</div>

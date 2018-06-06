@@ -42,6 +42,15 @@
           </strong>
         </div>
         <div class="line">
+          <span>Schedules:</span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.schedulerEnabled" id="schedulerEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.schedulerEnabled" id="schedulerDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
+        <div class="line">
           <span>Skipper Mode:</span>
           <strong *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled" id="skipperEnabled">
             <span class="fa fa-check"></span>

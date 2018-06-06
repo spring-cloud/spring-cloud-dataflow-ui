@@ -1,0 +1,137 @@
+<app-tasks-header></app-tasks-header>
+
+<app-tasks-tabulation>
+
+  <div id="schedules-list" *ngIf="isLoaded">
+    <div id="filters" class="pui-filter" *ngIf="!isSchedulesEmpty()">
+      <form #registerAppsForm="ngForm" name="registerAppsForm" role="form" (ngSubmit)="search()" novalidate>
+        <div class="pui-filter-center">
+          <div class="input-group input-group-filter">
+            <input type="text" name="q" class="form-control sm" placeholder="Filter items" [(ngModel)]="form.q">
+            <div class="input-group-btn">
+              <button [disabled]="!isSearchActive()" type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="pui-filter-actions">
+          <div class="pui-filter-left">
+            <div id="dropdown-actions" class="dropdown" *ngIf="countSelected() > 0" dropdown>
+              <button dropdownToggle type="button" class="btn btn-default btn-dropdown" data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false">
+                <span *ngIf="countSelected() == 1">Action (1)</span>
+                <span *ngIf="countSelected() > 1">Actions ({{ countSelected() }})</span>
+                <span class="caret"></span>
+              </button>
+              <ul *dropdownMenu class="dropdown-menu">
+                <li>
+                  <a id="destroy-schedules" style="cursor: pointer" (click)="destroySelectedSchedules()">
+                    <span *ngIf="countSelected() == 1">Destroy schedule</span>
+                    <span *ngIf="countSelected() > 1">Destroy schedules</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="pui-filter-actions">
+          <div class="pui-filter-right" style="text-align: right">
+            <button (click)="refresh()" name="app-refresh" type="button" class="btn btn-default btn-icon"
+                    title="Refresh">
+              <span class="glyphicon glyphicon-refresh"></span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <table *ngIf="taskSchedules && (taskSchedules.items | filterSchedules: q).length > 0"
+           class="table table-hover table-checkbox" id="taskSchedulesTable">
+      <thead>
+      <tr>
+        <th style="width: 30px">
+          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [appRoles]="['ROLE_CREATE']"
+                               [items]="form.checkboxes"></app-master-checkbox>
+        </th>
+        <th>
+          Schedule Name
+        </th>
+        <th>
+          Task Name
+        </th>
+        <th nowrap="">
+          Cron Expression
+        </th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container
+        *ngFor="let item of taskSchedules.items | filterSchedules: q; index as i">
+        <tr>
+          <td class="cell-checkbox">
+            <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
+                   [(ngModel)]="form.checkboxes[i]"/>
+          </td>
+          <td>
+            <a class="link-schedule" (click)="details(item)" style="cursor: pointer">{{ item.name }}</a>
+          </td>
+          <td>
+            <a class="link-task" (click)="taskDetails(item)" style="cursor: pointer">{{ item.taskName }}</a>
+          </td>
+          <td>
+            {{ item.cronExpression }}
+          </td>
+          <td class="table-actions" width="50px" nowrap="">
+            <div class="actions" role="group">
+              <button type="button" name="schedule-destroy{{ i }}" (click)="destroySchedules([item])"
+                      class="btn btn-default" title="Destroy">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+              <button type="button" name="schedule-details{{ i }}" (click)="details(item)" class="btn btn-default"
+                      title="Details">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+
+    <div *ngIf="taskSchedules" id="empty" style="padding-top:1.5rem">
+
+      <div *ngIf="isSchedulesEmpty()" class="text-center">
+        <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
+          <strong>No task schedules were executed, yet.</strong>
+        </div>
+      </div>
+
+      <div id="no-result" class="row"
+           *ngIf="!isSchedulesEmpty() && (taskSchedules.items | filterSchedules: q).length === 0">
+        <div class="col-md-8"></div>
+        <div class="col-md-8">
+          <div class="alert alert-warning" style="border:0 none;padding: 1.5rem 2rem;">
+            <div style="padding-bottom: 8px">
+            <span>
+              No results found for
+              <strong>'{{ params.q }}'</strong>
+            </span>
+            </div>
+            <div>
+              <button type="button" style="cursor: pointer;" (click)="clearSearch()" class="btn btn-primary">
+                <span class="glyphicon glyphicon-remove"></span>
+                Clear the search
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</app-tasks-tabulation>

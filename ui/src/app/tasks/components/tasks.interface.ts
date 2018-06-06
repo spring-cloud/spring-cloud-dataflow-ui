@@ -26,3 +26,19 @@ export interface TaskExecutionListParams extends ListParams {
   sort: string;
   order: string;
 }
+
+export interface TaskScheduleListParams extends ListParams {
+  task: string;
+  page: number;
+  size: number;
+  sort: string;
+  order: string;
+}
+
+export interface TaskScheduleCreateParams {
+  schedulerName: string;
+  task: string;
+  args?: string;
+  props?: string;
+  cronExpression: string;
+}

@@ -5,18 +5,22 @@
       <h1>Task <strong>{{ task.definition.name }}</strong></h1>
       <p>This section shows the details of a task.</p>
       <div class="actions">
-        <button name="task-launch" type="button" [appRoles]="['ROLE_CREATE']" (click)="launch(task.definition)"
+        <button id="task-launch" type="button" [appRoles]="['ROLE_CREATE']" (click)="launch(task.definition)"
                 class="btn btn-default" style="margin-left: 0;" title="Launch">
           <span class="glyphicon glyphicon-play"></span>
           Launch
         </button>
-        <button name="task-remove" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(task.definition)"
+        <button *ngIf="task.schedulerEnabled" id="task-schedule" type="button" [appRoles]="['ROLE_CREATE']"
+                (click)="schedule(task.definition)" class="btn btn-default" style="margin-left: 0;" title="Launch">
+          <span class="glyphicon glyphicon-time"></span>
+          Schedule
+        </button>
+        <button id="task-remove" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(task.definition)"
                 class="btn btn-danger" style="margin-left: 0;" title="Destroy">
           <span class="glyphicon glyphicon-trash"></span>
           Destroy
         </button>
       </div>
-
     </div>
   </div>
 
@@ -27,8 +31,19 @@
       <li role="presentation" routerLinkActive="active">
         <a routerLink="executions">
           Executions
-          <span class="label label-count label-primary"
-                *ngIf="task.executions">{{task.executions}}</span>
+          <span *ngIf="counters$ | async as counters;">
+            <span class="label label-count label-primary"
+                *ngIf="counters.executions">{{counters.executions}}</span>
+          </span>
+        </a>
+      </li>
+      <li role="presentation" routerLinkActive="active" *ngIf="task.schedulerEnabled">
+        <a routerLink="schedules">
+          Schedules
+          <span *ngIf="counters$ | async as counters;">
+            <span class="label label-count label-primary"
+                  *ngIf="counters.schedules">{{counters.schedules}}</span>
+          </span>
         </a>
       </li>
     </ul>

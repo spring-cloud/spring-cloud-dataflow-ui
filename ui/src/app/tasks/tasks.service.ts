@@ -8,13 +8,14 @@ import { TaskDefinition } from './model/task-definition';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import * as moment from 'moment';
 import { OrderParams } from '../shared/components/shared.interface';
-import {
-  TaskCreateParams, TaskExecutionListParams, TaskLaunchParams,
-  TaskListParams
-} from './components/tasks.interface';
 import { HttpUtils } from '../shared/support/http.utils';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../shared/services/logger.service';
+import { TaskSchedule } from './model/task-schedule';
+import {
+  TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams,
+  TaskScheduleListParams
+} from './components/tasks.interface';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -28,13 +29,53 @@ import { LoggerService } from '../shared/services/logger.service';
 @Injectable()
 export class TasksService {
 
+  static MOCK_SCHEDULES = {
+    '_embedded': {
+      'scheduleInfoResourceList': [{
+        'scheduleName': 'FOO',
+        'taskDefinitionName': 'task1',
+        'scheduleProperties': {
+          'spring.cloud.scheduler.cron.expression': '00 41 17 ? * *'
+        },
+        '_links': {
+          'self': {
+            'href': 'http://localhost:9393/tasks/schedules/FOO'
+          }
+        }
+      }, {
+        'scheduleName': 'BAR',
+        'taskDefinitionName': 'task1',
+        'scheduleProperties': {
+          'spring.cloud.scheduler.cron.expression': '00 10 * ? * *'
+        },
+        '_links': {
+          'self': {
+            'href': 'http://localhost:9393/tasks/schedules/BAR'
+          }
+        }
+      }]
+    },
+    '_links': {
+      'self': {
+        'href': 'http://localhost:9393/tasks/schedules?page=0&size=10'
+      }
+    },
+    'page': {
+      'size': 10,
+      'totalElements': 2,
+      'totalPages': 1,
+      'number': 0
+    }
+  };
+
   /**
    * URL API (definitions, executions, app)
    */
   public static URL = {
     EXECUTIONS: '/tasks/executions',
     DEFINITIONS: '/tasks/definitions',
-    APP: '/apps/task'
+    APP: '/apps/task',
+    SCHEDULES: '/tasks/schedules'
   };
 
   /**
@@ -59,6 +100,19 @@ export class TasksService {
     page: 0,
     size: 30,
     sort: 'TASK_EXECUTION_ID',
+    order: OrderParams.DESC,
+    itemsSelected: []
+  };
+
+  /**
+   * Schedules List context
+   * Persist the state of the TaskSchedulesComponent
+   */
+  public schedulesContext = {
+    task: '',
+    page: 0,
+    size: 30,
+    sort: 'SCHEDULE_NAME',
     order: OrderParams.DESC,
     itemsSelected: []
   };
@@ -126,47 +180,21 @@ export class TasksService {
   }
 
   /**
-   * Get the defails of an execution
-   *
-   * @param {string} id
-   * @returns {Observable<TaskExecution>}
-   */
-  getExecution(id: string): Observable<TaskExecution> {
-    return this.http.get(TasksService.URL.EXECUTIONS + '/' + id, {})
-      .pipe(map((item) => {
-        const jsonItem = item.json();
-        return new TaskExecution(
-          jsonItem.executionId,
-          jsonItem.exitCode,
-          jsonItem.taskName,
-          moment.utc(jsonItem.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]'),
-          moment.utc(jsonItem.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]'),
-          jsonItem.exitMessage,
-          jsonItem.arguments,
-          jsonItem.jobExecutionIds,
-          jsonItem.errorMessage,
-          jsonItem.externalExecutionId
-        );
-      }))
-      .catch(this.errorHandler.handleError);
-  }
-
-  /**
    * Calls the Spring Cloud Data Flow server to get paged task executions specified in {@link TaskExecution}
    * for a task.
    *
-   * @param {TaskExecutionListParams} taskExecutionListParams
-   * @returns {Observable<any | any>} that will call the subscribed funtions to handle
+   * @param {TaskScheduleListParams} taskScheduleListParams
+   * @returns {Observable<Page<TaskExecution>>} that will call the subscribed funtions to handle
    * the results when returned from the Spring Cloud Data Flow server.
    */
-  getTaskExecutions(taskExecutionListParams: TaskExecutionListParams) {
-    taskExecutionListParams = taskExecutionListParams || { task: '', page: 0, size: 20, sort: null, order: null };
-    const params = HttpUtils.getPaginationParams(taskExecutionListParams.page, taskExecutionListParams.size);
-    if (taskExecutionListParams.task) {
-      params.append('name', taskExecutionListParams.task);
+  getTaskExecutions(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskExecution>> {
+    taskScheduleListParams = taskScheduleListParams || { task: '', page: 0, size: 20, sort: null, order: null };
+    const params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
+    if (taskScheduleListParams.task) {
+      params.append('name', taskScheduleListParams.task);
     }
-    if (taskExecutionListParams.sort && taskExecutionListParams.order) {
-      params.append('sort', `${taskExecutionListParams.sort},${taskExecutionListParams.order}`);
+    if (taskScheduleListParams.sort && taskScheduleListParams.order) {
+      params.append('sort', `${taskScheduleListParams.sort},${taskScheduleListParams.order}`);
     }
     return this.http.get(TasksService.URL.EXECUTIONS, { search: params })
       .pipe(map((res) => {
@@ -196,6 +224,32 @@ export class TasksService {
         }
         this.loggerService.log('Extracted Task Executions:', taskExecutions);
         return taskExecutions;
+      }))
+      .catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Get the defails of an execution
+   *
+   * @param {string} id
+   * @returns {Observable<TaskExecution>}
+   */
+  getExecution(id: string): Observable<TaskExecution> {
+    return this.http.get(TasksService.URL.EXECUTIONS + '/' + id, {})
+      .pipe(map((item) => {
+        const jsonItem = item.json();
+        return new TaskExecution(
+          jsonItem.executionId,
+          jsonItem.exitCode,
+          jsonItem.taskName,
+          moment.utc(jsonItem.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]'),
+          moment.utc(jsonItem.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]'),
+          jsonItem.exitMessage,
+          jsonItem.arguments,
+          jsonItem.jobExecutionIds,
+          jsonItem.errorMessage,
+          jsonItem.externalExecutionId
+        );
       }))
       .catch(this.errorHandler.handleError);
   }
@@ -265,6 +319,94 @@ export class TasksService {
   }
 
   /**
+   * Get sch * Calls the Spring Cloud Data Flow server to get task schedules the specified {@link TaskSchedule}.
+   *
+   * @returns {Observable<R|T>} that will call the subscribed funtions to handle
+   * the results when returned from the Spring Cloud Data Flow server.
+   * @returns {Observable<Page<TaskSchedule>>}
+   */
+  getSchedules(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskSchedule>> {
+    taskScheduleListParams = taskScheduleListParams || { task: '', page: 0, size: 20, sort: null, order: null };
+    const params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
+    let url = TasksService.URL.SCHEDULES;
+    if (taskScheduleListParams.task) {
+      // params.append('search', taskScheduleListParams.task);
+      url = `${url}/instances/${taskScheduleListParams.task}`;
+    }
+    return this.http.get(url)
+      .pipe(map((res) => {
+        const page = new Page<TaskSchedule>();
+        const body = res.json();
+        if (body._embedded && body._embedded.scheduleInfoResourceList) {
+          page.items = body._embedded.scheduleInfoResourceList.map(TaskSchedule.fromJSON);
+        }
+        if (body.page) {
+          page.pageNumber = body.page.number;
+          page.pageSize = body.page.size;
+          page.totalElements = body.page.totalElements;
+          page.totalPages = body.page.totalPages;
+        }
+        this.loggerService.log('Extracted Task Schedules:', page);
+        return page;
+      })).catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Get the details of a definition
+   *
+   * @param {string} scheduleName
+   * @returns {Observable<TaskDefinition>}
+   */
+  getSchedule(scheduleName: string): Observable<TaskSchedule> {
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers });
+    return this.http.get(`${TasksService.URL.SCHEDULES}/${scheduleName}`, options)
+      .pipe(map(res => res.json()))
+      .pipe(map(TaskSchedule.fromJSON))
+      .catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Create Schedules
+   *
+   * @param {TaskScheduleCreateParams[]} taskScheduleCreateParams
+   * @returns {Observable<Response[]>}
+   */
+  createSchedules(taskScheduleCreateParams: TaskScheduleCreateParams[]): Observable<Response[]> {
+    const observables: Observable<Response>[] = [];
+    for (const params of taskScheduleCreateParams) {
+      observables.push(this.createSchedule(params));
+    }
+    return Observable.forkJoin(observables);
+  }
+
+  /**
+   * Create Schedule
+   * @param {TaskScheduleCreateParams} taskScheduleCreateParams
+   * @returns {Observable<any>}
+   */
+  createSchedule(taskScheduleCreateParams: TaskScheduleCreateParams): Observable<any> {
+    this.loggerService.log('Create schedule ' + taskScheduleCreateParams.schedulerName, taskScheduleCreateParams);
+    const params = new URLSearchParams();
+
+    // scheduler.cron.expression
+    const props = ['scheduler.cron.expression=' + taskScheduleCreateParams.cronExpression];
+    props.push(...taskScheduleCreateParams.props.split(','));
+
+    console.log(props);
+
+    params.append('scheduleName', taskScheduleCreateParams.schedulerName);
+    params.append('taskDefinitionName', taskScheduleCreateParams.task);
+    params.append('arguments', taskScheduleCreateParams.args);
+    params.append('properties', props.filter((prop) => !!prop).join(','));
+
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers, params: params });
+    return this.http.post(TasksService.URL.SCHEDULES, {}, options)
+      .catch(this.errorHandler.handleError);
+  }
+
+  /**
    * Create a definition
    *
    * @returns {any}
@@ -305,6 +447,34 @@ export class TasksService {
     const observables: Observable<Response>[] = [];
     for (const taskDefinition of taskDefinitions) {
       observables.push(this.destroyDefinition(taskDefinition));
+    }
+    return Observable.forkJoin(observables);
+  }
+
+  /**
+   * Destroy a schedule
+   *
+   * @param {TaskSchedule} taskSchedules
+   * @returns {Observable<Response>}
+   */
+  destroySchedule(taskSchedules: TaskSchedule): Observable<Response> {
+    this.loggerService.log('Destroying...', taskSchedules.name);
+    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const options = new RequestOptions({ headers: headers });
+    return this.http.delete(TasksService.URL.SCHEDULES + '/' + taskSchedules.name, options)
+      .catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Destroy Schedules
+   *
+   * @param {TaskSchedule[]} taskSchedules
+   * @returns {Observable<Response[]>}
+   */
+  destroySchedules(taskSchedules: TaskSchedule[]): Observable<Response[]> {
+    const observables: Observable<Response>[] = [];
+    for (const taskSchedule of taskSchedules) {
+      observables.push(this.destroySchedule(taskSchedule));
     }
     return Observable.forkJoin(observables);
   }

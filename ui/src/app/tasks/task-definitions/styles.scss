@@ -6,3 +6,13 @@
 .tab-pane {
   padding-top: 1px;
 }
+
+.btn-ico-remove-schedules {
+  position: relative;
+  .glyphicon-remove {
+    position: absolute;
+    top: -6px;
+    right: 3px;
+    font-size: 10px;
+  }
+}

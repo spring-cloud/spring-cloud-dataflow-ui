@@ -1,18 +1,21 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, share } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { TaskDefinition } from '../model/task-definition';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { NotificationService } from '../../shared/services/notification.service';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { TaskExecution } from '../model/task-execution';
 import { Page } from '../../shared/model/page';
+import { TaskExecution } from '../model/task-execution';
+import { TaskSchedule } from '../model/task-schedule';
 import { LoggerService } from '../../shared/services/logger.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 
 /**
  * @author Glenn Renfro
@@ -32,8 +35,10 @@ export class TaskDefinitionComponent implements OnInit {
    */
   task$: Observable<any>;
 
+  counters$: Observable<any>;
+
   /**
-   * Modal
+   * Modal reference
    */
   modal: BsModalRef;
 
@@ -46,6 +51,7 @@ export class TaskDefinitionComponent implements OnInit {
    * @param {Router} router
    * @param {LoggerService} loggerService
    * @param {BsModalService} modalService
+   * @param {SharedAboutService} sharedAboutService
    * @param {TasksService} tasksService
    */
   constructor(private route: ActivatedRoute,
@@ -54,6 +60,7 @@ export class TaskDefinitionComponent implements OnInit {
               private router: Router,
               private loggerService: LoggerService,
               private modalService: BsModalService,
+              private sharedAboutService: SharedAboutService,
               private tasksService: TasksService) {
   }
 
@@ -63,29 +70,66 @@ export class TaskDefinitionComponent implements OnInit {
   ngOnInit() {
     this.task$ = this.route.params
       .pipe(mergeMap(
-        val => forkJoin([
-          this.tasksService.getDefinition(val.id),
-          this.tasksService.getTaskExecutions({ task: val.id, size: 1, page: 0, sort: null, order: null }),
-        ]),
-        (val1, val2) => {
+        val => this.sharedAboutService.getFeatureInfo(),
+        (params: Params, featureInfo: FeatureInfo) => {
           return {
-            definition: val2[0],
-            executions: (val2[1] as Page<TaskExecution>).totalElements
+            id: params.id,
+            schedulerEnabled: featureInfo.schedulerEnabled
           };
         }
       ))
-      .catch((error) => {
+      .pipe(mergeMap(
+        (params: any) => this.tasksService.getDefinition(params.id),
+        (params: any, taskDefinition: TaskDefinition) => ({
+          schedulerEnabled: params.schedulerEnabled,
+          definition: taskDefinition
+        })
+      )).catch((error) => {
         if (HttpAppError.is404(error)) {
           this.cancel();
         }
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         return Observable.throw(error);
       });
+
+    this.counters$ = this.route.params
+      .pipe(mergeMap(
+        val => this.sharedAboutService.getFeatureInfo(),
+        (params: Params, featureInfo: FeatureInfo) => ({
+          id: params.id,
+          schedulerEnabled: featureInfo.schedulerEnabled
+        })
+      ))
+      .pipe(mergeMap(
+        (params: any) => {
+          const arr = [];
+          arr.push(this.tasksService.getTaskExecutions({ task: params.id, size: 1, page: 0, sort: null, order: null }));
+          if (params.schedulerEnabled) {
+            arr.push(this.tasksService.getSchedules({ task: params.id, size: 1, page: 0, sort: null, order: null }));
+          }
+          return forkJoin(...arr);
+        }, (params: any, forks) => {
+          const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
+          if (params.schedulerEnabled) {
+            result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
+          }
+          return result;
+        }
+      ))
+      .pipe(share());
+  }
+
+
+  /**
+   * Navigate to the schedule creation page
+   * @param {TaskDefinition} taskDefinition
+   */
+  schedule(taskDefinition: TaskDefinition) {
+    this.router.navigate([`/tasks/schedules/create/${taskDefinition.name}`]);
   }
 
   /**
-   * Deploy the stream, navigation to the dedicate page
-   *
+   * Launch page
    * @param {TaskDefinition} taskDefinition
    */
   launch(taskDefinition: TaskDefinition) {

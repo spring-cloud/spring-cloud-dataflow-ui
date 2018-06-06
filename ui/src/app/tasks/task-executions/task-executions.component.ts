@@ -27,7 +27,7 @@ import { AppError } from '../../shared/model/error.model';
 export class TaskExecutionsComponent implements OnInit, OnDestroy {
 
   /**
-   * Current page of Stream definitions
+   * Current page of Tasks definitions
    */
   taskExecutions: Page<TaskExecution>;
 
@@ -141,7 +141,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Determine if there is no application
+   * Determine if there is no task execution
    */
   isExecutionsEmpty(): boolean {
     if (this.taskExecutions) {
