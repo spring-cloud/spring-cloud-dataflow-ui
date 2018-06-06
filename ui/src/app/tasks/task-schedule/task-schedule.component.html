@@ -1,0 +1,37 @@
+<div *ngIf="taskSchedule$ | async as taskSchedule; else loading">
+
+  <div class="heading">
+    <div class="description">
+      <div class="actions" [appRoles]="['ROLE_CREATE']">
+        <button id="schedule-remove" name="schedule-remove" type="button" [appRoles]="['ROLE_CREATE']"
+                (click)="destroy(taskSchedule)" class="btn btn-danger" style="margin-left: 0;" title="Destroy">
+          Delete
+        </button>
+      </div>
+      <h1>Schedule <strong>{{ taskSchedule.name }}</strong></h1>
+      <p>This section shows the details of a schedule.</p>
+    </div>
+  </div>
+
+  <div class="tab-simple">
+    <ul class="nav nav-tabs">
+      <li role="presentation" routerLinkActive="active">
+        <a routerLink="summary" id="btn-schedule-summary">Summary</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane in active">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align: center;padding-top:2rem">
+    <button type="button" id="back-button" class="btn btn-default" (click)="cancel()">Back</button>
+  </div>
+
+</div>
+
+<ng-template #loading>
+  <div>Loading...</div>
+</ng-template>

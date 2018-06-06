@@ -11,7 +11,7 @@ import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe'
 import { TaskDefinitionComponent } from './task-definition.component';
 import { BusyService } from '../../shared/services/busy.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
-import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
+import { TASK_DEFINITIONS, TASK_EXECUTIONS, TASK_SCHEDULES } from '../../tests/mocks/mock-data';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -23,6 +23,7 @@ import { AuthService } from '../../auth/auth.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { MockModalService } from '../../tests/mocks/modal';
 import { BsModalService } from 'ngx-bootstrap';
+import { By } from '@angular/platform-browser';
 
 /**
  * Test {@link TaskDefinitionComponent}.
@@ -74,7 +75,10 @@ describe('TaskDefinitionComponent', () => {
   }));
 
   beforeEach(() => {
+    aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = false;
     tasksService.taskDefinitions = TASK_DEFINITIONS;
+    tasksService.taskSchedules = TASK_SCHEDULES;
+    tasksService.taskExecutions = TASK_EXECUTIONS;
     activeRoute.testParams = commonTestParams;
     fixture = TestBed.createComponent(TaskDefinitionComponent);
     component = fixture.componentInstance;
@@ -84,6 +88,33 @@ describe('TaskDefinitionComponent', () => {
   it('Component should be created', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  describe('Task action', () => {
+
+    beforeEach(() => {
+      aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = true;
+      fixture.detectChanges();
+    });
+
+    it('should delete the task', () => {
+      const spy = spyOn(component, 'destroy');
+      fixture.debugElement.query(By.css('#task-remove')).nativeElement.click();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should launch the task', () => {
+      const spy = spyOn(component, 'launch');
+      fixture.debugElement.query(By.css('#task-launch')).nativeElement.click();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should schedule the task', () => {
+      const spy = spyOn(component, 'schedule');
+      fixture.debugElement.query(By.css('#task-schedule')).nativeElement.click();
+      expect(spy).toHaveBeenCalled();
+    });
+
   });
 
 });

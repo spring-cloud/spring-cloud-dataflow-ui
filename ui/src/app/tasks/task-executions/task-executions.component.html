@@ -1,14 +1,4 @@
-<div class="heading">
-  <div class="actions hidden visible-md-block visible-lg-block" [appRoles]="['ROLE_CREATE']">
-    <a class="btn btn-primary" routerLink="/tasks/create">Create Task(s)</a>
-  </div>
-  <div class="description">
-    <h1 class="no-user-selection">Tasks</h1>
-    <p>
-      This section lists all the task definitions and provides the ability to run or schedule tasks.
-    </p>
-  </div>
-</div>
+<app-tasks-header></app-tasks-header>
 
 <app-tasks-tabulation>
   <div id="executions-list">
@@ -108,7 +98,7 @@
       </div>
       <div class="col-xs-12" *ngIf="taskExecutions && taskExecutions?.totalElements > 0">
         <app-pager [page]="params.page" [total]="taskExecutions.totalElements" [size]="params.size"
-                   (onSizeChange)="changeSize($event)">
+                   (sizeChange)="changeSize($event)">
         </app-pager>
       </div>
     </div>

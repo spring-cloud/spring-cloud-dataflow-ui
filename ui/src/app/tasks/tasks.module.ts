@@ -7,7 +7,10 @@ import { TaskLaunchComponent } from './task-launch/task-launch.component';
 import { TasksService } from './tasks.service';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import {
+  BsDatepickerModule, BsDropdownModule, ModalModule, PopoverModule, TimepickerModule,
+  TooltipModule
+} from 'ngx-bootstrap';
 import { AuthModule } from '../auth/auth.module';
 import { TaskGraphViewComponent } from './components/flo/task-graph-view/task-graph-view.component';
 import { MetamodelService } from './components/flo/metamodel.service';
@@ -31,7 +34,15 @@ import { TaskGraphComponent } from './task-definition/graph/task-graph.component
 import { TaskSummaryComponent } from './task-definition/summary/task-summary.component';
 import { AppsModule } from '../apps/apps.module';
 import { TasksTabulationComponent } from './components/tasks-tabulation/tasks-tabulation.component';
+import { TaskSchedulesComponent } from './task-schedules/task-schedules.component';
+import { TaskScheduleCreateComponent } from './task-schedule-create/task-schedule-create.component';
+import { TaskScheduleComponent } from './task-schedule/task-schedule.component';
+import { TaskScheduleSummaryComponent } from './task-schedule/summary/task-schedule-summary.component';
+import { TasksHeaderComponent } from './components/tasks-header/tasks-header.component';
+import { TaskSchedulesDestroyComponent } from './task-schedules-destroy/task-schedules-destroy.component';
+import { TaskDefinitionScheduleComponent } from './task-definition/schedules/task-definition-schedules.component';
 import { TaskDefinitionExecutionsComponent } from './task-definition/executions/task-definition-executions.component';
+import { TaskSchedulesFilterPipe } from './task-schedules/task-schedules.filter';
 
 @NgModule({
   imports: [
@@ -43,6 +54,8 @@ import { TaskDefinitionExecutionsComponent } from './task-definition/executions/
     PopoverModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot(),
     AppsModule,
     AuthModule,
     FloModule
@@ -64,7 +77,15 @@ import { TaskDefinitionExecutionsComponent } from './task-definition/executions/
     TaskSummaryComponent,
     TaskGraphComponent,
     TasksTabulationComponent,
-    TaskDefinitionExecutionsComponent
+    TaskSchedulesComponent,
+    TaskScheduleCreateComponent,
+    TaskScheduleComponent,
+    TaskScheduleSummaryComponent,
+    TasksHeaderComponent,
+    TaskSchedulesDestroyComponent,
+    TaskDefinitionScheduleComponent,
+    TaskDefinitionExecutionsComponent,
+    TaskSchedulesFilterPipe
   ],
   entryComponents: [
     NodeComponent,
@@ -72,7 +93,8 @@ import { TaskDefinitionExecutionsComponent } from './task-definition/executions/
     TaskPropertiesDialogComponent,
     DecorationComponent,
     HandleComponent,
-    TaskDefinitionsDestroyComponent
+    TaskDefinitionsDestroyComponent,
+    TaskSchedulesDestroyComponent
   ],
   providers: [
     TasksService,

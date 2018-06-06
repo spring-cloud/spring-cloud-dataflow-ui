@@ -1,0 +1,48 @@
+<div *ngIf="taskSchedules">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm the Deletion of Task Schedule(s)</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="taskSchedules.length == 1">
+    <p>This action will delete the task schedule <strong>{{ taskSchedules[0].name }}</strong>.
+      Are you sure?</p>
+  </div>
+  <div class="modal-body" *ngIf="taskSchedules.length > 1">
+    <p>
+      This action will delete the <strong>{{ taskSchedules.length }} task schedules</strong> listed below.
+      Are you sure?
+    </p>
+    <br/>
+    <table id="table-tasks" class="table table-striped">
+      <thead>
+      <tr>
+        <th>Schedule Name</th>
+        <th>Task Name</th>
+        <th>Schedule Trigger</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of taskSchedules">
+        <td>{{ item.name }}</td>
+        <td>{{ item.taskName }}</td>
+        <td>
+          <div *ngIf="item.dateTime">{{ item.dateTime | date: 'short' }}</div>
+          <div *ngIf="item.cronExpression">{{ item.cronExpression }}</div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer" style="text-align:center">
+    <button id="btn-cancel" type="button" class="btn btn-default" (click)="cancel()">No</button>
+    <button id="btn-destroy" type="button" class="btn btn-primary" (click)="destroy(taskSchedules)">
+      Delete Task Schedule(s)
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!taskSchedules" style="padding: 3rem">
+  <app-loader></app-loader>
+</div>

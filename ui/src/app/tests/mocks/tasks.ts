@@ -1,10 +1,15 @@
 import { Observable } from 'rxjs/Observable';
 import { AppInfo } from '../../tasks/model/app-info';
-import { Page} from '../../shared/model/page';
+import { Page } from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { TaskExecution } from '../../tasks/model/task-execution';
 import { TaskDefinition } from '../../tasks/model/task-definition';
 import { OrderParams } from '../../shared/components/shared.interface';
+import { TaskSchedule } from '../../tasks/model/task-schedule';
+import {
+  TaskListParams,
+  TaskScheduleListParams
+} from '../../tasks/components/tasks.interface';
 
 /**
  * Mock for TasksService.
@@ -49,11 +54,22 @@ export class MockTasksService {
     itemsExpanded: []
   };
 
+  public schedulesContext = {
+    q: '',
+    page: 0,
+    size: 30,
+    sort: 'SCHEDULE_NAME',
+    order: OrderParams.DESC,
+    itemsSelected: []
+  };
+
   private _testAppInfos: {};
   private _testTaskAppRegistrations: AppRegistration[];
   private _testExecutionDetails: {};
 
   public _taskDefinitions;
+  public _taskSchedules;
+  public _taskExecutions;
 
   get taskDefinitions(): any {
     return this._taskDefinitions;
@@ -63,8 +79,6 @@ export class MockTasksService {
     this._taskDefinitions = value;
   }
 
-  public _taskExecutions;
-
   get taskExecutions(): any {
     return this._taskExecutions;
   }
@@ -73,6 +87,13 @@ export class MockTasksService {
     this._taskExecutions = value;
   }
 
+  get taskSchedules(): any {
+    return this._taskSchedules;
+  }
+
+  set taskSchedules(value: any) {
+    this._taskSchedules = value;
+  }
 
   get testAppInfos() {
     return this._testAppInfos;
@@ -110,7 +131,7 @@ export class MockTasksService {
 
   getTaskAppRegistrations(): Observable<Page<AppRegistration>> {
     const p = new Page<AppRegistration>();
-    this._testTaskAppRegistrations.forEach( r => {
+    this._testTaskAppRegistrations.forEach(r => {
       p.items.push(new AppRegistration(r.name, r.type, r.uri));
     });
     return Observable.of(p);
@@ -130,7 +151,7 @@ export class MockTasksService {
   }
 
   destroyDefinitions(taskDefinitions: TaskDefinition[]): Observable<Response> | Observable<any> {
-    return Observable.of(Array.from({length: taskDefinitions.length}));
+    return Observable.of(Array.from({ length: taskDefinitions.length }));
   }
 
   getExecutions(): Observable<Page<TaskExecution>> {
@@ -171,11 +192,66 @@ export class MockTasksService {
     return Observable.of(page);
   }
 
+  getSchedules(taskListParams: TaskListParams): Observable<Page<TaskSchedule>> {
+    const page = new Page<TaskSchedule>();
+    if (this.taskSchedules) {
+      const response = this.taskSchedules;
+      let items: TaskSchedule[];
+      if (response._embedded && response._embedded.taskScheduleResourceList) {
+        items = response._embedded.taskScheduleResourceList as TaskSchedule[];
+      } else {
+        items = [];
+      }
+      page.items = items;
+      page.totalElements = response.page.totalElements;
+      page.totalPages = response.page.totalPages;
+      page.pageNumber = response.page.number;
+      page.pageSize = response.page.size;
+    }
+    return Observable.of(page);
+  }
+
+  getScheduleByTask(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskSchedule>> {
+    const page = new Page<TaskSchedule>();
+    if (this.taskSchedules) {
+      const response = this.taskSchedules;
+      let items: TaskSchedule[];
+      if (response._embedded && response._embedded.taskScheduleResourceList) {
+        items = response._embedded.taskScheduleResourceList as TaskSchedule[];
+      } else {
+        items = [];
+      }
+      page.items = items;
+      page.totalElements = response.page.totalElements;
+      page.totalPages = response.page.totalPages;
+      page.pageNumber = response.page.number;
+      page.pageSize = response.page.size;
+    }
+    return Observable.of(page);
+  }
+
+  getSchedule(scheduleName: string): Observable<TaskSchedule> {
+    return Observable.of(this.taskSchedules._embedded.taskScheduleResourceList[0]);
+  }
+
   getDefinition(name: string): Observable<any> {
     return Observable.of(this.taskDefinitions._embedded.taskDefinitionResourceList[0]);
   }
 
-  getTaskExecutions(): Observable<Page<TaskExecution>> {
+  destroySchedule(taskSchedules: TaskSchedule): Observable<any> {
+    return Observable.of({});
+  }
+
+  destroySchedules(taskSchedules: TaskSchedule[]): Observable<any> {
+    return Observable.of(Array.from({ length: taskSchedules.length }));
+  }
+
+  getTaskExecutions(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskExecution>> {
     return this.getExecutions();
   }
+
+  createSchedules() {
+    return Observable.of([{}]);
+  }
+
 }

@@ -5,7 +5,7 @@ import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
 import { BusyService } from '../../shared/services/busy.service';
 import { Subject } from 'rxjs/Subject';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
@@ -13,6 +13,11 @@ import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/tas
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
+import { TaskSchedule } from '../model/task-schedule';
+import { TaskSchedulesDestroyComponent } from '../task-schedules-destroy/task-schedules-destroy.component';
+import { GroupRouteService } from '../../shared/services/group-route.service';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -66,6 +71,12 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   };
 
   /**
+   * Schedule Enabled state
+   * @type {boolean}
+   */
+  schedulerEnabled = false;
+
+  /**
    * Contain a key application of each selected application
    * @type {Array}
    */
@@ -76,11 +87,24 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   context: any;
 
+  /**
+   * Constructor
+   * @param {TasksService} tasksService
+   * @param {BsModalService} modalService
+   * @param {BusyService} busyService
+   * @param {LoggerService} loggerService
+   * @param {GroupRouteService} groupRouteService
+   * @param {Router} router
+   * @param {SharedAboutService} sharedAboutService
+   * @param {NotificationService} notificationService
+   */
   constructor(public tasksService: TasksService,
               private modalService: BsModalService,
               private busyService: BusyService,
               private loggerService: LoggerService,
+              private groupRouteService: GroupRouteService,
               private router: Router,
+              private sharedAboutService: SharedAboutService,
               private notificationService: NotificationService) {
 
   }
@@ -93,7 +117,12 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.params = { ...this.context };
     this.form = { q: this.context.q, checkboxes: [] };
     this.itemsSelected = this.context.itemsSelected || [];
-    this.refresh();
+
+    this.sharedAboutService.getFeatureInfo()
+      .subscribe((featureInfo: FeatureInfo) => {
+        this.schedulerEnabled = featureInfo.schedulerEnabled;
+        this.refresh();
+      });
   }
 
   /**
@@ -264,6 +293,14 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.destroyTasks(taskDefinitions);
   }
 
+  /**
+   * Starts the schedule process of multiple {@link TaskDefinition}s
+   */
+  scheduleSelectedTasks() {
+    const taskDefinitions = this.taskDefinitions.items
+      .filter((item) => this.itemsSelected.indexOf(item.name) > -1);
+    this.scheduleTasks(taskDefinitions);
+  }
 
   /**
    * Starts the destroy the {@link TaskDefinition}s in parameter
@@ -287,6 +324,51 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Starts the destroy the {@link TaskSchedule[]}s
+   * by opening a confirmation modal dialog.
+   * @param {TaskDefinition} taskDefinition
+   */
+  destroySchedules(taskDefinition: TaskDefinition) {
+    this.modal = this.modalService.show(TaskSchedulesDestroyComponent, { class: 'modal-lg' });
+    this.tasksService
+      .getSchedules({
+        task: taskDefinition.name,
+        sort: 'SCHEDULE_ID',
+        order: OrderParams.ASC,
+        page: 0,
+        size: 1000
+      }).pipe(map((page: Page<TaskSchedule>) => {
+      if (page.totalElements === 0) {
+        this.notificationService.error('No schedule exists for this task.');
+        this.modal.hide();
+      } else {
+        this.loggerService.log(`Delete ${page.items} task schedule(s).`, page.items);
+        this.modal.content.open({ taskSchedules: page.items }).subscribe(() => {
+          this.refresh();
+        });
+      }
+      return page;
+    })).subscribe();
+  }
+
+  /**
+   * Starts the schedule the {@link TaskDefinition}s in parameter
+   * @param {TaskDefinition[]} taskDefinitions
+   */
+  scheduleTasks(taskDefinitions: TaskDefinition[]) {
+    if (taskDefinitions.length === 0) {
+      return;
+    }
+    this.loggerService.log(`Schedule ${taskDefinitions} task definition(s).`, taskDefinitions);
+    if (taskDefinitions.length === 1) {
+      this.schedule(taskDefinitions[0]);
+    } else {
+      const key = this.groupRouteService.create(taskDefinitions.map((task) => task.name));
+      this.router.navigate([`tasks/schedules/create/${key}`]);
+    }
+  }
+
+  /**
    * Route to {@link TaskDefinition} details page.
    * @param {TaskDefinition} taskDefinition
    */
@@ -300,6 +382,14 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   launch(taskDefinition: TaskDefinition) {
     this.router.navigate([`tasks/definitions/launch/${taskDefinition.name}`]);
+  }
+
+  /**
+   * Route to {@link TaskDefinition} schedule page.
+   * @param {TaskDefinition} taskDefinition
+   */
+  schedule(taskDefinition: TaskDefinition) {
+    this.router.navigate([`tasks/schedules/create/${taskDefinition.name}`]);
   }
 
 }

@@ -45,6 +45,10 @@ import { RoutingStateService } from './services/routing-state.service';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './services/notification.service';
 import { LoggerService } from './services/logger.service';
+import { GroupRouteService } from './services/group-route.service';
+import { LocalStorageModule } from 'angular-2-local-storage';
+import { TimepickerComponent } from './components/timepicker/timepicker.component';
+import { PopoverModule, TimepickerModule } from 'ngx-bootstrap';
 
 const busyConfig: BusyConfig = {
   message: 'Processing..',
@@ -72,6 +76,8 @@ const busyConfig: BusyConfig = {
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
+    PopoverModule.forRoot(),
+    TimepickerModule.forRoot(),
     NgxPaginationModule,
     ToastContainerModule,
     ProgressbarModule.forRoot(),
@@ -81,6 +87,10 @@ const busyConfig: BusyConfig = {
       preventDuplicates: true,
       maxOpened: 6
     }),
+    LocalStorageModule.withConfig({
+      prefix: 'dataflow-',
+      storageType: 'localStorage'
+    })
   ],
   declarations: [
     CapitalizePipe,
@@ -109,7 +119,8 @@ const busyConfig: BusyConfig = {
     OrderByPipe,
     ConfirmComponent,
     LoaderComponent,
-    PagerComponent
+    PagerComponent,
+    TimepickerComponent
   ],
   entryComponents: [
     ConfirmComponent
@@ -123,7 +134,8 @@ const busyConfig: BusyConfig = {
     BusyService,
     RoutingStateService,
     NotificationService,
-    LoggerService
+    LoggerService,
+    GroupRouteService
   ],
   exports: [
     StreamDslComponent,
@@ -157,7 +169,8 @@ const busyConfig: BusyConfig = {
     AutoResizeDirective,
     LoaderComponent,
     PagerComponent,
-    ToastContainerModule
+    ToastContainerModule,
+    TimepickerComponent
   ]
 })
 export class SharedModule {

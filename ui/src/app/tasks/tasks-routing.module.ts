@@ -10,6 +10,11 @@ import { TaskDefinitionComponent } from './task-definition/task-definition.compo
 import { TaskDefinitionsComponent } from './task-definitions/task-definitions.component';
 import { TaskGraphComponent } from './task-definition/graph/task-graph.component';
 import { TaskSummaryComponent } from './task-definition/summary/task-summary.component';
+import { TaskSchedulesComponent } from './task-schedules/task-schedules.component';
+import { TaskScheduleCreateComponent } from './task-schedule-create/task-schedule-create.component';
+import { TaskScheduleComponent } from './task-schedule/task-schedule.component';
+import { TaskScheduleSummaryComponent } from './task-schedule/summary/task-schedule-summary.component';
+import { TaskDefinitionScheduleComponent } from './task-definition/schedules/task-definition-schedules.component';
 import { TaskDefinitionExecutionsComponent } from './task-definition/executions/task-definition-executions.component';
 
 const taskRoutes: Routes = [
@@ -68,9 +73,36 @@ const taskRoutes: Routes = [
           {
             path: 'executions',
             component: TaskDefinitionExecutionsComponent,
+          },
+          {
+            path: 'schedules',
+            component: TaskDefinitionScheduleComponent,
           }
         ]
-      }
+      },
+      {
+        path: 'schedules',
+        component: TaskSchedulesComponent,
+      },
+      {
+        path: 'schedules/:id',
+        component: TaskScheduleComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'summary',
+            pathMatch: 'full'
+          },
+          {
+            path: 'summary',
+            component: TaskScheduleSummaryComponent,
+          }
+        ]
+      },
+      {
+        path: 'schedules/create/:id',
+        component: TaskScheduleCreateComponent,
+      },
     ]
   }
 ];

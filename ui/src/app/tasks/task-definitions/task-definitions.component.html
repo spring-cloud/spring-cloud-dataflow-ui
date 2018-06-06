@@ -1,14 +1,4 @@
-<div class="heading">
-  <div class="actions" [appRoles]="['ROLE_CREATE']" *ngIf="!isTasksEmpty()">
-    <a class="btn btn-primary" routerLink="/tasks/create">Create Task(s)</a>
-  </div>
-  <div class="description">
-    <h1 class="no-user-selection">Tasks</h1>
-    <p>
-      This section lists all the task definitions and provides the ability to run or schedule tasks.
-    </p>
-  </div>
-</div>
+<app-tasks-header></app-tasks-header>
 
 <app-tasks-tabulation>
 
@@ -43,6 +33,12 @@
                   <a id="destroy-tasks" style="cursor: pointer" (click)="destroySelectedTasks()">
                     <span *ngIf="countSelected() == 1">Destroy task</span>
                     <span *ngIf="countSelected() > 1">Destroy tasks</span>
+                  </a>
+                </li>
+                <li *ngIf="schedulerEnabled">
+                  <a id="schedule-tasks" style="cursor: pointer" (click)="scheduleSelectedTasks()">
+                    <span *ngIf="countSelected() == 1">Schedule task</span>
+                    <span *ngIf="countSelected() > 1">Schedule tasks</span>
                   </a>
                 </li>
               </ul>
@@ -95,7 +91,7 @@
           <td width="200px">
             <a style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">{{ item.name }}</a>
           </td>
-          <td>
+          <td class="dataflow-truncator-width">
             <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
           </td>
           <td>
@@ -108,11 +104,20 @@
                 <span class="glyphicon glyphicon-search"></span>
               </button>
               <button type="button" name="task-launch{{ i }}" (click)="launch(item)" [appRoles]="['ROLE_CREATE']"
-                      class="btn btn-default" style="margin-left: 0;" title="Launch">
+                      class="btn btn-default" style="margin-left: 0;" title="Launch task">
                 <span class="glyphicon glyphicon-play"></span>
               </button>
+              <button *ngIf="schedulerEnabled" type="button" name="task-schedule{{ i }}" (click)="schedule(item)" [appRoles]="['ROLE_CREATE']"
+                      class="btn btn-default" style="margin-left: 0;" title="Schedule task">
+                <span class="glyphicon glyphicon-time"></span>
+              </button>
+              <button *ngIf="schedulerEnabled" type="button" name="task-schedule-destroy{{ i }}" (click)="destroySchedules(item)"
+                      [appRoles]="['ROLE_CREATE']" class="btn btn-ico-remove-schedules btn-default" style="margin-left: 0;" title="Delete schedule">
+                <span class="glyphicon glyphicon-time"></span>
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
               <button name="task-destroy{{ i }}" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(item)"
-                      class="btn btn-default" style="margin-left: 0;" title="Destroy">
+                      class="btn btn-default" style="margin-left: 0;" title="Destroy task">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
             </div>
@@ -132,11 +137,10 @@
       </div>
       <div class="col-xs-12" *ngIf="taskDefinitions && taskDefinitions?.totalElements > 0">
         <app-pager [page]="params.page" [total]="taskDefinitions.totalElements" [size]="params.size"
-                   (onSizeChange)="changeSize($event)">
+                   (sizeChange)="changeSize($event)">
         </app-pager>
       </div>
     </div>
-
     <div *ngIf="taskDefinitions" id="empty" style="padding-top:1.5rem">
 
       <div *ngIf="isTasksEmpty()" class="text-center">
