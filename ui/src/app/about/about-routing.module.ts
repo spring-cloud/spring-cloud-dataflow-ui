@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { AboutComponent } from './about.component';
-import { AboutDetailsComponent } from './about-details.component';
+import { AboutComponent } from './about/about.component';
 import { AuthGuard } from '../auth/support/auth.guard';
 
 const aboutRoutes: Routes = [
@@ -14,8 +12,10 @@ const aboutRoutes: Routes = [
       roles: ['ROLE_VIEW']
     },
     children: [
-      { path: '', component: AboutComponent },
-      { path: 'details', component: AboutDetailsComponent }
+      {
+        path: '',
+        component: AboutComponent
+      }
     ]
   }
 ];
@@ -24,4 +24,5 @@ const aboutRoutes: Routes = [
   imports: [RouterModule.forChild(aboutRoutes)],
   exports: [RouterModule]
 })
-export class AboutRoutingModule {}
+export class AboutRoutingModule {
+}
