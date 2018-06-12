@@ -256,9 +256,9 @@ joint.shapes.flo.InstanceDot = joint.shapes.basic.Generic.extend({
 
   defaults: joint.util.deepSupplement({
     type: TYPE_INSTANCE_DOT,
-    size: { width: 60, height: 60 },
+    size: { width: 6, height: 6 },
     attrs: {
-      'circle': { r: 30, transform: 'translate(30, 30)' }
+      'circle': { r: 3, transform: 'translate(3, 3)' }
     }
   }, joint.shapes.basic.Generic.prototype.defaults)
 });

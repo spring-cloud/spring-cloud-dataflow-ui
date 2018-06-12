@@ -134,9 +134,7 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
   '<circle class="outer"/>' +
   '<text class="label"/>' +
   '</g>' +
-  '<g>' +
   '<circle class="input-port"/>' +
-  '</g>' +
   '</g>',
 
   defaults: defaultsDeep({
@@ -164,7 +162,7 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
         'ref-x': 0.5,
         'ref-y': 0,
         ref: '.outer',
-        stroke: '#34302D'
+        stroke: '#34302D',
       },
       '.label': {
         'ref-x': 0.5,

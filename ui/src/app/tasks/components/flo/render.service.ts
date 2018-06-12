@@ -200,7 +200,7 @@ export class RenderService implements Flo.Renderer {
             textNode.data = label.substr(0, label.length - i) + '\u2026';
             width = textSpan.getComputedTextLength();
           }
-          (<any>node).attr(labelPath, textNode.data);
+          node.attr(labelPath, textNode.data);
         } finally {
           document.body.removeChild(svgDocument);
         }
@@ -377,12 +377,12 @@ export class RenderService implements Flo.Renderer {
     LoggerService.log('getNodeView');
     const self = this;
 
-    return joint.dia.ElementView.extend({
+    return joint.shapes.flo.ElementView.extend({
       options: defaultsDeep({}, joint.dia.ElementView.prototype.options),
 
       renderMarkup: function () {
-        // Not called often. It's fine to destro old component and create the new one, because old DOM
-        // may have been aletered by JointJS updates
+        // Not called often. It's fine to destroy old component and create the new one, because old DOM
+        // may have been altered by JointJS updates
         if (self.componentFactoryResolver && ELEMENT_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
           if (this._angularComponentRef) {
             this._angularComponentRef.destroy();

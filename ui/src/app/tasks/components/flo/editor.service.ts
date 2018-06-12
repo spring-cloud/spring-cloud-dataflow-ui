@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { Constants, Flo } from 'spring-flo';
 import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE } from './support/shapes';
-import { dia } from 'jointjs';
+import { dia, g } from 'jointjs';
 import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
@@ -23,10 +23,6 @@ export class EditorService implements Flo.Editor {
   constructor(private bsModalService: BsModalService) {
   }
 
-  interactive = {
-    vertexAdd: true
-  };
-
   allowLinkVertexEdit = true;
 
   /**
@@ -45,7 +41,7 @@ export class EditorService implements Flo.Editor {
       const bbox = element.getBBox();
 
       // Delete handle
-      let pt = (<any>bbox).origin().offset(bbox.width + 3, bbox.height + 3);
+      let pt = bbox.origin().offset(bbox.width + 3, bbox.height + 3);
 
       if (element.attr('metadata/group') !== CONTROL_GROUP_TYPE
         || (element.attr('metadata/name') !== START_NODE_TYPE && element.attr('metadata/name') !== END_NODE_TYPE)) {
@@ -54,7 +50,7 @@ export class EditorService implements Flo.Editor {
 
       // Properties handle
       if (!element.attr('metadata/unresolved') && !element.attr('metadata/metadata/noEditableProps')) {
-        pt = (<any>bbox).origin().offset(-14, bbox.height + 3);
+        pt = bbox.origin().offset(-14, bbox.height + 3);
         createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
           const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
           modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
@@ -292,9 +288,9 @@ export class EditorService implements Flo.Editor {
     });
   }
 
-  validate(graph: dia.Graph, dsl: string, flo: Flo.EditorContext): Promise<Map<string, Flo.Marker[]>> {
+  validate(graph: dia.Graph, dsl: string, flo: Flo.EditorContext): Promise<Map<string | number, Flo.Marker[]>> {
     return new Promise(resolve => {
-      const markers: Map<string, Array<Flo.Marker>> = new Map();
+      const markers: Map<string | number, Array<Flo.Marker>> = new Map();
       const promises: Promise<void>[] = [];
       graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
         promises.push(new Promise<void>((nodeFinished) => {
@@ -319,7 +315,7 @@ export class EditorService implements Flo.Editor {
   }
 
   calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,
-                          point: dia.Point, sourceComponent: string): Flo.DnDDescriptor {
+                          point: g.Point, sourceComponent: string): Flo.DnDDescriptor {
 
     const targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
 
@@ -358,7 +354,7 @@ export class EditorService implements Flo.Editor {
             if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort)
               || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
               const bbox = joint.V(magnet).bbox(false, paper.viewport);
-              const distance = (<any>point).distance({
+              const distance = point.distance({
                 x: bbox.x + bbox.width / 2,
                 y: bbox.y + bbox.height / 2
               });
