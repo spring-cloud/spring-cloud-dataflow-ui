@@ -7,7 +7,7 @@ export function layout(paper: dia.Paper) {
 
     let gridSize = paper.options.gridSize;
     if (gridSize <= 1) {
-        gridSize = IMAGE_H / 2;
+        gridSize = IMAGE_H;
     }
 
     const g = new dagre.graphlib.Graph();

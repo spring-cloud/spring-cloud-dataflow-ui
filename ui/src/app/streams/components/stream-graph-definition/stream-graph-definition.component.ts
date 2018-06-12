@@ -273,17 +273,12 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
             // Create new label for outgoing message rate
             outgoingIndex = link.get('labels') ? link.get('labels').length : 0;
             link.label(outgoingIndex, <any>{
-              position: 10,
+              position: {
+                offset: -10,
+                distance: 10
+              },
               type: TYPE_OUTGOING_MESSAGE_RATE,
               rate: outgoingRate,
-              attrs: {
-                text: {
-                  transform: 'translate(0, -1)',
-                },
-                rect: {
-                  transform: 'translate(0, -1)',
-                }
-              }
             });
           }
         }
@@ -299,17 +294,12 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
             // Create new label for incoming message rate
             incomingIndex = link.get('labels') ? link.get('labels').length : 0;
             link.label(incomingIndex, <any>{
-              position: -10,
+              position: {
+                offset: 10,
+                distance: -10
+              },
               type: TYPE_INCOMING_MESSAGE_RATE,
               rate: incomingRate,
-              attrs: {
-                text: {
-                  transform: 'translate(0, 17)',
-                },
-                rect: {
-                  transform: 'translate(0, 17)',
-                }
-              }
             });
           }
         }

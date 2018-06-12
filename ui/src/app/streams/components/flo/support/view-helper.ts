@@ -71,8 +71,13 @@ export class ViewHelper {
       },
       renderLabels: function () {
 
-        if (!this._V.labels) {
-          return this;
+        const cache = this._V;
+        let vLabels = cache.labels;
+        const labelCache = this._labelCache = {};
+        const labelSelectors = this._labelSelectors = {};
+
+        if (vLabels) {
+          vLabels.empty();
         }
 
         if (this._angularComponentRef) {
@@ -80,30 +85,30 @@ export class ViewHelper {
           this._angularComponentRef = {};
         }
 
-        this._labelCache = {};
-        const $labels = $(this._V.labels.node).empty();
-
-        const labels = this.model.get('labels') || [];
-        if (!labels.length) {
+        const model = this.model;
+        const labels = model.get('labels') || [];
+        const labelsCount = labels.length;
+        if (labelsCount === 0) {
           return this;
         }
 
-        const labelTemplate = joint.util.template(this.model.get('labelMarkup') || this.model.labelMarkup);
-        // This is a prepared instance of a vectorized SVGDOM node for the label element resulting from
-        // compilation of the labelTemplate. The purpose is that all labels will just `clone()` this
-        // node to create a duplicate.
-        const labelNodeInstance = V(labelTemplate());
+        if (!vLabels) {
+          // there is no label container in the markup but some labels are defined
+          // add a <g class="labels" /> container
+          vLabels = cache.labels = V('g').addClass('labels').appendTo(this.el);
+        }
 
-        const canLabelMove = this.can('labelMove');
+        for (let i = 0; i < labelsCount; i++) {
 
-        _.each(labels, function (label: any, idx) {
+          const label = labels[i];
 
-          let labelNode;
+          let node;
+          let selectors;
 
           if (componentFactoryResolver && LINK_LABEL_COMPONENT_TYPE.has(label.type)) {
             // Inject link label component and take its DOM
-            if (this._angularComponentRef && this._angularComponentRef[idx]) {
-              this._angularComponentRef[idx].destroy();
+            if (this._angularComponentRef && this._angularComponentRef[i]) {
+              this._angularComponentRef[i].destroy();
             }
 
             const nodeComponentFactory = componentFactoryResolver
@@ -115,72 +120,50 @@ export class ViewHelper {
               this._angularComponentRef = {};
             }
 
-            this._angularComponentRef[idx] = componentRef;
-            this._angularComponentRef[idx].changeDetectorRef.markForCheck();
+            this._angularComponentRef[i] = componentRef;
+            this._angularComponentRef[i].changeDetectorRef.markForCheck();
 
             applicationRef.attachView(componentRef.hostView);
             componentRef.instance.data = label;
-            this._angularComponentRef[idx].changeDetectorRef.detectChanges();
+            this._angularComponentRef[i].changeDetectorRef.detectChanges();
 
-            labelNode = this._angularComponentRef[idx].location.nativeElement.children.item(0);
+            node = this._angularComponentRef[i].location.nativeElement.children.item(0);
+            selectors = {};
           } else {
             // Default JointJS behaviour
-            labelNode = labelNodeInstance.clone().node;
+            const labelMarkup = this._normalizeLabelMarkup(this._getLabelMarkup(label.markup));
+            if (labelMarkup) {
+              node = labelMarkup.node;
+              selectors = labelMarkup.selectors;
+
+            } else {
+              const builtinDefaultLabel =  model._builtins.defaultLabel;
+              const builtinDefaultLabelMarkup = this._normalizeLabelMarkup(this._getLabelMarkup(builtinDefaultLabel.markup));
+
+              const defaultLabel = model._getDefaultLabel();
+              const defaultLabelMarkup = this._normalizeLabelMarkup(this._getLabelMarkup(defaultLabel.markup));
+
+              const defaultMarkup = defaultLabelMarkup || builtinDefaultLabelMarkup;
+
+              node = defaultMarkup.node;
+              selectors = defaultMarkup.selectors;
+            }
           }
 
-          V(labelNode).attr('label-idx', idx);
-          if (canLabelMove) {
-            V(labelNode).attr('cursor', 'move');
-          }
 
-          // Cache label nodes so that the `updateLabels()` can just update the label node positions.
-          this._labelCache[idx] = V(labelNode);
+          const vLabel = V(node);
+          vLabel.attr('label-idx', i); // assign label-idx
+          vLabel.appendTo(vLabels);
+          labelCache[i] = vLabel; // cache node for `updateLabels()` so it can just update label node positions
 
-          const $text = $(labelNode).find('text');
-          const $rect = $(labelNode).find('rect');
+          selectors[this.selector] = vLabel.node;
+          labelSelectors[i] = selectors; // cache label selectors for `updateLabels()`
+        }
 
-          // Text attributes with the default `text-anchor` and font-size set.
-          const textAttributes = _.extend({
-            'text-anchor': 'middle',
-            'font-size': 14
-          }, joint.util.getByPath(label, 'attrs/text', '/'));
+        this.updateLabels();
 
-          $text.attr(_.omit(textAttributes, 'text'));
-
-          if (!_.isUndefined(textAttributes.text)) {
-
-            V($text[0]).text(textAttributes.text + '', {annotations: textAttributes.annotations});
-
-          }
-
-          // Note that we first need to append the `<text>` element to the DOM in order to
-          // get its bounding box.
-          $labels.append(labelNode);
-
-          // `y-alignment` - center the text element around its y coordinate.
-          const textBbox = V($text[0]).bbox(true, $labels[0]);
-          V($text[0]).translate(0, -textBbox.height / 2);
-
-          // Add default values.
-          const rectAttributes = _.extend({
-
-            fill: 'white',
-            rx: 3,
-            ry: 3
-
-          }, joint.util.getByPath(label, 'attrs/rect', '/'));
-
-          const padding = 1;
-
-          $rect.attr(_.extend(rectAttributes, {
-            x: textBbox.x - padding,
-            y: textBbox.y - padding - textBbox.height / 2,  // Take into account the y-alignment translation.
-            width: textBbox.width + 2 * padding,
-            height: textBbox.height + 2 * padding
-          }));
-
-        }, this);
         return this;
+
       }
     });
   }

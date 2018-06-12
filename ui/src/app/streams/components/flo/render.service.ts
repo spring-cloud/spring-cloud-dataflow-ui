@@ -172,7 +172,7 @@ export class RenderService implements Flo.Renderer {
       /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
         // No outgoing links -> hide stream name label
         // Set silently, last attr call would refresh the view
-        (<any>oldSource).attr('.stream-label/display', 'none', {silent: true});
+        oldSource.attr('.stream-label/display', 'none', {silent: true});
 
         //     // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
         //     oldSource.attr('.input-port/display', 'block');
@@ -181,7 +181,7 @@ export class RenderService implements Flo.Renderer {
       if (newSource && newSource.attr('metadata/name') === 'destination') {
         // Has outgoing link, there shouldn't be any incoming links yet -> show stream name label
         // Set silently, last attr call would refresh the view
-        (<any>newSource).attr('.stream-label/display', 'block', {silent: true});
+        newSource.attr('.stream-label/display', 'block', {silent: true});
 
         //     newSource.attr('.input-port/display', 'none');
       }
@@ -210,7 +210,7 @@ export class RenderService implements Flo.Renderer {
 
           // No more incoming links, there shouldn't be any outgoing links yet -> indeterminate, hide stream label
           // Set silently, last attr call would refresh the view
-          (<any>oldTarget).attr('.stream-label/display', 'none', {silent: true});
+          oldTarget.attr('.stream-label/display', 'none', {silent: true});
 
           //     // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
           //     oldTarget.attr('.output-port/display', 'block');
@@ -221,7 +221,7 @@ export class RenderService implements Flo.Renderer {
         if (newTarget.attr('metadata/name') === 'destination') {
           // Incoming link -> hide stream name label
           // Set silently, last attr call would refresh the view
-          (<any>newTarget).attr('.stream-label/display', 'none', {silent: true});
+          newTarget.attr('.stream-label/display', 'none', {silent: true});
 
           // // new target is destination? Hide output port then.
           // newTarget.attr('.output-port/display', 'none');
@@ -250,7 +250,7 @@ export class RenderService implements Flo.Renderer {
       && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
       // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
       // Set silently, last attr call would refresh the view
-      (<any>source).attr('.stream-label/display', 'none', {silent: true});
+      source.attr('.stream-label/display', 'none', {silent: true});
       source.removeAttr('.input-port/display');
       view = flo.getPaper().findViewByModel(source);
       if (view) {
@@ -261,7 +261,7 @@ export class RenderService implements Flo.Renderer {
       && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
       // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
       // Set silently, last attr call would refresh the view
-      (<any>target).attr('.stream-label/display', 'none', {silent: true});
+      target.attr('.stream-label/display', 'none', {silent: true});
       target.removeAttr('.output-port/display');
       view = flo.getPaper().findViewByModel(target);
       if (view) {
@@ -374,7 +374,7 @@ export class RenderService implements Flo.Renderer {
     if (target && target.attr('metadata/name') === 'destination') {
       // Incoming link has been added -> hide stream label
       // Set silently because update will be called for the next property setting
-      (<any>target).attr('.stream-label/display', 'none', {silent: true});
+      target.attr('.stream-label/display', 'none', {silent: true});
       // XXX target.attr('.output-port/display', 'none');
     }
     // If tap link has been added update the stream-label for the target

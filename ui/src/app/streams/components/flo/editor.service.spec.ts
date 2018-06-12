@@ -253,7 +253,7 @@ describe('editor.service', () => {
         }
     }
 
-    function expectMarkerCount(markers: Map<string, Array<Flo.Marker>>, expectedCount: number) {
+    function expectMarkerCount(markers: Map<string | number, Array<Flo.Marker>>, expectedCount: number) {
         let count = 0;
         Array.from(markers.keys()).forEach((k) => {
             count += markers.get(k).length;
@@ -261,8 +261,8 @@ describe('editor.service', () => {
         expect(count).toEqual(expectedCount);
     }
 
-    function printMarkers(markers: Map<string, Array<Flo.Marker>>) {
-        LoggerService.log('Markers summary: ' + markers.size + ' map entries');
+    function printMarkers(markers: Map<string | number, Array<Flo.Marker>>) {
+      LoggerService.log('Markers summary: ' + markers.size + ' map entries');
         Array.from(markers.keys()).forEach((k) => {
             const values = markers.get(k);
             LoggerService.log('For ' + k + ' there are ' + values.length + ' markers');
@@ -273,7 +273,7 @@ describe('editor.service', () => {
         });
     }
 
-    function getMarkersOn(markers: Map<string, Array<Flo.Marker>>, node: dia.Element): Flo.Marker[] {
+    function getMarkersOn(markers: Map<string | number, Array<Flo.Marker>>, node: dia.Element): Flo.Marker[] {
         return markers.get(node.id);
     }
 

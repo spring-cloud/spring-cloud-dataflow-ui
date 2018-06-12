@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { ApplicationType } from '../../../shared/model/application-type';
 import { Flo, Constants } from 'spring-flo';
-import { dia } from 'jointjs';
+import { dia, g } from 'jointjs';
 import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 import { Utils } from './support/utils';
 import * as _joint from 'jointjs';
@@ -49,6 +49,10 @@ export class EditorService implements Flo.Editor {
 
     constructor(private bsModalService: BsModalService) {}
 
+    interactive: dia.CellView.InteractivityOptions = {
+      vertexAdd: false
+    };
+
     createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
                                                          action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
         if (owner.model instanceof joint.dia.Link) {
@@ -58,12 +62,12 @@ export class EditorService implements Flo.Editor {
             const bbox = element.getBBox();
 
             // Delete handle
-            let pt = (<any>bbox).origin().offset(bbox.width + 3, bbox.height + 3);
+            let pt = bbox.origin().offset(bbox.width + 3, bbox.height + 3);
             createHandle(owner, Constants.REMOVE_HANDLE_TYPE, flo.deleteSelectedNode, pt);
 
             // Properties handle
             if (!element.attr('metadata/unresolved')) {
-                pt = (<any>bbox).origin().offset(-14, bbox.height + 3);
+                pt = bbox.origin().offset(-14, bbox.height + 3);
                 createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
                     const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
                     modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
@@ -195,7 +199,7 @@ export class EditorService implements Flo.Editor {
     }
 
     calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,
-                            point: dia.Point, sourceComponent: string): Flo.DnDDescriptor {
+                            point: g.Point, sourceComponent: string): Flo.DnDDescriptor {
         const source = draggedView.model;
         const paper = flo.getPaper();
         const targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
@@ -250,7 +254,7 @@ export class EditorService implements Flo.Editor {
                         if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort)
                           || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
                             const bbox = joint.V(magnet).bbox(false, paper.viewport);
-                            const distance = (<any>point).distance({
+                            const distance = point.distance({
                                 x: bbox.x + bbox.width / 2,
                                 y: bbox.y + bbox.height / 2
                             });
@@ -594,9 +598,9 @@ export class EditorService implements Flo.Editor {
         });
     }
 
-    validate(graph: dia.Graph, dsl: string, flo: Flo.EditorContext): Promise<Map<string, Flo.Marker[]>> {
+    validate(graph: dia.Graph, dsl: string, flo: Flo.EditorContext): Promise<Map<string | number, Flo.Marker[]>> {
         return new Promise(resolve => {
-            const markers: Map<string, Array<Flo.Marker>> = new Map();
+            const markers: Map<string | number, Array<Flo.Marker>> = new Map();
             const promises: Promise<void>[] = [];
             graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
                 promises.push(new Promise<void>((nodeFinished) => {

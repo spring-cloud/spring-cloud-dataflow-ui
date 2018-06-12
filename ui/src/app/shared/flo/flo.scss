@@ -71,6 +71,11 @@ $spring-grey: #DFE5E8;
   stroke-width: 3;
 }
 
+/* Otherwise ports, link labels, embedded shapes get outline on focus */
+svg * {
+  outline: none;
+}
+
 .input-port {
   cursor: pointer;
 }
