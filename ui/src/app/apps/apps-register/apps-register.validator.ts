@@ -1,4 +1,4 @@
-import {FormControl, FormGroup} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 /**
  * Validators for Register Form
@@ -18,6 +18,12 @@ export class AppsRegisterValidator {
    */
   static uriRegex = /^([a-zA-Z0-9-]+:\/\/)([\\w\\.:-]+)?([a-zA-Z0-9-\/.:-]+)*$/;
 
+
+  /**
+   * Docker artifact regex
+   */
+  static dockerArtifactRegex = /^(docker:)([a-zA-Z0-9-.-_]*)(\/)([a-zA-Z0-9-.-_]*)(\:)([a-zA-Z0-9-.-_]*)$/;
+
   /**
    * Validate the name conditions: no space, 2 characters min, no specials characters
    *
@@ -30,7 +36,7 @@ export class AppsRegisterValidator {
     }
 
     if (!AppsRegisterValidator.nameRegex.test(formControl.value)) {
-      return {invalid: true};
+      return { invalid: true };
     }
 
     return null;
@@ -47,8 +53,8 @@ export class AppsRegisterValidator {
       return null;
     }
 
-    if (!AppsRegisterValidator.uriRegex.test(formControl.value)) {
-      return {invalid: true};
+    if (!AppsRegisterValidator.uriRegex.test(formControl.value) && !AppsRegisterValidator.dockerArtifactRegex.test(formControl.value)) {
+      return { invalid: true };
     }
 
     return null;
