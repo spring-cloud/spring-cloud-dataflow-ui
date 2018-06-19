@@ -293,7 +293,11 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
           // Error: app not found
           builder.errors.global.push(line);
         } else {
-          builder.formGroup.get('appsVersion').get(appKey).setValue(value);
+          const app = this.refBuilder.streamDeployConfig.apps.find((app: any) => app.name === appKey);
+          // Populate if it's not the default version
+          if (!app || app.version !== value) {
+            builder.formGroup.get('appsVersion').get(appKey).setValue(value);
+          }
         }
       } else if (!StreamDeployService.app.is(key)) {
         // Invalid Key
