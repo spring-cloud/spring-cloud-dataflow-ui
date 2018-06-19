@@ -11,12 +11,13 @@ import { Router } from '@angular/router';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Observable } from 'rxjs/Observable';
-import { share, takeUntil } from 'rxjs/operators';
+import { mergeMap, share, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
+import { Platform } from '../../model/platform';
 
 /**
  * Stores progress percentage.
@@ -70,6 +71,11 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   streamDefs: Array<any> = [];
 
   /**
+   * Is deploy option enabled
+   */
+  isDeployEnabled = false;
+
+  /**
    * Errors
    */
   errors: Array<string>;
@@ -94,8 +100,15 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    */
   confirm: EventEmitter<boolean> = new EventEmitter();
 
+  /**
+   * FeatureInfo Observable
+   */
+  featureInfo$: Observable<FeatureInfo>;
 
-  featureInfo: Observable<FeatureInfo>;
+  /**
+   * FeatureInfo Subscription
+   */
+  featureInfoSubscription: Subscription;
 
   /**
    * Constructor
@@ -125,7 +138,20 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    */
   ngOnInit() {
     this.form = new FormGroup({}, this.uniqueStreamNames());
-    this.featureInfo = this.aboutService.getFeatureInfo().pipe(share());
+    this.featureInfo$ = this.aboutService.getFeatureInfo()
+      .pipe(mergeMap(
+        (featureInfo: FeatureInfo) => {
+          return featureInfo.skipperEnabled ? this.streamService.platforms() : Observable.of([]);
+        },
+        (featureInfo: FeatureInfo, platforms: Platform[]) => {
+          if (platforms.length < 2) {
+            this.isDeployEnabled = true;
+          }
+          return featureInfo;
+        }))
+      .pipe(share());
+
+    this.featureInfoSubscription = this.featureInfo$.subscribe();
   }
 
   /**
@@ -145,6 +171,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
+    this.featureInfoSubscription.unsubscribe();
   }
 
   /**
