@@ -1,5 +1,5 @@
-import {FormControl, FormGroup} from '@angular/forms';
-import {AppsRegisterValidator} from './apps-register.validator';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AppsRegisterValidator } from './apps-register.validator';
 
 /**
  * Test Application Register Validator functions {AppsRegisterValidator}.
@@ -30,14 +30,13 @@ describe('AppsRegisterValidator', () => {
 
   });
 
-  // TODO: to complete
   describe('uri', () => {
     it('invalid', () => {
       [
         ' ',
-        /*'http://foo. bar',
+        'http://foo. bar',
         'http://foo.b@r',
-        'http://foo.b%%r',*/
+        'http://foo.b%%r',
         'f'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
@@ -57,6 +56,11 @@ describe('AppsRegisterValidator', () => {
         'http://foo.bar:bar.foo:bar',
         'http://foo.bar:bar.foo-foo:bar',
         'http://foo.bar:bar.foo-foo:bar-bar',
+        'docker:sabby/xfmr:0.0.7.BUILD-SNAPSHOT',
+        'http://bit.ly/Celsius-BUILD-SNAPSHOT-stream-applications-kafka-10-maven',
+        'http://bit.ly/Clark-BUILD-SNAPSHOT-task-applications-maven',
+        'docker:springcloudstream/counter-sink-rabbit:1.3.1.RELEASE',
+        'docker:spring_cloud_stream/counter-sink_rabbit:1.3.1.RELEASE'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
         const result = AppsRegisterValidator.uri(uri);
