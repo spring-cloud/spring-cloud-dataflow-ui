@@ -175,4 +175,7 @@ export class MockTasksService {
     return Observable.of(this.taskDefinitions._embedded.taskDefinitionResourceList[0]);
   }
 
+  getTaskExecutions(): Observable<Page<TaskExecution>> {
+    return this.getExecutions();
+  }
 }

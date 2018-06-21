@@ -18,3 +18,11 @@ export interface TaskCreateParams {
   definition: string;
   name: string;
 }
+
+export interface TaskExecutionListParams extends ListParams {
+  task: string;
+  page: number;
+  size: number;
+  sort: string;
+  order: string;
+}

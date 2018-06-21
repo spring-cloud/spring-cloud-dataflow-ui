@@ -8,7 +8,10 @@ import { TaskDefinition } from './model/task-definition';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import * as moment from 'moment';
 import { OrderParams } from '../shared/components/shared.interface';
-import { TaskCreateParams, TaskLaunchParams, TaskListParams } from './components/tasks.interface';
+import {
+  TaskCreateParams, TaskExecutionListParams, TaskLaunchParams,
+  TaskListParams
+} from './components/tasks.interface';
 import { HttpUtils } from '../shared/support/http.utils';
 import { map } from 'rxjs/operators';
 import { LoggerService } from '../shared/services/logger.service';
@@ -144,6 +147,55 @@ export class TasksService {
           jsonItem.errorMessage,
           jsonItem.externalExecutionId
         );
+      }))
+      .catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Calls the Spring Cloud Data Flow server to get paged task executions specified in {@link TaskExecution}
+   * for a task.
+   *
+   * @param {TaskExecutionListParams} taskExecutionListParams
+   * @returns {Observable<any | any>} that will call the subscribed funtions to handle
+   * the results when returned from the Spring Cloud Data Flow server.
+   */
+  getTaskExecutions(taskExecutionListParams: TaskExecutionListParams) {
+    taskExecutionListParams = taskExecutionListParams || { task: '', page: 0, size: 20, sort: null, order: null };
+    const params = HttpUtils.getPaginationParams(taskExecutionListParams.page, taskExecutionListParams.size);
+    if (taskExecutionListParams.task) {
+      params.append('name', taskExecutionListParams.task);
+    }
+    if (taskExecutionListParams.sort && taskExecutionListParams.order) {
+      params.append('sort', `${taskExecutionListParams.sort},${taskExecutionListParams.order}`);
+    }
+    return this.http.get(TasksService.URL.EXECUTIONS, { search: params })
+      .pipe(map((res) => {
+        const taskExecutions = new Page<TaskExecution>();
+        const body = res.json();
+        if (body._embedded && body._embedded.taskExecutionResourceList) {
+          taskExecutions.items = body._embedded.taskExecutionResourceList.map(jsonItem => {
+            return new TaskExecution(
+              jsonItem.executionId,
+              jsonItem.exitCode,
+              jsonItem.taskName,
+              jsonItem.startTime,
+              jsonItem.endTime,
+              jsonItem.exitMessage,
+              jsonItem.arguments,
+              jsonItem.jobExecutionIds,
+              jsonItem.errorMessage,
+              jsonItem.externalExecutionId
+            );
+          });
+        }
+        if (body.page) {
+          taskExecutions.pageNumber = body.page.number;
+          taskExecutions.pageSize = body.page.size;
+          taskExecutions.totalElements = body.page.totalElements;
+          taskExecutions.totalPages = body.page.totalPages;
+        }
+        this.loggerService.log('Extracted Task Executions:', taskExecutions);
+        return taskExecutions;
       }))
       .catch(this.errorHandler.handleError);
   }

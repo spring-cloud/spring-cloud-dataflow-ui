@@ -1,0 +1,114 @@
+<div *ngIf="executions$ | async as executions; else loading">
+
+  <div id="executions-list">
+
+    <div id="filters" class="pui-filter" style="margin-top: 0.4rem">
+
+      <div class="pui-filter-center">
+        <div style="height: 34px">
+          &nbsp;
+        </div>
+      </div>
+
+      <div class="pui-filter-actions">
+        <div class="pui-filter-right" style="text-align: right">
+          <button (click)="refresh(executions.params)" name="app-refresh" type="button" class="btn btn-default btn-icon"
+                  title="Refresh">
+            <span class="glyphicon glyphicon-refresh"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <table *ngIf="executions.page?.items && executions.page.items.length > 0"
+           class="table table-hover table-actions" id="taskExecutionsTable">
+      <thead>
+      <tr>
+        <th style="width: 140px">
+          <app-sort id="sort-id" (change)="applySort(executions.params, $event)" [value]="'TASK_EXECUTION_ID'"
+                    [sort]="executions.params">
+            Execution Id
+          </app-sort>
+        </th>
+        <th nowrap="">
+          <app-sort id="sort-startdate" (change)="applySort(executions.params, $event)" [value]="'START_TIME'"
+                    [sort]="executions.params">
+            Start Date
+          </app-sort>
+        </th>
+        <th nowrap="">
+          <app-sort id="sort-enddate" (change)="applySort(executions.params, $event)" [value]="'END_TIME'"
+                    [sort]="executions.params">
+            End Date
+          </app-sort>
+        </th>
+        <th nowrap="">
+          <app-sort id="sort-exitcode" (change)="applySort(executions.params, $event)" [value]="'EXIT_CODE'"
+                    [sort]="executions.params">
+            Exit Code
+          </app-sort>
+        </th>
+        <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container
+        *ngFor="let item of executions.page.items | paginate: executions.page.getPaginationInstance(); index as i">
+        <tr>
+          <td>
+            <a (click)="details(item)" style="cursor: pointer">
+              #{{ item.executionId }}
+            </a>
+          </td>
+          <td>
+            {{ item.startTime }}
+          </td>
+          <td>
+            {{ item.endTime }}
+          </td>
+          <td>
+            {{ item.exitCode }}
+          </td>
+          <td class="table-actions" width="10px" nowrap="">
+            <div class="actions" role="group">
+              <button type="button" name="task-details{{ i }}" (click)="details(item)" class="btn btn-default"
+                      title="Details">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="pagination" *ngIf="executions.page && executions.page.totalPages > 1">
+          <pagination-controls *ngIf="executions.page.items.length > 0 "
+                               (pageChange)="getPage(executions.params, $event)"></pagination-controls>
+        </div>
+      </div>
+      <div class="col-xs-12" *ngIf="executions.page && executions.page?.totalElements > 0">
+        <app-pager [page]="executions.params.page" [total]="executions.page.totalElements"
+                   [size]="executions.params.size" (onSizeChange)="changeSize(executions.params, $event)">
+        </app-pager>
+      </div>
+    </div>
+
+    <div *ngIf="executions.page" id="empty" style="padding-top:1.5rem">
+
+      <div *ngIf="isExecutionsEmpty(executions.page)" class="text-center">
+        <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
+          <strong>No execution.</strong>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

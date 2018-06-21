@@ -14,6 +14,8 @@ import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
 import { TaskLaunchComponent } from './task-launch.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -27,6 +29,7 @@ describe('TaskLaunchComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const busyService = new BusyService();
+  const routingStateService = new MockRoutingStateService();
   const commonTestParams = { id: 'foo' };
 
   beforeEach(async(() => {
@@ -47,6 +50,7 @@ describe('TaskLaunchComponent', () => {
       providers: [
         { provide: TasksService, useValue: tasksService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService }
       ]
