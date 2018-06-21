@@ -58,8 +58,10 @@ export class RoutingStateService {
         .find((history) => {
           return !isNotRegex || !(isNotRegex.test(history.url));
         });
-      this.history = this.history.slice(0, this.history.indexOf(item));
-      url = item.url;
+      if (item) {
+        this.history = this.history.slice(0, this.history.indexOf(item));
+        url = item.url;
+      }
     }
     this.router.navigate([url]);
   }
