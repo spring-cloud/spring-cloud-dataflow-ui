@@ -1,18 +1,5 @@
 <div *ngIf="task$ | async as task; else loading">
 
-  <div class="task-actions">
-    <button name="task-launch" type="button" [appRoles]="['ROLE_CREATE']" (click)="launch(task.taskDefinition)"
-            class="btn btn-default" style="margin-left: 0;" title="Launch">
-      <span class="glyphicon glyphicon-play"></span>
-      Launch
-    </button>
-    <button name="task-remove" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(task.taskDefinition)"
-            class="btn btn-danger" style="margin-left: 0;" title="Destroy">
-      <span class="glyphicon glyphicon-trash"></span>
-      Destroy
-    </button>
-  </div>
-
   <div>
     <div class="row task-summary-row">
       <div class="col-md-3">

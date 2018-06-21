@@ -15,6 +15,14 @@ import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { RolesDirective } from '../../auth/directives/roles.directive';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { AuthService } from '../../auth/auth.service';
+import { LoggerService } from '../../shared/services/logger.service';
+import { MockModalService } from '../../tests/mocks/modal';
+import { BsModalService } from 'ngx-bootstrap';
 
 /**
  * Test {@link TaskDefinitionComponent}.
@@ -28,13 +36,18 @@ describe('TaskDefinitionComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const busyService = new BusyService();
+  const authService = new MockAuthService();
+  const aboutService = new MocksSharedAboutService();
   const commonTestParams = { id: 'foo' };
   const routingStateService = new MockRoutingStateService();
+  const loggerService = new LoggerService();
+  const modalService = new MockModalService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       declarations: [
+        RolesDirective,
         TaskDefinitionComponent,
         DataflowDateTimePipe,
         DataflowDurationPipe
@@ -46,11 +59,15 @@ describe('TaskDefinitionComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
+        { provide: SharedAboutService, useValue: aboutService },
+        { provide: AuthService, useValue: authService },
         { provide: TasksService, useValue: tasksService },
+        { provide: BsModalService, useValue: modalService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: BusyService, useValue: busyService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

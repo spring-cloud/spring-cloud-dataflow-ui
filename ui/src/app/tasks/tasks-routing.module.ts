@@ -10,6 +10,7 @@ import { TaskDefinitionComponent } from './task-definition/task-definition.compo
 import { TaskDefinitionsComponent } from './task-definitions/task-definitions.component';
 import { TaskGraphComponent } from './task-definition/graph/task-graph.component';
 import { TaskSummaryComponent } from './task-definition/summary/task-summary.component';
+import { TaskDefinitionExecutionsComponent } from './task-definition/executions/task-definition-executions.component';
 
 const taskRoutes: Routes = [
   {
@@ -63,6 +64,10 @@ const taskRoutes: Routes = [
           {
             path: 'summary',
             component: TaskSummaryComponent,
+          },
+          {
+            path: 'executions',
+            component: TaskDefinitionExecutionsComponent,
           }
         ]
       }

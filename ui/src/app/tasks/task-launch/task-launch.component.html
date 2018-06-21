@@ -107,9 +107,9 @@
       </div>
     </div>
     <div style="text-align: center;padding: 2rem 0">
-      <a class="btn btn-default" routerLink="/tasks/definitions">
+      <button type="button" class="btn btn-default" (click)="cancel(taskDefinition)">
         Back
-      </a>
+      </button>
       <button [disabled]="form.invalid" type="submit" class="btn btn-primary">
         Launch the task
       </button>

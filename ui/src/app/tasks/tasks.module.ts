@@ -31,6 +31,7 @@ import { TaskGraphComponent } from './task-definition/graph/task-graph.component
 import { TaskSummaryComponent } from './task-definition/summary/task-summary.component';
 import { AppsModule } from '../apps/apps.module';
 import { TasksTabulationComponent } from './components/tasks-tabulation/tasks-tabulation.component';
+import { TaskDefinitionExecutionsComponent } from './task-definition/executions/task-definition-executions.component';
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import { TasksTabulationComponent } from './components/tasks-tabulation/tasks-ta
     TaskDefinitionsComponent,
     TaskSummaryComponent,
     TaskGraphComponent,
-    TasksTabulationComponent
+    TasksTabulationComponent,
+    TaskDefinitionExecutionsComponent
   ],
   entryComponents: [
     NodeComponent,
