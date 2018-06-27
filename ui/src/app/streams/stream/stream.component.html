@@ -1,22 +1,27 @@
-<div class="heading">
-  <div class="description">
-    <h1>Detailed view of stream <strong>'{{ id }}'</strong></h1>
-    <p>This section shows the details of a stream.</p>
-  </div>
-</div>
+<div *ngIf="streamDefinitions$ | async as streamDefinitions; else loading">
 
-<div class="tab-simple">
-  <ul class="nav nav-tabs">
-    <li role="presentation" routerLinkActive="active"><a routerLink="summary">Summary</a></li>
-    <li role="presentation" routerLinkActive="active"><a routerLink="graph">Graph</a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane in active">
-      <router-outlet></router-outlet>
+  <div class="heading">
+    <div class="description">
+      <h1>Detailed view of stream <strong>'{{ id }}'</strong></h1>
+      <p>This section shows the details of a stream.</p>
     </div>
   </div>
-</div>
 
-<div class="footer-actions" style="text-align: center;margin: 1rem 0">
-  <button type="button" id="btn-cancel" class="btn btn-default" (click)="cancel()">Back</button>
+  <div class="tab-simple">
+    <ul class="nav nav-tabs">
+      <li role="presentation" routerLinkActive="active"><a routerLink="summary">Summary</a></li>
+      <li role="presentation" routerLinkActive="active"><a routerLink="graph">Graph</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane in active">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+  <div class="footer-actions" style="text-align: center;margin: 1rem 0">
+    <button type="button" id="btn-cancel" class="btn btn-default" (click)="cancel()">Back</button>
+  </div>
 </div>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

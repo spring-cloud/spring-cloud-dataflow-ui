@@ -10,6 +10,7 @@ import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable } from 'rxjs/Observable';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Component used to deploy stream definitions.
@@ -89,7 +90,7 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
         this.confirm.emit(data);
         this.cancel();
       }, (error) => {
-        this.notificationService.error(error);
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
       });
 
     this.busyService.addSubscription(busy);

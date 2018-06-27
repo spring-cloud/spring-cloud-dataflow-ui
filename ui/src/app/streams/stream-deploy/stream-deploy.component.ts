@@ -14,6 +14,7 @@ import { Parser } from '../../shared/services/parser';
 import { StreamDeployService } from './stream-deploy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { HttpAppError, AppError } from '../../shared/model/error.model';
 
 /**
  * Component used to deploy stream definitions.
@@ -34,7 +35,8 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    */
   config$: Observable<{
     id: string,
-    skipper: boolean
+    skipper: boolean,
+    streamDefinition: StreamDefinition
   }>;
 
   /**
@@ -156,7 +158,14 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       .pipe(map((config) => {
         this.refConfig = config;
         return config;
-      }));
+      }))
+      .catch((error) => {
+        if (HttpAppError.is404(error)) {
+          this.router.navigate(['/streams/definitions']);
+        }
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        return Observable.throw(error);
+      });
   }
 
   /**
@@ -215,6 +224,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     });
 
     let obs = Observable.of({});
+
     const isDeployed = (['deployed', 'deploying'].indexOf(this.refConfig.streamDefinition.status) > -1);
     const update = this.refConfig.skipper && isDeployed;
 
@@ -250,7 +260,6 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
           this.notificationService.error(err ? err : 'An error occurred during the stream deployment update.');
         }
       );
-
     this.busyService.addSubscription(busy);
 
   }

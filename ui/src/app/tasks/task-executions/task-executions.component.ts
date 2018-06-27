@@ -10,6 +10,7 @@ import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Component that display the Task Executions.
@@ -109,7 +110,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
 

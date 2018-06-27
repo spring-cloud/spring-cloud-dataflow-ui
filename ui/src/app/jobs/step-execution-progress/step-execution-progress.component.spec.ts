@@ -16,6 +16,8 @@ import {
 } from '../../tests/mocks/mock-data';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MockNotificationService } from '../../tests/mocks/notification';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 describe('StepExecutionProgressComponent', () => {
   let component: StepExecutionProgressComponent;
@@ -26,6 +28,7 @@ describe('StepExecutionProgressComponent', () => {
   let jobsService: MockJobsService;
   const notificationService = new MockNotificationService();
   const loggerService = new LoggerService();
+  const routingStateService = new MockRoutingStateService();
 
   beforeEach(async(() => {
     jobsService = new MockJobsService();
@@ -42,6 +45,7 @@ describe('StepExecutionProgressComponent', () => {
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
       ]
@@ -97,9 +101,9 @@ describe('StepExecutionProgressComponent', () => {
     fixture.detectChanges();
     de = fixture.debugElement.query(By.css('button[id=back]'));
     el = de.nativeElement;
-    const navigate = spyOn((<any>component).router, 'navigate');
+    const navigate = spyOn(routingStateService, 'back');
     fixture.detectChanges();
     el.click();
-    expect(navigate).toHaveBeenCalledWith(['jobs/executions/1/1']);
+    expect(navigate).toHaveBeenCalled();
   });
 });

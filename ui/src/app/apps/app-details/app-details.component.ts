@@ -16,6 +16,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { HttpAppError, AppError } from '../../shared/model/error.model';
 
 /**
  * Provides details for an App Registration
@@ -75,7 +76,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * @param {AppsService} appsService
    * @param {SharedAboutService} sharedAboutService
    * @param {NotificationService} notificationService
-   * @param {Router} router
    * @param {ActivatedRoute} route
    * @param {RoutingStateService} routingStateService
    * @param {BusyService} busyService
@@ -85,7 +85,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   constructor(private appsService: AppsService,
               private sharedAboutService: SharedAboutService,
               private notificationService: NotificationService,
-              private router: Router,
               private route: ActivatedRoute,
               private routingStateService: RoutingStateService,
               private busyService: BusyService,
@@ -98,13 +97,15 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.loggerService.log('App Service Details');
-    this.sharedAboutService.getFeatureInfo().pipe(combineLatest(this.route.params)).subscribe((data: any[]) => {
-      const featureInfo = data[0] as FeatureInfo;
-      const params = data[1] as Params;
-      this.application = new AppRegistration(params['appName'], params['appType'] as ApplicationType);
-      this.skipperEnabled = featureInfo.skipperEnabled;
-      this.refresh();
-    });
+    this.sharedAboutService.getFeatureInfo()
+      .pipe(combineLatest(this.route.params))
+      .subscribe((data: any[]) => {
+        const featureInfo = data[0] as FeatureInfo;
+        const params = data[1] as Params;
+        this.application = new AppRegistration(params['appName'], params['appType'] as ApplicationType);
+        this.skipperEnabled = featureInfo.skipperEnabled;
+        this.refresh();
+      });
   }
 
   /**
@@ -143,7 +144,10 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
           this.detailedAppRegistration = detailed;
         },
         error => {
-          this.notificationService.error(error);
+          if (HttpAppError.is404(error)) {
+            this.cancel();
+          }
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
 
     this.busyService.addSubscription(busy);
@@ -158,18 +162,22 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
       .getAppVersions(ApplicationType[this.application.type.toString()], this.application.name)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data: any) => {
-          this.application.versions = data;
-          this.defaultVersion = this.application.versions.find((a) => a.defaultVersion);
-          if (this.defaultVersion) {
-            this.application.version = this.defaultVersion.version;
-            this.application.uri = this.defaultVersion.uri;
-            this.selectVersion(this.defaultVersion.version);
+          if (data.length > 0) {
+            this.application.versions = data;
+            this.defaultVersion = this.application.versions.find((a) => a.defaultVersion);
+            if (this.defaultVersion) {
+              this.application.version = this.defaultVersion.version;
+              this.application.uri = this.defaultVersion.uri;
+              this.selectVersion(this.defaultVersion.version);
+            } else {
+              this.selectVersion(this.application.versions[0].version);
+            }
           } else {
-            this.selectVersion(this.application.versions[0].version);
+            this.loadProperties();
           }
         },
         error => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
 
     this.busyService.addSubscription(busy);

@@ -5,6 +5,7 @@ import {AppsService} from '../apps.service';
 import 'rxjs/add/observable/throw';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Applications Unregister modal
@@ -71,7 +72,7 @@ export class AppsUnregisterComponent {
         this.event.emit(data);
         this.close();
       }, error => {
-        this.notificationService.error(error);
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         this.close();
       });
   }

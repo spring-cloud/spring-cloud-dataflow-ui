@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -158,9 +159,8 @@ export class AppsComponent implements OnInit, OnDestroy {
           this.updateContext();
         },
         error => {
-          this.notificationService.error(error);
-        }
-      );
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        });
 
     this.busyService.addSubscription(busy);
   }

@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { RenderService } from '../../components/flo/render.service';
 import { MetamodelService } from '../../components/flo/metamodel.service';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { AppError } from '../../../shared/model/error.model';
 
 /**
  * Component that shows the details of a Stream Definition
@@ -66,7 +67,7 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
         .subscribe(streams => {
           this.dsl = streams.map(s => `${s.name}=${s.dslText}`).join('\n');
         }, (error) => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
 
       this.busyService.addSubscription(busy);
