@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RequestOptions, RequestOptionsArgs, Headers } from '@angular/http';
+import { RequestOptions, RequestOptionsArgs, Headers, RequestMethod } from '@angular/http';
 
 /**
  * Work-around to the fact that Angular re-instantiates
@@ -27,14 +27,15 @@ export class DefaultRequestOptions extends RequestOptions {
 
   merge(options: RequestOptions) {
     const newRequestOptions = super.merge(options);
-
+    if (options.method === RequestMethod.Put) {
+      return newRequestOptions;
+    }
     if (ValueHolder.xAuthToken) {
       if (!newRequestOptions.headers) {
         newRequestOptions.headers = new Headers();
       }
       newRequestOptions.headers.append(this.xAuthTokenHeaderName, ValueHolder.xAuthToken);
     }
-
     return new DefaultRequestOptions({
       method: newRequestOptions.method,
       headers: newRequestOptions.headers,
