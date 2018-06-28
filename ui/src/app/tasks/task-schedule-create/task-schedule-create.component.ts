@@ -13,6 +13,7 @@ import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { Page } from '../../shared/model/page';
+import { EMPTY } from 'rxjs/index';
 
 /**
  * Component handling a creation of a task schedule.
@@ -69,39 +70,42 @@ export class TaskScheduleCreateComponent implements OnInit {
     this.schedule$ = this.route.params
       .pipe(mergeMap(
         (params: Params) => {
+          let result: Observable<any>;
           if (this.groupRouteService.isSimilar(params.id)) {
             if (this.groupRouteService.group(params.id)) {
-              return Observable.of(this.groupRouteService.group(params.id));
+              result = Observable.of(this.groupRouteService.group(params.id));
             } else {
-              return Observable.throw(`Group selection not found.`);
+              return Observable.throwError(`Group selection not found.`);
             }
           } else {
-            return this.tasksService.getDefinition(params.id);
+            result = this.tasksService.getDefinition(params.id);
           }
-        },
-        (params: Params, data: any) => {
-          if (this.groupRouteService.isSimilar(params.id)) {
-            return {
-              params: params,
-              taskDefinitions: data
-            };
-          } else {
-            return {
-              params: params,
-              taskDefinitions: [data.name]
-            };
-          }
+
+          return result.pipe(map((data) => {
+            if (this.groupRouteService.isSimilar(params.id)) {
+              return {
+                params: params,
+                taskDefinitions: data
+              };
+            } else {
+              return {
+                params: params,
+                taskDefinitions: [data.name]
+              };
+            }
+          }));
+
         }
       ))
       .pipe(mergeMap(
-        () => this.tasksService.getSchedules({ task: '', page: 0, size: 10000, sort: null, order: null }),
-        (schedule, schedules: Page<TaskSchedule>) => {
-          return {
-            params: schedule.params,
-            taskDefinitions: schedule.taskDefinitions,
-            schedules: schedules.items.map((item) => item.name.toLowerCase())
-          };
-        }
+        (schedule) => this.tasksService.getSchedules({ task: '', page: 0, size: 10000, sort: null, order: null })
+          .pipe(map((schedules: Page<TaskSchedule>) => {
+            return {
+              params: schedule.params,
+              taskDefinitions: schedule.taskDefinitions,
+              schedules: schedules.items.map((item) => item.name.toLowerCase())
+            };
+          })),
       ))
       .pipe(map((schedule) => {
         this.buildForm(schedule);
@@ -110,7 +114,7 @@ export class TaskScheduleCreateComponent implements OnInit {
       .catch((error) => {
         this.notificationService.error(error.toString());
         this.cancel();
-        return Observable.throw(error);
+        return EMPTY;
       });
   }
 

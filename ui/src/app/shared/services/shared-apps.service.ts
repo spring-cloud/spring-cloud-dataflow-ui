@@ -45,7 +45,7 @@ export class SharedAppsService {
 
     requestOptionsArgs.search = params;
     return this.http.get(SharedAppsService.appsUrl, requestOptionsArgs)
-      .map(this.extractData.bind(this))
+      .map(response => this.extractData(response))
       .catch(this.errorHandler.handleError);
   }
 

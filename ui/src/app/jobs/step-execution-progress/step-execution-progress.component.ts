@@ -8,6 +8,7 @@ import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { NotificationService } from '../../shared/services/notification.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { EMPTY } from 'rxjs/index';
 
 /**
  * Step Execution Progress
@@ -66,11 +67,10 @@ export class StepExecutionProgressComponent implements OnInit {
           this.jobsService.getJobExecution(val.jobid),
           this.jobsService.getStepExecution(val.jobid, val.stepid),
           this.jobsService.getStepExecutionProgress(val.jobid, val.stepid)
-        ]),
-        (val1: Params, val2: any) => {
-          this.jobId = val1.jobid;
+        ]).pipe(map((val2) => {
+          this.jobId = val.jobid;
           return val2;
-        }
+        }))
       ))
       .pipe(map(
         val => ({ jobExecution: val[0], stepExecution: val[1], stepExecutionProgress: val[2] })
@@ -80,7 +80,7 @@ export class StepExecutionProgressComponent implements OnInit {
         }
         this.loggerService.log('error while loading Step Execution Progress', error);
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return Observable.throw(error);
+        return EMPTY;
       });
   }
 

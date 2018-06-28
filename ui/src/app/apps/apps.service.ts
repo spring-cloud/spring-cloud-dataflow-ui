@@ -104,7 +104,7 @@ export class AppsService {
    * @param {string} version The version to set default
    * @returns {Observable<any>}
    */
-  setAppDefaultVersion(type: ApplicationType, name: string, version: string): Observable<Response> {
+  setAppDefaultVersion(type: ApplicationType, name: string, version: string): Observable<void> {
     this.loggerService.log('Set app default version...', {name: name, type: type, version: version});
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, options)
@@ -118,7 +118,7 @@ export class AppsService {
    * @param {BulkImportParams} bulkImportParams Parameters
    * @returns {Observable<Response>}
    */
-  bulkImportApps(bulkImportParams: BulkImportParams): Observable<Response> {
+  bulkImportApps(bulkImportParams: BulkImportParams): Observable<void> {
     this.loggerService.log('Bulk import applications...', bulkImportParams);
     const options = HttpUtils.getDefaultRequestOptions();
     const params = new URLSearchParams();
@@ -135,9 +135,9 @@ export class AppsService {
    * Unregister Application
    *
    * @param {AppRegistration} appRegistration
-   * @returns {Observable<Response>}
+   * @returns {Observable<void>}
    */
-  unregisterApp(appRegistration: AppRegistration): Observable<Response> {
+  unregisterApp(appRegistration: AppRegistration): Observable<void> {
     this.loggerService.log('Unregistering...', appRegistration);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, options)
@@ -150,10 +150,10 @@ export class AppsService {
    * Join unregisterApp()
    *
    * @param {AppRegistration[]} appRegs
-   * @returns {Observable<Response[]>}
+   * @returns {Observable<void[]>}
    */
-  unregisterApps(appRegs: AppRegistration[]): Observable<Response[]> {
-    const observables: Observable<Response>[] = [];
+  unregisterApps(appRegs: AppRegistration[]): Observable<void[]> {
+    const observables: Observable<void>[] = [];
     for (const appReg of appRegs) {
       observables.push(this.unregisterApp(appReg));
     }
@@ -180,9 +180,9 @@ export class AppsService {
    * Register Application
    *
    * @param {AppRegisterParams} appRegisterParams
-   * @returns {Observable<Response>}
+   * @returns {Observable<void>}
    */
-  registerApp(appRegisterParams: AppRegisterParams): Observable<Response> {
+  registerApp(appRegisterParams: AppRegisterParams): Observable<void> {
     this.loggerService.log('Registering app...', appRegisterParams);
     const params = new URLSearchParams();
     params.append('uri', appRegisterParams.uri);
@@ -202,11 +202,11 @@ export class AppsService {
    * Join registerApp()
    *
    * @param {AppRegistration[]} appRegs
-   * @returns {Observable<Response[]>}
+   * @returns {Observable<void[]>}
    */
-  registerApps(appRegs: AppRegisterParams[]): Observable<Response[]> {
+  registerApps(appRegs: AppRegisterParams[]): Observable<void[]> {
     this.loggerService.log(`Registering ${appRegs.length} apps...`, appRegs);
-    const observables: Observable<Response>[] = [];
+    const observables: Observable<void>[] = [];
     for (const appReg of appRegs) {
       observables.push(this.registerApp(appReg));
     }

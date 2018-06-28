@@ -12,7 +12,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AboutDetailsComponent } from '../components/about-more/about-details.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
-import { ClipboardModule } from 'ngx-clipboard/dist';
+import { ClipboardModule } from 'ngx-clipboard';
 import { MapValuesPipe } from '../../shared/pipes/map-values-pipe.pipe';
 
 describe('AboutComponent', () => {

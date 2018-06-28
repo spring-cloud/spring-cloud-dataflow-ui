@@ -64,7 +64,7 @@ The following instructions can be used to do this:
 
 ## Unit Tests
 
-	$ ng test --browsers ChromeHeadless --single-run
+	$ ng test --browsers ChromeHeadless --watch
 
 ## E2E Tests
 

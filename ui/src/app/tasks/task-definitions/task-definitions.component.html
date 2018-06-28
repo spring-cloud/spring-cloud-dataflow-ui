@@ -104,7 +104,7 @@
                 <span class="glyphicon glyphicon-search"></span>
               </button>
               <button type="button" name="task-launch{{ i }}" (click)="launch(item)" [appRoles]="['ROLE_CREATE']"
-                      class="btn btn-default" style="margin-left: 0;" title="Launch task">
+                      class="btn btn-default" title="Launch task">
                 <span class="glyphicon glyphicon-play"></span>
               </button>
               <button *ngIf="schedulerEnabled" type="button" name="task-schedule{{ i }}" (click)="schedule(item)" [appRoles]="['ROLE_CREATE']"
@@ -117,7 +117,7 @@
                 <span class="glyphicon glyphicon-remove"></span>
               </button>
               <button name="task-destroy{{ i }}" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(item)"
-                      class="btn btn-default" style="margin-left: 0;" title="Destroy task">
+                      class="btn btn-default" title="Destroy task">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
             </div>

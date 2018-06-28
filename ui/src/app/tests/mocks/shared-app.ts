@@ -7,6 +7,7 @@ import {Page} from '../../shared/model/page';
 import {AppRegistration} from '../../shared/model/app-registration.model';
 import {DetailedAppRegistration} from '../../shared/model/detailed-app-registration.model';
 import {Flo} from 'spring-flo';
+import { EMPTY } from 'rxjs/index';
 
 const METAMODEL_DATA: Array<RawMetadata> = [{
   name: 'http', type: 'source', description: 'Receive HTTP input',
@@ -129,7 +130,7 @@ export class MockSharedAppService extends SharedAppsService {
     if (rawData) {
       return Observable.of(new DetailedAppRegistration().deserialize(rawData));
     } else {
-      return Observable.empty();
+      return EMPTY;
     }
   }
 

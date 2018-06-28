@@ -5,18 +5,18 @@
             [disabled]="(stream.streamDefinition.status === 'undeployed'
             || stream.streamDefinition.status === 'incomplete')"
             (click)="undeploy(stream.streamDefinition)"
-            class="btn btn-default" style="margin-left: 0;" title="Undeploy">
+            class="btn btn-default" title="Undeploy">
       <span class="glyphicon glyphicon-stop"></span>
       Undeploy
     </button>
     <button name="stream-deploy" type="button" [appRoles]="['ROLE_CREATE']"
             (click)="deploy(stream.streamDefinition)"
-            class="btn btn-default" style="margin-left: 0;" title="Deploy">
+            class="btn btn-default" title="Deploy">
       <span class="glyphicon glyphicon-play"></span>
       Deploy
     </button>
     <button name="stream-remove" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(stream.streamDefinition)"
-            class="btn btn-danger" style="margin-left: 0;" title="Destroy">
+            class="btn btn-danger" title="Destroy">
       <span class="glyphicon glyphicon-trash"></span>
       Destroy
     </button>

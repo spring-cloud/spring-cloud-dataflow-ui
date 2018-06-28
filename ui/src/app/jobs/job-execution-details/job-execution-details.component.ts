@@ -9,6 +9,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { EMPTY } from 'rxjs/index';
 
 /**
  * Displays a job's execution detail information based on the job execution id that is passed in via params on the URI.
@@ -53,15 +54,14 @@ export class JobExecutionDetailsComponent implements OnInit {
   ngOnInit() {
     this.jobExecution$ = this.route.params
       .pipe(mergeMap(
-        val => this.jobsService.getJobExecution(val.id),
-        (val1: Params, val2: JobExecution) => val2
+        val => this.jobsService.getJobExecution(val.id)
       )).catch((error) => {
         if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
           this.back();
         }
         this.loggerService.log('error while loading Job Execution Details', error);
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return Observable.throw(error);
+        return EMPTY;
       });
   }
 

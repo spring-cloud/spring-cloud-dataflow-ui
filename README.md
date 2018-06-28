@@ -168,7 +168,7 @@ You can view the results via your browser at: http://127.0.0.1:8888/
 ## Code Coverage Report
 Produces code coverage report.
 
-    $ ng test --browsers PhantomJS --single-run --code-coverage  --reporters=coverage-istanbul
+    $ ng test --browsers PhantomJS --watch --code-coverage  --reporters=coverage-istanbul
 
 [Angular]: http://angular.io/
 [Angular CLI]: https://cli.angular.io/

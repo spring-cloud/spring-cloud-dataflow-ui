@@ -18,7 +18,7 @@ exports.config = {
   },
   plugins: [
     {
-      path: 'protractor-docker-plugin/index.js',
+      path: '../protractor-docker-plugin/index.js',
       dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
       useCachedoDockerComposeFile: true
     }
@@ -41,7 +41,7 @@ exports.config = {
   maxSessions: 1,
   allScriptsTimeout: 160000,
   specs: [
-    './e2e/**/*.e2e-spec.ts'
+    './src/**/*.e2e-spec.ts'
   ],
   directConnect: false,
   baseUrl: 'http://localhost:4200/',
@@ -52,7 +52,10 @@ exports.config = {
     return new Promise(function(resolve, reject){
       exports.bs_local = new browserstack.Local();
       exports.bs_local.start({'key': exports.config.commonCapabilities['browserstack.key'] }, function(error) {
-        if (error) return reject(error);
+        if (error) {
+          console.log('Error:', error);
+          return reject(error);
+        }
         console.log('Connected. Now testing...');
 
         resolve();
@@ -73,7 +76,7 @@ exports.config = {
   },
   onPrepare() {
     require('ts-node').register({
-      project: 'e2e/tsconfig.e2e.json'
+      project: require('path').join(__dirname, './tsconfig.e2e.json')
     });
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   }

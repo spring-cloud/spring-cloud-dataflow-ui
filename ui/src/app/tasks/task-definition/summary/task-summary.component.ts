@@ -6,6 +6,7 @@ import { TasksService } from '../../tasks.service';
 import { TaskDefinition } from '../../model/task-definition';
 import { ToolsService } from '../../components/flo/tools.service';
 import { TaskConversion } from '../../components/flo/model/models';
+import { map } from 'rxjs/internal/operators';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -50,35 +51,32 @@ export class TaskSummaryComponent implements OnInit {
    */
   refresh() {
     this.task$ = this.route.parent.params
+      .pipe(mergeMap(val => this.tasksService.getDefinition(val.id)))
       .pipe(mergeMap(
-        val => this.tasksService.getDefinition(val.id),
-        (val1: Params, val2: TaskDefinition) => val2
-      ))
-      .pipe(mergeMap(
-        val => this.toolsService.parseTaskTextToGraph(val.dslText, val.name),
-        (val1: TaskDefinition, val2: TaskConversion) => {
-          let apps = [];
-          if (val2.graph && val2.graph.nodes) {
-            apps = val2.graph.nodes.map((node) => {
-              if (node.name === 'START' || node.name === 'END') {
-                return null;
-              }
-              const item = {
-                name: node.name,
-                origin: node.name,
-                type: 'task'
-              };
-              if (node.metadata && node.metadata['label']) {
-                item.name = node.metadata['label'];
-              }
-              return item;
-            }).filter((app) => app !== null);
-          }
-          return {
-            taskDefinition: val1,
-            apps: apps
-          };
-        }
+        val => this.toolsService.parseTaskTextToGraph(val.dslText, val.name)
+          .pipe(map((val2: TaskConversion) => {
+            let apps = [];
+            if (val2.graph && val2.graph.nodes) {
+              apps = val2.graph.nodes.map((node) => {
+                if (node.name === 'START' || node.name === 'END') {
+                  return null;
+                }
+                const item = {
+                  name: node.name,
+                  origin: node.name,
+                  type: 'task'
+                };
+                if (node.metadata && node.metadata['label']) {
+                  item.name = node.metadata['label'];
+                }
+                return item;
+              }).filter((app) => app !== null);
+            }
+            return {
+              taskDefinition: val,
+              apps: apps
+            };
+          }))
       ));
   }
 

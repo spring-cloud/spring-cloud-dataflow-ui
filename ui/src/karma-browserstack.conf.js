@@ -6,22 +6,22 @@ module.exports = function (config) {
   const customLaunchers = {
     'bs_chrome': {
       base: 'BrowserStack',
-      browser: 'firefox',
-      browser_version: '59',
-      os: 'Windows',
-      os_version: '10'
+      'os' : 'OS X',
+      'os_version' : 'High Sierra',
+      'browser' : 'Safari',
+      'browser_version' : '11.1'
     }
   };
 
   config.set({
     basePath: '',
-    frameworks: ['jasmine', '@angular/cli'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
 
     plugins: [
       require('karma-jasmine'),
       require('karma-browserstack-launcher'),
       require('karma-jasmine-html-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma')
     ],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
@@ -33,6 +33,7 @@ module.exports = function (config) {
       name: 'Data Flow Dashboard Unit Tests'
     },
     captureTimeout: 120000,
+    retryLimit: 10,
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
     singleRun: true,

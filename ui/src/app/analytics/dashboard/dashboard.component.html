@@ -1,7 +1,7 @@
 <button type="button" (click)="resetDashboard()"
         class="btn btn-default">Reset <span class="glyphicon glyphicon-trash"></span></button>
 <form #dashboardForm="ngForm" name="dashboardForm" role="form" novalidate>
-  <table *ngIf="dashboardItems && dashboardItems.length > 0" class="table table-hover">
+  <table *ngIf="dashboardItems && dashboardItems.length > 0" class="table table-hover table-actions">
     <thead>
       <tr>
           <th style="width: 200px">Metric Type</th>
@@ -51,23 +51,22 @@
                  class="form-control">
           <span class="help-block" *ngIf="refreshRate.invalid && refreshRate.touched">Please provide a valid refresh rate (seconds)</span>
       </td>
-      <td class="action-column">
-          <button type="button" (click)="moveUpItem(index)" [disabled]="first"
-          class="btn btn-default" title="Details"
-          ><span class="glyphicon glyphicon-arrow-up"></span>
+      <td class="table-actions" width="10px" nowrap="">
+        <div class="actions" role="group">
+          <button type="button" (click)="moveUpItem(index)" [disabled]="first" class="btn btn-default" title="Details">
+            <span class="glyphicon glyphicon-arrow-up"></span>
           </button>
-          <button type="button" (click)="moveDownItem(index)" [disabled]="last"
-                  class="btn btn-default" style="margin-left: 0;" title="Details"
-          ><span class="glyphicon glyphicon-arrow-down"></span>
+          <button type="button" (click)="moveDownItem(index)" [disabled]="last" class="btn btn-default" title="Details">
+            <span class="glyphicon glyphicon-arrow-down"></span>
           </button>
-          <button type="button" (click)="addNewDashboardItem(index)"
-          class="btn btn-default" style="margin-left: 0;" title="Unregister"
-          ><span class="glyphicon glyphicon-plus"></span>
+          <button type="button" (click)="addNewDashboardItem(index)" class="btn btn-default" title="Unregister">
+            <span class="glyphicon glyphicon-plus"></span>
           </button>
           <button type="button" (click)="removeDashboardItem(index)" [disabled]="dashboardItems.length <= 1"
-                  class="btn btn-default" style="margin-left: 0;" title="Unregister"
-          ><span class="glyphicon glyphicon-trash"></span>
+                  class="btn btn-default" title="Unregister">
+            <span class="glyphicon glyphicon-trash"></span>
           </button>
+        </div>
       </td>
     </tr>
     <tr *ngIf="item.counter && (item.visualization || item.metricType?.name === 'Counters')">

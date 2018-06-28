@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
+import { EMPTY } from 'rxjs/index';
 
 /**
  * Component that display a Task Execution.
@@ -47,15 +48,14 @@ export class TaskExecutionComponent implements OnInit {
   ngOnInit() {
     this.taskExecution$ = this.route.params
       .pipe(mergeMap(
-        (val) => this.tasksService.getExecution(val.id),
-        (val1, val2) => val2
+        (val) => this.tasksService.getExecution(val.id)
       ))
-      .catch((error) => {
+      .catch(error => {
         if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
           this.cancel();
         }
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return Observable.throw(error);
+        return EMPTY;
       });
   }
 

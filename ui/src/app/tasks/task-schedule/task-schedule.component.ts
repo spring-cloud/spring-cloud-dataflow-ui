@@ -53,8 +53,7 @@ export class TaskScheduleComponent implements OnInit {
   ngOnInit() {
     this.taskSchedule$ = this.route.params
       .pipe(mergeMap(
-        (params: Params) => this.tasksService.getSchedule(params.id),
-        (params: Params, schedule: TaskSchedule) => schedule
+        (params: Params) => this.tasksService.getSchedule(params.id)
       ));
   }
 

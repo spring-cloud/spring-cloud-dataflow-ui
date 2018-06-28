@@ -18,6 +18,7 @@ import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { Platform } from '../../model/platform';
+import { map } from 'rxjs/internal/operators';
 
 /**
  * Stores progress percentage.
@@ -141,13 +142,13 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
     this.featureInfo$ = this.aboutService.getFeatureInfo()
       .pipe(mergeMap(
         (featureInfo: FeatureInfo) => {
-          return featureInfo.skipperEnabled ? this.streamService.platforms() : Observable.of([]);
-        },
-        (featureInfo: FeatureInfo, platforms: Platform[]) => {
-          if (platforms.length < 2) {
-            this.isDeployEnabled = true;
-          }
-          return featureInfo;
+          return featureInfo.skipperEnabled ? this.streamService.platforms() : Observable.of([])
+            .pipe(map((platforms: Platform[]) => {
+              if (platforms.length < 2) {
+                this.isDeployEnabled = true;
+              }
+              return featureInfo;
+            }));
         }))
       .pipe(share());
 

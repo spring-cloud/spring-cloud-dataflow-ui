@@ -16,6 +16,8 @@ import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/tas
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { map } from 'rxjs/internal/operators';
+import { EMPTY } from 'rxjs/index';
 
 /**
  * @author Glenn Renfro
@@ -70,35 +72,39 @@ export class TaskDefinitionComponent implements OnInit {
   ngOnInit() {
     this.task$ = this.route.params
       .pipe(mergeMap(
-        val => this.sharedAboutService.getFeatureInfo(),
-        (params: Params, featureInfo: FeatureInfo) => {
-          return {
-            id: params.id,
-            schedulerEnabled: featureInfo.schedulerEnabled
-          };
-        }
+        (params: Params) => this.sharedAboutService.getFeatureInfo()
+          .pipe(map((featureInfo: FeatureInfo) => {
+            return {
+              id: params.id,
+              schedulerEnabled: featureInfo.schedulerEnabled
+            };
+          }))
       ))
       .pipe(mergeMap(
-        (params: any) => this.tasksService.getDefinition(params.id),
-        (params: any, taskDefinition: TaskDefinition) => ({
-          schedulerEnabled: params.schedulerEnabled,
-          definition: taskDefinition
-        })
+        (params: any) => this.tasksService.getDefinition(params.id)
+          .pipe(map((taskDefinition: TaskDefinition) => {
+            return {
+              schedulerEnabled: params.schedulerEnabled,
+              definition: taskDefinition
+            };
+          })),
       )).catch((error) => {
         if (HttpAppError.is404(error)) {
           this.cancel();
         }
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return Observable.throw(error);
+        return EMPTY;
       });
 
     this.counters$ = this.route.params
       .pipe(mergeMap(
-        val => this.sharedAboutService.getFeatureInfo(),
-        (params: Params, featureInfo: FeatureInfo) => ({
-          id: params.id,
-          schedulerEnabled: featureInfo.schedulerEnabled
-        })
+        (params: Params) => this.sharedAboutService.getFeatureInfo()
+          .pipe(map((featureInfo: FeatureInfo) => {
+            return {
+              id: params.id,
+              schedulerEnabled: featureInfo.schedulerEnabled
+            };
+          })),
       ))
       .pipe(mergeMap(
         (params: any) => {
@@ -107,13 +113,14 @@ export class TaskDefinitionComponent implements OnInit {
           if (params.schedulerEnabled) {
             arr.push(this.tasksService.getSchedules({ task: params.id, size: 1, page: 0, sort: null, order: null }));
           }
-          return forkJoin(...arr);
-        }, (params: any, forks) => {
-          const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
-          if (params.schedulerEnabled) {
-            result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
-          }
-          return result;
+          return forkJoin([...arr])
+            .pipe(map((forks) => {
+              const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
+              if (params.schedulerEnabled) {
+                result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
+              }
+              return result;
+            }));
         }
       ))
       .pipe(share());

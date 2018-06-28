@@ -15,6 +15,7 @@ import { StreamDeployService } from './stream-deploy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
+import { EMPTY } from 'rxjs/index';
 
 /**
  * Component used to deploy stream definitions.
@@ -94,66 +95,67 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     this.config$ = this.route.params
       .debounceTime(400)
       .pipe(mergeMap(
-        val => this.sharedAboutService.getFeatureInfo(),
-        (params: Params, featureInfo: FeatureInfo) => {
-          return {
-            id: params.id,
-            skipper: featureInfo.skipperEnabled
-          };
-        }
-      ))
+        (params: Params) => this.sharedAboutService.getFeatureInfo()
+          .pipe(map((featureInfo: FeatureInfo) => {
+            return {
+              id: params.id,
+              streamDefinition: null,
+              skipper: featureInfo.skipperEnabled
+            };
+          })))
+      )
       .pipe(mergeMap(
-        val => this.streamsService.getDeploymentInfo(val.id),
-        (config: any, deploymentInfo: StreamDefinition) => {
-          const properties = [];
-          const ignoreProperties = [];
-          const cleanValue = (v) => (v && v.length > 1 && v.startsWith('"') && v.endsWith('"'))
-            ? v.substring(1, v.length - 1) : v;
+        config => this.streamsService.getDeploymentInfo(config.id)
+          .pipe(map((deploymentInfo) => {
+            const properties = [];
+            const ignoreProperties = [];
+            const cleanValue = (v) => (v && v.length > 1 && v.startsWith('"') && v.endsWith('"'))
+              ? v.substring(1, v.length - 1) : v;
 
-          // Deployer properties
-          Object.keys(deploymentInfo.deploymentProperties).map(app => {
-            Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
-              const value = cleanValue(deploymentInfo.deploymentProperties[app][key]);
-              if (key === StreamDeployService.version.keyEdit) {
-                properties.push(`version.${app}=${value}`);
-              } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
-                const keyShort = key.substring(StreamDeployService.deployer.keyEdit.length, key.length);
-                if (keyShort !== 'group') {
-                  properties.push(`deployer.${app}.${keyShort}=${value}`);
+            // Deployer properties
+            Object.keys(deploymentInfo.deploymentProperties).map(app => {
+              Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
+                const value = cleanValue(deploymentInfo.deploymentProperties[app][key]);
+                if (key === StreamDeployService.version.keyEdit) {
+                  properties.push(`version.${app}=${value}`);
+                } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
+                  const keyShort = key.substring(StreamDeployService.deployer.keyEdit.length, key.length);
+                  if (keyShort !== 'group') {
+                    properties.push(`deployer.${app}.${keyShort}=${value}`);
+                  } else {
+                    this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+                  }
                 } else {
                   this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
                 }
-              } else {
-                this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+              });
+            });
+
+            // Application properties
+            const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
+            dslTextParsed.lines[0].nodes.forEach((node) => {
+              const app = node['label'] || node['name'];
+              const appType = node['name'];
+              if (node['options']) {
+                node.options.forEach((value, key) => {
+                  value = cleanValue(value);
+                  let keyShort = key;
+                  if (key.startsWith(`${appType}.`)) {
+                    keyShort = key.substring(`${appType}.`.length, key.length);
+                  }
+                  properties.push(`app.${app}.${keyShort}=${value}`);
+                  ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
+                });
               }
             });
-          });
-
-          // Application properties
-          const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
-          dslTextParsed.lines[0].nodes.forEach((node) => {
-            const app = node['label'] || node['name'];
-            const appType = node['name'];
-            if (node['options']) {
-              node.options.forEach((value, key) => {
-                value = cleanValue(value);
-                let keyShort = key;
-                if (key.startsWith(`${appType}.`)) {
-                  keyShort = key.substring(`${appType}.`.length, key.length);
-                }
-                properties.push(`app.${app}.${keyShort}=${value}`);
-                ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
-              });
+            this.properties = properties;
+            this.ignoreProperties = ignoreProperties;
+            if (config.skipper) {
+              this.ignoreProperties = Object.assign([], this.properties);
             }
-          });
-          this.properties = properties;
-          this.ignoreProperties = ignoreProperties;
-          if (config.skipper) {
-            this.ignoreProperties = Object.assign([], this.properties);
-          }
-          config.streamDefinition = deploymentInfo;
-          return config;
-        }
+            config.streamDefinition = deploymentInfo;
+            return config;
+          }))
       ))
       .pipe(map((config) => {
         this.refConfig = config;
@@ -164,7 +166,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
           this.router.navigate(['/streams/definitions']);
         }
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return Observable.throw(error);
+        return EMPTY;
       });
   }
 
@@ -229,21 +231,12 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     const update = this.refConfig.skipper && isDeployed;
 
     if (update) {
-      obs = obs.pipe(mergeMap(
-        val => this.streamsService.updateDefinition(this.refConfig.id, propertiesMap),
-        (val1, val2) => val2
-      ));
+      obs = obs.pipe(mergeMap(val => this.streamsService.updateDefinition(this.refConfig.id, propertiesMap)));
     } else {
       if (isDeployed) {
-        obs = obs.pipe(mergeMap(
-          val => this.streamsService.undeployDefinition(this.refConfig.streamDefinition),
-          (val1, val2) => val2
-        ));
+        obs = obs.pipe(mergeMap(val => this.streamsService.undeployDefinition(this.refConfig.streamDefinition)));
       }
-      obs = obs.pipe(mergeMap(
-        val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap),
-        (val1, val2) => val2
-      ));
+      obs = obs.pipe(mergeMap(val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap)));
     }
 
     const busy = obs.pipe(takeUntil(this.ngUnsubscribe$))

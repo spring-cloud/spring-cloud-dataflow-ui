@@ -57,7 +57,7 @@ export class ToolsService {
         const options = HttpUtils.getDefaultRequestOptions();
         const body = '{"dsl":"' + dsl + '","name":"' + name + '"}';
         return this.http.post(this.parseTaskTextToGraphUrl, body, options)
-          .map(this.extractConversionData.bind(this))
+          .map(response => this.extractConversionData(response))
           .catch(this.errorHandler.handleError);
       }
     }
@@ -74,7 +74,7 @@ export class ToolsService {
     const body = graph.toJson();
 
     return this.http.post(this.convertTaskGraphToTextUrl, body, options)
-      .map(this.extractConversionData.bind(this))
+      .map(response => this.extractConversionData(response))
       .catch(this.errorHandler.handleError);
   }
 

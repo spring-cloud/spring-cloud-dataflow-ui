@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { TasksService } from '../../tasks.service';
 import { TaskDefinition } from '../../model/task-definition';
 import { TaskSchedule } from '../../model/task-schedule';
+import { map } from 'rxjs/internal/operators';
 
 /**
  * Component that shows the summary details of a Task Schedule
@@ -49,15 +50,16 @@ export class TaskScheduleSummaryComponent implements OnInit {
   refresh() {
     this.schedule$ = this.route.parent.params
       .pipe(mergeMap(
-        (params: Params) => this.tasksService.getSchedule(params.id),
-        (params: Params, schedule: TaskSchedule) => schedule
+        (params: Params) => this.tasksService.getSchedule(params.id)
       ))
       .pipe(mergeMap(
-        val => this.tasksService.getDefinition(val.taskName),
-        (schedule: TaskSchedule, task: TaskDefinition) => ({
-          schedule: schedule,
-          task: task
-        })
+        (schedule: TaskSchedule) => this.tasksService.getDefinition(schedule.taskName)
+          .pipe(map((task: TaskDefinition) => {
+            return {
+              schedule: schedule,
+              task: task
+            };
+          })),
       ));
   }
 

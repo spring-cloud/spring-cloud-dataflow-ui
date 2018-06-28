@@ -6,14 +6,14 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 exports.config = {
   plugins: [
     {
-      path: 'protractor-docker-plugin/index.js',
+      path: '../protractor-docker-plugin/index.js',
       dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
       useCachedoDockerComposeFile: true
     }
   ],
   allScriptsTimeout: 110000,
   specs: [
-    './e2e/**/*.e2e-spec.ts'
+    './src/**/*.e2e-spec.ts'
   ],
   capabilities: {
     'browserName': 'chrome',
@@ -31,7 +31,7 @@ exports.config = {
   },
   onPrepare() {
     require('ts-node').register({
-      project: 'e2e/tsconfig.e2e.json'
+      project: require('path').join(__dirname, './tsconfig.e2e.json')
     });
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   }

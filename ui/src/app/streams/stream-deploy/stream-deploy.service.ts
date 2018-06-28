@@ -14,6 +14,9 @@ import {
 } from '../../shared/model/detailed-app-registration.model';
 import { StreamDeployConfig } from '../model/stream-deploy-config';
 import { Utils } from '../../shared/flo/support/utils';
+import { map } from 'rxjs/internal/operators';
+import { StreamDefinition } from '../model/stream-definition';
+import { forkJoin } from 'rxjs/index';
 
 /**
  * Provides {@link StreamDeployConfig} related services.
@@ -100,7 +103,7 @@ export class StreamDeployService {
     return this.streamsService.getDefinition(id)
       .pipe(
         mergeMap(
-          val => {
+          (val: StreamDefinition) => {
             const observablesApplications = Parser.parse(val.dslText as string, 'stream')
               .lines[0].nodes
               .map((node) => {
@@ -110,33 +113,31 @@ export class StreamDeployService {
                     type: node.type.toString(),
                     version: null,
                     options: null
-                  })
-                    .pipe(
-                      mergeMap(
-                        val1 => this.appsService.getAppVersions(ApplicationType[node.type], val1.origin),
-                        (val1: any, val2: AppVersion[]) => {
+                  }).pipe(
+                    mergeMap(
+                      (val1: any) => this.appsService.getAppVersions(ApplicationType[node.type], val1.origin)
+                        .pipe(map((val2: AppVersion[]) => {
                           val1.versions = val2;
                           const current = val2.find((a: AppVersion) => a.defaultVersion);
                           if (current) {
                             val1.version = current.version;
                           }
                           return val1;
-                        }
-                      )
-                    );
+                        }))
+                    ));
                 }
               );
-
+            let obs: Observable<any> = forkJoin([...observablesApplications]);
             if (skipper) {
-              return Observable.forkJoin(this.streamsService.platforms(), ...observablesApplications);
+              obs = forkJoin([this.streamsService.platforms(), ...observablesApplications]);
             }
-            return Observable.forkJoin(...observablesApplications);
-          },
-          (val, val2) => ({
-            streamDefinition: val,
-            args: val2,
-          }))
-      ).map(result => {
+            return obs.pipe(map((val2) => ({
+              streamDefinition: val,
+              args: val2,
+            })));
+          }
+        ))
+      .pipe(map((result) => {
         const config = new StreamDeployConfig();
         config.skipper = skipper;
         config.id = id;
@@ -215,7 +216,7 @@ export class StreamDeployService {
           },
         ];
         return config;
-      });
+      }));
   }
 
   /**
