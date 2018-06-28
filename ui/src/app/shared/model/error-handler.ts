@@ -11,7 +11,7 @@ export class ErrorHandler {
    * @param error the exception that was thrown by the http post.
    * @returns {any} Exception to be thrown by the Observable
    */
-  public handleError(error: Response | any): ErrorObservable {
+  public handleError(error: Response | any) {
     const errorObject = {
       status: 0,
       message: ''
@@ -37,10 +37,10 @@ export class ErrorHandler {
           errorObject.message += bodyElement.message;
         }
       }
-      return Observable.throw(new HttpAppError(errorObject.message, errorObject.status));
+      return Observable.throwError(new HttpAppError(errorObject.message, errorObject.status));
     } else {
       errorObject.message = error.message ? error.message : error.toString();
-      return Observable.throw(new AppError(errorObject.message));
+      return Observable.throwError(new AppError(errorObject.message));
     }
   }
 

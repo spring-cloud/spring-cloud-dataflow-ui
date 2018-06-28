@@ -7,6 +7,7 @@ import { TaskExecution } from '../../model/task-execution';
 import { Page } from '../../../shared/model/page';
 import { TaskExecutionListParams } from '../../components/tasks.interface';
 import { Subject } from 'rxjs/Subject';
+import { map } from 'rxjs/operators';
 
 /**
  * Component that shows the executions of a Task
@@ -49,13 +50,13 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.params$.subscribe((params: TaskExecutionListParams) => {
       this.executions$ = this.tasksService.getTaskExecutions(params)
-        .mergeMap(
-          (page: Page<TaskExecution>) => Observable.of(params),
-          (page, parameters) => ({
-            page: page,
-            params: parameters
-          })
-        );
+        .pipe(map((page) => {
+            return {
+              page: page,
+              params: params
+            };
+          }
+        ));
     });
     this.route.parent.params.subscribe((params: Params) => {
       this.params$.next({

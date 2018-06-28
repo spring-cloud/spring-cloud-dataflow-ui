@@ -50,17 +50,18 @@ export class TasksTabulationComponent implements OnInit {
           if (featureInfo.schedulerEnabled) {
             arr.push(this.tasksService.getSchedules({ task: '', size: 1, page: 0, sort: null, order: null }));
           }
-          return forkJoin(...arr);
-        }, (featureInfo: FeatureInfo, counters) => {
-          const result = {
-            schedulerEnabled: featureInfo.schedulerEnabled,
-            definitions: (counters[0] as Page<TaskDefinition>).totalElements,
-            executions: (counters[1] as Page<TaskExecution>).totalElements
-          };
-          if (result.schedulerEnabled) {
-            result['schedules'] = (counters[2] as Page<TaskSchedule>).totalElements;
-          }
-          return result;
+          return forkJoin([...arr])
+            .pipe(map((counters) => {
+              const result = {
+                schedulerEnabled: featureInfo.schedulerEnabled,
+                definitions: (counters[0] as Page<TaskDefinition>).totalElements,
+                executions: (counters[1] as Page<TaskExecution>).totalElements
+              };
+              if (result.schedulerEnabled) {
+                result['schedules'] = (counters[2] as Page<TaskSchedule>).totalElements;
+              }
+              return result;
+            }));
         }
       ))
       .pipe(share());

@@ -42,10 +42,7 @@ export class TaskGraphComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.taskDefinition$ = this.route.parent.params
-      .pipe(mergeMap(
-        val => this.tasksService.getDefinition(val.id),
-        (val1, val2) => val2
-      ));
+      .pipe(mergeMap(val => this.tasksService.getDefinition(val.id)));
   }
 
   /**

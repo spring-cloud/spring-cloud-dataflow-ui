@@ -66,8 +66,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
     this.buildForm();
     this.taskDefinition$ = this.route.params
       .pipe(mergeMap(
-        val => this.tasksService.getDefinition(val.id),
-        (val1, val2) => val2
+        val => this.tasksService.getDefinition(val.id)
       ));
   }
 

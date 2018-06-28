@@ -89,13 +89,12 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
           this.changeCheckboxes(page);
           return page;
         }))
-        .mergeMap(
-          (page: Page<TaskSchedule>) => Observable.of(params),
-          (page, parameters) => ({
+        .pipe(map((page: Page<TaskSchedule>) => {
+          return {
             page: page,
-            params: parameters
-          })
-        )
+            params: params
+          };
+        }))
         .pipe(share());
     });
 

@@ -9,6 +9,7 @@ import { StreamsDestroyComponent } from '../../streams-destroy/streams-destroy.c
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
+import { map } from 'rxjs/internal/operators';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -65,23 +66,26 @@ export class StreamSummaryComponent implements OnInit {
   refresh() {
     this.stream$ = this.route.parent.params
       .pipe(mergeMap(
-        val => this.streamsService.getDefinition(val.id),
-        (val1: Params, val2: StreamDefinition) => val2
+        val => this.streamsService.getDefinition(val.id)
+          .pipe(map((streamDefinition: StreamDefinition) => {
+            return streamDefinition;
+          }))
       ))
       .pipe(mergeMap(
-        val => Observable.of(Parser.parse(val.dslText as string, 'stream')),
-        (val1: StreamDefinition, val2: any) => ({
-          streamDefinition: val1,
-          apps: val2.lines[0].nodes
-            .map((node) => (
-              {
-                origin: node['name'],
-                name: node['label'] || node['name'],
-                type: node.type.toString()
-              }
-            ))
-        })
-      ));
+        (val: StreamDefinition) => Observable.of(Parser.parse(val.dslText as string, 'stream'))
+          .pipe(map((val2) => {
+            return {
+              streamDefinition: val,
+              apps: val2.lines[0].nodes
+                .map((node) => ({
+                  origin: node['name'],
+                  name: node['label'] || node['name'],
+                  type: node.type.toString()
+                }))
+            };
+          }))
+        )
+      );
   }
 
   /**

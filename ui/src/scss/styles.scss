@@ -236,6 +236,9 @@ table.table-actions, table.table-checkbox {
         margin: 0;
         padding: 0 10px;
       }
+      .btn + .btn {
+        margin-left: 4px;
+      }
     }
   }
 }

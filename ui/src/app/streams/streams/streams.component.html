@@ -146,16 +146,16 @@
             </button>
             <button name="stream-stop{{ i }}" type="button" [appRoles]="['ROLE_CREATE']"
                     [disabled]="(item.status==='undeployed'  || item.status==='incomplete')" (click)="undeploy(item)"
-                    class="btn btn-default" style="margin-left: 0;" title="Undeploy">
+                    class="btn btn-default" title="Undeploy">
               <span class="glyphicon glyphicon-stop"></span>
             </button>
             <button name="stream-deploy{{ i }}" type="button" [appRoles]="['ROLE_CREATE']"
                     [disabled]="(item.status==='deploying')" (click)="deploy(item)"
-                    class="btn btn-default" style="margin-left: 0;" title="Deploy">
+                    class="btn btn-default" title="Deploy">
               <span class="glyphicon glyphicon-play"></span>
             </button>
             <button name="stream-remove{{ i }}" type="button" [appRoles]="['ROLE_CREATE']" (click)="destroy(item)"
-                    class="btn btn-default" style="margin-left: 0;" title="Destroy">
+                    class="btn btn-default" title="Destroy">
               <span class="glyphicon glyphicon-trash"></span>
             </button>
           </div>

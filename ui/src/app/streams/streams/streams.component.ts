@@ -20,6 +20,7 @@ import { AppRegistration } from '../../shared/model/app-registration.model';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
+import { map } from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-streams',
@@ -178,13 +179,12 @@ export class StreamsComponent implements OnInit, OnDestroy {
             size: 1,
             order: 'name',
             sort: OrderParams.ASC
-          }),
-          (val1, val2) => {
+          }).pipe(map((val2) => {
             return {
-              streams: val1,
+              streams: val,
               apps: val2,
             };
-          })
+          })))
       )
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: { streams: Page<StreamDefinition>, apps: Page<AppRegistration> }) => {

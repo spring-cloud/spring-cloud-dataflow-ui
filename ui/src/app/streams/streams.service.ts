@@ -12,6 +12,7 @@ import { Platform } from './model/platform';
 import { StreamListParams } from './components/streams.interface';
 import { OrderParams } from '../shared/components/shared.interface';
 import { LoggerService } from '../shared/services/logger.service';
+import { forkJoin } from 'rxjs';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -81,7 +82,7 @@ export class StreamsService {
     const options = HttpUtils.getDefaultRequestOptions();
     options.params = params;
     return this.http.get(this.streamDefinitionsUrl, options)
-      .map(this.extractData.bind(this))
+      .map(response => this.extractData(response))
       .catch(this.errorHandler.handleError);
   }
 
@@ -116,18 +117,15 @@ export class StreamsService {
     this.loggerService.log('Destroying...', streamDefinition);
     const options = HttpUtils.getDefaultRequestOptions();
     return this.http.delete('/streams/definitions/' + streamDefinition.name, options)
-      .map(data => {
-        this.streamDefinitions.items = this.streamDefinitions.items.filter(item => item.name !== streamDefinition.name);
-      })
       .catch(this.errorHandler.handleError);
   }
 
   destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Response[]> {
-    const observables: Observable<Response>[] = [];
+    const observables: Observable<any>[] = [];
     for (const streamDefinition of streamDefinitions) {
       observables.push(this.destroyDefinition(streamDefinition));
     }
-    return Observable.forkJoin(observables);
+    return forkJoin([...observables]);
   }
 
   /**
@@ -147,7 +145,7 @@ export class StreamsService {
     for (const streamDefinition of streamDefinitions) {
       observables.push(this.undeployDefinition(streamDefinition));
     }
-    return Observable.forkJoin(observables);
+    return forkJoin([...observables]);
   }
 
 
@@ -169,7 +167,7 @@ export class StreamsService {
     for (const streamDefinition of streamDefinitions) {
       observables.push(this.deployDefinition(streamDefinition.name, streamDefinition.deploymentProperties));
     }
-    return Observable.forkJoin(observables);
+    return forkJoin([...observables]);
   }
 
   updateDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<Response> {

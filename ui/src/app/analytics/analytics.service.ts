@@ -128,7 +128,7 @@ export class AnalyticsService {
     requestOptionsArgs.search = params;
     return this.http.get(this.metricsCountersUrl, requestOptionsArgs)
       .map(response => this.extractData(response, detailed))
-      .catch(this.errorHandler.handleError);
+      .catch(this.errorHandler.handleError) as Observable<Page<Counter>>;
   }
 
   /**
@@ -141,7 +141,7 @@ export class AnalyticsService {
     requestOptionsArgs.search = params;
     return this.http.get(this.metricsFieldValueCountersUrl, requestOptionsArgs)
       .map(response => this.extractData(response, false))
-      .catch(this.errorHandler.handleError);
+      .catch(this.errorHandler.handleError) as Observable<Page<FieldValueCounter>>;
   }
 
   /**
@@ -154,7 +154,7 @@ export class AnalyticsService {
     requestOptionsArgs.search = params;
     return this.http.get(this.metricsAggregateCountersUrl, requestOptionsArgs)
       .map(response => this.extractData(response, false))
-      .catch(this.errorHandler.handleError);
+      .catch(this.errorHandler.handleError) as Observable<Page<AggregateCounter>>;
   }
 
   private extractData(response: Response, handleRates: boolean): Page<BaseCounter> {
@@ -389,7 +389,7 @@ export class AnalyticsService {
    *
    * @param counterName Name of the counter for which to retrieve details
    */
-  private getSingleFieldValueCounter(counterName: string): Observable<Counter> {
+  private getSingleFieldValueCounter(counterName: string): Observable<FieldValueCounter> {
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
     return this.http.get(this.metricsFieldValueCountersUrl + '/' + counterName, requestOptionsArgs)
       .map(response => {
@@ -404,7 +404,7 @@ export class AnalyticsService {
    *
    * @param counterName Name of the counter for which to retrieve details
    */
-  private getSingleAggregateCounter(counter: AggregateCounter): Observable<Counter> {
+  private getSingleAggregateCounter(counter: AggregateCounter): Observable<AggregateCounter> {
     const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
     const params = new URLSearchParams();
 
