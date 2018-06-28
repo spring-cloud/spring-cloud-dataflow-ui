@@ -16,13 +16,7 @@ export class AppsRegisterValidator {
   /**
    * Uri regex
    */
-  static uriRegex = /^([a-zA-Z0-9-]+:\/\/)([\\w\\.:-]+)?([a-zA-Z0-9-\/.:-]+)*$/;
-
-
-  /**
-   * Docker artifact regex
-   */
-  static dockerArtifactRegex = /^(docker:)([a-zA-Z0-9-.-_]*)(\/)([a-zA-Z0-9-.-_]*)(\:)([a-zA-Z0-9-.-_]*)$/;
+  static uriRegex = /^.{2,250}$/;
 
   /**
    * Validate the name conditions: no space, 2 characters min, no specials characters
@@ -53,7 +47,7 @@ export class AppsRegisterValidator {
       return null;
     }
 
-    if (!AppsRegisterValidator.uriRegex.test(formControl.value) && !AppsRegisterValidator.dockerArtifactRegex.test(formControl.value)) {
+    if (!AppsRegisterValidator.uriRegex.test(formControl.value)) {
       return { invalid: true };
     }
 

@@ -34,9 +34,6 @@ describe('AppsRegisterValidator', () => {
     it('invalid', () => {
       [
         ' ',
-        'http://foo. bar',
-        'http://foo.b@r',
-        'http://foo.b%%r',
         'f'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
