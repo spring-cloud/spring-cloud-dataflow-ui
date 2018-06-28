@@ -9,7 +9,8 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { BusyService } from '../../shared/services/busy.service';
 import { TaskLaunchValidator } from './task-launch.validator';
 import { NotificationService } from '../../shared/services/notification.service';
-import { AppError, HttpAppError } from '../../shared/model/error.model';
+import { AppError } from '../../shared/model/error.model';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
 
 /**
  * Component that provides a launcher of task.
@@ -46,12 +47,14 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
    * @param {BusyService} busyService
+   * @param {RoutingStateService} routingStateService
    * @param {ActivatedRoute} route
    * @param {Router} router
    */
   constructor(private tasksService: TasksService,
               private notificationService: NotificationService,
               private busyService: BusyService,
+              private routingStateService: RoutingStateService,
               private route: ActivatedRoute,
               private router: Router) {
   }
@@ -139,4 +142,15 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
       );
     this.busyService.addSubscription(busy);
   }
+
+  /**
+   * Back action
+   * Navigate to the previous URL or /tasks/definitions
+   *
+   * @param {TaskDefinition} taskDefinition
+   */
+  cancel(taskDefinition: TaskDefinition) {
+    this.routingStateService.back(`/tasks/definitions/${taskDefinition.name}`);
+  }
+
 }

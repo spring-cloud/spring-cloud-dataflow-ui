@@ -2,14 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { Parser } from '../../../shared/services/parser';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TasksService } from '../../tasks.service';
 import { TaskDefinition } from '../../model/task-definition';
-import { TaskDefinitionsDestroyComponent } from '../../task-definitions-destroy/task-definitions-destroy.component';
 import { ToolsService } from '../../components/flo/tools.service';
 import { TaskConversion } from '../../components/flo/model/models';
-import { LoggerService } from '../../../shared/services/logger.service';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -30,25 +26,14 @@ export class TaskSummaryComponent implements OnInit {
   task$: Observable<any>;
 
   /**
-   * Modal reference
-   */
-  modal: BsModalRef;
-
-  /**
    * Constructor
    *
    * @param {ActivatedRoute} route
-   * @param {BsModalService} modalService
-   * @param {Router} router
    * @param {ToolsService} toolsService
-   * @param {LoggerService} loggerService
    * @param {TasksService} tasksService
    */
   constructor(private route: ActivatedRoute,
-              private modalService: BsModalService,
-              private router: Router,
               private toolsService: ToolsService,
-              private loggerService: LoggerService,
               private tasksService: TasksService) {
   }
 
@@ -95,28 +80,6 @@ export class TaskSummaryComponent implements OnInit {
           };
         }
       ));
-  }
-
-  /**
-   * Deploy the stream, navigation to the dedicate page
-   *
-   * @param {TaskDefinition} taskDefinition
-   */
-  launch(taskDefinition: TaskDefinition) {
-    this.router.navigate([`/tasks/definitions/launch/${taskDefinition.name}`]);
-  }
-
-  /**
-   * Destroy the task
-   *
-   * @param {TaskDefinition} taskDefinition
-   */
-  destroy(taskDefinition: TaskDefinition) {
-    this.loggerService.log(`Destroy ${taskDefinition.name} task definition.`, taskDefinition.name);
-    this.modal = this.modalService.show(TaskDefinitionsDestroyComponent, { class: 'modal-md' });
-    this.modal.content.open({ taskDefinitions: [taskDefinition] }).subscribe(() => {
-      this.router.navigate([`/tasks/definitions`]);
-    });
   }
 
 }
