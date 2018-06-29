@@ -79,7 +79,8 @@ const busyConfig: BusyConfig = {
       timeOut: 3000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
-      maxOpened: 6
+      maxOpened: 6,
+      enableHtml: true
     }),
   ],
   declarations: [
