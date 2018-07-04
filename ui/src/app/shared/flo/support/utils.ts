@@ -15,6 +15,7 @@
  */
 
 import { Flo } from 'spring-flo';
+import { dia } from 'jointjs';
 
 /**
  * Utilities for Flo based graph editors.
@@ -47,6 +48,10 @@ export class Utils {
         && (propertyLowerCase === 'code' || propertyLowerCase === 'rxjava-processor.code'))
       || (metadata.name === Utils.SCRIPTABLE_TRANSFORM_NAME
         && (propertyLowerCase === 'script' || propertyLowerCase === 'scriptable-transformer.script'));
+  }
+
+  static isUnresolved(element: dia.Cell): boolean {
+    return element.attr('metadata/metadata/unresolved');
   }
 
 }

@@ -21,6 +21,7 @@ import { Flo, Constants } from 'spring-flo';
 import { dia, g } from 'jointjs';
 import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 import { Utils } from './support/utils';
+import { Utils as SharedUtils } from '../../../shared/flo/support/utils';
 import * as _joint from 'jointjs';
 import {StreamGraphPropertiesSource, StreamHead} from './properties/stream-properties-source';
 const joint: any = _joint;
@@ -66,7 +67,7 @@ export class EditorService implements Flo.Editor {
             createHandle(owner, Constants.REMOVE_HANDLE_TYPE, flo.deleteSelectedNode, pt);
 
             // Properties handle
-            if (!element.attr('metadata/unresolved')) {
+            if (!SharedUtils.isUnresolved(element)) {
                 pt = bbox.origin().offset(-14, bbox.height + 3);
                 createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
                     const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
@@ -574,7 +575,7 @@ export class EditorService implements Flo.Editor {
 
     private validateMetadata(element: dia.Cell, errors: Array<Flo.Marker>) {
         // Unresolved elements validation
-        if (!element.attr('metadata') || element.attr('metadata/unresolved')) {
+        if (!element.attr('metadata') || SharedUtils.isUnresolved(element)) {
             let msg = 'Unknown element \'' + element.attr('metadata/name') + '\'';
             if (element.attr('metadata/group')) {
                 msg += ' from group \'' + element.attr('metadata/group') + '\'.';
