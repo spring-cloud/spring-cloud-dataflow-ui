@@ -6,6 +6,7 @@ import { dia, g } from 'jointjs';
 import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
+import { Utils} from '../../../shared/flo/support/utils';
 
 const joint: any = _joint;
 
@@ -24,6 +25,8 @@ export class EditorService implements Flo.Editor {
   }
 
   allowLinkVertexEdit = true;
+
+
 
   /**
    * Creates cell handles.
@@ -49,7 +52,7 @@ export class EditorService implements Flo.Editor {
       }
 
       // Properties handle
-      if (!element.attr('metadata/unresolved') && !element.attr('metadata/metadata/noEditableProps')) {
+      if (!Utils.isUnresolved(element) && !element.attr('metadata/metadata/noEditableProps')) {
         pt = bbox.origin().offset(-14, bbox.height + 3);
         createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
           const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
@@ -125,7 +128,7 @@ export class EditorService implements Flo.Editor {
   }
 
   private validateConnectedLinks(graph: dia.Graph, element: dia.Element, markers: Array<Flo.Marker>) {
-    if (element.attr('metadata') && !element.attr('metadata/unresolved')) {
+    if (element.attr('metadata') && !Utils.isUnresolved(element)) {
       const type = element.attr('metadata/name');
       const incoming = graph.getConnectedLinks(element, { inbound: true });
       const outgoing = graph.getConnectedLinks(element, { outbound: true });
@@ -264,7 +267,7 @@ export class EditorService implements Flo.Editor {
 
   private validateMetadata(element: dia.Cell, errors: Array<Flo.Marker>) {
     // Unresolved elements validation
-    if (!element.attr('metadata') || element.attr('metadata/unresolved')) {
+    if (!element.attr('metadata') || Utils.isUnresolved(element)) {
       let msg = `Unknown element '${element.attr('metadata/name')}'`;
       if (element.attr('metadata/group')) {
         msg += ` from group '${element.attr('metadata/group')}'.`;

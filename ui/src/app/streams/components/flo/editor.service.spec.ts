@@ -4,18 +4,14 @@ import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
 
 import { dia } from 'jointjs';
-import * as _ from 'lodash';
 import { Flo, Constants } from 'spring-flo';
-import { convertGraphToText } from './graph-to-text';
 import { Shapes } from 'spring-flo';
-import * as _joint from 'jointjs';
-const joint: any = _joint;
 
 import { EditorService } from './editor.service';
 import {MockSharedAppService} from '../../../tests/mocks/shared-app';
 import { LoggerService } from '../../../shared/services/logger.service';
 
-describe('editor.service', () => {
+describe('Streams Editor Service', () => {
     const editorService = new EditorService(null);
 
     let graph: dia.Graph;
@@ -352,11 +348,11 @@ describe('editor.service', () => {
                 },
                 properties(): Promise<Map<string, Flo.PropertyMetadata>> {
                     return Promise.resolve(new Map());
+                },
+                metadata: {
+                  unresolved: !group ? true : false
                 }
             };
-        }
-        if (!group) {
-          params.metadata.unresolved = true;
         }
         const newNode: dia.Element = Shapes.Factory.createNode(params);
         graph.addCell(newNode);

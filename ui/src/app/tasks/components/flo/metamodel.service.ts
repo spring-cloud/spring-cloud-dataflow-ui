@@ -259,12 +259,10 @@ export class MetamodelService implements Flo.Metamodel {
         group = TASK_GROUP_TYPE;
       }
 
-      let metadata = metamodel.get(group).get(name);
+      let metadata = metamodel.get(group) ? metamodel.get(group).get(name) : undefined;
       if (!metadata) {
         // Unknown element
-        metadata = this.createMetadata(name, group, '', new Map<string, Flo.PropertyMetadata>());
-        // Mark it "unresolved"
-        metadata.unresolved = true;
+        metadata = this.createMetadata(name, group, '', new Map<string, Flo.PropertyMetadata>(), { unresolved: true });
       }
 
       const properties = new Map<string, any>();

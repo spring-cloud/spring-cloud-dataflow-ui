@@ -356,15 +356,17 @@ class TextToGraphConverter {
             if (!groupMetadata) {
                 // Create fake metadata so some sort of graph can be built
                 md = {
-                    'group': group,
-                    'name': name,
-                    unresolved: true,
-                    get(property: String): Promise<Flo.PropertyMetadata> {
-                        return Promise.resolve(null);
-                    },
-                    properties(): Promise<Map<string, Flo.PropertyMetadata>> {
-                        return Promise.resolve(new Map());
-                    }
+                      'group': group,
+                      'name': name,
+                      get(property: String): Promise<Flo.PropertyMetadata> {
+                          return Promise.resolve(null);
+                      },
+                      properties(): Promise<Map<string, Flo.PropertyMetadata>> {
+                          return Promise.resolve(new Map());
+                      },
+                      metadata: {
+                        unresolved: true
+                      }
                     };
             } else {
                 md = group ? this.metamodel.get(group).get(name) : null;
