@@ -1,15 +1,27 @@
 <div class="tab-simple">
-  <ul class="nav nav-tabs" *ngIf="counters$ | async as counters;">
+  <ul class="nav nav-tabs" *ngIf="params$ | async as params;">
     <li role="presentation" routerLinkActive="active">
       <a routerLink="/tasks/definitions">
         Tasks
-        <span class="label label-count label-primary" *ngIf="counters.definitions">{{counters.definitions}}</span>
+        <span *ngIf="counters$ | async as counters">
+          <span class="label label-count label-primary" *ngIf="counters.definitions">{{counters.definitions}}</span>
+        </span>
       </a>
     </li>
     <li role="presentation" routerLinkActive="active">
       <a routerLink="/tasks/executions">
         Executions
-        <span class="label label-count label-primary" *ngIf="counters.executions">{{counters.executions}}</span>
+        <span *ngIf="counters$ | async as counters">
+          <span class="label label-count label-primary" *ngIf="counters.executions">{{counters.executions}}</span>
+        </span>
+      </a>
+    </li>
+    <li role="presentation" routerLinkActive="active" *ngIf="params.schedulerEnabled">
+      <a routerLink="/tasks/schedules">
+        Schedules
+        <span *ngIf="counters$ | async as counters">
+          <span class="label label-count label-primary" *ngIf="counters.schedules">{{counters.schedules}}</span>
+        </span>
       </a>
     </li>
   </ul>

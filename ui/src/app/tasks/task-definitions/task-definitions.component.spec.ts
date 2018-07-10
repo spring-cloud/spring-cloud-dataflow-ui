@@ -3,7 +3,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
-import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
+import { TASK_DEFINITIONS, TASK_EXECUTIONS, TASK_SCHEDULES } from '../../tests/mocks/mock-data';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
@@ -31,6 +31,9 @@ import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-t
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { TasksHeaderComponent } from '../components/tasks-header/tasks-header.component';
+import { MockGroupRouteService } from '../../tests/mocks/group-route';
+import { GroupRouteService } from '../../shared/services/group-route.service';
 
 /**
  * Test {@link TaskDefinitionsComponent}.
@@ -47,6 +50,7 @@ describe('TaskDefinitionsComponent', () => {
   const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
+  const groupRouteService = new MockGroupRouteService();
 
   beforeEach(async(() => {
 
@@ -64,7 +68,8 @@ describe('TaskDefinitionsComponent', () => {
         PagerComponent,
         TruncatePipe,
         TaskStatusComponent,
-        TasksTabulationComponent
+        TasksTabulationComponent,
+        TasksHeaderComponent
       ],
       imports: [
         NgxPaginationModule,
@@ -82,6 +87,7 @@ describe('TaskDefinitionsComponent', () => {
         { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: BsModalService, useValue: modalService },
+        { provide: GroupRouteService, useValue: groupRouteService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
       ]
@@ -356,21 +362,99 @@ describe('TaskDefinitionsComponent', () => {
 
   });
 
+  describe('Task Schedule enable', () => {
+
+    beforeEach(() => {
+      tasksService.tasksContext.page = 0;
+      tasksService.taskDefinitions = TASK_DEFINITIONS;
+      tasksService.taskSchedules = TASK_SCHEDULES;
+      aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = true;
+      fixture.detectChanges();
+    });
+
+    it('should navigate to the schedule creation page', () => {
+      const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskDefinitionsTable tbody tr'))[0];
+      const spy = spyOn(component, 'schedule');
+      line.query(By.css('.actions button[name=task-schedule0]')).nativeElement.click();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should delete all the schedules related to a task', () => {
+      const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskDefinitionsTable tbody tr'))[0];
+      const spy = spyOn(component, 'destroySchedules');
+      line.query(By.css('.actions button[name=task-schedule-destroy0]')).nativeElement.click();
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should call the schedules creation page (multiple schedules)', fakeAsync(() => {
+      fixture.debugElement.queryAll(By.css('#taskDefinitionsTable tbody tr')).forEach((line) => {
+        const input: HTMLInputElement = line.query(By.css('td.cell-checkbox input')).nativeElement;
+        input.click();
+      });
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('#dropdown-actions .btn-dropdown')).nativeElement.click();
+      tick();
+      fixture.detectChanges();
+      const spy = spyOn((<any>component).router, 'navigate');
+      fixture.debugElement.query(By.css('#schedule-tasks')).nativeElement.click();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalledWith(['tasks/schedules/create/' + groupRouteService.last.key]);
+    }));
+
+  });
+
+  describe('Task Schedule disabled', () => {
+
+    beforeEach(() => {
+      tasksService.tasksContext.page = 0;
+      tasksService.taskDefinitions = TASK_DEFINITIONS;
+      aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = false;
+      fixture.detectChanges();
+    });
+
+    /*
+    TODO: fix it
+    it('should not display the inline action for schedule/delete schedules', () => {
+      const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskDefinitionsTable tbody tr'))[0];
+      expect(line.query(By.css('.actions button[name=task-schedule0]'))).toBeNull();
+      expect(line.query(By.css('.actions button[name=task-schedule-destroy0]'))).toBeNull();
+      expect(line.query(By.css('.actions button[name=task-details0]'))).toBeTruthy();
+    });
+    */
+
+    it('should not show the grouped action Schedule task(s)', fakeAsync(() => {
+      fixture.debugElement.queryAll(By.css('#taskDefinitionsTable tbody tr')).forEach((line) => {
+        const input: HTMLInputElement = line.query(By.css('td.cell-checkbox input')).nativeElement;
+        input.click();
+      });
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('#dropdown-actions .btn-dropdown')).nativeElement.click();
+      fixture.detectChanges();
+      tick();
+      expect(component.countSelected()).toBe(2);
+      expect(fixture.debugElement.query(By.css('#schedule-tasks'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('#destroy-tasks'))).toBeTruthy();
+    }));
+
+  });
+
+
   describe('Grouped applications action', () => {
 
     beforeEach(() => {
       tasksService.taskDefinitions = TASK_DEFINITIONS;
+      tasksService.taskSchedules = TASK_SCHEDULES;
       fixture.detectChanges();
     });
 
-    it('should show the grouped action if at least one stream is selected', () => {
+    it('should show the grouped action if at least one task is selected', () => {
       fixture.debugElement.queryAll(By.css('#taskDefinitionsTable tbody tr')).forEach((line) => {
         const input: HTMLInputElement = line.query(By.css('td.cell-checkbox input')).nativeElement;
         input.click();
       });
       fixture.detectChanges();
       expect(component.countSelected()).toBe(2);
-      expect(fixture.debugElement.queryAll(By.css('#dropdown-actions'))).toBeTruthy();
+      expect(fixture.debugElement.query(By.css('#dropdown-actions'))).toBeTruthy();
     });
 
     it('should call the destroy modal', fakeAsync(() => {

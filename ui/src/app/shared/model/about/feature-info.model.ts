@@ -5,6 +5,7 @@ import { LoggerService } from '../../services/logger.service';
  * Contains meta data about the supported features.
  *
  * @author Gunnar Hillert
+ * @author Damien Vitrac
  */
 export class FeatureInfo implements Serializable<FeatureInfo> {
 
@@ -12,10 +13,8 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
   public streamsEnabled = false;
   public tasksEnabled = false;
   public skipperEnabled = false;
+  public schedulerEnabled = false;
 
-  constructor() {
-
-  }
 
   /**
    * Set the FeatureInfo object to default values.
@@ -25,6 +24,7 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
     this.streamsEnabled = false;
     this.tasksEnabled = false;
     this.skipperEnabled = false;
+    this.schedulerEnabled = false;
   }
 
   public deserialize(input) {
@@ -32,6 +32,7 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
     this.streamsEnabled = input.streamsEnabled;
     this.tasksEnabled = input.tasksEnabled;
     this.skipperEnabled = input.skipperEnabled;
+    this.schedulerEnabled = input.schedulerEnabled;
     return this;
   }
 
@@ -55,6 +56,9 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
         }
         case 'skipperEnabled': {
           return this.skipperEnabled;
+        }
+        case 'schedulerEnabled': {
+          return this.schedulerEnabled;
         }
         default: {
           LoggerService.error(`Unsupported feature parameter '${feature}'.`);

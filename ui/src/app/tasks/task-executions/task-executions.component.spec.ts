@@ -31,6 +31,7 @@ import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-t
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { TasksHeaderComponent } from '../components/tasks-header/tasks-header.component';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -64,7 +65,8 @@ describe('TaskExecutionsComponent', () => {
         MasterCheckboxComponent,
         TruncatePipe,
         TaskStatusComponent,
-        TasksTabulationComponent
+        TasksTabulationComponent,
+        TasksHeaderComponent
       ],
       imports: [
         NgxPaginationModule,

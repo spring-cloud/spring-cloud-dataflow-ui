@@ -22,7 +22,7 @@ import {
         </button>
         <ul class="dropdown-menu dropdown-menu-up" id="dropdown-basic" *dropdownMenu>
           <li *ngFor="let s of SIZE_LIST" [class.active]="s === size">
-            <a (click)="sizeChange(s)" class="dropdown-item">{{ s }}</a>
+            <a (click)="doSizeChange(s)" class="dropdown-item">{{ s }}</a>
           </li>
         </ul>
       </div>
@@ -44,7 +44,7 @@ export class PagerComponent implements OnChanges {
 
   @Input() size: number;
 
-  @Output() onSizeChange = new EventEmitter<number>();
+  @Output() sizeChange = new EventEmitter<number>();
 
   values = {
     from: 0,
@@ -76,8 +76,8 @@ export class PagerComponent implements OnChanges {
     }
   }
 
-  sizeChange(size) {
-    this.onSizeChange.emit(size);
+  doSizeChange(size) {
+    this.sizeChange.emit(size);
   }
 
 }

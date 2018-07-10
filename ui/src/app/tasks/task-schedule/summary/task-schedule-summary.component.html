@@ -1,0 +1,43 @@
+<div *ngIf="schedule$ | async as schedule; else loading">
+  <div>
+    <div class="row schedule-summary-row">
+      <div class="col-md-3">
+        <strong>Schedule name:</strong>
+      </div>
+      <div class="col-md-21">
+        {{ schedule.schedule.name }}
+      </div>
+    </div>
+    <div class="row schedule-summary-row">
+      <div class="col-md-3">
+        <strong>Task name:</strong>
+      </div>
+      <div class="col-md-21">
+        <a style="cursor: pointer" (click)="detailsTask(schedule.task.name)">
+          {{ schedule.task.name }}
+        </a>
+      </div>
+    </div>
+    <div class="row schedule-summary-row">
+      <div class="col-md-3">
+        <strong>Task definition:</strong>
+      </div>
+      <div class="col-md-21">
+        <app-stream-dsl>{{ schedule.task.dslText }}</app-stream-dsl>
+      </div>
+    </div>
+    <hr>
+    <div class="row schedule-summary-row" *ngIf="schedule.schedule.cronExpression">
+      <div class="col-md-3">
+        <strong>Cron Expression:</strong>
+      </div>
+      <div class="col-md-21">
+        {{ schedule.schedule.cronExpression }}
+      </div>
+    </div>
+
+  </div>
+</div>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

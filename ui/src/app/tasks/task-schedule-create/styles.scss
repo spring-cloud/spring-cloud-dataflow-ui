@@ -1,0 +1,70 @@
+.task-details {
+  //background: #f5f6f7;
+  //padding: 2rem 3rem 3rem;
+}
+
+.schedule-form {
+  //padding: 2rem 3rem;
+}
+
+.task-create {
+  h2 {
+    padding-bottom: 1.2rem;
+  }
+}
+
+.footer-actions {
+  text-align: center;
+  padding: 2rem;
+}
+
+.h2-margin-top {
+  margin-top: 2rem;
+}
+
+.row-datetimepicker {
+  height: 32px;
+  .col-time, .col-date {
+    float: left;
+    width: 155px;
+  }
+}
+
+h3 {
+  font-size: 18px;
+  margin: 0.4rem 0;
+  font-weight: bold;
+}
+
+table.table-form {
+  border: 0 none;
+  tr {
+    border: 0 none;
+    td {
+      padding: 4px;
+      border: 0 none;
+      input {
+        //height: 36px;
+        //padding: 4px 10px;
+      }
+    }
+    td.table-actions {
+      padding-top: 4px
+    }
+    th {
+      border-right: 0 none;
+    }
+    &:last-child {
+      border: 0 none;
+    }
+  }
+}
+
+table.table-form-stripped {
+  tr {
+    border-bottom: 1px solid #DFE5E8;
+    td.td-label {
+      padding: 10px 8px;
+    }
+  }
+}

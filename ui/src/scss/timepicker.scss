@@ -1,0 +1,91 @@
+timepicker table {
+  margin: 0.4rem 0;
+  tr {
+    td {
+      vertical-align: middle;
+      padding: 0;
+      margin: 0;
+      height: 20px;
+      line-height: 10px;
+      .btn {
+        background: #f5f6f7;
+        color: #243641;
+        display: block;
+        text-align: center;
+        border-radius: 0;
+        height: 30px;
+        &:hover {
+          background: #dfe5e8;
+          color: #243641;
+        }
+        span.bs-chevron-up {
+          top: 10px;
+          margin-left: 2px;
+        }
+        span.bs-chevron-down {
+          top: 8px;
+          margin-left: 2px;
+        }
+      }
+      .btn.btn-default, button.btn.btn-default {
+        background: #f5f6f7;
+        color: #243641;
+        border: 0 none;
+        &:hover, &:active, &:focus, &:active:hover, &:focus:hover {
+          background: #dfe5e8;
+          color: #243641;
+        }
+      }
+      input {
+        cursor: ns-resize;
+      }
+    }
+  }
+  tr:first-child td {
+    padding-bottom: 2px;
+  }
+  tr:last-child td {
+    padding-top: 2px;
+  }
+  .form-control {
+    height: 32px;
+    padding: 5px 10px;
+  }
+}
+
+.popover-timepicker {
+  padding: 0 4px;
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid #dfe5e8;
+  > .arrow {
+    display: none;
+  }
+  .popover-content {
+    padding: 6px;
+  }
+}
+
+dataflow-timepicker {
+  .input-time {
+    width: 150px;
+  }
+  .form-control-timepicker {
+    position: relative;
+  }
+  .timepicker-icon {
+    position: absolute;
+    z-index: 4;
+    top: 6px;
+    left: 126px;
+    font-size: 20px;
+    cursor: pointer;
+    &:hover {
+      color: #45968f;
+    }
+  }
+}
+
+.popover-timepicker.popover.bottom {
+  margin-top: 2px;
+}

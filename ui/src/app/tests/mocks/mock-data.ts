@@ -1264,3 +1264,44 @@ export const TASK_EXECUTIONS = {
     number: 0
   }
 };
+
+
+export const TASK_SCHEDULES = {
+  _embedded: {
+    taskScheduleResourceList: [
+      {
+        name: 'foo1',
+        taskName: 'bar1',
+        status: 'complete',
+        cronExpression: '0 0 0 * 8 1',
+        _links: {
+          self: {
+            href: 'http://localhost:4200/tasks/schedules/foo1'
+          }
+        }
+      },
+      {
+        name: 'foo2',
+        taskName: 'bar2',
+        status: 'pending',
+        cronExpression: '0 0 0 * 8 1',
+        _links: {
+          self: {
+            href: 'http://localhost:4200/tasks/schedules/foo2'
+          }
+        }
+      }
+    ]
+  },
+  _links: {
+    self: {
+      href: 'http://localhost:4200/tasks/schedules?page=0&size=20&sort=NAME,asc'
+    }
+  },
+  page: {
+    size: 20,
+    totalElements: 2,
+    totalPages: 1,
+    number: 0
+  }
+};

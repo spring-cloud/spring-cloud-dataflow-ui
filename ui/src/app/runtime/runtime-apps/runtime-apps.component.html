@@ -72,7 +72,7 @@
       </div>
       <div class="col-xs-12" *ngIf="runtimeApps && runtimeApps?.totalElements > 0">
         <app-pager [page]="pagination.page" [total]="runtimeApps.totalElements" [size]="pagination.size"
-                   (onSizeChange)="changeSize($event)">
+                   (sizeChange)="changeSize($event)">
         </app-pager>
       </div>
     </div>

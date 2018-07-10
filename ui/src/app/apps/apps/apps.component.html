@@ -164,7 +164,7 @@
     </div>
     <div class="col-xs-12" *ngIf="appRegistrations && appRegistrations?.totalElements > 0">
       <app-pager [page]="params.page" [total]="appRegistrations.totalElements" [size]="params.size"
-       (onSizeChange)="changeSize($event)">
+                 (sizeChange)="changeSize($event)">
       </app-pager>
     </div>
   </div>

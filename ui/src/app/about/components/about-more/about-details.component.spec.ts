@@ -5,7 +5,6 @@ import { MockActivatedRoute } from '../../../tests/mocks/activated-route';
 import { ActivatedRoute } from '@angular/router';
 import { MockAboutService } from '../../../tests/mocks/about';
 import { AboutService } from '../../about.service';
-import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AboutDetailsComponent } from './about-details.component';
@@ -59,8 +58,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Skipper Mode'], 0);
-    validateSpansExists(['analyticsEnabled', 'streamsEnabled', 'tasksEnabled', 'skipperEnabled']);
+    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Schedules', 'Skipper Mode'], 0);
+    validateSpansExists(['analyticsEnabled', 'streamsEnabled', 'tasksEnabled', 'schedulerEnabled', 'skipperEnabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',
@@ -106,8 +105,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Skipper Mode'], 0);
-    validateSpansExists(['analyticsDisabled', 'streamsDisabled', 'tasksDisabled', 'skipperDisabled']);
+    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Schedules', 'Skipper Mode'], 0);
+    validateSpansExists(['analyticsDisabled', 'streamsDisabled', 'tasksDisabled', 'schedulerDisabled', 'skipperDisabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',
