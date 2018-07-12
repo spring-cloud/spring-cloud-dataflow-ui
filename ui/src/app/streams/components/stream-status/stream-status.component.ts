@@ -34,6 +34,7 @@ export class StreamStatusComponent implements OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     if (changes.streamDefinition) {
+      console.log(changes.streamDefinition.currentValue.status);
       if (changes.streamDefinition.currentValue.status) {
         this.label = changes.streamDefinition.currentValue.status.toString().toUpperCase();
       } else {
@@ -44,6 +45,7 @@ export class StreamStatusComponent implements OnChanges {
         case 'undeployed':
           this.labelClass = 'default';
           break;
+        case 'deleted':
         case 'failed':
           this.labelClass = 'danger';
           break;

@@ -1,8 +1,8 @@
-<div *ngIf="streamDefinitions$ | async as streamDefinitions; else loading">
+<div *ngIf="streamDefinition$ | async as streamDefinition; else loading">
 
   <div class="heading">
     <div class="description">
-      <h1>Detailed view of stream <strong>'{{ streamDefinitions.name }}'</strong></h1>
+      <h1>Detailed view of stream <strong>'{{ streamDefinition.streamDefinition.name }}'</strong></h1>
       <p>This section shows the details of a stream.</p>
     </div>
   </div>
@@ -11,6 +11,9 @@
     <ul class="nav nav-tabs">
       <li role="presentation" routerLinkActive="active"><a routerLink="summary">Summary</a></li>
       <li role="presentation" routerLinkActive="active"><a routerLink="graph">Graph</a></li>
+      <li role="presentation" routerLinkActive="active" *ngIf="streamDefinition.featureInfo.skipperEnabled">
+        <a routerLink="history">History</a>
+      </li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane in active">

@@ -40,6 +40,8 @@ import { StreamStatusComponent } from './components/stream-status/stream-status.
 import { StreamDeployBuilderErrorsComponent } from './stream-deploy/builder/errors/errors.component';
 import { StreamsUndeployComponent } from './streams-undeploy/streams-undeploy.component';
 import { StreamsDestroyComponent } from './streams-destroy/streams-destroy.component';
+import { StreamHistoryComponent } from './stream/history/stream-history.component';
+import { StreamHistoryStatusComponent } from './components/stream-history-status/stream-status.component';
 
 @NgModule({
   imports: [
@@ -80,7 +82,9 @@ import { StreamsDestroyComponent } from './streams-destroy/streams-destroy.compo
     StreamStatusComponent,
     StreamDeployBuilderErrorsComponent,
     StreamsUndeployComponent,
-    StreamsDestroyComponent
+    StreamsDestroyComponent,
+    StreamHistoryComponent,
+    StreamHistoryStatusComponent
   ],
   entryComponents: [
     StreamCreateDialogComponent,

@@ -1,10 +1,11 @@
-import {Observable} from 'rxjs/Observable';
-import {PageInfo} from '../../shared/model/pageInfo';
-import {Page} from '../../shared/model/page';
-import {StreamDefinition} from '../../streams/model/stream-definition';
-import {Platform} from '../../streams/model/platform';
-import {StreamMetrics} from '../../streams/model/stream-metrics';
-import {OrderParams} from '../../shared/components/shared.interface';
+import { Observable } from 'rxjs/Observable';
+import { PageInfo } from '../../shared/model/pageInfo';
+import { Page } from '../../shared/model/page';
+import { StreamDefinition } from '../../streams/model/stream-definition';
+import { Platform } from '../../streams/model/platform';
+import { StreamMetrics } from '../../streams/model/stream-metrics';
+import { OrderParams } from '../../shared/components/shared.interface';
+import { StreamHistory } from '../../streams/model/stream-history';
 
 /**
  * Mock for StreamsService.
@@ -73,7 +74,7 @@ export class MockStreamsService {
   }
 
   undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
-    return Observable.of(Array.from({length: streamDefinitions.length}));
+    return Observable.of(Array.from({ length: streamDefinitions.length }));
   }
 
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> | Observable<any> {
@@ -81,7 +82,7 @@ export class MockStreamsService {
   }
 
   destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
-    return Observable.of(Array.from({length: streamDefinitions.length}));
+    return Observable.of(Array.from({ length: streamDefinitions.length }));
   }
 
   deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> | Observable<any> {
@@ -89,7 +90,7 @@ export class MockStreamsService {
   }
 
   deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
-    return Observable.of(Array.from({length: streamDefinitions.length}));
+    return Observable.of(Array.from({ length: streamDefinitions.length }));
   }
 
   getRelatedDefinitions(streamDefinitionName: String, nested?: boolean): Observable<StreamDefinition[]> {
@@ -106,4 +107,12 @@ export class MockStreamsService {
   metrics(streamNames?: string[]): Observable<StreamMetrics[]> {
     return Observable.of([]);
   }
+
+  getHistory(streamDefinition: string): Observable<StreamHistory[]> {
+    return Observable.of([
+      new StreamHistory(streamDefinition, 2, new Date(), 'DEPLOYED', 'Upgrade complete', 'default'),
+      new StreamHistory(streamDefinition, 1, new Date(), 'DELETED', 'Delete complete', 'default')
+    ]);
+  }
+
 }

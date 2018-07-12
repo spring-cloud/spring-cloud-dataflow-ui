@@ -1,0 +1,37 @@
+<div *ngIf="stream$ | async as stream; else loading">
+
+  <table class="table table-hover" id="table-history" *ngIf="stream.history.length > 0">
+    <thead>
+    <tr>
+      <th>Version</th>
+      <th>Date</th>
+      <th>Stream Status</th>
+      <th>Description</th>
+      <th>platformName</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let history of stream.history">
+      <td>
+        <strong>{{ history.version }}</strong>
+      </td>
+      <td>{{ history.firstDeployed | date: 'short'}}</td>
+      <td>
+        <app-stream-history-status [status]="history.statusCode"></app-stream-history-status>
+      </td>
+      <td>{{ history.description}}</td>
+      <td>{{ history.platformName}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="stream.history.length == 0" class="alert alert-warning" style="display:inline-block;margin:0 auto">
+    <div style="padding-right: 15px">
+      No history.
+    </div>
+  </div>
+
+</div>
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>
