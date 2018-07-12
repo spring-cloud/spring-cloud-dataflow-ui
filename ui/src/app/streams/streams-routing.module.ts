@@ -7,6 +7,7 @@ import { AuthGuard } from '../auth/support/auth.guard';
 import { StreamComponent } from './stream/stream.component';
 import { StreamGraphComponent } from './stream/graph/stream-graph.component';
 import { StreamSummaryComponent } from './stream/summary/stream-summary.component';
+import { StreamHistoryComponent } from './stream/history/stream-history.component';
 
 const streamRoutes: Routes = [
   {
@@ -43,6 +44,10 @@ const streamRoutes: Routes = [
           {
             path: 'summary',
             component: StreamSummaryComponent,
+          },
+          {
+            path: 'history',
+            component: StreamHistoryComponent,
           }
         ]
       },

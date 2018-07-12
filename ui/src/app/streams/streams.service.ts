@@ -13,6 +13,7 @@ import { StreamListParams } from './components/streams.interface';
 import { OrderParams } from '../shared/components/shared.interface';
 import { LoggerService } from '../shared/services/logger.service';
 import { forkJoin } from 'rxjs';
+import { StreamHistory } from './model/stream-history';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -254,6 +255,10 @@ export class StreamsService {
     return this.streamDefinitions;
   }
 
+  /**
+   * Platforms
+   * @returns {Observable<Platform[]>}
+   */
   platforms(): Observable<Platform[]> {
     const options = HttpUtils.getDefaultRequestOptions();
     const params = new URLSearchParams('', URL_QUERY_ENCODER);
@@ -269,6 +274,26 @@ export class StreamsService {
         return [];
       })
       .catch(this.errorHandler.handleError);
+  }
+
+  /**
+   * Stream History
+   * @param {string} streamName
+   * @returns {Observable<StreamHistory[]>}
+   */
+  getHistory(streamName: string): Observable<StreamHistory[]> {
+    const options = HttpUtils.getDefaultRequestOptions();
+    return this.http.get(`/streams/deployments/history/${streamName}`, options)
+      .map(res => {
+        const data = res.json();
+        if (data && Array.isArray(data)) {
+          console.log(data);
+          return data.map((item) => {
+            return StreamHistory.fromJSON(item);
+          });
+        }
+        return [];
+      }).catch(this.errorHandler.handleError);
   }
 
 }

@@ -17,6 +17,8 @@ import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { STREAM_DEFINITIONS } from '../../tests/mocks/mock-data';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 
 /**
@@ -35,6 +37,7 @@ describe('StreamComponent', () => {
   const renderService = new RenderService(metamodelService);
   const busyService = new BusyService();
   const routingStateService = new MockRoutingStateService();
+  const aboutService = new MocksSharedAboutService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -51,6 +54,7 @@ describe('StreamComponent', () => {
       ],
       providers: [
         { provide: StreamsService, useValue: streamsService },
+        { provide: SharedAboutService, useValue: aboutService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: BusyService, useValue: busyService },
         { provide: RoutingStateService, useValue: routingStateService },
