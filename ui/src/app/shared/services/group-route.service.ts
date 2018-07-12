@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from 'angular-2-local-storage';
 
+import * as uuidv4 from 'uuid/v4';
+
 /**
- * A service for global logs.
+ * A service for create group route.
  *
  * @author Damien Vitrac
  */
@@ -12,11 +14,16 @@ export class GroupRouteService {
   constructor(private localStorageService: LocalStorageService) {
   }
 
+  /**
+   * Create an unique UUID
+   * Format:
+   * 6ba7b810-9dad-11d1-80b4-00c04fd430c8
+   *
+   * @param args
+   * @returns {string}
+   */
   create(args): string {
-    const key = `group-${'xxxxx-xxxxx-xxxxx-xxxxx'.replace(/[xy]/g, function (c) {
-      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    })}`;
+    const key = 'group-' + uuidv4();
     this.localStorageService.set(key, args);
     return key;
   }
@@ -26,7 +33,8 @@ export class GroupRouteService {
     if (!str.startsWith('group-')) {
       return false;
     }
-    if (str.length !== 29 || str[11] !== '-' || str[17] !== '-' || str[23] !== '-') {
+    const g = `group-`.length;
+    if (str.length !== (36 + g) || str[(8 + g)] !== '-' || str[(13 + g)] !== '-' || str[(18 + g)] !== '-' || str[(23 + g)] !== '-') {
       return false;
     }
     return true;
