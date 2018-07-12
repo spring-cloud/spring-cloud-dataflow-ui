@@ -27,11 +27,6 @@ import { EMPTY } from 'rxjs/index';
 export class StreamComponent implements OnInit {
 
   /**
-   * Stream ID
-   */
-  id: string;
-
-  /**
    * Observable of StreamDefinition
    */
   streamDefinitions$: Observable<StreamDefinition>;
