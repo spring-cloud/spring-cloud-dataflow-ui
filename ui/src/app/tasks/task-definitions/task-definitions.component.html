@@ -108,11 +108,11 @@
                 <span class="glyphicon glyphicon-play"></span>
               </button>
               <button *ngIf="schedulerEnabled" type="button" name="task-schedule{{ i }}" (click)="schedule(item)" [appRoles]="['ROLE_CREATE']"
-                      class="btn btn-default" style="margin-left: 0;" title="Schedule task">
+                      class="btn btn-default" title="Schedule task">
                 <span class="glyphicon glyphicon-time"></span>
               </button>
               <button *ngIf="schedulerEnabled" type="button" name="task-schedule-destroy{{ i }}" (click)="destroySchedules(item)"
-                      [appRoles]="['ROLE_CREATE']" class="btn btn-ico-remove-schedules btn-default" style="margin-left: 0;" title="Delete schedule">
+                      [appRoles]="['ROLE_CREATE']" class="btn btn-ico-remove-schedules btn-default" title="Delete schedule">
                 <span class="glyphicon glyphicon-time"></span>
                 <span class="glyphicon glyphicon-remove"></span>
               </button>
