@@ -1,6 +1,6 @@
 import {
-  OnChanges, ChangeDetectionStrategy, Component,
-  OnInit, DoCheck, HostListener, ViewChild,
+  OnChanges, Component,
+  OnInit, HostListener, ViewChild,
   ElementRef, Input, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
@@ -251,9 +251,5 @@ export class PieChartComponent implements OnInit, OnChanges {
       .text(function(d, i) {
         return localThis.chartDataToUse[i].key;
       });
-  }
-
-  private updateChart() {
-    const localThis = this;
   }
 }

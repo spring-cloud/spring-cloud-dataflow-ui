@@ -1,4 +1,3 @@
-import { URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { HttpUtils } from '../shared/support/http.utils';
@@ -7,13 +6,16 @@ import { ErrorHandler } from '../shared/model';
 import { AuthService } from './auth.service';
 import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { LoginRequest } from './model/login-request.model';
-import { SecurityAwareRequestOptions } from './support/security-aware-request-options';
 import { LoggerService } from '../shared/services/logger.service';
 
 describe('AuthService', () => {
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+    this.mockHttp = {
+      delete: jasmine.createSpy('delete'),
+      get: jasmine.createSpy('get'),
+      post: jasmine.createSpy('post')
+    };
     this.jsonData = {
       'authenticationEnabled': true,
       'authorizationEnabled': true,
@@ -33,9 +35,8 @@ describe('AuthService', () => {
       };
 
     const errorHandler = new ErrorHandler();
-    const securityAwareRequestOptions = new SecurityAwareRequestOptions();
     const loggerService = new LoggerService();
-    this.authService = new AuthService(this.mockHttp, errorHandler, loggerService, securityAwareRequestOptions);
+    this.authService = new AuthService(this.mockHttp, errorHandler, loggerService);
   });
 
   describe('loadSecurityInfo', () => {
@@ -44,7 +45,13 @@ describe('AuthService', () => {
 
       expect(this.authService.securityInfo).toBeUndefined();
       this.authService.loadSecurityInfo();
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/security/info', HttpUtils.getDefaultRequestOptions());
+
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/security/info');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+
     });
   });
 
@@ -54,10 +61,13 @@ describe('AuthService', () => {
       const loginRequest = new LoginRequest('foo', 'password123');
       this.authService.login(loginRequest);
 
-      expect(this.mockHttp.post).toHaveBeenCalledWith(
-        '/authenticate',
-        JSON.stringify(loginRequest).trim(),
-        HttpUtils.getDefaultRequestOptions());
+      const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
+      const payload = this.mockHttp.post.calls.mostRecent().args[1];
+      const headerArgs = this.mockHttp.post.calls.mostRecent().args[2].headers;
+      expect(httpUri).toEqual('/authenticate');
+      expect(payload).toEqual(JSON.stringify(loginRequest).trim());
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
   });
 
@@ -65,8 +75,12 @@ describe('AuthService', () => {
     it('should call logout REST endpoint', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       this.authService.logout();
-      expect(this.mockHttp.get).toHaveBeenCalledWith(
-        '/dashboard/logout', HttpUtils.getDefaultRequestOptions());
+
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/dashboard/logout');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
   });
 });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -48,10 +48,10 @@ export class JobsService {
   /**
    * Constructor
    *
-   * @param {Http} http
+   * @param {HttpClient} httpClient
    * @param {ErrorHandler} errorHandler
    */
-  constructor(private http: Http,
+  constructor(private httpClient: HttpClient,
               private loggerService: LoggerService,
               private errorHandler: ErrorHandler) {
   }
@@ -66,9 +66,8 @@ export class JobsService {
   getJobExecutions(listParams: ListParams): Observable<Page<JobExecution>> {
     this.loggerService.log(`Get Job Executions`, listParams);
     const params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
-    return this.http.get(JobsService.URL.EXECUTIONS, { search: params })
-      .map((response) => {
-        const body = response.json();
+    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS, { params: params })
+      .map((body) => {
         const items: JobExecution[] = [];
         if (body._embedded && body._embedded.jobExecutionResourceList) {
           for (const jsonItem of body._embedded.jobExecutionResourceList) {
@@ -105,9 +104,8 @@ export class JobsService {
    * @returns {Observable<JobExecution>}
    */
   getJobExecution(id: string): Observable<JobExecution> {
-    return this.http.get(JobsService.URL.EXECUTIONS + '/' + id, {})
-      .map((response) => {
-        const jsonItem = response.json();
+    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + id, {})
+      .map((jsonItem) => {
         const jobExecution: JobExecution = new JobExecution();
         jobExecution.name = jsonItem.name;
         jobExecution.startTime = moment(jsonItem.jobExecution.startTime);
@@ -141,9 +139,8 @@ export class JobsService {
    * @returns {Observable<StepExecutionResource>}
    */
   getStepExecution(jobid: string, stepid: string): Observable<StepExecutionResource> {
-    return this.http.get(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid, {})
-      .map((response) => {
-        const body = response.json();
+    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid, {})
+      .map((body) => {
         const stepExecutionItem = body.stepExecution;
         const stepExecutionResource: StepExecutionResource = new StepExecutionResource();
         const stepExecution = this.createStepExecution(stepExecutionItem);
@@ -179,10 +176,9 @@ export class JobsService {
    * @returns {Observable<StepExecutionProgress>}
    */
   getStepExecutionProgress(jobid: string, stepid: string): Observable<StepExecutionProgress> {
-    return this.http.get(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid + '/progress', {})
-      .map((response) => {
+    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid + '/progress', {})
+      .map((body) => {
         const stepExecutionProgress: StepExecutionProgress = new StepExecutionProgress();
-        const body = response.json();
         stepExecutionProgress.percentageComplete = body.percentageComplete;
         stepExecutionProgress.finished = body.finished;
         stepExecutionProgress.duration = body.duration;
@@ -255,8 +251,10 @@ export class JobsService {
    * @returns {Observable<any | any>} with the state of the restart.
    */
   restartJob(item: JobExecution) {
-    const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-    return this.http.put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?restart=true', options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?restart=true', {
+      headers: httpHeaders
+    })
       .catch(this.errorHandler.handleError);
   }
 
@@ -267,8 +265,10 @@ export class JobsService {
    * @returns {Observable<any | any>} state of the job execution stop event.
    */
   stopJob(item: JobExecution) {
-    const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-    return this.http.put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?stop=true', options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?stop=true', {
+      headers: httpHeaders
+    })
       .catch(this.errorHandler.handleError);
   }
 }

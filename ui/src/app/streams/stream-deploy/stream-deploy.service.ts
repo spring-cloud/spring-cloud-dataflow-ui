@@ -289,11 +289,11 @@ export class StreamDeployService {
    * @param {string} value
    * @returns {any}
    */
-  cleanValueProperties(value:string) {
+  cleanValueProperties(value: string) {
     if ((value && value.length > 1 && value.startsWith('"') && value.endsWith('"'))) {
       return value.substring(1, value.length - 1);
     }
-    if ((value && value.length > 1 && value.startsWith("'") && value.endsWith("'"))) {
+    if ((value && value.length > 1 && value.startsWith('\'') && value.endsWith('\''))) {
       return value.substring(1, value.length - 1);
     }
     return value;

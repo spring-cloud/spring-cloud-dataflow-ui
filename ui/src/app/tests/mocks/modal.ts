@@ -1,5 +1,3 @@
-import {BsModalRef} from 'ngx-bootstrap';
-
 /**
  * Mock for BsModalService.
  *

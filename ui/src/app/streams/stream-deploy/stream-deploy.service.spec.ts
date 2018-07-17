@@ -17,7 +17,11 @@ describe('StreamDeployService', () => {
 
   beforeEach(() => {
 
-    this.mockHttpSharedAppsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+    this.mockHttpSharedAppsService = {
+      delete: jasmine.createSpy('delete'),
+      get: jasmine.createSpy('get'),
+      post: jasmine.createSpy('post')
+    };
     this.mockHttpStreamsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
     this.mockHttpAppsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
 
@@ -41,15 +45,19 @@ describe('StreamDeployService', () => {
         options: []
       }));
       this.streamDeployService.appDetails(applicationType, applicationName);
-      expect(this.mockHttpSharedAppsService.get).toHaveBeenCalledWith(
-        '/apps/' + applicationType + '/' + applicationName, HttpUtils.getDefaultRequestOptions());
+
+      const httpUri = this.mockHttpSharedAppsService.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttpSharedAppsService.get.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/apps/' + applicationType + '/' + applicationName);
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+
     });
 
     it('should return an array of options formatted', () => {
       const applicationType = 'source';
       const applicationName = 'foo';
       this.mockHttpSharedAppsService.get.and.returnValue(Observable.of({
-        json: () => ({
           name: applicationName,
           type: applicationType,
           options: [
@@ -66,7 +74,7 @@ describe('StreamDeployService', () => {
             }
           ]
         })
-      }));
+      );
       this.streamDeployService.appDetails(applicationType, applicationName).subscribe((options) => {
         expect(options.length).toBe(1);
         expect(options[0]['valueOptions'].length).toBe(7);

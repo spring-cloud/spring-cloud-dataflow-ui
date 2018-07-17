@@ -197,25 +197,6 @@ export class GraphChartComponent implements OnInit, DoCheck {
         })
       .curve(d3.curveBasis);
 
-      const xAxisGroup = svg
-      .append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(0,' + (height - margin.bottom) + ')')
-      .attr('fill', 'none')
-      .attr('stroke', '#777')
-      .attr('opacity', 1.0)
-      .attr('shape-rendering', 'crispEdges')
-      .call(xAxis);
-
-      const yAxisGroup = svg.append('g')
-      .attr('class', 'y axis')
-      .attr('transform', 'translate(' + (margin.left) + ',0)')
-      .attr('fill', 'none')
-      .attr('stroke', '#777')
-      .attr('opacity', 1.0)
-      .attr('shape-rendering', 'crispEdges')
-      .call(yAxis);
-
       svg.append('path')
         .datum(dataItemsToUse)
         .attr('d', lineGen)

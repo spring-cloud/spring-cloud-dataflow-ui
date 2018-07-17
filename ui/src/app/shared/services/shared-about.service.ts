@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -35,7 +35,7 @@ export class SharedAboutService {
 
   constructor(
     private busyService: BusyService,
-    private http: Http, private errorHandler: ErrorHandler) {
+    private httpClient: HttpClient, private errorHandler: ErrorHandler) {
   }
 
   getAboutInfo(): Observable<AboutInfo> {
@@ -53,7 +53,7 @@ export class SharedAboutService {
 
   loadAboutInfo(reload?: boolean): Observable<AboutInfo> {
     if (!this.aboutInfo || reload) {
-      this.busyService.addSubscription(this.http.get(this.aboutUrl)
+      this.busyService.addSubscription(this.httpClient.get<any>(this.aboutUrl)
         .map(this.extractData.bind(this))
         .catch(this.errorHandler.handleError)
         .subscribe());
@@ -61,8 +61,8 @@ export class SharedAboutService {
     return Observable.of(this.aboutInfo);
   }
 
-  public extractData(response: Response): AboutInfo {
-    this.aboutInfo = new AboutInfo().deserialize(response.json());
+  public extractData(responseJson: any): AboutInfo {
+    this.aboutInfo = new AboutInfo().deserialize(responseJson);
     this.aboutInfo$.next(this.aboutInfo);
     this.featureInfo = this.aboutInfo.featureInfo;
     this.featureInfoSubject.next(this.aboutInfo.featureInfo);

@@ -1,4 +1,3 @@
-import {URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
 import {AppsService} from './apps.service';
@@ -7,11 +6,18 @@ import {ApplicationType, AppRegistration, ErrorHandler} from '../shared/model';
 import {SharedAppsService} from '../shared/services/shared-apps.service';
 import {AppsWorkaroundService} from './apps.workaround.service';
 import { LoggerService } from '../shared/services/logger.service';
+import { HttpParams } from '@angular/common/http';
 
 describe('AppsService', () => {
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+
+    this.mockHttp = {
+      delete: jasmine.createSpy('delete'),
+      get: jasmine.createSpy('get'),
+      post: jasmine.createSpy('post')
+    };
+
     this.jsonData = {};
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
@@ -27,7 +33,7 @@ describe('AppsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       expect(this.appsService.appRegistrations).toBeUndefined();
       const params = HttpUtils.getPaginationParams(0, 30);
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+      const httpHeaders = HttpUtils.getDefaultHttpHeaders();
       requestOptionsArgs.search = params;
       this.appsService.getApps();
       const defaultPageNumber: number = this.appsService.applicationsContext.page;
@@ -49,29 +55,31 @@ describe('AppsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       this.appsService.getAppInfo(applicationType, applicationName);
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith(
-        '/apps/' + applicationType + '/' + applicationName, HttpUtils.getDefaultRequestOptions());
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/apps/' + applicationType + '/' + applicationName);
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
-
   });
 
   describe('bulkImportApps', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
 
-      const requestOptions = HttpUtils.getDefaultRequestOptions();
-      const params = new URLSearchParams();
-
-      params.append('uri', 'http://blubba');
-      params.append('apps', '');
-      params.append('force', 'true');
-
-      requestOptions.params = params;
-
       const appRegistrationImport = {force: true, properties: [], uri: 'http://blubba'};
       this.mockHttp.post.and.returnValue(Observable.of(true));
       this.appsService.bulkImportApps(appRegistrationImport);
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps', {}, requestOptions);
+
+      const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.post.calls.mostRecent().args[2].headers;
+      const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
+      expect(httpUri).toEqual('/apps');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+      expect(httpParams.get('uri')).toEqual('http://blubba');
+      expect(httpParams.get('apps')).toEqual('');
+      expect(httpParams.get('force')).toEqual('true');
     });
 
   });
@@ -79,11 +87,16 @@ describe('AppsService', () => {
   describe('unregisterApp', () => {
 
     it('should call the apps service with the right url to unregister a single app', () => {
-      const requestOptions = HttpUtils.getDefaultRequestOptions();
       const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://somewhere');
       this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
       this.appsService.unregisterApp(appRegistration);
-      expect(this.mockHttp.delete).toHaveBeenCalledWith('/apps/0/blubba', requestOptions);
+
+      const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.delete.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/apps/0/blubba');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+
     });
 
   });
@@ -91,13 +104,10 @@ describe('AppsService', () => {
   describe('registerApp', () => {
 
     it('should call the apps service with the right url to register a single app', () => {
-      const requestOptions = HttpUtils.getDefaultRequestOptions();
-      const params = new URLSearchParams();
-
-      params.append('uri', 'http://blubba');
-      params.append('force', 'true');
-
-      requestOptions.params = params;
+      const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+      const params = new HttpParams()
+        .append('uri', 'http://blubba')
+        .append('force', 'true');
 
       this.mockHttp.post.and.returnValue(Observable.of(true));
 
@@ -105,27 +115,30 @@ describe('AppsService', () => {
       appRegistration.force = true;
 
       this.appsService.registerApp(appRegistration);
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/source/blubba', {}, requestOptions);
+
+      const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.post.calls.mostRecent().args[2].headers;
+      const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
+      expect(httpUri).toEqual('/apps/source/blubba');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+      expect(httpParams.get('uri')).toEqual('http://blubba');
+      expect(httpParams.get('force')).toEqual('true');
+
     });
   });
 
   describe('registerMultipleApps', () => {
     it('should call the apps service with the right url to register multiple apps', () => {
-      const requestOptions1 = HttpUtils.getDefaultRequestOptions();
-      const params1 = new URLSearchParams();
+      const httpHeaders1 = HttpUtils.getDefaultHttpHeaders();
+      const params1 = new HttpParams()
+        .append('uri', 'http://foo.bar')
+        .append('force', 'false');
 
-      params1.append('uri', 'http://foo.bar');
-      params1.append('force', 'false');
-
-      requestOptions1.params = params1;
-
-      const requestOptions2 = HttpUtils.getDefaultRequestOptions();
-      const params2 = new URLSearchParams();
-
-      params2.append('uri', 'http://bar.foo');
-      params2.append('force', 'false');
-
-      requestOptions2.params = params2;
+      const httpHeaders2 = HttpUtils.getDefaultHttpHeaders();
+      const params2 = new HttpParams()
+        .append('uri', 'http://bar.foo')
+        .append('force', 'false');
 
       this.mockHttp.post.and.returnValue(Observable.of(true));
       const appRegistrations = [
@@ -145,13 +158,25 @@ describe('AppsService', () => {
 
       this.appsService.registerApps(appRegistrations);
 
-      expect(this.mockHttp.post.calls.allArgs()).toEqual([
-        ['/apps/source/foo', {}, requestOptions1],
-        ['/apps/sink/bar', {}, requestOptions2]
-      ]);
+      const httpUri1 = this.mockHttp.post.calls.argsFor(0)[0];
+      const headerArgs1 = this.mockHttp.post.calls.argsFor(0)[2].headers;
+      const httpParams1 = this.mockHttp.post.calls.argsFor(0)[2].params;
 
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/source/foo', {}, requestOptions1);
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/apps/sink/bar', {}, requestOptions2);
+      const httpUri2 = this.mockHttp.post.calls.argsFor(1)[0];
+      const headerArgs2 = this.mockHttp.post.calls.argsFor(1)[2].headers;
+      const httpParams2 = this.mockHttp.post.calls.argsFor(1)[2].params;
+
+      expect(httpUri1).toEqual('/apps/source/foo');
+      expect(headerArgs1.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs1.get('Accept')).toEqual('application/json');
+      expect(httpParams1.get('uri')).toEqual('http://foo.bar');
+      expect(httpParams1.get('force')).toEqual('false');
+
+      expect(httpUri2).toEqual('/apps/sink/bar');
+      expect(headerArgs2.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs2.get('Accept')).toEqual('application/json');
+      expect(httpParams2.get('uri')).toEqual('http://bar.foo');
+      expect(httpParams2.get('force')).toEqual('false');
 
       expect(this.mockHttp.post).toHaveBeenCalledTimes(2);
     });

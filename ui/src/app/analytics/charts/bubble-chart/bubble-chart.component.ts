@@ -1,6 +1,6 @@
 import {
-  OnChanges, ChangeDetectionStrategy, Component,
-  OnInit, DoCheck, HostListener, ViewChild, ElementRef,
+  OnChanges, Component,
+  OnInit, HostListener, ViewChild, ElementRef,
   Input, ViewEncapsulation } from '@angular/core';
 
 import * as d3 from 'd3';
@@ -32,9 +32,6 @@ export class BubbleChartComponent implements OnInit, OnChanges {
     private chartDataToUse: FieldValueCounterValue[];
 
     private chart: any;
-    private xScale: any;
-    private yScale: any;
-    private xAxis: any;
 
     /**
      * Initialize the component and trigger the rendering of the chart.
@@ -129,8 +126,6 @@ export class BubbleChartComponent implements OnInit, OnChanges {
 
       const localThis = this;
 
-      const radius = Math.min(widthToUse, heightToUse) / 2;
-
       if (!localThis.chartDataToUse) {
         return;
       } else {
@@ -182,6 +177,4 @@ export class BubbleChartComponent implements OnInit, OnChanges {
           });
     }
 
-    private updateChart() {
-    }
 }

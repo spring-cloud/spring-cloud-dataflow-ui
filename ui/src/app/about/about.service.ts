@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import { ErrorHandler } from '../shared/model/error-handler';
 
 import { SharedAboutService } from '../shared/services/shared-about.service';
 import { FeatureInfo } from '../shared/model/about/feature-info.model';
@@ -18,12 +16,8 @@ export class AboutService {
    * Constructor
    *
    * @param {SharedAboutService} sharedAboutService
-   * @param {Http} http
-   * @param {ErrorHandler} errorHandler
    */
-  constructor(private sharedAboutService: SharedAboutService,
-              private http: Http,
-              private errorHandler: ErrorHandler) {
+  constructor(private sharedAboutService: SharedAboutService) {
   }
 
   /**

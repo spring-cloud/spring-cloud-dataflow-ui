@@ -1,5 +1,3 @@
-import { FeatureInfo } from './feature-info.model';
-import { Dependency } from './dependency.model';
 import { VersionInfo } from './version-info.model';
 
 describe('VersionInfo', () => {

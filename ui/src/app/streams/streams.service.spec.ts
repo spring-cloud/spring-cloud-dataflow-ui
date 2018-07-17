@@ -1,9 +1,9 @@
 import { ErrorHandler } from '../shared/model/error-handler';
 import { StreamsService } from './streams.service';
 import { Observable } from 'rxjs/Observable';
-import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
+import { HttpUtils } from '../shared/support/http.utils';
 import { StreamDefinition } from './model/stream-definition';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 import { MockResponse } from '../tests/mocks/response';
 import { STREAM_DEFINITIONS } from '../tests/mocks/mock-data';
 import { LoggerService } from '../shared/services/logger.service';
@@ -17,7 +17,11 @@ import { LoggerService } from '../shared/services/logger.service';
 describe('StreamsService', () => {
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+    this.mockHttp = {
+      delete: jasmine.createSpy('delete'),
+      get: jasmine.createSpy('get'),
+      post: jasmine.createSpy('post')
+    };
     this.jsonData = {};
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
@@ -29,55 +33,87 @@ describe('StreamsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
 
       expect(this.streamsService.streamDefinitions).toBeDefined();
-
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 30);
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      requestOptionsArgs.search = params;
       this.streamsService.getDefinitions();
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
+
+      const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs1 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/streams/definitions');
+      expect(headerArgs1.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs1.get('Accept')).toEqual('application/json');
+      expect(httpParams1.get('page')).toEqual('0');
+      expect(httpParams1.get('size')).toEqual('30');
+
       this.streamsService.streamDefinitions.filter = 'testFilter';
       this.streamsService.getDefinitions();
       expect(this.streamsService.streamDefinitions.filter).toBe('testFilter');
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
+
+      const httpUri2 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs2 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams2 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri2).toEqual('/streams/definitions');
+      expect(headerArgs2.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs2.get('Accept')).toEqual('application/json');
+      expect(httpParams2.get('page')).toEqual('0');
+      expect(httpParams2.get('size')).toEqual('30');
     });
 
     it('should call the definitions service with the right url [no sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 30);
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      requestOptionsArgs.search = params;
       this.streamsService.getDefinitions();
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
+
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri).toEqual('/streams/definitions');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+      expect(httpParams.get('page')).toEqual('0');
+      expect(httpParams.get('size')).toEqual('30');
     });
 
     it('should call the definitions service with the right url [undefined sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 30);
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      requestOptionsArgs.search = params;
       this.streamsService.getDefinitions(undefined);
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
+
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri).toEqual('/streams/definitions');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+      expect(httpParams.get('page')).toEqual('0');
+      expect(httpParams.get('size')).toEqual('30');
     });
 
     it('should call the definitions service with the right url [asc sort]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
-      params.append('sort', 'DEFINITION,ASC');
       this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'ASC' });
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      requestOptionsArgs.search = params;
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
+
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri).toEqual('/streams/definitions');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+      expect(httpParams.get('page')).toEqual('0');
+      expect(httpParams.get('size')).toEqual('10');
+      expect(httpParams.get('sort')).toEqual('DEFINITION,ASC');
     });
 
     it('should call the definitions service with the right url [desc sort]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 10);
-      params.append('sort', 'DEFINITION,DESC');
       this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC' });
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      requestOptionsArgs.search = params;
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions', requestOptionsArgs);
+
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri).toEqual('/streams/definitions');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+      expect(httpParams.get('page')).toEqual('0');
+      expect(httpParams.get('size')).toEqual('10');
+      expect(httpParams.get('sort')).toEqual('DEFINITION,DESC');
     });
   });
 
@@ -89,8 +125,12 @@ describe('StreamsService', () => {
 
       const streamDefinition = new StreamDefinition('test', 'time|log', 'undeployed');
       this.streamsService.destroyDefinition(streamDefinition);
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/definitions/test', requestOptionsArgs);
+
+      const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.delete.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/streams/definitions/test');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
 
     describe('undeployDefinition', () => {
@@ -101,8 +141,12 @@ describe('StreamsService', () => {
 
         const streamDefinition = new StreamDefinition('test', 'time|log', 'deployed');
         this.streamsService.undeployDefinition(streamDefinition);
-        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/deployments/test', requestOptionsArgs);
+
+        const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
+        const headerArgs = this.mockHttp.delete.calls.mostRecent().args[1].headers;
+        expect(httpUri).toEqual('/streams/deployments/test');
+        expect(headerArgs.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs.get('Accept')).toEqual('application/json');
       });
     });
 
@@ -113,8 +157,12 @@ describe('StreamsService', () => {
         expect(this.streamsService.streamDefinitions).toBeDefined();
 
         this.streamsService.deployDefinition('test', {});
-        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/test', {}, requestOptionsArgs);
+
+        const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
+        const headerArgs = this.mockHttp.post.calls.mostRecent().args[2].headers;
+        expect(httpUri).toEqual('/streams/deployments/test');
+        expect(headerArgs.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs.get('Accept')).toEqual('application/json');
       });
     });
 
@@ -125,8 +173,12 @@ describe('StreamsService', () => {
         expect(this.streamsService.getDeploymentInfo).toBeDefined();
 
         this.streamsService.getDeploymentInfo('test');
-        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-        expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/deployments/test', requestOptionsArgs);
+
+        const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+        const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+        expect(httpUri).toEqual('/streams/deployments/test');
+        expect(headerArgs.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs.get('Accept')).toEqual('application/json');
       });
     });
 
@@ -153,8 +205,13 @@ describe('StreamsService', () => {
         expect(this.streamsService.getRelatedDefinitions).toBeDefined();
 
         this.streamsService.getRelatedDefinitions('test');
-        expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions/test/related', HttpUtils.getDefaultRequestOptions());
-      });
+
+        const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+        const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+        expect(httpUri).toEqual('/streams/definitions/test/related');
+        expect(headerArgs.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs.get('Accept')).toEqual('application/json');
+    });
 
       it('should call the streams service to get related stream definitions with nesting', () => {
         this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
@@ -162,11 +219,18 @@ describe('StreamsService', () => {
         expect(this.streamsService.getRelatedDefinitions).toBeDefined();
 
         this.streamsService.getRelatedDefinitions('test', true);
-        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-        const params = new URLSearchParams('', URL_QUERY_ENCODER);
-        params.append('nested', 'true');
-        requestOptionsArgs.params = params;
-        expect(this.mockHttp.get).toHaveBeenCalledWith('/streams/definitions/test/related', requestOptionsArgs);
+        const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+        const params = new HttpParams()
+          .append('nested', 'true');
+
+
+        const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+        const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+        const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
+        expect(httpUri).toEqual('/streams/definitions/test/related');
+        expect(headerArgs.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs.get('Accept')).toEqual('application/json');
+        expect(httpParams.get('nested')).toEqual('true');
       });
 
     });
@@ -179,7 +243,12 @@ describe('StreamsService', () => {
         expect(this.streamsService.metrics).toBeDefined();
 
         this.streamsService.metrics();
-        expect(this.mockHttp.get).toHaveBeenCalledWith('/metrics/streams', HttpUtils.getDefaultRequestOptions());
+
+        const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+        const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+        expect(httpUri).toEqual('/metrics/streams');
+        expect(headerArgs.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs.get('Accept')).toEqual('application/json');
       });
 
       it('should call the streams metrics service with stream names specified', () => {
@@ -188,18 +257,25 @@ describe('StreamsService', () => {
         expect(this.streamsService.metrics).toBeDefined();
 
         this.streamsService.metrics(['test1', 'test2']);
-        const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-        const params = new URLSearchParams('', URL_QUERY_ENCODER);
-        params.append('names', 'test1,test2');
-        requestOptionsArgs.params = params;
-        expect(this.mockHttp.get).toHaveBeenCalledWith('/metrics/streams', requestOptionsArgs);
+        const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+        const params = new HttpParams()
+          .append('names', 'test1,test2');
+
+        const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+        const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+        const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
+        expect(httpUri).toEqual('/metrics/streams');
+        expect(headerArgs.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs.get('Accept')).toEqual('application/json');
+        expect(httpParams.get('names')).toEqual('test1,test2');
+
       });
 
     });
 
     describe('destroyMultipleStreamDefinitions', () => {
       it('should call the stream definition service with the right url to destroy multiple stream definitions', () => {
-        const options = HttpUtils.getDefaultRequestOptions();
+
         this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
         expect(this.streamsService.streamDefinitions).toBeDefined();
         const streamDefinitions = [
@@ -207,30 +283,54 @@ describe('StreamsService', () => {
           new StreamDefinition('stream2', 'ftp|filter|file', 'deployed')
         ];
         this.streamsService.destroyMultipleStreamDefinitions(streamDefinitions);
-        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/definitions/stream1', options);
-        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/definitions/stream2', options);
+
+        const httpUri1 = this.mockHttp.delete.calls.argsFor(0)[0];
+        const headerArgs1 = this.mockHttp.delete.calls.argsFor(0)[1].headers;
+        expect(httpUri1).toEqual('/streams/definitions/stream1');
+        expect(headerArgs1.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs1.get('Accept')).toEqual('application/json');
+
+        const httpUri2 = this.mockHttp.delete.calls.argsFor(1)[0];
+        const headerArgs2 = this.mockHttp.delete.calls.argsFor(1)[1].headers;
+        expect(httpUri2).toEqual('/streams/definitions/stream2');
+        expect(headerArgs2.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs2.get('Accept')).toEqual('application/json');
+
         expect(this.mockHttp.delete).toHaveBeenCalledTimes(2);
       });
     });
 
     describe('deployMultipleStreamDefinitions', () => {
       it('should call the stream definition service with the right url to deploy multiple stream definitions', () => {
-        const options = HttpUtils.getDefaultRequestOptions();
         this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
         expect(this.streamsService.streamDefinitions).toBeDefined();
         const stream1 = new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed');
         const stream2 = new StreamDefinition('stream2', 'file|filter|ftp', 'undeployed');
         stream1.deploymentProperties = { a: 'a' };
         this.streamsService.deployMultipleStreamDefinitions([stream1, stream2]);
-        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream1', { a: 'a' }, options);
-        expect(this.mockHttp.post).toHaveBeenCalledWith('/streams/deployments/stream2', {}, options);
+
+        const httpUri1 = this.mockHttp.post.calls.argsFor(0)[0];
+        const body1 = this.mockHttp.post.calls.argsFor(0)[1];
+        const headerArgs1 = this.mockHttp.post.calls.argsFor(0)[2].headers;
+        expect(httpUri1).toEqual('/streams/deployments/stream1');
+        expect(body1).toEqual(JSON.parse('{ "a": "a" }'));
+        expect(headerArgs1.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs1.get('Accept')).toEqual('application/json');
+
+        const httpUri2 = this.mockHttp.post.calls.argsFor(1)[0];
+        const body2 = this.mockHttp.post.calls.argsFor(1)[1];
+        const headerArgs2 = this.mockHttp.post.calls.argsFor(1)[2].headers;
+        expect(httpUri2).toEqual('/streams/deployments/stream2');
+        expect(body2).toEqual({});
+        expect(headerArgs2.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs2.get('Accept')).toEqual('application/json');
+
         expect(this.mockHttp.post).toHaveBeenCalledTimes(2);
       });
     });
 
     describe('undeployMultipleStreamDefinitions', () => {
       it('should call the stream definition service with the right url to undeploy multiple stream definitions', () => {
-        const options = HttpUtils.getDefaultRequestOptions();
         this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
         expect(this.streamsService.streamDefinitions).toBeDefined();
         const streamDefinitions = [
@@ -238,8 +338,19 @@ describe('StreamsService', () => {
           new StreamDefinition('stream2', 'ftp|filter|file', 'deployed')
         ];
         this.streamsService.undeployMultipleStreamDefinitions(streamDefinitions);
-        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/deployments/stream1', options);
-        expect(this.mockHttp.delete).toHaveBeenCalledWith('/streams/deployments/stream2', options);
+
+        const httpUri1 = this.mockHttp.delete.calls.argsFor(0)[0];
+        const headerArgs1 = this.mockHttp.delete.calls.argsFor(0)[1].headers;
+        expect(httpUri1).toEqual('/streams/deployments/stream1');
+        expect(headerArgs1.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs1.get('Accept')).toEqual('application/json');
+
+        const httpUri2 = this.mockHttp.delete.calls.argsFor(1)[0];
+        const headerArgs2 = this.mockHttp.delete.calls.argsFor(1)[1].headers;
+        expect(httpUri2).toEqual('/streams/deployments/stream2');
+        expect(headerArgs2.get('Content-Type')).toEqual('application/json');
+        expect(headerArgs2.get('Accept')).toEqual('application/json');
+
         expect(this.mockHttp.delete).toHaveBeenCalledTimes(2);
       });
     });

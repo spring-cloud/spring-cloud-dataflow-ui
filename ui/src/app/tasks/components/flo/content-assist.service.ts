@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpUtils } from '../../../shared/support/http.utils';
 
@@ -9,16 +9,19 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ContentAssistService {
 
-  constructor(private http: Http) {
+  constructor(private httpClient: HttpClient) {
   }
 
   getProposals(prefix: string): Observable<Array<string>> {
-    const options = HttpUtils.getDefaultRequestOptions();
-    options.params = new URLSearchParams();
-    options.params.append('start', prefix);
-    options.params.append('defaultLevel', '1');
-    return this.http.get('/completions/task', options).map(res => {
-      return res.json().proposals;
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams()
+      .append('start', prefix)
+      .append('defaultLevel', '1');
+    return this.httpClient.get<any>('/completions/task', {
+      headers: httpHeaders,
+      params: params
+    }).map(jsonResponse => {
+      return jsonResponse.proposals;
     });
   }
 

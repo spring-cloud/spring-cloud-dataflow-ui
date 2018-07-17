@@ -1,6 +1,5 @@
 import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { StreamsService } from '../streams.service';
-import { Subscription } from 'rxjs/Subscription';
 import { StreamDefinition } from '../model/stream-definition';
 import { BsModalRef } from 'ngx-bootstrap';
 import { Subject } from 'rxjs/Subject';

@@ -69,7 +69,7 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
     const busy = this.tasksService.destroyDefinitions(this.taskDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
-        this.notificationService.success(`${data.length} task definition(s) destroy.`);
+        this.notificationService.success(`${data.length} task definition(s) destroyed.`);
         this.confirm.emit('done');
         this.cancel();
       });

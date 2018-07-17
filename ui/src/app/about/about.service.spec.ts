@@ -1,7 +1,6 @@
 import { AboutService } from './about.service';
 import { Observable } from 'rxjs/Observable';
 import { ErrorHandler } from '../shared/model/error-handler';
-import { Response, ResponseOptions } from '@angular/http';
 import { SharedAboutService } from '../shared/services/shared-about.service';
 import { BusyService } from '../shared/services/busy.service';
 
@@ -102,19 +101,22 @@ describe('AboutService', () => {
     };
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
-    const mockResponse = new Response(new ResponseOptions({
-      body: JSON.stringify(jsonData)
-    }));
-    this.mockHttp.get.and.returnValue(Observable.of(mockResponse));
+    this.mockHttp = {
+        get: jasmine.createSpy('get'),
+      };
+    this.mockHttp.get.and.returnValue(Observable.of(jsonData));
     const errorHandler = new ErrorHandler();
     this.sharedAboutService = new SharedAboutService(new BusyService(), this.mockHttp, errorHandler);
-    this.aboutService = new AboutService(this.sharedAboutService, this.mockHttp, errorHandler);
+    this.aboutService = new AboutService(this.sharedAboutService);
   });
 
   it('should call the about service with the right url', () => {
     this.aboutService.getAboutInfo(true);
-    expect(this.mockHttp.get).toHaveBeenCalledWith('/about');
+
+    const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+    const headerArgs = this.mockHttp.get.calls.mostRecent().args[1];
+    expect(httpUri).toEqual('/about');
+    expect(headerArgs).toBeUndefined();
   });
 
   it('should return the correct json data', () => {

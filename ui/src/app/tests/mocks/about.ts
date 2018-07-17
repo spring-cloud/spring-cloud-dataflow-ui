@@ -1,6 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { AppInfo } from '../../tasks/model/app-info';
-import { Page} from '../../shared/model/page';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { AboutInfo } from '../../shared/model/about/about-info.model';
 import { RuntimeEnvironment } from '../../shared/model/about/runtime-environment.model';

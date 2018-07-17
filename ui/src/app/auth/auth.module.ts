@@ -11,6 +11,8 @@ import { CapsLockDirective } from './directives/caps-lock.directive';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './support/auth.guard';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TokenInterceptor } from './support/token.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -26,7 +28,12 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
   ],
   providers: [
     AuthGuard,
-    AuthService
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
   ],
   exports: [
     RolesDirective,

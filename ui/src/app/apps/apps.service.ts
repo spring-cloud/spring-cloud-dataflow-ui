@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, URLSearchParams} from '@angular/http';
+import {HttpClient, HttpResponse, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -51,7 +51,7 @@ export class AppsService {
    * @param {AppsWorkaroundService} appsWorkaroundService
    * @param {SharedAppsService} sharedAppsService
    */
-  constructor(private http: Http,
+  constructor(private httpClient: HttpClient,
               private errorHandler: ErrorHandler,
               private loggerService: LoggerService,
               private appsWorkaroundService: AppsWorkaroundService,
@@ -106,8 +106,10 @@ export class AppsService {
    */
   setAppDefaultVersion(type: ApplicationType, name: string, version: string): Observable<void> {
     this.loggerService.log('Set app default version...', {name: name, type: type, version: version});
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, {
+      headers: httpHeaders
+    })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -120,13 +122,16 @@ export class AppsService {
    */
   bulkImportApps(bulkImportParams: BulkImportParams): Observable<void> {
     this.loggerService.log('Bulk import applications...', bulkImportParams);
-    const options = HttpUtils.getDefaultRequestOptions();
-    const params = new URLSearchParams();
-    params.append('uri', bulkImportParams.uri);
-    params.append('apps', bulkImportParams.properties ? bulkImportParams.properties.join('\n') : null);
-    params.append('force', bulkImportParams.force ? 'true' : 'false');
-    options.params = params;
-    return this.http.post(AppsService.appsUrl, {}, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams()
+      .append('uri', bulkImportParams.uri)
+      .append('apps', bulkImportParams.properties ? bulkImportParams.properties.join('\n') : null)
+      .append('force', bulkImportParams.force ? 'true' : 'false');
+
+    return this.httpClient.post(AppsService.appsUrl, {}, {
+      headers: httpHeaders,
+      params: params
+    })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -139,8 +144,10 @@ export class AppsService {
    */
   unregisterApp(appRegistration: AppRegistration): Observable<void> {
     this.loggerService.log('Unregistering...', appRegistration);
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, {
+      headers: httpHeaders
+    })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -169,9 +176,11 @@ export class AppsService {
    */
   unregisterAppVersion(appRegistration: AppRegistration, version: string): Observable<any> {
     this.loggerService.log('Unregistering app version...', {app: appRegistration, version: version});
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name
-      + '/' + version, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name
+      + '/' + version, {
+        headers: httpHeaders
+      })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -184,15 +193,19 @@ export class AppsService {
    */
   registerApp(appRegisterParams: AppRegisterParams): Observable<void> {
     this.loggerService.log('Registering app...', appRegisterParams);
-    const params = new URLSearchParams();
-    params.append('uri', appRegisterParams.uri);
-    params.append('force', appRegisterParams.force.toString());
+    let params = new HttpParams()
+      .append('uri', appRegisterParams.uri)
+      .append('force', appRegisterParams.force.toString());
     if (appRegisterParams.metaDataUri) {
-      params.append('metadata-uri', appRegisterParams.metaDataUri);
+      params = params.append('metadata-uri', appRegisterParams.metaDataUri);
     }
-    const options = HttpUtils.getDefaultRequestOptions();
-    options.params = params;
-    return this.http.post(AppsService.appsUrl + '/' + ApplicationType[appRegisterParams.type] + '/' + appRegisterParams.name, {}, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+
+    return this.httpClient.post(AppsService.appsUrl + '/' + ApplicationType[appRegisterParams.type] + '/' + appRegisterParams.name,
+      {}, {
+        params: params,
+        headers: httpHeaders
+      })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }

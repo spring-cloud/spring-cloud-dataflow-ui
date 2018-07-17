@@ -1,13 +1,8 @@
-import { Component, forwardRef, ViewChild } from '@angular/core';
-import { NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import * as moment from 'moment';
 import { TimepickerValidator } from './timepicker.validator';
-
-export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => TimepickerComponent),
-  multi: true
-};
+import { CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR } from './timepicker.control';
 
 @Component({
   selector: 'app-dataflow-timepicker',

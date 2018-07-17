@@ -4,12 +4,16 @@ import { HttpUtils } from '../shared/support/http.utils';
 import { ErrorHandler } from '../shared/model';
 import { LoggerService } from '../shared/services/logger.service';
 import { JobExecution } from './model/job-execution.model';
-import { RequestOptionsArgs } from '@angular/http';
 
 describe('JobsService', () => {
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['get', 'put']);
+
+    this.mockHttp = {
+      get: jasmine.createSpy('get'),
+      put: jasmine.createSpy('put')
+    };
+
     this.jsonData = {};
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
@@ -26,7 +30,7 @@ describe('JobsService', () => {
 
       this.jobsService.getJobExecutions({ page: 0, size: 10 });
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions', { search: params });
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions', { params: params });
     });
   });
 
@@ -61,8 +65,12 @@ describe('JobsService', () => {
       jobExecution.name = 'foo';
       this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
       this.jobsService.restartJob(jobExecution);
-      const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      expect(this.mockHttp.put).toHaveBeenCalledWith('/jobs/executions/1?restart=true', options);
+
+      const httpUri = this.mockHttp.put.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.put.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/jobs/executions/1?restart=true');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
   });
 
@@ -71,10 +79,15 @@ describe('JobsService', () => {
       const jobExecution: JobExecution = new JobExecution();
       jobExecution.jobExecutionId = 1;
       jobExecution.name = 'foo';
+
       this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
       this.jobsService.stopJob(jobExecution);
-      const options: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      expect(this.mockHttp.put).toHaveBeenCalledWith('/jobs/executions/1?stop=true', options);
+
+      const httpUri = this.mockHttp.put.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.put.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/jobs/executions/1?stop=true');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
   });
 
