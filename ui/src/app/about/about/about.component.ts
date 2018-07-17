@@ -31,10 +31,8 @@ export class AboutComponent implements OnInit {
    * Constructor
    *
    * @param {AboutService} aboutService
-   * @param {Router} router
    */
-  constructor(private aboutService: AboutService,
-              private router: Router) {
+  constructor(private aboutService: AboutService) {
   }
 
   /**

@@ -33,7 +33,7 @@ export class StreamHistoryStatusComponent implements OnChanges {
    */
   ngOnChanges(changes: SimpleChanges) {
     if (changes.status && changes.status.currentValue) {
-      this.label = changes.status.currentValue.toString().toUpperCase()
+      this.label = changes.status.currentValue.toString().toUpperCase();
     } else {
       this.label = 'unknown'.toUpperCase();
     }

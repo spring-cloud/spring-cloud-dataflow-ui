@@ -68,10 +68,6 @@ describe('AggregateCounter', () => {
       const values = counter.getValues();
 
       expect(values.length).toBe(4);
-
-      const expectedTime0: Moment = moment('2017-09-27T00:03:58.378Z');
-      const expectedTime1: Moment = moment('2017-09-27T00:04:58.378Z');
-
       expect(values[0]).toBe(654);
       expect(values[1]).toBe(861);
     });

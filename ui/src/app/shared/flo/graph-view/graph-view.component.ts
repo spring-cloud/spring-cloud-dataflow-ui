@@ -1,7 +1,5 @@
 import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
 import { Flo } from 'spring-flo';
-import { MetamodelService } from '../../../streams/components/flo/metamodel.service';
-import { RenderService } from '../../../streams/components/flo/render.service';
 
 @Component({
   selector: 'app-graph-view',

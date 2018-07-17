@@ -1,15 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { map, mergeMap, share } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TasksService } from '../../tasks.service';
-import { TaskDefinition } from '../../model/task-definition';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { TaskSchedule } from '../../model/task-schedule';
 import { TaskSchedulesDestroyComponent } from '../../task-schedules-destroy/task-schedules-destroy.component';
-import { OrderParams, SortParams } from '../../../shared/components/shared.interface';
-import { TaskExecution } from '../../model/task-execution';
+import { OrderParams } from '../../../shared/components/shared.interface';
 import { Page } from '../../../shared/model/page';
 import { TaskScheduleListParams } from '../../components/tasks.interface';
 import { Subject } from 'rxjs/Subject';

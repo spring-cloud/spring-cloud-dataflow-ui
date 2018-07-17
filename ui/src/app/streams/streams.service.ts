@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -7,7 +7,7 @@ import { StreamDefinition } from './model/stream-definition';
 import { StreamMetrics } from './model/stream-metrics';
 import { Page } from '../shared/model/page';
 import { ErrorHandler } from '../shared/model/error-handler';
-import { HttpUtils, URL_QUERY_ENCODER } from '../shared/support/http.utils';
+import { HttpUtils } from '../shared/support/http.utils';
 import { Platform } from './model/platform';
 import { StreamListParams } from './components/streams.interface';
 import { OrderParams } from '../shared/components/shared.interface';
@@ -44,11 +44,11 @@ export class StreamsService {
 
   /**
    * Creates the {@link Page} instance for {@link StreamDefinition} pagination support.
-   * @param http handler for making calls to the data flow restful api
+   * @param httpClient handler for making calls to the data flow restful api
    * @param loggerService used to log.
    * @param errorHandler used to generate the error messages.
    */
-  constructor(private http: Http,
+  constructor(private httpClient: HttpClient,
               private loggerService: LoggerService,
               private errorHandler: ErrorHandler) {
     this.streamDefinitions = new Page<StreamDefinition>();
@@ -69,44 +69,52 @@ export class StreamsService {
       order: null
     };
     this.loggerService.log('Getting paged stream definitions', streamListParams);
-    const params = HttpUtils.getPaginationParams(
+    let params = HttpUtils.getPaginationParams(
       streamListParams.page,
       streamListParams.size
     );
     if (streamListParams.q) {
-      params.append('search', streamListParams.q);
+      params = params.append('search', streamListParams.q);
     }
     if (streamListParams.sort && streamListParams.order) {
-      params.append('sort', `${streamListParams.sort},${streamListParams.order}`);
+      params = params.append('sort', `${streamListParams.sort},${streamListParams.order}`);
     }
 
-    const options = HttpUtils.getDefaultRequestOptions();
-    options.params = params;
-    return this.http.get(this.streamDefinitionsUrl, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+
+    return this.httpClient.get<any>(this.streamDefinitionsUrl, {
+      params: params,
+      headers: httpHeaders,
+      observe: 'response'
+    })
       .map(response => this.extractData(response))
       .catch(this.errorHandler.handleError);
   }
 
   getDefinition(name: string): Observable<StreamDefinition> {
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.get(`${this.streamDefinitionsUrl}/${name}`, options)
-      .map(res => {
-        const json = res.json();
-        return new StreamDefinition(json.name, json.dslText, json.status);
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.get<any>(`${this.streamDefinitionsUrl}/${name}`, {
+      headers: httpHeaders
+    }).map(jsonResponse => {
+        return new StreamDefinition(jsonResponse.name, jsonResponse.dslText, jsonResponse.status);
       })
       .catch(this.errorHandler.handleError);
   }
 
-  createDefinition(name: string, dsl: string, deploy?: boolean): Observable<Response> {
-    const options = HttpUtils.getDefaultRequestOptions();
-    const params = new URLSearchParams('', URL_QUERY_ENCODER);
-    params.append('name', name);
-    params.append('definition', dsl);
+  createDefinition(name: string, dsl: string, deploy?: boolean): Observable<HttpResponse<any>> {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    let params = new HttpParams()
+      .append('name', name)
+      .append('definition', dsl);
     if (deploy) {
-      params.set('deploy', deploy.toString());
+      params = params.set('deploy', deploy.toString());
     }
-    options.params = params;
-    return this.http.post(this.streamDefinitionsUrl, null, options);
+   // options.observe = 'response' as 'response';
+    return this.httpClient.post<any>(this.streamDefinitionsUrl, null, {
+      headers: httpHeaders,
+      observe: 'response',
+      params: params
+    });
   }
 
   /**
@@ -116,12 +124,13 @@ export class StreamsService {
    */
   destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> {
     this.loggerService.log('Destroying...', streamDefinition);
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.delete('/streams/definitions/' + streamDefinition.name, options)
-      .catch(this.errorHandler.handleError);
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.delete<any>('/streams/definitions/' + streamDefinition.name, {
+      headers: httpHeaders})
+    .catch(this.errorHandler.handleError);
   }
 
-  destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Response[]> {
+  destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<HttpResponse<any>[]> {
     const observables: Observable<any>[] = [];
     for (const streamDefinition of streamDefinitions) {
       observables.push(this.destroyDefinition(streamDefinition));
@@ -134,15 +143,15 @@ export class StreamsService {
    * @param streamDefinition
    * @returns {Observable<R|T>} that will call subscribed functions to handle the result from the undeploy.
    */
-  undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> {
+  undeployDefinition(streamDefinition: StreamDefinition): Observable<HttpResponse<any>> {
     this.loggerService.log('Undeploying...', streamDefinition);
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.delete('/streams/deployments/' + streamDefinition.name, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.delete<any>('/streams/deployments/' + streamDefinition.name, { headers: httpHeaders})
       .catch(this.errorHandler.handleError);
   }
 
-  undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Response[]> {
-    const observables: Observable<Response>[] = [];
+  undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<HttpResponse<any>[]> {
+    const observables: Observable<HttpResponse<any>>[] = [];
     for (const streamDefinition of streamDefinitions) {
       observables.push(this.undeployDefinition(streamDefinition));
     }
@@ -156,68 +165,79 @@ export class StreamsService {
    * @param propertiesAsMap the application or deployment properties to be used for stream deployment.
    * @returns {Observable<R|T>} that will call the subscribed functions to handle the resut of the deploy.
    */
-  deployDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<Response> {
+  deployDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<HttpResponse<any>> {
     this.loggerService.log('Deploying...', streamDefinitionName);
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.post('/streams/deployments/' + streamDefinitionName, propertiesAsMap, options)
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.post<any>('/streams/deployments/' + streamDefinitionName, propertiesAsMap, {
+      headers: httpHeaders,
+      observe: 'response'
+    })
       .catch(this.errorHandler.handleError);
   }
 
-  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Response[]> {
-    const observables: Observable<Response>[] = [];
+  deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<HttpResponse<any>[]> {
+    const observables: Observable<HttpResponse<any>>[] = [];
     for (const streamDefinition of streamDefinitions) {
       observables.push(this.deployDefinition(streamDefinition.name, streamDefinition.deploymentProperties));
     }
     return forkJoin([...observables]);
   }
 
-  updateDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<Response> {
+  updateDefinition(streamDefinitionName: String, propertiesAsMap: any = {}): Observable<HttpResponse<any>> {
     this.loggerService.log('Updating...', streamDefinitionName, propertiesAsMap);
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.post(`/streams/deployments/update/${streamDefinitionName}`, {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.post(`/streams/deployments/update/${streamDefinitionName}`, {
       releaseName: streamDefinitionName,
       packageIdentifier: { packageName: streamDefinitionName, packageVersion: null },
       updateProperties: propertiesAsMap
-    }, options)
+    }, {
+      headers: httpHeaders,
+      observe: 'response'
+    })
       .catch(this.errorHandler.handleError);
   }
 
   getDeploymentInfo(streamDefinitionName: string): Observable<StreamDefinition> {
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.get(`/streams/deployments/${streamDefinitionName}`, options).map(res => {
-      const json = res.json();
-      const streamDef = new StreamDefinition(json.streamName, json.dslText, json.status);
-      this.loggerService.log(json.deploymentProperties);
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.get<any>(`/streams/deployments/${streamDefinitionName}`, {
+      headers: httpHeaders
+    }).map(jsonResponse => {
+      const streamDef = new StreamDefinition(jsonResponse.streamName, jsonResponse.dslText, jsonResponse.status);
+      this.loggerService.log(jsonResponse.deploymentProperties);
       // deploymentProperties come as json string -> turn the string into object
-      streamDef.deploymentProperties = json.deploymentProperties ? JSON.parse(json.deploymentProperties) : [];
+      streamDef.deploymentProperties = jsonResponse.deploymentProperties ? JSON.parse(jsonResponse.deploymentProperties) : [];
       return streamDef;
     }).catch(this.errorHandler.handleError);
   }
 
   getRelatedDefinitions(streamName: string, nested?: boolean): Observable<StreamDefinition[]> {
-    const options = HttpUtils.getDefaultRequestOptions();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    let params = new HttpParams();
+
     if (nested) {
-      const params = new URLSearchParams('', URL_QUERY_ENCODER);
-      params.append('nested', nested.toString());
-      options.params = params;
+      params = params.append('nested', nested.toString());
     }
-    return this.http.get(`/streams/definitions/${streamName}/related`, options)
-      .map(res => this.extractData(res).items)
+    return this.httpClient.get<any>(`/streams/definitions/${streamName}/related`, {
+      params: params,
+      headers: httpHeaders
+    })
+      .map(jsonResponse => this.extractData(jsonResponse).items)
       .catch(this.errorHandler.handleError);
   }
 
   metrics(streamNames?: string[]): Observable<StreamMetrics[]> {
-    const options = HttpUtils.getDefaultRequestOptions();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    let params = new HttpParams();
     if (streamNames) {
-      const params = new URLSearchParams('', URL_QUERY_ENCODER);
-      params.append('names', streamNames.join(','));
-      options.params = params;
+      params = params.append('names', streamNames.join(','));
     }
-    return this.http.get('/metrics/streams', options)
-      .map(res => {
-        const data = res.json();
-        if (Array.isArray(data)) {
-          return data.map(entry => new StreamMetrics().deserialize(entry));
+    return this.httpClient.get<any>('/metrics/streams', {
+      headers: httpHeaders,
+      params: params
+    })
+      .map(jsonResponse => {
+        if (Array.isArray(jsonResponse)) {
+          return jsonResponse.map(entry => new StreamMetrics().deserialize(entry));
         } else {
           return [];
         }
@@ -225,8 +245,8 @@ export class StreamsService {
       .catch(this.errorHandler.handleError);
   }
 
-  extractData(res: Response): Page<StreamDefinition> {
-    const body = res.json();
+  extractData(res: HttpResponse<any>): Page<StreamDefinition> {
+    const body = res.body;
     let items: StreamDefinition[];
     if (body._embedded && body._embedded.streamDefinitionResourceList) {
       items = body._embedded.streamDefinitionResourceList.map(jsonItem => {
@@ -260,14 +280,16 @@ export class StreamsService {
    * @returns {Observable<Platform[]>}
    */
   platforms(): Observable<Platform[]> {
-    const options = HttpUtils.getDefaultRequestOptions();
-    const params = new URLSearchParams('', URL_QUERY_ENCODER);
-    params.append('page', '0');
-    params.append('size', '1000');
-    options.params = params;
-    return this.http.get(`/streams/deployments/platform/list`, options)
-      .map(res => {
-        const data = res.json();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams()
+      .append('page', '0')
+      .append('size', '1000');
+
+    return this.httpClient.get<any>(`/streams/deployments/platform/list`, {
+      params: params,
+      headers: httpHeaders
+    })
+      .map(data => {
         if (data && Array.isArray(data)) {
           return data.map(entry => new Platform().deserialize(entry));
         }
@@ -282,10 +304,11 @@ export class StreamsService {
    * @returns {Observable<StreamHistory[]>}
    */
   getHistory(streamName: string): Observable<StreamHistory[]> {
-    const options = HttpUtils.getDefaultRequestOptions();
-    return this.http.get(`/streams/deployments/history/${streamName}`, options)
-      .map(res => {
-        const data = res.json();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.get<any>(`/streams/deployments/history/${streamName}`, {
+      headers: httpHeaders
+    })
+      .map(data => {
         if (data && Array.isArray(data)) {
           console.log(data);
           return data.map((item) => {

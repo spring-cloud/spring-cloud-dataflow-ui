@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { AnalyticsService } from '../analytics.service';
-import { Counter } from '../model/counter.model';
 import { LoggerService } from '../../shared/services/logger.service';
 
 /**

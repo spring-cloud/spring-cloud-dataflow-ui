@@ -18,6 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { By } from '@angular/platform-browser';
 import { Observable } from 'rxjs/Observable';
+import { throwError } from 'rxjs';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Platform } from '../../model/platform';
 
@@ -112,7 +113,7 @@ describe('StreamCreateDialogComponent', () => {
   // });
 
   it('platforms() call errors out => deploy checkbox is hidden', () => {
-    spyOn(streamsService, 'platforms').and.returnValue(Observable.throw('Error'));
+    spyOn(streamsService, 'platforms').and.returnValue(throwError('Error'));
     fixture.detectChanges();
     const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
     expect(deployDiv).toBeFalsy();

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { HttpUtils } from '../../../shared/support/http.utils';
 import { ErrorHandler } from '../../../shared/model/error-handler';
@@ -18,7 +18,7 @@ export class ToolsService {
   private parseTaskTextToGraphUrl = '/tools/parseTaskTextToGraph';
   private convertTaskGraphToTextUrl = '/tools/convertTaskGraphToText';
 
-  constructor(private http: Http,
+  constructor(private httpClient: HttpClient,
               private errorHandler: ErrorHandler) {
   }
 
@@ -54,9 +54,11 @@ export class ToolsService {
         });
       } else {
         // Invoke server parser service for non-empty one line DSL
-        const options = HttpUtils.getDefaultRequestOptions();
+        const httpHeaders = HttpUtils.getDefaultHttpHeaders();
         const body = '{"dsl":"' + dsl + '","name":"' + name + '"}';
-        return this.http.post(this.parseTaskTextToGraphUrl, body, options)
+        return this.httpClient.post<any>(this.parseTaskTextToGraphUrl, body, {
+          headers: httpHeaders
+        })
           .map(response => this.extractConversionData(response))
           .catch(this.errorHandler.handleError);
       }
@@ -70,10 +72,12 @@ export class ToolsService {
    * @returns {Observable<TaskConversion>}
    */
   convertTaskGraphToText(graph: Graph): Observable<TaskConversion> {
-    const options = HttpUtils.getDefaultRequestOptions();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     const body = graph.toJson();
 
-    return this.http.post(this.convertTaskGraphToTextUrl, body, options)
+    return this.httpClient.post<any>(this.convertTaskGraphToTextUrl, body, {
+      headers: httpHeaders
+    })
       .map(response => this.extractConversionData(response))
       .catch(this.errorHandler.handleError);
   }
@@ -81,12 +85,10 @@ export class ToolsService {
   /**
    * Extract TaskConversion from a response.
    *
-   * @param {Response} res the response
+   * @param {any} JSON body of the response
    * @returns {TaskConversion}
    */
-  extractConversionData(res: Response): TaskConversion {
-    const body = res.json();
-
+  extractConversionData(body: any): TaskConversion {
     let graph: Graph;
     if (body.graph) {
       const nodes: Array<Node> = new Array();
@@ -103,7 +105,6 @@ export class ToolsService {
       }
       graph = new Graph(nodes, links);
     }
-
     return new TaskConversion(body.dsl, body.errors, graph);
   }
 

@@ -1,4 +1,3 @@
-import { URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { HttpUtils } from '../support/http.utils';
@@ -10,7 +9,9 @@ import { LoggerService } from './logger.service';
 describe('SharedAppsService', () => {
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['get']);
+    this.mockHttp = {
+      get: jasmine.createSpy('get')
+    };
     this.jsonData = { };
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
@@ -23,14 +24,18 @@ describe('SharedAppsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
 
       const params = HttpUtils.getPaginationParams(0, 10);
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-      requestOptionsArgs.search = params;
+      const httpHeaders = HttpUtils.getDefaultHttpHeaders();
 
       const pageRequest = new PageRequest(0, 10);
 
       this.sharedServices.getApps(pageRequest);
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', requestOptionsArgs);
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/apps');
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
+
     });
 
   });
@@ -44,8 +49,11 @@ describe('SharedAppsService', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
       this.sharedServices.getAppInfo(applicationType, applicationName);
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith(
-        '/apps/' + applicationType + '/' + applicationName, HttpUtils.getDefaultRequestOptions());
+      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      expect(httpUri).toEqual('/apps/' + applicationType + '/' + applicationName);
+      expect(headerArgs.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
 
   });

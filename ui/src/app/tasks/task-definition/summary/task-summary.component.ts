@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { TasksService } from '../../tasks.service';
-import { TaskDefinition } from '../../model/task-definition';
 import { ToolsService } from '../../components/flo/tools.service';
 import { TaskConversion } from '../../components/flo/model/models';
 import { map } from 'rxjs/internal/operators';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { StreamDefinition } from '../../model/stream-definition';
 import { map, mergeMap } from 'rxjs/internal/operators';
 import { StreamsService } from '../../streams.service';

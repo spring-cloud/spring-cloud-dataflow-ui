@@ -1,7 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { RequestOptions } from '@angular/http';
-import { SecurityAwareRequestOptions } from './auth/support/security-aware-request-options';
 
 /* Feature Modules */
 import { AboutModule } from './about/about.module';
@@ -67,10 +65,6 @@ export function init(authService: AuthService, sharedAboutService: SharedAboutSe
       'useFactory': init,
       'deps': [ AuthService, SharedAboutService ],
       'multi': true
-    },
-    {
-      'provide': RequestOptions,
-      'useClass': SecurityAwareRequestOptions
     }
   ],
   bootstrap: [ AppComponent ]

@@ -94,7 +94,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
     it('Should display a message after destroy one task', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('1 task definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('1 task definition(s) destroyed.');
     }));
 
     it('Should close the modal after a success destroy', (() => {
@@ -141,7 +141,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
     it('Should display a message after destroy 2 tasks', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('2 task definition(s) destroy.');
+      expect(notificationService.testSuccess[0]).toContain('2 task definition(s) destroyed.');
     }));
 
     it('Should close the modal after a success destroy', (() => {

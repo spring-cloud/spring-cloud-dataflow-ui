@@ -1,78 +1,107 @@
-import { URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { ErrorHandler } from '../shared/model/error-handler';
-import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { TasksService } from './tasks.service';
-import { HttpUtils } from '../shared/support/http.utils';
 import { LoggerService } from '../shared/services/logger.service';
 
 describe('TasksService', () => {
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+    this.mockHttp = {
+      delete: jasmine.createSpy('delete'),
+      get: jasmine.createSpy('get'),
+      post: jasmine.createSpy('post')
+    };
     this.jsonData = {};
     const loggerService = new LoggerService();
     const errorHandler = new ErrorHandler();
-    const sharedServices = new SharedAppsService(this.mockHttp, loggerService, errorHandler);
-    this.tasksService = new TasksService(this.mockHttp, errorHandler, loggerService, sharedServices);
+    this.tasksService = new TasksService(this.mockHttp, errorHandler, loggerService);
   });
 
   describe('getDefinitions', () => {
     it('should call the definitions service with the right url [no sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 20);
-
       this.tasksService.getDefinitions();
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/tasks/definitions', { search: params });
+
+      const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs1 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/tasks/definitions');
+      expect(headerArgs1).toBeUndefined();
+      expect(httpParams1.get('page')).toEqual('0');
+      expect(httpParams1.get('size')).toEqual('20');
+
     });
 
     it('should call the definitions service with the right url [undefined sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 20);
       this.tasksService.getDefinitions(undefined);
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/tasks/definitions', { search: params });
+
+      const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs1 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/tasks/definitions');
+      expect(headerArgs1).toBeUndefined();
+      expect(httpParams1.get('page')).toEqual('0');
+      expect(httpParams1.get('size')).toEqual('20');
     });
 
     it('should call the definitions service with the right url [desc asc sort]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 20);
-      const tocheck = params;
-      tocheck.append('sort', 'START_TIME,ASC');
       this.tasksService.getDefinitions({ q: '', page: 0, size: 20, sort: 'START_TIME', order: 'ASC' });
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/tasks/definitions', { search: tocheck });
+
+      const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs1 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/tasks/definitions');
+      expect(headerArgs1).toBeUndefined();
+      expect(httpParams1.get('page')).toEqual('0');
+      expect(httpParams1.get('size')).toEqual('20');
+      expect(httpParams1.get('sort')).toEqual('START_TIME,ASC');
     });
   });
 
   describe('getExecutions', () => {
     it('should call the executions service with the right url [no sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 20);
       // params.append('type', 'task');
 
       this.tasksService.getExecutions();
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/tasks/executions', { search: params });
+
+      const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs1 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/tasks/executions');
+      expect(headerArgs1).toBeUndefined();
+      expect(httpParams1.get('page')).toEqual('0');
+      expect(httpParams1.get('size')).toEqual('20');
     });
 
     it('should call the executions service with the right url [undefined sort params]', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 20);
       this.tasksService.getExecutions(undefined);
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/tasks/executions', { search: params });
+
+      const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs1 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/tasks/executions');
+      expect(headerArgs1).toBeUndefined();
+      expect(httpParams1.get('page')).toEqual('0');
+      expect(httpParams1.get('size')).toEqual('20');
     });
 
     it('should call the executions service with the right url (sort, order)', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      const params: URLSearchParams = HttpUtils.getPaginationParams(0, 20);
-      const tocheck = params;
-      tocheck.append('sort', 'START_TIME,DESC');
       this.tasksService.getExecutions({ q: '', page: 0, size: 20, sort: 'START_TIME', order: 'DESC' });
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/tasks/executions', { search: tocheck });
+
+      const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs1 = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/tasks/executions');
+      expect(headerArgs1).toBeUndefined();
+      expect(httpParams1.get('page')).toEqual('0');
+      expect(httpParams1.get('size')).toEqual('20');
+      expect(httpParams1.get('sort')).toEqual('START_TIME,DESC');
     });
-
   });
-
-
 });

@@ -60,7 +60,7 @@ export class StreamComponent implements OnInit {
             return {
               id: param.id,
               featureInfo: featureInfo
-            }
+            };
           }))
       ))
       .pipe(mergeMap(
@@ -70,7 +70,7 @@ export class StreamComponent implements OnInit {
               id: val.id,
               featureInfo: val.featureInfo,
               streamDefinition: streamDefinition
-            }
+            };
           }))
       )).catch((error) => {
         if (HttpAppError.is404(error)) {

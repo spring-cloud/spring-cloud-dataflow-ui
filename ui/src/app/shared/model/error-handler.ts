@@ -1,6 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { AppError, HttpAppError } from './error.model';
 import { LoggerService } from '../services/logger.service';
 

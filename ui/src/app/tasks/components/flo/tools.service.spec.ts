@@ -50,7 +50,9 @@ describe('ToolsService', () => {
   };
 
   beforeEach(() => {
-    this.mockHttp = jasmine.createSpyObj('mockHttp', ['post']);
+    this.mockHttp = {
+      post: jasmine.createSpy('post')
+    };
     this.jsonData = {};
     const errorHandler = new ErrorHandler();
     this.toolsService = new ToolsService(this.mockHttp, errorHandler);
@@ -59,10 +61,17 @@ describe('ToolsService', () => {
   describe('parseTaskTextToGraph', () => {
     it('should call the tools service to parse dsl to graph', () => {
       this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       this.toolsService.parseTaskTextToGraph('fakedsl');
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/tools/parseTaskTextToGraph',
-        '{"dsl":"fakedsl","name":"unknown"}', requestOptionsArgs);
+
+      const httpUri1 = this.mockHttp.post.calls.mostRecent().args[0];
+      const body = this.mockHttp.post.calls.mostRecent().args[1];
+      const headerArgs1 = this.mockHttp.post.calls.mostRecent().args[2].headers;
+
+      expect(httpUri1).toEqual('/tools/parseTaskTextToGraph');
+      expect(body).toEqual(`{"dsl":"fakedsl","name":"unknown"}`);
+      expect(headerArgs1.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs1.get('Accept')).toEqual('application/json');
+
     });
     it('empty DSL case', (done) => {
       this.toolsService.parseTaskTextToGraph('').toPromise().then(result => {
@@ -91,23 +100,25 @@ describe('ToolsService', () => {
   describe('convertTaskGraphToText', () => {
     it('should call the tools service to parse graph to dsl', () => {
       this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
-      const requestOptionsArgs = HttpUtils.getDefaultRequestOptions();
       const graph = new Graph(new Array(), new Array());
       this.toolsService.convertTaskGraphToText(graph);
-      expect(this.mockHttp.post).toHaveBeenCalledWith('/tools/convertTaskGraphToText',
-        '{"nodes":[],"links":[]}', requestOptionsArgs);
+
+      const httpUri1 = this.mockHttp.post.calls.mostRecent().args[0];
+      const body = this.mockHttp.post.calls.mostRecent().args[1];
+      const headerArgs1 = this.mockHttp.post.calls.mostRecent().args[2].headers;
+
+      expect(httpUri1).toEqual('/tools/convertTaskGraphToText');
+      expect(body).toEqual(`{"nodes":[],"links":[]}`);
+      expect(headerArgs1.get('Content-Type')).toEqual('application/json');
+      expect(headerArgs1.get('Accept')).toEqual('application/json');
     });
   });
 
   describe('extractConversionData', () => {
     it('should do correct conversion', () => {
-      const response = new MockResponse();
-      response.body = CONVERSION_RESPONSE_1;
-      let taskConversion = this.toolsService.extractConversionData(response);
+      let taskConversion = this.toolsService.extractConversionData(CONVERSION_RESPONSE_1);
       expect(taskConversion.dsl).toBe('timestamp');
-
-      response.body = CONVERSION_RESPONSE_2;
-      taskConversion = this.toolsService.extractConversionData(response);
+      taskConversion = this.toolsService.extractConversionData(CONVERSION_RESPONSE_2);
       expect(taskConversion.graph).toBeTruthy();
       expect(taskConversion.graph.nodes.length).toBe(3);
       expect(taskConversion.graph.links.length).toBe(2);

@@ -1,5 +1,5 @@
 import {
-  OnChanges, ChangeDetectionStrategy, Component,
+  OnChanges, Component,
   OnInit, HostListener, ViewChild,
   ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';

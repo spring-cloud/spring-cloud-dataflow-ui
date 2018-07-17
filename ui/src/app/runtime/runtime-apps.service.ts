@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -25,10 +25,10 @@ export class RuntimeAppsService {
   /**
    * Constructor
    *
-   * @param {Http} http
+   * @param {HttpClient} httpClient
    * @param {ErrorHandler} errorHandler
    */
-  constructor(private http: Http, private errorHandler: ErrorHandler) {
+  constructor(private httpClient: HttpClient, private errorHandler: ErrorHandler) {
   }
 
   /**
@@ -38,7 +38,12 @@ export class RuntimeAppsService {
    * @param pagination
    */
   public getRuntimeApps(pagination: PaginationParams): Observable<Page<RuntimeApp>> {
-    return this.http.get(this.runtimeServiceURL, {params: pagination})
+
+    const httpParams = new HttpParams()
+      .append('page', pagination.page.toString())
+      .append('size', pagination.size.toString());
+
+    return this.httpClient.get<any>(this.runtimeServiceURL, {params: httpParams})
       .map(this.extractData)
       .catch(this.errorHandler.handleError);
   }
@@ -49,8 +54,7 @@ export class RuntimeAppsService {
    * @param {Response} result
    * @returns {Page<RuntimeApp>}
    */
-  private extractData(result: Response): Page<RuntimeApp> {
-    const response = result.json();
+  private extractData(response): Page<RuntimeApp> {
     const page = new Page<RuntimeApp>();
     if (response._embedded && response._embedded.appStatusResourceList) {
       page.items = (response._embedded.appStatusResourceList as RuntimeApp[]).map((item) => {

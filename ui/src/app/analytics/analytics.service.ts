@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/catch';
@@ -43,7 +43,7 @@ export class AnalyticsService {
   private rowId = 1; // For Dashboard
   public dashboardItems: DashboardItem[];
 
-  constructor(private http: Http,
+  constructor(private httpClient: HttpClient,
               private errorHandler: ErrorHandler,
               private loggerService: LoggerService,
               private notificationService: NotificationService) {
@@ -119,14 +119,16 @@ export class AnalyticsService {
     }
 
     const params = HttpUtils.getPaginationParams(this.counters.pageNumber, this.counters.pageSize);
-    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
 
     if (detailed) {
       params.append('detailed', detailed.toString());
     }
 
-    requestOptionsArgs.search = params;
-    return this.http.get(this.metricsCountersUrl, requestOptionsArgs)
+    return this.httpClient.get<any>(this.metricsCountersUrl, {
+      headers: httpHeaders,
+      params: params
+    })
       .map(response => this.extractData(response, detailed))
       .catch(this.errorHandler.handleError) as Observable<Page<Counter>>;
   }
@@ -136,10 +138,12 @@ export class AnalyticsService {
    */
   private getAllFieldValueCounters(): Observable<Page<FieldValueCounter>> {
     const params = HttpUtils.getPaginationParams(0, 100);
-    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
 
-    requestOptionsArgs.search = params;
-    return this.http.get(this.metricsFieldValueCountersUrl, requestOptionsArgs)
+    return this.httpClient.get<any>(this.metricsFieldValueCountersUrl, {
+      params: params,
+      headers: httpHeaders
+    })
       .map(response => this.extractData(response, false))
       .catch(this.errorHandler.handleError) as Observable<Page<FieldValueCounter>>;
   }
@@ -149,16 +153,17 @@ export class AnalyticsService {
    */
   private getAllAggregateCounters(): Observable<Page<AggregateCounter>> {
     const params = HttpUtils.getPaginationParams(0, 100);
-    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
 
-    requestOptionsArgs.search = params;
-    return this.http.get(this.metricsAggregateCountersUrl, requestOptionsArgs)
+    return this.httpClient.get<any>(this.metricsAggregateCountersUrl, {
+      params: params,
+      headers: httpHeaders
+    })
       .map(response => this.extractData(response, false))
       .catch(this.errorHandler.handleError) as Observable<Page<AggregateCounter>>;
   }
 
-  private extractData(response: Response, handleRates: boolean): Page<BaseCounter> {
-    const body = response.json();
+  private extractData(body, handleRates: boolean): Page<BaseCounter> {
     const items: BaseCounter[] = [];
     const cache: BaseCounter[] = [];
 
@@ -374,10 +379,11 @@ export class AnalyticsService {
    * @param counterName Name of the counter for which to retrieve details
    */
   private getSingleCounter(counterName: string): Observable<Counter> {
-    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-    return this.http.get(this.metricsCountersUrl + '/' + counterName, requestOptionsArgs)
-      .map(response => {
-        const body = response.json();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.get<any>(this.metricsCountersUrl + '/' + counterName, {
+      headers: httpHeaders
+    })
+      .map(body => {
         this.loggerService.log('body', body);
         return new Counter().deserialize(body);
       })
@@ -390,10 +396,11 @@ export class AnalyticsService {
    * @param counterName Name of the counter for which to retrieve details
    */
   private getSingleFieldValueCounter(counterName: string): Observable<FieldValueCounter> {
-    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-    return this.http.get(this.metricsFieldValueCountersUrl + '/' + counterName, requestOptionsArgs)
-      .map(response => {
-        const body = response.json();
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient.get<any>(this.metricsFieldValueCountersUrl + '/' + counterName, {
+      headers: httpHeaders
+    })
+      .map(body => {
         return new FieldValueCounter().deserialize(body);
       })
       .catch(this.errorHandler.handleError);
@@ -405,16 +412,16 @@ export class AnalyticsService {
    * @param counterName Name of the counter for which to retrieve details
    */
   private getSingleAggregateCounter(counter: AggregateCounter): Observable<AggregateCounter> {
-    const requestOptionsArgs: RequestOptionsArgs = HttpUtils.getDefaultRequestOptions();
-    const params = new URLSearchParams();
-
-    requestOptionsArgs.params = params;
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams();
 
     params.append('resolution', counter.resolutionType.name.toLowerCase());
 
-    return this.http.get(this.metricsAggregateCountersUrl + '/' + counter.name, requestOptionsArgs)
-      .map(response => {
-        const body = response.json();
+    return this.httpClient.get<any>(this.metricsAggregateCountersUrl + '/' + counter.name, {
+      headers: httpHeaders,
+      params: params
+    })
+      .map(body => {
         return new AggregateCounter().deserialize(body);
       })
       .catch(this.errorHandler.handleError);

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { Page } from '../shared/model/page';
 import { TaskExecution } from './model/task-execution';
 import { TaskDefinition } from './model/task-definition';
-import { SharedAppsService } from '../shared/services/shared-apps.service';
 import * as moment from 'moment';
 import { OrderParams } from '../shared/components/shared.interface';
 import { HttpUtils } from '../shared/support/http.utils';
@@ -16,6 +15,7 @@ import {
   TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams,
   TaskScheduleListParams
 } from './components/tasks.interface';
+import { HttpResponse } from '@angular/common/http';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -123,12 +123,10 @@ export class TasksService {
    * @param {Http} http
    * @param {ErrorHandler} errorHandler
    * @param {LoggerService} loggerService
-   * @param {SharedAppsService} sharedAppsService
    */
-  constructor(private http: Http,
+  constructor(private httpClient: HttpClient,
               private errorHandler: ErrorHandler,
-              private loggerService: LoggerService,
-              private sharedAppsService: SharedAppsService) {
+              private loggerService: LoggerService) {
   }
 
   /**
@@ -140,17 +138,16 @@ export class TasksService {
    */
   getExecutions(taskListParams: TaskListParams): Observable<Page<TaskExecution>> {
     taskListParams = taskListParams || { q: '', page: 0, size: 20, sort: null, order: null };
-    const params = HttpUtils.getPaginationParams(taskListParams.page, taskListParams.size);
+    let params = HttpUtils.getPaginationParams(taskListParams.page, taskListParams.size);
     if (taskListParams.q) {
-      params.append('search', taskListParams.q);
+      params = params.append('search', taskListParams.q);
     }
     if (taskListParams.sort && taskListParams.order) {
-      params.append('sort', `${taskListParams.sort},${taskListParams.order}`);
+      params = params.append('sort', `${taskListParams.sort},${taskListParams.order}`);
     }
-    return this.http.get(TasksService.URL.EXECUTIONS, { search: params })
-      .pipe(map((res) => {
+    return this.httpClient.get<any>(TasksService.URL.EXECUTIONS, { params: params })
+      .pipe(map((body) => {
         const taskExecutions = new Page<TaskExecution>();
-        const body = res.json();
         if (body._embedded && body._embedded.taskExecutionResourceList) {
           taskExecutions.items = body._embedded.taskExecutionResourceList.map(jsonItem => {
             return new TaskExecution(
@@ -189,17 +186,16 @@ export class TasksService {
    */
   getTaskExecutions(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskExecution>> {
     taskScheduleListParams = taskScheduleListParams || { task: '', page: 0, size: 20, sort: null, order: null };
-    const params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
+    let params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
     if (taskScheduleListParams.task) {
-      params.append('name', taskScheduleListParams.task);
+      params = params.append('name', taskScheduleListParams.task);
     }
     if (taskScheduleListParams.sort && taskScheduleListParams.order) {
-      params.append('sort', `${taskScheduleListParams.sort},${taskScheduleListParams.order}`);
+      params = params.append('sort', `${taskScheduleListParams.sort},${taskScheduleListParams.order}`);
     }
-    return this.http.get(TasksService.URL.EXECUTIONS, { search: params })
-      .pipe(map((res) => {
+    return this.httpClient.get<any>(TasksService.URL.EXECUTIONS, { params: params })
+      .pipe(map((body) => {
         const taskExecutions = new Page<TaskExecution>();
-        const body = res.json();
         if (body._embedded && body._embedded.taskExecutionResourceList) {
           taskExecutions.items = body._embedded.taskExecutionResourceList.map(jsonItem => {
             return new TaskExecution(
@@ -235,9 +231,8 @@ export class TasksService {
    * @returns {Observable<TaskExecution>}
    */
   getExecution(id: string): Observable<TaskExecution> {
-    return this.http.get(TasksService.URL.EXECUTIONS + '/' + id, {})
-      .pipe(map((item) => {
-        const jsonItem = item.json();
+    return this.httpClient.get<any>(TasksService.URL.EXECUTIONS + '/' + id, {})
+      .pipe(map((jsonItem) => {
         return new TaskExecution(
           jsonItem.executionId,
           jsonItem.exitCode,
@@ -261,11 +256,9 @@ export class TasksService {
    * @returns {Observable<TaskDefinition>}
    */
   getDefinition(taskname: string): Observable<TaskDefinition> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
-    return this.http.get(`${TasksService.URL.DEFINITIONS}/${taskname}`, options)
-      .map(res => {
-        const json = res.json();
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.httpClient.get<any>(`${TasksService.URL.DEFINITIONS}/${taskname}`, { headers: headers })
+      .map(json => {
         return new TaskDefinition(
           json.name,
           json.dslText,
@@ -285,17 +278,16 @@ export class TasksService {
    */
   getDefinitions(taskListParams: TaskListParams): Observable<Page<TaskDefinition>> {
     taskListParams = taskListParams || { q: '', page: 0, size: 20, sort: null, order: null };
-    const params = HttpUtils.getPaginationParams(taskListParams.page, taskListParams.size);
+    let params = HttpUtils.getPaginationParams(taskListParams.page, taskListParams.size);
     if (taskListParams.q) {
-      params.append('search', taskListParams.q);
+      params = params.append('search', taskListParams.q);
     }
     if (taskListParams.sort && taskListParams.order) {
-      params.append('sort', `${taskListParams.sort},${taskListParams.order}`);
+      params = params.append('sort', `${taskListParams.sort},${taskListParams.order}`);
     }
-    return this.http.get(TasksService.URL.DEFINITIONS, { search: params })
-      .pipe(map((res) => {
+    return this.httpClient.get<any>(TasksService.URL.DEFINITIONS, { params: params })
+      .pipe(map((body) => {
         const taskDefinitions = new Page<TaskDefinition>();
-        const body = res.json();
         if (body._embedded && body._embedded.taskDefinitionResourceList) {
           taskDefinitions.items = body._embedded.taskDefinitionResourceList.map(jsonItem => {
             return new TaskDefinition(
@@ -327,16 +319,15 @@ export class TasksService {
    */
   getSchedules(taskScheduleListParams: TaskScheduleListParams): Observable<Page<TaskSchedule>> {
     taskScheduleListParams = taskScheduleListParams || { task: '', page: 0, size: 20, sort: null, order: null };
-    const params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
+    // const params = HttpUtils.getPaginationParams(taskScheduleListParams.page, taskScheduleListParams.size);
     let url = TasksService.URL.SCHEDULES;
     if (taskScheduleListParams.task) {
       // params.append('search', taskScheduleListParams.task);
       url = `${url}/instances/${taskScheduleListParams.task}`;
     }
-    return this.http.get(url)
-      .pipe(map((res) => {
+    return this.httpClient.get<any>(url)
+      .pipe(map((body) => {
         const page = new Page<TaskSchedule>();
-        const body = res.json();
         if (body._embedded && body._embedded.scheduleInfoResourceList) {
           page.items = body._embedded.scheduleInfoResourceList.map(TaskSchedule.fromJSON);
         }
@@ -358,10 +349,8 @@ export class TasksService {
    * @returns {Observable<TaskDefinition>}
    */
   getSchedule(scheduleName: string): Observable<TaskSchedule> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
-    return this.http.get(`${TasksService.URL.SCHEDULES}/${scheduleName}`, options)
-      .pipe(map(res => res.json()))
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.httpClient.get<any>(`${TasksService.URL.SCHEDULES}/${scheduleName}`, { headers: headers })
       .pipe(map(TaskSchedule.fromJSON))
       .catch(this.errorHandler.handleError);
   }
@@ -387,7 +376,6 @@ export class TasksService {
    */
   createSchedule(taskScheduleCreateParams: TaskScheduleCreateParams): Observable<any> {
     this.loggerService.log('Create schedule ' + taskScheduleCreateParams.schedulerName, taskScheduleCreateParams);
-    const params = new URLSearchParams();
 
     // scheduler.cron.expression
     const props = ['scheduler.cron.expression=' + taskScheduleCreateParams.cronExpression];
@@ -395,14 +383,15 @@ export class TasksService {
 
     console.log(props);
 
-    params.append('scheduleName', taskScheduleCreateParams.schedulerName);
-    params.append('taskDefinitionName', taskScheduleCreateParams.task);
-    params.append('arguments', taskScheduleCreateParams.args);
-    params.append('properties', props.filter((prop) => !!prop).join(','));
+    const params = new HttpParams()
+      .append('scheduleName', taskScheduleCreateParams.schedulerName)
+      .append('taskDefinitionName', taskScheduleCreateParams.task)
+      .append('arguments', taskScheduleCreateParams.args)
+      .append('properties', props.filter((prop) => !!prop).join(','));
 
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers, params: params });
-    return this.http.post(TasksService.URL.SCHEDULES, {}, options)
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const options = { headers: headers, params: params };
+    return this.httpClient.post(TasksService.URL.SCHEDULES, {}, options)
       .catch(this.errorHandler.handleError);
   }
 
@@ -414,12 +403,12 @@ export class TasksService {
    */
   createDefinition(taskCreateParams: TaskCreateParams) {
     this.loggerService.log('Create task definition ' + taskCreateParams.definition + ' ' + taskCreateParams.name);
-    const params = new URLSearchParams();
-    params.append('definition', taskCreateParams.definition);
-    params.append('name', taskCreateParams.name);
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers, params: params });
-    return this.http.post(TasksService.URL.DEFINITIONS, {}, options)
+    const params = new HttpParams()
+      .append('definition', taskCreateParams.definition)
+      .append('name', taskCreateParams.name);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const options = { headers: headers, params: params };
+    return this.httpClient.post(TasksService.URL.DEFINITIONS, {}, options)
       .catch(this.errorHandler.handleError);
   }
 
@@ -429,12 +418,14 @@ export class TasksService {
    * @param {TaskDefinition} taskDefinition
    * @returns {Observable<Response>}
    */
-  destroyDefinition(taskDefinition: TaskDefinition): Observable<Response> {
+  destroyDefinition(taskDefinition: TaskDefinition): Observable<HttpResponse<any>> {
     this.loggerService.log('Destroying...', taskDefinition.name);
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
-    return this.http.delete(TasksService.URL.DEFINITIONS + '/' + taskDefinition.name, options)
-      .catch(this.errorHandler.handleError);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.httpClient.delete(TasksService.URL.DEFINITIONS + '/' + taskDefinition.name, {
+      headers: headers,
+      observe: 'response'
+    }).catch(this.errorHandler.handleError);
   }
 
   /**
@@ -443,8 +434,8 @@ export class TasksService {
    * @param {TaskDefinition[]} taskDefinitions
    * @returns {Observable<Response[]>}
    */
-  destroyDefinitions(taskDefinitions: TaskDefinition[]): Observable<Response[]> {
-    const observables: Observable<Response>[] = [];
+  destroyDefinitions(taskDefinitions: TaskDefinition[]): Observable<HttpResponse<any>[]> {
+    const observables: Observable<HttpResponse<any>>[] = [];
     for (const taskDefinition of taskDefinitions) {
       observables.push(this.destroyDefinition(taskDefinition));
     }
@@ -457,11 +448,10 @@ export class TasksService {
    * @param {TaskSchedule} taskSchedules
    * @returns {Observable<Response>}
    */
-  destroySchedule(taskSchedules: TaskSchedule): Observable<Response> {
+  destroySchedule(taskSchedules: TaskSchedule): Observable<HttpResponse<any>> {
     this.loggerService.log('Destroying...', taskSchedules.name);
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers });
-    return this.http.delete(TasksService.URL.SCHEDULES + '/' + taskSchedules.name, options)
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.httpClient.delete(TasksService.URL.SCHEDULES + '/' + taskSchedules.name, { headers: headers, observe: 'response'})
       .catch(this.errorHandler.handleError);
   }
 
@@ -471,8 +461,8 @@ export class TasksService {
    * @param {TaskSchedule[]} taskSchedules
    * @returns {Observable<Response[]>}
    */
-  destroySchedules(taskSchedules: TaskSchedule[]): Observable<Response[]> {
-    const observables: Observable<Response>[] = [];
+  destroySchedules(taskSchedules: TaskSchedule[]): Observable<HttpResponse<any>[]> {
+    const observables: Observable<HttpResponse<any>>[] = [];
     for (const taskSchedule of taskSchedules) {
       observables.push(this.destroySchedule(taskSchedule));
     }
@@ -486,17 +476,17 @@ export class TasksService {
    * @param {TaskLaunchParams} taskLaunchParams
    */
   launchDefinition(taskLaunchParams: TaskLaunchParams) {
-    const params = new URLSearchParams();
-    params.append('name', taskLaunchParams.name);
+    let params = new HttpParams()
+      .append('name', taskLaunchParams.name);
     if (taskLaunchParams.args) {
-      params.append('arguments', taskLaunchParams.args);
+      params = params.append('arguments', taskLaunchParams.args);
     }
     if (taskLaunchParams.props) {
-      params.append('properties', taskLaunchParams.props);
+      params = params.append('properties', taskLaunchParams.props);
     }
-    const headers = new Headers({ 'Content-Type': 'application/json' });
-    const options = new RequestOptions({ headers: headers, params: params });
-    return this.http.post(TasksService.URL.EXECUTIONS, {}, options)
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const options = { headers: headers, params: params };
+    return this.httpClient.post(TasksService.URL.EXECUTIONS, {}, options)
       .catch(this.errorHandler.handleError);
   }
 

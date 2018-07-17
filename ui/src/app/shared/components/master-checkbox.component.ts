@@ -1,7 +1,4 @@
 import {Component, Input, AfterViewInit, DoCheck, ViewChild, Output, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from 'rxjs/Subscription';
-import {Selectable} from '../../shared/model/selectable';
 
 /**
  * Component to be primarily used in multi-select data-grids. The component will

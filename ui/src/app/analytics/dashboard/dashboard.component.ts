@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnalyticsService } from '../analytics.service';
-import { AggregateCounter, AggregateCounterResolutionType, DashboardItem, MetricType } from '../model';
+import { AggregateCounterResolutionType, DashboardItem, MetricType } from '../model';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../shared/services/notification.service';

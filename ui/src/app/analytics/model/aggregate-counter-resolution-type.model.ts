@@ -1,5 +1,3 @@
-import { Serializable } from '../../shared/model';
-
 /**
  * Mimics the corresponding AggregateCounterResolution class from the
  * server-side. Represents a time-resolution supported by the

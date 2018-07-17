@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { AppsService } from '../apps.service';
 import { ApplicationType, DetailedAppRegistration } from '../../shared/model';
-import { Subscription } from 'rxjs/Subscription';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { SortParams } from '../../shared/components/shared.interface';
-import { combineLatest } from 'rxjs/operators/combineLatest';
+import { combineLatest } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
@@ -97,8 +96,9 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.loggerService.log('App Service Details');
-    this.sharedAboutService.getFeatureInfo()
-      .pipe(combineLatest(this.route.params))
+    const featureInfo$ = this.sharedAboutService.getFeatureInfo();
+
+    combineLatest(featureInfo$, this.route.params)
       .subscribe((data: any[]) => {
         const featureInfo = data[0] as FeatureInfo;
         const params = data[1] as Params;

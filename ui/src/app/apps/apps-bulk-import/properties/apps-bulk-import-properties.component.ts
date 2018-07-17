@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
@@ -80,7 +79,7 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
     } catch (e) {
     }
   }
-  prepareBulkImportRequest(force, importProps:string){
+  prepareBulkImportRequest(force, importProps: string) {
     return {
       force: force,
       properties: importProps.split('\n'),
