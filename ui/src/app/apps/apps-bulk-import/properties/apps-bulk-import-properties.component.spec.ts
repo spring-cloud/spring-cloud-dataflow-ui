@@ -122,4 +122,19 @@ describe('AppsBulkImportPropertiesComponent', () => {
     }, 1000);
   });
 
+  it('should split the properties by new lines', () => {
+    [
+      {properties: '', force: true, expectedProp: ['']},
+      {properties: 'a=a', force: false, expectedProp: ['a=a']},
+      {properties: 'bar', force: false, expectedProp: ['bar']},
+      {properties: 'foo=bar=bar', force: false, expectedProp: ['foo=bar=bar']},
+      {properties: 'foo=bar\nbar', force: false, expectedProp: ['foo=bar', 'bar']}
+    ].forEach(r => {
+      const propsRequest =  component.prepareBulkImportRequest(r.properties, r.properties);
+      expect(propsRequest.properties).toEqual(r.expectedProp);
+    } );
+
+
+  });
+
 });

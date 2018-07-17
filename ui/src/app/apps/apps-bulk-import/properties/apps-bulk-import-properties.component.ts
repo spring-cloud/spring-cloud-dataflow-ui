@@ -81,16 +81,23 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
     }
   }
 
+  prepareBulkImportRequest(force, importProps:string){
+    return {
+      force: force,
+      properties: importProps.split('\n'),
+      uri: ''
+    }
+  }
   /**
    * Bulk Import Apps.
    * Submit the parameters
    */
   submit() {
-    const busy = this.appsService.bulkImportApps({
-      force: this.form.get('force').value,
-      properties: this.form.get('properties').value.toString().split('/n'),
-      uri: ''
-    }).pipe(takeUntil(this.ngUnsubscribe$))
+    const reqImportBulkApps = this.prepareBulkImportRequest(
+                                this.form.get('force').value,
+                                this.form.get('properties').value.toString());
+    const busy = this.appsService.bulkImportApps(reqImportBulkApps)
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(data => {
         this.notificationService.success('Apps Imported.');
         this.router.navigate(['apps']);
