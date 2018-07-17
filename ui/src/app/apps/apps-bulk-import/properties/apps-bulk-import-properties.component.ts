@@ -88,7 +88,7 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
   submit() {
     const busy = this.appsService.bulkImportApps({
       force: this.form.get('force').value,
-      properties: this.form.get('properties').value.toString().split('/n'),
+      properties: this.form.get('properties').value.toString().split('\n'),
       uri: ''
     }).pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(data => {
