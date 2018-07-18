@@ -14,6 +14,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { Page } from '../../shared/model/page';
 import { EMPTY } from 'rxjs/index';
+import { AppError } from '../../shared/model/error.model';
 
 /**
  * Component handling a creation of a task schedule.
@@ -189,7 +190,7 @@ export class TaskScheduleCreateComponent implements OnInit {
           this.cancel();
         },
         error => {
-          this.notificationService.error(error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
     this.busyService.addSubscription(busy);
