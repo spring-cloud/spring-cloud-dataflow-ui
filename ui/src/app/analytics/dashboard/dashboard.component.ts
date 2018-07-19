@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
+import { ConfirmService } from '../../shared/components/confirm/confirm.service';
 
 /**
  * The dashboard component provides
@@ -37,6 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(public analyticsService: AnalyticsService,
               private loggerService: LoggerService,
+              private confirmService: ConfirmService,
               private notificationService: NotificationService) {
   }
 
@@ -100,7 +102,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * All pollers are stopped.
    */
   resetDashboard() {
-    this.analyticsService.resetDashboard();
+    const title = `Confirm reset the dashboard`;
+    const description = `This action will delete all the charts. Are you sure?`;
+    this.confirmService.open(title, description).subscribe(() => {
+      this.analyticsService.resetDashboard();
+      this.notificationService.success('The dashboard has been reset.');
+    });
   }
 
   /**

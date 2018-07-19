@@ -1,35 +1,48 @@
-<form #refreshRateForm="ngForm" class="form-inline" name="refreshRateForm" role="form" (ngSubmit)="changeRefreshRate()" novalidate>
+<form #refreshRateForm="ngForm" class="form-inline" name="refreshRateForm" role="form" (ngSubmit)="changeRefreshRate()"
+      novalidate>
   <div class="form-group">
     <label for="refreshRateFormField" style="display: inline">Update [seconds]:</label>
-    <input #refreshRateFormField2="ngModel" type="number" id="refreshRateFormField" name="refreshRateFormField" autofocus [(ngModel)]="refreshRateFormField" required
-           class="form-control" placeholder="Inerval in seconds" style="width: 150px"/>
+    <input #refreshRateFormField2="ngModel" type="number" id="refreshRateFormField" name="refreshRateFormField"
+           autofocus [(ngModel)]="refreshRateFormField" required
+           class="form-control input-sm" placeholder="Inerval in seconds" style="width: 100px"/>
     <span class="help-block" *ngIf="refreshRateFormField2.invalid && refreshRateFormField2.touched">Please provide a valid polling interval (0-1000s).</span>
   </div>
-  <button type="submit" [disabled]="refreshRateForm.invalid"
-          class="btn btn-default">Update <span class="glyphicon glyphicon-arrow-right"></span></button>
+  <button type="submit" [disabled]="refreshRateForm.invalid" style="margin-top: 1px;margin-left:2px"
+          class="btn btn-primary">Update
+  </button>
 </form>
-<div *ngIf="!counters || counters.items.length === 0">No counters available.</div>
+
+<hr>
+
+<div *ngIf="!counters || counters.items.length === 0">
+  <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
+    No counters available.
+  </div>
+</div>
+
 <table *ngIf="counters?.items && counters.items.length > 0" class="table table-hover">
   <thead>
-    <tr>
-        <th style="width: 100px">Stream</th>
-        <th style="width: 100px">Value</th>
-        <th style="width: 100px">Latest [counts/second]</th>
-        <th style="width: 300px">Rate [counts/second]</th>
-    </tr>
+  <tr>
+    <th style="width: 100px">Stream</th>
+    <th style="width: 100px">Value</th>
+    <th style="width: 100px">Latest [counts/second]</th>
+    <th style="width: 300px">Rate [counts/second]</th>
+  </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let item of counters.items | paginate: counters.getPaginationInstance(); index as i; trackBy: trackByIndex">
+  <tr
+    *ngFor="let item of counters.items | paginate: counters.getPaginationInstance(); index as i; trackBy: trackByIndex">
     <td>{{ item.name }}</td>
     <td>{{ item.value }}</td>
     <td>{{ item.latestRate }}</td>
     <td>
       <app-graph-chart [chartData]="item.rates" [height]="140" [total]="totalCacheSize()"
-      [reverse]="true" [axisUnitsX]="'seconds ago'" [axisUnitsY]="'counts'"
-      [unitsPerTickX]="refreshRate"></app-graph-chart>
+                       [reverse]="true" [axisUnitsX]="'seconds ago'" [axisUnitsY]="'counts'"
+                       [unitsPerTickX]="refreshRate"></app-graph-chart>
     </td>
   </tr>
   </tbody>
 </table>
-<pagination-controls *ngIf="counters?.items && counters?.items.length > 0" (pageChange)="getPage($event)"></pagination-controls>
+<pagination-controls *ngIf="counters?.items && counters?.items.length > 0"
+                     (pageChange)="getPage($event)"></pagination-controls>
 

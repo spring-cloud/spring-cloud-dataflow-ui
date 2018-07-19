@@ -1,17 +1,22 @@
-<h1>Analytics</h1>
-<p [hidden]="!router.isActive('/analytics/dashboard', true)">
-  This section displays dashboard for the metrics data from various counter apps.
-</p>
-<p [hidden]="!router.isActive('/analytics/counters', true)">
-  This section displays counters and their values.
-</p>
-
+<div class="heading">
+  <div class="description">
+    <h1>Analytics</h1>
+    <p [hidden]="!router.isActive('/analytics/dashboard', true)">
+      This section displays dashboard for the metrics data from various counter apps.
+    </p>
+    <p [hidden]="!router.isActive('/analytics/counters', true)">
+      This section displays counters and their values.
+    </p>
+  </div>
+</div>
 <div class="tab-simple">
   <ul class="nav nav-tabs">
     <li role="presentation" routerLinkActive="active"><a routerLink="dashboard">Dashboard</a></li>
     <li role="presentation" routerLinkActive="active"><a routerLink="counters">Counters</a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane in active"><router-outlet></router-outlet></div>
+    <div class="tab-pane in active">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
