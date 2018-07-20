@@ -3,6 +3,7 @@ const joint: any = _joint;
 
 // Load changes into joint object
 import 'spring-flo';
+import '../../../../shared/flo/support/shared-shapes';
 
 export const IMAGE_W = 120;
 export const IMAGE_H = 40;
@@ -221,8 +222,10 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
         options: {
             linkToolsOffset: 1000,
         },
-        smooth: true,
-//             router: { name: 'metro' },
+        connector: {
+          name: 'smoothHorizontal'
+        },
+//      router: { name: 'metro' },
         attrs: {
             '.connection': { stroke: '#34302d', 'stroke-width': 2 },
             '.connection-wrap': { display: 'none' },
@@ -262,6 +265,8 @@ joint.shapes.flo.InstanceDot = joint.shapes.basic.Generic.extend({
     }
   }, joint.shapes.basic.Generic.prototype.defaults)
 });
+
+
 
 
 
