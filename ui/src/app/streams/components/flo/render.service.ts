@@ -58,7 +58,7 @@ export class RenderService implements Flo.Renderer {
   }
 
   initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor) {
-    link.set('smooth', true);
+    link.set('connector/name', 'smoothHorizontal');
     link.attr('metadata/metadata/unselectable', true);
   }
 

@@ -1,6 +1,9 @@
 import { defaultsDeep } from 'lodash';
 import * as _joint from 'jointjs';
 
+// Loaded joint additions
+import '../../../../shared/flo/support/shared-shapes';
+
 const joint: any = _joint;
 
 export const IMAGE_W = 120;

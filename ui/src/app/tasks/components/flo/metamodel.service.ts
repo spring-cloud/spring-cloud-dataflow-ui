@@ -9,6 +9,7 @@ import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 
 import * as _joint from 'jointjs';
 import { LoggerService } from '../../../shared/services/logger.service';
+import { arrangeAll } from './support/layout';
 
 const joint: any = _joint;
 
@@ -302,16 +303,7 @@ export class MetamodelService implements Flo.Metamodel {
     flo.performLayout();
 
     // Graph is empty? Ensure there are at least start and end nodes created!
-    const promise = nodesIndex.length ? flo.performLayout() : flo.clearGraph();
-
-    if (promise && promise.then && promise.then.call) {
-      promise.then(function () {
-        flo.fitToPage();
-      });
-    } else {
-      flo.fitToPage();
-    }
-
+    nodesIndex.length ? arrangeAll(flo) : flo.clearGraph();
   }
 
   clearCachedData() {

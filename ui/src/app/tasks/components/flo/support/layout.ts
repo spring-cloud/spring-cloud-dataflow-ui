@@ -1,6 +1,8 @@
 import { dia } from 'jointjs';
 import { IMAGE_H, START_NODE_TYPE, END_NODE_TYPE, CONTROL_GROUP_TYPE } from './shapes';
 import * as dagre from 'dagre';
+import { centerGraphHorizontallyOnPaper } from '../../../../shared/flo/support/shared-shapes';
+import { Flo } from 'spring-flo';
 
 export function layout(paper: dia.Paper) {
   let start, end, empty = true;
@@ -40,8 +42,6 @@ export function layout(paper: dia.Paper) {
   });
 
   g.graph().rankdir = 'TB';
-  g.graph().marginx = gridSize;
-  g.graph().marginy = gridSize;
   g.graph().nodesep = 2 * gridSize;
   g.graph().ranksep = 2 * gridSize;
   g.graph().edgesep = gridSize;
@@ -52,8 +52,6 @@ export function layout(paper: dia.Paper) {
     g.setEdge(start.get('id'), end.get('id'), {
       minlen: 7
     });
-
-    g.graph().marginx = 5 * gridSize;
   }
 
   dagre.layout(g);
@@ -66,3 +64,11 @@ export function layout(paper: dia.Paper) {
   });
 
 }
+
+export function arrangeAll(editorContext: Flo.EditorContext): Promise<void> {
+  return editorContext.performLayout().then(() => {
+    editorContext.fitToPage();
+    centerGraphHorizontallyOnPaper(editorContext.getPaper());
+  });
+}
+

@@ -9,7 +9,7 @@
 
   <div id="flo-container" class="stream-editor">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="20"
+                [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="40"
                 (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
 
       <button (click)="createStreamDefs()" class="btn btn-default" type="button" [disabled]="isCreateStreamsDisabled">Create Stream</button>

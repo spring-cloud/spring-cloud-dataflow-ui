@@ -11,6 +11,7 @@ import { ToolsService } from '../components/flo/tools.service';
 import { TaskDefinitionCreateDialogComponent } from './create-dialog/create-dialog.component';
 import { Router } from '@angular/router';
 import { LoggerService } from '../../shared/services/logger.service';
+import { arrangeAll } from '../components/flo/support/layout';
 
 /**
  * Component handling a creation of a composed task.
@@ -83,7 +84,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   }
 
   arrangeAll() {
-    this.editorContext.performLayout().then(() => this.editorContext.fitToPage());
+    arrangeAll(this.editorContext);
   }
 
   clearGraph() {
