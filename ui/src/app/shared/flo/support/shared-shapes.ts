@@ -1,6 +1,8 @@
+import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 const joint: any = _joint;
 const g = joint.g;
+const V = joint.V;
 
 joint.connectors.smoothHorizontal = function(sourcePoint, targetPoint, route, opt) {
 
@@ -69,3 +71,12 @@ joint.connectors.smoothVertical = function(sourcePoint, targetPoint, route, opt)
 
   return (raw) ? path : path.serialize();
 };
+
+export function centerGraphHorizontallyOnPaper(paper: dia.Paper) {
+  const currentTranslate = paper.translate();
+  const box = /*V(paper.viewport).getBBox()*/paper.getContentBBox();
+  const tx = (paper.$el.innerWidth() - box.width) / 2;
+  paper.translate(tx, currentTranslate.ty);
+}
+
+

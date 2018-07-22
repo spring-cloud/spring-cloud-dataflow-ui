@@ -7,6 +7,7 @@ import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
 import { Utils} from '../../../shared/flo/support/utils';
+import { arrangeAll } from './support/layout';
 
 const joint: any = _joint;
 
@@ -75,7 +76,7 @@ export class EditorService implements Flo.Editor {
     editorContext.getGraph().clear();
     editorContext.createNode(data.get(CONTROL_GROUP_TYPE).get(START_NODE_TYPE));
     editorContext.createNode(data.get(CONTROL_GROUP_TYPE).get(END_NODE_TYPE));
-    editorContext.performLayout();
+    arrangeAll(editorContext);
   }
 
   validateLink(flo: Flo.EditorContext, cellViewS: dia.ElementView, magnetS: SVGElement, cellViewT: dia.ElementView,

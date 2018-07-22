@@ -7,7 +7,7 @@ export function layout(paper: dia.Paper) {
 
     let gridSize = paper.options.gridSize;
     if (gridSize <= 1) {
-        gridSize = IMAGE_H;
+        gridSize = IMAGE_H / 2;
     }
 
     const g = new dagre.graphlib.Graph();
@@ -25,8 +25,6 @@ export function layout(paper: dia.Paper) {
     });
 
     g.graph().rankdir = 'LR';
-    g.graph().marginx = gridSize;
-    g.graph().marginy = gridSize;
     g.graph().nodesep = 2 * gridSize;
     g.graph().ranksep = 2 * gridSize;
     g.graph().edgesep = gridSize;
