@@ -1,11 +1,11 @@
-import {SharedAppsService} from '../../shared/services/shared-apps.service';
-import {ErrorHandler} from '../../shared/model';
-import {StreamsService} from '../streams.service';
-import {AppsService} from '../../apps/apps.service';
-import {AppsWorkaroundService} from '../../apps/apps.workaround.service';
-import {StreamDeployService} from './stream-deploy.service';
-import {Observable} from 'rxjs/Observable';
-import {HttpUtils} from '../../shared/support/http.utils';
+import { SharedAppsService } from '../../shared/services/shared-apps.service';
+import { ErrorHandler } from '../../shared/model';
+import { StreamsService } from '../streams.service';
+import { AppsService } from '../../apps/apps.service';
+import { AppsWorkaroundService } from '../../apps/apps.workaround.service';
+import { StreamDeployService } from './stream-deploy.service';
+import { Observable } from 'rxjs/Observable';
+import { HttpUtils } from '../../shared/support/http.utils';
 import { LoggerService } from '../../shared/services/logger.service';
 
 /**
@@ -71,6 +71,36 @@ describe('StreamDeployService', () => {
         expect(options.length).toBe(1);
         expect(options[0]['valueOptions'].length).toBe(7);
         expect(options[0]['valueOptions'][0]).toBe('NANOSECONDS');
+      });
+    });
+
+  });
+
+  describe('Clean Value properties', () => {
+
+    it('without change', () => {
+      [
+        'foo',
+        'foo bar',
+        'foo " bar',
+        '"foo',
+        '\'foo',
+        'foo\'',
+        'foo barr"'
+      ].forEach((mock) => {
+        expect(this.streamDeployService.cleanValueProperties(mock)).toBe(mock);
+      });
+    });
+
+    it('with change', () => {
+      [
+        ['\'foo\'', 'foo'],
+        ['\"foo\"', 'foo'],
+        ['\"foo bar\"', 'foo bar'],
+        ['\"foo \' bar\"', 'foo \' bar'],
+        ['\"foo \" bar\"', 'foo \" bar']
+      ].forEach((mock) => {
+        expect(this.streamDeployService.cleanValueProperties(mock[0])).toBe(mock[1]);
       });
     });
 
