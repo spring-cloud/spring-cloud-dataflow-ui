@@ -75,6 +75,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {BusyService} busyService
    * @param {LoggerService} loggerService
+   * @param {StreamDeployService} streamDeployService
    * @param {Router} router
    * @param {SharedAboutService} sharedAboutService
    */
@@ -83,6 +84,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private busyService: BusyService,
               private loggerService: LoggerService,
+              private streamDeployService: StreamDeployService,
               private router: Router,
               private sharedAboutService: SharedAboutService) {
   }
@@ -109,13 +111,11 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
           .pipe(map((deploymentInfo) => {
             const properties = [];
             const ignoreProperties = [];
-            const cleanValue = (v) => (v && v.length > 1 && v.startsWith('"') && v.endsWith('"'))
-              ? v.substring(1, v.length - 1) : v;
 
             // Deployer properties
             Object.keys(deploymentInfo.deploymentProperties).map(app => {
               Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
-                const value = cleanValue(deploymentInfo.deploymentProperties[app][key]);
+                const value = this.streamDeployService.cleanValueProperties(deploymentInfo.deploymentProperties[app][key]);
                 if (key === StreamDeployService.version.keyEdit) {
                   properties.push(`version.${app}=${value}`);
                 } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
@@ -138,7 +138,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
               const appType = node['name'];
               if (node['options']) {
                 node.options.forEach((value, key) => {
-                  value = cleanValue(value);
+                  value = this.streamDeployService.cleanValueProperties(value);
                   let keyShort = key;
                   if (key.startsWith(`${appType}.`)) {
                     keyShort = key.substring(`${appType}.`.length, key.length);
