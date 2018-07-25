@@ -4,16 +4,6 @@
 module.exports = function (config) {
 
   const customLaunchers = {
-    'SL_Edge': {
-      base: 'SauceLabs',
-      browserName: 'MicrosoftEdge',
-      //version: '48.0',
-      platform: 'Windows 10',
-      timeout: 360,
-      idleTimeout: 5000,
-      maxDuration: 1800,
-      commandTimeout: 600
-    },
     'SL_Chrome': {
       base: 'SauceLabs',
       browserName: 'chrome',
