@@ -1,6 +1,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, BsModalRef } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { TASK_DEFINITIONS, TASK_EXECUTIONS, TASK_SCHEDULES } from '../../tests/mocks/mock-data';
@@ -21,7 +21,6 @@ import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { MasterCheckboxComponent } from '../../shared/components/master-checkbox.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { BusyService } from '../../shared/services/busy.service';
-import { MockModalService } from '../../tests/mocks/modal';
 import { TaskDefinitionsComponent } from './task-definitions.component';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
@@ -34,11 +33,13 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { TasksHeaderComponent } from '../components/tasks-header/tasks-header.component';
 import { MockGroupRouteService } from '../../tests/mocks/group-route';
 import { GroupRouteService } from '../../shared/services/group-route.service';
+import { Observable } from 'rxjs';
 
 /**
  * Test {@link TaskDefinitionsComponent}.
  *
  * @author Damien Vitrac
+ * @author Gunnar Hillert
  */
 describe('TaskDefinitionsComponent', () => {
   let component: TaskDefinitionsComponent;
@@ -46,7 +47,7 @@ describe('TaskDefinitionsComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
-  const modalService = new MockModalService();
+  let modalService;
   const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
@@ -86,7 +87,7 @@ describe('TaskDefinitionsComponent', () => {
         { provide: AuthService, useValue: authService },
         { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
-        { provide: BsModalService, useValue: modalService },
+        BsModalService,
         { provide: GroupRouteService, useValue: groupRouteService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
@@ -99,6 +100,7 @@ describe('TaskDefinitionsComponent', () => {
     fixture = TestBed.createComponent(TaskDefinitionsComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
+    modalService = TestBed.get(BsModalService);
   });
 
   it('should be created', () => {
@@ -468,7 +470,12 @@ describe('TaskDefinitionsComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const spy = spyOn(modalService, 'show');
+      const mockBsModalRef =  new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => Observable.of('testing')
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+
       fixture.debugElement.query(By.css('#destroy-tasks')).nativeElement.click();
       fixture.detectChanges();
 

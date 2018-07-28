@@ -4,6 +4,16 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/7pqco2aqjyaphp36/branch/master?svg=true)](https://ci.appveyor.com/project/ghillert/spring-cloud-dataflow-ui/branch/master)
 [![Code Coverage](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master)
 
+**SauceLabs Status**
+
+[![Sauce Test Status](https://saucelabs.com/buildstatus/ghillert)](https://saucelabs.com/u/ghillert)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/ghillert.svg)](https://saucelabs.com/u/ghillert)
+
+**BrowserStack Status**
+
+[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c)](https://www.browserstack.com/automate/public-build/T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c)
+
 This is the *Spring Cloud Data Flow Dashboard* user interface (UI). The UI uses [Angular][]. Source code documentation is available at http://cloud.spring.io/spring-cloud-dataflow-ui/.
 
 > The Git repository for the main *Spring Cloud Data Flow* project is at: https://github.com/spring-cloud/spring-cloud-dataflow
@@ -95,6 +105,21 @@ For E2E tests, developers should refrain from using `localhost`. Instead, add `d
 ```bash
 	$ npm run e2e-saucelabs-local
 ```
+
+## Slow Internet Connection
+
+By default the tests use an embedded version of Sauce Connect. In case you enounter test failures due to bandwidth constraints,
+you may consider establishing a SauceLabs tunnel using the stand-alone **[Sauce Connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy)**.
+
+Setup instructions can be found [here](https://wiki.saucelabs.com/display/DOCS/Basic+Sauce+Connect+Proxy+Setup).
+
+Make sure you have at least the following environment variables defined:
+
+export SAUCE_CONNECT_USE_EMBEDDED=false
+export SAUCE_USER=
+export SAUCE_API_KEY=
+
+For a list of further supported configuration options, check the `config_examples/sc_configs` folder in the downloaded Sauce Connect binary.
 
 ## Thank You
 

@@ -114,7 +114,7 @@ describe('StreamsDeployComponent', () => {
     });
     fixture.detectChanges();
     const bt: HTMLElement = fixture.debugElement.queryAll(By.css('.modal-footer .btn'))[1].nativeElement;
-    const deployMultipleStreamDefinitions = spyOn(streamsService, 'deployMultipleStreamDefinitions');
+    const deployMultipleStreamDefinitions = spyOn(streamsService, 'deployMultipleStreamDefinitions').and.callThrough();
     bt.click();
     fixture.detectChanges();
     expect(deployMultipleStreamDefinitions).toHaveBeenCalled();

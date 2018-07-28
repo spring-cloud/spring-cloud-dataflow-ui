@@ -101,7 +101,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<nodeVersion>v8.9.4</nodeVersion>
+							<nodeVersion>v10.8.0</nodeVersion>
 						</configuration>
 					</execution>
 					<execution>
@@ -153,6 +153,13 @@
 				<filesets>
 						<fileset>
 							<directory>ui/node_modules</directory>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+						<fileset>
+							<directory>ui</directory>
+							<includes>
+								<include>package-lock.json</include>
+							</includes>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>

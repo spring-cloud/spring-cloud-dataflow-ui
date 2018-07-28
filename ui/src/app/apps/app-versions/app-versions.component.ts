@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { AppsService } from '../apps.service';
 import { ConfirmService } from '../../shared/components/confirm/confirm.service';

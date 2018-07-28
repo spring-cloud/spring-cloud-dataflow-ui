@@ -2,7 +2,7 @@ import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testi
 import { AppsComponent } from './apps.component';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockAppsService } from '../../tests/mocks/apps';
-import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, TooltipModule, BsModalRef } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppsService } from '../apps.service';
@@ -20,7 +20,6 @@ import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { APPS } from '../../tests/mocks/mock-data';
 import { DebugElement } from '@angular/core';
-import { MockModalService } from '../../tests/mocks/modal';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
 import { tick } from '@angular/core/testing';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
@@ -30,15 +29,17 @@ import { TruncatorWidthProviderDirective } from '../../shared/components/truncat
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { Observable } from 'rxjs';
 
 describe('AppsComponent', () => {
+
   let component: AppsComponent;
   let fixture: ComponentFixture<AppsComponent>;
   const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
   const sharedAboutService = new MocksSharedAboutService();
   const authService = new MockAuthService();
-  const modalService = new MockModalService();
+  let modalService;
   const loggerService = new LoggerService();
 
   beforeEach(async(() => {
@@ -67,7 +68,7 @@ describe('AppsComponent', () => {
       providers: [
         { provide: AppsService, useValue: appsService },
         { provide: AuthService, useValue: authService },
-        { provide: BsModalService, useValue: modalService },
+        BsModalService,
         { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: LoggerService, useValue: loggerService },
@@ -81,6 +82,7 @@ describe('AppsComponent', () => {
     fixture = TestBed.createComponent(AppsComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
+    modalService = TestBed.get(BsModalService);
   });
 
   it('should be created', () => {
@@ -298,14 +300,13 @@ describe('AppsComponent', () => {
       });
     });
 
-    it('should change the page', () => {
+    it('should change the page', async(() => {
       fixture.detectChanges();
       const buttonPage2 = fixture.debugElement.queryAll(By.css('#pagination a'))[0].nativeElement;
       buttonPage2.click();
       fixture.detectChanges();
       expect(component.params.page).toBe(1);
-    });
-
+    }));
   });
 
   describe('Application action', () => {
@@ -350,6 +351,14 @@ describe('AppsComponent', () => {
     });
 
     it('should call the unregister modal', fakeAsync(() => {
+      const mockBsModalRef =  new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => {
+          return Observable.of('testing')
+        }
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+
       fixture.debugElement.queryAll(By.css('#table tbody tr')).forEach((line) => {
         const input: HTMLInputElement = line.query(By.css('td.cell-checkbox input')).nativeElement;
         input.click();
@@ -357,12 +366,10 @@ describe('AppsComponent', () => {
       fixture.detectChanges();
 
       fixture.debugElement.query(By.css('#dropdown-actions .btn-dropdown')).nativeElement.click();
-      fixture.detectChanges();
+
       tick();
 
-      const spy = spyOn(modalService, 'show');
       fixture.debugElement.query(By.css('#unregister-apps')).nativeElement.click();
-      fixture.detectChanges();
 
       expect(spy).toHaveBeenCalledWith(AppsUnregisterComponent);
     }));
@@ -389,10 +396,14 @@ describe('AppsComponent', () => {
     });
 
     it('should open the modal version', () => {
-      const spy = spyOn(modalService, 'show');
+      const mockBsModalRef =  new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => Observable.of('testing')
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+      fixture.detectChanges();
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#table tbody tr'))[0];
       line.query(By.css('.cell-version a')).nativeElement.click();
-      fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith(AppVersionsComponent, { class: 'modal-xl' });
     });
 

@@ -10,11 +10,13 @@ import {
   HostListener,
   Input,
   Optional,
+  OnDestroy,
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 
 import { TrailPositionType } from './trail-position-type.model';
 import { TruncatorWidthProviderDirective } from './truncator-width-provider.directive';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Component that supports a button that can change its message based on count of items in a array.
@@ -43,7 +45,7 @@ import { TruncatorWidthProviderDirective } from './truncator-width-provider.dire
   template:
   `<span [title]="input">{{output}}</span>`
 })
-export class TruncatorComponent implements AfterViewInit, AfterContentInit {
+export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDestroy {
 
   @Input()
   public trail = '…';
@@ -63,6 +65,11 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit {
 
   private canvas: HTMLCanvasElement;
 
+  /**
+   * Busy Subscriptions
+   */
+  private ngUnsubscribe$: Subject<any> = new Subject();
+
   constructor(
     @Host() @Optional() private truncatorWidthProviderComponent: TruncatorWidthProviderDirective,
     private elementRef: ElementRef, private changeDetector: ChangeDetectorRef) {
@@ -70,12 +77,22 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit {
     if (!this.truncatorWidthProviderComponent) {
       this.resizeEvents
         .debounceTime(500)
+        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           const innerWidth = this.getInnerWidth();
           this.doResizeInputString(innerWidth);
         });
     }
   }
+
+  /**
+   * On Destroy operations
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
   ngAfterContentInit() {
     this.input = this.input.replace(/\-/g, '\u2011');
     this.output = this.input;

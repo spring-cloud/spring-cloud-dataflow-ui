@@ -281,8 +281,10 @@ export class AnalyticsService {
    * All pollers of all {@link DashboarItem}s are stopped.
    */
   stopAllDashboardPollers() {
-    for (const dashboardItemToDisable of this.dashboardItems) {
-      this.stopPollingOfSingleDashboardItem(dashboardItemToDisable);
+    if (this.dashboardItems) {
+      for (const dashboardItemToDisable of this.dashboardItems) {
+        this.stopPollingOfSingleDashboardItem(dashboardItemToDisable);
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ModalModule, BsModalService } from 'ngx-bootstrap';
+import { ModalModule, BsModalService, BsModalRef } from 'ngx-bootstrap';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { RuntimeAppsComponent } from './runtime-apps.component';
@@ -12,17 +12,17 @@ import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
 import { RuntimeAppStateComponent } from '../components/runtime-app-state/runtime-app-state.component';
 import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
 import { NgBusyModule } from 'ng-busy';
-import { MockModalService } from '../../tests/mocks/modal';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
+import { Observable } from 'rxjs';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
   let fixture: ComponentFixture<RuntimeAppsComponent>;
   const notificationService = new MockNotificationService();
   const runtimeAppsService = new MockRuntimeAppsService();
-  const modalService = new MockModalService();
+  let modalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,7 +40,7 @@ describe('RuntimeAppsComponent', () => {
       ],
       providers: [
         { provide: RuntimeAppsService, useValue: runtimeAppsService },
-        { provide: BsModalService, useValue: modalService },
+        BsModalService,
         { provide: NotificationService, useValue: notificationService }
       ]
     })
@@ -50,6 +50,7 @@ describe('RuntimeAppsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RuntimeAppsComponent);
     component = fixture.componentInstance;
+    modalService = TestBed.get(BsModalService);
   });
 
   it('should be created', () => {
@@ -82,7 +83,12 @@ describe('RuntimeAppsComponent', () => {
 
     it('should call open modal', () => {
       const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#table tr td'));
-      const spy = spyOn(modalService, 'show');
+      const mockBsModalRef =  new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => Observable.of('testing')
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+
       des[3].query(By.css('.btn-default')).nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith(RuntimeAppComponent, { class: 'modal-xl' });
