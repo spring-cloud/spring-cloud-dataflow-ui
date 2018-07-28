@@ -10,6 +10,10 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {EditorComponent, Flo, FloModule} from 'spring-flo';
 import {MockToolsService} from '../../../tests/mocks/mock-tools';
 import { LoggerService } from '../../../shared/services/logger.service';
+import * as _$ from "jquery";
+
+const $: any = _$;
+
 
 describe('Task RenderService', () => {
 
@@ -44,6 +48,10 @@ describe('Task RenderService', () => {
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();
       flo = f;
+    });
+    const floViewElemnt = $('#flow-view');
+    floViewElemnt.css({
+      'height': '800px'
     });
     fixture.detectChanges();
   });

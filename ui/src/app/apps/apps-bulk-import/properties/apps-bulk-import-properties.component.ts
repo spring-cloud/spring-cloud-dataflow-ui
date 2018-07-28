@@ -7,6 +7,7 @@ import { AppsService } from '../../apps.service';
 import { BusyService } from '../../../shared/services/busy.service';
 import { AppsBulkImportValidator } from '../apps-bulk-import.validator';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { BulkImportParams } from '../../components/apps.interface';
 
 /**
  * Applications Bulk Import Properties
@@ -79,7 +80,7 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
     } catch (e) {
     }
   }
-  prepareBulkImportRequest(force, importProps: string) {
+  prepareBulkImportRequest(force, importProps: string): BulkImportParams {
     return {
       force: force,
       properties: importProps.split('\n'),

@@ -82,7 +82,7 @@ describe('TaskSchedulesDestroyComponent', () => {
     });
 
     it('Should call the service on validate destroy', () => {
-      const spy = spyOn(tasksService, 'destroySchedules');
+      const spy = spyOn(tasksService, 'destroySchedules').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
       fixture.detectChanges();
@@ -127,7 +127,7 @@ describe('TaskSchedulesDestroyComponent', () => {
     });
 
     it('Should call the service on validate destroy', () => {
-      const spy = spyOn(tasksService, 'destroySchedules');
+      const spy = spyOn(tasksService, 'destroySchedules').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
       fixture.detectChanges();

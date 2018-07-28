@@ -8,7 +8,9 @@ import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { LoggerService } from '../../../shared/services/logger.service';
+import * as _$ from "jquery";
 
+const $: any = _$;
 const joint: any = _joint;
 
 
@@ -48,6 +50,11 @@ describe('Task RenderService', () => {
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();
       flo = f;
+    });
+    // FF needs flo editor to have size otherwise `TypeError: a.getScreenCTM(...) is null`
+    const floViewElemnt = $('#flow-view');
+    floViewElemnt.css({
+      'height': '800px'
     });
     fixture.detectChanges();
   });

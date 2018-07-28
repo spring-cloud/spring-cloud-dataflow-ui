@@ -124,7 +124,7 @@ describe('AppVersionsComponent', () => {
 
     it('should display the confirm modal when unregister a version', () => {
       const btn: HTMLElement = fixture.debugElement.queryAll(By.css('#table-versions tbody tr .btn-default'))[1].nativeElement;
-      const spy = spyOn(confirmService, 'open');
+      const spy = spyOn(confirmService, 'open').and.callThrough();
       btn.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();

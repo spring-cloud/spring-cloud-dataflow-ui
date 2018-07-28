@@ -84,7 +84,7 @@ describe('StreamsUndeployComponent', () => {
     });
 
     it('Should call the service on validate undeploy', () => {
-      const spy = spyOn(streamsService, 'undeployMultipleStreamDefinitions');
+      const spy = spyOn(streamsService, 'undeployMultipleStreamDefinitions').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-undeploy')).nativeElement;
       bt.click();
       fixture.detectChanges();
@@ -131,7 +131,7 @@ describe('StreamsUndeployComponent', () => {
     });
 
     it('Should call the service on validate undeploy', () => {
-      const spy = spyOn(streamsService, 'undeployMultipleStreamDefinitions');
+      const spy = spyOn(streamsService, 'undeployMultipleStreamDefinitions').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-undeploy')).nativeElement;
       bt.click();
       fixture.detectChanges();

@@ -22,18 +22,19 @@ import { ConfirmService } from '../../shared/components/confirm/confirm.service'
 import { AppVersionLabelComponent } from '../components/app-versions-label/app-versions-label.component';
 import { SortComponent } from '../../shared/components/sort/sort.component';
 import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
-import { MockModalService } from '../../tests/mocks/modal';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { Observable } from 'rxjs';
 
 /**
  * Test {@link AppDetailsComponent}.
  *
  * @author Damien Vitrac
+ * @author Gunnar Hillert
  */
 describe('AppDetailsComponent', () => {
   let component: AppDetailsComponent;
@@ -42,7 +43,8 @@ describe('AppDetailsComponent', () => {
   const appsService = new MockAppsService();
   const authService = new MockAuthService();
   const sharedAboutService = new MocksSharedAboutService();
-  const modalService = new MockModalService();
+
+  let modalService;
   const confirmService = new MockConfirmService();
   const routingStateService = new MockRoutingStateService();
   let activeRoute: MockActivatedRoute;
@@ -77,7 +79,7 @@ describe('AppDetailsComponent', () => {
         { provide: AppsService, useValue: appsService },
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: BsModalService, useValue: modalService },
+        BsModalService,
         { provide: ConfirmService, useValue: confirmService },
         { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
@@ -95,6 +97,7 @@ describe('AppDetailsComponent', () => {
     component = fixture.componentInstance;
     notificationService.clearAll();
     appsService.mock = Object.assign({}, sourceMock);
+    modalService = TestBed.get(BsModalService);
   });
 
   describe('Application details', () => {
@@ -273,8 +276,13 @@ describe('AppDetailsComponent', () => {
         expect(message).toBeTruthy();
       });
 
-      it('should open the modal versions', () => {
-        const spy = spyOn(modalService, 'show');
+    it('should open the modal versions', () => {
+        const mockBsModalRef =  new BsModalRef();
+        mockBsModalRef.content = {
+          open: () => Observable.of('testing')
+        };
+        const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+
         fixture.debugElement.query(By.css('#no-default-version a')).nativeElement.click();
         fixture.detectChanges();
         expect(spy).toHaveBeenCalledWith(AppVersionsComponent, { class: 'modal-xl' });

@@ -86,7 +86,7 @@ describe('AppsUnregisterComponent', () => {
     ]);
     fixture.detectChanges();
     const bt: HTMLElement = fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement;
-    const spyAppsService = spyOn(appsService, 'unregisterApps');
+    const spyAppsService = spyOn(appsService, 'unregisterApps').and.callThrough();
     bt.click();
     expect(spyAppsService).toHaveBeenCalled();
   }));
@@ -95,7 +95,7 @@ describe('AppsUnregisterComponent', () => {
     component.open([new AppRegistration('foo', ApplicationType[ApplicationType.sink.toString()], 'maven://url.com')]);
     fixture.detectChanges();
     const bt: HTMLElement = fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement;
-    const spyAppsService = spyOn(appsService, 'unregisterApps');
+    const spyAppsService = spyOn(appsService, 'unregisterApps').and.callThrough();
     bt.click();
     expect(spyAppsService).toHaveBeenCalled();
   }));

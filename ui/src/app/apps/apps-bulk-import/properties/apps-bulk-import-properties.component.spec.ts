@@ -9,6 +9,7 @@ import {BusyService} from '../../../shared/services/busy.service';
 import {By} from '@angular/platform-browser';
 import {AppsBulkImportPropertiesComponent} from './apps-bulk-import-properties.component';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { Router } from '@angular/router';
 
 /**
  * Test {@link AppsBulkImportPropertiesComponent}.
@@ -18,6 +19,7 @@ import { NotificationService } from '../../../shared/services/notification.servi
 describe('AppsBulkImportPropertiesComponent', () => {
   let component: AppsBulkImportPropertiesComponent;
   let fixture: ComponentFixture<AppsBulkImportPropertiesComponent>;
+  let router;
   const bsModalRef = new BsModalRef();
   const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
@@ -48,6 +50,7 @@ describe('AppsBulkImportPropertiesComponent', () => {
     fixture = TestBed.createComponent(AppsBulkImportPropertiesComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
+    router = TestBed.get(Router);
   });
 
   it('should be created', () => {
@@ -82,13 +85,15 @@ describe('AppsBulkImportPropertiesComponent', () => {
     });
 
     it('should enable the import action and call the appService.bulkImportApps method', () => {
+      spyOn(router, 'navigateByUrl');
       fixture.detectChanges();
       const bt = fixture.debugElement.query(By.css('.footer-actions .btn-primary')).nativeElement;
       const inputs = {
         properties: fixture.debugElement.query(By.css('#propertiesInput')).nativeElement,
         force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
       };
-      const spy = spyOn(appsService, 'bulkImportApps');
+      const spy = spyOn(appsService, 'bulkImportApps').and.callThrough();
+
       [
         {properties: 'foo=http://foo.ly/foo-bar-foo', force: true},
         {properties: 'foo=http://foo.ly/foo-bar-foo\nbar=http://foo.ly/foo-bar-foo', force: true}
@@ -102,14 +107,22 @@ describe('AppsBulkImportPropertiesComponent', () => {
         bt.click();
       });
       expect(spy).toHaveBeenCalledTimes(2);
+
+      fixture.whenStable().then(() => {
+        expect((<any>router.navigateByUrl).calls.mostRecent().args[0].toString()).toBe('/apps');
+      });
     });
   });
 
   it('should display a toast after a success import', () => {
+    spyOn(router, 'navigateByUrl');
     component.form.get('properties').setValue('foo=http://foo.ly/foo-bar-foo');
     component.submit();
     fixture.detectChanges();
     expect(notificationService.testSuccess[0]).toContain('Apps Imported');
+    fixture.whenStable().then(() => {
+      expect((<any>router.navigateByUrl).calls.mostRecent().args[0].toString()).toBe('/apps');
+    });
   });
 
   it('should load a file in the properties input', (done) => {

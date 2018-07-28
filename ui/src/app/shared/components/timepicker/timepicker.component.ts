@@ -1,9 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, ViewChild, forwardRef } from '@angular/core';
+import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { TimepickerValidator } from './timepicker.validator';
-import { CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR } from './timepicker.control';
 
+/**
+ * FIXMWE: Should probably implement `ControlValueAccessor`?
+ */
 @Component({
   selector: 'app-dataflow-timepicker',
   styleUrls: ['./styles.scss'],
@@ -19,7 +21,13 @@ import { CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR } from './timepicker.control';
       </ng-template>
     </div>
   `,
-  providers: [CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TimepickerComponent),
+      multi: true
+    }
+  ]
 })
 export class TimepickerComponent {
 
@@ -86,5 +94,4 @@ export class TimepickerComponent {
       this.writeValue(null);
     }
   }
-
 }

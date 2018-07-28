@@ -84,7 +84,7 @@ describe('StreamsDestroyComponent', () => {
     });
 
     it('Should call the service on validate destroy', () => {
-      const spy = spyOn(streamsService, 'destroyMultipleStreamDefinitions');
+      const spy = spyOn(streamsService, 'destroyMultipleStreamDefinitions').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
       fixture.detectChanges();
@@ -131,7 +131,7 @@ describe('StreamsDestroyComponent', () => {
     });
 
     it('Should call the service on validate destroy', () => {
-      const spy = spyOn(streamsService, 'destroyMultipleStreamDefinitions');
+      const spy = spyOn(streamsService, 'destroyMultipleStreamDefinitions').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
       fixture.detectChanges();

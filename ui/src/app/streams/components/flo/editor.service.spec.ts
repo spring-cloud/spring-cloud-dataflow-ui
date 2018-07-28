@@ -11,6 +11,10 @@ import { EditorService } from './editor.service';
 import {MockSharedAppService} from '../../../tests/mocks/shared-app';
 import { LoggerService } from '../../../shared/services/logger.service';
 
+import * as _$ from "jquery";
+
+const $: any = _$;
+
 describe('Streams Editor Service', () => {
     const editorService = new EditorService(null);
 
@@ -426,6 +430,11 @@ describe('editor.service : Auto-Link', () => {
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();
       flo = f;
+    });
+    // FF needs flo editor to have size otherwise `TypeError: a.getScreenCTM(...) is null`
+    const floViewElemnt = $('#flow-view');
+    floViewElemnt.css({
+      'height': '800px'
     });
     fixture.detectChanges();
   });

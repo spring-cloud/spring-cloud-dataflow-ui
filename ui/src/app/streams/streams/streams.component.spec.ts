@@ -1,6 +1,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, BsModalRef } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { MockStreamsService } from '../../tests/mocks/streams';
@@ -33,19 +33,20 @@ import { MasterCheckboxComponent } from '../../shared/components/master-checkbox
 import { StreamGraphDefinitionComponent } from '../components/stream-graph-definition/stream-graph-definition.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { BusyService } from '../../shared/services/busy.service';
-import { MockModalService } from '../../tests/mocks/modal';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { Observable } from 'rxjs';
 
 /**
  * Test {@link StreamsComponent}.
  *
  * @author Glenn Renfro
  * @author Damien Vitrac
+ * @author Gunnar Hillert
  */
 describe('StreamsComponent', () => {
   let component: StreamsComponent;
@@ -53,7 +54,7 @@ describe('StreamsComponent', () => {
   const notificationService = new MockNotificationService();
   const streamsService = new MockStreamsService();
   const authService = new MockAuthService();
-  const modalService = new MockModalService();
+  let modalService;
   const appsService = new MockAppsService();
   const loggerService = new LoggerService();
 
@@ -98,7 +99,7 @@ describe('StreamsComponent', () => {
         { provide: AuthService, useValue: authService },
         { provide: BusyService, useValue: new BusyService() },
         { provide: StreamsService, useValue: streamsService },
-        { provide: BsModalService, useValue: modalService },
+        BsModalService,
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
       ]
@@ -110,6 +111,7 @@ describe('StreamsComponent', () => {
     fixture = TestBed.createComponent(StreamsComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
+    modalService = TestBed.get(BsModalService);
   });
 
   it('should be created', () => {
@@ -437,7 +439,12 @@ describe('StreamsComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const spy = spyOn(modalService, 'show');
+      const mockBsModalRef =  new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => Observable.of('testing')
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+
       fixture.debugElement.query(By.css('#destroy-streams')).nativeElement.click();
       fixture.detectChanges();
 
@@ -455,7 +462,12 @@ describe('StreamsComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const spy = spyOn(modalService, 'show');
+      const mockBsModalRef =  new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => Observable.of('testing')
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+
       fixture.debugElement.query(By.css('#deploy-streams')).nativeElement.click();
       fixture.detectChanges();
 
@@ -473,7 +485,12 @@ describe('StreamsComponent', () => {
       fixture.detectChanges();
       tick();
 
-      const spy = spyOn(modalService, 'show');
+      const mockBsModalRef =  new BsModalRef();
+      mockBsModalRef.content = {
+        open: () => Observable.of('testing')
+      };
+      const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+
       fixture.debugElement.query(By.css('#undeploy-streams')).nativeElement.click();
       fixture.detectChanges();
 
