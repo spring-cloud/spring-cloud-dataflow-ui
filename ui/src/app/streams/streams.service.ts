@@ -74,7 +74,7 @@ export class StreamsService {
       streamListParams.size
     );
     if (streamListParams.q) {
-      params = params.append('search', streamListParams.q);
+      params = params.append('searchName', streamListParams.q);
     }
     if (streamListParams.sort && streamListParams.order) {
       params = params.append('sort', `${streamListParams.sort},${streamListParams.order}`);
