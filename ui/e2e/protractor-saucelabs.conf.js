@@ -2,8 +2,12 @@
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
 const { SpecReporter } = require('jasmine-spec-reporter');
+const useEmbeddedSauceConnect =
+(process.env.SAUCE_CONNECT_USE_EMBEDDED && process.env.SAUCE_CONNECT_USE_EMBEDDED === 'false') ? false : true;
+console.log('Use embedded Sauce Connect client?: ' + useEmbeddedSauceConnect);
 
 exports.config = {
+
   jasmineNodeOpts: {
     defaultTimeoutInterval: 5000000
   },
@@ -56,25 +60,29 @@ exports.config = {
 };
 
 function startSauceConnect(deferred) {
-  var sauceConnectLauncher = require('sauce-connect-launcher');
-  console.log('Launching Sauce Connect...')
-  sauceConnectLauncher(
-    {
-      username: process.env.SAUCE_USERNAME,
-      accessKey: process.env.SAUCE_ACCESS_KEY,
-      // verbose: true,
-	    // logger: console.log,
-      //  tunnelIdentifier: 'npm-build',
-      // doctor: false
-    }, function (err, sauceConnectProcess) {
-      if (err) {
-        console.error('Error', err.message);
+  if (useEmbeddedSauceConnect) {
+    var sauceConnectLauncher = require('sauce-connect-launcher');
+    console.log('Launching Sauce Connect...')
+    sauceConnectLauncher(
+      {
+        username: process.env.SAUCE_USERNAME,
+        accessKey: process.env.SAUCE_ACCESS_KEY,
+        // verbose: true,
+        // logger: console.log,
+        //  tunnelIdentifier: 'npm-build',
+        // doctor: false
+      }, function (err, sauceConnectProcess) {
+        if (err) {
+          console.error('Error', err.message);
+        }
+        deferred.resolve();
+        console.log("Sauce Connect ready");
+        // sauceConnectProcess.close(function () {
+        //   console.log("Closed Sauce Connect process");
+        // })
       }
-      deferred.resolve();
-      console.log("Sauce Connect ready");
-      // sauceConnectProcess.close(function () {
-      //   console.log("Closed Sauce Connect process");
-      // })
-    }
-  );
+    );
+  } else {
+    deferred.resolve();
+  }
 };

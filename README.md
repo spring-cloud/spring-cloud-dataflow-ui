@@ -106,6 +106,21 @@ For E2E tests, developers should refrain from using `localhost`. Instead, add `d
 	$ npm run e2e-saucelabs-local
 ```
 
+## Slow Internet Connection
+
+By default the tests use an embedded version of Sauce Connect. In case you enounter test failures due to bandwidth constraints,
+you may consider establishing a SauceLabs tunnel using the stand-alone **[Sauce Connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy)**.
+
+Setup instructions can be found [here](https://wiki.saucelabs.com/display/DOCS/Basic+Sauce+Connect+Proxy+Setup).
+
+Make sure you have at least the following environment variables defined:
+
+export SAUCE_CONNECT_USE_EMBEDDED=false
+export SAUCE_USER=
+export SAUCE_API_KEY=
+
+For a list of further supported configuration options, check the `config_examples/sc_configs` folder in the downloaded Sauce Connect binary.
+
 ## Thank You
 
 ![SauceLabs Logo](master-ui-assets/images/saucelabs-logo-600x315.png)

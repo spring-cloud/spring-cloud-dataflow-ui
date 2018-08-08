@@ -3,6 +3,10 @@
 
 module.exports = function (config) {
 
+  const useEmbeddedSauceConnect =
+  (process.env.SAUCE_CONNECT_USE_EMBEDDED && process.env.SAUCE_CONNECT_USE_EMBEDDED === 'false') ? false : true;
+  console.log('Use embedded Sauce Connect client?: ' + useEmbeddedSauceConnect);
+
   const SL_COMMON_CONFIG = {
     base: 'SauceLabs',
     maxDuration: 30 * 60,
@@ -61,7 +65,8 @@ module.exports = function (config) {
       environment: 'dev'
     },
     sauceLabs: {
-      testName: 'Data Flow Dashboard Unit Tests'
+      testName: 'Data Flow Dashboard Unit Tests',
+      startConnect: useEmbeddedSauceConnect
     },
     captureTimeout: 1000000,
     browserDisconnectTimeout: 1000000,
