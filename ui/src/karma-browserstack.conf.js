@@ -67,15 +67,20 @@ module.exports = function (config) {
       name: 'Data Flow Dashboard Unit Tests',
       project: 'Data_Flow'
     },
-    captureTimeout: 120000,
-    retryLimit: 10,
+
+    concurrency: 1,
+    retryLimit: 4,
+    browserDisconnectTimeout: 240*1000,   // default 2000
+    browserDisconnectTolerance: 0,        // default 0
+    browserNoActivityTimeout: 240*1000,   // default 10000
+    captureTimeout: 240*1000,             // default 60000
+
     customLaunchers: customLaunchers,
     browsers: Object.keys(customLaunchers),
     singleRun: true,
     reporters: ['dots', 'BrowserStack'],
     colors: true,
     logLevel: config.LOG_WARN,
-    browserNoActivityTimeout: 1000000,
     browserConsoleLogOptions: {
       level: 'warn',
       format: '%b %T: %m',
