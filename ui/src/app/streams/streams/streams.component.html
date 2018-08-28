@@ -14,15 +14,16 @@
     <p>This section lists all the stream definitions and provides the ability to deploy/undeploy or destroy streams.</p>
 
     <app-list-bar [params]="params" [page]="streamDefinitions" [countSelected]="countSelected()" #listBar
-                  (refresh)="refresh()" (search)="search($event)" [actions]="streamsActions">
+                  (refresh)="refresh()" (search)="search($event)" [actions]="streamsActions()"
+                  (action)="applyAction($event.action)">
     </app-list-bar>
 
     <table *ngIf="streamDefinitions?.items && streamDefinitions.items.length > 0"
            class="table table-hover table-checkbox" id="streamDefinitionsTable">
       <thead>
       <tr>
-        <th style="width: 30px">
-          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [appRoles]="['ROLE_CREATE']"
+        <th style="width: 30px" [appRoles]="['ROLE_CREATE']">
+          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
         <th style="width: 70px">
@@ -59,7 +60,7 @@
       <ng-container
         *ngFor="let item of streamDefinitions.items | paginate: streamDefinitions.getPaginationInstance(); index as i">
         <tr>
-          <td class="cell-checkbox">
+          <td class="cell-checkbox" [appRoles]="['ROLE_CREATE']">
             <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
                    [(ngModel)]="form.checkboxes[i]"/>
           </td>
@@ -88,7 +89,7 @@
             <app-stream-deployment-properties-info [streamDefinition]="item"></app-stream-deployment-properties-info>
           </ng-template>
           <td class="table-actions" width="10px" nowrap="">
-            <app-list-row-actions [actions]="streamActions(item, i)" (action)="fireAction($event.action, $event.args)"
+            <app-list-row-actions [actions]="streamActions(item, i)" (action)="applyAction($event.action, $event.args)"
                                   [item]="item">
             </app-list-row-actions>
           </td>

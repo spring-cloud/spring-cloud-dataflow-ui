@@ -394,28 +394,28 @@ describe('StreamsComponent', () => {
     it('should delete a stream', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#streamDefinitionsTable tbody tr'))[0];
       const spy = spyOn(component, 'destroy');
-      component.fireAction('destroy', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
+      component.applyAction('destroy', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail stream', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#streamDefinitionsTable tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.fireAction('details', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
+      component.applyAction('details', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
       expect(navigate).toHaveBeenCalledWith(['streams/definitions/foo2']);
     });
 
     it('Should navigate to the deployment page.', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#streamDefinitionsTable tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.fireAction('deploy', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
+      component.applyAction('deploy', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
       expect(navigate).toHaveBeenCalledWith(['streams/definitions/foo2/deploy']);
     });
 
     it('Should stop the stream.', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#streamDefinitionsTable tbody tr'))[1];
       const spy = spyOn(component, 'undeploy');
-      component.fireAction('undeploy', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
+      component.applyAction('undeploy', streamsService.streamDefinitions._embedded.streamDefinitionResourceList[0])
       expect(spy).toHaveBeenCalled();
     });
 

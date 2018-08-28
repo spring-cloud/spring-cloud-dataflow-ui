@@ -255,13 +255,13 @@ describe('TaskSchedulesComponent', () => {
 
     it('should delete a schedule', () => {
       const spy = spyOn(component, 'destroySchedules');
-      component.fireAction('destroy', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
+      component.applyAction('destroy', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail schedule', () => {
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.fireAction('details', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
+      component.applyAction('details', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
       expect(navigate).toHaveBeenCalledWith(['tasks/schedules/foo1']);
     });
 

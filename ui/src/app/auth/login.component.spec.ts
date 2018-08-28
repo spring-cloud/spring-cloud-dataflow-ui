@@ -17,6 +17,12 @@ import { AboutService } from '../about/about.service';
 import { BusyService } from '../shared/services/busy.service';
 import { NotificationService } from '../shared/services/notification.service';
 import { LoggerService } from '../shared/services/logger.service';
+import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { BsDropdownModule } from 'ngx-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FocusDirective } from '../shared/directives/focus.directive';
+import { PagerComponent } from '../shared/components/pager/pager.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -28,24 +34,33 @@ describe('LoginComponent', () => {
   const busyService = new BusyService();
   const loggerService = new LoggerService();
 
-  beforeEach( async(() => {
+  beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       imports: [
         NgBusyModule,
         FormsModule,
-        RouterTestingModule.withRoutes([])
+        RouterTestingModule.withRoutes([]),
+        BsDropdownModule.forRoot(),
+        NgxPaginationModule
       ],
-      declarations:   [ LoginComponent ],
+      declarations: [
+        LoginComponent,
+        FocusDirective,
+        PagerComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST
+      ],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: BusyService, useValue: busyService },
         { provide: AboutService, useValue: aboutService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService },
-        { provide: ActivatedRoute, useValue: {
-            params: Observable.of({returnUrl: '/apps'})
-          }
+        {
+          provide: ActivatedRoute, useValue: {
+          params: Observable.of({ returnUrl: '/apps' })
+        }
         },
         {
           provide: Router,
@@ -55,7 +70,7 @@ describe('LoginComponent', () => {
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -71,7 +86,7 @@ describe('LoginComponent', () => {
     const de: DebugElement = fixture.debugElement.query(By.css('h1'));
     const el: HTMLElement = de.nativeElement;
 
-    expect(el.innerHTML).toBe('Login');
+    expect(el.innerHTML).toContain('Login');
 
     const usernameField: HTMLElement = fixture.debugElement.query(By.css('#username')).nativeElement;
     expect(usernameField.getAttribute('placeholder')).toBe('<Username>');
@@ -80,7 +95,7 @@ describe('LoginComponent', () => {
     expect(passwordField.getAttribute('placeholder')).toBe('<Password>');
 
     const loginButton: any = fixture.debugElement.query(By.css('#loginButton')).nativeElement;
-    expect(loginButton.innerHTML).toBe('Sign in');
+    expect(loginButton.innerHTML).toContain('Sign in');
 
     const logoutButton: DebugElement = fixture.debugElement.query(By.css('#logoutButton'));
     expect(logoutButton).toBe(null);

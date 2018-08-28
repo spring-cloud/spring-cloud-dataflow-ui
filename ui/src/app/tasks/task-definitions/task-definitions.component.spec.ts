@@ -352,19 +352,19 @@ describe('TaskDefinitionsComponent', () => {
 
     it('should delete a task', () => {
       const spy = spyOn(component, 'destroy');
-      component.fireAction('destroy', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      component.applyAction('destroy', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail task', () => {
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.fireAction('details', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      component.applyAction('details', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
       expect(navigate).toHaveBeenCalledWith(['tasks/definitions/foo']);
     });
 
     it('Should navigate to the launch page.', () => {
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.fireAction('launch', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      component.applyAction('launch', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
       expect(navigate).toHaveBeenCalledWith(['tasks/definitions/launch/foo']);
     });
 
@@ -382,13 +382,13 @@ describe('TaskDefinitionsComponent', () => {
 
     it('should navigate to the schedule creation page', () => {
       const spy = spyOn(component, 'schedule');
-      component.fireAction('schedule', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      component.applyAction('schedule', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should delete all the schedules related to a task', () => {
       const spy = spyOn(component, 'destroySchedules');
-      component.fireAction('delete-schedules', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      component.applyAction('delete-schedules', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
       expect(spy).toHaveBeenCalled();
     });
 

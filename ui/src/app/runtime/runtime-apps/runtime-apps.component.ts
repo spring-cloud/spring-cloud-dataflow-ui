@@ -68,11 +68,11 @@ export class RuntimeAppsComponent implements OnInit {
   }
 
   /**
-   * Fire Action (row)
+   * Apply Action (row)
    * @param action
    * @param item
    */
-  fireAction(action: string, item: RuntimeApp) {
+  applyAction(action: string, item: RuntimeApp) {
     switch (action) {
       case 'view':
         this.view(item);

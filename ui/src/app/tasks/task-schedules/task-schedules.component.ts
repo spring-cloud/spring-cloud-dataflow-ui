@@ -85,20 +85,6 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
 
   /**
    * Constructor
-   * Schedules selected actions
-   */
-  schedulesActions = [
-    {
-      id: 'destroy-schedules',
-      icon: 'trash',
-      action: () => this.destroySelectedSchedules(),
-      title: 'Destroy schedule(s)',
-      disabled: false
-    },
-  ];
-
-  /**
-   * Constructor
    *
    * @param {BusyService} busyService
    * @param {BsModalService} modalService
@@ -134,18 +120,30 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Schedules Actions
+   */
+  schedulesActions() {
+    return [
+      {
+        id: 'destroy-schedules',
+        icon: 'trash',
+        action: 'destroySelected',
+        title: 'Destroy schedule(s)'
+      },
+    ];
+  }
+
+  /**
    * Schedule Actions
-   * @param {TaskSchedule} item
    * @param {number} index
    */
-  scheduleActions(item: TaskSchedule, index: number) {
+  scheduleActions(index: number) {
     return [
       {
         id: 'details-schedule' + index,
         icon: 'info-circle',
         action: 'details',
         title: 'Details schedule',
-        disabled: false,
         isDefault: true
       },
       {
@@ -155,24 +153,26 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
         id: 'destroy-schedule' + index,
         icon: 'trash',
         action: 'destroy',
-        title: 'Delete schedule',
-        disabled: false
+        title: 'Delete schedule'
       }
     ];
   }
 
   /**
-   * Fire Action (row)
+   * Apply Action
    * @param action
-   * @param item
+   * @param arg
    */
-  fireAction(action: string, item: TaskSchedule) {
+  applyAction(action: string, args?: any) {
     switch (action) {
       case 'details':
-        this.details(item);
+        this.details(args);
         break;
       case 'destroy':
-        this.destroySchedules([item]);
+        this.destroySchedules([args]);
+        break;
+      case 'destroySelected':
+        this.destroySelectedSchedules();
         break;
     }
   }

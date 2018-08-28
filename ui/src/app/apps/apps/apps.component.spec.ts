@@ -319,13 +319,13 @@ describe('AppsComponent', () => {
 
     it('should unregister an application', () => {
       const spy = spyOn(component, 'unregisterApps');
-      component.fireAction('unregister', appsService.mock.items[0]);
+      component.applyAction('unregister', appsService.mock.items[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail page', () => {
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.fireAction('view', appsService.mock.items[0]);
+      component.applyAction('view', appsService.mock.items[0]);
       expect(navigate).toHaveBeenCalledWith(['apps/source/foo']);
     });
 

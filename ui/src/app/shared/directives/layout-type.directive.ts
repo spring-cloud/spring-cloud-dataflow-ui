@@ -43,6 +43,9 @@ export class LayoutTypeDirective implements AfterViewInit {
         break;
       case 'medium':
         this.currentClass = 'medium';
+        break;
+      case 'small':
+        this.currentClass = 'small';
     }
     this.renderer.addClass(this._elementRef.nativeElement, getClass(this.currentClass));
   }

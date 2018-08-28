@@ -42,11 +42,12 @@ $sidebar-width-large: 240px;
       height: 34px;
       width: 50px;
       position: absolute;
-      top: 12px;
-      left: 6px;
+      top: 9px;
+      left: 0px;
+      @include transition(left .1s);
       svg {
-        height: 30px;
-        width: 45px;
+        height: 36px;
+        width: 50px;
       }
     }
     .sidebar-title {
@@ -55,7 +56,8 @@ $sidebar-width-large: 240px;
       font-size: $font-size-lg - 2px;
       align-self: center;
       font-weight: normal;
-      padding-left: $sidebar-width;
+      padding-left: 60px;
+      @include transition(padding-left .1s);
       padding-top: 2px;
       white-space: nowrap;
       strong {
@@ -137,9 +139,10 @@ $sidebar-width-large: 240px;
   }
 
   .sidebar-user {
-    border-bottom: 2px solid $highlight-background-color;
-    border-top: 2px solid $highlight-background-color;
+    border-bottom: 1px solid $highlight-background-color;
+    border-top: 1px solid $highlight-background-color;
     margin-bottom: 1rem;
+    margin-top: 1px;
     padding: 10px 0;
     color: $dark-1;
     .sidebar-user-info {
@@ -352,6 +355,15 @@ $sidebar-width-large: 240px;
         }
       }
     }
+    .sidebar-header {
+      .icon {
+        left: 15px;
+      }
+      .sidebar-title {
+        padding-left: 70px;
+      }
+    }
+
   }
   #content {
     margin-left: $sidebar-width-large;

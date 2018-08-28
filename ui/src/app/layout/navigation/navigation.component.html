@@ -1,11 +1,11 @@
-<div class="sidebar-user" *ngIf="securityInfo.isAuthenticationEnabled">
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" *ngIf="!securityInfo.isAuthenticated">
+<div class="sidebar-user" *ngIf="securityInfo.isAuthenticationEnabled" [appRoles]="['ROLE_VIEW']">
+  <div class="sidebar-item" routerLinkActive="active" *ngIf="!securityInfo.isAuthenticated">
     <a routerLink="login">
       <i class="sidebar-fa fa fa-sign-in"></i>
       <span class="text">Login</span>
     </a>
   </div>
-  <div class="sidebar-item" [appRoles]="['ROLE_VIEW']" *ngIf="securityInfo.isAuthenticated">
+  <div class="sidebar-item" *ngIf="securityInfo.isAuthenticated">
     <a routerLink="logout">
       <i class="sidebar-fa fa fa-sign-out"></i>
       <span class="text">Logout</span>
@@ -13,9 +13,9 @@
   </div>
 </div>
 
-<app-navigation-search [force]="!isCollapsed"></app-navigation-search>
+<app-navigation-search [force]="!isCollapsed" [appRoles]="['ROLE_VIEW']"></app-navigation-search>
 
-<div class="sidebar-items">
+<div class="sidebar-items" [appRoles]="['ROLE_VIEW']">
   <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']">
     <a routerLink="apps">
       <i class="sidebar-fa fa fa-tags"></i>
@@ -54,8 +54,8 @@
   </div>
 </div>
 
-<div class="sidebar-items sidebar-items-bottom">
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']">
+<div class="sidebar-items sidebar-items-bottom" [appRoles]="['ROLE_VIEW']">
+  <div class="sidebar-item" routerLinkActive="active">
     <a routerLink="about">
       <i class="sidebar-fa fa fa-leaf"></i>
       <span class="text">About & Docs</span>

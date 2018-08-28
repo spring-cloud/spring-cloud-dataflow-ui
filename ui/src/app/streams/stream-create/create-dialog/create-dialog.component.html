@@ -12,9 +12,9 @@
         <div *ngFor="let error of errors">• {{ error }}</div>
       </div>
       <p>This action will create the following <strong>stream(s)</strong>:</p>
-      <div *ngFor="let def of streamDefsToCreate()" class="row-stream">
+      <div *ngFor="let def of streamDefsToCreate(); let i = index" class="row-stream">
         <div class="form-group">
-          <label class="control-label col-sm-4">Definition</label>
+          <label class="control-label col-sm-4">Definition {{ i }}</label>
           <div class="col-sm-18">
             <div class="control-empty">
               <app-stream-dsl>{{ def.def }}</app-stream-dsl>
@@ -29,6 +29,7 @@
             <input [disabled]="isStreamCreationInProgress()" class="form-control input-sm" [id]="def.index.toString()"
                    [name]="def.index.toString()" [formControlName]="def.index.toString()"
                    type="text" placeholder="<Stream Name>" [ngModel]="def.name"
+                   [dataflowFocus]="i === 0"
                    (ngModelChange)="changeStreamName(def.index, $event)"/>
             <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
                   class="help-block validation-block">

@@ -304,7 +304,7 @@ describe('TaskExecutionsComponent', () => {
 
     it('should navigate to the detail task', () => {
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.fireAction('details', tasksService.taskExecutions._embedded.taskExecutionResourceList[0]);
+      component.applyAction('details', tasksService.taskExecutions._embedded.taskExecutionResourceList[0]);
       expect(navigate).toHaveBeenCalledWith(['tasks/executions/2']);
     });
 

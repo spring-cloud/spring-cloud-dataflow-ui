@@ -4,7 +4,7 @@
 
     <app-list-bar [params]="schedules.params" [page]="schedules.page" [countSelected]="countSelected()" #listBar
                   (refresh)="refresh(schedules.params)" [hideSearch]="true"
-                  [actions]="schedulesActions(schedules.page)">
+                  [actions]="schedulesActions()" (action)="applyAction($event.action, schedules.page)">
     </app-list-bar>
 
     <table *ngIf="schedules.page?.items && schedules.page.items.length > 0"
@@ -39,16 +39,13 @@
             {{ item.cronExpression }}
           </td>
           <td class="table-actions" width="50px" nowrap="">
-
-            <app-list-row-actions [item]="item" (action)="fireAction($event.action, $event.args)"
+            <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
                                   [actions]="scheduleActions(item, i)"></app-list-row-actions>
-
           </td>
         </tr>
       </ng-container>
       </tbody>
     </table>
-
 
     <app-list-empty [page]="schedules.page" [filters]="[]">
       <p>There is <strong>no task schedule</strong>.</p>

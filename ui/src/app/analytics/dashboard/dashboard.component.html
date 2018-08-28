@@ -63,7 +63,7 @@
             <span class="help-block" *ngIf="refreshRate.invalid && refreshRate.touched">Please provide a valid refresh rate (seconds)</span>
           </td>
           <td class="table-actions" width="10px" nowrap="" style="vertical-align: middle;">
-            <app-list-row-actions (action)="fireAction($event.action, $event.args)" [item]="index"
+            <app-list-row-actions (action)="applyAction($event.action, $event.args)" [item]="index"
                                   [actions]="dashboardActions(item, index, dashboardItems.length)">
             </app-list-row-actions>
           </td>

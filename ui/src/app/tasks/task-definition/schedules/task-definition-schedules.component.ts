@@ -107,16 +107,15 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Schedules selected actions
+   * Schedules Actions
    */
-  schedulesActions(schedules: Page<TaskSchedule>) {
+  schedulesActions() {
     return [
       {
         id: 'destroy-schedules',
         icon: 'trash',
-        action: () => this.destroySelectedSchedules(schedules),
-        title: 'Destroy schedule(s)',
-        disabled: false
+        action: 'destroySelected',
+        title: 'Destroy schedule(s)'
       },
     ];
   }
@@ -133,7 +132,6 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
         icon: 'info-circle',
         action: 'details',
         title: 'Details schedule',
-        disabled: false,
         isDefault: true
       },
       {
@@ -143,24 +141,26 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
         id: 'destroy-schedule' + index,
         icon: 'trash',
         action: 'destroy',
-        title: 'Delete schedule',
-        disabled: false
+        title: 'Delete schedule'
       }
     ];
   }
 
   /**
-   * Fire Action (row)
+   * Apply Action
    * @param action
-   * @param item
+   * @param args
    */
-  fireAction(action: string, item: TaskSchedule) {
+  applyAction(action: string, args?: any) {
     switch (action) {
       case 'details':
-        this.details(item);
+        this.details(args);
         break;
       case 'destroy':
-        this.destroySchedules([item]);
+        this.destroySchedules([args]);
+        break;
+      case 'destroySelected':
+        this.destroySelectedSchedules(args);
         break;
     }
   }

@@ -11,7 +11,7 @@ import { ListDefaultParams } from '../shared.interface';
   template: `
     <form id="filters" class="list-bar" *ngIf="page && params && !isEmpty()" #filterForm="ngForm"
           name="filterForm" role="form" (ngSubmit)="doSearch()" novalidate>
-      <div *ngIf="actions?.length > 0" id="dropdown-actions" class="list-bar-action dropdown" dropdown
+      <div *ngIf="hasActions()" id="dropdown-actions" class="list-bar-action dropdown" dropdown
            [isDisabled]="!(countSelected > 0)">
         <button dropdownToggle type="button" class="btn btn-default btn-dropdown">
           <span>Actions</span>
@@ -20,7 +20,7 @@ import { ListDefaultParams } from '../shared.interface';
         </button>
         <ul *dropdownMenu class="dropdown-menu">
           <li *ngFor="let action of actions">
-            <a id="{{ action.id }}" style="cursor: pointer" (click)="action.action()">
+            <a *ngIf="!action['hidden']" id="{{ action.id }}" style="cursor: pointer" (click)="this.applyAction(action.action)">
               {{ action.title }}
             </a>
           </li>
@@ -65,6 +65,11 @@ export class ListBarComponent implements OnInit {
    * Search
    */
   @Output() search = new EventEmitter();
+
+  /**
+   * Search
+   */
+  @Output() action = new EventEmitter();
 
   /**
    * Count selected checkbox
@@ -141,6 +146,27 @@ export class ListBarComponent implements OnInit {
    */
   doRefresh() {
     this.refresh.emit();
+  }
+
+  applyAction(action) {
+    this.action.emit({ action: action });
+  }
+
+  /**
+   * Has Actions
+   * @returns {boolean}
+   */
+  hasActions() {
+    if (!this.actions) {
+      return false;
+    }
+    if (this.actions.length == 0) {
+      return false;
+    }
+    if (this.actions.filter((ac) => !ac['hidden']).length == 0) {
+      return false;
+    }
+    return true;
   }
 
 }

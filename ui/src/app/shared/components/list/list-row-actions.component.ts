@@ -67,7 +67,7 @@ export class ListRowActionsComponent implements OnChanges {
    * On Change
    */
   ngOnChanges(changes: SimpleChanges) {
-    const actions = this.actions.filter(item => !item['divider']);
+    const actions = this.actions.filter(item => !item['divider'] && !item['hidden']);
     this.actionsDefault = this.actions.filter(item => !!item['isDefault']);
     if (this.actionsDefault.length !== actions.length) {
       this.actionsMenu = this.actions;

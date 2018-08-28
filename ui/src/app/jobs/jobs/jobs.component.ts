@@ -102,15 +102,13 @@ export class JobsComponent implements OnInit, OnDestroy {
         icon: 'info-circle',
         action: 'view',
         title: 'View the job',
-        disabled: false,
         isDefault: true
       },
       {
         id: 'job-restart' + index,
         icon: 'repeat',
         action: 'restart',
-        title: 'Restart the job',
-        disabled: false
+        title: 'Restart the job'
       },
       {
         id: 'job-stop' + index,
@@ -123,11 +121,11 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Fire Action (row)
+   * Apply Action
    * @param action
    * @param item
    */
-  fireAction(action: string, item: JobExecution) {
+  applyAction(action: string, item: JobExecution) {
     switch (action) {
       case 'view':
         this.viewJob(item);

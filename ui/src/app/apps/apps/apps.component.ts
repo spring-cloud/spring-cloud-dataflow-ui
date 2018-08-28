@@ -17,6 +17,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { AppListBarComponent } from '../components/app-list-bar/app-list-bar.component';
+import { AuthService } from '../../auth/auth.service';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -90,19 +91,6 @@ export class AppsComponent implements OnInit, OnDestroy {
   listBar: AppListBarComponent;
 
   /**
-   * Applications selected actions
-   */
-  applicationsActions = [
-    {
-      id: 'unregister-apps',
-      icon: 'trash',
-      action: () => this.unregisterAppsSelected(),
-      title: 'Unregister application(s)',
-      disabled: false
-    }
-  ];
-
-  /**
    * Constructor
    *
    * @param {AppsService} appsService
@@ -111,6 +99,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param {BsModalService} modalService
    * @param {BusyService} busyService
    * @param {LoggerService} loggerService
+   * @param {AuthService} authService
    * @param {Router} router
    */
   constructor(public appsService: AppsService,
@@ -119,23 +108,8 @@ export class AppsComponent implements OnInit, OnDestroy {
               private modalService: BsModalService,
               private busyService: BusyService,
               private loggerService: LoggerService,
+              private authService: AuthService,
               private router: Router) {
-  }
-
-  /**
-   * Fire Action (row)
-   * @param action
-   * @param item
-   */
-  fireAction(action: string, item: AppRegistration) {
-    switch (action) {
-      case 'view':
-        this.view(item);
-        break;
-      case 'unregister':
-        this.unregisterApps([item]);
-        break;
-    }
   }
 
   /**
@@ -151,7 +125,6 @@ export class AppsComponent implements OnInit, OnDestroy {
     this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
       this.skipperEnabled = featureInfo.skipperEnabled;
     });
-
   }
 
   /**
@@ -165,22 +138,36 @@ export class AppsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Row actions
-   * @param {AppRegistration} item
+   * Return a list of action for an application
+   */
+  applicationsActions() {
+    return [
+      {
+        id: 'unregister-apps',
+        icon: 'trash',
+        action: 'unregisterSelected',
+        title: 'Unregister application(s)',
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+      }
+    ];
+  }
+
+  /**
+   * Return a list of action for an application
    * @param {number} index
    */
-  applicationActions(item: AppRegistration, index: number) {
+  applicationActions(index: number) {
     return [
       {
         id: 'view' + index,
         icon: 'info-circle',
         action: 'view',
         title: 'Details',
-        disabled: false,
         isDefault: true
       },
       {
-        divider: true
+        divider: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'remove' + index,
@@ -188,9 +175,28 @@ export class AppsComponent implements OnInit, OnDestroy {
         action: 'unregister',
         roles: ['ROLE_CREATE'],
         title: 'Remove',
-        disabled: false
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       }
     ];
+  }
+
+  /**
+   * Apply Action
+   * @param action
+   * @param args
+   */
+  applyAction(action: string, args?: any) {
+    switch (action) {
+      case 'view':
+        this.view(args);
+        break;
+      case 'unregister':
+        this.unregisterApps([args]);
+        break;
+      case 'unregisterSelected':
+        this.unregisterAppsSelected();
+        break;
+    }
   }
 
   /**

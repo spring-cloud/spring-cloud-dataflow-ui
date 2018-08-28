@@ -46,7 +46,7 @@
             </span>
             </td>
             <td class="table-actions" width="10px" nowrap="">
-              <app-list-row-actions [item]="runtimeApp" (action)="fireAction($event.action, $event.args)"
+              <app-list-row-actions [item]="runtimeApp" (action)="applyAction($event.action, $event.args)"
                                     [actions]="runtimeActions(runtimeApp, i)"></app-list-row-actions>
             </td>
           </tr>

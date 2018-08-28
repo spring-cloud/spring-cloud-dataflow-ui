@@ -50,7 +50,7 @@
           <app-job-execution-status [status]="item.status"></app-job-execution-status>
         </td>
         <td class="table-actions" width="80px" nowrap="">
-          <app-list-row-actions [item]="item" (action)="fireAction($event.action, $event.args)"
+          <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
                                 [actions]="jobActions(item, i)"></app-list-row-actions>
         </td>
       </tr>

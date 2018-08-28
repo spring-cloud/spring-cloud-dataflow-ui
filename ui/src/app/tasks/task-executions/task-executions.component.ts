@@ -98,11 +98,11 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Fire Action (row)
+   * Apply Action
    * @param action
    * @param item
    */
-  fireAction(action: string, item: TaskExecution) {
+  applyAction(action: string, item: TaskExecution) {
     switch (action) {
       case 'details':
         this.details(item);

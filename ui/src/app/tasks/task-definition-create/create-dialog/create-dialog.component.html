@@ -31,13 +31,14 @@
       </div>
 
       <div class="form-group" [class.has-error]="form.controls.taskName.errors">
-        <label [for]="name" class="control-label col-sm-4 control-label-sm">
+        <label for="name" class="control-label col-sm-4 control-label-sm">
           Name <em class="required">*</em>
         </label>
         <div class="col-sm-16">
           <input class="form-control input-sm" id="name"
                  name="name" formControlName="taskName"
-                 type="text" placeholder="<Task Name>"/>
+                 type="text" placeholder="<Task Name>"
+                 [dataflowFocus]="true"/>
           <span *ngIf="form.controls.taskName.errors"
                 class="help-block validation-block">
             The format of your task name is invalid. {{ form.controls.taskName.errors.validateTaskName.reason }}

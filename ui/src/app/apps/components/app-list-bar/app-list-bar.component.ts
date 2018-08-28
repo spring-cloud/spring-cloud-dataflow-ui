@@ -1,16 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AppListParams } from '../apps.interface';
 import { Page } from '../../../shared/model/page';
 
 /**
- * Applications Unregister modal
+ * Applications List Bar
  *
- * @author Gunnar Hillert
  * @author Damien Vitrac
  */
 @Component({
   selector: 'app-list-bar-app',
-  templateUrl: './app-list-bar.component.html'
+  templateUrl: './app-list-bar.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppListBarComponent implements OnInit {
 
@@ -33,6 +33,11 @@ export class AppListBarComponent implements OnInit {
    * Search
    */
   @Output() search = new EventEmitter<AppListParams>();
+
+  /**
+   * Action
+   */
+  @Output() action = new EventEmitter<any>();
 
   /**
    * Count selected checkbox
@@ -97,6 +102,23 @@ export class AppListBarComponent implements OnInit {
 
   doRefresh() {
     this.refresh.emit();
+  }
+
+  fire(action) {
+    this.action.emit({ action: action });
+  }
+
+  hasActions() {
+    if (!this.actions) {
+      return false;
+    }
+    if (this.actions.length == 0) {
+      return false;
+    }
+    if (this.actions.filter((ac) => !ac['hidden']).length == 0) {
+      return false;
+    }
+    return true;
   }
 
 }

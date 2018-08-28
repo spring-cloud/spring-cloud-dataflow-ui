@@ -110,11 +110,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Fire Action (row)
+   * Apply Action (row)
    * @param action
    * @param item
    */
-  fireAction(action: string, index) {
+  applyAction(action: string, index) {
     switch (action) {
       case 'up':
         this.moveUpItem(index);

@@ -1,7 +1,7 @@
 <form id="filters" class="list-bar list-bar-app" *ngIf="page && params && !isEmpty()" #registerAppsForm="ngForm"
       name="registerAppsForm" role="form" (ngSubmit)="doSearch()" novalidate>
 
-  <div *ngIf="actions?.length > 0" id="dropdown-actions" class="list-bar-action dropdown" dropdown
+  <div *ngIf="hasActions()" id="dropdown-actions" class="list-bar-action dropdown" dropdown
        [isDisabled]="!(countSelected > 0)">
     <button dropdownToggle type="button" class="btn btn-default btn-dropdown">
       <span>Actions</span>
@@ -10,7 +10,7 @@
     </button>
     <ul *dropdownMenu class="dropdown-menu">
       <li *ngFor="let action of actions">
-        <a id="{{ action.id }}" style="cursor: pointer" (click)="action.action()">
+        <a *ngIf="!action.hidden" id="{{ action.id }}" style="cursor: pointer" (click)="fire(action.action)">
           {{ action.title }}
         </a>
       </li>

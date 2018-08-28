@@ -3,7 +3,8 @@
   <div id="schedules-list" *ngIf="isLoaded && taskSchedules" dataflowLayoutType type="full">
 
     <app-list-bar [params]="params" [page]="taskSchedules" [countSelected]="countSelected()" #listBar
-                  (refresh)="refresh()" (search)="search($event)" [actions]="schedulesActions">
+                  (refresh)="refresh()" (search)="search($event)" [actions]="schedulesActions()"
+                  (action)="applyAction($event.action)">
     </app-list-bar>
 
     <table *ngIf="taskSchedules && (taskSchedules.items | filterSchedules: q).length > 0"
@@ -44,8 +45,8 @@
             {{ item.cronExpression }}
           </td>
           <td class="table-actions" width="10px" nowrap="">
-            <app-list-row-actions [item]="item" (action)="fireAction($event.action, $event.args)"
-                                  [actions]="scheduleActions(item, i)"></app-list-row-actions>
+            <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
+                                  [actions]="scheduleActions(i)"></app-list-row-actions>
           </td>
         </tr>
       </ng-container>

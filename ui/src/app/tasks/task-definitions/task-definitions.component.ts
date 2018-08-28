@@ -19,6 +19,7 @@ import { GroupRouteService } from '../../shared/services/group-route.service';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
+import { AuthService } from '../../auth/auth.service';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -94,20 +95,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
 
   /**
    * Constructor
-   * Task selected actions
-   */
-  tasksActions = [
-    {
-      id: 'destroy-tasks',
-      icon: 'trash',
-      action: () => this.destroySelectedTasks(),
-      title: 'Destroy task(s)',
-      disabled: false
-    },
-  ];
-
-  /**
-   * Constructor
    *
    * @param {TasksService} tasksService
    * @param {BsModalService} modalService
@@ -115,6 +102,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param {LoggerService} loggerService
    * @param {GroupRouteService} groupRouteService
    * @param {Router} router
+   * @param {AuthService} authService
    * @param {SharedAboutService} sharedAboutService
    * @param {NotificationService} notificationService
    */
@@ -124,9 +112,32 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
               private loggerService: LoggerService,
               private groupRouteService: GroupRouteService,
               private router: Router,
+              private authService: AuthService,
               private sharedAboutService: SharedAboutService,
               private notificationService: NotificationService) {
 
+  }
+
+  /**
+   * Tasks Actions
+   */
+  tasksActions() {
+    return [
+      {
+        id: 'destroy-tasks',
+        icon: 'trash',
+        action: 'destroySelected',
+        title: 'Destroy task(s)',
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+      },
+      {
+        id: 'schedule-tasks',
+        icon: 'clock-o',
+        action: 'scheduleSelected',
+        title: 'Schedule task(s)',
+        hidden: !this.schedulerEnabled
+      }
+    ];
   }
 
   /**
@@ -134,28 +145,29 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param {TaskDefinition} item
    * @param {number} index
    */
-  taskActions(item: TaskDefinition, index: number) {
+  taskActions(index: number) {
     return [
       {
         id: 'details-task' + index,
         icon: 'info-circle',
         action: 'details',
         title: 'Details task',
-        disabled: false,
         isDefault: true
       },
       {
-        divider: true
+        divider: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'launch-task' + index,
         icon: 'play',
         action: 'launch',
         title: 'Launch task',
-        disabled: false
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
-        divider: true
+        divider: true,
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'task-schedule' + index,
@@ -163,7 +175,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'schedule',
         title: 'Schedule task',
         disabled: !this.schedulerEnabled,
-        hidden: !this.schedulerEnabled
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'delete-schedules' + index,
@@ -171,43 +183,49 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'delete-schedules',
         title: 'Delete schedule',
         disabled: !this.schedulerEnabled,
-        hidden: !this.schedulerEnabled
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         divider: true,
-        hidden: !this.schedulerEnabled
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'destroy-task' + index,
         icon: 'trash',
         action: 'destroy',
         title: 'Destroy task',
-        disabled: false
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
     ];
   }
 
   /**
-   * Fire Action (row)
+   * Apply Action
    * @param action
-   * @param item
+   * @param args
    */
-  fireAction(action: string, item: TaskDefinition) {
+  applyAction(action: string, args?: any) {
     switch (action) {
       case 'details':
-        this.details(item);
+        this.details(args);
         break;
       case 'launch':
-        this.launch(item);
+        this.launch(args);
         break;
       case 'schedule':
-        this.schedule(item);
+        this.schedule(args);
         break;
       case 'delete-schedules':
-        this.destroySchedules(item);
+        this.destroySchedules(args);
         break;
       case 'destroy':
-        this.destroy(item);
+        this.destroy(args);
+        break;
+      case 'destroySelected':
+        this.destroySelectedTasks();
+        break;
+      case 'scheduleSelected':
+        this.scheduleSelectedTasks();
         break;
     }
   }

@@ -22,6 +22,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { map } from 'rxjs/internal/operators';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-streams',
@@ -117,33 +118,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
-   * Stream selected actions
-   */
-  streamsActions = [
-    {
-      id: 'deploy-streams',
-      icon: 'play',
-      action: () => this.deploySelectedStreams(),
-      title: 'Deploy stream(s)',
-      disabled: false
-    },
-    {
-      id: 'undeploy-streams',
-      icon: 'pause',
-      action: () => this.undeploySelectedStreams(),
-      title: 'Undeploy stream(s)',
-      disabled: false
-    },
-    {
-      id: 'destroy-streams',
-      icon: 'trash',
-      action: () => this.destroySelectedStreams(),
-      title: 'Destroy stream(s)',
-      disabled: false
-    },
-  ];
-
-  /**
    * Initialize component
    *
    * @param {StreamsService} streamsService
@@ -152,6 +126,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param {BusyService} busyService
    * @param {NotificationService} notificationService
    * @param {LoggerService} loggerService
+   * @param {AuthService} authService
    * @param {Router} router
    */
   constructor(public streamsService: StreamsService,
@@ -160,7 +135,37 @@ export class StreamsComponent implements OnInit, OnDestroy {
               private busyService: BusyService,
               private notificationService: NotificationService,
               private loggerService: LoggerService,
+              private authService: AuthService,
               private router: Router) {
+  }
+
+  /**
+   * Stream selected actions
+   */
+  streamsActions() {
+    return [
+      {
+        id: 'deploy-streams',
+        icon: 'play',
+        action: 'deploySelected',
+        title: 'Deploy stream(s)',
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+      },
+      {
+        id: 'undeploy-streams',
+        icon: 'pause',
+        action: 'undeploySelected',
+        title: 'Undeploy stream(s)',
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+      },
+      {
+        id: 'destroy-streams',
+        icon: 'trash',
+        action: 'destroySelected',
+        title: 'Destroy stream(s)',
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+      },
+    ];
   }
 
   /**
@@ -175,57 +180,68 @@ export class StreamsComponent implements OnInit, OnDestroy {
         action: 'details',
         icon: 'info-circle',
         title: 'Details stream',
-        disabled: false,
         isDefault: true
       },
       {
-        divider: true
+        divider: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'deploy-stream' + index,
         action: 'deploy',
         icon: 'play',
         title: 'Deploy stream',
-        disabled: false
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'undeploy-stream' + index,
         action: 'undeploy',
         icon: 'pause',
         title: 'Undeploy stream',
-        disabled: (item.status === 'undeployed')
+        disabled: (item.status === 'undeployed'),
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
-        divider: true
+        divider: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
         id: 'destroy-stream' + index,
         action: 'destroy',
         icon: 'trash',
         title: 'Destroy stream',
-        disabled: false
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
     ];
   }
 
   /**
-   * Fire Action
+   * Apply Action
    * @param {string} action
-   * @param {StreamDefinition} item
+   * @param {any} args
    */
-  fireAction(action: string, item: StreamDefinition) {
+  applyAction(action: string, args?: any) {
     switch (action) {
       case 'details':
-        this.details(item);
+        this.details(args);
         break;
       case 'deploy':
-        this.deploy(item);
+        this.deploy(args);
         break;
       case 'undeploy':
-        this.undeploy(item);
+        this.undeploy(args);
         break;
       case 'destroy':
-        this.destroy(item);
+        this.destroy(args);
+        break;
+      case 'deploySelected':
+        this.deploySelectedStreams();
+        break;
+      case 'undeploySelected':
+        this.undeploySelectedStreams();
+        break;
+      case 'destroySelected':
+        this.destroySelectedStreams();
         break;
     }
   }
