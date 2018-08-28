@@ -179,7 +179,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         id: 'details-stream' + index,
         action: 'details',
         icon: 'info-circle',
-        title: 'Details stream',
+        title: 'Show details',
         isDefault: true
       },
       {

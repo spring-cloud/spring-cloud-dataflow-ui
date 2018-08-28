@@ -22,7 +22,7 @@
         <thead>
         <tr>
           <th>App Id</th>
-          <th>State</th>
+          <th>Status</th>
           <th># of Instances</th>
           <th>&nbsp;</th>
         </tr>
@@ -59,7 +59,7 @@
       </app-list-pagination>
 
       <app-list-empty [page]="runtimeApps" [filters]="[]">
-        <p>There is <strong>no runtime available</strong>.</p>
+        <p>There are <strong>no running applications</strong> currently available.</p>
         <p>
           You can <a (click)="loadRuntimeApps()">Refresh</a> the page.
         </p>

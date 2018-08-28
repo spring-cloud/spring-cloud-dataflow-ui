@@ -80,7 +80,7 @@
     </app-list-pagination>
 
     <app-list-empty [page]="appRegistrations" [filters]="[params.q, params.type]">
-      <p>There is <strong>no application register</strong>.</p>
+      <p>There is <strong>no application registered</strong>, yet.</p>
       <p [appRoles]="['ROLE_CREATE']">
         You can: <a (click)="addApps()">Add Application(s)</a> or <a (click)="refresh()">Refresh</a> the page.
       </p>

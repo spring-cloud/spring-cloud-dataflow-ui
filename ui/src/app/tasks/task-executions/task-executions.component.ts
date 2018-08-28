@@ -90,8 +90,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         id: 'details-execution' + index,
         icon: 'info-circle',
         action: 'details',
-        title: 'Details execution',
-        disabled: false,
+        title: 'Show details',
         isDefault: true
       }
     ];

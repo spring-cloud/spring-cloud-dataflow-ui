@@ -101,7 +101,7 @@ export class JobsComponent implements OnInit, OnDestroy {
         id: 'job-view' + index,
         icon: 'info-circle',
         action: 'view',
-        title: 'View the job',
+        title: 'Show details',
         isDefault: true
       },
       {

@@ -151,7 +151,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         id: 'details-task' + index,
         icon: 'info-circle',
         action: 'details',
-        title: 'Details task',
+        title: 'Show details',
         isDefault: true
       },
       {

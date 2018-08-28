@@ -162,7 +162,7 @@ export class AppsComponent implements OnInit, OnDestroy {
         id: 'view' + index,
         icon: 'info-circle',
         action: 'view',
-        title: 'Details',
+        title: 'Show details',
         isDefault: true
       },
       {

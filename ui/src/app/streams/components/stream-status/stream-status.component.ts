@@ -52,7 +52,7 @@ export class StreamStatusComponent implements OnChanges {
           this.labelClass = 'warning';
           break;
         case 'deployed':
-          this.labelClass = 'primary';
+          this.labelClass = 'success';
           break;
         case 'deploying':
           this.labelClass = 'info';

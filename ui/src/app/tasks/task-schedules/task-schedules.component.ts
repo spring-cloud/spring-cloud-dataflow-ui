@@ -143,7 +143,7 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
         id: 'details-schedule' + index,
         icon: 'info-circle',
         action: 'details',
-        title: 'Details schedule',
+        title: 'Show details',
         isDefault: true
       },
       {

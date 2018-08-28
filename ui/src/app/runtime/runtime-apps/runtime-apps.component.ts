@@ -60,8 +60,7 @@ export class RuntimeAppsComponent implements OnInit {
         id: 'view' + index,
         icon: 'info-circle',
         action: 'view',
-        title: 'Details',
-        disabled: false,
+        title: 'Show details',
         isDefault: true
       }
     ];
