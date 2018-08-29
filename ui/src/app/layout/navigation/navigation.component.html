@@ -1,3 +1,5 @@
+<app-navigation-search [force]="!isCollapsed" [appRoles]="['ROLE_VIEW']"></app-navigation-search>
+
 <div class="sidebar-user" *ngIf="securityInfo.isAuthenticationEnabled" [appRoles]="['ROLE_VIEW']">
   <div class="sidebar-item" routerLinkActive="active" *ngIf="!securityInfo.isAuthenticated">
     <a routerLink="login">
@@ -5,15 +7,17 @@
       <span class="text">Login</span>
     </a>
   </div>
-  <div class="sidebar-item" *ngIf="securityInfo.isAuthenticated">
-    <a routerLink="logout">
-      <i class="sidebar-fa fa fa-sign-out"></i>
-      <span class="text">Logout</span>
+  <div dropdown class="sidebar-item dropdown" *ngIf="securityInfo.isAuthenticated">
+    <a class="dropdown-toggle" dropdownToggle>
+      <i class="sidebar-fa fa fa-user"></i>
+      <span class="text">{{ securityInfo.username | truncate: 20 }}</span>
+      <span class="fa fa-chevron-right"></span>
     </a>
+    <ul class="dropdown-menu" *dropdownMenu="">
+      <li><a routerLink="logout">Logout</a></li>
+    </ul>
   </div>
 </div>
-
-<app-navigation-search [force]="!isCollapsed" [appRoles]="['ROLE_VIEW']"></app-navigation-search>
 
 <div class="sidebar-items" [appRoles]="['ROLE_VIEW']">
   <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']">

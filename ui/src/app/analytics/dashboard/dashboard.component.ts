@@ -92,7 +92,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         id: 'add-dashboard' + index,
         icon: 'plus',
         action: 'add',
-        title: 'Add dashboard',
+        title: 'Add dashboard item',
         disabled: false,
         isDefault: true
       },
@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         id: 'remove-dashboard' + index,
         icon: 'trash',
         action: 'remove',
-        title: 'Remove dashboard',
+        title: 'Remove dashboard item',
         disabled: (total <= 1)
       }
     ];

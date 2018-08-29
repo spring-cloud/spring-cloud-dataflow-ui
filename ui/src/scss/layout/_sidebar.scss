@@ -70,7 +70,6 @@ $sidebar-width-large: 240px;
   .sidebar-item {
     font-size: 16px;
     border-left: $active-item-border-size solid transparent;
-
     &.active {
       background-color: $highlight-background-color;
       border-left: $active-item-border-size solid $brand-8;
@@ -85,9 +84,15 @@ $sidebar-width-large: 240px;
         padding-left: $sidebar-item-left-padding;
       }
     }
-
     .sidebar-item a {
       padding-left: $sidebar-item-left-padding;
+    }
+    .fa-chevron-right {
+      position: absolute;
+      right: 20px;
+      top: 14px;
+      color: rgba(104, 104, 104, 0);
+      @include transition(color .1s);
     }
   }
 
@@ -109,7 +114,6 @@ $sidebar-width-large: 240px;
       position: absolute;
       right: 15px;
       top: 13px;
-      //TODO
       display: none;
     }
 
@@ -140,10 +144,9 @@ $sidebar-width-large: 240px;
 
   .sidebar-user {
     border-bottom: 1px solid $highlight-background-color;
-    border-top: 1px solid $highlight-background-color;
     margin-bottom: 1rem;
-    margin-top: 1px;
-    padding: 10px 0;
+    margin-top: 0;
+    padding: 0px 0 4px 0;
     color: $dark-1;
     .sidebar-user-info {
       position: relative;
@@ -153,6 +156,14 @@ $sidebar-width-large: 240px;
         top: 3px;
         left: 15px;
       }
+    }
+    ul.dropdown-menu {
+      width: 200px;
+      position: fixed;
+      top: 120px;
+      left: $sidebar-width;
+      margin: 0;
+      padding: 10px 0;
     }
     ul {
       margin: 0;
@@ -165,6 +176,9 @@ $sidebar-width-large: 240px;
         padding-bottom: 8px;
         font-size: 14px;
       }
+    }
+    .sidebar-item-username {
+      padding: 0 20px;
     }
   }
 
@@ -363,7 +377,16 @@ $sidebar-width-large: 240px;
         padding-left: 70px;
       }
     }
-
+    .sidebar-item {
+      .fa-chevron-right {
+        color: rgba(104, 104, 104, 1);
+      }
+    }
+    .sidebar-user {
+      ul.dropdown-menu {
+        left: $sidebar-width-large - 10px;
+      }
+    }
   }
   #content {
     margin-left: $sidebar-width-large;
@@ -383,37 +406,4 @@ $sidebar-width-large: 240px;
       }
     }
   }
-}
-
-@media (max-width: 900px) {
-  /*.sidebar-fixed {
-    .page-step-1 {
-      left: $sidebar-width;
-    }
-    #sidebar {
-      width: $sidebar-width;
-
-      app-navigation-search {
-        height: 54px;
-        .sidebar-quicksearch {
-          display: none;
-        }
-      }
-      .sidebar-item-collapser {
-        display: none;
-      }
-    }
-    #content {
-      margin-left: $sidebar-width;
-    }
-    .dataflow-page-head {
-      left: $sidebar-width;
-    }
-    .page-step-2 {
-      left: $sidebar-width + 500px;
-    }
-    .page-step-2-head {
-      left: $sidebar-width + 500px -1px;
-    }
-  }*/
 }
