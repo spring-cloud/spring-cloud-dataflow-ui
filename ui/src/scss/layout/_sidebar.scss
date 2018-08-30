@@ -245,15 +245,20 @@ $sidebar-width-large: 240px;
     }
     .sidebar-quicksearch-result {
       position: fixed;
-      display: none;
+      //display: none;
       top: 0px;
       left: $sidebar-width;
       bottom: 0;
       background-color: white;
-      border-right: 1px solid $highlight-background-color;
-      width: 500px;
+      //border-right: 1px solid $highlight-background-color;
+      width: 0;
+      @include transition(width .1s);
       color: $navy-1;
       box-shadow: 6px 0 10px rgba(0, 0, 0, .08);
+      overflow-x: hidden;
+      .sidebar-quicksearch-result-wrap {
+        width: 500px;
+      }
       &::after {
         content: ' ';
         height: 52px;
@@ -323,7 +328,10 @@ $sidebar-width-large: 240px;
         }
       }
       .sidebar-quicksearch-result {
-        display: block;
+        width: 500px;
+        &::after {
+          display: block;
+        }
       }
     }
   }
@@ -364,9 +372,6 @@ $sidebar-width-large: 240px;
 
       .sidebar-quicksearch-result {
         left: $sidebar-width-large;
-        &::after {
-          display: block;
-        }
       }
     }
     .sidebar-header {
