@@ -5,10 +5,17 @@ $font-size-lg: 20px;
 $sidebar-width: 60px;
 $sidebar-width-large: 240px;
 
+$sidebar-background: #243641;
+$sidebar-background-active: #232b2f;
+$sidebar-divider: #3e4a53;
+$sidebar-color: #edefef;
+$sidebar-color-hover: #fff;
+$sidebar-active: #00a79d;
+
 #sidebar {
-  background-color: $dark-11;
+  background: $sidebar-background;
   width: $sidebar-width;
-  color: $gray-3;
+  color: $sidebar-color;
   overflow-y: auto;
   overflow-x: hidden;
   position: fixed;
@@ -18,6 +25,7 @@ $sidebar-width-large: 240px;
   font-size: 16px;
   z-index: 888;
   border-right: 1px solid #dfe5e8;
+  opacity: 1;
   @include transition(width .1s);
 
   .text {
@@ -25,7 +33,7 @@ $sidebar-width-large: 240px;
   }
 
   .sidebar-divider {
-    border-top: 1px solid $navy-8;
+    border-top: 1px solid $sidebar-divider;
   }
 
   .sidebar-header {
@@ -52,17 +60,17 @@ $sidebar-width-large: 240px;
     }
     .sidebar-title {
       display: block;
-      color: $dark-1;
-      font-size: $font-size-lg - 2px;
+      color: $sidebar-color;
+      font-size: $font-size-lg + 2px;
       align-self: center;
-      font-weight: normal;
+      font-weight: 600;
       padding-left: 60px;
       @include transition(padding-left .1s);
       padding-top: 2px;
       white-space: nowrap;
       strong {
         font-weight: normal;
-        color: $brand-8;
+        color: $sidebar-active;
       }
     }
   }
@@ -70,17 +78,18 @@ $sidebar-width-large: 240px;
   .sidebar-item {
     font-size: 16px;
     border-left: $active-item-border-size solid transparent;
+    @include transition(background-color .2s);
     &.active {
-      background-color: $highlight-background-color;
-      border-left: $active-item-border-size solid $brand-8;
+      background-color: $sidebar-background-active;
+      border-left: $active-item-border-size solid $sidebar-active;
       a {
-        color: $dark-1;
+        color: $sidebar-color-hover;
         &:hover {
-          color: $dark-1;
+          color: $sidebar-color-hover;
         }
       }
       .sidebar-item a {
-        color: $dark-1;
+        color: $sidebar-color-hover;
         padding-left: $sidebar-item-left-padding;
       }
     }
@@ -104,12 +113,11 @@ $sidebar-width-large: 240px;
   .sidebar-item > a {
     position: relative;
     text-decoration: none;
-    color: $neutral-3;
+    color: $sidebar-color;
     padding: $base-unit $base-unit $base-unit $sidebar-item-left-padding;
     display: block;
     cursor: pointer;
     height: 40px;
-
     .icon-right {
       position: absolute;
       right: 15px;
@@ -118,7 +126,7 @@ $sidebar-width-large: 240px;
     }
 
     &:hover {
-      color: $neutral-3;
+      color: $sidebar-color-hover;
       text-decoration: underline;
     }
   }
@@ -132,7 +140,7 @@ $sidebar-width-large: 240px;
   }
   .sidebar-items div.sidebar-item-copyright {
     display: block;
-    border-top: 1px solid $highlight-background-color;
+    border-top: 1px solid $sidebar-divider;
     border-left: 0 none;
     font-size: 13px;
     line-height: 20px;
@@ -143,7 +151,7 @@ $sidebar-width-large: 240px;
   }
 
   .sidebar-user {
-    border-bottom: 1px solid $highlight-background-color;
+    border-bottom: 1px solid $sidebar-divider;
     margin-bottom: 1rem;
     margin-top: 0;
     padding: 0px 0 4px 0;
@@ -195,18 +203,20 @@ $sidebar-width-large: 240px;
       display: none;
     }
     .sidebar-button {
-      height: 32px;
+      height: 34px;
       position: relative;
       a {
         position: absolute;
         text-align: center;
         top: -6px;
-        left: -10px;
+        left: -18px;
         height: 45px;
         width: 50px;
         line-height: 45px;
         cursor: pointer;
-        color: $navy-3;
+        padding-left: 8px;
+        color: $sidebar-color;
+        border-left: $active-item-border-size solid $sidebar-background;
       }
     }
     .sidebar-quicksearch-result {
@@ -221,20 +231,34 @@ $sidebar-width-large: 240px;
     position: relative;
     margin-top: 1px;
     margin-bottom: 5px;
-    padding: 10px 15px;
-    border-top: 1px solid $highlight-background-color;
-    border-bottom: 1px solid $highlight-background-color;
+    padding: 10px 15px 10px 18px;
+    //border-top: 1px solid $sidebar-divider;
+    //border-bottom: 1px solid $sidebar-divider;
     .sidebar-quicksearch-input {
       position: relative;
       .fa {
         position: absolute;
         top: 8px;
         left: 8px;
-        color: $navy-8;
+        color: rgba(255, 255, 255, .6);
       }
       input.form-control {
-        height: 32px;
-        padding-left: 30px;
+        height: 34px;
+        padding-left: 34px;
+        &.input-dark {
+          background: #252b2f;
+          border: 2px solid transparent;
+          @include transition(border-color .05s);
+          margin-left: -4px;
+          color: #fff;
+          box-shadow: none;
+          &:focus {
+            border-color: #47a49c;
+          }
+          &::placeholder {
+            color: rgba(255, 255, 255, .4)
+          }
+        }
       }
       app-loader {
         padding: 0;
@@ -259,15 +283,11 @@ $sidebar-width-large: 240px;
       .sidebar-quicksearch-result-wrap {
         width: 500px;
       }
-      &::after {
-        content: ' ';
-        height: 52px;
-        width: 1px;
-        background: white;
-        position: fixed;
-        top: 60px;
-        left: 239px;
-        display: none;
+      .sidebar-quicksearch-input {
+        .fa {
+          color: $navy-1;
+          left: 11px;
+        }
       }
       .result-content {
         padding: 19px 2rem;
@@ -321,17 +341,17 @@ $sidebar-width-large: 240px;
       }
     }
     &.open {
-      background: white;
+      background: $sidebar-background-active;
       .sidebar-quicksearch-input {
         .fa {
-          color: $navy-2
+          //color: $navy-2
         }
       }
       .sidebar-quicksearch-result {
         width: 500px;
-        &::after {
-          display: block;
-        }
+      }
+      .sidebar-button a {
+        border-left: $active-item-border-size solid $sidebar-active;
       }
     }
   }
@@ -374,6 +394,7 @@ $sidebar-width-large: 240px;
         left: $sidebar-width-large;
       }
     }
+
     .sidebar-header {
       .icon {
         left: 15px;
@@ -384,7 +405,7 @@ $sidebar-width-large: 240px;
     }
     .sidebar-item {
       .fa-chevron-right {
-        color: rgba(104, 104, 104, 1);
+        color: $sidebar-color;
       }
     }
     .sidebar-user {

@@ -175,7 +175,7 @@ div.tooltip-version {
   padding: 0 3rem;
   border-bottom: 1px solid #dfe5e8;
   @include transition(left .1s);
-  background: white;
+  background: $navy-11;
   z-index: 100;
   h1.dataflow-page-head-title {
     font-size: 20px;
@@ -273,7 +273,7 @@ app-list-row-actions {
   }
   ul.nav-tabs {
     padding: 11px 3rem 0;
-    border-bottom: 1px solid $navy-9;
+    border-bottom: 1px solid #DFE5E8;
     li {
       a {
         border-radius: 0;

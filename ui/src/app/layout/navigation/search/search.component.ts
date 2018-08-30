@@ -97,7 +97,7 @@ export class NavigationSearchComponent implements OnInit {
         this.quickSearch = (value !== '') || this.force;
         return value;
       })
-      .debounceTime(200)
+      .debounceTime(300)
       .subscribe((value) => {
 
         this.resultSearch.app = null;
