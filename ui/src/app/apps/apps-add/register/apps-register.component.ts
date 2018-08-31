@@ -144,7 +144,7 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Return true if all the form are empty
+   * Return true if all the forms are empty
    *
    * @returns {boolean}
    */

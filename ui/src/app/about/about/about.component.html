@@ -13,8 +13,8 @@
       <div id="properties" class="properties">
         <div class="infos">
           <div class="box">
-            <a *ngIf="showDetails" (click)="toggleDetails()"  class="fa fa-chevron-down" aria-hidden="true"></a>
-            <a *ngIf="!showDetails" (click)="toggleDetails()"  class="fa fa-chevron-right" aria-hidden="true"></a>
+            <a *ngIf="showDetails" (click)="toggleDetails()" class="fa fa-chevron-down" aria-hidden="true"></a>
+            <a *ngIf="!showDetails" (click)="toggleDetails()" class="fa fa-chevron-right" aria-hidden="true"></a>
             <div class="line">
               Name:
               <strong>{{ dataflowVersionInfo ? dataflowVersionInfo.versionInfo.implementation.name : 'N/A' }}</strong>
@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="show-more" *ngIf="showDetails">
-            <app-about-details></app-about-details>
+          <app-about-details></app-about-details>
         </div>
       </div>
     </div>
@@ -41,14 +41,14 @@
           <a target="_blank" href="http://cloud.spring.io/spring-cloud-dataflow/">
             <img src="/assets/img/project-page.png" width="50px" alt="">
             <strong>Project Page</strong>
-            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</span>
+            <span>Quick overview of Spring Data Flow Project.</span>
           </a>
         </li>
         <li>
           <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow">
             <img src="/assets/img/github.png" width="50px" alt="">
             <strong>Sources</strong>
-            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</span>
+            <span>Spring Data Flow Project is an Open Source Project.</span>
           </a>
         </li>
         <li>
@@ -56,7 +56,7 @@
              href="http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/reference/htmlsingle/">
             <img src="/assets/img/documentation.png" width="50px" alt="">
             <strong>Documentation</strong>
-            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</span>
+            <span>Learn all about you need.</span>
           </a>
         </li>
         <li>
@@ -64,21 +64,21 @@
              href="http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/api/">
             <img src="/assets/img/api.png" width="50px" alt="">
             <strong>API Docs</strong>
-            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</span>
+            <span>Spring Cloud Data Flow expose an API.</span>
           </a>
         </li>
         <li>
           <a target="_blank" href="http://stackoverflow.com/questions/tagged/spring-cloud-dataflow">
             <img src="/assets/img/forum.png" width="50px" alt="">
             <strong>Support Forum</strong>
-            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</span>
+            <span>You need help?</span>
           </a>
         </li>
         <li>
           <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues">
             <img src="/assets/img/tracker.png" width="50px" alt="">
             <strong>Issue Tracker</strong>
-            <span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem.</span>
+            <span>Report an issue</span>
           </a>
         </li>
       </ul>
@@ -90,12 +90,20 @@
       <img src="/assets/img/shell.png" width="383px" alt="">
       <div class="shell-content">
         <h2 *ngIf="dataflowVersionInfo">Get the Spring Cloud Data Flow Shell</h2>
-        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-          aperiam, eaque. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
         <p class="index-page--subtitle">As an alternative to the Dashboard UI, you can also
           <a href="{{ dataflowVersionInfo.versionInfo.shell.url }}" target="_blank">
             download the compatible version of the Shell
           </a> ({{ dataflowVersionInfo.versionInfo.shell.version }}).
+        </p>
+        <p>
+          The shell is built upon the <a href="https://projects.spring.io/spring-shell/">Spring Shell</a> project.
+          There are command line options generic to Spring Shell and some specific to Data Flow.
+        </p>
+        <p>
+          <a
+            href="http://docs.spring.io/spring-cloud-dataflow/docs/{{ dataflowVersionInfo.versionInfo.core.version }}/reference/htmlsingle/#shell">
+            Read more about Spring Cloud Data Flow Shell
+          </a>
         </p>
       </div>
     </div>

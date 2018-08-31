@@ -32,7 +32,7 @@ describe('StreamsService', () => {
     it('should call the streams service with the right url to get stream definitions', () => {
       this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
 
-      //expect(this.streamsService.streamDefinitions).toBeDefined();
+      // expect(this.streamsService.streamDefinitions).toBeDefined();
       this.streamsService.getDefinitions();
 
       const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
@@ -109,7 +109,7 @@ describe('StreamsService', () => {
     it('should call the streams service to destroy stream definition', () => {
       this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
 
-      //expect(this.streamsService.streamDefinitions).toBeDefined();
+      // expect(this.streamsService.streamDefinitions).toBeDefined();
 
       const streamDefinition = new StreamDefinition('test', 'time|log', 'undeployed');
       this.streamsService.destroyDefinition(streamDefinition);
@@ -125,7 +125,7 @@ describe('StreamsService', () => {
       it('should call the streams service to undeploy stream definition', () => {
         this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
 
-        //expect(this.streamsService.streamDefinitions).toBeDefined();
+        // expect(this.streamsService.streamDefinitions).toBeDefined();
 
         const streamDefinition = new StreamDefinition('test', 'time|log', 'deployed');
         this.streamsService.undeployDefinition(streamDefinition);
@@ -142,7 +142,7 @@ describe('StreamsService', () => {
       it('should call the streams service to deploy stream definition', () => {
         this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
 
-        //expect(this.streamsService.streamDefinitions).toBeDefined();
+        // expect(this.streamsService.streamDefinitions).toBeDefined();
 
         this.streamsService.deployDefinition('test', {});
 
@@ -265,7 +265,7 @@ describe('StreamsService', () => {
       it('should call the stream definition service with the right url to destroy multiple stream definitions', () => {
 
         this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
-        //expect(this.streamsService.streamDefinitions).toBeDefined();
+        // expect(this.streamsService.streamDefinitions).toBeDefined();
         const streamDefinitions = [
           new StreamDefinition('stream1', 'file|filter|ftp', 'deployed'),
           new StreamDefinition('stream2', 'ftp|filter|file', 'deployed')
@@ -291,7 +291,7 @@ describe('StreamsService', () => {
     describe('deployMultipleStreamDefinitions', () => {
       it('should call the stream definition service with the right url to deploy multiple stream definitions', () => {
         this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
-        //expect(this.streamsService.streamDefinitions).toBeDefined();
+        // expect(this.streamsService.streamDefinitions).toBeDefined();
         const stream1 = new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed');
         const stream2 = new StreamDefinition('stream2', 'file|filter|ftp', 'undeployed');
         stream1.deploymentProperties = { a: 'a' };

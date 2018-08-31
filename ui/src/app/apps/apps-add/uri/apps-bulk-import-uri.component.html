@@ -1,6 +1,8 @@
 <app-page-head class="step2">
   <app-page-head-back [defaultUrl]="'/apps/add'" [isNotRegex]="'^(\/apps\/add\/)'"></app-page-head-back>
-  <app-page-head-title>Import Application(s) <strong>from URI</strong></app-page-head-title>
+  <app-page-head-title>
+    <strong>Bulk import application</strong> coordinates from an HTTP URI location
+  </app-page-head-title>
 </app-page-head>
 
 <div dataflowLayoutType type="large">
@@ -8,7 +10,8 @@
 
     <div class="dataflow-alert dataflow-alert-info">
       Provide a <strong>URI</strong> that points to the location of the <strong>properties file</strong>. <br>
-      This properties file is formatted as keys are the `type.name` and the values are the URIs of the apps.
+      This properties file is formatted so that the keys represent the <i>type</i>
+      and the <i>name</i> of the application, e.g. <strong>type.name</strong>. The property values are the URIs of the app.
     </div>
 
 

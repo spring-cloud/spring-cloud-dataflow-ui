@@ -20,7 +20,7 @@ import { SharedAboutService } from '../../../shared/services/shared-about.servic
 import { RolesDirective } from '../../../auth/directives/roles.directive';
 import { AuthService } from '../../../auth/auth.service';
 import { MockModalService } from '../../../tests/mocks/modal';
-import { BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { ToolsService } from '../../components/flo/tools.service';
@@ -33,10 +33,8 @@ import { SortComponent } from '../../../shared/components/sort/sort.component';
 import { MasterCheckboxComponent } from '../../../shared/components/master-checkbox.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { TaskSchedulesDestroyComponent } from '../../task-schedules-destroy/task-schedules-destroy.component';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
-import { Observable } from 'rxjs/Rx';
 
 /**
  * Test {@link TaskDefinitionScheduleComponent}.

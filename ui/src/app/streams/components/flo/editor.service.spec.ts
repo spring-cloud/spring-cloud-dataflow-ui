@@ -11,7 +11,7 @@ import { EditorService } from './editor.service';
 import {MockSharedAppService} from '../../../tests/mocks/shared-app';
 import { LoggerService } from '../../../shared/services/logger.service';
 
-import * as _$ from "jquery";
+import * as _$ from 'jquery';
 
 const $: any = _$;
 

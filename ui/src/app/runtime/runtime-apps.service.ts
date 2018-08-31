@@ -19,7 +19,7 @@ export class RuntimeAppsService {
 
   /**
    * URL API fo runtime Services
-   */ 
+   */
   private runtimeServiceURL = '/runtime/apps';
 
   /**

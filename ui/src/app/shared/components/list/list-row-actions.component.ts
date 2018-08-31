@@ -35,7 +35,7 @@ import {
     </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListRowActionsComponent implements OnChanges {
+export class ListRowActionsComponent implements OnInit {
 
   /**
    * Item
@@ -64,9 +64,9 @@ export class ListRowActionsComponent implements OnChanges {
   private actionsDefault = [];
 
   /**
-   * On Change
+   * On Init
    */
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnInit() {
     const actions = this.actions.filter(item => !item['divider'] && !item['hidden']);
     this.actionsDefault = this.actions.filter(item => !!item['isDefault']);
     if (this.actionsDefault.length !== actions.length) {

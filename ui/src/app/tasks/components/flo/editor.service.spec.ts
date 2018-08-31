@@ -8,7 +8,7 @@ import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { LoggerService } from '../../../shared/services/logger.service';
-import * as _$ from "jquery";
+import * as _$ from 'jquery';
 
 const $: any = _$;
 const joint: any = _joint;

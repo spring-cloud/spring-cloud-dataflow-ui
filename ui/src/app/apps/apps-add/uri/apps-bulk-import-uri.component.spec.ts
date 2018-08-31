@@ -124,7 +124,7 @@ describe('AppsBulkImportUriComponent', () => {
 
       fixture.whenStable().then(() => {
         expect((<any>router.navigateByUrl).calls.mostRecent().args[0].toString()).toBe('/apps');
-      })
+      });
 
     });
   });

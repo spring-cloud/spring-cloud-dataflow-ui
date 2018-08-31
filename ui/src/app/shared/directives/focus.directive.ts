@@ -15,13 +15,13 @@ export class FocusDirective implements OnChanges {
    * App Focus
    * @type {boolean}
    */
-  @Input() dataflowFocus: boolean = false;
+  @Input() dataflowFocus = false;
 
   /**
    * Delay Focus
    * @type {number}
    */
-  @Input() focusDelay: number = 0;
+  @Input() focusDelay = 0;
 
   /**
    * Constructor

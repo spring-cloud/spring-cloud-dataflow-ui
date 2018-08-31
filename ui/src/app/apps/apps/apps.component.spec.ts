@@ -21,7 +21,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { APPS } from '../../tests/mocks/mock-data';
 import { DebugElement } from '@angular/core';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
-import { tick } from '@angular/core/testing';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { BusyService } from '../../shared/services/busy.service';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
@@ -32,7 +31,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppListBarComponent } from 'src/app/apps/components/app-list-bar/app-list-bar.component';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 
 describe('AppsComponent', () => {
 

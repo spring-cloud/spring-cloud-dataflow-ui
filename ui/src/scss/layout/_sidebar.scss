@@ -24,7 +24,6 @@ $sidebar-active: #00a79d;
   left: 0;
   font-size: 16px;
   z-index: 888;
-  border-right: 1px solid #dfe5e8;
   opacity: 1;
   @include transition(width .1s);
 
@@ -269,12 +268,10 @@ $sidebar-active: #00a79d;
     }
     .sidebar-quicksearch-result {
       position: fixed;
-      //display: none;
-      top: 0px;
       left: $sidebar-width;
+      top: 0;
       bottom: 0;
       background-color: white;
-      //border-right: 1px solid $highlight-background-color;
       width: 0;
       @include transition(width .1s);
       color: $navy-1;
@@ -294,9 +291,10 @@ $sidebar-active: #00a79d;
         h1 {
           font-size: 20px;
           border-bottom: 1px solid $highlight-background-color;
-          padding-bottom: 20px;
-          height: 41px;
+          padding: 2rem;
+          margin: -2rem -2rem;
           margin-bottom: 1rem;
+          background: $navy-11;
         }
       }
       .result-item {

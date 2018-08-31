@@ -160,10 +160,10 @@ export class ListBarComponent implements OnInit {
     if (!this.actions) {
       return false;
     }
-    if (this.actions.length == 0) {
+    if (this.actions.length === 0) {
       return false;
     }
-    if (this.actions.filter((ac) => !ac['hidden']).length == 0) {
+    if (this.actions.filter((ac) => !ac['hidden']).length === 0) {
       return false;
     }
     return true;
