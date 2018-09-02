@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDatepickerModule, BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import {
+  BsDatepickerModule, BsDropdownModule, BsModalService, ModalModule, PopoverModule,
+  TooltipModule
+} from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -74,6 +77,7 @@ describe('TaskScheduleComponent', () => {
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
         BsDatepickerModule.forRoot(),
+        TooltipModule.forRoot(),
         FormsModule,
         FloModule,
         ReactiveFormsModule,

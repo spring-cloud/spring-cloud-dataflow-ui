@@ -1,3 +1,5 @@
+
+
 .ng-busy {
   z-index: 9002;
 }
@@ -17,8 +19,8 @@
   right: 0;
   bottom: 0;
   z-index: 9001;
-  background: #fff;
-  opacity: .7;
+  background: rgba(255, 255, 255, .6);
+  opacity: 1;
 }
 .ng-busy-default-wrapper {
   text-align: center;
@@ -27,15 +29,10 @@
   position: relative;
   display: inline-block;
   z-index: 9003;
-  padding: 12px 14px;
-  border: 1px solid #d8d8d8;
-  border-top: 0;
-  border-radius: 4px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  background: #f8f8f8;
-  color: #333;
+  padding: 16px 20px;
+  border: 0 none;
+  background: rgba(35, 43, 47, .9);
+  color: #fff;
 }
 .ng-busy-default-text {
   display: inline-block;
@@ -47,8 +44,8 @@
 .ng-busy-default-spinner {
   position: relative;
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   vertical-align: middle;
 }
 .ng-busy-default-spinner div {
@@ -57,9 +54,8 @@
   top: 37%;
   width: 10%;
   height: 26%;
-  background: #666;
+  background: #fff;
   border-radius: 50px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
   opacity: 0;
   -webkit-animation: busy-spinner-anim 1s linear infinite;
   animation: busy-spinner-anim 1s linear infinite;

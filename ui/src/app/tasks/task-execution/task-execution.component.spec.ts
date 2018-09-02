@@ -19,7 +19,7 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 
 describe('TaskExecutionsDetailsComponent', () => {
   let component: TaskExecutionComponent;
@@ -76,6 +76,7 @@ describe('TaskExecutionsDetailsComponent', () => {
         ReactiveFormsModule,
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [

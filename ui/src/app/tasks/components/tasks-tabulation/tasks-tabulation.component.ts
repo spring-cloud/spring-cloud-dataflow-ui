@@ -10,6 +10,7 @@ import { TaskSchedule } from '../../model/task-schedule';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Router } from '@angular/router';
+import { AppsService } from '../../../apps/apps.service';
 
 /**
  * Component used to display the tabulation with counters.
@@ -27,19 +28,28 @@ export class TasksTabulationComponent implements OnInit {
 
   counters$: Observable<any>;
 
+
+  /**
+   * Apps State
+   */
+  appsState$: Observable<any>;
+
   /**
    * Constructor
    *
    * @param {TasksService} tasksService
    * @param {SharedAboutService} sharedAboutService
+   * @param appsService
    * @param {Router} router
    */
   constructor(private tasksService: TasksService,
               private sharedAboutService: SharedAboutService,
+              private appsService: AppsService,
               private router: Router) {
   }
 
   ngOnInit() {
+    this.appsState$ = this.appsService.appsState();
     this.refresh();
   }
 

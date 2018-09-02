@@ -23,6 +23,7 @@ import { AppError } from '../../shared/model/error.model';
 import { map } from 'rxjs/internal/operators';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-streams',
@@ -118,6 +119,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * Apps State
+   */
+  appsState$: Observable<any>;
+
+  /**
    * Initialize component
    *
    * @param {StreamsService} streamsService
@@ -191,6 +197,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         action: 'deploy',
         icon: 'play',
         title: 'Deploy stream',
+        isDefault: (item.status === 'undeployed'),
         hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
@@ -198,6 +205,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         action: 'undeploy',
         icon: 'pause',
         title: 'Undeploy stream',
+        isDefault: !(item.status === 'undeployed'),
         disabled: (item.status === 'undeployed'),
         hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
@@ -255,6 +263,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.form = { q: this.context.q, checkboxes: [], checkboxesExpand: [] };
     this.itemsSelected = this.context.itemsSelected || [];
     this.itemsExpanded = this.context.itemsExpanded || [];
+
+    this.appsState$ = this.appsService.appsState();
     this.refresh();
 
     this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
@@ -290,12 +300,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
       .pipe(
         mergeMap(
           val => this.appsService.getApps({
-            q: '',
-            type: null,
-            page: 0,
-            size: 1,
-            order: 'name',
-            sort: OrderParams.ASC
+            q: '', type: null, page: 0, size: 1, order: 'name', sort: OrderParams.ASC
           }).pipe(map((val2) => {
             return {
               streams: val,
@@ -608,8 +613,18 @@ export class StreamsComponent implements OnInit, OnDestroy {
       || item.status === 'incomplete';
   }
 
+  /**
+   * Navigate to the create stream
+   */
   createStream() {
     this.router.navigate(['/streams/create']);
+  }
+
+  /**
+   * Navigate to the register app
+   */
+  registerApps() {
+    this.router.navigate(['/apps/add']);
   }
 
 }

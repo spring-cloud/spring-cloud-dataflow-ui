@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FloModule } from 'spring-flo';
-import { ModalModule, BsModalService, BsDropdownModule } from 'ngx-bootstrap';
+import { ModalModule, BsModalService, BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { MetamodelService } from '../components/flo/metamodel.service';
 import { RenderService } from '../components/flo/render.service';
 import { EditorService } from '../components/flo/editor.service';
@@ -55,6 +55,7 @@ describe('TaskCreateComposedTaskComponent', () => {
         FormsModule,
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([]),
         ModalModule,
         FloModule,

@@ -18,7 +18,7 @@ import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('AboutComponent', () => {
@@ -38,6 +38,7 @@ describe('AboutComponent', () => {
         ClipboardModule,
         BsDropdownModule.forRoot(),
         ReactiveFormsModule,
+        TooltipModule.forRoot(),
         FormsModule,
         NgxPaginationModule,
       ],

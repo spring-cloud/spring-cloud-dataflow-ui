@@ -64,9 +64,15 @@
 
     <app-list-empty [page]="taskDefinitions" [filters]="[params.q]">
       <p>There is <strong>no registered task</strong>, yet.</p>
-      <p [appRoles]="['ROLE_CREATE']">
-        You can <a (click)="createTask()">Create Task(s)</a> or <a (click)="refresh()">Refresh</a> the page
-      </p>
+      <div *ngIf="appsState$ | async as appsState">
+        <p *ngIf="appsState.tasks > 0" [appRoles]="['ROLE_CREATE']">
+          You can <a (click)="createTask()">Create Task(s)</a> or <a (click)="refresh()">Refresh</a> the page
+        </p>
+        <p *ngIf="appsState.tasks == 0" [appRoles]="['ROLE_CREATE']">
+          To create task(s), you have to <a (click)="registerApps()">register Apps</a> first.<br />
+          You can <a (click)="refresh()">Refresh</a> the page.
+        </p>
+      </div>
     </app-list-empty>
 
     <app-list-no-result [page]="taskDefinitions" [filters]="[params.q]">

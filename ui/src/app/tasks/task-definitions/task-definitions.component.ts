@@ -20,6 +20,8 @@ import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
+import { AppsService } from '../../apps/apps.service';
+import { Observable } from 'rxjs/Rx';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -94,10 +96,16 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * Apps State
+   */
+  appsState$: Observable<any>;
+
+  /**
    * Constructor
    *
    * @param {TasksService} tasksService
    * @param {BsModalService} modalService
+   * @param {AppsService} appsService
    * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {GroupRouteService} groupRouteService
@@ -108,6 +116,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   constructor(public tasksService: TasksService,
               private modalService: BsModalService,
+              private appsService: AppsService,
               private busyService: BusyService,
               private loggerService: LoggerService,
               private groupRouteService: GroupRouteService,
@@ -163,6 +172,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         icon: 'play',
         action: 'launch',
         title: 'Launch task',
+        isDefault: true,
         hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       },
       {
@@ -239,6 +249,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.form = { q: this.context.q, checkboxes: [] };
     this.itemsSelected = this.context.itemsSelected || [];
 
+    this.appsState$ = this.appsService.appsState();
     this.sharedAboutService.getFeatureInfo()
       .subscribe((featureInfo: FeatureInfo) => {
         this.schedulerEnabled = !!featureInfo.schedulerEnabled;
@@ -475,6 +486,13 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   createTask() {
     this.router.navigate([`tasks/create`]);
+  }
+
+  /**
+   * Navigate to the register app
+   */
+  registerApps() {
+    this.router.navigate(['/apps/add']);
   }
 
 }

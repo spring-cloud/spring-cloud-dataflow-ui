@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { TASK_EXECUTIONS } from '../../tests/mocks/mock-data';
@@ -34,6 +34,8 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { AppsService } from '../../apps/apps.service';
+import { MockAppsService } from '../../tests/mocks/apps';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -50,6 +52,7 @@ describe('TaskExecutionsComponent', () => {
   const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
+  const appsService = new MockAppsService();
 
   beforeEach(async(() => {
 
@@ -77,6 +80,7 @@ describe('TaskExecutionsComponent', () => {
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         FormsModule,
         FloModule,
         ReactiveFormsModule,
@@ -88,6 +92,7 @@ describe('TaskExecutionsComponent', () => {
         { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: BsModalService, useValue: modalService },
+        { provide: AppsService, useValue: appsService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
       ]

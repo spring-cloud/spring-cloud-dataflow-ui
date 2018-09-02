@@ -11,7 +11,7 @@
     <textarea dataflowAutoResize autofocus formControlName="input"></textarea>
   </div>
   <div class="input-file">
-    <label class="btn-file btn btn-default" placement="top"
+    <label class="btn-file btn btn-default" placement="top" delay="500"
            tooltip="Please provide a text file containing properties. This will be used to populate the text area above.">
       <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
              (change)="fileChange($event)"/>

@@ -7,41 +7,36 @@
 
 <div dataflowLayoutType type="large">
   <form [formGroup]="form" role="form" (ngSubmit)="submit()" novalidate>
-
-    <div class="dataflow-alert dataflow-alert-info">
-      Provide a <strong>URI</strong> that points to the location of the <strong>properties file</strong>. <br>
-      This properties file is formatted so that the keys represent the <i>type</i>
-      and the <i>name</i> of the application, e.g. <strong>type.name</strong>. The property values are the URIs of the app.
-    </div>
-
-
-    <div class="form-group" [class.has-error]="form.get('uri').invalid && submitted">
-      <label for="uriInput" class="control-label">URI: <em class="required">*</em></label>
-      <input type="text" id="uriInput" name="uri" autofocus formControlName="uri" class="form-control"
-             placeholder="http://url.to.properties"
-             [dataflowFocus]="true">
-      <span class="help-block" *ngIf="form.get('uri').invalid && submitted">
+    <div dataflowLayoutType type="medium">
+      <div class="dataflow-alert dataflow-alert-info">
+        Provide a <strong>URI</strong> that points to the location of the <strong>properties file</strong>. <br>
+        This properties file is formatted so that the keys represent the <i>type</i>
+        and the <i>name</i> of the application, e.g. <strong>type.name</strong>. The property values are the URIs of the
+        app.
+      </div>
+      <div class="form-group" [class.has-error]="form.get('uri').invalid && submitted">
+        <label for="uriInput" class="control-label">URI: <em class="required">*</em></label>
+        <input type="text" id="uriInput" name="uri" autofocus formControlName="uri" class="form-control"
+               placeholder="http://url.to.properties"
+               [dataflowFocus]="true">
+        <span class="help-block" *ngIf="form.get('uri').invalid && submitted">
           Please provide a valid URI pointing to the respective properties file.
         </span>
-      <span class="help-block">e.g. http://bit.ly/Celsius-BUILD-SNAPSHOT-stream-applications-kafka-10-maven</span>
-    </div>
-
-
-    <div class="form-group">
-      <label class="checkbox-inline">
-        <input formControlName="force" id="forceInput" name="force" type="checkbox"/>
-        Force<span class="checkbox-description">, the applications will be imported and installed
+        <span class="help-block">e.g. http://bit.ly/Celsius-BUILD-SNAPSHOT-stream-applications-kafka-10-maven</span>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-inline">
+          <input formControlName="force" id="forceInput" name="force" type="checkbox"/>
+          Force<span class="checkbox-description">, the applications will be imported and installed
         even if it already exists but only if not being used already.</span>
-      </label>
+        </label>
+      </div>
     </div>
-
     <app-page-actions id="footer-actions">
       <button name="cancel" type="button" class="btn btn-default" routerLink="/apps">Cancel</button>
       <button name="submit" type="submit" class="btn btn-primary">
         Import the application(s)
       </button>
     </app-page-actions>
-
   </form>
-
 </div>

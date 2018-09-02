@@ -1,6 +1,5 @@
 <app-page *ngIf="taskDefinition$ | async as taskDefinition; else loading">
 
-
   <app-page-head>
     <app-page-head-back [defaultUrl]="'/tasks/definitions/' + taskDefinition.name"></app-page-head-back>
     <app-page-head-title>Launch task <strong>{{ taskDefinition.name }}</strong></app-page-head-title>
@@ -10,101 +9,105 @@
     Optionally, you can add properties and arguments.</p>
 
   <form [formGroup]="form" class="form-horizontal" role="form" (ngSubmit)="submit(taskDefinition.name)" novalidate>
-    <div class="builder">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="col-1-layout" formArrayName="args">
-            <h2>Task Arguments</h2>
-            <p>You can add optional task arguments before launching the task.</p>
-            <table class="table table-actions table-form">
-              <thead>
-              <tr>
-                <th>Key</th>
-                <th>Value</th>
-                <th>&nbsp;</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let f of form.get('args').controls;let i = index"
-                  [formGroupName]="i">
-                <td>
-                  <div [class.has-error]="form.get('args.' + i).invalid">
-                    <input formControlName="key" type="text" class="form-control"/>
-                    <div *ngIf="form.get('args.' + i + '.key').invalid"
-                         class="help-block">Invalid key
+
+    <div dataflowLayoutType type="large">
+      <div class="builder">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="col-1-layout" formArrayName="args">
+              <h2>Task Arguments</h2>
+              <p>You can add optional task arguments before launching the task.</p>
+              <table class="table table-actions table-form">
+                <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                  <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let f of form.get('args').controls;let i = index"
+                    [formGroupName]="i">
+                  <td>
+                    <div [class.has-error]="form.get('args.' + i).invalid">
+                      <input formControlName="key" type="text" class="form-control"/>
+                      <div *ngIf="form.get('args.' + i + '.key').invalid"
+                           class="help-block">Invalid key
+                      </div>
+                      <div *ngIf="form.get('args.' + i).invalid" class="help-block">
+                        Invalid key
+                      </div>
                     </div>
-                    <div *ngIf="form.get('args.' + i).invalid" class="help-block">
-                      Invalid key
+                  </td>
+                  <td>
+                    <div [class.has-error]="form.get('args.' + i).invalid">
+                      <input formControlName="val" type="text" class="form-control"/>
+                      <div *ngIf="form.get('args.' + i + '.val').invalid"
+                           class="help-block">Invalid value
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <div [class.has-error]="form.get('args.' + i).invalid">
-                    <input formControlName="val" type="text" class="form-control"/>
-                    <div *ngIf="form.get('args.' + i + '.val').invalid"
-                         class="help-block">Invalid value
+                  </td>
+                  <td class="table-actions" width="10px" nowrap="">
+                    <div class="actions-btn" role="group">
+                      <button [disabled]="form.get('args').controls.length == (i+1)" type="button"
+                              class="btn btn-danger"
+                              (click)="form.get('args').removeAt(i)">
+                        <span class="fa fa-times" style="margin-top: 2px"></span>
+                      </button>
                     </div>
-                  </div>
-                </td>
-                <td class="table-actions" width="10px" nowrap="">
-                  <div class="actions-btn" role="group">
-                    <button [disabled]="form.get('args').controls.length == (i+1)" type="button" class="btn btn-danger"
-                            (click)="form.get('args').removeAt(i)">
-                      <span class="fa fa-times" style="margin-top: 2px"></span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="col-md-12">
-          <div class="col-2-layout" formArrayName="params">
-            <h2>Task Properties</h2>
-            <p>You can add optional task properties before launching the task.</p>
-            <table class="table table-actions table-form">
-              <thead>
-              <tr>
-                <th>Key</th>
-                <th>Value</th>
-                <th>&nbsp;</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let f of form.get('params').controls;let i = index"
-                  [formGroupName]="i">
-                <td>
-                  <div [class.has-error]="form.get('params.' + i).invalid">
-                    <input formControlName="key" type="text" class="form-control"/>
-                    <div *ngIf="form.get('params.' + i + '.key').invalid"
-                         class="help-block">Invalid key
+          <div class="col-md-12">
+            <div class="col-2-layout" formArrayName="params">
+              <h2>Task Properties</h2>
+              <p>You can add optional task properties before launching the task.</p>
+              <table class="table table-actions table-form">
+                <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                  <th>&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let f of form.get('params').controls;let i = index"
+                    [formGroupName]="i">
+                  <td>
+                    <div [class.has-error]="form.get('params.' + i).invalid">
+                      <input formControlName="key" type="text" class="form-control"/>
+                      <div *ngIf="form.get('params.' + i + '.key').invalid"
+                           class="help-block">Invalid key
+                      </div>
+                      <div *ngIf="form.get('params.' + i).invalid" class="help-block">
+                        Invalid key
+                      </div>
                     </div>
-                    <div *ngIf="form.get('params.' + i).invalid" class="help-block">
-                      Invalid key
+                  </td>
+                  <td>
+                    <div [class.has-error]="form.get('params.' + i).invalid">
+                      <input formControlName="val" type="text" class="form-control"/>
+                      <div *ngIf="form.get('params.' + i + '.val').invalid"
+                           class="help-block">Invalid value
+                      </div>
                     </div>
-                  </div>
-                </td>
-                <td>
-                  <div [class.has-error]="form.get('params.' + i).invalid">
-                    <input formControlName="val" type="text" class="form-control"/>
-                    <div *ngIf="form.get('params.' + i + '.val').invalid"
-                         class="help-block">Invalid value
+                  </td>
+                  <td class="table-actions" width="10px" nowrap="">
+                    <div class="actions-btn" role="group">
+                      <button [disabled]="form.get('params').controls.length == (i + 1)" type="button"
+                              class="btn btn-danger"
+                              (click)="form.get('params').removeAt(i)">
+                        <span class="fa fa-times" style="margin-top: 2px"></span>
+                      </button>
                     </div>
-                  </div>
-                </td>
-                <td class="table-actions" width="10px" nowrap="">
-                  <div class="actions-btn" role="group">
-                    <button [disabled]="form.get('params').controls.length == (i + 1)" type="button"
-                            class="btn btn-danger"
-                            (click)="form.get('params').removeAt(i)">
-                      <span class="fa fa-times" style="margin-top: 2px"></span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,6 +37,8 @@ import { TaskSchedulesFilterPipe } from './task-schedules.filter';
 import { Observable } from 'rxjs';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { AppsService } from '../../apps/apps.service';
 
 /**
  * Test {@link TaskSchedulesComponent}.
@@ -53,6 +55,7 @@ describe('TaskSchedulesComponent', () => {
   const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
+  const appsService = new MockAppsService();
   let modalService;
 
   beforeEach(async(() => {
@@ -83,6 +86,7 @@ describe('TaskSchedulesComponent', () => {
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         FormsModule,
         FloModule,
         ReactiveFormsModule,
@@ -92,6 +96,7 @@ describe('TaskSchedulesComponent', () => {
         BsModalService,
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
+        { provide: AppsService, useValue: appsService },
         { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: NotificationService, useValue: notificationService },

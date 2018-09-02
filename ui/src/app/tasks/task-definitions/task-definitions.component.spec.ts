@@ -1,6 +1,6 @@
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, BsModalRef } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, BsModalRef, TooltipModule } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { TASK_DEFINITIONS, TASK_SCHEDULES } from '../../tests/mocks/mock-data';
@@ -36,6 +36,8 @@ import { Observable } from 'rxjs';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { AppsService } from '../../apps/apps.service';
 
 /**
  * Test {@link TaskDefinitionsComponent}.
@@ -47,6 +49,7 @@ describe('TaskDefinitionsComponent', () => {
   let component: TaskDefinitionsComponent;
   let fixture: ComponentFixture<TaskDefinitionsComponent>;
   const notificationService = new MockNotificationService();
+  const appsService = new MockAppsService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
   let modalService;
@@ -81,6 +84,7 @@ describe('TaskDefinitionsComponent', () => {
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         FormsModule,
         FloModule,
         ReactiveFormsModule,
@@ -89,6 +93,7 @@ describe('TaskDefinitionsComponent', () => {
       providers: [
         BsModalService,
         { provide: SharedAboutService, useValue: aboutService },
+        { provide: AppsService, useValue: appsService },
         { provide: AuthService, useValue: authService },
         { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },

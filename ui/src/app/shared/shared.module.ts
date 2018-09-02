@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, Inject, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -55,13 +55,14 @@ import { DATAFLOW_LIST } from './components/list/list.component';
 import { FocusDirective } from './directives/focus.directive';
 
 const busyConfig: BusyConfig = {
-  message: 'Processing..',
+  message: 'Processing...',
   delay: 0,
-  template: BUSY_CONFIG_DEFAULTS.template,
-  minDuration: 1000,
+  minDuration: 0,
   backdrop: true,
+  template: BUSY_CONFIG_DEFAULTS.template,
   wrapperClass: BUSY_CONFIG_DEFAULTS.wrapperClass
 };
+
 
 /**
  * This module contains/declares all application-wide shared functionality.

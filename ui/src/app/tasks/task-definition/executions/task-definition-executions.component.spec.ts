@@ -20,7 +20,7 @@ import { SharedAboutService } from '../../../shared/services/shared-about.servic
 import { RolesDirective } from '../../../auth/directives/roles.directive';
 import { AuthService } from '../../../auth/auth.service';
 import { MockModalService } from '../../../tests/mocks/modal';
-import { BsDropdownModule, BsModalService } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, TooltipModule } from 'ngx-bootstrap';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { ToolsService } from '../../components/flo/tools.service';
@@ -78,6 +78,7 @@ describe('TaskDefinitionExecutionsComponent', () => {
         NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
+        TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [

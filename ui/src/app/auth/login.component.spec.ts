@@ -19,7 +19,7 @@ import { NotificationService } from '../shared/services/notification.service';
 import { LoggerService } from '../shared/services/logger.service';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FocusDirective } from '../shared/directives/focus.directive';
 import { PagerComponent } from '../shared/components/pager/pager.component';
@@ -42,6 +42,7 @@ describe('LoginComponent', () => {
         FormsModule,
         RouterTestingModule.withRoutes([]),
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         NgxPaginationModule
       ],
       declarations: [

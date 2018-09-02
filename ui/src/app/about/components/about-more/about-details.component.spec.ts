@@ -13,7 +13,7 @@ import { MapValuesPipe } from '../../../shared/pipes/map-values-pipe.pipe';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { LoggerService } from '../../../shared/services/logger.service';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DATAFLOW_PAGE } from '../../../shared/components/page/page.component';
@@ -40,6 +40,7 @@ describe('AboutDetailsComponent', () => {
         ClipboardModule,
         BsDropdownModule.forRoot(),
         ReactiveFormsModule,
+        TooltipModule.forRoot(),
         FormsModule,
         NgxPaginationModule
       ],

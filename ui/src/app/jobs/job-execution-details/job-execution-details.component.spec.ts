@@ -21,7 +21,7 @@ import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('JobExecutionDetailsComponent', () => {
@@ -53,6 +53,7 @@ describe('JobExecutionDetailsComponent', () => {
         FormsModule,
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [

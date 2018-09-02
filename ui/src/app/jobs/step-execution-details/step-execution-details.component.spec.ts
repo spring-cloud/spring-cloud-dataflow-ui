@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BsDropdownModule, ProgressbarModule } from 'ngx-bootstrap';
+import { BsDropdownModule, ProgressbarModule, TooltipModule } from 'ngx-bootstrap';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { JobsService } from '../jobs.service';
@@ -57,7 +57,8 @@ describe('StepExecutionDetailsComponent', () => {
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
         RouterTestingModule.withRoutes([]),
-        ProgressbarModule.forRoot()
+        ProgressbarModule.forRoot(),
+        TooltipModule.forRoot()
       ],
       providers: [
         { provide: JobsService, useValue: jobsService },

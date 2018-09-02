@@ -11,7 +11,7 @@ import { EditorService } from '../components/flo/editor.service';
 import { RenderService } from '../components/flo/render.service';
 import { ActivatedRoute } from '@angular/router';
 import { FloModule } from 'spring-flo';
-import { ModalModule, BsModalService, BsDropdownModule } from 'ngx-bootstrap';
+import { ModalModule, BsModalService, BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { ContentAssistService } from '../components/flo/content-assist.service';
 import { ParserService } from '../../shared/services/parser.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
@@ -68,6 +68,7 @@ describe('StreamCreateComponent', () => {
         ModalModule,
         FloModule,
         NgBusyModule,
+        TooltipModule.forRoot(),
         NoopAnimationsModule
       ],
       providers: [

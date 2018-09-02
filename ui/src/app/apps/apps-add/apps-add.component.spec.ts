@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BsModalRef, ModalModule, PopoverModule, BsDropdownModule } from 'ngx-bootstrap';
+import { BsModalRef, ModalModule, PopoverModule, BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { AppsService } from '../apps.service';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockAppsService } from '../../tests/mocks/apps';
@@ -43,6 +43,7 @@ describe('AppsAddComponent', () => {
         FormsModule,
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [

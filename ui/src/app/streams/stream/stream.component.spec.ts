@@ -22,7 +22,7 @@ import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
-import { BsDropdownModule, BsModalService } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, TooltipModule } from 'ngx-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { StreamStatusComponent } from '../components/stream-status/stream-status.component';
@@ -72,6 +72,7 @@ describe('StreamComponent', () => {
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
         RouterTestingModule.withRoutes([]),
+        TooltipModule.forRoot(),
         FloModule
       ],
       providers: [

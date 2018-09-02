@@ -4,7 +4,7 @@ $btn-default-color-focus: $navy-9;
 $btn-default-color-hover: $navy-9;
 $btn-light: $navy-1;
 
-.pui-btn, .btn {
+.btn {
   text-transform: none;
   letter-spacing: 0;
   height: 34px;
@@ -17,7 +17,7 @@ $btn-light: $navy-1;
 
 //Fa Button
 //---------------------------------------
-.pui-btn, .btn {
+.btn {
   &.btn-fa {
     position: relative;
     padding-left: 34px;
@@ -35,7 +35,7 @@ $btn-light: $navy-1;
 
 //Default Button
 //---------------------------------------
-.pui-btn.pui-btn-default, .btn.btn-default {
+.btn.btn-default {
   background-color: $btn-default-color;
   color: $btn-light;
   border-color: $btn-default-color;
@@ -56,17 +56,40 @@ $btn-light: $navy-1;
   }
 }
 
-.pui-btn.pui-btn-default:focus, .btn.btn-default:focus {
+.btn.btn-default:focus {
   background-color: $btn-default-color-focus;
   border-color: $btn-default-color-focus;
   outline: none;
 }
 
-.pui-btn.pui-btn-default:hover,
-.pui-btn.pui-btn-default:focus:hover,
 .btn.btn-default:hover,
 .btn.btn-default:focus:hover {
   background-color: $btn-default-color-hover;
   border-color: $btn-default-color-hover;
   outline: none;
+}
+
+.btn.btn-default:active,
+.btn.btn-default:focus:active {
+  box-shadow: none;
+  background-color: $navy-8;
+  border-color: $navy-8;
+  color: $navy-1;
+}
+
+
+.btn.btn-primary:active,
+.btn.btn-primary:focus:active {
+  box-shadow: none;
+  background-color: darken($brand-primary, 25%);
+  border-color: darken($brand-primary, 25%);
+  color: #FFF;
+}
+
+.btn.btn-danger:active,
+.btn.btn-danger:focus:active {
+  box-shadow: none;
+  background-color: darken(#B31B22, 15%);
+  border-color: darken(#B31B22, 15%);
+  color: #FFF;
 }

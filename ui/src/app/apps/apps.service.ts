@@ -1,18 +1,19 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/forkJoin';
-import {SharedAppsService} from '../shared/services/shared-apps.service';
-import {AppRegistration, ErrorHandler, Page, ApplicationType, DetailedAppRegistration} from '../shared/model';
-import {HttpUtils} from '../shared/support/http.utils';
-import {AppsWorkaroundService} from './apps.workaround.service';
-import {AppListParams, AppRegisterParams, BulkImportParams} from './components/apps.interface';
-import {AppVersion} from '../shared/model/app-version';
+import { SharedAppsService } from '../shared/services/shared-apps.service';
+import { AppRegistration, ErrorHandler, Page, ApplicationType, DetailedAppRegistration } from '../shared/model';
+import { HttpUtils } from '../shared/support/http.utils';
+import { AppsWorkaroundService } from './apps.workaround.service';
+import { AppListParams, AppRegisterParams, BulkImportParams } from './components/apps.interface';
+import { AppVersion } from '../shared/model/app-version';
 import { LoggerService } from '../shared/services/logger.service';
+import { OrderParams } from '../shared/components/shared.interface';
 
 /**
  * Service class for the Apps module.
@@ -104,7 +105,7 @@ export class AppsService {
    * @returns {Observable<any>}
    */
   setAppDefaultVersion(type: ApplicationType, name: string, version: string): Observable<void> {
-    this.loggerService.log('Set app default version...', {name: name, type: type, version: version});
+    this.loggerService.log('Set app default version...', { name: name, type: type, version: version });
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient.put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, {
       headers: httpHeaders
@@ -174,12 +175,12 @@ export class AppsService {
    * @returns {Observable<any>}
    */
   unregisterAppVersion(appRegistration: AppRegistration, version: string): Observable<any> {
-    this.loggerService.log('Unregistering app version...', {app: appRegistration, version: version});
+    this.loggerService.log('Unregistering app version...', { app: appRegistration, version: version });
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name
       + '/' + version, {
-        headers: httpHeaders
-      })
+      headers: httpHeaders
+    })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -223,6 +224,34 @@ export class AppsService {
       observables.push(this.registerApp(appReg));
     }
     return Observable.forkJoin(observables);
+  }
+
+
+  appsState(): Observable<any> {
+    const apps$: Observable<Page<AppRegistration>> = this.getApps({
+      q: '',
+      type: null,
+      page: 0, size: 1,
+      order: 'name',
+      sort: OrderParams.ASC
+    });
+    const appsForTask$: Observable<Page<AppRegistration>> = this.getApps({
+      q: '',
+      type: (ApplicationType[ApplicationType.task] as any),
+      page: 0,
+      size: 1,
+      order: 'name',
+      sort: OrderParams.ASC
+    });
+    return Observable.forkJoin(apps$, appsForTask$)
+      .map(obs => {
+        const apps = obs[0].totalElements;
+        const apssForTask = obs[1].totalElements;
+        return {
+          streams: apps - apssForTask,
+          tasks: apssForTask
+        };
+      });
   }
 
 }

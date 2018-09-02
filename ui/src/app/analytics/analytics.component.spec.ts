@@ -9,7 +9,7 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from '../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 
 describe('AnalyticsComponent', () => {
   let component: AnalyticsComponent;
@@ -30,6 +30,7 @@ describe('AnalyticsComponent', () => {
         NgxPaginationModule,
         ReactiveFormsModule,
         FormsModule,
+        TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [

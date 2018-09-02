@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ModalModule, BsModalService, BsModalRef, BsDropdownModule } from 'ngx-bootstrap';
+import { ModalModule, BsModalService, BsModalRef, BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { RuntimeAppsComponent } from './runtime-apps.component';
@@ -43,6 +43,7 @@ describe('RuntimeAppsComponent', () => {
         NgBusyModule,
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         ModalModule.forRoot()
       ],
       providers: [

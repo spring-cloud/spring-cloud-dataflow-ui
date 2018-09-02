@@ -3,10 +3,12 @@
   <app-page-head>
     <app-page-head-title><strong>Streams</strong></app-page-head-title>
     <app-page-head-actions [appRoles]="['ROLE_CREATE']">
-      <button class="btn btn-primary btn-fa" (click)="createStream()">
-        <span class="fa fa-plus"></span>
-        Create stream(s)
-      </button>
+      <ng-container *ngIf="appsState$ | async as appsState;">
+        <button class="btn btn-primary btn-fa" (click)="createStream()" *ngIf="appsState.streams > 0">
+          <span class="fa fa-plus"></span>
+          Create stream(s)
+        </button>
+      </ng-container>
     </app-page-head-actions>
   </app-page-head>
 
@@ -50,8 +52,9 @@
         </th>
         <th nowrap="" style="width: 120px">
           Status
-          <a #childPopover="bs-popover" [popover]="popTemplate" placement="bottom" [outsideClick]="true"
-             title="Available Deployment Statuses"><span class="fa fa-question-circle"></span></a>
+          <a #childPopover="bs-popover" [popover]="popTemplate" placement="left" [outsideClick]="true"
+             title="Available Deployment Statuses" style="cursor: pointer">
+            <span class="fa fa-question-circle"></span></a>
         </th>
         <th>&nbsp;</th>
       </tr>
@@ -69,14 +72,17 @@
           </td>
           <td>
             <a (click)="toggleExpand(i)" class="link-expand">
-              <span *ngIf="form.checkboxesExpand[i]" class="fa fa-chevron-down"></span>
-              <span *ngIf="!form.checkboxesExpand[i]" class="fa fa-chevron-right"></span>
+              <span *ngIf="form.checkboxesExpand[i]" class="fa fa-chevron-down" tooltip="Hide graph" delay="500"></span>
+              <span *ngIf="!form.checkboxesExpand[i]" class="fa fa-chevron-right" tooltip="Show graph"
+                    delay="500"></span>
               <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
             </a>
           </td>
           <td *ngIf="canShowDeploymentInfo(item); else deployment_status_only_content">
-            <a href="" (click)="false" [popover]="stream_info" placement="bottom" triggers="focus"
+            <a href="" class="stream-info-toggle" (click)="false" [popover]="stream_info" placement="left"
+               triggers="focus"
                containerClass="deployment-info-popup">
+              <span class="ico fa fa-info-circle"></span>
               <app-stream-status [streamDefinition]="item"></app-stream-status>
             </a>
           </td>
@@ -110,9 +116,15 @@
 
     <app-list-empty [page]="streamDefinitions" [filters]="[params.q]">
       <p>There is <strong>no stream register</strong>.</p>
-      <p [appRoles]="['ROLE_CREATE']">
-        You can <a (click)="createStream()">Create Streams(s)</a> or <a (click)="refresh()">Refresh</a> the page
-      </p>
+      <div *ngIf="appsState$ | async as appsState">
+        <p *ngIf="appsState.streams > 0" [appRoles]="['ROLE_CREATE']">
+          You can <a (click)="createStream()">Create Streams(s)</a> or <a (click)="refresh()">Refresh</a> the page
+        </p>
+        <p *ngIf="appsState.streams == 0" [appRoles]="['ROLE_CREATE']">
+          To create stream(s), you have to <a (click)="registerApps()">register Apps</a> first.<br/>
+          You can <a (click)="refresh()">Refresh</a> the page.
+        </p>
+      </div>
     </app-list-empty>
 
     <app-list-no-result [page]="streamDefinitions" [filters]="[params.q]">

@@ -225,6 +225,9 @@ app-list-row-actions {
     span.fa-ellipsis-h {
       margin-top: 6px;
     }
+    span.fa-pause, span.fa-play {
+      font-size: 16px;
+    }
   }
   .btn-group {
     display: inline-block;
@@ -286,6 +289,9 @@ app-list-row-actions {
         &:hover {
           color: $navy-1;
         }
+      }
+      .label {
+        padding: .1rem .6rem .2rem;
       }
       &.active {
         a, a:active, a:hover {
