@@ -7,6 +7,8 @@ import { MockTasksService } from '../../../tests/mocks/tasks';
 import { TaskDefinitionCreateDialogComponent } from './create-dialog.component';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
+import { StreamDslComponent } from '../../../shared/components/dsl/dsl.component';
+import { FocusDirective } from '../../../shared/directives/focus.directive';
 
 describe('TaskDefinitionCreateDialogComponent', () => {
   let component: TaskDefinitionCreateDialogComponent;
@@ -19,7 +21,9 @@ describe('TaskDefinitionCreateDialogComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TaskDefinitionCreateDialogComponent
+        TaskDefinitionCreateDialogComponent,
+        StreamDslComponent,
+        FocusDirective
       ],
       imports: [
         FormsModule,

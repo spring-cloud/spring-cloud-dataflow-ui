@@ -1,0 +1,44 @@
+<app-page>
+
+  <div *ngIf="!isSmallDisplay || radio === '/apps/add'">
+    <app-page-head>
+      <app-page-head-back [defaultUrl]="'/apps'" [isNotRegex]="'^(\/apps\/)'"></app-page-head-back>
+      <app-page-head-title><strong>Add Application(s)</strong></app-page-head-title>
+    </app-page-head>
+    <div class="page-step page-step-1">
+      <div class="page-step-content">
+        <p style="margin-bottom:0">
+          You can <strong>Import</strong> or <strong>register applications</strong> your application(s).
+        </p>
+      </div>
+      <ul class="step">
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="register">
+            <input type="radio" [(ngModel)]="radio" value="/apps/add/register"/>
+            <strong>Register one or more applications</strong> coordinates by entering a Name, Type and URI of the
+            application.
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="import-from-uri">
+            <input type="radio" [(ngModel)]="radio" value="/apps/add/import-from-uri"/>
+            <strong>Bulk import application</strong> coordinates from an HTTP URI location.
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="import-from-properties">
+            <input type="radio" [(ngModel)]="radio" value="/apps/add/import-from-properties"/>
+            <strong>Bulk import application</strong> coordinates from a properties file.
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div [class.page-step]="!isSmallDisplay" [class.page-step-2]="!isSmallDisplay">
+    <div class="page-step-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</app-page>

@@ -100,22 +100,26 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
    * actions, i.e. clearing a flo graph.
    */
   handleCreate() {
-    this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl })
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(
-        () => {
-          this.loggerService.log('Succesfully created task', this.taskName.value, this.dsl);
-          if (this.successCallback) {
-            this.successCallback();
+    if (!this.form.valid) {
+      this.notificationService.error('Some field(s) are missing or invalid.');
+    } else {
+      this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl })
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
+          () => {
+            this.loggerService.log('Succesfully created task', this.taskName.value, this.dsl);
+            if (this.successCallback) {
+              this.successCallback();
+            }
+            this.bsModalRef.hide();
+            this.notificationService.success('Composed task created for ' + this.taskName.value);
+          },
+          (error) => {
+            this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+            this.bsModalRef.hide();
           }
-          this.bsModalRef.hide();
-          this.notificationService.success('Composed task created for ' + this.taskName.value);
-        },
-        (error) => {
-          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-          this.bsModalRef.hide();
-        }
-      );
+        );
+    }
   }
 
   /**

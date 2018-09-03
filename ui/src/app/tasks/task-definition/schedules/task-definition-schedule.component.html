@@ -1,39 +1,12 @@
-<div *ngIf="schedules$ | async as schedules; else loading">
+<div *ngIf="schedules$ | async as schedules; else loading" dataflowLayoutType type="full">
+
   <div id="schedules-list">
-    <div id="filters" class="pui-filter">
-      <div class="pui-filter-center">
-        <div style="height: 34px">
-          &nbsp;
-        </div>
-      </div>
-      <div class="pui-filter-actions">
-        <div class="pui-filter-left">
-          <div id="dropdown-actions" class="dropdown" *ngIf="countSelected() > 0" dropdown>
-            <button dropdownToggle type="button" class="btn btn-default btn-dropdown" data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-              <span *ngIf="countSelected() == 1">Action (1)</span>
-              <span *ngIf="countSelected() > 1">Actions ({{ countSelected() }})</span>
-              <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu">
-              <li>
-                <a id="destroy-schedules" style="cursor: pointer" (click)="destroySelectedSchedules(schedules.page)">
-                  <span *ngIf="countSelected() == 1">Destroy schedule</span>
-                  <span *ngIf="countSelected() > 1">Destroy schedules</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="pui-filter-right" style="text-align: right">
-          <button (click)="refresh(schedules.params)" name="app-refresh" type="button" class="btn btn-default btn-icon"
-                  title="Refresh">
-            <span class="glyphicon glyphicon-refresh"></span>
-          </button>
-        </div>
-      </div>
-    </div>
+
+    <app-list-bar [params]="schedules.params" [page]="schedules.page" [countSelected]="countSelected()" #listBar
+                  (refresh)="refresh(schedules.params)" [hideSearch]="true"
+                  [actions]="schedulesActions()" (action)="applyAction($event.action, schedules.page)">
+    </app-list-bar>
+
     <table *ngIf="schedules.page?.items && schedules.page.items.length > 0"
            class="table table-checkbox table-hover" id="taskSchedulesTable">
       <thead>
@@ -66,21 +39,22 @@
             {{ item.cronExpression }}
           </td>
           <td class="table-actions" width="50px" nowrap="">
-            <div class="actions" role="group">
-              <button type="button" name="schedule-destroy{{ i }}" (click)="destroySchedules([item])"
-                      class="btn btn-default" title="Destroy">
-                <span class="glyphicon glyphicon-trash"></span>
-              </button>
-              <button type="button" name="schedule-details{{ i }}" (click)="details(item)" class="btn btn-default"
-                      title="Details">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-            </div>
+            <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
+                                  [actions]="scheduleActions(item, i)"></app-list-row-actions>
           </td>
         </tr>
       </ng-container>
       </tbody>
     </table>
+
+    <app-list-empty [page]="schedules.page" [filters]="[]">
+      <p>There is <strong>no task schedule</strong>.</p>
+      <p [appRoles]="['ROLE_CREATE']">
+        You can <a (click)="refresh(schedules.params)">Refresh</a> the page
+      </p>
+    </app-list-empty>
+
+    <!--
     <div *ngIf="schedules.page" id="empty" style="padding-top:1.5rem">
       <div *ngIf="isSchedulesEmpty(schedules.page)" class="text-center">
         <div class="alert alert-warning" style="display:inline-block;margin:0 auto">
@@ -88,6 +62,8 @@
         </div>
       </div>
     </div>
+    -->
+
   </div>
 </div>
 <ng-template #loading>

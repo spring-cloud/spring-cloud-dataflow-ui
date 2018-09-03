@@ -1,37 +1,45 @@
-<div>
+<app-page>
 
-  <div class="heading">
-    <div class="description">
-      <h1 class="no-user-selection">Create a stream</h1>
-      <p> Create a stream using text based input or the visual editor.</p>
-    </div>
-  </div>
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/streams/definitions'"></app-page-head-back>
+    <app-page-head-title><strong>Create a stream</strong></app-page-head-title>
+  </app-page-head>
 
-  <div id="flo-container" class="stream-editor">
+  <p>Create a stream using text based input or the visual editor.</p>
+
+  <div id="flo-container" class="stream-editor" dataflowLayoutType type="full">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="40"
+                [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="20"
                 (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
-
-      <button (click)="createStreamDefs()" class="btn btn-default" type="button" [disabled]="isCreateStreamsDisabled">Create Stream</button>
-      <button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>
-      <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
-      <button class="btn" (click)="editorContext.autolink = !editorContext.autolink"
-              [ngClass]="{'btn-default-alt': !editorContext.autolink, 'btn-default': editorContext.autolink}">Auto Link</button>
-      <button class="btn" (click)="gridOn = !gridOn"
-              [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid</button>
 
       <div class="flow-definition-container">
         <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
                     (focus)="editorContext.graphToTextSync=false" placeholder="Enter stream definition..."
                     [hintOptions]="hintOptions" [lintOptions]="lintOptions"></dsl-editor>
       </div>
+
+      <div class="flow-actions">
+        <button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>
+        <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
+        <button class="btn" (click)="editorContext.autolink = !editorContext.autolink"
+                [ngClass]="{'btn-default-alt': !editorContext.autolink, 'btn-default': editorContext.autolink}">Auto
+          Link
+        </button>
+        <button class="btn" (click)="gridOn = !gridOn"
+                [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid
+        </button>
+      </div>
+
     </flo-editor>
   </div>
 
-  <div class="footer-actions" style="text-align: center;padding:2rem 0 1rem 0">
+  <app-page-actions>
     <button id="back-button" type="button" class="btn btn-default" routerLink="/streams">
       Cancel
     </button>
-  </div>
+    <button (click)="createStreamDefs()" class="btn btn-primary" type="button">
+      Create Stream
+    </button>
+  </app-page-actions>
 
-</div>
+</app-page>

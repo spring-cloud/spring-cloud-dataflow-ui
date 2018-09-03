@@ -1,6 +1,6 @@
 <div *ngIf="task$ | async as task; else loading">
 
-  <div>
+  <div dataflowLayoutType type="large">
     <div class="row task-summary-row">
       <div class="col-md-3">
         <strong>Definition:</strong>
@@ -44,9 +44,9 @@
                 <app-type [application]="app"></app-type>
               </td>
               <td class="table-actions" width="10px" nowrap="">
-                <div class="actions" role="group">
+                <div class="actions-btn" role="group">
                   <a routerLink="/apps/{{ app.type }}/{{ app.origin }}" class="btn btn-default" title="Details">
-                    <span class="glyphicon glyphicon-search"></span>
+                    <span class="fa fa-ellipsis-h"></span>
                   </a>
                 </div>
               </td>

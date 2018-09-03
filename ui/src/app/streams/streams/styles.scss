@@ -14,38 +14,23 @@
   max-width: 500px;
 }
 
-table.status-help-content-table {
-  border: 0 none;
-  tr {
-    border-left: 0 none;
-    border-right: 0 none;
-    &:first-child {
-      border-top: 0 none;
-    }
-    &:last-child {
-      border-bottom: 0 none;
-    }
-  }
-}
-
-
 .link-expand {
   display: block;
   position: relative;
   padding-left: 25px;
   cursor: pointer;
-  .glyphicon {
+  .fa {
     position: absolute;
-    left: 6px;
-    top: 1px;
+    left: 4px;
+    top: 5px;
     color: #232b2f;
-    &.glyphicon-chevron-right {
-      left: 3px;
-      top: 0;
+    &.fa-chevron-right {
+      left: 6px;
+      top: 6px;
     }
   }
   &:hover {
-    .glyphicon {
+    .fa {
       color: #1B78B3;
     }
     text-decoration: none;
@@ -65,26 +50,103 @@ table.status-help-content-table {
       color: #232b2f;
       cursor: pointer;
       &:hover {
-        .glyphicon {
+        .fa {
           color: #1B78B3;
         }
       }
     }
-    .glyphicon-chevron-right {
+    .fa-chevron-right {
+      margin-top: 4px;
+      margin-left: 4px;
       display: block;
     }
-    .glyphicon-chevron-down {
+    .fa-chevron-down {
       display: none;
     }
     &.open {
-      .glyphicon-chevron-right {
+      .fa-chevron-right {
         display: none;
       }
-      .glyphicon-chevron-down {
+      .fa-chevron-down {
         margin-top: 1px;
         margin-left: 3px;
         display: block;
       }
     }
+  }
+}
+
+.popover {
+  border: 0 none;
+  box-shadow: none;
+  background-color: rgba(35, 43, 47, 0.9);
+  color: white;
+  font-size: 15px;
+  &.left {
+    margin-top: 8px;
+  }
+  &.left > .arrow {
+    box-shadow: none;
+    border: 0 none;
+    &:after {
+      border-left-color: rgba(35, 43, 47, 0.9);
+    }
+  }
+  &.bottom > .arrow {
+    box-shadow: none;
+    border: 0 none;
+    &:after {
+      border-bottom-color: rgba(35, 43, 47, 0.9);
+    }
+  }
+
+  table.status-help-content-table {
+    border: 0 none;
+    tr {
+      border-left: 0 none;
+      border-right: 0 none;
+      border-top: 1px solid rgba(255, 255, 255, .2);
+      &:first-child {
+        border-top: 0 none;
+      }
+      &:last-child {
+        border-bottom: 0 none;
+      }
+      td {
+        vertical-align: top;
+        padding: 12px 5px;
+      }
+    }
+  }
+  table.table {
+    background: transparent;
+    tbody {
+      tr, tr:nth-child(odd), tr:nth-child(even) {
+        background: transparent;
+        td {
+          border-color: rgba(255, 255, 255, .2);
+          background: transparent;
+          &.deployment-properties-key {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+a.stream-info-toggle {
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  .label-stream-status {
+    padding-left: 23px;
+  }
+  .ico {
+    position: absolute;
+    left: 6px;
+    top: 3px;
+    color: white;
   }
 }

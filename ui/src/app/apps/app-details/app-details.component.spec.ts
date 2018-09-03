@@ -29,6 +29,10 @@ import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { Observable } from 'rxjs';
+import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 
 /**
  * Test {@link AppDetailsComponent}.
@@ -64,13 +68,17 @@ describe('AppDetailsComponent', () => {
         AppVersionLabelComponent,
         SortComponent,
         OrderByPipe,
-        RolesDirective
+        RolesDirective,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        PagerComponent,
       ],
       imports: [
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
         TooltipModule.forRoot(),
         BsDropdownModule.forRoot(),
+        NgxPaginationModule,
         ReactiveFormsModule,
         FormsModule,
         RouterTestingModule.withRoutes([])
@@ -98,24 +106,6 @@ describe('AppDetailsComponent', () => {
     notificationService.clearAll();
     appsService.mock = Object.assign({}, sourceMock);
     modalService = TestBed.get(BsModalService);
-  });
-
-  describe('Application details', () => {
-
-    it('should be created', () => {
-      fixture.detectChanges();
-      expect(component).toBeTruthy();
-    });
-
-    it('Should cancel (footer close)', () => {
-      fixture.detectChanges();
-      const navigate = spyOn(routingStateService, 'back');
-      const bt: HTMLElement = fixture.debugElement.query(By.css('.footer-actions .btn-default')).nativeElement;
-      bt.click();
-      fixture.detectChanges();
-      expect(navigate).toHaveBeenCalled();
-    });
-
   });
 
   describe('Application properties without skipper enable', () => {

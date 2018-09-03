@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
 import { AnalyticsService } from '../analytics.service';
 import { LoggerService } from '../../shared/services/logger.service';
 

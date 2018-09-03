@@ -7,9 +7,8 @@ import { TasksService } from '../../tasks.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { TaskSchedule } from '../../model/task-schedule';
 import { TaskSchedulesDestroyComponent } from '../../task-schedules-destroy/task-schedules-destroy.component';
-import { OrderParams } from '../../../shared/components/shared.interface';
+import { ListDefaultParams, OrderParams } from '../../../shared/components/shared.interface';
 import { Page } from '../../../shared/model/page';
-import { TaskScheduleListParams } from '../../components/tasks.interface';
 import { Subject } from 'rxjs/Subject';
 
 /**
@@ -32,12 +31,12 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
   /**
    * Params Subject
    */
-  params$: Subject<TaskScheduleListParams>;
+  params$: Subject<ListDefaultParams>;
 
   /**
    * Last Params
    */
-  lastParams: TaskScheduleListParams;
+  lastParams: ListDefaultParams;
 
   /**
    * Current forms value
@@ -71,14 +70,14 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
               private loggerService: LoggerService,
               private modalService: BsModalService,
               private tasksService: TasksService) {
-    this.params$ = new Subject<TaskScheduleListParams>();
+    this.params$ = new Subject<ListDefaultParams>();
   }
 
   /**
    * Init component, call refresh method
    */
   ngOnInit() {
-    this.params$.subscribe((params: TaskScheduleListParams) => {
+    this.params$.subscribe((params: ListDefaultParams) => {
       this.schedules$ = this.tasksService.getSchedules(params)
         .pipe(map((page: Page<TaskSchedule>) => {
           this.form.checkboxes = page.items.map((schedule) => {
@@ -98,13 +97,72 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
 
     this.route.parent.params.subscribe((params: Params) => {
       this.refresh({
-        task: params.id,
+        q: params.id,
         sort: 'SCHEDULE_ID',
         order: OrderParams.ASC,
         page: 0,
         size: 100000
       });
     });
+  }
+
+  /**
+   * Schedules Actions
+   */
+  schedulesActions() {
+    return [
+      {
+        id: 'destroy-schedules',
+        icon: 'trash',
+        action: 'destroySelected',
+        title: 'Destroy schedule(s)'
+      },
+    ];
+  }
+
+  /**
+   * Schedule Actions
+   * @param {TaskSchedule} item
+   * @param {number} index
+   */
+  scheduleActions(item: TaskSchedule, index: number) {
+    return [
+      {
+        id: 'details-schedule' + index,
+        icon: 'info-circle',
+        action: 'details',
+        title: 'Show details',
+        isDefault: true
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'destroy-schedule' + index,
+        icon: 'trash',
+        action: 'destroy',
+        title: 'Delete schedule'
+      }
+    ];
+  }
+
+  /**
+   * Apply Action
+   * @param action
+   * @param args
+   */
+  applyAction(action: string, args?: any) {
+    switch (action) {
+      case 'details':
+        this.details(args);
+        break;
+      case 'destroy':
+        this.destroySchedules([args]);
+        break;
+      case 'destroySelected':
+        this.destroySelectedSchedules(args);
+        break;
+    }
   }
 
   /**
@@ -120,7 +178,7 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
    * Create an observable which provides the required data
    * @param {ScheduleExecutionListParams} params
    */
-  refresh(params: TaskScheduleListParams) {
+  refresh(params: ListDefaultParams) {
     this.lastParams = params;
     this.params$.next(params);
   }

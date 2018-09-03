@@ -1,28 +1,25 @@
-<div *ngIf="stepExecutionDetails$ | async as stepExecutionDetails; else loading">
+<app-page *ngIf="stepExecutionDetails$ | async as stepExecutionDetails; else loading">
 
-  <div class="heading">
-    <div class="description">
-      <h1>
-        Step Execution <strong>{{ stepExecutionDetails.stepExecution.stepExecution.name }}</strong>
-        ({{ stepExecutionDetails.stepExecution.stepExecution.id }})
-      </h1>
-      <h2>
-        Job execution <strong>{{ stepExecutionDetails.jobExecution.name }}</strong>
-        ({{ stepExecutionDetails.jobExecution.jobExecutionId }})
-      </h2>
-    </div>
-    <div class="actions">
-      <button id="refresh" class="btn btn-default" (click)="refresh()">
-        <span class="glyphicon glyphicon-refresh"></span>
-      </button>
-      <button id="stats" class="btn btn-primary" title="Details"
+  <app-page-head>
+    <app-page-head-back [defaultUrl]="'/jobs/executions/' + jobId"></app-page-head-back>
+    <app-page-head-title>
+      Step Execution <strong>{{ stepExecutionDetails.stepExecution.stepExecution.name }}
+      ({{ stepExecutionDetails.stepExecution.stepExecution.id }})</strong>
+      - Job execution  <strong>{{ stepExecutionDetails.jobExecution.name }}</strong>
+      ({{ stepExecutionDetails.jobExecution.jobExecutionId }})
+    </app-page-head-title>
+    <app-page-head-actions>
+      <button id="stats" class="btn btn-primary btn-fa" title="Details"
               (click)="viewStepExecutionProgress(stepExecutionDetails.stepExecution)">
+        <span class="fa fa-info-circle"></span>
         More details
       </button>
-    </div>
-  </div>
-
-  <hr>
+      <button id="refresh" class="btn btn-primary btn-fa" (click)="refresh()">
+        <span class="fa fa-refresh"></span>
+        Refresh
+      </button>
+    </app-page-head-actions>
+  </app-page-head>
 
   <div *ngIf="stepExecutionDetails.stepExecutionProgress.percentageComplete < 1">
     <h4>Step Execution Progress</h4>
@@ -142,13 +139,7 @@
     </table>
   </div>
 
-  <div style="text-align: center;padding-top: 10px;">
-    <button id="back" class="btn btn-default" (click)="back(stepExecutionDetails.stepExecution.jobExecutionId)">
-      Back
-    </button>
-  </div>
-
-</div>
+</app-page>
 <ng-template #loading>
   <app-loader></app-loader>
 </ng-template>

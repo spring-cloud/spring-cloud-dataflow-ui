@@ -20,6 +20,6 @@ export class RuntimePage {
    * @returns {any}
    */
   getHeaderText() {
-    return element(by.css('app-root h1')).getText();
+    return element(by.css('app-page-head-title h1')).getText();
   }
 }

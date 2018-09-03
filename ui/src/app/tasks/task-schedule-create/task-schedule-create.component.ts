@@ -44,6 +44,8 @@ export class TaskScheduleCreateComponent implements OnInit {
    */
   form: FormGroup;
 
+  submitted = false;
+
   /**
    * Constructor
    *
@@ -99,7 +101,7 @@ export class TaskScheduleCreateComponent implements OnInit {
         }
       ))
       .pipe(mergeMap(
-        (schedule) => this.tasksService.getSchedules({ task: '', page: 0, size: 10000, sort: null, order: null })
+        (schedule) => this.tasksService.getSchedules({ q: '', page: 0, size: 10000, sort: null, order: null })
           .pipe(map((schedules: Page<TaskSchedule>) => {
             return {
               params: schedule.params,
@@ -160,40 +162,45 @@ export class TaskScheduleCreateComponent implements OnInit {
    * Create a schedule
    */
   submit(schedule) {
-    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
-    const getClean = (arr: FormArray): Array<string> => arr.controls
-      .map((group) => !isEmpty(group.value) ? `${group.get('key').value}=${group.get('val').value}` : '')
-      .filter((a) => a !== '');
+    this.submitted = true;
+    if (!this.form.valid) {
+      this.notificationService.error('Some field(s) are missing or invalid.');
+    } else {
+      const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
+      const getClean = (arr: FormArray): Array<string> => arr.controls
+        .map((group) => !isEmpty(group.value) ? `${group.get('key').value}=${group.get('val').value}` : '')
+        .filter((a) => a !== '');
 
-    const taskArguments = getClean(this.form.get('args') as FormArray);
-    const taskProperties = getClean(this.form.get('params') as FormArray);
-    const cronExpression = this.form.get('cron').value;
-    const scheduleParams = schedule.taskDefinitions
-      .map((taskName: string, index: number) => ({
-          args: taskArguments.join(','),
-          props: taskProperties.join(','),
-          cronExpression: cronExpression,
-          task: taskName,
-          schedulerName: (this.form.get('names') as FormArray).controls
-            .map((control: FormControl) => control.value)[index]
-        })
-      );
-    const busy = this.tasksService.createSchedules(scheduleParams)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(
-        data => {
-          if (scheduleParams.length === 1) {
-            this.notificationService.success(`Successfully schedule creation "${scheduleParams[0].schedulerName}"`);
-          } else {
-            this.notificationService.success(`Successfully ${scheduleParams.length} schedules creation`);
+      const taskArguments = getClean(this.form.get('args') as FormArray);
+      const taskProperties = getClean(this.form.get('params') as FormArray);
+      const cronExpression = this.form.get('cron').value;
+      const scheduleParams = schedule.taskDefinitions
+        .map((taskName: string, index: number) => ({
+            args: taskArguments.join(','),
+            props: taskProperties.join(','),
+            cronExpression: cronExpression,
+            task: taskName,
+            schedulerName: (this.form.get('names') as FormArray).controls
+              .map((control: FormControl) => control.value)[index]
+          })
+        );
+      const busy = this.tasksService.createSchedules(scheduleParams)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
+          data => {
+            if (scheduleParams.length === 1) {
+              this.notificationService.success(`Successfully schedule creation "${scheduleParams[0].schedulerName}"`);
+            } else {
+              this.notificationService.success(`Successfully ${scheduleParams.length} schedules creation`);
+            }
+            this.cancel();
+          },
+          error => {
+            this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
           }
-          this.cancel();
-        },
-        error => {
-          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        }
-      );
-    this.busyService.addSubscription(busy);
+        );
+      this.busyService.addSubscription(busy);
+    }
   }
 
   /**

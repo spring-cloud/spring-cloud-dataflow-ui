@@ -1,0 +1,78 @@
+<div class="sidebar-quicksearch" [class.open]="quickSearch">
+  <div class="sidebar-quicksearch-input">
+    <span class="fa fa-search"></span>
+    <input *ngIf="!force" [formControl]="q" (focus)="openQuickSearch()" (blur)="hideQuickSearch()" type="text"
+           class="form-control input-sm input-dark"
+           placeholder="Quick Search"/>
+  </div>
+  <div class="sidebar-button">
+    <a (click)="openQuickSearch(true)">
+      <span class="fa fa-search"></span>
+    </a>
+  </div>
+  <div class="sidebar-quicksearch-result">
+    <div class="sidebar-quicksearch-result-wrap">
+      <div class="result-content">
+        <h1>Quick Search</h1>
+        <div *ngIf="force" class="sidebar-quicksearch-input">
+          <span class="fa fa-search"></span>
+          <input [formControl]="q" (blur)="hideQuickSearch()" type="text"
+                 class="form-control input-sm"
+                 [dataflowFocus]="focusedField == 'search'"
+                 placeholder="Quick Search"/>
+        </div>
+        <app-loader text="Searching…" *ngIf="isRunningSearch()"></app-loader>
+        <div *ngIf="quickSearch && !isRunningSearch()">
+          <div *ngIf="isNoResult()" class="dataflow-alert">
+            No Result find.
+          </div>
+          <div *ngIf="!isNoResult()">
+
+            <div class="result-item" *ngIf="resultSearch.app && resultSearch.app.totalElements > 0">
+              <h2>Application(s)</h2>
+              <ul>
+                <li *ngFor="let item of resultSearch.app.items">
+                  <a (click)="navigate('app', item)">
+                    {{ item.name }}
+                    <app-type [application]="item"></app-type>
+                  </a>
+                </li>
+              </ul>
+              <p class="more-result" *ngIf="resultSearch.app.totalElements > 5">
+                {{ resultSearch.app.totalElements }} results
+              </p>
+            </div>
+            <div class="result-item" *ngIf="resultSearch.stream && resultSearch.stream.totalElements > 0">
+              <h2>Stream(s)</h2>
+              <ul>
+                <li *ngFor="let item of resultSearch.stream.items">
+                  <a (click)="navigate('stream', item)">
+                    {{ item.name }}
+                    <app-stream-status [streamDefinition]="item"></app-stream-status>
+                  </a>
+                </li>
+              </ul>
+              <p class="more-result" *ngIf="resultSearch.stream.totalElements > 5">
+                {{ resultSearch.stream.totalElements }} results
+              </p>
+            </div>
+            <div class="result-item" *ngIf="resultSearch.task && resultSearch.task.totalElements > 0">
+              <h2>Task(s)</h2>
+              <ul>
+                <li *ngFor="let item of resultSearch.task.items">
+                  <a (click)="navigate('task', item)">
+                    {{ item.name }}
+                    <app-task-status [taskDefinition]="item"></app-task-status>
+                  </a>
+                </li>
+              </ul>
+              <p class="more-result" *ngIf="resultSearch.task.totalElements > 5">
+                {{ resultSearch.task.totalElements }} results
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

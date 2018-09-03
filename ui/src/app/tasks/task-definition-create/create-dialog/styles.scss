@@ -1,25 +1,26 @@
-.modal-body {
-  tbody {
-    width: 100%;
-    display: inline-table;
+
+.row-task {
+  border-top: 1px solid #e0e5e8;
+  padding: 0.8rem 0;
+  .form-group {
+    margin-bottom: 0;
   }
-  tr {
-    width: 100%;
-    display: inline-table;
+  .control-empty {
+    padding: 10px 0;
   }
-  .task-definition-label-cell {
-    vertical-align: top;
-    padding: 4px 8px;
+}
+
+.form-group {
+  .control-label-sm {
+    height: 32px;
+    line-height: 24px;
   }
-  .task-name-form-control-cell {
-    width: 50%;
-  }
-  .dialog-error-sign {
-    color: red;
-  }
-  .dialog-validation {
-    margin-bottom: 4px;
-    font-size: smaller;
-    line-height: 1em;
+}
+
+.row-stream-deploy {
+  border-top: 1px solid #e0e5e8;
+  padding: 1rem 0;
+  .checkbox-inline {
+    font-weight: bold;
   }
 }

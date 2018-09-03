@@ -12,7 +12,7 @@ export class AppsBulkImportUriPage {
    * @returns {wdpromise.Promise<any>}
    */
   navigateTo() {
-    return browser.get('#/apps/bulk-import-apps/uri');
+    return browser.get('#/apps/add/import-from-uri');
   }
 
   /**
@@ -20,7 +20,7 @@ export class AppsBulkImportUriPage {
    * @returns {any}
    */
   getHeaderText() {
-    return element(by.css('app-root h1')).getText();
+    return element(by.css('.page-step-2-head h1')).getText();
   }
 
   /**

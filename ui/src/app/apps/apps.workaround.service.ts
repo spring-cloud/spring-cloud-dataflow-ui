@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {PageRequest} from '../shared/model/pagination/page-request.model';
-import {AppRegistration} from '../shared/model/app-registration.model';
-import {SharedAppsService} from '../shared/services/shared-apps.service';
-import {AppVersion} from '../shared/model/app-version';
-import {Page} from '../shared/model/page';
-import {Subscriber} from 'rxjs/Subscriber';
-import {AppListParams} from './components/apps.interface';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { PageRequest } from '../shared/model/pagination/page-request.model';
+import { AppRegistration } from '../shared/model/app-registration.model';
+import { SharedAppsService } from '../shared/services/shared-apps.service';
+import { AppVersion } from '../shared/model/app-version';
+import { Page } from '../shared/model/page';
+import { Subscriber } from 'rxjs/Subscriber';
+import { AppListParams } from './components/apps.interface';
 import * as moment from 'moment';
-import {ApplicationType} from '../shared/model/application-type';
+import { ApplicationType } from '../shared/model/application-type';
 
 
 /**
@@ -117,10 +117,17 @@ export class AppsWorkaroundService {
 
   appVersions(appType: ApplicationType, appName: string): Observable<AppVersion[]> {
     return this.sharedAppsService
-      .getApps(new PageRequest(0, 1000), appType, appName, [{sort: 'name', order: 'ASC'}, {sort: 'type', order: 'ASC'}])
-      .map((version): AppVersion[] => {
-        return version.items
-          .map((a) => (a.name === appName) ? new AppVersion(a.version, a.uri, a.defaultVersion) : null)
+      .getApps(new PageRequest(0, 1000), appType, appName, [{ sort: 'name', order: 'ASC' }, {
+        sort: 'type',
+        order: 'ASC'
+      }])
+      .map((app: Page<AppRegistration>): AppVersion[] => {
+        return app.items
+          .map((a) => {
+            return (a.name === appName && a.type.toString() === ApplicationType[appType].toString())
+              ? new AppVersion(a.version, a.uri, a.defaultVersion)
+              : null;
+          })
           .filter((a) => a != null)
           .sort((a, b) => a.version < b.version ? -1 : 1);
       });
@@ -128,7 +135,11 @@ export class AppsWorkaroundService {
 
   private run(): Observable<any> {
     return this.sharedAppsService
-      .getApps(new PageRequest(0, 1000), null, '', [{sort: 'name', order: 'ASC'}, {sort: 'type', order: 'ASC'}])
+      .getApps(new PageRequest(0, 1000), null, '', [{ sort: 'name', order: 'ASC' }, { sort: 'type', order: 'ASC' }])
+      .map(page => {
+        page.items = page.items.sort((a, b) => a.name < b.name ? -1 : 1);
+        return page;
+      })
       .map(page => {
         for (let i = 0; i < page.items.length; i++) {
           const item = page.items[i] as AppRegistration;

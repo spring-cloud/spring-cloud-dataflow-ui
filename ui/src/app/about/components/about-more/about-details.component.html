@@ -4,8 +4,8 @@
 
     <div class="actions">
       <button id="copy-button" [ngxClipboard] [cbContent]="dataflowVersionInfo | json"
-              (cbOnSuccess)="onCopyToClipboardSuccess($event);" type="button" class="btn btn-primary">
-        <span class="glyphicon glyphicon-copy"></span>
+              (cbOnSuccess)="onCopyToClipboardSuccess($event);" type="button" class="btn btn-fa btn-primary">
+        <span class="fa fa-copy"></span>
         <span>Copy Details to Clipboard</span>
       </button>
     </div>
@@ -15,7 +15,7 @@
       <h2>Enabled Features</h2>
       <div id="enabledFeaturesTable">
         <div class="line">
-          <span>Analytics:</span>
+          <span>Analytics: </span>
           <strong *ngIf="dataflowVersionInfo.featureInfo.analyticsEnabled" id="analyticsEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -33,7 +33,7 @@
           </strong>
         </div>
         <div class="line">
-          <span>Tasks:</span>
+          <span>Tasks: </span>
           <strong *ngIf="dataflowVersionInfo.featureInfo.tasksEnabled" id="tasksEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -42,7 +42,7 @@
           </strong>
         </div>
         <div class="line">
-          <span>Schedules:</span>
+          <span>Schedules: </span>
           <strong *ngIf="dataflowVersionInfo.featureInfo.schedulerEnabled" id="schedulerEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -51,7 +51,7 @@
           </strong>
         </div>
         <div class="line">
-          <span>Skipper Mode:</span>
+          <span>Skipper Mode: </span>
           <strong *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled" id="skipperEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -67,7 +67,7 @@
       <h2>Security Information</h2>
       <div id="securityInformationTable">
         <div class="line">
-          <span>Authentication Enabled:</span>
+          <span>Authentication Enabled: </span>
           <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthenticationEnabled" id="authenticationEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -76,7 +76,7 @@
           </strong>
         </div>
         <div class="line">
-          <span>Authorization Enabled</span>
+          <span>Authorization Enabled: </span>
           <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthorizationEnabled" id="authorizationEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -85,7 +85,7 @@
           </strong>
         </div>
         <div class="line">
-          <span>Form Login:</span>
+          <span>Form Login: </span>
           <strong *ngIf="dataflowVersionInfo.securityInfo.isFormLogin" id="formLoginEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -94,7 +94,7 @@
           </strong>
         </div>
         <div class="line">
-          <span>Authenticated:</span>
+          <span>Authenticated: </span>
           <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthenticated" id="authenticateEnabled">
             <span class="fa fa-check"></span>
           </strong>
@@ -103,11 +103,11 @@
           </strong>
         </div>
         <div class="line" *ngIf="dataflowVersionInfo.securityInfo.username">
-          <span>Username:</span>
+          <span>Username: </span>
           <strong id="username">{{ dataflowVersionInfo.securityInfo.username || 'N/A' }}</strong>
         </div>
         <div class="line" *ngIf="dataflowVersionInfo.securityInfo.roles?.length > 0">
-          <span>Roles:</span>
+          <span>Roles: </span>
           <strong id="roles">{{ dataflowVersionInfo.securityInfo.roles }}</strong>
         </div>
       </div>
@@ -119,35 +119,35 @@
       <h2>Version Information</h2>
       <div id="versionInformationTable">
         <div class="line">
-          <span>Implementation Version:</span>
+          <span>Implementation Version: </span>
           <strong id="implementationVersion">
             {{ dataflowVersionInfo.versionInfo.implementation.version }} ({{ dataflowVersionInfo.versionInfo.implementation.name }})
           </strong>
         </div>
         <div class="line">
-          <span>Core:</span>
+          <span>Core: </span>
           <strong id="coreVersion">
             {{ dataflowVersionInfo.versionInfo.core.version }} ({{ dataflowVersionInfo.versionInfo.core.name }})
           </strong>
         </div>
         <div class="line">
-          <span>Dashboard:</span>
+          <span>Dashboard: </span>
           <strong id="dashboardVersion">
             {{ dataflowVersionInfo.versionInfo.dashboard.version }} ({{ dataflowVersionInfo.versionInfo.dashboard.name }})
           </strong>
         </div>
         <div class="line">
-          <span>Shell:</span>
+          <span>Shell: </span>
           <strong id="shellVersion">
             {{ dataflowVersionInfo.versionInfo.shell.version }} ({{ dataflowVersionInfo.versionInfo.shell.name }})
           </strong>
         </div>
         <div id="shellChecksumSha1" class="line" *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha1">
-          <span>Shell Checksum Sha1:</span>
+          <span>Shell Checksum Sha1: </span>
           <strong>{{ dataflowVersionInfo.versionInfo.shell.checksumSha1 }}</strong>
         </div>
         <div id="shellChecksumSha256" class="line" *ngIf="dataflowVersionInfo.versionInfo.shell.checksumSha256">
-          <span>Shell Checksum Sha256:</span> <strong>{{ dataflowVersionInfo.versionInfo.shell.checksumSha256 }}</strong>
+          <span>Shell Checksum Sha256: </span> <strong>{{ dataflowVersionInfo.versionInfo.shell.checksumSha256 }}</strong>
         </div>
       </div>
     </div>
@@ -158,43 +158,43 @@
       <h2 *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled">Runtime Environment - App Deployer</h2>
       <div id="appDeployerTable">
         <div class="line">
-          <span>Implementation Version:</span>
+          <span>Implementation Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerImplementationVersion }}</strong>
         </div>
         <div class="line">
-          <span>Name:</span>
+          <span>Name: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerName || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Spi Version:</span>
+          <span>Spi Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.deployerSpiVersion || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Java Version:</span>
+          <span>Java Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.javaVersion || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Platform Api Version:</span>
+          <span>Platform Api Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformApiVersion || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Platform Client Version:</span>
+          <span>Platform Client Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformClientVersion || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Platform Host Version:</span>
+          <span>Platform Host Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformHostVersion || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Platform Type:</span>
+          <span>Platform Type: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.platformType || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Spring Boot Version:</span>
+          <span>Spring Boot Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.springBootVersion || 'N/A' }}</strong>
         </div>
         <div class="line">
-          <span>Spring Version:</span>
+          <span>Spring Version: </span>
           <strong>{{ dataflowVersionInfo.runtimeEnvironment.appDeployer.springVersion || 'N/A' }}</strong>
         </div>
       </div>
@@ -209,7 +209,7 @@
           ngFor let-item
           [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | mapValuesPipe">
           <div class="line">
-            <span>{{ item.key }}:</span> <strong>{{ item.value }}</strong>
+            <span>{{ item.key }}: </span> <strong>{{ item.value }}</strong>
           </div>
         </ng-template>
         <div
@@ -230,39 +230,39 @@
         </div>
         <div *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)" id="taskLauncherTable">
           <div class="line">
-            <span>Implementation Version:</span>
+            <span>Implementation Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion }}</strong>
           </div>
           <div class="line">
-            <span>Name:</span>
+            <span>Name: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerName }}</strong>
           </div>
           <div class="line">
-            <span>Spi Version:</span>
+            <span>Spi Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerSpiVersion }}</strong>
           </div>
           <div class="line">
-            <span>Java Version:</span>
+            <span>Java Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.javaVersion }}</strong>
           </div>
           <div class="line">
-            <span>Platform Api Version:</span>
+            <span>Platform Api Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformApiVersion }}</strong>
           </div>
           <div class="line">
-            <span>Platform Client Version:</span>
+            <span>Platform Client Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformClientVersion }}</strong>
           </div>
           <div class="line">
-            <span>Platform Host Version:</span>
+            <span>Platform Host Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformHostVersion }}</strong>
           </div>
           <div class="line">
-            <span>Platform Type:</span>
+            <span>Platform Type: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformType }}</strong>
           </div>
           <div class="line">
-            <span>Spring Boot Version:</span>
+            <span>Spring Boot Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springBootVersion }}</strong>
           </div>
           <div class="line">
@@ -281,7 +281,7 @@
           ngFor let-item
           [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | mapValuesPipe">
           <div class="line">
-            <span>{{ item.key }}:</span> <strong>{{ item.value }}</strong>
+            <span>{{ item.key }}: </span> <strong>{{ item.value }}</strong>
           </div>
         </ng-template>
         <div

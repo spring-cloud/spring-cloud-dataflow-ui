@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, Inject, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -49,15 +49,20 @@ import { GroupRouteService } from './services/group-route.service';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { TimepickerComponent } from './components/timepicker/timepicker.component';
 import { PopoverModule, TimepickerModule } from 'ngx-bootstrap';
+import { LayoutTypeDirective } from './directives/layout-type.directive';
+import { DATAFLOW_PAGE } from './components/page/page.component';
+import { DATAFLOW_LIST } from './components/list/list.component';
+import { FocusDirective } from './directives/focus.directive';
 
 const busyConfig: BusyConfig = {
-  message: 'Processing..',
+  message: 'Processing...',
   delay: 0,
-  template: BUSY_CONFIG_DEFAULTS.template,
-  minDuration: 1000,
+  minDuration: 0,
   backdrop: true,
+  template: BUSY_CONFIG_DEFAULTS.template,
   wrapperClass: BUSY_CONFIG_DEFAULTS.wrapperClass
 };
+
 
 /**
  * This module contains/declares all application-wide shared functionality.
@@ -83,7 +88,7 @@ const busyConfig: BusyConfig = {
     ProgressbarModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-right',
       preventDuplicates: true,
       maxOpened: 6,
       enableHtml: true
@@ -121,7 +126,11 @@ const busyConfig: BusyConfig = {
     ConfirmComponent,
     LoaderComponent,
     PagerComponent,
-    TimepickerComponent
+    TimepickerComponent,
+    LayoutTypeDirective,
+    FocusDirective,
+    DATAFLOW_LIST,
+    DATAFLOW_PAGE
   ],
   entryComponents: [
     ConfirmComponent
@@ -171,7 +180,11 @@ const busyConfig: BusyConfig = {
     LoaderComponent,
     PagerComponent,
     ToastContainerModule,
-    TimepickerComponent
+    TimepickerComponent,
+    LayoutTypeDirective,
+    FocusDirective,
+    DATAFLOW_LIST,
+    DATAFLOW_PAGE
   ]
 })
 export class SharedModule {

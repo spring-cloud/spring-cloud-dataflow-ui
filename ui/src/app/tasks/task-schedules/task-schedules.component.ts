@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Page } from '../../shared/model/page';
-import { OrderParams, SortParams } from '../../shared/components/shared.interface';
-import { TaskListParams, TaskScheduleListParams } from '../components/tasks.interface';
+import { ListDefaultParams, OrderParams } from '../../shared/components/shared.interface';
 import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
 import { TasksService } from '../tasks.service';
@@ -12,6 +11,8 @@ import { TaskSchedule } from '../model/task-schedule';
 import { map, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskSchedulesDestroyComponent } from '../task-schedules-destroy/task-schedules-destroy.component';
+import { ViewChild } from '@angular/core';
+import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 
 /**
  * Provides {@link TaskSchedule} related services.
@@ -32,6 +33,12 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   taskSchedules: Page<TaskSchedule>;
 
   /**
+   * List Bar Component
+   */
+  @ViewChild('listBar')
+  listBar: ListBarComponent;
+
+  /**
    * Busy Subscriptions
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
@@ -45,25 +52,19 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
    * Current forms value
    */
   form: any = {
-    q: '',
     checkboxes: []
   };
 
   /**
    * State of App List Params
    */
-  params: TaskScheduleListParams = {
+  params: ListDefaultParams = {
     sort: 'SCHEDULE_ID',
     order: OrderParams.ASC,
     page: 0,
     size: 100000,
-    task: ''
+    q: ''
   };
-
-  /**
-   * The current search
-   */
-  q: string;
 
   /**
    * Contain a key application of each selected application
@@ -106,7 +107,6 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.context = this.tasksService.schedulesContext;
     this.params = { ...this.context };
-    this.form = { q: this.context.task };
     this.itemsSelected = this.context.itemsSelected || [];
     this.refresh();
   }
@@ -120,10 +120,68 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Schedules Actions
+   */
+  schedulesActions() {
+    return [
+      {
+        id: 'destroy-schedules',
+        icon: 'trash',
+        action: 'destroySelected',
+        title: 'Destroy schedule(s)'
+      },
+    ];
+  }
+
+  /**
+   * Schedule Actions
+   * @param {number} index
+   */
+  scheduleActions(index: number) {
+    return [
+      {
+        id: 'details-schedule' + index,
+        icon: 'info-circle',
+        action: 'details',
+        title: 'Show details',
+        isDefault: true
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'destroy-schedule' + index,
+        icon: 'trash',
+        action: 'destroy',
+        title: 'Delete schedule'
+      }
+    ];
+  }
+
+  /**
+   * Apply Action
+   * @param action
+   * @param arg
+   */
+  applyAction(action: string, args?: any) {
+    switch (action) {
+      case 'details':
+        this.details(args);
+        break;
+      case 'destroy':
+        this.destroySchedules([args]);
+        break;
+      case 'destroySelected':
+        this.destroySelectedSchedules();
+        break;
+    }
+  }
+
+  /**
    * Write the context in the service.
    */
   updateContext() {
-    this.context.task = this.params.task;
+    this.context.q = this.params.q;
     this.context.sort = this.params.sort;
     this.context.order = this.params.order;
     this.context.page = this.params.page;
@@ -167,7 +225,7 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   isSchedulesEmpty(): boolean {
     if (this.taskSchedules) {
       if (this.taskSchedules.totalPages < 2) {
-        return this.params.task === '' && this.taskSchedules.items.length === 0;
+        return this.params.q === '' && this.taskSchedules.items.length === 0;
       }
     }
     return false;
@@ -200,24 +258,10 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   /**
    * Run the search
    */
-  search() {
-    this.q = this.form.q;
-  }
-
-  /**
-   * Used to determinate the state of the query parameters
-   * @returns {boolean} Search is active
-   */
-  isSearchActive() {
-    return (this.form.q !== this.q);
-  }
-
-  /**
-   * Reset the search parameters and run the search
-   */
-  clearSearch() {
-    this.form.q = '';
-    this.search();
+  search(params: ListDefaultParams) {
+    this.params.q = params.q;
+    this.params.page = 0;
+    this.refresh();
   }
 
   /**

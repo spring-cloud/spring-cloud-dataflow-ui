@@ -15,6 +15,6 @@ describe('E2E spec for about page', () => {
   it('should display about title', () => {
     page.navigateTo();
 
-    expect(page.getHeaderText()).toEqual('About');
+    expect(page.getHeaderText()).toEqual('About & Docs');
   });
 });

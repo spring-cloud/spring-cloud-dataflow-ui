@@ -22,8 +22,14 @@ import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { AuthService } from '../../auth/auth.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { MockModalService } from '../../tests/mocks/modal';
-import { BsModalService } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, TooltipModule } from 'ngx-bootstrap';
 import { By } from '@angular/platform-browser';
+import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
+import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { TaskStatusComponent } from '../components/task-status/task-status.component';
 
 /**
  * Test {@link TaskDefinitionComponent}.
@@ -51,9 +57,17 @@ describe('TaskDefinitionComponent', () => {
         RolesDirective,
         TaskDefinitionComponent,
         DataflowDateTimePipe,
-        DataflowDurationPipe
+        DataflowDurationPipe,
+        PagerComponent,
+        LoaderComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        TaskStatusComponent
       ],
       imports: [
+        NgxPaginationModule,
+        BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         NgBusyModule,
         FormsModule,
         ReactiveFormsModule,

@@ -37,9 +37,6 @@ export class StreamsService {
     itemsExpanded: []
   };
 
-  /** Will never be null. */
-  public streamDefinitions: Page<StreamDefinition>;
-
   private streamDefinitionsUrl = '/streams/definitions';
 
   /**
@@ -51,7 +48,6 @@ export class StreamsService {
   constructor(private httpClient: HttpClient,
               private loggerService: LoggerService,
               private errorHandler: ErrorHandler) {
-    this.streamDefinitions = new Page<StreamDefinition>();
   }
 
   /**
@@ -213,13 +209,13 @@ export class StreamsService {
   getRelatedDefinitions(streamName: string, nested?: boolean): Observable<StreamDefinition[]> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     let params = new HttpParams();
-
     if (nested) {
       params = params.append('nested', nested.toString());
     }
     return this.httpClient.get<any>(`/streams/definitions/${streamName}/related`, {
       params: params,
-      headers: httpHeaders
+      headers: httpHeaders,
+      observe: 'response'
     })
       .map(jsonResponse => this.extractData(jsonResponse).items)
       .catch(this.errorHandler.handleError);
@@ -248,6 +244,7 @@ export class StreamsService {
   extractData(res: HttpResponse<any>): Page<StreamDefinition> {
     const body = res.body;
     let items: StreamDefinition[];
+    const page = new Page<StreamDefinition>();
     if (body._embedded && body._embedded.streamDefinitionResourceList) {
       items = body._embedded.streamDefinitionResourceList.map(jsonItem => {
         const streamDefinition: StreamDefinition = new StreamDefinition(
@@ -263,16 +260,16 @@ export class StreamsService {
 
     if (body.page) {
       this.loggerService.log('BODY', body.page);
-      this.streamDefinitions.pageNumber = body.page.number;
-      this.streamDefinitions.pageSize = body.page.size;
-      this.streamDefinitions.totalElements = body.page.totalElements;
-      this.streamDefinitions.totalPages = body.page.totalPages;
+      page.pageNumber = body.page.number;
+      page.pageSize = body.page.size;
+      page.totalElements = body.page.totalElements;
+      page.totalPages = body.page.totalPages;
     }
 
-    this.streamDefinitions.items = items;
+    page.items = items;
 
-    this.loggerService.log('Extracted Stream Definitions:', this.streamDefinitions);
-    return this.streamDefinitions;
+    this.loggerService.log('Extracted Stream Definitions:', page);
+    return page;
   }
 
   /**
@@ -310,7 +307,6 @@ export class StreamsService {
     })
       .map(data => {
         if (data && Array.isArray(data)) {
-          console.log(data);
           return data.map((item) => {
             return StreamHistory.fromJSON(item);
           });

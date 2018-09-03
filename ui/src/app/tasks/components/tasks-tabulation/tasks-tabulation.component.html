@@ -1,33 +1,55 @@
-<div class="tab-simple">
-  <ul class="nav nav-tabs" *ngIf="params$ | async as params;">
-    <li role="presentation" routerLinkActive="active">
-      <a routerLink="/tasks/definitions">
-        Tasks
-        <span *ngIf="counters$ | async as counters">
-          <span class="label label-count label-primary" *ngIf="counters.definitions">{{counters.definitions}}</span>
-        </span>
-      </a>
-    </li>
-    <li role="presentation" routerLinkActive="active">
-      <a routerLink="/tasks/executions">
-        Executions
-        <span *ngIf="counters$ | async as counters">
-          <span class="label label-count label-primary" *ngIf="counters.executions">{{counters.executions}}</span>
-        </span>
-      </a>
-    </li>
-    <li role="presentation" routerLinkActive="active" *ngIf="params.schedulerEnabled">
-      <a routerLink="/tasks/schedules">
-        Schedules
-        <span *ngIf="counters$ | async as counters">
-          <span class="label label-count label-primary" *ngIf="counters.schedules">{{counters.schedules}}</span>
-        </span>
-      </a>
-    </li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane in active">
-      <ng-content></ng-content>
+<app-page *ngIf="params$ | async as params; else loading">
+
+  <app-page-head>
+    <app-page-head-title><strong>Tasks</strong></app-page-head-title>
+    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+      <ng-container *ngIf="appsState$ | async as appsState;">
+        <button class="btn btn-primary btn-fa" (click)="createTask()" *ngIf="appsState.tasks > 0">
+          <span class="fa fa-plus"></span>
+          Create task(s)
+        </button>
+      </ng-container>
+    </app-page-head-actions>
+  </app-page-head>
+
+  <div class="page-tab">
+    <div class="page-tab-head">
+      <ul class="nav nav-tabs">
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="/tasks/definitions">
+            Task
+            <span *ngIf="counters$ | async as counters">
+              <span class="label label-count label-primary" *ngIf="counters.definitions">{{counters.definitions}}</span>
+            </span>
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="/tasks/executions">
+            Executions
+            <span *ngIf="counters$ | async as counters">
+              <span class="label label-count label-primary" *ngIf="counters.executions">{{counters.executions}}</span>
+            </span>
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active" *ngIf="params.schedulerEnabled">
+          <a routerLink="/tasks/schedules">
+            Schedules
+            <span *ngIf="counters$ | async as counters">
+              <span class="label label-count label-primary" *ngIf="counters.schedules">{{counters.schedules}}</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div class="tab-pane in active">
+        <ng-content></ng-content>
+      </div>
     </div>
   </div>
-</div>
+
+</app-page>
+
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>

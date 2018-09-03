@@ -8,9 +8,9 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-stream-dsl',
   styleUrls: ['./styles.scss'],
-  template: `<code class="dsl">
+  template: `<div class="dsl">
     <ng-content></ng-content>
-  </code>`
+  </div>`
 })
 export class StreamDslComponent {
 }

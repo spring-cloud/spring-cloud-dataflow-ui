@@ -1,13 +1,13 @@
-import {AppRegistration} from '../../shared/model/app-registration.model';
-import {Page} from '../../shared/model/page';
-import {Observable} from 'rxjs/Observable';
-import {ApplicationType} from '../../shared/model/application-type';
+import { AppRegistration } from '../../shared/model/app-registration.model';
+import { Page } from '../../shared/model/page';
+import { Observable } from 'rxjs/Observable';
+import { ApplicationType } from '../../shared/model/application-type';
 import {
   ConfigurationMetadataProperty,
   DetailedAppRegistration
 } from '../../shared/model/detailed-app-registration.model';
-import {AppListParams, AppRegisterParams, BulkImportParams} from '../../apps/components/apps.interface';
-import {AppVersion} from '../../shared/model/app-version';
+import { AppListParams, AppRegisterParams, BulkImportParams } from '../../apps/components/apps.interface';
+import { AppVersion } from '../../shared/model/app-version';
 
 /**
  * Mock for {@link AppsService}.
@@ -100,7 +100,7 @@ export class MockAppsService {
     return Observable.of(detailedAppRegistration);
   }
 
-  bulkImportApps(bulkImportApps: BulkImportParams): Observable<Response> | Observable<any> {
+  bulkImportApps(bulkImportApps: BulkImportParams) {
     return Observable.of({});
   }
 
@@ -109,13 +109,13 @@ export class MockAppsService {
   }
 
   unregisterApps(appRegs: AppRegistration[]): Observable<Response[]> | Observable<any> {
-    return Observable.of(Array.from({length: appRegs.length}).map(() => {
+    return Observable.of(Array.from({ length: appRegs.length }).map(() => {
       return {};
     }));
   }
 
   registerApps(appRegs: AppRegisterParams[]): Observable<Response[]> | Observable<any> {
-    return Observable.of(Array.from({length: appRegs.length}).map(() => {
+    return Observable.of(Array.from({ length: appRegs.length }).map(() => {
       return {};
     }));
   }
@@ -135,6 +135,13 @@ export class MockAppsService {
 
   setAppDefaultVersion(appType: ApplicationType, appName: string, appVersion: string): Observable<any> {
     return Observable.of({});
+  }
+
+  appsState(): Observable<any> {
+    return Observable.of({
+      streams: 20,
+      tasks: 10
+    });
   }
 
 }

@@ -19,7 +19,18 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 import { STREAM_DEFINITIONS } from '../../tests/mocks/mock-data';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
+import { BsDropdownModule, BsModalService, TooltipModule } from 'ngx-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
+import { StreamStatusComponent } from '../components/stream-status/stream-status.component';
+import { RolesDirective } from '../../auth/directives/roles.directive';
+import { LoggerService } from '../../shared/services/logger.service';
+import { MockModalService } from '../../tests/mocks/modal';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { AuthService } from '../../auth/auth.service';
 
 /**
  * Test {@link StreamComponent}.
@@ -38,6 +49,9 @@ describe('StreamComponent', () => {
   const busyService = new BusyService();
   const routingStateService = new MockRoutingStateService();
   const aboutService = new MocksSharedAboutService();
+  const loggerService = new LoggerService();
+  const modalService = new MockModalService();
+  const authService = new MockAuthService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -46,20 +60,32 @@ describe('StreamComponent', () => {
       declarations: [
         StreamComponent,
         GraphViewComponent,
-        LoaderComponent
+        LoaderComponent,
+        PagerComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        RolesDirective,
+        StreamStatusComponent
       ],
       imports: [
+        FormsModule,
+        NgxPaginationModule,
+        BsDropdownModule.forRoot(),
         RouterTestingModule.withRoutes([]),
+        TooltipModule.forRoot(),
         FloModule
       ],
       providers: [
         { provide: StreamsService, useValue: streamsService },
         { provide: SharedAboutService, useValue: aboutService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: AuthService, useValue: authService },
         { provide: BusyService, useValue: busyService },
+        { provide: BsModalService, useValue: modalService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
         { provide: MetamodelService, useValue: metamodelService },
+        { provide: LoggerService, useValue: loggerService },
         { provide: RenderService, useValue: renderService }
       ]
     })

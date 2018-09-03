@@ -64,6 +64,74 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Row action
+   * @param item
+   * @param {number} index
+   * @param total
+   */
+  dashboardActions(item, index: number, total) {
+    return [
+      {
+        id: 'up-dashboard' + index,
+        icon: 'arrow-up',
+        action: 'up',
+        title: 'Up',
+        disabled: (index === 0)
+      },
+      {
+        id: 'down-dashboard' + index,
+        icon: 'arrow-down',
+        action: 'down',
+        title: 'Down',
+        disabled: ((index + 1) === total)
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'add-dashboard' + index,
+        icon: 'plus',
+        action: 'add',
+        title: 'Add dashboard item',
+        disabled: false,
+        isDefault: true
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'remove-dashboard' + index,
+        icon: 'trash',
+        action: 'remove',
+        title: 'Remove dashboard item',
+        disabled: (total <= 1)
+      }
+    ];
+  }
+
+  /**
+   * Apply Action (row)
+   * @param action
+   * @param item
+   */
+  applyAction(action: string, index) {
+    switch (action) {
+      case 'up':
+        this.moveUpItem(index);
+        break;
+      case 'down':
+        this.moveDownItem(index);
+        break;
+      case 'add':
+        this.addNewDashboardItem(index);
+        break;
+      case 'remove':
+        this.removeDashboardItem(index);
+        break;
+    }
+  }
+
+  /**
    * Removes a dashboard item.
    *
    * @param index Index of the entry
