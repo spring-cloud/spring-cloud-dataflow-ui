@@ -51,6 +51,11 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
   @Output() deploy = new EventEmitter();
 
   /**
+   * Emit for request copy
+   */
+  @Output() copyProperties = new EventEmitter();
+
+  /**
    * Properties to load
    */
   @Input() properties: Array<string> = [];
@@ -573,6 +578,13 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    */
   exportProps() {
     this.exportProperties.emit(this.getProperties());
+  }
+
+  /**
+   * Copye to clipboard
+   */
+  copyToClipboard() {
+    this.copyProperties.emit(this.getProperties());
   }
 
 }

@@ -8,7 +8,7 @@
         </div>
       </ng-template>
     </div>
-    <textarea dataflowAutoResize autofocus formControlName="input"></textarea>
+    <textarea dataflowAutoResize [dataflowFocus]="true" formControlName="input"></textarea>
   </div>
   <div class="input-file">
     <label class="btn-file btn btn-default" placement="top" delay="500"
@@ -20,8 +20,11 @@
   </div>
   <app-page-actions>
     <a id="btn-cancel" class="btn btn-default" routerLink="/streams">Cancel</a>
-    <button id="btn-export" type="button" class="btn btn-default" [disabled]="!isExportable" (click)="exportProps()">
+    <button id="btn-export" type="button" class="btn btn-default" (click)="exportProps()">
       Export
+    </button>
+    <button tabindex="200" id="btn-copy" type="button" class="btn btn-default" (click)="copyToClipboard()">
+      Copy to Clipboard
     </button>
     <button id="btn-deploy" type="submit" class="btn btn-primary" [disabled]="!isSubmittable">
       Deploy the stream
