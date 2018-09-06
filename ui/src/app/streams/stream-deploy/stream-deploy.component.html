@@ -37,13 +37,13 @@
       <div *ngIf="state.view == 'builder'">
         <app-stream-deploy-builder [properties]="properties" [skipper]="config.skipper" [id]="config.id"
                                    (exportProperties)="runExport($event)" (update)="update($event)"
-                                   (deploy)="runDeploy($event)">
+                                   (deploy)="runDeploy($event)" (copyProperties)="runCopy($event)">
         </app-stream-deploy-builder>
       </div>
       <div *ngIf="state.view == 'freetext'">
         <app-stream-deploy-free-text [properties]="properties" (update)="update($event)" [id]="config.id"
                                      (exportProperties)="runExport($event)" (update)="update($event)"
-                                     (deploy)="runDeploy($event)">
+                                     (deploy)="runDeploy($event)" (copyProperties)="runCopy($event)">
         </app-stream-deploy-free-text>
       </div>
     </div>

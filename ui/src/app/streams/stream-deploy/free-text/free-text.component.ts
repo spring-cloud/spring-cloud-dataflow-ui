@@ -32,6 +32,11 @@ export class StreamDeployFreeTextComponent implements OnInit, OnDestroy {
   @Output() exportProperties = new EventEmitter();
 
   /**
+   * Emit for request copy
+   */
+  @Output() copyProperties = new EventEmitter();
+
+  /**
    * Emit for request deploy
    */
   @Output() deploy = new EventEmitter();
@@ -154,6 +159,13 @@ export class StreamDeployFreeTextComponent implements OnInit, OnDestroy {
    */
   exportProps() {
     this.exportProperties.emit(this.getCleanProperties());
+  }
+
+  /**
+   * Copye to clipboard
+   */
+  copyToClipboard() {
+    this.copyProperties.emit(this.getCleanProperties());
   }
 
   /**
