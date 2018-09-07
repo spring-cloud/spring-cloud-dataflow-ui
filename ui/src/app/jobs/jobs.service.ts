@@ -5,12 +5,9 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { ErrorHandler, Page } from '../shared/model';
 import { JobExecution } from './model/job-execution.model';
-import { StepExecution } from './model/step-execution.model';
 import { HttpUtils } from '../shared/support/http.utils';
-import * as moment from 'moment';
-import { ExecutionContext } from './model/execution-context.model';
 import { StepExecutionResource } from './model/step-execution-resource.model';
-import { CountDetails, StepExecutionHistory, StepExecutionProgress } from './model/step-execution-progress.model';
+import { StepExecutionProgress } from './model/step-execution-progress.model';
 import { LoggerService } from '../shared/services/logger.service';
 import { ListParams } from '../shared/components/shared.interface';
 
@@ -45,6 +42,7 @@ export class JobsService {
    * Constructor
    *
    * @param {HttpClient} httpClient
+   * @param {LoggerService} loggerService
    * @param {ErrorHandler} errorHandler
    */
   constructor(private httpClient: HttpClient,
@@ -64,26 +62,10 @@ export class JobsService {
     const params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
     return this.httpClient.get<any>(JobsService.URL.EXECUTIONS, { params: params })
       .map((body) => {
-        const items: JobExecution[] = [];
-        if (body._embedded && body._embedded.jobExecutionResourceList) {
-          for (const jsonItem of body._embedded.jobExecutionResourceList) {
-            const jobExecution: JobExecution = new JobExecution();
-            jobExecution.name = jsonItem.name;
-            jobExecution.startTime = moment(jsonItem.jobExecution.startTime);
-            jobExecution.stepExecutionCount = jsonItem.stepExecutionCount;
-            jobExecution.status = jsonItem.jobExecution.status;
-            jobExecution.jobExecutionId = jsonItem.jobExecution.id;
-            jobExecution.taskExecutionId = jsonItem.taskExecutionId;
-            jobExecution.jobInstanceId = jsonItem.jobExecution.jobInstance.id;
-            jobExecution.restartable = jsonItem.restartable;
-            jobExecution.abandonable = jsonItem.abandonable;
-            jobExecution.stoppable = jsonItem.stoppable;
-            jobExecution.defined = jsonItem.defined;
-            items.push(jobExecution);
-          }
-        }
         const page = new Page<JobExecution>();
-        page.items = items;
+        if (body._embedded && body._embedded.jobExecutionResourceList) {
+          page.items = body._embedded.jobExecutionResourceList.map(JobExecution.fromJSON);
+        }
         page.totalElements = body.page.totalElements;
         page.pageNumber = body.page.number;
         page.pageSize = body.page.size;
@@ -101,29 +83,7 @@ export class JobsService {
    */
   getJobExecution(id: string): Observable<JobExecution> {
     return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + id, {})
-      .map((jsonItem) => {
-        const jobExecution: JobExecution = new JobExecution();
-        jobExecution.name = jsonItem.name;
-        jobExecution.startTime = moment(jsonItem.jobExecution.startTime);
-        jobExecution.endTime = moment(jsonItem.jobExecution.endTime);
-        jobExecution.stepExecutionCount = jsonItem.stepExecutionCount;
-        jobExecution.status = jsonItem.jobExecution.status;
-        jobExecution.exitCode = jsonItem.jobExecution.exitStatus.exitCode;
-        jobExecution.exitMessage = jsonItem.jobExecution.exitStatus.exitDescription;
-        jobExecution.jobExecutionId = jsonItem.jobExecution.id;
-        jobExecution.taskExecutionId = jsonItem.taskExecutionId;
-        jobExecution.jobInstanceId = jsonItem.jobExecution.jobInstance.id;
-        jobExecution.jobParametersString = jsonItem.jobParametersString;
-        jsonItem.jobExecution.stepExecutions.forEach(stepExecutionItem => {
-            jobExecution.stepExecutions.push(this.createStepExecution(stepExecutionItem));
-          }
-        );
-        jobExecution.restartable = jsonItem.restartable;
-        jobExecution.abandonable = jsonItem.abandonable;
-        jobExecution.stoppable = jsonItem.stoppable;
-        jobExecution.defined = jsonItem.defined;
-        return jobExecution;
-      })
+      .map(JobExecution.fromJSON)
       .catch(this.errorHandler.handleError);
   }
 
@@ -136,31 +96,7 @@ export class JobsService {
    */
   getStepExecution(jobid: string, stepid: string): Observable<StepExecutionResource> {
     return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid, {})
-      .map((body) => {
-        const stepExecutionItem = body.stepExecution;
-        const stepExecutionResource: StepExecutionResource = new StepExecutionResource();
-        const stepExecution = this.createStepExecution(stepExecutionItem);
-        const values = new Array<Map<string, string>>();
-        stepExecutionItem.executionContext.values.forEach(item => {
-          const map = new Map<string, string>();
-          for (const prop in item) {
-            if (item.hasOwnProperty(prop)) {
-              map.set(prop, item[prop]);
-            }
-          }
-          values.push(map);
-        });
-        stepExecution.executionContext = new ExecutionContext(
-          stepExecutionItem.executionContext.dirty,
-          stepExecutionItem.executionContext.empty,
-          values);
-        stepExecution.exitCode = stepExecutionItem.exitStatus.exitCode;
-        stepExecution.exitMessage = stepExecutionItem.exitStatus.exitDescription;
-        stepExecutionResource.jobExecutionId = body.jobExecutionId;
-        stepExecutionResource.stepExecution = stepExecution;
-        stepExecutionResource.stepType = body.stepType;
-        return stepExecutionResource;
-      })
+      .map(StepExecutionResource.fromJSON)
       .catch(this.errorHandler.handleError);
   }
 
@@ -173,71 +109,8 @@ export class JobsService {
    */
   getStepExecutionProgress(jobid: string, stepid: string): Observable<StepExecutionProgress> {
     return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid + '/progress', {})
-      .map((body) => {
-        const stepExecutionProgress: StepExecutionProgress = new StepExecutionProgress();
-        stepExecutionProgress.percentageComplete = body.percentageComplete;
-        stepExecutionProgress.finished = body.finished;
-        stepExecutionProgress.duration = body.duration;
-        const stepExecutionItem = body.stepExecution;
-        const stepExecution = this.createStepExecution(stepExecutionItem);
-        const values = new Array<Map<string, string>>();
-        stepExecutionItem.executionContext.values.forEach(item => {
-          const map = new Map<string, string>();
-          for (const prop in item) {
-            if (item.hasOwnProperty(prop)) {
-              map.set(prop, item[prop]);
-            }
-          }
-          values.push(map);
-        });
-        stepExecution.executionContext = new ExecutionContext(
-          stepExecutionItem.executionContext.dirty,
-          stepExecutionItem.executionContext.empty,
-          values);
-        stepExecution.exitCode = stepExecutionItem.exitStatus.exitCode;
-        stepExecution.exitMessage = stepExecutionItem.exitStatus.exitDescription;
-        stepExecutionProgress.stepExecution = stepExecution;
-        const stepExecutionHistory: StepExecutionHistory = new StepExecutionHistory();
-        stepExecutionHistory.stepName = body.stepExecutionHistory.stepName;
-        stepExecutionHistory.count = body.stepExecutionHistory.count;
-        ['commitCount', 'rollbackCount', 'readCount', 'writeCount', 'filterCount', 'readSkipCount', 'writeSkipCount',
-          'processSkipCount', 'duration', 'durationPerRead'].forEach((item) => {
-          stepExecutionHistory[item] = new CountDetails();
-          stepExecutionHistory[item].count = body.stepExecutionHistory[item].count;
-          stepExecutionHistory[item].min = body.stepExecutionHistory[item].min;
-          stepExecutionHistory[item].max = body.stepExecutionHistory[item].max;
-          stepExecutionHistory[item].mean = body.stepExecutionHistory[item].mean;
-          stepExecutionHistory[item].standardDeviation = body.stepExecutionHistory[item].standardDeviation;
-        });
-        stepExecutionProgress.stepExecutionHistory = stepExecutionHistory;
-        return stepExecutionProgress;
-      })
+      .map(StepExecutionProgress.fromJSON)
       .catch(this.errorHandler.handleError);
-  }
-
-  /**
-   * Create an instance of StepExecution
-   *
-   * @param stepExecutionItem JSON data
-   * @returns {StepExecution}
-   */
-  private createStepExecution(stepExecutionItem: any): StepExecution {
-    const stepExecution: StepExecution = new StepExecution();
-    stepExecution.id = stepExecutionItem.id;
-    stepExecution.name = stepExecutionItem.stepName;
-    stepExecution.status = stepExecutionItem.status;
-    stepExecution.readCount = stepExecutionItem.readCount;
-    stepExecution.writeCount = stepExecutionItem.writeCount;
-    stepExecution.commitCount = stepExecutionItem.commitCount;
-    stepExecution.rollbackCount = stepExecutionItem.rollbackCount;
-    stepExecution.readSkipCount = stepExecutionItem.readSkipCount;
-    stepExecution.processSkipCount = stepExecutionItem.processSkipCount;
-    stepExecution.writeSkipCount = stepExecutionItem.writeSkipCount;
-    stepExecution.filterCount = stepExecutionItem.filterCount;
-    stepExecution.skipCount = stepExecutionItem.skipCount;
-    stepExecution.startTime = moment.utc(stepExecutionItem.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
-    stepExecution.endTime = moment.utc(stepExecutionItem.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
-    return stepExecution;
   }
 
   /**
@@ -248,9 +121,8 @@ export class JobsService {
    */
   restartJob(item: JobExecution) {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?restart=true', {
-      headers: httpHeaders
-    })
+    return this.httpClient
+      .put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?restart=true', { headers: httpHeaders })
       .catch(this.errorHandler.handleError);
   }
 
@@ -262,9 +134,8 @@ export class JobsService {
    */
   stopJob(item: JobExecution) {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?stop=true', {
-      headers: httpHeaders
-    })
+    return this.httpClient
+      .put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?stop=true', { headers: httpHeaders })
       .catch(this.errorHandler.handleError);
   }
 }

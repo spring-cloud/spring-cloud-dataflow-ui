@@ -36,6 +36,7 @@ import { LoaderComponent } from 'src/app/shared/components/loader/loader.compone
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
+import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -73,6 +74,7 @@ describe('TaskExecutionsComponent', () => {
         TasksTabulationComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
+        DataflowDateTimePipe,
         LoaderComponent
       ],
       imports: [

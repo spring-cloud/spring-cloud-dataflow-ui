@@ -50,10 +50,10 @@
             <a [routerLink]="'/tasks/definitions/' + item.taskName">{{ item.taskName }}</a>
           </td>
           <td>
-            {{ item.startTime }}
+            {{ item.startTime | dataflowDateTime }}
           </td>
           <td>
-            {{ item.endTime }}
+            {{ item.endTime | dataflowDateTime }}
           </td>
           <td>
             {{ item.exitCode }}

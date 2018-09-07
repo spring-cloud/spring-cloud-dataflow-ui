@@ -35,14 +35,6 @@
         <td>{{ taskExecution.externalExecutionId || 'N/A' }}</td>
       </tr>
       <tr>
-        <td>Start Time</td>
-        <td>{{ taskExecution.startTime | dataflowDateTime }}</td>
-      </tr>
-      <tr>
-        <td>End Time</td>
-        <td>{{ taskExecution.endTime | dataflowDateTime }}</td>
-      </tr>
-      <tr>
         <td>Batch Job</td>
         <td>
           <span *ngIf="taskExecution.jobExecutionIds.length > 0" class="glyphicon glyphicon-ok text-info"></span>

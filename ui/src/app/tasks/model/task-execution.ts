@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import * as moment from 'moment';
 
 export class TaskExecution {
 
@@ -13,17 +14,16 @@ export class TaskExecution {
   public errorMessage: string;
   public externalExecutionId: string;
 
-  constructor(
-      executionId: number,
-      exitCode: number,
-      taskName: string,
-      startTime: Moment,
-      endTime: Moment,
-      exitMessage: string,
-      args: string[], // arguments would be restricted name
-      jobExecutionIds: number[],
-      errorMessage: string,
-      externalExecutionId: string) {
+  constructor(executionId: number,
+              exitCode: number,
+              taskName: string,
+              startTime: Moment,
+              endTime: Moment,
+              exitMessage: string,
+              args: string[], // arguments would be restricted name
+              jobExecutionIds: number[],
+              errorMessage: string,
+              externalExecutionId: string) {
     this.executionId = executionId;
     this.exitCode = exitCode;
     this.taskName = taskName;
@@ -35,4 +35,19 @@ export class TaskExecution {
     this.errorMessage = errorMessage;
     this.externalExecutionId = externalExecutionId;
   }
+
+  static fromJSON(jsonItem) {
+    return new TaskExecution(
+      jsonItem.executionId,
+      jsonItem.exitCode,
+      jsonItem.taskName,
+      jsonItem.startTime ? moment.utc(jsonItem.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]') : null,
+      jsonItem.endTime ? moment.utc(jsonItem.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]') : null,
+      jsonItem.exitMessage,
+      jsonItem.arguments,
+      jsonItem.jobExecutionIds,
+      jsonItem.errorMessage,
+      jsonItem.externalExecutionId);
+  }
+
 }
