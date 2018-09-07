@@ -5,8 +5,29 @@
   </button>
 </div>
 <form name="app-properties" (submit)="handleOk()" class="modal-body app-properties">
-  <properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
-                    [form]="propertiesFormGroup" [ngBusy]="busy"></properties-group>
+  <div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading">
+
+    <div *ngIf="propertiesGroupModel.getControlsModels().length > 50 && !showProperties"
+         class="dataflow-alert dataflow-alert-info" style="display: block">
+      <p style="padding-bottom: 5px;">
+        There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br>Do you want to
+        <strong>display all the properties</strong> ?
+      </p>
+      <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
+    </div>
+
+    <div *ngIf="propertiesGroupModel.getControlsModels().length < 50 || showProperties">
+
+      <properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
+                        [form]="propertiesFormGroup" [ngBusy]="busy"></properties-group>
+    </div>
+  </div>
+
+  <div *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading"
+       style="padding-bottom: 20px;padding-left:10px;padding-top: 10px;">
+    <app-loader></app-loader>
+  </div>
+
   <div class="modal-footer">
     <button type="button" class="btn btn-default" (click)="handleCancel()">Close</button>
     <button type="submit" class="btn btn-primary" [disabled]="okDisabled">OK</button>

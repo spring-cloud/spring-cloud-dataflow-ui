@@ -71,6 +71,16 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   };
 
   /**
+   * Display the properties
+   */
+  showProperties = true;
+
+  /**
+   * State too Many properties
+   */
+  tooManyProperties = false;
+
+  /**
    * Constructor
    *
    * @param {AppsService} appsService
@@ -142,6 +152,8 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
     const busy = this.appsService.getAppInfo(this.application.type, this.application.name, version)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((detailed: DetailedAppRegistration) => {
+          this.tooManyProperties = (detailed.options.length > 50);
+          this.showProperties = !this.tooManyProperties;
           this.detailedAppRegistration = detailed;
         },
         error => {

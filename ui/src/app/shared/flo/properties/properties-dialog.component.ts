@@ -28,6 +28,8 @@ export class PropertiesDialogComponent implements OnInit {
 
   busy: Subscription;
 
+  showProperties = false;
+
   constructor(private bsModalRef: BsModalRef
   ) {
     this.propertiesFormGroup = new FormGroup({});
