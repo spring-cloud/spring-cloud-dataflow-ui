@@ -9,7 +9,7 @@
 
   <div id="flo-container" class="stream-editor" [ngBusy]="busy">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="20" [(dsl)]="dsl"
+                [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="55" [(dsl)]="dsl"
                 (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
 
       <div class="flow-definition-container">
