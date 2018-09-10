@@ -127,7 +127,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
     const taskProperties = getClean(this.form.get('params') as FormArray);
     const busy = this.tasksService.launchDefinition({
       name: name,
-      args: taskArguments.join(','),
+      args: taskArguments.join(' '),
       props: taskProperties.join(',')
     }).pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
