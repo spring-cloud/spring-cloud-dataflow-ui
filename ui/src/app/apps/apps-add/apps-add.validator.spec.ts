@@ -13,7 +13,6 @@ describe('AppsAddValidator', () => {
       [
         ' ',
         'bb',
-        ' http://foo.ly/foo',
         'b b'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
@@ -23,7 +22,9 @@ describe('AppsAddValidator', () => {
     it('valid', () => {
       [
         'http://foo.ly/foo',
-        'http://foo.bar:bar.foo-foo:bar-bar'
+        'http://foo.bar:bar.foo-foo:bar-bar',
+        'http://foo.bar/foo.bar&a=a',
+        'http://foo.bar/foo.bar&b=b?a=a'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
         expect(AppsAddValidator.uri(uri)).toBeNull();

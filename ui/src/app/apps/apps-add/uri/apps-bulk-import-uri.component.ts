@@ -8,6 +8,7 @@ import { AppsService } from '../../apps.service';
 import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { AppsAddValidator } from '../apps-add.validator';
+import { AppError } from '../../../shared/model/error.model';
 
 /**
  * Applications Bulk Import
@@ -83,6 +84,8 @@ export class AppsBulkImportUriComponent implements OnDestroy {
         .subscribe(data => {
           this.notificationService.success('Apps Imported.');
           this.router.navigate(['apps']);
+        }, (error) => {
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
 
       this.busyService.addSubscription(busy);
