@@ -1,4 +1,4 @@
-import {FormControl, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 /**
  * Validators for Bulk Import Form
@@ -11,7 +11,7 @@ export class AppsAddValidator {
   /**
    * Uri regex
    */
-  static uriRegex = /^([a-zA-Z0-9-]+:\/\/)([\\w\\.:-]+)?([a-zA-Z0-9-\/.:-]+)*$/;
+  static uriRegex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
   /**
    * Validate the uri conditions
