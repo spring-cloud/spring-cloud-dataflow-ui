@@ -21,6 +21,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SharedAboutService } from './shared/services/shared-about.service';
 import { LayoutModule } from './layout/layout.module';
 import { LogoComponent } from './layout/logo/logo.component';
+import { AuditRecordModule } from './audit/audit-record.module';
 
 /**
  * Executed when the app starts up. Will load the security
@@ -48,6 +49,7 @@ export function init(authService: AuthService, sharedAboutService: SharedAboutSe
     AboutModule,
     AnalyticsModule,
     AppsModule,
+    AuditRecordModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
