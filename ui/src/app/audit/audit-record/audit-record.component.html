@@ -1,0 +1,124 @@
+<app-page id="applications-list">
+
+  <app-page-head>
+    <app-page-head-title><strong>Audit Records</strong></app-page-head-title>
+  </app-page-head>
+
+  <div dataflowLayoutType type="full">
+    <p>
+      This section gives you access to recorded audit events.
+    </p>
+
+    <app-list-bar-audit-record [params]="params" [page]="auditRecords" #listBar
+                               (refresh)="refresh()" (search)="search($event)" [actions]="[]"
+                               (action)="applyAction($event.action)" [operationTypes]="operationTypes"
+                               [actionTypes]="actionTypes">
+    </app-list-bar-audit-record>
+
+    <table id="table" *ngIf="auditRecords?.items && auditRecords.items.length > 0"
+           class="table-checkbox table table-hover">
+      <thead>
+      <tr>
+        <th style="width: 10px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'id'" [sort]="params"
+                    id="sort-id">ID
+          </app-sort>
+        </th>
+        <th style="width: 200px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'createdOn'" [sort]="params"
+                    id="sort-createdOn">Created On
+          </app-sort>
+        </th>
+        <th style="width: 100px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'auditOperation'" [sort]="params"
+                    id="sort-auditOperation">Operation
+          </app-sort>
+        </th>
+        <th style="width: 100px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'auditAction'" [sort]="params"
+                    id="sort-auditAction">Action
+          </app-sort>
+        </th>
+        <th style="width: 200px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'correlationId'" [sort]="params"
+                    id="sort-correlationId">Correlation Id
+          </app-sort>
+        </th>
+        <th style="width: 200px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'createdBy'" [sort]="params"
+                    id="sort-createdBy">Created By
+          </app-sort>
+        </th>
+        <th style="width: 100px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'serverHost'" [sort]="params"
+                    id="sort-serverHost">Host
+          </app-sort>
+        </th>
+        <th>
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'auditData'" [sort]="params"
+                    id="sort-auditData">Data
+          </app-sort>
+        </th>
+        <th class="text-center">&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of auditRecords.items | paginate: auditRecords.getPaginationInstance(); index as i">
+        <td>
+          <a style="cursor: pointer" (click)="viewDetails(item)">{{ item.auditRecordId }}</a>
+        </td>
+        <td>
+          {{ item.createdOn | dataflowDateTime }}
+        </td>
+        <td>
+          <app-audit-record-operation [auditRecord]="item"></app-audit-record-operation>
+        </td>
+        <td>
+          <app-audit-record-action [auditRecord]="item"></app-audit-record-action>
+        </td>
+        <td>
+          <strong>{{ item.correlationId }}</strong>
+        </td>
+        <td>
+          {{item.createdBy || 'N/A'}}
+        </td>
+        <td>
+          {{ item.serverHost }}
+        </td>
+        <td>
+          {{ item.auditData }}
+        </td>
+        <td class="table-actions" width="10px" nowrap="">
+          <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
+                                [actions]="auditActions(i)"></app-list-row-actions>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <app-list-pagination [page]="auditRecords" [params]="params" (changed)="changePaginationPager($event)"
+                         [item]="'audit record'" [items]="'audit records'">
+    </app-list-pagination>
+
+    <app-list-empty [page]="auditRecords" [filters]="[params.q, params.action, params.operation]">
+      <p><strong>No audit records are available</strong>, yet.</p>
+      <p [appRoles]="['ROLE_VIEW']">
+        <a (click)="refresh()">Refresh</a> the page.
+      </p>
+    </app-list-empty>
+
+    <app-list-no-result [page]="auditRecords" [filters]="[params.q, params.action, params.operation]">
+      <p>
+        No results found for
+        <strong *ngIf="params.q != ''">'{{ params.q }}'</strong><span
+        *ngIf="params.q != '' && params.operation">, </span>
+        <strong *ngIf="params.operation">'{{ params.operation.name }}'</strong>
+        <strong *ngIf="params.action">'{{ params.action.name }}'</strong>.
+      </p>
+      <p>
+        You can <a id="search-clear" (click)="listBar.clearSearch()">clear the search</a> or <a (click)="refresh()">Refresh</a>
+        the page.
+      </p>
+    </app-list-no-result>
+  </div>
+</app-page>

@@ -4,6 +4,11 @@
         "secure": false,
         "logLevel": "debug"
     },
+    "/audit-records" : {
+        "target": "http://localhost:9393/",
+        "secure": false,
+        "logLevel": "debug"
+    },
     "/authenticate" : {
         "target": "http://localhost:9393/",
         "secure": false,
