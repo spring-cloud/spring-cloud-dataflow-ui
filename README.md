@@ -1,37 +1,86 @@
-# Spring Cloud Data Flow Dashboard [![Stories in Ready](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui) [![Stories in Progress](https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/spring-cloud/spring-cloud-dataflow-ui)
 
-[![Build Status](https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui.png?branch=master)](https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui)
-[![Build status](https://ci.appveyor.com/api/projects/status/7pqco2aqjyaphp36/branch/master?svg=true)](https://ci.appveyor.com/project/ghillert/spring-cloud-dataflow-ui/branch/master)
-[![Code Coverage](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master)
+<p align="center">
+  <a href="https://cloud.spring.io/spring-cloud-dataflow/">
+    <img alt="Spring Data Flow Dashboard" title="Spring Data Flow Dashboard" src="http://i.imgur.com/ZfEGBE4.png" width="450">
+  </a>
+</p>
 
-**SauceLabs Status**
+<p align="center">
+  <a href="http://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
+    <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready"
+         alt="Stories in Ready">
+  </a>
+  <a href="http://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
+    <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress"
+         alt="Stories in Progress">
+  </a>
+  <br />
+  <a href="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui">
+    <img src="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui.png?branch=master"
+         alt="Build Status">
+  </a>
+  <a href="https://ci.appveyor.com/project/ghillert/spring-cloud-dataflow-ui/branch/master">
+    <img src="https://ci.appveyor.com/api/projects/status/7pqco2aqjyaphp36/branch/master?svg=true"
+         alt="Build status">
+  </a>
+  <a href="https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master">
+    <img src="https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master/graph/badge.svg"
+         alt="Code Coverage">
+  </a>
+  <a href="https://saucelabs.com/u/ghillert">
+    <img src="https://saucelabs.com/buildstatus/ghillert"
+         alt="Sauce Test Status">
+  </a>
+  <a href="https://www.browserstack.com/automate/public-build/T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c">
+    <img src="https://www.browserstack.com/automate/badge.svg?badge_key=T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c"
+         alt="BrowserStack Status">
+  </a>
+</p>
 
-[![Sauce Test Status](https://saucelabs.com/buildstatus/ghillert)](https://saucelabs.com/u/ghillert)
+<p align="center">
+  <a href="#introduction">Introduction</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#acknowledgments">Acknowledgments</a>
+</p>
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/ghillert.svg)](https://saucelabs.com/u/ghillert)
+## Introduction
 
-**BrowserStack Status**
+This is the **Spring Cloud Data Flow Dashboard** user interface (UI). The UI uses [Angular][]. Source code documentation is available at http://cloud.spring.io/spring-cloud-dataflow-ui/.
 
-[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c)](https://www.browserstack.com/automate/public-build/T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c)
+> The Git repository for the main **Spring Cloud Data Flow** project is at: https://github.com/spring-cloud/spring-cloud-dataflow
 
-This is the *Spring Cloud Data Flow Dashboard* user interface (UI). The UI uses [Angular][]. Source code documentation is available at http://cloud.spring.io/spring-cloud-dataflow-ui/.
+---
 
-> The Git repository for the main *Spring Cloud Data Flow* project is at: https://github.com/spring-cloud/spring-cloud-dataflow
+## Showcase
 
-# Building the Module
+<center>
+  <table>
+    <tr>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-available-apps-list.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-available-apps-list.png"></a></td>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-bulk-import-applications.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-bulk-import-applications.png"></a></td>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-streams-list-definitions.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-streams-list-definitions.png"></a></td>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-flo-create-stream.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-flo-create-stream.png"></a></td>
+    </tr>
+    <tr>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-stream-deploy-builder.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-stream-deploy-builder.png"></a></td>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-task-apps-list.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-task-apps-list.png"></a></td>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-ctr-flo-tab.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-ctr-flo-tab.png"></a></td>
+      <td><a href="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-jobs-job-execution-details.png"><img width="120" alt="Spring Cloud Data Flow" src="https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-docs/src/main/asciidoc/images/dataflow-jobs-job-execution-details.png"></a></td>
+    </tr>
+  </table>
+</center>
 
-Two build tool chains are supported. Primarily, the *Spring Cloud Data Flow UI* uses [npm][] ([Node.js][]-based) for managing dependencies and the execution of the build. In order to provide easier *Continuous Integration* (CI) support, [Maven][] can also be used to execute the build.
+---
 
-The *Spring Cloud Data Flow Dashboard* uses [Maven][], specifically the [frontend-maven-plugin][] which will actually execute [npm][] underneath. Using the [frontend-maven-plugin][], however, the required tooling, including [Node.js][] will be downloaded, installed and executed for you.
+## How To Use
 
-## Requirements
+Two build tool chains are supported. Primarily, the **Spring Cloud Data Flow UI** uses [npm][] ([Node.js][]-based) for managing dependencies and the execution of the build. In order to provide easier **Continuous Integration** (CI) support, [Maven][] can also be used to execute the build.
 
-Using [Maven][] is also the easiest route for Java developers to get started, as the only requirements are:
+The **Spring Cloud Data Flow Dashboard** uses [Maven][], specifically the [frontend-maven-plugin][] which will actually execute [npm][] underneath. Using the [frontend-maven-plugin][], however, the required tooling, including [Node.js][] will be downloaded, installed and executed for you.
 
-* [Maven][]
-* [Git][]
+### Building the Project using Maven
 
-## Building the Project using Maven
+Please ensure that at a minimum [Maven][] and [Git][] are available on your system (Using [Maven][] is also the easiest route for Java developers to get started).
 
 	$ git clone https://github.com/spring-cloud/spring-cloud-dataflow-ui.git
 	$ cd spring-cloud-dataflow-ui
@@ -39,7 +88,7 @@ Using [Maven][] is also the easiest route for Java developers to get started, as
 
 This will create `target/spring-cloud-dataflow-ui-1.3.0.BUILD-SNAPSHOT.jar` and also install the build artifact into the local Maven repository.
 
-## Building the Project using npm
+### Building the Project using npm
 
 For UI development purposes, we recommend using [npm][] directly. Please ensure that at a minimum [Node.js][], [npm][] and the [Angular CLI][] are available on your system. In order to execute the build simply do:
 
@@ -48,151 +97,25 @@ For UI development purposes, we recommend using [npm][] directly. Please ensure 
 	$ npm install
 	$ ng build --prod
 
-**NOTE:** Before building be sure that the `ng-serve` development server has been shutdown.
+Before building be sure that the `ng-serve` development server has been shutdown.<br >
+If you want to develop on the project, please, have a look on the [Developer Guideline](README_DEV.md/#development).
 
-### Build fails after merging a branch or changing branches
+---
 
-In some cases the npm-modules or other dependencies may become inconsistent during branch changes.
-In order to resolve the problem we need to clean out inconsistent dependencies.
-The following instructions can be used to do this:
+## Acknowledgments
 
-* Shutdown the development server if it is running.
-* Commit or stash your changes
-* Execute the following:
-	* `git clean -fx`
-	* `npm install`
-* If you stashed your files execute the following:  `git stash pop`
-* Now build the application by executing the following: `ng build --prod`
+Thanks to [Saucelabs](https://saucelabs.com/) and [Browserstack](https://www.browserstack.com/) for supporting us.
+This project uses code from several open source packages: 
+[Angular](https://angular.io),
+[Ngx Bootstrap](https://valor-software.com/),
+[RxJS](https://github.com/ReactiveX/rxjs),
+[Spring Flo](https://github.com/spring-projects/spring-flo),
+[Ngx Toastr](https://github.com/scttcper/ngx-toastr),
+[Font Awesome](https://fontawesome.com/v4.7.0/icons/) (...).
 
-## Important Build-related Configuration Files
+This project is powered by:
 
-* **pom.xml** Maven config file
-* ui/**package.json** Node dependencies
-
-# Running Tests - Locally
-
-## Unit Tests
-
-```bash
-	$ ng test --single-run
-```
-
-## E2E Tests
-
-```bash
-	$ npm run e2e
-```
-
-# Running Tests - SauceLabs
-
-Before you can run tests using SauceLabs, please setup your username and password:
-
-```bash
-    $ export SAUCE_USERNAME=your-username
-    $ export SAUCE_ACCESS_KEY=your-access-key
-```
-
-## Unit Tests
-
-```bash
-	$ npm run test-saucelabs-local
-```
-
-## E2E Tests
-
-For E2E tests, developers should refrain from using `localhost`. Instead, add `dataflow.local` to your local DNS hosts file.
-
-```bash
-	$ npm run e2e-saucelabs-local
-```
-
-## Slow Internet Connection
-
-By default the tests use an embedded version of Sauce Connect. In case you enounter test failures due to bandwidth constraints,
-you may consider establishing a SauceLabs tunnel using the stand-alone **[Sauce Connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy)**.
-
-Setup instructions can be found [here](https://wiki.saucelabs.com/display/DOCS/Basic+Sauce+Connect+Proxy+Setup).
-
-Make sure you have at least the following environment variables defined:
-
-export SAUCE_CONNECT_USE_EMBEDDED=false
-export SAUCE_USER=
-export SAUCE_API_KEY=
-
-For a list of further supported configuration options, check the `config_examples/sc_configs` folder in the downloaded Sauce Connect binary.
-
-## Thank You
-
-![SauceLabs Logo](master-ui-assets/images/saucelabs-logo-600x315.png)
-
-Cross-browser Testing provided by [SauceLabs](https://saucelabs.com).
-
-# Running Tests - BrowserStack
-
-Before you can run tests using BrowserStack, please setup your username and password:
-
-```bash
-    $ export BROWSER_STACK_USERNAME=your-username
-    $ export BROWSER_STACK_ACCESS_KEY=your-access-key
-```
-
-## Unit Tests
-
-```bash
-	$ npm run test-browserstack-local
-```
-
-## E2E Tests
-
-For E2E tests, developers should refrain from using `localhost`. Instead, add `dataflow.local` to your local DNS hosts file.
-
-```bash
-	$ npm run e2e-browserstack-local
-```
-
-## Big Thanks
-
-![BrowserStack Logo](master-ui-assets/images/browserstack-logo-600x315.png)
-
-
-Cross-browser Testing Platform provided by [BrowserStack](https://browserstack.com).
-
-# Development
-
-For development, please ensure that a *Spring Cloud Data Flow* server instance is running at `http://localhost:9393/`.
-
-The execute:
-
-	$ npm start
-
-The Dashboard will be running at `http://localhost:4200/`. The browser will automatically reload upon saving any changes to the application sources.
-
-# Dependency Management
-
-[npm][] is used for managing UI dependencies.
-
-## Install Build Dependency
-
-	$ npm install --save-dev my-dependency
-
-## How to Update Node.js dependencies in package.json
-
-Use [https://github.com/tjunnone/npm-check-updates](https://github.com/tjunnone/npm-check-updates)
-
-# Project Analytics
-
-## Web Pack Bundle Analyzer
-Produces analysis report on the project webpack bundles.
-
-    $ ng build --prod --stats-json
-    $ npm run bundle-report
-
-You can view the results via your browser at: http://127.0.0.1:8888/
-
-## Code Coverage Report
-Produces code coverage report.
-
-    $ ng test --browsers PhantomJS --watch --code-coverage  --reporters=coverage-istanbul
+<a href="http://pivotal.io/"><img alt="Pivotal" width="136" title="Pivotal" src="https://i.imgur.com/XPeBw7A.png"></a> <a href="http://spring.io/"><img alt="Spring" title="Spring" src="https://i.imgur.com/az8Xady.png" width="155"></a>
 
 [Angular]: http://angular.io/
 [Angular CLI]: https://cli.angular.io/
@@ -202,4 +125,3 @@ Produces code coverage report.
 [Node.js]: http://nodejs.org/
 [npm]: https://www.npmjs.com/
 [Protractor]: https://github.com/angular/protractor
-
