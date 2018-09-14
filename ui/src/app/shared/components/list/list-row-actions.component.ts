@@ -12,7 +12,7 @@ import {
     <div *ngIf="actions" class="actions">
       <button *ngFor="let action of actionsDefault" name="{{ action.id }}" type="button" (click)="call(action)"
               class="btn btn-default" title="{{ action.title }}" [disabled]="!!action?.disabled"
-              [tooltip]="action.title" delay="500">
+              [tooltip]="action.title" delay="500" container="body">
         <span class="fa fa-{{ action.icon }}"></span>
       </button>
       <div class="btn-group" *ngIf="actionsMenu.length > 0" dropdown>
