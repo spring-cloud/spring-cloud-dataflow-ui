@@ -16,6 +16,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
 import { EMPTY } from 'rxjs/index';
+import { ClipboardService } from 'ngx-clipboard';
 
 /**
  * Component used to deploy stream definitions.
@@ -77,6 +78,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * @param {LoggerService} loggerService
    * @param {StreamDeployService} streamDeployService
    * @param {Router} router
+   * @param {ClipboardService} clipboardService
    * @param {SharedAboutService} sharedAboutService
    */
   constructor(private route: ActivatedRoute,
@@ -86,6 +88,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
               private loggerService: LoggerService,
               private streamDeployService: StreamDeployService,
               private router: Router,
+              private clipboardService: ClipboardService,
               private sharedAboutService: SharedAboutService) {
   }
 
@@ -192,11 +195,31 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    */
   runExport(value: Array<string>) {
     this.update(value);
-    const propertiesText = this.properties.join('\n');
-    const date = moment().format('YYYY-MM-HHmmss');
-    const filename = `${this.refConfig.id}_${date}.txt`;
-    const blob = new Blob([propertiesText], { type: 'text/plain' });
-    saveAs(blob, filename);
+    if (this.properties.length === 0) {
+      this.notificationService.error('There is no properties to export.');
+    } else {
+      const propertiesText = this.properties.join('\n');
+      const date = moment().format('YYYY-MM-HHmmss');
+      const filename = `${this.refConfig.id}_${date}.txt`;
+      const blob = new Blob([propertiesText], { type: 'text/plain' });
+      saveAs(blob, filename);
+    }
+  }
+
+  /**
+   * Run copy to clipboard
+   * Update the properties
+   * @param value Array of properties
+   */
+  runCopy(value: Array<string>) {
+    this.update(value);
+    if (this.properties.length === 0) {
+      this.notificationService.error('There is no properties to copy.');
+    } else {
+      const propertiesText = this.properties.join('\n');
+      this.clipboardService.copyFromContent(propertiesText);
+      this.notificationService.success('The properties has been copied to your clipboard.');
+    }
   }
 
   /**

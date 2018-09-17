@@ -353,6 +353,9 @@
           <button tabindex="200" id="btn-export" type="button" class="btn btn-default" (click)="exportProps()">
             Export
           </button>
+          <button tabindex="200" id="btn-copy" type="button" class="btn btn-default" (click)="copyToClipboard()">
+            Copy to Clipboard
+          </button>
           <button tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary"
                   [disabled]="!isSubmittable(builder)">
             Deploy the stream
