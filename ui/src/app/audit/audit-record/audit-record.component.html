@@ -64,29 +64,29 @@
       </thead>
       <tbody>
       <tr *ngFor="let item of auditRecords.items | paginate: auditRecords.getPaginationInstance(); index as i">
-        <td>
+        <td nowrap="">
           <a style="cursor: pointer" (click)="viewDetails(item)">{{ item.auditRecordId }}</a>
         </td>
-        <td>
+        <td nowrap="">
           {{ item.createdOn | dataflowDateTime }}
         </td>
-        <td>
+        <td nowrap="">
           <app-audit-record-operation [auditRecord]="item"></app-audit-record-operation>
         </td>
-        <td>
+        <td nowrap="">
           <app-audit-record-action [auditRecord]="item"></app-audit-record-action>
         </td>
-        <td>
+        <td nowrap="">
           <strong>{{ item.correlationId }}</strong>
         </td>
-        <td>
+        <td nowrap="">
           {{item.createdBy || 'N/A'}}
         </td>
-        <td>
+        <td nowrap="">
           {{ item.serverHost }}
         </td>
-        <td>
-          {{ item.auditData }}
+        <td class="dataflow-truncator-width">
+          <dataflow-truncator [input]="item.auditData" trailPosition="start" trail="…"></dataflow-truncator>
         </td>
         <td class="table-actions" width="10px" nowrap="">
           <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
