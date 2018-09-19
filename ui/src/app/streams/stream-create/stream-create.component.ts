@@ -246,7 +246,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   get isCreateStreamsDisabled(): boolean {
-    if (this.dsl && this.contentValidated && this.parseErrors.length === 0) {
+    if (this.dsl && this.dsl.trim() && this.contentValidated && this.parseErrors.length === 0) {
       return Array.from(this.validationMarkers.values())
         .find(markers => markers
           .find(m => m.severity === Flo.Severity.Error) !== undefined) !== undefined;

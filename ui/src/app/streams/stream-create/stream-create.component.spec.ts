@@ -140,6 +140,23 @@ describe('StreamCreateComponent', () => {
     }, 1000);
   });
 
+  it('disable stream creation for invalid stream (space)', (done) => {
+    fixture.detectChanges();
+    expect(component.isCreateStreamsDisabled).toBeTruthy();
+    component.dsl = ' ';
+    fixture.detectChanges();
+    // Validation is performed after a delay, hence the wait
+    setTimeout(() => {
+      expect(component.dsl).toEqual(' ');
+      expect(component.parseErrors.length).toEqual(0);
+      const allMarkers = [];
+      Array.from(component.validationMarkers.values()).forEach(markers => allMarkers.push(...markers));
+      expect(allMarkers.length).toEqual(0);
+      expect(component.isCreateStreamsDisabled).toBeTruthy();
+      done();
+    }, 1000);
+  });
+
   it('disable stream creation for graph validation error marker', (done) => {
     fixture.detectChanges();
     expect(component.isCreateStreamsDisabled).toBeTruthy();
