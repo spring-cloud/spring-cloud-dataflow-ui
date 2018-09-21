@@ -161,6 +161,13 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Refresh action
+   */
+  refresh() {
+    this.loadJobExecutions();
+  }
+
+  /**
    * Update event from the Paginator Pager
    * @param params
    */
