@@ -11,6 +11,7 @@ import { TaskLaunchValidator } from './task-launch.validator';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError } from '../../shared/model/error.model';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { TaskLaunchParams } from '../components/tasks.interface';
 
 /**
  * Component that provides a launcher of task.
@@ -110,6 +111,21 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Prepare params
+   * @param {string} name
+   * @param {Array<string>} taskArguments
+   * @param {Array<string>} taskProperties
+   * @returns {TaskLaunchParams}
+   */
+  prepareParams(name: string, taskArguments: Array<string>, taskProperties: Array<string>): TaskLaunchParams {
+    return {
+      name: name,
+      args: taskArguments.join(' '),
+      props: taskProperties.join(', ')
+    };
+  }
+
+  /**
    * Launch the task
    *
    * @param {string} name
@@ -125,11 +141,8 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
     };
     const taskArguments = getClean(this.form.get('args') as FormArray);
     const taskProperties = getClean(this.form.get('params') as FormArray);
-    const busy = this.tasksService.launchDefinition({
-      name: name,
-      args: taskArguments.join(' '),
-      props: taskProperties.join(',')
-    }).pipe(takeUntil(this.ngUnsubscribe$))
+    const busy = this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties))
+      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(
         data => {
           this.notificationService.success('Successfully launched task "' + name + '"');
