@@ -82,4 +82,34 @@ describe('TaskLaunchComponent', () => {
     expect(component).toBeTruthy();
   });
 
+
+  describe('Prepare Arguments', () => {
+
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('Name, no arg, 2 properties', () => {
+      const result = component.prepareParams('name', [], ['prop1=val1', 'prop2=val2']);
+      expect(result.name).toBe('name');
+      expect(result.args).toBe('');
+      expect(result.props).toBe('prop1=val1, prop2=val2');
+    });
+
+    it('Name, 2 args, no property', () => {
+      const result = component.prepareParams('name', ['arg1=val1', 'arg2=val2'], []);
+      expect(result.name).toBe('name');
+      expect(result.args).toBe('arg1=val1 arg2=val2');
+      expect(result.props).toBe('');
+    });
+
+    it('Name, 2 args, 2 properties', () => {
+      const result = component.prepareParams('name', ['arg1=valArg1', 'arg2=valArg2'], ['prop1=valProp1', 'prop2=valProp2']);
+      expect(result.name).toBe('name');
+      expect(result.args).toBe('arg1=valArg1 arg2=valArg2');
+      expect(result.props).toBe('prop1=valProp1, prop2=valProp2');
+    });
+
+  });
+
 });
