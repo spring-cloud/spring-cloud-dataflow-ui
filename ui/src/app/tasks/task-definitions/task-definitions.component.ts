@@ -96,11 +96,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
-   * Apps State
-   */
-  appsState$: Observable<any>;
-
-  /**
    * Constructor
    *
    * @param {TasksService} tasksService
@@ -249,7 +244,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.form = { q: this.context.q, checkboxes: [] };
     this.itemsSelected = this.context.itemsSelected || [];
 
-    this.appsState$ = this.appsService.appsState();
     this.sharedAboutService.getFeatureInfo()
       .subscribe((featureInfo: FeatureInfo) => {
         this.schedulerEnabled = !!featureInfo.schedulerEnabled;
