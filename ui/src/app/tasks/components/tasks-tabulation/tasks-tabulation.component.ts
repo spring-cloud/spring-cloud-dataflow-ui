@@ -28,12 +28,6 @@ export class TasksTabulationComponent implements OnInit {
 
   counters$: Observable<any>;
 
-
-  /**
-   * Apps State
-   */
-  appsState$: Observable<any>;
-
   /**
    * Constructor
    *
@@ -49,7 +43,6 @@ export class TasksTabulationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.appsState$ = this.appsService.appsState();
     this.refresh();
   }
 
