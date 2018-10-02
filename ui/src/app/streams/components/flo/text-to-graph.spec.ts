@@ -63,6 +63,17 @@ describe('text-to-graph', () => {
         expect(graph.links[1].to).toEqual(1);
     });
 
+    it('jsongraph: two separate apps should be unconnected', () => {
+        graph = getGraph('aaa, bbb');
+        expect(graph.streamdefs.length).toEqual(1);
+        expect(graph.streamdefs[0].def).toEqual('aaa, bbb');
+        expect(graph.nodes[0].name).toEqual('aaa');
+        expect(graph.nodes[0].group).toEqual('app');
+        expect(graph.nodes[1].name).toEqual('bbb');
+        expect(graph.nodes[1].group).toEqual('app');
+        expect(graph.links.length).toEqual(0);
+    });
+
     it('jsongraph: tapping a stream', () => {
         graph = getGraph('aaaa= time | log\n:aaaa.time>log');
         expect(graph.streamdefs[0].def).toEqual('time | log');

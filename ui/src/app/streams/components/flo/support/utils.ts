@@ -15,6 +15,7 @@
  */
 
 import {dia} from 'jointjs';
+import {ApplicationType} from '../../../../shared/model';
 
 /**
  * Utilities for Flo based Stream Definition graph editor.
@@ -26,7 +27,19 @@ export class Utils {
   static canBeHeadOfStream(graph: dia.Graph, element: dia.Element): boolean {
     if (element.attr('metadata')) {
       if (!element.attr('.input-port') || element.attr('.input-port/display') === 'none') {
-        return true;
+        if (element.attr('metadata/group') === ApplicationType[ApplicationType.app]) {
+          // For APP nodes if one has `stream-name` set then others cannot have `stream-name` property
+          // Check current element. If it has `stream-name` property then it's allowed to have it
+          if (element.attr('stream-name')) {
+            return true;
+          }
+          // Otherwise check the rest of APP nodes don't have `stream-name` set
+          return !graph.getElements()
+            .filter(e => e.attr('metadata/group') === ApplicationType[ApplicationType.app] && e !== element)
+            .find(e => e.attr('stream-name'));
+        } else {
+          return true;
+        }
       } else {
         const incoming = graph.getConnectedLinks(element, {inbound: true});
         const tapLink = incoming.find(l => l.attr('props/isTapLink'));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 the original author or authors.
+ * Copyright 2016-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,15 +41,12 @@ class InternalParser {
         this.textlines = definitionsText.split('\n');
     }
 
-    private tokenListToStringList(tokens, delimiter) {
+    private tokenListToStringList(tokens) {
         if (tokens.length === 0) {
             return '';
         }
         let result = '';
         for (let t = 0; t < tokens.length; t++) {
-            if (t > 0) {
-                result = result + delimiter;
-            }
             result = result + tokens[t].data;
         }
         return result;
@@ -125,6 +122,25 @@ class InternalParser {
         }
     }
 
+    private peekDestinationComponentToken(mustMatchAndConsumeIfDoes: boolean): Token {
+        const t = this.peekAtToken();
+        if (t === null) {
+            throw {'msg': 'Out of data', 'start': this.text.length};
+        }
+        if (!(this.isKind(t, TokenKind.IDENTIFIER) || this.isKind(t, TokenKind.STAR) ||
+              this.isKind(t, TokenKind.SLASH) || this.isKind(t, TokenKind.HASH))) {
+           if (mustMatchAndConsumeIfDoes) {
+               throw {'msg': 'Tokens of kind ' + t.kind + ' cannot be used in a destination', 'start': t.start};
+           } else {
+               return null;
+           }
+        }
+        if (mustMatchAndConsumeIfDoes) {
+            this.nextToken();
+        }
+        return t;
+    }
+
     private eatToken(expectedKind: TokenKind): Token {
         const t = this.nextToken();
         if (t === null) {
@@ -137,7 +153,7 @@ class InternalParser {
         return t;
     }
 
-    // A destination reference is of the form ':'IDENTIFIER['.'IDENTIFIER]*
+    // A destination reference is of the form ':'(IDENTIFIER|STAR|SLASH|HASH)['.'(IDENTIFIER|STAR|SLASH|HASH]*
     private eatDestinationReference(tapAllowed: boolean): Parser.DestinationReference {
         const nameComponents = [];
         let t;
@@ -147,16 +163,21 @@ class InternalParser {
             throw {'msg': 'Destination must start with a \':\'', 'start': firstToken.start, 'end': firstToken.end};
         }
         if (!this.isNextTokenAdjacent()) {
-        t = this.peekAtToken();
+            t = this.peekAtToken();
             if (t) {
                 throw {'msg': 'No whitespace allowed in destination', 'start': firstToken.end, 'end': t.start};
             } else {
                 throw {'msg': 'Out of data - incomplete destination', 'start': firstToken.start};
             }
         }
-        nameComponents.push(this.eatToken(TokenKind.IDENTIFIER)); // the non-optional identifier
+        let isDotted = false;
+        nameComponents.push(this.peekDestinationComponentToken(true));
+        while (this.isNextTokenAdjacent() && (this.peekDestinationComponentToken(false) !== null)) {
+            nameComponents.push(this.peekDestinationComponentToken(true));
+        }
         while (this.isNextTokenAdjacent() && this.peekToken(TokenKind.DOT)) {
             currentToken = this.eatToken(TokenKind.DOT);
+            isDotted = true;
             if (!this.isNextTokenAdjacent()) {
                 t = this.peekAtToken();
                 if (t) {
@@ -165,11 +186,15 @@ class InternalParser {
                     throw {'msg': 'Out of data - incomplete destination', 'start': currentToken.start};
                 }
             }
-            nameComponents.push(this.eatToken(TokenKind.IDENTIFIER));
+            nameComponents.push(currentToken);
+            nameComponents.push(this.peekDestinationComponentToken(true));
+            while (this.isNextTokenAdjacent() && (this.peekDestinationComponentToken(false) !== null)) {
+                nameComponents.push(this.peekDestinationComponentToken(true));
+            }
         }
         let type = null;
         // TODO this does not cope with dotted stream names...
-        if (nameComponents.length < 2 || !tapAllowed) {
+        if (!isDotted || !tapAllowed) {
             type = 'destination';
         } else {
             type = 'tap';
@@ -179,7 +204,7 @@ class InternalParser {
             type: type,
             start: firstToken.start,
             end: endpos,
-            name: (type === 'tap' ? 'tap:' : '') + this.tokenListToStringList(nameComponents, '.')
+            name: (type === 'tap' ? 'tap:' : '') + this.tokenListToStringList(nameComponents)
         };
         return destinationObject;
     }
@@ -338,18 +363,41 @@ class InternalParser {
     // appList: app (| app)*
     // A stream may end in a app (if it is a sink) or be followed by
     // a sink channel.
-    private eatAppList(): Parser.AppNode[] {
+    private eatAppList(preceedingSourceChannelSpecified: boolean): Parser.AppNode[] {
         const appNodes: Parser.AppNode[] = [];
+        let usedListDelimiter = -1;
+        let usedStreamDelimiter = -1;
         appNodes.push(this.eatApp());
         while (this.moreTokens()) {
             const t = this.peekAtToken();
             if (this.isKind(t, TokenKind.PIPE)) {
+                if (usedListDelimiter >= 0) {
+                    throw {'msg': 'Don\'t mix pipe and comma', 'start': usedListDelimiter};
+                }
+                usedStreamDelimiter = t.start;
+                this.nextToken();
+                appNodes.push(this.eatApp());
+            } else if (this.isKind(t, TokenKind.COMMA)) {
+                if (preceedingSourceChannelSpecified) {
+                    throw {'msg': 'Don\'t use comma with channels', 'start': t.start};
+                }
+                if (usedStreamDelimiter >= 0) {
+                    throw {'msg': 'Don\'t mix pipe and comma', 'start': usedStreamDelimiter};
+                }
+                usedListDelimiter = t.start;
                 this.nextToken();
                 appNodes.push(this.eatApp());
             } else {
                 // might be followed by sink channel
                 break;
             }
+        }
+        const isFollowedBySinkChannel = this.peekToken(TokenKind.GT);
+        if (isFollowedBySinkChannel && usedListDelimiter >= 0) {
+            throw {'msg': 'Don\'t use comma with channels', 'start': usedListDelimiter};
+        }
+        for (let appNumber = 0; appNumber < appNodes.length; appNumber++) {
+            appNodes[appNumber].nonStreamApp = !preceedingSourceChannelSpecified && !isFollowedBySinkChannel && (usedStreamDelimiter < 0);
         }
         return appNodes;
     }
@@ -449,9 +497,9 @@ class InternalParser {
         if (bridge) {
             // Create a bridge app to hang the source/sink channels off
             this.tokenStreamPointer--; // Rewind so we can nicely eat the sink channel
-            appNodes = [{'name': 'bridge', 'start': this.peekAtToken().start, 'end': this.peekAtToken().end}];
+            appNodes = [{'name': 'bridge', 'start': this.peekAtToken().start, 'end': this.peekAtToken().end, 'nonStreamApp': false}];
         } else {
-            appNodes = this.eatAppList();
+            appNodes = this.eatAppList(sourceChannelNode != null);
         }
         streamNode.apps = appNodes;
         const sinkChannelNode = this.maybeEatSinkChannel();
@@ -552,6 +600,9 @@ class InternalParser {
                                 sinkChannelName = streamdef.sinkChannel.channel.name;
                             }
                             app = streamdef.apps[m];
+                            if (app.nonStreamApp) {
+                                expectedType = 'app';
+                            }
                             options = new Map();
                             optionsranges = new Map();
                             if (app.options) {
@@ -587,7 +638,7 @@ class InternalParser {
                                         '\' (at app position ' + m + ') and app \'' + streamdef.apps[previous].name +
                                         '\' (at app position ' + previous + ') both use it'
                                         : 'App \'' + app.name +
-                                        '\' should be unique within the stream, use a label to differentiate multiple occurrences',
+                                        '\' should be unique within the definition, use a label to differentiate multiple occurrences',
                                     'range': streamObject.range
                                 });
                             } else {
@@ -696,6 +747,7 @@ export namespace Parser {
         options?: Parser.Option[];
         start: number;
         end: number;
+        nonStreamApp?: boolean;
     }
 
     export interface Option {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2017 the original author or authors.
+ * Copyright 2015-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import * as _ from 'lodash';
 import { Parser } from '../../../shared/services/parser';
 import { MetamodelService } from './metamodel.service';
 import { LoggerService } from '../../../shared/services/logger.service';
+import { ApplicationType } from '../../../shared/model';
 
 /**
  * Build a graph representation from text dsl.
@@ -167,23 +168,30 @@ class TextToGraphConverter {
                           parsedNode.name === 'bridge') &&
                         parsedNode.name) {
                         if (n > 0) {
-                            streamdef = streamdef + '| ';
+                            if (parsedNode.type !== 'app') {
+                                streamdef = streamdef + '| ';
+                            } else {
+                                streamdef = streamdef + ', ';
+                            }
                         }
                         graphNode = {
                             'id': nodeId++,
                             'label': parsedNode.label,
                             'name': parsedNode.name,
+                            'group': parsedNode.type,
                             'range': parsedNode.range
                             };
-                        if (linkFrom !== -1) {
-                            newlink = {'from': linkFrom, 'to': graphNode.id};
-                            if (linkCount === 0 && linkType) {
-                                newlink.linkType = linkType;
+                        if (parsedNode.type !== 'app') {
+                            if (linkFrom !== -1) {
+                                newlink = {'from': linkFrom, 'to': graphNode.id};
+                                if (linkCount === 0 && linkType) {
+                                    newlink.linkType = linkType;
+                                }
+                                links.push(newlink);
+                                linkCount++;
                             }
-                            links.push(newlink);
-                            linkCount++;
+                            linkFrom = graphNode.id;
                         }
-                        linkFrom = graphNode.id;
                         if (!nameSet && parsedNode.group) {
                             nameSet = true;
                             streamName = parsedNode.group;
@@ -198,7 +206,7 @@ class TextToGraphConverter {
                         if (parsedNode.label) {
                             streamdef = streamdef + parsedNode.label + ': ';
                         }
-                        streamdef = streamdef + graphNode.name + ' ';
+                        streamdef = streamdef + graphNode.name + ((parsedNode.type !== 'app') ? ' ' : '' );
                         if (parsedNode.options.size !== 0) {
                             graphNode.properties = parsedNode.options;
                             graphNode.propertiesranges = parsedNode.optionsranges;
@@ -280,31 +288,43 @@ class TextToGraphConverter {
 
     private matchGroup(name: string, incoming: number, outgoing: number): string {
         let score = Number.MIN_VALUE;
-        let group: string;
+        let group = ApplicationType[ApplicationType.app];
         Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
                     grp => this.metamodel.get(grp).get(name)).find(match => {
           let failedConstraintsNumber = 0;
-          if (match.group === 'source') {
-            if (incoming > 0) {
-              failedConstraintsNumber++;
-            }
-            // if (outgoing > 1) {
-            //   failedConstraintsNumber++;
-            // }
-          } else if (match.group === 'sink') {
-            if (incoming > 1) {
-              failedConstraintsNumber++;
-            }
-            if (outgoing > 0) {
-              failedConstraintsNumber++;
-            }
-          } else if (match.group === 'processor') {
-            if (incoming > 1) {
-              failedConstraintsNumber++;
-            }
-            // if (outgoing > 1) {
-            //   failedConstraintsNumber++;
-            // }
+          switch (match.group) {
+            case ApplicationType[ApplicationType.app]:
+              if (incoming > 1) {
+                failedConstraintsNumber++;
+              }
+              if (outgoing > 1) {
+                failedConstraintsNumber++;
+              }
+              break;
+            case ApplicationType[ApplicationType.source]:
+              if (incoming > 0) {
+                failedConstraintsNumber++;
+              }
+              // if (outgoing > 1) {
+              //   failedConstraintsNumber++;
+              // }
+              break;
+            case ApplicationType[ApplicationType.processor]:
+              if (incoming > 1) {
+                failedConstraintsNumber++;
+              }
+              // if (outgoing > 1) {
+              //   failedConstraintsNumber++;
+              // }
+              break;
+            case ApplicationType[ApplicationType.sink]:
+              if (incoming > 1) {
+                failedConstraintsNumber++;
+              }
+              if (outgoing > 0) {
+                failedConstraintsNumber++;
+              }
+              break;
           }
           if (failedConstraintsNumber < score) {
             score = failedConstraintsNumber;
@@ -347,7 +367,7 @@ class TextToGraphConverter {
         for (let n = 0; n < inputnodesCount; n++) {
             const name = inputnodes[n].name;
             const label = inputnodes[n].label;
-            let group = inputnodes[n].group;
+            let group = null; // Ignore inputnodes[n].group; - instead compute the right result in matchGroup
             if (!group) {
                 group = this.matchGroup(name, incoming[n], outgoing[n]);
             }

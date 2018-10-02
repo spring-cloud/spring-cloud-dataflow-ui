@@ -15,7 +15,7 @@ describe('parser:', () => {
         expect(line.errors).toBeNull();
         node = line.nodes[0];
         expect(node.group).toEqual('UNKNOWN_0');
-        expect(node.type).toEqual('source');
+        expect(node.type).toEqual('app');
         expect(node.name).toEqual('time');
         expect(node.options.size).toEqual(0);
         expect(node.optionsranges.size).toEqual(0);
@@ -59,6 +59,34 @@ describe('parser:', () => {
         expectChannels(node, 'foo');
     });
 
+    it('channel input with extended character set', () => {
+        parseResult = Parser.parse(':foo*/# > log', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        line = parseResult.lines[0];
+        nodes = parseResult.lines[0].nodes;
+        expect(nodes.length).toEqual(1);
+        node = nodes[0];
+        expect(node.group).toEqual('UNKNOWN_0');
+        expect(node.type).toEqual('sink');
+        expect(node.name).toEqual('log');
+        expectRange(node.range, 10, 0, 13, 0);
+        expectChannels(node, 'foo*/#');
+    });
+
+    it('channel input with extended character set 2', () => {
+        parseResult = Parser.parse(':*/foo > :*bar/foo#', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        line = parseResult.lines[0];
+        nodes = parseResult.lines[0].nodes;
+        expect(nodes.length).toEqual(1);
+        node = nodes[0];
+        expect(node.group).toEqual('UNKNOWN_0');
+        expect(node.type).toEqual('processor');
+        expect(node.name).toEqual('bridge');
+        expectRange(node.range, 7, 0, 8, 0);
+        expectChannels(node, '*/foo', '*bar/foo#');
+    });
+
     it('channel output', () => {
         parseResult = Parser.parse('time > :foo', 'stream');
         expect(parseResult.lines.length).toEqual(1);
@@ -71,6 +99,24 @@ describe('parser:', () => {
         expect(node.name).toEqual('time');
         expectRange(node.range, 0, 0, 4, 0);
         expectChannels(node, null, 'foo');
+    });
+
+    it('long running apps', () => {
+        parseResult = Parser.parse('aaa, bbb', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        line = parseResult.lines[0];
+        nodes = parseResult.lines[0].nodes;
+        expect(nodes.length).toEqual(2);
+        node = nodes[0];
+        expect(node.group).toEqual('UNKNOWN_0');
+        expect(node.type).toEqual('app');
+        expect(node.name).toEqual('aaa');
+        expectRange(node.range, 0, 0, 3, 0);
+        node = nodes[1];
+        expect(node.group).toEqual('UNKNOWN_0');
+        expect(node.type).toEqual('app');
+        expect(node.name).toEqual('bbb');
+        expectRange(node.range, 5, 0, 8, 0);
     });
 
     it('options', () => {
@@ -146,6 +192,40 @@ describe('parser:', () => {
         error = parseResult.lines[0].errors[0];
         expect(error.message).toEqual('Expected format: name = taskapplication [options]');
         expectRange(error.range, 0, 0, 0, 0);
+    });
+
+    it('list of apps - error checking', () => {
+        parseResult = Parser.parse(':aaa > fff,bbb', 'stream');
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('Don\'t use comma with channels');
+        expectRange(error.range, 10, 0, 11, 0);
+        parseResult = Parser.parse('aaa,bbb > :zzz', 'stream');
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('Don\'t use comma with channels');
+        expectRange(error.range, 3, 0, 4, 0);
+        parseResult = Parser.parse('aaa | bbb, ccc', 'stream');
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('Don\'t mix pipe and comma');
+        expectRange(error.range, 4, 0, 5, 0);
+        parseResult = Parser.parse('aaa, bbb| ccc', 'stream');
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('Don\'t mix pipe and comma');
+        expectRange(error.range, 3, 0, 4, 0);
+
+        parseResult = Parser.parse('aaa | filter --expression=\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'', 'stream');
+        console.log(parseResult);
+        expect(parseResult.lines[0].nodes[1].options.get('expression')).
+            toEqual('\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'');
+
+        parseResult = Parser.parse('aaa --bbb=ccc,', 'stream');
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('Out of data');
+        expectRange(error.range, 14, 0, 15, 0);
+
+        parseResult = Parser.parse('aaa --bbb=\'ccc\',', 'stream');
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('Out of data');
+        expectRange(error.range, 16, 0, 17, 0);
     });
 
     it('error: task with extra data', () => {
@@ -276,8 +356,18 @@ describe('parser:', () => {
         parseResult = Parser.parse('bbb | bbb', 'stream');
         expect(parseResult.lines.length).toEqual(1);
         error = parseResult.lines[0].errors[0];
-        expect(error.message).toEqual('App \'bbb\' should be unique within the stream, use a label to differentiate multiple occurrences');
+        expect(error.message)
+          .toEqual('App \'bbb\' should be unique within the definition, use a label to differentiate multiple occurrences');
         expectRange(error.range, 6, 0, 9, 0);
+    });
+
+    it('error: label required unmanaged stream app', () => {
+        parseResult = Parser.parse('bbb, bbb', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        error = parseResult.lines[0].errors[0];
+        expect(error.message)
+          .toEqual('App \'bbb\' should be unique within the definition, use a label to differentiate multiple occurrences');
+        expectRange(error.range, 5, 0, 8, 0);
     });
 
     it('error: rogue option name', () => {
@@ -389,6 +479,14 @@ describe('parser:', () => {
         parseResult = Parser.parse('aaa: time | log', 'stream');
         expect((<Parser.StreamApp>parseResult.lines[0].nodes[0]).label).toEqual('aaa');
         expect(parseResult.lines[0].nodes[0].name).toEqual('time');
+    });
+
+    it('check label unmanaged stream apps', () => {
+        parseResult = Parser.parse('aaa, bbb: aaa', 'stream');
+        expect((<Parser.StreamApp>parseResult.lines[0].nodes[0]).label).toBeUndefined();
+        expect((<Parser.StreamApp>parseResult.lines[0].nodes[1]).label).toEqual('bbb');
+        expect(parseResult.lines[0].nodes[0].name).toEqual('aaa');
+        expect(parseResult.lines[0].nodes[1].name).toEqual('aaa');
     });
 
     it('error: bad options 1', () => {

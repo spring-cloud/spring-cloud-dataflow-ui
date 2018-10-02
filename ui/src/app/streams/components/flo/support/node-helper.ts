@@ -36,6 +36,7 @@ const DECORATION_ICON_MAP = new Map<string, string>()
 
 // Default icons (unicode chars) for each group member, unless they override
 const GROUP_ICONS = new Map<string, string>()
+  .set('app', '⌸') // U+2338 (Quad equal symbol)
   .set('source', '⤇')// 2907
   .set('processor', 'λ') // 3bb  //flux capacitor? 1D21B
   .set('sink', '⤇') // 2907
@@ -54,6 +55,31 @@ export class NodeHelper {
 
   static createNode(metadata: Flo.ElementMetadata): dia.Element {
     switch (metadata.group) {
+
+      case ApplicationType[ApplicationType.app]:
+        return new joint.shapes.flo.DataFlowApp(
+          joint.util.deepSupplement({
+            attrs: {
+              '.box': {
+                'fill': '#eef4ee',
+              },
+              '.input-port': {
+                display: 'none',
+                magnet: false
+              },
+              '.output-port': {
+                display: 'none',
+                magnet: false
+              },
+              '.label1': {
+                'text': metadata.name
+              },
+              '.label2': {
+                'text': GROUP_ICONS.get(metadata.group)
+              }
+            }
+          }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+        );
 
       case ApplicationType[ApplicationType.source]:
         return new joint.shapes.flo.DataFlowApp(
