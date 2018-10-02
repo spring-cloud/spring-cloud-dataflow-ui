@@ -26,8 +26,12 @@ export enum TokenKind {
     SEMICOLON = ';',
     // REFERENCE = '@',
     DOT = '.',
+    SLASH = '/',
+    STAR = '*',
+    HASH = '#',
     LITERAL_STRING = '<LITERAL_STRING>',
-    EOF = '<EOF>'
+    EOF = '<EOF>',
+    COMMA = ','
 }
 
 export interface Token {
@@ -94,7 +98,7 @@ class Tokenizer {
 
     private isArgValueIdentifierTerminator(ch: string, quoteOpen: boolean): boolean {
         return (ch === '|' && !quoteOpen) || (ch === ';' && !quoteOpen) || ch === '\0' || (ch === ' ' && !quoteOpen) ||
-            (ch === '\t' && !quoteOpen) || (ch === '>' && !quoteOpen) ||
+            (ch === '\t' && !quoteOpen) || (ch === '>' && !quoteOpen) || (ch === ',' && !quoteOpen) ||
             ch === '\r' || ch === '\n';
     }
 
@@ -130,7 +134,7 @@ class Tokenizer {
     }
 
     private pushCharToken(tokenkind: TokenKind) {
-        this.tokens.push({'kind': tokenkind, 'start': this.pos, 'end': this.pos + 1});
+        this.tokens.push({'kind': tokenkind,  'data': tokenkind, 'start': this.pos, 'end': this.pos + 1});
         this.pos++;
     }
 
@@ -293,8 +297,20 @@ class Tokenizer {
                 case '>':
                     this.pushCharToken(TokenKind.GT);
                     break;
+                case ',':
+                    this.pushCharToken(TokenKind.COMMA);
+                    break;
                 case ':':
                     this.pushCharToken(TokenKind.COLON);
+                    break;
+                case '/':
+                    this.pushCharToken(TokenKind.SLASH);
+                    break;
+                case '*':
+                    this.pushCharToken(TokenKind.STAR);
+                    break;
+                case '#':
+                    this.pushCharToken(TokenKind.HASH);
                     break;
                 case ';':
                     this.pushCharToken(TokenKind.SEMICOLON);

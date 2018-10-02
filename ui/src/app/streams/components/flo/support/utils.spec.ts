@@ -23,6 +23,72 @@ describe('utils', () => {
     METAMODEL_SERVICE.load().then(data => metamodel = data);
   }));
 
+  it('app can be head of stream', () => {
+    const node = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('http-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    expect(Utils.canBeHeadOfStream(graph, node)).toEqual(true);
+  });
+
+  it('both app can be head of stream', () => {
+    const node1 = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('http-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    const node2 = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('file-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    expect(Utils.canBeHeadOfStream(graph, node1)).toEqual(true);
+    expect(Utils.canBeHeadOfStream(graph, node2)).toEqual(true);
+  });
+
+  it('if one app has "stream-name" set others cannot be head of stream', () => {
+    const node = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('time-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    node.attr('stream-name', 'STREAM-1');
+    const node1 = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('http-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    const node2 = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('file-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    expect(Utils.canBeHeadOfStream(graph, node)).toEqual(true);
+    expect(Utils.canBeHeadOfStream(graph, node1)).toEqual(false);
+    expect(Utils.canBeHeadOfStream(graph, node2)).toEqual(false);
+  });
+
+  it('if non-app node has "stream-name" set other app nodes can be head of streams', () => {
+    const node = Shapes.Factory.createNode({
+      metadata: metamodel.get('source').get('http'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    const node1 = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('http-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    const node2 = Shapes.Factory.createNode({
+      metadata: metamodel.get('app').get('file-app'),
+      renderer: RENDER_SERVICE,
+      graph: graph
+    });
+    expect(Utils.canBeHeadOfStream(graph, node1)).toEqual(true);
+    expect(Utils.canBeHeadOfStream(graph, node2)).toEqual(true);
+  });
+
   it('source can be head of stream', () => {
     const node = Shapes.Factory.createNode({
       metadata: metamodel.get('source').get('http'),

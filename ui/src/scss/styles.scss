@@ -436,6 +436,11 @@ em.required {
   color: rgba(255, 255, 255, .9);
 }
 
+.label-error {
+  background-color: #FF0000;
+  color: rgba(255, 255, 255, .9);
+}
+
 .label-apptype, .label-stream-status, .label-task-status, .label-job-status {
   padding: .25em 0.8em .3em;
   &.label-default {

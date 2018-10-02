@@ -52,6 +52,9 @@ export class AppTypeComponent implements AfterContentInit, DoCheck {
       this.label = this.application.type.toString().toUpperCase();
 
       switch (this.label) {
+        case 'APP':
+          this.labelClass = 'error';
+          break;
         case 'TASK':
           this.labelClass = 'danger';
           break;
