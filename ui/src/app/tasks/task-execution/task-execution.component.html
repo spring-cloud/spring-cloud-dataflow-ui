@@ -28,7 +28,17 @@
       </tr>
       <tr>
         <td>Arguments</td>
-        <td>{{ taskExecution.arguments || 'N/A' }}</td>
+        <td>
+          <div *ngIf="taskExecution.arguments">
+            <div *ngFor="let arg of getArguments(taskExecution.arguments)">
+              {{ arg[0] }}:
+              <strong>{{ arg[1] }}</strong>
+            </div>
+          </div>
+          <div *ngIf="!taskExecution.arguments">
+            N/A
+          </div>
+        </td>
       </tr>
       <tr>
         <td>External Execution Id</td>

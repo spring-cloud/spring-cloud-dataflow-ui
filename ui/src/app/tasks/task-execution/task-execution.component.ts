@@ -67,4 +67,13 @@ export class TaskExecutionComponent implements OnInit {
     this.routingStateService.back('/tasks/executions', /^(\/tasks\/executions\/)/);
   }
 
+  /**
+   * Prepare args (split line into array)
+   * @param {Array<any>} args
+   * @returns {Array<any>}
+   */
+  getArguments(args: Array<any>): Array<any> {
+    return args.map((arg) => arg.split('='));
+  }
+
 }
