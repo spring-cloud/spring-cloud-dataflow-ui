@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { AppError, HttpAppError } from './error.model';
 import { LoggerService } from '../services/logger.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export class ErrorHandler {
 
@@ -14,15 +15,14 @@ export class ErrorHandler {
       status: 0,
       message: ''
     };
-
-    if (error instanceof Response) {
+    if (error instanceof HttpErrorResponse) {
       let body;
       errorObject.status = error.status;
       try {
-        body = error.json() || '';
+        body = error.error || '';
       } catch (e) {
         LoggerService.log('Unparsable json', error);
-        errorObject.message = `${error.text()} (Status code: ${error.status})`;
+        errorObject.message = `${error} (Status code: ${error.status})`;
       }
       if (body) {
         let isFirst = true;
