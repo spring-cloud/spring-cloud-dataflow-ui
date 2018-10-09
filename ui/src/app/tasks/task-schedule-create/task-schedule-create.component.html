@@ -30,7 +30,7 @@
             </div>
             <div class="col-xs-20">
               <div formArrayName="names">
-                <input id="name" name="name" [formControl]="submitted && form.get('names').controls[0]"
+                <input id="name" name="name" [formControl]="form.get('names').controls[0]"
                        class="form-control input-sm"/>
                 <div class="errors-name" *ngIf="submitted && form.get('names.0').invalid">
                   <div *ngIf="form.get('names.0').errors?.required" class="help-block">The name is required.</div>
