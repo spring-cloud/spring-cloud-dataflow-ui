@@ -102,21 +102,41 @@ describe('parser:', () => {
     });
 
     it('long running apps', () => {
-        parseResult = Parser.parse('aaa, bbb', 'stream');
-        expect(parseResult.lines.length).toEqual(1);
-        line = parseResult.lines[0];
-        nodes = parseResult.lines[0].nodes;
-        expect(nodes.length).toEqual(2);
-        node = nodes[0];
-        expect(node.group).toEqual('UNKNOWN_0');
-        expect(node.type).toEqual('app');
-        expect(node.name).toEqual('aaa');
-        expectRange(node.range, 0, 0, 3, 0);
-        node = nodes[1];
-        expect(node.group).toEqual('UNKNOWN_0');
-        expect(node.type).toEqual('app');
-        expect(node.name).toEqual('bbb');
-        expectRange(node.range, 5, 0, 8, 0);
+      parseResult = Parser.parse('aaa, bbb', 'stream');
+      expect(parseResult.lines.length).toEqual(1);
+      line = parseResult.lines[0];
+      nodes = parseResult.lines[0].nodes;
+      expect(nodes.length).toEqual(2);
+      node = nodes[0];
+      expect(node.group).toEqual('UNKNOWN_0');
+      expect(node.type).toEqual('app');
+      expect(node.name).toEqual('aaa');
+      expectRange(node.range, 0, 0, 3, 0);
+      node = nodes[1];
+      expect(node.group).toEqual('UNKNOWN_0');
+      expect(node.type).toEqual('app');
+      expect(node.name).toEqual('bbb');
+      expectRange(node.range, 5, 0, 8, 0);
+    });
+
+    it('from source and processor to named destination', () => {
+      parseResult = Parser.parse('time | transform > :foo', 'stream');
+      expect(parseResult.lines.length).toEqual(1);
+      line = parseResult.lines[0];
+      nodes = parseResult.lines[0].nodes;
+      expect(nodes.length).toEqual(2);
+      node = nodes[0];
+      expect(node.group).toEqual('UNKNOWN_0');
+      expect(node.type).toEqual('source');
+      expect(node.name).toEqual('time');
+      expectRange(node.range, 0, 0, 4, 0);
+      expectChannels(node, null, null);
+      node = nodes[1];
+      expect(node.group).toEqual('UNKNOWN_0');
+      expect(node.type).toEqual('processor');
+      expect(node.name).toEqual('transform');
+      expectRange(node.range, 7, 0, 16, 0);
+      expectChannels(node, null, 'foo');
     });
 
     it('options', () => {

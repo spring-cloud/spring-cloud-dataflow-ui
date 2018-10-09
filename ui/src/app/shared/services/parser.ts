@@ -587,7 +587,10 @@ class InternalParser {
                             } else {
                                 if (m === 0 && !streamdef.sourceChannel) {
                                     expectedType = 'source';
-                                } else if (m === (streamdef.apps.length - 1)) {
+                                } else if (m === (streamdef.apps.length - 1) && !streamdef.sinkChannel) {
+                                    // if last expect it to be sink only
+                                    // without sink channel. i.e. source | processor > :dest
+                                    // we fall back to processor type
                                     expectedType = 'sink';
                                 }
                             }
