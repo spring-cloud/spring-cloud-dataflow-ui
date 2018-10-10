@@ -129,17 +129,24 @@ export class EditorService implements Flo.Editor {
         }
 
         if (cellViewS.model.attr('metadata') && cellViewT.model.attr('metadata')) {
+            const targetGroup = cellViewT.model.attr('metadata/group');
+
             // Target is a SOURCE node? Disallow link!
-            if (cellViewT.model.attr('metadata/group') === ApplicationType[ApplicationType.source]) {
+            // Target is APP type node? Disallow link!
+            if (targetGroup === ApplicationType[ApplicationType.source]
+                || targetGroup === ApplicationType[ApplicationType.app]) {
                 return false;
             }
             // Target is an explicit tap? Disallow link!
             if (cellViewT.model.attr('metadata/name') === 'tap') {
                 return false;
             }
-            // Sinks and Tasks cannot have outgoing links
-            if (cellViewS.model.attr('metadata/group') === ApplicationType[ApplicationType.sink] ||
-                cellViewS.model.attr('metadata/group') === ApplicationType[ApplicationType.task]) {
+
+            const sourceGroup = cellViewS.model.attr('metadata/group');
+            // SINK, TASK, APP cannot have outgoing links
+            if (sourceGroup === ApplicationType[ApplicationType.sink]
+              || sourceGroup === ApplicationType[ApplicationType.task]
+              || sourceGroup === ApplicationType[ApplicationType.app]) {
                 return false;
             }
 

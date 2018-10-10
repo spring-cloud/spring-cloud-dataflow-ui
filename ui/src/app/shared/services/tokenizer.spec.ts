@@ -93,13 +93,41 @@ describe('tokenizer:', () => {
 
   it('error: unexpected char', () => {
     try {
-      tokens = tokenize(' *');
+      tokens = tokenize(' (');
       fail();
     } catch (error) {
       expect(error.msg).toEqual('TokenizationError: Unexpected character');
       expect(error.start).toEqual(1);
       expect(error.end).toEqual(2);
     }
+  });
+
+  it('channel tokenization', () => {
+    tokens = tokenize(':foo');
+    expect(tokens.length).toEqual(2);
+    expectToken(tokens[0], TokenKind.COLON, 0, 1);
+    expectToken(tokens[1], TokenKind.IDENTIFIER, 1, 4, 'foo');
+    tokens = tokenize(':foo*');
+    expect(tokens.length).toEqual(3);
+    expectToken(tokens[0], TokenKind.COLON, 0, 1);
+    expectToken(tokens[1], TokenKind.IDENTIFIER, 1, 4, 'foo');
+    expectToken(tokens[2], TokenKind.STAR, 4, 5);
+    tokens = tokenize(':foo/');
+    expect(tokens.length).toEqual(3);
+    expectToken(tokens[0], TokenKind.COLON, 0, 1);
+    expectToken(tokens[1], TokenKind.IDENTIFIER, 1, 4, 'foo');
+    expectToken(tokens[2], TokenKind.SLASH, 4, 5);
+    tokens = tokenize(':foo#');
+    expect(tokens.length).toEqual(3);
+    expectToken(tokens[0], TokenKind.COLON, 0, 1);
+    expectToken(tokens[1], TokenKind.IDENTIFIER, 1, 4, 'foo');
+    expectToken(tokens[2], TokenKind.HASH, 4, 5);
+    tokens = tokenize(':*/#');
+    expect(tokens.length).toEqual(4);
+    expectToken(tokens[0], TokenKind.COLON, 0, 1);
+    expectToken(tokens[1], TokenKind.STAR, 1, 2);
+    expectToken(tokens[2], TokenKind.SLASH, 2, 3);
+    expectToken(tokens[3], TokenKind.HASH, 3, 4);
   });
 
   it('option tokenization', () => {
@@ -118,8 +146,6 @@ describe('tokenizer:', () => {
     expect(token.end).toEqual(end);
     if (data) {
       expect(token.data).toEqual(data);
-    } else {
-      expect(token.data).toBeUndefined();
     }
   }
 });

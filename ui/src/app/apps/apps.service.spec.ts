@@ -93,7 +93,7 @@ describe('AppsService', () => {
 
       const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.delete.calls.mostRecent().args[1].headers;
-      expect(httpUri).toEqual('/apps/0/blubba');
+      expect(httpUri).toEqual('/apps/1/blubba');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
 

@@ -69,7 +69,7 @@ export class MetamodelService implements Flo.Metamodel {
     }
 
     groups(): Array<string> {
-        return ['source', 'processor', 'sink', 'other'];
+        return ['app', 'source', 'processor', 'sink', 'other'];
     }
 
     load(): Promise<Map<string, Map<string, Flo.ElementMetadata>>> {
@@ -83,7 +83,8 @@ export class MetamodelService implements Flo.Metamodel {
             this.appsService.getApps({page: 0, size: 1000}).subscribe(
                 data => {
                     data.items.filter(item => {
-                        return item.type.toString() === ApplicationType[ApplicationType.source]
+                        return item.type.toString() === ApplicationType[ApplicationType.app]
+                        || item.type.toString() === ApplicationType[ApplicationType.source]
                         || item.type.toString() === ApplicationType[ApplicationType.processor]
                         || item.type.toString() === ApplicationType[ApplicationType.sink];
                     }).forEach(item => {

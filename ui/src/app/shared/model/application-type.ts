@@ -6,6 +6,11 @@
  */
 export enum ApplicationType {
   /**
+   * An applicatioin type that can have a number of input and output channels
+   */
+  app,
+
+  /**
    * An application type that appears in a stream, at first position.
    */
   source,

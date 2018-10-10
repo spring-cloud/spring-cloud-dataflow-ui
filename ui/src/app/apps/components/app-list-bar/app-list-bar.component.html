@@ -34,6 +34,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu="">
           <li [class.active]="form.type == '' || form.type == null"><a (click)="form.type = ''">All types</a></li>
+          <li [class.active]="form.type == 'app'"><a (click)="form.type = 'app'">App</a></li>
           <li [class.active]="form.type == 'source'"><a (click)="form.type = 'source'">Source</a></li>
           <li [class.active]="form.type == 'processor'"><a (click)="form.type = 'processor'">Processor</a></li>
           <li [class.active]="form.type == 'sink'"><a (click)="form.type = 'sink'">Sink</a></li>
