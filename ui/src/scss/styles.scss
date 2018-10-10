@@ -446,6 +446,10 @@ em.required {
   &.label-default {
     background-color: #87939f;
   }
+  &.label-app {
+    background: #ff00de;
+    color: rgba(255, 255, 255, .9);
+  }
 }
 
 .input-file {
