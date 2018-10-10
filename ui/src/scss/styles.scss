@@ -179,7 +179,7 @@ div.tooltip-version {
   z-index: 100;
   h1.dataflow-page-head-title {
     font-size: 20px;
-    padding: 16px 0;
+    padding: 18px 0 14px;
     line-height: 26px;
     strong {
       font-weight: 600;
@@ -199,7 +199,7 @@ div.tooltip-version {
       color: $navy-1;
       display: block;
       padding: 12px 15px;
-      line-height: 24px;
+      line-height: 28px;
       margin: 6px 4px 6px 4px;
       cursor: pointer;
       &:hover {
@@ -208,7 +208,7 @@ div.tooltip-version {
     }
   }
   app-page-head-subtitle {
-    padding: 14px 0 14px 15px;
+    padding: 16px 0 12px 15px;
     line-height: 32px;
   }
 }
@@ -404,7 +404,7 @@ em.required {
 
 .label {
   display: inline;
-  padding: .2em .6em .3em;
+  padding: .35em .85em .25em;
   font-size: 12px;
   font-weight: 400;
   text-transform: capitalize;
@@ -442,7 +442,6 @@ em.required {
 }
 
 .label-apptype, .label-stream-status, .label-task-status, .label-job-status {
-  padding: .25em 0.8em .3em;
   &.label-default {
     background-color: #87939f;
   }
@@ -479,7 +478,7 @@ em.required {
   .btn {
     height: 42px;
     padding: 0 30px;
-    line-height: 38px;
+    line-height: 40px;
   }
 }
 
