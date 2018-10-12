@@ -12,7 +12,6 @@ export class AuditRecord implements Serializable<AuditRecord> {
 
   public auditRecordId: number;
   public createdBy: string;
-  public serverHost: string;
   public correlationId: string;
   public auditData: string;
   public createdOn: Moment;
@@ -33,7 +32,6 @@ export class AuditRecord implements Serializable<AuditRecord> {
   public deserialize(input) {
     this.auditRecordId = input.auditRecordId;
     this.createdBy = input.createdBy;
-    this.serverHost = input.serverHost;
     this.correlationId = input.correlationId;
     this.auditData = input.auditData;
     this.createdOn = moment(input.createdOn, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
