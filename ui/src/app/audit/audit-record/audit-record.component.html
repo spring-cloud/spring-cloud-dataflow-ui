@@ -49,11 +49,6 @@
                     id="sort-createdBy">Created By
           </app-sort>
         </th>
-        <th style="width: 100px">
-          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'serverHost'" [sort]="params"
-                    id="sort-serverHost">Host
-          </app-sort>
-        </th>
         <th>
           <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'auditData'" [sort]="params"
                     id="sort-auditData">Data
@@ -81,9 +76,6 @@
         </td>
         <td nowrap="">
           {{item.createdBy || 'N/A'}}
-        </td>
-        <td nowrap="">
-          {{ item.serverHost }}
         </td>
         <td class="dataflow-truncator-width">
           <dataflow-truncator [input]="item.auditData" trailPosition="start" trail="…"></dataflow-truncator>

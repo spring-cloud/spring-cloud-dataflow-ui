@@ -50,7 +50,6 @@ export class MockAuditRecordService {
     auditRecord.auditAction = 'action';
     auditRecord.auditOperation = 'operation';
     auditRecord.createdBy = 'Cartman';
-    auditRecord.serverHost = 'host';
     auditRecord.createdOn = moment();
     return Observable.of(auditRecord);
   }
