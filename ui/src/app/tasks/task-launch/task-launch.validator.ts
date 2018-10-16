@@ -24,4 +24,18 @@ export class TaskLaunchValidator {
     return { invalid: true };
   }
 
+  /**
+   * Key should start with app. or deployer. or scheduler if not empty
+   *
+   * @param {FormControl} control
+   * @returns {any}
+   */
+  static key(control: FormControl) {
+    const value = control.value;
+    if (value && !value.startsWith('app.') && !value.startsWith('deployer.') && !value.startsWith('scheduler.')) {
+      return { invalid: true };
+    }
+    return null;
+  }
+
 }

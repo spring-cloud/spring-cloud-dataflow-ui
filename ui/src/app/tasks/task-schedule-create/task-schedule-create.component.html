@@ -163,10 +163,13 @@
                     <td>
                       <div [class.has-error]="submitted && form.get('params.' + i).invalid">
                         <input formControlName="key" type="text" class="form-control input-sm"/>
-                        <div *ngIf="submitted && form.get('params.' + i + '.key').invalid" class="help-block">Invalid
-                          key
+                        <div *ngIf="submitted && form.get('params.' + i + '.key').invalid" class="help-block">
+                          The key should start with `app.` or `deployer.` or `scheduler.`.
                         </div>
-                        <div *ngIf="submitted && form.get('params.' + i).invalid" class="help-block">Invalid key</div>
+                        <div class="help-block"
+                             *ngIf="submitted && form.get('params.' + i).invalid && !form.get('params.' + i + '.key').invalid">
+                          Invalid key
+                        </div>
                       </div>
                     </td>
                     <td>

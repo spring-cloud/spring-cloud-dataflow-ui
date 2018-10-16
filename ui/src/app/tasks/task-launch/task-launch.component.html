@@ -31,8 +31,8 @@
                   <td>
                     <div [class.has-error]="form.get('args.' + i).invalid">
                       <input formControlName="key" type="text" class="form-control"/>
-                      <div *ngIf="form.get('args.' + i + '.key').invalid"
-                           class="help-block">Invalid key
+                      <div *ngIf="form.get('args.' + i + '.key').invalid" class="help-block">
+                        Invalid key
                       </div>
                       <div *ngIf="form.get('args.' + i).invalid" class="help-block">
                         Invalid key
@@ -79,10 +79,10 @@
                   <td>
                     <div [class.has-error]="form.get('params.' + i).invalid">
                       <input formControlName="key" type="text" class="form-control"/>
-                      <div *ngIf="form.get('params.' + i + '.key').invalid"
-                           class="help-block">Invalid key
+                      <div *ngIf="form.get('params.' + i + '.key').invalid" class="help-block">
+                        The key should start with `app.` or `deployer.` or `scheduler.`.
                       </div>
-                      <div *ngIf="form.get('params.' + i).invalid" class="help-block">
+                      <div *ngIf="form.get('params.' + i).invalid && !form.get('params.' + i + '.key').invalid" class="help-block">
                         Invalid key
                       </div>
                     </div>

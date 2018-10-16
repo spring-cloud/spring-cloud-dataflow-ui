@@ -139,23 +139,23 @@ export class TaskScheduleCreateComponent implements OnInit {
       'args': new FormArray([])
     });
     const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
-    const clean = (array: FormArray, addFunc) => {
+    const clean = (array: FormArray, addFunc, keyValidator: boolean) => {
       if (!isEmpty(array.controls[array.controls.length - 1].value)) {
-        return addFunc(array);
+        return addFunc(array, keyValidator);
       }
     };
-    const add = (arr: FormArray) => {
+    const add = (arr: FormArray, keyValidator: boolean) => {
       const group = new FormGroup({
-        'key': new FormControl(''),
+        'key': new FormControl('', keyValidator ? TaskLaunchValidator.key : null),
         'val': new FormControl('')
       }, { validators: TaskLaunchValidator.keyRequired });
       group.valueChanges.subscribe(() => {
-        clean(arr, add);
+        clean(arr, add, keyValidator);
       });
       arr.push(group);
     };
-    add(this.form.get('params') as FormArray);
-    add(this.form.get('args') as FormArray);
+    add(this.form.get('params') as FormArray, true);
+    add(this.form.get('args') as FormArray, false);
   }
 
   /**
