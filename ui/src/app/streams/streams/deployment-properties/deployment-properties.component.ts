@@ -70,7 +70,7 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
       .subscribe(featureInfo => {
         this.skipperEnabled = featureInfo.skipperEnabled;
         if (this.skipperEnabled) {
-          this.subscriptionPlatforms = this.streamsService.platforms()
+          this.subscriptionPlatforms = this.streamsService.getPlatforms()
             .pipe(takeUntil(this.ngUnsubscribe$))
             .subscribe((platforms: Platform[]) => {
               this.platforms = platforms;

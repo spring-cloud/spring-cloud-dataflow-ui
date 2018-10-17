@@ -8,11 +8,11 @@ import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
-import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuditRecord, AuditOperationType, AuditActionType } from '../../shared/model/audit-record.model';
 import { AuditRecordService } from '../audit-record.service';
 import { Page } from '../../shared/model';
 import { AuditRecordListParams } from '../components/audit.interface';
+import { AuditRecordListBarComponent } from '../components/audit-record-list-bar/audit-record-list-bar.component';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -69,7 +69,7 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
    * List Bar Component
    */
   @ViewChild('listBar')
-  listBar: ListBarComponent;
+  listBar: AuditRecordListBarComponent;
 
   /**
    * Constructor
@@ -105,8 +105,8 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
     this.loadAuditRecords();
     this.form = { q: this.context.q, action: this.context.action, operation: this.context.operation };
     this.itemsSelected = this.context.itemsSelected || [];
-    this.auditRecordService.loadAuditActionTypes();
-    this.auditRecordService.loadAuditOperationTypes();
+    this.auditRecordService.loadAuditActionTypes().subscribe();
+    this.auditRecordService.loadAuditOperationTypes().subscribe();
   }
 
   /**

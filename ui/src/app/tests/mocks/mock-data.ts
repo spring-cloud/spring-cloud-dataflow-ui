@@ -405,8 +405,7 @@ export const JOB_EXECUTIONS_WITH_PAGINATION = {
           createTime: '2017-09-06T00:54:46.000Z',
           endTime: '2017-09-06T00:54:46.000Z',
           lastUpdated: '2017-09-06T00:54:46.000Z',
-          exitStatus: {
-          },
+          exitStatus: {},
           executionContext: {
             dirty: false,
             empty: true,
@@ -1268,12 +1267,11 @@ export const TASK_EXECUTIONS = {
 
 export const TASK_SCHEDULES = {
   _embedded: {
-    taskScheduleResourceList: [
+    scheduleInfoResourceList: [
       {
-        name: 'foo1',
-        taskName: 'bar1',
-        status: 'complete',
-        cronExpression: '0 0 0 * 8 1',
+        scheduleName: 'foo1',
+        taskDefinitionName: 'bar1',
+        scheduleProperties: { 'spring.cloud.scheduler.cron.expression': '0 0 0 * 8 1'},
         _links: {
           self: {
             href: 'http://localhost:4200/tasks/schedules/foo1'
@@ -1281,10 +1279,9 @@ export const TASK_SCHEDULES = {
         }
       },
       {
-        name: 'foo2',
-        taskName: 'bar2',
-        status: 'pending',
-        cronExpression: '0 0 0 * 8 1',
+        scheduleName: 'foo2',
+        taskDefinitionName: 'bar2',
+        scheduleProperties: { 'spring.cloud.scheduler.cron.expression': '0 0 0 * 8 1'},
         _links: {
           self: {
             href: 'http://localhost:4200/tasks/schedules/foo2'
@@ -1301,6 +1298,77 @@ export const TASK_SCHEDULES = {
   page: {
     size: 20,
     totalElements: 2,
+    totalPages: 1,
+    number: 0
+  }
+};
+
+export const AUDIT_RECORDS = {
+  _embedded: {
+    auditRecordResourceList: [
+      {
+        auditRecordId: 1,
+        createdBy: null,
+        correlationId: 'foo1',
+        auditData: 'bar1',
+        createdOn: '2018-10-16T13:36:01.720Z',
+        auditAction: 'CREATE',
+        auditOperation: 'APP_REGISTRATION',
+        _links: {
+          self: {
+            self: 'http://localhost:4200/audit-records/1'
+          }
+        }
+      }, {
+        auditRecordId: 2,
+        createdBy: null,
+        correlationId: 'foo2',
+        auditData: 'bar2',
+        createdOn: '2018-10-16T13:36:01.720Z',
+        auditAction: 'UNDEPLOY',
+        auditOperation: 'STREAM',
+        _links: {
+          self: {
+            self: 'http://localhost:4200/audit-records/1'
+          }
+        }
+      }, {
+        auditRecordId: 3,
+        createdBy: null,
+        correlationId: 'foo3',
+        auditData: 'bar3',
+        createdOn: '2018-10-16T13:36:01.720Z',
+        auditAction: 'DELETE',
+        auditOperation: 'TASK',
+        _links: {
+          self: {
+            self: 'http://localhost:4200/audit-records/1'
+          }
+        }
+      }, {
+        auditRecordId: 4,
+        createdBy: null,
+        correlationId: 'foo4',
+        auditData: 'bar4',
+        createdOn: '2018-10-16T13:36:01.720Z',
+        auditAction: 'UPDATE',
+        auditOperation: 'SCHEDULE',
+        _links: {
+          self: {
+            self: 'http://localhost:4200/audit-records/1'
+          }
+        }
+      }
+    ]
+  },
+  _links: {
+    self: {
+      href: 'http://localhost:4200/audit-records?page=0&size=30&sort=createdOn,desc'
+    }
+  },
+  page: {
+    size: 30,
+    totalElements: 1,
     totalPages: 1,
     number: 0
   }

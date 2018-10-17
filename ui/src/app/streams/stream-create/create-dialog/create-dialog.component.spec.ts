@@ -76,6 +76,13 @@ describe('StreamCreateDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should be populate', () => {
+    fixture.detectChanges();
+    expect(component).toBeTruthy();
+    component.open({ dsl: 'file | log' });
+    expect(component).toBeTruthy();
+  });
+
   it('default mocks: single deployment platform (skipper mode off, multiple platforms)', () => {
     fixture.detectChanges();
     const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
@@ -95,7 +102,7 @@ describe('StreamCreateDialogComponent', () => {
     const featureInfo = new FeatureInfo();
     featureInfo.skipperEnabled = true;
     spyOn(aboutService, 'getFeatureInfo').and.returnValue(Observable.of(featureInfo));
-    spyOn(streamsService, 'platforms').and.returnValue(Observable.of([
+    spyOn(streamsService, 'getPlatforms').and.returnValue(Observable.of([
       new Platform('default', 'local')
     ]));
     fixture.detectChanges();
@@ -113,7 +120,7 @@ describe('StreamCreateDialogComponent', () => {
   // });
 
   it('platforms() call errors out => deploy checkbox is hidden', () => {
-    spyOn(streamsService, 'platforms').and.returnValue(throwError('Error'));
+    spyOn(streamsService, 'getPlatforms').and.returnValue(throwError('Error'));
     fixture.detectChanges();
     const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
     expect(deployDiv).toBeFalsy();

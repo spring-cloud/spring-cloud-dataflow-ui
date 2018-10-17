@@ -1,6 +1,8 @@
 /**
  * Representation of a task schedule
  */
+import { Page } from '../../shared/model/page';
+
 export class TaskSchedule {
 
   /**
@@ -42,6 +44,14 @@ export class TaskSchedule {
       cron = input.scheduleProperties['spring.cloud.scheduler.cron.expression'];
     }
     return new TaskSchedule(input.scheduleName, input.taskDefinitionName, cron);
+  }
+
+  static pageFromJSON(input): Page<TaskSchedule> {
+    const page = Page.fromJSON<TaskSchedule>(input);
+    if (input && input._embedded && input._embedded.scheduleInfoResourceList) {
+      page.items = input._embedded.scheduleInfoResourceList.map(TaskSchedule.fromJSON);
+    }
+    return page;
   }
 
 }

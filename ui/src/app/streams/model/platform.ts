@@ -1,11 +1,9 @@
-import { Serializable } from '../../shared/model/serialization/serializable.model';
-
 /**
  * Represents a Platform.
  *
  * @author Damien Vitrac
  */
-export class Platform implements Serializable<Platform> {
+export class Platform {
 
   public name: String;
   public type: String;
@@ -17,11 +15,25 @@ export class Platform implements Serializable<Platform> {
     this.description = description;
   }
 
-  deserialize(inputJson) {
-    this.name = inputJson.name;
-    this.type = inputJson.type;
-    this.description = inputJson.description;
-    return this;
+  /**
+   * Create a Platform from a json
+   * @param inputJson
+   * @returns {Platform}
+   */
+  static fromJSON(inputJson): Platform {
+    return new Platform(inputJson.name, inputJson.type, inputJson.description);
+  }
+
+  /**
+   * Create an Array<Platform> from a json
+   * @param input
+   * @returns {Array<Platform>}
+   */
+  static listFromJSON(input): Array<Platform> {
+    if (input && Array.isArray(input)) {
+      return input.map(Platform.fromJSON);
+    }
+    return [];
   }
 
 }

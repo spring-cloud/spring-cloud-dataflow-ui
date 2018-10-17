@@ -22,6 +22,17 @@ export class Page<T> {
   sort = {};
   paginationId: 'pagination-instance';
 
+  public static fromJSON<T>(input): Page<T> {
+    const page = new Page<T>();
+    if (input && input.page) {
+      page.pageNumber = input.page.number;
+      page.pageSize = input.page.size;
+      page.totalElements = input.page.totalElements;
+      page.totalPages = input.page.totalPages;
+    }
+    return page;
+  }
+
   /**
    * Helper method for ngx-pagination. Allows for passing in
    * pagination meta information directly to ngx-pagination

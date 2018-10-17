@@ -1,13 +1,10 @@
 import {Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import {Observable} from 'rxjs/Observable';
-
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
-
 import {AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page} from '../model';
 import {PageRequest} from '../model/pagination/page-request.model';
 import {HttpUtils} from '../support/http.utils';
@@ -16,8 +13,17 @@ import { LoggerService } from './logger.service';
 @Injectable()
 export class SharedAppsService {
 
+  /**
+   * URL App
+   */
   private static appsUrl = '/apps';
 
+  /**
+   * Constructor
+   * @param {HttpClient} httpClient
+   * @param {LoggerService} loggerService
+   * @param {ErrorHandler} errorHandler
+   */
   constructor(private httpClient: HttpClient,
               private loggerService: LoggerService,
               private errorHandler: ErrorHandler) {
@@ -25,6 +31,11 @@ export class SharedAppsService {
 
   /**
    * Returns a paged list of {@link AppRegistrations}s.
+   * @param {PageRequest} pageRequest
+   * @param {ApplicationType} type
+   * @param {string} search
+   * @param {Array<{sort: string; order: string}>} sort
+   * @returns {Observable<Page<AppRegistration>>}
    */
   getApps(pageRequest: PageRequest, type?: ApplicationType, search?: string,
           sort?: Array<{ sort: string, order: string }>): Observable<Page<AppRegistration>> {
@@ -42,15 +53,19 @@ export class SharedAppsService {
         params.append('sort', `${value.sort},${value.order}`);
       });
     }
-
-    return this.httpClient.get(SharedAppsService.appsUrl, {
-      headers: httpHeaders,
-      params: params
-    })
-      .map(jsonResponse => this.extractData(jsonResponse))
+    return this.httpClient
+      .get(SharedAppsService.appsUrl, { headers: httpHeaders, params: params })
+      .map(AppRegistration.pageFromJSON)
       .catch(this.errorHandler.handleError);
   }
 
+  /**
+   * Get Application info
+   * @param {ApplicationType} appType
+   * @param {string} appName
+   * @param {string} appVersion
+   * @returns {Observable<DetailedAppRegistration>}
+   */
   getAppInfo(appType: ApplicationType, appName: string, appVersion?: string): Observable<DetailedAppRegistration> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     let url = `${SharedAppsService.appsUrl}/${appType}/${appName}`;
@@ -58,31 +73,8 @@ export class SharedAppsService {
       url = `${SharedAppsService.appsUrl}/${appType}/${appName}/${appVersion}`;
     }
     return this.httpClient.get(url, { headers: httpHeaders})
-      .map(body => {
-        this.loggerService.log('Returned App Registration Detail:', body);
-        const detailedAppRegistration = new DetailedAppRegistration().deserialize(body);
-        return detailedAppRegistration;
-      })
+      .map(DetailedAppRegistration.fromJSON)
       .catch(this.errorHandler.handleError);
-  }
-
-  private extractData(jsonResponse): Page<AppRegistration> {
-    const items: AppRegistration[] = [];
-    if (jsonResponse._embedded && jsonResponse._embedded.appRegistrationResourceList) {
-      for (const jsonAppregistration of jsonResponse._embedded.appRegistrationResourceList) {
-        items.push(new AppRegistration().deserialize(jsonAppregistration));
-      }
-    }
-
-    const page = new Page<AppRegistration>();
-    page.items = items;
-    page.totalElements = jsonResponse.page.totalElements;
-    page.pageNumber = jsonResponse.page.number;
-    page.pageSize = jsonResponse.page.size;
-    page.totalPages = jsonResponse.page.totalPages;
-
-    this.loggerService.log('page', page);
-    return page;
   }
 
 }

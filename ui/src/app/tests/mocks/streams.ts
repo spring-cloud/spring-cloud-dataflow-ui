@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import { PageInfo } from '../../shared/model/pageInfo';
 import { Page } from '../../shared/model/page';
 import { StreamDefinition } from '../../streams/model/stream-definition';
 import { Platform } from '../../streams/model/platform';
@@ -36,57 +35,22 @@ export class MockStreamsService {
     itemsExpanded: []
   };
 
-  public _streamDefinitions;
-
-  get streamDefinitions(): any {
-    return this._streamDefinitions;
-  }
-
-  set streamDefinitions(value: any) {
-    this._streamDefinitions = value;
-  }
+  public streamDefinitions;
 
   getDefinitions(): Observable<Page<StreamDefinition>> {
-    const page = new Page<StreamDefinition>();
-    if (this.streamDefinitions) {
-      const response = this.streamDefinitions;
-      let items: StreamDefinition[];
-      if (response._embedded && response._embedded.streamDefinitionResourceList) {
-        items = response._embedded.streamDefinitionResourceList as StreamDefinition[];
-      } else {
-        items = [];
-      }
-      page.items = items;
-      page.totalElements = response.page.totalElements;
-      page.totalPages = response.page.totalPages;
-      page.pageNumber = response.page.number;
-      page.pageSize = response.page.size;
-    }
-    return Observable.of(page);
+    return Observable.of(StreamDefinition.pageFromJSON(this.streamDefinitions));
   }
 
   getDefinition(name: string): Observable<any> {
-    return Observable.of(this.streamDefinitions._embedded.streamDefinitionResourceList[0]);
-  }
-
-  undeployDefinition(streamDefinition: StreamDefinition): Observable<Response> | Observable<any> {
-    return Observable.of({});
+    return Observable.of(StreamDefinition.fromJSON(this.streamDefinitions._embedded.streamDefinitionResourceList[0]));
   }
 
   undeployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
     return Observable.of(Array.from({ length: streamDefinitions.length }));
   }
 
-  destroyDefinition(streamDefinition: StreamDefinition): Observable<Response> | Observable<any> {
-    return Observable.of({});
-  }
-
   destroyMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
     return Observable.of(Array.from({ length: streamDefinitions.length }));
-  }
-
-  deployDefinition(streamDefinitionName: String, propertiesAsMap: any): Observable<Response> | Observable<any> {
-    return Observable.of({});
   }
 
   deployMultipleStreamDefinitions(streamDefinitions: StreamDefinition[]): Observable<Array<any>> {
@@ -97,21 +61,31 @@ export class MockStreamsService {
     return Observable.of([]);
   }
 
-  platforms(): Observable<Platform[]> {
+  getPlatforms(): Observable<Platform[]> {
     return Observable.of([
-      new Platform('default', 'local'),
-      new Platform('foo', 'bar', 'foobar')
+      Platform.fromJSON({name: 'default', type: 'local', description: ''}),
+      Platform.fromJSON({name: 'foo', type: 'bar', description: 'foobar'})
     ]);
   }
 
-  metrics(streamNames?: string[]): Observable<StreamMetrics[]> {
+  getMetrics(streamNames?: string[]): Observable<StreamMetrics[]> {
     return Observable.of([]);
   }
 
   getHistory(streamDefinition: string): Observable<StreamHistory[]> {
     return Observable.of([
-      new StreamHistory(streamDefinition, 2, new Date(), 'DEPLOYED', 'Upgrade complete', 'default'),
-      new StreamHistory(streamDefinition, 1, new Date(), 'DELETED', 'Delete complete', 'default')
+      StreamHistory.fromJSON({
+        name: streamDefinition,
+        version: 2,
+        platformName: 'default',
+        info: { firstDeployed: new Date(), status: { statusCode: 'DEPLOYED' }, description: 'Upgrade complete' }
+      }),
+      StreamHistory.fromJSON({
+        name: streamDefinition,
+        version: 1,
+        platformName: 'default',
+        info: { firstDeployed: new Date(), status: { statusCode: 'DELETED' }, description: 'Delete complete' }
+      })
     ]);
   }
 

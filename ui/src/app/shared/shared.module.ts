@@ -5,13 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgBusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'ng-busy';
 import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
-import { TriStateCheckboxComponent } from './components/tri-state-checkbox.component';
-import { TriStateButtonComponent } from './components/tri-state-button.component';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { SearchfilterPipe } from './pipes/search-filter.pipe';
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -102,13 +99,10 @@ const busyConfig: BusyConfig = {
     CapitalizePipe,
     KeyValuePipe,
     SearchfilterPipe,
-    TriStateButtonComponent,
-    TriStateCheckboxComponent,
     MasterCheckboxComponent,
     SortComponent,
     ClickOutsideDirective,
     AutoResizeDirective,
-    PropertyTableComponent,
     TabsComponent,
     TabComponent,
     DataflowDateTimePipe,
@@ -161,9 +155,6 @@ const busyConfig: BusyConfig = {
     KeyValuePipe,
     MapValuesPipe,
     SearchfilterPipe,
-    TriStateCheckboxComponent,
-    TriStateButtonComponent,
-    PropertyTableComponent,
     ProgressbarModule,
     DecorationComponent,
     MasterCheckboxComponent,

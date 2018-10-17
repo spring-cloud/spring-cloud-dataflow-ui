@@ -11,8 +11,6 @@ import { RolesDirective } from '../../auth/directives/roles.directive';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { FloModule } from 'spring-flo';
-import { TriStateButtonComponent } from '../../shared/components/tri-state-button.component';
-import { TriStateCheckboxComponent } from '../../shared/components/tri-state-checkbox.component';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { SortComponent } from '../../shared/components/sort/sort.component';
@@ -39,6 +37,7 @@ import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { AppsService } from '../../apps/apps.service';
+import { TaskSchedule } from '../model/task-schedule';
 
 /**
  * Test {@link TaskSchedulesComponent}.
@@ -66,8 +65,6 @@ describe('TaskSchedulesComponent', () => {
         RolesDirective,
         TaskSchedulesComponent,
         TaskDefinitionsDestroyComponent,
-        TriStateButtonComponent,
-        TriStateCheckboxComponent,
         SortComponent,
         StreamDslComponent,
         MasterCheckboxComponent,
@@ -133,7 +130,7 @@ describe('TaskSchedulesComponent', () => {
     beforeEach(() => {
       tasksService.taskSchedules = {
         _embedded: {
-          taskScheduleResourceList: []
+          scheduleInfoResourceList: []
         },
         page: {
           size: 20,
@@ -170,12 +167,10 @@ describe('TaskSchedulesComponent', () => {
 
       tasksService.taskSchedules = {
         _embedded: {
-          taskScheduleResourceList: Array.from({ length: 20 }).map((a, i) => {
+          scheduleInfoResourceList: Array.from({ length: 20 }).map((a, i) => {
             return {
-              name: `foo${i}`,
-              taskName: `bar${i}`,
-              status: 'complete',
-              date: '2017-08-11T06:15:50.064Z',
+              scheduleName: `foo${i}`,
+              taskDefinitionName: `bar${i}`,
               cronExpression: ''
             };
           })
@@ -225,12 +220,10 @@ describe('TaskSchedulesComponent', () => {
     it('should apply a search', () => {
       tasksService.taskSchedules = {
         _embedded: {
-          taskScheduleResourceList: Array.from({ length: 12 }).map((a, i) => {
+          scheduleInfoResourceList: Array.from({ length: 12 }).map((a, i) => {
             return {
-              name: `foo${i}`,
-              taskName: `bar${i}`,
-              status: 'complete',
-              date: '2017-08-11T06:15:50.064Z',
+              scheduleName: `foo${i}`,
+              taskDefinitionName: `bar${i}`,
               cronExpression: ''
             };
           })
@@ -260,13 +253,13 @@ describe('TaskSchedulesComponent', () => {
 
     it('should delete a schedule', () => {
       const spy = spyOn(component, 'destroySchedules');
-      component.applyAction('destroy', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
+      component.applyAction('destroy', TaskSchedule.fromJSON(tasksService.taskSchedules._embedded.scheduleInfoResourceList[0]));
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail schedule', () => {
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.applyAction('details', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
+      component.applyAction('details', TaskSchedule.fromJSON(tasksService.taskSchedules._embedded.scheduleInfoResourceList[0]));
       expect(navigate).toHaveBeenCalledWith(['tasks/schedules/foo1']);
     });
 

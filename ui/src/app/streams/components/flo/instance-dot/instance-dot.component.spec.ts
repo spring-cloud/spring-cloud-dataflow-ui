@@ -30,7 +30,7 @@ describe('InstanceDotComponent', () => {
   it('source input', () => {
     const properties = {};
     properties[TYPE] = 'source';
-    component.view = createView(new InstanceMetrics().deserialize({
+    component.view = createView(InstanceMetrics.fromJSON({
       guid: 'my-guid',
       index: 0,
       properties: properties,
@@ -51,7 +51,7 @@ describe('InstanceDotComponent', () => {
   it('sink input', () => {
     const properties = {};
     properties[TYPE] = 'sink';
-    component.view = createView(new InstanceMetrics().deserialize({
+    component.view = createView(InstanceMetrics.fromJSON({
       guid: 'my-guid',
       index: 0,
       properties: properties,
@@ -72,7 +72,7 @@ describe('InstanceDotComponent', () => {
   it('processor input', () => {
     const properties = {};
     properties[TYPE] = 'processor';
-    component.view = createView(new InstanceMetrics().deserialize({
+    component.view = createView(InstanceMetrics.fromJSON({
       guid: 'my-guid',
       index: 0,
       properties: properties,

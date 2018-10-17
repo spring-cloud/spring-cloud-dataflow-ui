@@ -15,12 +15,6 @@ describe('StreamsDefinition', () => {
       expect(streamDefinition.dslText).toBe('bar');
       expect(streamDefinition.status).toBe('baz');
       expect(streamDefinition.force).toBe(false);
-      expect(streamDefinition.isExpanded).toBe(false);
-      streamDefinition.toggleIsExpanded();
-      expect(streamDefinition.isExpanded).toBe(true);
-      streamDefinition.isSelected = true;
-      expect(streamDefinition.force).toBe(true);
-      expect(streamDefinition.deploymentProperties).toBeUndefined();
     });
   });
 });

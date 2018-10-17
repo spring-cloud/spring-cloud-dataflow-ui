@@ -105,10 +105,6 @@ export class AppsWorkaroundService {
         page.totalPages = Math.ceil(page.items.length / page.pageSize);
         page.totalElements = page.items.length;
         page.items = page.items.slice((params.page * page.pageSize), ((params.page + 1) * page.pageSize));
-        page.items = page.items.map((a) => {
-          a.isSelected = false;
-          return a;
-        });
         subscriber.next(page);
         subscriber.complete();
       });

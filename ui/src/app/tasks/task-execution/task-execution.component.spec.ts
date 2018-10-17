@@ -93,9 +93,12 @@ describe('TaskExecutionsDetailsComponent', () => {
     fixture = TestBed.createComponent(TaskExecutionComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
+    activeRoute.testParams = commonTestParams;
   });
 
   it('Component should be created', () => {
+    tasksService.testExecutionDetails = commonTestExecutionDetails;
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 

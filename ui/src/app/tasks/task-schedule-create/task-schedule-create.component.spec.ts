@@ -35,9 +35,8 @@ import { PagerComponent } from 'src/app/shared/components/pager/pager.component'
  * Test {@link TaskScheduleCreateComponent}.
  *
  * @author Damien Vitrac
- * TODO: FIX IT
  */
-xdescribe('TaskScheduleCreateComponent', () => {
+describe('TaskScheduleCreateComponent', () => {
   let component: TaskScheduleCreateComponent;
   let fixture: ComponentFixture<TaskScheduleCreateComponent>;
   const notificationService = new MockNotificationService();

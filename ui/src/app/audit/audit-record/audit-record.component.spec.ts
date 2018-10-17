@@ -27,6 +27,9 @@ import { AuditRecordListBarComponent } from '../components/audit-record-list-bar
 import { AuditRecordActionComponent } from '../components/audit-record-action/audit-record-action.component';
 import { AuditRecordOperationComponent } from '../components/audit-record-operation/audit-record-operation.component';
 import { DataflowDateTimePipe } from 'src/app/shared/pipes/dataflow-date-time.pipe';
+import { AUDIT_RECORDS } from '../../tests/mocks/mock-data';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('AuditRecordComponent', () => {
 
@@ -88,6 +91,43 @@ describe('AuditRecordComponent', () => {
   it('should be created', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  describe('1 page', () => {
+
+    beforeEach(() => {
+      auditRecordService.auditRecords = AUDIT_RECORDS;
+      fixture.detectChanges();
+    });
+
+    it('should display the search', () => {
+      const search = fixture.debugElement.query(By.css('#filters')).nativeElement;
+      expect(search).toBeTruthy();
+    });
+
+    it('should not display the pagination', () => {
+      expect(fixture.debugElement.query(By.css('#pagination'))).toBeNull();
+    });
+
+    it('should populate audit records', () => {
+      const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#table tr td'));
+      expect(des.length).toBe(8 * 4);
+      expect(des[0].nativeElement.textContent).toContain('1');
+      // expect(des[1].nativeElement.textContent).toContain('2018-10-16T13:36:01.720Z');
+      expect(des[2].nativeElement.textContent).toContain('APP_REGISTRATION');
+      expect(des[3].nativeElement.textContent).toContain('CREATE');
+      expect(des[4].nativeElement.textContent).toContain('foo1');
+      expect(des[5].nativeElement.textContent).toContain('N/A');
+      expect(des[6].nativeElement.textContent).toContain('bar1');
+    });
+
+    it('should refresh the page', () => {
+      const spy = spyOn(component, 'loadAuditRecords');
+      fixture.debugElement.query(By.css('button[name=app-refresh]')).nativeElement.click();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
+    });
+
   });
 
 });

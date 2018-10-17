@@ -69,7 +69,7 @@ describe('TaskDefinitionsDestroyComponent', () => {
   describe('1 tasks destroy', () => {
 
     const mock = [
-      new TaskDefinition('foo0', 'foo1 && foo2', true, '')
+      TaskDefinition.fromJSON({name: 'foo0', dslText: 'foo1 && foo2', composed: true, status: ''})
     ];
 
     beforeEach(() => {
@@ -110,8 +110,8 @@ describe('TaskDefinitionsDestroyComponent', () => {
   describe('Multiple tasks destroy', () => {
 
     const mock = [
-      new TaskDefinition('foo0', 'foo1 && foo2', true, ''),
-      new TaskDefinition('foo1', 'foo1 && foo2', true, '')
+      TaskDefinition.fromJSON({name: 'foo0', dslText: 'foo1 && foo2', composed: true, status: ''}),
+      TaskDefinition.fromJSON({name: 'foo1', dslText: 'foo1 && foo2', composed: true, status: ''})
     ];
 
     beforeEach(() => {
@@ -159,8 +159,8 @@ describe('TaskDefinitionsDestroyComponent', () => {
     beforeEach(() => {
       component.open({
         taskDefinitions: [
-          new TaskDefinition('foo0', 'foo1 && foo2', true, ''),
-          new TaskDefinition('foo1', 'foo1 && foo2', true, '')
+          TaskDefinition.fromJSON({name: 'foo0', dslText: 'foo1 && foo2', composed: true, status: ''}),
+          TaskDefinition.fromJSON({name: 'foo1', dslText: 'foo1 && foo2', composed: true, status: ''})
         ]
       });
       fixture.detectChanges();

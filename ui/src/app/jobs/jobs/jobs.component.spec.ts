@@ -96,7 +96,7 @@ describe('JobsComponent', () => {
     beforeEach(() => {
       jobsService.setJobExecutions({
         _embedded: {
-          taskDefinitionResourceList: []
+          jobExecutionResourceList: []
         },
         page: {
           size: 30,
@@ -281,7 +281,6 @@ describe('JobsComponent', () => {
 
   });
 
-  /* TODO: review it
   describe('Job action', () => {
 
     beforeEach(() => {
@@ -291,29 +290,27 @@ describe('JobsComponent', () => {
     });
 
     it('should stop a job', () => {
-      const button: DebugElement = fixture.debugElement
-        .queryAll(By.css('#tableJobs tbody tr'))[0]
-        .query(By.css('.actions button[name=job-stop0]'));
-
       const spy = spyOn(component, 'stopJob');
-      button.nativeElement.click();
+      component.applyAction('stop', jobsService.jobExecutionsPage.items[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should restart a job', () => {
-      const button: DebugElement = fixture.debugElement
-        .queryAll(By.css('#tableJobs tbody tr'))[1]
-        .query(By.css('.actions button[name=job-restart1]'));
-
       const spy = spyOn(component, 'restartJob');
-      button.nativeElement.click();
+      component.applyAction('restart', jobsService.jobExecutionsPage.items[0]);
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should view a job', () => {
+      const spy = spyOn(component, 'viewJob');
+      component.applyAction('view', jobsService.jobExecutionsPage.items[0]);
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail job', () => {
       const button: DebugElement = fixture.debugElement
         .queryAll(By.css('#tableJobs tbody tr'))[2]
-        .query(By.css('.actions button[name="job-details2"]'));
+        .query(By.css('.table-actions button[name="job-view2"]'));
 
       const navigate = spyOn((<any>component).router, 'navigate');
       button.nativeElement.click();
@@ -332,6 +329,5 @@ describe('JobsComponent', () => {
     });
 
   });
-  */
 
 });

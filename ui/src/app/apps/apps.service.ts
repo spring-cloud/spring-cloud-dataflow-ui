@@ -5,7 +5,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/forkJoin';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppRegistration, ErrorHandler, Page, ApplicationType, DetailedAppRegistration } from '../shared/model';
 import { HttpUtils } from '../shared/support/http.utils';
@@ -14,6 +13,7 @@ import { AppListParams, AppRegisterParams, BulkImportParams } from './components
 import { AppVersion } from '../shared/model/app-version';
 import { LoggerService } from '../shared/services/logger.service';
 import { OrderParams } from '../shared/components/shared.interface';
+import { forkJoin } from 'rxjs';
 
 /**
  * Service class for the Apps module.
@@ -45,7 +45,7 @@ export class AppsService {
   /**
    * Constructor
    *
-   * @param {Http} http
+   * @param {HttpClient} httpClient
    * @param {ErrorHandler} errorHandler
    * @param {LoggerService} loggerService
    * @param {AppsWorkaroundService} appsWorkaroundService
@@ -107,9 +107,10 @@ export class AppsService {
   setAppDefaultVersion(type: ApplicationType, name: string, version: string): Observable<void> {
     this.loggerService.log('Set app default version...', { name: name, type: type, version: version });
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, {
-      headers: httpHeaders
-    })
+    return this.httpClient
+      .put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, {
+        headers: httpHeaders
+      })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -128,10 +129,11 @@ export class AppsService {
       .append('apps', bulkImportParams.properties ? bulkImportParams.properties.join('\n') : null)
       .append('force', bulkImportParams.force ? 'true' : 'false');
 
-    return this.httpClient.post(AppsService.appsUrl, {}, {
-      headers: httpHeaders,
-      params: params
-    })
+    return this.httpClient
+      .post(AppsService.appsUrl, {}, {
+        headers: httpHeaders,
+        params: params
+      })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -145,9 +147,8 @@ export class AppsService {
   unregisterApp(appRegistration: AppRegistration): Observable<void> {
     this.loggerService.log('Unregistering...', appRegistration);
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, {
-      headers: httpHeaders
-    })
+    return this.httpClient
+      .delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, { headers: httpHeaders })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -160,11 +161,7 @@ export class AppsService {
    * @returns {Observable<void[]>}
    */
   unregisterApps(appRegs: AppRegistration[]): Observable<void[]> {
-    const observables: Observable<void>[] = [];
-    for (const appReg of appRegs) {
-      observables.push(this.unregisterApp(appReg));
-    }
-    return Observable.forkJoin(observables);
+    return forkJoin(appRegs.map(app => this.unregisterApp(app)));
   }
 
   /**
@@ -177,10 +174,8 @@ export class AppsService {
   unregisterAppVersion(appRegistration: AppRegistration, version: string): Observable<any> {
     this.loggerService.log('Unregistering app version...', { app: appRegistration, version: version });
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name
-      + '/' + version, {
-      headers: httpHeaders
-    })
+    return this.httpClient.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name + '/'
+      + version, { headers: httpHeaders })
       .map(AppsWorkaroundService.cache.invalidate)
       .catch(this.errorHandler.handleError);
   }
@@ -218,20 +213,19 @@ export class AppsService {
    * @returns {Observable<void[]>}
    */
   registerApps(appRegs: AppRegisterParams[]): Observable<void[]> {
-    this.loggerService.log(`Registering ${appRegs.length} apps...`, appRegs);
-    const observables: Observable<void>[] = [];
-    for (const appReg of appRegs) {
-      observables.push(this.registerApp(appReg));
-    }
-    return Observable.forkJoin(observables);
+    return forkJoin(appRegs.map(app => this.registerApp(app)));
   }
 
-
+  /**
+   * Get counters (apps for stream, app for task)
+   * @returns {Observable<any>}
+   */
   appsState(): Observable<any> {
     const apps$: Observable<Page<AppRegistration>> = this.getApps({
       q: '',
       type: null,
-      page: 0, size: 1,
+      page: 0,
+      size: 1,
       order: 'name',
       sort: OrderParams.ASC
     });

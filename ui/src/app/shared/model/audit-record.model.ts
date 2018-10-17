@@ -2,6 +2,7 @@ import { Serializable } from '../../shared/model';
 import { DateTimeUtils } from '../support/date-time.utils';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import { Page } from './page';
 
 /**
  * Represents an Audit Record.
@@ -20,6 +21,14 @@ export class AuditRecord implements Serializable<AuditRecord> {
 
   public static fromJSON(input) {
     return new AuditRecord().deserialize(input);
+  }
+
+  public static pageFromJSON(input): Page<AuditRecord> {
+    const page = Page.fromJSON<AuditRecord>(input);
+    if (input && input._embedded && input._embedded.auditRecordResourceList) {
+      page.items = input._embedded.auditRecordResourceList.map(AuditRecord.fromJSON);
+    }
+    return page;
   }
 
   /**

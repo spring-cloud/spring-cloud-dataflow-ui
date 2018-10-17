@@ -15,7 +15,8 @@ describe('AppsService', () => {
     this.mockHttp = {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
-      post: jasmine.createSpy('post')
+      post: jasmine.createSpy('post'),
+      put: jasmine.createSpy('put'),
     };
 
     this.jsonData = {};
@@ -26,25 +27,43 @@ describe('AppsService', () => {
     this.appsService = new AppsService(this.mockHttp, errorHandler, loggerService, workArroundService, sharedServices);
   });
 
-  /*
-  describe('getApps', () => {
+  describe('setAppDefaultVersion', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
-      expect(this.appsService.appRegistrations).toBeUndefined();
-      const params = HttpUtils.getPaginationParams(0, 30);
-      const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-      requestOptionsArgs.search = params;
-      this.appsService.getApps();
-      const defaultPageNumber: number = this.appsService.applicationsContext.page;
-      const defaultPageSize: number = this.appsService.applicationsContext.size;
-      expect(defaultPageNumber).toBe(0);
-      expect(defaultPageSize).toBe(30);
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/apps', requestOptionsArgs);
+      this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
+      this.appsService.setAppDefaultVersion('foo', 'bar', '1.0.0');
+      const httpUri1 = this.mockHttp.put.calls.mostRecent().args[0];
+      expect(httpUri1).toEqual('/apps/foo/bar/1.0.0');
     });
 
   });
-  */
+
+  describe('unregisterAppVersion', () => {
+
+    it('should call the unregisterAppVersion service with the right url to get all apps', () => {
+      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.appsService.unregisterAppVersion({name: 'foo', type: 'bar'}, '1.0.0');
+      const httpUri1 = this.mockHttp.delete.calls.mostRecent().args[0];
+      expect(httpUri1).toEqual('/apps/bar/foo/1.0.0');
+    });
+
+  });
+
+  describe('unregisterApps', () => {
+
+    it('should call the unregisterAppVersion service with the right url to get all apps', () => {
+      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.appsService.unregisterApps([
+        {name: 'foo', type: 'bar'},
+        {name: 'foo2', type: 'bar2'}
+      ]);
+      let httpUri = this.mockHttp.delete.calls.argsFor(0)[0];
+      expect(httpUri).toEqual('/apps/bar/foo');
+      httpUri = this.mockHttp.delete.calls.argsFor(1)[0];
+      expect(httpUri).toEqual('/apps/bar2/foo2');
+    });
+
+  });
 
   describe('getAppInfo', () => {
 
@@ -61,6 +80,7 @@ describe('AppsService', () => {
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
     });
+
   });
 
   describe('bulkImportApps', () => {

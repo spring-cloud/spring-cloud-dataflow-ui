@@ -35,6 +35,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
+import { TaskSchedule } from '../../model/task-schedule';
 
 /**
  * Test {@link TaskDefinitionScheduleComponent}.
@@ -126,7 +127,7 @@ describe('TaskDefinitionScheduleComponent', () => {
     beforeEach(() => {
       tasksService.taskSchedules = {
         _embedded: {
-          taskScheduleResourceList: []
+          scheduleInfoResourceList: []
         },
         page: {
           size: 20,
@@ -162,12 +163,10 @@ describe('TaskDefinitionScheduleComponent', () => {
 
       tasksService.taskSchedules = {
         _embedded: {
-          taskScheduleResourceList: Array.from({ length: 20 }).map((a, i) => {
+          scheduleInfoResourceList: Array.from({ length: 20 }).map((a, i) => {
             return {
-              name: `foo${i}`,
-              taskName: `foo`,
-              status: 'complete',
-              date: '2017-08-11T06:15:50.064Z',
+              scheduleName: `foo${i}`,
+              taskDefinitionName: `foo`,
               cronExpression: ''
             };
           })
@@ -199,13 +198,13 @@ describe('TaskDefinitionScheduleComponent', () => {
 
     it('should delete a schedule', () => {
       const spy = spyOn(component, 'destroySchedules');
-      component.applyAction('destroy', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
+      component.applyAction('destroy', TaskSchedule.fromJSON(tasksService.taskSchedules._embedded.scheduleInfoResourceList[0]));
       expect(spy).toHaveBeenCalled();
     });
 
     it('should navigate to the detail schedule', () => {
       const navigate = spyOn((<any>component).router, 'navigate');
-      component.applyAction('details', tasksService.taskSchedules._embedded.taskScheduleResourceList[0]);
+      component.applyAction('details', TaskSchedule.fromJSON(tasksService.taskSchedules._embedded.scheduleInfoResourceList[0]));
       expect(navigate).toHaveBeenCalledWith(['tasks/schedules/foo1']);
     });
 
