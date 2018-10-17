@@ -1,7 +1,8 @@
-import {Selectable} from '../../shared/model/selectable';
-import {ApplicationType} from './application-type';
-import {Serializable} from '../../shared/model';
-import {AppVersion} from './app-version';
+import { Selectable } from '../../shared/model/selectable';
+import { ApplicationType } from './application-type';
+import { Serializable } from '../../shared/model';
+import { AppVersion } from './app-version';
+import { Page } from './page';
 
 /**
  * Represents an App Registration and implements Selectable
@@ -9,33 +10,41 @@ import {AppVersion} from './app-version';
  *
  * @author Gunnar Hillert
  */
-export class AppRegistration implements Selectable, Serializable<AppRegistration> {
+export class AppRegistration implements Serializable<AppRegistration> {
+
   public name: string;
+
   public type: ApplicationType;
+
   public uri: string;
+
   public metaDataUri: string;
+
   public force: boolean;
 
   public version: string;
+
   public defaultVersion: boolean;
 
   public versions: AppVersion[] = [];
 
-  constructor(name?: string,
-              type?: ApplicationType,
-              uri?: string, metaDataUri?: string) {
+  constructor(name?: string, type?: ApplicationType, uri?: string, metaDataUri?: string) {
     this.name = name;
     this.type = type;
     this.uri = uri;
     this.metaDataUri = metaDataUri;
   }
 
-  get isSelected(): boolean {
-    return this.force;
+  public static fromJSON(input): AppRegistration {
+    return new AppRegistration().deserialize(input);
   }
 
-  set isSelected(isSelected: boolean) {
-    this.force = isSelected;
+  public static pageFromJSON(input): Page<AppRegistration> {
+    const page = Page.fromJSON<AppRegistration>(input);
+    if (input && input._embedded && input._embedded.appRegistrationResourceList) {
+      page.items = input._embedded.appRegistrationResourceList.map(AppRegistration.fromJSON);
+    }
+    return page;
   }
 
   versionOnError(): boolean {

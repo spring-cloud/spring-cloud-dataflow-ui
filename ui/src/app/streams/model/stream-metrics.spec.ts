@@ -13,7 +13,7 @@ import {
 describe('Metric', () => {
 
   it('Metric simple deserialize', () => {
-    const m = new Metric().deserialize({
+    const m = Metric.fromJSON({
       name: 'metric1',
       value: 5
     });
@@ -22,7 +22,7 @@ describe('Metric', () => {
   });
 
   it ('Metric extra data present', () => {
-    const m = new Metric().deserialize({
+    const m = Metric.fromJSON({
       name: 'metric',
       value: 'data',
       extra: 'more data'
@@ -32,7 +32,7 @@ describe('Metric', () => {
   });
 
   it ('Metric data missing', () => {
-    const m = new Metric().deserialize({
+    const m = Metric.fromJSON({
       name: 'metric',
       extra: 'more data'
     });
@@ -45,7 +45,7 @@ describe('Metric', () => {
 describe('InstanceMetrics', () => {
 
   it('Guid and Index only deserialize', () => {
-    const i = new InstanceMetrics().deserialize({
+    const i = InstanceMetrics.fromJSON({
       guid: 'guid',
       index: 8,
     });
@@ -60,7 +60,7 @@ describe('InstanceMetrics', () => {
       p1: 'v1',
       p2: 876,
     };
-    const i = new InstanceMetrics().deserialize({
+    const i = InstanceMetrics.fromJSON({
       properties: props
     });
     expect(i.guid).toBeUndefined();
@@ -70,7 +70,7 @@ describe('InstanceMetrics', () => {
   });
 
   it('Metrics deserialize', () => {
-    const i = new InstanceMetrics().deserialize({
+    const i = InstanceMetrics.fromJSON({
       metrics: [
         {name: 'm1', value: 'v1'},
         {name: 'm2', value: 4}
@@ -91,7 +91,7 @@ describe('InstanceMetrics', () => {
 describe('ApplicationMetrics', () => {
 
   it('Deserialize ApplicationMetrics only name', () => {
-    const a = new ApplicationMetrics().deserialize({
+    const a = ApplicationMetrics.fromJSON({
       name: 'my-app'
     });
     expect(a.name).toEqual('my-app');
@@ -100,7 +100,7 @@ describe('ApplicationMetrics', () => {
   });
 
   it('Deserialize general case', () => {
-    const a = new ApplicationMetrics().deserialize({
+    const a = ApplicationMetrics.fromJSON({
       name: 'my-app',
       aggregateMetrics: [
         {name: 'a1', value: 'av1'},
@@ -147,7 +147,7 @@ describe('ApplicationMetrics', () => {
 describe('StreamMetrics', () => {
 
   it('Deserialize name only', () => {
-    const s = new StreamMetrics().deserialize({
+    const s = StreamMetrics.fromJSON({
       name: 'str1'
     });
     expect(s.name).toEqual('str1');
@@ -155,7 +155,7 @@ describe('StreamMetrics', () => {
   });
 
   it ('General case for deserialize', () => {
-    const s = new StreamMetrics().deserialize({
+    const s = StreamMetrics.fromJSON({
       applications: [
         {
           name: 'app-1',

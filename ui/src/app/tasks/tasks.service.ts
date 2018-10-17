@@ -14,6 +14,7 @@ import {
   TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams
 } from './components/tasks.interface';
 import { HttpResponse } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -104,21 +105,9 @@ export class TasksService {
     if (taskListParams.sort && taskListParams.order) {
       params = params.append('sort', `${taskListParams.sort},${taskListParams.order}`);
     }
-    return this.httpClient.get<any>(TasksService.URL.EXECUTIONS, { params: params })
-      .pipe(map((body) => {
-        const taskExecutions = new Page<TaskExecution>();
-        if (body._embedded && body._embedded.taskExecutionResourceList) {
-          taskExecutions.items = body._embedded.taskExecutionResourceList.map(TaskExecution.fromJSON);
-        }
-        if (body.page) {
-          taskExecutions.pageNumber = body.page.number;
-          taskExecutions.pageSize = body.page.size;
-          taskExecutions.totalElements = body.page.totalElements;
-          taskExecutions.totalPages = body.page.totalPages;
-        }
-        this.loggerService.log('Extracted Task Executions:', taskExecutions);
-        return taskExecutions;
-      }))
+    return this.httpClient
+      .get<any>(TasksService.URL.EXECUTIONS, { params: params })
+      .pipe(map(TaskExecution.pageFromJSON))
       .catch(this.errorHandler.handleError);
   }
 
@@ -139,21 +128,9 @@ export class TasksService {
     if (listParams.sort && listParams.order) {
       params = params.append('sort', `${listParams.sort},${listParams.order}`);
     }
-    return this.httpClient.get<any>(TasksService.URL.EXECUTIONS, { params: params })
-      .pipe(map((body) => {
-        const taskExecutions = new Page<TaskExecution>();
-        if (body._embedded && body._embedded.taskExecutionResourceList) {
-          taskExecutions.items = body._embedded.taskExecutionResourceList.map(TaskExecution.fromJSON);
-        }
-        if (body.page) {
-          taskExecutions.pageNumber = body.page.number;
-          taskExecutions.pageSize = body.page.size;
-          taskExecutions.totalElements = body.page.totalElements;
-          taskExecutions.totalPages = body.page.totalPages;
-        }
-        this.loggerService.log('Extracted Task Executions:', taskExecutions);
-        return taskExecutions;
-      }))
+    return this.httpClient
+      .get<any>(TasksService.URL.EXECUTIONS, { params: params })
+      .pipe(map(TaskExecution.pageFromJSON))
       .catch(this.errorHandler.handleError);
   }
 
@@ -164,7 +141,8 @@ export class TasksService {
    * @returns {Observable<TaskExecution>}
    */
   getExecution(id: string): Observable<TaskExecution> {
-    return this.httpClient.get<any>(TasksService.URL.EXECUTIONS + '/' + id, {})
+    return this.httpClient
+      .get<any>(TasksService.URL.EXECUTIONS + '/' + id, {})
       .pipe(map(TaskExecution.fromJSON))
       .catch(this.errorHandler.handleError);
   }
@@ -177,7 +155,8 @@ export class TasksService {
    */
   getDefinition(taskname: string): Observable<TaskDefinition> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.httpClient.get<any>(`${TasksService.URL.DEFINITIONS}/${taskname}`, { headers: headers })
+    return this.httpClient
+      .get<any>(`${TasksService.URL.DEFINITIONS}/${taskname}`, { headers: headers })
       .map(TaskDefinition.fromJSON)
       .catch(this.errorHandler.handleError);
   }
@@ -198,21 +177,9 @@ export class TasksService {
     if (taskListParams.sort && taskListParams.order) {
       params = params.append('sort', `${taskListParams.sort},${taskListParams.order}`);
     }
-    return this.httpClient.get<any>(TasksService.URL.DEFINITIONS, { params: params })
-      .pipe(map((body) => {
-        const taskDefinitions = new Page<TaskDefinition>();
-        if (body._embedded && body._embedded.taskDefinitionResourceList) {
-          taskDefinitions.items = body._embedded.taskDefinitionResourceList.map(TaskDefinition.fromJSON);
-        }
-        if (body.page) {
-          taskDefinitions.pageNumber = body.page.number;
-          taskDefinitions.pageSize = body.page.size;
-          taskDefinitions.totalElements = body.page.totalElements;
-          taskDefinitions.totalPages = body.page.totalPages;
-        }
-        this.loggerService.log('Extracted Task Definitions:', taskDefinitions);
-        return taskDefinitions;
-      }))
+    return this.httpClient
+      .get<any>(TasksService.URL.DEFINITIONS, { params: params })
+      .pipe(map(TaskDefinition.pageFromJSON))
       .catch(this.errorHandler.handleError);
   }
 
@@ -229,21 +196,10 @@ export class TasksService {
     if (params.q) {
       url = `${url}/instances/${params.q}`;
     }
-    return this.httpClient.get<any>(url)
-      .pipe(map((body) => {
-        const page = new Page<TaskSchedule>();
-        if (body._embedded && body._embedded.scheduleInfoResourceList) {
-          page.items = body._embedded.scheduleInfoResourceList.map(TaskSchedule.fromJSON);
-        }
-        if (body.page) {
-          page.pageNumber = body.page.number;
-          page.pageSize = body.page.size;
-          page.totalElements = body.page.totalElements;
-          page.totalPages = body.page.totalPages;
-        }
-        this.loggerService.log('Extracted Task Schedules:', page);
-        return page;
-      })).catch(this.errorHandler.handleError);
+    return this.httpClient
+      .get<any>(url)
+      .pipe(map(TaskSchedule.pageFromJSON))
+      .catch(this.errorHandler.handleError);
   }
 
   /**
@@ -266,11 +222,7 @@ export class TasksService {
    * @returns {Observable<Response[]>}
    */
   createSchedules(taskScheduleCreateParams: TaskScheduleCreateParams[]): Observable<Response[]> {
-    const observables: Observable<Response>[] = [];
-    for (const params of taskScheduleCreateParams) {
-      observables.push(this.createSchedule(params));
-    }
-    return Observable.forkJoin(observables);
+    return forkJoin(taskScheduleCreateParams.map(schedule => this.createSchedule(schedule)));
   }
 
   /**
@@ -292,8 +244,8 @@ export class TasksService {
       .append('properties', props.filter((prop) => !!prop).join(','));
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const options = { headers: headers, params: params };
-    return this.httpClient.post(TasksService.URL.SCHEDULES, {}, options)
+    return this.httpClient
+      .post(TasksService.URL.SCHEDULES, {}, { headers: headers, params: params })
       .catch(this.errorHandler.handleError);
   }
 
@@ -309,8 +261,8 @@ export class TasksService {
       .append('definition', taskCreateParams.definition)
       .append('name', taskCreateParams.name);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const options = { headers: headers, params: params };
-    return this.httpClient.post(TasksService.URL.DEFINITIONS, {}, options)
+    return this.httpClient
+      .post(TasksService.URL.DEFINITIONS, {}, { headers: headers, params: params })
       .catch(this.errorHandler.handleError);
   }
 
@@ -323,11 +275,9 @@ export class TasksService {
   destroyDefinition(taskDefinition: TaskDefinition): Observable<HttpResponse<any>> {
     this.loggerService.log('Destroying...', taskDefinition.name);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    return this.httpClient.delete(TasksService.URL.DEFINITIONS + '/' + taskDefinition.name, {
-      headers: headers,
-      observe: 'response'
-    }).catch(this.errorHandler.handleError);
+    return this.httpClient
+      .delete(TasksService.URL.DEFINITIONS + '/' + taskDefinition.name, { headers: headers, observe: 'response' })
+      .catch(this.errorHandler.handleError);
   }
 
   /**
@@ -337,11 +287,7 @@ export class TasksService {
    * @returns {Observable<Response[]>}
    */
   destroyDefinitions(taskDefinitions: TaskDefinition[]): Observable<HttpResponse<any>[]> {
-    const observables: Observable<HttpResponse<any>>[] = [];
-    for (const taskDefinition of taskDefinitions) {
-      observables.push(this.destroyDefinition(taskDefinition));
-    }
-    return Observable.forkJoin(observables);
+    return forkJoin(taskDefinitions.map(task => this.destroyDefinition(task)));
   }
 
   /**
@@ -353,10 +299,8 @@ export class TasksService {
   destroySchedule(taskSchedules: TaskSchedule): Observable<HttpResponse<any>> {
     this.loggerService.log('Destroying...', taskSchedules.name);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.httpClient.delete(TasksService.URL.SCHEDULES + '/' + taskSchedules.name, {
-      headers: headers,
-      observe: 'response'
-    })
+    return this.httpClient
+      .delete(TasksService.URL.SCHEDULES + '/' + taskSchedules.name, { headers: headers, observe: 'response' })
       .catch(this.errorHandler.handleError);
   }
 
@@ -367,11 +311,7 @@ export class TasksService {
    * @returns {Observable<Response[]>}
    */
   destroySchedules(taskSchedules: TaskSchedule[]): Observable<HttpResponse<any>[]> {
-    const observables: Observable<HttpResponse<any>>[] = [];
-    for (const taskSchedule of taskSchedules) {
-      observables.push(this.destroySchedule(taskSchedule));
-    }
-    return Observable.forkJoin(observables);
+    return forkJoin(taskSchedules.map(schedule => this.destroySchedule(schedule)));
   }
 
   /**
@@ -390,8 +330,8 @@ export class TasksService {
       params = params.append('properties', taskLaunchParams.props);
     }
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const options = { headers: headers, params: params };
-    return this.httpClient.post(TasksService.URL.EXECUTIONS, {}, options)
+    return this.httpClient
+      .post(TasksService.URL.EXECUTIONS, {}, { headers: headers, params: params })
       .catch(this.errorHandler.handleError);
   }
 

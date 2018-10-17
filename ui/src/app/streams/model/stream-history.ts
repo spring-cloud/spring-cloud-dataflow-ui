@@ -40,4 +40,16 @@ export class StreamHistory {
     return new StreamHistory(input.name, input.version, firstDeployed, statusCode, description, input.platformName);
   }
 
+  /**
+   * Create an Array<StreamHistory> from a json
+   * @param input
+   * @returns {Array<StreamHistory>}
+   */
+  static listFromJSON(input): Array<StreamHistory> {
+    if (input && Array.isArray(input)) {
+      return input.map(StreamHistory.fromJSON);
+    }
+    return [];
+  }
+
 }

@@ -26,24 +26,31 @@ import { StreamDeployFreeTextComponent } from './free-text/free-text.component';
 import { StreamDeployBuilderComponent } from './builder/builder.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { StreamDeployBuilderErrorsComponent } from './builder/errors/errors.component';
-import { StreamDeployService } from './stream-deploy.service';
+import { FocusDirective } from '../../shared/directives/focus.directive';
+import { StreamDeployService } from 'src/app/streams/stream-deploy/stream-deploy.service';
+import { MockSharedAppService } from 'src/app/tests/mocks/shared-app';
+import { MockAppsService } from '../../tests/mocks/apps';
+import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 
 /**
  * Test {@link StreamDeployComponent}.
  *
  * @author Glenn Renfro
  */
-xdescribe('StreamDeployComponent', () => {
+describe('StreamDeployComponent', () => {
   let component: StreamDeployComponent;
   let fixture: ComponentFixture<StreamDeployComponent>;
   const notificationService = new MockNotificationService();
   const streamsService = new MockStreamsService();
   const sharedAboutService = new MocksSharedAboutService();
+  const appsService = new MockAppsService();
+  const sharedAppService = new MockSharedAppService();
   const busyService = new BusyService();
   let activeRoute: MockActivatedRoute;
   const commonTestParams = { id: '1' };
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
+  const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any);
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -58,7 +65,8 @@ xdescribe('StreamDeployComponent', () => {
         AppTypeComponent,
         StreamDeployFreeTextComponent,
         StreamDeployBuilderComponent,
-        StreamDeployBuilderErrorsComponent
+        StreamDeployBuilderErrorsComponent,
+        FocusDirective
       ],
       imports: [
         NgBusyModule,
@@ -68,6 +76,7 @@ xdescribe('StreamDeployComponent', () => {
         ModalModule.forRoot(),
         BsDropdownModule.forRoot(),
         NgxPaginationModule,
+        ClipboardModule,
         RouterTestingModule.withRoutes([{ path: 'streams/definitions', component: MockComponent }])
       ],
       providers: [
@@ -77,6 +86,8 @@ xdescribe('StreamDeployComponent', () => {
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: NotificationService, useValue: notificationService },
         { provide: RoutingStateService, useValue: routingStateService },
+        { provide: StreamDeployService, useValue: streamDeployService },
+        ClipboardService,
         { provide: LoggerService, useValue: loggerService }
       ]
     })
@@ -94,44 +105,31 @@ xdescribe('StreamDeployComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-  /*
-    it('Should execute deploy for stream', () => {
-      streamsService.streamDefinitions = STREAM_DEFINITIONS;
-      fixture.detectChanges();
-      const de: DebugElement = fixture.debugElement.query(By.css('button[id=deployBtn]'));
-      const el: HTMLElement = de.nativeElement;
-      const navigate = spyOn((<any>component).router, 'navigate');
-      el.click();
 
-      expect(navigate).toHaveBeenCalledWith(['streams/definitions']);
-      expect(notificationService.testSuccess).toContain('Successfully deployed stream definition "1"');
+  describe('Run Copy', () => {
+
+    it('should copy and display a success message', () => {
+      component.runCopy(['a=a', 'b=b']);
+      fixture.detectChanges();
+      expect(notificationService.testSuccess[0]).toContain('The properties have been copied to your clipboard.');
     });
 
-    it('Should execute deploy for stream with properties', () => {
-      streamsService.streamDefinitions = STREAM_DEFINITIONS;
+    it('should display an error message (empty)', () => {
+      component.runCopy([]);
       fixture.detectChanges();
-      const de: DebugElement = fixture.debugElement.query(By.css('button[id=deployBtn]'));
-      const el: HTMLElement = de.nativeElement;
-      const navigate = spyOn((<any>component).router, 'navigate');
-      component.deploymentProperties.setValue('app.bar=foo\napp.aaa=bbb=ccc\napp.ddd=eee');
-      el.click();
-      expect(component.propertiesAsMap['app.bar']).toBe('foo');
-      expect(component.propertiesAsMap['app.aaa']).toBe('bbb=ccc');
-      expect(component.propertiesAsMap['app.ddd']).toBe('eee');
-
-      expect(navigate).toHaveBeenCalledWith(['streams/definitions']);
-      expect(notificationService.testSuccess).toContain('Successfully deployed stream definition "1"');
+      expect(notificationService.testError[0]).toContain('There are no properties to copy.');
     });
 
-    it('Should return back to stream definitions page', () => {
-      streamsService.streamDefinitions = STREAM_DEFINITIONS;
-      fixture.detectChanges();
-      const de: DebugElement = fixture.debugElement.query(By.css('button[id=backBtn]'));
-      const el: HTMLElement = de.nativeElement;
-      const navigate = spyOn((<any>component).router, 'navigate');
-      el.click();
+  });
 
-      expect(navigate).toHaveBeenCalledWith(['streams/definitions']);
-      expect(notificationService.testSuccess.length).toBe(0);
-    });*/
+  describe('Run Export', () => {
+
+    it('should display an error message (empty)', () => {
+      component.runExport([]);
+      fixture.detectChanges();
+      expect(notificationService.testError[0]).toContain('There are no properties to export.');
+    });
+
+  });
+
 });

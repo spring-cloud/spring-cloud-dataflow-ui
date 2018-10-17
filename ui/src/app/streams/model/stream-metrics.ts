@@ -1,5 +1,3 @@
-import { Serializable } from '../../shared/model';
-
 export const TYPE = 'spring.cloud.dataflow.stream.app.type';
 export const INSTANCE_COUNT = 'spring.cloud.stream.instanceCount';
 export const INPUT_CHANNEL_MEAN = 'integration.channel.input.send.mean';
@@ -10,68 +8,80 @@ export const OUTPUT_CHANNEL_MEAN = 'integration.channel.output.send.mean';
  *
  * @author Alex Boyko
  */
-export class Metric implements Serializable<Metric> {
+export class Metric {
   name: string;
   value: any;
 
-  public deserialize(input) {
-    this.name = input.name;
-    this.value = input.value;
-    return this;
+  static fromJSON(input): Metric {
+    const metric = new Metric();
+    metric.name = input.name;
+    metric.value = input.value;
+    return metric;
   }
 }
 
-export class InstanceMetrics implements Serializable<InstanceMetrics> {
+export class InstanceMetrics {
   guid: string;
   index: number;
   properties: {};
   metrics: Metric[];
 
-  public deserialize(input) {
-    this.guid = input.guid;
-    this.index = input.index;
-    this.properties = input.properties;
+  static fromJSON(input): InstanceMetrics {
+    const instanceMetrics = new InstanceMetrics();
+    instanceMetrics.guid = input.guid;
+    instanceMetrics.index = input.index;
+    instanceMetrics.properties = input.properties;
     if (Array.isArray(input.metrics)) {
-      this.metrics = input.metrics.map(m => new Metric().deserialize(m));
+      instanceMetrics.metrics = input.metrics.map(Metric.fromJSON);
     } else {
-      this.metrics = [];
+      instanceMetrics.metrics = [];
     }
-    return this;
+    return instanceMetrics;
   }
+
 }
 
-export class ApplicationMetrics implements Serializable<ApplicationMetrics> {
+export class ApplicationMetrics {
   name: string;
   instances: InstanceMetrics[];
   aggregateMetrics: Metric[];
 
-  public deserialize(input) {
-    this.name = input.name;
+  static fromJSON(input) {
+    const applicationMetrics = new ApplicationMetrics();
+    applicationMetrics.name = input.name;
     if (Array.isArray(input.instances)) {
-      this.instances = input.instances.map(i => new InstanceMetrics().deserialize(i));
+      applicationMetrics.instances = input.instances.map(InstanceMetrics.fromJSON);
     } else {
-      this.instances = [];
+      applicationMetrics.instances = [];
     }
     if (Array.isArray(input.aggregateMetrics)) {
-      this.aggregateMetrics = input.aggregateMetrics.map(a => new Metric().deserialize(a));
+      applicationMetrics.aggregateMetrics = input.aggregateMetrics.map(Metric.fromJSON);
     } else {
-      this.aggregateMetrics = [];
+      applicationMetrics.aggregateMetrics = [];
     }
-    return this;
+    return applicationMetrics;
   }
 }
 
-export class StreamMetrics implements Serializable<StreamMetrics> {
+export class StreamMetrics {
   name: string;
   applications: ApplicationMetrics[];
 
-  public deserialize(input) {
-    this.name = input.name;
+  static fromJSON(input): StreamMetrics {
+    const streamMetrics = new StreamMetrics();
+    streamMetrics.name = input.name;
     if (Array.isArray(input.applications)) {
-      this.applications = input.applications.map(a => new ApplicationMetrics().deserialize(a));
+      streamMetrics.applications = input.applications.map(ApplicationMetrics.fromJSON);
     } else {
-      this.applications = [];
+      streamMetrics.applications = [];
     }
-    return this;
+    return streamMetrics;
+  }
+
+  static listFromJSON(input): Array<StreamMetrics> {
+    if (Array.isArray(input)) {
+      return input.map(StreamMetrics.fromJSON);
+    }
+    return [];
   }
 }

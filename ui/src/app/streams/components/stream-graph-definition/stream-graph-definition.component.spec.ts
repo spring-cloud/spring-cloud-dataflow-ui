@@ -200,7 +200,7 @@ describe('StreamGraphDefinitionComponent', () => {
         ]
       });
     }
-    return new ApplicationMetrics().deserialize({
+    return ApplicationMetrics.fromJSON({
       name: name,
       instances: instances,
       aggregateMetrics: [

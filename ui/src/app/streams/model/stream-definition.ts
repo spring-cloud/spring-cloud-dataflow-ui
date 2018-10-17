@@ -1,4 +1,4 @@
-import { Expandable } from './../../shared/model/expandable';
+import { Page } from '../../shared/model/page';
 
 /**
  * Represents a StreamDefiniton.
@@ -7,36 +7,46 @@ import { Expandable } from './../../shared/model/expandable';
  * @author Gunnar Hillert
  * @author Damien Vitrac
  */
-export class StreamDefinition implements Expandable {
+export class StreamDefinition {
 
   public name: string;
+
   public dslText: string;
+
   public status: string;
-  public isExpanded = false;
-  public force = false;
 
   public deploymentProperties: any;
 
-  constructor(name: string,
-              dslText: string,
-              status: string) {
+  public force = false;
+
+  constructor(name: string, dslText: string, status: string) {
     this.name = name;
     this.dslText = dslText;
     this.status = status;
   }
 
-  get isSelected(): boolean {
-    return this.force;
-  }
-
-  set isSelected(isSelected: boolean) {
-    this.force = isSelected;
+  /**
+   * Create a StreamDefinition from JSON
+   * @param input
+   * @returns {StreamDefinition}
+   */
+  public static fromJSON(input): StreamDefinition {
+    const stream = new StreamDefinition(input.name, input.dslText, input.status);
+    stream.deploymentProperties = input.deploymentProperties ? JSON.parse(input.deploymentProperties) : [];
+    return stream;
   }
 
   /**
-   * Marks a StreamDefinition as expanded/collapsed.
+   * Create a Page<StreamDefinition> from JSON
+   * @param input
+   * @returns {Page<StreamDefinition>}
    */
-  public toggleIsExpanded() {
-    this.isExpanded = !this.isExpanded;
+  public static pageFromJSON(input): Page<StreamDefinition> {
+    const page = Page.fromJSON<StreamDefinition>(input);
+    if (input && input._embedded && input._embedded.streamDefinitionResourceList) {
+      page.items = input._embedded.streamDefinitionResourceList.map(StreamDefinition.fromJSON);
+    }
+    return page;
   }
+
 }

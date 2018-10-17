@@ -404,7 +404,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         .map(s => s.name.toString())
       : [];
     if (streamNames.length) {
-      this.streamsService.metrics(streamNames).subscribe(metrics => this.metrics = metrics);
+      this.streamsService.getMetrics(streamNames).subscribe(metrics => this.metrics = metrics);
     } else {
       this.metrics = [];
     }

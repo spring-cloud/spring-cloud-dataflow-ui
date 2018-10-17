@@ -18,7 +18,7 @@ import { Subject } from 'rxjs/Subject';
  */
 @Component({
   selector: 'app-task-definition-schedules',
-  templateUrl: 'task-definition-schedule.component.html',
+  templateUrl: 'task-definition-schedules.component.html',
   styleUrls: ['../styles.scss'],
 })
 export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {

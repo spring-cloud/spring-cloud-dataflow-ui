@@ -17,8 +17,6 @@ import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { GraphViewComponent } from '../../shared/flo/graph-view/graph-view.component';
 import { FloModule } from 'spring-flo';
-import { TriStateButtonComponent } from '../../shared/components/tri-state-button.component';
-import { TriStateCheckboxComponent } from '../../shared/components/tri-state-checkbox.component';
 import { DeploymentPropertiesComponent } from './deployment-properties/deployment-properties.component';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
@@ -69,8 +67,6 @@ describe('StreamsComponent', () => {
         RolesDirective,
         GraphViewComponent,
         StreamsComponent,
-        TriStateButtonComponent,
-        TriStateCheckboxComponent,
         DeploymentPropertiesComponent,
         DeploymentPropertiesInfoComponent,
         StreamsDeployComponent,

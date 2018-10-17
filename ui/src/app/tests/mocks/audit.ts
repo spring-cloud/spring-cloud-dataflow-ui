@@ -34,13 +34,66 @@ export class MockAuditRecordService {
     itemsSelected: []
   };
 
+  public auditRecords;
+
   getAuditRecords(auditRecordListParams: AuditRecordListParams): Observable<Page<AuditRecord>> {
-    const page = new Page<AuditRecord>();
-    return Observable.of(page);
+    return Observable.of(AuditRecord.pageFromJSON(this.auditRecords));
   }
+
   loadAuditOperationTypes() {
+    return Observable.of([
+      AuditOperationType.fromJSON({ 'id': 100, 'name': 'App Registration', 'key': 'APP_REGISTRATION' }),
+      AuditOperationType.fromJSON({ 'id': 200, 'name': 'Schedule', 'key': 'SCHEDULE' }),
+      AuditOperationType.fromJSON({ 'id': 300, 'name': 'Stream', 'key': 'STREAM' }),
+      AuditOperationType.fromJSON({ 'id': 400, 'name': 'Task', 'key': 'TASK' })
+    ]);
   }
+
   loadAuditActionTypes() {
+    return Observable.of([
+      AuditActionType.fromJSON({
+        'id': 100,
+        'name': 'Create',
+        'description': 'Create an Entity',
+        'key': 'CREATE',
+        'nameWithDescription': 'Create (Create an Entity)'
+      }),
+      AuditActionType.fromJSON({
+        'id': 200,
+        'name': 'Delete',
+        'description': 'Delete an Entity',
+        'key': 'DELETE',
+        'nameWithDescription': 'Delete (Delete an Entity)'
+      }),
+      AuditActionType.fromJSON({
+        'id': 300,
+        'name': 'Deploy',
+        'description': 'Deploy an Entity',
+        'key': 'DEPLOY',
+        'nameWithDescription': 'Deploy (Deploy an Entity)'
+      }),
+      AuditActionType.fromJSON({
+        'id': 400,
+        'name': 'Rollback',
+        'description': 'Rollback an Entity',
+        'key': 'ROLLBACK',
+        'nameWithDescription': 'Rollback (Rollback an Entity)'
+      }),
+      AuditActionType.fromJSON({
+        'id': 500,
+        'name': 'Undeploy',
+        'description': 'Undeploy an Entity',
+        'key': 'UNDEPLOY',
+        'nameWithDescription': 'Undeploy (Undeploy an Entity)'
+      }),
+      AuditActionType.fromJSON({
+        'id': 600,
+        'name': 'Update',
+        'description': 'Update an Entity',
+        'key': 'UPDATE',
+        'nameWithDescription': 'Update (Update an Entity)'
+      })
+    ]);
   }
 
   getAuditRecordDetails(id: number): Observable<AuditRecord> {

@@ -7,9 +7,9 @@ import { Serializable } from '../../shared/model';
  */
 export class Deprecation implements Serializable<Deprecation> {
 
-  public  level: string;
-  public  reason: string;
-  public  replacement: string;
+  public level: string;
+  public reason: string;
+  public replacement: string;
 
   /**
    * For a given JSON data object, this method
@@ -73,12 +73,15 @@ export class DetailedAppRegistration extends AppRegistration implements Serializ
 
   public options: ConfigurationMetadataProperty[];
 
-  constructor(
-    name?: string,
-    type?: ApplicationType,
-    uri?: string ) {
-      super(name, type, uri);
-    }
+  constructor(name?: string, type?: ApplicationType, uri?: string) {
+    super(name, type, uri);
+  }
+
+  static fromJSON(input): DetailedAppRegistration {
+    const detailed = new DetailedAppRegistration();
+
+    return new DetailedAppRegistration().deserialize(input);
+  }
 
   /**
    * For a given JSON data object, this method
@@ -98,4 +101,5 @@ export class DetailedAppRegistration extends AppRegistration implements Serializ
     }
     return this;
   }
+
 }

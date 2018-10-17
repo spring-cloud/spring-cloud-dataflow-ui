@@ -129,7 +129,7 @@ export class StreamDeployService {
               );
             let obs: Observable<any> = forkJoin([...observablesApplications]);
             if (skipper) {
-              obs = forkJoin([this.streamsService.platforms(), ...observablesApplications]);
+              obs = forkJoin([this.streamsService.getPlatforms(), ...observablesApplications]);
             }
             return obs.pipe(map((val2) => ({
               streamDefinition: val,

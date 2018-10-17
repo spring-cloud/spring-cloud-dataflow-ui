@@ -13,16 +13,6 @@
  */
 export class MockRoutingStateService {
 
-  public watchRouting() {
-
-  }
-
-  public getHistory(): string[] {
-    return [];
-  }
-
-  public back(defaultUrl: string, isNotRegex?: RegExp) {
-
-  }
+  public back(defaultUrl: string, isNotRegex?: RegExp) {}
 
 }

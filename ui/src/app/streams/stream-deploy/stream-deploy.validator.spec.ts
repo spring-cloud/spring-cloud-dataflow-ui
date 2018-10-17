@@ -1,5 +1,6 @@
 import {FormControl} from '@angular/forms';
 import {StreamDeployValidator} from './stream-deploy.validator';
+import { FormGroup } from '@angular/forms';
 
 /**
  * Test Stream Validator functions.
@@ -39,6 +40,7 @@ describe('StreamsDefinitionValidator', () => {
   describe('key', () => {
     it('valid', () => {
       [
+        '',
         'aa.aa',
         'aa.a',
         'a',
@@ -75,6 +77,7 @@ describe('StreamsDefinitionValidator', () => {
   describe('keyProperty', () => {
     it('valid', () => {
       [
+        '',
         'app.*.foo',
         'app.file.foo',
         'version.file',
@@ -102,6 +105,68 @@ describe('StreamsDefinitionValidator', () => {
       ].forEach((mock) => {
         const control: FormControl = new FormControl(mock);
         expect(StreamDeployValidator.keyProperty(control).invalid).toBeTruthy();
+      });
+    });
+  });
+
+  describe('property / properties', () => {
+    it('valid', () => {
+      [
+        '',
+        'app.*.foo=a',
+        'app.file.foo=a',
+        'version.file=a',
+        'deployer.*.foo=a',
+        'deployer.file.foo=a',
+        'spring.cloud.dataflow.skipper.platformName=a',
+        'app.*.spring.cloud.stream.bindings.applicationMetrics.destination=a',
+        'app.*.spring.cloud.stream.metrics.schedule-interval=a'
+      ].forEach((mock) => {
+        expect(StreamDeployValidator.property(mock)).toBeTruthy();
+        const control: FormControl = new FormControl(mock);
+        expect(StreamDeployValidator.properties(control)).toBeNull();
+      });
+    });
+    it('invalid', () => {
+      [
+        'app.aa',
+        'aa.aa=aa',
+      ].forEach((mock) => {
+        expect(StreamDeployValidator.property(mock)).toBe('Not valid');
+        const control: FormControl = new FormControl(mock);
+        expect(StreamDeployValidator.properties(control).invalid).toBeTruthy();
+      });
+    });
+  });
+
+  describe('keyRequired', () => {
+    it('valid', () => {
+      [
+        { property: '', foo: '', bar: ''},
+        { property: 'foobar', foo: 'bar', bar: 'foo'},
+        { property: 'foobar', foo: 'bar', bar: ''},
+        { property: 'foobar', foo: '', bar: 'foo'}
+      ].forEach((mock) => {
+        const group = new FormGroup({
+          property: new FormControl(mock.property),
+          foo: new FormControl(mock.foo),
+          bar: new FormControl(mock.bar),
+        });
+        expect(StreamDeployValidator.keyRequired(group)).toBeNull();
+      });
+    });
+    it('invalid', () => {
+      [
+        { property: '', foo: 'foo', bar: ''},
+        { property: '', foo: '', bar: 'foo'},
+        { property: '', foo: 'foo', bar: 'foo'}
+      ].forEach((mock) => {
+        const group = new FormGroup({
+          property: new FormControl(mock.property),
+          foo: new FormControl(mock.foo),
+          bar: new FormControl(mock.bar),
+        });
+        expect(StreamDeployValidator.keyRequired(group).invalid).toBeTruthy();
       });
     });
   });

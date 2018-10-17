@@ -9,7 +9,7 @@ import { Platform } from './platform';
 describe('Platform', () => {
 
   it('Platform simple deserialize', () => {
-    const m = new Platform().deserialize({
+    const m = Platform.fromJSON({
       name: 'foobar',
       type: 'foo',
       description: 'bar',

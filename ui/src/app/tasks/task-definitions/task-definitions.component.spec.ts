@@ -12,8 +12,6 @@ import { RolesDirective } from '../../auth/directives/roles.directive';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { FloModule } from 'spring-flo';
-import { TriStateButtonComponent } from '../../shared/components/tri-state-button.component';
-import { TriStateCheckboxComponent } from '../../shared/components/tri-state-checkbox.component';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { SortComponent } from '../../shared/components/sort/sort.component';
@@ -66,8 +64,6 @@ describe('TaskDefinitionsComponent', () => {
         RolesDirective,
         TaskDefinitionsComponent,
         TaskDefinitionsDestroyComponent,
-        TriStateButtonComponent,
-        TriStateCheckboxComponent,
         SortComponent,
         StreamDslComponent,
         MasterCheckboxComponent,

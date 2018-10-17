@@ -60,18 +60,9 @@ export class JobsService {
   getJobExecutions(listParams: ListParams): Observable<Page<JobExecution>> {
     this.loggerService.log(`Get Job Executions`, listParams);
     const params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
-    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS, { params: params })
-      .map((body) => {
-        const page = new Page<JobExecution>();
-        if (body._embedded && body._embedded.jobExecutionResourceList) {
-          page.items = body._embedded.jobExecutionResourceList.map(JobExecution.fromJSON);
-        }
-        page.totalElements = body.page.totalElements;
-        page.pageNumber = body.page.number;
-        page.pageSize = body.page.size;
-        page.totalPages = body.page.totalPages;
-        return page;
-      })
+    return this.httpClient
+      .get<any>(JobsService.URL.EXECUTIONS, { params: params })
+      .map(JobExecution.pageFromJSON)
       .catch(this.errorHandler.handleError);
   }
 
@@ -138,4 +129,5 @@ export class JobsService {
       .put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?stop=true', { headers: httpHeaders })
       .catch(this.errorHandler.handleError);
   }
+
 }

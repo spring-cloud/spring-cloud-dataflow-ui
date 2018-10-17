@@ -75,6 +75,8 @@ export class AuditRecordListBarComponent implements OnInit {
    */
   ngOnInit() {
     this.form.q = this.params.q;
+    this.form.operation = this.params.operation;
+    this.form.action = this.params.action;
   }
 
   /**
@@ -124,19 +126,6 @@ export class AuditRecordListBarComponent implements OnInit {
 
   fire(action) {
     this.action.emit({ action: action });
-  }
-
-  hasActions() {
-    if (!this.actions) {
-      return false;
-    }
-    if (this.actions.length === 0) {
-      return false;
-    }
-    if (this.actions.filter((ac) => !ac['hidden']).length === 0) {
-      return false;
-    }
-    return true;
   }
 
 }

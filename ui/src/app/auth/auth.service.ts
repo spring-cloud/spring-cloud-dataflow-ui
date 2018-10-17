@@ -3,43 +3,64 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-
 import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { LoginRequest } from './model/login-request.model';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';
-import { Output } from '@angular/core';
-import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { LoggerService } from '../shared/services/logger.service';
 
 /**
  * The AuthService deals with all security-related services:
- *
- * - Login
- * - Logout
- * - Loading of security meta-information
+ * Login, Logout, loading of security meta-information
  *
  * @author Gunnar Hillert
  */
 @Injectable()
 export class AuthService {
 
+  /**
+   * URL API
+   */
+  public static URL = {
+    SECURITY_INFO: '/security/info',
+    AUTHENTICATION: '/authenticate',
+    LOGOUT: '/dashboard/logout'
+  };
+
+  /**
+   * Current Auth Token
+   * @type {string}
+   */
   public xAuthToken = '';
 
-  private securityInfoUrl = '/security/info';
-  private authenticationUrl = '/authenticate';
-  private logoutUrl = '/dashboard/logout';
-
+  /**
+   * Auth Token key name
+   * @type {string}
+   */
   private readonly xAuthTokenKeyName = 'xAuthToken';
 
+  /**
+   * Current Security Info
+   */
   public securityInfo: SecurityInfo;
+
+  /**
+   * Observable Security Info
+   * @type {Subject<SecurityInfo>}
+   */
   public securityInfoSubject = new Subject<SecurityInfo>();
 
-  constructor(
-    private http: HttpClient,
-    private errorHandler: ErrorHandler,
-    private loggerService: LoggerService) {
+  /**
+   * Constructor
+   *
+   * @param {HttpClient} http
+   * @param {ErrorHandler} errorHandler
+   * @param {LoggerService} loggerService
+   */
+  constructor(private http: HttpClient,
+              private errorHandler: ErrorHandler,
+              private loggerService: LoggerService) {
   }
 
   /**
@@ -61,21 +82,19 @@ export class AuthService {
       }
     }
 
-    return this.http.get<any>(this.securityInfoUrl, {
-      headers: httpHeaders
-    })
-                    .map(body => {
-                      this.securityInfo = new SecurityInfo().deserialize(body);
-                      this.securityInfoSubject.next(this.securityInfo);
-                      this.loggerService.log('SecurityInfo:', this.securityInfo);
-                      if (!this.securityInfo.isAuthenticationEnabled
-                        && this.xAuthToken) {
-                        this.xAuthToken = undefined;
-                        this.deletePersistedXAuthToken();
-                      }
-                      return this.securityInfo;
-                    })
-                    .catch(this.errorHandler.handleError);
+    return this.http
+      .get<any>(AuthService.URL.SECURITY_INFO, { headers: httpHeaders })
+      .map(body => {
+        this.securityInfo = new SecurityInfo().deserialize(body);
+        this.securityInfoSubject.next(this.securityInfo);
+        this.loggerService.log('SecurityInfo:', this.securityInfo);
+        if (!this.securityInfo.isAuthenticationEnabled && this.xAuthToken) {
+          this.xAuthToken = undefined;
+          this.deletePersistedXAuthToken();
+        }
+        return this.securityInfo;
+      })
+      .catch(this.errorHandler.handleError);
   }
 
   /**
@@ -90,17 +109,16 @@ export class AuthService {
   login(loginRequest: LoginRequest): Observable<SecurityInfo> {
     this.loggerService.log(`Logging in user ${loginRequest.username}.`);
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.http.post<any>(this.authenticationUrl, JSON.stringify(loginRequest), {headers: httpHeaders})
-                    .map(response => {
-                      return response as string;
-                    })
-                    .flatMap((id: string) => {
-                      this.loggerService.log('Logging you in ...', httpHeaders);
-                      this.xAuthToken = id;
-                      this.persistXAuthToken(id);
-                      return this.loadSecurityInfo();
-                    })
-                    .catch(this.errorHandler.handleError);
+    return this.http
+      .post<any>(AuthService.URL.AUTHENTICATION, JSON.stringify(loginRequest), { headers: httpHeaders })
+      .map(response => response as string)
+      .flatMap((id: string) => {
+        this.loggerService.log('Logging you in ...', httpHeaders);
+        this.xAuthToken = id;
+        this.persistXAuthToken(id);
+        return this.loadSecurityInfo();
+      })
+      .catch(this.errorHandler.handleError);
   }
 
   /**
@@ -110,24 +128,22 @@ export class AuthService {
   logout(): Observable<SecurityInfo> {
     this.loggerService.log('Logging out ...');
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.http.get(this.logoutUrl, { headers: httpHeaders})
-                    .map(response => {
-                      this.clearLocalSecurity();
-                      return response;
-                    })
-                    .flatMap((response: Response) => {
-                      this.loggerService.log('Retrieving security info ...', httpHeaders);
-                      return this.loadSecurityInfo();
-                    })
-                    .catch(this.errorHandler.handleError);
+    return this.http.get(AuthService.URL.LOGOUT, { headers: httpHeaders })
+      .map(response => {
+        this.clearLocalSecurity();
+        return response;
+      })
+      .flatMap(() => {
+        this.loggerService.log('Retrieving security info ...', httpHeaders);
+        return this.loadSecurityInfo();
+      })
+      .catch(this.errorHandler.handleError);
   }
 
   /**
    * Clears all security-relevant information from the local application:
-   *
    * - Calls `securityInfo.reset()`
    * - Deletes a persisted XAuthToken (Session Storage)
-   *
    */
   public clearLocalSecurity() {
     this.securityInfo.reset();
@@ -135,6 +151,10 @@ export class AuthService {
     this.deletePersistedXAuthToken();
   }
 
+  /**
+   * Get the persisted Auth Token
+   * @returns {string}
+   */
   private retrievePersistedXAuthToken(): string {
     const token = sessionStorage.getItem(this.xAuthTokenKeyName);
     if (token) {
@@ -143,11 +163,19 @@ export class AuthService {
     return undefined;
   }
 
+  /**
+   * Persist the Auth Token
+   * @param {string} token
+   */
   private persistXAuthToken(token: string) {
     sessionStorage.setItem(this.xAuthTokenKeyName, JSON.stringify(token));
   }
 
+  /**
+   * Clear the Auth Token
+   */
   private deletePersistedXAuthToken() {
     sessionStorage.removeItem(this.xAuthTokenKeyName);
   }
+
 }
