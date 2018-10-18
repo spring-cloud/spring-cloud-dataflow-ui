@@ -37,9 +37,12 @@
     <button id="back-button" type="button" class="btn btn-default" routerLink="/streams">
       Cancel
     </button>
-    <button (click)="createStreamDefs()" class="btn btn-primary" type="button">
-      Create Stream
-    </button>
+    <span class="btn" style="padding: 0; cursor: inherit"
+            tooltip="Disabled whilst stream definition(s) invalid !" [isDisabled]="!isCreateStreamsDisabled" container="body" triggers="click:mouseleave" placement="right">
+      <button (click)="createStreamDefs()" class="btn btn-primary" type="button" [disabled]="isCreateStreamsDisabled">
+        Create Stream
+      </button>
+    </span>
   </app-page-actions>
 
 </app-page>
