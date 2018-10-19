@@ -14,7 +14,7 @@ export class LayoutTypeDirective implements AfterViewInit {
 
   currentClass = null;
 
-  @Input('type') type: String;
+  @Input() type: String;
 
   constructor(private _elementRef: ElementRef,
               private loggerService: LoggerService,
