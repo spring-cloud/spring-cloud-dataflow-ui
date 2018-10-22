@@ -184,7 +184,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
       },
       {
         id: 'delete-schedules' + index,
-        icon: '',
+        icon: 'trash',
         action: 'delete-schedules',
         title: 'Delete schedule',
         disabled: !this.schedulerEnabled,
