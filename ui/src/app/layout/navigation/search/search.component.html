@@ -39,7 +39,9 @@
                 </li>
               </ul>
               <p class="more-result" *ngIf="resultSearch.app.totalElements > 5">
-                {{ resultSearch.app.totalElements }} results
+                <a (click)="moreResult('app')">
+                  View {{ resultSearch.app.totalElements }} applications
+                </a>
               </p>
             </div>
             <div class="result-item" *ngIf="resultSearch.stream && resultSearch.stream.totalElements > 0">
@@ -53,7 +55,9 @@
                 </li>
               </ul>
               <p class="more-result" *ngIf="resultSearch.stream.totalElements > 5">
-                {{ resultSearch.stream.totalElements }} results
+                <a (click)="moreResult('stream')">
+                  View {{ resultSearch.stream.totalElements }} streams
+                </a>
               </p>
             </div>
             <div class="result-item" *ngIf="resultSearch.task && resultSearch.task.totalElements > 0">
@@ -67,7 +71,9 @@
                 </li>
               </ul>
               <p class="more-result" *ngIf="resultSearch.task.totalElements > 5">
-                {{ resultSearch.task.totalElements }} results
+                <a (click)="moreResult('task')">
+                  View {{ resultSearch.task.totalElements }} tasks
+                </a>
               </p>
             </div>
           </div>
