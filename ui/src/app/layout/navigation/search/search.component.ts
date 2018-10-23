@@ -9,6 +9,7 @@ import { TaskDefinition } from 'src/app/tasks/model/task-definition';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs/index';
+import { OrderParams } from '../../../shared/components/shared.interface';
 
 /**
  * Navigation Search component
@@ -222,6 +223,52 @@ export class NavigationSearchComponent implements OnInit {
         break;
       case 'task':
         this.router.navigate(['/tasks/definitions/' + item.name]);
+        break;
+    }
+  }
+
+  /**
+   * Redirect to the specified module with the current search value
+   */
+  moreResult(page) {
+    switch (page) {
+      case 'app':
+        this.appsService.applicationsContext = {
+          q: this.q.value,
+          type: null,
+          sort: 'name',
+          order: 'ASC',
+          page: 0,
+          size: 30,
+          itemsSelected: []
+        };
+        this.router.navigate(['about']).then(() =>
+          this.router.navigate(['apps']));
+        break;
+      case 'stream':
+        this.streamsService.streamsContext = {
+          q: this.q.value,
+          page: 0,
+          size: 30,
+          sort: 'DEFINITION_NAME',
+          order: OrderParams.ASC,
+          itemsSelected: [],
+          itemsExpanded: []
+        };
+        this.router.navigate(['about']).then(() =>
+          this.router.navigate(['/streams/definitions']));
+        break;
+      case 'task':
+        this.tasksService.tasksContext = {
+          q: this.q.value,
+          page: 0,
+          size: 30,
+          sort: 'DEFINITION_NAME',
+          order: OrderParams.ASC,
+          itemsSelected: []
+        };
+        this.router.navigate(['about']).then(() =>
+          this.router.navigate(['/tasks/definitions']));
         break;
     }
   }

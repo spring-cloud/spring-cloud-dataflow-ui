@@ -333,8 +333,18 @@ $sidebar-active: #00a79d;
         }
         p.more-result {
           color: $blue-5;
-          font-size: 12px;
           margin: 0;
+          a {
+            color: $blue-5;
+            margin: 0 -1.5rem;
+            display: block;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            &:hover {
+              color: $blue-4;
+              background: $navy-11;
+            }
+          }
         }
       }
     }
