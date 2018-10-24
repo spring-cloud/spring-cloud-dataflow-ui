@@ -9,7 +9,6 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AboutDetailsComponent } from './about-details.component';
 import { ClipboardModule } from 'ngx-clipboard';
-import { MapValuesPipe } from '../../../shared/pipes/map-values-pipe.pipe';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { LoggerService } from '../../../shared/services/logger.service';
@@ -46,7 +45,6 @@ describe('AboutDetailsComponent', () => {
       ],
       declarations: [
         AboutDetailsComponent,
-        MapValuesPipe,
         LoaderComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,

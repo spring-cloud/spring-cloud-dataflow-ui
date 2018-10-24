@@ -5,7 +5,6 @@ import {
   TooltipModule
 } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
-import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RolesDirective } from '../../auth/directives/roles.directive';
@@ -61,7 +60,6 @@ describe('TaskScheduleComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        KeyValuePipe,
         RolesDirective,
         TruncatePipe,
         LoaderComponent,

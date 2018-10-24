@@ -2,7 +2,6 @@ import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testi
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDatepickerModule, BsDropdownModule, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
-import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { FormArray, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RolesDirective } from '../../auth/directives/roles.directive';
@@ -54,7 +53,6 @@ xdescribe('TaskScheduleCreateComponent', () => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       declarations: [
-        KeyValuePipe,
         RolesDirective,
         TruncatePipe,
         LoaderComponent,

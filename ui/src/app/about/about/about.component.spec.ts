@@ -13,7 +13,6 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { AboutDetailsComponent } from '../components/about-more/about-details.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { ClipboardModule } from 'ngx-clipboard';
-import { MapValuesPipe } from '../../shared/pipes/map-values-pipe.pipe';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
@@ -46,7 +45,6 @@ describe('AboutComponent', () => {
         AboutComponent,
         AboutDetailsComponent,
         LoaderComponent,
-        MapValuesPipe,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         PagerComponent,

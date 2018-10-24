@@ -2,7 +2,6 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDropdownModule, BsModalRef, BsModalService, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
-import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DebugElement } from '@angular/core';
@@ -62,7 +61,6 @@ describe('TaskSchedulesComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        KeyValuePipe,
         RolesDirective,
         TaskSchedulesComponent,
         TaskDefinitionsDestroyComponent,

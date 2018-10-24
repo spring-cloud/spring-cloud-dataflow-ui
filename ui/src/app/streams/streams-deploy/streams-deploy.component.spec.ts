@@ -11,7 +11,6 @@ import { By } from '@angular/platform-browser';
 import { StreamDefinition } from '../model/stream-definition';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { BusyService } from '../../shared/services/busy.service';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
@@ -41,7 +40,6 @@ describe('StreamsDeployComponent', () => {
       declarations: [
         StreamsDeployComponent,
         DeploymentPropertiesComponent,
-        KeyValuePipe,
         StreamDslComponent,
         TruncatePipe
       ],

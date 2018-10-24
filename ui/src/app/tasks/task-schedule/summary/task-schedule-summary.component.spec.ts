@@ -11,7 +11,6 @@ import { BusyService } from '../../../shared/services/busy.service';
 import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { MockActivatedRoute } from '../../../tests/mocks/activated-route';
-import { KeyValuePipe } from '../../../shared/pipes/key-value-filter.pipe';
 import { RolesDirective } from '../../../auth/directives/roles.directive';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
@@ -48,7 +47,6 @@ describe('TaskScheduleSummaryComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        KeyValuePipe,
         RolesDirective,
         TruncatePipe,
         LoaderComponent,

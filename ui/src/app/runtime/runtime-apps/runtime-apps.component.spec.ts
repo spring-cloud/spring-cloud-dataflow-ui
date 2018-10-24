@@ -5,7 +5,6 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { RuntimeAppsComponent } from './runtime-apps.component';
 import { MockNotificationService } from '../../tests/mocks/notification';
-import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { MockRuntimeAppsService } from '../../tests/mocks/runtime';
 import { RuntimeAppsService } from '../runtime-apps.service';
 import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
@@ -31,7 +30,6 @@ describe('RuntimeAppsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         RuntimeAppsComponent,
-        KeyValuePipe,
         RuntimeAppStateComponent,
         LoaderComponent,
         PagerComponent,

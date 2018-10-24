@@ -9,7 +9,6 @@ import { TriStateCheckboxComponent } from './components/tri-state-checkbox.compo
 import { TriStateButtonComponent } from './components/tri-state-button.component';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { SearchfilterPipe } from './pipes/search-filter.pipe';
-import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PropertyTableComponent } from './components/property-table/property-table.component';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
@@ -21,7 +20,6 @@ import { ParserService } from './services/parser.service';
 import { SharedAppsService } from './services/shared-apps.service';
 import { DataflowDateTimePipe } from './pipes/dataflow-date-time.pipe';
 import { DataflowDurationPipe } from './pipes/dataflow-duration.pipe';
-import { MapValuesPipe } from './pipes/map-values-pipe.pipe';
 import { FloModule } from 'spring-flo';
 import { HandleComponent } from './flo/handle/handle.component';
 import { DecorationComponent } from './flo/decoration/decoration.component';
@@ -100,7 +98,6 @@ const busyConfig: BusyConfig = {
   ],
   declarations: [
     CapitalizePipe,
-    KeyValuePipe,
     SearchfilterPipe,
     TriStateButtonComponent,
     TriStateCheckboxComponent,
@@ -113,7 +110,6 @@ const busyConfig: BusyConfig = {
     TabComponent,
     DataflowDateTimePipe,
     DataflowDurationPipe,
-    MapValuesPipe,
     DecorationComponent,
     HandleComponent,
     PropertiesDialogComponent,
@@ -158,8 +154,6 @@ const busyConfig: BusyConfig = {
     CapitalizePipe,
     DataflowDateTimePipe,
     DataflowDurationPipe,
-    KeyValuePipe,
-    MapValuesPipe,
     SearchfilterPipe,
     TriStateCheckboxComponent,
     TriStateButtonComponent,

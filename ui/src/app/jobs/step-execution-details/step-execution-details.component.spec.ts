@@ -10,7 +10,6 @@ import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { StepExecutionDetailsComponent } from './step-execution-details.component';
 import { JobExecutionStatusComponent } from '../components/job-execution-status.component';
 import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe';
-import { MapValuesPipe } from '../../shared/pipes/map-values-pipe.pipe';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import {
@@ -46,7 +45,6 @@ describe('StepExecutionDetailsComponent', () => {
         StepExecutionDetailsComponent,
         JobExecutionStatusComponent,
         DataflowDurationPipe,
-        MapValuesPipe,
         LoaderComponent,
         PagerComponent,
         DATAFLOW_PAGE,
@@ -134,11 +132,11 @@ describe('StepExecutionDetailsComponent', () => {
 
     des = fixture.debugElement.queryAll(By.css('table[id=stepExecutionContext] td'));
     expect(des.length).toBe(4);
-    expect(des[0].nativeElement.textContent).toContain('batch.taskletType');
-    expect(des[1].nativeElement.textContent)
+    expect(des[2].nativeElement.textContent).toContain('batch.taskletType');
+    expect(des[3].nativeElement.textContent)
       .toContain('org.springframework.cloud.task.app.timestamp.batch.TimestampBatchTaskConfiguration$1');
-    expect(des[2].nativeElement.textContent).toContain('batch.stepType');
-    expect(des[3].nativeElement.textContent).toContain('org.springframework.batch.core.step.tasklet.TaskletStep');
+    expect(des[0].nativeElement.textContent).toContain('batch.stepType');
+    expect(des[1].nativeElement.textContent).toContain('org.springframework.batch.core.step.tasklet.TaskletStep');
 
     de = fixture.debugElement.query(By.css('pre'));
     expect(de).toBeNull();

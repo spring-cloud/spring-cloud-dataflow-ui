@@ -207,7 +207,7 @@
         <ng-template
           *ngIf="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo.size > 0"
           ngFor let-item
-          [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | mapValuesPipe">
+          [ngForOf]="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalue">
           <div class="line">
             <span>{{ item.key }}: </span> <strong>{{ item.value }}</strong>
           </div>
@@ -279,7 +279,7 @@
         <ng-template
           *ngIf="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo.size > 0"
           ngFor let-item
-          [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | mapValuesPipe">
+          [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | keyvalue">
           <div class="line">
             <span>{{ item.key }}: </span> <strong>{{ item.value }}</strong>
           </div>
