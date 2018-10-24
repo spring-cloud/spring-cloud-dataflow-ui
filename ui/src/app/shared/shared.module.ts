@@ -6,7 +6,6 @@ import { NgBusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'ng-busy';
 import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { SearchfilterPipe } from './pipes/search-filter.pipe';
-import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ModalModule } from 'ngx-bootstrap/modal';
@@ -17,7 +16,6 @@ import { ParserService } from './services/parser.service';
 import { SharedAppsService } from './services/shared-apps.service';
 import { DataflowDateTimePipe } from './pipes/dataflow-date-time.pipe';
 import { DataflowDurationPipe } from './pipes/dataflow-duration.pipe';
-import { MapValuesPipe } from './pipes/map-values-pipe.pipe';
 import { FloModule } from 'spring-flo';
 import { HandleComponent } from './flo/handle/handle.component';
 import { DecorationComponent } from './flo/decoration/decoration.component';
@@ -96,7 +94,6 @@ const busyConfig: BusyConfig = {
   ],
   declarations: [
     CapitalizePipe,
-    KeyValuePipe,
     SearchfilterPipe,
     MasterCheckboxComponent,
     SortComponent,
@@ -105,7 +102,6 @@ const busyConfig: BusyConfig = {
     TabComponent,
     DataflowDateTimePipe,
     DataflowDurationPipe,
-    MapValuesPipe,
     DecorationComponent,
     HandleComponent,
     PropertiesDialogComponent,
@@ -149,8 +145,6 @@ const busyConfig: BusyConfig = {
     CapitalizePipe,
     DataflowDateTimePipe,
     DataflowDurationPipe,
-    KeyValuePipe,
-    MapValuesPipe,
     SearchfilterPipe,
     ProgressbarModule,
     DecorationComponent,

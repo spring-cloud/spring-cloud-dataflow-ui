@@ -9,7 +9,6 @@ import { RuntimeAppComponent } from './runtime-app.component';
 import { By } from '@angular/platform-browser';
 import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
 import { RuntimeApp } from '../model/runtime-app';
-import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { RuntimeAppInstance } from '../model/runtime-app-instance';
 import { NgBusyModule } from 'ng-busy';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -33,7 +32,6 @@ describe('RuntimeAppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         RuntimeAppComponent,
-        KeyValuePipe,
         RuntimeAppStateComponent,
         LoaderComponent,
         TruncatorComponent,

@@ -2,7 +2,6 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, BsModalRef, TooltipModule } from 'ngx-bootstrap';
 import { MockNotificationService } from '../../tests/mocks/notification';
-import { KeyValuePipe } from '../../shared/pipes/key-value-filter.pipe';
 import { MockStreamsService } from '../../tests/mocks/streams';
 import { STREAM_DEFINITIONS } from '../../tests/mocks/mock-data';
 import { StreamsComponent } from './streams.component';
@@ -63,7 +62,6 @@ describe('StreamsComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        KeyValuePipe,
         RolesDirective,
         GraphViewComponent,
         StreamsComponent,

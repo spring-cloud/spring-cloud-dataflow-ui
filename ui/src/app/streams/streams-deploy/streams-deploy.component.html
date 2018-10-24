@@ -28,10 +28,10 @@
             <app-stream-dsl>{{ item.dslText | truncate: 90 }}</app-stream-dsl>
           </td>
           <td width="10" nowrap="">
-            <div *ngIf="item.deploymentProperties && (item.deploymentProperties | keyvalues)?.length > 0">
+            <div *ngIf="item.deploymentProperties && (item.deploymentProperties | keyvalue)?.length > 0">
               <p style="padding-bottom: 6px">
-                <strong>{{ (item.deploymentProperties | keyvalues)?.length }}
-                  propert{{ (item.deploymentProperties | keyvalues)?.length > 1 ? 'ies' : 'y' }}</strong>
+                <strong>{{ (item.deploymentProperties | keyvalue)?.length }}
+                  propert{{ (item.deploymentProperties | keyvalue)?.length > 1 ? 'ies' : 'y' }}</strong>
               </p>
             </div>
             <div>
