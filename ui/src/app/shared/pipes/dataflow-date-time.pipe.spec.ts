@@ -14,12 +14,12 @@ describe('DataflowDateTimePipe', () => {
   });
 
   it('convert string', () => {
-    const expected = moment('1970').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
-    expect(pipe.transform('1970')).toEqual(expected);
+    const expected = moment('1970', 'Y').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+    expect(pipe.transform('1970', 'Y')).toEqual(expected);
   });
 
   it('convert string with format argument', () => {
-    expect(pipe.transform('1971-01-01', 'Y')).toEqual('1971');
+    expect(pipe.transform('1971-01-01', 'Y-DD-MM', 'Y')).toEqual('1971');
   });
 
   it('convert number', () => {
