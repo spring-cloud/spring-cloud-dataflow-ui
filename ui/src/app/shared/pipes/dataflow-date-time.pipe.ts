@@ -16,15 +16,15 @@ export class DataflowDateTimePipe implements PipeTransform {
 
   private DEFAULT = 'Y-MM-DD[T]HH:mm:ss.SSS[Z]';
 
-  transform(value: number|string|Moment, format: string = null): string {
+  transform(value: number|string|Moment, inputFormat: string = null, outputFormat: string = null): string {
     let m: Moment;
     if (isMoment(value)) {
       m = value;
     } else {
-      m = moment(value);
+      m = moment(value, inputFormat);
     }
     if (m.isValid()) {
-      return m.format(format != null ? format : this.DEFAULT);
+      return m.format(outputFormat != null ? outputFormat : this.DEFAULT);
     } else {
       return 'N/A';
     }
