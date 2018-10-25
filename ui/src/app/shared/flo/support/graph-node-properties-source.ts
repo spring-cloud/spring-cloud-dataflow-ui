@@ -1,5 +1,5 @@
 import { Flo, Properties } from 'spring-flo';
-import {AppUiProperty} from './app-ui-property';
+import { AppUiProperty } from './app-ui-property';
 
 /**
  * Able to provide AppUiProperty array from the graph node to be consumed by properties dialog

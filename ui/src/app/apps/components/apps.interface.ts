@@ -1,5 +1,5 @@
-import {ApplicationType} from '../../shared/model/application-type';
-import {ListParams} from '../../shared/components/shared.interface';
+import { ApplicationType } from '../../shared/model';
+import { ListParams } from '../../shared/components/shared.interface';
 
 export interface BulkImportParams {
   force: boolean;

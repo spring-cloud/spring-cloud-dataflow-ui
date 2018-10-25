@@ -6,7 +6,7 @@ import { Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import { PropertiesDialogComponent } from '../../../../shared/flo/properties/properties-dialog.component';
 import { PropertiesGroupModel } from '../../../../shared/flo/support/properties-group-model';
-import {AppUiProperty} from '../../../../shared/flo/support/app-ui-property';
+import { AppUiProperty } from '../../../../shared/flo/support/app-ui-property';
 import PropertiesSource = Properties.PropertiesSource;
 
 

@@ -1,4 +1,4 @@
-import {Properties} from 'spring-flo';
+import { Properties } from 'spring-flo';
 
 /**
  * App property consumable by properties dialog

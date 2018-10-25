@@ -1,11 +1,11 @@
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { PageRequest } from '../../shared/model/pagination/page-request.model';
 import { ApplicationType } from '../../shared/model/application-type';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/empty';
 import { Page } from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { DetailedAppRegistration } from '../../shared/model/detailed-app-registration.model';
+import { Observable } from 'rxjs/Observable';
 import { Flo } from 'spring-flo';
 import { EMPTY } from 'rxjs/index';
 

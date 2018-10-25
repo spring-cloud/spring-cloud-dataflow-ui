@@ -1,4 +1,4 @@
-import {Component, Input, AfterViewInit, DoCheck, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, Input, AfterViewInit, DoCheck, ViewChild, Output, EventEmitter } from '@angular/core';
 
 /**
  * Component to be primarily used in multi-select data-grids. The component will

@@ -1,5 +1,5 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {OrderParams} from '../components/shared.interface';
+import { Pipe, PipeTransform } from '@angular/core';
+import { OrderParams } from '../components/shared.interface';
 
 @Pipe({
   name: 'orderby'

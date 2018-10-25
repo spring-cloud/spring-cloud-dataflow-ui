@@ -1,10 +1,9 @@
-import {Observable} from 'rxjs/Observable';
-
-import {AppsService} from './apps.service';
-import {HttpUtils} from '../shared/support/http.utils';
-import {ApplicationType, AppRegistration, ErrorHandler} from '../shared/model';
-import {SharedAppsService} from '../shared/services/shared-apps.service';
-import {AppsWorkaroundService} from './apps.workaround.service';
+import { Observable } from 'rxjs/Observable';
+import { AppsService } from './apps.service';
+import { HttpUtils } from '../shared/support/http.utils';
+import { ApplicationType, AppRegistration, ErrorHandler } from '../shared/model';
+import { SharedAppsService } from '../shared/services/shared-apps.service';
+import { AppsWorkaroundService } from './apps.workaround.service';
 import { LoggerService } from '../shared/services/logger.service';
 import { HttpParams } from '@angular/common/http';
 

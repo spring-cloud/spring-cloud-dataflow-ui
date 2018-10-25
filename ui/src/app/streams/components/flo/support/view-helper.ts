@@ -21,17 +21,15 @@ import {
   Type,
   ComponentRef
 } from '@angular/core';
-import {IMAGE_W, HORIZONTAL_PADDING} from './shapes';
-import {NodeComponent} from '../node/node.component';
-import {DecorationComponent} from '../../../../shared/flo/decoration/decoration.component';
-import {HandleComponent} from '../../../../shared/flo/handle/handle.component';
-import {BaseShapeComponent, ElementComponent} from '../../../../shared/flo/support/shape-component';
-import {TYPE_INSTANCE_DOT, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE} from './shapes';
-import {InstanceDotComponent} from '../instance-dot/instance-dot.component';
-import {MessageRateComponent} from '../message-rate/message-rate.component';
-import {dia} from 'jointjs';
-import * as _ from 'underscore';
-import * as $ from 'jquery';
+import { IMAGE_W, HORIZONTAL_PADDING } from './shapes';
+import { NodeComponent } from '../node/node.component';
+import { DecorationComponent } from '../../../../shared/flo/decoration/decoration.component';
+import { HandleComponent } from '../../../../shared/flo/handle/handle.component';
+import { BaseShapeComponent, ElementComponent } from '../../../../shared/flo/support/shape-component';
+import { TYPE_INSTANCE_DOT, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from './shapes';
+import { InstanceDotComponent } from '../instance-dot/instance-dot.component';
+import { MessageRateComponent } from '../message-rate/message-rate.component';
+import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;

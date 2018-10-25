@@ -2,15 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FloModule, EditorComponent } from 'spring-flo';
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
-
 import { dia } from 'jointjs';
 import { Flo, Constants } from 'spring-flo';
 import { Shapes } from 'spring-flo';
-
 import { EditorService } from './editor.service';
-import {MockSharedAppService} from '../../../tests/mocks/shared-app';
+import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { LoggerService } from '../../../shared/services/logger.service';
-
 import * as _$ from 'jquery';
 
 const $: any = _$;

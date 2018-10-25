@@ -141,7 +141,8 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
     this.featureInfo$ = this.aboutService.getFeatureInfo()
       .pipe(mergeMap(
         (featureInfo: FeatureInfo) => {
-          const platforms$: Observable<Platform[]> = featureInfo.skipperEnabled ? this.streamService.getPlatforms() : Observable.of<Platform[]>([]);
+          const platforms$: Observable<Platform[]> =
+            featureInfo.skipperEnabled ? this.streamService.getPlatforms() : Observable.of<Platform[]>([]);
           return platforms$.pipe(map((platforms: Platform[]): FeatureInfo => {
             if (platforms.length < 2) {
               this.isDeployEnabled = true;

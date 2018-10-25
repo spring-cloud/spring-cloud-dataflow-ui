@@ -1,4 +1,4 @@
-import {OnDestroy, OnInit} from '@angular/core';
+import { OnDestroy, OnInit } from '@angular/core';
 
 
 /**

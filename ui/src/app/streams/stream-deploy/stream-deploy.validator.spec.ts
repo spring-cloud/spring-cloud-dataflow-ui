@@ -1,5 +1,5 @@
-import {FormControl} from '@angular/forms';
-import {StreamDeployValidator} from './stream-deploy.validator';
+import { FormControl } from '@angular/forms';
+import { StreamDeployValidator } from './stream-deploy.validator';
 import { FormGroup } from '@angular/forms';
 
 /**

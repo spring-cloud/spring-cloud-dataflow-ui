@@ -1,8 +1,7 @@
-import { Selectable } from '../../shared/model/selectable';
-import { ApplicationType } from './application-type';
 import { Serializable } from '../../shared/model';
 import { AppVersion } from './app-version';
 import { Page } from './page';
+import { ApplicationType } from './application-type';
 
 /**
  * Represents an App Registration and implements Selectable

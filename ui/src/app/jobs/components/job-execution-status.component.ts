@@ -1,6 +1,4 @@
-import {
-  ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 /**
  * Component that will format the Job Execution Status.

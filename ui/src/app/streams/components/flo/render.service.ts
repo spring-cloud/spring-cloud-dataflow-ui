@@ -18,13 +18,13 @@ import './support/shapes';
 import {
   Injectable, ComponentFactoryResolver, Injector, ApplicationRef
 } from '@angular/core';
-import {MetamodelService} from './metamodel.service';
-import {Flo} from 'spring-flo';
-import {dia} from 'jointjs';
-import {Utils} from './support/utils';
-import {ViewHelper} from './support/view-helper';
-import {NodeHelper} from './support/node-helper';
-import {layout} from './support/layout';
+import { MetamodelService } from './metamodel.service';
+import { Flo } from 'spring-flo';
+import { dia } from 'jointjs';
+import { Utils } from './support/utils';
+import { ViewHelper } from './support/view-helper';
+import { NodeHelper } from './support/node-helper';
+import { layout } from './support/layout';
 import * as _joint from 'jointjs';
 import { LoggerService } from '../../../shared/services/logger.service';
 

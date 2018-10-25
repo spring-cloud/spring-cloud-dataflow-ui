@@ -1,7 +1,7 @@
-import {MessageRateComponent} from './message-rate.component';
-import {TYPE_OUTGOING_MESSAGE_RATE, TYPE_INCOMING_MESSAGE_RATE} from '../support/shapes';
-
+import { MessageRateComponent } from './message-rate.component';
+import { TYPE_OUTGOING_MESSAGE_RATE, TYPE_INCOMING_MESSAGE_RATE } from '../support/shapes';
 import * as _joint from 'jointjs';
+
 const joint: any = _joint;
 
 /**

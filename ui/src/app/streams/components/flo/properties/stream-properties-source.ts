@@ -1,8 +1,8 @@
-import {GraphNodePropertiesSource} from '../../../../shared/flo/support/graph-node-properties-source';
-import {ApplicationType} from '../../../../shared/model/application-type';
-import {AppUiProperty} from '../../../../shared/flo/support/app-ui-property';
-import {Flo, Properties} from 'spring-flo';
-import {dia} from 'jointjs';
+import { GraphNodePropertiesSource } from '../../../../shared/flo/support/graph-node-properties-source';
+import { ApplicationType } from '../../../../shared/model';
+import { AppUiProperty } from '../../../../shared/flo/support/app-ui-property';
+import { Flo, Properties } from 'spring-flo';
+import { dia } from 'jointjs';
 import PropertiesSource = Properties.PropertiesSource;
 
 export interface StreamHead {

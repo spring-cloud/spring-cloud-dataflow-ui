@@ -1,7 +1,7 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {BsModalRef} from 'ngx-bootstrap';
-import {AppRegistration} from '../../shared/model/app-registration.model';
-import {AppsService} from '../apps.service';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap';
+import { AppRegistration } from '../../shared/model';
+import { AppsService } from '../apps.service';
 import 'rxjs/add/observable/throw';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';

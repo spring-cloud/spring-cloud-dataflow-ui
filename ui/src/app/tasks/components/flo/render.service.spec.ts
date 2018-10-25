@@ -3,12 +3,12 @@
  *
  * @author Alex Boyko
  */
-import {MockSharedAppService} from '../../../tests/mocks/shared-app';
-import {MetamodelService} from './metamodel.service';
-import {RenderService} from './render.service';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {EditorComponent, Flo, FloModule} from 'spring-flo';
-import {MockToolsService} from '../../../tests/mocks/mock-tools';
+import { MockSharedAppService } from '../../../tests/mocks/shared-app';
+import { MetamodelService } from './metamodel.service';
+import { RenderService } from './render.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { EditorComponent, Flo, FloModule } from 'spring-flo';
+import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { LoggerService } from '../../../shared/services/logger.service';
 import * as _$ from 'jquery';
 
