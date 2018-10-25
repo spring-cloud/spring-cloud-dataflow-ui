@@ -291,7 +291,8 @@ app-list-row-actions {
         }
       }
       .label {
-        padding: .1rem .6rem .2rem;
+        padding: .2rem 0.6rem .1rem;
+        border-radius: 30px;
       }
       &.active {
         a, a:active, a:hover {
