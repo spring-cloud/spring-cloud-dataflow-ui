@@ -7,11 +7,11 @@ import { Validators } from '@angular/forms';
 import { StreamsService } from '../../../streams.service';
 import { PropertiesDialogComponent } from '../../../../shared/flo/properties/properties-dialog.component';
 import { PropertiesGroupModel } from '../../../../shared/flo/support/properties-group-model';
-import {AppUiProperty} from '../../../../shared/flo/support/app-ui-property';
-import {StreamAppPropertiesSource} from './stream-properties-source';
-
+import { AppUiProperty } from '../../../../shared/flo/support/app-ui-property';
+import { StreamAppPropertiesSource } from './stream-properties-source';
 // Workaround to load jshint to have linting working for JS snippet inside the props dialog
 import { JSHINT } from 'jshint';
+
 if (!(<any>window).JSHINT) {
   (<any>window).JSHINT = JSHINT;
 }

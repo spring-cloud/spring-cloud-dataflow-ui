@@ -1,8 +1,8 @@
-import {GraphNodePropertiesSource} from '../../../../shared/flo/support/graph-node-properties-source';
-import {ApplicationType} from '../../../../shared/model/application-type';
-import {Flo} from 'spring-flo';
-import {dia} from 'jointjs';
-import {AppUiProperty} from '../../../../shared/flo/support/app-ui-property';
+import { GraphNodePropertiesSource } from '../../../../shared/flo/support/graph-node-properties-source';
+import { ApplicationType } from '../../../../shared/model';
+import { Flo } from 'spring-flo';
+import { dia } from 'jointjs';
+import { AppUiProperty } from '../../../../shared/flo/support/app-ui-property';
 
 /**
  * Properties source for Composed Tasks graph node

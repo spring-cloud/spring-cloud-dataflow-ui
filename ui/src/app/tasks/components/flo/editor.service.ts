@@ -6,7 +6,7 @@ import { dia, g } from 'jointjs';
 import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
-import { Utils} from '../../../shared/flo/support/utils';
+import { Utils } from '../../../shared/flo/support/utils';
 import { arrangeAll } from './support/layout';
 
 const joint: any = _joint;

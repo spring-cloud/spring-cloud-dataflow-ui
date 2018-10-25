@@ -15,9 +15,9 @@
  */
 
 import './shapes';
-import {ApplicationType} from '../../../../shared/model/application-type';
-import {dia} from 'jointjs';
-import {Flo, Constants} from 'spring-flo';
+import { ApplicationType } from '../../../../shared/model';
+import { dia } from 'jointjs';
+import { Flo, Constants } from 'spring-flo';
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;

@@ -1,6 +1,6 @@
-import {AfterContentInit, Component, DoCheck, EventEmitter, Input, Output} from '@angular/core';
-import {AppRegistration} from '../../../shared/model/app-registration.model';
-import {AppVersion} from '../../../shared/model/app-version';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AppRegistration } from '../../../shared/model';
+import { AppVersion } from '../../../shared/model/app-version';
 
 /**
  * Component used to format the type of Application.

@@ -1,5 +1,5 @@
-import {Component, Output, EventEmitter} from '@angular/core';
-import {BsModalRef} from 'ngx-bootstrap';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap';
 
 /**
  * Confirm component

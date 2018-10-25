@@ -1,4 +1,4 @@
-import {StepExecution} from './step-execution.model';
+import { StepExecution } from './step-execution.model';
 
 /**
  * Used to store the Step Execution data for a particular instance.

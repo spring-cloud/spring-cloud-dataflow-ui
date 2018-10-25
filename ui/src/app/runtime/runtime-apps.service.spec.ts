@@ -1,9 +1,9 @@
-import {Observable} from 'rxjs/Observable';
-import {ErrorHandler} from '../shared/model/error-handler';
-import {RuntimeAppsService} from './runtime-apps.service';
-import {RUNTIME_APPS} from '../tests/mocks/mock-data';
-import {RuntimeApp} from './model/runtime-app';
-import {Page} from '../shared/model/page';
+import { Observable } from 'rxjs/Observable';
+import { ErrorHandler } from '../shared/model';
+import { RuntimeAppsService } from './runtime-apps.service';
+import { RUNTIME_APPS } from '../tests/mocks/mock-data';
+import { RuntimeApp } from './model/runtime-app';
+import { Page } from '../shared/model';
 
 describe('RuntimeAppsService', () => {
 

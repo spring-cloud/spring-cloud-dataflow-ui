@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import {dia} from 'jointjs';
-import {ApplicationType} from '../../../../shared/model';
+import { dia } from 'jointjs';
+import { ApplicationType } from '../../../../shared/model';
 
 /**
  * Utilities for Flo based Stream Definition graph editor.

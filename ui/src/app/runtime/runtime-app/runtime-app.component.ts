@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {RuntimeApp} from '../model/runtime-app';
-import {Observable} from 'rxjs/Observable';
-import {BsModalRef} from 'ngx-bootstrap';
+import { Component } from '@angular/core';
+import { RuntimeApp } from '../model/runtime-app';
+import { Observable } from 'rxjs/Observable';
+import { BsModalRef } from 'ngx-bootstrap';
 
 /**
  * Component that display a Runtime application.

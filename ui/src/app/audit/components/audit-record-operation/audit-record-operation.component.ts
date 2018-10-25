@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 /**
  * Runtime application status.

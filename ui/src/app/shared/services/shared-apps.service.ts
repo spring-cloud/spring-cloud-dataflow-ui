@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/merge';
 import 'rxjs/add/observable/of';
-import {AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page} from '../model';
-import {PageRequest} from '../model/pagination/page-request.model';
-import {HttpUtils} from '../support/http.utils';
+import { AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page } from '../model';
+import { PageRequest } from '../model/pagination/page-request.model';
+import { HttpUtils } from '../support/http.utils';
 import { LoggerService } from './logger.service';
 
 @Injectable()

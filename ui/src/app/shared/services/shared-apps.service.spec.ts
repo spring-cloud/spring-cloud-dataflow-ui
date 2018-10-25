@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs/Observable';
-
 import { HttpUtils } from '../support/http.utils';
-import { ApplicationType, AppRegistration, ErrorHandler } from '../model';
+import { ErrorHandler } from '../model';
 import { PageRequest } from '../model/pagination/page-request.model';
 import { SharedAppsService } from './shared-apps.service';
 import { LoggerService } from './logger.service';

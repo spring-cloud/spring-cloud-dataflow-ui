@@ -16,14 +16,15 @@
 
 import { Injectable } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
-import { ApplicationType } from '../../../shared/model/application-type';
+import { ApplicationType } from '../../../shared/model';
 import { Flo, Constants } from 'spring-flo';
 import { dia, g } from 'jointjs';
 import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 import { Utils } from './support/utils';
 import { Utils as SharedUtils } from '../../../shared/flo/support/utils';
 import * as _joint from 'jointjs';
-import {StreamGraphPropertiesSource, StreamHead} from './properties/stream-properties-source';
+import { StreamGraphPropertiesSource, StreamHead } from './properties/stream-properties-source';
+
 const joint: any = _joint;
 
 const NODE_DROPPING = false;

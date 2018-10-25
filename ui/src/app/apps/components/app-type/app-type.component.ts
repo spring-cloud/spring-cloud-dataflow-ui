@@ -1,5 +1,5 @@
-import {AfterContentInit, Component, DoCheck, Input} from '@angular/core';
-import {AppRegistration} from '../../../shared/model/app-registration.model';
+import { AfterContentInit, Component, DoCheck, Input } from '@angular/core';
+import { AppRegistration } from '../../../shared/model';
 
 /**
  * Component used to format the type of Application.

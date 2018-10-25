@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ContentChildren, Input, QueryList} from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, Input, QueryList } from '@angular/core';
 
 /**
  * Generic tab component representing one tab in tabs.

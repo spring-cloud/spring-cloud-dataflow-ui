@@ -1,6 +1,16 @@
 {
     "extends": "../tslint.json",
     "rules": {
-
+      "whitespace": [
+        true,
+        "check-branch",
+        "check-decl",
+        "check-operator",
+        "check-separator",
+        "check-type",
+        "check-module",
+        "check-preblock"
+      ]
     }
+
 }

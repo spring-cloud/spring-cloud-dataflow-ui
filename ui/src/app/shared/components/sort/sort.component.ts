@@ -1,5 +1,5 @@
-import {Component, Output, EventEmitter, Input} from '@angular/core';
-import {OrderParams, SortParams} from '../shared.interface';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { OrderParams, SortParams } from '../shared.interface';
 
 /**
  * Sort

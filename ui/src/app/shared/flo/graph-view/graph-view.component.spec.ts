@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { GraphViewComponent } from './graph-view.component';
 import { FloModule } from 'spring-flo';
 import { RenderService } from '../../../streams/components/flo/render.service';

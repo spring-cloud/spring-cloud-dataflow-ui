@@ -1,9 +1,4 @@
-import {
-  StreamMetrics,
-  ApplicationMetrics,
-  InstanceMetrics,
-  Metric,
-} from './stream-metrics';
+import { StreamMetrics, ApplicationMetrics, InstanceMetrics, Metric } from './stream-metrics';
 
 /**
  * Test {@link StreamDefinition} model.

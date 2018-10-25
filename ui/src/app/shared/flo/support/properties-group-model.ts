@@ -1,7 +1,7 @@
 import { Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import { Utils } from './utils';
-import {AppUiProperty} from './app-ui-property';
+import { AppUiProperty } from './app-ui-property';
 
 /**
  * Utility class for working with Properties.
