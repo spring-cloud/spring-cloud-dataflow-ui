@@ -7,7 +7,7 @@
     <app-page-head-subtitle>
       <app-stream-status [streamDefinition]="streamDefinition.streamDefinition"></app-stream-status>
     </app-page-head-subtitle>
-    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+    <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
 
       <button name="stream-stop" type="button"
               *ngIf="!(streamDefinition.streamDefinition.status === 'undeployed'|| streamDefinition.streamDefinition.status === 'incomplete')"

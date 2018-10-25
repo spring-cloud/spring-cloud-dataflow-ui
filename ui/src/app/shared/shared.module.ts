@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgBusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'ng-busy';
 import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
-import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { SearchfilterPipe } from './pipes/search-filter.pipe';
 import { KeyValuePipe } from './pipes/key-value-filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -101,7 +100,6 @@ const busyConfig: BusyConfig = {
     SearchfilterPipe,
     MasterCheckboxComponent,
     SortComponent,
-    ClickOutsideDirective,
     AutoResizeDirective,
     TabsComponent,
     TabComponent,
@@ -144,7 +142,6 @@ const busyConfig: BusyConfig = {
   exports: [
     StreamDslComponent,
     NgBusyModule,
-    ClickOutsideDirective,
     CommonModule,
     FormsModule,
     NgxPaginationModule,

@@ -2,7 +2,7 @@
 
   <app-page-head>
     <app-page-head-title><strong>Applications</strong></app-page-head-title>
-    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+    <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
       <button class="btn btn-primary btn-fa" (click)="addApps()">
         <span class="fa fa-plus"></span>
         Add Application(s)
@@ -25,7 +25,7 @@
            class="table-checkbox table table-hover">
       <thead>
       <tr>
-        <th style="width: 30px" [appRoles]="['ROLE_CREATE']">
+        <th style="width: 30px" [dataflowAppRoles]="['ROLE_CREATE']">
           <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
@@ -50,7 +50,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance(); index as i">
-        <td class="cell-checkbox" [appRoles]="['ROLE_CREATE']">
+        <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_CREATE']">
           <input type="checkbox" (change)="changeCheckboxes()"
                  [(ngModel)]="form.checkboxes[i]"/>
         </td>
@@ -81,7 +81,7 @@
 
     <app-list-empty [page]="appRegistrations" [filters]="[params.q, params.type]">
       <p>There is <strong>no application registered</strong>, yet.</p>
-      <p [appRoles]="['ROLE_CREATE']">
+      <p [dataflowAppRoles]="['ROLE_CREATE']">
         You can: <a (click)="addApps()">Add Application(s)</a> or <a (click)="refresh()">Refresh</a> the page.
       </p>
     </app-list-empty>

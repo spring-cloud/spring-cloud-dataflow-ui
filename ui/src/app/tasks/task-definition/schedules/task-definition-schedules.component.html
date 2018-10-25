@@ -13,7 +13,7 @@
       <tr>
         <th style="width: 30px">
           <app-master-checkbox (change)="changeCheckboxes(schedules.page)" *ngIf="form?.checkboxes"
-                               [appRoles]="['ROLE_CREATE']" [items]="form.checkboxes"></app-master-checkbox>
+                               [dataflowAppRoles]="['ROLE_CREATE']" [items]="form.checkboxes"></app-master-checkbox>
         </th>
         <th>
           Schedule Name
@@ -29,7 +29,7 @@
         *ngFor="let item of schedules.page.items | paginate: schedules.page.getPaginationInstance(); index as i">
         <tr>
           <td class="cell-checkbox">
-            <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes(schedules.page)"
+            <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes(schedules.page)"
                    [(ngModel)]="form.checkboxes[i]"/>
           </td>
           <td>
@@ -49,7 +49,7 @@
 
     <app-list-empty [page]="schedules.page" [filters]="[]">
       <p>There is <strong>no task schedule</strong>.</p>
-      <p [appRoles]="['ROLE_CREATE']">
+      <p [dataflowAppRoles]="['ROLE_CREATE']">
         You can <a (click)="refresh(schedules.params)">Refresh</a> the page
       </p>
     </app-list-empty>

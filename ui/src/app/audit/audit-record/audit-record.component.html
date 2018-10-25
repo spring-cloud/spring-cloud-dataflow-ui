@@ -94,7 +94,7 @@
 
     <app-list-empty [page]="auditRecords" [filters]="[params.q, params.action, params.operation]">
       <p><strong>No audit records are available</strong>, yet.</p>
-      <p [appRoles]="['ROLE_VIEW']">
+      <p [dataflowAppRoles]="['ROLE_VIEW']">
         <a (click)="refresh()">Refresh</a> the page.
       </p>
     </app-list-empty>
