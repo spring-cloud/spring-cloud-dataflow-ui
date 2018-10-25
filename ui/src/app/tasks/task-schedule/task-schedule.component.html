@@ -4,8 +4,8 @@
     <app-page-head-back [defaultUrl]="'/tasks/schedules'"
                         [isNotRegex]="'^(\/tasks\/schedules\/)'"></app-page-head-back>
     <app-page-head-title>Schedule <strong>{{ taskSchedule.name }}</strong></app-page-head-title>
-    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
-      <button id="schedule-remove" name="schedule-remove" type="button" [appRoles]="['ROLE_CREATE']"
+    <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
+      <button id="schedule-remove" name="schedule-remove" type="button" [dataflowAppRoles]="['ROLE_CREATE']"
               (click)="destroy(taskSchedule)" class="btn btn-danger btn-fa" title="Destroy">
         <span class="fa fa-trash"></span>
         Delete

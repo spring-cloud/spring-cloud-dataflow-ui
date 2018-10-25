@@ -1,6 +1,6 @@
-<app-navigation-search [force]="!isCollapsed" [appRoles]="['ROLE_VIEW']"></app-navigation-search>
+<app-navigation-search [force]="!isCollapsed" [dataflowAppRoles]="['ROLE_VIEW']"></app-navigation-search>
 
-<div class="sidebar-user" *ngIf="securityInfo.isAuthenticationEnabled" [appRoles]="['ROLE_VIEW']">
+<div class="sidebar-user" *ngIf="securityInfo.isAuthenticationEnabled" [dataflowAppRoles]="['ROLE_VIEW']">
   <div class="sidebar-item" routerLinkActive="active" *ngIf="!securityInfo.isAuthenticated">
     <a routerLink="login">
       <i class="sidebar-fa fa fa-sign-in"></i>
@@ -19,44 +19,44 @@
   </div>
 </div>
 
-<div class="sidebar-items" [appRoles]="['ROLE_VIEW']">
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']">
+<div class="sidebar-items" [dataflowAppRoles]="['ROLE_VIEW']">
+  <div class="sidebar-item" routerLinkActive="active" [dataflowAppRoles]="['ROLE_VIEW']">
     <a routerLink="apps">
       <i class="sidebar-fa fa fa-tags"></i>
       <span class="text">Apps</span>
     </a>
   </div>
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled">
+  <div class="sidebar-item" routerLinkActive="active" [dataflowAppRoles]="['ROLE_VIEW']" appFeature="streamsEnabled">
     <a routerLink="runtime/apps">
       <i class="sidebar-fa fa fa-terminal"></i>
       <span class="text">Runtime</span>
     </a>
   </div>
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="streamsEnabled">
+  <div class="sidebar-item" routerLinkActive="active" [dataflowAppRoles]="['ROLE_VIEW']" appFeature="streamsEnabled">
     <a routerLink="streams">
       <i class="sidebar-fa fa fa-cloud"></i>
       <span class="text">Streams</span>
     </a>
   </div>
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled">
+  <div class="sidebar-item" routerLinkActive="active" [dataflowAppRoles]="['ROLE_VIEW']" appFeature="tasksEnabled">
     <a routerLink="tasks">
       <i class="sidebar-fa fa fa-tasks"></i>
       <span class="text">Tasks</span>
     </a>
   </div>
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="tasksEnabled">
+  <div class="sidebar-item" routerLinkActive="active" [dataflowAppRoles]="['ROLE_VIEW']" appFeature="tasksEnabled">
     <a routerLink="jobs">
       <i class="sidebar-fa fa fa-clock-o"></i>
       <span class="text">Jobs</span>
     </a>
   </div>
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']" appFeature="analyticsEnabled">
+  <div class="sidebar-item" routerLinkActive="active" [dataflowAppRoles]="['ROLE_VIEW']" appFeature="analyticsEnabled">
     <a routerLink="analytics">
       <i class="sidebar-fa fa fa-filter"></i>
       <span class="text">Analytics</span>
     </a>
   </div>
-  <div class="sidebar-item" routerLinkActive="active" [appRoles]="['ROLE_VIEW']">
+  <div class="sidebar-item" routerLinkActive="active" [dataflowAppRoles]="['ROLE_VIEW']">
     <a routerLink="audit-records">
       <i class="sidebar-fa fa fa-list-alt"></i>
       <span class="text">Audit Records</span>
@@ -64,7 +64,7 @@
   </div>
 </div>
 
-<div class="sidebar-items sidebar-items-bottom" [appRoles]="['ROLE_VIEW']">
+<div class="sidebar-items sidebar-items-bottom" [dataflowAppRoles]="['ROLE_VIEW']">
   <div class="sidebar-item" routerLinkActive="active">
     <a routerLink="about">
       <i class="sidebar-fa fa fa-leaf"></i>

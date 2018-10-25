@@ -2,7 +2,7 @@
 
   <app-page-head>
     <app-page-head-title><strong>Tasks</strong></app-page-head-title>
-    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+    <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
       <button class="btn btn-primary btn-fa" (click)="createTask()">
         <span class="fa fa-plus"></span>
         Create task(s)

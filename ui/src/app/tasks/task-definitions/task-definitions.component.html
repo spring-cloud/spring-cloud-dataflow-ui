@@ -10,8 +10,8 @@
            class="table table-hover table-checkbox" id="taskDefinitionsTable">
       <thead>
       <tr>
-        <th style="width: 30px" [appRoles]="['ROLE_CREATE']">
-          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [appRoles]="['ROLE_CREATE']"
+        <th style="width: 30px" [dataflowAppRoles]="['ROLE_CREATE']">
+          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [dataflowAppRoles]="['ROLE_CREATE']"
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
         <th style="width: 70px">
@@ -36,8 +36,8 @@
       <ng-container
         *ngFor="let item of taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance(); index as i">
         <tr>
-          <td class="cell-checkbox" [appRoles]="['ROLE_CREATE']">
-            <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
+          <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_CREATE']">
+            <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
                    [(ngModel)]="form.checkboxes[i]"/>
           </td>
           <td width="200px">
@@ -65,7 +65,7 @@
     <app-list-empty [page]="taskDefinitions" [filters]="[params.q]">
       <p>There is <strong>no registered task</strong>, yet.</p>
       <div>
-        <p [appRoles]="['ROLE_CREATE']">
+        <p [dataflowAppRoles]="['ROLE_CREATE']">
           You can <a (click)="createTask()">Create Task(s)</a> or <a (click)="refresh()">Refresh</a> the page
         </p>
       </div>

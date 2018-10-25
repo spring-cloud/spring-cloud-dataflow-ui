@@ -7,7 +7,7 @@ import { AfterViewInit, Directive, Output, EventEmitter, HostListener, ElementRe
  * @author Gunnar Hillert
  */
 @Directive({
-    selector: '[appCapsLock]'
+    selector: '[dataflowCapsLock]'
 })
 export class CapsLockDirective implements AfterViewInit {
 

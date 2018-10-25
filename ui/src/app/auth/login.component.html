@@ -36,7 +36,7 @@
           <input #password="ngModel" type="text" id="password" name="password" type="password"
                  [(ngModel)]="user.password" required
                  class="form-control" placeholder="&lt;Password&gt;">
-          <span class="glyphicon glyphicon-arrow-up form-control-feedback" appCapsLock></span>
+          <span class="glyphicon glyphicon-arrow-up form-control-feedback" dataflowCapsLock></span>
           <span class="help-block"
                 *ngIf="password.invalid && password.touched">Please provide a valid password.</span>
         </div>

@@ -13,12 +13,12 @@ import { SharedAboutService } from '../../shared/services/shared-about.service';
  * @author Gunnar Hillert
  */
 @Directive({
-    selector: '[appRoles]'
+    selector: '[dataflowAppRoles]'
 })
 export class RolesDirective implements AfterViewInit, OnInit {
 
   @Input()
-  public appRoles: string[];
+  public dataflowAppRoles: string[];
 
   @Input()
   public appFeature: string;
@@ -42,7 +42,7 @@ export class RolesDirective implements AfterViewInit, OnInit {
   }
 
   private checkRoleAccess(featureEnabled: boolean) {
-    const hasRoleAccess = this.authService.securityInfo.canAccess(this.appRoles);
+    const hasRoleAccess = this.authService.securityInfo.canAccess(this.dataflowAppRoles);
     if (!featureEnabled || !hasRoleAccess) {
       this.renderer.setStyle(this.elem.nativeElement, 'display', 'none');
     } else {

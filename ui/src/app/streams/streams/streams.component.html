@@ -2,7 +2,7 @@
 
   <app-page-head>
     <app-page-head-title><strong>Streams</strong></app-page-head-title>
-    <app-page-head-actions [appRoles]="['ROLE_CREATE']">
+    <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
       <ng-container *ngIf="appsState$ | async as appsState;">
         <button class="btn btn-primary btn-fa" (click)="createStream()" *ngIf="appsState.streams > 0">
           <span class="fa fa-plus"></span>
@@ -24,7 +24,7 @@
            class="table table-hover table-checkbox" id="streamDefinitionsTable">
       <thead>
       <tr>
-        <th style="width: 30px" [appRoles]="['ROLE_CREATE']">
+        <th style="width: 30px" [dataflowAppRoles]="['ROLE_CREATE']">
           <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
@@ -63,8 +63,8 @@
       <ng-container
         *ngFor="let item of streamDefinitions.items | paginate: streamDefinitions.getPaginationInstance(); index as i">
         <tr>
-          <td class="cell-checkbox" [appRoles]="['ROLE_CREATE']">
-            <input [appRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
+          <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_CREATE']">
+            <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
                    [(ngModel)]="form.checkboxes[i]"/>
           </td>
           <td>
@@ -117,10 +117,10 @@
     <app-list-empty [page]="streamDefinitions" [filters]="[params.q]">
       <p>There are <strong>no streams registered</strong>, yet.</p>
       <div *ngIf="appsState$ | async as appsState">
-        <p *ngIf="appsState.streams > 0" [appRoles]="['ROLE_CREATE']">
+        <p *ngIf="appsState.streams > 0" [dataflowAppRoles]="['ROLE_CREATE']">
           You can <a (click)="createStream()">Create Streams(s)</a> or <a (click)="refresh()">Refresh</a> the page
         </p>
-        <p *ngIf="appsState.streams == 0" [appRoles]="['ROLE_CREATE']">
+        <p *ngIf="appsState.streams == 0" [dataflowAppRoles]="['ROLE_CREATE']">
           To create stream(s), you have to <a (click)="registerApps()">register Apps</a> first.<br/>
           You can <a (click)="refresh()">Refresh</a> the page.
         </p>
