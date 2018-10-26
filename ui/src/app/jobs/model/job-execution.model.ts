@@ -1,16 +1,15 @@
-import { Moment } from 'moment';
 import { DateTimeUtils } from '../../shared/support/date-time.utils';
 import { StepExecution } from './step-execution.model';
-import * as moment from 'moment';
 import { Page } from '../../shared/model/page';
+import { DateTime } from 'luxon';
 
 export class JobExecution {
   public name: string;
   public taskExecutionId: number;
   public jobInstanceId: number;
   public jobExecutionId: number;
-  public startTime: Moment;
-  public endTime: Moment;
+  public startTime: DateTime;
+  public endTime: DateTime;
   public stepExecutionCount: number;
   public status: string;
   public jobParametersString: string;
@@ -35,7 +34,7 @@ export class JobExecution {
   static fromJSON(input): JobExecution {
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.name = input.name;
-    jobExecution.startTime = moment(input.jobExecution.startTime);
+    jobExecution.startTime = DateTime.fromISO(input.jobExecution.startTime);
     jobExecution.stepExecutionCount = input.stepExecutionCount;
     jobExecution.status = input.jobExecution.status;
     jobExecution.jobExecutionId = input.jobExecution.id;
@@ -46,7 +45,7 @@ export class JobExecution {
     jobExecution.stoppable = input.stoppable;
     jobExecution.defined = input.defined;
     if (input.jobExecution.endTime) {
-      jobExecution.endTime = moment(input.jobExecution.endTime);
+      jobExecution.endTime = DateTime.fromISO(input.jobExecution.endTime);
     }
     if (input.jobExecution.exitStatus) {
       jobExecution.exitCode = input.jobExecution.exitStatus.exitCode;

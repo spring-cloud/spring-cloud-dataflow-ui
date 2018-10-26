@@ -1,6 +1,5 @@
-import { Moment } from 'moment';
 import { ExecutionContext } from './execution-context.model';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 
 /**
  * Contains information about a specific step execution.
@@ -19,8 +18,8 @@ export class StepExecution {
   public writeSkipCount: number;
   public filterCount: number;
   public skipCount: number;
-  public startTime: Moment;
-  public endTime: Moment;
+  public startTime: DateTime;
+  public endTime: DateTime;
   public executionContext: ExecutionContext;
   public exitCode: string;
   public exitMessage: string;
@@ -40,8 +39,8 @@ export class StepExecution {
     stepExecution.writeSkipCount = input.writeSkipCount;
     stepExecution.filterCount = input.filterCount;
     stepExecution.skipCount = input.skipCount;
-    stepExecution.startTime = moment.utc(input.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
-    stepExecution.endTime = moment.utc(input.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+    stepExecution.startTime = DateTime.fromISO(input.startTime);
+    stepExecution.endTime = DateTime.fromISO(input.endTime);
     if (input.executionContext) {
       const values = new Array<Map<string, string>>();
       input.executionContext.values.forEach(item => {

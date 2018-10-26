@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { isMoment, Moment } from 'moment';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
+import { DateTimeUtils } from '../support/date-time.utils';
 
 /**
  * Pipe that formats a given value into a datetime string
  * with optional format parameter defaulting to
- * 'Y-MM-DD HH:mm:ss,SSS Z'.
+ * 'Y-MM-DD HH:mm:ss,SSS Z' (DateTimeUtils.DEFAULT).
  *
  * @author Janne Valkealahti
  */
@@ -14,17 +14,15 @@ import * as moment from 'moment';
 })
 export class DataflowDateTimePipe implements PipeTransform {
 
-  private DEFAULT = 'Y-MM-DD[T]HH:mm:ss.SSS[Z]';
-
-  transform(value: number|string|Moment, inputFormat: string = null, outputFormat: string = null): string {
-    let m: Moment;
-    if (isMoment(value)) {
+  transform(value: string | DateTime, format: string = null): string {
+    let m: DateTime;
+    if (value instanceof DateTime) {
       m = value;
     } else {
-      m = moment(value, inputFormat);
+      m = DateTime.fromISO(value as string);
     }
-    if (m.isValid()) {
-      return m.format(outputFormat != null ? outputFormat : this.DEFAULT);
+    if (m.isValid) {
+      return m.toFormat(format != null ? format : DateTimeUtils.DEFAULT);
     } else {
       return 'N/A';
     }

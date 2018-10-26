@@ -1,16 +1,13 @@
-import { Moment } from 'moment';
-import * as moment from 'moment';
 import { Page } from '../../shared/model/page';
-import { Task } from 'protractor/built/taskScheduler';
-import { Serializable } from '../../shared/model/serialization/serializable.model';
+import { DateTime } from 'luxon';
 
 export class TaskExecution {
 
   public executionId: number;
   public exitCode: number;
   public taskName: string;
-  public startTime: Moment;
-  public endTime: Moment;
+  public startTime: DateTime;
+  public endTime: DateTime;
   public exitMessage: string;
   public arguments: string[];
   public jobExecutionIds: number[];
@@ -20,8 +17,8 @@ export class TaskExecution {
   constructor(executionId: number,
               exitCode: number,
               taskName: string,
-              startTime: Moment,
-              endTime: Moment,
+              startTime: DateTime,
+              endTime: DateTime,
               exitMessage: string,
               args: string[], // arguments would be restricted name
               jobExecutionIds: number[],
@@ -44,8 +41,8 @@ export class TaskExecution {
       jsonItem.executionId,
       jsonItem.exitCode,
       jsonItem.taskName,
-      jsonItem.startTime ? moment.utc(jsonItem.startTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]') : null,
-      jsonItem.endTime ? moment.utc(jsonItem.endTime, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]') : null,
+      jsonItem.startTime ? DateTime.fromISO(jsonItem.startTime) : null,
+      jsonItem.endTime ? DateTime.fromISO(jsonItem.endTime) : null,
       jsonItem.exitMessage,
       jsonItem.arguments,
       jsonItem.jobExecutionIds,

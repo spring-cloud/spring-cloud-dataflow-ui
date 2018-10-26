@@ -1,5 +1,6 @@
 import { JOBS_EXECUTIONS_1_STEPS_1_PROGRESS } from '../../tests/mocks/mock-data';
 import { StepExecutionProgress } from './step-execution-progress.model';
+import { DateTime } from 'luxon';
 
 describe('StepExecutionProgress', () => {
 
@@ -23,8 +24,8 @@ describe('StepExecutionProgress', () => {
       expect(stepExecutionProgress.stepExecution.processSkipCount).toBe(0);
       expect(stepExecutionProgress.stepExecution.writeSkipCount).toBe(0);
       expect(stepExecutionProgress.stepExecution.skipCount).toBe(0);
-      expect(stepExecutionProgress.stepExecution.startTime.toISOString()).toBe('2017-08-21T07:25:05.028Z');
-      expect(stepExecutionProgress.stepExecution.endTime.toISOString()).toBe('2017-08-21T07:25:05.041Z');
+      expect(stepExecutionProgress.stepExecution.startTime.toISO()).toBe(DateTime.fromISO('2017-08-21T07:25:05.028Z').toISO());
+      expect(stepExecutionProgress.stepExecution.endTime.toISO()).toBe(DateTime.fromISO('2017-08-21T07:25:05.041Z').toISO());
       expect(stepExecutionProgress.stepExecution.exitCode).toBe('COMPLETED');
       expect(stepExecutionProgress.stepExecution.exitMessage).toBe('');
       expect(stepExecutionProgress.stepExecutionHistory.stepName).toBe('job1step1');

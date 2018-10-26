@@ -9,7 +9,6 @@ import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
 import { DataflowDurationPipe } from '../../shared/pipes/dataflow-duration.pipe';
-import * as moment from 'moment';
 import { TaskExecutionComponent } from './task-execution.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
@@ -20,6 +19,7 @@ import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
+import { DateTime } from 'luxon';
 
 describe('TaskExecutionsDetailsComponent', () => {
   let component: TaskExecutionComponent;
@@ -34,8 +34,8 @@ describe('TaskExecutionsDetailsComponent', () => {
       executionId: 1,
       exitCode: 0,
       taskName: 'footask',
-      startTime: moment('2017-08-10T05:46:19.079Z'),
-      endTime: moment('2017-08-10T05:46:19.098Z'),
+      startTime: DateTime.fromISO('2017-08-10T05:46:19.079Z'),
+      endTime: DateTime.fromISO('2017-08-10T05:46:19.098Z'),
       exitMessage: null,
       arguments: ['--spring.cloud.task.executionid=1'],
       jobExecutionIds: [],
@@ -48,8 +48,8 @@ describe('TaskExecutionsDetailsComponent', () => {
       executionId: 1,
       exitCode: 0,
       taskName: 'footask',
-      startTime: moment('2017-08-10T05:46:19.079Z'),
-      endTime: moment('2017-08-10T05:46:19.098Z'),
+      startTime: DateTime.fromISO('2017-08-10T05:46:19.079Z'),
+      endTime: DateTime.fromISO('2017-08-10T05:46:19.098Z'),
       exitMessage: null,
       arguments: ['--spring.cloud.task.executionid=1'],
       jobExecutionIds: [1, 2, 3],
@@ -110,8 +110,8 @@ describe('TaskExecutionsDetailsComponent', () => {
       de = fixture.debugElement.query(By.css('div'));
       el = de.nativeElement;
       fixture.detectChanges();
-      const expectedStart = moment('2017-08-10T05:46:19.079Z').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
-      const expectedStop = moment('2017-08-10T05:46:19.098Z').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+      const expectedStart = DateTime.fromISO('2017-08-10T05:46:19.079Z').toFormat('yyyy-MM-dd HH:mm:ss,SSS[Z]');
+      const expectedStop = DateTime.fromISO('2017-08-10T05:46:19.098Z').toFormat('yyyy-MM-dd HH:mm:ss,SSS[Z]');
 
       expect(el.textContent).toContain('Task Execution Details - Execution ID: 1');
 
@@ -152,8 +152,8 @@ describe('TaskExecutionsDetailsComponent', () => {
       de = fixture.debugElement.query(By.css('div'));
       el = de.nativeElement;
       fixture.detectChanges();
-      const expectedStart = moment('2017-08-10T05:46:19.079Z').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
-      const expectedStop = moment('2017-08-10T05:46:19.098Z').format('Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+      const expectedStart = DateTime.fromISO('2017-08-10T05:46:19.079Z').toFormat('yyyy-MM-dd HH:mm:ss,SSS[Z]');
+      const expectedStop = DateTime.fromISO('2017-08-10T05:46:19.098Z').toFormat('yyyy-MM-dd HH:mm:ss,SSS[Z]');
 
       expect(el.textContent).toContain('Task Execution Details - Execution ID: 1');
 

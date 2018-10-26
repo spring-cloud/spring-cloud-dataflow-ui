@@ -1,6 +1,5 @@
 import { AggregateCounter } from './aggregate-counter.model';
-import * as moment from 'moment';
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 describe('AggregateCounter', () => {
   describe('deserialize', () => {
@@ -29,8 +28,8 @@ describe('AggregateCounter', () => {
       expect(counter.name).toEqual('aggregate-counter-sink');
       expect(counter.counts.length).toBe(4);
 
-      const expectedTime0: Moment = moment('2017-09-27T00:03:58.378Z');
-      const expectedTime1: Moment = moment('2017-09-27T00:04:58.378Z');
+      const expectedTime0: DateTime = DateTime.fromISO('2017-09-27T00:03:58.378Z');
+      const expectedTime1: DateTime = DateTime.fromISO('2017-09-27T00:04:58.378Z');
 
       expect(counter.counts[0].key.hour).toBe(expectedTime0.hour);
       expect(counter.counts[0].key.year).toBe(expectedTime0.year);

@@ -41,7 +41,6 @@ import { NotificationService } from './services/notification.service';
 import { LoggerService } from './services/logger.service';
 import { GroupRouteService } from './services/group-route.service';
 import { LocalStorageModule } from 'angular-2-local-storage';
-import { TimepickerComponent } from './components/timepicker/timepicker.component';
 import { PopoverModule, TimepickerModule } from 'ngx-bootstrap';
 import { LayoutTypeDirective } from './directives/layout-type.directive';
 import { DATAFLOW_PAGE } from './components/page/page.component';
@@ -114,7 +113,6 @@ const busyConfig: BusyConfig = {
     ConfirmComponent,
     LoaderComponent,
     PagerComponent,
-    TimepickerComponent,
     LayoutTypeDirective,
     FocusDirective,
     DATAFLOW_LIST,
@@ -162,7 +160,6 @@ const busyConfig: BusyConfig = {
     LoaderComponent,
     PagerComponent,
     ToastContainerModule,
-    TimepickerComponent,
     LayoutTypeDirective,
     FocusDirective,
     DATAFLOW_LIST,

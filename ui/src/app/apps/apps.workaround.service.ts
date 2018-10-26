@@ -7,8 +7,8 @@ import { AppVersion } from '../shared/model/app-version';
 import { Page } from '../shared/model/page';
 import { Subscriber } from 'rxjs/Subscriber';
 import { AppListParams } from './components/apps.interface';
-import * as moment from 'moment';
 import { ApplicationType } from '../shared/model/application-type';
+import { DateTime } from 'luxon';
 
 
 /**
@@ -25,20 +25,21 @@ export class AppsWorkaroundService {
   public static cache = {
     init: false,
     invalid: true,
-    time: moment(new Date()),
+    time: DateTime.local(),
     page: new Page<any>(),
     set: (page) => {
       AppsWorkaroundService.cache.init = false;
       AppsWorkaroundService.cache.invalid = false;
       AppsWorkaroundService.cache.page.update(page);
-      AppsWorkaroundService.cache.time = moment(new Date());
+      AppsWorkaroundService.cache.time = DateTime.local();
     },
     invalidate: () => {
       AppsWorkaroundService.cache.invalid = true;
     },
     doCheck: () => {
       // Invalidate the cache after 30s
-      if (moment(new Date()).diff(AppsWorkaroundService.cache.time, 'seconds') > 30) {
+      const date = DateTime.local();
+      if (date.diff(AppsWorkaroundService.cache.time).seconds > 30) {
         AppsWorkaroundService.cache.invalidate();
       }
     }

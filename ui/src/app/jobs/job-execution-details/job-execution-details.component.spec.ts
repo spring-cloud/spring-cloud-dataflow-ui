@@ -23,6 +23,8 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { FormsModule } from '@angular/forms';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { DateTime } from 'luxon';
+import { DateTimeUtils } from '../../shared/support/date-time.utils';
 
 describe('JobExecutionDetailsComponent', () => {
   let component: JobExecutionDetailsComponent;
@@ -102,9 +104,9 @@ describe('JobExecutionDetailsComponent', () => {
     expect(des[8].nativeElement.textContent).toContain('Job Parameters');
     expect(des[9].nativeElement.textContent).toContain('--spring.cloud.task.executionid=2');
     expect(des[10].nativeElement.textContent).toContain('Start Time');
-    // expect(des[11].nativeElement.textContent).toContain('2017-08-11T08:15:50.027Z');
+    expect(des[11].nativeElement.textContent).toContain(DateTimeUtils.formatAsDateTime(DateTime.fromISO('2017-08-11T06:15:50.027Z')));
     expect(des[12].nativeElement.textContent).toContain('End Time');
-    // expect(des[13].nativeElement.textContent).toContain('2017-08-11T08:15:50.067Z');
+    expect(des[13].nativeElement.textContent).toContain(DateTimeUtils.formatAsDateTime(DateTime.fromISO('2017-08-11T06:15:50.067Z')));
     expect(des[14].nativeElement.textContent).toContain('Duration');
     expect(des[15].nativeElement.textContent).toContain('00:00:00.040');
     expect(des[16].nativeElement.textContent).toContain('Status');

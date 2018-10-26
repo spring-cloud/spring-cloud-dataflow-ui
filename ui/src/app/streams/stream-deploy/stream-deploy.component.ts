@@ -5,7 +5,6 @@ import { map, mergeMap, takeUntil } from 'rxjs/operators';
 import { saveAs } from 'file-saver/FileSaver';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
-import * as moment from 'moment';
 import { StreamsService } from '../streams.service';
 import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
@@ -17,6 +16,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
 import { EMPTY } from 'rxjs/index';
 import { ClipboardService } from 'ngx-clipboard';
+import { DateTime } from 'luxon';
 
 /**
  * Component used to deploy stream definitions.
@@ -199,7 +199,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       this.notificationService.error('There are no properties to export.');
     } else {
       const propertiesText = this.properties.join('\n');
-      const date = moment().format('YYYY-MM-HHmmss');
+      const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
       const filename = `${this.refConfig.id}_${date}.txt`;
       const blob = new Blob([propertiesText], { type: 'text/plain' });
       saveAs(blob, filename);

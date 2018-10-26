@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { DateTime } from 'luxon';
 
 /**
  * Aggregate Counter Value model object for the Analytics module.
@@ -7,7 +7,7 @@ import { Moment } from 'moment';
  */
 export class AggregateCounterValue {
   constructor(
-    public key: Moment,
+    public key: DateTime,
     public value: number
   ) {}
 }

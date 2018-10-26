@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs';
 import { AuditActionType, AuditOperationType, AuditRecord } from '../../shared/model/audit-record.model';
 import { AuditRecordListParams } from '../../audit/components/audit.interface';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 
 /**
  * Mock for {@link AuditRecordService}.
@@ -103,7 +103,7 @@ export class MockAuditRecordService {
     auditRecord.auditAction = 'action';
     auditRecord.auditOperation = 'operation';
     auditRecord.createdBy = 'Cartman';
-    auditRecord.createdOn = moment();
+    auditRecord.createdOn = DateTime.local();
     return Observable.of(auditRecord);
   }
 }

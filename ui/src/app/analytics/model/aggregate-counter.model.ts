@@ -1,8 +1,8 @@
 import { Serializable } from '../../shared/model';
 import { BaseCounter } from './base-counter.model';
 import { AggregateCounterValue } from './aggregate-counter-value.model';
-import * as moment from 'moment';
 import { AggregateCounterResolutionType } from './aggregate-counter-resolution-type.model';
+import { DateTime } from 'luxon';
 
 /**
  * Aggregate Counter model object for the Analytics module.
@@ -31,7 +31,7 @@ export class AggregateCounter extends BaseCounter implements Serializable<Aggreg
     super.deserialize(input);
     this.counts = [];
     for (const key of Object.keys(input.counts)) {
-      const fvc = new AggregateCounterValue(moment(key), input.counts[key]);
+      const fvc = new AggregateCounterValue(DateTime.fromISO(key), input.counts[key]);
       this.counts.push(fvc);
     }
     return this;

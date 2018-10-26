@@ -9,7 +9,6 @@ import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockTasksService } from '../../../tests/mocks/tasks';
 import { BusyService } from '../../../shared/services/busy.service';
 import { DataflowDateTimePipe } from '../../../shared/pipes/dataflow-date-time.pipe';
-import { DataflowDurationPipe } from '../../../shared/pipes/dataflow-duration.pipe';
 import { TasksService } from '../../tasks.service';
 import { TASK_DEFINITIONS } from '../../../tests/mocks/mock-data';
 import { AppTypeComponent } from '../../../apps/components/app-type/app-type.component';
@@ -54,7 +53,6 @@ describe('TaskSummaryComponent', () => {
         RolesDirective,
         TaskSummaryComponent,
         DataflowDateTimePipe,
-        DataflowDurationPipe,
         AppTypeComponent,
         TaskStatusComponent,
         StreamDslComponent,

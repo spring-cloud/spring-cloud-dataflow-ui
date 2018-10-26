@@ -1,5 +1,6 @@
 import { JOBS_EXECUTIONS_1_STEPS_1 } from '../../tests/mocks/mock-data';
 import { StepExecutionResource } from './step-execution-resource.model';
+import { DateTime } from 'luxon';
 
 describe('StepExecutionResource', () => {
 
@@ -23,8 +24,8 @@ describe('StepExecutionResource', () => {
       expect(stepExecutionResource.stepExecution.writeSkipCount).toBe(0);
       expect(stepExecutionResource.stepExecution.filterCount).toBe(0);
       expect(stepExecutionResource.stepExecution.skipCount).toBe(0);
-      expect(stepExecutionResource.stepExecution.startTime.toISOString()).toBe('2017-08-11T06:15:50.046Z');
-      expect(stepExecutionResource.stepExecution.endTime.toISOString()).toBe('2017-08-11T06:15:50.064Z');
+      expect(stepExecutionResource.stepExecution.startTime.toISO()).toBe(DateTime.fromISO('2017-08-11T06:15:50.046Z').toISO());
+      expect(stepExecutionResource.stepExecution.endTime.toISO()).toBe(DateTime.fromISO('2017-08-11T06:15:50.064Z').toISO());
     });
 
   });

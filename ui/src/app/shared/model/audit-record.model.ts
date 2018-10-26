@@ -1,8 +1,6 @@
 import { Serializable } from '../../shared/model';
-import { DateTimeUtils } from '../support/date-time.utils';
-import { Moment } from 'moment';
-import * as moment from 'moment';
 import { Page } from './page';
+import { DateTime } from 'luxon';
 
 /**
  * Represents an Audit Record.
@@ -15,7 +13,7 @@ export class AuditRecord implements Serializable<AuditRecord> {
   public createdBy: string;
   public correlationId: string;
   public auditData: string;
-  public createdOn: Moment;
+  public createdOn: DateTime;
   public auditAction: string;
   public auditOperation: string;
 
@@ -43,7 +41,7 @@ export class AuditRecord implements Serializable<AuditRecord> {
     this.createdBy = input.createdBy;
     this.correlationId = input.correlationId;
     this.auditData = input.auditData;
-    this.createdOn = moment(input.createdOn, 'Y-MM-DD[T]HH:mm:ss.SSS[Z]');
+    this.createdOn = DateTime.fromISO(input.createdOn);
     this.auditAction = input.auditAction;
     this.auditOperation = input.auditOperation;
     return this;

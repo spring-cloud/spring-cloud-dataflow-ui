@@ -18,12 +18,12 @@ import { ConfirmService } from '../../shared/components/confirm/confirm.service'
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
-import * as moment from 'moment';
 import { DateTimeUtils } from '../../shared/support/date-time.utils';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { FormsModule } from '@angular/forms';
+import { DateTime } from 'luxon';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -78,7 +78,7 @@ describe('JobsComponent', () => {
   it('should populate task definitions', () => {
     jobsService.setJobExecutions(JOB_EXECUTIONS_WITH_PAGINATION);
     fixture.detectChanges();
-    const expectedDateTimeString = DateTimeUtils.formatAsDateTime(moment('2017-09-06T00:54:46.000Z'));
+    const expectedDateTimeString = DateTimeUtils.formatAsDateTime(DateTime.fromISO('2017-09-06T00:54:46.000Z'));
 
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=tableJobs] tr:first-child td'));
     expect(des.length).toBe(8);
