@@ -11,14 +11,13 @@ import { Router } from '@angular/router';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Observable } from 'rxjs/Observable';
-import { mergeMap, share, takeUntil } from 'rxjs/operators';
+import { map, mergeMap, share, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { Platform } from '../../model/platform';
-import { map } from 'rxjs/internal/operators';
 
 /**
  * Stores progress percentage.
@@ -142,16 +141,15 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
     this.featureInfo$ = this.aboutService.getFeatureInfo()
       .pipe(mergeMap(
         (featureInfo: FeatureInfo) => {
-          return featureInfo.skipperEnabled ? this.streamService.getPlatforms() : Observable.of([])
-            .pipe(map((platforms: Platform[]) => {
-              if (platforms.length < 2) {
-                this.isDeployEnabled = true;
-              }
-              return featureInfo;
-            }));
+          const platforms$: Observable<Platform[]> = featureInfo.skipperEnabled ? this.streamService.getPlatforms() : Observable.of<Platform[]>([]);
+          return platforms$.pipe(map((platforms: Platform[]): FeatureInfo => {
+            if (platforms.length < 2) {
+              this.isDeployEnabled = true;
+            }
+            return featureInfo;
+          }));
         }))
       .pipe(share());
-
     this.featureInfoSubscription = this.featureInfo$.subscribe();
   }
 
