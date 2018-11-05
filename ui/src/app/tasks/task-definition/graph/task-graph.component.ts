@@ -4,7 +4,7 @@ import { mergeMap } from 'rxjs/operators';
 import { RenderService } from '../../components/flo/render.service';
 import { MetamodelService } from '../../components/flo/metamodel.service';
 import { TasksService } from '../../tasks.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { TaskDefinition } from '../../model/task-definition';
 
 /**

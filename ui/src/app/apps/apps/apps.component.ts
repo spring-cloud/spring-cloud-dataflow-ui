@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
 import { AppsService } from '../apps.service';
 import { AppRegistration, Page } from '../../shared/model';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
@@ -10,7 +10,6 @@ import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { AppsWorkaroundService } from '../apps.workaround.service';
 import { AppListParams } from '../components/apps.interface';
 import { SortParams } from '../../shared/components/shared.interface';
-import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';

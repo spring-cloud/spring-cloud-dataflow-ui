@@ -1,9 +1,9 @@
-import { Observable } from 'rxjs/Observable';
 import { JobsService } from './jobs.service';
 import { HttpUtils } from '../shared/support/http.utils';
 import { ErrorHandler } from '../shared/model';
 import { LoggerService } from '../shared/services/logger.service';
 import { JobExecution } from './model/job-execution.model';
+import { of } from 'rxjs';
 
 describe('JobsService', () => {
 
@@ -22,7 +22,7 @@ describe('JobsService', () => {
 
   describe('getJobExecutions', () => {
     it('should call the jobs service with the right url to get all job executions', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
 
       expect(this.jobsService.jobExecutions).toBeUndefined();
 
@@ -36,7 +36,7 @@ describe('JobsService', () => {
 
   describe('getJobExecution', () => {
     it('should call the jobs service with the right url to get job execution', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.jobsService.getJobExecution('1');
       expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1', {});
     });
@@ -44,7 +44,7 @@ describe('JobsService', () => {
 
   describe('getStepExecution', () => {
     it('should call the jobs service with the right url to get step execution', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.jobsService.getStepExecution('1', '1');
       expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1/steps/1', {});
     });
@@ -52,7 +52,7 @@ describe('JobsService', () => {
 
   describe('getStepExecutionProgress', () => {
     it('should call the jobs service with the right url to get step execution progress', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.jobsService.getStepExecutionProgress('1', '1');
       expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1/steps/1/progress', {});
     });
@@ -63,7 +63,7 @@ describe('JobsService', () => {
       const jobExecution: JobExecution = new JobExecution();
       jobExecution.jobExecutionId = 1;
       jobExecution.name = 'foo';
-      this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.put.and.returnValue(of(this.jsonData));
       this.jobsService.restartJob(jobExecution);
 
       const httpUri = this.mockHttp.put.calls.mostRecent().args[0];
@@ -80,7 +80,7 @@ describe('JobsService', () => {
       jobExecution.jobExecutionId = 1;
       jobExecution.name = 'foo';
 
-      this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.put.and.returnValue(of(this.jsonData));
       this.jobsService.stopJob(jobExecution);
 
       const httpUri = this.mockHttp.put.calls.mostRecent().args[0];

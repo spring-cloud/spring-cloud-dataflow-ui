@@ -1,8 +1,7 @@
 import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { Modal } from '../../shared/components/modal/modal-abstract';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { TaskDefinition } from '../model/task-definition';

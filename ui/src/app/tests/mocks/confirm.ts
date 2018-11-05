@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 
 /**
  * Mock for {@link ConfirmService}.
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Observable';
 export class MockConfirmService {
 
   open(title: string, description: string, options: any = {}): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
 }

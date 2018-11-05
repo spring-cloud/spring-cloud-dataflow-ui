@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { mergeMap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { TasksService } from '../../tasks.service';
 import { TaskDefinition } from '../../model/task-definition';
 import { TaskSchedule } from '../../model/task-schedule';
-import { map } from 'rxjs/internal/operators';
 
 /**
  * Component that shows the summary details of a Task Schedule

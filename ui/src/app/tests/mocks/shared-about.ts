@@ -1,5 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject, of } from 'rxjs';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { AboutInfo } from '../../shared/model/about/about-info.model';
 
@@ -25,7 +24,7 @@ export class MocksSharedAboutService {
     this.featureInfo = new FeatureInfo().deserialize(this.dataflowVersionInfo.featureInfo);
     this.featureInfoSubject.next(this.featureInfo);
 
-    return Observable.of(this.dataflowVersionInfo);
+    return of(this.dataflowVersionInfo);
   }
 
 

@@ -1,6 +1,4 @@
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
+import { Observable, Subject, of } from 'rxjs';
 import { SecurityInfo } from '../../shared/model/about/security-info.model';
 import { LoginRequest } from '../../auth/model/login-request.model';
 
@@ -23,11 +21,11 @@ export class MockAuthService {
     this.securityInfo.username = 'Pele';
     this.securityInfo.roles = ['ROLE_VIEW', 'ROLE_CREATE', 'ROLE_MANAGE'];
 
-    return Observable.of(this.securityInfo);
+    return of(this.securityInfo);
   }
 
   logout(): Observable<SecurityInfo> {
     this.securityInfo.reset();
-    return Observable.of(this.securityInfo);
+    return of(this.securityInfo);
   }
 }

@@ -1,6 +1,5 @@
 import { Page } from '../../shared/model/page';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { AuditActionType, AuditOperationType, AuditRecord } from '../../shared/model/audit-record.model';
 import { AuditRecordListParams } from '../../audit/components/audit.interface';
 import { DateTime } from 'luxon';
@@ -37,11 +36,11 @@ export class MockAuditRecordService {
   public auditRecords;
 
   getAuditRecords(auditRecordListParams: AuditRecordListParams): Observable<Page<AuditRecord>> {
-    return Observable.of(AuditRecord.pageFromJSON(this.auditRecords));
+    return of(AuditRecord.pageFromJSON(this.auditRecords));
   }
 
   loadAuditOperationTypes() {
-    return Observable.of([
+    return of([
       AuditOperationType.fromJSON({ 'id': 100, 'name': 'App Registration', 'key': 'APP_REGISTRATION' }),
       AuditOperationType.fromJSON({ 'id': 200, 'name': 'Schedule', 'key': 'SCHEDULE' }),
       AuditOperationType.fromJSON({ 'id': 300, 'name': 'Stream', 'key': 'STREAM' }),
@@ -50,7 +49,7 @@ export class MockAuditRecordService {
   }
 
   loadAuditActionTypes() {
-    return Observable.of([
+    return of([
       AuditActionType.fromJSON({
         'id': 100,
         'name': 'Create',
@@ -104,6 +103,6 @@ export class MockAuditRecordService {
     auditRecord.auditOperation = 'operation';
     auditRecord.createdBy = 'Cartman';
     auditRecord.createdOn = DateTime.local();
-    return Observable.of(auditRecord);
+    return of(auditRecord);
   }
 }

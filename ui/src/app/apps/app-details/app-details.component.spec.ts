@@ -28,7 +28,7 @@ import { RoutingStateService } from '../../shared/services/routing-state.service
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
@@ -269,7 +269,7 @@ describe('AppDetailsComponent', () => {
     it('should open the modal versions', () => {
         const mockBsModalRef =  new BsModalRef();
         mockBsModalRef.content = {
-          open: () => Observable.of('testing')
+          open: () => of('testing')
         };
         const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
 

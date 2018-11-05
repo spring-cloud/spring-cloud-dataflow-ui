@@ -17,8 +17,7 @@ import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { By } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Platform } from '../../model/platform';
 
@@ -92,7 +91,7 @@ describe('StreamCreateDialogComponent', () => {
   it('skipper mode and multiple platforms => deploy checkbox is hidden', () => {
     const featureInfo = new FeatureInfo();
     featureInfo.skipperEnabled = true;
-    spyOn(aboutService, 'getFeatureInfo').and.returnValue(Observable.of(featureInfo));
+    spyOn(aboutService, 'getFeatureInfo').and.returnValue(of(featureInfo));
     fixture.detectChanges();
     const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
     expect(deployDiv).toBeFalsy();
@@ -101,8 +100,8 @@ describe('StreamCreateDialogComponent', () => {
   it('skipper mode on and single platform => deploy checkbox is shown', () => {
     const featureInfo = new FeatureInfo();
     featureInfo.skipperEnabled = true;
-    spyOn(aboutService, 'getFeatureInfo').and.returnValue(Observable.of(featureInfo));
-    spyOn(streamsService, 'getPlatforms').and.returnValue(Observable.of([
+    spyOn(aboutService, 'getFeatureInfo').and.returnValue(of(featureInfo));
+    spyOn(streamsService, 'getPlatforms').and.returnValue(of([
       new Platform('default', 'local')
     ]));
     fixture.detectChanges();

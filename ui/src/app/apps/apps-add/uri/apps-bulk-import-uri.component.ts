@@ -1,8 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { AppsService } from '../../apps.service';
 import { BusyService } from '../../../shared/services/busy.service';

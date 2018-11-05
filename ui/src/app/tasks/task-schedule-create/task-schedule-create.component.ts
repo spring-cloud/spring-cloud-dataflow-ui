@@ -1,19 +1,17 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, EMPTY, Subject, of, throwError } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { TasksService } from '../tasks.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskScheduleCreateValidator } from './task-schedule-create.validator';
 import { GroupRouteService } from '../../shared/services/group-route.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { TaskLaunchValidator } from '../task-launch/task-launch.validator';
-import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { Page } from '../../shared/model/page';
-import { EMPTY } from 'rxjs/index';
 import { AppError } from '../../shared/model/error.model';
 
 /**
@@ -71,54 +69,54 @@ export class TaskScheduleCreateComponent implements OnInit {
    */
   ngOnInit() {
     this.schedule$ = this.route.params
-      .pipe(mergeMap(
-        (params: Params) => {
-          let result: Observable<any>;
-          if (this.groupRouteService.isSimilar(params.id)) {
-            if (this.groupRouteService.group(params.id)) {
-              result = Observable.of(this.groupRouteService.group(params.id));
-            } else {
-              return Observable.throwError(`Group selection not found.`);
-            }
-          } else {
-            result = this.tasksService.getDefinition(params.id);
-          }
-
-          return result.pipe(map((data) => {
+      .pipe(
+        mergeMap(
+          (params: Params) => {
+            let result: Observable<any>;
             if (this.groupRouteService.isSimilar(params.id)) {
-              return {
-                params: params,
-                taskDefinitions: data
-              };
+              if (this.groupRouteService.group(params.id)) {
+                result = of(this.groupRouteService.group(params.id));
+              } else {
+                return throwError(`Group selection not found.`);
+              }
             } else {
-              return {
-                params: params,
-                taskDefinitions: [data.name]
-              };
+              result = this.tasksService.getDefinition(params.id);
             }
-          }));
-
-        }
-      ))
-      .pipe(mergeMap(
-        (schedule) => this.tasksService.getSchedules({ q: '', page: 0, size: 10000, sort: null, order: null })
-          .pipe(map((schedules: Page<TaskSchedule>) => {
-            return {
-              params: schedule.params,
-              taskDefinitions: schedule.taskDefinitions,
-              schedules: schedules.items.map((item) => item.name.toLowerCase())
-            };
-          })),
-      ))
-      .pipe(map((schedule) => {
-        this.buildForm(schedule);
-        return schedule;
-      }))
-      .catch((error) => {
-        this.notificationService.error(error.toString());
-        this.cancel();
-        return EMPTY;
-      });
+            return result.pipe(map((data) => {
+              if (this.groupRouteService.isSimilar(params.id)) {
+                return {
+                  params: params,
+                  taskDefinitions: data
+                };
+              } else {
+                return {
+                  params: params,
+                  taskDefinitions: [data.name]
+                };
+              }
+            }));
+          }
+        ),
+        mergeMap(
+          (schedule) => this.tasksService.getSchedules({ q: '', page: 0, size: 10000, sort: null, order: null })
+            .pipe(map((schedules: Page<TaskSchedule>) => {
+              return {
+                params: schedule.params,
+                taskDefinitions: schedule.taskDefinitions,
+                schedules: schedules.items.map((item) => item.name.toLowerCase())
+              };
+            })),
+        ),
+        map((schedule) => {
+          this.buildForm(schedule);
+          return schedule;
+        }),
+        catchError((error) => {
+          this.notificationService.error(error.toString());
+          this.cancel();
+          return EMPTY;
+        })
+      );
   }
 
   /**

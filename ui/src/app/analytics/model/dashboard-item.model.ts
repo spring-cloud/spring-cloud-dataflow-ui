@@ -1,8 +1,7 @@
 import { Serializable } from '../../shared/model';
 import { MetricType } from './metric-type.model';
 import { BaseCounter } from './base-counter.model';
-import { Page } from '../../shared/model';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 /**
  * Counter model object for the Analytics module.

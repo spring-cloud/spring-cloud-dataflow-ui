@@ -1,19 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/observable/of';
-
+import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { ErrorHandler } from '../model';
 import { FeatureInfo } from '../model/about/feature-info.model';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AboutInfo } from '../model/about/about-info.model';
 import { BusyService } from './busy.service';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Common service used by multiple modules such as
@@ -53,12 +45,14 @@ export class SharedAboutService {
 
   loadAboutInfo(reload?: boolean): Observable<AboutInfo> {
     if (!this.aboutInfo || reload) {
-      this.busyService.addSubscription(this.httpClient.get<any>(this.aboutUrl)
-        .map(this.extractData.bind(this))
-        .catch(this.errorHandler.handleError)
-        .subscribe());
+      this.busyService.addSubscription(this.httpClient
+        .get<any>(this.aboutUrl)
+        .pipe(
+          map(this.extractData.bind(this)),
+          catchError(this.errorHandler.handleError)
+        ).subscribe());
     }
-    return Observable.of(this.aboutInfo);
+    return of(this.aboutInfo);
   }
 
   public extractData(responseJson: any): AboutInfo {

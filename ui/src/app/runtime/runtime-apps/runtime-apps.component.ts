@@ -3,7 +3,7 @@ import { RuntimeApp } from '../model/runtime-app';
 import { Page } from '../../shared/model/page';
 import { RuntimeAppsService } from '../runtime-apps.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
 import { PaginationParams } from '../../shared/components/shared.interface';
 

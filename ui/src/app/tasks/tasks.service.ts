@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, forkJoin } from 'rxjs';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { Page } from '../shared/model/page';
 import { TaskExecution } from './model/task-execution';
 import { TaskDefinition } from './model/task-definition';
 import { ListDefaultParams, OrderParams } from '../shared/components/shared.interface';
 import { HttpUtils } from '../shared/support/http.utils';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { LoggerService } from '../shared/services/logger.service';
 import { TaskSchedule } from './model/task-schedule';
 import {
   TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams
 } from './components/tasks.interface';
 import { HttpResponse } from '@angular/common/http';
-import { forkJoin } from 'rxjs';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -107,8 +106,10 @@ export class TasksService {
     }
     return this.httpClient
       .get<any>(TasksService.URL.EXECUTIONS, { params: params })
-      .pipe(map(TaskExecution.pageFromJSON))
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(TaskExecution.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -130,8 +131,10 @@ export class TasksService {
     }
     return this.httpClient
       .get<any>(TasksService.URL.EXECUTIONS, { params: params })
-      .pipe(map(TaskExecution.pageFromJSON))
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(TaskExecution.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -143,8 +146,10 @@ export class TasksService {
   getExecution(id: string): Observable<TaskExecution> {
     return this.httpClient
       .get<any>(TasksService.URL.EXECUTIONS + '/' + id, {})
-      .pipe(map(TaskExecution.fromJSON))
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(TaskExecution.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -157,8 +162,10 @@ export class TasksService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .get<any>(`${TasksService.URL.DEFINITIONS}/${taskname}`, { headers: headers })
-      .map(TaskDefinition.fromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(TaskDefinition.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -179,8 +186,10 @@ export class TasksService {
     }
     return this.httpClient
       .get<any>(TasksService.URL.DEFINITIONS, { params: params })
-      .pipe(map(TaskDefinition.pageFromJSON))
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(TaskDefinition.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -198,8 +207,10 @@ export class TasksService {
     }
     return this.httpClient
       .get<any>(url)
-      .pipe(map(TaskSchedule.pageFromJSON))
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(TaskSchedule.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -211,8 +222,10 @@ export class TasksService {
   getSchedule(scheduleName: string): Observable<TaskSchedule> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient.get<any>(`${TasksService.URL.SCHEDULES}/${scheduleName}`, { headers: headers })
-      .pipe(map(TaskSchedule.fromJSON))
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(TaskSchedule.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -246,7 +259,9 @@ export class TasksService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .post(TasksService.URL.SCHEDULES, {}, { headers: headers, params: params })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -263,7 +278,9 @@ export class TasksService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .post(TasksService.URL.DEFINITIONS, {}, { headers: headers, params: params })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -277,7 +294,9 @@ export class TasksService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .delete(TasksService.URL.DEFINITIONS + '/' + taskDefinition.name, { headers: headers, observe: 'response' })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -301,7 +320,9 @@ export class TasksService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .delete(TasksService.URL.SCHEDULES + '/' + taskSchedules.name, { headers: headers, observe: 'response' })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -332,7 +353,9 @@ export class TasksService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .post(TasksService.URL.EXECUTIONS, {}, { headers: headers, params: params })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
 }

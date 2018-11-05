@@ -1,12 +1,8 @@
-import { Observable } from 'rxjs/Observable';
-
-import { HttpUtils } from '../shared/support/http.utils';
 import { ErrorHandler } from '../shared/model';
-
 import { AuthService } from './auth.service';
-import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { LoginRequest } from './model/login-request.model';
 import { LoggerService } from '../shared/services/logger.service';
+import { of } from 'rxjs';
 
 describe('AuthService', () => {
 
@@ -41,7 +37,7 @@ describe('AuthService', () => {
 
   describe('loadSecurityInfo', () => {
     it('should call the "security/info" REST endpoint', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
 
       expect(this.authService.securityInfo).toBeUndefined();
       this.authService.loadSecurityInfo();
@@ -57,7 +53,7 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('should call the authentication REST endpoint', () => {
-      this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.post.and.returnValue(of(this.jsonData));
       const loginRequest = new LoginRequest('foo', 'password123');
       this.authService.login(loginRequest);
 
@@ -73,7 +69,7 @@ describe('AuthService', () => {
 
   describe('logout', () => {
     it('should call logout REST endpoint', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.authService.logout();
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];

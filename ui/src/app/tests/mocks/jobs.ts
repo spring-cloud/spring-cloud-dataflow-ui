@@ -1,9 +1,8 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { Page } from '../../shared/model/page';
 import { JobExecution } from '../../jobs/model/job-execution.model';
 import { StepExecutionResource } from '../../jobs/model/step-execution-resource.model';
 import { StepExecutionProgress } from '../../jobs/model/step-execution-progress.model';
-import { DateTime } from 'luxon';
 
 export class MockJobsService {
 
@@ -60,11 +59,11 @@ export class MockJobsService {
     if (this.testStepExecutionProgress) {
       stepExecutionProgress = StepExecutionProgress.fromJSON(this.testStepExecutionProgress);
     }
-    return Observable.of(stepExecutionProgress);
+    return of(stepExecutionProgress);
   }
 
   getJobExecutions() {
-    return Observable.of(this.jobExecutionsPage);
+    return of(this.jobExecutionsPage);
   }
 
   getJobExecution(id: string) {
@@ -73,11 +72,11 @@ export class MockJobsService {
       const jsonItem = this.testJobExecutions
         .find(je => je['executionId'] === +id);
       if (!jsonItem) {
-        return Observable.of(jobExecution);
+        return of(jobExecution);
       }
       jobExecution = JobExecution.fromJSON(jsonItem);
     }
-    return Observable.of(jobExecution);
+    return of(jobExecution);
   }
 
   getStepExecution(jobid: string, stepid: string): Observable<StepExecutionResource> {
@@ -86,15 +85,15 @@ export class MockJobsService {
       stepExecutionResource = StepExecutionResource.fromJSON(this.testStepExecutionResource);
     }
 
-    return Observable.of(stepExecutionResource);
+    return of(stepExecutionResource);
   }
 
   stopJob(item: JobExecution) {
-    return Observable.of({});
+    return of({});
 
   }
 
   restartJob(item: JobExecution) {
-    return Observable.of({});
+    return of({});
   }
 }

@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { PropertiesGroupModel } from '../support/properties-group-model';
 import { Properties } from 'spring-flo';
 import PropertiesSource = Properties.PropertiesSource;

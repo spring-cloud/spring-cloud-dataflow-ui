@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { TaskExecution } from '../model/task-execution';
 import { ActivatedRoute } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { catchError, mergeMap } from 'rxjs/operators';
+import { Observable, EMPTY } from 'rxjs';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
-import { EMPTY } from 'rxjs/index';
 
 /**
  * Component that display a Task Execution.
@@ -47,16 +46,18 @@ export class TaskExecutionComponent implements OnInit {
    */
   ngOnInit() {
     this.taskExecution$ = this.route.params
-      .pipe(mergeMap(
-        (val) => this.tasksService.getExecution(val.id)
-      ))
-      .catch(error => {
-        if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
-          this.cancel();
-        }
-        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return EMPTY;
-      });
+      .pipe(
+        mergeMap(
+          (val) => this.tasksService.getExecution(val.id)
+        ),
+        catchError(error => {
+          if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
+            this.cancel();
+          }
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          return EMPTY;
+        })
+      );
   }
 
   /**

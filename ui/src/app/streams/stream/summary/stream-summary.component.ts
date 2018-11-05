@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { StreamsService } from '../../streams.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { mergeMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { mergeMap, map } from 'rxjs/operators';
 import { StreamDefinition } from '../../model/stream-definition';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { Parser } from '../../../shared/services/parser';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap';
-import { NotificationService } from '../../../shared/services/notification.service';
-import { LoggerService } from '../../../shared/services/logger.service';
-import { map } from 'rxjs/internal/operators';
+import { BsModalRef } from 'ngx-bootstrap';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -63,7 +60,7 @@ export class StreamSummaryComponent implements OnInit {
           }))
       ))
       .pipe(mergeMap(
-        (val: StreamDefinition) => Observable.of(Parser.parse(val.dslText as string, 'stream'))
+        (val: StreamDefinition) => of(Parser.parse(val.dslText as string, 'stream'))
           .pipe(map((val2) => {
             return {
               streamDefinition: val,

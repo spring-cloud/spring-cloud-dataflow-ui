@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
 
 /**
  * A service for global spinners. Allows for services and

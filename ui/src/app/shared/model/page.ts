@@ -1,6 +1,5 @@
 import { PaginationInstance } from 'ngx-pagination';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of } from 'rxjs';
 
 /**
  * Central class for pagination support. Holds typed collections that can be
@@ -56,7 +55,7 @@ export class Page<T> {
   }
 
   public getItemsAsObservable(): Observable<T[]> {
-    return Observable.of(this.items);
+    return of(this.items);
   }
 
   public update(page: Page<T> ) {

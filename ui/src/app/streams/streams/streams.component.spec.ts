@@ -36,7 +36,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 
@@ -436,7 +436,7 @@ describe('StreamsComponent', () => {
     it('should call the destroy modal', fakeAsync(() => {
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.destroySelectedStreams();
@@ -447,7 +447,7 @@ describe('StreamsComponent', () => {
     it('should call the deploy modal', fakeAsync(() => {
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.deploySelectedStreams();
@@ -457,7 +457,7 @@ describe('StreamsComponent', () => {
     it('should call the undeploy modal', fakeAsync(() => {
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.undeploySelectedStreams();

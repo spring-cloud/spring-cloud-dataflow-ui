@@ -1,5 +1,3 @@
-import 'rxjs/add/operator/debounceTime';
-
 import {
   AfterContentInit,
   AfterViewInit,
@@ -12,8 +10,7 @@ import {
   Optional,
   OnDestroy,
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-
+import { Subject } from 'rxjs';
 import { TrailPositionType } from './trail-position-type.model';
 import { TruncatorWidthProviderDirective } from './truncator-width-provider.directive';
 import { takeUntil } from 'rxjs/operators';

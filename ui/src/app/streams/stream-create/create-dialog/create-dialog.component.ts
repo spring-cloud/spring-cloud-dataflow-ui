@@ -6,18 +6,16 @@ import { convertParseResponseToJsonGraph } from '../../components/flo/text-to-gr
 import { Utils } from '../../components/flo/support/utils';
 import { StreamsService } from '../../streams.service';
 import { Properties } from 'spring-flo';
-import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
-import { Observable } from 'rxjs/Observable';
 import { map, mergeMap, share, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { Platform } from '../../model/platform';
+import { Observable, Subscription, of, Subject } from 'rxjs';
 
 /**
  * Stores progress percentage.
@@ -142,7 +140,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
       .pipe(mergeMap(
         (featureInfo: FeatureInfo) => {
           const platforms$: Observable<Platform[]> =
-            featureInfo.skipperEnabled ? this.streamService.getPlatforms() : Observable.of<Platform[]>([]);
+            featureInfo.skipperEnabled ? this.streamService.getPlatforms() : of<Platform[]>([]);
           return platforms$.pipe(map((platforms: Platform[]): FeatureInfo => {
             if (platforms.length < 2) {
               this.isDeployEnabled = true;

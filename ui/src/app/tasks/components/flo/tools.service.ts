@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { HttpUtils } from '../../../shared/support/http.utils';
 import { ErrorHandler } from '../../../shared/model/error-handler';
 import { Graph, Link, Node, TaskConversion } from './model/models';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Provides tools service having conversion between
@@ -33,7 +34,7 @@ export class ToolsService {
     if (!dsl) {
       // Server parser service gives error for empty DSL
       // Workaround: produce empty graph thus START and END node can be created
-      return Observable.of({
+      return of({
         dsl: '',
         graph: new Graph([], []),
         errors: []
@@ -41,7 +42,7 @@ export class ToolsService {
     } else {
       // Multi-line task definitions are not supported
       if (dsl.indexOf('\n') >= 0) {
-        return Observable.of({
+        return of({
           dsl: dsl,
           graph: null,
           errors: [
@@ -56,11 +57,12 @@ export class ToolsService {
         // Invoke server parser service for non-empty one line DSL
         const httpHeaders = HttpUtils.getDefaultHttpHeaders();
         const body = '{"dsl":"' + dsl + '","name":"' + name + '"}';
-        return this.httpClient.post<any>(this.parseTaskTextToGraphUrl, body, {
-          headers: httpHeaders
-        })
-          .map(response => this.extractConversionData(response))
-          .catch(this.errorHandler.handleError);
+        return this.httpClient
+          .post<any>(this.parseTaskTextToGraphUrl, body, { headers: httpHeaders })
+          .pipe(
+            map(response => this.extractConversionData(response)),
+            catchError(this.errorHandler.handleError)
+          );
       }
     }
   }
@@ -75,11 +77,12 @@ export class ToolsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     const body = graph.toJson();
 
-    return this.httpClient.post<any>(this.convertTaskGraphToTextUrl, body, {
-      headers: httpHeaders
-    })
-      .map(response => this.extractConversionData(response))
-      .catch(this.errorHandler.handleError);
+    return this.httpClient
+      .post<any>(this.convertTaskGraphToTextUrl, body, { headers: httpHeaders })
+      .pipe(
+        map(response => this.extractConversionData(response)),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**

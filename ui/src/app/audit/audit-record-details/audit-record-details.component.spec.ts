@@ -21,7 +21,7 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { MockAuditRecordService } from '../../tests/mocks/audit';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuditRecordActionComponent } from '../components/audit-record-action/audit-record-action.component';
 import { AuditRecordOperationComponent } from '../components/audit-record-operation/audit-record-operation.component';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
@@ -69,7 +69,7 @@ describe('AuditRecordDetailsComponent', () => {
         { provide: AuditRecordService, useValue: auditRecordService },
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: {
-          params: Observable.of({ auditRecordId: 12347 })
+          params: of({ auditRecordId: 12347 })
         } },
         BsModalService,
         { provide: BusyService, useValue: new BusyService() },

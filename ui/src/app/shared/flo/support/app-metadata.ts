@@ -1,6 +1,6 @@
 import { Flo } from 'spring-flo';
 import { DetailedAppRegistration, ConfigurationMetadataProperty } from '../../model/detailed-app-registration.model';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Utils } from './utils';
 
 /**

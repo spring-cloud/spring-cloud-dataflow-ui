@@ -1,12 +1,10 @@
 import { ErrorHandler } from '../shared/model/error-handler';
 import { StreamsService } from './streams.service';
-import { Observable } from 'rxjs/Observable';
 import { HttpUtils } from '../shared/support/http.utils';
 import { StreamDefinition } from './model/stream-definition';
 import { HttpParams } from '@angular/common/http';
-import { MockResponse } from '../tests/mocks/response';
-import { STREAM_DEFINITIONS } from '../tests/mocks/mock-data';
 import { LoggerService } from '../shared/services/logger.service';
+import { of } from 'rxjs';
 
 /**
  * Test Streams Services.
@@ -30,7 +28,7 @@ describe('StreamsService', () => {
 
   describe('getDefinitions', () => {
     it('should call the streams service with the right url to get stream definitions', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
 
       // expect(this.streamsService.streamDefinitions).toBeDefined();
       this.streamsService.getDefinitions();
@@ -47,7 +45,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the definitions service with the right url [no sort params]', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.streamsService.getDefinitions();
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
@@ -61,7 +59,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the definitions service with the right url [undefined sort params]', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.streamsService.getDefinitions(undefined);
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
@@ -75,7 +73,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the definitions service with the right url [asc sort]', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'ASC' });
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
@@ -90,7 +88,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the definitions service with the right url [desc sort]', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC' });
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
@@ -105,7 +103,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the definitions service with the right url [search desc sort]', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.streamsService.getDefinitions({ q: 'foo', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC' });
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
@@ -124,7 +122,7 @@ describe('StreamsService', () => {
   describe('getDefinition', () => {
 
     it('should call the definition service with the right url', () => {
-      this.mockHttp.get.and.returnValue(Observable.of({}));
+      this.mockHttp.get.and.returnValue(of({}));
       this.streamsService.getDefinition('foo');
       const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri1).toEqual('/streams/definitions/foo');
@@ -135,7 +133,7 @@ describe('StreamsService', () => {
   describe('createDefinition', () => {
 
     it('should call the create and deploy definition with the right url/params', () => {
-      this.mockHttp.post.and.returnValue(Observable.of({}));
+      this.mockHttp.post.and.returnValue(of({}));
       this.streamsService.createDefinition('foobar', 'foo | bar', true);
       const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
       const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
@@ -146,7 +144,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the create definition with the right url/params', () => {
-      this.mockHttp.post.and.returnValue(Observable.of({}));
+      this.mockHttp.post.and.returnValue(of({}));
       this.streamsService.createDefinition('foobar', 'foo | bar', false);
       const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
       const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
@@ -161,7 +159,7 @@ describe('StreamsService', () => {
   describe('updateDefinition', () => {
 
     it('should call the update definition with the right url/params', () => {
-      this.mockHttp.post.and.returnValue(Observable.of({}));
+      this.mockHttp.post.and.returnValue(of({}));
       const properties = {
         a: 'a',
         b: 'b'
@@ -180,7 +178,7 @@ describe('StreamsService', () => {
 
   describe('destroyDefinition', () => {
     it('should call the streams service to destroy stream definition', () => {
-      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.delete.and.returnValue(of(this.jsonData));
 
       // expect(this.streamsService.streamDefinitions).toBeDefined();
 
@@ -198,7 +196,7 @@ describe('StreamsService', () => {
 
   describe('undeployDefinition', () => {
     it('should call the streams service to undeploy stream definition', () => {
-      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.delete.and.returnValue(of(this.jsonData));
 
       // expect(this.streamsService.streamDefinitions).toBeDefined();
 
@@ -215,7 +213,7 @@ describe('StreamsService', () => {
 
   describe('deployDefinition', () => {
     it('should call the streams service to deploy stream definition', () => {
-      this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.post.and.returnValue(of(this.jsonData));
 
       // expect(this.streamsService.streamDefinitions).toBeDefined();
 
@@ -231,7 +229,7 @@ describe('StreamsService', () => {
 
   describe('deploymentInfo', () => {
     it('should call the streams service to get deployment info', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       expect(this.streamsService.getDeploymentInfo).toBeDefined();
       this.streamsService.getDeploymentInfo('test');
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
@@ -260,7 +258,7 @@ describe('StreamsService', () => {
   describe('relatedStreamDefinitions', () => {
 
     it('should call the streams service to get related stream definitions no nesting', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
 
       expect(this.streamsService.getRelatedDefinitions).toBeDefined();
 
@@ -274,7 +272,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the streams service to get related stream definitions with nesting', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
 
       expect(this.streamsService.getRelatedDefinitions).toBeDefined();
 
@@ -298,7 +296,7 @@ describe('StreamsService', () => {
   describe('metrics', () => {
 
     it('should call the streams metrics service no stream names specified', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       expect(this.streamsService.getMetrics).toBeDefined();
       this.streamsService.getMetrics();
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
@@ -309,7 +307,7 @@ describe('StreamsService', () => {
     });
 
     it('should call the streams metrics service with stream names specified', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       expect(this.streamsService.getMetrics).toBeDefined();
       this.streamsService.getMetrics(['test1', 'test2']);
       const httpHeaders = HttpUtils.getDefaultHttpHeaders();
@@ -330,7 +328,7 @@ describe('StreamsService', () => {
   describe('destroyMultipleStreamDefinitions', () => {
     it('should call the stream definition service with the right url to destroy multiple stream definitions', () => {
 
-      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.delete.and.returnValue(of(this.jsonData));
       // expect(this.streamsService.streamDefinitions).toBeDefined();
       const streamDefinitions = [
         new StreamDefinition('stream1', 'file|filter|ftp', 'deployed'),
@@ -356,7 +354,7 @@ describe('StreamsService', () => {
 
   describe('deployMultipleStreamDefinitions', () => {
     it('should call the stream definition service with the right url to deploy multiple stream definitions', () => {
-      this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.post.and.returnValue(of(this.jsonData));
       // expect(this.streamsService.streamDefinitions).toBeDefined();
       const stream1 = new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed');
       const stream2 = new StreamDefinition('stream2', 'file|filter|ftp', 'undeployed');
@@ -385,7 +383,7 @@ describe('StreamsService', () => {
 
   describe('undeployMultipleStreamDefinitions', () => {
     it('should call the stream definition service with the right url to undeploy multiple stream definitions', () => {
-      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.delete.and.returnValue(of(this.jsonData));
       // expect(this.streamsService.streamDefinitions).toBeDefined();
       const streamDefinitions = [
         new StreamDefinition('stream1', 'file|filter|ftp', 'deployed'),
@@ -412,7 +410,7 @@ describe('StreamsService', () => {
   describe('getPlatforms', () => {
 
     it('should call the platform service with the right url', () => {
-      this.mockHttp.get.and.returnValue(Observable.of({}));
+      this.mockHttp.get.and.returnValue(of({}));
       this.streamsService.getPlatforms();
       const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri1).toEqual('/streams/deployments/platform/list');
@@ -423,7 +421,7 @@ describe('StreamsService', () => {
   describe('getHistory', () => {
 
     it('should call the history service with the right url', () => {
-      this.mockHttp.get.and.returnValue(Observable.of({}));
+      this.mockHttp.get.and.returnValue(of({}));
       this.streamsService.getHistory('foobar');
       const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri1).toEqual('/streams/deployments/history/foobar');

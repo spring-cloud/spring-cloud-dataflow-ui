@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/concat';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/forkJoin';
+import { Observable } from 'rxjs';
 import { ErrorHandler, Page } from '../shared/model';
 import { HttpUtils } from '../shared/support/http.utils';
 import { LoggerService } from '../shared/services/logger.service';
 import { AuditRecord, AuditOperationType, AuditActionType } from '../shared/model/audit-record.model';
 import { BehaviorSubject } from 'rxjs';
 import { AuditRecordListParams } from './components/audit.interface';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Service class for the Audit Record module.
@@ -88,8 +83,10 @@ export class AuditRecordService {
     }
     return this.httpClient
       .get<any>(AuditRecordService.URL, { params: params, headers: HttpUtils.getDefaultHttpHeaders() })
-      .map(AuditRecord.pageFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(AuditRecord.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -99,13 +96,14 @@ export class AuditRecordService {
   loadAuditOperationTypes() {
     this.loggerService.log('Getting audit operation types.');
     return this.httpClient
-      .get<any>(AuditRecordService.URL + '/audit-operation-types',
-        { headers: HttpUtils.getDefaultHttpHeaders() })
-      .map(response => {
-        const auditOperationTypes: AuditOperationType[] = response.map(AuditOperationType.fromJSON);
-        this.auditOperationTypes$.next(auditOperationTypes);
-      })
-      .catch(this.errorHandler.handleError);
+      .get<any>(AuditRecordService.URL + '/audit-operation-types', { headers: HttpUtils.getDefaultHttpHeaders() })
+      .pipe(
+        map(response => {
+          const auditOperationTypes: AuditOperationType[] = response.map(AuditOperationType.fromJSON);
+          this.auditOperationTypes$.next(auditOperationTypes);
+        }),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -115,13 +113,14 @@ export class AuditRecordService {
   loadAuditActionTypes() {
     this.loggerService.log('Getting audit action types.');
     return this.httpClient
-      .get<any>(AuditRecordService.URL + '/audit-action-types',
-      { headers: HttpUtils.getDefaultHttpHeaders() })
-      .map(response => {
-        const auditActionTypes: AuditActionType[] = response.map(AuditActionType.fromJSON);
-        this.auditActionTypes$.next(auditActionTypes);
-      })
-      .catch(this.errorHandler.handleError);
+      .get<any>(AuditRecordService.URL + '/audit-action-types', { headers: HttpUtils.getDefaultHttpHeaders() })
+      .pipe(
+        map(response => {
+          const auditActionTypes: AuditActionType[] = response.map(AuditActionType.fromJSON);
+          this.auditActionTypes$.next(auditActionTypes);
+        }),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -133,8 +132,10 @@ export class AuditRecordService {
     const url = `${AuditRecordService.URL}/${id}`;
     return this.httpClient
       .get(url, { headers: HttpUtils.getDefaultHttpHeaders() })
-      .map(AuditRecord.fromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(AuditRecord.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
 }

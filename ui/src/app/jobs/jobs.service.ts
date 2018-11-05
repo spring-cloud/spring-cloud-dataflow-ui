@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
 import { ErrorHandler, Page } from '../shared/model';
 import { JobExecution } from './model/job-execution.model';
 import { HttpUtils } from '../shared/support/http.utils';
@@ -10,6 +8,7 @@ import { StepExecutionResource } from './model/step-execution-resource.model';
 import { StepExecutionProgress } from './model/step-execution-progress.model';
 import { LoggerService } from '../shared/services/logger.service';
 import { ListParams } from '../shared/components/shared.interface';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Retrieves Job and Step Execution data from the Spring Cloud Data Flow server.
@@ -62,8 +61,10 @@ export class JobsService {
     const params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
     return this.httpClient
       .get<any>(JobsService.URL.EXECUTIONS, { params: params })
-      .map(JobExecution.pageFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(JobExecution.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -73,9 +74,12 @@ export class JobsService {
    * @returns {Observable<JobExecution>}
    */
   getJobExecution(id: string): Observable<JobExecution> {
-    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + id, {})
-      .map(JobExecution.fromJSON)
-      .catch(this.errorHandler.handleError);
+    return this.httpClient
+      .get<any>(JobsService.URL.EXECUTIONS + '/' + id, {})
+      .pipe(
+        map(JobExecution.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -86,9 +90,12 @@ export class JobsService {
    * @returns {Observable<StepExecutionResource>}
    */
   getStepExecution(jobid: string, stepid: string): Observable<StepExecutionResource> {
-    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid, {})
-      .map(StepExecutionResource.fromJSON)
-      .catch(this.errorHandler.handleError);
+    return this.httpClient
+      .get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid, {})
+      .pipe(
+        map(StepExecutionResource.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -99,9 +106,12 @@ export class JobsService {
    * @returns {Observable<StepExecutionProgress>}
    */
   getStepExecutionProgress(jobid: string, stepid: string): Observable<StepExecutionProgress> {
-    return this.httpClient.get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid + '/progress', {})
-      .map(StepExecutionProgress.fromJSON)
-      .catch(this.errorHandler.handleError);
+    return this.httpClient
+      .get<any>(JobsService.URL.EXECUTIONS + '/' + jobid + '/steps/' + stepid + '/progress', {})
+      .pipe(
+        map(StepExecutionProgress.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -114,7 +124,9 @@ export class JobsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?restart=true', { headers: httpHeaders })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -127,7 +139,9 @@ export class JobsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .put(JobsService.URL.EXECUTIONS + '/' + item.jobExecutionId + '?stop=true', { headers: httpHeaders })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
 }

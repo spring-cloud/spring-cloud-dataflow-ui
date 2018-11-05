@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
 import { TasksService } from '../tasks.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { BusyService } from '../../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskListParams } from '../components/tasks.interface';

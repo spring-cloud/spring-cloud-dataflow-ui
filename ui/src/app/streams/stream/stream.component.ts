@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
-import { ActivatedRoute, Params } from '@angular/router';
-import { mergeMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 import { StreamsService } from '../streams.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, EMPTY } from 'rxjs';
 import { StreamDefinition } from '../model/stream-definition';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { Router } from '@angular/router';
@@ -11,10 +11,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { NotificationService } from '../../shared/services/notification.service';
-import { EMPTY } from 'rxjs/index';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { map } from 'rxjs/internal/operators';
-import { FeatureInfo } from 'src/app/shared/model/about/feature-info.model';
 
 /**
  * Component that shows the details of a Stream Definition
@@ -59,31 +56,34 @@ export class StreamComponent implements OnInit {
    */
   ngOnInit() {
     this.streamDefinition$ = this.route.params
-      .pipe(mergeMap(
-        (val) => this.sharedAboutService.getFeatureInfo()
-          .pipe(map((featureInfo) => {
-            return {
-              id: val.id,
-              featureInfo: featureInfo
-            };
-          }))
-      ))
-      .pipe(mergeMap(
-        (val) => this.streamsService.getDefinition(val.id)
-          .pipe(map((streamDefinition: StreamDefinition) => {
-            return {
-              id: val.id,
-              featureInfo: val.featureInfo,
-              streamDefinition: streamDefinition
-            };
-          }))
-      )).catch((error) => {
-        if (HttpAppError.is404(error)) {
-          this.cancel();
-        }
-        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return EMPTY;
-      });
+      .pipe(
+        mergeMap(
+          (val) => this.sharedAboutService.getFeatureInfo()
+            .pipe(map((featureInfo) => {
+              return {
+                id: val.id,
+                featureInfo: featureInfo
+              };
+            }))
+        ),
+        mergeMap(
+          (val) => this.streamsService.getDefinition(val.id)
+            .pipe(map((streamDefinition: StreamDefinition) => {
+              return {
+                id: val.id,
+                featureInfo: val.featureInfo,
+                streamDefinition: streamDefinition
+              };
+            }))
+        ),
+        catchError((error) => {
+          if (HttpAppError.is404(error)) {
+            this.cancel();
+          }
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          return EMPTY;
+        })
+      );
   }
 
   /**

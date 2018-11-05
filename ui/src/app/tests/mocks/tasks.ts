@@ -1,14 +1,10 @@
-import { Observable } from 'rxjs/Observable';
-import { AppInfo } from '../../tasks/model/app-info';
+import { Observable, of } from 'rxjs';
 import { Page } from '../../shared/model/page';
-import { AppRegistration } from '../../shared/model/app-registration.model';
 import { TaskExecution } from '../../tasks/model/task-execution';
 import { TaskDefinition } from '../../tasks/model/task-definition';
 import { ListDefaultParams, OrderParams } from '../../shared/components/shared.interface';
 import { TaskSchedule } from '../../tasks/model/task-schedule';
-import {
-  TaskListParams
-} from '../../tasks/components/tasks.interface';
+import { TaskListParams } from '../../tasks/components/tasks.interface';
 
 /**
  * Mock for TasksService.
@@ -71,39 +67,39 @@ export class MockTasksService {
   public taskExecutions;
 
   createDefinition(definition: string, name: string) {
-    return Observable.of({});
+    return of({});
   }
 
   getExecution(id: string): Observable<TaskExecution> {
-    return Observable.of(this.testExecutionDetails[id]);
+    return of(this.testExecutionDetails[id]);
   }
 
   destroyDefinitions(taskDefinitions: TaskDefinition[]): Observable<Response> | Observable<any> {
-    return Observable.of(Array.from({ length: taskDefinitions.length }));
+    return of(Array.from({ length: taskDefinitions.length }));
   }
 
   getExecutions(): Observable<Page<TaskExecution>> {
-    return Observable.of(TaskExecution.pageFromJSON(this.taskExecutions));
+    return of(TaskExecution.pageFromJSON(this.taskExecutions));
   }
 
   getDefinitions(): Observable<Page<TaskDefinition>> {
-    return Observable.of(TaskDefinition.pageFromJSON(this.taskDefinitions));
+    return of(TaskDefinition.pageFromJSON(this.taskDefinitions));
   }
 
   getSchedules(taskListParams: TaskListParams): Observable<Page<TaskSchedule>> {
-    return Observable.of(TaskSchedule.pageFromJSON(this.taskSchedules));
+    return of(TaskSchedule.pageFromJSON(this.taskSchedules));
   }
 
   getSchedule(scheduleName: string): Observable<TaskSchedule> {
-    return Observable.of(TaskSchedule.fromJSON(this.taskSchedules._embedded.scheduleInfoResourceList[0]));
+    return of(TaskSchedule.fromJSON(this.taskSchedules._embedded.scheduleInfoResourceList[0]));
   }
 
   getDefinition(name: string): Observable<any> {
-    return Observable.of(TaskDefinition.fromJSON(this.taskDefinitions._embedded.taskDefinitionResourceList[0]));
+    return of(TaskDefinition.fromJSON(this.taskDefinitions._embedded.taskDefinitionResourceList[0]));
   }
 
   destroySchedules(taskSchedules: TaskSchedule[]): Observable<any> {
-    return Observable.of(Array.from({ length: taskSchedules.length }));
+    return of(Array.from({ length: taskSchedules.length }));
   }
 
   getTaskExecutions(taskScheduleListParams: ListDefaultParams): Observable<Page<TaskExecution>> {
@@ -111,7 +107,7 @@ export class MockTasksService {
   }
 
   createSchedules() {
-    return Observable.of([{}]);
+    return of([{}]);
   }
 
 }

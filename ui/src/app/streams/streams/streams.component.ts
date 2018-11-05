@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@ang
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { StreamMetrics } from '../model/stream-metrics';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -12,18 +12,16 @@ import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.comp
 import { SortParams, OrderParams, ListDefaultParams } from '../../shared/components/shared.interface';
 import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 import { StreamListParams } from '../components/streams.interface';
-import { Subject } from 'rxjs/Subject';
-import { mergeMap, takeUntil } from 'rxjs/operators';
+import { mergeMap, takeUntil, map } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { AppsService } from '../../apps/apps.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
-import { map } from 'rxjs/internal/operators';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-streams',

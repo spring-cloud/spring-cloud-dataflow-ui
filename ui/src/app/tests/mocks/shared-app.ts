@@ -1,13 +1,11 @@
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { PageRequest } from '../../shared/model/pagination/page-request.model';
 import { ApplicationType } from '../../shared/model/application-type';
-import 'rxjs/add/observable/empty';
 import { Page } from '../../shared/model/page';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { DetailedAppRegistration } from '../../shared/model/detailed-app-registration.model';
-import { Observable } from 'rxjs/Observable';
 import { Flo } from 'spring-flo';
-import { EMPTY } from 'rxjs/index';
+import { Observable, EMPTY, of } from 'rxjs';
 
 const METAMODEL_DATA: Array<RawMetadata> = [
   {
@@ -155,13 +153,13 @@ export class MockSharedAppService extends SharedAppsService {
     page.pageSize = apps.length;
     page.totalElements = apps.length;
     page.totalPages = 1;
-    return Observable.of(page);
+    return of(page);
   }
 
   getAppInfo(appType: ApplicationType, appName: string, appVersion?: string): Observable<DetailedAppRegistration> {
     const rawData = METAMODEL_DATA.find(d => d.name === appName && (!appType || d.type === ApplicationType[appType]));
     if (rawData) {
-      return Observable.of(new DetailedAppRegistration().deserialize(rawData));
+      return of(new DetailedAppRegistration().deserialize(rawData));
     } else {
       return EMPTY;
     }

@@ -1,5 +1,5 @@
 import { DataflowDateTimePipe } from './dataflow-date-time.pipe';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 describe('DataflowDateTimePipe', () => {
 

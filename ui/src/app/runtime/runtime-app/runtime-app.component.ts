@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap';
 
 /**
@@ -35,7 +35,7 @@ export class RuntimeAppComponent {
    * @param {RuntimeApp} runtimeApp
    */
   open(runtimeApp: RuntimeApp) {
-    this.runtimeApp$ = Observable.of(runtimeApp);
+    this.runtimeApp$ = of(runtimeApp);
   }
 
   /**

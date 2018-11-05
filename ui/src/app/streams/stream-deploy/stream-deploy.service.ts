@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Platform } from '../model/platform';
 import { StreamsService } from '../streams.service';
-import { mergeMap } from 'rxjs/operators';
 import { Parser } from '../../shared/services/parser';
 import { ApplicationType } from '../../shared/model/application-type';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
@@ -14,9 +12,9 @@ import {
 } from '../../shared/model/detailed-app-registration.model';
 import { StreamDeployConfig } from '../model/stream-deploy-config';
 import { Utils } from '../../shared/flo/support/utils';
-import { map } from 'rxjs/internal/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { StreamDefinition } from '../model/stream-definition';
-import { forkJoin } from 'rxjs/index';
+import { Observable, forkJoin, of } from 'rxjs';
 
 /**
  * Provides {@link StreamDeployConfig} related services.
@@ -107,7 +105,7 @@ export class StreamDeployService {
             const observablesApplications = Parser.parse(val.dslText as string, 'stream')
               .lines[0].nodes
               .map((node) => {
-                  return Observable.of({
+                  return of({
                     origin: node['name'],
                     name: node['label'] || node['name'],
                     type: node.type.toString(),

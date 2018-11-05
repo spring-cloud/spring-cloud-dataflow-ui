@@ -2,7 +2,6 @@ import {
   Component, OnDestroy, OnInit, Renderer2,
   ViewChild, ViewEncapsulation, HostListener
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { Flo } from 'spring-flo';
 import { ParserService } from '../../shared/services/parser.service';
 import { Parser } from '../../shared/services/parser';
@@ -13,7 +12,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { StreamCreateDialogComponent } from './create-dialog/create-dialog.component';
 import { ContentAssistService } from '../components/flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
-import { Subject } from 'rxjs/Subject';
+import { Subject, Subscription } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { LoggerService } from '../../shared/services/logger.service';

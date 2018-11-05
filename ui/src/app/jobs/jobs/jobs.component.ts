@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
 import { Page } from '../../shared/model';
 import { JobsService } from '../jobs.service';
 import { JobExecution } from '../model/job-execution.model';
-import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
 import { ListParams, OrderParams } from '../../shared/components/shared.interface';

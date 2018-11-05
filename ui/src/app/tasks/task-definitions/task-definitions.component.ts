@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
 import { BusyService } from '../../shared/services/busy.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskListParams } from '../components/tasks.interface';
@@ -21,7 +21,6 @@ import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
 import { AppsService } from '../../apps/apps.service';
-import { Observable } from 'rxjs/Observable';
 
 /**
  * Provides {@link TaskDefinition} related services.

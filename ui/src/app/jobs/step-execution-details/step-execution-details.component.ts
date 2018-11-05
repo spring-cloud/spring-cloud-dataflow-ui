@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { JobsService } from '../jobs.service';
 import { StepExecutionResource } from '../model/step-execution-resource.model';
-import { Observable } from 'rxjs/Observable';
-import { mergeMap, map } from 'rxjs/operators';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable, forkJoin } from 'rxjs';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
 import { LoggerService } from '../../shared/services/logger.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
-import { EMPTY } from 'rxjs/index';
+import { EMPTY } from 'rxjs';
 
 /**
  * Step Execution Details
@@ -75,16 +74,19 @@ export class StepExecutionDetailsComponent implements OnInit {
           return val2;
         }))
       ))
-      .pipe(map(
-        val => ({ jobExecution: val[0], stepExecution: val[1], stepExecutionProgress: val[2] })
-      )).catch((error) => {
-        if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
-          this.routingStateService.back(`/jobs/executions/`);
-        }
-        this.loggerService.log('error while loading Step Execution Progress', error);
-        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return EMPTY;
-      });
+      .pipe(
+        map(
+          val => ({ jobExecution: val[0], stepExecution: val[1], stepExecutionProgress: val[2] })
+        ),
+        catchError((error) => {
+          if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
+            this.routingStateService.back(`/jobs/executions/`);
+          }
+          this.loggerService.log('error while loading Step Execution Progress', error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          return EMPTY;
+        })
+      );
   }
 
   /**

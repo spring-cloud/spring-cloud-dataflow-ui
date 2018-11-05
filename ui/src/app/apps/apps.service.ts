@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/observable/of';
+import { Observable } from 'rxjs';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppRegistration, ErrorHandler, Page, ApplicationType, DetailedAppRegistration } from '../shared/model';
 import { HttpUtils } from '../shared/support/http.utils';
@@ -14,6 +10,7 @@ import { AppVersion } from '../shared/model/app-version';
 import { LoggerService } from '../shared/services/logger.service';
 import { OrderParams } from '../shared/components/shared.interface';
 import { forkJoin } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Service class for the Apps module.
@@ -66,9 +63,9 @@ export class AppsService {
    * @param {Boolean} force !workaround! force to kill the cache
    * @returns {Observable<Page<AppRegistration>>}
    */
-  getApps(params: AppListParams, force?: boolean): Observable<Page<AppRegistration>> {
+  getApps(params: AppListParams, force?: boolean): Observable<Page<AppRegistration> | never> {
     return this.appsWorkaroundService.apps(params, force)
-      .catch(this.errorHandler.handleError);
+      .pipe(catchError(this.errorHandler.handleError));
   }
 
   /**
@@ -90,9 +87,9 @@ export class AppsService {
    * @param type
    * @param name
    */
-  getAppVersions(type: ApplicationType, name: string): Observable<AppVersion[]> {
+  getAppVersions(type: ApplicationType, name: string): Observable<AppVersion[] | never> {
     return this.appsWorkaroundService.appVersions(type, name)
-      .catch(this.errorHandler.handleError);
+      .pipe(catchError(this.errorHandler.handleError));
   }
 
   /**
@@ -108,11 +105,11 @@ export class AppsService {
     this.loggerService.log('Set app default version...', { name: name, type: type, version: version });
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, {
-        headers: httpHeaders
-      })
-      .map(AppsWorkaroundService.cache.invalidate)
-      .catch(this.errorHandler.handleError);
+      .put(AppsService.appsUrl + '/' + type + '/' + name + '/' + version, { headers: httpHeaders })
+      .pipe(
+        map(AppsWorkaroundService.cache.invalidate),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -130,12 +127,11 @@ export class AppsService {
       .append('force', bulkImportParams.force ? 'true' : 'false');
 
     return this.httpClient
-      .post(AppsService.appsUrl, {}, {
-        headers: httpHeaders,
-        params: params
-      })
-      .map(AppsWorkaroundService.cache.invalidate)
-      .catch(this.errorHandler.handleError);
+      .post(AppsService.appsUrl, {}, { headers: httpHeaders, params: params })
+      .pipe(
+        map(AppsWorkaroundService.cache.invalidate),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -149,8 +145,10 @@ export class AppsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name, { headers: httpHeaders })
-      .map(AppsWorkaroundService.cache.invalidate)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(AppsWorkaroundService.cache.invalidate),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -176,8 +174,10 @@ export class AppsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient.delete(AppsService.appsUrl + '/' + appRegistration.type + '/' + appRegistration.name + '/'
       + version, { headers: httpHeaders })
-      .map(AppsWorkaroundService.cache.invalidate)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(AppsWorkaroundService.cache.invalidate),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -197,12 +197,11 @@ export class AppsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
 
     return this.httpClient.post(AppsService.appsUrl + '/' + ApplicationType[appRegisterParams.type] + '/' + appRegisterParams.name,
-      {}, {
-        params: params,
-        headers: httpHeaders
-      })
-      .map(AppsWorkaroundService.cache.invalidate)
-      .catch(this.errorHandler.handleError);
+      {}, { params: params, headers: httpHeaders })
+      .pipe(
+        map(AppsWorkaroundService.cache.invalidate),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -237,15 +236,12 @@ export class AppsService {
       order: 'name',
       sort: OrderParams.ASC
     });
-    return Observable.forkJoin(apps$, appsForTask$)
-      .map(obs => {
+    return forkJoin(apps$, appsForTask$)
+      .pipe(map(obs => {
         const apps = obs[0].totalElements;
         const apssForTask = obs[1].totalElements;
-        return {
-          streams: apps - apssForTask,
-          tasks: apssForTask
-        };
-      });
+        return { streams: apps - apssForTask, tasks: apssForTask };
+      }));
   }
 
 }

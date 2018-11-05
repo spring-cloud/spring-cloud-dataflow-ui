@@ -1,6 +1,7 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Page } from '../../shared/model/page';
 import { RuntimeApp } from '../../runtime/model/runtime-app';
+import { of } from 'rxjs';
 
 /**
  * Mock for RuntimeAppsService.
@@ -23,6 +24,6 @@ export class MockRuntimeAppsService {
   public testRuntimeApps: any;
 
   public getRuntimeApps(): Observable<Page<RuntimeApp>> {
-    return Observable.of(RuntimeApp.pageFromJSON(this.testRuntimeApps));
+    return of(RuntimeApp.pageFromJSON(this.testRuntimeApps));
   }
 }

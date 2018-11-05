@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { mergeMap, share } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { mergeMap, share, map, catchError } from 'rxjs/operators';
+import { Observable, forkJoin, EMPTY } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { NotificationService } from '../../shared/services/notification.service';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
 import { TaskSchedule } from '../model/task-schedule';
@@ -16,8 +15,6 @@ import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/tas
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
-import { map } from 'rxjs/internal/operators';
-import { EMPTY } from 'rxjs/index';
 
 /**
  * @author Glenn Renfro
@@ -80,50 +77,55 @@ export class TaskDefinitionComponent implements OnInit {
             };
           }))
       ))
-      .pipe(mergeMap(
-        (params: any) => this.tasksService.getDefinition(params.id)
-          .pipe(map((taskDefinition: TaskDefinition) => {
-            return {
-              schedulerEnabled: params.schedulerEnabled,
-              definition: taskDefinition
-            };
-          })),
-      )).catch((error) => {
-        if (HttpAppError.is404(error)) {
-          this.cancel();
-        }
-        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return EMPTY;
-      });
+      .pipe(
+        mergeMap(
+          (params: any) => this.tasksService.getDefinition(params.id)
+            .pipe(map((taskDefinition: TaskDefinition) => {
+              return {
+                schedulerEnabled: params.schedulerEnabled,
+                definition: taskDefinition
+              };
+            })),
+        ),
+        catchError((error) => {
+          if (HttpAppError.is404(error)) {
+            this.cancel();
+          }
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          return EMPTY;
+        })
+      );
 
     this.counters$ = this.route.params
-      .pipe(mergeMap(
-        (params: Params) => this.sharedAboutService.getFeatureInfo()
-          .pipe(map((featureInfo: FeatureInfo) => {
-            return {
-              id: params.id,
-              schedulerEnabled: featureInfo.schedulerEnabled
-            };
-          })),
-      ))
-      .pipe(mergeMap(
-        (params: any) => {
-          const arr = [];
-          arr.push(this.tasksService.getTaskExecutions({ q: params.id, size: 1, page: 0, sort: null, order: null }));
-          if (params.schedulerEnabled) {
-            arr.push(this.tasksService.getSchedules({ q: params.id, size: 1, page: 0, sort: null, order: null }));
+      .pipe(
+        mergeMap(
+          (params: Params) => this.sharedAboutService.getFeatureInfo()
+            .pipe(map((featureInfo: FeatureInfo) => {
+              return {
+                id: params.id,
+                schedulerEnabled: featureInfo.schedulerEnabled
+              };
+            }))
+        ),
+        mergeMap(
+          (params: any) => {
+            const arr = [];
+            arr.push(this.tasksService.getTaskExecutions({ q: params.id, size: 1, page: 0, sort: null, order: null }));
+            if (params.schedulerEnabled) {
+              arr.push(this.tasksService.getSchedules({ q: params.id, size: 1, page: 0, sort: null, order: null }));
+            }
+            return forkJoin([...arr])
+              .pipe(map((forks) => {
+                const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
+                if (params.schedulerEnabled) {
+                  result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
+                }
+                return result;
+              }));
           }
-          return forkJoin([...arr])
-            .pipe(map((forks) => {
-              const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
-              if (params.schedulerEnabled) {
-                result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
-              }
-              return result;
-            }));
-        }
-      ))
-      .pipe(share());
+        ),
+        share()
+      );
   }
 
 

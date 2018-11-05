@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { throwError } from 'rxjs';
 import { AppError, HttpAppError } from './error.model';
 import { LoggerService } from '../services/logger.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -35,10 +35,10 @@ export class ErrorHandler {
           errorObject.message += bodyElement.message;
         }
       }
-      return Observable.throwError(new HttpAppError(errorObject.message, errorObject.status));
+      return throwError(new HttpAppError(errorObject.message, errorObject.status));
     } else {
       errorObject.message = error.message ? error.message : error.toString();
-      return Observable.throwError(new AppError(errorObject.message));
+      return throwError(new AppError(errorObject.message));
     }
   }
 

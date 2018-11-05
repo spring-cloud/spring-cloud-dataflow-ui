@@ -1,7 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { EditorComponent, Flo } from 'spring-flo';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject, Subscription } from 'rxjs';
 import { BsModalService } from 'ngx-bootstrap';
 import { MetamodelService } from '../components/flo/metamodel.service';
 import { RenderService } from '../components/flo/render.service';

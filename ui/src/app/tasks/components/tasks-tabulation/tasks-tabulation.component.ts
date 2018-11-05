@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, forkJoin } from 'rxjs';
 import { TasksService } from '../../tasks.service';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import { map, mergeMap, share } from 'rxjs/operators';
 import { Page } from '../../../shared/model/page';
 import { TaskDefinition } from '../../model/task-definition';

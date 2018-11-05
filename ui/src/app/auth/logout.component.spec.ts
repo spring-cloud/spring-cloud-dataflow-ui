@@ -9,10 +9,10 @@ import { MockAboutService } from '../tests/mocks/about';
 import { MockAuthService } from '../tests/mocks/auth';
 import { AuthService } from './auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
 import { AboutService } from '../about/about.service';
 import { NotificationService } from '../shared/services/notification.service';
 import { LoggerService } from '../shared/services/logger.service';
+import { of } from 'rxjs';
 
 describe('LogoutComponent', () => {
   let component: LogoutComponent;
@@ -38,7 +38,7 @@ describe('LogoutComponent', () => {
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService },
         { provide: ActivatedRoute, useValue: {
-            params: Observable.of({returnUrl: '/apps'})
+            params: of({returnUrl: '/apps'})
           }
         }
       ]

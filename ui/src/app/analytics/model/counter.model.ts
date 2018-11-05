@@ -1,7 +1,6 @@
 import { Serializable } from '../../shared/model';
 import { BaseCounter } from './base-counter.model';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs';
 /**
  * Counter model object for the Analytics module.
  *

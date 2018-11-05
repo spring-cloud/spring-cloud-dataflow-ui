@@ -6,7 +6,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/for
 import { StreamDeployService } from '../stream-deploy.service';
 import { map } from 'rxjs/operators';
 import { StreamDeployConfig } from '../../model/stream-deploy-config';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { StreamDeployValidator } from '../stream-deploy.validator';
 import { AppPropertiesSource, StreamDeployAppPropertiesComponent } from '../app-properties/app-properties.component';
 import { BsModalService } from 'ngx-bootstrap';

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StreamDefinition } from '../../model/stream-definition';
-import { map, mergeMap } from 'rxjs/internal/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { StreamsService } from '../../streams.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StreamHistory } from '../../model/stream-history';

@@ -1,6 +1,5 @@
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { Page } from '../../shared/model/page';
-import { Observable } from 'rxjs/Observable';
 import { ApplicationType } from '../../shared/model/application-type';
 import {
   ConfigurationMetadataProperty,
@@ -8,6 +7,7 @@ import {
 } from '../../shared/model/detailed-app-registration.model';
 import { AppListParams, AppRegisterParams, BulkImportParams } from '../../apps/components/apps.interface';
 import { AppVersion } from '../../shared/model/app-version';
+import { Observable, of } from 'rxjs';
 
 /**
  * Mock for {@link AppsService}.
@@ -84,7 +84,7 @@ export class MockAppsService {
         order: params.order,
       };
     }
-    return Observable.of(page);
+    return of(page);
   }
 
   getAppInfo(appType: ApplicationType, appName: string, appVersion: string = ''): Observable<DetailedAppRegistration> | Observable<any> {
@@ -97,48 +97,48 @@ export class MockAppsService {
     }
     const detailedAppRegistration = new DetailedAppRegistration(appName, appType, version.uri);
     detailedAppRegistration.options = version.metadata.map(a => new ConfigurationMetadataProperty().deserialize(a));
-    return Observable.of(detailedAppRegistration);
+    return of(detailedAppRegistration);
   }
 
   bulkImportApps(bulkImportApps: BulkImportParams) {
-    return Observable.of({});
+    return of({});
   }
 
   unregisterApp(appRegistration: AppRegistration): Observable<Response> | Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   unregisterApps(appRegs: AppRegistration[]): Observable<Response[]> | Observable<any> {
-    return Observable.of(Array.from({ length: appRegs.length }).map(() => {
+    return of(Array.from({ length: appRegs.length }).map(() => {
       return {};
     }));
   }
 
   registerApps(appRegs: AppRegisterParams[]): Observable<Response[]> | Observable<any> {
-    return Observable.of(Array.from({ length: appRegs.length }).map(() => {
+    return of(Array.from({ length: appRegs.length }).map(() => {
       return {};
     }));
   }
 
   registerApp(appRegistration: AppRegistration): Observable<Response> | Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   unregisterAppVersion(appRegistration: AppRegistration, version: string): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   getAppVersions(appType: ApplicationType, appName: string): Observable<any> {
     const item = this.mock.items.find((a) => a.name === appName);
-    return Observable.of(item.versions);
+    return of(item.versions);
   }
 
   setAppDefaultVersion(appType: ApplicationType, appName: string, appVersion: string): Observable<any> {
-    return Observable.of({});
+    return of({});
   }
 
   appsState(): Observable<any> {
-    return Observable.of({
+    return of({
       streams: 20,
       tasks: 10
     });

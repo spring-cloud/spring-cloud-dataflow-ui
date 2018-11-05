@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/merge';
-import 'rxjs/add/observable/of';
+import { Observable } from 'rxjs';
 import { AppRegistration, ApplicationType, DetailedAppRegistration, ErrorHandler, Page } from '../model';
 import { PageRequest } from '../model/pagination/page-request.model';
 import { HttpUtils } from '../support/http.utils';
 import { LoggerService } from './logger.service';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
 export class SharedAppsService {
@@ -55,8 +52,10 @@ export class SharedAppsService {
     }
     return this.httpClient
       .get(SharedAppsService.appsUrl, { headers: httpHeaders, params: params })
-      .map(AppRegistration.pageFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(AppRegistration.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -72,9 +71,11 @@ export class SharedAppsService {
     if (appVersion) {
       url = `${SharedAppsService.appsUrl}/${appType}/${appName}/${appVersion}`;
     }
-    return this.httpClient.get(url, { headers: httpHeaders})
-      .map(DetailedAppRegistration.fromJSON)
-      .catch(this.errorHandler.handleError);
+    return this.httpClient.get(url, { headers: httpHeaders })
+      .pipe(
+        map(DetailedAppRegistration.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
 }

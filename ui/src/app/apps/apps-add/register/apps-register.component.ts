@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import 'rxjs/add/observable/of';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppsRegisterValidator } from './apps-register.validator';
-import { Subject } from 'rxjs/Subject';
 import { takeUntil } from 'rxjs/operators';
 import { ApplicationType } from '../../../shared/model/application-type';
 import { AppsService } from '../../apps.service';

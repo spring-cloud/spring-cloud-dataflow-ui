@@ -29,7 +29,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { MockGroupRouteService } from '../../tests/mocks/group-route';
 import { GroupRouteService } from '../../shared/services/group-route.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -461,7 +461,7 @@ describe('TaskDefinitionsComponent', () => {
     it('should call the destroy modal', () => {
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.destroySelectedTasks();

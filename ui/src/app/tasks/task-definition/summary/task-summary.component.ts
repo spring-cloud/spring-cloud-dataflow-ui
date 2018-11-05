@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { mergeMap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { TasksService } from '../../tasks.service';
 import { ToolsService } from '../../components/flo/tools.service';
 import { TaskConversion } from '../../components/flo/model/models';
-import { map } from 'rxjs/internal/operators';
 
 /**
  * Component that shows the summary details of a Stream Definition

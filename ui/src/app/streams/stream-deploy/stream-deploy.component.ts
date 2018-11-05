@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import { map, mergeMap, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, EMPTY, of } from 'rxjs';
+import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { saveAs } from 'file-saver/FileSaver';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { StreamsService } from '../streams.service';
-import { Subject } from 'rxjs/Subject';
 import { BusyService } from '../../shared/services/busy.service';
 import { StreamDefinition } from '../model/stream-definition';
 import { Parser } from '../../shared/services/parser';
@@ -14,7 +13,6 @@ import { StreamDeployService } from './stream-deploy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
-import { EMPTY } from 'rxjs/index';
 import { ClipboardService } from 'ngx-clipboard';
 import { DateTime } from 'luxon';
 
@@ -160,17 +158,19 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
             return config;
           }))
       ))
-      .pipe(map((config) => {
-        this.refConfig = config;
-        return config;
-      }))
-      .catch((error) => {
-        if (HttpAppError.is404(error)) {
-          this.router.navigate(['/streams/definitions']);
-        }
-        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return EMPTY;
-      });
+      .pipe(
+        map((config) => {
+          this.refConfig = config;
+          return config;
+        }),
+        catchError((error) => {
+          if (HttpAppError.is404(error)) {
+            this.router.navigate(['/streams/definitions']);
+          }
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          return EMPTY;
+        })
+      );
   }
 
   /**
@@ -248,7 +248,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       }
     });
 
-    let obs = Observable.of({});
+    let obs = of({});
 
     const isDeployed = (['deployed', 'deploying'].indexOf(this.refConfig.streamDefinition.status) > -1);
     const update = this.refConfig.skipper && isDeployed;

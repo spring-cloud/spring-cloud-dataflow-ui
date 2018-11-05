@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TasksService } from '../tasks.service';
 import { mergeMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';

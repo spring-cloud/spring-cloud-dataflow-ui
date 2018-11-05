@@ -31,7 +31,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppListBarComponent } from 'src/app/apps/components/app-list-bar/app-list-bar.component';
-import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs';
 
 describe('AppsComponent', () => {
 
@@ -350,7 +350,7 @@ describe('AppsComponent', () => {
     it('should call the unregister modal', fakeAsync(() => {
       const mockBsModalRef =  new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.unregisterAppsSelected();
@@ -382,7 +382,7 @@ describe('AppsComponent', () => {
     it('should open the modal version', () => {
       const mockBsModalRef =  new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       fixture.detectChanges();

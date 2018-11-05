@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { map, share } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TasksService } from '../../tasks.service';
 import { LoggerService } from '../../../shared/services/logger.service';
@@ -9,7 +9,6 @@ import { TaskSchedule } from '../../model/task-schedule';
 import { TaskSchedulesDestroyComponent } from '../../task-schedules-destroy/task-schedules-destroy.component';
 import { ListDefaultParams, OrderParams } from '../../../shared/components/shared.interface';
 import { Page } from '../../../shared/model/page';
-import { Subject } from 'rxjs/Subject';
 
 /**
  * Component that shows the executions of a Stream Schedule

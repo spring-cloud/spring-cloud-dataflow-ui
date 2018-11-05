@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { Observable, Subject } from 'rxjs';
 import { SecurityInfo } from '../shared/model/about/security-info.model';
 import { LoginRequest } from './model/login-request.model';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';
-import { Subject } from 'rxjs/Subject';
 import { LoggerService } from '../shared/services/logger.service';
+import { catchError, flatMap, map } from 'rxjs/operators';
 
 /**
  * The AuthService deals with all security-related services:
@@ -84,17 +82,19 @@ export class AuthService {
 
     return this.http
       .get<any>(AuthService.URL.SECURITY_INFO, { headers: httpHeaders })
-      .map(body => {
-        this.securityInfo = new SecurityInfo().deserialize(body);
-        this.securityInfoSubject.next(this.securityInfo);
-        this.loggerService.log('SecurityInfo:', this.securityInfo);
-        if (!this.securityInfo.isAuthenticationEnabled && this.xAuthToken) {
-          this.xAuthToken = undefined;
-          this.deletePersistedXAuthToken();
-        }
-        return this.securityInfo;
-      })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(body => {
+          this.securityInfo = new SecurityInfo().deserialize(body);
+          this.securityInfoSubject.next(this.securityInfo);
+          this.loggerService.log('SecurityInfo:', this.securityInfo);
+          if (!this.securityInfo.isAuthenticationEnabled && this.xAuthToken) {
+            this.xAuthToken = undefined;
+            this.deletePersistedXAuthToken();
+          }
+          return this.securityInfo;
+        }),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -111,14 +111,16 @@ export class AuthService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.http
       .post<any>(AuthService.URL.AUTHENTICATION, JSON.stringify(loginRequest), { headers: httpHeaders })
-      .map(response => response as string)
-      .flatMap((id: string) => {
-        this.loggerService.log('Logging you in ...', httpHeaders);
-        this.xAuthToken = id;
-        this.persistXAuthToken(id);
-        return this.loadSecurityInfo();
-      })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(response => response as string),
+        flatMap((id: string) => {
+          this.loggerService.log('Logging you in ...', httpHeaders);
+          this.xAuthToken = id;
+          this.persistXAuthToken(id);
+          return this.loadSecurityInfo();
+        }),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -129,15 +131,17 @@ export class AuthService {
     this.loggerService.log('Logging out ...');
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.http.get(AuthService.URL.LOGOUT, { headers: httpHeaders })
-      .map(response => {
-        this.clearLocalSecurity();
-        return response;
-      })
-      .flatMap(() => {
-        this.loggerService.log('Retrieving security info ...', httpHeaders);
-        return this.loadSecurityInfo();
-      })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(response => {
+          this.clearLocalSecurity();
+          return response;
+        }),
+        flatMap(() => {
+          this.loggerService.log('Retrieving security info ...', httpHeaders);
+          return this.loadSecurityInfo();
+        }),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PageRequest } from '../shared/model/pagination/page-request.model';
 import { AppRegistration } from '../shared/model/app-registration.model';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppVersion } from '../shared/model/app-version';
 import { Page } from '../shared/model/page';
-import { Subscriber } from 'rxjs/Subscriber';
+import { Subscriber } from 'rxjs';
 import { AppListParams } from './components/apps.interface';
 import { ApplicationType } from '../shared/model/application-type';
 import { DateTime } from 'luxon';

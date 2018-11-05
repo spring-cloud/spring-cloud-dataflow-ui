@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { TasksService } from '../../tasks.service';
 import { ListDefaultParams, SortParams } from '../../../shared/components/shared.interface';
 import { TaskExecution } from '../../model/task-execution';
-import { Subject } from 'rxjs/Subject';
 import { map } from 'rxjs/operators';
 
 /**

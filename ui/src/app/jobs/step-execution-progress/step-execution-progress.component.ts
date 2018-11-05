@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JobsService } from '../jobs.service';
-import { map, mergeMap } from 'rxjs/operators';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { Observable } from 'rxjs/Observable';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+import { Observable, forkJoin, EMPTY } from 'rxjs';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { NotificationService } from '../../shared/services/notification.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { LoggerService } from '../../shared/services/logger.service';
-import { EMPTY } from 'rxjs/index';
 
 /**
  * Step Execution Progress
@@ -62,26 +60,29 @@ export class StepExecutionProgressComponent implements OnInit {
    */
   refresh() {
     this.stepExecutionDetails$ = this.route.params
-      .pipe(mergeMap(
-        val => forkJoin([
-          this.jobsService.getJobExecution(val.jobid),
-          this.jobsService.getStepExecution(val.jobid, val.stepid),
-          this.jobsService.getStepExecutionProgress(val.jobid, val.stepid)
-        ]).pipe(map((val2) => {
-          this.jobId = val.jobid;
-          return val2;
-        }))
-      ))
-      .pipe(map(
-        val => ({ jobExecution: val[0], stepExecution: val[1], stepExecutionProgress: val[2] })
-      )).catch((error) => {
-        if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
-          this.routingStateService.back(`/jobs/executions/`);
-        }
-        this.loggerService.log('error while loading Step Execution Progress', error);
-        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        return EMPTY;
-      });
+      .pipe(
+        mergeMap(
+          val => forkJoin([
+            this.jobsService.getJobExecution(val.jobid),
+            this.jobsService.getStepExecution(val.jobid, val.stepid),
+            this.jobsService.getStepExecutionProgress(val.jobid, val.stepid)
+          ]).pipe(map((val2) => {
+            this.jobId = val.jobid;
+            return val2;
+          }))
+        ),
+        map(
+          val => ({ jobExecution: val[0], stepExecution: val[1], stepExecutionProgress: val[2] })
+        ),
+        catchError((error) => {
+          if (HttpAppError.is404(error) || HttpAppError.is400(error)) {
+            this.routingStateService.back(`/jobs/executions/`);
+          }
+          this.loggerService.log('error while loading Step Execution Progress', error);
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          return EMPTY;
+        })
+      );
   }
 
   /**

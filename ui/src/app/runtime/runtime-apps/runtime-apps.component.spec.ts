@@ -14,7 +14,7 @@ import { NgBusyModule } from 'ng-busy';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { FormsModule } from '@angular/forms';
@@ -91,7 +91,7 @@ describe('RuntimeAppsComponent', () => {
       const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#table tr td'));
       const mockBsModalRef =  new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
 

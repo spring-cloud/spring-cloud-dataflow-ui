@@ -1,10 +1,9 @@
-import { Observable } from 'rxjs/Observable';
-
 import { AuditRecordService } from './audit-record.service';
 import { LoggerService } from '../shared/services/logger.service';
 import { AuditActionType, AuditOperationType } from '../shared/model/audit-record.model';
 import { AuditRecordListParams } from './components/audit.interface';
 import { ErrorHandler } from '../shared/model';
+import { of } from 'rxjs';
 
 describe('AuditRecordService', () => {
 
@@ -38,7 +37,7 @@ describe('AuditRecordService', () => {
         order: 'ASC'
       };
 
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.auditRecordService.getAuditRecords(auditRecordListParams);
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
@@ -67,7 +66,7 @@ describe('AuditRecordService', () => {
         order: 'DESC'
       };
 
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.auditRecordService.getAuditRecords(auditRecordListParams);
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
@@ -88,14 +87,14 @@ describe('AuditRecordService', () => {
   describe('loadAuditOperationTypes / loadAuditActionTypes', () => {
 
     it('should call the audit record service with the right url to get all audit operation types', () => {
-      this.mockHttp.get.and.returnValue(Observable.of({}));
+      this.mockHttp.get.and.returnValue(of({}));
       this.auditRecordService.loadAuditOperationTypes();
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri).toEqual('/audit-records/audit-operation-types');
     });
 
     it('should call the audit record service with the right url to get all audit action types', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.auditRecordService.loadAuditActionTypes();
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri).toEqual('/audit-records/audit-action-types');
@@ -106,7 +105,7 @@ describe('AuditRecordService', () => {
   describe('getAuditRecordDetails', () => {
 
     it('should call the audit record details service with the right url', () => {
-      this.mockHttp.get.and.returnValue(Observable.of({}));
+      this.mockHttp.get.and.returnValue(of({}));
       this.auditRecordService.getAuditRecordDetails('foobar');
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri).toEqual('/audit-records/foobar');

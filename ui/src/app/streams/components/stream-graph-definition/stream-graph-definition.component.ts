@@ -16,13 +16,11 @@ import {
   TYPE_INCOMING_MESSAGE_RATE,
   TYPE_OUTGOING_MESSAGE_RATE
 } from '../flo/support/shapes';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Subject } from 'rxjs';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
-
 import * as _joint from 'jointjs';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 
 const joint: any = _joint;
 

@@ -1,9 +1,7 @@
-import { Observable } from 'rxjs/Observable';
 import { ToolsService } from './tools.service';
 import { Graph, Link, Node } from './model/models';
 import { ErrorHandler } from '../../../shared/model/error-handler';
-import { HttpUtils } from '../../../shared/support/http.utils';
-import { MockResponse } from '../../../tests/mocks/response';
+import { of } from 'rxjs';
 
 /**
  * Tests tools service.
@@ -60,7 +58,7 @@ describe('ToolsService', () => {
 
   describe('parseTaskTextToGraph', () => {
     it('should call the tools service to parse dsl to graph', () => {
-      this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.post.and.returnValue(of(this.jsonData));
       this.toolsService.parseTaskTextToGraph('fakedsl');
 
       const httpUri1 = this.mockHttp.post.calls.mostRecent().args[0];
@@ -99,7 +97,7 @@ describe('ToolsService', () => {
 
   describe('convertTaskGraphToText', () => {
     it('should call the tools service to parse graph to dsl', () => {
-      this.mockHttp.post.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.post.and.returnValue(of(this.jsonData));
       const graph = new Graph(new Array(), new Array());
       this.toolsService.convertTaskGraphToText(graph);
 

@@ -4,9 +4,8 @@ import { StreamsService } from '../streams.service';
 import { AppsService } from '../../apps/apps.service';
 import { AppsWorkaroundService } from '../../apps/apps.workaround.service';
 import { StreamDeployService } from './stream-deploy.service';
-import { Observable } from 'rxjs/Observable';
-import { HttpUtils } from '../../shared/support/http.utils';
 import { LoggerService } from '../../shared/services/logger.service';
+import { of } from 'rxjs';
 
 /**
  * Test Stream Deploy Services.
@@ -41,7 +40,7 @@ describe('StreamDeployService', () => {
     it('should call the shared apps service with the right url to get a app details', () => {
       const applicationType = 'source';
       const applicationName = 'foo';
-      this.mockHttpSharedAppsService.get.and.returnValue(Observable.of({
+      this.mockHttpSharedAppsService.get.and.returnValue(of({
         options: []
       }));
       this.streamDeployService.appDetails(applicationType, applicationName);
@@ -57,7 +56,7 @@ describe('StreamDeployService', () => {
     it('should return an array of options formatted', () => {
       const applicationType = 'source';
       const applicationName = 'foo';
-      this.mockHttpSharedAppsService.get.and.returnValue(Observable.of({
+      this.mockHttpSharedAppsService.get.and.returnValue(of({
           name: applicationName,
           type: applicationType,
           options: [

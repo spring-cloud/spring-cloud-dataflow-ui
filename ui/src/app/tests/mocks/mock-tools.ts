@@ -1,5 +1,5 @@
 import { ToolsService } from '../../tasks/components/flo/tools.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { Graph, TaskConversion } from '../../tasks/components/flo/model/models';
 
 export class MockToolsService extends ToolsService {
@@ -9,10 +9,10 @@ export class MockToolsService extends ToolsService {
   }
 
   parseTaskTextToGraph(dsl: string, name: string = 'unknown'): Observable<TaskConversion> {
-    return Observable.of(new TaskConversion(dsl, []));
+    return of(new TaskConversion(dsl, []));
   }
 
   convertTaskGraphToText(graph: Graph): Observable<TaskConversion> {
-    return Observable.of(new TaskConversion('', [], graph));
+    return of(new TaskConversion('', [], graph));
   }
 }

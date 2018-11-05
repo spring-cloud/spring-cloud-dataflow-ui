@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { Observable, forkJoin } from 'rxjs';
 import { StreamDefinition } from './model/stream-definition';
 import { StreamMetrics } from './model/stream-metrics';
 import { Page } from '../shared/model/page';
@@ -12,8 +10,8 @@ import { Platform } from './model/platform';
 import { StreamListParams } from './components/streams.interface';
 import { OrderParams } from '../shared/components/shared.interface';
 import { LoggerService } from '../shared/services/logger.service';
-import { forkJoin } from 'rxjs';
 import { StreamHistory } from './model/stream-history';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -76,8 +74,10 @@ export class StreamsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .get<any>(StreamsService.URL, { params: params, headers: httpHeaders })
-      .map(StreamDefinition.pageFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(StreamDefinition.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -90,8 +90,10 @@ export class StreamsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .get<any>(`${StreamsService.URL}/${name}`, { headers: httpHeaders })
-      .map(StreamDefinition.fromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(StreamDefinition.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -111,7 +113,9 @@ export class StreamsService {
     }
     return this.httpClient
       .post<any>(StreamsService.URL, null, { headers: httpHeaders, observe: 'response', params: params })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -124,7 +128,9 @@ export class StreamsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .delete<any>('/streams/definitions/' + streamDefinition.name, { headers: httpHeaders })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -146,7 +152,9 @@ export class StreamsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .delete<any>('/streams/deployments/' + streamDefinition.name, { headers: httpHeaders })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -172,7 +180,9 @@ export class StreamsService {
         headers: httpHeaders,
         observe: 'response'
       })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -199,7 +209,9 @@ export class StreamsService {
         packageIdentifier: { packageName: streamDefinitionName, packageVersion: null },
         updateProperties: propertiesAsMap
       }, { headers: httpHeaders, observe: 'response' })
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -211,8 +223,10 @@ export class StreamsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .get<any>(`/streams/deployments/${streamDefinitionName}`, { headers: httpHeaders })
-      .map(StreamDefinition.fromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(StreamDefinition.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -229,8 +243,10 @@ export class StreamsService {
     }
     return this.httpClient
       .get<any>(`/streams/definitions/${streamName}/related`, { params: params, headers: httpHeaders })
-      .map(jsonResponse => StreamDefinition.pageFromJSON(jsonResponse).items)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(jsonResponse => StreamDefinition.pageFromJSON(jsonResponse).items),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -246,8 +262,10 @@ export class StreamsService {
     }
     return this.httpClient
       .get<any>('/metrics/streams', { headers: httpHeaders, params: params })
-      .map(StreamMetrics.listFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(StreamMetrics.listFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -259,8 +277,10 @@ export class StreamsService {
     const params = HttpUtils.getPaginationParams(0, 1000);
     return this.httpClient
       .get<any>(`/streams/deployments/platform/list`, { params: params, headers: httpHeaders })
-      .map(Platform.listFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(Platform.listFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**
@@ -272,8 +292,10 @@ export class StreamsService {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .get<any>(`/streams/deployments/history/${streamName}`, { headers: httpHeaders })
-      .map(StreamHistory.listFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(StreamHistory.listFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
 }

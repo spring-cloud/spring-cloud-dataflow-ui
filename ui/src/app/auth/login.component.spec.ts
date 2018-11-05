@@ -11,7 +11,6 @@ import { AuthService } from './auth.service';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { AboutService } from '../about/about.service';
 import { BusyService } from '../shared/services/busy.service';
@@ -23,6 +22,7 @@ import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FocusDirective } from '../shared/directives/focus.directive';
 import { PagerComponent } from '../shared/components/pager/pager.component';
+import { of } from 'rxjs';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -60,7 +60,7 @@ describe('LoginComponent', () => {
         { provide: LoggerService, useValue: loggerService },
         {
           provide: ActivatedRoute, useValue: {
-          params: Observable.of({ returnUrl: '/apps' })
+          params: of({ returnUrl: '/apps' })
         }
         },
         {

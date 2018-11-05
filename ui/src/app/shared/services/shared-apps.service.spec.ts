@@ -1,9 +1,9 @@
-import { Observable } from 'rxjs/Observable';
 import { HttpUtils } from '../support/http.utils';
 import { ErrorHandler } from '../model';
 import { PageRequest } from '../model/pagination/page-request.model';
 import { SharedAppsService } from './shared-apps.service';
 import { LoggerService } from './logger.service';
+import { of } from 'rxjs';
 
 describe('SharedAppsService', () => {
 
@@ -20,7 +20,7 @@ describe('SharedAppsService', () => {
   describe('getApps', () => {
 
     it('should call the shared apps service with the right url to get all apps', () => {
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
 
       const params = HttpUtils.getPaginationParams(0, 10);
       const httpHeaders = HttpUtils.getDefaultHttpHeaders();
@@ -45,7 +45,7 @@ describe('SharedAppsService', () => {
       const applicationType = 'source';
       const applicationName = 'blubba';
 
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.sharedServices.getAppInfo(applicationType, applicationName);
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];

@@ -1,4 +1,4 @@
-import DateTime from 'luxon/src/datetime.js'
+import DateTime from 'luxon/src/datetime.js';
 
 /**
  * Contains common Date/Time related helper methods.

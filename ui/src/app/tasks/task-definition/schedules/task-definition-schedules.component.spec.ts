@@ -240,7 +240,7 @@ describe('TaskDefinitionScheduleComponent', () => {
       fixture.detectChanges();
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.destroySelectedSchedules();

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Page } from '../../shared/model/page';
 import { ListDefaultParams, OrderParams } from '../../shared/components/shared.interface';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { BusyService } from '../../shared/services/busy.service';
 import { TasksService } from '../tasks.service';
 import { NotificationService } from '../../shared/services/notification.service';

@@ -3,7 +3,7 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TasksService } from '../../tasks.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { AppError } from '../../../shared/model/error.model';

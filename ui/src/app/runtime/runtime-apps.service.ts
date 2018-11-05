@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
 import { Page } from '../shared/model/page';
 import { RuntimeApp } from './model/runtime-app';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { PaginationParams } from '../shared/components/shared.interface';
+import { catchError, map } from 'rxjs/operators';
 
 /**
  * Service to interact with the SCDF server on Runtime applications queries.
@@ -44,8 +43,10 @@ export class RuntimeAppsService {
 
     return this.httpClient
       .get<any>(this.runtimeServiceURL, { params: httpParams })
-      .map(RuntimeApp.pageFromJSON)
-      .catch(this.errorHandler.handleError);
+      .pipe(
+        map(RuntimeApp.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
 

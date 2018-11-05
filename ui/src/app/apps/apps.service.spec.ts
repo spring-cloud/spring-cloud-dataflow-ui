@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import { AppsService } from './apps.service';
 import { HttpUtils } from '../shared/support/http.utils';
 import { ApplicationType, AppRegistration, ErrorHandler } from '../shared/model';
@@ -6,6 +5,7 @@ import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppsWorkaroundService } from './apps.workaround.service';
 import { LoggerService } from '../shared/services/logger.service';
 import { HttpParams } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('AppsService', () => {
 
@@ -29,7 +29,7 @@ describe('AppsService', () => {
   describe('setAppDefaultVersion', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
-      this.mockHttp.put.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.put.and.returnValue(of(this.jsonData));
       this.appsService.setAppDefaultVersion('foo', 'bar', '1.0.0');
       const httpUri1 = this.mockHttp.put.calls.mostRecent().args[0];
       expect(httpUri1).toEqual('/apps/foo/bar/1.0.0');
@@ -40,7 +40,7 @@ describe('AppsService', () => {
   describe('unregisterAppVersion', () => {
 
     it('should call the unregisterAppVersion service with the right url to get all apps', () => {
-      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.delete.and.returnValue(of(this.jsonData));
       this.appsService.unregisterAppVersion({name: 'foo', type: 'bar'}, '1.0.0');
       const httpUri1 = this.mockHttp.delete.calls.mostRecent().args[0];
       expect(httpUri1).toEqual('/apps/bar/foo/1.0.0');
@@ -51,7 +51,7 @@ describe('AppsService', () => {
   describe('unregisterApps', () => {
 
     it('should call the unregisterAppVersion service with the right url to get all apps', () => {
-      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.delete.and.returnValue(of(this.jsonData));
       this.appsService.unregisterApps([
         {name: 'foo', type: 'bar'},
         {name: 'foo2', type: 'bar2'}
@@ -70,7 +70,7 @@ describe('AppsService', () => {
       const applicationType = 'source';
       const applicationName = 'blubba';
 
-      this.mockHttp.get.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.get.and.returnValue(of(this.jsonData));
       this.appsService.getAppInfo(applicationType, applicationName);
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
@@ -87,7 +87,7 @@ describe('AppsService', () => {
     it('should call the apps service with the right url to get all apps', () => {
 
       const appRegistrationImport = {force: true, properties: [], uri: 'http://blubba'};
-      this.mockHttp.post.and.returnValue(Observable.of(true));
+      this.mockHttp.post.and.returnValue(of(true));
       this.appsService.bulkImportApps(appRegistrationImport);
 
       const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
@@ -107,7 +107,7 @@ describe('AppsService', () => {
 
     it('should call the apps service with the right url to unregister a single app', () => {
       const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://somewhere');
-      this.mockHttp.delete.and.returnValue(Observable.of(this.jsonData));
+      this.mockHttp.delete.and.returnValue(of(this.jsonData));
       this.appsService.unregisterApp(appRegistration);
 
       const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
@@ -128,7 +128,7 @@ describe('AppsService', () => {
         .append('uri', 'http://blubba')
         .append('force', 'true');
 
-      this.mockHttp.post.and.returnValue(Observable.of(true));
+      this.mockHttp.post.and.returnValue(of(true));
 
       const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://blubba');
       appRegistration.force = true;
@@ -159,7 +159,7 @@ describe('AppsService', () => {
         .append('uri', 'http://bar.foo')
         .append('force', 'false');
 
-      this.mockHttp.post.and.returnValue(Observable.of(true));
+      this.mockHttp.post.and.returnValue(of(true));
       const appRegistrations = [
         {
           name: 'foo',

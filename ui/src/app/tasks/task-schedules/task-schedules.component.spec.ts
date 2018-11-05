@@ -31,7 +31,7 @@ import { TruncatorWidthProviderDirective } from '../../shared/components/truncat
 import { TASK_SCHEDULES } from '../../tests/mocks/mock-data';
 import { TaskSchedulesDestroyComponent } from '../task-schedules-destroy/task-schedules-destroy.component';
 import { TaskSchedulesFilterPipe } from './task-schedules.filter';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { MockAppsService } from '../../tests/mocks/apps';
@@ -296,7 +296,7 @@ describe('TaskSchedulesComponent', () => {
     it('should call the destroy modal', fakeAsync(() => {
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
-        open: () => Observable.of('testing')
+        open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.destroySelectedSchedules();

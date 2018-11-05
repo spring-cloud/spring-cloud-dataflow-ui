@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { AboutInfo } from '../../shared/model/about/about-info.model';
 import { RuntimeEnvironment } from '../../shared/model/about/runtime-environment.model';
@@ -165,7 +165,7 @@ export class MockAboutService {
     if (this.isAboutInfoAvailable) {
       dataFlowVersion = this.getDataflowVersionInfo();
     }
-    return Observable.of(dataFlowVersion);
+    return of(dataFlowVersion);
   }
 
   getDetails(): Observable<AboutInfo> {
@@ -188,7 +188,7 @@ export class MockAboutService {
         dataFlowVersion.runtimeEnvironment.appDeployer.platformSpecificInfo = new Map();
       }
     }
-    return Observable.of(dataFlowVersion);
+    return of(dataFlowVersion);
   }
 }
 

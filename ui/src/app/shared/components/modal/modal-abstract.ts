@@ -1,5 +1,5 @@
 import { BsModalRef } from 'ngx-bootstrap';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export abstract class Modal {
 

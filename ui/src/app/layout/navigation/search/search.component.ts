@@ -8,7 +8,7 @@ import { StreamDefinition } from '../../../streams/model/stream-definition';
 import { TaskDefinition } from 'src/app/tasks/model/task-definition';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs/index';
+import { timer } from 'rxjs';
 import { OrderParams } from '../../../shared/components/shared.interface';
 
 /**
