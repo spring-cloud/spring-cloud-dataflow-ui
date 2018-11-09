@@ -23,11 +23,9 @@ export class AppsAddValidator {
     if (!formControl.value) {
       return null;
     }
-
     if (!AppsAddValidator.uriRegex.test(formControl.value)) {
       return { invalid: true };
     }
-
     return null;
   }
 
@@ -53,7 +51,9 @@ export class AppsAddValidator {
           if (tmp.length !== 2) {
             throw new Error();
           }
-          if (!AppsAddValidator.uriRegex.test(tmp[1])) {
+          const val:string = tmp[1];
+          const startWidth = ['http://', 'https://', 'docker:', 'maven://'];
+          if (startWidth.filter((a) => val.startsWith(a)).length === 0) {
             throw new Error();
           }
         });
