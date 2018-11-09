@@ -45,7 +45,13 @@ describe('AppsAddValidator', () => {
     it('valid', () => {
       [
         'foo=http://foo.ly/foo',
-        'bar=http://foo.bar:bar.foo-foo:bar-bar'
+        'bar=http://foo.bar:bar.foo-foo:bar-bar',
+        'source.user-producer=docker:sabby/user-producer:0.0.1-SNAPSHOT',
+        'processor.user-by-region=docker:sabby/user-consumer:0.0.1-SNAPSHOT',
+        'app.user-producer-app=docker:sabby/user-producer:0.0.1-SNAPSHOT',
+        'app.user-by-region-app=docker:sabby/user-consumer:0.0.1-SNAPSHOT',
+        'app.websocket-app=docker:springcloudstream/websocket-sink-kafka-10:1.3.1.RELEASE',
+        'source.foo=maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
         expect(AppsAddValidator.properties(uri)).toBeNull();
