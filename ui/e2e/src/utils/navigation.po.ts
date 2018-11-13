@@ -26,7 +26,7 @@ export class Navigation {
    * @returns {ElementFinder}
    */
   get() {
-    return element(by.css('#navigation'));
+    return element(by.css('app-navigation'));
   }
 
   /**

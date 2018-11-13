@@ -6,6 +6,7 @@ import { AppsRegisterPage } from './apps-register.po';
 import { AppsBulkImportUriPage } from './apps-bulk-import-uri.po';
 import { AppVersionsModal } from './app-versions.po';
 import { Navigation } from '../utils/navigation.po';
+import { AppsAddPage } from './apps-add.po';
 
 /**
  * E2E spec for apps page.
@@ -21,7 +22,7 @@ import { Navigation } from '../utils/navigation.po';
  * @author Glenn Renfro
  * @author Damien Vitrac
  */
-xdescribe('E2E spec for apps page', () => {
+describe('E2E spec for apps page', () => {
 
   let pageApps: AppsPage;
 
@@ -31,6 +32,8 @@ xdescribe('E2E spec for apps page', () => {
 
   let pageBulkImportUriApps: AppsBulkImportUriPage;
 
+  let pageAppsAdd: AppsAddPage;
+
   let modalAppVersions: AppVersionsModal;
 
   let pagination: Pagination;
@@ -39,14 +42,51 @@ xdescribe('E2E spec for apps page', () => {
 
   const TICK_DELAY = 1500;
 
+  browser.waitForAngularEnabled(false);
+
   beforeEach(() => {
     pageApps = new AppsPage();
     pageRegisterApps = new AppsRegisterPage();
     pageAppDetails = new AppDetailsPage();
     pageBulkImportUriApps = new AppsBulkImportUriPage();
+    pageAppsAdd = new AppsAddPage();
     modalAppVersions = new AppVersionsModal();
     pagination = new Pagination();
     navigation = new Navigation();
+
+  });
+
+  /**
+   * Remove all the applications
+   */
+  describe('Clean applications', () => {
+
+    it('should display apps title', () => {
+      pageApps.navigateTo();
+      browser.sleep(TICK_DELAY);
+      expect(pageApps.getHeaderText()).toEqual('Applications');
+    });
+
+    it('should destroy all the apps', () => {
+      expect(pageApps.getTableRows().count()).toBe(30);
+      expect(pagination.get().isPresent()).toBeTruthy();
+      pageApps.setUnregisters();
+      browser.sleep(TICK_DELAY);
+      expect(pageApps.getTableRows().count()).toBe(30);
+      expect(pagination.get().isPresent()).toBeTruthy();
+      pageApps.setUnregisters();
+      browser.sleep(TICK_DELAY);
+      expect(pageApps.getTableRows().count()).toBe(12);
+      expect(pagination.get().isPresent()).toBeFalsy();
+      pageApps.setUnregisters();
+      browser.sleep(TICK_DELAY);
+      expect(pageApps.getTableRows().count()).toBe(0);
+      expect(pagination.get().isPresent()).toBeFalsy();
+      expect(pageApps.getEmpty().isPresent()).toBeTruthy();
+      expect(pageApps.getEmpty().getText()).toContain('There is no application registered, yet.');
+      expect(pageApps.getEmpty().getText()).toContain('You can: Add Application(s) or Refresh the page.');
+    });
+
   });
 
   /**
@@ -57,16 +97,10 @@ xdescribe('E2E spec for apps page', () => {
    */
   describe('Initial state (no application register)', () => {
 
-    it('should display apps title', () => {
-      pageApps.navigateTo();
-      browser.sleep(TICK_DELAY);
-      expect(pageApps.getHeaderText()).toEqual('Apps');
-    });
-
     it('should display a message related to the empty register app', () => {
       expect(pageApps.getEmpty().isPresent()).toBeTruthy();
-      expect(pageApps.getEmpty().getText()).toContain('No registered apps.');
-      expect(pageApps.getEmpty().getText()).toContain('You can register apps by clicking:');
+      expect(pageApps.getEmpty().getText()).toContain('There is no application registered, yet.');
+      expect(pageApps.getEmpty().getText()).toContain('You can: Add Application(s) or Refresh the page.');
     });
 
     it('should not display the table, the filter form and the pagination', () => {
@@ -76,41 +110,18 @@ xdescribe('E2E spec for apps page', () => {
     });
 
     it('should navigate to the register page', () => {
-      pageApps.getEmpty().all(by.css('button')).first().click();
+      pageApps.getEmpty().all(by.css('a')).first().click();
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
           const parts = url.split('#');
-          expect(parts[1] === '/apps/register-apps').toBeTruthy();
+          expect(parts[1] === '/apps/add').toBeTruthy();
           return url;
         });
       });
     });
 
     it('should navigate to the list app page', () => {
-      pageRegisterApps.getCancel().click();
-      browser.sleep(100);
-      browser.wait(() => {
-        return browser.getCurrentUrl().then((url) => {
-          const parts = url.split('#');
-          expect(parts[1] === '/apps').toBeTruthy();
-          return url;
-        });
-      });
-    });
-
-    it('should navigate to the bulk import page', () => {
-      pageApps.getEmpty().all(by.css('button')).last().click();
-      browser.wait(() => {
-        return browser.getCurrentUrl().then((url) => {
-          const parts = url.split('#');
-          expect(parts[1] === '/apps/bulk-import-apps/uri').toBeTruthy();
-          return url;
-        });
-      });
-    });
-
-    it('should navigate to the list app page', () => {
-      pageBulkImportUriApps.getCancel().click();
+      pageAppsAdd.getCancel().click();
       browser.sleep(100);
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
@@ -128,92 +139,37 @@ xdescribe('E2E spec for apps page', () => {
    * This test should:
    * - create the Foo1 application
    * - create the Foo2, Foo3, Foo4 applications
-   * - inform the user there is no application
    * - destroy the Foo1 application
    * - destroy the Foo2, Foo3, Foo4 applications
+   * - inform the user there is no application
    */
   describe('Apps list (single page)', () => {
 
-    it('should display register apps title', () => {
-      pageApps.getEmpty().all(by.css('button')).first().click();
-      browser.sleep(TICK_DELAY);
-      expect(pageApps.getHeaderText()).toEqual('Register Applications');
-    });
-
-    it('should register one app', () => {
-      expect(pageRegisterApps.getSubmit().getAttribute('disabled')).toEqual('true');
-      pageRegisterApps.setForm(0, 'foo1', 'source', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
-      expect(pageRegisterApps.getSubmit().getAttribute('disabled')).toBeFalsy();
-      pageRegisterApps.getSubmit().click();
-      browser.wait(() => {
-        return browser.getCurrentUrl().then((url) => {
-          const parts = url.split('#');
-          expect(parts[1] === '/apps').toBeTruthy();
-          return url;
-        });
-      });
-    });
-
-    it('should register 3 apps', () => {
-      pageApps.navigateToRegisterApp();
-      browser.sleep(TICK_DELAY);
-      pageRegisterApps.getAdd().click();
-      browser.sleep(100);
-      pageRegisterApps.getAdd().click();
-      browser.sleep(100);
-      pageRegisterApps.setForm(0, 'foo2', 'processor', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
-      pageRegisterApps.setForm(1, 'foo3', 'task', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
-      pageRegisterApps.setForm(2, 'foo4', 'sink', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
-      pageRegisterApps.getSubmit().click();
-      browser.wait(() => {
-        return browser.getCurrentUrl().then((url) => {
-          const parts = url.split('#');
-          expect(parts[1] === '/apps').toBeTruthy();
-          return url;
-        });
-      });
-    });
-
     it('should navigate to the register page', () => {
-      element(by.css('.heading .actions .dropdown button')).click();
+      pageRegisterApps.navigateTo();
       browser.sleep(100);
-      element.all(by.css('.heading .actions .dropdown-menu li')).first().click();
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
           const parts = url.split('#');
-          expect(parts[1] === '/apps/register-apps').toBeTruthy();
+          expect(parts[1] === '/apps/add/register').toBeTruthy();
           return url;
         });
       });
     });
 
-    it('should navigate to the list app page', () => {
-      pageRegisterApps.getCancel().click();
-      browser.wait(() => {
-        return browser.getCurrentUrl().then((url) => {
-          const parts = url.split('#');
-          expect(parts[1] === '/apps').toBeTruthy();
-          return url;
-        });
-      });
-    });
-
-    it('should navigate to the bulk import page', () => {
-      element(by.css('.heading .actions .dropdown button')).click();
-      browser.sleep(100);
-      element.all(by.css('.heading .actions .dropdown-menu li')).last().click();
-      browser.wait(() => {
-        return browser.getCurrentUrl().then((url) => {
-          const parts = url.split('#');
-          expect(parts[1] === '/apps/bulk-import-apps/uri').toBeTruthy();
-          return url;
-        });
-      });
-    });
-
-    it('should navigate to the list app page', () => {
-      pageBulkImportUriApps.getCancel().click();
-      browser.sleep(100);
+    it('should register 4 apps', () => {
+      pageRegisterApps.getAdd().click();
+      browser.sleep(TICK_DELAY);
+      pageRegisterApps.getAdd().click();
+      browser.sleep(TICK_DELAY);
+      pageRegisterApps.getAdd().click();
+      browser.sleep(TICK_DELAY);
+      pageRegisterApps.setForm(0, 'foo1', 'source', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
+      pageRegisterApps.setForm(1, 'foo2', 'processor', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
+      pageRegisterApps.setForm(2, 'foo3', 'task', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
+      pageRegisterApps.setForm(3, 'foo4', 'sink', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
+      pageRegisterApps.getSubmit().click();
+      browser.sleep(TICK_DELAY);
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
           const parts = url.split('#');
@@ -231,13 +187,7 @@ xdescribe('E2E spec for apps page', () => {
       expect(pagination.get().isPresent()).toBeFalsy();
     });
 
-    it('should delete one app', () => {
-      pageApps.setUnregister(0);
-      browser.sleep(TICK_DELAY);
-      expect(pageApps.getTableRows().count()).toBe(3);
-    });
-
-    it('should destroy 3 apps', () => {
+    it('should destroy 4 apps', () => {
       pageApps.setUnregisters();
       browser.sleep(TICK_DELAY);
       expect(pageApps.getTableRows().count()).toBe(0);
@@ -245,8 +195,8 @@ xdescribe('E2E spec for apps page', () => {
 
     it('should be in the initial state (no app)', () => {
       expect(pageApps.getEmpty().isPresent()).toBeTruthy();
-      expect(pageApps.getEmpty().getText()).toContain('No registered apps.');
-      expect(pageApps.getEmpty().getText()).toContain('You can register apps by clicking:');
+      expect(pageApps.getEmpty().getText()).toContain('There is no application registered, yet.');
+      expect(pageApps.getEmpty().getText()).toContain('You can: Add Application(s) or Refresh the page.');
     });
 
   });
@@ -263,8 +213,19 @@ xdescribe('E2E spec for apps page', () => {
    */
   describe('Apps list (2 pages)', () => {
 
+    it('should navigate to the register page', () => {
+      pageRegisterApps.navigateTo();
+      browser.sleep(100);
+      browser.wait(() => {
+        return browser.getCurrentUrl().then((url) => {
+          const parts = url.split('#');
+          expect(parts[1] === '/apps/add/register').toBeTruthy();
+          return url;
+        });
+      });
+    });
+
     it('Create 10 apps', () => {
-      pageApps.getEmpty().all(by.css('button')).first().click();
       browser.sleep(TICK_DELAY);
       for (let i = 0; i < 10; i++) {
         const type = 'source';
@@ -278,9 +239,19 @@ xdescribe('E2E spec for apps page', () => {
       expect(pageApps.getFilters().isPresent()).toBeTruthy();
     });
 
+    it('should navigate to the register page', () => {
+      pageRegisterApps.navigateTo();
+      browser.sleep(100);
+      browser.wait(() => {
+        return browser.getCurrentUrl().then((url) => {
+          const parts = url.split('#');
+          expect(parts[1] === '/apps/add/register').toBeTruthy();
+          return url;
+        });
+      });
+    });
+
     it('Create 10 apps', () => {
-      pageApps.navigateToRegisterApp();
-      browser.sleep(TICK_DELAY);
       for (let i = 0; i < 10; i++) {
         const type = 'task';
         pageRegisterApps.getAdd().click();
@@ -293,9 +264,19 @@ xdescribe('E2E spec for apps page', () => {
       expect(pageApps.getFilters().isPresent()).toBeTruthy();
     });
 
+    it('should navigate to the register page', () => {
+      pageRegisterApps.navigateTo();
+      browser.sleep(100);
+      browser.wait(() => {
+        return browser.getCurrentUrl().then((url) => {
+          const parts = url.split('#');
+          expect(parts[1] === '/apps/add/register').toBeTruthy();
+          return url;
+        });
+      });
+    });
+
     it('Create 10 apps', () => {
-      pageApps.navigateToRegisterApp();
-      browser.sleep(TICK_DELAY);
       for (let i = 0; i < 10; i++) {
         const type = 'processor';
         pageRegisterApps.getAdd().click();
@@ -308,9 +289,19 @@ xdescribe('E2E spec for apps page', () => {
       expect(pageApps.getFilters().isPresent()).toBeTruthy();
     });
 
+    it('should navigate to the register page', () => {
+      pageRegisterApps.navigateTo();
+      browser.sleep(100);
+      browser.wait(() => {
+        return browser.getCurrentUrl().then((url) => {
+          const parts = url.split('#');
+          expect(parts[1] === '/apps/add/register').toBeTruthy();
+          return url;
+        });
+      });
+    });
+
     it('Create 10 apps', () => {
-      pageApps.navigateToRegisterApp();
-      browser.sleep(TICK_DELAY);
       for (let i = 0; i < 10; i++) {
         const type = 'sink';
         pageRegisterApps.getAdd().click();
@@ -323,6 +314,7 @@ xdescribe('E2E spec for apps page', () => {
       expect(pageApps.getFilters().isPresent()).toBeTruthy();
       expect(pagination.get().isPresent()).toBeTruthy();
     });
+
     it('should filter the result', () => {
       expect(pageApps.getFilterSubmit().getAttribute('disabled')).toEqual('true');
       pageApps.setFilters('foo1', 0);
@@ -396,8 +388,7 @@ xdescribe('E2E spec for apps page', () => {
       expect(pageApps.getSort('type', 'desc').isPresent()).toBeFalsy();
       expect(pageApps.getSort('uri', 'asc').isPresent()).toBeFalsy();
       expect(pageApps.getSort('uri', 'desc').isPresent()).toBeFalsy();
-      expect(pageApps.getTableRows().first().getText()).toContain('foo28');
-
+      expect(pageApps.getTableRows().first().getText()).toContain('foo20');
       pageApps.setSort('type');
       browser.sleep(TICK_DELAY);
       expect(pageApps.getSort('name', 'asc').isPresent()).toBeFalsy();
@@ -406,7 +397,7 @@ xdescribe('E2E spec for apps page', () => {
       expect(pageApps.getSort('type', 'desc').isPresent()).toBeTruthy();
       expect(pageApps.getSort('uri', 'asc').isPresent()).toBeFalsy();
       expect(pageApps.getSort('uri', 'desc').isPresent()).toBeFalsy();
-      expect(pageApps.getTableRows().first().getText()).toContain('foo14');
+      expect(pageApps.getTableRows().first().getText()).toContain('foo10');
 
       pageApps.setSort('type');
       browser.sleep(TICK_DELAY);
@@ -492,7 +483,7 @@ xdescribe('E2E spec for apps page', () => {
       pageApps.getTableRows().get(2).element(by.css('.cell-checkbox input')).click();
       browser.sleep(100);
 
-      expect(pageApps.getFilters().element(by.css('#q')).getAttribute('value')).toContain('foo');
+      expect(pageApps.getFilters().element(by.css('#filter-q')).getAttribute('value')).toContain('foo');
       expect(pagination.getCurrentText()).toContain('2');
       expect(pageApps.getTableRows().count()).toBe(10);
       expect(pageApps.getSort('uri', 'asc').isPresent()).toBeTruthy();
@@ -505,7 +496,7 @@ xdescribe('E2E spec for apps page', () => {
       navigation.navigateTo(Navigation.APPS);
       browser.sleep(TICK_DELAY);
 
-      expect(pageApps.getFilters().element(by.css('#q')).getAttribute('value')).toContain('foo');
+      expect(pageApps.getFilters().element(by.css('#filter-q')).getAttribute('value')).toContain('foo');
       expect(pagination.getCurrentText()).toContain('2');
       expect(pageApps.getTableRows().count()).toBe(10);
       expect(pageApps.getSort('uri', 'asc').isPresent()).toBeTruthy();
@@ -534,8 +525,8 @@ xdescribe('E2E spec for apps page', () => {
       browser.sleep(TICK_DELAY);
       expect(pageApps.getTableRows().count()).toBe(0);
       expect(pageApps.getEmpty().isPresent()).toBeTruthy();
-      expect(pageApps.getEmpty().getText()).toContain('No registered apps.');
-      expect(pageApps.getEmpty().getText()).toContain('You can register apps by clicking:');
+      expect(pageApps.getEmpty().getText()).toContain('There is no application registered, yet.');
+      expect(pageApps.getEmpty().getText()).toContain('You can: Add Application(s) or Refresh the page.');
     });
 
   });
@@ -549,11 +540,22 @@ xdescribe('E2E spec for apps page', () => {
    */
   describe('App details', () => {
 
-    it('should create the Log application', () => {
-      pageApps.getEmpty().all(by.css('button')).first().click();
+    it('should navigate to the register page', () => {
+      pageRegisterApps.navigateTo();
       browser.sleep(TICK_DELAY);
+      browser.wait(() => {
+        return browser.getCurrentUrl().then((url) => {
+          const parts = url.split('#');
+          expect(parts[1] === '/apps/add/register').toBeTruthy();
+          return url;
+        });
+      });
+    });
+
+    it('should create the Log application', () => {
       pageRegisterApps.setForm(0, 'log', 'sink', 'maven://org.springframework.cloud.stream.app:log-sink-kafka-10:1.2.0.RELEASE', '');
       pageRegisterApps.getSubmit().click();
+      browser.sleep(TICK_DELAY);
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
           const parts = url.split('#');
@@ -565,7 +567,8 @@ xdescribe('E2E spec for apps page', () => {
 
     it('should navigate to the Log application details page (button action)', () => {
       browser.sleep(TICK_DELAY);
-      pageApps.getTableRows().first().element(by.name('app-view0')).click();
+      pageApps.getTableRows().first().element(by.name('view0')).click();
+      browser.sleep(TICK_DELAY);
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
           const parts = url.split('#');
@@ -579,8 +582,6 @@ xdescribe('E2E spec for apps page', () => {
       browser.sleep(TICK_DELAY);
       expect(pageAppDetails.getHeaderText()).toContain('Application log');
       expect(pageAppDetails.getHeaderText()).toContain('SINK');
-      expect(pageAppDetails.getHeaderText()).toContain('1.2.0.RELEASE');
-      expect(pageAppDetails.getInfo()).toContain('1.2.0.RELEASE');
       expect(pageAppDetails.getInfo()).toContain('maven://org.springframework.cloud.stream.app:log-sink-kafka-10:1.2.0.RELEASE');
 
       const properties = pageAppDetails.getProperties();
@@ -595,7 +596,8 @@ xdescribe('E2E spec for apps page', () => {
 
       expect(properties.get(2).getText()).toContain('expression');
       expect(properties.get(2).getText()).toContain('A SpEL expression (against the incoming message) to evaluate as the logged message.');
-      expect(properties.get(2).getText()).toContain('java.lang.String (Default value: payload)');
+      expect(properties.get(2).getText()).toContain('java.lang.String');
+      expect(properties.get(2).getText()).toContain('(Default value: payload)');
     });
 
     it('should go back to the apps page', () => {
@@ -637,13 +639,14 @@ xdescribe('E2E spec for apps page', () => {
       browser.sleep(TICK_DELAY);
       expect(pageApps.getTableRows().count()).toBe(0);
       expect(pageApps.getEmpty().isPresent()).toBeTruthy();
-      expect(pageApps.getEmpty().getText()).toContain('No registered apps.');
-      expect(pageApps.getEmpty().getText()).toContain('You can register apps by clicking:');
+      expect(pageApps.getEmpty().getText()).toContain('There is no application registered, yet.');
+      expect(pageApps.getEmpty().getText()).toContain('You can: Add Application(s) or Refresh the page.');
     });
 
   });
 
   /**
+   * TODO: waiting 2.0.0.M1 with skipper integration
    * Skipper integration: versions of an application
    * This test should:
    * - create the new version 1.2.0 and 1.3.1 of the Log application (sink)
@@ -651,8 +654,7 @@ xdescribe('E2E spec for apps page', () => {
    * - make the default version to 1.3.1 of the Log application
    * - destroy the version 1.2.0 of Log application
    * - destroy the version 1.3.1 of the Log application
-   */
-  describe('Skipper: manage versions of an application', () => {
+   xdescribe('Skipper: manage versions of an application', () => {
 
     it('should create the foo app (version 1.2.0)', () => {
       pageApps.getEmpty().all(by.css('button')).first().click();
@@ -737,11 +739,12 @@ xdescribe('E2E spec for apps page', () => {
       expect(modalAppVersions.getModal().isPresent()).toBeFalsy();
       expect(pageApps.getTableRows().count()).toBe(0);
       expect(pageApps.getEmpty().isPresent()).toBeTruthy();
-      expect(pageApps.getEmpty().getText()).toContain('No registered apps.');
-      expect(pageApps.getEmpty().getText()).toContain('You can register apps by clicking:');
+      expect(pageApps.getEmpty().getText()).toContain('There is no application registered, yet.');
+      expect(pageApps.getEmpty().getText()).toContain('You can: Add Application(s) or Refresh the page.');
     });
 
   });
+   */
 
   /**
    * Bulk import applications
@@ -751,12 +754,11 @@ xdescribe('E2E spec for apps page', () => {
   describe('Bulk import applications', () => {
 
     it('should import applications using bulk import uri', () => {
-      pageApps.getEmpty().all(by.css('button')).last().click();
+      pageBulkImportUriApps.navigateTo();
       browser.sleep(TICK_DELAY);
-      expect(pageBulkImportUriApps.getSubmit().getAttribute('disabled')).toEqual('true');
       pageBulkImportUriApps.setUri('http://bit.ly/Bacon-RELEASE-stream-applications-kafka-10-maven');
-      expect(pageBulkImportUriApps.getSubmit().getAttribute('disabled')).toBeFalsy();
       pageBulkImportUriApps.getSubmit().click();
+      browser.sleep(TICK_DELAY);
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
           const parts = url.split('#');
@@ -778,8 +780,8 @@ xdescribe('E2E spec for apps page', () => {
       expect(pageApps.getTableRows().count()).toBe(0);
       expect(pagination.get().isPresent()).toBeFalsy();
       expect(pageApps.getEmpty().isPresent()).toBeTruthy();
-      expect(pageApps.getEmpty().getText()).toContain('No registered apps.');
-      expect(pageApps.getEmpty().getText()).toContain('You can register apps by clicking:');
+      expect(pageApps.getEmpty().getText()).toContain('There is no application registered, yet.');
+      expect(pageApps.getEmpty().getText()).toContain('You can: Add Application(s) or Refresh the page.');
     });
 
   });

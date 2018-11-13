@@ -110,13 +110,17 @@ export class AppsPage {
     browser.sleep(100);
   }
 
+  getAdd() {
+    return element(by.css('app-page-head-actions button'));
+  }
+
   /**
    * Set filters
    * @param {string} q
    * @param {string} type
    */
   setFilters(q: string, type: number) {
-    const field = element(by.css('#q'));
+    const field = element(by.css('#filter-q'));
     field.clear().then(() => {
       browser.sleep(200);
       field.sendKeys('a');
@@ -127,7 +131,7 @@ export class AppsPage {
       browser.sleep(100);
       this.getFilters().element(by.css('.filter-dropdown-toggle')).click();
       browser.sleep(100);
-      this.getFilters().all(by.css('.filter-dropdown .dropdown-menu a')).get(type).click();
+      this.getFilters().all(by.css('.list-bar-dropdown .dropdown-menu a')).get(type).click();
       browser.sleep(100);
     });
   }
@@ -137,6 +141,6 @@ export class AppsPage {
    * @returns {ElementFinder}
    */
   getFilterSubmit() {
-    return element(by.css(`#submit`));
+    return element(by.css(`#search-submit`));
   }
 }

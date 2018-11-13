@@ -21,7 +21,7 @@ export class Pagination {
    * @returns {ElementFinder}
    */
   getButtonByPage(page: number) {
-    const lis = element.all(by.css('#pagination ul li'));
+    const lis = element.all(by.css('pagination-controls ul li'));
     return lis.get(page).$('a');
   }
 

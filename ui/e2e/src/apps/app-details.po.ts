@@ -20,7 +20,7 @@ export class AppDetailsPage {
    * @returns {any}
    */
   getHeaderText() {
-    return element(by.css('.heading h1')).getText();
+    return element(by.css('.dataflow-page-head')).getText();
   }
 
   /**
@@ -44,8 +44,7 @@ export class AppDetailsPage {
    * @returns {any}
    */
   getCancel() {
-    return element(by.css('#back-button'));
-
+    return element(by.css('app-page-head-back a'));
   }
 
 }

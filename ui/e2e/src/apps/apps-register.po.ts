@@ -21,7 +21,7 @@ export class AppsRegisterPage {
    * @returns {any}
    */
   getHeaderText() {
-    return element(by.css('.step2 h1')).getText();
+    return element(by.css('.step2 dataflow-page-head h1')).getText();
   }
 
   /**
@@ -61,7 +61,7 @@ export class AppsRegisterPage {
    * @returns {ElementFinder}
    */
   getCancel() {
-    return element(by.name(`cancel`));
+    return element(by.css('app-page-head-back a'));
   }
 
 }
