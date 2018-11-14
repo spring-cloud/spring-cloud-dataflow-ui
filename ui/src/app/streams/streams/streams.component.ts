@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, NgZone } from '@angular/core';
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
@@ -131,6 +131,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {LoggerService} loggerService
    * @param {AuthService} authService
+   * @param {NgZone} ngZone
    * @param {Router} router
    */
   constructor(public streamsService: StreamsService,
@@ -140,6 +141,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private loggerService: LoggerService,
               private authService: AuthService,
+              private ngZone: NgZone,
               private router: Router) {
   }
 
@@ -265,7 +267,10 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.appsState$ = this.appsService.appsState();
     this.refresh();
 
-    this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
+    this.ngZone.runOutsideAngular(() => {
+      IntervalObservable.create(2000)
+        .subscribe(() => this.loadStreamMetrics());
+    });
   }
 
   /**

@@ -76,7 +76,7 @@ describe('E2E spec for apps page', () => {
       expect(pagination.get().isPresent()).toBeTruthy();
       pageApps.setUnregisters();
       browser.sleep(TICK_DELAY);
-      expect(pageApps.getTableRows().count()).toBe(12);
+      expect(pageApps.getTableRows().count()).toBe(11);
       expect(pagination.get().isPresent()).toBeFalsy();
       pageApps.setUnregisters();
       browser.sleep(TICK_DELAY);
@@ -168,8 +168,9 @@ describe('E2E spec for apps page', () => {
       pageRegisterApps.setForm(1, 'foo2', 'processor', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
       pageRegisterApps.setForm(2, 'foo3', 'task', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
       pageRegisterApps.setForm(3, 'foo4', 'sink', 'maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT', '');
-      pageRegisterApps.getSubmit().click();
       browser.sleep(TICK_DELAY);
+      pageRegisterApps.getSubmit().click();
+      browser.sleep(TICK_DELAY * 2);
       browser.wait(() => {
         return browser.getCurrentUrl().then((url) => {
           const parts = url.split('#');
@@ -234,7 +235,7 @@ describe('E2E spec for apps page', () => {
         pageRegisterApps.setForm(i, `foo${i}`, type, `maven://io.spring.cloud:scdf-sample-app:jar:1.0.${i}.BUILD-SNAPSHOT`, '');
       }
       pageRegisterApps.getSubmit().click();
-      browser.sleep(TICK_DELAY);
+      browser.sleep(TICK_DELAY * 2);
       expect(pageApps.getTable().isPresent()).toBeTruthy();
       expect(pageApps.getFilters().isPresent()).toBeTruthy();
     });
@@ -259,7 +260,7 @@ describe('E2E spec for apps page', () => {
         pageRegisterApps.setForm(i, `foo${i + 10}`, type, `maven://io.spring.cloud:scdf-sample-app:jar:1.0.${i + 10}.BUILD-SNAPSHOT`, '');
       }
       pageRegisterApps.getSubmit().click();
-      browser.sleep(TICK_DELAY);
+      browser.sleep(TICK_DELAY * 2);
       expect(pageApps.getTable().isPresent()).toBeTruthy();
       expect(pageApps.getFilters().isPresent()).toBeTruthy();
     });
@@ -284,7 +285,7 @@ describe('E2E spec for apps page', () => {
         pageRegisterApps.setForm(i, `foo${i + 20}`, type, `maven://io.spring.cloud:scdf-sample-app:jar:1.0.${i + 20}.BUILD-SNAPSHOT`, '');
       }
       pageRegisterApps.getSubmit().click();
-      browser.sleep(TICK_DELAY);
+      browser.sleep(TICK_DELAY * 2);
       expect(pageApps.getTable().isPresent()).toBeTruthy();
       expect(pageApps.getFilters().isPresent()).toBeTruthy();
     });
@@ -769,6 +770,7 @@ describe('E2E spec for apps page', () => {
     });
 
     it('should destroy all the apps', () => {
+      browser.sleep(TICK_DELAY);
       expect(pageApps.getTableRows().count()).toBe(30);
       expect(pagination.get().isPresent()).toBeTruthy();
       pageApps.setUnregisters();

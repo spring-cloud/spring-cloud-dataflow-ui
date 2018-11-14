@@ -39,7 +39,7 @@
     </button>
     <span class="btn" style="padding: 0; cursor: inherit"
             tooltip="Disabled whilst stream definition(s) invalid !" [isDisabled]="!isCreateStreamsDisabled" container="body" triggers="click:mouseleave" placement="right">
-      <button (click)="createStreamDefs()" class="btn btn-primary" type="button" [disabled]="isCreateStreamsDisabled">
+      <button id="stream-create-submit" (click)="createStreamDefs()" class="btn btn-primary" type="button" [disabled]="isCreateStreamsDisabled">
         Create Stream
       </button>
     </span>

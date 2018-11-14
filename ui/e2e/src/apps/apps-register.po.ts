@@ -34,7 +34,8 @@ export class AppsRegisterPage {
    */
   setForm(index: number, name: string, type: string, uri: string, metaUri: string) {
     element(by.name(`name${index}`)).sendKeys(name);
-    element(by.name(`type${index}`)).sendKeys(type);
+    const u = ['app', 'source', 'processor', 'sink', 'task'].indexOf(type.toLowerCase());
+    element(by.name(`type${index}`)).all(by.css('option')).get(u + 1).click();
     element(by.name(`uri${index}`)).sendKeys(uri);
     element(by.name(`metaDataUri${index}`)).sendKeys(metaUri);
     browser.sleep(100);

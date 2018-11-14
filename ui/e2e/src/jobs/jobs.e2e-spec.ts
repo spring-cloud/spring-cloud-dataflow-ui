@@ -1,4 +1,5 @@
 import { JobsPage } from './jobs.po';
+import { browser } from 'protractor';
 
 /**
  * E2E spec for Jobs page.
@@ -6,15 +7,20 @@ import { JobsPage } from './jobs.po';
  * @author Glenn Renfro
  */
 describe('E2E spec for jobs page', () => {
-  let page: JobsPage;
+
+  let pageJobs: JobsPage;
+
+  const TICK_DELAY = 1500;
+
+  browser.waitForAngularEnabled(false);
 
   beforeEach(() => {
-    page = new JobsPage();
+    pageJobs = new JobsPage();
   });
 
   it('should display jobs title', () => {
-    page.navigateTo();
-
-    expect(page.getHeaderText()).toEqual('Batch Job Executions');
+    pageJobs.navigateTo();
+    browser.sleep(TICK_DELAY);
+    expect(pageJobs.getHeaderText()).toEqual('Batch Job Executions');
   });
 });

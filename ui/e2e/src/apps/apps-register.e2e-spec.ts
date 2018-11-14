@@ -6,7 +6,7 @@
 
 import { AppsRegisterPage } from './apps-register.po';
 
-describe('E2E spec for app registration page', () => {
+xdescribe('E2E spec for app registration page', () => {
   let page: AppsRegisterPage;
 
   beforeEach(() => {
