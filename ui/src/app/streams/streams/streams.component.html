@@ -115,7 +115,7 @@
     </app-list-pagination>
 
     <app-list-empty [page]="streamDefinitions" [filters]="[params.q]">
-      <p>There are <strong>no streams registered</strong>, yet.</p>
+      <p>There is <strong>no stream registered</strong>, yet.</p>
       <div *ngIf="appsState$ | async as appsState">
         <p *ngIf="appsState.streams > 0" [dataflowAppRoles]="['ROLE_CREATE']">
           You can <a (click)="createStream()">Create Streams(s)</a> or <a (click)="refresh()">Refresh</a> the page
