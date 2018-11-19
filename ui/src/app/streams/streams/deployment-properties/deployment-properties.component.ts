@@ -24,15 +24,16 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   id: String;
+
   form: FormGroup;
+
   deploymentProperties = new FormControl('', StreamDeployValidator.validateDeploymentProperties);
+
   deploymentPlatform = new FormControl('');
 
   platforms: Platform[];
 
   subscriptionPlatforms: Subscription;
-  subscriptionFeatureInfo: Subscription;
-  skipperEnabled = false;
 
   @Output()
   public cancel = new EventEmitter();
@@ -64,18 +65,12 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
    * Parse the current parameters and populate fields
    */
   ngOnInit() {
-    this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo()
+    this.subscriptionPlatforms = this.streamsService.getPlatforms()
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(featureInfo => {
-        this.skipperEnabled = featureInfo.skipperEnabled;
-        if (this.skipperEnabled) {
-          this.subscriptionPlatforms = this.streamsService.getPlatforms()
-            .pipe(takeUntil(this.ngUnsubscribe$))
-            .subscribe((platforms: Platform[]) => {
-              this.platforms = platforms;
-            });
-        }
+      .subscribe((platforms: Platform[]) => {
+        this.platforms = platforms;
       });
+
     this.deploymentPlatform.setValue('default');
     if (this.stream.deploymentProperties instanceof Object) {
       if (this.stream.deploymentProperties.platformName) {
@@ -113,9 +108,7 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
         }
       }
     }
-    if (this.skipperEnabled) {
-      propertiesAsMap['spring.cloud.dataflow.skipper.platformName'] = this.deploymentPlatform.value;
-    }
+    propertiesAsMap['spring.cloud.dataflow.skipper.platformName'] = this.deploymentPlatform.value;
     this.stream.deploymentProperties = propertiesAsMap;
     this.submit.emit();
   }

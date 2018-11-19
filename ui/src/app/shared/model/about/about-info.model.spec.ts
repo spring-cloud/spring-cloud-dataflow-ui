@@ -8,8 +8,7 @@ describe('AboutInfo', () => {
           "featureInfo": {
             "analyticsEnabled": true,
             "streamsEnabled": true,
-            "tasksEnabled": true,
-            "skipperEnabled": false
+            "tasksEnabled": true
           },
           "versionInfo": {
             "implementation": {

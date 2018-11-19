@@ -62,25 +62,15 @@ describe('DeploymentPropertiesComponent', () => {
     expect(component.deploymentProperties.value).toBe('');
   });
 
-  it('should display the platform input (skipper enabled)', () => {
+  it('should display the platform input (skipper integration)', () => {
     component.stream = new StreamDefinition('foo2', 'time |log', 'undeployed');
     component.stream.deploymentProperties = {};
-    sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
     fixture.detectChanges();
     const de: DebugElement = fixture.debugElement.query(By.css('#groupPlatform'));
     const el: HTMLElement = fixture.debugElement.query(By.css('#deploymentPlatform')).nativeElement;
     expect(de == null).not.toBeTruthy();
     expect(el.innerHTML.indexOf('foo (bar)') !== -1).toBe(true);
     expect(el.innerHTML.indexOf('default (local)') !== -1).toBe(true);
-  });
-
-  it('should not display the platform input (skipper disabled)', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'undeployed');
-    component.stream.deploymentProperties = {};
-    sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = false;
-    fixture.detectChanges();
-    const de: DebugElement = fixture.debugElement.query(By.css('#groupPlatform'));
-    expect(de == null).toBeTruthy();
   });
 
   it('should not populate properties input (invalid data)', () => {

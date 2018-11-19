@@ -41,11 +41,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   detailedAppRegistration: DetailedAppRegistration;
 
   /**
-   * Skipper State
-   */
-  skipperEnabled: boolean;
-
-  /**
    * Application
    */
   application: AppRegistration;
@@ -113,7 +108,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
         const featureInfo = data[0] as FeatureInfo;
         const params = data[1] as Params;
         this.application = new AppRegistration(params['appName'], params['appType'] as ApplicationType);
-        this.skipperEnabled = featureInfo.skipperEnabled;
         this.refresh();
       });
   }
@@ -131,11 +125,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * Refresh page, load the current version informations
    */
   refresh() {
-    if (!this.skipperEnabled) {
-      this.loadProperties();
-    } else {
-      this.loadVersions();
-    }
+    this.loadVersions();
   }
 
   /**

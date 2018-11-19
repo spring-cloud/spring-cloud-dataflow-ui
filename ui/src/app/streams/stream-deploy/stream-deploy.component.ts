@@ -35,7 +35,6 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    */
   config$: Observable<{
     id: string,
-    skipper: boolean,
     streamDefinition: StreamDefinition
   }>;
 
@@ -97,15 +96,13 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.config$ = this.route.params
       .debounceTime(400)
-      .pipe(mergeMap(
-        (params: Params) => this.sharedAboutService.getFeatureInfo()
-          .pipe(map((featureInfo: FeatureInfo) => {
-            return {
-              id: params.id,
-              streamDefinition: null,
-              skipper: featureInfo.skipperEnabled
-            };
-          })))
+      .pipe(
+        map((params: Params) => {
+          return {
+            id: params.id,
+            streamDefinition: null
+          };
+        })
       )
       .pipe(mergeMap(
         config => this.streamsService.getDeploymentInfo(config.id)
@@ -151,9 +148,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
             });
             this.properties = properties;
             this.ignoreProperties = ignoreProperties;
-            if (config.skipper) {
-              this.ignoreProperties = Object.assign([], this.properties);
-            }
+            this.ignoreProperties = Object.assign([], this.properties);
             config.streamDefinition = deploymentInfo;
             return config;
           }))
@@ -251,14 +246,11 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     let obs = of({});
 
     const isDeployed = (['deployed', 'deploying'].indexOf(this.refConfig.streamDefinition.status) > -1);
-    const update = this.refConfig.skipper && isDeployed;
+    const update = isDeployed;
 
-    if (update) {
+    if (isDeployed) {
       obs = obs.pipe(mergeMap(val => this.streamsService.updateDefinition(this.refConfig.id, propertiesMap)));
     } else {
-      if (isDeployed) {
-        obs = obs.pipe(mergeMap(val => this.streamsService.undeployDefinition(this.refConfig.streamDefinition)));
-      }
       obs = obs.pipe(mergeMap(val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap)));
     }
 

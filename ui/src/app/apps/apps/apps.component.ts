@@ -22,7 +22,7 @@ import { AuthService } from '../../auth/auth.service';
  * Main entry point to the Apps Module. Provides
  * a paginated list of {@link AppRegistration}s and
  * also provides operations to unregister {@link AppRegistration}s,
- * displays versions control if skipper is enabled.
+ * displays versions control
  *
  * @author Gunnar Hillert
  * @author Damien Vitrac
@@ -47,17 +47,6 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Modal
    */
   modal: BsModalRef;
-
-  /**
-   * Subscription to Feature Info
-   */
-  subscriptionFeatureInfo: Subscription;
-
-  /**
-   * Skipper enabled
-   * @type {boolean}
-   */
-  skipperEnabled: boolean;
 
   /**
    * Current forms value
@@ -121,9 +110,6 @@ export class AppsComponent implements OnInit, OnDestroy {
     this.form = { q: this.context.q, type: this.context.type, checkboxes: [] };
     this.itemsSelected = this.context.itemsSelected || [];
     this.loadAppRegistrations();
-    this.subscriptionFeatureInfo = this.sharedAboutService.getFeatureInfo().subscribe(featureInfo => {
-      this.skipperEnabled = featureInfo.skipperEnabled;
-    });
   }
 
   /**
@@ -131,7 +117,6 @@ export class AppsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.updateContext();
-    this.subscriptionFeatureInfo.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }

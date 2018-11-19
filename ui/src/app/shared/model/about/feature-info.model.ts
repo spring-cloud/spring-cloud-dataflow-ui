@@ -12,7 +12,6 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
   public analyticsEnabled = false;
   public streamsEnabled = false;
   public tasksEnabled = false;
-  public skipperEnabled = false;
   public schedulerEnabled = false;
 
 
@@ -23,7 +22,6 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
     this.analyticsEnabled = false;
     this.streamsEnabled = false;
     this.tasksEnabled = false;
-    this.skipperEnabled = false;
     this.schedulerEnabled = false;
   }
 
@@ -31,7 +29,6 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
     this.analyticsEnabled = input.analyticsEnabled;
     this.streamsEnabled = input.streamsEnabled;
     this.tasksEnabled = input.tasksEnabled;
-    this.skipperEnabled = input.skipperEnabled;
     this.schedulerEnabled = input.schedulerEnabled;
     return this;
   }
@@ -53,9 +50,6 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
         }
         case 'tasksEnabled': {
           return this.tasksEnabled;
-        }
-        case 'skipperEnabled': {
-          return this.skipperEnabled;
         }
         case 'schedulerEnabled': {
           return this.schedulerEnabled;

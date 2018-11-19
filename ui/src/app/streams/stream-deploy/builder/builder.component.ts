@@ -31,11 +31,6 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
   @Input() id: string;
 
   /**
-   * Skipper
-   */
-  @Input() skipper: boolean;
-
-  /**
    * Emits on destroy component with the current value
    */
   @Output() update = new EventEmitter();
@@ -91,7 +86,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.builder$ = this.streamDeployService
-      .config(this.id, this.skipper)
+      .config(this.id)
       .pipe(map((streamDeployConfig) => this.build(streamDeployConfig)))
       .pipe(map((builder) => this.populate(builder)))
       .pipe(map((builder) => this.populateApp(builder)));
@@ -271,11 +266,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       const value = arr[1] as string;
       const appKey = key.split('.')[1];
       if (StreamDeployService.platform.is(key)) {
-        if (this.skipper) {
-          builder.formGroup.get('platform').setValue(value);
-        } else {
-          builder.errors.global.push(line);
-        }
+        builder.formGroup.get('platform').setValue(value);
       } else if (StreamDeployService.deployer.is(key)) {
         // Deployer
         const keyReduce = StreamDeployService.deployer.extract(key);
@@ -322,15 +313,13 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
     const builderAppsProperties = {};
 
     // Platform
-    if (this.skipper) {
-      formGroup.addControl('platform', new FormControl(getValue(streamDeployConfig.platform.defaultValue),
-        (formControl: FormControl) => {
-          if (this.isErrorPlatform(streamDeployConfig.platform.values, formControl.value)) {
-            return { invalid: true };
-          }
-          return null;
-        }));
-    }
+    formGroup.addControl('platform', new FormControl(getValue(streamDeployConfig.platform.defaultValue),
+      (formControl: FormControl) => {
+        if (this.isErrorPlatform(streamDeployConfig.platform.values, formControl.value)) {
+          return { invalid: true };
+        }
+        return null;
+      }));
 
     // Deployers
     const deployers = new FormArray([]);

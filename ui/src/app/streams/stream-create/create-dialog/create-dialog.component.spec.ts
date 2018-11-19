@@ -71,36 +71,33 @@ describe('StreamCreateDialogComponent', () => {
   });
 
   it('should be created', () => {
+    spyOn(streamsService, 'getPlatforms').and.returnValue(of([
+      new Platform('default', 'local')
+    ]));
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should be populate', () => {
+    spyOn(streamsService, 'getPlatforms').and.returnValue(of([
+      new Platform('default', 'local')
+    ]));
     fixture.detectChanges();
     expect(component).toBeTruthy();
     component.open({ dsl: 'file | log' });
     expect(component).toBeTruthy();
   });
 
-  it('default mocks: single deployment platform (skipper mode off, multiple platforms)', () => {
-    fixture.detectChanges();
-    const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
-    expect(deployDiv).toBeDefined();
-  });
-
   it('skipper mode and multiple platforms => deploy checkbox is hidden', () => {
-    const featureInfo = new FeatureInfo();
-    featureInfo.skipperEnabled = true;
-    spyOn(aboutService, 'getFeatureInfo').and.returnValue(of(featureInfo));
+    spyOn(streamsService, 'getPlatforms').and.returnValue(of([
+      new Platform('default', 'local')
+    ]));
     fixture.detectChanges();
     const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
     expect(deployDiv).toBeFalsy();
   });
 
   it('skipper mode on and single platform => deploy checkbox is shown', () => {
-    const featureInfo = new FeatureInfo();
-    featureInfo.skipperEnabled = true;
-    spyOn(aboutService, 'getFeatureInfo').and.returnValue(of(featureInfo));
     spyOn(streamsService, 'getPlatforms').and.returnValue(of([
       new Platform('default', 'local')
     ]));
@@ -111,7 +108,6 @@ describe('StreamCreateDialogComponent', () => {
 
   // it('skipper mode errors out => deploy checkbox is hidden', () => {
   //   const featureInfo = new FeatureInfo();
-  //   featureInfo.skipperEnabled = true;
   //   spyOn(aboutService, 'getFeatureInfo').and.returnValue(Observable.throw('Error'));
   //   fixture.detectChanges();
   //   const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));

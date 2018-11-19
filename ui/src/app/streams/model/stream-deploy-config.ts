@@ -5,8 +5,6 @@
  */
 export class StreamDeployConfig {
 
-  skipper = false;
-
   id: string;
 
   platform: any;

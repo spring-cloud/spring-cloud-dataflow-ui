@@ -13,7 +13,7 @@
             </div>
 
             <!-- 1 -->
-            <div class="line-toggle" *ngIf="skipper">
+            <div class="line-toggle">
 
               <a class="toggle" (click)="state.platform = !state.platform">
                 <span class="fa" [class.fa-chevron-down]="state.platform"
@@ -23,7 +23,7 @@
             </div>
 
             <!-- 2 -->
-            <div class="line-body" *ngIf="skipper && state.platform">
+            <div class="line-body" *ngIf="state.platform">
               <div class="status" *ngIf="builder.formGroup.get('platform').invalid">
                 <div tooltipPlacement="right"
                      [tooltip]="tooltipTemplate"
@@ -72,13 +72,10 @@
               <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
               <span class="fa" [class.fa-chevron-down]="state.specificPlatform"
                     [class.fa-chevron-right]="!state.specificPlatform"></span>
-                <span *ngIf="skipper">
+                <span>
                   Deployment Platform
                 </span>
-                <span *ngIf="!skipper">
-                  Deployer Properties
-                </span>
-                <span *ngIf="skipper && builder.formGroup.get('platform').value">
+                <span *ngIf="builder.formGroup.get('platform').value">
                   ({{ builder.formGroup.get('platform').value }})
                 </span>
               </a>
@@ -116,7 +113,7 @@
 
             <!-- 8 -->
             <div *ngIf="state.app">
-              <div class="line-body" *ngIf="skipper">
+              <div class="line-body">
 
                 <div class="status" *ngIf="builder.formGroup.get('appsVersion').invalid">
                   <div tooltipPlacement="right"
@@ -170,10 +167,10 @@
             </div>
 
             <!-- 1 -->
-            <div class="line-toggle" *ngIf="skipper"></div>
+            <div class="line-toggle"></div>
 
             <!-- 2 -->
-            <div class="line-body" *ngIf="skipper && state.platform"
+            <div class="line-body" *ngIf="state.platform"
                  [class.has-error]="isErrorPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)">
               <select tabindex="1" formControlName="platform">
                 <option value="">Select a value</option>
@@ -223,7 +220,7 @@
 
             <!-- 8 -->
             <div *ngIf="state.app">
-              <div class="line-body" *ngIf="skipper"></div>
+              <div class="line-body"></div>
               <div class="line-body"></div>
               <div formArrayName="global">
                 <div class="line-body" *ngFor="let f of builder.formGroup.get('global').controls;let i = index"
@@ -253,10 +250,10 @@
               </div>
 
               <!-- 1 -->
-              <div class="line-toggle" *ngIf="skipper"></div>
+              <div class="line-toggle"></div>
 
               <!-- 2 -->
-              <div class="line-body" *ngIf="skipper && state.platform"></div>
+              <div class="line-body" *ngIf="state.platform"></div>
 
               <!-- 3 -->
               <div class="line-toggle"></div>
@@ -293,7 +290,7 @@
 
               <!-- 8 -->
               <div *ngIf="state.app">
-                <div *ngIf="skipper" class="line-body" [class.has-error]="app.optionsState.isInvalid">
+                <div class="line-body" [class.has-error]="app.optionsState.isInvalid">
                   <div formGroupName="appsVersion">
                     <div class="cell">
                       <select tabindex="{{ 100 }}" [formControlName]="app.name">

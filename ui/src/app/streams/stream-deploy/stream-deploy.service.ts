@@ -94,10 +94,9 @@ export class StreamDeployService {
    * Provide an observable of {@link StreamDeployConfig} for an ID stream passed in parameter
    *
    * @param {string} id Stream ID
-   * @param {boolean} skipper
    * @returns {Observable<StreamDeployConfig>}
    */
-  config(id: string, skipper: boolean): Observable<StreamDeployConfig> {
+  config(id: string): Observable<StreamDeployConfig> {
     return this.streamsService.getDefinition(id)
       .pipe(
         mergeMap(
@@ -125,41 +124,37 @@ export class StreamDeployService {
                     ));
                 }
               );
-            let obs: Observable<any> = forkJoin([...observablesApplications]);
-            if (skipper) {
-              obs = forkJoin([this.streamsService.getPlatforms(), ...observablesApplications]);
-            }
-            return obs.pipe(map((val2) => ({
-              streamDefinition: val,
-              args: val2,
-            })));
+            return forkJoin([this.streamsService.getPlatforms(), ...observablesApplications])
+              .pipe(
+                map((val2) => ({
+                    streamDefinition: val,
+                    args: val2,
+                  })
+                ));
           }
         ))
       .pipe(map((result) => {
         const config = new StreamDeployConfig();
-        config.skipper = skipper;
         config.id = id;
 
         // Platform
-        if (config.skipper) {
-          const platforms = result.args[0] as Platform[];
-          (result.args as Array<any>).splice(0, 1);
-          config.platform = {
-            id: 'platform',
-            name: 'platform',
-            form: 'select',
-            type: 'java.lang.String',
-            defaultValue: '',
-            values: platforms.map((platform: Platform) => {
-              return {
-                key: platform.name,
-                name: platform.name,
-                type: platform.type
-              };
-            })
-          };
+        const platforms = result.args[0] as Platform[];
+        (result.args as Array<any>).splice(0, 1);
+        config.platform = {
+          id: 'platform',
+          name: 'platform',
+          form: 'select',
+          type: 'java.lang.String',
+          defaultValue: '',
+          values: platforms.map((platform: Platform) => {
+            return {
+              key: platform.name,
+              name: platform.name,
+              type: platform.type
+            };
+          })
+        };
 
-        }
         // Applications
         config.apps = (result.args as Array<any>).map((app: any) => ({
           origin: app.origin,

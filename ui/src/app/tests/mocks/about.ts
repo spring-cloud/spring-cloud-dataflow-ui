@@ -108,7 +108,6 @@ export class MockAboutService {
     featureInfo.analyticsEnabled = true;
     featureInfo.streamsEnabled = true;
     featureInfo.tasksEnabled = true;
-    featureInfo.skipperEnabled = true;
     featureInfo.schedulerEnabled = true;
     return featureInfo;
   }
@@ -181,7 +180,6 @@ export class MockAboutService {
         dataFlowVersion.featureInfo.streamsEnabled = false;
         dataFlowVersion.featureInfo.tasksEnabled = false;
         dataFlowVersion.featureInfo.schedulerEnabled = false;
-        dataFlowVersion.featureInfo.skipperEnabled = false;
       }
       if (!this._isPlatformSpecificInformationAvailable) {
         dataFlowVersion.runtimeEnvironment.taskLauncher.platformSpecificInfo = new Map();

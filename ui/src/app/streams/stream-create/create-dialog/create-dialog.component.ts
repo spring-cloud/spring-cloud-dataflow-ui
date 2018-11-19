@@ -99,14 +99,14 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   confirm: EventEmitter<boolean> = new EventEmitter();
 
   /**
-   * FeatureInfo Observable
+   * Platforms Observable
    */
-  featureInfo$: Observable<FeatureInfo>;
+  platforms$: Observable<Platform[]>;
 
   /**
-   * FeatureInfo Subscription
+   * Plarforms Subscription
    */
-  featureInfoSubscription: Subscription;
+  platformsSubscription: Subscription;
 
   /**
    * Constructor
@@ -136,20 +136,17 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    */
   ngOnInit() {
     this.form = new FormGroup({}, this.uniqueStreamNames());
-    this.featureInfo$ = this.aboutService.getFeatureInfo()
-      .pipe(mergeMap(
-        (featureInfo: FeatureInfo) => {
-          const platforms$: Observable<Platform[]> =
-            featureInfo.skipperEnabled ? this.streamService.getPlatforms() : of<Platform[]>([]);
-          return platforms$.pipe(map((platforms: Platform[]): FeatureInfo => {
-            if (platforms.length < 2) {
-              this.isDeployEnabled = true;
-            }
-            return featureInfo;
-          }));
-        }))
-      .pipe(share());
-    this.featureInfoSubscription = this.featureInfo$.subscribe();
+    this.platforms$ = this.streamService.getPlatforms()
+      .pipe(
+        map((platforms: Platform[]): Platform[] => {
+          if (platforms.length < 2) {
+            this.isDeployEnabled = true;
+          }
+          return platforms;
+        }),
+        share()
+      );
+    this.platformsSubscription = this.platforms$.subscribe();
   }
 
   /**
@@ -169,7 +166,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
-    this.featureInfoSubscription.unsubscribe();
+    this.platformsSubscription.unsubscribe();
   }
 
   /**

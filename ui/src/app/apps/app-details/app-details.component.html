@@ -5,7 +5,7 @@
     <app-page-head-title>Application <strong>{{ application.name }}</strong></app-page-head-title>
     <app-page-head-subtitle>
       <app-type [application]="application"></app-type>
-      <span *ngIf="skipperEnabled && defaultVersion" class="label label-default" style="margin-left: 5px;">
+      <span *ngIf="defaultVersion" class="label label-default" style="margin-left: 5px;">
         {{ defaultVersion.version }}
       </span>
     </app-page-head-subtitle>
@@ -18,7 +18,7 @@
   </app-page-head>
 
   <div dataflowLayoutType type="large">
-    <div id="no-default-version" *ngIf="skipperEnabled && application.versions.length > 0 && !defaultVersion">
+    <div id="no-default-version" *ngIf="application.versions.length > 0 && !defaultVersion">
       <div class="alert alert-danger" style="display: inline-block;padding:1rem 2rem;">
         <strong>Application unavailable.</strong><br>
         You have to set a default version for this application.
@@ -29,7 +29,7 @@
     </div>
 
     <div *ngIf="detailedAppRegistration">
-      <div *ngIf="skipperEnabled && application.versions.length > 1" style="padding: 1rem 0;">
+      <div *ngIf="application.versions.length > 1" style="padding: 1rem 0;">
         <div id="version-dropdown" class="dropdown" dropdown>
           <button dropdownToggle type="button" class="btn btn-dropdown btn-primary">
             Version: {{ versionSelect }}
@@ -54,7 +54,7 @@
       </div>
       <div class="app-details-info" style="padding: 0.5rem 0 1.5rem;">
         <div><strong>Uri</strong>: {{ detailedAppRegistration.uri }}</div>
-        <div *ngIf="skipperEnabled && application.versions.length == 1">
+        <div *ngIf="application.versions.length == 1">
           <strong>Version</strong>: {{ detailedAppRegistration.version }}
         </div>
       </div>

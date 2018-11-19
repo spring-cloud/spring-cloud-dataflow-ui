@@ -44,7 +44,7 @@
                     id="sort-uri">Uri
           </app-sort>
         </th>
-        <th *ngIf="skipperEnabled">Versions</th>
+        <th>Versions</th>
         <th class="text-center">&nbsp;</th>
       </tr>
       </thead>
@@ -63,7 +63,7 @@
         <td class="dataflow-truncator-width">
           {{ item.uri }}
         </td>
-        <td class="cell-version" *ngIf="skipperEnabled">
+        <td class="cell-version">
           <app-version-label [isClickable]="true" (labelClick)="versions(item)"
                              [application]="item"></app-version-label>
         </td>

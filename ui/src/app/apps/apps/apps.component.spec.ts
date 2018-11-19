@@ -167,7 +167,6 @@ describe('AppsComponent', () => {
   describe('At least 2 pages', () => {
 
     beforeEach(() => {
-      sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = false;
       appsService.mock = {
         items: Array.from({ length: 20 }).map((a, i) => {
           return { name: 'foo' + i, type: 'source', uri: 'http://foo.bar' };
@@ -363,7 +362,6 @@ describe('AppsComponent', () => {
   describe('Skipper enabled', () => {
 
     beforeEach(() => {
-      sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
       appsService.mock = JSON.parse(JSON.stringify(APPS));
       fixture.detectChanges();
     });

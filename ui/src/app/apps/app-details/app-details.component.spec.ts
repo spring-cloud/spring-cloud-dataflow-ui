@@ -108,16 +108,10 @@ describe('AppDetailsComponent', () => {
     modalService = TestBed.get(BsModalService);
   });
 
-  describe('Application properties without skipper enable', () => {
+  describe('Application properties', () => {
 
     beforeEach(() => {
-      sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = false;
       fixture.detectChanges();
-    });
-
-    it('should not display the dropdown versions', () => {
-      const dropdown: DebugElement = fixture.debugElement.query(By.css('#version-dropdown'));
-      expect(dropdown).toBeNull();
     });
 
     it('Should contains the information related to the application (uri, type name)', () => {
@@ -164,14 +158,13 @@ describe('AppDetailsComponent', () => {
 
   });
 
-  describe('Application properties with skipper enable', () => {
+  describe('Application properties (skipper)', () => {
 
     describe('Many versions with a default version', () => {
 
       const versionMock = appMock.versions[2];
 
       beforeEach(() => {
-        sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
         fixture.detectChanges();
       });
 
@@ -217,7 +210,6 @@ describe('AppDetailsComponent', () => {
         const mock = Object.assign({}, sourceMock);
         appMock.versions = [versionMock];
         appsService.mock = mock;
-        sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
         fixture.detectChanges();
       });
 
@@ -251,7 +243,6 @@ describe('AppDetailsComponent', () => {
         const mock = Object.assign({}, sourceMock);
         appMock.versions = versionsMock;
         appsService.mock = mock;
-        sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
         fixture.detectChanges();
       });
 
@@ -317,7 +308,6 @@ describe('AppDetailsComponent', () => {
         const mock = Object.assign({}, sourceMock);
         appMock.versions = [versionMock];
         appsService.mock = mock;
-        sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
         fixture.detectChanges();
       });
 

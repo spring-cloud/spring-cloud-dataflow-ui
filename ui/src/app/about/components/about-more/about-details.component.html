@@ -50,15 +50,6 @@
             <span class="fa fa-close"></span>
           </strong>
         </div>
-        <div class="line">
-          <span>Skipper Mode: </span>
-          <strong *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled" id="skipperEnabled">
-            <span class="fa fa-check"></span>
-          </strong>
-          <strong *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled" id="skipperDisabled">
-            <span class="fa fa-close"></span>
-          </strong>
-        </div>
       </div>
     </div>
 
@@ -154,8 +145,7 @@
 
     <div class="box">
       <span class="fa fa-cube"></span>
-      <h2 *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled">Runtime Environment - Skipper Deployer</h2>
-      <h2 *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled">Runtime Environment - App Deployer</h2>
+      <h2>Runtime Environment - Skipper Deployer</h2>
       <div id="appDeployerTable">
         <div class="line">
           <span>Implementation Version: </span>
@@ -201,8 +191,7 @@
     </div>
 
     <div class="box">
-      <h2 *ngIf="dataflowVersionInfo.featureInfo.skipperEnabled">Platform-specific Information of the Skipper Deployer</h2>
-      <h2 *ngIf="!dataflowVersionInfo.featureInfo.skipperEnabled">Platform-specific Information of the App Deployer</h2>
+      <h2>Platform-specific Information of the Skipper Deployer</h2>
       <div id="appDeployerPlatformSpecificTable">
         <ng-template
           *ngIf="dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.appDeployer.platformSpecificInfo.size > 0"

@@ -91,7 +91,6 @@ describe('AppVersionsComponent', () => {
     const versionMock = versionsMock[2];
 
     beforeEach(() => {
-      sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
       appsService.mock = Object.assign({}, JSON.parse(JSON.stringify(APPS)));
       component.open(new AppRegistration('foo', ApplicationType[ApplicationType.source.toString()]));
       fixture.detectChanges();
@@ -193,7 +192,6 @@ describe('AppVersionsComponent', () => {
   describe('Many versions without a default version', () => {
 
     beforeEach(() => {
-      sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
       const mock = Object.assign({}, JSON.parse(JSON.stringify(APPS)));
       mock.items[0].versions = [mock.items[0].versions[0], mock.items[0].versions[1]];
       appsService.mock = mock;
@@ -212,7 +210,6 @@ describe('AppVersionsComponent', () => {
   describe('Modal', () => {
 
     beforeEach(() => {
-      sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = true;
       appsService.mock = Object.assign({}, JSON.parse(JSON.stringify(APPS)));
       component.open(new AppRegistration('foo', ApplicationType[ApplicationType.source.toString()]));
       fixture.detectChanges();

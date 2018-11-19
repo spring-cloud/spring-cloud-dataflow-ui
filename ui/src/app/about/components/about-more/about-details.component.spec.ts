@@ -70,8 +70,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Schedules', 'Skipper Mode'], 0);
-    validateSpansExists(['analyticsEnabled', 'streamsEnabled', 'tasksEnabled', 'schedulerEnabled', 'skipperEnabled']);
+    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Schedules'], 0);
+    validateSpansExists(['analyticsEnabled', 'streamsEnabled', 'tasksEnabled', 'schedulerEnabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',
@@ -117,8 +117,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Schedules', 'Skipper Mode'], 0);
-    validateSpansExists(['analyticsDisabled', 'streamsDisabled', 'tasksDisabled', 'schedulerDisabled', 'skipperDisabled']);
+    validateColumnValues('enabledFeaturesTable', ['Analytics', 'Streams', 'Tasks', 'Schedules'], 0);
+    validateSpansExists(['analyticsDisabled', 'streamsDisabled', 'tasksDisabled', 'schedulerDisabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',
