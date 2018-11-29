@@ -33,17 +33,7 @@ jobs:
       script: ./run-maven-build.sh
     - stage: Unit Tests SauceLabs + BrowserStack
       script: ./run-npm-test-saucelabs.sh
-      if: type != pull_request
-      after_success: skip
     - script: ./run-npm-test-browserstack.sh
-      if: type != pull_request
-      after_success: skip
     - stage: E2E Local + SauceLabs + BrowserStack
-      script: ./run-npm-e2e-local.sh
-      after_success: skip
-    - script: ./run-npm-e2e-saucelabs.sh
-      if: type != pull_request
-      after_success: skip
+      script: ./run-npm-e2e-saucelabs.sh
     - script: ./run-npm-e2e-browserstack.sh
-      if: type != pull_request
-      after_success: skip

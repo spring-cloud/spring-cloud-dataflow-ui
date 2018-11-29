@@ -5,8 +5,9 @@
  */
 
 import { AppsRegisterPage } from './apps-register.po';
+import { browser } from 'protractor';
 
-describe('E2E spec for app registration page', () => {
+xdescribe('E2E spec for app registration page', () => {
   let page: AppsRegisterPage;
 
   beforeEach(() => {

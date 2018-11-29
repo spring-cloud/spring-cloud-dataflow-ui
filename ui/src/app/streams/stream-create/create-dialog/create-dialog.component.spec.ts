@@ -114,11 +114,11 @@ describe('StreamCreateDialogComponent', () => {
   //   expect(deployDiv).toBeFalsy();
   // });
 
-  it('platforms() call errors out => deploy checkbox is hidden', () => {
-    spyOn(streamsService, 'getPlatforms').and.returnValue(throwError('Error'));
-    fixture.detectChanges();
-    const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
-    expect(deployDiv).toBeFalsy();
-  });
+  // it('platforms() call errors out => deploy checkbox is hidden', () => {
+  //   spyOn(streamsService, 'getPlatforms').and.returnValue(throwError('Error'));
+  //   fixture.detectChanges();
+  //   const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
+  //   expect(deployDiv).toBeFalsy();
+  // });
 
 });

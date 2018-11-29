@@ -12,6 +12,7 @@ exports.config = {
     }
   ],
   allScriptsTimeout: 110000,
+  getPageTimeout: 110000,
   specs: [
     './src/**/*.e2e-spec.ts'
   ],

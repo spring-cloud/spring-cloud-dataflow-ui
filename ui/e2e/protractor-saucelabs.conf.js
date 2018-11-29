@@ -7,10 +7,6 @@ const useEmbeddedSauceConnect =
 console.log('Use embedded Sauce Connect client?: ' + useEmbeddedSauceConnect);
 
 exports.config = {
-
-  jasmineNodeOpts: {
-    defaultTimeoutInterval: 5000000
-  },
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
   plugins: [
@@ -24,7 +20,8 @@ exports.config = {
     {
       name: 'E2E Safari/Mac',
       browserName: 'safari',
-      platform: 'macOS 10.13'
+      platform: 'macOS 10.12',
+      version: '11.0'
     },
     {
       name: 'E2E Edge/Win10',
@@ -48,7 +45,7 @@ exports.config = {
   },
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: 50000000,
     print: function() {}
   },
   onPrepare() {
