@@ -14,6 +14,8 @@ class ProtractorDockerPlugin implements ProtractorPlugin {
   private readonly destinationFileName = 'docker-compose.yml';
   private readonly destinationFilePath = '.docker/' + this.destinationFileName;
   private readonly dockerComposeCommand = 'docker-compose';
+  private readonly defaultDataflowDockerTag = 'latest';
+  private readonly defaultSkipperDockerTag = '2.0.0.BUILD-SNAPSHOT';
 
   public async setup() {
     console.log('Setting up Docker Compose…');
@@ -68,7 +70,21 @@ class ProtractorDockerPlugin implements ProtractorPlugin {
       console.log('Did NOT find command: ' + this.dockerComposeCommand);
       process.exit(1);
     }
-    process.env['DATAFLOW_VERSION'] = 'latest';
+
+    if (!process.env['DATAFLOW_VERSION']) {
+      process.env['DATAFLOW_VERSION'] = this.defaultDataflowDockerTag;
+      console.log(`Setting Data Flow Docker tag to '${process.env['DATAFLOW_VERSION']}'`);
+    } else {
+      console.log(`Using exising Data Flow Docker tag (DATAFLOW_VERSION) '${process.env['DATAFLOW_VERSION']}'`);
+    }
+
+    if (!process.env['SKIPPER_VERSION']) {
+      process.env['SKIPPER_VERSION'] = this.defaultSkipperDockerTag;
+      console.log(`Setting Skipper Docker tag to '${process.env['SKIPPER_VERSION']}'`);
+    } else {
+      console.log(`Using exising Skipper Docker tag (SKIPPER_VERSION) '${process.env['SKIPPER_VERSION']}'`);
+    }
+
     let stdout = cp.execSync(this.dockerComposeCommand + ' -f ' + this.destinationFilePath + ' up -d');
     console.log('Docker startup command result:' + stdout);
     await this.sleep(dockerComposeWaitTime);
