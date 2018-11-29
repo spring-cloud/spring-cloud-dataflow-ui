@@ -70,7 +70,7 @@
   </table>
 
   <app-list-pagination [page]="executions.page" [params]="executions.params"
-                       (changed)="changePaginationPager(executions.params. $event)" [item]="'task execution'"
+                       (changed)="changePaginationPager(executions.params, $event)" [item]="'task execution'"
                        [items]="'task executions'">
   </app-list-pagination>
 
