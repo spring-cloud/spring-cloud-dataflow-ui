@@ -15,13 +15,13 @@
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
         <th style="width: 70px">
-          <app-sort id="sort-name" (change)="applySort($event)" [value]="'DEFINITION_NAME'" [sort]="params">
+          <app-sort id="sort-name" (change)="applySort($event)" [value]="'taskName'" [sort]="params">
             Name
           </app-sort>
         </th>
         <th>
           <div class="head-dsl">
-            <app-sort id="sort-dsl" (change)="applySort($event)" [value]="'DEFINITION'" [sort]="params">
+            <app-sort id="sort-dsl" (change)="applySort($event)" [value]="'dslText'" [sort]="params">
               Definitions
             </app-sort>
           </div>

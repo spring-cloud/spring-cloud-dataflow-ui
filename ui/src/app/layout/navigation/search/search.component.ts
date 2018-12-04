@@ -131,7 +131,7 @@ export class NavigationSearchComponent implements OnInit {
             q: value + '',
             page: 0,
             size: 5,
-            sort: 'DEFINITION_NAME',
+            sort: 'name',
             order: 'ASC'
           }).subscribe((page: Page<StreamDefinition>) => {
             this.resultSearch.stream = page;
@@ -141,7 +141,7 @@ export class NavigationSearchComponent implements OnInit {
             q: value + '',
             page: 0,
             size: 5,
-            sort: 'DEFINITION_NAME',
+            sort: 'taskName',
             order: 'ASC'
           }).subscribe((page: Page<TaskDefinition>) => {
             this.resultSearch.task = page;
@@ -250,7 +250,7 @@ export class NavigationSearchComponent implements OnInit {
           q: this.q.value,
           page: 0,
           size: 30,
-          sort: 'DEFINITION_NAME',
+          sort: 'name',
           order: OrderParams.ASC,
           itemsSelected: [],
           itemsExpanded: []
@@ -263,7 +263,7 @@ export class NavigationSearchComponent implements OnInit {
           q: this.q.value,
           page: 0,
           size: 30,
-          sort: 'DEFINITION_NAME',
+          sort: 'name',
           order: OrderParams.ASC,
           itemsSelected: []
         };

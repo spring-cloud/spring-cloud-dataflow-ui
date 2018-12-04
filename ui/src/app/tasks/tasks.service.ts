@@ -45,7 +45,7 @@ export class TasksService {
     q: '',
     page: 0,
     size: 30,
-    sort: 'DEFINITION_NAME',
+    sort: 'taskName',
     order: OrderParams.ASC,
     itemsSelected: []
   };
