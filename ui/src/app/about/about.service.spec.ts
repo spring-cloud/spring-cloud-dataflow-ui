@@ -9,7 +9,6 @@ describe('AboutService', () => {
   const jsonData = {
       'featureInfo':
       {
-          'analyticsEnabled': true,
           'streamsEnabled': true,
           'tasksEnabled': true,
       },

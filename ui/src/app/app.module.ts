@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AboutModule } from './about/about.module';
-import { AnalyticsModule } from './analytics/analytics.module';
 import { AppsModule } from './apps/apps.module';
 import { JobsModule } from './jobs/jobs.module';
 import { RuntimeAppsModule } from './runtime/runtime-apps.module';
@@ -42,7 +41,6 @@ export function init(authService: AuthService, sharedAboutService: SharedAboutSe
   ],
   imports: [
     AboutModule,
-    AnalyticsModule,
     AppsModule,
     AuditRecordModule,
     BrowserModule,
