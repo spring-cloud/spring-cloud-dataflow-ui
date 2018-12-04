@@ -6,7 +6,6 @@ describe('AboutInfo', () => {
       const jsonAboutInfo = JSON.parse(`
         {
           "featureInfo": {
-            "analyticsEnabled": true,
             "streamsEnabled": true,
             "tasksEnabled": true
           },

@@ -103,7 +103,6 @@ export class MockAboutService {
 
   private getFeatureInfo() {
     const featureInfo = new FeatureInfo();
-    featureInfo.analyticsEnabled = true;
     featureInfo.streamsEnabled = true;
     featureInfo.tasksEnabled = true;
     featureInfo.schedulerEnabled = true;
@@ -172,7 +171,6 @@ export class MockAboutService {
       if (!this._isFeatureEnabled) {
         dataFlowVersion.securityInfo.isAuthenticationEnabled = false;
         dataFlowVersion.securityInfo.isAuthenticated = false;
-        dataFlowVersion.featureInfo.analyticsEnabled = false;
         dataFlowVersion.featureInfo.streamsEnabled = false;
         dataFlowVersion.featureInfo.tasksEnabled = false;
         dataFlowVersion.featureInfo.schedulerEnabled = false;

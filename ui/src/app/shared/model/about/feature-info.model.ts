@@ -9,7 +9,6 @@ import { LoggerService } from '../../services/logger.service';
  */
 export class FeatureInfo implements Serializable<FeatureInfo> {
 
-  public analyticsEnabled = false;
   public streamsEnabled = false;
   public tasksEnabled = false;
   public schedulerEnabled = false;
@@ -19,14 +18,12 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
    * Set the FeatureInfo object to default values.
    */
   public reset() {
-    this.analyticsEnabled = false;
     this.streamsEnabled = false;
     this.tasksEnabled = false;
     this.schedulerEnabled = false;
   }
 
   public deserialize(input) {
-    this.analyticsEnabled = input.analyticsEnabled;
     this.streamsEnabled = input.streamsEnabled;
     this.tasksEnabled = input.tasksEnabled;
     this.schedulerEnabled = input.schedulerEnabled;
@@ -42,9 +39,6 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
   public isFeatureEnabled(feature: string): boolean {
     if (feature) {
       switch (feature) {
-        case 'analyticsEnabled': {
-          return this.analyticsEnabled;
-        }
         case 'streamsEnabled': {
           return this.streamsEnabled;
         }
