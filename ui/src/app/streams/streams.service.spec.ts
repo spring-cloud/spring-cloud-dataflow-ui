@@ -74,7 +74,7 @@ describe('StreamsService', () => {
 
     it('should call the definitions service with the right url [asc sort]', () => {
       this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'ASC' });
+      this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'dslText', order: 'ASC' });
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
@@ -84,12 +84,12 @@ describe('StreamsService', () => {
       expect(headerArgs.get('Accept')).toEqual('application/json');
       expect(httpParams.get('page')).toEqual('0');
       expect(httpParams.get('size')).toEqual('10');
-      expect(httpParams.get('sort')).toEqual('DEFINITION,ASC');
+      expect(httpParams.get('sort')).toEqual('dslText,ASC');
     });
 
     it('should call the definitions service with the right url [desc sort]', () => {
       this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC' });
+      this.streamsService.getDefinitions({ q: '', page: 0, size: 10, sort: 'dslText', order: 'DESC' });
 
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
@@ -99,12 +99,12 @@ describe('StreamsService', () => {
       expect(headerArgs.get('Accept')).toEqual('application/json');
       expect(httpParams.get('page')).toEqual('0');
       expect(httpParams.get('size')).toEqual('10');
-      expect(httpParams.get('sort')).toEqual('DEFINITION,DESC');
+      expect(httpParams.get('sort')).toEqual('dslText,DESC');
     });
 
     it('should call the definitions service with the right url [search desc sort]', () => {
       this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.streamsService.getDefinitions({ q: 'foo', page: 0, size: 10, sort: 'DEFINITION', order: 'DESC' });
+      this.streamsService.getDefinitions({ q: 'foo', page: 0, size: 10, sort: 'dslText', order: 'DESC' });
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
       const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
@@ -114,7 +114,7 @@ describe('StreamsService', () => {
       expect(httpParams.get('page')).toEqual('0');
       expect(httpParams.get('size')).toEqual('10');
       expect(httpParams.get('search')).toEqual('foo');
-      expect(httpParams.get('sort')).toEqual('DEFINITION,DESC');
+      expect(httpParams.get('sort')).toEqual('dslText,DESC');
     });
 
   });

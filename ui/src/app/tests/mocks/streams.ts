@@ -29,7 +29,7 @@ export class MockStreamsService {
     q: '',
     page: 0,
     size: 30,
-    sort: 'DEFINITION_NAME',
+    sort: 'name',
     order: OrderParams.ASC,
     itemsSelected: [],
     itemsExpanded: []

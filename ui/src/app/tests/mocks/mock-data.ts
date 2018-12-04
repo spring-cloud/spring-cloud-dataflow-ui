@@ -1192,7 +1192,7 @@ export const TASK_DEFINITIONS = {
   },
   _links: {
     self: {
-      href: 'http://localhost:4200/tasks/definitions?page=0&size=20&sort=DEFINITION_NAME,asc'
+      href: 'http://localhost:4200/tasks/definitions?page=0&size=20&sort=taskName,asc'
     }
   },
   page: {

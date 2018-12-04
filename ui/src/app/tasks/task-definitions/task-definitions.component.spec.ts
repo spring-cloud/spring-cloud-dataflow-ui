@@ -298,11 +298,11 @@ describe('TaskDefinitionsComponent', () => {
       const sortName: HTMLElement = fixture.debugElement.query(By.css('#sort-name a')).nativeElement;
       const sortDsl: HTMLElement = fixture.debugElement.query(By.css('#sort-dsl a')).nativeElement;
       [
-        { click: sortName, nameDesc: true, sort: 'DEFINITION_NAME', order: 'DESC' },
-        { click: sortDsl, dslAsc: true, sort: 'DEFINITION', order: 'ASC' },
-        { click: sortDsl, dslDesc: true, sort: 'DEFINITION', order: 'DESC' },
-        { click: sortName, nameAsc: true, sort: 'DEFINITION_NAME', order: 'ASC' },
-        { click: sortDsl, dslAsc: true, sort: 'DEFINITION', order: 'ASC' }
+        { click: sortName, nameDesc: true, sort: 'taskName', order: 'DESC' },
+        { click: sortDsl, dslAsc: true, sort: 'dslText', order: 'ASC' },
+        { click: sortDsl, dslDesc: true, sort: 'dslText', order: 'DESC' },
+        { click: sortName, nameAsc: true, sort: 'taskName', order: 'ASC' },
+        { click: sortDsl, dslAsc: true, sort: 'dslText', order: 'ASC' }
       ].forEach((test) => {
         test.click.click();
         fixture.detectChanges();

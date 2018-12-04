@@ -33,7 +33,7 @@ export class MockTasksService {
     q: '',
     page: 0,
     size: 20,
-    sort: 'DEFINITION_NAME',
+    sort: 'taskName',
     order: OrderParams.ASC,
     itemsSelected: [],
     itemsExpanded: []
