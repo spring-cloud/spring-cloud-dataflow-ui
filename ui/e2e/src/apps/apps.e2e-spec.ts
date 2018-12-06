@@ -40,7 +40,7 @@ describe('E2E spec for apps page', () => {
 
   let navigation: Navigation;
 
-  const TICK_DELAY = 1500;
+  const TICK_DELAY = 3500;
 
   browser.waitForAngularEnabled(false);
 

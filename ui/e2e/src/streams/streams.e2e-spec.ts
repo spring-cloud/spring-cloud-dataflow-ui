@@ -20,7 +20,7 @@ describe('E2E spec for streams page', () => {
 
   let pagination: Pagination;
 
-  const TICK_DELAY = 1500;
+  const TICK_DELAY = 3500;
 
   browser.waitForAngularEnabled(false);
 
@@ -228,6 +228,7 @@ describe('E2E spec for streams page', () => {
     });
 
     it('should destroy all the streams', () => {
+      browser.sleep(TICK_DELAY);
       expect(pageStreams.getTableRows().count()).toBe(30);
       expect(pagination.get().isPresent()).toBeTruthy();
       pageStreams.setDestroys();
@@ -257,6 +258,7 @@ describe('E2E spec for streams page', () => {
     });
 
     it('should destroy all the apps', () => {
+      browser.sleep(TICK_DELAY);
       expect(pageApps.getTableRows().count()).toBe(30);
       expect(pagination.get().isPresent()).toBeTruthy();
       pageApps.setUnregisters();
