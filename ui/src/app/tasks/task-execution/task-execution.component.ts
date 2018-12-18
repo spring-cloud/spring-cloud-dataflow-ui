@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskExecution } from '../model/task-execution';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TasksService } from '../tasks.service';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { Observable, EMPTY } from 'rxjs';
@@ -32,12 +32,14 @@ export class TaskExecutionComponent implements OnInit {
    * @param {TasksService} tasksService
    * @param {RoutingStateService} routingStateService
    * @param {NotificationService} notificationService
+   * @param {Router} router
    * @param {ActivatedRoute} route
    * @param {TasksService} tasksService
    */
   constructor(private tasksService: TasksService,
               private routingStateService: RoutingStateService,
               private notificationService: NotificationService,
+              private router: Router,
               private route: ActivatedRoute) {
   }
 
@@ -76,5 +78,22 @@ export class TaskExecutionComponent implements OnInit {
   getArguments(args: Array<any>): Array<any> {
     return args.map((arg) => arg.split('='));
   }
+
+  /**
+   * Route to {@link TaskDefinition} launch page.
+   * @param {taskDefinitionName} taskDefinitionName
+   */
+  launch(taskDefinitionName: string) {
+    this.router.navigate([`tasks/definitions/launch/${taskDefinitionName}`]);
+  }
+
+  /**
+   * Route to {@link TaskDefinition} details page.
+   * @param {taskDefinitionName} taskDefinitionName
+   */
+  detailsTask(taskDefinitionName: string) {
+    this.router.navigate([`tasks/definitions/${taskDefinitionName}`]);
+  }
+
 
 }
