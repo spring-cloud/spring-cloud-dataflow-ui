@@ -20,6 +20,11 @@ import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { DateTime } from 'luxon';
+import { RolesDirective } from '../../auth/directives/roles.directive';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { AuthService } from '../../auth/auth.service';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 
 describe('TaskExecutionsDetailsComponent', () => {
   let component: TaskExecutionComponent;
@@ -28,6 +33,10 @@ describe('TaskExecutionsDetailsComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const routingStateService = new MockRoutingStateService();
+
+  const authService = new MockAuthService();
+  const aboutService = new MocksSharedAboutService();
+
   const commonTestParams = { id: '1' };
   const commonTestExecutionDetails = {
     1: {
@@ -62,6 +71,7 @@ describe('TaskExecutionsDetailsComponent', () => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       declarations: [
+        RolesDirective,
         TaskExecutionComponent,
         DataflowDateTimePipe,
         DataflowDurationPipe,
@@ -80,6 +90,8 @@ describe('TaskExecutionsDetailsComponent', () => {
         RouterTestingModule.withRoutes([])
       ],
       providers: [
+        { provide: SharedAboutService, useValue: aboutService },
+        { provide: AuthService, useValue: authService },
         { provide: TasksService, useValue: tasksService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: ActivatedRoute, useValue: activeRoute },

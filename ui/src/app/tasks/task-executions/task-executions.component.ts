@@ -11,6 +11,8 @@ import { OrderParams, SortParams } from '../../shared/components/shared.interfac
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
+import { AuthService } from '../../auth/auth.service';
+import { TaskDefinition } from '../model/task-definition';
 
 /**
  * Component that display the Task Executions.
@@ -59,12 +61,14 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {BusyService} busyService
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
+   * @param {AuthService} authService
    * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(private busyService: BusyService,
               public tasksService: TasksService,
               public notificationService: NotificationService,
+              private authService: AuthService,
               public loggerService: LoggerService,
               private router: Router) {
   }
@@ -92,7 +96,25 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         action: 'details',
         title: 'Show details',
         isDefault: true
-      }
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'details-task' + index,
+        icon: 'info-circle',
+        action: 'detailstask',
+        title: 'Show task details',
+        isDefault: false
+      },
+      {
+        id: 'launch-task' + index,
+        icon: 'play',
+        action: 'launch',
+        title: 'Relaunch task',
+        isDefault: false,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+      },
     ];
   }
 
@@ -105,6 +127,12 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'details':
         this.details(item);
+        break;
+      case 'detailstask':
+        this.detailsTask(item.taskName);
+        break;
+      case 'launch':
+        this.launch(item.taskName);
         break;
     }
   }
@@ -195,5 +223,22 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   details(taskExecution: TaskExecution) {
     this.router.navigate([`tasks/executions/${taskExecution.executionId}`]);
   }
+
+  /**
+   * Route to {@link TaskDefinition} details page.
+   * @param {taskDefinitionName} taskDefinitionName
+   */
+  detailsTask(taskDefinitionName: string) {
+    this.router.navigate([`tasks/definitions/${taskDefinitionName}`]);
+  }
+
+  /**
+   * Route to {@link TaskDefinition} launch page.
+   * @param {taskDefinitionName} taskDefinitionName
+   */
+  launch(taskDefinitionName: string) {
+    this.router.navigate([`tasks/definitions/launch/${taskDefinitionName}`]);
+  }
+
 
 }

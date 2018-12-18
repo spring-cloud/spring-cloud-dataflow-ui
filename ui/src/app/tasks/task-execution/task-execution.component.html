@@ -3,8 +3,23 @@
   <app-page-head>
     <app-page-head-back [defaultUrl]="'/tasks/executions'"
                         [isNotRegex]="'^(\/tasks\/executions\/)'"></app-page-head-back>
-    <app-page-head-title>Task Execution Details - <strong>Execution ID: {{ taskExecution.executionId }}</strong>
+    <app-page-head-title>
+      Task Execution Details - <strong>Execution ID: {{ taskExecution.executionId }}</strong>
     </app-page-head-title>
+    <app-page-head-actions>
+
+      <button name="task-view" type="button" id="task-view"
+              (click)="detailsTask(taskExecution.taskName)" class="btn btn-primary btn-fa" title="View details task">
+        <span class="fa fa-info-circle"></span>
+        View task details
+      </button>
+      <button name="task-launch" type="button" id="task-launch"
+              (click)="launch(taskExecution.taskName)" class="btn btn-primary btn-fa" title="Relaunch the task"
+              [dataflowAppRoles]="['ROLE_CREATE']">
+        <span class="fa fa-play"></span>
+        Relaunch task
+      </button>
+    </app-page-head-actions>
   </app-page-head>
 
   <div dataflowLayoutType type="large">
