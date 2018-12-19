@@ -45,29 +45,13 @@ export class LogoutComponent implements OnInit, OnDestroy {
     }
 
     this.loggerService.log('Logging out ...');
-    if (this.authService.securityInfo.isFormLogin) {
-      this.authService.logout()
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(
-        result => {
-          this.aboutService.featureInfo.reset();
-          this.notificationService.success('Logged out.');
-          this.router.navigate(['login']);
-        },
-        error => {
-          this.aboutService.featureInfo.reset();
-          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        },
-      );
-    } else {
-      this.loggerService.log(`Logging out user ${this.authService.securityInfo.username} (OAuth)`);
-      this.authService.clearLocalSecurity();
-      this.aboutService.featureInfo.reset();
+    this.loggerService.log(`Logging out user ${this.authService.securityInfo.username} (OAuth)`);
+    this.authService.clearLocalSecurity();
+    this.aboutService.featureInfo.reset();
 
-      const logoutUrl = '//' + window.location.host + '/logout';
-      this.loggerService.log('Redirecting to ' + logoutUrl);
-      window.open(logoutUrl, '_self');
-    }
+    const logoutUrl = '//' + window.location.host + '/logout';
+    this.loggerService.log('Redirecting to ' + logoutUrl);
+    window.open(logoutUrl, '_self');
   }
 
   /**

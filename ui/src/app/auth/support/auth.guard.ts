@@ -43,8 +43,7 @@ export class AuthGuard implements CanActivate {
 
     if (securityInfo.isAuthenticationEnabled) {
       this.loggerService.log(`Determining authorizations ... ` +
-        `[authentication enabled: ${securityInfo.isAuthenticationEnabled}, ` +
-        `authorization enabled: ${securityInfo.isAuthorizationEnabled}]`, route.data);
+        `[authentication enabled: ${securityInfo.isAuthenticationEnabled}]`, route.data);
     }
 
     if (securityInfo.canAccess(rolesNeeded)) {
@@ -52,7 +51,7 @@ export class AuthGuard implements CanActivate {
     }
 
     if (securityInfo.isAuthenticationEnabled) {
-      if (securityInfo.isAuthorizationEnabled && securityInfo.isAuthenticated) {
+      if (securityInfo.isAuthenticated) {
         this.loggerService.log('You do not have any of the necessary role(s) ' + rolesNeeded);
         this.router.navigate(['roles-missing']);
       } else {

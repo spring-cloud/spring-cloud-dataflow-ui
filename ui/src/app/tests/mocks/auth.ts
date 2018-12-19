@@ -15,17 +15,18 @@ export class MockAuthService {
   login(loginRequest: LoginRequest): Observable<SecurityInfo> {
 
     this.securityInfo.isAuthenticationEnabled = true;
-    this.securityInfo.isAuthorizationEnabled = true;
-    this.securityInfo.isFormLogin = true;
     this.securityInfo.isAuthenticated = true;
     this.securityInfo.username = 'Pele';
     this.securityInfo.roles = ['ROLE_VIEW', 'ROLE_CREATE', 'ROLE_MANAGE'];
-
     return of(this.securityInfo);
   }
 
   logout(): Observable<SecurityInfo> {
     this.securityInfo.reset();
     return of(this.securityInfo);
+  }
+
+  public clearLocalSecurity() {
+    this.securityInfo.reset();
   }
 }

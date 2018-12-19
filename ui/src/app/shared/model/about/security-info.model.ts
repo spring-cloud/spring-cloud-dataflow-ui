@@ -7,8 +7,6 @@ import { Serializable } from '../serialization/serializable.model';
 export class SecurityInfo implements Serializable<SecurityInfo> {
 
   public isAuthenticationEnabled = true;
-  public isAuthorizationEnabled = true;
-  public isFormLogin = true;
   public isAuthenticated = false;
   public username = '';
   public roles: string[] = [];
@@ -18,8 +16,6 @@ export class SecurityInfo implements Serializable<SecurityInfo> {
    */
   public reset() {
     this.isAuthenticationEnabled = true;
-    this.isAuthorizationEnabled = true;
-    this.isFormLogin = true;
     this.isAuthenticated = false;
     this.username = '';
     this.roles = [];
@@ -27,8 +23,6 @@ export class SecurityInfo implements Serializable<SecurityInfo> {
 
   public deserialize(input) {
     this.isAuthenticationEnabled = input.authenticationEnabled,
-    this.isAuthorizationEnabled = input.authorizationEnabled,
-    this.isFormLogin = input.formLogin,
     this.isAuthenticated = input.authenticated,
     this.username = input.username,
     this.roles = input.roles as string[];
@@ -66,13 +60,9 @@ export class SecurityInfo implements Serializable<SecurityInfo> {
       found = true;
     } else {
       if (this.isAuthenticated) {
-        if (this.isAuthorizationEnabled) {
           if (this.hasAnyRoleOf(appRoles)) {
             found = true;
           }
-        } else {
-          found = true;
-        }
       } else {
         found = false;
       }
