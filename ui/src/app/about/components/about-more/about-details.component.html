@@ -67,24 +67,6 @@
           </strong>
         </div>
         <div class="line">
-          <span>Authorization Enabled: </span>
-          <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthorizationEnabled" id="authorizationEnabled">
-            <span class="fa fa-check"></span>
-          </strong>
-          <strong *ngIf="!dataflowVersionInfo.securityInfo.isAuthorizationEnabled" id="authorizationDisabled">
-            <span class="fa fa-close"></span>
-          </strong>
-        </div>
-        <div class="line">
-          <span>Form Login: </span>
-          <strong *ngIf="dataflowVersionInfo.securityInfo.isFormLogin" id="formLoginEnabled">
-            <span class="fa fa-check"></span>
-          </strong>
-          <strong *ngIf="!dataflowVersionInfo.securityInfo.isFormLogin" id="formLoginDisabled">
-            <span class="fa fa-close"></span>
-          </strong>
-        </div>
-        <div class="line">
           <span>Authenticated: </span>
           <strong *ngIf="dataflowVersionInfo.securityInfo.isAuthenticated" id="authenticateEnabled">
             <span class="fa fa-check"></span>
@@ -255,7 +237,7 @@
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springBootVersion }}</strong>
           </div>
           <div class="line">
-            <span>Spring Versionv</span>
+            <span>Spring Version: </span>
             <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springVersion }}</strong>
           </div>
         </div>

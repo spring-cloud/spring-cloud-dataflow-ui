@@ -95,8 +95,6 @@ export class MockAboutService {
   private getSecurityInfo() {
     const securityInfo = new SecurityInfo();
     securityInfo.isAuthenticationEnabled = true;
-    securityInfo.isAuthorizationEnabled = true;
-    securityInfo.isFormLogin = true;
     securityInfo.isAuthenticated = true;
     securityInfo.roles = ['base_role'];
     securityInfo.username = 'joe';
@@ -173,8 +171,6 @@ export class MockAboutService {
       dataFlowVersion = this.getDataflowVersionInfo();
       if (!this._isFeatureEnabled) {
         dataFlowVersion.securityInfo.isAuthenticationEnabled = false;
-        dataFlowVersion.securityInfo.isAuthorizationEnabled = false;
-        dataFlowVersion.securityInfo.isFormLogin = false;
         dataFlowVersion.securityInfo.isAuthenticated = false;
         dataFlowVersion.featureInfo.analyticsEnabled = false;
         dataFlowVersion.featureInfo.streamsEnabled = false;

@@ -60,12 +60,13 @@ describe('LogoutComponent', () => {
     const navigate = spyOn((<any>component).router, 'navigate');
     const logout = spyOn(authService as AuthService, 'logout').and.callThrough();
 
+    spyOn(window, 'open');
+
     fixture.detectChanges();
     expect(component).toBeTruthy();
     expect(authService.securityInfo.isAuthenticated).toBe(false);
     expect(authService.securityInfo.username).toEqual('');
-    expect(logout).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith(['login']);
+    expect(window.open).toHaveBeenCalledWith('//' + window.location.host + '/logout', '_self');
   });
 
   it('Logout should just redirect to the root of the app as '

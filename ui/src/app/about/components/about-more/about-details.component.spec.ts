@@ -74,9 +74,8 @@ describe('AboutDetailsComponent', () => {
     validateSpansExists(['analyticsEnabled', 'streamsEnabled', 'tasksEnabled', 'schedulerEnabled']);
 
     // Verify Security Information
-    validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',
-      'Form Login', 'Authenticated', 'Username', 'Roles'], 0);
-    validateSpansExists(['authenticationEnabled', 'authorizationEnabled', 'formLoginEnabled', 'authenticateEnabled']);
+    validateColumnValues('securityInformationTable', ['Authentication', 'Authenticated', 'Username', 'Roles'], 0);
+    validateSpansExists(['authenticationEnabled', 'authenticateEnabled']);
     validateTdValue('username', 'joe');
     validateTdValue('roles', 'base_role');
 
@@ -121,9 +120,8 @@ describe('AboutDetailsComponent', () => {
     validateSpansExists(['analyticsDisabled', 'streamsDisabled', 'tasksDisabled', 'schedulerDisabled']);
 
     // Verify Security Information
-    validateColumnValues('securityInformationTable', ['Authentication', 'Authorization',
-      'Form Login', 'Authenticated', 'Username', 'Roles'], 0);
-    validateSpansExists(['authenticationDisabled', 'authorizationDisabled', 'formLoginDisabled', 'authenticateDisabled']);
+    validateColumnValues('securityInformationTable', ['Authentication', 'Authenticated', 'Username', 'Roles'], 0);
+    validateSpansExists(['authenticationDisabled', 'authenticateDisabled']);
     validateTdValue('username', 'joe');
     validateTdValue('roles', 'base_role');
   });

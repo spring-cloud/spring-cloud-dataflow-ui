@@ -14,8 +14,6 @@ describe('AuthService', () => {
     };
     this.jsonData = {
       'authenticationEnabled': true,
-      'authorizationEnabled': true,
-      'formLogin': true,
       'authenticated': true,
       'username': 'foo',
       'roles':

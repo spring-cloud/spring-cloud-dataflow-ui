@@ -31,8 +31,6 @@ describe('AboutInfo', () => {
           },
           "securityInfo": {
             "authenticationEnabled": false,
-            "authorizationEnabled": false,
-            "formLogin": false,
             "authenticated": false,
             "username": null,
             "roles": []
