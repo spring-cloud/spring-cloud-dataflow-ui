@@ -16,9 +16,7 @@ import { SharedAboutService } from '../../../shared/services/shared-about.servic
 import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
-import { By } from '@angular/platform-browser';
-import { of, throwError } from 'rxjs';
-import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
+import { of } from 'rxjs';
 import { Platform } from '../../model/platform';
 
 /**
@@ -86,39 +84,6 @@ describe('StreamCreateDialogComponent', () => {
     expect(component).toBeTruthy();
     component.open({ dsl: 'file | log' });
     expect(component).toBeTruthy();
-  });
-
-  it('skipper mode and multiple platforms => deploy checkbox is hidden', () => {
-    spyOn(streamsService, 'getPlatforms').and.returnValue(of([
-      new Platform('default', 'local')
-    ]));
-    fixture.detectChanges();
-    const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
-    expect(deployDiv).toBeFalsy();
-  });
-
-  it('skipper mode on and single platform => deploy checkbox is shown', () => {
-    spyOn(streamsService, 'getPlatforms').and.returnValue(of([
-      new Platform('default', 'local')
-    ]));
-    fixture.detectChanges();
-    const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
-    expect(deployDiv).toBeDefined();
-  });
-
-  // it('skipper mode errors out => deploy checkbox is hidden', () => {
-  //   const featureInfo = new FeatureInfo();
-  //   spyOn(aboutService, 'getFeatureInfo').and.returnValue(Observable.throw('Error'));
-  //   fixture.detectChanges();
-  //   const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
-  //   expect(deployDiv).toBeFalsy();
-  // });
-
-  it('platforms() call errors out => deploy checkbox is hidden', () => {
-    spyOn(streamsService, 'getPlatforms').and.returnValue(throwError('Error'));
-    fixture.detectChanges();
-    const deployDiv = fixture.debugElement.query(By.css('.row .row-stream-deploy'));
-    expect(deployDiv).toBeFalsy();
   });
 
 });
