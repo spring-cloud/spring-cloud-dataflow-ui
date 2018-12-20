@@ -30,7 +30,7 @@ describe('JobsService', () => {
 
       this.jobsService.getJobExecutions({ page: 0, size: 10 });
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions', { params: params });
+      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/thinexecutions', { params: params });
     });
   });
 

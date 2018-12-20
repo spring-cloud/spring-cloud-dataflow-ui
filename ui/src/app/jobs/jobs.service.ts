@@ -23,7 +23,8 @@ export class JobsService {
    * URL API
    */
   public static URL = {
-    EXECUTIONS: '/jobs/executions'
+    EXECUTIONS: '/jobs/executions',
+    THINEXECUTIONS: '/jobs/thinexecutions'
   };
 
   /**
@@ -60,7 +61,7 @@ export class JobsService {
     this.loggerService.log(`Get Job Executions`, listParams);
     const params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
     return this.httpClient
-      .get<any>(JobsService.URL.EXECUTIONS, { params: params })
+      .get<any>(JobsService.URL.THINEXECUTIONS, { params: params })
       .pipe(
         map(JobExecution.pageFromJSON),
         catchError(this.errorHandler.handleError)

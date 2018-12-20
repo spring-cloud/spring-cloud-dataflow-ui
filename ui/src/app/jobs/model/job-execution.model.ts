@@ -58,10 +58,32 @@ export class JobExecution {
     return jobExecution;
   }
 
+  static fromThinJSON(input): JobExecution {
+    const jobExecution: JobExecution = new JobExecution();
+    jobExecution.name = input.name;
+    jobExecution.startTime = DateTime.fromISO(input.startDateTime);
+    jobExecution.stepExecutionCount = input.stepExecutionCount;
+    jobExecution.status = input.status;
+    jobExecution.jobExecutionId = input.executionId;
+    jobExecution.taskExecutionId = input.taskExecutionId;
+    jobExecution.jobInstanceId = input.instanceId;
+    jobExecution.restartable = input.restartable;
+    jobExecution.abandonable = input.abandonable;
+    jobExecution.stoppable = input.stoppable;
+    jobExecution.defined = input.defined;
+    jobExecution.jobParametersString = input.jobParametersString;
+    return jobExecution;
+  }
+
   static pageFromJSON(input): Page<JobExecution> {
     const page = Page.fromJSON<JobExecution>(input);
-    if (input && input._embedded && input._embedded.jobExecutionResourceList) {
-      page.items = input._embedded.jobExecutionResourceList.map(JobExecution.fromJSON);
+    if (input && input._embedded) {
+      if (input._embedded.jobExecutionResourceList) {
+        page.items = input._embedded.jobExecutionResourceList.map(JobExecution.fromJSON);
+      }
+      if (input._embedded.jobExecutionThinResourceList) {
+        page.items = input._embedded.jobExecutionThinResourceList.map(JobExecution.fromThinJSON);
+      }
     }
     return page;
   }
