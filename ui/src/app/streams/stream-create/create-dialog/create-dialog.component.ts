@@ -69,11 +69,6 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   streamDefs: Array<any> = [];
 
   /**
-   * Is deploy option enabled
-   */
-  isDeployEnabled = false;
-
-  /**
    * Errors
    */
   errors: Array<string>;
@@ -89,24 +84,9 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   progressData: ProgressData;
 
   /**
-   * Form deploy
-   */
-  deploy = false;
-
-  /**
    * Emit after undeploy success
    */
   confirm: EventEmitter<boolean> = new EventEmitter();
-
-  /**
-   * Platforms Observable
-   */
-  platforms$: Observable<Platform[]>;
-
-  /**
-   * Plarforms Subscription
-   */
-  platformsSubscription: Subscription;
 
   /**
    * Constructor
@@ -136,17 +116,6 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    */
   ngOnInit() {
     this.form = new FormGroup({}, this.uniqueStreamNames());
-    this.platforms$ = this.streamService.getPlatforms()
-      .pipe(
-        map((platforms: Platform[]): Platform[] => {
-          if (platforms.length < 2) {
-            this.isDeployEnabled = true;
-          }
-          return platforms;
-        }),
-        share()
-      );
-    this.platformsSubscription = this.platforms$.subscribe();
   }
 
   /**
@@ -166,7 +135,6 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
   ngOnDestroy() {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
-    this.platformsSubscription.unsubscribe();
   }
 
   /**
@@ -379,7 +347,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
     } else {
       // Send the request to create a stream
       const def = this.streamDefs[index];
-      const busy = this.streamService.createDefinition(def.name, def.def, this.deploy)
+      const busy = this.streamService.createDefinition(def.name, def.def, false)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           this.loggerService.log('Stream ' + def.name + ' created OK');

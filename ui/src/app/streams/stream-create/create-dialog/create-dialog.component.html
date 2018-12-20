@@ -50,26 +50,15 @@
           </div>
         </div>
       </div>
-      <div class="row row-stream-deploy" *ngIf="isDeployEnabled">
-        <div class="col-sm-offset-4 col-sm-18">
-          <label class="checkbox-inline">
-            <input [disabled]="isStreamCreationInProgress()" type="checkbox" [(ngModel)]="deploy"
-                   [ngModelOptions]="{standalone: true}"/>
-            Deploy stream(s)
-          </label>
-        </div>
-      </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
       <button type="submit" class="btn btn-primary" [disabled]="!canSubmit()">
         <span *ngIf="streamDefsToCreate().length === 1">
-          <span *ngIf="deploy">Create and deploy the stream</span>
-          <span *ngIf="!deploy">Create the stream</span>
+          <span>Create the stream</span>
         </span>
         <span *ngIf="streamDefsToCreate().length > 1">
-          <span *ngIf="deploy">Create and deploy the {{ streamDefsToCreate().length }} streams</span>
-          <span *ngIf="!deploy">Create the {{ streamDefsToCreate().length }} streams</span>
+          <span>Create the {{ streamDefsToCreate().length }} streams</span>
         </span>
       </button>
     </div>
