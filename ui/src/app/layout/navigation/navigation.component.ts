@@ -1,6 +1,9 @@
 import { Component, DoCheck, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { SecurityInfo } from '../../shared/model/about/security-info.model';
 import { AuthService } from '../../auth/auth.service';
+import { Observable } from 'rxjs';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 /**
  * Navigation component
@@ -32,12 +35,19 @@ export class NavigationComponent implements DoCheck, OnInit {
   isSm = false;
 
   /**
+   * Fearture Inf
+   */
+  featureInfo$: Observable<FeatureInfo>;
+
+  /**
    * Contructor
    *
    * @param {AuthService} authService
+   * @param {SharedAboutService} sharedAboutService
    * @param {Renderer2} renderer
    */
   constructor(private authService: AuthService,
+              private sharedAboutService: SharedAboutService,
               private renderer: Renderer2) {
     this.securityInfo = authService.securityInfo;
   }
@@ -49,6 +59,8 @@ export class NavigationComponent implements DoCheck, OnInit {
     if (this.isCollapsed) {
       this.renderer.addClass(document.body, 'sidebar-fixed');
     }
+    this.featureInfo$ = this.sharedAboutService.getFeatureInfo();
+    this.update();
   }
 
   /**
