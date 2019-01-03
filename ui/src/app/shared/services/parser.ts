@@ -372,17 +372,17 @@ class InternalParser {
             const t = this.peekAtToken();
             if (this.isKind(t, TokenKind.PIPE)) {
                 if (usedListDelimiter >= 0) {
-                    throw {'msg': 'Don\'t mix pipe and comma', 'start': usedListDelimiter};
+                    throw {'msg': 'Don\'t mix | and || in the same stream definition', 'start': usedListDelimiter};
                 }
                 usedStreamDelimiter = t.start;
                 this.nextToken();
                 appNodes.push(this.eatApp());
-            } else if (this.isKind(t, TokenKind.COMMA)) {
+            } else if (this.isKind(t, TokenKind.DOUBLE_PIPE)) {
                 if (preceedingSourceChannelSpecified) {
-                    throw {'msg': 'Don\'t use comma with channels', 'start': t.start};
+                    throw {'msg': 'Don\'t use || with channels', 'start': t.start};
                 }
                 if (usedStreamDelimiter >= 0) {
-                    throw {'msg': 'Don\'t mix pipe and comma', 'start': usedStreamDelimiter};
+                    throw {'msg': 'Don\'t mix | and || in the same stream definition', 'start': usedStreamDelimiter};
                 }
                 usedListDelimiter = t.start;
                 this.nextToken();
@@ -394,7 +394,7 @@ class InternalParser {
         }
         const isFollowedBySinkChannel = this.peekToken(TokenKind.GT);
         if (isFollowedBySinkChannel && usedListDelimiter >= 0) {
-            throw {'msg': 'Don\'t use comma with channels', 'start': usedListDelimiter};
+            throw {'msg': 'Don\'t use || with channels', 'start': usedListDelimiter};
         }
         for (let appNumber = 0; appNumber < appNodes.length; appNumber++) {
             appNodes[appNumber].nonStreamApp = !preceedingSourceChannelSpecified && !isFollowedBySinkChannel && (usedStreamDelimiter < 0);

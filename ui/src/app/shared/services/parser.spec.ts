@@ -102,7 +102,7 @@ describe('parser:', () => {
     });
 
     it('long running apps', () => {
-      parseResult = Parser.parse('aaa, bbb', 'stream');
+      parseResult = Parser.parse('aaa|| bbb', 'stream');
       expect(parseResult.lines.length).toEqual(1);
       line = parseResult.lines[0];
       nodes = parseResult.lines[0].nodes;
@@ -116,7 +116,7 @@ describe('parser:', () => {
       expect(node.group).toEqual('UNKNOWN_0');
       expect(node.type).toEqual('app');
       expect(node.name).toEqual('bbb');
-      expectRange(node.range, 5, 0, 8, 0);
+      expectRange(node.range, 6, 0, 9, 0);
     });
 
     it('from source and processor to named destination', () => {
@@ -215,21 +215,21 @@ describe('parser:', () => {
     });
 
     it('list of apps - error checking', () => {
-        parseResult = Parser.parse(':aaa > fff,bbb', 'stream');
+        parseResult = Parser.parse(':aaa > fff||bbb', 'stream');
         error = parseResult.lines[0].errors[0];
-        expect(error.message).toEqual('Don\'t use comma with channels');
+        expect(error.message).toEqual('Don\'t use || with channels');
         expectRange(error.range, 10, 0, 11, 0);
-        parseResult = Parser.parse('aaa,bbb > :zzz', 'stream');
+        parseResult = Parser.parse('aaa||bbb > :zzz', 'stream');
         error = parseResult.lines[0].errors[0];
-        expect(error.message).toEqual('Don\'t use comma with channels');
+        expect(error.message).toEqual('Don\'t use || with channels');
         expectRange(error.range, 3, 0, 4, 0);
-        parseResult = Parser.parse('aaa | bbb, ccc', 'stream');
+        parseResult = Parser.parse('aaa | bbb || ccc', 'stream');
         error = parseResult.lines[0].errors[0];
-        expect(error.message).toEqual('Don\'t mix pipe and comma');
+        expect(error.message).toEqual('Don\'t mix | and || in the same stream definition');
         expectRange(error.range, 4, 0, 5, 0);
-        parseResult = Parser.parse('aaa, bbb| ccc', 'stream');
+        parseResult = Parser.parse('aaa|| bbb| ccc', 'stream');
         error = parseResult.lines[0].errors[0];
-        expect(error.message).toEqual('Don\'t mix pipe and comma');
+        expect(error.message).toEqual('Don\'t mix | and || in the same stream definition');
         expectRange(error.range, 3, 0, 4, 0);
 
         parseResult = Parser.parse('aaa | filter --expression=\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'', 'stream');
@@ -237,15 +237,15 @@ describe('parser:', () => {
         expect(parseResult.lines[0].nodes[1].options.get('expression')).
             toEqual('\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'');
 
-        parseResult = Parser.parse('aaa --bbb=ccc,', 'stream');
+        parseResult = Parser.parse('aaa --bbb=ccc||', 'stream');
         error = parseResult.lines[0].errors[0];
         expect(error.message).toEqual('Out of data');
-        expectRange(error.range, 14, 0, 15, 0);
+        expectRange(error.range, 15, 0, 16, 0);
 
-        parseResult = Parser.parse('aaa --bbb=\'ccc\',', 'stream');
+        parseResult = Parser.parse('aaa --bbb=\'ccc\'||', 'stream');
         error = parseResult.lines[0].errors[0];
         expect(error.message).toEqual('Out of data');
-        expectRange(error.range, 16, 0, 17, 0);
+        expectRange(error.range, 17, 0, 18, 0);
     });
 
     it('error: task with extra data', () => {
@@ -382,12 +382,12 @@ describe('parser:', () => {
     });
 
     it('error: label required unmanaged stream app', () => {
-        parseResult = Parser.parse('bbb, bbb', 'stream');
+        parseResult = Parser.parse('bbb|| bbb', 'stream');
         expect(parseResult.lines.length).toEqual(1);
         error = parseResult.lines[0].errors[0];
         expect(error.message)
           .toEqual('App \'bbb\' should be unique within the definition, use a label to differentiate multiple occurrences');
-        expectRange(error.range, 5, 0, 8, 0);
+        expectRange(error.range, 6, 0, 9, 0);
     });
 
     it('error: rogue option name', () => {
@@ -502,7 +502,7 @@ describe('parser:', () => {
     });
 
     it('check label unmanaged stream apps', () => {
-        parseResult = Parser.parse('aaa, bbb: aaa', 'stream');
+        parseResult = Parser.parse('aaa|| bbb: aaa', 'stream');
         expect((<Parser.StreamApp>parseResult.lines[0].nodes[0]).label).toBeUndefined();
         expect((<Parser.StreamApp>parseResult.lines[0].nodes[1]).label).toEqual('bbb');
         expect(parseResult.lines[0].nodes[0].name).toEqual('aaa');
