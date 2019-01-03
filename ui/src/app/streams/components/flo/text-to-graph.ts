@@ -171,7 +171,7 @@ class TextToGraphConverter {
                             if (parsedNode.type !== 'app') {
                                 streamdef = streamdef + '| ';
                             } else {
-                                streamdef = streamdef + ', ';
+                                streamdef = streamdef + ' || ';
                             }
                         }
                         graphNode = {
