@@ -28,6 +28,14 @@ describe('tokenizer:', () => {
     expectToken(tokens[2], TokenKind.SEMICOLON, 8, 9);
   });
 
+  it('double pipes', () => {
+    tokens = tokenize('abc || def');
+    expect(tokens.length).toEqual(3);
+    expectToken(tokens[0], TokenKind.IDENTIFIER, 0, 3, 'abc');
+    expectToken(tokens[1], TokenKind.DOUBLE_PIPE, 4, 6);
+    expectToken(tokens[2], TokenKind.IDENTIFIER, 7, 10, 'def');
+  });
+
   it('single quoted literal', () => {
     tokens = tokenize('\'abc def\'');
     expect(tokens.length).toEqual(1);

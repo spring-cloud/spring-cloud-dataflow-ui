@@ -242,7 +242,7 @@ class GraphToTextConverter {
                         text += ' > ';
                     } else {
                         if (node.attr('metadata/group') === 'app') {
-                            text += ', ';
+                            text += ' || ';
                         } else {
                             text += ' | ';
                         }

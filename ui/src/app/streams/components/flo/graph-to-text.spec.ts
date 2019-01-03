@@ -104,7 +104,7 @@ describe('graph-to-text', () => {
         const appA = createApp('appA');
         const appB = createApp('appB');
         dsl = convertGraphToText(graph);
-        expect(dsl).toEqual('appA, appB');
+        expect(dsl).toEqual('appA || appB');
     });
 
     it('non stream apps with properties', () => {
@@ -112,7 +112,7 @@ describe('graph-to-text', () => {
         setProperties(appA, new Map([['aaa', 'bbb']]));
         const appB = createApp('appB');
         dsl = convertGraphToText(graph);
-        expect(dsl).toEqual('appA --aaa=bbb, appB');
+        expect(dsl).toEqual('appA --aaa=bbb || appB');
     });
 
     it('non stream apps with properties 2', () => {
@@ -123,7 +123,7 @@ describe('graph-to-text', () => {
         setProperties(appC, new Map([['ccc', 'ddd']]));
         setProperties(appC, new Map([['eee', 'fff']]));
         dsl = convertGraphToText(graph);
-        expect(dsl).toEqual('appA --aaa=bbb, appB, appC --ccc=ddd --eee=fff');
+        expect(dsl).toEqual('appA --aaa=bbb || appB || appC --ccc=ddd --eee=fff');
     });
 
     it('mix apps/streams on graph', () => {
@@ -142,7 +142,7 @@ describe('graph-to-text', () => {
       const appB = createApp('appB');
       appA.attr('stream-name', 'stream-1');
       dsl = convertGraphToText(graph);
-      expect(dsl).toEqual('stream-1=appA, appB');
+      expect(dsl).toEqual('stream-1=appA || appB');
     });
 
     it('non stream apps stream-name on second node', () => {
@@ -150,7 +150,7 @@ describe('graph-to-text', () => {
       const appB = createApp('appB');
       appB.attr('stream-name', 'stream-1');
       dsl = convertGraphToText(graph);
-      expect(dsl).toEqual('stream-1=appB, appA');
+      expect(dsl).toEqual('stream-1=appB || appA');
     });
 
     it('basic - multiple properties', () => {

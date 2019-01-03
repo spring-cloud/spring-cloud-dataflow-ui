@@ -20,6 +20,7 @@ export enum TokenKind {
     EQUALS = '=',
     AND = '&',
     PIPE = '|',
+    DOUBLE_PIPE = '||',
     NEWLINE = '<NEWLINE>',
     COLON = ':',
     GT = '>',
@@ -98,7 +99,7 @@ class Tokenizer {
 
     private isArgValueIdentifierTerminator(ch: string, quoteOpen: boolean): boolean {
         return (ch === '|' && !quoteOpen) || (ch === ';' && !quoteOpen) || ch === '\0' || (ch === ' ' && !quoteOpen) ||
-            (ch === '\t' && !quoteOpen) || (ch === '>' && !quoteOpen) || (ch === ',' && !quoteOpen) ||
+            (ch === '\t' && !quoteOpen) || (ch === '>' && !quoteOpen) ||
             ch === '\r' || ch === '\n';
     }
 
@@ -281,7 +282,11 @@ class Tokenizer {
                     this.pushCharToken(TokenKind.AND);
                     break;
                 case '|':
-                    this.pushCharToken(TokenKind.PIPE);
+                    if (this.isTwoCharToken(TokenKind.DOUBLE_PIPE)) {
+                        this.pushPairToken(TokenKind.DOUBLE_PIPE);
+                    } else {
+                        this.pushCharToken(TokenKind.PIPE);
+                    }
                     break;
                 case ' ':
                 case '\t':
