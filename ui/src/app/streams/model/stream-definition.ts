@@ -32,7 +32,9 @@ export class StreamDefinition {
    */
   public static fromJSON(input): StreamDefinition {
     const stream = new StreamDefinition(input.name, input.dslText, input.status);
-    stream.deploymentProperties = input.deploymentProperties ? JSON.parse(input.deploymentProperties) : null;
+    if (input.deploymentProperties && input.deploymentProperties.length > 0) {
+      stream.deploymentProperties = JSON.parse(input.deploymentProperties);
+    }
     return stream;
   }
 

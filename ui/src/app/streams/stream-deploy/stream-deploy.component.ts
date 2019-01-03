@@ -111,23 +111,25 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
             const ignoreProperties = [];
 
             // Deployer properties
-            Object.keys(deploymentInfo.deploymentProperties).map(app => {
-              Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
-                const value = this.streamDeployService.cleanValueProperties(deploymentInfo.deploymentProperties[app][key]);
-                if (key === StreamDeployService.version.keyEdit) {
-                  properties.push(`version.${app}=${value}`);
-                } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
-                  const keyShort = key.substring(StreamDeployService.deployer.keyEdit.length, key.length);
-                  if (keyShort !== 'group') {
-                    properties.push(`deployer.${app}.${keyShort}=${value}`);
+            if (deploymentInfo.deploymentProperties) {
+              Object.keys(deploymentInfo.deploymentProperties).map(app => {
+                Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
+                  const value = this.streamDeployService.cleanValueProperties(deploymentInfo.deploymentProperties[app][key]);
+                  if (key === StreamDeployService.version.keyEdit) {
+                    properties.push(`version.${app}=${value}`);
+                  } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
+                    const keyShort = key.substring(StreamDeployService.deployer.keyEdit.length, key.length);
+                    if (keyShort !== 'group') {
+                      properties.push(`deployer.${app}.${keyShort}=${value}`);
+                    } else {
+                      this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+                    }
                   } else {
                     this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
                   }
-                } else {
-                  this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
-                }
+                });
               });
-            });
+            }
 
             // Application properties
             const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
