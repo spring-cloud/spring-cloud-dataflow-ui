@@ -111,7 +111,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
             const ignoreProperties = [];
 
             // Deployer properties
-            if (deploymentInfo.deploymentProperties !== null && deploymentInfo.deploymentProperties.length > 0) {
+            if (deploymentInfo.deploymentProperties) {
               Object.keys(deploymentInfo.deploymentProperties).map(app => {
                 Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
                   const value = this.streamDeployService.cleanValueProperties(deploymentInfo.deploymentProperties[app][key]);
