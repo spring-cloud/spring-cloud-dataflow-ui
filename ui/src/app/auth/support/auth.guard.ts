@@ -7,8 +7,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 /**
  * A guard used by the router in order to check whether a the user has
  * the necessary access rights. If not, the user is redirected to the
- * login page and the original request url will be appended to the
- * 'returnUrl' query parameter.
+ * an error page.
  *
  * @author Gunnar Hillert
  */
@@ -20,11 +19,12 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService,
     private loggerService: LoggerService,
     private sharedAboutService: SharedAboutService
-  ) { }
+  ) {
+  }
 
   /**
    * If true the user has access to the route, if false, the user will
-   * be redirected to the login url.
+   * be redirected to an error page.
    *
    * @param route
    * @param state
@@ -55,7 +55,7 @@ export class AuthGuard implements CanActivate {
         this.loggerService.log('You do not have any of the necessary role(s) ' + rolesNeeded);
         this.router.navigate(['roles-missing']);
       } else {
-        this.router.navigate(['login'], { queryParams: { 'returnUrl': state.url }});
+        this.router.navigate(['authentication-required']);
       }
     }
     return false;

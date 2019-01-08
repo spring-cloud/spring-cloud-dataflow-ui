@@ -1,6 +1,5 @@
 import { ErrorHandler } from '../shared/model';
 import { AuthService } from './auth.service';
-import { LoginRequest } from './model/login-request.model';
 import { LoggerService } from '../shared/services/logger.service';
 import { of } from 'rxjs';
 
@@ -46,22 +45,6 @@ describe('AuthService', () => {
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
 
-    });
-  });
-
-  describe('login', () => {
-    it('should call the authentication REST endpoint', () => {
-      this.mockHttp.post.and.returnValue(of(this.jsonData));
-      const loginRequest = new LoginRequest('foo', 'password123');
-      this.authService.login(loginRequest);
-
-      const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
-      const payload = this.mockHttp.post.calls.mostRecent().args[1];
-      const headerArgs = this.mockHttp.post.calls.mostRecent().args[2].headers;
-      expect(httpUri).toEqual('/authenticate');
-      expect(payload).toEqual(JSON.stringify(loginRequest).trim());
-      expect(headerArgs.get('Content-Type')).toEqual('application/json');
-      expect(headerArgs.get('Accept')).toEqual('application/json');
     });
   });
 

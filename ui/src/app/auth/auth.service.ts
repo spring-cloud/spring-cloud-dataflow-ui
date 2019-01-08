@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { SecurityInfo } from '../shared/model/about/security-info.model';
-import { LoginRequest } from './model/login-request.model';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';
 import { LoggerService } from '../shared/services/logger.service';
@@ -10,7 +9,7 @@ import { catchError, flatMap, map } from 'rxjs/operators';
 
 /**
  * The AuthService deals with all security-related services:
- * Login, Logout, loading of security meta-information
+ * Logout, loading of security meta-information
  *
  * @author Gunnar Hillert
  */
@@ -92,32 +91,6 @@ export class AuthService {
             this.deletePersistedXAuthToken();
           }
           return this.securityInfo;
-        }),
-        catchError(this.errorHandler.handleError)
-      );
-  }
-
-  /**
-   * Logs in a user based on the provided {@link LoginRequest}. If the login
-   * was successful, the retrieved xAuthToken will be persisted (Session
-   * Storage) and the the xAuthToken will also be set in
-   * {@link SecurityAwareRequestOptions}. Upon login a {@link SecurityInfo}
-   * will be returned.
-   *
-   * @param loginRequest The login-request holding username and password
-   */
-  login(loginRequest: LoginRequest): Observable<SecurityInfo> {
-    this.loggerService.log(`Logging in user ${loginRequest.username}.`);
-    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    return this.http
-      .post<any>(AuthService.URL.AUTHENTICATION, JSON.stringify(loginRequest), { headers: httpHeaders })
-      .pipe(
-        map(response => response as string),
-        flatMap((id: string) => {
-          this.loggerService.log('Logging you in ...', httpHeaders);
-          this.xAuthToken = id;
-          this.persistXAuthToken(id);
-          return this.loadSecurityInfo();
         }),
         catchError(this.errorHandler.handleError)
       );
