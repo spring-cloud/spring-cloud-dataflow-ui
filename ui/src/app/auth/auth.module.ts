@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-
 import { SharedModule } from '../shared/shared.module';
-import { LoginComponent } from './login.component';
 import { LogoutComponent } from './logout.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { FeatureDisabledComponent } from './feature-disabled.component';
@@ -13,15 +11,18 @@ import { AuthGuard } from './support/auth.guard';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TokenInterceptor } from './support/token.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthenticationRequiredComponent } from './authentication-required.component';
 
 @NgModule({
   imports: [
-    AuthRoutingModule, SharedModule, BsDropdownModule.forRoot()
+    AuthRoutingModule,
+    SharedModule,
+    BsDropdownModule.forRoot()
   ],
   declarations: [
     CapsLockDirective,
+    AuthenticationRequiredComponent,
     FeatureDisabledComponent,
-    LoginComponent,
     LogoutComponent,
     RolesDirective,
     RolesMissingComponent
@@ -41,4 +42,5 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
   ]
 })
 
-export class AuthModule { }
+export class AuthModule {
+}

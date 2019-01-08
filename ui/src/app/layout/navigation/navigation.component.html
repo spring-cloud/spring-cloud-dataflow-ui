@@ -1,12 +1,6 @@
 <app-navigation-search [force]="!isCollapsed" [dataflowAppRoles]="['ROLE_VIEW']"></app-navigation-search>
 
 <div class="sidebar-user" *ngIf="securityInfo.isAuthenticationEnabled" [dataflowAppRoles]="['ROLE_VIEW']">
-  <div class="sidebar-item" routerLinkActive="active" *ngIf="!securityInfo.isAuthenticated">
-    <a routerLink="login">
-      <i class="sidebar-fa fa fa-sign-in"></i>
-      <span class="text">Login</span>
-    </a>
-  </div>
   <div dropdown class="sidebar-item dropdown" *ngIf="securityInfo.isAuthenticated">
     <a class="dropdown-toggle" dropdownToggle>
       <i class="sidebar-fa fa fa-user"></i>
