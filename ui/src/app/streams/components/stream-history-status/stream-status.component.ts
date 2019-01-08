@@ -49,7 +49,7 @@ export class StreamHistoryStatusComponent implements OnChanges {
         this.labelClass = 'warning';
         break;
       case 'deployed':
-        this.labelClass = 'primary';
+        this.labelClass = 'success';
         break;
     }
   }
