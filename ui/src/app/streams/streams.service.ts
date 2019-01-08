@@ -298,4 +298,18 @@ export class StreamsService {
       );
   }
 
+  /**
+   * Calls the Spring Cloud Data Flow server to rollback a stream to a specified version
+   * @param streamHistory
+   * @returns {Observable<HttpResponse<any>>}
+   */
+  historyRollback(streamHistory: StreamHistory): Observable<HttpResponse<any>> {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient
+      .post<any>(`/streams/deployments/rollback/${streamHistory.stream}/${streamHistory.version}`, { headers: httpHeaders })
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
 }

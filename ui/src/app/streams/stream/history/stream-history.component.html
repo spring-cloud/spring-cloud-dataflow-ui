@@ -1,6 +1,13 @@
 <div dataflowLayoutType type="full" *ngIf="stream$ | async as stream; else loading">
 
-  <table class="table table-hover" id="table-history" *ngIf="stream.history.length > 0">
+  <div class="list-bar" *ngIf="stream.history.length > 0">
+    <button name="refresh" class="btn btn-default btn-fa" (click)="refresh()" title="Refresh" type="button">
+      <span class="fa fa-refresh"></span>
+      Refresh
+    </button>
+  </div>
+
+  <table class="table table-actions table-hover" id="table-history" *ngIf="stream.history.length > 0">
     <thead>
     <tr>
       <th>Version</th>
@@ -8,10 +15,11 @@
       <th>Stream Status</th>
       <th>Description</th>
       <th>platformName</th>
+      <th>&nbsp;</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let history of stream.history">
+    <tr *ngFor="let history of stream.history;let i=index" class="align-middle">
       <td>
         <strong>{{ history.version }}</strong>
       </td>
@@ -21,12 +29,24 @@
       </td>
       <td>{{ history.description}}</td>
       <td>{{ history.platformName}}</td>
+      <td class="table-actions" width="10px" nowrap="">
+        <div class="actions">
+          <button name="stream_rollback{{ i }}" type="button" (click)="rollback(history)"
+                  class="btn btn-default" [disabled]="!canRollback(stream.stream, history)"
+                  style="padding: 0 8px;" title="Rollback">
+            <span class="fa fa-undo"></span>
+          </button>
+        </div>
+      </td>
     </tr>
     </tbody>
   </table>
 
-  <div *ngIf="stream.history.length == 0" class="dataflow-alert">
-    No history.
+  <div id="empty" *ngIf="stream.history.length == 0" class="dataflow-alert">
+    <p>There is <strong>no history</strong>.</p>
+    <p>
+      You can <a (click)="refresh()">Refresh</a> the page.
+    </p>
   </div>
 
 </div>

@@ -89,4 +89,8 @@ export class MockStreamsService {
     ]);
   }
 
+  historyRollback(streamHistory: StreamHistory): Observable<any> {
+    return of([]);
+  }
+
 }
