@@ -21,7 +21,7 @@ describe('RuntimeEnvironment', () => {
             "springBootVersion": "1.5.9.RELEASE",
             "springVersion": "4.3.13.RELEASE"
           },
-          "taskLauncher": {
+          "taskLaunchers": [{
             "deployerImplementationVersion": "1.3.0.RC1",
             "deployerName": "LocalTaskLauncher",
             "deployerSpiVersion": "1.3.0.M2",
@@ -33,14 +33,14 @@ describe('RuntimeEnvironment', () => {
             "platformType": "Local",
             "springBootVersion": "1.5.9.RELEASE",
             "springVersion": "4.3.13.RELEASE"
-          }
+          }]
         }
       `);
 
       const runtimeEnvironment = new RuntimeEnvironment().deserialize(jsonRuntimeEnvironment);
 
       expect(runtimeEnvironment.appDeployer).toBeDefined();
-      expect(runtimeEnvironment.taskLauncher).toBeDefined();
+      expect(runtimeEnvironment.taskLaunchers).toBeDefined();
 
       expect(runtimeEnvironment.appDeployer.deployerImplementationVersion).toBe('1.3.0.RC1');
       expect(runtimeEnvironment.appDeployer.deployerName).toBe('LocalAppDeployer');
@@ -54,17 +54,18 @@ describe('RuntimeEnvironment', () => {
       expect(runtimeEnvironment.appDeployer.springBootVersion).toBe('1.5.9.RELEASE');
       expect(runtimeEnvironment.appDeployer.springVersion).toBe('4.3.13.RELEASE');
 
-      expect(runtimeEnvironment.taskLauncher.deployerImplementationVersion).toBe('1.3.0.RC1');
-      expect(runtimeEnvironment.taskLauncher.deployerName).toBe('LocalTaskLauncher');
-      expect(runtimeEnvironment.taskLauncher.deployerSpiVersion).toBe('1.3.0.M2');
-      expect(runtimeEnvironment.taskLauncher.javaVersion).toBe('1.8.0_60');
-      expect(runtimeEnvironment.taskLauncher.platformApiVersion).toBe('Mac OS X 10.13.2');
-      expect(runtimeEnvironment.taskLauncher.platformClientVersion).toBe('10.13.2');
-      expect(runtimeEnvironment.taskLauncher.platformHostVersion).toBe('10.13.2');
-      expect(runtimeEnvironment.taskLauncher.platformSpecificInfo.size).toBe(0);
-      expect(runtimeEnvironment.taskLauncher.platformType).toBe('Local');
-      expect(runtimeEnvironment.taskLauncher.springBootVersion).toBe('1.5.9.RELEASE');
-      expect(runtimeEnvironment.taskLauncher.springVersion).toBe('4.3.13.RELEASE');
+      const taskLauncher = runtimeEnvironment.taskLaunchers.pop();
+      expect(taskLauncher.deployerImplementationVersion).toBe('1.3.0.RC1');
+      expect(taskLauncher.deployerName).toBe('LocalTaskLauncher');
+      expect(taskLauncher.deployerSpiVersion).toBe('1.3.0.M2');
+      expect(taskLauncher.javaVersion).toBe('1.8.0_60');
+      expect(taskLauncher.platformApiVersion).toBe('Mac OS X 10.13.2');
+      expect(taskLauncher.platformClientVersion).toBe('10.13.2');
+      expect(taskLauncher.platformHostVersion).toBe('10.13.2');
+      expect(taskLauncher.platformSpecificInfo.size).toBe(0);
+      expect(taskLauncher.platformType).toBe('Local');
+      expect(taskLauncher.springBootVersion).toBe('1.5.9.RELEASE');
+      expect(taskLauncher.springVersion).toBe('4.3.13.RELEASE');
     });
   });
 });

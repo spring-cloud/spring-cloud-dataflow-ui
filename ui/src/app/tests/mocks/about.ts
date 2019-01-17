@@ -88,7 +88,7 @@ export class MockAboutService {
 
     const runtimeEnvironment = new RuntimeEnvironment();
     runtimeEnvironment.appDeployer = appDeployer;
-    runtimeEnvironment.taskLauncher = taskLauncher;
+    runtimeEnvironment.taskLaunchers = [taskLauncher];
     return runtimeEnvironment;
   }
 
@@ -176,7 +176,9 @@ export class MockAboutService {
         dataFlowVersion.featureInfo.schedulerEnabled = false;
       }
       if (!this._isPlatformSpecificInformationAvailable) {
-        dataFlowVersion.runtimeEnvironment.taskLauncher.platformSpecificInfo = new Map();
+        for (const taskLauncher of dataFlowVersion.runtimeEnvironment.taskLaunchers) {
+          taskLauncher.platformSpecificInfo = new Map();
+        }
         dataFlowVersion.runtimeEnvironment.appDeployer.platformSpecificInfo = new Map();
       }
     }

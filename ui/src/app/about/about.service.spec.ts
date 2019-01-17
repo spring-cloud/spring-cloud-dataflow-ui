@@ -70,8 +70,8 @@ describe('AboutService', () => {
               'springBootVersion': '1.5.4.RELEASE',
               'springVersion': '4.3.9.RELEASE'
           },
-          'taskLauncher':
-          {
+          'taskLaunchers':
+          [{
               'deployerImplementationVersion': '1.2.2.BUILD-SNAPSHOT',
               'deployerName': 'LocalTaskLauncher',
               'deployerSpiVersion': '1.2.1.RELEASE',
@@ -85,7 +85,7 @@ describe('AboutService', () => {
               'platformType': 'Local',
               'springBootVersion': '1.5.4.RELEASE',
               'springVersion': '4.3.9.RELEASE'
-          }
+          }]
       },
       '_links':
       {
