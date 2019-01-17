@@ -390,6 +390,32 @@ describe('parser:', () => {
         expectRange(error.range, 6, 0, 9, 0);
     });
 
+    it('error: special chars at start of argument values', () => {
+        parseResult = Parser.parse('aaa --bbb= --ccc=ddd', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('expected argument value');
+        expectRange(error.range, 11, 0, 12, 0);
+
+        parseResult = Parser.parse('aaa --bbb=| --ccc=ddd', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('expected argument value');
+        expectRange(error.range, 10, 0, 11, 0);
+
+        parseResult = Parser.parse('aaa --bbb=; --ccc=ddd', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('expected argument value');
+        expectRange(error.range, 10, 0, 11, 0);
+
+        parseResult = Parser.parse('aaa --bbb=> --ccc=ddd', 'stream');
+        expect(parseResult.lines.length).toEqual(1);
+        error = parseResult.lines[0].errors[0];
+        expect(error.message).toEqual('expected argument value');
+        expectRange(error.range, 10, 0, 11, 0);
+    });
+
     it('error: rogue option name', () => {
         parseResult = Parser.parse('aaa --|=99 ', 'stream');
         error = parseResult.lines[0].errors[0];
