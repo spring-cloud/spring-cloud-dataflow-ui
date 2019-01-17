@@ -51,7 +51,7 @@ describe('AboutInfo', () => {
               "springBootVersion": "1.5.9.RELEASE",
               "springVersion": "4.3.13.RELEASE"
             },
-            "taskLauncher": {
+            "taskLaunchers": [{
               "deployerImplementationVersion": "1.3.0.RC1",
               "deployerName": "LocalTaskLauncher",
               "deployerSpiVersion": "1.3.0.M2",
@@ -63,7 +63,7 @@ describe('AboutInfo', () => {
               "platformType": "Local",
               "springBootVersion": "1.5.9.RELEASE",
               "springVersion": "4.3.13.RELEASE"
-            }
+            }]
           },
           "_links": {
             "self": {

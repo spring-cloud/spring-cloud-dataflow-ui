@@ -100,10 +100,10 @@ describe('AboutDetailsComponent', () => {
     // Task Launcher Table
     validateColumnValues('taskLauncherTable', ['Implementation Version', 'Name', 'Spi Version',
       'Java Version', 'Platform Api Version', 'Platform Client Version', 'Platform Host Version', 'Platform Type',
-      'Spring Boot Version', 'Spring Version'], 0);
+      'Spring Boot Version', 'Spring Version', 'key1_task', 'key2_task'], 0);
     validateColumnValues('taskLauncherTable', ['DEP_IMP_VER_TASK', 'FOODeployer_TASK', 'DEP_SPI_VER_TASK',
       'JAV_VER_TASK', 'PLA_API_VER_TASK', 'PLA_CLI_VER_TASK', 'PLA_HOS_VER_TASK', 'FOO_PLATFORM_TASK',
-      'SPR_BOO_VER_TASK', 'SPR_VER_TASK'], 0);
+      'SPR_BOO_VER_TASK', 'SPR_VER_TASK', 'value1_task', 'value2_task'], 0);
 
     // App Task Launcher Platform Specific Table
     validateColumnValues('appTaskLauncherPlatformSpecificTable', ['key1_task', 'key2_task'], 0);
@@ -131,7 +131,6 @@ describe('AboutDetailsComponent', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     validateTdValue('noAppDeployerPlatformMessage', 'No platform-specific app deployer information available.');
-    validateTdValue('noTaskLauncherPlatformMessage', 'No platform-specific task launcher information available.');
   });
 
   /*

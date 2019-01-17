@@ -187,71 +187,74 @@
       <span class="fa fa-cube"></span>
       <h2>Runtime Environment - Task Launcher</h2>
       <div>
-        <div *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)">
+        <div *ngIf="isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLaunchers)">
           <span>No Task Launcher information is available.</span>
         </div>
-        <div *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLauncher)" id="taskLauncherTable">
-          <div class="line">
-            <span>Implementation Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerImplementationVersion }}</strong>
-          </div>
-          <div class="line">
-            <span>Name: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerName }}</strong>
-          </div>
-          <div class="line">
-            <span>Spi Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.deployerSpiVersion }}</strong>
-          </div>
-          <div class="line">
-            <span>Java Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.javaVersion }}</strong>
-          </div>
-          <div class="line">
-            <span>Platform Api Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformApiVersion }}</strong>
-          </div>
-          <div class="line">
-            <span>Platform Client Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformClientVersion }}</strong>
-          </div>
-          <div class="line">
-            <span>Platform Host Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformHostVersion }}</strong>
-          </div>
-          <div class="line">
-            <span>Platform Type: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformType }}</strong>
-          </div>
-          <div class="line">
-            <span>Spring Boot Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springBootVersion }}</strong>
-          </div>
-          <div class="line">
-            <span>Spring Version: </span>
-            <strong>{{ dataflowVersionInfo.runtimeEnvironment.taskLauncher.springVersion }}</strong>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="box">
-      <h2>Platform-specific Information of the Task Launcher</h2>
-      <div id="appTaskLauncherPlatformSpecificTable">
-        <ng-template
-          *ngIf="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo && dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo.size > 0"
-          ngFor let-item
-          [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo | keyvalue">
-          <div class="line">
-            <span>{{ item.key }}: </span> <strong>{{ item.value }}</strong>
-          </div>
-        </ng-template>
-        <div
-          *ngIf="!dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo || dataflowVersionInfo.runtimeEnvironment.taskLauncher.platformSpecificInfo.size == 0">
+          <div *ngIf="!isEmpty(dataflowVersionInfo.runtimeEnvironment.taskLaunchers)" id="taskLauncherTable">
+            <ng-template
+                ngFor let-item
+                [ngForOf]="dataflowVersionInfo.runtimeEnvironment.taskLaunchers">
+            <div class="line">
+              <span>Implementation Version: </span>
+              <strong>{{ item.deployerImplementationVersion }}</strong>
+            </div>
+            <div class="line">
+              <span>Name: </span>
+              <strong>{{ item.deployerName }}</strong>
+            </div>
+            <div class="line">
+              <span>Spi Version: </span>
+              <strong>{{ item.deployerSpiVersion }}</strong>
+            </div>
+            <div class="line">
+              <span>Java Version: </span>
+              <strong>{{ item.javaVersion }}</strong>
+            </div>
+            <div class="line">
+              <span>Platform Api Version: </span>
+              <strong>{{ item.platformApiVersion }}</strong>
+            </div>
+            <div class="line">
+              <span>Platform Client Version: </span>
+              <strong>{{ item.platformClientVersion }}</strong>
+            </div>
+            <div class="line">
+              <span>Platform Host Version: </span>
+              <strong>{{ item.platformHostVersion }}</strong>
+            </div>
+            <div class="line">
+              <span>Platform Type: </span>
+              <strong>{{ item.platformType }}</strong>
+            </div>
+            <div class="line">
+              <span>Spring Boot Version: </span>
+              <strong>{{ item.springBootVersion }}</strong>
+            </div>
+            <div class="line">
+              <span>Spring Version: </span>
+              <strong>{{ item.springVersion }}</strong>
+            </div>
+            <div class="box">
+              <h2>Platform-specific Information of the Task Launcher</h2>
+              <div id="appTaskLauncherPlatformSpecificTable">
+                <ng-template
+                  *ngIf="item.platformSpecificInfo && item.platformSpecificInfo.size > 0"
+                  ngFor let-item
+                  [ngForOf]="item.platformSpecificInfo | keyvalue">
+                  <div class="line">
+                    <span>{{ item.key }}: </span> <strong>{{ item.value }}</strong>
+                  </div>
+                </ng-template>
+                <div
+                  *ngIf="!item.platformSpecificInfo || item.platformSpecificInfo.size == 0">
           <span id="noTaskLauncherPlatformMessage">
             No platform-specific task launcher information available.
           </span>
-        </div>
+                </div>
+              </div>
+            </div>
+            </ng-template>
+          </div>
       </div>
     </div>
 
