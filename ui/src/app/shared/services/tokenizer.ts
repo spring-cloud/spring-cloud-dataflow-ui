@@ -258,6 +258,10 @@ class Tokenizer {
                     // consuming everything up to the next special char.
                     // This allows SpEL expressions to be used without quoting in many
                     // situations
+                    // If the next char is a special char then the argument value is missing
+                    if (this.isArgValueIdentifierTerminator(ch, false)) {
+                        throw {'msg': 'expected argument value', 'start': this.pos};
+                    }
                     this.lexArgValueIdentifier();
                 }
                 this.justProcessedEquals = false;
