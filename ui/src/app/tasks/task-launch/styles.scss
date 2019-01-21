@@ -20,17 +20,18 @@ table.table-form {
   }
 }
 
-h2 {
+h2, label {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
 }
 
-.col-1-layout, .col-2-layout {
-  padding: 0 1rem;
+.col-1-layout {
+  padding-right: 1rem;
+}
+.col-2-layout {
+  padding-left: 1rem;
 }
 
 .builder {
-  background-color: #f5f6f7;
-  padding: 2rem;
   margin: 2rem 0;
 }

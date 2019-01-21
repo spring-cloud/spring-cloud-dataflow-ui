@@ -361,7 +361,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
       )
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: { streams: Page<StreamDefinition>, apps: Page<AppRegistration>, statuses: any }) => {
-          //this.streamStatuses = value.statuses;
           if (value.streams.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
             this.refresh();

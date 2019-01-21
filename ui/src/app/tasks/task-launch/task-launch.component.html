@@ -1,16 +1,31 @@
-<app-page *ngIf="taskDefinition$ | async as taskDefinition; else loading">
+<app-page *ngIf="task$ | async as task; else loading">
 
   <app-page-head>
-    <app-page-head-back [defaultUrl]="'/tasks/definitions/' + taskDefinition.name"></app-page-head-back>
-    <app-page-head-title>Launch task <strong>{{ taskDefinition.name }}</strong></app-page-head-title>
+    <app-page-head-back [defaultUrl]="'/tasks/definitions/' + task.taskDefinition.name"></app-page-head-back>
+    <app-page-head-title>Launch task <strong>{{ task.taskDefinition.name }}</strong></app-page-head-title>
   </app-page-head>
 
   <p>This action will launch the <strong>task definition</strong>.
     Optionally, you can add properties and arguments.</p>
 
-  <form [formGroup]="form" class="form-horizontal" role="form" (ngSubmit)="submit(taskDefinition.name)" novalidate>
+  <form [formGroup]="form" class="form-horizontal" role="form" (ngSubmit)="submit(task.taskDefinition.name)" novalidate>
 
     <div dataflowLayoutType type="large">
+
+      <div *ngIf="canSelectPlatform(task)">
+        <div class="form-group">
+          <label class="control-label col-xs-2" style="text-align: left">Platform</label>
+          <div class="col-xs-6">
+            <select tabindex="1" formControlName="platform">
+              <option *ngFor="let platform of task.platforms" [value]="platform.name">
+                {{ platform.name }}
+                ({{ platform.type }})
+              </option>
+            </select>
+          </div>
+        </div>
+        <hr>
+      </div>
 
       <div class="form-group" [class.has-error]="form.get('args').invalid && submitted">
         <label class="control-label col-xs-2" style="text-align: left">
@@ -43,10 +58,10 @@
     </div>
 
     <app-page-actions>
-      <button type="button" class="btn btn-default" (click)="cancel(taskDefinition)">
+      <button type="button" class="btn btn-default" (click)="cancel(task.taskDefinition)">
         Cancel
       </button>
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" id="launch-task">
         Launch the task
       </button>
     </app-page-actions>

@@ -8,14 +8,12 @@ import { StreamsService } from '../../streams.service';
 import { Properties } from 'spring-flo';
 import { Router } from '@angular/router';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
-import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
-import { map, mergeMap, share, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
-import { Platform } from '../../model/platform';
-import { Observable, Subscription, of, Subject } from 'rxjs';
+import { Observable, Subscription, Subject } from 'rxjs';
 
 /**
  * Stores progress percentage.

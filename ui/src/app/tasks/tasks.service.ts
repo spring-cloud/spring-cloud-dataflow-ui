@@ -14,6 +14,7 @@ import {
   TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams
 } from './components/tasks.interface';
 import { HttpResponse } from '@angular/common/http';
+import { Platform, PlatformTask } from '../shared/model/platform';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -34,7 +35,8 @@ export class TasksService {
     EXECUTIONS: '/tasks/executions',
     DEFINITIONS: '/tasks/definitions',
     APP: '/apps/task',
-    SCHEDULES: '/tasks/schedules'
+    SCHEDULES: '/tasks/schedules',
+    PLATFORM: '/tasks/platforms'
   };
 
   /**
@@ -333,6 +335,20 @@ export class TasksService {
    */
   destroySchedules(taskSchedules: TaskSchedule[]): Observable<HttpResponse<any>[]> {
     return forkJoin(taskSchedules.map(schedule => this.destroySchedule(schedule)));
+  }
+
+  /**
+   * Get Platforms
+   */
+  getPlatforms() {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    const params = HttpUtils.getPaginationParams(0, 1000);
+    return this.httpClient
+      .get<any>(TasksService.URL.PLATFORM, { params: params, headers: httpHeaders })
+      .pipe(
+        map(PlatformTask.listFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
   }
 
   /**

@@ -4,7 +4,8 @@ import { TaskExecution } from '../../tasks/model/task-execution';
 import { TaskDefinition } from '../../tasks/model/task-definition';
 import { ListDefaultParams, OrderParams } from '../../shared/components/shared.interface';
 import { TaskSchedule } from '../../tasks/model/task-schedule';
-import { TaskListParams } from '../../tasks/components/tasks.interface';
+import { TaskLaunchParams, TaskListParams } from '../../tasks/components/tasks.interface';
+import { Platform } from '../../shared/model/platform';
 
 /**
  * Mock for TasksService.
@@ -108,6 +109,17 @@ export class MockTasksService {
 
   createSchedules() {
     return of([{}]);
+  }
+
+  getPlatforms(): Observable<Platform[]> {
+    return of([
+      Platform.fromJSON({name: 'default', type: 'local', description: ''}),
+      Platform.fromJSON({name: 'foo', type: 'bar', description: 'foobar'})
+    ]);
+  }
+
+  launchDefinition(taskLaunchParams: TaskLaunchParams): Observable<any> {
+    return of({});
   }
 
 }

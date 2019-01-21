@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '../model/platform';
 import { StreamsService } from '../streams.service';
 import { Parser } from '../../shared/services/parser';
 import { ApplicationType } from '../../shared/model/application-type';
@@ -15,6 +14,7 @@ import { Utils } from '../../shared/flo/support/utils';
 import { map, mergeMap } from 'rxjs/operators';
 import { StreamDefinition } from '../model/stream-definition';
 import { Observable, forkJoin, of } from 'rxjs';
+import { Platform } from '../../shared/model/platform';
 
 /**
  * Provides {@link StreamDeployConfig} related services.

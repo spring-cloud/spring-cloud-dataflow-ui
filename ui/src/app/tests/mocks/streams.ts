@@ -1,10 +1,10 @@
 import { Page } from '../../shared/model/page';
 import { StreamDefinition } from '../../streams/model/stream-definition';
-import { Platform } from '../../streams/model/platform';
 import { StreamStatuses } from '../../streams/model/stream-metrics';
 import { OrderParams } from '../../shared/components/shared.interface';
 import { StreamHistory } from '../../streams/model/stream-history';
 import { Observable, of } from 'rxjs';
+import { Platform } from '../../shared/model/platform';
 
 /**
  * Mock for StreamsService.
