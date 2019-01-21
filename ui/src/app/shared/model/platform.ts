@@ -6,7 +6,9 @@
 export class Platform {
 
   public name: String;
+
   public type: String;
+
   public description: String;
 
   constructor(name: String = '', type: String = '', description: String = '') {
@@ -32,6 +34,31 @@ export class Platform {
   static listFromJSON(input): Array<Platform> {
     if (input && Array.isArray(input)) {
       return input.map(Platform.fromJSON);
+    }
+    return [];
+  }
+
+}
+
+/**
+ * Represents a Platform for Tasks.
+ *
+ * @author Damien Vitrac
+ */
+export class PlatformTask extends Platform {
+
+  constructor(name: String = '', type: String = '', description: String = '') {
+    super(name, type, description);
+  }
+
+  /**
+   * Create an Array<Platform> from a json
+   * @param input
+   * @returns {Array<Platform>}
+   */
+  static listFromJSON(input): Array<Platform> {
+    if (input && input._embedded && input._embedded.launcherResourceList) {
+      return input._embedded.launcherResourceList.map(Platform.fromJSON);
     }
     return [];
   }

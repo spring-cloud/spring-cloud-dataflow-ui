@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { mergeMap, takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
-import { AppError } from '../../shared/model/error.model';
+import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { TaskLaunchParams } from '../components/tasks.interface';
 import { TaskLaunchValidator } from './task-launch.validator';
@@ -35,7 +35,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   /**
    * Observable of Task Definition
    */
-  taskDefinition$: Observable<TaskDefinition>;
+  task$: Observable<any>;
 
   /**
    * Form
@@ -81,17 +81,36 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
 
   /**
    * Initialize
+   * Load the task definitions and the platforms
    */
   ngOnInit() {
     this.form = new FormGroup({
       args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
-      props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props))
+      props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
+      platform: new FormControl('default')
     });
-    this.taskDefinition$ = this.route.params
-      .pipe(mergeMap(
-        val => this.tasksService.getDefinition(val.id)
-      ));
+    this.task$ = this.route.params
+      .pipe(
+        mergeMap(val => this.tasksService.getDefinition(val.id)),
+        mergeMap(
+          val => this.tasksService.getPlatforms()
+            .pipe(map(val2 => {
+              return {
+                taskDefinition: val,
+                platforms: val2
+              };
+            }))
+        ),
+        catchError((error) => {
+          if (HttpAppError.is404(error)) {
+            this.router.navigate(['/tasks/definitions']);
+          }
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          return EMPTY;
+        })
+      );
   }
+
 
   /**
    * Destroy
@@ -109,20 +128,22 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * @param {string} name
    * @param {Array<string>} taskArguments
    * @param {Array<string>} taskProperties
+   * @param {string} platform
    * @returns {TaskLaunchParams}
    */
-  prepareParams(name: string, taskArguments: Array<string>, taskProperties: Array<string>): TaskLaunchParams {
+  prepareParams(name: string, taskArguments: Array<string>, taskProperties: Array<string>, platform: string): TaskLaunchParams {
     return {
       name: name,
       args: taskArguments.filter((a) => a !== '').join(' '),
-      props: taskProperties.filter((a) => a !== '').join(', ')
+      props: taskProperties.filter((a) => a !== '').join(', '),
+      platform: platform
     };
   }
 
   /**
    * Launch the task
    *
-   * @param {string} name
+   * @param name
    */
   submit(name: string) {
     this.submitted = true;
@@ -131,7 +152,8 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
     } else {
       const taskArguments = this.form.get('args').value.toString().split('\n');
       const taskProperties = this.form.get('props').value.toString().split('\n');
-      const busy = this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties))
+      const platform = this.form.get('platform').value;
+      const busy = this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties, platform))
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           data => {
@@ -154,6 +176,14 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    */
   cancel(taskDefinition: TaskDefinition) {
     this.routingStateService.back(`/tasks/definitions/${taskDefinition.name}`);
+  }
+
+  /**
+   * Can select the platform target
+   * @param task
+   */
+  canSelectPlatform(task):boolean {
+    return task.platforms && task.platforms.length > 1;
   }
 
 }

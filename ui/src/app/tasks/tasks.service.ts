@@ -14,6 +14,7 @@ import {
   TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams
 } from './components/tasks.interface';
 import { HttpResponse } from '@angular/common/http';
+import { Platform, PlatformTask } from '../shared/model/platform';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -34,7 +35,8 @@ export class TasksService {
     EXECUTIONS: '/tasks/executions',
     DEFINITIONS: '/tasks/definitions',
     APP: '/apps/task',
-    SCHEDULES: '/tasks/schedules'
+    SCHEDULES: '/tasks/schedules',
+    PLATFORM: '/tasks/platforms'
   };
 
   /**
@@ -336,6 +338,20 @@ export class TasksService {
   }
 
   /**
+   * Get Platforms
+   */
+  getPlatforms() {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    const params = HttpUtils.getPaginationParams(0, 1000);
+    return this.httpClient
+      .get<any>(TasksService.URL.PLATFORM, { params: params, headers: httpHeaders })
+      .pipe(
+        map(PlatformTask.listFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
+  /**
    * Launch a task
    *
    * @returns {any}
@@ -349,6 +365,9 @@ export class TasksService {
     }
     if (taskLaunchParams.props) {
       params = params.append('properties', taskLaunchParams.props);
+    }
+    if (taskLaunchParams.platform && taskLaunchParams.platform !== 'default') {
+      params = params.append('spring.cloud.dataflow.task.platformName', taskLaunchParams.platform);
     }
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient

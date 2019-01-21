@@ -295,13 +295,25 @@ describe('TasksService', () => {
 
       it('should call the launch definition with the right url/params', () => {
         this.mockHttp.post.and.returnValue(of({}));
-        this.tasksService.launchDefinition({ name: 'foo', args: 'a=a', props: 'b=b' });
+        this.tasksService.launchDefinition({ name: 'foo', args: 'a=a', props: 'b=b', platform: 'foo' });
         const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
         const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
         expect(httpUri).toEqual('/tasks/executions');
         expect(httpParams.get('name')).toEqual('foo');
         expect(httpParams.get('arguments')).toEqual('a=a');
         expect(httpParams.get('properties')).toEqual('b=b');
+        expect(httpParams.get('platformName')).toEqual('foo');
+      });
+
+    });
+
+    describe('getPlatforms', () => {
+
+      it('should call the platform service with the right url', () => {
+        this.mockHttp.get.and.returnValue(of({}));
+        this.tasksService.getPlatforms();
+        const httpUri1 = this.mockHttp.get.calls.mostRecent().args[0];
+        expect(httpUri1).toEqual('/tasks/platforms');
       });
 
     });

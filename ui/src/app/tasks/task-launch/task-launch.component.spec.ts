@@ -22,6 +22,9 @@ import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
+import { Platform } from '../../shared/model/platform';
+import { TaskDefinition } from '../model/task-definition';
+import { By } from '@angular/platform-browser';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -85,7 +88,6 @@ describe('TaskLaunchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
   describe('Prepare Arguments', () => {
 
     beforeEach(() => {
@@ -93,26 +95,71 @@ describe('TaskLaunchComponent', () => {
     });
 
     it('Name, no arg, 2 properties', () => {
-      const result = component.prepareParams('name', [], ['prop1=val1', 'prop2=val2']);
+      const result = component.prepareParams('name', [], ['prop1=val1', 'prop2=val2'], 'default');
       expect(result.name).toBe('name');
       expect(result.args).toBe('');
       expect(result.props).toBe('prop1=val1, prop2=val2');
     });
 
     it('Name, 2 args, no property', () => {
-      const result = component.prepareParams('name', ['arg1=val1', 'arg2=val2'], []);
+      const result = component.prepareParams('name', ['arg1=val1', 'arg2=val2'], [], 'default');
       expect(result.name).toBe('name');
       expect(result.args).toBe('arg1=val1 arg2=val2');
       expect(result.props).toBe('');
     });
 
     it('Name, 2 args, 2 properties', () => {
-      const result = component.prepareParams('name', ['arg1=valArg1', 'arg2=valArg2'], ['prop1=valProp1', 'prop2=valProp2']);
+      const result = component.prepareParams('name', ['arg1=valArg1', 'arg2=valArg2'], ['prop1=valProp1', 'prop2=valProp2'], 'default');
       expect(result.name).toBe('name');
       expect(result.args).toBe('arg1=valArg1 arg2=valArg2');
       expect(result.props).toBe('prop1=valProp1, prop2=valProp2');
     });
 
   });
+
+  describe('Platform Integration', () => {
+
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('Can select a platform', () => {
+      const task = {
+        task: new TaskDefinition('foo', 'timestamp', false, 'COMPLETE'),
+        platforms: [
+          new Platform('foo', 'foo', 'foo'),
+          new Platform('bar', 'bar', 'bar'),
+        ]
+      };
+      expect(component.canSelectPlatform(task)).toBeTruthy();
+    });
+
+    it('Can not select a platform', () => {
+      const task = {
+        task: new TaskDefinition('foo', 'timestamp', false, 'COMPLETE'),
+        platforms: [
+          new Platform('foo', 'foo', 'foo')
+        ]
+      };
+      expect(component.canSelectPlatform(task)).toBeFalsy();
+    });
+
+  });
+
+  describe('Launch task', () => {
+
+    beforeEach(() => {
+      fixture.detectChanges();
+    });
+
+    it('Should call the right method service', () => {
+      const spy = spyOn(tasksService, 'launchDefinition');
+      fixture.debugElement.query(By.css('#launch-task')).nativeElement.click();
+      fixture.detectChanges();
+      expect(spy).toHaveBeenCalled();
+    });
+
+  });
+
 
 });

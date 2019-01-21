@@ -2,11 +2,11 @@ import { Component, OnInit, Output, EventEmitter, Input, OnDestroy } from '@angu
 import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { StreamDefinition } from '../../model/stream-definition';
 import { Subscription, Subject } from 'rxjs';
-import { Platform } from '../../model/platform';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { StreamsService } from '../../streams.service';
 import { takeUntil } from 'rxjs/operators';
 import { StreamDeployValidator } from '../../stream-deploy/stream-deploy.validator';
+import { Platform } from '../../../shared/model/platform';
 
 @Component({
   selector: 'app-stream-deployment-properties',

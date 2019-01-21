@@ -17,7 +17,7 @@ import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { of } from 'rxjs';
-import { Platform } from '../../model/platform';
+import { Platform } from '../../../shared/model/platform';
 
 /**
  * Test {@link StreamCreateDialogComponent}.

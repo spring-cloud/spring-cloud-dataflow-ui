@@ -6,12 +6,12 @@ import { StreamStatuses } from './model/stream-metrics';
 import { Page } from '../shared/model/page';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';
-import { Platform } from './model/platform';
 import { StreamListParams } from './components/streams.interface';
 import { OrderParams } from '../shared/components/shared.interface';
 import { LoggerService } from '../shared/services/logger.service';
 import { StreamHistory } from './model/stream-history';
 import { catchError, map } from 'rxjs/operators';
+import { Platform } from '../shared/model/platform';
 
 /**
  * Provides {@link StreamDefinition} related services.
