@@ -9,14 +9,10 @@ import {
   StreamMetrics,
   ApplicationMetrics,
   INSTANCE_COUNT,
-  INPUT_CHANNEL_MEAN,
-  OUTPUT_CHANNEL_MEAN,
   TYPE
 } from '../../model/stream-metrics';
 import { dia } from 'jointjs';
 import {
-  TYPE_INCOMING_MESSAGE_RATE,
-  TYPE_OUTGOING_MESSAGE_RATE,
   TYPE_INSTANCE_DOT,
   TYPE_INSTANCE_LABEL
 } from '../flo/support/shapes';
@@ -83,9 +79,9 @@ describe('StreamGraphDefinitionComponent', () => {
   it('verify dots in the view', (done) => {
     component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'deployed');
 
-    const httpMetrics = createAppMetrics('source', 'http', 2, 0, 3.4562243);
-    const filterMetrics = createAppMetrics('processor', 'filter', 40, 4.68954, 2.93718423);
-    const nullMetrics = createAppMetrics('sink', 'null', 3, 4.3124, 0);
+    const httpMetrics = createAppMetrics('source', 'http', 2);
+    const filterMetrics = createAppMetrics('processor', 'filter', 40);
+    const nullMetrics = createAppMetrics('sink', 'null', 3);
 
     // Remove 3 instances to have 37/40 label
     filterMetrics.instances.pop();
@@ -136,56 +132,7 @@ describe('StreamGraphDefinitionComponent', () => {
     fixture.detectChanges();
   });
 
-  it('verify message rate labels in the view', (done) => {
-    component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'deployed');
-
-    const httpMetrics = createAppMetrics('source', 'http', 1, 0, 3.4562243);
-    const filterMetrics = createAppMetrics('processor', 'filter', 1, 4.68954, 2.93718423);
-    const nullMetrics = createAppMetrics('sink', 'null', 1, 4.3124, 0);
-
-    const streamMetrics = new StreamMetrics();
-    streamMetrics.name = 'test-stream';
-    streamMetrics.applications = [
-      httpMetrics,
-      filterMetrics,
-      nullMetrics
-    ];
-    component.metrics = streamMetrics;
-
-    const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
-      subscription.unsubscribe();
-
-      // verify http dots
-      const link1 = component.flo.getGraph().getLinks()[0];
-      let labels = link1.get('labels');
-      expect(Array.isArray(labels)).toBeTruthy();
-      let incomingRate = labels.filter(l => l.type === TYPE_INCOMING_MESSAGE_RATE);
-      expect(incomingRate.length).toEqual(1);
-      expect(incomingRate[0].rate).toEqual(4.68954);
-      let outgoingRate = labels.filter(l => l.type === TYPE_OUTGOING_MESSAGE_RATE);
-      expect(outgoingRate.length).toEqual(1);
-      expect(outgoingRate[0].rate).toEqual(3.4562243);
-
-
-      const link2 = component.flo.getGraph().getLinks()[1];
-      labels = link2.get('labels');
-      expect(Array.isArray(labels)).toBeTruthy();
-      incomingRate = labels.filter(l => l.type === TYPE_INCOMING_MESSAGE_RATE);
-      expect(incomingRate.length).toEqual(1);
-      expect(incomingRate[0].rate).toEqual(4.3124);
-      outgoingRate = labels.filter(l => l.type === TYPE_OUTGOING_MESSAGE_RATE);
-      expect(outgoingRate.length).toEqual(1);
-      expect(outgoingRate[0].rate).toEqual(2.93718423);
-
-      done();
-
-    });
-    // Subscribe to graph changes before running angular change/update cycle
-    fixture.detectChanges();
-  });
-
-  function createAppMetrics(group: string, name: string, numberOfInstances: number,
-                            inRate: number, outRate: number): ApplicationMetrics {
+  function createAppMetrics(group: string, name: string, numberOfInstances: number): ApplicationMetrics {
     const instances = [];
     for (let index = 0; index < numberOfInstances; index++) {
       const properties = {};
@@ -193,20 +140,12 @@ describe('StreamGraphDefinitionComponent', () => {
       instances.push({
         guid: `${name}-${index}`,
         index: index,
-        properties: properties,
-        metrics: [
-          { name: INPUT_CHANNEL_MEAN, value: inRate },
-          { name: OUTPUT_CHANNEL_MEAN, value: outRate }
-        ]
+        properties: properties
       });
     }
     return ApplicationMetrics.fromJSON({
       name: name,
-      instances: instances,
-      aggregateMetrics: [
-        { name: INPUT_CHANNEL_MEAN, value: inRate },
-        { name: OUTPUT_CHANNEL_MEAN, value: outRate }
-      ]
+      instances: instances
     });
   }
 

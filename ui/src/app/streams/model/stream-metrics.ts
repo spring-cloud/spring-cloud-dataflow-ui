@@ -8,34 +8,18 @@ export const OUTPUT_CHANNEL_MEAN = 'integration.channel.output.send.mean';
  *
  * @author Alex Boyko
  */
-export class Metric {
-  name: string;
-  value: any;
-
-  static fromJSON(input): Metric {
-    const metric = new Metric();
-    metric.name = input.name;
-    metric.value = input.value;
-    return metric;
-  }
-}
-
 export class InstanceMetrics {
   guid: string;
   index: number;
   properties: {};
-  metrics: Metric[];
+  state: string;
 
   static fromJSON(input): InstanceMetrics {
     const instanceMetrics = new InstanceMetrics();
     instanceMetrics.guid = input.guid;
     instanceMetrics.index = input.index;
     instanceMetrics.properties = input.properties;
-    if (Array.isArray(input.metrics)) {
-      instanceMetrics.metrics = input.metrics.map(Metric.fromJSON);
-    } else {
-      instanceMetrics.metrics = [];
-    }
+    instanceMetrics.state = input.state;
     return instanceMetrics;
   }
 
@@ -44,7 +28,6 @@ export class InstanceMetrics {
 export class ApplicationMetrics {
   name: string;
   instances: InstanceMetrics[];
-  aggregateMetrics: Metric[];
 
   static fromJSON(input) {
     const applicationMetrics = new ApplicationMetrics();
@@ -53,11 +36,6 @@ export class ApplicationMetrics {
       applicationMetrics.instances = input.instances.map(InstanceMetrics.fromJSON);
     } else {
       applicationMetrics.instances = [];
-    }
-    if (Array.isArray(input.aggregateMetrics)) {
-      applicationMetrics.aggregateMetrics = input.aggregateMetrics.map(Metric.fromJSON);
-    } else {
-      applicationMetrics.aggregateMetrics = [];
     }
     return applicationMetrics;
   }

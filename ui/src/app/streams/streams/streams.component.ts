@@ -265,7 +265,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.appsState$ = this.appsService.appsState();
     this.refresh();
 
-    this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
+    this.metricsSubscription = IntervalObservable.create(30000).subscribe(() => this.loadStreamMetrics());
   }
 
   /**
@@ -398,7 +398,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
   loadStreamMetrics() {
     const streamNames = this.streamDefinitions && Array.isArray(this.streamDefinitions.items) ?
       this.streamDefinitions.items
-        .filter(i => i.status === 'deployed')
+        .filter(i => (i.status === 'deployed') || (i.status === 'deploying') || (i.status === 'partial'))
         .map(s => s.name.toString())
       : [];
     if (streamNames.length) {

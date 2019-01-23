@@ -4,17 +4,13 @@ import { StreamDefinition } from '../../model/stream-definition';
 import {
   StreamMetrics,
   ApplicationMetrics,
-  INPUT_CHANNEL_MEAN,
-  OUTPUT_CHANNEL_MEAN,
   INSTANCE_COUNT
 } from '../../model/stream-metrics';
 import { ApplicationType } from '../../../shared/model/application-type';
 import { dia } from 'jointjs';
 import {
   TYPE_INSTANCE_DOT,
-  TYPE_INSTANCE_LABEL,
-  TYPE_INCOMING_MESSAGE_RATE,
-  TYPE_OUTGOING_MESSAGE_RATE
+  TYPE_INSTANCE_LABEL
 } from '../flo/support/shapes';
 import { Subscription, Subject } from 'rxjs';
 import { MetamodelService } from '../flo/metamodel.service';
@@ -49,24 +45,6 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
   set metrics(m: StreamMetrics) {
     this._metrics = m;
     this.update();
-  }
-
-  static getInputRate(app: ApplicationMetrics): number {
-    if (app && app.aggregateMetrics) {
-      const metric = app.aggregateMetrics.find(m => m.name === INPUT_CHANNEL_MEAN);
-      if (metric) {
-        return metric.value;
-      }
-    }
-  }
-
-  static getOutputRate(app: ApplicationMetrics): number {
-    if (app && app.aggregateMetrics) {
-      const metric = app.aggregateMetrics.find(m => m.name === OUTPUT_CHANNEL_MEAN);
-      if (metric) {
-        return metric.value;
-      }
-    }
   }
 
   constructor(public metamodel: MetamodelService, public renderer: RenderService) {
@@ -107,16 +85,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
   }
 
   private update() {
-    this.updateMessageRates();
     this.updateDots();
-  }
-
-  private updateMessageRates() {
-    if (this.flo) {
-      this.flo.getGraph().getLinks()
-        .filter(link => link.get('type') === joint.shapes.flo.LINK_TYPE)
-        .forEach(link => this.updateMessageRatesForLink(link));
-    }
   }
 
   private updateDots() {
@@ -230,79 +199,6 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
         label.remove();
       }
       dots.forEach(e => e.remove());
-    }
-  }
-
-  private updateMessageRatesForLink(link: dia.Link) {
-    let outgoingIndex: number, incomingIndex: number;
-    let moduleMetrics: ApplicationMetrics;
-    let labels: any[] = link.get('labels') || [];
-
-    // Find incoming and outgoing message rates labels
-    if (labels && Array.isArray(labels)) {
-      labels.forEach((label, i) => {
-        if (label.type === TYPE_OUTGOING_MESSAGE_RATE) {
-          outgoingIndex = i;
-        } else if (label.type === TYPE_INCOMING_MESSAGE_RATE) {
-          incomingIndex = i;
-        }
-      });
-    } else {
-      labels = [];
-    }
-
-    if (!this.metrics || !this.stream || this.stream.status === 'undeployed' || this.stream.status === 'failed') {
-      if (typeof outgoingIndex === 'number' || typeof incomingIndex === 'number') {
-        // Need to set the labels if labels were removed. Must be a new array object.
-        const newLabels = labels.filter((label, i) => i !== outgoingIndex && i !== incomingIndex);
-        link.set('labels', newLabels);
-      }
-    } else {
-      const source = this.flo.getGraph().getCell(link.get('source').id);
-      const target = this.flo.getGraph().getCell(link.get('target').id);
-
-      if (source) {
-        moduleMetrics = this.findModuleMetrics(source.attr('node-name') || source.attr('metadata/name'));
-        const outgoingRate = StreamGraphDefinitionComponent.getOutputRate(moduleMetrics);
-        if (typeof outgoingRate === 'number') {
-          if (typeof outgoingIndex === 'number') {
-            labels[outgoingIndex].rate = outgoingRate;
-          } else {
-            // Create new label for outgoing message rate
-            outgoingIndex = link.get('labels') ? link.get('labels').length : 0;
-            link.label(outgoingIndex, <any>{
-              position: {
-                offset: -10,
-                distance: 10
-              },
-              type: TYPE_OUTGOING_MESSAGE_RATE,
-              rate: outgoingRate,
-            });
-          }
-        }
-      }
-
-      if (target) {
-        moduleMetrics = this.findModuleMetrics(target.attr('node-name') || target.attr('metadata/name'));
-        const incomingRate = StreamGraphDefinitionComponent.getInputRate(moduleMetrics);
-        if (typeof incomingRate === 'number') {
-          if (typeof incomingIndex === 'number') {
-            labels[incomingIndex].rate = incomingRate;
-          } else {
-            // Create new label for incoming message rate
-            incomingIndex = link.get('labels') ? link.get('labels').length : 0;
-            link.label(incomingIndex, <any>{
-              position: {
-                offset: 10,
-                distance: -10
-              },
-              type: TYPE_INCOMING_MESSAGE_RATE,
-              rate: incomingRate,
-            });
-          }
-        }
-      }
-
     }
   }
 
