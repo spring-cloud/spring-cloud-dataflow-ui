@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
-import { Subscription } from 'rxjs';
-import { StreamMetrics } from '../model/stream-metrics';
+import { of, Subscription, timer } from 'rxjs';
+import { StreamStatuses } from '../model/stream-metrics';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { StreamsDeployComponent } from '../streams-deploy/streams-deploy.component';
@@ -64,9 +64,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
   metricsSubscription: Subscription;
 
   /**
-   * Array of metrics
+   * Array of streamStatuses
    */
-  metrics: StreamMetrics[];
+  streamStatuses: StreamStatuses[];
 
   /**
    * Modal reference
@@ -122,16 +122,26 @@ export class StreamsComponent implements OnInit, OnDestroy {
   appsState$: Observable<any>;
 
   /**
+   * Runtime Statuses Subscription
+   */
+  runtimeStreamStatusesSubscription: Subscription;
+
+  /**
+   * Time Subscription
+   */
+  timeSubscription: Subscription;
+
+  /**
    * Initialize component
    *
-   * @param {StreamsService} streamsService
-   * @param {BsModalService} modalService
-   * @param {AppsService} appsService
-   * @param {BusyService} busyService
-   * @param {NotificationService} notificationService
-   * @param {LoggerService} loggerService
-   * @param {AuthService} authService
-   * @param {Router} router
+   * @param streamsService
+   * @param modalService
+   * @param appsService
+   * @param busyService
+   * @param notificationService
+   * @param loggerService
+   * @param authService
+   * @param router
    */
   constructor(public streamsService: StreamsService,
               private modalService: BsModalService,
@@ -264,8 +274,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
 
     this.appsState$ = this.appsService.appsState();
     this.refresh();
-
-    this.metricsSubscription = IntervalObservable.create(2000).subscribe(() => this.loadStreamMetrics());
   }
 
   /**
@@ -274,6 +282,12 @@ export class StreamsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.metricsSubscription) {
       this.metricsSubscription.unsubscribe();
+    }
+    if (this.timeSubscription) {
+      this.timeSubscription.unsubscribe();
+    }
+    if (this.runtimeStreamStatusesSubscription) {
+      this.runtimeStreamStatusesSubscription.unsubscribe();
     }
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
@@ -307,7 +321,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
           })))
       )
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((value: { streams: Page<StreamDefinition>, apps: Page<AppRegistration> }) => {
+      .subscribe((value: { streams: Page<StreamDefinition>, apps: Page<AppRegistration>, statuses: any }) => {
+          //this.streamStatuses = value.statuses;
           if (value.streams.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
             this.refresh();
@@ -318,6 +333,15 @@ export class StreamsComponent implements OnInit, OnDestroy {
           this.changeExpand();
           this.changeCheckboxes();
           this.updateContext();
+
+          if (!this.timeSubscription) {
+            this.loadStreamMetrics();
+            this.timeSubscription = timer(0, 10 * 1000)
+              .subscribe(() => {
+                this.loadStreamMetrics();
+              });
+          }
+
         },
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
@@ -393,18 +417,24 @@ export class StreamsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Loads streams metrics data
+   * Loads streams streamStatuses data
    */
   loadStreamMetrics() {
     const streamNames = this.streamDefinitions && Array.isArray(this.streamDefinitions.items) ?
       this.streamDefinitions.items
-        .filter(i => i.status === 'deployed')
+        .filter(i => (i.status === 'deployed') || (i.status === 'deploying') || (i.status === 'partial'))
         .map(s => s.name.toString())
       : [];
     if (streamNames.length) {
-      this.streamsService.getMetrics(streamNames).subscribe(metrics => this.metrics = metrics);
+      if (this.runtimeStreamStatusesSubscription) {
+        this.runtimeStreamStatusesSubscription.unsubscribe();
+      }
+      this.runtimeStreamStatusesSubscription = this.streamsService.getRuntimeStreamStatuses(streamNames)
+        .subscribe(metrics => {
+          this.streamStatuses = metrics;
+        });
     } else {
-      this.metrics = [];
+      this.streamStatuses = [];
     }
   }
 
@@ -590,11 +620,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
   /**
    * Metrics for stream
    * @param {string} name
-   * @returns {StreamMetrics}
+   * @returns {StreamStatuses}
    */
-  metricsForStream(name: string): StreamMetrics {
-    if (Array.isArray(this.metrics)) {
-      return this.metrics.find(m => m.name === name);
+  metricsForStream(name: string): StreamStatuses {
+    if (Array.isArray(this.streamStatuses)) {
+      return this.streamStatuses.find(m => m.name === name);
     }
   }
 

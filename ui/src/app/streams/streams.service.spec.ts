@@ -293,30 +293,30 @@ describe('StreamsService', () => {
 
   });
 
-  describe('metrics', () => {
+  describe('streamStatuses', () => {
 
-    it('should call the streams metrics service no stream names specified', () => {
+    it('should call the streams streamStatuses service no stream names specified', () => {
       this.mockHttp.get.and.returnValue(of(this.jsonData));
-      expect(this.streamsService.getMetrics).toBeDefined();
-      this.streamsService.getMetrics();
+      expect(this.streamsService.getRuntimeStreamStatuses).toBeDefined();
+      this.streamsService.getRuntimeStreamStatuses();
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
-      expect(httpUri).toEqual('/metrics/streams');
+      expect(httpUri).toEqual('/runtime/streams');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
     });
 
-    it('should call the streams metrics service with stream names specified', () => {
+    it('should call the streams streamStatuses service with stream names specified', () => {
       this.mockHttp.get.and.returnValue(of(this.jsonData));
-      expect(this.streamsService.getMetrics).toBeDefined();
-      this.streamsService.getMetrics(['test1', 'test2']);
+      expect(this.streamsService.getRuntimeStreamStatuses).toBeDefined();
+      this.streamsService.getRuntimeStreamStatuses(['test1', 'test2']);
       const httpHeaders = HttpUtils.getDefaultHttpHeaders();
       const params = new HttpParams()
         .append('names', 'test1,test2');
       const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
       const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
-      expect(httpUri).toEqual('/metrics/streams');
+      expect(httpUri).toEqual('/runtime/streams');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
       expect(httpParams.get('names')).toEqual('test1,test2');

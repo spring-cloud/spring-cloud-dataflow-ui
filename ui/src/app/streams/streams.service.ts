@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { StreamDefinition } from './model/stream-definition';
-import { StreamMetrics } from './model/stream-metrics';
+import { StreamStatuses } from './model/stream-metrics';
 import { Page } from '../shared/model/page';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { HttpUtils } from '../shared/support/http.utils';
@@ -250,20 +250,20 @@ export class StreamsService {
   }
 
   /**
-   * Calls the Spring Cloud Data Flow server to get the metrics of a specified stream.
+   * Calls the Spring Cloud Data Flow server to get the streamStatuses of a specified stream.
    * @param {string[]} streamNames
-   * @returns {Observable<StreamMetrics[]>}
+   * @returns {Observable<StreamStatuses[]>}
    */
-  getMetrics(streamNames?: string[]): Observable<StreamMetrics[]> {
+  getRuntimeStreamStatuses(streamNames?: string[]): Observable<StreamStatuses[]> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     let params = new HttpParams();
     if (streamNames) {
       params = params.append('names', streamNames.join(','));
     }
     return this.httpClient
-      .get<any>('/metrics/streams', { headers: httpHeaders, params: params })
+      .get<any>('/runtime/streams', { headers: httpHeaders, params: params })
       .pipe(
-        map(StreamMetrics.listFromJSON),
+        map(StreamStatuses.listFromJSON),
         catchError(this.errorHandler.handleError)
       );
   }
