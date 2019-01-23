@@ -1,4 +1,4 @@
-<svg:g class="rotatable" [tooltip]="dotTooltip" placement="bottom" container="body" [ngClass]="{deployed: instance}">
+<svg:g class="rotatable" [tooltip]="dotTooltip" placement="bottom" container="body" [ngClass]="{deployed: state == 'deployed', failed: state == 'failed'}">
   <svg:g class="scalable">
     <svg:circle class="instance-dot"/>
   </svg:g>
