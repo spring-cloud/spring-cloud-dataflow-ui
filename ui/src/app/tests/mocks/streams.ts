@@ -1,7 +1,7 @@
 import { Page } from '../../shared/model/page';
 import { StreamDefinition } from '../../streams/model/stream-definition';
 import { Platform } from '../../streams/model/platform';
-import { StreamMetrics } from '../../streams/model/stream-metrics';
+import { StreamStatuses } from '../../streams/model/stream-metrics';
 import { OrderParams } from '../../shared/components/shared.interface';
 import { StreamHistory } from '../../streams/model/stream-history';
 import { Observable, of } from 'rxjs';
@@ -68,7 +68,7 @@ export class MockStreamsService {
     ]);
   }
 
-  getMetrics(streamNames?: string[]): Observable<StreamMetrics[]> {
+  getStreamStatuses(streamNames?: string[]): Observable<StreamStatuses[]> {
     return of([]);
   }
 

@@ -6,7 +6,7 @@ const MAGNITUDE_NUMBERS = [ 1000000000, 1000000, 1000];
 const MAGNITUDE_LITERALS = ['B', 'M', 'K'];
 
 /**
- * Component for displaying "dot" for instance metrics data under the module
+ * Component for displaying "dot" for instance streamStatuses data under the module
  *
  * @author Alex Boyko
  * @author Andy Clement

@@ -3,7 +3,7 @@ import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
 import { Subscription } from 'rxjs';
-import { StreamMetrics } from '../model/stream-metrics';
+import { StreamStatuses } from '../model/stream-metrics';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { StreamsDeployComponent } from '../streams-deploy/streams-deploy.component';
@@ -64,9 +64,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
   metricsSubscription: Subscription;
 
   /**
-   * Array of metrics
+   * Array of streamStatuses
    */
-  metrics: StreamMetrics[];
+  streamStatuses: StreamStatuses[];
 
   /**
    * Modal reference
@@ -265,7 +265,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.appsState$ = this.appsService.appsState();
     this.refresh();
 
-    this.metricsSubscription = IntervalObservable.create(30000).subscribe(() => this.loadStreamMetrics());
+    this.metricsSubscription = IntervalObservable.create(10000).subscribe(() => this.loadStreamMetrics());
   }
 
   /**
@@ -393,7 +393,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Loads streams metrics data
+   * Loads streams streamStatuses data
    */
   loadStreamMetrics() {
     const streamNames = this.streamDefinitions && Array.isArray(this.streamDefinitions.items) ?
@@ -402,9 +402,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
         .map(s => s.name.toString())
       : [];
     if (streamNames.length) {
-      this.streamsService.getMetrics(streamNames).subscribe(metrics => this.metrics = metrics);
+      this.streamsService.getRuntimeStreamStatuses(streamNames).subscribe(metrics => this.streamStatuses = metrics);
     } else {
-      this.metrics = [];
+      this.streamStatuses = [];
     }
   }
 
@@ -590,11 +590,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
   /**
    * Metrics for stream
    * @param {string} name
-   * @returns {StreamMetrics}
+   * @returns {StreamStatuses}
    */
-  metricsForStream(name: string): StreamMetrics {
-    if (Array.isArray(this.metrics)) {
-      return this.metrics.find(m => m.name === name);
+  metricsForStream(name: string): StreamStatuses {
+    if (Array.isArray(this.streamStatuses)) {
+      return this.streamStatuses.find(m => m.name === name);
     }
   }
 

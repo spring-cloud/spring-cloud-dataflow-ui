@@ -2,9 +2,8 @@ import { Component, ViewEncapsulation, Input, OnDestroy } from '@angular/core';
 import { Flo } from 'spring-flo';
 import { StreamDefinition } from '../../model/stream-definition';
 import {
-  StreamMetrics,
-  ApplicationMetrics,
-  INSTANCE_COUNT
+  StreamStatuses,
+  StreamStatus
 } from '../../model/stream-metrics';
 import { ApplicationType } from '../../../shared/model/application-type';
 import { dia } from 'jointjs';
@@ -35,14 +34,14 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   flo: Flo.EditorContext;
-  private _metrics: StreamMetrics;
+  private _metrics: StreamStatuses;
   private _subscriptionToGraphUpdates: Subscription;
 
   @Input()
   stream: StreamDefinition;
 
   @Input()
-  set metrics(m: StreamMetrics) {
+  set metrics(m: StreamStatuses) {
     this._metrics = m;
     this.update();
   }
@@ -58,7 +57,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
-  get metrics(): StreamMetrics {
+  get metrics(): StreamStatuses {
     return this._metrics;
   }
 
@@ -80,7 +79,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
       .subscribe(() => this.update());
   }
 
-  private findModuleMetrics(label: string): ApplicationMetrics {
+  private findModuleMetrics(label: string): StreamStatus {
     return this.metrics && Array.isArray(this.metrics.applications) ? this.metrics.applications.find(app => app.name === label) : undefined;
   }
 
@@ -103,7 +102,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     }
   }
 
-  private updateInstanceDecorations(cell: dia.Element, moduleMetrics: ApplicationMetrics) {
+  private updateInstanceDecorations(cell: dia.Element, moduleMetrics: StreamStatus) {
     let label: dia.Cell;
     let dots: dia.Cell[] = [];
     // Find label or dots currently painted
@@ -116,10 +115,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     });
 
     if (moduleMetrics && Array.isArray(moduleMetrics.instances) && moduleMetrics.instances.length > 0) {
-      let instanceCount = Number(moduleMetrics.instances[0].properties[INSTANCE_COUNT]);
-      if (!instanceCount) {
-        instanceCount = moduleMetrics.instances.length;
-      }
+      let instanceCount = moduleMetrics.instances.length;
 
       // Label or Dots should be displayed
       const size: dia.Size = cell.get('size');

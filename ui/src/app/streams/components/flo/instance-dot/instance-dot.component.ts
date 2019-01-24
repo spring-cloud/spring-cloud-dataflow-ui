@@ -1,10 +1,10 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { ElementComponent } from '../../../../shared/flo/support/shape-component';
-import { InstanceMetrics, TYPE } from '../../../model/stream-metrics';
+import { InstanceStatus, TYPE } from '../../../model/stream-metrics';
 import { ApplicationType } from '../../../../shared/model/application-type';
 
 /**
- * Component for displaying "dot" for instance metrics data under the module
+ * Component for displaying "dot" for instance streamStatuses data under the module
  *
  * @author Alex Boyko
  * @author Andy Clement
@@ -17,16 +17,8 @@ import { ApplicationType } from '../../../../shared/model/application-type';
 })
 export class InstanceDotComponent extends ElementComponent {
 
-  get instance(): InstanceMetrics {
+  get instance(): InstanceStatus {
     return this.view ? this.view.model.attr('instance') : undefined;
-  }
-
-  get isSource(): boolean {
-    return this.instance ? this.instance.properties[TYPE] === ApplicationType[ApplicationType.source] : false;
-  }
-
-  get isSink(): boolean {
-    return this.instance ? this.instance.properties[TYPE] === ApplicationType[ApplicationType.sink] : false;
   }
 
   get guid(): string {

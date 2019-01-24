@@ -1,21 +1,20 @@
-import { StreamMetrics, ApplicationMetrics, InstanceMetrics } from './stream-metrics';
+import { StreamStatuses, StreamStatus, InstanceStatus } from './stream-metrics';
 
 /**
  * Test {@link StreamDefinition} model.
  *
  * @author Glenn Renfro
  */
-describe('InstanceMetrics', () => {
+describe('InstanceStatus', () => {
 
   it('Guid and Index only deserialize', () => {
-    const i = InstanceMetrics.fromJSON({
+    const i = InstanceStatus.fromJSON({
       guid: 'guid',
       index: 8,
       state: 'deployed'
     });
     expect(i.guid).toEqual('guid');
     expect(i.index).toEqual(8);
-    expect(i.properties).toBeUndefined();
     expect(i.state).toEqual('deployed');
   });
 
@@ -24,20 +23,19 @@ describe('InstanceMetrics', () => {
       p1: 'v1',
       p2: 876,
     };
-    const i = InstanceMetrics.fromJSON({
+    const i = InstanceStatus.fromJSON({
       properties: props
     });
     expect(i.guid).toBeUndefined();
     expect(i.index).toBeUndefined();
-    expect(i.properties).toEqual(props);
   });
 
 });
 
-describe('ApplicationMetrics', () => {
+describe('StreamStatus', () => {
 
-  it('Deserialize ApplicationMetrics only name', () => {
-    const a = ApplicationMetrics.fromJSON({
+  it('Deserialize StreamStatus only name', () => {
+    const a = StreamStatus.fromJSON({
       name: 'my-app'
     });
     expect(a.name).toEqual('my-app');
@@ -45,7 +43,7 @@ describe('ApplicationMetrics', () => {
   });
 
   it('Deserialize general case', () => {
-    const a = ApplicationMetrics.fromJSON({
+    const a = StreamStatus.fromJSON({
       name: 'my-app',
       instances: [
         {
@@ -69,10 +67,10 @@ describe('ApplicationMetrics', () => {
 
 });
 
-describe('StreamMetrics', () => {
+describe('StreamStatuses', () => {
 
   it('Deserialize name only', () => {
-    const s = StreamMetrics.fromJSON({
+    const s = StreamStatuses.fromJSON({
       name: 'str1'
     });
     expect(s.name).toEqual('str1');
@@ -80,7 +78,7 @@ describe('StreamMetrics', () => {
   });
 
   it ('General case for deserialize', () => {
-    const s = StreamMetrics.fromJSON({
+    const s = StreamStatuses.fromJSON({
       applications: [
         {
           name: 'app-1'

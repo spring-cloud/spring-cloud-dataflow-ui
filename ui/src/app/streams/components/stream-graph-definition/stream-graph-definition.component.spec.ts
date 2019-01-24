@@ -6,10 +6,8 @@ import { FloModule } from 'spring-flo';
 import { MetamodelService } from '../flo/metamodel.service';
 import { RenderService } from '../flo/render.service';
 import {
-  StreamMetrics,
-  ApplicationMetrics,
-  INSTANCE_COUNT,
-  TYPE
+  StreamStatuses,
+  StreamStatus
 } from '../../model/stream-metrics';
 import { dia } from 'jointjs';
 import {
@@ -79,17 +77,16 @@ describe('StreamGraphDefinitionComponent', () => {
   it('verify dots in the view', (done) => {
     component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'deployed');
 
-    const httpMetrics = createAppMetrics('source', 'http', 2);
-    const filterMetrics = createAppMetrics('processor', 'filter', 40);
-    const nullMetrics = createAppMetrics('sink', 'null', 3);
+    const httpMetrics = createStreamStatus('source', 'http', 2);
+    const filterMetrics = createStreamStatus('processor', 'filter', 40);
+    const nullMetrics = createStreamStatus('sink', 'null', 3);
 
     // Remove 3 instances to have 37/40 label
     filterMetrics.instances.pop();
     filterMetrics.instances.pop();
     filterMetrics.instances.pop();
-    filterMetrics.instances[0].properties[INSTANCE_COUNT] = 40;
 
-    const streamMetrics = new StreamMetrics();
+    const streamMetrics = new StreamStatuses();
     streamMetrics.name = 'test-stream';
     streamMetrics.applications = [
       httpMetrics,
@@ -115,7 +112,7 @@ describe('StreamGraphDefinitionComponent', () => {
       expect(filter.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_DOT)).toBeUndefined();
       const filterEmbeds = filter.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_LABEL);
       expect(filterEmbeds.length).toEqual(1);
-      expect(filterEmbeds[0].attr('.label/text')).toEqual('37/40');
+      expect(filterEmbeds[0].attr('.label/text')).toEqual('37/37');
 
       // verify null dots
       const nullApp = <dia.Element> component.flo.getGraph().getElements().find(e => e.attr('metadata/name') === 'null');
@@ -132,18 +129,15 @@ describe('StreamGraphDefinitionComponent', () => {
     fixture.detectChanges();
   });
 
-  function createAppMetrics(group: string, name: string, numberOfInstances: number): ApplicationMetrics {
+  function createStreamStatus(group: string, name: string, numberOfInstances: number): StreamStatus {
     const instances = [];
     for (let index = 0; index < numberOfInstances; index++) {
-      const properties = {};
-      properties[TYPE] = group;
       instances.push({
         guid: `${name}-${index}`,
         index: index,
-        properties: properties
       });
     }
-    return ApplicationMetrics.fromJSON({
+    return StreamStatus.fromJSON({
       name: name,
       instances: instances
     });

@@ -1,64 +1,60 @@
 export const TYPE = 'spring.cloud.dataflow.stream.app.type';
 export const INSTANCE_COUNT = 'spring.cloud.stream.instanceCount';
-export const INPUT_CHANNEL_MEAN = 'integration.channel.input.send.mean';
-export const OUTPUT_CHANNEL_MEAN = 'integration.channel.output.send.mean';
 
 /**
- * StreamMetrics and related model classes
+ * StreamStatuses and related model classes
  *
  * @author Alex Boyko
  */
-export class InstanceMetrics {
+export class InstanceStatus {
   guid: string;
   index: number;
-  properties: {};
   state: string;
 
-  static fromJSON(input): InstanceMetrics {
-    const instanceMetrics = new InstanceMetrics();
-    instanceMetrics.guid = input.guid;
-    instanceMetrics.index = input.index;
-    instanceMetrics.properties = input.properties;
-    instanceMetrics.state = input.state;
-    return instanceMetrics;
+  static fromJSON(input): InstanceStatus {
+    const instanceStatus = new InstanceStatus();
+    instanceStatus.guid = input.guid;
+    instanceStatus.index = input.index;
+    instanceStatus.state = input.state;
+    return instanceStatus;
   }
 
 }
 
-export class ApplicationMetrics {
+export class StreamStatus {
   name: string;
-  instances: InstanceMetrics[];
+  instances: InstanceStatus[];
 
   static fromJSON(input) {
-    const applicationMetrics = new ApplicationMetrics();
-    applicationMetrics.name = input.name;
+    const streamStatus = new StreamStatus();
+    streamStatus.name = input.name;
     if (Array.isArray(input.instances)) {
-      applicationMetrics.instances = input.instances.map(InstanceMetrics.fromJSON);
+      streamStatus.instances = input.instances.map(InstanceStatus.fromJSON);
     } else {
-      applicationMetrics.instances = [];
+      streamStatus.instances = [];
     }
-    return applicationMetrics;
+    return streamStatus;
   }
 }
 
-export class StreamMetrics {
+export class StreamStatuses {
   name: string;
-  applications: ApplicationMetrics[];
+  applications: StreamStatus[];
 
-  static fromJSON(input): StreamMetrics {
-    const streamMetrics = new StreamMetrics();
-    streamMetrics.name = input.name;
+  static fromJSON(input): StreamStatuses {
+    const streamStatuses = new StreamStatuses();
+    streamStatuses.name = input.name;
     if (Array.isArray(input.applications)) {
-      streamMetrics.applications = input.applications.map(ApplicationMetrics.fromJSON);
+      streamStatuses.applications = input.applications.map(StreamStatus.fromJSON);
     } else {
-      streamMetrics.applications = [];
+      streamStatuses.applications = [];
     }
-    return streamMetrics;
+    return streamStatuses;
   }
 
-  static listFromJSON(input): Array<StreamMetrics> {
+  static listFromJSON(input): Array<StreamStatuses> {
     if (Array.isArray(input)) {
-      return input.map(StreamMetrics.fromJSON);
+      return input.map(StreamStatuses.fromJSON);
     }
     return [];
   }
