@@ -13,6 +13,7 @@ import { BusyService } from '../../shared/services/busy.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { Page } from '../../shared/model/page';
 import { AppError } from '../../shared/model/error.model';
+import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
 
 /**
  * Component handling a creation of a task schedule.
@@ -42,7 +43,24 @@ export class TaskScheduleCreateComponent implements OnInit {
    */
   form: FormGroup;
 
+  /**
+   * Form Submitted
+   */
   submitted = false;
+
+  /**
+   * Validators args / props component
+   */
+  kvValidators = {
+    args: {
+      key: [Validators.required],
+      value: []
+    },
+    props: {
+      key: [Validators.required, TaskLaunchValidator.key],
+      value: []
+    }
+  };
 
   /**
    * Constructor
@@ -133,27 +151,9 @@ export class TaskScheduleCreateComponent implements OnInit {
     this.form = new FormGroup({
       'cron': new FormControl('', [Validators.required, TaskScheduleCreateValidator.cron]),
       'names': names,
-      'params': new FormArray([]),
-      'args': new FormArray([])
+      'args': new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
+      'props': new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props))
     });
-    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
-    const clean = (array: FormArray, addFunc, keyValidator: boolean) => {
-      if (!isEmpty(array.controls[array.controls.length - 1].value)) {
-        return addFunc(array, keyValidator);
-      }
-    };
-    const add = (arr: FormArray, keyValidator: boolean) => {
-      const group = new FormGroup({
-        'key': new FormControl('', keyValidator ? TaskLaunchValidator.key : null),
-        'val': new FormControl('')
-      }, { validators: TaskLaunchValidator.keyRequired });
-      group.valueChanges.subscribe(() => {
-        clean(arr, add, keyValidator);
-      });
-      arr.push(group);
-    };
-    add(this.form.get('params') as FormArray, true);
-    add(this.form.get('args') as FormArray, false);
   }
 
   /**
@@ -164,13 +164,11 @@ export class TaskScheduleCreateComponent implements OnInit {
     if (!this.form.valid) {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
-      const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
-      const getClean = (arr: FormArray): Array<string> => arr.controls
-        .map((group) => !isEmpty(group.value) ? `${group.get('key').value}=${group.get('val').value}` : '')
+      const getClean = (val: string): Array<string> => val.split('\n')
         .filter((a) => a !== '');
 
-      const taskArguments = getClean(this.form.get('args') as FormArray);
-      const taskProperties = getClean(this.form.get('params') as FormArray);
+      const taskArguments = getClean(this.form.get('args').value);
+      const taskProperties = getClean(this.form.get('props').value);
       const cronExpression = this.form.get('cron').value;
       const scheduleParams = schedule.taskDefinitions
         .map((taskName: string, index: number) => ({

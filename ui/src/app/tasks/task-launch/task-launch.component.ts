@@ -4,13 +4,14 @@ import { TasksService } from '../tasks.service';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BusyService } from '../../shared/services/busy.service';
-import { TaskLaunchValidator } from './task-launch.validator';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError } from '../../shared/model/error.model';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { TaskLaunchParams } from '../components/tasks.interface';
+import { TaskLaunchValidator } from './task-launch.validator';
+import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
 
 /**
  * Component that provides a launcher of task.
@@ -42,6 +43,25 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   /**
+   * Validators args / props component
+   */
+  kvValidators = {
+    args: {
+      key: [Validators.required],
+      value: []
+    },
+    props: {
+      key: [Validators.required, TaskLaunchValidator.key],
+      value: []
+    }
+  };
+
+  /**
+   * Form Subbmitted
+   */
+  submitted = false;
+
+  /**
    * Constructor
    *
    * @param {TasksService} tasksService
@@ -63,39 +83,14 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * Initialize
    */
   ngOnInit() {
-    this.buildForm();
+    this.form = new FormGroup({
+      args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
+      props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props))
+    });
     this.taskDefinition$ = this.route.params
       .pipe(mergeMap(
         val => this.tasksService.getDefinition(val.id)
       ));
-  }
-
-  /**
-   * Build the form
-   */
-  buildForm() {
-    this.form = new FormGroup({
-      'params': new FormArray([]),
-      'args': new FormArray([])
-    });
-    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
-    const clean = (array: FormArray, addFunc, keyValidator: boolean) => {
-      if (!isEmpty(array.controls[array.controls.length - 1].value)) {
-        return addFunc(array, keyValidator);
-      }
-    };
-    const add = (arr: FormArray, keyValidator: boolean) => {
-      const group = new FormGroup({
-        'key': new FormControl('', keyValidator ? TaskLaunchValidator.key : null),
-        'val': new FormControl('')
-      }, { validators: TaskLaunchValidator.keyRequired });
-      group.valueChanges.subscribe(() => {
-        clean(arr, add, keyValidator);
-      });
-      arr.push(group);
-    };
-    add(this.form.get('params') as FormArray, true);
-    add(this.form.get('args') as FormArray, false);
   }
 
   /**
@@ -119,8 +114,8 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   prepareParams(name: string, taskArguments: Array<string>, taskProperties: Array<string>): TaskLaunchParams {
     return {
       name: name,
-      args: taskArguments.join(' '),
-      props: taskProperties.join(', ')
+      args: taskArguments.filter((a) => a !== '').join(' '),
+      props: taskProperties.filter((a) => a !== '').join(', ')
     };
   }
 
@@ -130,28 +125,25 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * @param {string} name
    */
   submit(name: string) {
-    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
-    const getClean = (arr: FormArray): Array<string> => {
-      return arr.controls.map((group) => {
-        return !isEmpty(group.value)
-          ? `${group.get('key').value}=${group.get('val').value}`
-          : '';
-      }).filter((a) => a !== '');
-    };
-    const taskArguments = getClean(this.form.get('args') as FormArray);
-    const taskProperties = getClean(this.form.get('params') as FormArray);
-    const busy = this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties))
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(
-        data => {
-          this.notificationService.success('Successfully launched task "' + name + '"');
-          this.router.navigate(['/tasks/definitions']);
-        },
-        error => {
-          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        }
-      );
-    this.busyService.addSubscription(busy);
+    this.submitted = true;
+    if (!this.form.valid) {
+      this.notificationService.error('Some field(s) are invalid.');
+    } else {
+      const taskArguments = this.form.get('args').value.toString().split('\n');
+      const taskProperties = this.form.get('props').value.toString().split('\n');
+      const busy = this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties))
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
+          data => {
+            this.notificationService.success('Successfully launched task "' + name + '"');
+            this.router.navigate(['/tasks/definitions']);
+          },
+          error => {
+            this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          }
+        );
+      this.busyService.addSubscription(busy);
+    }
   }
 
   /**

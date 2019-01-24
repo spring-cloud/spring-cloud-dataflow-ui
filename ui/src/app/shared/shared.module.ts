@@ -46,6 +46,7 @@ import { LayoutTypeDirective } from './directives/layout-type.directive';
 import { DATAFLOW_PAGE } from './components/page/page.component';
 import { DATAFLOW_LIST } from './components/list/list.component';
 import { FocusDirective } from './directives/focus.directive';
+import { KvRichTextComponent } from './components/kv-rich-text/kv-rich-text.component';
 
 const busyConfig: BusyConfig = {
   message: 'Processing...',
@@ -115,6 +116,7 @@ const busyConfig: BusyConfig = {
     PagerComponent,
     LayoutTypeDirective,
     FocusDirective,
+    KvRichTextComponent,
     DATAFLOW_LIST,
     DATAFLOW_PAGE
   ],
@@ -162,6 +164,7 @@ const busyConfig: BusyConfig = {
     ToastContainerModule,
     LayoutTypeDirective,
     FocusDirective,
+    KvRichTextComponent,
     DATAFLOW_LIST,
     DATAFLOW_PAGE
   ]

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { Page } from '../shared/model/page';
 import { TaskExecution } from './model/task-execution';
