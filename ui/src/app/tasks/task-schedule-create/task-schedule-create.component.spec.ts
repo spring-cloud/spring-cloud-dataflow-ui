@@ -29,6 +29,8 @@ import { By } from '@angular/platform-browser';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
+import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
+import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 
 /**
  * Test {@link TaskScheduleCreateComponent}.
@@ -59,7 +61,8 @@ describe('TaskScheduleCreateComponent', () => {
         StreamDslComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
-        PagerComponent
+        PagerComponent,
+        KvRichTextComponent
       ],
       imports: [
         NgxPaginationModule,
@@ -71,6 +74,7 @@ describe('TaskScheduleCreateComponent', () => {
         FormsModule,
         FloModule,
         ReactiveFormsModule,
+        ClipboardModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [
@@ -81,7 +85,8 @@ describe('TaskScheduleCreateComponent', () => {
         { provide: TasksService, useValue: tasksService },
         { provide: GroupRouteService, useValue: groupRouteService },
         { provide: RoutingStateService, useValue: routingStateService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        ClipboardService
       ]
     })
       .compileComponents();

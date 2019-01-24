@@ -20,6 +20,8 @@ import { PagerComponent } from 'src/app/shared/components/pager/pager.component'
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
+import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
+import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -45,6 +47,7 @@ describe('TaskLaunchComponent', () => {
         LoaderComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
+        KvRichTextComponent,
         PagerComponent
       ],
       imports: [
@@ -52,6 +55,7 @@ describe('TaskLaunchComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         NgxPaginationModule,
+        ClipboardModule,
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])
@@ -61,7 +65,8 @@ describe('TaskLaunchComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: BusyService, useValue: busyService },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        ClipboardService
       ]
     })
       .compileComponents();
