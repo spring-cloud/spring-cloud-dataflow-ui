@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
 import { Observable, of } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { map } from 'rxjs/operators';
+import { RuntimeAppInstance } from '../model/runtime-app-instance';
 
 /**
  * Component that display a Runtime application.
@@ -22,11 +25,18 @@ export class RuntimeAppComponent {
   runtimeApp$: Observable<RuntimeApp>;
 
   /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
    * Constructor
    *
    * @param {BsModalRef} modalRef
+   * @param grafanaService
    */
-  constructor(private modalRef: BsModalRef) {
+  constructor(private modalRef: BsModalRef,
+              private grafanaService: GrafanaService) {
   }
 
   /**
@@ -35,7 +45,14 @@ export class RuntimeAppComponent {
    * @param {RuntimeApp} runtimeApp
    */
   open(runtimeApp: RuntimeApp) {
-    this.runtimeApp$ = of(runtimeApp);
+    this.runtimeApp$ = this.grafanaService.isAllowed()
+      .pipe(
+        map((active) => {
+          this.grafanaEnabled = active;
+          return runtimeApp;
+        })
+
+      );
   }
 
   /**
@@ -43,6 +60,15 @@ export class RuntimeAppComponent {
    */
   cancel() {
     this.modalRef.hide();
+  }
+
+  /**
+   * Open the grafana dashboard application
+   */
+  grafanaDashboard(appInstance: RuntimeAppInstance): void {
+    this.grafanaService.getDashboardApplication(appInstance).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 
 }

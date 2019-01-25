@@ -5,6 +5,9 @@ import { SharedAboutService } from '../services/shared-about.service';
 import { map } from 'rxjs/operators';
 import { FeatureInfo } from '../model/about/feature-info.model';
 import { AboutInfo } from '../model/about/about-info.model';
+import { GrafanaInfo } from '../model/about/grafana.model';
+import { RuntimeApp } from '../../runtime/model/runtime-app';
+import { RuntimeAppInstance } from '../../runtime/model/runtime-app-instance';
 
 /**
  * Grafana Service.
@@ -32,28 +35,41 @@ export class GrafanaService {
   }
 
   /**
-   * Return an observable which contains the URL to the stream dashboard
+   * Return an observable which contains the URL to the streams dashboard
    */
   getDashboardStreams(): Observable<string> {
     return this.sharedAboutService
       .getAboutInfo()
       .pipe(
-        map((aboutInfo: AboutInfo) => aboutInfo.grafanaInfo.url),
-        map((url: string) => `${url}/d/scdf-streams/streams?refresh=5`)
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}`)
       );
   }
 
   /**
-   * Return an observable which contains the URL to the application dashboard
+   * Return an observable which contains the URL to the stream dashboard
    * @param {StreamDefinition} stream
    */
   getDashboardStream(stream: StreamDefinition): Observable<string> {
     return this.sharedAboutService
       .getAboutInfo()
       .pipe(
-        map((aboutInfo: AboutInfo) => aboutInfo.grafanaInfo.url),
-        map((url: string) => `${url}/d/scdf-streams/streams?refresh=5&var-stream_name=${stream.name}`)
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}&var-stream_name=${stream.name}`)
       );
   }
-  
+
+  /**
+   * Return an observable which contains the URL to the application dashboard
+   * @param appInstance
+   */
+  getDashboardApplication(appInstance: RuntimeAppInstance): Observable<string> {
+    return this.sharedAboutService
+      .getAboutInfo()
+      .pipe(
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}&var-application_name=${appInstance.instanceId}`)
+      );
+  }
+
 }

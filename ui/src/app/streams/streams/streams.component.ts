@@ -122,7 +122,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
    */
   appsState$: Observable<any>;
 
-
+  /**
+   * Grafana Subscription
+   */
   grafanaEnabledSubscription: Subscription;
 
   /**

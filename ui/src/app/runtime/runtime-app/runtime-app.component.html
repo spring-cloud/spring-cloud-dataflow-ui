@@ -12,12 +12,21 @@
           Instance
           <strong>{{ item.instanceId }}</strong>
           <app-runtime-state style="margin-left: 10px" [runtimeApp]="item"></app-runtime-state>
+          <div class="pull-right" *ngIf="grafanaEnabled">
+            <button type="button" (click)="grafanaDashboard(item)" class="btn btn-default btn-fa"
+                    title="Grafana Dashboard">
+              <span class="icon-custom icon-custom-grafana"></span>
+              Grafana Dashboard
+            </button>
+          </div>
         </div>
         <div class="panel-content">
           <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalue">
             <div class="row row-key-value">
               <div class="col-md-8">
-                <strong><dataflow-truncator [input]="item.key" trailPosition="start" trail="…"></dataflow-truncator></strong>
+                <strong>
+                  <dataflow-truncator [input]="item.key" trailPosition="start" trail="…"></dataflow-truncator>
+                </strong>
               </div>
               <div class="col-md-16">
                 <input type="text" readonly [value]="item.value" class="form-control input-sm">

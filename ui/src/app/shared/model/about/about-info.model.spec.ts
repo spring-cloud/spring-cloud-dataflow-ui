@@ -12,7 +12,8 @@ describe('AboutInfo', () => {
           },
           "grafanaInfo": {
             "url": null,
-            "token": null
+            "token": null,
+            "refreshInterval": 20
           },
           "versionInfo": {
             "implementation": {

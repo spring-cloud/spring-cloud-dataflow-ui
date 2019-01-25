@@ -8,9 +8,9 @@
       <app-stream-status [streamDefinition]="streamDefinition.streamDefinition"></app-stream-status>
     </app-page-head-subtitle>
     <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
-      <button name="stream-stop" type="button" *ngIf="streamDefinition.grafanaEnabled"
+      <button name="stream-grafana" type="button" *ngIf="streamDefinition.grafanaEnabled"
               [disabled]="!(streamDefinition.streamDefinition.status === 'deployed')"
-              (click)="grafanaDashboard(streamDefinition.streamDefinition)" class="btn btn-primary btn-fa" title="Undeploy">
+              (click)="grafanaDashboard(streamDefinition.streamDefinition)" class="btn btn-primary btn-fa" title="Grafana Dashboard">
         <span class="icon-custom icon-custom-grafana white"></span>
         Grafana Dashboard
       </button>

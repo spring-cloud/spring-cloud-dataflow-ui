@@ -29,7 +29,7 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
     this.streamsEnabled = input['streamsEnabled'] === true;
     this.tasksEnabled = input['tasksEnabled'] === true;
     this.schedulerEnabled = input['schedulerEnabled'] === true;
-    this.grafanaEnabled = true;
+    this.grafanaEnabled = true; // TODO: input['grafanaEnabled'] ===true;
     return this;
   }
 

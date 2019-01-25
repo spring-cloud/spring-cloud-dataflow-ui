@@ -8,12 +8,14 @@ describe('GrafanaInfo', () => {
       const json = JSON.parse(`
         {
           "url": "http://localhost:3000",
-          "token": null
+          "token": null,
+          "refreshInterval": 20
         }
       `);
       const grafanaInfo = new GrafanaInfo().deserialize(json);
       expect(grafanaInfo.url).toBe('http://localhost:3000');
       expect(grafanaInfo.token).toBe('');
+      expect(grafanaInfo.refreshInterval).toBe(20);
     });
 
   });

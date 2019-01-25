@@ -1,4 +1,5 @@
 import { Serializable } from '..';
+import { isNumber } from 'util';
 
 /**
  * Contains meta data about grafana.
@@ -9,6 +10,7 @@ export class GrafanaInfo implements Serializable<GrafanaInfo> {
 
   public url = '';
   public token = '';
+  public refreshInterval:number = 10;
 
   public reset() {
     this.url = '';
@@ -19,6 +21,7 @@ export class GrafanaInfo implements Serializable<GrafanaInfo> {
     if (input) {
       this.url = input['url'] ? input['url'] : '';
       this.token = input['token'] ? input['token'] : '';
+      this.refreshInterval = isNumber(input['refreshInterval']) ? input['refreshInterval'] : 10;
     }
     return this;
   }
