@@ -261,7 +261,7 @@ export class StreamsService {
       params = params.append('names', streamNames.join(','));
     }
     return this.httpClient
-      .get<any>('/runtime/stream', { headers: httpHeaders, params: params })
+      .get<any>('/runtime/streams', { headers: httpHeaders, params: params })
       .pipe(
         map(StreamStatuses.listFromJSON),
         catchError(this.errorHandler.handleError)
