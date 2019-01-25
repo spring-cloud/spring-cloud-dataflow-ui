@@ -59,7 +59,7 @@
         "secure": false,
         "logLevel": "debug"
     },
-    "/runtime/apps" : {
+    "/runtime" : {
         "target": "http://localhost:9393/",
         "secure": false,
         "logLevel": "debug"
