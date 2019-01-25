@@ -39,7 +39,7 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo) => aboutInfo.grafanaInfo.url),
-        map((url: string) => `${url}/d/scdf-streams/streams/`)
+        map((url: string) => `${url}/d/scdf-streams/streams?refresh=5`)
       );
   }
 
@@ -52,9 +52,8 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo) => aboutInfo.grafanaInfo.url),
-        map((url: string) => `${url}/d/scdf-streams/streams/${stream.name}`)
+        map((url: string) => `${url}/d/scdf-streams/streams?refresh=5&var-stream_name=${stream.name}`)
       );
   }
-
-
+  
 }
