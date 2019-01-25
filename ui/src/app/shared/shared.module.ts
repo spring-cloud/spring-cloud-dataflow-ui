@@ -46,6 +46,7 @@ import { LayoutTypeDirective } from './directives/layout-type.directive';
 import { DATAFLOW_PAGE } from './components/page/page.component';
 import { DATAFLOW_LIST } from './components/list/list.component';
 import { FocusDirective } from './directives/focus.directive';
+import { GrafanaModule } from './grafana/grafana.module';
 
 const busyConfig: BusyConfig = {
   message: 'Processing...',
@@ -79,6 +80,7 @@ const busyConfig: BusyConfig = {
     NgxPaginationModule,
     ToastContainerModule,
     ProgressbarModule.forRoot(),
+    GrafanaModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',
@@ -135,6 +137,7 @@ const busyConfig: BusyConfig = {
   ],
   exports: [
     StreamDslComponent,
+    GrafanaModule,
     NgBusyModule,
     CommonModule,
     FormsModule,

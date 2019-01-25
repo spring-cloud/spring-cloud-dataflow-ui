@@ -242,14 +242,20 @@ app-list-row-actions {
         padding-left: 40px;
         padding-right: 40px;
         cursor: pointer;
-        .fa {
+        .fa, .icon-custom {
           position: absolute;
           top: 8px;
           left: 12px;
         }
+        .icon-custom-grafana {
+          top: 6px;
+        }
         &.disabled {
           color: #999;
           cursor: not-allowed;
+          .icon-custom {
+            opacity: .4;
+          }
           &:hover {
             background: white;
           }
@@ -517,4 +523,18 @@ em.required {
 
 .form-control::placeholder {
   color: $navy-8;
+}
+
+.icon-custom {
+  &.icon-custom-grafana {
+    display: inline-block;
+    height: 17px;
+    width: 17px;
+    background: url("/assets/img/grafana.png") no-repeat 0 0;
+    background-size: 17px 17px;
+    &.white {
+      background: url("/assets/img/grafana_white.png") no-repeat 0 0;
+      background-size: 17px 17px;
+    }
+  }
 }

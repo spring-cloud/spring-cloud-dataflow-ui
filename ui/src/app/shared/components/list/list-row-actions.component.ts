@@ -13,7 +13,8 @@ import {
       <button *ngFor="let action of actionsDefault" name="{{ action.id }}" type="button" (click)="call(action)"
               class="btn btn-default" title="{{ action.title }}" [disabled]="!!action?.disabled"
               [tooltip]="action.title" delay="500" container="body">
-        <span class="fa fa-{{ action.icon }}"></span>
+        <span *ngIf="!action['custom']" class="fa fa-{{ action.icon }}"></span>
+        <span *ngIf="action['custom']" class="icon-custom icon-custom-{{ action.icon }}"></span>
       </button>
       <div class="btn-group" *ngIf="actionsMenu.length > 0" dropdown>
         <button id="button-basic" dropdownToggle type="button" class="btn btn-default"
@@ -25,7 +26,8 @@ import {
             <li *ngIf="!action['divider'] && !action['hidden']">
               <a id="{{ action.id }}" class="dropdown-item" (click)="call(action)"
                  [class.disabled]="!!action?.disabled">
-                <span *ngIf="action.icon" class="fa fa-{{ action.icon }}"></span>
+                <span *ngIf="action.icon && !action['custom']" class="fa fa-{{ action.icon }}"></span>
+                <span *ngIf="action.icon && action['custom']" class="icon-custom icon-custom-{{ action.icon }}"></span>
                 {{ action.title }}
               </a>
             </li>
@@ -69,7 +71,7 @@ export class ListRowActionsComponent implements OnInit {
    */
   ngOnInit() {
     const actions = this.actions.filter(item => !item['divider'] && !item['hidden']);
-    this.actionsDefault = this.actions.filter(item => !!item['isDefault']);
+    this.actionsDefault = this.actions.filter(item => !!item['isDefault'] && !item['hidden']);
     if (this.actionsDefault.length !== actions.length) {
       this.actionsMenu = this.actions;
     } else {
