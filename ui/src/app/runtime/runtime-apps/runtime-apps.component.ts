@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
 import { Page } from '../../shared/model/page';
 import { RuntimeAppsService } from '../runtime-apps.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
 import { PaginationParams } from '../../shared/components/shared.interface';
+import { RuntimeAppInstance } from '../model/runtime-app-instance';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component that loads Runtime applications.
@@ -17,7 +20,7 @@ import { PaginationParams } from '../../shared/components/shared.interface';
   selector: 'app-runtime-apps',
   templateUrl: './runtime-apps.component.html',
 })
-export class RuntimeAppsComponent implements OnInit {
+export class RuntimeAppsComponent implements OnInit, OnDestroy {
 
   /**
    * Observable of a runtime applications page
@@ -35,12 +38,26 @@ export class RuntimeAppsComponent implements OnInit {
   modal: BsModalRef;
 
   /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
+   * Grafana Subscription
+   */
+  grafanaSubscription: Subscription;
+
+  /**
    * Contructor
    *
    * @param {RuntimeAppsService} runtimeAppsService
+   * @param {GrafanaService} grafanaService
+   * @param {NotificationService} notificationService
    * @param {BsModalService} modalService
    */
   constructor(private runtimeAppsService: RuntimeAppsService,
+              private grafanaService: GrafanaService,
+              private notificationService: NotificationService,
               private modalService: BsModalService) {
   }
 
@@ -49,6 +66,13 @@ export class RuntimeAppsComponent implements OnInit {
    */
   ngOnInit() {
     this.loadRuntimeApps();
+  }
+
+  /**
+   * Destroy
+   */
+  ngOnDestroy() {
+    this.grafanaSubscription.unsubscribe();
   }
 
   /**
@@ -62,10 +86,20 @@ export class RuntimeAppsComponent implements OnInit {
         action: 'view',
         title: 'Show details',
         isDefault: true
-      }
+      },
+      {
+        id: 'grafana' + index,
+        action: 'grafana',
+        icon: 'grafana',
+        custom: true,
+        title: 'Grafana Dashboard',
+        isDefault: true,
+        hidden: !this.grafanaEnabled
+      },
     ];
   }
 
+// appFeature="streamsEnabled"
   /**
    * Apply Action (row)
    * @param action
@@ -76,6 +110,8 @@ export class RuntimeAppsComponent implements OnInit {
       case 'view':
         this.view(item);
         break;
+      case 'grafana':
+        this.grafanaDashboard(item);
     }
   }
 
@@ -83,6 +119,9 @@ export class RuntimeAppsComponent implements OnInit {
    * Load runtime applications, request the dedicate service
    */
   loadRuntimeApps() {
+    this.grafanaSubscription = this.grafanaService.isAllowed().subscribe((active) => {
+      this.grafanaEnabled = active;
+    });
     this.runtimeApps$ = this.runtimeAppsService.getRuntimeApps(this.pagination);
   }
 
@@ -103,6 +142,28 @@ export class RuntimeAppsComponent implements OnInit {
   view(runtimeApp: RuntimeApp): void {
     this.modal = this.modalService.show(RuntimeAppComponent, { class: 'modal-xl' });
     this.modal.content.open(runtimeApp);
+  }
+
+  /**
+   * Open the grafana dashboard application
+   */
+  grafanaDashboard(runtimeApp: RuntimeApp): void {
+    let appName = '';
+    let streamName = '';
+    if (runtimeApp.appInstances && runtimeApp.appInstances.length > 0) {
+      const firstInstance: RuntimeAppInstance = runtimeApp.appInstances[0];
+      if (firstInstance.attributes) {
+        appName = firstInstance.attributes['skipper.application.name'];
+        streamName = firstInstance.attributes['skipper.release.name'];
+      }
+    }
+    if (streamName && appName) {
+      this.grafanaService.getDashboardApplication(streamName, appName).subscribe((url: string) => {
+        window.open(url);
+      });
+    } else {
+      this.notificationService.error('Sorry, we can\' open this grafana dashboard');
+    }
   }
 
 }

@@ -22,13 +22,16 @@ $btn-light: $navy-1;
   &.btn-fa {
     position: relative;
     padding-left: 34px;
-    span.fa {
+    span.fa, span.icon-custom {
       position: absolute;
       line-height: 32px;
       left: 8px;
       top: 0;
       width: 20px;
       text-align: center;
+    }
+    span.icon-custom {
+      top: 6px;
     }
   }
 }

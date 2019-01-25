@@ -31,6 +31,8 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { MockModalService } from '../../tests/mocks/modal';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
+import { GrafanaModule } from '../../shared/grafana/grafana.module';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Test {@link StreamComponent}.
@@ -70,6 +72,7 @@ describe('StreamComponent', () => {
       imports: [
         FormsModule,
         NgxPaginationModule,
+        GrafanaModule,
         BsDropdownModule.forRoot(),
         RouterTestingModule.withRoutes([]),
         TooltipModule.forRoot(),
@@ -86,7 +89,8 @@ describe('StreamComponent', () => {
         { provide: NotificationService, useValue: notificationService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: LoggerService, useValue: loggerService },
-        { provide: RenderService, useValue: renderService }
+        { provide: RenderService, useValue: renderService },
+        GrafanaService
       ]
     })
       .compileComponents();

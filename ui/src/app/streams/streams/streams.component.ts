@@ -10,7 +10,6 @@ import { StreamsDeployComponent } from '../streams-deploy/streams-deploy.compone
 import { StreamsUndeployComponent } from '../streams-undeploy/streams-undeploy.component';
 import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
 import { SortParams, OrderParams, ListDefaultParams } from '../../shared/components/shared.interface';
-import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
 import { StreamListParams } from '../components/streams.interface';
 import { mergeMap, takeUntil, map } from 'rxjs/operators';
 import { BusyService } from '../../shared/services/busy.service';
@@ -22,6 +21,8 @@ import { AppError } from '../../shared/model/error.model';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
 import { Observable, Subject } from 'rxjs';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 @Component({
   selector: 'app-streams',
@@ -122,6 +123,16 @@ export class StreamsComponent implements OnInit, OnDestroy {
   appsState$: Observable<any>;
 
   /**
+   * Grafana Subscription
+   */
+  grafanaEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
    * Runtime Statuses Subscription
    */
   runtimeStreamStatusesSubscription: Subscription;
@@ -141,6 +152,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param notificationService
    * @param loggerService
    * @param authService
+   * @param sharedAboutService
+   * @param grafanaService
    * @param router
    */
   constructor(public streamsService: StreamsService,
@@ -150,6 +163,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private loggerService: LoggerService,
               private authService: AuthService,
+              private sharedAboutService: SharedAboutService,
+              private grafanaService: GrafanaService,
               private router: Router) {
   }
 
@@ -195,6 +210,16 @@ export class StreamsComponent implements OnInit, OnDestroy {
         icon: 'info-circle',
         title: 'Show details',
         isDefault: true
+      },
+      {
+        id: 'grafana-stream' + index,
+        action: 'grafana',
+        icon: 'grafana',
+        custom: true,
+        title: 'Grafana Dashboard',
+        isDefault: true,
+        disabled: (item.status !== 'deployed'),
+        hidden: !this.grafanaEnabled
       },
       {
         divider: true,
@@ -259,6 +284,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
       case 'destroySelected':
         this.destroySelectedStreams();
         break;
+      case 'grafana':
+        this.grafanaStreamDashboard(args);
+        break;
     }
   }
 
@@ -271,7 +299,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.form = { q: this.context.q, checkboxes: [], checkboxesExpand: [] };
     this.itemsSelected = this.context.itemsSelected || [];
     this.itemsExpanded = this.context.itemsExpanded || [];
-
+    this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
+      this.grafanaEnabled = active;
+    });
     this.appsState$ = this.appsService.appsState();
     this.refresh();
   }
@@ -289,6 +319,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
     if (this.runtimeStreamStatusesSubscription) {
       this.runtimeStreamStatusesSubscription.unsubscribe();
     }
+    this.grafanaEnabledSubscription.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
@@ -653,6 +684,25 @@ export class StreamsComponent implements OnInit, OnDestroy {
    */
   registerApps() {
     this.router.navigate(['/apps/add']);
+  }
+
+  /**
+   * Navigate to the grafana Dashboard
+   */
+  grafanaDashboard() {
+    this.grafanaService.getDashboardStreams().subscribe((url: string) => {
+      window.open(url);
+    });
+  }
+
+  /**
+   * Navigate to the grafana stream Dashboard
+   * @param streamDefinition
+   */
+  grafanaStreamDashboard(streamDefinition: StreamDefinition) {
+    this.grafanaService.getDashboardStream(streamDefinition).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 
 }

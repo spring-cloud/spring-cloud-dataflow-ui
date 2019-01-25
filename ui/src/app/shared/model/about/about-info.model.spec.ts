@@ -7,7 +7,13 @@ describe('AboutInfo', () => {
         {
           "featureInfo": {
             "streamsEnabled": true,
+            "grafanaEnabled": false,
             "tasksEnabled": true
+          },
+          "grafanaInfo": {
+            "url": null,
+            "token": null,
+            "refreshInterval": 20
           },
           "versionInfo": {
             "implementation": {
@@ -78,6 +84,7 @@ describe('AboutInfo', () => {
       expect(aboutInfo.runtimeEnvironment).toBeDefined();
       expect(aboutInfo.securityInfo).toBeDefined();
       expect(aboutInfo.versionInfo).toBeDefined();
+      expect(aboutInfo.grafanaInfo).toBeDefined();
     });
   });
 });

@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
 import { Observable, of } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { map } from 'rxjs/operators';
+import { RuntimeAppInstance } from '../model/runtime-app-instance';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component that display a Runtime application.
@@ -22,11 +26,20 @@ export class RuntimeAppComponent {
   runtimeApp$: Observable<RuntimeApp>;
 
   /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
    * Constructor
    *
-   * @param {BsModalRef} modalRef
+   * @param modalRef
+   * @param notificationService
+   * @param grafanaService
    */
-  constructor(private modalRef: BsModalRef) {
+  constructor(private modalRef: BsModalRef,
+              private notificationService: NotificationService,
+              private grafanaService: GrafanaService) {
   }
 
   /**
@@ -35,7 +48,15 @@ export class RuntimeAppComponent {
    * @param {RuntimeApp} runtimeApp
    */
   open(runtimeApp: RuntimeApp) {
-    this.runtimeApp$ = of(runtimeApp);
+    this.runtimeApp$ = this.grafanaService.isAllowed()
+      .pipe(
+        map((active) => {
+          this.grafanaEnabled = active;
+          console.log(runtimeApp);
+          return runtimeApp;
+        })
+
+      );
   }
 
   /**
@@ -43,6 +64,28 @@ export class RuntimeAppComponent {
    */
   cancel() {
     this.modalRef.hide();
+  }
+
+  /**
+   * Open the grafana dashboard application
+   */
+  grafanaDashboard(runtimeApp: RuntimeApp): void {
+    let appName = '';
+    let streamName = '';
+    if (runtimeApp.appInstances && runtimeApp.appInstances.length > 0) {
+      const firstInstance: RuntimeAppInstance = runtimeApp.appInstances[0];
+      if (firstInstance.attributes) {
+        appName = firstInstance.attributes['skipper.application.name'];
+        streamName = firstInstance.attributes['skipper.release.name'];
+      }
+    }
+    if (streamName && appName) {
+      this.grafanaService.getDashboardApplication(streamName, appName).subscribe((url: string) => {
+        window.open(url);
+      });
+    } else {
+      this.notificationService.error('Sorry, we can\' open this grafana dashboard');
+    }
   }
 
 }

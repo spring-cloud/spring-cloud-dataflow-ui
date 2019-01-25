@@ -39,6 +39,8 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { Observable, of } from 'rxjs';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { GrafanaModule } from '../../shared/grafana/grafana.module';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Test {@link StreamsComponent}.
@@ -90,6 +92,7 @@ describe('StreamsComponent', () => {
         FormsModule,
         FloModule,
         ReactiveFormsModule,
+        GrafanaModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [
@@ -100,7 +103,8 @@ describe('StreamsComponent', () => {
         { provide: BusyService, useValue: new BusyService() },
         { provide: StreamsService, useValue: streamsService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: LoggerService, useValue: loggerService }
+        { provide: LoggerService, useValue: loggerService },
+        GrafanaService
       ]
     })
       .compileComponents();

@@ -1,6 +1,15 @@
 <div dataflowLayoutType type="full" *ngIf="runtimeApp$ | async as runtimeApp; else loading" id="page">
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Instances for app <strong>{{ runtimeApp.deploymentId }}</strong></h4>
+    <h4 class="modal-title pull-left">
+      Instances for app <strong>{{ runtimeApp.deploymentId }}</strong>
+      <span *ngIf="grafanaEnabled" style="margin-left: 1rem;">
+        <button type="button" (click)="grafanaDashboard(runtimeApp)" class="btn btn-default btn-fa"
+                title="Grafana Dashboard">
+          <span class="icon-custom icon-custom-grafana"></span>
+          Grafana Dashboard
+        </button>
+      </span>
+    </h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -17,7 +26,9 @@
           <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalue">
             <div class="row row-key-value">
               <div class="col-md-8">
-                <strong><dataflow-truncator [input]="item.key" trailPosition="start" trail="…"></dataflow-truncator></strong>
+                <strong>
+                  <dataflow-truncator [input]="item.key" trailPosition="start" trail="…"></dataflow-truncator>
+                </strong>
               </div>
               <div class="col-md-16">
                 <input type="text" readonly [value]="item.value" class="form-control input-sm">
