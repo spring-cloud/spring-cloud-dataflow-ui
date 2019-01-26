@@ -318,7 +318,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
           this.changeExpand();
           this.changeCheckboxes();
           this.updateContext();
-          this.loadStreamMetrics();
         },
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);

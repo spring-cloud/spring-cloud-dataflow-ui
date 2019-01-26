@@ -1,8 +1,9 @@
 import { InstanceDotComponent } from './instance-dot.component';
 import '../support/shapes';
-import { InstanceStatus, TYPE} from '../../../model/stream-metrics';
+import { InstanceStatus, TYPE } from '../../../model/stream-metrics';
 
 import * as _joint from 'jointjs';
+
 const joint: any = _joint;
 
 /**

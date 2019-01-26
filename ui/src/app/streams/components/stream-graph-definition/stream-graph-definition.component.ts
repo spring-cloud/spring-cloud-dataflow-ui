@@ -115,7 +115,7 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
     });
 
     if (moduleMetrics && Array.isArray(moduleMetrics.instances) && moduleMetrics.instances.length > 0) {
-      let instanceCount = moduleMetrics.instances.length;
+      const instanceCount = moduleMetrics.instances.length;
 
       // Label or Dots should be displayed
       const size: dia.Size = cell.get('size');
