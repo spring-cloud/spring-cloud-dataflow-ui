@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
 import { Page } from '../../shared/model/page';
 import { RuntimeAppsService } from '../runtime-apps.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
 import { PaginationParams } from '../../shared/components/shared.interface';
+import { RuntimeAppInstance } from '../model/runtime-app-instance';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Component that loads Runtime applications.
@@ -17,7 +19,7 @@ import { PaginationParams } from '../../shared/components/shared.interface';
   selector: 'app-runtime-apps',
   templateUrl: './runtime-apps.component.html',
 })
-export class RuntimeAppsComponent implements OnInit {
+export class RuntimeAppsComponent implements OnInit, OnDestroy {
 
   /**
    * Observable of a runtime applications page
@@ -35,12 +37,24 @@ export class RuntimeAppsComponent implements OnInit {
   modal: BsModalRef;
 
   /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
+   * Grafana Subscription
+   */
+  grafanaSubscription: Subscription;
+
+  /**
    * Contructor
    *
    * @param {RuntimeAppsService} runtimeAppsService
+   * @param {GrafanaService} grafanaService
    * @param {BsModalService} modalService
    */
   constructor(private runtimeAppsService: RuntimeAppsService,
+              private grafanaService: GrafanaService,
               private modalService: BsModalService) {
   }
 
@@ -49,6 +63,13 @@ export class RuntimeAppsComponent implements OnInit {
    */
   ngOnInit() {
     this.loadRuntimeApps();
+  }
+
+  /**
+   * Destroy
+   */
+  ngOnDestroy() {
+    this.grafanaSubscription.unsubscribe();
   }
 
   /**
@@ -83,6 +104,9 @@ export class RuntimeAppsComponent implements OnInit {
    * Load runtime applications, request the dedicate service
    */
   loadRuntimeApps() {
+    this.grafanaSubscription = this.grafanaService.isAllowed().subscribe((active) => {
+      this.grafanaEnabled = active;
+    });
     this.runtimeApps$ = this.runtimeAppsService.getRuntimeApps(this.pagination);
   }
 
@@ -103,6 +127,15 @@ export class RuntimeAppsComponent implements OnInit {
   view(runtimeApp: RuntimeApp): void {
     this.modal = this.modalService.show(RuntimeAppComponent, { class: 'modal-xl' });
     this.modal.content.open(runtimeApp);
+  }
+
+  /**
+   * Open the grafana dashboard applications
+   */
+  grafanaDashboard(): void {
+    this.grafanaService.getDashboardApplications().subscribe((url: string) => {
+      window.open(url);
+    });
   }
 
 }

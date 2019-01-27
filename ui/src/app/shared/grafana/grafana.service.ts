@@ -42,7 +42,7 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}`)
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}s`)
       );
   }
 
@@ -55,7 +55,19 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}&var-stream_name=${stream.name}`)
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}s&var-stream_name=${stream.name}`)
+      );
+  }
+
+  /**
+   * Return an observable which contains the URL to the applications dashboard
+   */
+  getDashboardApplications(): Observable<string> {
+    return this.sharedAboutService
+      .getAboutInfo()
+      .pipe(
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s`)
       );
   }
 
@@ -68,7 +80,7 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}&var-application_name=${appInstance.instanceId}`)
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s&var-application_name=${appInstance.instanceId}`)
       );
   }
 

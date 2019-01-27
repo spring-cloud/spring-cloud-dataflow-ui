@@ -14,16 +14,22 @@ import { NgBusyModule } from 'ng-busy';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { FormsModule } from '@angular/forms';
+import { BusyService } from '../../shared/services/busy.service';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
   let fixture: ComponentFixture<RuntimeAppsComponent>;
   const notificationService = new MockNotificationService();
   const runtimeAppsService = new MockRuntimeAppsService();
+  const sharedAboutService = new MocksSharedAboutService();
+  const busyService = new BusyService();
   let modalService;
 
   beforeEach(async(() => {
@@ -45,9 +51,12 @@ describe('RuntimeAppsComponent', () => {
         ModalModule.forRoot()
       ],
       providers: [
+        { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: RuntimeAppsService, useValue: runtimeAppsService },
         BsModalService,
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: BusyService, useValue: busyService },
+        GrafanaService
       ]
     })
       .compileComponents();

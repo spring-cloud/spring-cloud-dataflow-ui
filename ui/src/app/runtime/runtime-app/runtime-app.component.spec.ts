@@ -58,10 +58,10 @@ describe('RuntimeAppComponent', () => {
       ],
       providers: [
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: BusyService, useValue: busyService },
         { provide: RuntimeAppsService, useValue: runtimeAppsService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: NotificationService, useValue: notificationService },
+        { provide: BusyService, useValue: busyService },
         GrafanaService
       ]
     })
