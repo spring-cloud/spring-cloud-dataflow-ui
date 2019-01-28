@@ -68,7 +68,7 @@ export class MockStreamsService {
     ]);
   }
 
-  getStreamStatuses(streamNames?: string[]): Observable<StreamStatuses[]> {
+  getRuntimeStreamStatuses(streamNames?: string[]): Observable<StreamStatuses[]> {
     return of([]);
   }
 

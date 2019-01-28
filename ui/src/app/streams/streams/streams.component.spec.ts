@@ -47,7 +47,7 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
  * @author Damien Vitrac
  * @author Gunnar Hillert
  */
-describe('StreamsComponent', () => {
+fdescribe('StreamsComponent', () => {
   let component: StreamsComponent;
   let fixture: ComponentFixture<StreamsComponent>;
   const notificationService = new MockNotificationService();
@@ -451,6 +451,7 @@ describe('StreamsComponent', () => {
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.deploySelectedStreams();
+      fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith(StreamsDeployComponent, { class: 'modal-xl' });
     }));
 
@@ -459,6 +460,7 @@ describe('StreamsComponent', () => {
       mockBsModalRef.content = {
         open: () => of('testing')
       };
+      fixture.detectChanges();
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.undeploySelectedStreams();
       expect(spy).toHaveBeenCalledWith(StreamsUndeployComponent, { class: 'modal-lg' });
