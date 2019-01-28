@@ -30,18 +30,18 @@
           </app-sort>
         </th>
         <th style="width: 100px">
-          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'auditOperation'" [sort]="params"
-                    id="sort-auditOperation">Operation
-          </app-sort>
-        </th>
-        <th style="width: 100px">
           <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'auditAction'" [sort]="params"
                     id="sort-auditAction">Action
           </app-sort>
         </th>
+        <th style="width: 100px">
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'auditOperation'" [sort]="params"
+                    id="sort-auditOperation">Operation
+          </app-sort>
+        </th>
         <th style="width: 200px">
           <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'correlationId'" [sort]="params"
-                    id="sort-correlationId">Correlation Id
+                    id="sort-correlationId">Operation Id
           </app-sort>
         </th>
         <th style="width: 200px">
@@ -66,10 +66,10 @@
           {{ item.createdOn | dataflowDateTime }}
         </td>
         <td nowrap="">
-          <app-audit-record-operation [auditRecord]="item"></app-audit-record-operation>
+          <app-audit-record-action [auditRecord]="item"></app-audit-record-action>
         </td>
         <td nowrap="">
-          <app-audit-record-action [auditRecord]="item"></app-audit-record-action>
+          <app-audit-record-operation [auditRecord]="item"></app-audit-record-operation>
         </td>
         <td nowrap="">
           <strong>{{ item.correlationId }}</strong>

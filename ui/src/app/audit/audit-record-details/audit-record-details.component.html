@@ -26,14 +26,6 @@
     </div>
     <div class="row audit-summary-row">
       <div class="col-md-3">
-        <strong>Operation:</strong>
-      </div>
-      <div class="col-md-21">
-        <app-audit-record-operation [auditRecord]="auditRecord"></app-audit-record-operation>
-      </div>
-    </div>
-    <div class="row audit-summary-row">
-      <div class="col-md-3">
         <strong>Action:</strong>
       </div>
       <div class="col-md-21">
@@ -42,7 +34,15 @@
     </div>
     <div class="row audit-summary-row">
       <div class="col-md-3">
-        <strong>Correlation Id:</strong>
+        <strong>Operation:</strong>
+      </div>
+      <div class="col-md-21">
+        <app-audit-record-operation [auditRecord]="auditRecord"></app-audit-record-operation>
+      </div>
+    </div>
+    <div class="row audit-summary-row">
+      <div class="col-md-3">
+        <strong>Operation Id:</strong>
       </div>
       <div class="col-md-21">
         <strong>{{ auditRecord.correlationId }}</strong>
