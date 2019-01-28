@@ -79,14 +79,14 @@ export class StreamHistoryComponent implements OnInit {
    * @param streamHistory
    */
   rollback(streamHistory: StreamHistory) {
-    const title = `Confirm rollback the stream`;
+    const title = `Confirm stream rollback`;
     const description = `This action will rollback the  ` +
       `<strong>stream ${streamHistory.stream} to the version ${streamHistory.version}</strong>. Are you sure?`;
     this.confirmService.open(title, description, { confirm: 'Rollback' }).subscribe(() => {
       this.loggerService.log('Rollback to ' + streamHistory);
       this.streamsService.historyRollback(streamHistory)
         .subscribe(data => {
-            this.notificationService.success('Successfully rollback stream to the version "' + streamHistory.version + '"');
+            this.notificationService.success('Successful stream rollback to version "' + streamHistory.version + '"');
             this.refresh();
           }, error => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
@@ -96,7 +96,7 @@ export class StreamHistoryComponent implements OnInit {
   }
 
   /**
-   * Determine if the rollback action is allow
+   * Determine if the rollback action is allowed
    * @param stream
    * @param history
    */
