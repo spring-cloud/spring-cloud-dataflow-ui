@@ -55,7 +55,7 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}s&var-stream_name=${stream.name}`)
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s&var-stream_name=${stream.name}&var-application_name=All`)
       );
   }
 
