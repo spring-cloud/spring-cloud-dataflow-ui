@@ -29,7 +29,7 @@
             </span>
           </a>
         </li>
-        <li role="presentation" routerLinkActive="active" *ngIf="params.schedulerEnabled">
+        <li role="presentation" routerLinkActive="active" *ngIf="params.schedulerEnabled" [dataflowAppRoles]="['ROLE_SCHEDULE']">
           <a routerLink="/tasks/schedules">
             Schedules
             <span *ngIf="counters$ | async as counters">

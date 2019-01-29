@@ -138,7 +138,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         icon: 'clock-o',
         action: 'scheduleSelected',
         title: 'Schedule task(s)',
-        hidden: !this.schedulerEnabled
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       }
     ];
   }
@@ -159,7 +159,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
       {
         id: 'launch-task' + index,
@@ -167,11 +167,11 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'launch',
         title: 'Launch task',
         isDefault: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
       {
         divider: true,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       },
       {
         id: 'task-schedule' + index,
@@ -179,7 +179,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'schedule',
         title: 'Schedule task',
         disabled: !this.schedulerEnabled,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       },
       {
         id: 'delete-schedules' + index,
@@ -187,18 +187,18 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'delete-schedules',
         title: 'Delete schedule',
         disabled: !this.schedulerEnabled,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       },
       {
         divider: true,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
       {
         id: 'destroy-task' + index,
         icon: 'trash',
         action: 'destroy',
         title: 'Destroy task',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
     ];
   }

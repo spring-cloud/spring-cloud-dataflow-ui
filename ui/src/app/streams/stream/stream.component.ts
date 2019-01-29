@@ -32,7 +32,6 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 export class StreamComponent implements OnInit {
 
   /**
-   <<<<<<< HEAD
    * Observable of StreamDefinition
    */
   streamDefinition$: Observable<any>;

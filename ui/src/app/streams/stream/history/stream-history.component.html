@@ -15,7 +15,7 @@
       <th>Stream Status</th>
       <th>Description</th>
       <th>platformName</th>
-      <th>&nbsp;</th>
+      <th [dataflowAppRoles]="['ROLE_MODIFY']">&nbsp;</th>
     </tr>
     </thead>
     <tbody>
@@ -29,7 +29,7 @@
       </td>
       <td>{{ history.description}}</td>
       <td>{{ history.platformName}}</td>
-      <td class="table-actions" width="10px" nowrap="">
+      <td class="table-actions" width="10px" nowrap="" [dataflowAppRoles]="['ROLE_MODIFY']">
         <div class="actions">
           <button name="stream_rollback{{ i }}" type="button" (click)="rollback(history)"
                   class="btn btn-default" [disabled]="!canRollback(stream.stream, history)"

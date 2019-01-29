@@ -8,27 +8,35 @@
       <app-stream-status [streamDefinition]="streamDefinition.streamDefinition"></app-stream-status>
     </app-page-head-subtitle>
     <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
+      <button name="stream-stop" type="button"
+              *ngIf="!(streamDefinition.streamDefinition.status === 'undeployed'|| streamDefinition.streamDefinition.status === 'incomplete')"
+              (click)="undeploy(streamDefinition.streamDefinition)" class="btn btn-primary btn-fa" title="Undeploy"
+              [dataflowAppRoles]="['ROLE_CREATE']">
+        <span class="fa fa-stop"></span>
+        Undeploy stream
+      </button>
+      <button name="stream-deploy" type="button" (click)="deploy(streamDefinition.streamDefinition)"
+              class="btn btn-primary btn-fa" title="Deploy" [dataflowAppRoles]="['ROLE_DEPLOY']"
+              *ngIf="streamDefinition.streamDefinition.status !== 'deployed'">
+        <span class="fa fa-play"></span>
+        Deploy stream
+      </button>
+      <button name="stream-deploy" type="button" (click)="deploy(streamDefinition.streamDefinition)"
+              class="btn btn-primary btn-fa" title="Deploy" [dataflowAppRoles]="['ROLE_MODIFY']"
+              *ngIf="streamDefinition.streamDefinition.status === 'deployed'">
+        <span class="fa fa-edit"></span>
+        Update stream
+      </button>
+      <button name="stream-remove" type="button" (click)="destroy(streamDefinition.streamDefinition)"
+              class="btn btn-danger btn-fa" title="Destroy" [dataflowAppRoles]="['ROLE_DESTROY']">
+        <span class="fa fa-trash"></span>
+        Destroy stream
+      </button>
       <button name="stream-grafana" type="button" *ngIf="streamDefinition.grafanaEnabled"
               [disabled]="!(streamDefinition.streamDefinition.status === 'deployed')"
               (click)="grafanaDashboard(streamDefinition.streamDefinition)" class="btn btn-primary btn-fa" title="Grafana Dashboard">
         <span class="icon-custom icon-custom-grafana white"></span>
         Grafana Dashboard
-      </button>
-      <button name="stream-stop" type="button"
-              *ngIf="!(streamDefinition.streamDefinition.status === 'undeployed'|| streamDefinition.streamDefinition.status === 'incomplete')"
-              (click)="undeploy(streamDefinition.streamDefinition)" class="btn btn-primary btn-fa" title="Undeploy">
-        <span class="fa fa-stop"></span>
-        Undeploy stream
-      </button>
-      <button name="stream-deploy" type="button" (click)="deploy(streamDefinition.streamDefinition)"
-              class="btn btn-primary btn-fa" title="Deploy">
-        <span class="fa fa-play"></span>
-        Deploy stream
-      </button>
-      <button name="stream-remove" type="button" (click)="destroy(streamDefinition.streamDefinition)"
-              class="btn btn-danger btn-fa" title="Destroy">
-        <span class="fa fa-trash"></span>
-        Destroy stream
       </button>
     </app-page-head-actions>
   </app-page-head>

@@ -10,7 +10,7 @@
            class="table table-hover table-checkbox" id="taskDefinitionsTable">
       <thead>
       <tr>
-        <th style="width: 30px" [dataflowAppRoles]="['ROLE_CREATE']">
+        <th style="width: 30px" [dataflowAppRoles]="['ROLE_DESTROY']">
           <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [dataflowAppRoles]="['ROLE_CREATE']"
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
@@ -36,7 +36,7 @@
       <ng-container
         *ngFor="let item of taskDefinitions.items | paginate: taskDefinitions.getPaginationInstance(); index as i">
         <tr>
-          <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_CREATE']">
+          <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_DESTROY']">
             <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
                    [(ngModel)]="form.checkboxes[i]"/>
           </td>

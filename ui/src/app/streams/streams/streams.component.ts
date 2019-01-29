@@ -178,7 +178,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         icon: 'play',
         action: 'deploySelected',
         title: 'Deploy stream(s)',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
       {
         id: 'undeploy-streams',
@@ -192,7 +192,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         icon: 'trash',
         action: 'destroySelected',
         title: 'Destroy stream(s)',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
     ];
   }
@@ -223,15 +223,23 @@ export class StreamsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE', 'ROLE_DEPLOY', 'ROLE_DESTROY'])
       },
       {
         id: 'deploy-stream' + index,
         action: 'deploy',
         icon: 'play',
         title: 'Deploy stream',
-        isDefault: (item.status === 'undeployed'),
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        isDefault: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || (item.status === 'deployed')
+      },
+      {
+        id: 'update-stream' + index,
+        action: 'deploy',
+        icon: 'edit',
+        title: 'Update stream',
+        isDefault: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_MODIFY']) || !(item.status === 'deployed')
       },
       {
         id: 'undeploy-stream' + index,
@@ -244,14 +252,14 @@ export class StreamsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
       {
         id: 'destroy-stream' + index,
         action: 'destroy',
         icon: 'trash',
         title: 'Destroy stream',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
     ];
   }
