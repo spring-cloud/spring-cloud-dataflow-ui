@@ -47,7 +47,7 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
  * @author Damien Vitrac
  * @author Gunnar Hillert
  */
-fdescribe('StreamsComponent', () => {
+describe('StreamsComponent', () => {
   let component: StreamsComponent;
   let fixture: ComponentFixture<StreamsComponent>;
   const notificationService = new MockNotificationService();
