@@ -124,7 +124,7 @@ describe('StreamHistoryComponent', () => {
     const trs = fixture.debugElement.queryAll(By.css('#table-history tbody tr'));
     expect(trs.length).toBe(2);
     const tds = trs[1].queryAll(By.css('td'));
-    const action:HTMLElement = tds[5].query(By.css('button')).nativeElement;
+    const action: HTMLElement = tds[5].query(By.css('button')).nativeElement;
     action.click();
     fixture.detectChanges();
     expect(spy).toHaveBeenCalled();
@@ -135,10 +135,10 @@ describe('StreamHistoryComponent', () => {
     const trs = fixture.debugElement.queryAll(By.css('#table-history tbody tr'));
     expect(trs.length).toBe(2);
     const tds = trs[1].queryAll(By.css('td'));
-    const action:HTMLElement = tds[5].query(By.css('button')).nativeElement;
+    const action: HTMLElement = tds[5].query(By.css('button')).nativeElement;
     action.click();
     fixture.detectChanges();
-    expect(notificationService.testSuccess[0]).toContain('Successfully rollback stream to the version')
+    expect(notificationService.testSuccess[0]).toContain('Successful stream rollback to version');
   });
 
 });
