@@ -41,6 +41,15 @@
             <span class="fa fa-close"></span>
           </strong>
         </div>
+        <div class="line">
+          <span>Grafana: </span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.grafanaEnabled" id="grafanaEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.grafanaEnabled" id="grafanaDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
       </div>
     </div>
 

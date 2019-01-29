@@ -70,8 +70,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules'], 0);
-    validateSpansExists(['streamsEnabled', 'tasksEnabled', 'schedulerEnabled']);
+    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules', 'Grafana'], 0);
+    validateSpansExists(['streamsEnabled', 'tasksEnabled', 'schedulerEnabled', 'grafanaEnabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authenticated', 'Username', 'Roles'], 0);
@@ -116,8 +116,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules'], 0);
-    validateSpansExists(['streamsDisabled', 'tasksDisabled', 'schedulerDisabled']);
+    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules', 'Grafana'], 0);
+    validateSpansExists(['streamsDisabled', 'tasksDisabled', 'schedulerDisabled', 'grafanaDisabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authenticated', 'Username', 'Roles'], 0);
