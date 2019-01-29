@@ -114,8 +114,8 @@ describe('AuditRecordComponent', () => {
       expect(des.length).toBe(8 * 4);
       expect(des[0].nativeElement.textContent).toContain('1');
       // expect(des[1].nativeElement.textContent).toContain('2018-10-16T13:36:01.720Z');
-      expect(des[2].nativeElement.textContent).toContain('APP_REGISTRATION');
-      expect(des[3].nativeElement.textContent).toContain('CREATE');
+      expect(des[2].nativeElement.textContent).toContain('CREATE');
+      expect(des[3].nativeElement.textContent).toContain('APP_REGISTRATION');
       expect(des[4].nativeElement.textContent).toContain('foo1');
       expect(des[5].nativeElement.textContent).toContain('N/A');
       expect(des[6].nativeElement.textContent).toContain('bar1');
