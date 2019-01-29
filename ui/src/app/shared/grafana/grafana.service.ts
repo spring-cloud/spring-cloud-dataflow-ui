@@ -60,27 +60,16 @@ export class GrafanaService {
   }
 
   /**
-   * Return an observable which contains the URL to the applications dashboard
-   */
-  getDashboardApplications(): Observable<string> {
-    return this.sharedAboutService
-      .getAboutInfo()
-      .pipe(
-        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s`)
-      );
-  }
-
-  /**
    * Return an observable which contains the URL to the application dashboard
-   * @param appInstance
+   * @param streamName
+   * @param appName
    */
-  getDashboardApplication(appInstance: RuntimeAppInstance): Observable<string> {
+  getDashboardApplication(streamName: string, appName: string): Observable<string> {
     return this.sharedAboutService
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s&var-application_name=${appInstance.instanceId}`)
+        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s&var-stream_name=${streamName}&var-application_name=${appName}&var-name=All`)
       );
   }
 

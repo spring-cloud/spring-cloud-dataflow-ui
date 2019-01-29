@@ -8,6 +8,7 @@ import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
 import { PaginationParams } from '../../shared/components/shared.interface';
 import { RuntimeAppInstance } from '../model/runtime-app-instance';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 /**
  * Component that loads Runtime applications.
@@ -51,10 +52,12 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
    *
    * @param {RuntimeAppsService} runtimeAppsService
    * @param {GrafanaService} grafanaService
+   * @param {NotificationService} notificationService
    * @param {BsModalService} modalService
    */
   constructor(private runtimeAppsService: RuntimeAppsService,
               private grafanaService: GrafanaService,
+              private notificationService: NotificationService,
               private modalService: BsModalService) {
   }
 
@@ -83,10 +86,20 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
         action: 'view',
         title: 'Show details',
         isDefault: true
-      }
+      },
+      {
+        id: 'grafana' + index,
+        action: 'grafana',
+        icon: 'grafana',
+        custom: true,
+        title: 'Grafana Dashboard',
+        isDefault: true,
+        hidden: !this.grafanaEnabled
+      },
     ];
   }
 
+// appFeature="streamsEnabled"
   /**
    * Apply Action (row)
    * @param action
@@ -97,6 +110,8 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
       case 'view':
         this.view(item);
         break;
+      case 'grafana':
+        this.grafanaDashboard(item);
     }
   }
 
@@ -130,12 +145,25 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Open the grafana dashboard applications
+   * Open the grafana dashboard application
    */
-  grafanaDashboard(): void {
-    this.grafanaService.getDashboardApplications().subscribe((url: string) => {
-      window.open(url);
-    });
+  grafanaDashboard(runtimeApp: RuntimeApp): void {
+    let appName = '';
+    let streamName = '';
+    if (runtimeApp.appInstances && runtimeApp.appInstances.length > 0) {
+      const firstInstance: RuntimeAppInstance = runtimeApp.appInstances[0];
+      if (firstInstance.attributes) {
+        appName = firstInstance.attributes['skipper.application.name'];
+        streamName = firstInstance.attributes['skipper.release.name'];
+      }
+    }
+    if (streamName && appName) {
+      this.grafanaService.getDashboardApplication(streamName, appName).subscribe((url: string) => {
+        window.open(url);
+      });
+    } else {
+      this.notificationService.error('Sorry, we can\' open this grafana dashboard');
+    }
   }
 
 }
