@@ -42,7 +42,7 @@
               Uri
             </app-sort>
           </th>
-          <th>&nbsp;</th>
+          <th [dataflowAppRoles]="['ROLE_DESTROY', 'ROLE_MODIFY']">&nbsp;</th>
         </tr>
         </thead>
         <tbody>
@@ -59,17 +59,16 @@
           <td>
             <code>{{ version?.uri }}</code>
           </td>
-          <td class="table-actions" width="10px" nowrap="">
-
+          <td class="table-actions" width="10px" nowrap="" [dataflowAppRoles]="['ROLE_DESTROY', 'ROLE_MODIFY']">
             <div class="actions-btn" role="group">
-              <button roles="['ROLE_CREATE']" type="button" (click)="makeDefaultVersion(versions, version)"
-                      [dataflowAppRoles]="['ROLE_CREATE']"
+              <button type="button" (click)="makeDefaultVersion(versions, version)"
+                      [dataflowAppRoles]="['ROLE_MODIFY']"
                       [disabled]="version.defaultVersion"
                       class="btn btn-default" title="Make default version">
                 <span style="margin-top: 2px" class="fa fa-star"></span>
               </button>
-              <button roles="['ROLE_CREATE']" type="button" (click)="unregisterVersion(version)"
-                      [dataflowAppRoles]="['ROLE_CREATE']"
+              <button type="button" (click)="unregisterVersion(version)"
+                      [dataflowAppRoles]="['ROLE_DESTROY']"
                       class="btn btn-default" title="Unregister">
                 <span style="margin-top: 2px" class="fa fa-trash"></span>
               </button>

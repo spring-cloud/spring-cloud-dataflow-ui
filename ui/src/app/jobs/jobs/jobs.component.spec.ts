@@ -24,6 +24,8 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { FormsModule } from '@angular/forms';
 import { DateTime } from 'luxon';
+import { MockAuthService } from '../../tests/mocks/auth';
+import { AuthService } from '../../auth/auth.service';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -32,6 +34,7 @@ describe('JobsComponent', () => {
   const loggerService = new LoggerService();
   const jobsService = new MockJobsService();
   const comfirmService = new MockConfirmService();
+  const authService = new MockAuthService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -55,6 +58,7 @@ describe('JobsComponent', () => {
       providers: [
         { provide: BusyService, useValue: new BusyService() },
         { provide: JobsService, useValue: jobsService },
+        { provide: AuthService, useValue: authService },
         { provide: ConfirmService, useValue: comfirmService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }

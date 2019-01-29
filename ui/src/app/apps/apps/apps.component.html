@@ -24,7 +24,7 @@
            class="table-checkbox table table-hover">
       <thead>
       <tr>
-        <th style="width: 30px" [dataflowAppRoles]="['ROLE_CREATE']">
+        <th style="width: 30px" [dataflowAppRoles]="['ROLE_DESTROY']">
           <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
                                [items]="form.checkboxes"></app-master-checkbox>
         </th>
@@ -49,7 +49,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance(); index as i">
-        <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_CREATE']">
+        <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_DESTROY']">
           <input type="checkbox" (change)="changeCheckboxes()"
                  [(ngModel)]="form.checkboxes[i]"/>
         </td>

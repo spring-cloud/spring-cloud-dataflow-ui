@@ -10,6 +10,7 @@ import { ListParams, OrderParams } from '../../shared/components/shared.interfac
 import { ConfirmService } from '../../shared/components/confirm/confirm.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { AuthService } from '../../auth/auth.service';
 
 /**
  * Main entry point to the Jobs Module. Provides
@@ -65,6 +66,7 @@ export class JobsComponent implements OnInit, OnDestroy {
               private jobsService: JobsService,
               private notificationService: NotificationService,
               private confirmService: ConfirmService,
+              private authService: AuthService,
               private loggerService: LoggerService,
               private router: Router) {
   }
@@ -107,7 +109,8 @@ export class JobsComponent implements OnInit, OnDestroy {
         id: 'job-restart' + index,
         icon: 'repeat',
         action: 'restart',
-        title: 'Restart the job'
+        title: 'Restart the job',
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
       {
         id: 'job-stop' + index,

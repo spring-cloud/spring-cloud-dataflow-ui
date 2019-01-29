@@ -113,7 +113,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         action: 'launch',
         title: 'Relaunch task',
         isDefault: false,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
     ];
   }

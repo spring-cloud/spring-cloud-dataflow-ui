@@ -131,7 +131,7 @@ export class AppsComponent implements OnInit, OnDestroy {
         icon: 'trash',
         action: 'unregisterSelected',
         title: 'Unregister application(s)',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       }
     ];
   }
@@ -151,7 +151,7 @@ export class AppsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
       {
         id: 'remove' + index,
@@ -159,7 +159,7 @@ export class AppsComponent implements OnInit, OnDestroy {
         action: 'unregister',
         roles: ['ROLE_CREATE'],
         title: 'Remove',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       }
     ];
   }

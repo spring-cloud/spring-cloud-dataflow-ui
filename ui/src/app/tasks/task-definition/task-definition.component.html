@@ -7,19 +7,19 @@
     <app-page-head-subtitle>
       <app-task-status [taskDefinition]="task.definition"></app-task-status>
     </app-page-head-subtitle>
-    <app-page-head-actions [dataflowAppRoles]="['ROLE_CREATE']">
-      <button name="stream-stop" type="button" id="task-launch"
+    <app-page-head-actions>
+      <button name="stream-stop" type="button" id="task-launch" [dataflowAppRoles]="['ROLE_DEPLOY']"
               (click)="launch(task.definition)" class="btn btn-primary btn-fa" title="Launch">
         <span class="fa fa-play"></span>
         Launch task
       </button>
-      <button *ngIf="task.schedulerEnabled" id="task-schedule" type="button" [dataflowAppRoles]="['ROLE_CREATE']"
+      <button *ngIf="task.schedulerEnabled" id="task-schedule" type="button" [dataflowAppRoles]="['ROLE_SCHEDULE']"
               (click)="schedule(task.definition)" class="btn btn-primary btn-fa" title="Schedule">
         <span class="fa fa-clock-o"></span>
         Schedule
       </button>
       <button name="stream-remove" type="button" (click)="destroy(task.definition)" id="task-remove"
-              class="btn btn-danger btn-fa" title="Destroy" [dataflowAppRoles]="['ROLE_CREATE']">
+              class="btn btn-danger btn-fa" title="Destroy" [dataflowAppRoles]="['ROLE_DESTROY']">
         <span class="fa fa-trash"></span>
         Destroy task
       </button>
