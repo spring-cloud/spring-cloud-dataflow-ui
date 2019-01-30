@@ -16,6 +16,9 @@ export const TYPE_INSTANCE_DOT = 'dataflow-InstanceDot';
 export const TYPE_INCOMING_MESSAGE_RATE = 'dataflow-incoming-rate';
 export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
 
+export const IS_FF = window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+export const LABEL2_OFFSET_Y = IS_FF  ? '38%' : '53%';
+
 joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
 
     markup:
@@ -81,7 +84,7 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             '.label2': {
                 'y-alignment': 'middle',
                 'ref-x': HORIZONTAL_PADDING + 2, // jointjs specific: relative position to ref'd element
-                'ref-y': 0.55, // jointjs specific: relative position to ref'd element
+                'ref-y': LABEL2_OFFSET_Y, // jointjs specific: relative position to ref'd element
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
                 fill: 'black',
                 'font-size': 20
@@ -168,7 +171,7 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
             '.label2': {
                 'y-alignment': 'middle',
                 'ref-x': HORIZONTAL_PADDING + 2, // jointjs specific: relative position to ref'd element
-                'ref-y': 0.55, // jointjs specific: relative position to ref'd element
+                'ref-y': LABEL2_OFFSET_Y, // jointjs specific: relative position to ref'd element
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
                 fill: 'black',
                 'font-size': 20
