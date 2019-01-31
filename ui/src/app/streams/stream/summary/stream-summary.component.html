@@ -68,6 +68,40 @@
       </div>
     </div>
 
+    <div class="row stream-summary-row" *ngIf="stream.runtimes.length > 0">
+      <div class="col-md-3">
+        <strong>Runtimes:</strong>
+      </div>
+      <div class="col-md-21">
+        <table id="table" class="table table-apps table-actions">
+          <thead>
+          <tr>
+            <th>App Id</th>
+            <th># of Instances</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-template ngFor let-runtimeApp [ngForOf]="stream.runtimes">
+            <tr class="align-middle">
+              <td>
+                {{ runtimeApp.id }}
+              </td>
+              <td>
+                {{ runtimeApp.instances.length }}
+                <span *ngIf="runtimeApp.instances.length == 1">
+                  instance
+                </span>
+                <span *ngIf="runtimeApp.instances.length > 1">
+                  instances
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 </div>
 <ng-template #loading>
