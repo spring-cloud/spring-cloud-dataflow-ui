@@ -23,10 +23,12 @@ export class InstanceStatus {
 
 export class StreamStatus {
   name: string;
+  id: string;
   instances: InstanceStatus[];
 
   static fromJSON(input) {
     const streamStatus = new StreamStatus();
+    streamStatus.id = input.id;
     streamStatus.name = input.name;
     if (Array.isArray(input.instances)) {
       streamStatus.instances = input.instances.map(InstanceStatus.fromJSON);

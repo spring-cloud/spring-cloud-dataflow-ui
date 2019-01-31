@@ -6,6 +6,7 @@ import { StreamDefinition } from '../../model/stream-definition';
 import { Observable, of } from 'rxjs';
 import { Parser } from '../../../shared/services/parser';
 import { BsModalRef } from 'ngx-bootstrap';
+import { StreamStatuses } from '../../model/stream-metrics';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -59,11 +60,29 @@ export class StreamSummaryComponent implements OnInit {
             return streamDefinition;
           }))
       ))
+      .pipe(mergeMap((val: StreamDefinition) => {
+          if (val.status === 'deployed') {
+            return this.streamsService.getRuntimeStreamStatuses([val.name])
+              .pipe(map((statuses: StreamStatuses[]) => {
+                return {
+                  streamDefinition: val,
+                  runtimes: statuses.length === 1 ? statuses[0].applications : []
+                };
+              }));
+          } else {
+            return of({
+              streamDefinition: val,
+              runtimes: []
+            });
+          }
+        }
+      ))
       .pipe(mergeMap(
-        (val: StreamDefinition) => of(Parser.parse(val.dslText as string, 'stream'))
+        (val: any) => of(Parser.parse(val.streamDefinition.dslText as string, 'stream'))
           .pipe(map((val2) => {
             return {
-              streamDefinition: val,
+              streamDefinition: val.streamDefinition,
+              runtimes: val.runtimes,
               apps: val2.lines[0].nodes
                 .map((node) => ({
                   origin: node['name'],
