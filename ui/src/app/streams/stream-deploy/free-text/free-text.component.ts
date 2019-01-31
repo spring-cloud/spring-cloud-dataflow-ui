@@ -47,6 +47,11 @@ export class StreamDeployFreeTextComponent implements OnInit, OnDestroy {
   @Input() properties: Array<string> = [];
 
   /**
+   * Is Deployed
+   */
+  @Input() isDeployed = false;
+
+  /**
    * Form
    */
   formGroup: FormGroup;

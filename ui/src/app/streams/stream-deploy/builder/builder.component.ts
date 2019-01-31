@@ -56,6 +56,11 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
   @Input() properties: Array<string> = [];
 
   /**
+   * Is Deployed
+   */
+  @Input() isDeployed = false;
+
+  /**
    * Builder observable
    * Contains the form and the input data
    */
