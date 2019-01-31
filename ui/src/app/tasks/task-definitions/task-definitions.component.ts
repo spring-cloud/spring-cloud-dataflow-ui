@@ -191,7 +191,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
       {
         id: 'destroy-task' + index,
