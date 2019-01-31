@@ -109,10 +109,10 @@ describe('TaskLaunchComponent', () => {
     });
 
     it('Name, 2 args, 2 properties', () => {
-      const result = component.prepareParams('name', ['arg1=valArg1', 'arg2=valArg2'], ['prop1=valProp1', 'prop2=valProp2'], 'default');
+      const result = component.prepareParams('name', ['arg1=valArg1', 'arg2=valArg2'], ['prop1=valProp1', 'prop2=valProp2'], 'sample');
       expect(result.name).toBe('name');
       expect(result.args).toBe('arg1=valArg1 arg2=valArg2');
-      expect(result.props).toBe('prop1=valProp1, prop2=valProp2');
+      expect(result.props).toBe('prop1=valProp1, prop2=valProp2, spring.cloud.dataflow.task.platformName=sample');
     });
 
   });

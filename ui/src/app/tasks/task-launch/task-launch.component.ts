@@ -132,11 +132,13 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * @returns {TaskLaunchParams}
    */
   prepareParams(name: string, taskArguments: Array<string>, taskProperties: Array<string>, platform: string): TaskLaunchParams {
+    if (platform && platform !== 'default') {
+      taskProperties.push(`spring.cloud.dataflow.task.platformName=${platform}`);
+    }
     return {
       name: name,
       args: taskArguments.filter((a) => a !== '').join(' '),
-      props: taskProperties.filter((a) => a !== '').join(', '),
-      platform: platform
+      props: taskProperties.filter((a) => a !== '').join(', ')
     };
   }
 
@@ -182,7 +184,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * Can select the platform target
    * @param task
    */
-  canSelectPlatform(task):boolean {
+  canSelectPlatform(task): boolean {
     return task.platforms && task.platforms.length > 1;
   }
 

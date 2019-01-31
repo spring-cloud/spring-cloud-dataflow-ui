@@ -12,7 +12,6 @@ export interface TaskLaunchParams {
   name: string;
   args?: string;
   props?: string;
-  platform?: string;
 }
 
 export interface TaskCreateParams {

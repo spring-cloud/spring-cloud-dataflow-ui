@@ -10,7 +10,7 @@ export class GrafanaInfo implements Serializable<GrafanaInfo> {
 
   public url = '';
   public token = '';
-  public refreshInterval:number = 10;
+  public refreshInterval = 10;
 
   public reset() {
     this.url = '';

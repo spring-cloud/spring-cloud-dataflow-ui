@@ -366,9 +366,6 @@ export class TasksService {
     if (taskLaunchParams.props) {
       params = params.append('properties', taskLaunchParams.props);
     }
-    if (taskLaunchParams.platform && taskLaunchParams.platform !== 'default') {
-      params = params.append('spring.cloud.dataflow.task.platformName', taskLaunchParams.platform);
-    }
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .post(TasksService.URL.EXECUTIONS, {}, { headers: headers, params: params })
