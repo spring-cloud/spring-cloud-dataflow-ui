@@ -27,7 +27,8 @@
       Copy to Clipboard
     </button>
     <button id="btn-deploy" type="submit" class="btn btn-primary" [disabled]="!isSubmittable">
-      Deploy the stream
+      <span *ngIf="!isDeployed">Deploy stream</span>
+      <span *ngIf="isDeployed">Update stream</span>
     </button>
   </app-page-actions>
 </form>

@@ -2,11 +2,13 @@
 
   <app-page-head>
     <app-page-head-back [defaultUrl]="'/streams/definitions'"></app-page-head-back>
-    <app-page-head-title>Deploy Stream Definition <strong>{{ config.id }}</strong></app-page-head-title>
+    <app-page-head-title *ngIf="!isDeployed(config.streamDefinition)">Deploy Stream Definition
+      <strong>{{ config.id }}</strong></app-page-head-title>
+    <app-page-head-title *ngIf="isDeployed(config.streamDefinition)">Update Stream Definition
+      <strong>{{ config.id }}</strong></app-page-head-title>
   </app-page-head>
 
   <div class="page-tab">
-
     <div class="page-tab-head">
       <div class="page-tab-head-content">
         <p>
@@ -18,7 +20,6 @@
             target="_blank">Technical Documentation</a>.
         </p>
       </div>
-
       <ul class="nav nav-tabs">
         <li [class.active]="state.view == 'builder'"><a (click)="state.view = 'builder'">Builder</a></li>
         <li [class.active]="state.view == 'freetext'"><a (click)="state.view = 'freetext'">Freetext</a></li>
@@ -27,12 +28,14 @@
     <div class="tab-pane" dataflowLayoutType type="full">
       <div *ngIf="state.view == 'builder'">
         <app-stream-deploy-builder [properties]="properties" [id]="config.id"
+                                   [isDeployed]="isDeployed(config.streamDefinition)"
                                    (exportProperties)="runExport($event)" (update)="update($event)"
                                    (deploy)="runDeploy($event)" (copyProperties)="runCopy($event)">
         </app-stream-deploy-builder>
       </div>
       <div *ngIf="state.view == 'freetext'">
         <app-stream-deploy-free-text [properties]="properties" (update)="update($event)" [id]="config.id"
+                                     [isDeployed]="isDeployed(config.streamDefinition)"
                                      (exportProperties)="runExport($event)" (update)="update($event)"
                                      (deploy)="runDeploy($event)" (copyProperties)="runCopy($event)">
         </app-stream-deploy-free-text>

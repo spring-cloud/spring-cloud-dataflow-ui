@@ -355,7 +355,8 @@
           </button>
           <button tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary"
                   [disabled]="!isSubmittable(builder)">
-            Deploy the stream
+            <span *ngIf="!isDeployed">Deploy stream</span>
+            <span *ngIf="isDeployed">Update stream</span>
           </button>
         </app-page-actions>
       </div>

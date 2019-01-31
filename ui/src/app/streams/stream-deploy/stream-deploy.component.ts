@@ -4,7 +4,6 @@ import { Observable, Subject, EMPTY, of } from 'rxjs';
 import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { saveAs } from 'file-saver/FileSaver';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { StreamsService } from '../streams.service';
 import { BusyService } from '../../shared/services/busy.service';
 import { StreamDefinition } from '../model/stream-definition';
@@ -244,21 +243,16 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         }
       }
     });
-
     let obs = of({});
-
-    const isDeployed = (['deployed', 'deploying'].indexOf(this.refConfig.streamDefinition.status) > -1);
-    const update = isDeployed;
-
+    const isDeployed = this.isDeployed(this.refConfig.streamDefinition);
     if (isDeployed) {
       obs = obs.pipe(mergeMap(val => this.streamsService.updateDefinition(this.refConfig.id, propertiesMap)));
     } else {
       obs = obs.pipe(mergeMap(val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap)));
     }
-
     const busy = obs.pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(data => {
-          if (update) {
+          if (isDeployed) {
             this.notificationService.success(`Successfully updated stream definition "${this.refConfig.id}"`);
           } else {
             this.notificationService.success(`Successfully deployed stream definition "${this.refConfig.id}"`);
@@ -271,7 +265,13 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         }
       );
     this.busyService.addSubscription(busy);
+  }
 
+  /**
+   * Is stream deployed (or deploying)
+   */
+  isDeployed(stream: StreamDefinition): boolean {
+    return (['deployed', 'deploying'].indexOf(stream.status) > -1);
   }
 
 }
