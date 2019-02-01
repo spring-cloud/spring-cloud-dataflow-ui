@@ -101,7 +101,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * On Destroy
    */
   ngOnDestroy() {
-    this.update.emit(this.getProperties());
+    if (this.refBuilder) {
+      this.update.emit(this.getProperties());
+    }
   }
 
   /**
