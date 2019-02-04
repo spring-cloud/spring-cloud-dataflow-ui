@@ -271,7 +271,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * Is stream deployed (or deploying)
    */
   isDeployed(stream: StreamDefinition): boolean {
-    return (['deployed', 'deploying'].indexOf(stream.status) > -1);
+    return (stream.status !== 'undeployed');
   }
 
 }

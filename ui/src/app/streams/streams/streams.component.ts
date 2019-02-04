@@ -231,7 +231,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         icon: 'play',
         title: 'Deploy stream',
         isDefault: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || (item.status === 'deployed')
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || (item.status !== 'undeployed')
       },
       {
         id: 'update-stream' + index,
@@ -239,7 +239,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         icon: 'edit',
         title: 'Update stream',
         isDefault: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_MODIFY']) || !(item.status === 'deployed')
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_MODIFY']) || (item.status === 'undeployed')
       },
       {
         id: 'undeploy-stream' + index,
