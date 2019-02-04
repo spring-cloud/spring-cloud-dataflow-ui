@@ -17,6 +17,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { AppListBarComponent } from '../components/app-list-bar/app-list-bar.component';
 import { AuthService } from '../../auth/auth.service';
+import { AppsUnregisterAllComponent } from '../apps-unregister-all/apps-unregister-all.component';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -256,6 +257,17 @@ export class AppsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Return true if there is no application register
+   */
+  isEmpty() {
+    if (this.appRegistrations && this.appRegistrations.totalPages < 2) {
+      return this.appRegistrations.items.length === 0 && [this.params.q, this.params.type]
+        .map((filter) => (filter === '' || !filter))
+        .filter((filter) => !!filter).length === 2;
+    }
+  }
+
+  /**
    * Update the list of selected checkbox
    */
   changeCheckboxes() {
@@ -311,6 +323,18 @@ export class AppsComponent implements OnInit, OnDestroy {
     this.loggerService.log(`Unregister ${appRegistrations.length} app(s).`, appRegistrations);
     this.modal = this.modalService.show(AppsUnregisterComponent);
     this.modal.content.open(appRegistrations).subscribe(() => {
+      this.loadAppRegistrations();
+    });
+  }
+
+  /**
+   * Starts the unregistration all process
+   * by opening a confirmation modal dialog.
+   */
+  unregisterAllApps() {
+    this.loggerService.log(`Unregister all app(s).`);
+    this.modal = this.modalService.show(AppsUnregisterAllComponent);
+    this.modal.content.open().subscribe(() => {
       this.loadAppRegistrations();
     });
   }

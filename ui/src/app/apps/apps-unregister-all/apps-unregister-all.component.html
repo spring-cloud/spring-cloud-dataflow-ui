@@ -1,0 +1,26 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm Unregister all Applications</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div *ngIf="countApplications$ | async as count; else loading">
+    <div class="modal-body">
+      <p>This action will unregister and delete all the <strong>{{ count }} application(s)</strong>.
+        Are you sure?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" (click)="close()">Cancel</button>
+      <button name="app-unregister" type="button" class="btn btn-primary" (click)="unregister()">
+        Unregister all the applications
+      </button>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+</div>

@@ -114,6 +114,10 @@ export class MockAppsService {
     }));
   }
 
+  unregisterAllApps(): Observable<Response> | Observable<any> {
+    return of({});
+  }
+
   registerApps(appRegs: AppRegisterParams[]): Observable<Response[]> | Observable<any> {
     return of(Array.from({ length: appRegs.length }).map(() => {
       return {};

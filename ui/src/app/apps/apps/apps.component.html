@@ -6,6 +6,10 @@
         <span class="fa fa-plus"></span>
         Add Application(s)
       </button>
+      <button *ngIf="appRegistrations && !isEmpty()" class="btn btn-danger btn-fa" (click)="unregisterAllApps()">
+        <span class="fa fa-trash"></span>
+        Unregister all
+      </button>
     </app-page-head-actions>
   </app-page-head>
 
@@ -48,7 +52,8 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance(); index as i">
+      <tr
+        *ngFor="let item of appRegistrations.items | paginate: appRegistrations.getPaginationInstance(); index as i">
         <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_DESTROY']">
           <input type="checkbox" (change)="changeCheckboxes()"
                  [(ngModel)]="form.checkboxes[i]"/>

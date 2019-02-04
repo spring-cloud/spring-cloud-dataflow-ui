@@ -163,6 +163,22 @@ export class AppsService {
   }
 
   /**
+   * Unregister all Applications
+   *
+   *  @returns {Observable<void[]>}
+   */
+  unregisterAllApps(): Observable<void> {
+    this.loggerService.log('Unregistering all...');
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient
+      .delete(AppsService.appsUrl, { headers: httpHeaders })
+      .pipe(
+        map(AppsWorkaroundService.cache.invalidate),
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
+  /**
    * Unregister a version of an application
    *
    * @param {AppRegistration} appRegistration

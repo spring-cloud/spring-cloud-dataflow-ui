@@ -17,6 +17,7 @@ import { AppsBulkImportPropertiesComponent } from './apps-add/properties/apps-bu
 import { AppsBulkImportUriComponent } from './apps-add/uri/apps-bulk-import-uri.component';
 import { AppsAddComponent } from './apps-add/apps-add.component';
 import { AppsRegisterComponent } from './apps-add/register/apps-register.component';
+import { AppsUnregisterAllComponent } from './apps-unregister-all/apps-unregister-all.component';
 
 @NgModule({
   imports: [
@@ -42,12 +43,14 @@ import { AppsRegisterComponent } from './apps-add/register/apps-register.compone
     AppVersionsComponent,
     AppsBulkImportPropertiesComponent,
     AppsBulkImportUriComponent,
-    AppListBarComponent
+    AppListBarComponent,
+    AppsUnregisterAllComponent
   ],
   entryComponents: [
     AppsUnregisterComponent,
     AppDetailsComponent,
-    AppVersionsComponent
+    AppVersionsComponent,
+    AppsUnregisterAllComponent
   ],
   providers: [
     AppsService,

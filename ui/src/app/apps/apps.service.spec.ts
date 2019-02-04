@@ -64,6 +64,17 @@ describe('AppsService', () => {
 
   });
 
+  describe('unregisterAllApps', () => {
+
+    it('should call the unregisterAllApps service with the right url', () => {
+      this.mockHttp.delete.and.returnValue(of({}));
+      this.appsService.unregisterAllApps();
+      const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
+      expect(httpUri).toEqual('/apps');
+    });
+
+  });
+
   describe('getAppInfo', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
