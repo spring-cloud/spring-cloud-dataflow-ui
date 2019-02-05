@@ -218,7 +218,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         custom: true,
         title: 'Grafana Dashboard',
         isDefault: true,
-        disabled: (item.status !== 'deployed'),
+        disabled: (item.status === 'undeployed'),
         hidden: !this.grafanaEnabled
       },
       {

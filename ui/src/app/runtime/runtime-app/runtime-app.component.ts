@@ -55,7 +55,6 @@ export class RuntimeAppComponent {
           console.log(runtimeApp);
           return runtimeApp;
         })
-
       );
   }
 
@@ -81,6 +80,27 @@ export class RuntimeAppComponent {
     }
     if (streamName && appName) {
       this.grafanaService.getDashboardApplication(streamName, appName).subscribe((url: string) => {
+        window.open(url);
+      });
+    } else {
+      this.notificationService.error('Sorry, we can\' open this grafana dashboard');
+    }
+  }
+
+  /**
+   * Open the grafana dashboard application
+   */
+  grafanaInstanceDashboard(instance: RuntimeAppInstance): void {
+    let appName = '';
+    let streamName = '';
+    let guid = '';
+    if (instance.attributes) {
+      appName = instance.attributes['skipper.application.name'];
+      streamName = instance.attributes['skipper.release.name'];
+      guid = instance.attributes['guid'];
+    }
+    if (streamName && appName && guid) {
+      this.grafanaService.getDashboardApplicationInstance(streamName, appName, guid).subscribe((url: string) => {
         window.open(url);
       });
     } else {

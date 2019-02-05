@@ -17,7 +17,7 @@
       </button>
       <button name="stream-deploy" type="button" (click)="deploy(streamDefinition.streamDefinition)"
               class="btn btn-primary btn-fa" title="Deploy" [dataflowAppRoles]="['ROLE_DEPLOY']"
-              *ngIf="streamDefinition.streamDefinition.status !== 'deployed'">
+              *ngIf="streamDefinition.streamDefinition.status === 'undeployed'">
         <span class="fa fa-play"></span>
         Deploy stream
       </button>

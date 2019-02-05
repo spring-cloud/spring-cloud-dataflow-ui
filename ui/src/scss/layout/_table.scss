@@ -13,8 +13,12 @@ table.table-actions, table.table-checkbox {
     padding: 4px;
     text-align: center;
 
+    div.actions {
+      text-align: right;
+    }
     div.actions-btn {
       white-space: nowrap;
+      text-align: right;
       .btn {
         padding: 0 10px;
         .fa {

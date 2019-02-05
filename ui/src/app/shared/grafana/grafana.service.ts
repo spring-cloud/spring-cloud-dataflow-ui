@@ -6,8 +6,6 @@ import { map } from 'rxjs/operators';
 import { FeatureInfo } from '../model/about/feature-info.model';
 import { AboutInfo } from '../model/about/about-info.model';
 import { GrafanaInfo } from '../model/about/grafana.model';
-import { RuntimeApp } from '../../runtime/model/runtime-app';
-import { RuntimeAppInstance } from '../../runtime/model/runtime-app-instance';
 
 /**
  * Grafana Service.
@@ -42,7 +40,9 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-streams/streams?refresh=${grafanaInfo.refreshInterval}s`)
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-streams/streams?refresh=' + grafanaInfo.refreshInterval + 's';
+        })
       );
   }
 
@@ -55,7 +55,10 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s&var-stream_name=${stream.name}&var-application_name=All`)
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-applications/applications?refresh=' + grafanaInfo.refreshInterval +
+            's&var-stream_name=' + stream.name + '&var-application_name=All';
+        })
       );
   }
 
@@ -69,7 +72,29 @@ export class GrafanaService {
       .getAboutInfo()
       .pipe(
         map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
-        map((grafanaInfo: GrafanaInfo): string => `${grafanaInfo.url}/d/scdf-applications/applications?refresh=${grafanaInfo.refreshInterval}s&var-stream_name=${streamName}&var-application_name=${appName}&var-name=All`)
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-applications/applications?refresh=' + grafanaInfo.refreshInterval +
+            's&var-stream_name=' + streamName + '&var-application_name=' + appName + '&var-name=All';
+        })
+      );
+  }
+
+  /**
+   * Return an observable which contains the URL to the application instance dashboard
+   * @param streamName
+   * @param appName
+   * @param guid
+   */
+  getDashboardApplicationInstance(streamName: string, appName: string, guid: string): Observable<string> {
+    return this.sharedAboutService
+      .getAboutInfo()
+      .pipe(
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-applications/applications?refresh=' + grafanaInfo.refreshInterval +
+            's&var-stream_name=' + streamName + '&var-application_name=' + appName +
+            '&var-name=All&var-application_guid=' + guid;
+        })
       );
   }
 
