@@ -31,10 +31,6 @@ jobs:
   include:
     - stage: Maven
       script: ./run-maven-build.sh
-    - stage: Unit Tests SauceLabs + BrowserStack
-      script: ./run-npm-test-saucelabs.sh
-      if: type != pull_request
-      after_success: skip
     - script: ./run-npm-test-browserstack.sh
       if: type != pull_request
       after_success: skip
