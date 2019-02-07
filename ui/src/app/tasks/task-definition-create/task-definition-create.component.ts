@@ -36,7 +36,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   parseErrors: any[];
 
   initSubject: Subject<void>;
-  busy: Subscription;
+  // busy: Subscription;
 
   @ViewChild(EditorComponent) flo;
 
@@ -63,7 +63,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
     };
 
     this.initSubject = new Subject();
-    this.busy = this.initSubject.subscribe();
+    // this.busy = this.initSubject.subscribe();
   }
 
   ngOnInit() {

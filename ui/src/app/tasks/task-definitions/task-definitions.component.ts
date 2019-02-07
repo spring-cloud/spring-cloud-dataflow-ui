@@ -3,9 +3,7 @@ import { Page } from '../../shared/model/page';
 import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
-import { BusyService } from '../../shared/services/busy.service';
-import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskListParams } from '../components/tasks.interface';
 import { ListDefaultParams, OrderParams, SortParams } from '../../shared/components/shared.interface';
@@ -42,11 +40,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * Current page of task definitions
    */
   taskDefinitions: Page<TaskDefinition>;
-
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * List Bar Component
@@ -100,7 +93,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param {TasksService} tasksService
    * @param {BsModalService} modalService
    * @param {AppsService} appsService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {GroupRouteService} groupRouteService
    * @param {Router} router
@@ -111,7 +103,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   constructor(public tasksService: TasksService,
               private modalService: BsModalService,
               private appsService: AppsService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private groupRouteService: GroupRouteService,
               private router: Router,
@@ -254,22 +245,22 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * Close subscription
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
    * Initializes the taskDefinitions attribute with the results from Spring Cloud Data Flow server.
    */
   refresh() {
-    const busy = this.tasksService
-      .getDefinitions(this.params).map((page: Page<TaskDefinition>) => {
-        this.form.checkboxes = page.items.map((task) => {
-          return this.itemsSelected.indexOf(task.name) > -1;
-        });
-        return page;
-      })
-      .pipe(takeUntil(this.ngUnsubscribe$))
+    this.tasksService
+      .getDefinitions(this.params)
+      .pipe(
+        map((page: Page<TaskDefinition>) => {
+          this.form.checkboxes = page.items.map((task) => {
+            return this.itemsSelected.indexOf(task.name) > -1;
+          });
+          return page;
+        })
+      )
       .subscribe((page: Page<TaskDefinition>) => {
           if (page.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
@@ -284,8 +275,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
-
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -419,18 +408,20 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         order: OrderParams.ASC,
         page: 0,
         size: 1000
-      }).pipe(map((page: Page<TaskSchedule>) => {
-      if (page.totalElements === 0) {
-        this.notificationService.error('No schedule exists for this task.');
-        this.modal.hide();
-      } else {
-        this.loggerService.log(`Delete ${page.items} task schedule(s).`, page.items);
-        this.modal.content.open({ taskSchedules: page.items }).subscribe(() => {
-          this.refresh();
-        });
-      }
-      return page;
-    })).subscribe();
+      })
+      .pipe(map((page: Page<TaskSchedule>) => {
+        if (page.totalElements === 0) {
+          this.notificationService.error('No schedule exists for this task.');
+          this.modal.hide();
+        } else {
+          this.loggerService.log(`Delete ${page.items} task schedule(s).`, page.items);
+          this.modal.content.open({ taskSchedules: page.items }).subscribe(() => {
+            this.refresh();
+          });
+        }
+        return page;
+      }))
+      .subscribe();
   }
 
   /**

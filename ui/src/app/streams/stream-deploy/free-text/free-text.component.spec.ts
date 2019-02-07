@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
@@ -50,7 +49,6 @@ describe('StreamDeployFreeTextComponent', () => {
         FocusDirective
       ],
       imports: [
-        NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
         TooltipModule.forRoot(),

@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { JobsComponent } from './jobs.component';
 import { DefinitionStatusComponent } from '../components/definition-status.component';
@@ -8,7 +7,6 @@ import { SearchfilterPipe } from '../../shared/pipes/search-filter.pipe';
 import { JobsService } from '../jobs.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockJobsService } from '../../tests/mocks/jobs';
-import { BusyService } from '../../shared/services/busy.service';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { JOB_EXECUTIONS_WITH_PAGINATION } from '../../tests/mocks/mock-data';
@@ -26,6 +24,8 @@ import { FormsModule } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -35,6 +35,7 @@ describe('JobsComponent', () => {
   const jobsService = new MockJobsService();
   const comfirmService = new MockConfirmService();
   const authService = new MockAuthService();
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -48,7 +49,6 @@ describe('JobsComponent', () => {
         DATAFLOW_LIST
       ],
       imports: [
-        NgBusyModule,
         NgxPaginationModule,
         FormsModule,
         TooltipModule.forRoot(),
@@ -56,8 +56,8 @@ describe('JobsComponent', () => {
         BsDropdownModule.forRoot()
       ],
       providers: [
-        { provide: BusyService, useValue: new BusyService() },
         { provide: JobsService, useValue: jobsService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: AuthService, useValue: authService },
         { provide: ConfirmService, useValue: comfirmService },
         { provide: NotificationService, useValue: notificationService },

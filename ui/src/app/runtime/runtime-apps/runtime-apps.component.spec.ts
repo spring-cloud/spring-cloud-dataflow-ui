@@ -10,7 +10,6 @@ import { RuntimeAppsService } from '../runtime-apps.service';
 import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
 import { RuntimeAppStateComponent } from '../components/runtime-app-state/runtime-app-state.component';
 import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
-import { NgBusyModule } from 'ng-busy';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -18,7 +17,6 @@ import { of } from 'rxjs';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { FormsModule } from '@angular/forms';
-import { BusyService } from '../../shared/services/busy.service';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
@@ -29,7 +27,6 @@ describe('RuntimeAppsComponent', () => {
   const notificationService = new MockNotificationService();
   const runtimeAppsService = new MockRuntimeAppsService();
   const sharedAboutService = new MocksSharedAboutService();
-  const busyService = new BusyService();
   let modalService;
 
   beforeEach(async(() => {
@@ -44,7 +41,6 @@ describe('RuntimeAppsComponent', () => {
       ],
       imports: [
         FormsModule,
-        NgBusyModule,
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
@@ -55,7 +51,6 @@ describe('RuntimeAppsComponent', () => {
         { provide: RuntimeAppsService, useValue: runtimeAppsService },
         BsModalService,
         { provide: NotificationService, useValue: notificationService },
-        { provide: BusyService, useValue: busyService },
         GrafanaService
       ]
     })

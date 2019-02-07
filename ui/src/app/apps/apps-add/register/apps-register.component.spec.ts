@@ -8,7 +8,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppsRegisterComponent } from './apps-register.component';
 import { CapitalizePipe } from '../../../shared/pipes/capitalize.pipe';
 import { By } from '@angular/platform-browser';
-import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { DATAFLOW_PAGE } from '../../../shared/components/page/page.component';
@@ -18,6 +17,8 @@ import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { MockRoutingStateService } from '../../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../../shared/services/routing-state.service';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
+import { MockBlockerService } from '../../../tests/mocks/blocker.service';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link AppsRegisterComponent}.
@@ -31,6 +32,7 @@ describe('AppsRegisterComponent', () => {
   const appsService = new MockAppsService();
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -54,7 +56,7 @@ describe('AppsRegisterComponent', () => {
       ],
       providers: [
         { provide: AppsService, useValue: appsService },
-        { provide: BusyService, useValue: new BusyService() },
+        { provide: BlockerService, useValue: blockerService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }

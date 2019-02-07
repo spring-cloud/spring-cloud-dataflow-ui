@@ -17,6 +17,7 @@ import { AppsBulkImportPropertiesComponent } from './apps-add/properties/apps-bu
 import { AppsBulkImportUriComponent } from './apps-add/uri/apps-bulk-import-uri.component';
 import { AppsAddComponent } from './apps-add/apps-add.component';
 import { AppsRegisterComponent } from './apps-add/register/apps-register.component';
+import { BlockerService } from '../shared/components/blocker/blocker.service';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { AppsRegisterComponent } from './apps-add/register/apps-register.compone
   ],
   providers: [
     AppsService,
-    AppsWorkaroundService
+    AppsWorkaroundService,
+    BlockerService
   ],
   exports: [
     AppTypeComponent,

@@ -4,10 +4,11 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppsService } from '../../apps.service';
-import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { BulkImportParams } from '../../components/apps.interface';
 import { AppsAddValidator } from '../apps-add.validator';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
+import { AppError } from '../../../shared/model/error.model';
 
 /**
  * Applications Bulk Import Properties
@@ -21,11 +22,6 @@ import { AppsAddValidator } from '../apps-add.validator';
   templateUrl: './apps-bulk-import-properties.component.html'
 })
 export class AppsBulkImportPropertiesComponent implements OnDestroy {
-
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Fom Group
@@ -43,13 +39,13 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
    * @param {AppsService} appsService
    * @param {NotificationService} notificationService
    * @param {FormBuilder} fb
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
               private notificationService: NotificationService,
               private fb: FormBuilder,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private router: Router) {
 
     this.form = fb.group({
@@ -64,8 +60,6 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -108,18 +102,21 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
     if (!this.form.valid) {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
+      this.blockerService.lock();
       const reqImportBulkApps = this.prepareBulkImportRequest(
         this.form.get('force').value,
         this.form.get('properties').value.toString()
       );
-      const busy = this.appsService.bulkImportApps(reqImportBulkApps)
-        .pipe(takeUntil(this.ngUnsubscribe$))
+      this.appsService.bulkImportApps(reqImportBulkApps)
         .subscribe(() => {
           this.notificationService.success('Apps Imported.');
           this.router.navigate(['apps']);
+          this.blockerService.unlock();
+        }, (error) => {
+          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          this.blockerService.unlock();
         });
 
-      this.busyService.addSubscription(busy);
     }
   }
 

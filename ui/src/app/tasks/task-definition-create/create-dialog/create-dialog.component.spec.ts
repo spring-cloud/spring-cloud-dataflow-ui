@@ -9,6 +9,8 @@ import { NotificationService } from '../../../shared/services/notification.servi
 import { LoggerService } from '../../../shared/services/logger.service';
 import { StreamDslComponent } from '../../../shared/components/dsl/dsl.component';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
+import { MockBlockerService } from '../../../tests/mocks/blocker.service';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 describe('TaskDefinitionCreateDialogComponent', () => {
   let component: TaskDefinitionCreateDialogComponent;
@@ -17,6 +19,7 @@ describe('TaskDefinitionCreateDialogComponent', () => {
   const notificationService = new MockNotificationService();
   const bsModalRefStub = {};
   const loggerService = new LoggerService();
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,6 +34,7 @@ describe('TaskDefinitionCreateDialogComponent', () => {
       ],
       providers: [
         { provide: TasksService, useValue: tasksService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: NotificationService, useValue: notificationService },
         { provide: BsModalRef, useValue: bsModalRefStub },
         { provide: LoggerService, useValue: loggerService }

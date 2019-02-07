@@ -1,6 +1,6 @@
-import { Directive, ElementRef, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 
 /**
  * Directive that can be used to provide size information to the main {@link TruncatorComponent}.
@@ -13,35 +13,40 @@ import { takeUntil } from 'rxjs/operators';
 export class TruncatorWidthProviderDirective implements OnDestroy {
 
   public innerWidth = new BehaviorSubject<number>(undefined);
+
   public initDone = new BehaviorSubject<boolean>(false);
 
   public resizeEvents = new Subject();
+
   private destroyed = false;
 
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
-
-  constructor(private elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef,
+              private renderer: Renderer2) {
+    const ref = this.elementRef;
     this.resizeEvents
-      .debounceTime(500)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(
+        map((a) => {
+          this.renderer.removeClass(ref.nativeElement, 'show');
+          return a;
+        }),
+        debounceTime(400)
+      )
       .subscribe(() => {
         this.updateWidthValue();
+        this.renderer.addClass(ref.nativeElement, 'show');
       });
-    this.initDone.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(
-      value => {
-        if (value) {
-          const localThis = this;
-          setTimeout(function () {
+    this.initDone
+      .subscribe(
+        value => {
+          if (value) {
+            const localThis = this;
             if (!localThis.destroyed) {
               localThis.updateWidthValue();
+              renderer.addClass(ref.nativeElement, 'show');
             }
-          }, 500);
+          }
         }
-      }
-    );
+      );
   }
 
   /**
@@ -49,8 +54,6 @@ export class TruncatorWidthProviderDirective implements OnDestroy {
    */
   ngOnDestroy() {
     this.destroyed = true;
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**

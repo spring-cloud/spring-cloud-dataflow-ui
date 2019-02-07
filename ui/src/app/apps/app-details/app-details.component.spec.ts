@@ -23,7 +23,6 @@ import { AppVersionLabelComponent } from '../components/app-versions-label/app-v
 import { SortComponent } from '../../shared/components/sort/sort.component';
 import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
-import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -33,6 +32,7 @@ import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 /**
  * Test {@link AppDetailsComponent}.
@@ -69,6 +69,7 @@ describe('AppDetailsComponent', () => {
         SortComponent,
         OrderByPipe,
         RolesDirective,
+        LoaderComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         PagerComponent,
@@ -89,7 +90,6 @@ describe('AppDetailsComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         BsModalService,
         { provide: ConfirmService, useValue: confirmService },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: NotificationService, useValue: notificationService },

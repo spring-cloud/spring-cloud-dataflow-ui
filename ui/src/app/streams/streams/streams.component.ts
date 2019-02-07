@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation, ViewChild, NgZone, Cha
 import { Page } from '../../shared/model';
 import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
-import { of, Subscription, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { StreamStatuses } from '../model/stream-metrics';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -12,7 +12,6 @@ import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.comp
 import { SortParams, OrderParams, ListDefaultParams } from '../../shared/components/shared.interface';
 import { StreamListParams } from '../components/streams.interface';
 import { mergeMap, takeUntil, map } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { AppsService } from '../../apps/apps.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -20,9 +19,10 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 @Component({
   selector: 'app-streams',
@@ -49,9 +49,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
   streamDefinitions: Page<StreamDefinition>;
 
   /**
-   * Busy Subscriptions
+   * Subscription
    */
-  private ngUnsubscribe$: Subject<any> = new Subject();
+  streamDefinitionsSubscription: Subscription;
 
   /**
    * List Bar Component
@@ -148,7 +148,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param streamsService
    * @param modalService
    * @param appsService
-   * @param busyService
+   * @param blockerService
    * @param notificationService
    * @param loggerService
    * @param authService
@@ -159,7 +159,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
   constructor(public streamsService: StreamsService,
               private modalService: BsModalService,
               private appsService: AppsService,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private notificationService: NotificationService,
               private loggerService: LoggerService,
               private authService: AuthService,
@@ -327,9 +327,10 @@ export class StreamsComponent implements OnInit, OnDestroy {
     if (this.runtimeStreamStatusesSubscription) {
       this.runtimeStreamStatusesSubscription.unsubscribe();
     }
+    if (this.streamDefinitionsSubscription) {
+      this.streamDefinitionsSubscription.unsubscribe();
+    }
     this.grafanaEnabledSubscription.unsubscribe();
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -337,18 +338,21 @@ export class StreamsComponent implements OnInit, OnDestroy {
    */
   refresh() {
     this.loggerService.log('Loading Stream Definitions...', this.params);
-    const busy = this.streamsService
+    if (this.streamDefinitionsSubscription) {
+      this.streamDefinitionsSubscription.unsubscribe();
+    }
+    this.streamDefinitionsSubscription = this.streamsService
       .getDefinitions(this.params)
-      .map((page: Page<StreamDefinition>) => {
-        this.form.checkboxes = page.items.map((stream) => {
-          return this.itemsSelected.indexOf(stream.name) > -1;
-        });
-        this.form.checkboxesExpand = page.items.map((stream) => {
-          return this.itemsExpanded.indexOf(stream.name) > -1;
-        });
-        return page;
-      })
       .pipe(
+        map((page: Page<StreamDefinition>) => {
+          this.form.checkboxes = page.items.map((stream) => {
+            return this.itemsSelected.indexOf(stream.name) > -1;
+          });
+          this.form.checkboxesExpand = page.items.map((stream) => {
+            return this.itemsExpanded.indexOf(stream.name) > -1;
+          });
+          return page;
+        }),
         mergeMap(
           val => this.appsService.getApps({
             q: '', type: null, page: 0, size: 1, order: 'name', sort: OrderParams.ASC
@@ -359,7 +363,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
             };
           })))
       )
-      .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: { streams: Page<StreamDefinition>, apps: Page<AppRegistration>, statuses: any }) => {
           if (value.streams.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
@@ -385,7 +388,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
 
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -534,14 +536,17 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param item the stream definition to be undeployed.
    */
   undeploy(item: StreamDefinition) {
-    const busy = this.streamsService
+    this.blockerService.lock();
+    this.streamsService
       .undeployDefinition(item)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(data => {
+      .subscribe(() => {
+        this.refresh();
         this.notificationService.success(`Successfully undeployed stream definition "${item.name}"`);
+        this.blockerService.unlock();
+      }, (error) => {
+        this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        this.blockerService.unlock();
       });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -628,7 +633,6 @@ export class StreamsComponent implements OnInit, OnDestroy {
     if (streamDefinitions.length === 0) {
       return;
     }
-
     if (streamDefinitions.length === 1) {
       this.router.navigate(['streams/definitions/' + streamDefinitions[0].name + '/deploy']);
     } else {

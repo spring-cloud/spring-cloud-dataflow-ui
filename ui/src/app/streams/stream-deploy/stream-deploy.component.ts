@@ -5,7 +5,6 @@ import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { saveAs } from 'file-saver/FileSaver';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { StreamsService } from '../streams.service';
-import { BusyService } from '../../shared/services/busy.service';
 import { StreamDefinition } from '../model/stream-definition';
 import { Parser } from '../../shared/services/parser';
 import { StreamDeployService } from './stream-deploy.service';
@@ -14,6 +13,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
 import { ClipboardService } from 'ngx-clipboard';
 import { DateTime } from 'luxon';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -50,11 +50,6 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   refConfig;
 
   /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
-
-  /**
    * Properties Array
    */
   properties: Array<string> = [];
@@ -70,7 +65,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * @param {ActivatedRoute} route
    * @param {StreamsService} streamsService
    * @param {NotificationService} notificationService
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {LoggerService} loggerService
    * @param {StreamDeployService} streamDeployService
    * @param {Router} router
@@ -80,7 +75,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private streamsService: StreamsService,
               private notificationService: NotificationService,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private loggerService: LoggerService,
               private streamDeployService: StreamDeployService,
               private router: Router,
@@ -173,8 +168,6 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    * On Destroy operations
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -246,25 +239,25 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
     let obs = of({});
     const isDeployed = this.isDeployed(this.refConfig.streamDefinition);
     if (isDeployed) {
-      obs = obs.pipe(mergeMap(val => this.streamsService.updateDefinition(this.refConfig.id, propertiesMap)));
+      obs = obs.pipe(mergeMap(() => this.streamsService.updateDefinition(this.refConfig.id, propertiesMap)));
     } else {
-      obs = obs.pipe(mergeMap(val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap)));
+      obs = obs.pipe(mergeMap(() => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap)));
     }
-    const busy = obs.pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe(data => {
-          if (isDeployed) {
-            this.notificationService.success(`Successfully updated stream definition "${this.refConfig.id}"`);
-          } else {
-            this.notificationService.success(`Successfully deployed stream definition "${this.refConfig.id}"`);
-          }
-          this.router.navigate(['streams']);
-        },
-        error => {
-          const err = error.message ? error.message : error.toString();
-          this.notificationService.error(err ? err : 'An error occurred during the stream deployment update.');
+    this.blockerService.lock();
+    obs.subscribe(() => {
+        if (isDeployed) {
+          this.notificationService.success(`Successfully updated stream definition "${this.refConfig.id}"`);
+        } else {
+          this.notificationService.success(`Successfully deployed stream definition "${this.refConfig.id}"`);
         }
-      );
-    this.busyService.addSubscription(busy);
+        this.router.navigate(['streams']);
+        this.blockerService.unlock();
+      },
+      error => {
+        const err = error.message ? error.message : error.toString();
+        this.notificationService.error(err ? err : 'An error occurred during the stream deployment update.');
+        this.blockerService.unlock();
+      });
   }
 
   /**

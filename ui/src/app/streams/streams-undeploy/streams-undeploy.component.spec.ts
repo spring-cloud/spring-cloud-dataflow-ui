@@ -11,12 +11,13 @@ import { DebugElement } from '@angular/core';
 import { MockStreamsService } from '../../tests/mocks/streams';
 import { StreamsService } from '../streams.service';
 import { StreamsUndeployComponent } from './streams-undeploy.component';
-import { BusyService } from '../../shared/services/busy.service';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { RolesDirective } from '../../auth/directives/roles.directive';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link StreamsUndeployComponent}.
@@ -31,8 +32,8 @@ describe('StreamsUndeployComponent', () => {
   const authService = new MockAuthService();
   const bsModalRef = new BsModalRef();
   const streamsService = new MockStreamsService();
-  const busyService = new BusyService();
   const loggerService = new LoggerService();
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -51,8 +52,8 @@ describe('StreamsUndeployComponent', () => {
       ],
       providers: [
         { provide: AuthService, useValue: authService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: BsModalRef, useValue: bsModalRef },
-        { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
         { provide: StreamsService, useValue: streamsService },
         { provide: LoggerService, useValue: loggerService }

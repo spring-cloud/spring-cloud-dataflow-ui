@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockStreamsService } from '../../tests/mocks/streams';
 import { StreamsService } from '../streams.service';
@@ -11,7 +10,6 @@ import { StreamDeployComponent } from './stream-deploy.component';
 import { MockComponent } from '../../tests/mocks/mock-component';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { BusyService } from '../../shared/services/busy.service';
 import { BsDropdownModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { AppTypeComponent } from '../../apps/components/app-type/app-type.component';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -31,6 +29,8 @@ import { StreamDeployService } from 'src/app/streams/stream-deploy/stream-deploy
 import { MockSharedAppService } from 'src/app/tests/mocks/shared-app';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -45,12 +45,12 @@ describe('StreamDeployComponent', () => {
   const sharedAboutService = new MocksSharedAboutService();
   const appsService = new MockAppsService();
   const sharedAppService = new MockSharedAppService();
-  const busyService = new BusyService();
   let activeRoute: MockActivatedRoute;
   const commonTestParams = { id: '1' };
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
   const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any);
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -69,7 +69,6 @@ describe('StreamDeployComponent', () => {
         FocusDirective
       ],
       imports: [
-        NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
         TooltipModule.forRoot(),
@@ -80,8 +79,8 @@ describe('StreamDeployComponent', () => {
         RouterTestingModule.withRoutes([{ path: 'streams/definitions', component: MockComponent }])
       ],
       providers: [
-        { provide: BusyService, useValue: busyService },
         { provide: StreamsService, useValue: streamsService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: NotificationService, useValue: notificationService },

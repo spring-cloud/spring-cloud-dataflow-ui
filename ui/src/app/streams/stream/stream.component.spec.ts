@@ -10,7 +10,6 @@ import { MockNotificationService } from '../../tests/mocks/notification';
 import { MetamodelService } from '../components/flo/metamodel.service';
 import { RenderService } from '../components/flo/render.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
-import { BusyService } from '../../shared/services/busy.service';
 import { StreamComponent } from './stream.component';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
@@ -48,7 +47,6 @@ describe('StreamComponent', () => {
   const notificationService = new MockNotificationService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
-  const busyService = new BusyService();
   const routingStateService = new MockRoutingStateService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
@@ -83,7 +81,6 @@ describe('StreamComponent', () => {
         { provide: SharedAboutService, useValue: aboutService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: AuthService, useValue: authService },
-        { provide: BusyService, useValue: busyService },
         { provide: BsModalService, useValue: modalService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },

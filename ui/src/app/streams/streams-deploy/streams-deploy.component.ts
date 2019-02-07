@@ -3,12 +3,12 @@ import { StreamsService } from '../streams.service';
 import { StreamDefinition } from '../model/stream-definition';
 import { BsModalRef } from 'ngx-bootstrap';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable, Subject } from 'rxjs';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -21,11 +21,6 @@ import { AppError } from '../../shared/model/error.model';
   templateUrl: './streams-deploy.component.html'
 })
 export class StreamsDeployComponent extends Modal implements OnDestroy {
-
-  /**
-   * Subscription Busy
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Collections of StreamDefinition to unregister
@@ -46,13 +41,13 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
    * Adds deployment properties to the FormBuilder
    * @param modalRef Modal reference
    * @param streamsService The service used to deploy the stream.
-   * @param busyService
+   * @param blockerService
    * @param notificationService used to display the status of a deployment
    * @param loggerService
    */
   constructor(private streamsService: StreamsService,
               private modalRef: BsModalRef,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private loggerService: LoggerService,
               private notificationService: NotificationService) {
 
@@ -72,8 +67,6 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -81,17 +74,17 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
    */
   deployDefinitions() {
     this.loggerService.log(`Proceeding to deploy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
-    const busy = this.streamsService.deployMultipleStreamDefinitions(this.streamDefinitions)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+    this.blockerService.lock();
+    this.streamsService.deployMultipleStreamDefinitions(this.streamDefinitions)
       .subscribe((data) => {
         this.notificationService.success(`${data.length} stream definition(s) deployed.`);
         this.confirm.emit(data);
         this.cancel();
+        this.blockerService.unlock();
       }, (error) => {
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        this.blockerService.unlock();
       });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

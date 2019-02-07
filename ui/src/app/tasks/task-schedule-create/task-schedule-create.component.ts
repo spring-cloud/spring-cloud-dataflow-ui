@@ -9,11 +9,11 @@ import { TaskScheduleCreateValidator } from './task-schedule-create.validator';
 import { GroupRouteService } from '../../shared/services/group-route.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { TaskLaunchValidator } from '../task-launch/task-launch.validator';
-import { BusyService } from '../../shared/services/busy.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { Page } from '../../shared/model/page';
 import { AppError } from '../../shared/model/error.model';
 import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component handling a creation of a task schedule.
@@ -27,11 +27,6 @@ import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-ric
   encapsulation: ViewEncapsulation.None
 })
 export class TaskScheduleCreateComponent implements OnInit {
-
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Schedule Object
@@ -67,7 +62,7 @@ export class TaskScheduleCreateComponent implements OnInit {
    *
    * @param {RoutingStateService} routingStateService
    * @param {TasksService} tasksService
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {Router} router
    * @param {GroupRouteService} groupRouteService
    * @param {NotificationService} notificationService
@@ -75,7 +70,7 @@ export class TaskScheduleCreateComponent implements OnInit {
    */
   constructor(private routingStateService: RoutingStateService,
               private tasksService: TasksService,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private router: Router,
               private groupRouteService: GroupRouteService,
               private notificationService: NotificationService,
@@ -180,22 +175,22 @@ export class TaskScheduleCreateComponent implements OnInit {
               .map((control: FormControl) => control.value)[index]
           })
         );
-      const busy = this.tasksService.createSchedules(scheduleParams)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(
-          data => {
+      this.blockerService.lock();
+      this.tasksService.createSchedules(scheduleParams)
+        .subscribe(() => {
             if (scheduleParams.length === 1) {
               this.notificationService.success(`Successfully schedule creation "${scheduleParams[0].schedulerName}"`);
             } else {
               this.notificationService.success(`Successfully ${scheduleParams.length} schedules creation`);
             }
             this.cancel();
+            this.blockerService.unlock();
           },
           error => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+            this.blockerService.unlock();
           }
         );
-      this.busyService.addSubscription(busy);
     }
   }
 

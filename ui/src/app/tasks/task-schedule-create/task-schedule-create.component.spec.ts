@@ -11,7 +11,6 @@ import { FloModule } from 'spring-flo';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -31,6 +30,8 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
 import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link TaskScheduleCreateComponent}.
@@ -43,12 +44,13 @@ describe('TaskScheduleCreateComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
-  const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const groupRouteService = new MockGroupRouteService();
   const routingStateService = new MockRoutingStateService();
   const commonTestParams = { id: 'foo' };
+  const blockerService = new MockBlockerService();
   let activeRoute: MockActivatedRoute;
+
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -80,8 +82,8 @@ describe('TaskScheduleCreateComponent', () => {
       providers: [
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: GroupRouteService, useValue: groupRouteService },
         { provide: RoutingStateService, useValue: routingStateService },

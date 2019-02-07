@@ -10,13 +10,13 @@ import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { AppsWorkaroundService } from '../apps.workaround.service';
 import { AppListParams } from '../components/apps.interface';
 import { SortParams } from '../../shared/components/shared.interface';
-import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
+import { map } from 'rxjs/operators';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { AppListBarComponent } from '../components/app-list-bar/app-list-bar.component';
 import { AuthService } from '../../auth/auth.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Main entry point to the Apps Module. Provides
@@ -37,11 +37,6 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Current applications items
    */
   appRegistrations: Page<AppRegistration>;
-
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Modal
@@ -73,6 +68,11 @@ export class AppsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * appRegistrations Subscription
+   */
+  appRegistrationsSubscription: Subscription;
+
+  /**
    * List Bar Component
    */
   @ViewChild('listBar')
@@ -85,18 +85,18 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {SharedAboutService} sharedAboutService
    * @param {BsModalService} modalService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {AuthService} authService
+   * @param blockerService
    * @param {Router} router
    */
   constructor(public appsService: AppsService,
               private notificationService: NotificationService,
               private sharedAboutService: SharedAboutService,
               private modalService: BsModalService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private authService: AuthService,
+              private blockerService: BlockerService,
               private router: Router) {
   }
 
@@ -117,8 +117,9 @@ export class AppsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.updateContext();
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    if (this.appRegistrationsSubscription) {
+      this.appRegistrationsSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -188,13 +189,19 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Build the form checkboxes (persist selection)
    */
   loadAppRegistrations() {
-    const busy = this.appsService.getApps(this.params).map((page: Page<AppRegistration>) => {
-      this.form.checkboxes = page.items.map((app) => {
-        return this.itemsSelected.indexOf(`${app.name}#${app.type}`) > -1;
-      });
-      return page;
-    }).pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((page: Page<AppRegistration>) => {
+    if (this.appRegistrationsSubscription) {
+      this.appRegistrationsSubscription.unsubscribe();
+    }
+    this.appRegistrationsSubscription = this.appsService
+      .getApps(this.params)
+      .pipe(
+        map((page: Page<AppRegistration>) => {
+          this.form.checkboxes = page.items.map((app) => {
+            return this.itemsSelected.indexOf(`${app.name}#${app.type}`) > -1;
+          });
+          return page;
+        })
+      ).subscribe((page: Page<AppRegistration>) => {
           if (page.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
             this.loadAppRegistrations();
@@ -207,8 +214,6 @@ export class AppsComponent implements OnInit, OnDestroy {
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

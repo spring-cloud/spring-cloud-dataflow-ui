@@ -5,7 +5,6 @@ import { AppsService } from '../../apps.service';
 import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockAppsService } from '../../../tests/mocks/apps';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BusyService } from '../../../shared/services/busy.service';
 import { By } from '@angular/platform-browser';
 import { AppsBulkImportPropertiesComponent } from './apps-bulk-import-properties.component';
 import { NotificationService } from '../../../shared/services/notification.service';
@@ -21,6 +20,8 @@ import { LoggerService } from '../../../shared/services/logger.service';
 import { RoutingStateService } from '../../../shared/services/routing-state.service';
 import { MockRoutingStateService } from 'src/app/tests/mocks/routing-state';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
+import { MockBlockerService } from '../../../tests/mocks/blocker.service';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link AppsBulkImportPropertiesComponent}.
@@ -37,6 +38,7 @@ describe('AppsBulkImportPropertiesComponent', () => {
   const sharedAboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -59,10 +61,10 @@ describe('AppsBulkImportPropertiesComponent', () => {
       ],
       providers: [
         { provide: AuthService, useValue: authService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: AppsService, useValue: appsService },
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }

@@ -2,9 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SortParams } from '../../shared/components/shared.interface';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
@@ -34,11 +33,6 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
   auditRecords: Page<AuditRecord>;
 
   /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
-
-  /**
    * State of App List Params
    * @type {SortParams}
    */
@@ -56,6 +50,11 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * auditRecords Subscription
+   */
+  auditRecordsSubscription: Subscription;
+
+  /**
    * List Bar Component
    */
   @ViewChild('listBar')
@@ -66,13 +65,11 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
    *
    * @param {AuditRecordService} auditRecordService
    * @param {NotificationService} notificationService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(public auditRecordService: AuditRecordService,
               private notificationService: NotificationService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private router: Router) {
   }
@@ -95,8 +92,9 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.updateContext();
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    if (this.auditRecordsSubscription) {
+      this.auditRecordsSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -133,8 +131,10 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
    * Build the form checkboxes (persist selection)
    */
   loadAuditRecords() {
-    const busy = this.auditRecordService.getAuditRecords(this.params)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+    if (this.auditRecordsSubscription) {
+      this.auditRecordsSubscription.unsubscribe();
+    }
+    this.auditRecordsSubscription = this.auditRecordService.getAuditRecords(this.params)
       .subscribe((page: Page<AuditRecord>) => {
           if (page.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
@@ -146,7 +146,6 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-    this.busyService.addSubscription(busy);
   }
 
   /**

@@ -1,21 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppsService } from '../apps.service';
-import { ApplicationType, DetailedAppRegistration } from '../../shared/model';
+import { ApplicationType, AppVersion, DetailedAppRegistration } from '../../shared/model';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { AppRegistration } from '../../shared/model/app-registration.model';
-import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { AppRegistration } from '../../shared/model';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { SortParams } from '../../shared/components/shared.interface';
-import { Subject, combineLatest } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { HttpAppError, AppError } from '../../shared/model/error.model';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
+import { Subscription } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 /**
  * Provides details for an App Registration
@@ -29,11 +27,6 @@ import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.comp
   templateUrl: './app-details.component.html'
 })
 export class AppDetailsComponent implements OnInit, OnDestroy {
-
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Properties
@@ -75,6 +68,21 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   tooManyProperties = false;
 
   /**
+   * Subscription
+   */
+  detailedAppRegistrationSubscription: Subscription;
+
+  /**
+   * Subscription
+   */
+  versionsSubscription: Subscription;
+
+  /**
+   * Loaded properties
+   */
+  loaded = false;
+
+  /**
    * Constructor
    *
    * @param {AppsService} appsService
@@ -82,7 +90,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {ActivatedRoute} route
    * @param {RoutingStateService} routingStateService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {BsModalService} modalService
    */
@@ -91,7 +98,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private route: ActivatedRoute,
               private routingStateService: RoutingStateService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private modalService: BsModalService) {
   }
@@ -101,15 +107,10 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.loggerService.log('App Service Details');
-    const featureInfo$ = this.sharedAboutService.getFeatureInfo();
-
-    combineLatest(featureInfo$, this.route.params)
-      .subscribe((data: any[]) => {
-        const featureInfo = data[0] as FeatureInfo;
-        const params = data[1] as Params;
-        this.application = new AppRegistration(params['appName'], params['appType'] as ApplicationType);
-        this.refresh();
-      });
+    this.route.params.subscribe((params: Params) => {
+      this.application = new AppRegistration(params['appName'], params['appType'] as ApplicationType);
+      this.refresh();
+    });
   }
 
   /**
@@ -117,8 +118,12 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    if (this.versionsSubscription) {
+      this.versionsSubscription.unsubscribe();
+    }
+    if (this.detailedAppRegistrationSubscription) {
+      this.detailedAppRegistrationSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -136,10 +141,12 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   loadProperties(version: string = '') {
     this.loggerService.log('Retrieving properties application for ' + this.application.name + ' (' +
     this.application.type + ', version ' + version ? version : '/' + ').');
-
     this.versionSelect = version;
-    const busy = this.appsService.getAppInfo(this.application.type, this.application.name, version)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+    if (this.detailedAppRegistrationSubscription) {
+      this.detailedAppRegistrationSubscription.unsubscribe();
+    }
+    this.detailedAppRegistrationSubscription = this.appsService
+      .getAppInfo(this.application.type, this.application.name, version)
       .subscribe((detailed: DetailedAppRegistration) => {
           this.tooManyProperties = (detailed.options.length > 50);
           this.showProperties = !this.tooManyProperties;
@@ -150,9 +157,9 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
             this.cancel();
           }
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        }, () => {
+          this.loaded = true;
         });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -160,29 +167,25 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   loadVersions() {
     this.loggerService.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
-    const busy = this.appsService
+    if (this.versionsSubscription) {
+      this.versionsSubscription.unsubscribe();
+    }
+    this.versionsSubscription = this.appsService
       .getAppVersions(ApplicationType[this.application.type.toString()], this.application.name)
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: any) => {
-          if (data.length > 0) {
-            this.application.versions = data;
-            this.defaultVersion = this.application.versions.find((a) => a.defaultVersion);
-            if (this.defaultVersion) {
-              this.application.version = this.defaultVersion.version;
-              this.application.uri = this.defaultVersion.uri;
-              this.selectVersion(this.defaultVersion.version);
-            } else {
-              this.selectVersion(this.application.versions[0].version);
-            }
+      .subscribe((appVersions: AppVersion[]) => {
+          this.application.versions = appVersions;
+          this.defaultVersion = this.application.versions.find((a) => a.defaultVersion);
+          if (this.defaultVersion) {
+            this.application.version = this.defaultVersion.version;
+            this.application.uri = this.defaultVersion.uri;
+            this.selectVersion(this.defaultVersion.version);
           } else {
-            this.loadProperties();
+            this.selectVersion(this.application.versions[0].version);
           }
         },
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -230,6 +233,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
     if (this.versionSelect === version) {
       return;
     }
+    this.loaded = false;
     this.loadProperties(version);
   }
 

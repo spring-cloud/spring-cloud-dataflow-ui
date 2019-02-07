@@ -7,7 +7,6 @@ import { MetamodelService } from '../components/flo/metamodel.service';
 import { RenderService } from '../components/flo/render.service';
 import { EditorService } from '../components/flo/editor.service';
 import { ContentAssistService } from '../components/flo/content-assist.service';
-import { NgBusyModule } from 'ng-busy';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { MockToolsService } from '../../tests/mocks/mock-tools';
@@ -59,7 +58,6 @@ describe('TaskCreateComposedTaskComponent', () => {
         RouterTestingModule.withRoutes([]),
         ModalModule,
         FloModule,
-        NgBusyModule,
         NoopAnimationsModule
       ],
       providers: [

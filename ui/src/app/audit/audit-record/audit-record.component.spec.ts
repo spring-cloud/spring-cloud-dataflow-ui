@@ -21,7 +21,6 @@ import { SortComponent } from '../../shared/components/sort/sort.component';
 import { MasterCheckboxComponent } from '../../shared/components/master-checkbox.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BusyService } from '../../shared/services/busy.service';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
@@ -82,7 +81,6 @@ describe('AuditRecordComponent', () => {
         { provide: AuditRecordService, useValue: auditRecordService },
         { provide: AuthService, useValue: authService },
         BsModalService,
-        { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: LoggerService, useValue: loggerService },
         { provide: NotificationService, useValue: notificationService }

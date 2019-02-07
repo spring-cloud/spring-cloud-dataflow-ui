@@ -14,7 +14,6 @@ import { ContentAssistService } from '../components/flo/content-assist.service';
 import * as CodeMirror from 'codemirror';
 import { Subject, Subscription } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { EditorComponent } from 'spring-flo';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -31,7 +30,6 @@ import { NotificationService } from '../../shared/services/notification.service'
 })
 export class StreamCreateComponent implements OnInit, OnDestroy {
 
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   dsl: string;
 
@@ -58,7 +56,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
               public editorService: EditorService,
               private bsModalService: BsModalService,
               private renderer: Renderer2,
-              private busyService: BusyService,
               private notificationService: NotificationService,
               private contentAssistService: ContentAssistService,
               private loggerService: LoggerService,
@@ -81,11 +78,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     };
 
     this.initSubject = new Subject();
-    const busy = this.initSubject
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe();
-
-    this.busyService.addSubscription(busy);
+    this.initSubject.subscribe();
   }
 
   ngOnInit() {
@@ -99,9 +92,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Invalidate cached metamodel, thus it's reloaded next time page is opened
     this.metamodelService.clearCachedData();
-
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -123,7 +113,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     this.editorContext = editorContext;
     if (this.editorContext) {
       const subscription = this.editorContext.paletteReady
-        .pipe(takeUntil(this.ngUnsubscribe$))
         .pipe(map((value) => {
           this.resizeFloGraph();
           return value;
@@ -170,7 +159,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
     return new Promise((resolve) => {
       this.contentAssistService.getProposals(prefix)
-        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(completions => {
           const chopAt = this.interestingPrefixStart(prefix, completions);
           const finalProposals = completions.map((longCompletion: any) => {

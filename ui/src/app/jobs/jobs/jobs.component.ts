@@ -1,16 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Page } from '../../shared/model';
 import { JobsService } from '../jobs.service';
 import { JobExecution } from '../model/job-execution.model';
-import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { ListParams, OrderParams } from '../../shared/components/shared.interface';
 import { ConfirmService } from '../../shared/components/confirm/confirm.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AuthService } from '../../auth/auth.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Main entry point to the Jobs Module. Provides
@@ -26,15 +25,14 @@ import { AuthService } from '../../auth/auth.service';
 export class JobsComponent implements OnInit, OnDestroy {
 
   /**
-   * Busy subscription
-   * @type {Subject<any>}
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
-
-  /**
    * Jobs
    */
   public jobExecutions: Page<JobExecution>;
+
+  /**
+   * jobExecutionsSubscription
+   */
+  jobExecutionsSubscription: Subscription;
 
   /**
    * State of Job List Params
@@ -55,19 +53,20 @@ export class JobsComponent implements OnInit, OnDestroy {
   /**
    * Constructor
    *
-   * @param {BusyService} busyService
    * @param {JobsService} jobsService
    * @param {NotificationService} notificationService
    * @param {ConfirmService} confirmService
+   * @param {AuthService} authService
    * @param {LoggerService} loggerService
+   * @param {BlockerService} blockerService
    * @param {Router} router
    */
-  constructor(private busyService: BusyService,
-              private jobsService: JobsService,
+  constructor(private jobsService: JobsService,
               private notificationService: NotificationService,
               private confirmService: ConfirmService,
               private authService: AuthService,
               private loggerService: LoggerService,
+              private blockerService: BlockerService,
               private router: Router) {
   }
 
@@ -87,8 +86,9 @@ export class JobsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.updateContext();
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
+    if (this.jobExecutionsSubscription) {
+      this.jobExecutionsSubscription.unsubscribe();
+    }
   }
 
   /**
@@ -145,8 +145,10 @@ export class JobsComponent implements OnInit, OnDestroy {
    * Load a paginated list of {@link JobExecution}s.
    */
   public loadJobExecutions() {
-    const busy = this.jobsService.getJobExecutions(this.params)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+    if (this.jobExecutionsSubscription) {
+      this.jobExecutionsSubscription.unsubscribe();
+    }
+    this.jobExecutionsSubscription = this.jobsService.getJobExecutions(this.params)
       .subscribe(page => {
         if (page.items.length === 0 && this.params.page > 0) {
           this.params.page = 0;
@@ -154,12 +156,10 @@ export class JobsComponent implements OnInit, OnDestroy {
           return;
         }
         this.jobExecutions = page;
-        // this.changeCheckboxes();
         this.updateContext();
       }, error => {
         this.notificationService.error(error);
       });
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -200,12 +200,14 @@ export class JobsComponent implements OnInit, OnDestroy {
       `<strong>job execution ${item.name} (${item.jobExecutionId})</strong>. Are you sure?`;
     this.confirmService.open(title, description, { confirm: 'Restart' }).subscribe(() => {
       this.loggerService.log('Restart Job ' + item.jobExecutionId);
+      this.blockerService.lock();
       this.jobsService.restartJob(item)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(data => {
+        .subscribe(() => {
           this.notificationService.success('Successfully restarted job "' + item.name + '"');
+          this.blockerService.unlock();
         }, error => {
           this.notificationService.error(error);
+          this.blockerService.unlock();
         });
     });
   }
@@ -220,14 +222,15 @@ export class JobsComponent implements OnInit, OnDestroy {
       `<strong>job execution ${item.name} (${item.jobExecutionId})</strong>. Are you sure?`;
     this.confirmService.open(title, description, { confirm: 'Stop' }).subscribe(() => {
       this.loggerService.log('Stop Job' + item.jobExecutionId);
+      this.blockerService.lock();
       this.jobsService.stopJob(item)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(data => {
-            this.notificationService.success('Successfully stopped job "' + item.name + '"');
-          }, error => {
-            this.notificationService.error(error);
-          }
-        );
+        .subscribe(() => {
+          this.notificationService.success('Successfully stopped job "' + item.name + '"');
+          this.blockerService.unlock();
+        }, error => {
+          this.notificationService.error(error);
+          this.blockerService.unlock();
+        });
     });
   }
 

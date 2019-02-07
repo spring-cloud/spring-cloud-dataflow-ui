@@ -12,6 +12,8 @@ import { DebugElement } from '@angular/core';
 import { AppTypeComponent } from '../components/app-type/app-type.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link AppsUnregisterComponent}.
@@ -25,6 +27,7 @@ describe('AppsUnregisterComponent', () => {
   const notificationService = new MockNotificationService();
   const appsService = new MockAppsService();
   const loggerService = new LoggerService();
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -37,6 +40,7 @@ describe('AppsUnregisterComponent', () => {
       ],
       providers: [
         { provide: AppsService, useValue: appsService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }

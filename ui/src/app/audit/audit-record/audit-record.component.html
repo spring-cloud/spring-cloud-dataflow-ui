@@ -77,8 +77,10 @@
         <td nowrap="">
           {{item.createdBy || 'N/A'}}
         </td>
-        <td class="dataflow-truncator-width">
-          <dataflow-truncator [input]="item.auditData" trailPosition="start" trail="…"></dataflow-truncator>
+        <td>
+          <div class="dataflow-truncator-width">
+            <dataflow-truncator [input]="item.auditData" trailPosition="start" trail="…"></dataflow-truncator>
+          </div>
         </td>
         <td class="table-actions" width="10px" nowrap="">
           <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"

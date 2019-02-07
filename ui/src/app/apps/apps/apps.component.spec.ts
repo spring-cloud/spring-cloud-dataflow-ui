@@ -22,7 +22,6 @@ import { APPS } from '../../tests/mocks/mock-data';
 import { DebugElement } from '@angular/core';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
-import { BusyService } from '../../shared/services/busy.service';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
@@ -32,6 +31,8 @@ import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppListBarComponent } from 'src/app/apps/components/app-list-bar/app-list-bar.component';
 import { of } from 'rxjs';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 describe('AppsComponent', () => {
 
@@ -42,6 +43,8 @@ describe('AppsComponent', () => {
   const sharedAboutService = new MocksSharedAboutService();
   const authService = new MockAuthService();
   const loggerService = new LoggerService();
+  const blockerService = new MockBlockerService();
+
   let modalService;
 
   beforeEach(async(() => {
@@ -73,9 +76,9 @@ describe('AppsComponent', () => {
       providers: [
         BsModalService,
         { provide: AppsService, useValue: appsService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: AuthService, useValue: authService },
         BsModalService,
-        { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: LoggerService, useValue: loggerService },
         { provide: NotificationService, useValue: notificationService }

@@ -7,7 +7,7 @@
 
   <p> Create a task using text based input or the visual editor.</p>
 
-  <div id="flo-container" class="stream-editor" [ngBusy]="busy">
+  <div id="flo-container" class="stream-editor">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
                 [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="55" [(dsl)]="dsl"
                 (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">

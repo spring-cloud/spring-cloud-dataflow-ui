@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { StreamsService } from '../../streams.service';
-import { BusyService } from '../../../shared/services/busy.service';
-import { takeUntil } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { RenderService } from '../../components/flo/render.service';
 import { MetamodelService } from '../../components/flo/metamodel.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { AppError } from '../../../shared/model/error.model';
+import { StreamDefinition } from '../../model/stream-definition';
+import { Observable } from 'rxjs';
 
 /**
  * Component that shows the details of a Stream Definition
@@ -24,11 +24,6 @@ import { AppError } from '../../../shared/model/error.model';
 export class StreamGraphComponent implements OnInit, OnDestroy {
 
   /**
-   * Busy Subject
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
-
-  /**
    * Stream name
    */
   id: string;
@@ -36,7 +31,7 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
   /**
    * DSL
    */
-  dsl = '';
+  dsl$: Observable<string>;
 
   /**
    * Constructor
@@ -44,14 +39,12 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
    * @param {ActivatedRoute} route
    * @param {StreamsService} streamsService
    * @param {NotificationService} notificationService
-   * @param {BusyService} busyService
    * @param {MetamodelService} metamodelService
    * @param {RenderService} renderService
    */
   constructor(private route: ActivatedRoute,
               private streamsService: StreamsService,
               private notificationService: NotificationService,
-              private busyService: BusyService,
               public metamodelService: MetamodelService,
               public renderService: RenderService) {
   }
@@ -60,19 +53,11 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
    * Initialize
    */
   ngOnInit() {
-    this.route.parent.params.subscribe(params => {
-      this.id = params['id'];
-      const busy = this.streamsService.getRelatedDefinitions(this.id, true)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(streams => {
-          console.log(streams);
-          this.dsl = streams.map(s => `${s.name}=${s.dslText}`).join('\n');
-        }, (error) => {
-          this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        });
-
-      this.busyService.addSubscription(busy);
-    });
+    this.dsl$ = this.route.parent.params
+      .pipe(
+        mergeMap((param: Params) => this.streamsService.getRelatedDefinitions(param.id, true)),
+        map((streams: StreamDefinition[]): string => streams.map(s => `${s.name}=${s.dslText}`).join('\n'))
+      );
   }
 
   /**
@@ -80,8 +65,6 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
     this.metamodelService.clearCachedData();
   }
 

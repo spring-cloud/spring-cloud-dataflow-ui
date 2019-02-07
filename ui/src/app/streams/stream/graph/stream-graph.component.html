@@ -1,4 +1,5 @@
-<div *ngIf="dsl" dataflowLayoutType type="full">
+
+<div *ngIf="dsl$ | async as dsl; else loading" dataflowLayoutType type="full">
 
   <app-graph-view [dsl]="dsl" [paperPadding]="40" class="stream-details"
                   [metamodel]="metamodelService"
@@ -7,6 +8,6 @@
 
 </div>
 
-<div *ngIf="!dsl">
+<ng-template #loading>
   <app-loader></app-loader>
-</div>
+</ng-template>

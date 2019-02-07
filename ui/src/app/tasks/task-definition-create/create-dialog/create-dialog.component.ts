@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { AppError } from '../../../shared/model/error.model';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Component to display dialog to allow user to name and deploy a task.
@@ -19,8 +20,6 @@ import { AppError } from '../../../shared/model/error.model';
   styleUrls: ['./styles.scss']
 })
 export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
-
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Shown and used dsl for task.
@@ -58,6 +57,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
               private fb: FormBuilder,
               private notificationService: NotificationService,
               private loggerService: LoggerService,
+              private blockerService: BlockerService,
               private bsModalRef: BsModalRef) {
     this.form = fb.group({
       'taskName': this.taskName
@@ -74,8 +74,6 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -103,8 +101,9 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
     if (!this.form.valid) {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
-      this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl })
-        .pipe(takeUntil(this.ngUnsubscribe$))
+      this.blockerService.lock();
+      this.tasksService
+        .createDefinition({ name: this.taskName.value, definition: this.dsl })
         .subscribe(
           () => {
             this.loggerService.log('Succesfully created task', this.taskName.value, this.dsl);
@@ -113,10 +112,12 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
             }
             this.bsModalRef.hide();
             this.notificationService.success('Composed task created for ' + this.taskName.value);
+            this.blockerService.unlock();
           },
           (error) => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
             this.bsModalRef.hide();
+            this.blockerService.unlock();
           }
         );
     }

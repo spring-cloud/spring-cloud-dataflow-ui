@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -7,7 +6,6 @@ import { TasksService } from '../tasks.service';
 import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
 import { TaskLaunchComponent } from './task-launch.component';
@@ -25,6 +23,8 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { Platform } from '../../shared/model/platform';
 import { TaskDefinition } from '../model/task-definition';
 import { By } from '@angular/platform-browser';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -37,9 +37,9 @@ describe('TaskLaunchComponent', () => {
   let activeRoute: MockActivatedRoute;
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
-  const busyService = new BusyService();
   const routingStateService = new MockRoutingStateService();
   const commonTestParams = { id: 'foo' };
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -54,7 +54,6 @@ describe('TaskLaunchComponent', () => {
         PagerComponent
       ],
       imports: [
-        NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
         NgxPaginationModule,
@@ -66,8 +65,8 @@ describe('TaskLaunchComponent', () => {
       providers: [
         { provide: TasksService, useValue: tasksService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: BlockerService, useValue: blockerService },
         { provide: RoutingStateService, useValue: routingStateService },
-        { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
         ClipboardService
       ]

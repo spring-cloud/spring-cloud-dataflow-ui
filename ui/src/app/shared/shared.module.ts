@@ -1,8 +1,7 @@
 import { Component, Inject, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { NgBusyModule, BusyConfig, BUSY_CONFIG_DEFAULTS } from 'ng-busy';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler } from './model/error-handler';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { SearchfilterPipe } from './pipes/search-filter.pipe';
@@ -28,7 +27,6 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { OrderByPipe } from './pipes/orderby.pipe';
 import { ConfirmService } from './components/confirm/confirm.service';
 import { ConfirmComponent } from './components/confirm/confirm.component';
-import { BusyService } from './services/busy.service';
 import { AutoResizeDirective } from './directives/auto-resize.directive';
 import { StreamDslComponent } from './components/dsl/dsl.component';
 import { LoaderComponent } from './components/loader/loader.component';
@@ -48,16 +46,11 @@ import { DATAFLOW_LIST } from './components/list/list.component';
 import { FocusDirective } from './directives/focus.directive';
 import { GrafanaModule } from './grafana/grafana.module';
 import { KvRichTextComponent } from './components/kv-rich-text/kv-rich-text.component';
-
-const busyConfig: BusyConfig = {
-  message: 'Processing...',
-  delay: 0,
-  minDuration: 0,
-  backdrop: true,
-  template: BUSY_CONFIG_DEFAULTS.template,
-  wrapperClass: BUSY_CONFIG_DEFAULTS.wrapperClass
-};
-
+import { BlockerComponent } from './components/blocker/blocker.component';
+import { BlockerService } from './components/blocker/blocker.service';
+import { HttpLoaderComponent } from './components/http-loader/http-loader.component';
+import { HttpLoaderInterceptor } from './components/http-loader/http-loader.interceptor';
+import { HttpLoaderService } from './components/http-loader/http-loader.service';
 
 /**
  * This module contains/declares all application-wide shared functionality.
@@ -72,7 +65,6 @@ const busyConfig: BusyConfig = {
     HttpClientModule,
     ReactiveFormsModule,
     FloModule,
-    NgBusyModule.forRoot(busyConfig),
     ModalModule.forRoot(),
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -119,6 +111,8 @@ const busyConfig: BusyConfig = {
     LayoutTypeDirective,
     FocusDirective,
     KvRichTextComponent,
+    BlockerComponent,
+    HttpLoaderComponent,
     DATAFLOW_LIST,
     DATAFLOW_PAGE
   ],
@@ -131,16 +125,21 @@ const busyConfig: BusyConfig = {
     ParserService,
     ErrorHandler,
     ConfirmService,
-    BusyService,
     RoutingStateService,
     NotificationService,
     LoggerService,
-    GroupRouteService
+    GroupRouteService,
+    BlockerService,
+    HttpLoaderService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpLoaderInterceptor,
+      multi: true
+    }
   ],
   exports: [
     StreamDslComponent,
     GrafanaModule,
-    NgBusyModule,
     CommonModule,
     FormsModule,
     NgxPaginationModule,
@@ -168,6 +167,8 @@ const busyConfig: BusyConfig = {
     LayoutTypeDirective,
     FocusDirective,
     KvRichTextComponent,
+    BlockerComponent,
+    HttpLoaderComponent,
     DATAFLOW_LIST,
     DATAFLOW_PAGE
   ]

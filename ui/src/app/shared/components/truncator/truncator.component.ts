@@ -73,7 +73,7 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
 
     if (!this.truncatorWidthProviderComponent) {
       this.resizeEvents
-        .debounceTime(500)
+        .debounceTime(200)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           const innerWidth = this.getInnerWidth();

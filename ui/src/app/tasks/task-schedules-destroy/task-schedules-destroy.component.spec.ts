@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../../auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { BusyService } from '../../shared/services/busy.service';
 import { RolesDirective } from '../../auth/directives/roles.directive';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
@@ -16,6 +15,8 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { TaskSchedulesDestroyComponent } from './task-schedules-destroy.component';
 import { TaskSchedule } from '../model/task-schedule';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link TaskSchedulesDestroyComponent}.
@@ -30,8 +31,8 @@ describe('TaskSchedulesDestroyComponent', () => {
   const authService = new MockAuthService();
   const bsModalRef = new BsModalRef();
   const tasksService = new MockTasksService();
-  const busyService = new BusyService();
   const loggerService = new LoggerService();
+  const blockerService = new MockBlockerService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,9 +51,9 @@ describe('TaskSchedulesDestroyComponent', () => {
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: BsModalRef, useValue: bsModalRef },
-        { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
         { provide: TasksService, useValue: tasksService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: LoggerService, useValue: loggerService }
       ]
     }).compileComponents();

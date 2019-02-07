@@ -3,14 +3,13 @@ import { Subscription, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppsRegisterValidator } from './apps-register.validator';
-import { takeUntil } from 'rxjs/operators';
 import { ApplicationType } from '../../../shared/model/application-type';
 import { AppsService } from '../../apps.service';
 import { NotificationService } from '../../../shared/services/notification.service';
-import { BusyService } from '../../../shared/services/busy.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { AppRegisterParams } from '../../components/apps.interface';
 import { AppError } from '../../../shared/model/error.model';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Applications Register
@@ -25,11 +24,6 @@ import { AppError } from '../../../shared/model/error.model';
   templateUrl: './apps-register.component.html'
 })
 export class AppsRegisterComponent implements OnInit, OnDestroy {
-
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Array of forms registration
@@ -54,14 +48,14 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
    * @param {AppsService} appsService
    * @param {NotificationService} notificationService
    * @param {FormBuilder} fb
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
               private notificationService: NotificationService,
               private fb: FormBuilder,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private loggerService: LoggerService,
               private router: Router) {
   }
@@ -71,8 +65,6 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
 
@@ -95,30 +87,31 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
         this.notificationService.error('Some field(s) are missing or invalid.');
       }
     } else {
-      const applications: AppRegisterParams[] = this.forms.map((form: FormGroup) => {
-        if (!form.invalid && !this.isFormEmpty(form)) {
-          return {
-            name: form.get('name').value,
-            type: form.get('type').value as ApplicationType,
-            uri: form.get('uri').value,
-            metaDataUri: form.get('metaDataUri').value,
-            force: form.get('force').value
-          };
-        }
-      }).filter((a) => a != null);
-      const busy = this.appsService.registerApps(applications)
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(
-          data => {
+      this.blockerService.lock();
+      const applications: AppRegisterParams[] = this.forms
+        .map((form: FormGroup) => {
+          if (!form.invalid && !this.isFormEmpty(form)) {
+            return {
+              name: form.get('name').value,
+              type: form.get('type').value as ApplicationType,
+              uri: form.get('uri').value,
+              metaDataUri: form.get('metaDataUri').value,
+              force: form.get('force').value
+            };
+          }
+        })
+        .filter((a) => a != null);
+      this.appsService.registerApps(applications)
+        .subscribe(data => {
             this.notificationService.success(`${data.length} App(s) registered.`);
             this.cancel();
+            this.blockerService.unlock();
           },
           error => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-          }
-        );
+            this.blockerService.unlock();
+          });
 
-      this.busyService.addSubscription(busy);
     }
   }
 

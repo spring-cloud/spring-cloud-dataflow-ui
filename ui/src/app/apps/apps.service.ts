@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SharedAppsService } from '../shared/services/shared-apps.service';
 import { AppRegistration, ErrorHandler, Page, ApplicationType, DetailedAppRegistration } from '../shared/model';
 import { HttpUtils } from '../shared/support/http.utils';
@@ -11,6 +11,7 @@ import { LoggerService } from '../shared/services/logger.service';
 import { OrderParams } from '../shared/components/shared.interface';
 import { forkJoin } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { BlockerService } from '../shared/components/blocker/blocker.service';
 
 /**
  * Service class for the Apps module.
@@ -125,7 +126,6 @@ export class AppsService {
       .append('uri', bulkImportParams.uri)
       .append('apps', bulkImportParams.properties ? bulkImportParams.properties.join('\n') : null)
       .append('force', bulkImportParams.force ? 'true' : 'false');
-
     return this.httpClient
       .post(AppsService.appsUrl, {}, { headers: httpHeaders, params: params })
       .pipe(

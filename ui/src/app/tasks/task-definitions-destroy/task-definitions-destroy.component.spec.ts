@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from '../../auth/auth.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { BusyService } from '../../shared/services/busy.service';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { RolesDirective } from '../../auth/directives/roles.directive';
@@ -17,6 +16,8 @@ import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { MockBlockerService } from '../../tests/mocks/blocker.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link TaskDefinitionsDestroyComponent}.
@@ -31,8 +32,9 @@ describe('TaskDefinitionsDestroyComponent', () => {
   const authService = new MockAuthService();
   const bsModalRef = new BsModalRef();
   const tasksService = new MockTasksService();
-  const busyService = new BusyService();
   const loggerService = new LoggerService();
+  const blockerService = new MockBlockerService();
+
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -51,8 +53,8 @@ describe('TaskDefinitionsDestroyComponent', () => {
       ],
       providers: [
         { provide: AuthService, useValue: authService },
+        { provide: BlockerService, useValue: blockerService },
         { provide: BsModalRef, useValue: bsModalRef },
-        { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
         { provide: TasksService, useValue: tasksService },
         { provide: LoggerService, useValue: loggerService }

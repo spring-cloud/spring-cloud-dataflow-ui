@@ -1,17 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
 import { FormControl, FormGroup, Validator, Validators } from '@angular/forms';
-import { BusyService } from '../../shared/services/busy.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { TaskLaunchParams } from '../components/tasks.interface';
 import { TaskLaunchValidator } from './task-launch.validator';
 import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component that provides a launcher of task.
@@ -26,11 +27,6 @@ import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-ric
   styleUrls: ['./styles.scss']
 })
 export class TaskLaunchComponent implements OnInit, OnDestroy {
-
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
    * Observable of Task Definition
@@ -66,14 +62,14 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    *
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {RoutingStateService} routingStateService
    * @param {ActivatedRoute} route
    * @param {Router} router
    */
   constructor(private tasksService: TasksService,
               private notificationService: NotificationService,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private routingStateService: RoutingStateService,
               private route: ActivatedRoute,
               private router: Router) {
@@ -130,8 +126,6 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   /**
@@ -166,18 +160,17 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
       const taskArguments = this.form.get('args').value.toString().split('\n');
       const taskProperties = this.form.get('props').value.toString().split('\n');
       const platform = this.form.get('platform').value;
-      const busy = this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties, platform))
-        .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(
-          data => {
+      this.blockerService.lock();
+      this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties, platform))
+        .subscribe(() => {
             this.notificationService.success('Successfully launched task "' + name + '"');
             this.router.navigate(['/tasks/definitions']);
-          },
-          error => {
+          this.blockerService.unlock();
+          }, error => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          this.blockerService.unlock();
           }
         );
-      this.busyService.addSubscription(busy);
     }
   }
 

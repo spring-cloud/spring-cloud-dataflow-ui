@@ -26,8 +26,6 @@ export class PropertiesDialogComponent implements OnInit {
 
   propertiesFormGroup: FormGroup;
 
-  busy: Subscription;
-
   showProperties = false;
 
   constructor(private bsModalRef: BsModalRef
@@ -57,7 +55,6 @@ export class PropertiesDialogComponent implements OnInit {
   setData(propertiesSource: PropertiesSource) {
     this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
-    this.busy = this.propertiesGroupModel.loadedSubject.subscribe();
   }
 
 }
