@@ -8,6 +8,7 @@ import { AuditRecord, AuditOperationType, AuditActionType } from '../shared/mode
 import { BehaviorSubject } from 'rxjs';
 import { AuditRecordListParams } from './components/audit.interface';
 import { catchError, map } from 'rxjs/operators';
+import { DateTime } from 'luxon';
 
 /**
  * Service class for the Audit Record module.
@@ -29,6 +30,8 @@ export class AuditRecordService {
     q: '',
     action: null,
     operation: null,
+    fromDate: null,
+    toDate: null,
     sort: 'createdOn',
     order: 'DESC',
     page: 0,
@@ -80,6 +83,12 @@ export class AuditRecordService {
     }
     if (auditRecordListParams.sort && auditRecordListParams.order) {
       params = params.append('sort', `${auditRecordListParams.sort},${auditRecordListParams.order}`);
+    }
+    if (auditRecordListParams.fromDate) {
+      params = params.append('fromDate', auditRecordListParams.fromDate.toISODate() + 'T00:00:00');
+    }
+    if (auditRecordListParams.toDate) {
+      params = params.append('toDate', auditRecordListParams.toDate.toISODate() + 'T23:59:59');
     }
     return this.httpClient
       .get<any>(AuditRecordService.URL, { params: params, headers: HttpUtils.getDefaultHttpHeaders() })

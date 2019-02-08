@@ -1,7 +1,15 @@
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { AuditRecordComponent } from './audit-record.component';
 import { MockNotificationService } from '../../tests/mocks/notification';
-import { BsDropdownModule, BsModalService, ModalModule, PopoverModule, TooltipModule, BsModalRef } from 'ngx-bootstrap';
+import {
+  BsDropdownModule,
+  BsModalService,
+  ModalModule,
+  PopoverModule,
+  TooltipModule,
+  BsModalRef,
+  BsDatepickerModule
+} from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
@@ -66,7 +74,8 @@ describe('AuditRecordComponent', () => {
         TooltipModule.forRoot(),
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
-        BsDropdownModule.forRoot()
+        BsDropdownModule.forRoot(),
+        BsDatepickerModule.forRoot()
       ],
       providers: [
         BsModalService,

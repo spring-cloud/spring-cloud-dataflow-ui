@@ -92,20 +92,21 @@
                          [item]="'audit record'" [items]="'audit records'">
     </app-list-pagination>
 
-    <app-list-empty [page]="auditRecords" [filters]="[params.q, params.action, params.operation]">
+    <app-list-empty [page]="auditRecords" [filters]="[params.q, params.action, params.operation, params.toDate, params.fromDate]">
       <p><strong>No audit records are available</strong>, yet.</p>
       <p [dataflowAppRoles]="['ROLE_VIEW']">
         <a (click)="refresh()">Refresh</a> the page.
       </p>
     </app-list-empty>
 
-    <app-list-no-result [page]="auditRecords" [filters]="[params.q, params.action, params.operation]">
+    <app-list-no-result [page]="auditRecords" [filters]="[params.q, params.action, params.operation, params.toDate, params.fromDate]">
       <p>
         No results found for
         <strong *ngIf="params.q != ''">'{{ params.q }}'</strong><span
         *ngIf="params.q != '' && params.operation">, </span>
         <strong *ngIf="params.operation">'{{ params.operation.name }}'</strong>
-        <strong *ngIf="params.action">'{{ params.action.name }}'</strong>.
+        <strong *ngIf="params.action">'{{ params.action.name }}'</strong>
+        <strong *ngIf="getDateRange()">'{{ getDateRange() }}'</strong>.
       </p>
       <p>
         You can <a id="search-clear" (click)="listBar.clearSearch()">clear the search</a> or <a (click)="refresh()">Refresh</a>

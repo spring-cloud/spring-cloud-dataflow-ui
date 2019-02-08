@@ -1,0 +1,18 @@
+
+.list-bar-audit {
+  .list-bar-filter {
+    width: 720px;
+    .form-control {
+      width: 190px;
+      font-size: 14px;
+    }
+  }
+  .list-bar-dropdown .filter-dropdown-toggle {
+    width: 240px;
+  }
+  .dropdown-menu {
+    width: 240px;
+    a {}
+    cursor: pointer;
+  }
+}

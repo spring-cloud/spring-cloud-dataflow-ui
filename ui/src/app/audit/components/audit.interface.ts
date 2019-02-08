@@ -1,6 +1,7 @@
 
 import { ListParams } from '../../shared/components/shared.interface';
 import { AuditOperationType, AuditActionType } from '../../shared/model/audit-record.model';
+import { DateTime } from 'luxon';
 
 /**
  * @author Gunnar Hillert
@@ -13,4 +14,6 @@ export interface AuditRecordListParams extends ListParams {
   size: number;
   sort: string;
   order: string;
+  fromDate: DateTime;
+  toDate: DateTime;
 }

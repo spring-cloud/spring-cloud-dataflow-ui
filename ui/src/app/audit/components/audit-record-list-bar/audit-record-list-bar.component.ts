@@ -3,6 +3,7 @@ import { AuditRecordListParams } from '../audit.interface';
 import { Page } from '../../../shared/model/page';
 import { AuditOperationType, AuditActionType } from '../../../shared/model/audit-record.model';
 import { Subject } from 'rxjs';
+import { DateTime } from 'luxon';
 
 /**
  * Audit Record List Bar
@@ -11,6 +12,7 @@ import { Subject } from 'rxjs';
  */
 @Component({
   selector: 'app-list-bar-audit-record',
+  styleUrls: ['./styles.scss'],
   templateUrl: './audit-record-list-bar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -51,7 +53,14 @@ export class AuditRecordListBarComponent implements OnInit {
    */
   @Input() actions: Array<object>;
 
+  /**
+   * Operation Types
+   */
   @Input() operationTypes: Subject<AuditOperationType>;
+
+  /**
+   * Actions
+   */
   @Input() actionTypes: Subject<AuditActionType>;
 
 
@@ -61,7 +70,8 @@ export class AuditRecordListBarComponent implements OnInit {
   form = {
     q: '',
     operation: null,
-    action: null
+    action: null,
+    dateRange: null
   };
 
   /**
@@ -77,6 +87,11 @@ export class AuditRecordListBarComponent implements OnInit {
     this.form.q = this.params.q;
     this.form.operation = this.params.operation;
     this.form.action = this.params.action;
+    if (this.params.fromDate && this.params.toDate) {
+      this.form.dateRange = [
+        this.params.fromDate.toJSDate(), this.params.toDate.toJSDate()
+      ];
+    }
   }
 
   /**
@@ -85,7 +100,7 @@ export class AuditRecordListBarComponent implements OnInit {
   isEmpty(): boolean {
     if (this.page && this.page.totalPages < 2 && this.page.totalElements < 1) {
       return (this.params.q === '' || !this.params.q)
-        && (!this.params.action) && (!this.params.operation);
+        && (!this.params.action) && (!this.params.operation) && (!this.params.toDate) && (!this.params.fromDate);
     }
     return false;
   }
@@ -95,9 +110,31 @@ export class AuditRecordListBarComponent implements OnInit {
    * @returns {boolean} Search is active
    */
   isSearchActive() {
+    let paramRange = '';
+    let formRange = '';
+    const values = this.splitControlDate();
+    if (values.fromDate && values.toDate) {
+      formRange = `${values.fromDate.toISO()}-${values.toDate.toISO()}`;
+    }
+    if (this.params.fromDate && this.params.toDate) {
+      paramRange = `${this.params.fromDate.toISO()}-${this.params.toDate.toISO()}`;
+    }
     return (this.form.action !== this.params.action)
-    || (this.form.operation !== this.params.operation)
-    || (this.form.q !== this.params.q);
+      || (this.form.operation !== this.params.operation)
+      || (this.form.q !== this.params.q)
+      || (paramRange !== formRange);
+  }
+
+  splitControlDate() {
+    let fromDate, toDate;
+    if (this.form.dateRange && Array.isArray(this.form.dateRange) && this.form.dateRange.length === 2) {
+      fromDate = DateTime.fromJSDate(this.form.dateRange[0]).startOf('day');
+      toDate = DateTime.fromJSDate(this.form.dateRange[1]).endOf('day');
+    }
+    return {
+      fromDate: fromDate,
+      toDate: toDate
+    };
   }
 
   /**
@@ -107,14 +144,18 @@ export class AuditRecordListBarComponent implements OnInit {
     this.form.q = '';
     this.form.action = null;
     this.form.operation = null;
+    this.form.dateRange = null;
     this.doSearch();
   }
 
   doSearch() {
+    const values = this.splitControlDate();
     const params: AuditRecordListParams = Object.assign(this.params, {
       q: this.form.q,
       action: this.form.action,
       operation: this.form.operation,
+      fromDate: values.fromDate,
+      toDate: values.toDate,
       page: 1
     });
     this.search.emit(params);

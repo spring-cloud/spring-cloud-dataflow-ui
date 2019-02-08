@@ -39,16 +39,6 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   /**
-   * Current forms value
-   */
-  form: any = {
-    action: null,
-    operation: null
-  };
-
-  public searchForm: FormGroup;
-
-  /**
    * State of App List Params
    * @type {SortParams}
    */
@@ -87,13 +77,6 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
               private router: Router) {
   }
 
-  private initForm() {
-    this.searchForm = new FormGroup({
-      'actionType': new FormControl('', Validators.required),
-      'operationType': new FormControl('', Validators.required)
-    });
-  }
-
   /**
    * As soon as the page loads we retrieve a list of {@link AppRegistration}s
    * after init the context.
@@ -101,9 +84,7 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.context = this.auditRecordService.auditContext;
     this.params = { ...this.context };
-    this.initForm();
     this.loadAuditRecords();
-    this.form = { q: this.context.q, action: this.context.action, operation: this.context.operation };
     this.itemsSelected = this.context.itemsSelected || [];
     this.auditRecordService.loadAuditActionTypes().subscribe();
     this.auditRecordService.loadAuditOperationTypes().subscribe();
@@ -183,6 +164,8 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
     this.context.q = this.params.q;
     this.context.action = this.params.action;
     this.context.operation = this.params.operation;
+    this.context.fromDate = this.params.fromDate;
+    this.context.toDate = this.params.toDate;
     this.context.sort = this.params.sort;
     this.context.order = this.params.order;
     this.context.page = this.params.page;
@@ -200,6 +183,16 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
     this.params.sort = sort.sort;
     this.params.order = sort.order;
     this.loadAuditRecords();
+  }
+
+  /**
+   * Get Date Range formatted
+   */
+  getDateRange() {
+    if (this.params.fromDate && this.params.toDate) {
+      return this.params.fromDate.toISODate() + ' - ' + this.params.toDate.toISODate();
+    }
+    return null;
   }
 
   /**
