@@ -4,7 +4,7 @@
 
 	<groupId>org.springframework.cloud</groupId>
 	<artifactId>spring-cloud-dataflow-ui</artifactId>
-	<version>1.7.3.BUILD-SNAPSHOT</version>
+	<version>1.7.3.RELEASE</version>
 	<packaging>jar</packaging>
 	<name>Spring Cloud Data Flow User Interface</name>
 	<description>This application provides the Dashboard application of Spring Cloud Data Flow.</description>
