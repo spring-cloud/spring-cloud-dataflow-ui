@@ -4,7 +4,14 @@ import { AuditRecordComponent } from './audit-record/audit-record.component';
 import { AuditRecordDetailsComponent } from './audit-record-details/audit-record-details.component';
 import { AuditRecordService } from './audit-record.service';
 import { AuditRecordRoutingModule } from './audit-record-routing.module';
-import { AlertModule, BsDropdownModule, ModalModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import {
+  AlertModule,
+  BsDatepickerModule,
+  BsDropdownModule,
+  ModalModule,
+  PopoverModule,
+  TooltipModule
+} from 'ngx-bootstrap';
 import { AuthModule } from '../auth/auth.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuditRecordListBarComponent } from './components/audit-record-list-bar/audit-record-list-bar.component';
@@ -22,7 +29,8 @@ import { AuditRecordOperationComponent } from 'src/app/audit/components/audit-re
     BsDropdownModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    BsDatepickerModule.forRoot()
   ],
   declarations: [
     AuditRecordListBarComponent,

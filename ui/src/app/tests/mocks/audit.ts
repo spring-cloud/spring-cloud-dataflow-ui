@@ -26,6 +26,8 @@ export class MockAuditRecordService {
     q: '',
     action: null,
     operation: null,
+    toDate: null,
+    fromDate: null,
     sort: 'createdOn',
     order: 'DESC',
     page: 0,

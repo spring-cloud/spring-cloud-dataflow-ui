@@ -634,3 +634,25 @@ app-kv-rich-text {
     }
   }
 }
+
+.bs-datepicker-container {
+  padding: 1px;
+}
+
+.bs-datepicker-multiple + .bs-datepicker-multiple {
+  margin-left: 2px;
+}
+
+.bs-datepicker-body {
+  min-height: 214px;
+}
+.bs-datepicker-body table.days span {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+}
+
+.bs-datepicker-head {
+  height: 38px;
+  padding: 4px 10px;
+}

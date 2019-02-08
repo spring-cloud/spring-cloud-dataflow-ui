@@ -1,7 +1,10 @@
 <form id="filters" class="list-bar list-bar-audit" *ngIf="page && params && !isEmpty()" #auditRecordsForm="ngForm"
       name="auditRecordsForm" role="form" (ngSubmit)="doSearch()" novalidate>
-
   <div class="list-bar-filter">
+    <span>
+      <input class="form-control" autocomplete="off" placeholder="Date Range"
+             name="daterange" #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="form.dateRange">
+    </span>
     <div class="list-bar-dropdown">
       <div dropdown class="dropdown">
         <a class="filter-dropdown-toggle" dropdownToggle>

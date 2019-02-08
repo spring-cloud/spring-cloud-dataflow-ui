@@ -183,6 +183,8 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
     this.context.q = this.params.q;
     this.context.action = this.params.action;
     this.context.operation = this.params.operation;
+    this.context.fromDate = this.params.fromDate;
+    this.context.toDate = this.params.toDate;
     this.context.sort = this.params.sort;
     this.context.order = this.params.order;
     this.context.page = this.params.page;
