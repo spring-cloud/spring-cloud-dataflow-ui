@@ -154,6 +154,7 @@ describe('TaskLaunchComponent', () => {
 
     it('Should call the right method service', () => {
       const spy = spyOn(tasksService, 'launchDefinition');
+      component.form.get('platform').setValue('default');
       fixture.debugElement.query(By.css('#launch-task')).nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
