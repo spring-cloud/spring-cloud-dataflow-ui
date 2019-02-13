@@ -85,10 +85,10 @@ export class AuditRecordService {
       params = params.append('sort', `${auditRecordListParams.sort},${auditRecordListParams.order}`);
     }
     if (auditRecordListParams.fromDate) {
-      params = params.append('fromDate', auditRecordListParams.fromDate.toISO());
+      params = params.append('fromDate', auditRecordListParams.fromDate.toISODate() + 'T00:00:00');
     }
     if (auditRecordListParams.toDate) {
-      params = params.append('toDate', auditRecordListParams.toDate.toISO());
+      params = params.append('toDate', auditRecordListParams.toDate.toISODate() + 'T23:59:59');
     }
     return this.httpClient
       .get<any>(AuditRecordService.URL, { params: params, headers: HttpUtils.getDefaultHttpHeaders() })

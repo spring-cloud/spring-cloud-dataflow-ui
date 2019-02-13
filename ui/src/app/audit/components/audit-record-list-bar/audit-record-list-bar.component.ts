@@ -87,6 +87,11 @@ export class AuditRecordListBarComponent implements OnInit {
     this.form.q = this.params.q;
     this.form.operation = this.params.operation;
     this.form.action = this.params.action;
+    if (this.params.fromDate && this.params.toDate) {
+      this.form.dateRange = [
+        this.params.fromDate.toJSDate(), this.params.toDate.toJSDate()
+      ];
+    }
   }
 
   /**
@@ -95,7 +100,7 @@ export class AuditRecordListBarComponent implements OnInit {
   isEmpty(): boolean {
     if (this.page && this.page.totalPages < 2 && this.page.totalElements < 1) {
       return (this.params.q === '' || !this.params.q)
-        && (!this.params.action) && (!this.params.operation);
+        && (!this.params.action) && (!this.params.operation) && (!this.params.toDate) && (!this.params.fromDate);
     }
     return false;
   }
