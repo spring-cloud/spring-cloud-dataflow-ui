@@ -13,22 +13,29 @@
     <div dataflowLayoutType type="large">
 
       <div *ngIf="canSelectPlatform(task)">
-        <div class="form-group">
-          <label class="control-label col-xs-2" style="text-align: left">Platform</label>
+        <div class="form-group" [class.has-error]="form.get('platform').invalid && submitted">
+          <label class="control-label col-xs-2" style="text-align: left;padding-top: 0">
+            Platform:
+            <em class="required">*</em>
+          </label>
           <div class="col-xs-6">
             <select tabindex="1" formControlName="platform">
+              <option value="">Select</option>
               <option *ngFor="let platform of task.platforms" [value]="platform.name">
                 {{ platform.name }}
                 ({{ platform.type }})
               </option>
             </select>
+            <span class="help-block" *ngIf="form.get('platform').invalid && submitted">
+              Please select a platform.
+            </span>
           </div>
         </div>
         <hr>
       </div>
 
       <div class="form-group" [class.has-error]="form.get('args').invalid && submitted">
-        <label class="control-label col-xs-2" style="text-align: left">
+        <label class="control-label col-xs-2" style="text-align: left;padding-top: 0">
           Arguments:
         </label>
         <div class="col-xs-10">
@@ -43,7 +50,7 @@
       </div>
 
       <div class="form-group" [class.has-error]="form.get('props').invalid && submitted">
-        <label class="control-label col-xs-2" style="text-align: left">
+        <label class="control-label col-xs-2" style="text-align: left;padding-top: 0">
           Parameters:
         </label>
         <div class="col-xs-10">

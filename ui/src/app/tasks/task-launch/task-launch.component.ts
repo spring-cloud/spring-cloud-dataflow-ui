@@ -4,7 +4,7 @@ import { TasksService } from '../tasks.service';
 import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validator, Validators } from '@angular/forms';
 import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
@@ -84,17 +84,28 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * Load the task definitions and the platforms
    */
   ngOnInit() {
-    this.form = new FormGroup({
-      args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
-      props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
-      platform: new FormControl('default')
-    });
     this.task$ = this.route.params
       .pipe(
         mergeMap(val => this.tasksService.getDefinition(val.id)),
         mergeMap(
           val => this.tasksService.getPlatforms()
             .pipe(map(val2 => {
+              if (val2.length === 0) {
+                this.form = new FormGroup({
+                  args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
+                  props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
+                  platform: new FormControl('')
+                });
+              } else {
+                this.form = new FormGroup({
+                  args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
+                  props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
+                  platform: new FormControl('', Validators.required)
+                });
+              }
+              if (val2.length === 1) {
+                this.form.get('platform').setValue(val2[0].name)
+              }
               return {
                 taskDefinition: val,
                 platforms: val2
