@@ -62,11 +62,6 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
 
   private canvas: HTMLCanvasElement;
 
-  /**
-   * Busy Subscriptions
-   */
-  private ngUnsubscribe$: Subject<any> = new Subject();
-
   constructor(
     @Host() @Optional() private truncatorWidthProviderComponent: TruncatorWidthProviderDirective,
     private elementRef: ElementRef, private changeDetector: ChangeDetectorRef) {
@@ -74,7 +69,6 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
     if (!this.truncatorWidthProviderComponent) {
       this.resizeEvents
         .debounceTime(200)
-        .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           const innerWidth = this.getInnerWidth();
           this.doResizeInputString(innerWidth);
@@ -86,8 +80,6 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
    * On Destroy operations
    */
   ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   ngAfterContentInit() {

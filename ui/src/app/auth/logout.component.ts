@@ -20,8 +20,6 @@ import { AppError } from '../shared/model/error.model';
 })
 export class LogoutComponent implements OnInit, OnDestroy {
 
-  private ngUnsubscribe$: Subject<any> = new Subject();
-
   constructor(
     private authService: AuthService,
     private aboutService: AboutService,
@@ -52,14 +50,5 @@ export class LogoutComponent implements OnInit, OnDestroy {
     const logoutUrl = '//' + window.location.host + '/logout';
     this.loggerService.log('Redirecting to ' + logoutUrl);
     window.open(logoutUrl, '_self');
-  }
-
-  /**
-   * Will cleanup any {@link Subscription}s to prevent
-   * memory leaks.
-   */
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 }

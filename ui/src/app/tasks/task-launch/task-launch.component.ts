@@ -4,7 +4,6 @@ import { TasksService } from '../tasks.service';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
-import { FormControl, FormGroup, Validator, Validators } from '@angular/forms';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
