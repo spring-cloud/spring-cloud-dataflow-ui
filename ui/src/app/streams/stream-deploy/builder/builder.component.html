@@ -69,15 +69,28 @@
 
             <!-- 5 -->
             <div class="line-toggle">
+              <div class="help">
+                <span class="fa fa-question-circle" tooltipPlacement="right" [tooltip]="tooltipTemplate"></span>
+                <ng-template #tooltipTemplate>
+                  <div>
+                    <div><strong>Example:</strong></div>
+                    <div>Key: <strong>cloudfoundry.services</strong></div>
+                    <div>Value (application <strong>jdbc</strong>): <strong>mysqlcups</strong></div>
+                    <div>Generate property: <strong>deployer.jdbc.cloudfoundry.services=mysqlcups</strong></div>
+                  </div>
+                </ng-template>
+              </div>
+
+
               <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
               <span class="fa" [class.fa-chevron-down]="state.specificPlatform"
                     [class.fa-chevron-right]="!state.specificPlatform"></span>
-                <span>
-                  Deployment Platform
-                </span>
+                Deployment Platform
+                <!--
                 <span *ngIf="builder.formGroup.get('platform').value">
                   ({{ builder.formGroup.get('platform').value }})
                 </span>
+                -->
               </a>
             </div>
 
