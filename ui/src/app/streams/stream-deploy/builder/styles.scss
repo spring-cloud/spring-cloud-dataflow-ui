@@ -77,6 +77,7 @@ $border-separator-color: #637885;
     height: 42px;
     line-height: 42px;
     margin-top: 4px;
+    position: relative;
   }
   .line-body {
     position: relative;
@@ -129,24 +130,32 @@ $border-separator-color: #637885;
     padding-left: 12px;
   }
 
+  .help {
+    color: #1B78B3;
+    position: absolute;
+    right: 8px;
+    top: 1px;
+    cursor: pointer;
+  }
+
   .toggle {
     display: block;
     cursor: pointer;
     position: relative;
     padding-left: 40px;
+    margin-right: 30px;
     color: #000;
-    .fa {
+    .fa-chevron-right, .fa-chevron-down {
       position: absolute;
       top: 12px;
       left: 15px;
-      &.fa-chevron-right {
-        top: 14px;
-        left: 17px;
-      }
+    }
+    .fa-chevron-right {
+      top: 14px;
+      left: 17px;
     }
     &:hover {
       text-decoration: none;
     }
   }
 }
-
