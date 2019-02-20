@@ -37,7 +37,7 @@
     <button id="back-button" type="button" class="btn btn-default" routerLink="/streams">
       Cancel
     </button>
-    <span class="btn" style="padding: 0; cursor: inherit"
+    <span style="margin-left: 8px;"
             tooltip="Disabled whilst stream definition(s) invalid !" [isDisabled]="!isCreateStreamsDisabled" container="body" triggers="click:mouseleave" placement="right">
       <button (click)="createStreamDefs()" class="btn btn-primary" type="button" [disabled]="isCreateStreamsDisabled">
         Create Stream
