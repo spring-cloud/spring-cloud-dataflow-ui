@@ -13,7 +13,7 @@
     "e2e": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e",
     "e2e-saucelabs-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-saucelabs.conf.js --prod",
     "e2e-browserstack-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-browserstack.conf.js --prod",
-    "install": "napa pivotal-cf/pivotal-ui:pivotal-ui-git-clone",
+    "install": "napa pivotal-cf/pivotal-ui#v16.2.1:pivotal-ui-git-clone",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json -n \"Spring Cloud Data Flow Dashboard Documentation\"",
     "mavenbuild-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeHeadless",
     "mavenbuild-without-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../target/classes/public/dashboard --base-href /dashboard/",
