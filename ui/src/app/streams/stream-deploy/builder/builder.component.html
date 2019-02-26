@@ -192,7 +192,7 @@
                   ({{ platform.type }})
                 </option>
                 <option
-                  *ngIf="isErrorPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)"
+                  *ngIf="isInvalidPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)"
                   [value]="builder.formGroup.get('platform').value">
                   {{ builder.formGroup.get('platform').value }} (invalid)
                 </option>

@@ -325,6 +325,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
         if (this.isErrorPlatform(streamDeployConfig.platform.values, formControl.value)) {
           return { invalid: true };
         }
+        if (streamDeployConfig.platform.values.length > 1 && !formControl.value) {
+          return { invalid: true };
+        }
         return null;
       }));
 
@@ -456,14 +459,26 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Return true if the platform is not valid
+   * Return true if the platform is on error
    *
    * @param {Array<any>} platforms
    * @param {string} platform
    * @returns {boolean}
    */
   isErrorPlatform(platforms: Array<any>, platform: string): boolean {
-    return platform !== '' && !platforms.find(p => p.key === platform);
+    return (platform !== '' && !platforms.find(p => p.key === platform))
+      || (platform === '' && platforms.length > 1);
+  }
+
+  /**
+   * Return true if the platform is invalid (invalid value)
+   *
+   * @param {Array<any>} platforms
+   * @param {string} platform
+   * @returns {boolean}
+   */
+  isInvalidPlatform(platforms: Array<any>, platform: string): boolean {
+    return (platform !== '' && !platforms.find(p => p.key === platform));
   }
 
   /**
