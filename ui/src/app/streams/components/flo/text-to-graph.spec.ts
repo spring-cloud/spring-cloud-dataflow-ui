@@ -1,8 +1,7 @@
 import { Flo } from 'spring-flo';
 import { convertParseResponseToJsonGraph } from './text-to-graph';
-import { JsonGraph } from './text-to-graph';
+import { JsonGraph, TextToGraphConverter } from './text-to-graph';
 import { Parser } from '../../../shared/services/parser';
-import * as _ from 'lodash';
 
 describe('text-to-graph', () => {
 
@@ -29,6 +28,7 @@ describe('text-to-graph', () => {
         fakemetamodel = new Map();
         fakemetamodel['fake'] = fakeTime;
     });
+
 
     // First set of tests don't require a fake Flo - they convert DSL to a JSON graph (not a jointjs graph)
     it('jsongraph: nograph', () => {
@@ -325,6 +325,20 @@ describe('text-to-graph', () => {
         expect(link.to).toEqual(1);
     });
 
+    it('group selection', () => {
+      const metamodel: Map<string, Map<string, Flo.ElementMetadata>> = new Map<string, Map<string, Flo.ElementMetadata>>();
+      metamodel.set('processor', new Map<string, Flo.ElementMetadata>([['counter', createEntry('processor', 'counter')]]));
+      metamodel.set('source', new Map<string, Flo.ElementMetadata>([['counter', createEntry('source', 'counter')]]));
+      metamodel.set('sink', new Map<string, Flo.ElementMetadata>([['counter', createEntry('sink', 'counter')]]));
+      const converter: any = new TextToGraphConverter('', null, metamodel);
+      expect(converter.matchGroup('counter', 1,1)).toEqual('processor');
+      expect(converter.matchGroup('counter', 3,2)).toEqual('processor');
+      expect(converter.matchGroup('counter', 1,0)).toEqual('sink');
+      expect(converter.matchGroup('counter', 3,0)).toEqual('sink');
+      expect(converter.matchGroup('counter', 0,1)).toEqual('source');
+      expect(converter.matchGroup('counter', 0,3)).toEqual('source');
+    });
+
     function getGraph(dsl: string) {
         parseResult = Parser.parse(dsl, 'stream');
         return convertParseResponseToJsonGraph(dsl, parseResult).graph;
@@ -336,5 +350,18 @@ describe('text-to-graph', () => {
         expect(range.end.ch).toEqual(endChar);
         expect(range.end.line).toEqual(endLine);
     }
+
+  function createEntry(group: string, name: string): Flo.ElementMetadata {
+    return {
+      group: group,
+      name: name,
+      get(property: String): Promise<Flo.PropertyMetadata> {
+        return Promise.resolve(null);
+      },
+      properties(): Promise<Map<string, Flo.PropertyMetadata>> {
+        return Promise.resolve(new Map());
+      }
+    };
+  }
 
 });

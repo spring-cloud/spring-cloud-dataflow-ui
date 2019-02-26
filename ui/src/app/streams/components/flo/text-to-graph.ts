@@ -27,7 +27,7 @@ import { ApplicationType } from '../../../shared/model';
  * @author Andy Clement
  * @author Alex Boyko
  */
-class TextToGraphConverter {
+export class TextToGraphConverter {
 
     static DEBUG = false;
 
@@ -287,52 +287,67 @@ class TextToGraphConverter {
     }
 
     private matchGroup(name: string, incoming: number, outgoing: number): string {
-        let score = Number.MIN_VALUE;
-        let group = ApplicationType[ApplicationType.app];
-        Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
-                    grp => this.metamodel.get(grp).get(name)).find(match => {
-          let failedConstraintsNumber = 0;
+        const match = Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
+                    grp => this.metamodel.get(grp).get(name)).map(match => {
+          let score = 0;
           switch (match.group) {
             case ApplicationType[ApplicationType.app]:
               if (incoming > 1) {
-                failedConstraintsNumber++;
+                score -= 10;
               }
               if (outgoing > 1) {
-                failedConstraintsNumber++;
+                score -= 10
+              }
+              if (incoming == 0 && outgoing == 0) {
+                score += 5;
               }
               break;
             case ApplicationType[ApplicationType.source]:
               if (incoming > 0) {
-                failedConstraintsNumber++;
+                score -= 10;
+              } else if (outgoing == 1) {
+                score += 5;
+              } else {
+                score += 3;
               }
-              // if (outgoing > 1) {
-              //   failedConstraintsNumber++;
-              // }
               break;
             case ApplicationType[ApplicationType.processor]:
-              if (incoming > 1) {
-                failedConstraintsNumber++;
+              if (incoming == 1) {
+                score += 3;
+              } else if (incoming > 1) {
+                score += 1;
               }
-              // if (outgoing > 1) {
-              //   failedConstraintsNumber++;
-              // }
+              if (outgoing == 1) {
+                score += 3;
+              } else if (outgoing > 1) {
+                score += 1;
+              }
               break;
             case ApplicationType[ApplicationType.sink]:
-              if (incoming > 1) {
-                failedConstraintsNumber++;
-              }
               if (outgoing > 0) {
-                failedConstraintsNumber++;
+                score -= 10;
+              } else if (incoming == 1) {
+                score += 5;
+              } else {
+                score += 3;
               }
               break;
+            default:
+              score = Number.MIN_VALUE;
           }
-          if (failedConstraintsNumber < score) {
-            score = failedConstraintsNumber;
-            group = match.group;
+          return {
+            match,
+            score
+          };
+        }).reduce((bestMatch, currentMatch) => {
+          if (bestMatch) {
+            if (currentMatch.score > bestMatch.score) {
+              return currentMatch;
+            }
           }
-          return failedConstraintsNumber === 0;
+          return bestMatch;
         });
-        return group;
+        return match ? match.match.group : ApplicationType[ApplicationType.app];
     }
 
     /**
@@ -487,4 +502,9 @@ export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamode
 
 export function convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
   return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
+}
+
+interface MatchAndScore<T> {
+  match: T;
+  score: number;
 }
