@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Page } from '../../model/page';
 import { ListDefaultParams } from '../shared.interface';
 
@@ -19,7 +19,7 @@ import { ListDefaultParams } from '../shared.interface';
           <span class="caret"></span>
         </button>
         <ul *dropdownMenu class="dropdown-menu">
-          <li *ngFor="let action of actions">
+          <li *ngFor="let action of _actions">
             <a *ngIf="!action['hidden']" id="{{ action.id }}" style="cursor: pointer" (click)="this.applyAction(action.action)">
               {{ action.title }}
             </a>
@@ -42,7 +42,8 @@ import { ListDefaultParams } from '../shared.interface';
         </button>
       </div>
     </form>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListBarComponent implements OnInit {
 
@@ -79,7 +80,12 @@ export class ListBarComponent implements OnInit {
   /**
    * Actions
    */
-  @Input() actions: Array<object>;
+  @Input() actions: Array<any>;
+
+  /**
+   * Copy of actions
+   */
+  _actions: Array<any>;
 
   /**
    * Hide the search inputs
@@ -102,6 +108,7 @@ export class ListBarComponent implements OnInit {
     if (this.params) {
       this.form.q = this.params['q'];
     }
+    this._actions = this.actions;
   }
 
   /**
@@ -157,13 +164,13 @@ export class ListBarComponent implements OnInit {
    * @returns {boolean}
    */
   hasActions() {
-    if (!this.actions) {
+    if (!this._actions) {
       return false;
     }
-    if (this.actions.length === 0) {
+    if (this._actions.length === 0) {
       return false;
     }
-    if (this.actions.filter((ac) => !ac['hidden']).length === 0) {
+    if (this._actions.filter((ac) => !ac['hidden']).length === 0) {
       return false;
     }
     return true;
