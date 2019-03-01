@@ -1,6 +1,5 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output,
-  SimpleChanges
+  ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild
 } from '@angular/core';
 
 /**
@@ -11,19 +10,18 @@ import {
   template: `
     <div *ngIf="actions" class="actions">
       <ng-container *ngFor="let action of actionsDefault">
-        <button *ngIf="!action['divider'] && !action['hidden']" name="{{ action.id }}" type="button" (click)="call(action)"
-                class="btn btn-default" title="{{ action.title }}" [disabled]="!!action?.disabled"
-                [tooltip]="action.title" delay="500" container="body">
+        <button *ngIf="!action['divider'] && !action['hidden']" name="{{ action.id }}" type="button"
+                (click)="call(action)" class="btn btn-default" title="{{ action.title }}"
+                [disabled]="!!action?.disabled" [tooltip]="action.title" delay="500" container="body">
           <span *ngIf="!action['custom']" class="fa fa-{{ action.icon }}"></span>
           <span *ngIf="action['custom']" class="icon-custom icon-custom-{{ action.icon }}"></span>
         </button>
       </ng-container>
-      <div class="btn-group" *ngIf="actionsMenu.length > 0" dropdown>
-        <button id="button-basic" dropdownToggle type="button" class="btn btn-default"
-                aria-controls="dropdown-basic">
+      <div class="btn-group" *ngIf="actionsMenu.length > 0" [class.open]="_display">
+        <button #showButton type="button" class="btn btn-default" (click)="showMenu()">
           <span class="fa fa-chevron-down"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right" *dropdownMenu>
+        <ul *ngIf="_display" class="dropdown-menu dropdown-menu-right">
           <ng-container *ngFor="let action of actionsMenu">
             <li *ngIf="!action['divider'] && !action['hidden']">
               <a id="{{ action.id }}" class="dropdown-item" (click)="call(action)"
@@ -57,6 +55,8 @@ export class ListRowActionsComponent implements OnInit {
    */
   @Output() action: EventEmitter<any> = new EventEmitter();
 
+  @ViewChild('showButton') showButton;
+
   /**
    * List of actions
    */
@@ -64,16 +64,32 @@ export class ListRowActionsComponent implements OnInit {
 
   /**
    * List of default actions
-   * @type {Array}
    */
   private actionsDefault = [];
+
+  /**
+   * Menu display
+   */
+  private _display = false;
+
+  constructor(private renderer: Renderer2) {
+
+  }
 
   /**
    * On Init
    */
   ngOnInit() {
-    const actions = this.actions.filter(item => !item['divider'] && !item['hidden']);
-    this.actionsDefault = this.actions.filter(item => !!item['isDefault'] && !item['hidden']);
+    const actions = [];
+    for (let o = 0; o < this.actions.length; o++) {
+      const item = this.actions[o];
+      if (!item['divider'] && !item['hidden']) {
+        actions.push(item);
+      }
+      if (!!item['isDefault'] && !item['hidden']) {
+        this.actionsDefault.push(item);
+      }
+    }
     const diff = actions.filter(item => {
       return !this.actionsDefault.find(i => i['id'] === item['id']);
     });
@@ -92,6 +108,15 @@ export class ListRowActionsComponent implements OnInit {
     if (!action['disabled']) {
       this.action.emit({ action: action.action, args: this.item });
     }
+  }
+
+  showMenu() {
+    this._display = true;
+    this.renderer.listen(document.body, 'click', (event) => {
+      if (!this.showButton.nativeElement.contains(event.target)) {
+        this._display = false;
+      }
+    });
   }
 
 }
