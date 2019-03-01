@@ -71,8 +71,12 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
         this.notificationService.success(`${data.length} task definition(s) destroyed.`);
         this.confirm.emit('done');
         this.cancel();
+      }, () => {
+        this.notificationService.error('An error occurred when bulk deleting Composed Tasks. ' +
+          'Please check the server logs for more details.');
+        this.confirm.emit('done');
+        this.cancel();
       });
-
     this.busyService.addSubscription(busy);
   }
 
