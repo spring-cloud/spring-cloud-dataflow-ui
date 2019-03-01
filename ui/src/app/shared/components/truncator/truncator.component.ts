@@ -22,25 +22,21 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'dataflow-truncator',
   styles: [`
-  span {
-    -ms-word-break: break-all;
-    word-break: break-all;
-
-    /* Non standard for webkit */
-    word-break: break-word;
-
-    -webkit-hyphens: none;
-    -moz-hyphens: none;
-    hyphens: none;
-
-    overflow-wrap: break-all;
-
-    white-space: pre-wrap;
-    word-break: break-all;
-  }
+    span {
+      -ms-word-break: break-all;
+      word-break: break-all;
+      /* Non standard for webkit */
+      word-break: break-word;
+      -webkit-hyphens: none;
+      -moz-hyphens: none;
+      hyphens: none;
+      overflow-wrap: break-all;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
   `],
   template:
-  `<span [title]="input">{{output}}</span>`
+      `<span [title]="input">{{output}}</span>`
 })
 export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDestroy {
 
@@ -62,9 +58,6 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
 
   private canvas: HTMLCanvasElement;
 
-  /**
-   * Busy Subscriptions
-   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   constructor(
@@ -73,7 +66,7 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
 
     if (!this.truncatorWidthProviderComponent) {
       this.resizeEvents
-        .debounceTime(500)
+        .debounceTime(200)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           const innerWidth = this.getInnerWidth();
@@ -94,6 +87,7 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
     this.input = this.input.replace(/\-/g, '\u2011');
     this.output = this.input;
   }
+
   /**
    * Updates the button state after the component has been fully initialized.
    */
@@ -143,11 +137,11 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
     const nativeElement = this.elementRef.nativeElement;
     const computedStyleOfElement: CSSStyleDeclaration = getComputedStyle(nativeElement);
 
-    const cssFontProperty = computedStyleOfElement.fontStyle   + ' ' +
-                            computedStyleOfElement.fontVariant + ' ' +
-                            computedStyleOfElement.fontWeight  + ' ' +
-                            computedStyleOfElement.fontSize    + ' ' +
-                            computedStyleOfElement.fontFamily  + ' ';
+    const cssFontProperty = computedStyleOfElement.fontStyle + ' ' +
+      computedStyleOfElement.fontVariant + ' ' +
+      computedStyleOfElement.fontWeight + ' ' +
+      computedStyleOfElement.fontSize + ' ' +
+      computedStyleOfElement.fontFamily + ' ';
     this.output = this.stringThatFitsInElement(this.input, cssFontProperty, maxWidth);
   }
 
