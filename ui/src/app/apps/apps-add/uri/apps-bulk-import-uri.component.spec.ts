@@ -5,7 +5,6 @@ import { AppsService } from '../../apps.service';
 import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockAppsService } from '../../../tests/mocks/apps';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BusyService } from '../../../shared/services/busy.service';
 import { By } from '@angular/platform-browser';
 import { AppsBulkImportUriComponent } from './apps-bulk-import-uri.component';
 import { NotificationService } from '../../../shared/services/notification.service';
@@ -17,6 +16,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MockRoutingStateService } from '../../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../../shared/services/routing-state.service';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link AppsBulkImportUriComponent}.
@@ -55,10 +55,10 @@ describe('AppsBulkImportUriComponent', () => {
       ],
       providers: [
         { provide: AppsService, useValue: appsService },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: BsModalRef, useValue: bsModalRef },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        BlockerService
       ]
     })
       .compileComponents();

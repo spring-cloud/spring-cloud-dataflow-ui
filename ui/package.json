@@ -50,7 +50,6 @@
     "stompjs": "2.3.3",
     "jshint": "2.9.5",
     "spring-flo": "0.8.8",
-    "ng-busy": "1.4.4",
     "rxjs-compat": "6.2.1",
     "uuid": "3.3.2"
   },

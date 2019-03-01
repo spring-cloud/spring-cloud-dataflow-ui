@@ -10,7 +10,6 @@ import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MetamodelService } from '../../components/flo/metamodel.service';
 import { RenderService } from '../../components/flo/render.service';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
-import { BusyService } from '../../../shared/services/busy.service';
 import { StreamGraphComponent } from './stream-graph.component';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { NotificationService } from '../../../shared/services/notification.service';
@@ -31,7 +30,6 @@ describe('StreamGraphComponent', () => {
   const notificationService = new MockNotificationService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService);
-  const busyService = new BusyService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -49,7 +47,6 @@ describe('StreamGraphComponent', () => {
       providers: [
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: RenderService, useValue: renderService }

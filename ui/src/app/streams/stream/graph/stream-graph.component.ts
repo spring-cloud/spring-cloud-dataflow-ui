@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { StreamsService } from '../../streams.service';
-import { BusyService } from '../../../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { RenderService } from '../../components/flo/render.service';
 import { MetamodelService } from '../../components/flo/metamodel.service';
@@ -24,7 +23,7 @@ import { AppError } from '../../../shared/model/error.model';
 export class StreamGraphComponent implements OnInit, OnDestroy {
 
   /**
-   * Busy Subject
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -44,14 +43,12 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
    * @param {ActivatedRoute} route
    * @param {StreamsService} streamsService
    * @param {NotificationService} notificationService
-   * @param {BusyService} busyService
    * @param {MetamodelService} metamodelService
    * @param {RenderService} renderService
    */
   constructor(private route: ActivatedRoute,
               private streamsService: StreamsService,
               private notificationService: NotificationService,
-              private busyService: BusyService,
               public metamodelService: MetamodelService,
               public renderService: RenderService) {
   }
@@ -62,7 +59,7 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.parent.params.subscribe(params => {
       this.id = params['id'];
-      const busy = this.streamsService.getRelatedDefinitions(this.id, true)
+      this.streamsService.getRelatedDefinitions(this.id, true)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(streams => {
           console.log(streams);
@@ -70,8 +67,6 @@ export class StreamGraphComponent implements OnInit, OnDestroy {
         }, (error) => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-
-      this.busyService.addSubscription(busy);
     });
   }
 

@@ -4,7 +4,6 @@ import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { ErrorHandler } from '../model';
 import { FeatureInfo } from '../model/about/feature-info.model';
 import { AboutInfo } from '../model/about/about-info.model';
-import { BusyService } from './busy.service';
 import { catchError, map } from 'rxjs/operators';
 
 /**
@@ -25,9 +24,7 @@ export class SharedAboutService {
   public aboutInfo: AboutInfo;
   public aboutInfo$ = new BehaviorSubject<AboutInfo>(undefined);
 
-  constructor(
-    private busyService: BusyService,
-    private httpClient: HttpClient, private errorHandler: ErrorHandler) {
+  constructor(private httpClient: HttpClient, private errorHandler: ErrorHandler) {
   }
 
   getAboutInfo(): Observable<AboutInfo> {
@@ -45,12 +42,12 @@ export class SharedAboutService {
 
   loadAboutInfo(reload?: boolean): Observable<AboutInfo> {
     if (!this.aboutInfo || reload) {
-      this.busyService.addSubscription(this.httpClient
+      this.httpClient
         .get<any>(this.aboutUrl)
         .pipe(
           map(this.extractData.bind(this)),
           catchError(this.errorHandler.handleError)
-        ).subscribe());
+        ).subscribe();
     }
     return of(this.aboutInfo);
   }

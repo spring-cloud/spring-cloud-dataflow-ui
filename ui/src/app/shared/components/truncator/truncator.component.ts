@@ -58,6 +58,9 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
 
   private canvas: HTMLCanvasElement;
 
+  /**
+   * Unsubscribe
+   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   constructor(

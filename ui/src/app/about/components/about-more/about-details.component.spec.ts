@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockActivatedRoute } from '../../../tests/mocks/activated-route';
 import { ActivatedRoute } from '@angular/router';
@@ -34,7 +33,6 @@ describe('AboutDetailsComponent', () => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       imports: [
-        NgBusyModule,
         RouterTestingModule.withRoutes([]),
         ClipboardModule,
         BsDropdownModule.forRoot(),

@@ -23,7 +23,6 @@ import { AppVersionLabelComponent } from '../components/app-versions-label/app-v
 import { SortComponent } from '../../shared/components/sort/sort.component';
 import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
-import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -89,7 +88,6 @@ describe('AppDetailsComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         BsModalService,
         { provide: ConfirmService, useValue: confirmService },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: NotificationService, useValue: notificationService },

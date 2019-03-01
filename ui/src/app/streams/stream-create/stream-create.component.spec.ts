@@ -1,5 +1,4 @@
 import { StreamCreateComponent } from './stream-create.component';
-import { NgBusyModule } from 'ng-busy';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockActivatedRoute } from '../../tests/mocks/activated-route';
@@ -15,7 +14,6 @@ import { ModalModule, BsModalService, BsDropdownModule, TooltipModule } from 'ng
 import { ContentAssistService } from '../components/flo/content-assist.service';
 import { ParserService } from '../../shared/services/parser.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
-import { BusyService } from '../../shared/services/busy.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { StreamStatusComponent } from 'src/app/streams/components/stream-status/stream-status.component';
@@ -42,7 +40,6 @@ describe('StreamCreateComponent', () => {
   const renderService = new RenderService(metamodelService);
   const parserService = new ParserService();
   const editorService = new EditorService(null);
-  const busyService = new BusyService();
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
   const notificationService = new MockNotificationService();
@@ -67,7 +64,6 @@ describe('StreamCreateComponent', () => {
         RouterTestingModule.withRoutes([]),
         ModalModule,
         FloModule,
-        NgBusyModule,
         TooltipModule.forRoot(),
         NoopAnimationsModule
       ],
@@ -77,7 +73,6 @@ describe('StreamCreateComponent', () => {
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
         { provide: RenderService, useValue: renderService },
-        { provide: BusyService, useValue: busyService },
         { provide: ContentAssistService },
         { provide: BsModalService },
         { provide: ActivatedRoute, useValue: activeRoute },

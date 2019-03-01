@@ -14,7 +14,6 @@ import { FloModule } from 'spring-flo';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -46,7 +45,6 @@ describe('TaskScheduleComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
-  const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const groupRouteService = new MockGroupRouteService();
   const routingStateService = new MockRoutingStateService();
@@ -85,7 +83,6 @@ describe('TaskScheduleComponent', () => {
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: BusyService, useValue: busyService },
         { provide: BsModalService, useValue: modalServie },
         { provide: TasksService, useValue: tasksService },
         { provide: LoggerService, useValue: loggerService },

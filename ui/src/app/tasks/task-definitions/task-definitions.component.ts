@@ -3,7 +3,6 @@ import { Page } from '../../shared/model/page';
 import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
-import { BusyService } from '../../shared/services/busy.service';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
@@ -44,7 +43,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   taskDefinitions: Page<TaskDefinition>;
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -100,7 +99,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param {TasksService} tasksService
    * @param {BsModalService} modalService
    * @param {AppsService} appsService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {GroupRouteService} groupRouteService
    * @param {Router} router
@@ -111,7 +109,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   constructor(public tasksService: TasksService,
               private modalService: BsModalService,
               private appsService: AppsService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private groupRouteService: GroupRouteService,
               private router: Router,
@@ -262,7 +259,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * Initializes the taskDefinitions attribute with the results from Spring Cloud Data Flow server.
    */
   refresh() {
-    const busy = this.tasksService
+    this.tasksService
       .getDefinitions(this.params).map((page: Page<TaskDefinition>) => {
         this.form.checkboxes = page.items.map((task) => {
           return this.itemsSelected.indexOf(task.name) > -1;
@@ -284,8 +281,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

@@ -4,10 +4,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppsService } from '../../apps.service';
-import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { BulkImportParams } from '../../components/apps.interface';
 import { AppsAddValidator } from '../apps-add.validator';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Applications Bulk Import Properties
@@ -23,7 +23,7 @@ import { AppsAddValidator } from '../apps-add.validator';
 export class AppsBulkImportPropertiesComponent implements OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -42,14 +42,14 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
    *
    * @param {AppsService} appsService
    * @param {NotificationService} notificationService
+   * @param {BlockerService} blockerService
    * @param {FormBuilder} fb
-   * @param {BusyService} busyService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
               private notificationService: NotificationService,
+              private blockerService: BlockerService,
               private fb: FormBuilder,
-              private busyService: BusyService,
               private router: Router) {
 
     this.form = fb.group({
@@ -108,18 +108,22 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
     if (!this.form.valid) {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
+      this.blockerService.lock();
       const reqImportBulkApps = this.prepareBulkImportRequest(
         this.form.get('force').value,
         this.form.get('properties').value.toString()
       );
-      const busy = this.appsService.bulkImportApps(reqImportBulkApps)
+      this.appsService.bulkImportApps(reqImportBulkApps)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           this.notificationService.success('Apps Imported.');
           this.router.navigate(['apps']);
+        }, () => {
+          this.notificationService.error('An error occurred while importing Apps. ' +
+            'Please check the server logs for more details.');
+        }, () => {
+          this.blockerService.unlock();
         });
-
-      this.busyService.addSubscription(busy);
     }
   }
 

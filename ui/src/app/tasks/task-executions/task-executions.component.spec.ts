@@ -17,7 +17,6 @@ import { SortComponent } from '../../shared/components/sort/sort.component';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { MasterCheckboxComponent } from '../../shared/components/master-checkbox.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { MockModalService } from '../../tests/mocks/modal';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
@@ -47,7 +46,6 @@ describe('TaskExecutionsComponent', () => {
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
   const modalService = new MockModalService();
-  const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
   const appsService = new MockAppsService();
@@ -85,7 +83,6 @@ describe('TaskExecutionsComponent', () => {
       providers: [
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
-        { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: BsModalService, useValue: modalService },
         { provide: AppsService, useValue: appsService },

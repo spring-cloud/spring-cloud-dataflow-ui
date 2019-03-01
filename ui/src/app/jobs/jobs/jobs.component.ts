@@ -5,7 +5,6 @@ import { Page } from '../../shared/model';
 import { JobsService } from '../jobs.service';
 import { JobExecution } from '../model/job-execution.model';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { ListParams, OrderParams } from '../../shared/components/shared.interface';
 import { ConfirmService } from '../../shared/components/confirm/confirm.service';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -26,8 +25,7 @@ import { AuthService } from '../../auth/auth.service';
 export class JobsComponent implements OnInit, OnDestroy {
 
   /**
-   * Busy subscription
-   * @type {Subject<any>}
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -55,15 +53,13 @@ export class JobsComponent implements OnInit, OnDestroy {
   /**
    * Constructor
    *
-   * @param {BusyService} busyService
    * @param {JobsService} jobsService
    * @param {NotificationService} notificationService
    * @param {ConfirmService} confirmService
    * @param {LoggerService} loggerService
    * @param {Router} router
    */
-  constructor(private busyService: BusyService,
-              private jobsService: JobsService,
+  constructor(private jobsService: JobsService,
               private notificationService: NotificationService,
               private confirmService: ConfirmService,
               private authService: AuthService,
@@ -145,7 +141,7 @@ export class JobsComponent implements OnInit, OnDestroy {
    * Load a paginated list of {@link JobExecution}s.
    */
   public loadJobExecutions() {
-    const busy = this.jobsService.getJobExecutions(this.params)
+    this.jobsService.getJobExecutions(this.params)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(page => {
         if (page.items.length === 0 && this.params.page > 0) {
@@ -159,7 +155,6 @@ export class JobsComponent implements OnInit, OnDestroy {
       }, error => {
         this.notificationService.error(error);
       });
-    this.busyService.addSubscription(busy);
   }
 
   /**

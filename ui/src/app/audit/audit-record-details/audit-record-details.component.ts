@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AuditRecordService } from '../audit-record.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
@@ -23,7 +22,7 @@ import { AuditRecord } from '../../shared/model/audit-record.model';
 export class AuditRecordDetailsComponent implements OnInit, OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -39,14 +38,12 @@ export class AuditRecordDetailsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {ActivatedRoute} route
    * @param {RoutingStateService} routingStateService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    */
   constructor(private auditRecordService: AuditRecordService,
               private notificationService: NotificationService,
               private route: ActivatedRoute,
               private routingStateService: RoutingStateService,
-              private busyService: BusyService,
               private loggerService: LoggerService) {
   }
 
@@ -85,7 +82,7 @@ export class AuditRecordDetailsComponent implements OnInit, OnDestroy {
    */
   loadAuditRecordDetails() {
     this.loggerService.log('Retrieving Audit Record details for id ' + this.auditRecord.auditRecordId + '.');
-    const busy = this.auditRecordService.getAuditRecordDetails(this.auditRecord.auditRecordId)
+    this.auditRecordService.getAuditRecordDetails(this.auditRecord.auditRecordId)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((auditRecord: AuditRecord) => {
           this.auditRecord = auditRecord;
@@ -96,8 +93,6 @@ export class AuditRecordDetailsComponent implements OnInit, OnDestroy {
           }
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

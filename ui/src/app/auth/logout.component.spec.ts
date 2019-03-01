@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { FormsModule } from '@angular/forms';
 import { LogoutComponent } from './logout.component';
 import { MockNotificationService } from '../tests/mocks/notification';
@@ -27,7 +26,6 @@ describe('LogoutComponent', () => {
     activeRoute = new MockActivatedRoute();
     TestBed.configureTestingModule({
       imports: [
-        NgBusyModule,
         FormsModule,
         RouterTestingModule.withRoutes([])
       ],

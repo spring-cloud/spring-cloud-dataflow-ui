@@ -22,7 +22,6 @@ import { APPS } from '../../tests/mocks/mock-data';
 import { DebugElement } from '@angular/core';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
-import { BusyService } from '../../shared/services/busy.service';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
@@ -75,7 +74,6 @@ describe('AppsComponent', () => {
         { provide: AppsService, useValue: appsService },
         { provide: AuthService, useValue: authService },
         BsModalService,
-        { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: LoggerService, useValue: loggerService },
         { provide: NotificationService, useValue: notificationService }

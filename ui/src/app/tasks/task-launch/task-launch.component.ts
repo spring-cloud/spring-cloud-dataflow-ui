@@ -5,7 +5,6 @@ import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
 import { FormControl, FormGroup, Validator, Validators } from '@angular/forms';
-import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
@@ -28,7 +27,7 @@ import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-ric
 export class TaskLaunchComponent implements OnInit, OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -66,14 +65,12 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    *
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
-   * @param {BusyService} busyService
    * @param {RoutingStateService} routingStateService
    * @param {ActivatedRoute} route
    * @param {Router} router
    */
   constructor(private tasksService: TasksService,
               private notificationService: NotificationService,
-              private busyService: BusyService,
               private routingStateService: RoutingStateService,
               private route: ActivatedRoute,
               private router: Router) {
@@ -166,7 +163,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
       const taskArguments = this.form.get('args').value.toString().split('\n');
       const taskProperties = this.form.get('props').value.toString().split('\n');
       const platform = this.form.get('platform').value;
-      const busy = this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties, platform))
+      this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties, platform))
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           data => {
@@ -177,7 +174,6 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
           }
         );
-      this.busyService.addSubscription(busy);
     }
   }
 

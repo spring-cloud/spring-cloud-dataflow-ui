@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { AppsService } from '../../apps.service';
-import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { AppsAddValidator } from '../apps-add.validator';
 import { AppError } from '../../../shared/model/error.model';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Applications Bulk Import
@@ -23,7 +23,7 @@ import { AppError } from '../../../shared/model/error.model';
 export class AppsBulkImportUriComponent implements OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -42,14 +42,14 @@ export class AppsBulkImportUriComponent implements OnDestroy {
    *
    * @param {AppsService} appsService
    * @param {NotificationService} notificationService
+   * @param {BlockerService} blockerService
    * @param {FormBuilder} fb
-   * @param {BusyService} busyService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
               private notificationService: NotificationService,
+              private blockerService: BlockerService,
               private fb: FormBuilder,
-              private busyService: BusyService,
               private router: Router) {
 
     this.form = fb.group({
@@ -75,7 +75,8 @@ export class AppsBulkImportUriComponent implements OnDestroy {
     if (!this.form.valid) {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
-      const busy = this.appsService.bulkImportApps({
+      this.blockerService.lock();
+      this.appsService.bulkImportApps({
         force: this.form.get('force').value,
         properties: null,
         uri: this.form.get('uri').value.toString()
@@ -85,9 +86,9 @@ export class AppsBulkImportUriComponent implements OnDestroy {
           this.router.navigate(['apps']);
         }, (error) => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        }, () => {
+          this.blockerService.unlock();
         });
-
-      this.busyService.addSubscription(busy);
     }
   }
 

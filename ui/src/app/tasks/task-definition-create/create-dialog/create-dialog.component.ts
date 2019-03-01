@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { AppError } from '../../../shared/model/error.model';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Component to display dialog to allow user to name and deploy a task.
@@ -58,6 +59,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
               private fb: FormBuilder,
               private notificationService: NotificationService,
               private loggerService: LoggerService,
+              private blockerService: BlockerService,
               private bsModalRef: BsModalRef) {
     this.form = fb.group({
       'taskName': this.taskName
@@ -103,6 +105,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
     if (!this.form.valid) {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
+      this.blockerService.lock();
       this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl })
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
@@ -117,6 +120,8 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
           (error) => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
             this.bsModalRef.hide();
+          }, () => {
+            this.blockerService.unlock();
           }
         );
     }

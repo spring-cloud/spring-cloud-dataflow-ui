@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -81,7 +80,6 @@ describe('TaskExecutionsDetailsComponent', () => {
         PagerComponent
       ],
       imports: [
-        NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
         NgxPaginationModule,
