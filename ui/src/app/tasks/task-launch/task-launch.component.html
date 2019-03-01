@@ -40,7 +40,7 @@
         </label>
         <div class="col-xs-10">
           <app-kv-rich-text [validators]="kvValidators.args" [formControl]="form.get('args')"
-                            placeholder="myarg=myvalue"></app-kv-rich-text>
+                            placeholder="--myarg=myvalue"></app-kv-rich-text>
           <span class="help-block" *ngIf="form.get('args').invalid && submitted">
             One or more arguments are invalid.<br/>Example: <code>myarg=myvalue</code>.
           </span>
