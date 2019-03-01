@@ -77,7 +77,7 @@ export class ListRowActionsComponent implements OnInit {
     const diff = actions.filter(item => {
       return !this.actionsDefault.find(i => i['id'] === item['id']);
     });
-    if (diff.length == 0) {
+    if (diff.length === 0) {
       this.actionsMenu = [];
     } else {
       this.actionsMenu = this.actions;

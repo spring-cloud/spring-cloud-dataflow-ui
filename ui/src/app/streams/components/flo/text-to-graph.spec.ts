@@ -331,12 +331,12 @@ describe('text-to-graph', () => {
       metamodel.set('source', new Map<string, Flo.ElementMetadata>([['counter', createEntry('source', 'counter')]]));
       metamodel.set('sink', new Map<string, Flo.ElementMetadata>([['counter', createEntry('sink', 'counter')]]));
       const converter: any = new TextToGraphConverter('', null, metamodel);
-      expect(converter.matchGroup('counter', 1,1)).toEqual('processor');
-      expect(converter.matchGroup('counter', 3,2)).toEqual('processor');
-      expect(converter.matchGroup('counter', 1,0)).toEqual('sink');
-      expect(converter.matchGroup('counter', 3,0)).toEqual('sink');
-      expect(converter.matchGroup('counter', 0,1)).toEqual('source');
-      expect(converter.matchGroup('counter', 0,3)).toEqual('source');
+      expect(converter.matchGroup('counter', 1, 1)).toEqual('processor');
+      expect(converter.matchGroup('counter', 3, 2)).toEqual('processor');
+      expect(converter.matchGroup('counter', 1, 0)).toEqual('sink');
+      expect(converter.matchGroup('counter', 3, 0)).toEqual('sink');
+      expect(converter.matchGroup('counter', 0, 1)).toEqual('source');
+      expect(converter.matchGroup('counter', 0, 3)).toEqual('source');
     });
 
     function getGraph(dsl: string) {
