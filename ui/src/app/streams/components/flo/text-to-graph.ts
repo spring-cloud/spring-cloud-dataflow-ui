@@ -287,7 +287,7 @@ export class TextToGraphConverter {
     }
 
     private matchGroup(name: string, incoming: number, outgoing: number): string {
-        const match = Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
+        const match1 = Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
                     grp => this.metamodel.get(grp).get(name)).map(match => {
           let score = 0;
           switch (match.group) {
@@ -296,28 +296,28 @@ export class TextToGraphConverter {
                 score -= 10;
               }
               if (outgoing > 1) {
-                score -= 10
+                score -= 10;
               }
-              if (incoming == 0 && outgoing == 0) {
+              if (incoming === 0 && outgoing === 0) {
                 score += 5;
               }
               break;
             case ApplicationType[ApplicationType.source]:
               if (incoming > 0) {
                 score -= 10;
-              } else if (outgoing == 1) {
+              } else if (outgoing === 1) {
                 score += 5;
               } else {
                 score += 3;
               }
               break;
             case ApplicationType[ApplicationType.processor]:
-              if (incoming == 1) {
+              if (incoming === 1) {
                 score += 3;
               } else if (incoming > 1) {
                 score += 1;
               }
-              if (outgoing == 1) {
+              if (outgoing === 1) {
                 score += 3;
               } else if (outgoing > 1) {
                 score += 1;
@@ -326,7 +326,7 @@ export class TextToGraphConverter {
             case ApplicationType[ApplicationType.sink]:
               if (outgoing > 0) {
                 score -= 10;
-              } else if (incoming == 1) {
+              } else if (incoming === 1) {
                 score += 5;
               } else {
                 score += 3;
@@ -347,7 +347,7 @@ export class TextToGraphConverter {
           }
           return bestMatch;
         });
-        return match ? match.match.group : ApplicationType[ApplicationType.app];
+        return match1 ? match1.match.group : ApplicationType[ApplicationType.app];
     }
 
     /**

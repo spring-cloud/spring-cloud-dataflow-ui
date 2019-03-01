@@ -104,7 +104,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
                 });
               }
               if (val2.length === 1) {
-                this.form.get('platform').setValue(val2[0].name)
+                this.form.get('platform').setValue(val2[0].name);
               }
               return {
                 taskDefinition: val,
