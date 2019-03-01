@@ -29,7 +29,6 @@ import { StreamsUndeployComponent } from '../streams-undeploy/streams-undeploy.c
 import { MasterCheckboxComponent } from '../../shared/components/master-checkbox.component';
 import { StreamGraphDefinitionComponent } from '../components/stream-graph-definition/stream-graph-definition.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -41,6 +40,7 @@ import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link StreamsComponent}.
@@ -100,11 +100,11 @@ describe('StreamsComponent', () => {
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AppsService, useValue: appsService },
         { provide: AuthService, useValue: authService },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: StreamsService, useValue: streamsService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService },
-        GrafanaService
+        GrafanaService,
+        BlockerService
       ]
     })
       .compileComponents();

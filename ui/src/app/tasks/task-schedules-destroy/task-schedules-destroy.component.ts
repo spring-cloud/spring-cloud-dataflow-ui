@@ -3,11 +3,11 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { TasksService } from '../tasks.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { TaskSchedule } from '../model/task-schedule';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component used to delete task schedules.
@@ -21,7 +21,7 @@ import { TaskSchedule } from '../model/task-schedule';
 export class TaskSchedulesDestroyComponent extends Modal implements OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -40,14 +40,14 @@ export class TaskSchedulesDestroyComponent extends Modal implements OnDestroy {
    *
    * @param {BsModalRef} modalRef used to control the current modal
    * @param {TasksService} tasksService
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {NotificationService} notificationService
    * @param {LoggerService} loggerService
    */
   constructor(private modalRef: BsModalRef,
               private tasksService: TasksService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
+              private blockerService: BlockerService,
               private notificationService: NotificationService) {
     super(modalRef);
   }
@@ -65,15 +65,21 @@ export class TaskSchedulesDestroyComponent extends Modal implements OnDestroy {
    */
   destroy() {
     this.loggerService.log(`Proceeding to delete ${this.taskSchedules.length} task schedule(s).`, this.taskSchedules);
-    const busy = this.tasksService.destroySchedules(this.taskSchedules)
+    this.blockerService.lock();
+    this.tasksService.destroySchedules(this.taskSchedules)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
         this.notificationService.success(`${data.length} task schedule(s) deleted.`);
         this.confirm.emit('done');
         this.cancel();
+      }, () => {
+        this.notificationService.error('An error occurred when bulk deleting Schedules. ' +
+          'Please check the server logs for more details.');
+        this.confirm.emit('done');
+        this.cancel();
+      }, () => {
+        this.blockerService.unlock();
       });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

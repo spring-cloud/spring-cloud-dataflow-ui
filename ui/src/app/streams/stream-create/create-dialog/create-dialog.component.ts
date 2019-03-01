@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { takeUntil } from 'rxjs/operators';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
-import { BusyService } from '../../../shared/services/busy.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { Observable, Subscription, Subject } from 'rxjs';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Stores progress percentage.
@@ -52,7 +52,7 @@ const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 export class StreamCreateDialogComponent extends Modal implements OnInit, OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * UnSubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -94,7 +94,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    * @param {ParserService} parserService
    * @param {StreamsService} streamService
    * @param {LoggerService} loggerService
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {Router} router
    * @param {SharedAboutService} aboutService
    */
@@ -103,7 +103,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
               private parserService: ParserService,
               private streamService: StreamsService,
               private loggerService: LoggerService,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private router: Router,
               private aboutService: SharedAboutService) {
     super(bsModalRef);
@@ -345,7 +345,8 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
     } else {
       // Send the request to create a stream
       const def = this.streamDefs[index];
-      const busy = this.streamService.createDefinition(def.name, def.def, false)
+      this.blockerService.lock();
+      this.streamService.createDefinition(def.name, def.def, false)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           this.loggerService.log('Stream ' + def.name + ' created OK');
@@ -359,6 +360,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
             setTimeout(() => {
               this.bsModalRef.hide();
               this.notificationService.success('Stream(s) have been created successfully');
+              this.blockerService.unlock();
             }, PROGRESS_BAR_WAIT_TIME);
             this.router.navigate(['streams']);
           } else {
@@ -386,9 +388,8 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
           } else {
             this.notificationService.error(`Failed to create stream '${def.name}'`);
           }
+          this.blockerService.unlock();
         });
-
-      this.busyService.addSubscription(busy);
     }
   }
 

@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockStreamsService } from '../../tests/mocks/streams';
 import { StreamsService } from '../streams.service';
@@ -11,13 +10,13 @@ import { By } from '@angular/platform-browser';
 import { StreamDefinition } from '../model/stream-definition';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { BusyService } from '../../shared/services/busy.service';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link StreamsDeployComponent}.
@@ -44,7 +43,6 @@ describe('StreamsDeployComponent', () => {
         TruncatePipe
       ],
       imports: [
-        NgBusyModule,
         FormsModule,
         ModalModule.forRoot(),
         ReactiveFormsModule
@@ -53,10 +51,10 @@ describe('StreamsDeployComponent', () => {
         { provide: AuthService, useValue: authService },
         { provide: StreamsService, useValue: streamsService },
         { provide: BsModalRef, useValue: bsModalRef },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: SharedAboutService, useValue: sharedAboutService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: LoggerService, useValue: loggerService }
+        { provide: LoggerService, useValue: loggerService },
+        BlockerService
       ]
     })
       .compileComponents();

@@ -5,9 +5,9 @@ import { StreamsService } from '../streams.service';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 @Component({
   selector: 'app-stream-destroy',
@@ -16,7 +16,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 export class StreamsDestroyComponent extends Modal implements OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -35,14 +35,14 @@ export class StreamsDestroyComponent extends Modal implements OnDestroy {
    *
    * @param {BsModalRef} modalRef used to control the current modal
    * @param {StreamsService} streamsService
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {NotificationService} notificationService
    * @param {LoggerService} loggerService
    */
   constructor(private modalRef: BsModalRef,
               private streamsService: StreamsService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
+              private blockerService: BlockerService,
               private notificationService: NotificationService) {
     super(modalRef);
   }
@@ -60,7 +60,8 @@ export class StreamsDestroyComponent extends Modal implements OnDestroy {
    */
   destroy() {
     this.loggerService.log(`Proceeding to destroy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
-    const busy = this.streamsService.destroyMultipleStreamDefinitions(this.streamDefinitions)
+    this.blockerService.lock();
+    this.streamsService.destroyMultipleStreamDefinitions(this.streamDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
         let successMessgage: string;
@@ -73,9 +74,14 @@ export class StreamsDestroyComponent extends Modal implements OnDestroy {
         this.notificationService.success(successMessgage);
         this.confirm.emit('done');
         this.cancel();
+      }, () => {
+        this.notificationService.error('An error occurred when bulk deleting Streams. ' +
+          'Please check the server logs for more details.');
+        this.confirm.emit('done');
+        this.cancel();
+      }, () => {
+        this.blockerService.unlock();
       });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

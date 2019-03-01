@@ -7,7 +7,6 @@ import { TaskScheduleSummaryComponent } from './task-schedule-summary.component'
 import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockTasksService } from '../../../tests/mocks/tasks';
 import { MockAuthService } from '../../../tests/mocks/auth';
-import { BusyService } from '../../../shared/services/busy.service';
 import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { MockActivatedRoute } from '../../../tests/mocks/activated-route';
@@ -36,7 +35,6 @@ describe('TaskScheduleSummaryComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
-  const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
   const commonTestParams = { id: 'foo1' };
@@ -68,7 +66,6 @@ describe('TaskScheduleSummaryComponent', () => {
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: LoggerService, useValue: loggerService },
         { provide: NotificationService, useValue: notificationService }

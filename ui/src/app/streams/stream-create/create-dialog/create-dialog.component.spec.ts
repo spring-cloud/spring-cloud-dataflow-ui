@@ -1,5 +1,4 @@
 import { StreamCreateDialogComponent } from './create-dialog.component';
-import { NgBusyModule } from 'ng-busy';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStreamsService } from '../../../tests/mocks/streams';
@@ -8,7 +7,6 @@ import { StreamsService } from '../../streams.service';
 import { FloModule } from 'spring-flo';
 import { BsModalRef, ModalModule } from 'ngx-bootstrap';
 import { ParserService } from '../../../shared/services/parser.service';
-import { BusyService } from '../../../shared/services/busy.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { MockNotificationService } from '../../../tests/mocks/notification';
 import { NotificationService } from '../../../shared/services/notification.service';
@@ -18,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { of } from 'rxjs';
 import { Platform } from '../../../shared/model/platform';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link StreamCreateDialogComponent}.
@@ -28,7 +27,6 @@ describe('StreamCreateDialogComponent', () => {
   let component: StreamCreateDialogComponent;
   let fixture: ComponentFixture<StreamCreateDialogComponent>;
   const streamsService = new MockStreamsService();
-  const busyService = new BusyService();
   const loggerService = new LoggerService();
   const parserService = new ParserService();
   const notificationService = new MockNotificationService();
@@ -47,17 +45,16 @@ describe('StreamCreateDialogComponent', () => {
         ReactiveFormsModule,
         ModalModule,
         FloModule,
-        NgBusyModule,
         NoopAnimationsModule
       ],
       providers: [
         { provide: StreamsService, useValue: streamsService },
-        { provide: BusyService, useValue: busyService },
         { provide: ParserService, useValue: parserService },
         { provide: LoggerService, useValue: loggerService },
         { provide: NotificationService, useValue: notificationService },
         { provide: SharedAboutService, useValue: aboutService },
         { provide: BsModalRef, useValue: null },
+        BlockerService
       ]
     })
       .compileComponents();

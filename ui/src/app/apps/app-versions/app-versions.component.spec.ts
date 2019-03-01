@@ -23,7 +23,6 @@ import { AppRegistration } from '../../shared/model/app-registration.model';
 import { ApplicationType } from '../../shared/model/application-type';
 import { SortComponent } from '../../shared/components/sort/sort.component';
 import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -70,7 +69,6 @@ describe('AppVersionsComponent', () => {
         { provide: ConfirmService, useValue: confirmService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: SharedAboutService, useValue: sharedAboutService },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
       ]

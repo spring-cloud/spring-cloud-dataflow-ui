@@ -4,7 +4,6 @@ import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
 import { TasksService } from '../tasks.service';
 import { Subject } from 'rxjs';
-import { BusyService } from '../../shared/services/busy.service';
 import { takeUntil } from 'rxjs/operators';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
@@ -34,7 +33,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   taskExecutions: Page<TaskExecution>;
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -58,15 +57,13 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   /**
    * Constructor
    *
-   * @param {BusyService} busyService
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
    * @param {AuthService} authService
    * @param {LoggerService} loggerService
    * @param {Router} router
    */
-  constructor(private busyService: BusyService,
-              public tasksService: TasksService,
+  constructor(public tasksService: TasksService,
               public notificationService: NotificationService,
               private authService: AuthService,
               public loggerService: LoggerService,
@@ -149,7 +146,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * Initializes the taskDefinitions attribute with the results from Spring Cloud Data Flow server.
    */
   refresh() {
-    const busy = this.tasksService
+    this.tasksService
       .getExecutions(this.params)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((page: Page<TaskExecution>) => {
@@ -165,8 +162,6 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

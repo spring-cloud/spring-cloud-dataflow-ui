@@ -9,6 +9,7 @@ import { NotificationService } from '../../../shared/services/notification.servi
 import { LoggerService } from '../../../shared/services/logger.service';
 import { StreamDslComponent } from '../../../shared/components/dsl/dsl.component';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 describe('TaskDefinitionCreateDialogComponent', () => {
   let component: TaskDefinitionCreateDialogComponent;
@@ -33,7 +34,8 @@ describe('TaskDefinitionCreateDialogComponent', () => {
         { provide: TasksService, useValue: tasksService },
         { provide: NotificationService, useValue: notificationService },
         { provide: BsModalRef, useValue: bsModalRefStub },
-        { provide: LoggerService, useValue: loggerService }
+        { provide: LoggerService, useValue: loggerService },
+        BlockerService
       ]
     })
       .compileComponents();

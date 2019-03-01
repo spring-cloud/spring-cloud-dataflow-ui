@@ -1,12 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgBusyModule } from 'ng-busy';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockActivatedRoute } from '../../../tests/mocks/activated-route';
 import { MockNotificationService } from '../../../tests/mocks/notification';
 import { MockTasksService } from '../../../tests/mocks/tasks';
-import { BusyService } from '../../../shared/services/busy.service';
 import { DataflowDateTimePipe } from '../../../shared/pipes/dataflow-date-time.pipe';
 import { TasksService } from '../../tasks.service';
 import { TASK_EXECUTIONS } from '../../../tests/mocks/mock-data';
@@ -49,7 +47,6 @@ describe('TaskDefinitionExecutionsComponent', () => {
   const authService = new MockAuthService();
   const aboutService = new MocksSharedAboutService();
   const modalService = new MockModalService();
-  const busyService = new BusyService();
   const toolsService = new MockToolsService();
   const commonTestParams = { id: 'foo' };
   const loggerService = new LoggerService();
@@ -73,7 +70,6 @@ describe('TaskDefinitionExecutionsComponent', () => {
       imports: [
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
-        NgBusyModule,
         FormsModule,
         ReactiveFormsModule,
         TooltipModule.forRoot(),
@@ -86,7 +82,6 @@ describe('TaskDefinitionExecutionsComponent', () => {
         { provide: BsModalService, useValue: modalService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: ToolsService, useValue: toolsService },
-        { provide: BusyService, useValue: busyService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
       ]

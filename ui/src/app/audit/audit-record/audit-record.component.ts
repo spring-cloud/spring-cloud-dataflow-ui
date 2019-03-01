@@ -4,7 +4,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SortParams } from '../../shared/components/shared.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
@@ -34,7 +33,7 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
   auditRecords: Page<AuditRecord>;
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -66,13 +65,11 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
    *
    * @param {AuditRecordService} auditRecordService
    * @param {NotificationService} notificationService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(public auditRecordService: AuditRecordService,
               private notificationService: NotificationService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private router: Router) {
   }
@@ -133,7 +130,7 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
    * Build the form checkboxes (persist selection)
    */
   loadAuditRecords() {
-    const busy = this.auditRecordService.getAuditRecords(this.params)
+    this.auditRecordService.getAuditRecords(this.params)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((page: Page<AuditRecord>) => {
           if (page.items.length === 0 && this.params.page > 0) {
@@ -146,7 +143,6 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-    this.busyService.addSubscription(busy);
   }
 
   /**

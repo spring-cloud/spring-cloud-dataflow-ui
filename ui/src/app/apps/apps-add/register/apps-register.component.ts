@@ -7,10 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { ApplicationType } from '../../../shared/model/application-type';
 import { AppsService } from '../../apps.service';
 import { NotificationService } from '../../../shared/services/notification.service';
-import { BusyService } from '../../../shared/services/busy.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { AppRegisterParams } from '../../components/apps.interface';
 import { AppError } from '../../../shared/model/error.model';
+import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 
 /**
  * Applications Register
@@ -27,7 +27,7 @@ import { AppError } from '../../../shared/model/error.model';
 export class AppsRegisterComponent implements OnInit, OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -54,14 +54,14 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
    * @param {AppsService} appsService
    * @param {NotificationService} notificationService
    * @param {FormBuilder} fb
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {LoggerService} loggerService
    * @param {Router} router
    */
   constructor(private appsService: AppsService,
               private notificationService: NotificationService,
               private fb: FormBuilder,
-              private busyService: BusyService,
+              private blockerService: BlockerService,
               private loggerService: LoggerService,
               private router: Router) {
   }
@@ -106,7 +106,8 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
           };
         }
       }).filter((a) => a != null);
-      const busy = this.appsService.registerApps(applications)
+      this.blockerService.lock();
+      this.appsService.registerApps(applications)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           data => {
@@ -115,10 +116,10 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
           },
           error => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          }, () => {
+            this.blockerService.unlock();
           }
         );
-
-      this.busyService.addSubscription(busy);
     }
   }
 

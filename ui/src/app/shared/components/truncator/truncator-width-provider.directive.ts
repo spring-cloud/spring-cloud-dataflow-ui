@@ -20,6 +20,9 @@ export class TruncatorWidthProviderDirective implements OnDestroy {
 
   private destroyed = false;
 
+  /**
+   * Unsubscribe
+   */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   constructor(private elementRef: ElementRef,

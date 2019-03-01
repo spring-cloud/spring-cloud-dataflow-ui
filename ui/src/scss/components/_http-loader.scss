@@ -1,0 +1,155 @@
+$progress-bar-infinite-bg: $navy-10;
+$progress-bar-infinite-active: $brand-8;
+$progress-bar-infinite-height: 4px;
+$progress-bar-infinite-full-animation-duration: 2000ms;
+$progress-bar-infinite-piece-animation-duration: 250ms;
+
+.app-http-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999999;
+  height: $progress-bar-infinite-height;
+}
+
+// Progress-bar
+
+.progress-bar-infinite {
+  display: block;
+  height: $progress-bar-infinite-height;
+  overflow: hidden;
+  position: relative;
+  transform: translateZ(0);
+  transition: opacity $progress-bar-infinite-piece-animation-duration linear;
+  width: 100%;
+  background: $progress-bar-infinite-bg;
+  border-bottom: 1px solid white;
+
+  .progress-bar-infinite-element, .progress-bar-infinite-fill::after {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+  }
+
+  .progress-bar-infinite-background {
+    background-repeat: repeat-x;
+    background-size: 10px 4px;
+    display: none;
+  }
+
+  .progress-bar-infinite-secondary {
+    display: none;
+  }
+
+  .progress-bar-infinite-fill {
+    animation: none;
+    transform-origin: top left;
+    transition: transform $progress-bar-infinite-piece-animation-duration ease;
+    background-color: $progress-bar-infinite-bg;
+  }
+
+  .progress-bar-infinite-fill::after {
+    animation: none;
+    content: '';
+    display: inline-block;
+    left: 0;
+    background: $progress-bar-infinite-active;
+  }
+
+  .progress-bar-infinite-fill {
+    transition: none;
+  }
+  .progress-bar-infinite-primary {
+    animation: progress-bar-infinite-primary-indeterminate-translate $progress-bar-infinite-full-animation-duration infinite linear;
+    left: -145.166611%;
+  }
+  .progress-bar-infinite-primary.progress-bar-infinite-fill::after {
+    animation: progress-bar-infinite-primary-indeterminate-scale $progress-bar-infinite-full-animation-duration infinite linear;
+  }
+  .progress-bar-infinite-secondary {
+    animation: progress-bar-infinite-secondary-indeterminate-translate $progress-bar-infinite-full-animation-duration infinite linear;
+    left: -54.888891%;
+    display: block;
+  }
+  .progress-bar-infinite-secondary.progress-bar-infinite-fill::after {
+    animation: progress-bar-infinite-secondary-indeterminate-scale $progress-bar-infinite-full-animation-duration infinite linear;
+  }
+}
+
+@keyframes progress-bar-infinite-primary-indeterminate-translate {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    animation-timing-function: cubic-bezier(0.5, 0, 0.701732, 0.495819);
+    transform: translateX(0);
+  }
+  59.15% {
+    animation-timing-function: cubic-bezier(0.302435, 0.381352, 0.55, 0.956352);
+    transform: translateX(83.67142%);
+  }
+  100% {
+    transform: translateX(200.611057%);
+  }
+}
+
+@keyframes progress-bar-infinite-primary-indeterminate-scale {
+  0% {
+    transform: scaleX(0.08);
+  }
+  36.65% {
+    animation-timing-function: cubic-bezier(0.334731, 0.12482, 0.785844, 1);
+    transform: scaleX(0.08);
+  }
+  69.15% {
+    animation-timing-function: cubic-bezier(0.06, 0.11, 0.6, 1);
+    transform: scaleX(0.661479);
+  }
+  100% {
+    transform: scaleX(0.08);
+  }
+}
+
+@keyframes progress-bar-infinite-secondary-indeterminate-translate {
+  0% {
+    animation-timing-function: cubic-bezier(0.15, 0, 0.515058, 0.409685);
+    transform: translateX(0);
+  }
+  25% {
+    animation-timing-function: cubic-bezier(0.31033, 0.284058, 0.8, 0.733712);
+
+    transform: translateX(37.651913%);
+  }
+  48.35% {
+    animation-timing-function: cubic-bezier(0.4, 0.627035, 0.6, 0.902026);
+    transform: translateX(84.386165%);
+  }
+  100% {
+    transform: translateX(160.277782%);
+  }
+}
+
+@keyframes progress-bar-infinite-secondary-indeterminate-scale {
+  0% {
+    animation-timing-function: cubic-bezier(0.15, 0, 0.515058, 0.409685);
+    transform: scaleX(0.08);
+  }
+  19.15% {
+    animation-timing-function: cubic-bezier(0.31033, 0.284058, 0.8, 0.733712);
+    transform: scaleX(0.457104);
+  }
+  44.15% {
+    animation-timing-function: cubic-bezier(0.4, 0.627035, 0.6, 0.902026);
+    transform: scaleX(0.72796);
+  }
+  100% {
+    transform: scaleX(0.08);
+  }
+}
+
+@keyframes progress-bar-infinite-background-scroll {
+  to {
+    transform: translateX(-10px);
+  }
+}

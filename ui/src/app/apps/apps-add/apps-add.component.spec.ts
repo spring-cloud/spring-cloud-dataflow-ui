@@ -5,7 +5,6 @@ import { AppsService } from '../apps.service';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppsAddComponent } from './apps-add.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
@@ -48,7 +47,6 @@ describe('AppsAddComponent', () => {
       ],
       providers: [
         { provide: AppsService, useValue: appsService },
-        { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: NotificationService, useValue: notificationService }

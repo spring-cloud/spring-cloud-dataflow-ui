@@ -10,7 +10,6 @@ import { By } from '@angular/platform-browser';
 import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
 import { RuntimeApp } from '../model/runtime-app';
 import { RuntimeAppInstance } from '../model/runtime-app-instance';
-import { NgBusyModule } from 'ng-busy';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
@@ -23,7 +22,6 @@ import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
-import { BusyService } from '../../shared/services/busy.service';
 
 describe('RuntimeAppComponent', () => {
   let component: RuntimeAppComponent;
@@ -31,7 +29,6 @@ describe('RuntimeAppComponent', () => {
   const notificationService = new MockNotificationService();
   const runtimeAppsService = new MockRuntimeAppsService();
   const sharedAboutService = new MocksSharedAboutService();
-  const busyService = new BusyService();
   const bsModalRef = new BsModalRef();
   const mock: any = RUNTIME_APPS;
 
@@ -49,7 +46,6 @@ describe('RuntimeAppComponent', () => {
       ],
       imports: [
         FormsModule,
-        NgBusyModule,
         NgxPaginationModule,
         GrafanaModule,
         BsDropdownModule.forRoot(),
@@ -61,7 +57,6 @@ describe('RuntimeAppComponent', () => {
         { provide: RuntimeAppsService, useValue: runtimeAppsService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: NotificationService, useValue: notificationService },
-        { provide: BusyService, useValue: busyService },
         GrafanaService
       ]
     })

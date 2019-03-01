@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ModalModule } from 'ngx-bootstrap';
-import { NgBusyModule } from 'ng-busy';
 import { BodyComponent } from './body.component';
 
 describe('BodyComponent', () => {
@@ -14,7 +13,6 @@ describe('BodyComponent', () => {
         BodyComponent
       ],
       imports: [
-        NgBusyModule,
         NgxPaginationModule,
         ModalModule.forRoot()
       ],

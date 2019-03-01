@@ -11,7 +11,6 @@ import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { SortComponent } from '../../shared/components/sort/sort.component';
 import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -72,7 +71,6 @@ describe('AuditRecordDetailsComponent', () => {
           params: of({ auditRecordId: 12347 })
         } },
         BsModalService,
-        { provide: BusyService, useValue: new BusyService() },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }

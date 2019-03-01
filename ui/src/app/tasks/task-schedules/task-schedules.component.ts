@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Page } from '../../shared/model/page';
 import { ListDefaultParams, OrderParams } from '../../shared/components/shared.interface';
 import { Subject } from 'rxjs';
-import { BusyService } from '../../shared/services/busy.service';
 import { TasksService } from '../tasks.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
@@ -39,7 +38,7 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   listBar: ListBarComponent;
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -86,15 +85,13 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   /**
    * Constructor
    *
-   * @param {BusyService} busyService
    * @param {BsModalService} modalService
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
    * @param {Router} router
    * @param {LoggerService} loggerService
    */
-  constructor(private busyService: BusyService,
-              private modalService: BsModalService,
+  constructor(private modalService: BsModalService,
               private tasksService: TasksService,
               private notificationService: NotificationService,
               private router: Router,
@@ -193,7 +190,7 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
    * Initializes the taskSchedules attribute with the results from Spring Cloud Data Flow server.
    */
   refresh() {
-    const busy = this.tasksService
+    this.tasksService
       .getSchedules(this.params)
       .pipe(map(((page: Page<TaskSchedule>) => {
         this.form.checkboxes = page.items.map((schedule) => this.itemsSelected.indexOf(schedule.name) > -1);
@@ -215,8 +212,6 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
           this.notificationService.error(error);
         }
       );
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

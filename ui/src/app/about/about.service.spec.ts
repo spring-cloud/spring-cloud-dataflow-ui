@@ -1,7 +1,6 @@
 import { AboutService } from './about.service';
 import { ErrorHandler } from '../shared/model/error-handler';
 import { SharedAboutService } from '../shared/services/shared-about.service';
-import { BusyService } from '../shared/services/busy.service';
 import { of } from 'rxjs';
 
 describe('AboutService', () => {
@@ -102,7 +101,7 @@ describe('AboutService', () => {
       };
     this.mockHttp.get.and.returnValue(of(jsonData));
     const errorHandler = new ErrorHandler();
-    this.sharedAboutService = new SharedAboutService(new BusyService(), this.mockHttp, errorHandler);
+    this.sharedAboutService = new SharedAboutService(this.mockHttp, errorHandler);
     this.aboutService = new AboutService(this.sharedAboutService);
   });
 

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AppsService } from '../apps.service';
 import { AppRegistration, Page } from '../../shared/model';
 import { AppsUnregisterComponent } from '../apps-unregister/apps-unregister.component';
@@ -11,7 +11,6 @@ import { AppsWorkaroundService } from '../apps.workaround.service';
 import { AppListParams } from '../components/apps.interface';
 import { SortParams } from '../../shared/components/shared.interface';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
@@ -39,7 +38,7 @@ export class AppsComponent implements OnInit, OnDestroy {
   appRegistrations: Page<AppRegistration>;
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -85,7 +84,6 @@ export class AppsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {SharedAboutService} sharedAboutService
    * @param {BsModalService} modalService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {AuthService} authService
    * @param {Router} router
@@ -94,7 +92,6 @@ export class AppsComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private sharedAboutService: SharedAboutService,
               private modalService: BsModalService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private authService: AuthService,
               private router: Router) {
@@ -188,7 +185,7 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Build the form checkboxes (persist selection)
    */
   loadAppRegistrations() {
-    const busy = this.appsService.getApps(this.params).map((page: Page<AppRegistration>) => {
+    this.appsService.getApps(this.params).map((page: Page<AppRegistration>) => {
       this.form.checkboxes = page.items.map((app) => {
         return this.itemsSelected.indexOf(`${app.name}#${app.type}`) > -1;
       });
@@ -207,8 +204,6 @@ export class AppsComponent implements OnInit, OnDestroy {
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**

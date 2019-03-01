@@ -3,11 +3,11 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component used to destroy task definitions.
@@ -21,7 +21,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy {
 
   /**
-   * Busy Subscriptions
+   * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
@@ -40,14 +40,14 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
    *
    * @param {BsModalRef} modalRef used to control the current modal
    * @param {TasksService} tasksService
-   * @param {BusyService} busyService
+   * @param {BlockerService} blockerService
    * @param {NotificationService} notificationService
    * @param {LoggerService} loggerService
    */
   constructor(private modalRef: BsModalRef,
               private tasksService: TasksService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
+              private blockerService: BlockerService,
               private notificationService: NotificationService) {
     super(modalRef);
   }
@@ -62,10 +62,12 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
 
   /**
    * Submit destroy task(s)
+   * Blocking action
    */
   destroy() {
     this.loggerService.log(`Proceeding to destroy ${this.taskDefinitions.length} task definition(s).`, this.taskDefinitions);
-    const busy = this.tasksService.destroyDefinitions(this.taskDefinitions)
+    this.blockerService.lock();
+    this.tasksService.destroyDefinitions(this.taskDefinitions)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((data) => {
         this.notificationService.success(`${data.length} task definition(s) destroyed.`);
@@ -76,8 +78,9 @@ export class TaskDefinitionsDestroyComponent extends Modal implements OnDestroy 
           'Please check the server logs for more details.');
         this.confirm.emit('done');
         this.cancel();
+      }, () => {
+        this.blockerService.unlock();
       });
-    this.busyService.addSubscription(busy);
   }
 
   /**

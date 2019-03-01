@@ -16,7 +16,6 @@ import { SortComponent } from '../../shared/components/sort/sort.component';
 import { StreamDslComponent } from '../../shared/components/dsl/dsl.component';
 import { MasterCheckboxComponent } from '../../shared/components/master-checkbox.component';
 import { TruncatePipe } from '../../shared/pipes/truncate.pipe';
-import { BusyService } from '../../shared/services/busy.service';
 import { TasksService } from '../tasks.service';
 import { MockTasksService } from '../../tests/mocks/tasks';
 import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
@@ -50,7 +49,6 @@ describe('TaskSchedulesComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const authService = new MockAuthService();
-  const busyService = new BusyService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
   const appsService = new MockAppsService();
@@ -92,7 +90,6 @@ describe('TaskSchedulesComponent', () => {
         { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: AppsService, useValue: appsService },
-        { provide: BusyService, useValue: busyService },
         { provide: TasksService, useValue: tasksService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }
