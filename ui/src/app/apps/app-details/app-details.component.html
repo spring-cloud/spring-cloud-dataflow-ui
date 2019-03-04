@@ -10,7 +10,8 @@
       </span>
     </app-page-head-subtitle>
     <app-page-head-actions>
-      <button type="button" class="btn btn-danger btn-fa" (click)="unregisterApp()" [dataflowAppRoles]="['ROLE_DESTROY']">
+      <button type="button" class="btn btn-danger btn-fa" (click)="unregisterApp()"
+              [dataflowAppRoles]="['ROLE_DESTROY']">
         <span class="fa fa-trash"></span>
         Remove
       </button>
@@ -18,6 +19,7 @@
   </app-page-head>
 
   <div dataflowLayoutType type="large">
+
     <div id="no-default-version" *ngIf="application.versions.length > 0 && !defaultVersion">
       <div class="alert alert-danger" style="display: inline-block;padding:1rem 2rem;">
         <strong>Application unavailable.</strong><br>
@@ -52,52 +54,60 @@
           </ul>
         </div>
       </div>
-      <div class="app-details-info" style="padding: 0.5rem 0 1.5rem;">
-        <div><strong>Uri</strong>: {{ detailedAppRegistration.uri }}</div>
-        <div *ngIf="application.versions.length == 1">
-          <strong>Version</strong>: {{ detailedAppRegistration.version }}
+
+      <div *ngIf="loaded">
+
+        <div class="app-details-info" style="padding: 0.5rem 0 1.5rem;">
+          <div><strong>Uri</strong>: {{ detailedAppRegistration.uri }}</div>
+          <div *ngIf="application.versions.length == 1">
+            <strong>Version</strong>: {{ detailedAppRegistration.version }}
+          </div>
         </div>
+
+        <div *ngIf="tooManyProperties && !showProperties" class="dataflow-alert dataflow-alert-info">
+          <p style="padding-bottom: 5px;">
+            There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br>Do you want to
+            <strong>display all the properties</strong> ?
+          </p>
+          <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
+        </div>
+        <div *ngIf="showProperties">
+          <div *ngIf="detailedAppRegistration?.options && detailedAppRegistration?.options.length > 0">
+            <table id="table-properties" class="table table-hover" *ngIf="detailedAppRegistration?.options">
+              <thead>
+              <tr>
+                <th>
+                  <app-sort id="sort-name" [indeterminate]="true" (change)="applySort($event)" [value]="'name'"
+                            [sort]="sort">
+                    Property
+                  </app-sort>
+                </th>
+                <th>Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let property of detailedAppRegistration.options | orderby:sort.sort:sort.order">
+                <td>
+                  <strong>{{ property.name }}</strong>
+                  <div *ngIf="property.isDeprecated">
+                    <span class="label label-warning">Deprecation level: {{ property.deprecation.level }}</span>
+                  </div>
+                </td>
+                <td>
+                  <p>{{ property.description ? property.description : '(No Description Available)' }}</p>
+                  <p class="type-block"><code>{{ property.type }}</code> <span
+                    *ngIf="property.defaultValue">(Default value: <code>{{ property.defaultValue }}</code>)</span></p>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </div>
 
-      <div *ngIf="tooManyProperties && !showProperties" class="dataflow-alert dataflow-alert-info">
-        <p style="padding-bottom: 5px;">
-          There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br>Do you want to
-          <strong>display all the properties</strong> ?
-        </p>
-        <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
-      </div>
-      <div *ngIf="showProperties">
-
-        <div *ngIf="detailedAppRegistration?.options && detailedAppRegistration?.options.length > 0">
-          <table id="table-properties" class="table table-hover" *ngIf="detailedAppRegistration?.options">
-            <thead>
-            <tr>
-              <th>
-                <app-sort id="sort-name" [indeterminate]="true" (change)="applySort($event)" [value]="'name'"
-                          [sort]="sort">
-                  Property
-                </app-sort>
-              </th>
-              <th>Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let property of detailedAppRegistration.options | orderby:sort.sort:sort.order">
-              <td>
-                <strong>{{ property.name }}</strong>
-                <div *ngIf="property.isDeprecated">
-                  <span class="label label-warning">Deprecation level: {{ property.deprecation.level }}</span>
-                </div>
-              </td>
-              <td>
-                <p>{{ property.description ? property.description : '(No Description Available)' }}</p>
-                <p class="type-block"><code>{{ property.type }}</code> <span
-                  *ngIf="property.defaultValue">(Default value: <code>{{ property.defaultValue }}</code>)</span></p>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+      <div *ngIf="!loaded" style="padding:1rem;">
+        <app-loader></app-loader>
       </div>
 
       <div *ngIf="!(detailedAppRegistration?.options && detailedAppRegistration?.options.length > 0)"
@@ -105,6 +115,9 @@
         No properties available.
       </div>
 
+    </div>
+    <div *ngIf="!detailedAppRegistration">
+      <app-loader></app-loader>
     </div>
   </div>
 </app-page>

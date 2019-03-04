@@ -1,16 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppsService } from '../apps.service';
-import { ApplicationType, DetailedAppRegistration } from '../../shared/model';
+import { ApplicationType, AppVersion, DetailedAppRegistration } from '../../shared/model';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
-import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { SortParams } from '../../shared/components/shared.interface';
-import { Subject, combineLatest } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BusyService } from '../../shared/services/busy.service';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
@@ -75,6 +73,11 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   tooManyProperties = false;
 
   /**
+   * Loaded properties
+   */
+  loaded = false;
+
+  /**
    * Constructor
    *
    * @param {AppsService} appsService
@@ -82,7 +85,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {ActivatedRoute} route
    * @param {RoutingStateService} routingStateService
-   * @param {BusyService} busyService
    * @param {LoggerService} loggerService
    * @param {BsModalService} modalService
    */
@@ -91,7 +93,6 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
               private notificationService: NotificationService,
               private route: ActivatedRoute,
               private routingStateService: RoutingStateService,
-              private busyService: BusyService,
               private loggerService: LoggerService,
               private modalService: BsModalService) {
   }
@@ -101,12 +102,9 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.loggerService.log('App Service Details');
-    const featureInfo$ = this.sharedAboutService.getFeatureInfo();
-
-    combineLatest(featureInfo$, this.route.params)
-      .subscribe((data: any[]) => {
-        const featureInfo = data[0] as FeatureInfo;
-        const params = data[1] as Params;
+    this.route.params
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((params: Params) => {
         this.application = new AppRegistration(params['appName'], params['appType'] as ApplicationType);
         this.refresh();
       });
@@ -136,9 +134,9 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   loadProperties(version: string = '') {
     this.loggerService.log('Retrieving properties application for ' + this.application.name + ' (' +
     this.application.type + ', version ' + version ? version : '/' + ').');
-
     this.versionSelect = version;
-    const busy = this.appsService.getAppInfo(this.application.type, this.application.name, version)
+    this.appsService
+      .getAppInfo(this.application.type, this.application.name, version)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((detailed: DetailedAppRegistration) => {
           this.tooManyProperties = (detailed.options.length > 50);
@@ -150,9 +148,9 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
             this.cancel();
           }
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+        }, () => {
+          this.loaded = true;
         });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -160,29 +158,23 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   loadVersions() {
     this.loggerService.log(`Retrieving versions application for ${this.application.name} (${this.application.type}).`);
-    const busy = this.appsService
+    this.appsService
       .getAppVersions(ApplicationType[this.application.type.toString()], this.application.name)
       .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((data: any) => {
-          if (data.length > 0) {
-            this.application.versions = data;
-            this.defaultVersion = this.application.versions.find((a) => a.defaultVersion);
-            if (this.defaultVersion) {
-              this.application.version = this.defaultVersion.version;
-              this.application.uri = this.defaultVersion.uri;
-              this.selectVersion(this.defaultVersion.version);
-            } else {
-              this.selectVersion(this.application.versions[0].version);
-            }
+      .subscribe((appVersions: AppVersion[]) => {
+          this.application.versions = appVersions;
+          this.defaultVersion = this.application.versions.find((a) => a.defaultVersion);
+          if (this.defaultVersion) {
+            this.application.version = this.defaultVersion.version;
+            this.application.uri = this.defaultVersion.uri;
+            this.selectVersion(this.defaultVersion.version);
           } else {
-            this.loadProperties();
+            this.selectVersion(this.application.versions[0].version);
           }
         },
         error => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         });
-
-    this.busyService.addSubscription(busy);
   }
 
   /**
@@ -204,9 +196,11 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   versions(appRegistration: AppRegistration) {
     this.loggerService.log(`Manage versions ${appRegistration.name} app.`, appRegistration);
     const modal = this.modalService.show(AppVersionsComponent, { class: 'modal-xl' });
-    modal.content.open(appRegistration).subscribe(() => {
-      this.loadVersions();
-    });
+    modal.content.open(appRegistration)
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.loadVersions();
+      });
   }
 
   /**
@@ -215,9 +209,11 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
    */
   unregisterApp() {
     const modal = this.modalService.show(AppsUnregisterComponent);
-    modal.content.open([this.application]).subscribe(() => {
-      this.refresh();
-    });
+    modal.content.open([this.application])
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(() => {
+        this.refresh();
+      });
   }
 
 
@@ -230,6 +226,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
     if (this.versionSelect === version) {
       return;
     }
+    this.loaded = false;
     this.loadProperties(version);
   }
 
@@ -240,4 +237,5 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
   cancel() {
     this.routingStateService.back('/apps', /^(\/apps\/)/);
   }
+
 }

@@ -33,6 +33,7 @@ import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 
 /**
  * Test {@link AppDetailsComponent}.
@@ -71,7 +72,8 @@ describe('AppDetailsComponent', () => {
         RolesDirective,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
-        PagerComponent,
+        LoaderComponent,
+        PagerComponent
       ],
       imports: [
         ModalModule.forRoot(),
