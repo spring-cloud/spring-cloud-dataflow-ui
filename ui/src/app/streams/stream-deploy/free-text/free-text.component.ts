@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { StreamDeployValidator } from '../stream-deploy.validator';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * Free Text Component
@@ -79,7 +80,7 @@ export class StreamDeployFreeTextComponent implements OnInit, OnDestroy {
    * Constructor
    * Initialize FormGroup
    */
-  constructor() {
+  constructor(private notificationService: NotificationService) {
     this.formGroup = new FormGroup({
       'input': new FormControl(),
       'file': new FormControl('')
@@ -177,7 +178,11 @@ export class StreamDeployFreeTextComponent implements OnInit, OnDestroy {
    * Emit a request deploy
    */
   deployStream() {
-    this.deploy.emit(this.getCleanProperties());
+    if (!this.isSubmittable) {
+      this.notificationService.error('Some line(s) are invalid.');
+    } else {
+      this.deploy.emit(this.getCleanProperties());
+    }
   }
 
 }

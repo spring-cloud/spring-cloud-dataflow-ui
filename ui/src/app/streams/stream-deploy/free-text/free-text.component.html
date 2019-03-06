@@ -26,7 +26,7 @@
     <button tabindex="200" id="btn-copy" type="button" class="btn btn-default" (click)="copyToClipboard()">
       Copy to Clipboard
     </button>
-    <button id="btn-deploy" type="submit" class="btn btn-primary" [disabled]="!isSubmittable">
+    <button id="btn-deploy" type="submit" class="btn btn-primary">
       <span *ngIf="!isDeployed">Deploy stream</span>
       <span *ngIf="isDeployed">Update stream</span>
     </button>
