@@ -11,6 +11,7 @@ import { StreamDeployValidator } from '../stream-deploy.validator';
 import { AppPropertiesSource, StreamDeployAppPropertiesComponent } from '../app-properties/app-properties.component';
 import { BsModalService } from 'ngx-bootstrap';
 import { Properties } from 'spring-flo';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 /**
  * TODO
@@ -83,6 +84,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
 
   constructor(private streamDeployService: StreamDeployService,
               private changeDetector: ChangeDetectorRef,
+              private notificationService: NotificationService,
               private bsModalService: BsModalService) {
   }
 
@@ -581,7 +583,11 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * Emit a request deploy
    */
   deployStream() {
-    this.deploy.emit(this.getProperties());
+    if (!this.isSubmittable(this.refBuilder)) {
+      this.notificationService.error('Some field(s) are invalid.');
+    } else {
+      this.deploy.emit(this.getProperties());
+    }
   }
 
   /**
