@@ -1,9 +1,8 @@
 
-// Set PUI variables / Bootstrap
+// Bootstrap
 @import 'scss/pui-variables';
 @import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
 @import 'scss/pui-variables';
-@import 'scss/pui';
 
 // Font awesome
 @import '../node_modules/@compodoc/compodoc/src/resources/styles/font-awesome.min.css';
@@ -11,6 +10,8 @@
 // Components
 @import 'scss/components/http-loader';
 @import 'scss/components/blocker';
+@import 'scss/components/forms';
+@import 'scss/components/select';
 @import 'scss/components/spinner';
 @import 'scss/components/toastr';
 @import 'scss/components/modal';
@@ -19,12 +20,11 @@
 @import 'scss/components/timepicker';
 
 // Layout
+@import 'scss/layout/typo';
 @import 'scss/layout/content';
 @import 'scss/layout/footer';
 @import 'scss/layout/table';
+@import 'scss/layout/sidebar';
 
 // Application styles
 @import 'scss/styles';
-
-// Sidebar
-@import 'scss/layout/sidebar';
