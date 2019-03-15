@@ -1,11 +1,10 @@
-import { ProtractorPlugin, PluginConfig } from 'protractor';
+import { ProtractorPlugin, PluginConfig, browser } from 'protractor';
 
 import * as request from 'request';
 import * as requestPromise from 'request-promise-native';
 import * as fs from 'fs';
 import * as cp from 'child_process';
 import * as path from 'path';
-import * as execSync from 'child_process';
 
 class ProtractorDockerPlugin implements ProtractorPlugin {
 
@@ -14,15 +13,21 @@ class ProtractorDockerPlugin implements ProtractorPlugin {
   private readonly destinationFileName = 'docker-compose.yml';
   private readonly destinationFilePath = '.docker/' + this.destinationFileName;
   private readonly dockerComposeCommand = 'docker-compose';
-  private readonly defaultDataflowDockerTag = 'latest';
-  private readonly defaultSkipperDockerTag = '2.0.0.BUILD-SNAPSHOT';
+  private readonly defaultDataflowDockerTag = '2.1.0.BUILD-SNAPSHOT';
+  private readonly defaultSkipperDockerTag = '2.0.2.RC1';
 
   public async setup() {
+
+    if (process.env['DATAFLOW_SKIP_DOCKER_COMPOSE'] === 'true') {
+      console.log('Skipping Docker Compose Setup of Spring Cloud Dataflow.');
+      return;
+    }
+
     console.log('Setting up Docker Compose…');
 
-    let dockerComposeWaitTime = 30000;
+    let dockerComposeWaitTime = 180000;
     let useCachedoDockerComposeFile = true;
-    let dockerComposeUri = 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/' + this.destinationFileName;
+    let dockerComposeUri = 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server/' + this.destinationFileName;
     const commandExistsSync = require('command-exists');
 
     if (!this.config.dockerComposeUri) {
@@ -67,7 +72,7 @@ class ProtractorDockerPlugin implements ProtractorPlugin {
     if (commandExistsSync(this.dockerComposeCommand)) {
       console.log('Found command: ' + this.dockerComposeCommand);
     } else {
-      console.log('Did NOT find command: ' + this.dockerComposeCommand);
+      console.log('Did not find command: ' + this.dockerComposeCommand);
       process.exit(1);
     }
 
@@ -85,13 +90,58 @@ class ProtractorDockerPlugin implements ProtractorPlugin {
       console.log(`Using exising Skipper Docker tag (SKIPPER_VERSION) '${process.env['SKIPPER_VERSION']}'`);
     }
 
-    let stdout = cp.execSync(this.dockerComposeCommand + ' -f ' + this.destinationFilePath + ' up -d');
-    console.log('Docker startup command result:' + stdout);
-    await this.sleep(dockerComposeWaitTime);
-    console.log(`Waited for ${ dockerComposeWaitTime } seconds`);
+    const dockerComposeCommand = this.dockerComposeCommand + ' -f ' + this.destinationFilePath + ' up -d';
+    console.log('Docker Compose command: ' + dockerComposeCommand);
+    cp.exec(dockerComposeCommand);
+
+    process.chdir(".docker");
+    console.log('.docker directory: ' + cp.execSync('ls -al'));
+    let isUp: boolean = await this.isDataFlowUp();
+    console.log(`Waited for ${ dockerComposeWaitTime } seconds and SCDF process is up: ` + isUp);
+    process.chdir("..");
+
+    // Docker Container is up but SCDF has not started yet
+    // We may need to implement a better health-check in the Docker image
+    await browser.sleep(60000);
   }
 
+  async isDataFlowUp() : Promise<boolean> {
+    const localThis = this;
+    return await new Promise<boolean>(resolve => {
+      let timeout = setTimeout(async function timeOutFunction() {
+          const isUp = doCheck();
+          console.log('Is Docker up? ' + isUp);
+          console.log('Docker Compose processes: ' + cp.execSync('docker-compose ps'));
+          if (!isUp) {
+              timeout = setTimeout(timeOutFunction, 2000);
+          }
+          else {
+              resolve(true);
+          }
+      }, 2000);
+
+      setTimeout(() => {
+          console.log('Cancelling Data Flow Server check.');
+          clearTimeout(timeout);
+          resolve(false);
+      }, 500000);
+
+      function doCheck() : boolean {
+          try {
+            cp.execSync(localThis.dockerComposeCommand + ' exec -T dataflow-server echo "Data Flow Server is up"');
+            return true;
+          } 
+          catch (error) {
+            return false;
+          }
+      }
+  })
+
+  }
   public teardown() {
+    if (process.env['DATAFLOW_SKIP_DOCKER_COMPOSE'] === 'true') {
+      return;
+    }
     const shutdownCommand = this.dockerComposeCommand + ' -f ' + this.destinationFilePath + ' stop';
     console.log('Shutting down Docker images: ' + shutdownCommand);
     let stdout = cp.execSync(shutdownCommand);

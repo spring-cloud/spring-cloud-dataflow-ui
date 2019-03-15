@@ -1,4 +1,5 @@
-import { browser, by, element, protractor } from 'protractor';
+import { browser, by, element, protractor, ElementFinder } from 'protractor';
+import { ElementHelper } from '../utils/element-helpers';
 
 /**
  * E2E Page Object for apps page.
@@ -20,16 +21,22 @@ export class AppsPage {
    * Retrieves text of the title for the page.
    * @returns {any}
    */
-  getHeaderText() {
-    return element(by.css('app-page-head-title h1')).getText();
+  async getHeaderText() {
+    return element(await ElementHelper.getElementOrWait(by.css('app-page-head-title h1'))).getText();
+  }
+
+  async getSecondHeaderText() {
+    return element.all(await ElementHelper.getElementOrWait(by.css('app-page-head-title h1'))).get(1).getText();
   }
 
   /**
    * Get the empty box
    * @returns {ElementFinder}
    */
-  getEmpty() {
-    return element(by.css('#empty'));
+  async getEmpty() : Promise<ElementFinder> {
+    const e = await ElementHelper.getElementOrWait(by.css('#empty'));
+    console.log('eeeee', e);
+    return element(e);
   }
 
   /**
@@ -44,8 +51,15 @@ export class AppsPage {
    * Get all the rows of the table
    * @returns {ElementArrayFinder}
    */
-  getTableRows() {
+  getTableRows() : any | ElementFinder[] {
+    const e = ElementHelper.getElementOrWait(by.css('#table tbody tr'));
+    return e;
     return element.all(by.css('#table tbody tr'));
+  }
+
+  async getTableRowCount() : Promise<number> {
+    const e = await ElementHelper.getElementOrWait(by.css('#table tbody tr'));
+    return element.all(e).count();
   }
 
   /**
@@ -62,15 +76,13 @@ export class AppsPage {
   /**
    * Unregister all the applications of the table
    */
-  setUnregisters() {
-    element(by.css(`app-master-checkbox input`)).click();
-    browser.sleep(200);
-    element(by.css(`#dropdown-actions button`)).click();
-    browser.sleep(100);
-    element(by.css(`#unregister-apps`)).click();
-    browser.sleep(100);
-    element(by.name(`app-unregister`)).click();
-    browser.sleep(100);
+  async setUnregisters() {
+    await ElementHelper.waitForSpinners();
+    await ElementHelper.clickElement(by.css(`app-master-checkbox input`), false, undefined);
+    await ElementHelper.clickElement(by.css(`#dropdown-actions button`), false, undefined);
+    await ElementHelper.clickElement(by.css(`#unregister-apps`), false, undefined);
+    await ElementHelper.clickElement(by.name(`app-unregister`), false, undefined);
+    await ElementHelper.waitForSpinners();
   }
 
   /**

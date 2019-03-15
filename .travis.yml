@@ -1,6 +1,8 @@
 sudo: required
 services:
   - docker
+env:
+  - DOCKER_COMPOSE_VERSION=1.23.2
 cache:
   directories:
     - $HOME/.m2
@@ -8,6 +10,11 @@ dist: trusty
 language: java
 before_install:
   - nvm install 9.5.0
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  
 addons:
   chrome: stable
   hosts:
@@ -34,12 +41,13 @@ jobs:
     - script: ./run-npm-test-browserstack.sh
       if: type != pull_request
       after_success: skip
-#    - stage: E2E Local + SauceLabs + BrowserStack
-#      script: ./run-npm-e2e-local.sh
-#      after_success: skip
-#    - script: ./run-npm-e2e-saucelabs.sh
-#      if: type != pull_request
-#      after_success: skip
-#    - script: ./run-npm-e2e-browserstack.sh
-#      if: type != pull_request
-#      after_success: skip
+    - stage: E2E Local + SauceLabs + BrowserStack
+      script: ./run-npm-e2e-local.sh
+      after_success: skip
+    - script: ./run-npm-e2e-saucelabs.sh
+      if: type != pull_request
+      after_success: skip
+    - script: ./run-npm-e2e-browserstack.sh
+      if: type != pull_request
+      after_success: skip
+

@@ -8,13 +8,15 @@ exports.config = {
     {
       path: '../protractor-docker-plugin/index.js',
       dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server/docker-compose.yml',
-      useCachedoDockerComposeFile: true
+      useCachedoDockerComposeFile: true,
+      dockerComposeWaitTime: 512000
     }
   ],
   allScriptsTimeout: 110000,
   specs: [
     './src/**/*.e2e-spec.ts'
   ],
+  SELENIUM_PROMISE_MANAGER: false,
   capabilities: {
     'browserName': 'chrome',
     chromeOptions: {
