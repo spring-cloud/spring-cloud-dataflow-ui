@@ -9,7 +9,7 @@ console.log('Use embedded Sauce Connect client?: ' + useEmbeddedSauceConnect);
 exports.config = {
 
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 5000000
+    defaultTimeoutInterval: 500000
   },
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
@@ -17,26 +17,37 @@ exports.config = {
     {
       path: '../protractor-docker-plugin/index.js',
       dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
-      useCachedoDockerComposeFile: true
+      useCachedoDockerComposeFile: true,
+      dockerComposeWaitTime: 512000
     }
   ],
   multiCapabilities: [
     {
-      name: 'E2E Safari/Mac',
-      browserName: 'safari',
-      platform: 'macOS 10.13'
+      name: 'E2E Chrome/Mac',
+      browserName: 'chrome',
+      version: '73.0',
+      platform: 'Windows 10',
+      idleTimeout: 512
     },
     {
-      name: 'E2E Edge/Win10',
-      browserName: 'MicrosoftEdge',
-      platform: 'Windows 10',
+      name: 'E2E Safari/Mac',
+      browserName: 'safari',
+      platform: 'macOS 10.13',
+      idleTimeout: 512
     }
+    // {
+    //   name: 'E2E Edge/Win10',
+    //   browserName: 'MicrosoftEdge',
+    //   platform: 'Windows 10',
+    //   idleTimeout: 512
+    // }
   ],
   maxSessions: 1,
   allScriptsTimeout: 160000,
   specs: [
     './src/**/*.e2e-spec.ts'
   ],
+  SELENIUM_PROMISE_MANAGER: false,
   directConnect: false,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',
@@ -48,7 +59,7 @@ exports.config = {
   },
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: 300000,
     print: function() {}
   },
   onPrepare() {

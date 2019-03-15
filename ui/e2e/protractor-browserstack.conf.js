@@ -6,7 +6,7 @@ const browserstack = require('browserstack-local');
 
 exports.config = {
   jasmineNodeOpts: {
-    defaultTimeoutInterval: 5000000
+    defaultTimeoutInterval: 50000000
   },
   seleniumAddress: 'https://hub-cloud.browserstack.com/wd/hub',
   commonCapabilities: {
@@ -14,13 +14,15 @@ exports.config = {
     'browserstack.user': process.env.BROWSER_STACK_USERNAME,
     'browserstack.key':  process.env.BROWSER_STACK_ACCESS_KEY,
     'browserstack.local': true,
-    'browserstack.debug': true
+    'browserstack.debug': true,
+    'browserstack.idleTimeout': 512
   },
   plugins: [
     {
       path: '../protractor-docker-plugin/index.js',
       dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
-      useCachedoDockerComposeFile: true
+      useCachedoDockerComposeFile: true,
+      dockerComposeWaitTime: 512000
     }
   ],
   multiCapabilities: [
@@ -28,21 +30,22 @@ exports.config = {
       os: 'Windows',
       os_version: '10',
       browserName: 'Chrome',
-      browser_version: '62.0',
+      browser_version: '73.0',
       resolution: '1024x768'
-    },
-    {
-      os: 'Windows',
-      os_version: '10',
-      browserName: 'Edge',
-      browser_version: '16.0'
     }
+    // {
+    //   os: 'Windows',
+    //   os_version: '10',
+    //   browserName: 'Edge',
+    //   browser_version: '16.0'
+    // }
   ],
   maxSessions: 1,
   allScriptsTimeout: 160000,
   specs: [
     './src/**/*.e2e-spec.ts'
   ],
+  SELENIUM_PROMISE_MANAGER: false,
   directConnect: false,
   baseUrl: 'http://localhost:4200/',
   framework: 'jasmine',

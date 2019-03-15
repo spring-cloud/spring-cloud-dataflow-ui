@@ -1,9 +1,11 @@
 #!/bin/bash
 set -ev
 cd ui
+mkdir .docker
+cd .docker
+curl -O https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v$DATAFLOW_VERSION/spring-cloud-dataflow-server/docker-compose.yml
+docker-compose up --no-start
+cd ..
 npm install
-pwd
-ls -al
-ls -al e2e
 npm run e2e
 cd ..

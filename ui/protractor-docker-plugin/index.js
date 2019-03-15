@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const protractor_1 = require("protractor");
 const requestPromise = require("request-promise-native");
 const fs = require("fs");
 const cp = require("child_process");
@@ -17,15 +18,19 @@ class ProtractorDockerPlugin {
         this.destinationFileName = 'docker-compose.yml';
         this.destinationFilePath = '.docker/' + this.destinationFileName;
         this.dockerComposeCommand = 'docker-compose';
-        this.defaultDataflowDockerTag = 'latest';
-        this.defaultSkipperDockerTag = '2.0.0.BUILD-SNAPSHOT';
+        this.defaultDataflowDockerTag = '2.1.0.BUILD-SNAPSHOT';
+        this.defaultSkipperDockerTag = '2.0.2.RC1';
     }
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
+            if (process.env['DATAFLOW_SKIP_DOCKER_COMPOSE'] === 'true') {
+                console.log('Skipping Docker Compose Setup of Spring Cloud Dataflow.');
+                return;
+            }
             console.log('Setting up Docker Compose…');
-            let dockerComposeWaitTime = 30000;
+            let dockerComposeWaitTime = 180000;
             let useCachedoDockerComposeFile = true;
-            let dockerComposeUri = 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/' + this.destinationFileName;
+            let dockerComposeUri = 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server/' + this.destinationFileName;
             const commandExistsSync = require('command-exists');
             if (!this.config.dockerComposeUri) {
                 console.error('Please specify the dockerComposeUri property.');
@@ -68,7 +73,7 @@ class ProtractorDockerPlugin {
                 console.log('Found command: ' + this.dockerComposeCommand);
             }
             else {
-                console.log('Did NOT find command: ' + this.dockerComposeCommand);
+                console.log('Did not find command: ' + this.dockerComposeCommand);
                 process.exit(1);
             }
             if (!process.env['DATAFLOW_VERSION']) {
@@ -85,13 +90,57 @@ class ProtractorDockerPlugin {
             else {
                 console.log(`Using exising Skipper Docker tag (SKIPPER_VERSION) '${process.env['SKIPPER_VERSION']}'`);
             }
-            let stdout = cp.execSync(this.dockerComposeCommand + ' -f ' + this.destinationFilePath + ' up -d');
-            console.log('Docker startup command result:' + stdout);
-            yield this.sleep(dockerComposeWaitTime);
-            console.log(`Waited for ${dockerComposeWaitTime} seconds`);
+            const dockerComposeCommand = this.dockerComposeCommand + ' -f ' + this.destinationFilePath + ' up -d';
+            console.log('Docker Compose command: ' + dockerComposeCommand);
+            cp.exec(dockerComposeCommand);
+            process.chdir(".docker");
+            console.log('.docker directory: ' + cp.execSync('ls -al'));
+            let isUp = yield this.isDataFlowUp();
+            console.log(`Waited for ${dockerComposeWaitTime} seconds and SCDF process is up: ` + isUp);
+            process.chdir("..");
+            // Docker Container is up but SCDF has not started yet
+            // We may need to implement a better health-check in the Docker image
+            yield protractor_1.browser.sleep(60000);
+        });
+    }
+    isDataFlowUp() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const localThis = this;
+            return yield new Promise(resolve => {
+                let timeout = setTimeout(function timeOutFunction() {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        const isUp = doCheck();
+                        console.log('Is Docker up? ' + isUp);
+                        console.log('Docker Compose processes: ' + cp.execSync('docker-compose ps'));
+                        if (!isUp) {
+                            timeout = setTimeout(timeOutFunction, 2000);
+                        }
+                        else {
+                            resolve(true);
+                        }
+                    });
+                }, 2000);
+                setTimeout(() => {
+                    console.log('Cancelling Data Flow Server check.');
+                    clearTimeout(timeout);
+                    resolve(false);
+                }, 500000);
+                function doCheck() {
+                    try {
+                        cp.execSync(localThis.dockerComposeCommand + ' exec -T dataflow-server echo "Data Flow Server is up"');
+                        return true;
+                    }
+                    catch (error) {
+                        return false;
+                    }
+                }
+            });
         });
     }
     teardown() {
+        if (process.env['DATAFLOW_SKIP_DOCKER_COMPOSE'] === 'true') {
+            return;
+        }
         const shutdownCommand = this.dockerComposeCommand + ' -f ' + this.destinationFilePath + ' stop';
         console.log('Shutting down Docker images: ' + shutdownCommand);
         let stdout = cp.execSync(shutdownCommand);

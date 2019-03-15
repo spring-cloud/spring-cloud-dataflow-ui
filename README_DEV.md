@@ -82,6 +82,15 @@ $ npm run test-browserstack-local
 $ npm run e2e-browserstack-local
 ```
 
+⚠️ **E2E Tests**
+
+When executing E2E tests you can either run a local Docker environment using the Spring Cloud Data Flow provided [Docker Compose yaml file](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server/docker-compose.yml) or, alternatively, have Protractor bootstrap Docker for you (Docker needs to be running and the [Docker Compose](https://docs.docker.com/compose/) command needs to be available in the path).
+
+When using Docker Compose manually, set the environment variable `DATAFLOW_SKIP_DOCKER_COMPOSE` to `true`. For both options you also need to specify the respective Docker version tags for [Spring Cloud Data Flow](https://hub.docker.com/r/springcloud/spring-cloud-dataflow-server/tags) and [Spring Cloud Skipper](https://hub.docker.com/r/springcloud/spring-cloud-skipper-server/tags) using the environment variables:
+
+- `DATAFLOW_VERSION`
+- `SKIPPER_VERSION`
+
 ### Build fails after merging a branch or changing branches
 
 In some cases the npm-modules or other dependencies may become inconsistent during branch changes.
