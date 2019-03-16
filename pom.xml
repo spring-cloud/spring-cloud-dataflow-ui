@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.springframework.cloud</groupId>
@@ -8,15 +8,15 @@
 	<packaging>jar</packaging>
 	<name>Spring Cloud Data Flow User Interface</name>
 	<description>This application provides the Dashboard application of Spring Cloud Data Flow.</description>
-	<url>http://cloud.spring.io/spring-cloud-dataflow/</url>
+	<url>https://cloud.spring.io/spring-cloud-dataflow/</url>
 	<organization>
 		<name>Pivotal Software, Inc.</name>
-		<url>http://www.spring.io</url>
+		<url>https://www.spring.io</url>
 	</organization>
 	<licenses>
 	  <license>
 	    <name>The Apache License, Version 2.0</name>
-	    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	    <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
 	  </license>
 	</licenses>
 	<scm>
@@ -31,7 +31,7 @@
 			<name>Gunnar Hillert</name>
 			<email>ghillert at pivotal.io</email>
 			<organization>Pivotal Software, Inc.</organization>
-			<organizationUrl>http://www.spring.io</organizationUrl>
+			<organizationUrl>https://www.spring.io</organizationUrl>
 			<roles>
 				<role>Project lead</role>
 			</roles>
@@ -41,7 +41,7 @@
 			<name>Ilayaperumal Gopinathan</name>
 			<email>ilayaperumalg at pivotal.io</email>
 			<organization>Pivotal Software, Inc.</organization>
-			<organizationUrl>http://www.spring.io</organizationUrl>
+			<organizationUrl>https://www.spring.io</organizationUrl>
 			<roles>
 				<role>Project lead</role>
 			</roles>
@@ -51,7 +51,7 @@
 			<name>Andy Clement</name>
 			<email>aclement at pivotal.io</email>
 			<organization>Pivotal Software, Inc.</organization>
-			<organizationUrl>http://www.spring.io</organizationUrl>
+			<organizationUrl>https://www.spring.io</organizationUrl>
 			<roles>
 				<role>Project lead</role>
 			</roles>
@@ -61,7 +61,7 @@
 			<name>Alex Boyko</name>
 			<email>aboyko at pivotal.io</email>
 			<organization>Pivotal Software, Inc.</organization>
-			<organizationUrl>http://www.spring.io</organizationUrl>
+			<organizationUrl>https://www.spring.io</organizationUrl>
 			<roles>
 				<role>Project lead</role>
 			</roles>
@@ -173,7 +173,7 @@
 				</repository>
 				<repository>
 					<id>clojars.org</id>
-					<url>http://clojars.org/repo</url>
+					<url>https://clojars.org/repo</url>
 				</repository>
 			</repositories>
 		</profile>
