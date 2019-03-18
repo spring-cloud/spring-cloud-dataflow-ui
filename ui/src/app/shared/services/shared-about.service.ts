@@ -19,7 +19,7 @@ export class SharedAboutService {
 
   public aboutUrl = '/about';
   public featureInfo;
-  public featureInfoSubject = new Subject<FeatureInfo>();
+  public featureInfoSubject = new BehaviorSubject<FeatureInfo>(undefined);
 
   public aboutInfo: AboutInfo;
   public aboutInfo$ = new BehaviorSubject<AboutInfo>(undefined);
