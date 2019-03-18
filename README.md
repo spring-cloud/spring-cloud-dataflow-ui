@@ -6,15 +6,6 @@
 </p>
 
 <p align="center">
-  <a href="http://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
-    <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready"
-         alt="Stories in Ready">
-  </a>
-  <a href="http://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
-    <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress"
-         alt="Stories in Progress">
-  </a>
-  <br />
   <a href="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui">
     <img src="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui.png?branch=master"
          alt="Build Status">
