@@ -17,12 +17,12 @@
       <div class="form-group" [class.has-error]="form.get('uri').invalid && submitted">
         <label for="uriInput" class="control-label">URI: <em class="required">*</em></label>
         <input type="text" id="uriInput" name="uri" autofocus formControlName="uri" class="form-control"
-               placeholder="http://url.to.properties"
+               placeholder="https://url.to.properties"
                [dataflowFocus]="true">
         <span class="help-block" *ngIf="form.get('uri').invalid && submitted">
           Please provide a valid URI pointing to the respective properties file.
         </span>
-        <span class="help-block">e.g. http://bit.ly/Celsius-BUILD-SNAPSHOT-stream-applications-kafka-10-maven</span>
+        <span class="help-block">e.g. https://bit.ly/Celsius-BUILD-SNAPSHOT-stream-applications-kafka-10-maven</span>
       </div>
       <div class="form-group">
         <label class="checkbox-inline">

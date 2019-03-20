@@ -112,7 +112,7 @@ describe('AppsBulkImportUriComponent', () => {
       };
       const spy = spyOn(appsService, 'bulkImportApps').and.callThrough();
       [
-        { uri: 'http://foo.ly/foo-bar-foo', force: false }
+        { uri: 'https://foo.ly/foo-bar-foo', force: false }
       ].forEach((a) => {
         component.form.get('uri').setValue(a.uri);
         component.form.get('force').setValue(a.force);
@@ -133,7 +133,7 @@ describe('AppsBulkImportUriComponent', () => {
   it('should display a toast after a success import', () => {
     spyOn(router, 'navigateByUrl');
 
-    component.form.get('uri').setValue('http://foo.ly/foo-bar-foo');
+    component.form.get('uri').setValue('https://foo.ly/foo-bar-foo');
     component.submit();
     fixture.detectChanges();
     expect(notificationService.testSuccess[0]).toContain('Apps Imported');
