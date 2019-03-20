@@ -1,16 +1,16 @@
 ﻿
 <p align="center">
   <a href="https://cloud.spring.io/spring-cloud-dataflow/">
-    <img alt="Spring Data Flow Dashboard" title="Spring Data Flow Dashboard" src="http://i.imgur.com/ZfEGBE4.png" width="450">
+    <img alt="Spring Data Flow Dashboard" title="Spring Data Flow Dashboard" src="https://i.imgur.com/ZfEGBE4.png" width="450">
   </a>
 </p>
 
 <p align="center">
-  <a href="http://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
+  <a href="https://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
     <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready"
          alt="Stories in Ready">
   </a>
-  <a href="http://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
+  <a href="https://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
     <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress"
          alt="Stories in Progress">
   </a>
@@ -45,7 +45,7 @@
 
 ## Introduction
 
-This is the **Spring Cloud Data Flow Dashboard** user interface (UI). The UI uses [Angular][]. **Source code documentation** is available at http://cloud.spring.io/spring-cloud-dataflow-ui/.
+This is the **Spring Cloud Data Flow Dashboard** user interface (UI). The UI uses [Angular][]. **Source code documentation** is available at https://cloud.spring.io/spring-cloud-dataflow-ui/.
 
 > The Git repository for the main **Spring Cloud Data Flow** project is at: https://github.com/spring-cloud/spring-cloud-dataflow
 
@@ -116,13 +116,13 @@ This project uses code from several open source packages:
 
 This project is powered by:
 
-<a href="http://pivotal.io/"><img alt="Pivotal" width="136" title="Pivotal" src="https://i.imgur.com/XPeBw7A.png"></a> <a href="http://spring.io/"><img alt="Spring" title="Spring" src="https://i.imgur.com/az8Xady.png" width="155"></a>
+<a href="https://pivotal.io/"><img alt="Pivotal" width="136" title="Pivotal" src="https://i.imgur.com/XPeBw7A.png"></a> <a href="https://spring.io/"><img alt="Spring" title="Spring" src="https://i.imgur.com/az8Xady.png" width="155"></a>
 
-[Angular]: http://angular.io/
+[Angular]: https://angular.io/
 [Angular CLI]: https://cli.angular.io/
 [frontend-maven-plugin]: https://github.com/eirslett/frontend-maven-plugin
 [Git]: https://git-scm.com/
-[Maven]: http://maven.apache.org/
-[Node.js]: http://nodejs.org/
+[Maven]: https://maven.apache.org/
+[Node.js]: https://nodejs.org/
 [npm]: https://www.npmjs.com/
 [Protractor]: https://github.com/angular/protractor

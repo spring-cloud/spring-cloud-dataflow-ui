@@ -745,7 +745,7 @@ xdescribe('E2E spec for apps page', () => {
 
   /**
    * Bulk import applications
-   * - should import 59 applications (uri: http://bit.ly/Bacon-RELEASE-stream-applications-kafka-10-maven)
+   * - should import 59 applications (uri: https://bit.ly/Bacon-RELEASE-stream-applications-kafka-10-maven)
    * - should destroy all the applications
    */
   describe('Bulk import applications', () => {
@@ -754,7 +754,7 @@ xdescribe('E2E spec for apps page', () => {
       pageApps.getEmpty().all(by.css('button')).last().click();
       browser.sleep(TICK_DELAY);
       expect(pageBulkImportUriApps.getSubmit().getAttribute('disabled')).toEqual('true');
-      pageBulkImportUriApps.setUri('http://bit.ly/Bacon-RELEASE-stream-applications-kafka-10-maven');
+      pageBulkImportUriApps.setUri('https://bit.ly/Bacon-RELEASE-stream-applications-kafka-10-maven');
       expect(pageBulkImportUriApps.getSubmit().getAttribute('disabled')).toBeFalsy();
       pageBulkImportUriApps.getSubmit().click();
       browser.wait(() => {

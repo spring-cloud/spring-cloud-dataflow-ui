@@ -86,7 +86,7 @@ describe('AppsService', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
 
-      const appRegistrationImport = {force: true, properties: [], uri: 'http://blubba'};
+      const appRegistrationImport = {force: true, properties: [], uri: 'https://blubba'};
       this.mockHttp.post.and.returnValue(of(true));
       this.appsService.bulkImportApps(appRegistrationImport);
 
@@ -96,7 +96,7 @@ describe('AppsService', () => {
       expect(httpUri).toEqual('/apps');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
-      expect(httpParams.get('uri')).toEqual('http://blubba');
+      expect(httpParams.get('uri')).toEqual('https://blubba');
       expect(httpParams.get('apps')).toEqual('');
       expect(httpParams.get('force')).toEqual('true');
     });
@@ -106,7 +106,7 @@ describe('AppsService', () => {
   describe('unregisterApp', () => {
 
     it('should call the apps service with the right url to unregister a single app', () => {
-      const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://somewhere');
+      const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'https://somewhere');
       this.mockHttp.delete.and.returnValue(of(this.jsonData));
       this.appsService.unregisterApp(appRegistration);
 
@@ -125,12 +125,12 @@ describe('AppsService', () => {
     it('should call the apps service with the right url to register a single app', () => {
       const httpHeaders = HttpUtils.getDefaultHttpHeaders();
       const params = new HttpParams()
-        .append('uri', 'http://blubba')
+        .append('uri', 'https://blubba')
         .append('force', 'true');
 
       this.mockHttp.post.and.returnValue(of(true));
 
-      const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'http://blubba');
+      const appRegistration = new AppRegistration('blubba', ApplicationType.source, 'https://blubba');
       appRegistration.force = true;
 
       this.appsService.registerApp(appRegistration);
@@ -141,7 +141,7 @@ describe('AppsService', () => {
       expect(httpUri).toEqual('/apps/source/blubba');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
-      expect(httpParams.get('uri')).toEqual('http://blubba');
+      expect(httpParams.get('uri')).toEqual('https://blubba');
       expect(httpParams.get('force')).toEqual('true');
 
     });
@@ -151,12 +151,12 @@ describe('AppsService', () => {
     it('should call the apps service with the right url to register multiple apps', () => {
       const httpHeaders1 = HttpUtils.getDefaultHttpHeaders();
       const params1 = new HttpParams()
-        .append('uri', 'http://foo.bar')
+        .append('uri', 'https://foo.bar')
         .append('force', 'false');
 
       const httpHeaders2 = HttpUtils.getDefaultHttpHeaders();
       const params2 = new HttpParams()
-        .append('uri', 'http://bar.foo')
+        .append('uri', 'https://bar.foo')
         .append('force', 'false');
 
       this.mockHttp.post.and.returnValue(of(true));
@@ -164,13 +164,13 @@ describe('AppsService', () => {
         {
           name: 'foo',
           type: ApplicationType.source,
-          uri: 'http://foo.bar',
+          uri: 'https://foo.bar',
           force: false
         },
         {
           name: 'bar',
           type: ApplicationType.sink,
-          uri: 'http://bar.foo',
+          uri: 'https://bar.foo',
           force: false
         }
       ];
@@ -188,13 +188,13 @@ describe('AppsService', () => {
       expect(httpUri1).toEqual('/apps/source/foo');
       expect(headerArgs1.get('Content-Type')).toEqual('application/json');
       expect(headerArgs1.get('Accept')).toEqual('application/json');
-      expect(httpParams1.get('uri')).toEqual('http://foo.bar');
+      expect(httpParams1.get('uri')).toEqual('https://foo.bar');
       expect(httpParams1.get('force')).toEqual('false');
 
       expect(httpUri2).toEqual('/apps/sink/bar');
       expect(headerArgs2.get('Content-Type')).toEqual('application/json');
       expect(headerArgs2.get('Accept')).toEqual('application/json');
-      expect(httpParams2.get('uri')).toEqual('http://bar.foo');
+      expect(httpParams2.get('uri')).toEqual('https://bar.foo');
       expect(httpParams2.get('force')).toEqual('false');
 
       expect(this.mockHttp.post).toHaveBeenCalledTimes(2);
