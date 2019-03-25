@@ -12,6 +12,7 @@ import { LoggerService } from '../shared/services/logger.service';
 import { StreamHistory } from './model/stream-history';
 import { catchError, map } from 'rxjs/operators';
 import { Platform } from '../shared/model/platform';
+import { DataflowEncoder } from '../shared/support/encoder.utils';
 
 /**
  * Provides {@link StreamDefinition} related services.
@@ -105,7 +106,7 @@ export class StreamsService {
    */
   createDefinition(name: string, dsl: string, deploy?: boolean): Observable<HttpResponse<any>> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    let params = new HttpParams()
+    let params = new HttpParams({ encoder: new DataflowEncoder() })
       .append('name', name)
       .append('definition', dsl);
     if (deploy) {

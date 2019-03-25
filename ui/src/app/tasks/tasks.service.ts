@@ -15,6 +15,7 @@ import {
 } from './components/tasks.interface';
 import { HttpResponse } from '@angular/common/http';
 import { Platform, PlatformTask } from '../shared/model/platform';
+import { DataflowEncoder } from '../shared/support/encoder.utils';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -274,7 +275,7 @@ export class TasksService {
    */
   createDefinition(taskCreateParams: TaskCreateParams) {
     this.loggerService.log('Create task definition ' + taskCreateParams.definition + ' ' + taskCreateParams.name);
-    const params = new HttpParams()
+    const params = new HttpParams({ encoder: new DataflowEncoder() })
       .append('definition', taskCreateParams.definition)
       .append('name', taskCreateParams.name);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
