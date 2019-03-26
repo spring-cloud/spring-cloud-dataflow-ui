@@ -121,8 +121,8 @@ describe('AppsBulkImportPropertiesComponent', () => {
         force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
       };
       [
-        { properties: 'foo=http://foo.ly/foo-bar-foo', force: true },
-        { properties: 'foo=http://foo.ly/foo-bar-foo\nbar=http://foo.ly/foo-bar-foo', force: true }
+        { properties: 'foo=https://foo.ly/foo-bar-foo', force: true },
+        { properties: 'foo=https://foo.ly/foo-bar-foo\nbar=https://foo.ly/foo-bar-foo', force: true }
       ].forEach((a) => {
         component.form.get('properties').setValue(a.properties);
         component.form.get('force').setValue(a.force);
@@ -137,7 +137,7 @@ describe('AppsBulkImportPropertiesComponent', () => {
   });
 
   it('should display a toast after a success import', () => {
-    component.form.get('properties').setValue('foo=http://foo.ly/foo-bar-foo');
+    component.form.get('properties').setValue('foo=https://foo.ly/foo-bar-foo');
     component.submit();
     fixture.detectChanges();
     expect(notificationService.testSuccess[0]).toContain('Apps Imported');

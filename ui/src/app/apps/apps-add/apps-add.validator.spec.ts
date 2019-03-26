@@ -21,10 +21,10 @@ describe('AppsAddValidator', () => {
     });
     it('valid', () => {
       [
-        'http://foo.ly/foo',
-        'http://foo.bar:bar.foo-foo:bar-bar',
-        'http://foo.bar/foo.bar&a=a',
-        'http://foo.bar/foo.bar&b=b?a=a'
+        'https://foo.ly/foo',
+        'https://foo.bar:bar.foo-foo:bar-bar',
+        'https://foo.bar/foo.bar&a=a',
+        'https://foo.bar/foo.bar&b=b?a=a'
       ].forEach((mock) => {
         const uri: FormControl = new FormControl(mock);
         expect(AppsAddValidator.uri(uri)).toBeNull();
@@ -44,8 +44,8 @@ describe('AppsAddValidator', () => {
     });
     it('valid', () => {
       [
-        'foo=http://foo.ly/foo',
-        'bar=http://foo.bar:bar.foo-foo:bar-bar',
+        'foo=https://foo.ly/foo',
+        'bar=https://foo.bar:bar.foo-foo:bar-bar',
         'source.user-producer=docker:sabby/user-producer:0.0.1-SNAPSHOT',
         'processor.user-by-region=docker:sabby/user-consumer:0.0.1-SNAPSHOT',
         'app.user-producer-app=docker:sabby/user-producer:0.0.1-SNAPSHOT',

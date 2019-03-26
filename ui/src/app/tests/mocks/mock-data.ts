@@ -993,7 +993,7 @@ export const RUNTIME_APPS = {
                   port: '36395',
                   stderr: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log/stderr_0.log',
                   stdout: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log/stdout_0.log',
-                  url: 'http://127.0.1.1:36395',
+                  url: 'https://127.0.1.1:36395',
                   'working.dir': '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log'
                 },
                 _links: {
@@ -1026,7 +1026,7 @@ export const RUNTIME_APPS = {
                   port: '49401',
                   stderr: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time/stderr_0.log',
                   stdout: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time/stdout_0.log',
-                  url: 'http://127.0.1.1:49401',
+                  url: 'https://127.0.1.1:49401',
                   'working.dir': '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time'
                 },
                 _links: {
@@ -1064,13 +1064,13 @@ export const APPS = {
     {
       name: 'foo',
       type: 'source',
-      uri: 'http://foo.bar:1.0.0',
+      uri: 'https://foo.bar:1.0.0',
       version: '1.0.0',
       defaultVersion: true,
       versions: [
         {
           version: '0.0.1',
-          uri: 'http://foo.bar:0.0.1',
+          uri: 'https://foo.bar:0.0.1',
           defaultVersion: false,
           metadata: [
             { name: 'foo1', description: 'bar1' },
@@ -1079,7 +1079,7 @@ export const APPS = {
         },
         {
           version: '0.0.2',
-          uri: 'http://foo.bar:0.0.2',
+          uri: 'https://foo.bar:0.0.2',
           defaultVersion: false,
           metadata: [
             { name: 'lorem1', description: 'ipsum1' },
@@ -1088,7 +1088,7 @@ export const APPS = {
         },
         {
           version: '1.0.0',
-          uri: 'http://foo.bar:1.0.0',
+          uri: 'https://foo.bar:1.0.0',
           defaultVersion: true,
           metadata: [
             { name: 'set1', description: 'set1' },
@@ -1100,13 +1100,13 @@ export const APPS = {
     {
       name: 'bar',
       type: 'processor',
-      uri: 'http://bar.foo:0.0.1 ',
+      uri: 'https://bar.foo:0.0.1 ',
       version: '0.0.1',
       defaultVersion: true,
       versions: [
         {
           version: '0.0.1',
-          uri: 'http://foo.bar:0.0.1',
+          uri: 'https://foo.bar:0.0.1',
           defaultVersion: true,
           metadata: [
             { name: 'foo1', description: 'bar1' },

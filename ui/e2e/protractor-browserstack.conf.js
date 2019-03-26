@@ -8,7 +8,7 @@ exports.config = {
   jasmineNodeOpts: {
     defaultTimeoutInterval: 5000000
   },
-  seleniumAddress: 'http://hub-cloud.browserstack.com/wd/hub',
+  seleniumAddress: 'https://hub-cloud.browserstack.com/wd/hub',
   commonCapabilities: {
     name: 'Data Flow Dashboard E2E Tests',  
     'browserstack.user': process.env.BROWSER_STACK_USERNAME,

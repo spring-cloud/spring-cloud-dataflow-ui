@@ -170,7 +170,7 @@ describe('AppsComponent', () => {
       sharedAboutService.dataflowVersionInfo.featureInfo.skipperEnabled = false;
       appsService.mock = {
         items: Array.from({ length: 20 }).map((a, i) => {
-          return { name: 'foo' + i, type: 'source', uri: 'http://foo.bar' };
+          return { name: 'foo' + i, type: 'source', uri: 'https://foo.bar' };
         }),
         size: 20,
         totalElements: 30,
@@ -229,7 +229,7 @@ describe('AppsComponent', () => {
     it('should apply a search', () => {
       appsService.mock = {
         items: Array.from({ length: 12 }).map((a, i) => {
-          return { name: 'foo' + i, type: 'task', uri: 'http://foo.bar' };
+          return { name: 'foo' + i, type: 'task', uri: 'https://foo.bar' };
         }),
         size: 20,
         totalElements: 12,
