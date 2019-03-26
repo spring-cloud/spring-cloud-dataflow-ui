@@ -124,7 +124,7 @@ describe('AppDetailsComponent', () => {
       const page: HTMLElement = fixture.debugElement.query(By.css('#app-details')).nativeElement;
       expect(page.textContent).toContain('foo');
       expect(page.textContent).toContain('SOURCE');
-      expect(page.textContent).toContain('http://foo.bar:1.0.0');
+      expect(page.textContent).toContain('https://foo.bar:1.0.0');
     });
 
     it('should display the metadata related to the version', () => {
