@@ -41,7 +41,7 @@
       },
       isIE = (new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null) ? parseFloat(RegExp.$1) : false,
       getClosest = function(el, s) { //el is the element and s the selector of the closest item to find
-      // source http://gomakethings.com/climbing-up-and-down-the-dom-tree-with-vanilla-javascript/
+      // source https://gomakethings.com/climbing-up-and-down-the-dom-tree-with-vanilla-javascript/
       var f = s.charAt(0);
       for (; el && el !== document; el = el.parentNode) { // Get closest match
         if (f === '.') { // If selector is a class

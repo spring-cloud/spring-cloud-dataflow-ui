@@ -1,5 +1,5 @@
 /**
- * @author mrdoob / http://mrdoob.com/
+ * @author mrdoob / https://mrdoob.com/
  */
 
 var EventDispatcher = function () {};
