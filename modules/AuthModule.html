@@ -1,0 +1,2863 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Spring Cloud Data Flow Dashboard Documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	    <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">Spring Cloud Data Flow Dashboard Documentation</a>
+            <button type="button" class="btn btn-default btn-menu fa fa-bars" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <div id="book-search-input" role="search">
+                <input type="text" placeholder="Type to search">
+            </div>
+            <nav>
+            
+                <ul class="list">
+            
+                    <li class="title">
+                        <a href="../index.html">Spring Cloud Data Flow Dashboard Documentation</a>
+                    </li>
+            
+                    <li class="divider"></li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                        <ul class="links">
+                                <li class="link">
+                                    <a 
+                                        
+                                         href="../overview.html" 
+                                         href="../overview.html" 
+                                        >
+                                        <span class="fa fa-th"></span>Overview
+                                    </a>
+                                </li>
+                                <li class="link">
+                                  <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../modules.html" >
+                            <div class="menu-toggler linked" data-toggle="collapse"
+                                    data-target="#xs-modules-links"
+                            >
+                                <span class="fa fa-archive"></span>
+                                <span class="link-name">Modules</span>
+                                <span class="fa fa-angle-down"></span>
+                            </div>
+                        </a>
+                        <ul class="links collapse "
+                                id="xs-modules-links"
+                            >
+                                <li class="link">
+                                    <a href="../modules/AboutModule.html" >AboutModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AboutRoutingModule.html" >AboutRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AppModule.html" >AppModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AppRoutingModule.html" >AppRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AppsModule.html" >AppsModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AppsRoutingModule.html" >AppsRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AuditRecordModule.html" >AuditRecordModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AuditRecordRoutingModule.html" >AuditRecordRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AuthModule.html"  data-type="entity-link" class="active" >AuthModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/AuthRoutingModule.html" >AuthRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/GrafanaModule.html" >GrafanaModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/JobsModule.html" >JobsModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/JobsRoutingModule.html" >JobsRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/LayoutModule.html" >LayoutModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/RuntimeAppsModule.html" >RuntimeAppsModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/RuntimeAppsRoutingModule.html" >RuntimeAppsRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/SharedModule.html" >SharedModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/StreamsModule.html" >StreamsModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/StreamsRoutingModule.html" >StreamsRoutingModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/TasksModule.html" >TasksModule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../modules/TasksRoutingModule.html" >TasksRoutingModule</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-components-links"
+                            >
+                            <span class="fa fa-cogs"></span>
+                            <span>Components</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-components-links"
+                            >
+                                <li class="link">
+                                    <a href="../components/AboutComponent.html" >AboutComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AboutDetailsComponent.html" >AboutDetailsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppComponent.html" >AppComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppDetailsComponent.html" >AppDetailsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppListBarComponent.html" >AppListBarComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppTypeComponent.html" >AppTypeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppVersionLabelComponent.html" >AppVersionLabelComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppVersionsComponent.html" >AppVersionsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppsAddComponent.html" >AppsAddComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppsBulkImportPropertiesComponent.html" >AppsBulkImportPropertiesComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppsBulkImportUriComponent.html" >AppsBulkImportUriComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppsComponent.html" >AppsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppsRegisterComponent.html" >AppsRegisterComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AppsUnregisterComponent.html" >AppsUnregisterComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AuditRecordActionComponent.html" >AuditRecordActionComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AuditRecordComponent.html" >AuditRecordComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AuditRecordDetailsComponent.html" >AuditRecordDetailsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AuditRecordListBarComponent.html" >AuditRecordListBarComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AuditRecordOperationComponent.html" >AuditRecordOperationComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/AuthenticationRequiredComponent.html" >AuthenticationRequiredComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/BlockerComponent.html" >BlockerComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/BodyComponent.html" >BodyComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ConfirmComponent.html" >ConfirmComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/DecorationComponent.html" >DecorationComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/DefinitionStatusComponent.html" >DefinitionStatusComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/DeploymentPropertiesComponent.html" >DeploymentPropertiesComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/DeploymentPropertiesInfoComponent.html" >DeploymentPropertiesInfoComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/FeatureDisabledComponent.html" >FeatureDisabledComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/GraphViewComponent.html" >GraphViewComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/HandleComponent.html" >HandleComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/HttpLoaderComponent.html" >HttpLoaderComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/InstanceDotComponent.html" >InstanceDotComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/JobExecutionDetailsComponent.html" >JobExecutionDetailsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/JobExecutionStatusComponent.html" >JobExecutionStatusComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/JobsComponent.html" >JobsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/KvRichTextComponent.html" >KvRichTextComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ListBarComponent.html" >ListBarComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ListEmptyComponent.html" >ListEmptyComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ListNoResultComponent.html" >ListNoResultComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ListPaginationComponent.html" >ListPaginationComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/ListRowActionsComponent.html" >ListRowActionsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LoaderComponent.html" >LoaderComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LogoComponent.html" >LogoComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/LogoutComponent.html" >LogoutComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/MasterCheckboxComponent.html" >MasterCheckboxComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/MessageRateComponent.html" >MessageRateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/NavigationComponent.html" >NavigationComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/NavigationSearchComponent.html" >NavigationSearchComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/NodeComponent.html" >NodeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/NodeComponent.html" >NodeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PageActionsComponent.html" >PageActionsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PageComponent.html" >PageComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PageHeadActionsComponent.html" >PageHeadActionsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PageHeadBackComponent.html" >PageHeadBackComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PageHeadComponent.html" >PageHeadComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PageHeadSubtitleComponent.html" >PageHeadSubtitleComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PageHeadTitleComponent.html" >PageHeadTitleComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PagerComponent.html" >PagerComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/PropertiesDialogComponent.html" >PropertiesDialogComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/RolesMissingComponent.html" >RolesMissingComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/RuntimeAppComponent.html" >RuntimeAppComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/RuntimeAppStateComponent.html" >RuntimeAppStateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/RuntimeAppsComponent.html" >RuntimeAppsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/SidebarComponent.html" >SidebarComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/SortComponent.html" >SortComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StepExecutionDetailsComponent.html" >StepExecutionDetailsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StepExecutionProgressComponent.html" >StepExecutionProgressComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamComponent.html" >StreamComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamCreateComponent.html" >StreamCreateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamCreateDialogComponent.html" >StreamCreateDialogComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamDeployAppPropertiesComponent.html" >StreamDeployAppPropertiesComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamDeployBuilderComponent.html" >StreamDeployBuilderComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamDeployBuilderErrorsComponent.html" >StreamDeployBuilderErrorsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamDeployComponent.html" >StreamDeployComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamDeployFreeTextComponent.html" >StreamDeployFreeTextComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamDeployPropertiesDebugComponent.html" >StreamDeployPropertiesDebugComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamDslComponent.html" >StreamDslComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamGraphComponent.html" >StreamGraphComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamGraphDefinitionComponent.html" >StreamGraphDefinitionComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamHistoryComponent.html" >StreamHistoryComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamHistoryStatusComponent.html" >StreamHistoryStatusComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamPropertiesDialogComponent.html" >StreamPropertiesDialogComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamStatusComponent.html" >StreamStatusComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamSummaryComponent.html" >StreamSummaryComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamsComponent.html" >StreamsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamsDeployComponent.html" >StreamsDeployComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamsDestroyComponent.html" >StreamsDestroyComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/StreamsUndeployComponent.html" >StreamsUndeployComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TabComponent.html" >TabComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TabsComponent.html" >TabsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskDefinitionComponent.html" >TaskDefinitionComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskDefinitionCreateComponent.html" >TaskDefinitionCreateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskDefinitionCreateDialogComponent.html" >TaskDefinitionCreateDialogComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskDefinitionExecutionsComponent.html" >TaskDefinitionExecutionsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskDefinitionScheduleComponent.html" >TaskDefinitionScheduleComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskDefinitionsComponent.html" >TaskDefinitionsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskDefinitionsDestroyComponent.html" >TaskDefinitionsDestroyComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskExecutionComponent.html" >TaskExecutionComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskExecutionsComponent.html" >TaskExecutionsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskGraphComponent.html" >TaskGraphComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskGraphViewComponent.html" >TaskGraphViewComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskLaunchComponent.html" >TaskLaunchComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskPropertiesDialogComponent.html" >TaskPropertiesDialogComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskScheduleComponent.html" >TaskScheduleComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskScheduleCreateComponent.html" >TaskScheduleCreateComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskScheduleSummaryComponent.html" >TaskScheduleSummaryComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskSchedulesComponent.html" >TaskSchedulesComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskSchedulesDestroyComponent.html" >TaskSchedulesDestroyComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskStatusComponent.html" >TaskStatusComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TaskSummaryComponent.html" >TaskSummaryComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TasksComponent.html" >TasksComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TasksTabulationComponent.html" >TasksTabulationComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../components/TruncatorComponent.html" >TruncatorComponent</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-directives-links"
+                            >
+                            <span class="fa fa-code"></span>
+                            <span>Directives</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-directives-links"
+                            >
+                                <li class="link">
+                                    <a href="../directives/AutoResizeDirective.html" >AutoResizeDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/CapsLockDirective.html" >CapsLockDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/FocusDirective.html" >FocusDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/LayoutTypeDirective.html" >LayoutTypeDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/RolesDirective.html" >RolesDirective</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../directives/TruncatorWidthProviderDirective.html" >TruncatorWidthProviderDirective</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-classes-links"
+                            >
+                            <span class="fa fa-file-code-o"></span>
+                            <span>Classes</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-classes-links"
+                            >
+                                <li class="link">
+                                    <a href="../classes/AboutInfo.html" >AboutInfo</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AboutPage.html" >AboutPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppDetailsPage.html" >AppDetailsPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppError.html" >AppError</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppInfo.html" >AppInfo</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppInfoOptions.html" >AppInfoOptions</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppMetadata.html" >AppMetadata</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppPropertiesSource.html" >AppPropertiesSource</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppPropertyMetadata.html" >AppPropertyMetadata</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppRegistration.html" >AppRegistration</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppVersion.html" >AppVersion</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppVersionsModal.html" >AppVersionsModal</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppsAddValidator.html" >AppsAddValidator</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppsBulkImportUriPage.html" >AppsBulkImportUriPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppsPage.html" >AppsPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppsRegisterPage.html" >AppsRegisterPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AppsRegisterValidator.html" >AppsRegisterValidator</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AuditActionType.html" >AuditActionType</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AuditOperationType.html" >AuditOperationType</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/AuditRecord.html" >AuditRecord</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/BaseShapeComponent.html" >BaseShapeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ConfigurationMetadataProperty.html" >ConfigurationMetadataProperty</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/CountDetails.html" >CountDetails</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/DateTimeUtils.html" >DateTimeUtils</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Dependency.html" >Dependency</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/DeployedAppProperties.html" >DeployedAppProperties</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Deprecation.html" >Deprecation</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/DetailedAppRegistration.html" >DetailedAppRegistration</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ElementComponent.html" >ElementComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ErrorHandler.html" >ErrorHandler</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ExecutionContext.html" >ExecutionContext</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/FeatureInfo.html" >FeatureInfo</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/GrafanaInfo.html" >GrafanaInfo</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Graph.html" >Graph</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/GraphNodePropertiesSource.html" >GraphNodePropertiesSource</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/GraphToTextConverter.html" >GraphToTextConverter</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/HttpAppError.html" >HttpAppError</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/HttpUtils.html" >HttpUtils</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/InstanceStatus.html" >InstanceStatus</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/InternalParser.html" >InternalParser</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/JobExecution.html" >JobExecution</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/JobsPage.html" >JobsPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/KeyValuePair.html" >KeyValuePair</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/KvRichTextValidator.html" >KvRichTextValidator</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Link.html" >Link</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockAboutService.html" >MockAboutService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockActivatedRoute.html" >MockActivatedRoute</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockAppsService.html" >MockAppsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockAuditRecordService.html" >MockAuditRecordService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockAuthService.html" >MockAuthService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockComponent.html" >MockComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockConfirmService.html" >MockConfirmService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockGroupRouteService.html" >MockGroupRouteService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockJobsService.html" >MockJobsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockModalService.html" >MockModalService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockNotificationService.html" >MockNotificationService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockResponse.html" >MockResponse</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockRoutingStateService.html" >MockRoutingStateService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockRuntimeAppsService.html" >MockRuntimeAppsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockSharedAppService.html" >MockSharedAppService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockStreamsService.html" >MockStreamsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockTasksService.html" >MockTasksService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MockToolsService.html" >MockToolsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/MocksSharedAboutService.html" >MocksSharedAboutService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Modal.html" >Modal</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Navigation.html" >Navigation</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Node.html" >Node</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/NodeHelper.html" >NodeHelper</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ObjectUtils.html" >ObjectUtils</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/OrderParams.html" >OrderParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Page.html" >Page</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/PageRequest.html" >PageRequest</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Pagination.html" >Pagination</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Platform.html" >Platform</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/PlatformTask.html" >PlatformTask</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ProgressData.html" >ProgressData</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/PropertiesGroupModel.html" >PropertiesGroupModel</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ProtractorDockerPlugin.html" >ProtractorDockerPlugin</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/RuntimeApp.html" >RuntimeApp</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/RuntimeAppInstance.html" >RuntimeAppInstance</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/RuntimeEnvironment.html" >RuntimeEnvironment</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/RuntimeEnvironmentDetails.html" >RuntimeEnvironmentDetails</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/RuntimePage.html" >RuntimePage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/SecurityInfo.html" >SecurityInfo</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ShapeComponent.html" >ShapeComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StepExecution.html" >StepExecution</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StepExecutionHistory.html" >StepExecutionHistory</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StepExecutionProgress.html" >StepExecutionProgress</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StepExecutionResource.html" >StepExecutionResource</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamDefinition.html" >StreamDefinition</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamDeployConfig.html" >StreamDeployConfig</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamDeployValidator.html" >StreamDeployValidator</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamGraphPropertiesSource.html" >StreamGraphPropertiesSource</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamHistory.html" >StreamHistory</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamPropertiesGroupModel.html" >StreamPropertiesGroupModel</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamStatus.html" >StreamStatus</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamStatuses.html" >StreamStatuses</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/StreamsPage.html" >StreamsPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskConversion.html" >TaskConversion</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskDefinition.html" >TaskDefinition</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskExecution.html" >TaskExecution</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskGraphPropertiesSource.html" >TaskGraphPropertiesSource</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskLaunchValidator.html" >TaskLaunchValidator</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskPropertiesGroupModel.html" >TaskPropertiesGroupModel</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskSchedule.html" >TaskSchedule</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TaskScheduleCreateValidator.html" >TaskScheduleCreateValidator</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TasksPage.html" >TasksPage</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TextToGraphConverter.html" >TextToGraphConverter</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Tokenizer.html" >Tokenizer</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/TrailPositionType.html" >TrailPositionType</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Utils.html" >Utils</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/Utils.html" >Utils</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/VersionInfo.html" >VersionInfo</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../classes/ViewHelper.html" >ViewHelper</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-injectables-links"
+                            >
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="../injectables/AboutService.html" >AboutService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/AppsService.html" >AppsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/AppsWorkaroundService.html" >AppsWorkaroundService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/AuditRecordService.html" >AuditRecordService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/AuthGuard.html" >AuthGuard</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/AuthService.html" >AuthService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/BlockerService.html" >BlockerService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ConfirmService.html" >ConfirmService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ContentAssistService.html" >ContentAssistService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ContentAssistService.html" >ContentAssistService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/EditorService.html" >EditorService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/EditorService.html" >EditorService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/GrafanaService.html" >GrafanaService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/GroupRouteService.html" >GroupRouteService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/HttpLoaderService.html" >HttpLoaderService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/JobsService.html" >JobsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/LoggerService.html" >LoggerService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/MetamodelService.html" >MetamodelService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/MetamodelService.html" >MetamodelService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/NotificationService.html" >NotificationService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ParserService.html" >ParserService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/RenderService.html" >RenderService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/RenderService.html" >RenderService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/RoutingStateService.html" >RoutingStateService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/RuntimeAppsService.html" >RuntimeAppsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/SharedAboutService.html" >SharedAboutService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/SharedAppsService.html" >SharedAppsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/StreamDeployService.html" >StreamDeployService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/StreamsService.html" >StreamsService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/TasksService.html" >TasksService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/ToolsService.html" >ToolsService</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-interceptors-links"
+                            >
+                            <span class="fa fa-exchange"></span>
+                            <span>Interceptors</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-interceptors-links"
+                            >
+                                <li class="link">
+                                    <a href="../interceptors/HttpLoaderInterceptor.html" >HttpLoaderInterceptor</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interceptors/TokenInterceptor.html" >TokenInterceptor</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-interfaces-links"
+                            >
+                            <span class="fa fa-info"></span>
+                            <span>Interfaces</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-interfaces-links"
+                            >
+                                <li class="link">
+                                    <a href="../interfaces/AppListParams.html" >AppListParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/AppNode.html" >AppNode</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/AppRegisterParams.html" >AppRegisterParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/AppUiProperty.html" >AppUiProperty</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/AuditRecordListParams.html" >AuditRecordListParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/BulkImportParams.html" >BulkImportParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ChannelReference.html" >ChannelReference</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/CodeOptions.html" >CodeOptions</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/CodeProperty.html" >CodeProperty</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/DestinationReference.html" >DestinationReference</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Error.html" >Error</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Expandable.html" >Expandable</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Graph.html" >Graph</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/GraphHolder.html" >GraphHolder</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/KvRichTextValidators.html" >KvRichTextValidators</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Line.html" >Line</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Link.html" >Link</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ListDefaultParams.html" >ListDefaultParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ListParams.html" >ListParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/MatchAndScore.html" >MatchAndScore</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Node.html" >Node</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Node.html" >Node</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Option.html" >Option</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/PaginationParams.html" >PaginationParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/ParseResult.html" >ParseResult</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Pos.html" >Pos</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Pos.html" >Pos</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/PropertiesDebug.html" >PropertiesDebug</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Range.html" >Range</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Range.html" >Range</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/RawMetadata.html" >RawMetadata</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Selectable.html" >Selectable</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Serializable.html" >Serializable</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/SortParams.html" >SortParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/StreamApp.html" >StreamApp</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/StreamAppPropertiesSource.html" >StreamAppPropertiesSource</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/StreamBuilderError.html" >StreamBuilderError</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/StreamDef.html" >StreamDef</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/StreamHead.html" >StreamHead</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/StreamListParams.html" >StreamListParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/TaskApp.html" >TaskApp</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/TaskCreateParams.html" >TaskCreateParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/TaskLaunchParams.html" >TaskLaunchParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/TaskListParams.html" >TaskListParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/TaskNode.html" >TaskNode</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/TaskScheduleCreateParams.html" >TaskScheduleCreateParams</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Token.html" >Token</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-pipes-links"
+                            >
+                            <span class="fa fa-plus"></span>
+                            <span>Pipes</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-pipes-links"
+                            >
+                                <li class="link">
+                                    <a href="../pipes/CapitalizePipe.html" >CapitalizePipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../pipes/DataflowDateTimePipe.html" >DataflowDateTimePipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../pipes/DataflowDurationPipe.html" >DataflowDurationPipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../pipes/OrderByPipe.html" >OrderByPipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../pipes/SearchfilterPipe.html" >SearchfilterPipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../pipes/TaskSchedulesFilterPipe.html" >TaskSchedulesFilterPipe</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../pipes/TruncatePipe.html" >TruncatePipe</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <div class="simple menu-toggler" data-toggle="collapse"
+                                data-target="#xs-miscellaneous-links"
+                            >
+                            <span class="fa fa-cubes"></span>
+                            <span>Miscellaneous</span>
+                            <span class="fa fa-angle-down"></span>
+                        </div>
+                        <ul class="links collapse "
+                                id="xs-miscellaneous-links"
+                            >
+                                <li class="link">
+                                  <a href="../miscellaneous/enumerations.html" data-type="entity-link" >Enums</a>
+                                </li>
+                                <li class="link">
+                                  <a href="../miscellaneous/functions.html" data-type="entity-link" >Functions</a>
+                                </li>
+                                <li class="link">
+                                  <a href="../miscellaneous/variables.html" data-type="entity-link" >Variables</a>
+                                </li>
+                        </ul>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../routes.html" ><span class="fa fa-code-fork"></span>Routes</a>
+                    </li>
+            
+                    <li class="chapter">
+                        <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                    </li>
+            
+                    <li class="divider"></li>
+                    <li class="copyright">
+                            Documentation generated using <a href="https://compodoc.github.io/website/" target="_blank">
+                                        <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                            </a>
+                    </li>
+            
+                </ul>
+            
+            </nav>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <nav>
+                   
+                       <ul class="list">
+                   
+                           <li class="title">
+                               <a href="../index.html">Spring Cloud Data Flow Dashboard Documentation</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                   
+                               <div id="book-search-input" role="search">
+                                   <input type="text" placeholder="Type to search">
+                               </div>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../index.html"><span class="fa fa-home"></span>Getting started</a>
+                               <ul class="links">
+                                       <li class="link">
+                                           <a 
+                                               
+                                                href="../overview.html" 
+                                                href="../overview.html" 
+                                               >
+                                               <span class="fa fa-th"></span>Overview
+                                           </a>
+                                       </li>
+                                       <li class="link">
+                                         <a href="../index.html" ><span class="fa fa-file-text-o"></span>README</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../modules.html" >
+                                   <div class="menu-toggler linked" data-toggle="collapse"
+                                           data-target="#modules-links"
+                                   >
+                                       <span class="fa fa-archive"></span>
+                                       <span class="link-name">Modules</span>
+                                       <span class="fa fa-angle-down"></span>
+                                   </div>
+                               </a>
+                               <ul class="links collapse "
+                                       id="modules-links"
+                   >
+                                       <li class="link">
+                                           <a href="../modules/AboutModule.html" >AboutModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AboutRoutingModule.html" >AboutRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AppModule.html" >AppModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AppRoutingModule.html" >AppRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AppsModule.html" >AppsModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AppsRoutingModule.html" >AppsRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AuditRecordModule.html" >AuditRecordModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AuditRecordRoutingModule.html" >AuditRecordRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AuthModule.html"  data-type="entity-link" class="active" >AuthModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/AuthRoutingModule.html" >AuthRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/GrafanaModule.html" >GrafanaModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/JobsModule.html" >JobsModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/JobsRoutingModule.html" >JobsRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/LayoutModule.html" >LayoutModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/RuntimeAppsModule.html" >RuntimeAppsModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/RuntimeAppsRoutingModule.html" >RuntimeAppsRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/SharedModule.html" >SharedModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/StreamsModule.html" >StreamsModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/StreamsRoutingModule.html" >StreamsRoutingModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/TasksModule.html" >TasksModule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../modules/TasksRoutingModule.html" >TasksRoutingModule</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#components-links"
+                   >
+                                   <span class="fa fa-cogs"></span>
+                                   <span>Components</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="components-links"
+                   >
+                                       <li class="link">
+                                           <a href="../components/AboutComponent.html" >AboutComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AboutDetailsComponent.html" >AboutDetailsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppComponent.html" >AppComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppDetailsComponent.html" >AppDetailsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppListBarComponent.html" >AppListBarComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppTypeComponent.html" >AppTypeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppVersionLabelComponent.html" >AppVersionLabelComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppVersionsComponent.html" >AppVersionsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppsAddComponent.html" >AppsAddComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppsBulkImportPropertiesComponent.html" >AppsBulkImportPropertiesComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppsBulkImportUriComponent.html" >AppsBulkImportUriComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppsComponent.html" >AppsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppsRegisterComponent.html" >AppsRegisterComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AppsUnregisterComponent.html" >AppsUnregisterComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AuditRecordActionComponent.html" >AuditRecordActionComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AuditRecordComponent.html" >AuditRecordComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AuditRecordDetailsComponent.html" >AuditRecordDetailsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AuditRecordListBarComponent.html" >AuditRecordListBarComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AuditRecordOperationComponent.html" >AuditRecordOperationComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/AuthenticationRequiredComponent.html" >AuthenticationRequiredComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/BlockerComponent.html" >BlockerComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/BodyComponent.html" >BodyComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ConfirmComponent.html" >ConfirmComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/DecorationComponent.html" >DecorationComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/DefinitionStatusComponent.html" >DefinitionStatusComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/DeploymentPropertiesComponent.html" >DeploymentPropertiesComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/DeploymentPropertiesInfoComponent.html" >DeploymentPropertiesInfoComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/FeatureDisabledComponent.html" >FeatureDisabledComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/GraphViewComponent.html" >GraphViewComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/HandleComponent.html" >HandleComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/HttpLoaderComponent.html" >HttpLoaderComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/InstanceDotComponent.html" >InstanceDotComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/JobExecutionDetailsComponent.html" >JobExecutionDetailsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/JobExecutionStatusComponent.html" >JobExecutionStatusComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/JobsComponent.html" >JobsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/KvRichTextComponent.html" >KvRichTextComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ListBarComponent.html" >ListBarComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ListEmptyComponent.html" >ListEmptyComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ListNoResultComponent.html" >ListNoResultComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ListPaginationComponent.html" >ListPaginationComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/ListRowActionsComponent.html" >ListRowActionsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LoaderComponent.html" >LoaderComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LogoComponent.html" >LogoComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/LogoutComponent.html" >LogoutComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/MasterCheckboxComponent.html" >MasterCheckboxComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/MessageRateComponent.html" >MessageRateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/NavigationComponent.html" >NavigationComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/NavigationSearchComponent.html" >NavigationSearchComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/NodeComponent.html" >NodeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/NodeComponent.html" >NodeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PageActionsComponent.html" >PageActionsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PageComponent.html" >PageComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PageHeadActionsComponent.html" >PageHeadActionsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PageHeadBackComponent.html" >PageHeadBackComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PageHeadComponent.html" >PageHeadComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PageHeadSubtitleComponent.html" >PageHeadSubtitleComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PageHeadTitleComponent.html" >PageHeadTitleComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PagerComponent.html" >PagerComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/PropertiesDialogComponent.html" >PropertiesDialogComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/RolesMissingComponent.html" >RolesMissingComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/RuntimeAppComponent.html" >RuntimeAppComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/RuntimeAppStateComponent.html" >RuntimeAppStateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/RuntimeAppsComponent.html" >RuntimeAppsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/SidebarComponent.html" >SidebarComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/SortComponent.html" >SortComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StepExecutionDetailsComponent.html" >StepExecutionDetailsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StepExecutionProgressComponent.html" >StepExecutionProgressComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamComponent.html" >StreamComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamCreateComponent.html" >StreamCreateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamCreateDialogComponent.html" >StreamCreateDialogComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamDeployAppPropertiesComponent.html" >StreamDeployAppPropertiesComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamDeployBuilderComponent.html" >StreamDeployBuilderComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamDeployBuilderErrorsComponent.html" >StreamDeployBuilderErrorsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamDeployComponent.html" >StreamDeployComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamDeployFreeTextComponent.html" >StreamDeployFreeTextComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamDeployPropertiesDebugComponent.html" >StreamDeployPropertiesDebugComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamDslComponent.html" >StreamDslComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamGraphComponent.html" >StreamGraphComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamGraphDefinitionComponent.html" >StreamGraphDefinitionComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamHistoryComponent.html" >StreamHistoryComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamHistoryStatusComponent.html" >StreamHistoryStatusComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamPropertiesDialogComponent.html" >StreamPropertiesDialogComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamStatusComponent.html" >StreamStatusComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamSummaryComponent.html" >StreamSummaryComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamsComponent.html" >StreamsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamsDeployComponent.html" >StreamsDeployComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamsDestroyComponent.html" >StreamsDestroyComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/StreamsUndeployComponent.html" >StreamsUndeployComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TabComponent.html" >TabComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TabsComponent.html" >TabsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskDefinitionComponent.html" >TaskDefinitionComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskDefinitionCreateComponent.html" >TaskDefinitionCreateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskDefinitionCreateDialogComponent.html" >TaskDefinitionCreateDialogComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskDefinitionExecutionsComponent.html" >TaskDefinitionExecutionsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskDefinitionScheduleComponent.html" >TaskDefinitionScheduleComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskDefinitionsComponent.html" >TaskDefinitionsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskDefinitionsDestroyComponent.html" >TaskDefinitionsDestroyComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskExecutionComponent.html" >TaskExecutionComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskExecutionsComponent.html" >TaskExecutionsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskGraphComponent.html" >TaskGraphComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskGraphViewComponent.html" >TaskGraphViewComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskLaunchComponent.html" >TaskLaunchComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskPropertiesDialogComponent.html" >TaskPropertiesDialogComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskScheduleComponent.html" >TaskScheduleComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskScheduleCreateComponent.html" >TaskScheduleCreateComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskScheduleSummaryComponent.html" >TaskScheduleSummaryComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskSchedulesComponent.html" >TaskSchedulesComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskSchedulesDestroyComponent.html" >TaskSchedulesDestroyComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskStatusComponent.html" >TaskStatusComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TaskSummaryComponent.html" >TaskSummaryComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TasksComponent.html" >TasksComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TasksTabulationComponent.html" >TasksTabulationComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../components/TruncatorComponent.html" >TruncatorComponent</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#directives-links"
+                   >
+                                   <span class="fa fa-code"></span>
+                                   <span>Directives</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="directives-links"
+                   >
+                                       <li class="link">
+                                           <a href="../directives/AutoResizeDirective.html" >AutoResizeDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/CapsLockDirective.html" >CapsLockDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/FocusDirective.html" >FocusDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/LayoutTypeDirective.html" >LayoutTypeDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/RolesDirective.html" >RolesDirective</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../directives/TruncatorWidthProviderDirective.html" >TruncatorWidthProviderDirective</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#classes-links"
+                   >
+                                   <span class="fa fa-file-code-o"></span>
+                                   <span>Classes</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="classes-links"
+                   >
+                                       <li class="link">
+                                           <a href="../classes/AboutInfo.html" >AboutInfo</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AboutPage.html" >AboutPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppDetailsPage.html" >AppDetailsPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppError.html" >AppError</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppInfo.html" >AppInfo</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppInfoOptions.html" >AppInfoOptions</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppMetadata.html" >AppMetadata</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppPropertiesSource.html" >AppPropertiesSource</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppPropertyMetadata.html" >AppPropertyMetadata</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppRegistration.html" >AppRegistration</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppVersion.html" >AppVersion</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppVersionsModal.html" >AppVersionsModal</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppsAddValidator.html" >AppsAddValidator</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppsBulkImportUriPage.html" >AppsBulkImportUriPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppsPage.html" >AppsPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppsRegisterPage.html" >AppsRegisterPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AppsRegisterValidator.html" >AppsRegisterValidator</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AuditActionType.html" >AuditActionType</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AuditOperationType.html" >AuditOperationType</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/AuditRecord.html" >AuditRecord</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/BaseShapeComponent.html" >BaseShapeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ConfigurationMetadataProperty.html" >ConfigurationMetadataProperty</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/CountDetails.html" >CountDetails</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/DateTimeUtils.html" >DateTimeUtils</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Dependency.html" >Dependency</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/DeployedAppProperties.html" >DeployedAppProperties</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Deprecation.html" >Deprecation</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/DetailedAppRegistration.html" >DetailedAppRegistration</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ElementComponent.html" >ElementComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ErrorHandler.html" >ErrorHandler</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ExecutionContext.html" >ExecutionContext</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/FeatureInfo.html" >FeatureInfo</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/GrafanaInfo.html" >GrafanaInfo</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Graph.html" >Graph</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/GraphNodePropertiesSource.html" >GraphNodePropertiesSource</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/GraphToTextConverter.html" >GraphToTextConverter</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/HttpAppError.html" >HttpAppError</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/HttpUtils.html" >HttpUtils</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/InstanceStatus.html" >InstanceStatus</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/InternalParser.html" >InternalParser</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/JobExecution.html" >JobExecution</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/JobsPage.html" >JobsPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/KeyValuePair.html" >KeyValuePair</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/KvRichTextValidator.html" >KvRichTextValidator</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Link.html" >Link</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockAboutService.html" >MockAboutService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockActivatedRoute.html" >MockActivatedRoute</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockAppsService.html" >MockAppsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockAuditRecordService.html" >MockAuditRecordService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockAuthService.html" >MockAuthService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockComponent.html" >MockComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockConfirmService.html" >MockConfirmService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockGroupRouteService.html" >MockGroupRouteService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockJobsService.html" >MockJobsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockModalService.html" >MockModalService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockNotificationService.html" >MockNotificationService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockResponse.html" >MockResponse</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockRoutingStateService.html" >MockRoutingStateService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockRuntimeAppsService.html" >MockRuntimeAppsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockSharedAppService.html" >MockSharedAppService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockStreamsService.html" >MockStreamsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockTasksService.html" >MockTasksService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MockToolsService.html" >MockToolsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/MocksSharedAboutService.html" >MocksSharedAboutService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Modal.html" >Modal</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Navigation.html" >Navigation</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Node.html" >Node</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/NodeHelper.html" >NodeHelper</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ObjectUtils.html" >ObjectUtils</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/OrderParams.html" >OrderParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Page.html" >Page</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/PageRequest.html" >PageRequest</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Pagination.html" >Pagination</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Platform.html" >Platform</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/PlatformTask.html" >PlatformTask</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ProgressData.html" >ProgressData</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/PropertiesGroupModel.html" >PropertiesGroupModel</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ProtractorDockerPlugin.html" >ProtractorDockerPlugin</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/RuntimeApp.html" >RuntimeApp</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/RuntimeAppInstance.html" >RuntimeAppInstance</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/RuntimeEnvironment.html" >RuntimeEnvironment</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/RuntimeEnvironmentDetails.html" >RuntimeEnvironmentDetails</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/RuntimePage.html" >RuntimePage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/SecurityInfo.html" >SecurityInfo</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ShapeComponent.html" >ShapeComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StepExecution.html" >StepExecution</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StepExecutionHistory.html" >StepExecutionHistory</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StepExecutionProgress.html" >StepExecutionProgress</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StepExecutionResource.html" >StepExecutionResource</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamDefinition.html" >StreamDefinition</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamDeployConfig.html" >StreamDeployConfig</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamDeployValidator.html" >StreamDeployValidator</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamGraphPropertiesSource.html" >StreamGraphPropertiesSource</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamHistory.html" >StreamHistory</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamPropertiesGroupModel.html" >StreamPropertiesGroupModel</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamStatus.html" >StreamStatus</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamStatuses.html" >StreamStatuses</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/StreamsPage.html" >StreamsPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskConversion.html" >TaskConversion</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskDefinition.html" >TaskDefinition</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskExecution.html" >TaskExecution</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskGraphPropertiesSource.html" >TaskGraphPropertiesSource</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskLaunchValidator.html" >TaskLaunchValidator</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskPropertiesGroupModel.html" >TaskPropertiesGroupModel</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskSchedule.html" >TaskSchedule</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TaskScheduleCreateValidator.html" >TaskScheduleCreateValidator</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TasksPage.html" >TasksPage</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TextToGraphConverter.html" >TextToGraphConverter</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Tokenizer.html" >Tokenizer</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/TrailPositionType.html" >TrailPositionType</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Utils.html" >Utils</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/Utils.html" >Utils</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/VersionInfo.html" >VersionInfo</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../classes/ViewHelper.html" >ViewHelper</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#injectables-links"
+                   >
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="../injectables/AboutService.html" >AboutService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/AppsService.html" >AppsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/AppsWorkaroundService.html" >AppsWorkaroundService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/AuditRecordService.html" >AuditRecordService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/AuthGuard.html" >AuthGuard</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/AuthService.html" >AuthService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/BlockerService.html" >BlockerService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ConfirmService.html" >ConfirmService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ContentAssistService.html" >ContentAssistService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ContentAssistService.html" >ContentAssistService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/EditorService.html" >EditorService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/EditorService.html" >EditorService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/GrafanaService.html" >GrafanaService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/GroupRouteService.html" >GroupRouteService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/HttpLoaderService.html" >HttpLoaderService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/JobsService.html" >JobsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/LoggerService.html" >LoggerService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/MetamodelService.html" >MetamodelService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/MetamodelService.html" >MetamodelService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/NotificationService.html" >NotificationService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ParserService.html" >ParserService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/RenderService.html" >RenderService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/RenderService.html" >RenderService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/RoutingStateService.html" >RoutingStateService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/RuntimeAppsService.html" >RuntimeAppsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/SharedAboutService.html" >SharedAboutService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/SharedAppsService.html" >SharedAppsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/StreamDeployService.html" >StreamDeployService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/StreamsService.html" >StreamsService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/TasksService.html" >TasksService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/ToolsService.html" >ToolsService</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#interceptors-links"
+                   >
+                                   <span class="fa fa-exchange"></span>
+                                   <span>Interceptors</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="interceptors-links"
+                   >
+                                       <li class="link">
+                                           <a href="../interceptors/HttpLoaderInterceptor.html" >HttpLoaderInterceptor</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interceptors/TokenInterceptor.html" >TokenInterceptor</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#interfaces-links"
+                   >
+                                   <span class="fa fa-info"></span>
+                                   <span>Interfaces</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="interfaces-links"
+                   >
+                                       <li class="link">
+                                           <a href="../interfaces/AppListParams.html" >AppListParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/AppNode.html" >AppNode</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/AppRegisterParams.html" >AppRegisterParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/AppUiProperty.html" >AppUiProperty</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/AuditRecordListParams.html" >AuditRecordListParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/BulkImportParams.html" >BulkImportParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ChannelReference.html" >ChannelReference</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/CodeOptions.html" >CodeOptions</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/CodeProperty.html" >CodeProperty</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/DestinationReference.html" >DestinationReference</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Error.html" >Error</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Expandable.html" >Expandable</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Graph.html" >Graph</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/GraphHolder.html" >GraphHolder</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/KvRichTextValidators.html" >KvRichTextValidators</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Line.html" >Line</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Link.html" >Link</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ListDefaultParams.html" >ListDefaultParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ListParams.html" >ListParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/MatchAndScore.html" >MatchAndScore</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Node.html" >Node</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Node.html" >Node</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Option.html" >Option</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/PaginationParams.html" >PaginationParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/ParseResult.html" >ParseResult</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Pos.html" >Pos</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Pos.html" >Pos</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/PropertiesDebug.html" >PropertiesDebug</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Range.html" >Range</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Range.html" >Range</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/RawMetadata.html" >RawMetadata</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Selectable.html" >Selectable</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Serializable.html" >Serializable</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/SortParams.html" >SortParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/StreamApp.html" >StreamApp</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/StreamAppPropertiesSource.html" >StreamAppPropertiesSource</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/StreamBuilderError.html" >StreamBuilderError</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/StreamDef.html" >StreamDef</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/StreamHead.html" >StreamHead</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/StreamListParams.html" >StreamListParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/TaskApp.html" >TaskApp</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/TaskCreateParams.html" >TaskCreateParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/TaskLaunchParams.html" >TaskLaunchParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/TaskListParams.html" >TaskListParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/TaskNode.html" >TaskNode</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/TaskScheduleCreateParams.html" >TaskScheduleCreateParams</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Token.html" >Token</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#pipes-links"
+                   >
+                                   <span class="fa fa-plus"></span>
+                                   <span>Pipes</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="pipes-links"
+                   >
+                                       <li class="link">
+                                           <a href="../pipes/CapitalizePipe.html" >CapitalizePipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../pipes/DataflowDateTimePipe.html" >DataflowDateTimePipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../pipes/DataflowDurationPipe.html" >DataflowDurationPipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../pipes/OrderByPipe.html" >OrderByPipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../pipes/SearchfilterPipe.html" >SearchfilterPipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../pipes/TaskSchedulesFilterPipe.html" >TaskSchedulesFilterPipe</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../pipes/TruncatePipe.html" >TruncatePipe</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <div class="simple menu-toggler" data-toggle="collapse"
+                                       data-target="#miscellaneous-links"
+                   >
+                                   <span class="fa fa-cubes"></span>
+                                   <span>Miscellaneous</span>
+                                   <span class="fa fa-angle-down"></span>
+                               </div>
+                               <ul class="links collapse "
+                                       id="miscellaneous-links"
+                   >
+                                       <li class="link">
+                                         <a href="../miscellaneous/enumerations.html" data-type="entity-link" >Enums</a>
+                                       </li>
+                                       <li class="link">
+                                         <a href="../miscellaneous/functions.html" data-type="entity-link" >Functions</a>
+                                       </li>
+                                       <li class="link">
+                                         <a href="../miscellaneous/variables.html" data-type="entity-link" >Variables</a>
+                                       </li>
+                               </ul>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../routes.html" ><span class="fa fa-code-fork"></span>Routes</a>
+                           </li>
+                   
+                           <li class="chapter">
+                               <a data-type="chapter-link" href="../coverage.html" ><span class="fa fa-tasks"></span>Documentation coverage</a>
+                           </li>
+                   
+                           <li class="divider"></li>
+                           <li class="copyright">
+                                   Documentation generated using <a href="https://compodoc.github.io/website/" target="_blank">
+                                               <img src="..//images/compodoc-vectorise.svg" class="img-responsive">
+                                   </a>
+                           </li>
+                   
+                       </ul>
+                   
+                   </nav>
+               </div>
+               <div class="content module">
+                   <div class="content-data">
+
+
+
+<ol class="breadcrumb">
+  <li>Modules</li>
+  <li>AuthModule</li>
+</ol>
+
+      <div class="text-center module-graph-container">
+          <div id="module-graph-svg">
+              <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: dependencies Pages: 1 -->
+<svg width="1754pt" height="284pt"
+ viewBox="0.00 0.00 1754.00 284.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 280)">
+<title>dependencies</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-280 1750,-280 1750,4 -4,4"/>
+<text text-anchor="start" x="852.0091" y="-42.4" font-family="sans-serif" font-weight="bold" font-size="14.00" fill="#000000">Legend</text>
+<polygon fill="#ffffb3" stroke="transparent" points="639,-10 639,-30 659,-30 659,-10 639,-10"/>
+<text text-anchor="start" x="662.629" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Declarations</text>
+<polygon fill="#8dd3c7" stroke="transparent" points="752,-10 752,-30 772,-30 772,-10 752,-10"/>
+<text text-anchor="start" x="775.7251" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Module</text>
+<polygon fill="#80b1d3" stroke="transparent" points="838,-10 838,-30 858,-30 858,-10 838,-10"/>
+<text text-anchor="start" x="861.7812" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Bootstrap</text>
+<polygon fill="#fdb462" stroke="transparent" points="935,-10 935,-30 955,-30 955,-10 935,-10"/>
+<text text-anchor="start" x="958.6732" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Providers</text>
+<polygon fill="#fb8072" stroke="transparent" points="1031,-10 1031,-30 1051,-30 1051,-10 1031,-10"/>
+<text text-anchor="start" x="1054.7258" y="-15.4" font-family="sans-serif" font-size="14.00" fill="#000000"> &#160;Exports</text>
+<g id="clust1" class="cluster">
+<title>cluster_AuthModule</title>
+<polygon fill="none" stroke="#000000" stroke-dasharray="1,5" points="8,-70 8,-268 1738,-268 1738,-70 8,-70"/>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_AuthModule_declarations</title>
+<polygon fill="none" stroke="#000000" points="732,-78 732,-130 1730,-130 1730,-78 732,-78"/>
+</g>
+<g id="clust9" class="cluster">
+<title>cluster_AuthModule_imports</title>
+<polygon fill="none" stroke="#000000" points="459,-78 459,-130 724,-130 724,-78 459,-78"/>
+</g>
+<g id="clust10" class="cluster">
+<title>cluster_AuthModule_exports</title>
+<polygon fill="none" stroke="#000000" points="680,-208 680,-260 946,-260 946,-208 680,-208"/>
+</g>
+<g id="clust12" class="cluster">
+<title>cluster_AuthModule_providers</title>
+<polygon fill="none" stroke="#000000" points="16,-78 16,-130 451,-130 451,-78 16,-78"/>
+</g>
+<!-- CapsLockDirective -->
+<g id="node1" class="node">
+<title>CapsLockDirective</title>
+<polygon fill="#ffffb3" stroke="#000000" points="1722.3459,-122 1597.6541,-122 1597.6541,-86 1722.3459,-86 1722.3459,-122"/>
+<text text-anchor="middle" x="1660" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">CapsLockDirective</text>
+</g>
+<!-- AuthModule -->
+<g id="node7" class="node">
+<title>AuthModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="862.5482,-187 859.5482,-191 838.5482,-191 835.5482,-187 775.4518,-187 775.4518,-151 862.5482,-151 862.5482,-187"/>
+<text text-anchor="middle" x="819" y="-164.8" font-family="Times,serif" font-size="14.00" fill="#000000">AuthModule</text>
+</g>
+<!-- CapsLockDirective&#45;&gt;AuthModule -->
+<g id="edge1" class="edge">
+<title>CapsLockDirective&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M1660,-122.2479C1660,-145.0179 1660,-181 1660,-181 1660,-181 872.7379,-181 872.7379,-181"/>
+<polygon fill="#000000" stroke="#000000" points="872.7379,-177.5001 862.7379,-181 872.7378,-184.5001 872.7379,-177.5001"/>
+</g>
+<!-- AuthenticationRequiredComponent -->
+<g id="node2" class="node">
+<title>AuthenticationRequiredComponent</title>
+<polygon fill="#ffffb3" stroke="#000000" points="1579.8529,-122 1364.1471,-122 1364.1471,-86 1579.8529,-86 1579.8529,-122"/>
+<text text-anchor="middle" x="1472" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">AuthenticationRequiredComponent</text>
+</g>
+<!-- AuthenticationRequiredComponent&#45;&gt;AuthModule -->
+<g id="edge2" class="edge">
+<title>AuthenticationRequiredComponent&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M1472,-122.2843C1472,-143.3211 1472,-175 1472,-175 1472,-175 872.6047,-175 872.6047,-175"/>
+<polygon fill="#000000" stroke="#000000" points="872.6047,-171.5001 862.6047,-175 872.6046,-178.5001 872.6047,-171.5001"/>
+</g>
+<!-- FeatureDisabledComponent -->
+<g id="node3" class="node">
+<title>FeatureDisabledComponent</title>
+<polygon fill="#ffffb3" stroke="#000000" points="1346.5716,-122 1173.4284,-122 1173.4284,-86 1346.5716,-86 1346.5716,-122"/>
+<text text-anchor="middle" x="1260" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">FeatureDisabledComponent</text>
+</g>
+<!-- FeatureDisabledComponent&#45;&gt;AuthModule -->
+<g id="edge3" class="edge">
+<title>FeatureDisabledComponent&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M1260,-122.1061C1260,-141.3391 1260,-169 1260,-169 1260,-169 872.897,-169 872.897,-169"/>
+<polygon fill="#000000" stroke="#000000" points="872.8971,-165.5001 862.897,-169 872.897,-172.5001 872.8971,-165.5001"/>
+</g>
+<!-- LogoutComponent -->
+<g id="node4" class="node">
+<title>LogoutComponent</title>
+<polygon fill="#ffffb3" stroke="#000000" points="1155.7758,-122 1034.2242,-122 1034.2242,-86 1155.7758,-86 1155.7758,-122"/>
+<text text-anchor="middle" x="1095" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">LogoutComponent</text>
+</g>
+<!-- LogoutComponent&#45;&gt;AuthModule -->
+<g id="edge4" class="edge">
+<title>LogoutComponent&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M1095,-122.0225C1095,-139.3734 1095,-163 1095,-163 1095,-163 872.733,-163 872.733,-163"/>
+<polygon fill="#000000" stroke="#000000" points="872.7331,-159.5001 862.733,-163 872.733,-166.5001 872.7331,-159.5001"/>
+</g>
+<!-- RolesDirective -->
+<g id="node5" class="node">
+<title>RolesDirective</title>
+<polygon fill="#ffffb3" stroke="#000000" points="1015.9692,-122 916.0308,-122 916.0308,-86 1015.9692,-86 1015.9692,-122"/>
+<text text-anchor="middle" x="966" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">RolesDirective</text>
+</g>
+<!-- RolesDirective&#45;&gt;AuthModule -->
+<g id="edge5" class="edge">
+<title>RolesDirective&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M926.875,-122.2396C926.875,-137.5706 926.875,-157 926.875,-157 926.875,-157 872.5659,-157 872.5659,-157"/>
+<polygon fill="#000000" stroke="#000000" points="872.566,-153.5001 862.5659,-157 872.5659,-160.5001 872.566,-153.5001"/>
+</g>
+<!-- RolesMissingComponent -->
+<g id="node6" class="node">
+<title>RolesMissingComponent</title>
+<polygon fill="#ffffb3" stroke="#000000" points="898.3342,-122 739.6658,-122 739.6658,-86 898.3342,-86 898.3342,-122"/>
+<text text-anchor="middle" x="819" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">RolesMissingComponent</text>
+</g>
+<!-- RolesMissingComponent&#45;&gt;AuthModule -->
+<g id="edge6" class="edge">
+<title>RolesMissingComponent&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M819,-122.1061C819,-122.1061 819,-140.991 819,-140.991"/>
+<polygon fill="#000000" stroke="#000000" points="815.5001,-140.9909 819,-150.991 822.5001,-140.991 815.5001,-140.9909"/>
+</g>
+<!-- RolesDirective  -->
+<g id="node10" class="node">
+<title>RolesDirective </title>
+<polygon fill="#fb8072" stroke="#000000" points="937.9703,-252 834.0297,-252 834.0297,-216 937.9703,-216 937.9703,-252"/>
+<text text-anchor="middle" x="886" y="-229.8" font-family="Times,serif" font-size="14.00" fill="#000000">RolesDirective </text>
+</g>
+<!-- AuthModule&#45;&gt;RolesDirective  -->
+<g id="edge9" class="edge">
+<title>AuthModule&#45;&gt;RolesDirective </title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M848.5195,-187.1061C848.5195,-187.1061 848.5195,-205.991 848.5195,-205.991"/>
+<polygon fill="#000000" stroke="#000000" points="845.0195,-205.9909 848.5195,-215.991 852.0195,-205.991 845.0195,-205.9909"/>
+</g>
+<!-- CapsLockDirective  -->
+<g id="node11" class="node">
+<title>CapsLockDirective </title>
+<polygon fill="#fb8072" stroke="#000000" points="816.3463,-252 687.6537,-252 687.6537,-216 816.3463,-216 816.3463,-252"/>
+<text text-anchor="middle" x="752" y="-229.8" font-family="Times,serif" font-size="14.00" fill="#000000">CapsLockDirective </text>
+</g>
+<!-- AuthModule&#45;&gt;CapsLockDirective  -->
+<g id="edge10" class="edge">
+<title>AuthModule&#45;&gt;CapsLockDirective </title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M795.6997,-187.1061C795.6997,-187.1061 795.6997,-205.991 795.6997,-205.991"/>
+<polygon fill="#000000" stroke="#000000" points="792.1998,-205.9909 795.6997,-215.991 799.1998,-205.991 792.1998,-205.9909"/>
+</g>
+<!-- AuthRoutingModule -->
+<g id="node8" class="node">
+<title>AuthRoutingModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="716.1652,-122 713.1652,-126 692.1652,-126 689.1652,-122 583.8348,-122 583.8348,-86 716.1652,-86 716.1652,-122"/>
+<text text-anchor="middle" x="650" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">AuthRoutingModule</text>
+</g>
+<!-- AuthRoutingModule&#45;&gt;AuthModule -->
+<g id="edge7" class="edge">
+<title>AuthRoutingModule&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M702.0798,-122.2396C702.0798,-137.5706 702.0798,-157 702.0798,-157 702.0798,-157 765.1306,-157 765.1306,-157"/>
+<polygon fill="#000000" stroke="#000000" points="765.1306,-160.5001 775.1306,-157 765.1305,-153.5001 765.1306,-160.5001"/>
+</g>
+<!-- SharedModule -->
+<g id="node9" class="node">
+<title>SharedModule</title>
+<polygon fill="#8dd3c7" stroke="#000000" points="565.4231,-122 562.4231,-126 541.4231,-126 538.4231,-122 466.5769,-122 466.5769,-86 565.4231,-86 565.4231,-122"/>
+<text text-anchor="middle" x="516" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">SharedModule</text>
+</g>
+<!-- SharedModule&#45;&gt;AuthModule -->
+<g id="edge8" class="edge">
+<title>SharedModule&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M516,-122.0225C516,-139.3734 516,-163 516,-163 516,-163 765.2648,-163 765.2648,-163"/>
+<polygon fill="#000000" stroke="#000000" points="765.2648,-166.5001 775.2648,-163 765.2648,-159.5001 765.2648,-166.5001"/>
+</g>
+<!-- AuthGuard -->
+<g id="node12" class="node">
+<title>AuthGuard</title>
+<ellipse fill="#fdb462" stroke="#000000" cx="389" cy="-104" rx="54.4566" ry="18"/>
+<text text-anchor="middle" x="389" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">AuthGuard</text>
+</g>
+<!-- AuthGuard&#45;&gt;AuthModule -->
+<g id="edge11" class="edge">
+<title>AuthGuard&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M389,-122.1061C389,-141.3391 389,-169 389,-169 389,-169 765.4029,-169 765.4029,-169"/>
+<polygon fill="#000000" stroke="#000000" points="765.403,-172.5001 775.4029,-169 765.4029,-165.5001 765.403,-172.5001"/>
+</g>
+<!-- AuthService -->
+<g id="node13" class="node">
+<title>AuthService</title>
+<ellipse fill="#fdb462" stroke="#000000" cx="257" cy="-104" rx="59.1083" ry="18"/>
+<text text-anchor="middle" x="257" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">AuthService</text>
+</g>
+<!-- AuthService&#45;&gt;AuthModule -->
+<g id="edge12" class="edge">
+<title>AuthService&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M257,-122.2843C257,-143.3211 257,-175 257,-175 257,-175 765.3684,-175 765.3684,-175"/>
+<polygon fill="#000000" stroke="#000000" points="765.3685,-178.5001 775.3684,-175 765.3684,-171.5001 765.3685,-178.5001"/>
+</g>
+<!-- TokenInterceptor -->
+<g id="node14" class="node">
+<title>TokenInterceptor</title>
+<ellipse fill="#fdb462" stroke="#000000" cx="102" cy="-104" rx="78.1308" ry="18"/>
+<text text-anchor="middle" x="102" y="-99.8" font-family="Times,serif" font-size="14.00" fill="#000000">TokenInterceptor</text>
+</g>
+<!-- TokenInterceptor&#45;&gt;AuthModule -->
+<g id="edge13" class="edge">
+<title>TokenInterceptor&#45;&gt;AuthModule</title>
+<path fill="none" stroke="#000000" d="M102,-122.2479C102,-145.0179 102,-181 102,-181 102,-181 765.2278,-181 765.2278,-181"/>
+<polygon fill="#000000" stroke="#000000" points="765.2278,-184.5001 775.2278,-181 765.2277,-177.5001 765.2278,-184.5001"/>
+</g>
+</g>
+</svg>
+
+          </div>
+          <i id="fullscreen" class="fa fa-expand module-graph-fullscreen-btn" aria-hidden="true"></i>
+          <div class="btn-group">
+              <button id="zoom-in" class="btn btn-default btn-sm">Zoom in</button>
+              <button id="reset" class="btn btn-default btn-sm">Reset</button>
+              <button id="zoom-out" class="btn btn-default btn-sm">Zoom out</button>
+          </div>
+      </div>
+      <script src="../js/libs/svg-pan-zoom.min.js"></script>
+      <script src="../js/svg-pan-zoom.controls.js"></script>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">
+        <a href="#info" id="info-tab" role="tab" data-toggle="tab" data-link="info">Info</a>
+    </li>
+
+
+    <li>
+        <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+    </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/auth/auth.module.ts</code>
+        </p>
+
+
+        <div class="container-fluid module">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h3>Declarations<a href="https://angular.io/api/core/NgModule#declarations" target="_blank" title="Official documentation about module declarations"><span class="fa fa-info-circle"></span></a></h3>
+                    <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="../directives/CapsLockDirective.html">CapsLockDirective</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="../components/AuthenticationRequiredComponent.html">AuthenticationRequiredComponent</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="../components/FeatureDisabledComponent.html">FeatureDisabledComponent</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="../components/LogoutComponent.html">LogoutComponent</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="../directives/RolesDirective.html">RolesDirective</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="../components/RolesMissingComponent.html">RolesMissingComponent</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Providers<a href="https://angular.io/api/core/NgModule#providers" target="_blank" title="Official documentation about module providers"><span class="fa fa-info-circle"></a></h3>
+                    <ul class="list-group">
+                            <li class="list-group-item">
+                                     <a href="../injectables/AuthGuard.html" >AuthGuard</a>
+                            </li>
+                            <li class="list-group-item">
+                                     <a href="../injectables/AuthService.html" >AuthService</a>
+                            </li>
+                            <li class="list-group-item">
+                                     <a href="../interceptors/TokenInterceptor.html" >TokenInterceptor</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Imports<a href="https://angular.io/api/core/NgModule#imports" target="_blank" title="Official documentation about module imports"><span class="fa fa-info-circle"></a></h3>
+                    <ul class="list-group">
+                            <li class="list-group-item">
+                                    <a href="../modules/AuthRoutingModule.html" >AuthRoutingModule</a>
+                            </li>
+                            <li class="list-group-item">
+                                    <a href="../modules/SharedModule.html" >SharedModule</a>
+                            </li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Exports<a href="https://angular.io/api/core/NgModule#exports" target="_blank" title="Official documentation about module exports"><span class="fa fa-info-circle"></a></h3>
+                    <ul class="list-group">
+                            <li class="list-group-item">
+                                    <a href="../directives/RolesDirective.html" >RolesDirective</a>
+                            </li>
+                            <li class="list-group-item">
+                                    <a href="../directives/CapsLockDirective.html" >CapsLockDirective</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab-pane fade tab-source-code" id="source">
+        <pre class="line-numbers"><code class="language-typescript">import { NgModule } from &#x27;@angular/core&#x27;;
+import { SharedModule } from &#x27;../shared/shared.module&#x27;;
+import { LogoutComponent } from &#x27;./logout.component&#x27;;
+import { AuthRoutingModule } from &#x27;./auth-routing.module&#x27;;
+import { FeatureDisabledComponent } from &#x27;./feature-disabled.component&#x27;;
+import { RolesDirective } from &#x27;./directives/roles.directive&#x27;;
+import { RolesMissingComponent } from &#x27;./roles-missing.component&#x27;;
+import { CapsLockDirective } from &#x27;./directives/caps-lock.directive&#x27;;
+import { AuthService } from &#x27;./auth.service&#x27;;
+import { AuthGuard } from &#x27;./support/auth.guard&#x27;;
+import { BsDropdownModule } from &#x27;ngx-bootstrap/dropdown&#x27;;
+import { TokenInterceptor } from &#x27;./support/token.interceptor&#x27;;
+import { HTTP_INTERCEPTORS } from &#x27;@angular/common/http&#x27;;
+import { AuthenticationRequiredComponent } from &#x27;./authentication-required.component&#x27;;
+
+@NgModule({
+  imports: [
+    AuthRoutingModule,
+    SharedModule,
+    BsDropdownModule.forRoot()
+  ],
+  declarations: [
+    CapsLockDirective,
+    AuthenticationRequiredComponent,
+    FeatureDisabledComponent,
+    LogoutComponent,
+    RolesDirective,
+    RolesMissingComponent
+  ],
+  providers: [
+    AuthGuard,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
+  exports: [
+    RolesDirective,
+    CapsLockDirective
+  ]
+})
+
+export class AuthModule {
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+           </div>
+       </div>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script>var COMPODOC_CURRENT_PAGE_DEPTH = 1;</script>
+
+       <script src="../js/search/search.js"></script>
+       <script src="../js/search/lunr.min.js"></script>
+       <script src="../js/search/search-lunr.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/search/search_index.js"></script>
+
+    </body>
+</html>
