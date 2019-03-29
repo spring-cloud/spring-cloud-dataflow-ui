@@ -13,7 +13,7 @@
         <span class="fa fa-play"></span>
         Launch task
       </button>
-      <button *ngIf="task.schedulerEnabled" id="task-schedule" type="button" [dataflowAppRoles]="['ROLE_SCHEDULE']"
+      <button *ngIf="task.schedulesEnabled" id="task-schedule" type="button" [dataflowAppRoles]="['ROLE_SCHEDULE']"
               (click)="schedule(task.definition)" class="btn btn-primary btn-fa" title="Schedule">
         <span class="fa fa-clock-o"></span>
         Schedule
@@ -39,7 +39,7 @@
           </span>
           </a>
         </li>
-        <li role="presentation" routerLinkActive="active" *ngIf="task.schedulerEnabled">
+        <li role="presentation" routerLinkActive="active" *ngIf="task.schedulesEnabled">
           <a routerLink="schedules">
             Schedules
             <span *ngIf="counters$ | async as counters;">

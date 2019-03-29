@@ -82,7 +82,7 @@ describe('TaskDefinitionComponent', () => {
   }));
 
   beforeEach(() => {
-    aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = false;
+    aboutService.dataflowVersionInfo.featureInfo.schedulesEnabled = false;
     tasksService.taskDefinitions = TASK_DEFINITIONS;
     tasksService.taskSchedules = TASK_SCHEDULES;
     tasksService.taskExecutions = TASK_EXECUTIONS;
@@ -100,7 +100,7 @@ describe('TaskDefinitionComponent', () => {
   describe('Task action', () => {
 
     beforeEach(() => {
-      aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = true;
+      aboutService.dataflowVersionInfo.featureInfo.schedulesEnabled = true;
       fixture.detectChanges();
     });
 

@@ -372,7 +372,7 @@ describe('TaskDefinitionsComponent', () => {
       tasksService.tasksContext.page = 0;
       tasksService.taskDefinitions = TASK_DEFINITIONS;
       tasksService.taskSchedules = TASK_SCHEDULES;
-      aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = true;
+      aboutService.dataflowVersionInfo.featureInfo.schedulesEnabled = true;
       fixture.detectChanges();
     });
 
@@ -409,7 +409,7 @@ describe('TaskDefinitionsComponent', () => {
     beforeEach(() => {
       tasksService.tasksContext.page = 0;
       tasksService.taskDefinitions = TASK_DEFINITIONS;
-      aboutService.dataflowVersionInfo.featureInfo.schedulerEnabled = false;
+      aboutService.dataflowVersionInfo.featureInfo.schedulesEnabled = false;
       fixture.detectChanges();
     });
 

@@ -105,7 +105,7 @@ export class MockAboutService {
     const featureInfo = new FeatureInfo();
     featureInfo.streamsEnabled = true;
     featureInfo.tasksEnabled = true;
-    featureInfo.schedulerEnabled = true;
+    featureInfo.schedulesEnabled = true;
     featureInfo.grafanaEnabled = true;
     return featureInfo;
   }
@@ -174,7 +174,7 @@ export class MockAboutService {
         dataFlowVersion.securityInfo.isAuthenticated = false;
         dataFlowVersion.featureInfo.streamsEnabled = false;
         dataFlowVersion.featureInfo.tasksEnabled = false;
-        dataFlowVersion.featureInfo.schedulerEnabled = false;
+        dataFlowVersion.featureInfo.schedulesEnabled = false;
         dataFlowVersion.featureInfo.grafanaEnabled = false;
       }
       if (!this._isPlatformSpecificInformationAvailable) {

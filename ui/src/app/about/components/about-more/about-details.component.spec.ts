@@ -69,7 +69,7 @@ describe('AboutDetailsComponent', () => {
 
     // Verify Enabled Features
     validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules', 'Grafana'], 0);
-    validateSpansExists(['streamsEnabled', 'tasksEnabled', 'schedulerEnabled', 'grafanaEnabled']);
+    validateSpansExists(['streamsEnabled', 'tasksEnabled', 'schedulesEnabled', 'grafanaEnabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authenticated', 'Username', 'Roles'], 0);

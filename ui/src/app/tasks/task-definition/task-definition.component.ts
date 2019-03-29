@@ -73,7 +73,7 @@ export class TaskDefinitionComponent implements OnInit {
           .pipe(map((featureInfo: FeatureInfo) => {
             return {
               id: params.id,
-              schedulerEnabled: featureInfo.schedulerEnabled
+              schedulesEnabled: featureInfo.schedulesEnabled
             };
           }))
       ))
@@ -82,7 +82,7 @@ export class TaskDefinitionComponent implements OnInit {
           (params: any) => this.tasksService.getDefinition(params.id)
             .pipe(map((taskDefinition: TaskDefinition) => {
               return {
-                schedulerEnabled: params.schedulerEnabled,
+                schedulesEnabled: params.schedulesEnabled,
                 definition: taskDefinition
               };
             })),
@@ -103,7 +103,7 @@ export class TaskDefinitionComponent implements OnInit {
             .pipe(map((featureInfo: FeatureInfo) => {
               return {
                 id: params.id,
-                schedulerEnabled: featureInfo.schedulerEnabled
+                schedulesEnabled: featureInfo.schedulesEnabled
               };
             }))
         ),
@@ -111,13 +111,13 @@ export class TaskDefinitionComponent implements OnInit {
           (params: any) => {
             const arr = [];
             arr.push(this.tasksService.getTaskExecutions({ q: params.id, size: 1, page: 0, sort: null, order: null }));
-            if (params.schedulerEnabled) {
+            if (params.schedulesEnabled) {
               arr.push(this.tasksService.getSchedules({ q: params.id, size: 1, page: 0, sort: null, order: null }));
             }
             return forkJoin([...arr])
               .pipe(map((forks) => {
                 const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
-                if (params.schedulerEnabled) {
+                if (params.schedulesEnabled) {
                   result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
                 }
                 return result;

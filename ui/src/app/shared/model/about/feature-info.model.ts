@@ -11,7 +11,7 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
 
   public streamsEnabled = false;
   public tasksEnabled = false;
-  public schedulerEnabled = false;
+  public schedulesEnabled = false;
   public grafanaEnabled = false;
 
 
@@ -21,14 +21,14 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
   public reset() {
     this.streamsEnabled = false;
     this.tasksEnabled = false;
-    this.schedulerEnabled = false;
+    this.schedulesEnabled = false;
     this.grafanaEnabled = false;
   }
 
   public deserialize(input) {
     this.streamsEnabled = input['streamsEnabled'] === true;
     this.tasksEnabled = input['tasksEnabled'] === true;
-    this.schedulerEnabled = input['schedulerEnabled'] === true;
+    this.schedulesEnabled = input['schedulesEnabled'] === true;
     this.grafanaEnabled = input['grafanaEnabled'] === true;
     return this;
   }
@@ -48,8 +48,8 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
         case 'tasksEnabled': {
           return this.tasksEnabled;
         }
-        case 'schedulerEnabled': {
-          return this.schedulerEnabled;
+        case 'schedulesEnabled': {
+          return this.schedulesEnabled;
         }
         case 'grafanaEnabled': {
           return this.grafanaEnabled;

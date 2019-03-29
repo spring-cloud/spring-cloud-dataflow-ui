@@ -80,7 +80,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * Schedule Enabled state
    * @type {boolean}
    */
-  schedulerEnabled = false;
+  schedulesEnabled = false;
 
   /**
    * Contain a key application of each selected application
@@ -135,7 +135,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         icon: 'clock-o',
         action: 'scheduleSelected',
         title: 'Schedule task(s)',
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
+        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       }
     ];
   }
@@ -168,23 +168,23 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
+        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       },
       {
         id: 'task-schedule' + index,
         icon: 'clock-o',
         action: 'schedule',
         title: 'Schedule task',
-        disabled: !this.schedulerEnabled,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
+        disabled: !this.schedulesEnabled,
+        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       },
       {
         id: 'delete-schedules' + index,
         icon: 'trash',
         action: 'delete-schedules',
         title: 'Delete schedule',
-        disabled: !this.schedulerEnabled,
-        hidden: !this.schedulerEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
+        disabled: !this.schedulesEnabled,
+        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
       },
       {
         divider: true,
@@ -242,7 +242,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
 
     this.sharedAboutService.getFeatureInfo()
       .subscribe((featureInfo: FeatureInfo) => {
-        this.schedulerEnabled = !!featureInfo.schedulerEnabled;
+        this.schedulesEnabled = !!featureInfo.schedulesEnabled;
         this.refresh();
       });
   }

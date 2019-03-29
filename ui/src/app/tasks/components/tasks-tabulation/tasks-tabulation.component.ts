@@ -48,7 +48,7 @@ export class TasksTabulationComponent implements OnInit {
   refresh() {
     this.params$ = this.sharedAboutService.getFeatureInfo()
       .pipe(map((featureInfo: FeatureInfo) => ({
-        schedulerEnabled: featureInfo.schedulerEnabled
+        schedulesEnabled: featureInfo.schedulesEnabled
       })));
     this.counters$ = this.sharedAboutService.getFeatureInfo()
       .pipe(mergeMap(
@@ -56,17 +56,17 @@ export class TasksTabulationComponent implements OnInit {
           const arr = [];
           arr.push(this.tasksService.getDefinitions({ q: '', size: 1, page: 0, sort: null, order: null }),
             this.tasksService.getExecutions({ q: '', size: 1, page: 0, sort: null, order: null }));
-          if (featureInfo.schedulerEnabled) {
+          if (featureInfo.schedulesEnabled) {
             arr.push(this.tasksService.getSchedules({ q: '', size: 1, page: 0, sort: null, order: null }));
           }
           return forkJoin([...arr])
             .pipe(map((counters) => {
               const result = {
-                schedulerEnabled: featureInfo.schedulerEnabled,
+                schedulesEnabled: featureInfo.schedulesEnabled,
                 definitions: (counters[0] as Page<TaskDefinition>).totalElements,
                 executions: (counters[1] as Page<TaskExecution>).totalElements
               };
-              if (result.schedulerEnabled) {
+              if (result.schedulesEnabled) {
                 result['schedules'] = (counters[2] as Page<TaskSchedule>).totalElements;
               }
               return result;
