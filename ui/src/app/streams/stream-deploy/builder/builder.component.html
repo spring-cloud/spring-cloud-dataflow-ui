@@ -95,6 +95,14 @@
             </div>
 
             <!-- 6 -->
+            <div *ngIf="state.specificPlatform">
+              <div *ngIf="builder.builderDeploymentProperties.global.length > 0"
+                   class="line-body">
+                <div class="form-control form-control-label">
+                  Properties
+                </div>
+              </div>
+            </div>
             <div *ngIf="state.specificPlatform"
                  formArrayName="specificPlatform">
               <div class="line-body" *ngFor="let f of builder.formGroup.get('specificPlatform').controls;let i = index"
@@ -217,6 +225,18 @@
             <!-- 5 -->
             <div class="line-toggle"></div>
 
+            <div class="line-body"
+                 *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0">
+              <div class="form-control form-control-label">
+                <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties).length }}</strong>
+                <span> /</span> {{ builder.builderDeploymentProperties.global.length }} properties
+                <button tabindex="{{ 101 }}" type="button" (click)="openDeploymentProperties(builder)"
+                        class="btn btn-primary">
+                  <span class="fa fa-pencil"></span>
+                </button>
+              </div>
+            </div>
+
             <!-- 6 -->
             <div *ngIf="state.specificPlatform"
                  formArrayName="specificPlatform">
@@ -287,6 +307,18 @@
               <div class="line-toggle"></div>
 
               <!-- 6 -->
+              <!-- track visibility from global as those are same as per apps -->
+              <div class="line-body" *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0">
+                <div class="form-control form-control-label">
+                  <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties, app.name).length }}</strong>
+                  <span> /</span> {{ builder.builderDeploymentProperties.apps[app.name].length }} properties
+                  <button tabindex="{{ 101 }}" type="button" (click)="openDeploymentProperties(builder, app.name)"
+                      class="btn btn-primary">
+                    <span class="fa fa-pencil"></span>
+                  </button>
+                </div>
+              </div>
+
               <div *ngIf="state.specificPlatform"
                    formArrayName="specificPlatform">
                 <div class="line-body"

@@ -20,6 +20,7 @@ import { Platform } from '../../shared/model/platform';
  * Provides {@link StreamDeployConfig} related services.
  *
  * @author Damien Vitrac
+ * @author Janne Valkealahti
  */
 @Injectable()
 export class StreamDeployService {
@@ -150,7 +151,8 @@ export class StreamDeployService {
             return {
               key: platform.name,
               name: platform.name,
-              type: platform.type
+              type: platform.type,
+              options: platform.options
             };
           })
         };
