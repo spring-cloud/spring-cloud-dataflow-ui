@@ -1121,6 +1121,51 @@ export const APPS = {
   number: 0
 };
 
+export const APPS_2 = {
+  items: [
+    {
+      name: 'time',
+      type: 'source',
+      uri: 'https://foo.bar:1.0.0',
+      version: '1.0.0',
+      defaultVersion: true,
+      versions: [
+        {
+          version: '0.0.1',
+          uri: 'https://foo.bar:0.0.1',
+          defaultVersion: false,
+          metadata: [
+            { name: 'foo1', description: 'bar1' },
+            { name: 'foo2', description: 'bar2' }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'log',
+      type: 'sink',
+      uri: 'https://bar.foo:0.0.1 ',
+      version: '0.0.1',
+      defaultVersion: true,
+      versions: [
+        {
+          version: '0.0.1',
+          uri: 'https://foo.bar:0.0.1',
+          defaultVersion: true,
+          metadata: [
+            { name: 'foo1', description: 'bar1' },
+            { name: 'foo2', description: 'bar2' }
+          ]
+        }
+      ]
+    }
+  ],
+  size: 20,
+  totalElements: 2,
+  totalPages: 1,
+  number: 0
+};
+
 export const STREAM_DEFINITIONS = {
   _embedded: {
     streamDefinitionResourceList: [

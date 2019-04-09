@@ -17,6 +17,7 @@ import { NotificationService } from '../../../shared/services/notification.servi
  * TODO
  *
  * @author Damien Vitrac
+ * @author Janne Valkealahti
  */
 @Component({
   selector: 'app-stream-deploy-builder',
@@ -160,6 +161,10 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       if (!isEmpty(appsVersion.get(app.name))) {
         result.push(`version.${app.name}=${appsVersion.get(app.name).value}`);
       }
+      // App deployment props set via modal
+      this.getDeploymentProperties(this.refBuilder.builderDeploymentProperties, app.name).forEach((keyValue) => {
+        result.push(`deployer.${app.name}.${keyValue.key.replace(/spring.cloud.deployer./, '')}=${keyValue.value}`);
+      });
     });
 
     // Apps Properties
@@ -167,6 +172,11 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       this.getAppProperties(this.refBuilder.builderAppsProperties, key).forEach((keyValue) => {
         result.push(`app.${key}.${keyValue.key}=${keyValue.value}`);
       });
+    });
+
+    // Global deployment props set via modal
+    this.getDeploymentProperties(this.refBuilder.builderDeploymentProperties).forEach((keyValue) => {
+      result.push(`deployer.*.${keyValue.key.replace(/spring.cloud.deployer./, '')}=${keyValue.value}`);
     });
 
     // Errors
@@ -266,16 +276,46 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    */
   private populate(builder) {
     this.refBuilder = builder;
+
     const appNames: Array<string> = builder.streamDeployConfig.apps.map(app => app.name);
     const deployerKeys: Array<string> = builder.streamDeployConfig.deployers.map(deployer => deployer.name);
     builder.errors.global = [];
+
+    // we need to iterate twice to get a possible platform name set
+    // as it's needed later and we don't control order of these properties
+    this.properties.some((line: string) => {
+      const arr = line.split(/=(.*)/);
+      const key = arr[0] as string;
+      const value = arr[1] as string;
+      if (StreamDeployService.platform.is(key)) {
+        builder.formGroup.get('platform').setValue(value);
+        const platform = builder.streamDeployConfig.platform.values.find(p => p.name === value);
+        builder.builderDeploymentProperties.global = [];
+        builder.streamDeployConfig.apps.forEach((app: any) => {
+          builder.builderDeploymentProperties.apps[app.name] = [];
+        });
+        if (platform) {
+          platform.options.forEach(o => {
+            builder.builderDeploymentProperties.global.push(Object.assign({isSemantic: true}, o));
+            builder.streamDeployConfig.apps.forEach((app: any) => {
+              builder.builderDeploymentProperties.apps[app.name].push(Object.assign({isSemantic: true}, o));
+            });
+          });
+        }
+        // got it, break from loop
+        return true;
+      }
+      return false;
+    });
+
     this.properties.forEach((line: string) => {
       const arr = line.split(/=(.*)/);
       const key = arr[0] as string;
       const value = arr[1] as string;
       const appKey = key.split('.')[1];
       if (StreamDeployService.platform.is(key)) {
-        builder.formGroup.get('platform').setValue(value);
+        // consume but don't do anything, otherwise error is added
+        // platform value is set in first iteration
       } else if (StreamDeployService.deployer.is(key)) {
         // Deployer
         const keyReduce = StreamDeployService.deployer.extract(key);
@@ -288,8 +328,31 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
               .controls[deployerKeys.indexOf(keyReduce)]
               .get(appKey === '*' ? 'global' : appKey).setValue(value);
           } else {
-            this.updateFormArray(builder, builder.formGroup.get('specificPlatform') as FormArray, appKey,
-              keyReduce, value);
+            const keymatch = 'spring.cloud.deployer.' + keyReduce;
+            // go through deployment properties for global and apps and
+            // mark match if it looks property is handled by modal, otherwise
+            // it belong to form array
+            let match = false;
+            if (key.indexOf('deployer.*.') > -1) {
+              builder.builderDeploymentProperties.global.forEach(p => {
+                if (keymatch === p.id) {
+                  match = true;
+                  p.value = value;
+                }
+              });
+            } else if (key.indexOf('deployer.' + appKey + '.') > -1) {
+              builder.builderDeploymentProperties.apps[appKey].forEach(p => {
+                if (keymatch === p.id) {
+                  match = true;
+                  p.value = value;
+                }
+              });
+            }
+
+            if (!match) {
+              this.updateFormArray(builder, builder.formGroup.get('specificPlatform') as FormArray, appKey,
+                keyReduce, value);
+            }
           }
         }
       } else if (StreamDeployService.version.is(key)) {
@@ -320,9 +383,10 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
 
     const getValue = (defaultValue) => !defaultValue ? '' : defaultValue;
     const builderAppsProperties = {};
+    const builderDeploymentProperties = {global: [], apps: {}};
 
     // Platform
-    formGroup.addControl('platform', new FormControl(getValue(streamDeployConfig.platform.defaultValue),
+    const platformControl = new FormControl(getValue(streamDeployConfig.platform.defaultValue),
       (formControl: FormControl) => {
         if (this.isErrorPlatform(streamDeployConfig.platform.values, formControl.value)) {
           return { invalid: true };
@@ -331,7 +395,38 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
           return { invalid: true };
         }
         return null;
-      }));
+      });
+
+    const defaultPlatform = streamDeployConfig.platform.values.length === 1 ?
+      streamDeployConfig.platform.values[0] : null;
+
+    const populateDeployerProperties = (value) => {
+      builderDeploymentProperties.global = [];
+      streamDeployConfig.apps.forEach((app: any) => {
+        builderDeploymentProperties.apps[app.name] = [];
+      });
+      const platform = streamDeployConfig.platform.values.find(p => p.name === value);
+      if (platform) {
+        platform.options.forEach(o => {
+          builderDeploymentProperties.global.push(Object.assign({isSemantic: true}, o));
+          streamDeployConfig.apps.forEach((app: any) => {
+            builderDeploymentProperties.apps[app.name].push(Object.assign({isSemantic: true}, o));
+          });
+        });
+      }
+    };
+
+    if (defaultPlatform) {
+      populateDeployerProperties(defaultPlatform.name);
+    }
+
+    platformControl.valueChanges.subscribe((value) => {
+      if (!defaultPlatform) {
+        populateDeployerProperties(value);
+      }
+    });
+
+    formGroup.addControl('platform', platformControl);
 
     // Deployers
     const deployers = new FormArray([]);
@@ -432,6 +527,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
     return {
       formGroup: formGroup,
       builderAppsProperties: builderAppsProperties,
+      builderDeploymentProperties: builderDeploymentProperties,
       streamDeployConfig: streamDeployConfig,
       errors: {
         global: [],
@@ -510,6 +606,57 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
 
     }
     return arr.join('<br />');
+  }
+
+  /**
+   * Load the deployment properties of an app or global
+   *
+   * @param {{}} builderDeploymentProperties
+   * @param {string} appId
+   * @returns {Array}
+   */
+  getDeploymentProperties(builderDeploymentProperties: {global: [], apps: {}}, appId?: string): Array<{ key: string, value: string }> {
+    const deploymentProperties = appId ? builderDeploymentProperties.apps[appId] : builderDeploymentProperties.global;
+    if (!deploymentProperties) {
+      return [];
+    }
+
+    return deploymentProperties.map((property: Properties.Property) => {
+      if (property.value && property.value !== undefined && property.value.toString() !== ''
+        && property.value !== property.defaultValue) {
+        return {
+          key: `${property.id}`,
+          value: property.value
+        };
+      }
+      return null;
+    }).filter((app) => app !== null);
+  }
+
+  /**
+   * Open Deployment Properties modal for an app or global
+   *
+   * @param builder
+   * @param {string} appId
+   * @param app
+   */
+  openDeploymentProperties(builder, appId?: string) {
+    const modal = this.bsModalService.show(StreamDeployAppPropertiesComponent);
+    const options = appId ? builder.builderDeploymentProperties.apps[appId] : builder.builderDeploymentProperties.global;
+    modal.content.title = `Deployment properties for platform`;
+
+    const appPropertiesSource = new AppPropertiesSource(Object.assign([], options
+      .map((property) => Object.assign({}, property))));
+
+    appPropertiesSource.confirm.subscribe((properties: Array<any>) => {
+      if (appId) {
+        builder.builderDeploymentProperties.apps[appId] = properties;
+      } else {
+        builder.builderDeploymentProperties.global = properties;
+      }
+      this.changeDetector.markForCheck();
+    });
+    modal.content.setData(appPropertiesSource);
   }
 
   /**

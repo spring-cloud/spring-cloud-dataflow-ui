@@ -2,6 +2,7 @@
  * Represents a Platform.
  *
  * @author Damien Vitrac
+ * @author Janne Valkealahti
  */
 export class Platform {
 
@@ -11,10 +12,13 @@ export class Platform {
 
   public description: String;
 
-  constructor(name: String = '', type: String = '', description: String = '') {
+  public options: Array<any>;
+
+  constructor(name: String = '', type: String = '', description: String = '', options: Array<any> = []) {
     this.name = name;
     this.type = type;
     this.description = description;
+    this.options = options;
   }
 
   /**
@@ -23,7 +27,7 @@ export class Platform {
    * @returns {Platform}
    */
   static fromJSON(inputJson): Platform {
-    return new Platform(inputJson.name, inputJson.type, inputJson.description);
+    return new Platform(inputJson.name, inputJson.type, inputJson.description, inputJson.options);
   }
 
   /**

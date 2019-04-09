@@ -63,7 +63,9 @@ export class MockStreamsService {
 
   getPlatforms(): Observable<Platform[]> {
     return of([
-      Platform.fromJSON({name: 'default', type: 'local', description: ''}),
+      Platform.fromJSON({name: 'default', type: 'local', description: '',
+        options: [{id: 'spring.cloud.deployer.local.opt1', name: 'opt1'}]
+      }),
       Platform.fromJSON({name: 'foo', type: 'bar', description: 'foobar'})
     ]);
   }
