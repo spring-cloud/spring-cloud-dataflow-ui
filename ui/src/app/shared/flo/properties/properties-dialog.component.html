@@ -16,7 +16,7 @@
       <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
     </div>
 
-    <div *ngIf="propertiesGroupModel.getControlsModels().length < 50 || showProperties">
+    <div *ngIf="propertiesGroupModel.getControlsModels().length <= 50 || showProperties">
 
       <properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
                         [form]="propertiesFormGroup"></properties-group>
