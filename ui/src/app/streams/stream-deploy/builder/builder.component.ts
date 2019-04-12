@@ -12,6 +12,10 @@ import { AppPropertiesSource, StreamDeployAppPropertiesComponent } from '../app-
 import { BsModalService } from 'ngx-bootstrap';
 import { Properties } from 'spring-flo';
 import { NotificationService } from '../../../shared/services/notification.service';
+import {
+  GroupPropertiesSource, GroupPropertiesSources,
+  PropertiesGroupsDialogComponent
+} from '../../../shared/flo/properties-groups/properties-groups-dialog.component';
 
 /**
  * TODO
@@ -641,14 +645,41 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @param app
    */
   openDeploymentProperties(builder, appId?: string) {
-    const modal = this.bsModalService.show(StreamDeployAppPropertiesComponent);
+    const modal = this.bsModalService.show(PropertiesGroupsDialogComponent);
     const options = appId ? builder.builderDeploymentProperties.apps[appId] : builder.builderDeploymentProperties.global;
     modal.content.title = `Deployment properties for platform`;
 
-    const appPropertiesSource = new AppPropertiesSource(Object.assign([], options
-      .map((property) => Object.assign({}, property))));
+    // jee.foo.bar-xxx -> jee.foo
+    const deduceKey = (key) => {
+      return key.substring(0, key.lastIndexOf('.'));
+    };
 
-    appPropertiesSource.confirm.subscribe((properties: Array<any>) => {
+    // grouping all properties by a deduced key
+    const groupBy = (items, key) => items.reduce(
+      (result, item) => {
+        const groupKey = deduceKey(item[key]);
+        return ({
+          ...result,
+          [groupKey]: [...(result[groupKey] || []), item],
+        });
+      }, {}
+    );
+
+    // setup groups and sort alphabetically by group titles
+    let groupedPropertiesSources: Array<GroupPropertiesSource> = [];
+    const groupedEntries: { [s: string]: Array<any>; } = groupBy(options, 'id');
+    Object.entries(groupedEntries).forEach(v => {
+      const groupedPropertiesSource = new GroupPropertiesSource(Object.assign([], v[1]
+        .map((property) => Object.assign({}, property))), v[0]);
+      groupedPropertiesSources.push(groupedPropertiesSource);
+    });
+    groupedPropertiesSources = groupedPropertiesSources.sort(((a, b) => {
+      return a.title === b.title ? 0 : a.title < b.title ? -1 : 1;
+    }));
+    const groupPropertiesSources = new GroupPropertiesSources(groupedPropertiesSources);
+
+    // get new props from modal
+    groupPropertiesSources.confirm.subscribe((properties: Array<any>) => {
       if (appId) {
         builder.builderDeploymentProperties.apps[appId] = properties;
       } else {
@@ -656,7 +687,8 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       }
       this.changeDetector.markForCheck();
     });
-    modal.content.setData(appPropertiesSource);
+
+    modal.content.setData(groupPropertiesSources);
   }
 
   /**
