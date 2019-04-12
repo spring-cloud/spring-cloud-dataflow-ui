@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{ title }}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="handleCancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form name="app-properties" (submit)="handleOk()" class="modal-body app-properties">
+
+  <div class="properties"
+       *ngFor="let group of propertiesGroupModels">
+    <div class="line-toggle">
+      <a class="toggle" (click)="collapse(group.title)">
+                <span class="fa" [class.fa-chevron-down]="state[group.title]"
+                      [class.fa-chevron-right]="!state[group.title]"></span>
+        {{group.title}}
+      </a>
+    </div>
+    <div *ngIf="state[group.title]">
+      <properties-group [propertiesGroupModel]="group"
+                        [form]="propertiesFormGroup"></properties-group>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="handleCancel()">Close</button>
+    <button type="submit" class="btn btn-primary" [disabled]="okDisabled">OK</button>
+  </div>
+</form>

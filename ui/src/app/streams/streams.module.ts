@@ -42,6 +42,7 @@ import { StreamsUndeployComponent } from './streams-undeploy/streams-undeploy.co
 import { StreamsDestroyComponent } from './streams-destroy/streams-destroy.component';
 import { StreamHistoryComponent } from './stream/history/stream-history.component';
 import { StreamHistoryStatusComponent } from './components/stream-history-status/stream-status.component';
+import { PropertiesGroupsDialogComponent } from '../shared/flo/properties-groups/properties-groups-dialog.component';
 
 @NgModule({
   imports: [
@@ -97,6 +98,7 @@ import { StreamHistoryStatusComponent } from './components/stream-history-status
     MessageRateComponent,
     StreamsUndeployComponent,
     StreamDeployAppPropertiesComponent,
+    PropertiesGroupsDialogComponent,
     StreamsDestroyComponent
   ],
   providers: [

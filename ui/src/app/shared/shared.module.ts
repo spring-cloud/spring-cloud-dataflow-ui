@@ -19,6 +19,7 @@ import { FloModule } from 'spring-flo';
 import { HandleComponent } from './flo/handle/handle.component';
 import { DecorationComponent } from './flo/decoration/decoration.component';
 import { PropertiesDialogComponent } from './flo/properties/properties-dialog.component';
+import { PropertiesGroupsDialogComponent } from './flo/properties-groups/properties-groups-dialog.component';
 import { GraphViewComponent } from './flo/graph-view/graph-view.component';
 import { SharedAboutService } from './services/shared-about.service';
 import { MasterCheckboxComponent } from './components/master-checkbox.component';
@@ -101,6 +102,7 @@ import { BlockerService } from './components/blocker/blocker.service';
     DecorationComponent,
     HandleComponent,
     PropertiesDialogComponent,
+    PropertiesGroupsDialogComponent,
     GraphViewComponent,
     StreamDslComponent,
     TruncatePipe,
@@ -156,6 +158,7 @@ import { BlockerService } from './components/blocker/blocker.service';
     SortComponent,
     HandleComponent,
     PropertiesDialogComponent,
+    PropertiesGroupsDialogComponent,
     GraphViewComponent,
     TruncatePipe,
     TruncatorComponent,
