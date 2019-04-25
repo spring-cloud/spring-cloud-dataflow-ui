@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, Subject, EMPTY, of } from 'rxjs';
-import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { catchError, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { saveAs } from 'file-saver/FileSaver';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { StreamsService } from '../streams.service';
@@ -251,7 +251,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
       obs = obs.pipe(mergeMap(val => this.streamsService.deployDefinition(this.refConfig.id, propertiesMap)));
     }
     this.blockerService.lock();
-    obs.pipe(takeUntil(this.ngUnsubscribe$))
+    obs.pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe(data => {
           if (isDeployed) {
             this.notificationService.success(`Successfully updated stream definition "${this.refConfig.id}"`);
@@ -263,8 +263,6 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
         error => {
           const err = error.message ? error.message : error.toString();
           this.notificationService.error(err ? err : 'An error occurred during the stream deployment update.');
-        }, () => {
-          this.blockerService.unlock();
         }
       );
   }

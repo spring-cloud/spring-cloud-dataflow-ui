@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { AppsService } from '../../apps.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { AppsAddValidator } from '../apps-add.validator';
@@ -80,14 +80,12 @@ export class AppsBulkImportUriComponent implements OnDestroy {
         force: this.form.get('force').value,
         properties: null,
         uri: this.form.get('uri').value.toString()
-      }).pipe(takeUntil(this.ngUnsubscribe$))
+      }).pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(data => {
           this.notificationService.success('Apps Imported.');
           this.router.navigate(['apps']);
         }, (error) => {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-        }, () => {
-          this.blockerService.unlock();
         });
     }
   }

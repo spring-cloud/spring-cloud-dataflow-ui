@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { Observable, EMPTY, Subject, of, throwError } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { catchError, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { TasksService } from '../tasks.service';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TaskScheduleCreateValidator } from './task-schedule-create.validator';
@@ -183,7 +183,7 @@ export class TaskScheduleCreateComponent implements OnInit {
 
       this.blockerService.lock();
       this.tasksService.createSchedules(scheduleParams)
-        .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           data => {
             if (scheduleParams.length === 1) {
@@ -195,8 +195,6 @@ export class TaskScheduleCreateComponent implements OnInit {
           },
           error => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-          }, () => {
-            this.blockerService.unlock();
           }
         );
     }

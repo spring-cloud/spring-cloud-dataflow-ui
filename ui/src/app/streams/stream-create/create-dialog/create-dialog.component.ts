@@ -8,7 +8,7 @@ import { StreamsService } from '../../streams.service';
 import { Properties } from 'spring-flo';
 import { Router } from '@angular/router';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
@@ -347,7 +347,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
       const def = this.streamDefs[index];
       this.blockerService.lock();
       this.streamService.createDefinition(def.name, def.def, false)
-        .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(() => {
           this.loggerService.log('Stream ' + def.name + ' created OK');
           // Stream created successfully, mark it as created
@@ -360,7 +360,6 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
             setTimeout(() => {
               this.bsModalRef.hide();
               this.notificationService.success('Stream(s) have been created successfully');
-              this.blockerService.unlock();
             }, PROGRESS_BAR_WAIT_TIME);
             this.router.navigate(['streams']);
           } else {
@@ -388,7 +387,6 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
           } else {
             this.notificationService.error(`Failed to create stream '${def.name}'`);
           }
-          this.blockerService.unlock();
         });
     }
   }
