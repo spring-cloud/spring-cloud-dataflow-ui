@@ -2,7 +2,7 @@ import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { StreamsService } from '../streams.service';
 import { StreamDefinition } from '../model/stream-definition';
 import { BsModalRef } from 'ngx-bootstrap';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable, Subject } from 'rxjs';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -83,15 +83,13 @@ export class StreamsDeployComponent extends Modal implements OnDestroy {
     this.loggerService.log(`Proceeding to deploy ${this.streamDefinitions.length} stream definition(s).`, this.streamDefinitions);
     this.blockerService.lock();
     this.streamsService.deployMultipleStreamDefinitions(this.streamDefinitions)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe((data) => {
         this.notificationService.success(`${data.length} stream definition(s) deployed.`);
         this.confirm.emit(data);
         this.cancel();
       }, (error) => {
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-      }, () => {
-        this.blockerService.unlock();
       });
   }
 

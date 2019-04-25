@@ -3,7 +3,7 @@ import { Subscription, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppsRegisterValidator } from './apps-register.validator';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { ApplicationType } from '../../../shared/model/application-type';
 import { AppsService } from '../../apps.service';
 import { NotificationService } from '../../../shared/services/notification.service';
@@ -108,7 +108,7 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
       }).filter((a) => a != null);
       this.blockerService.lock();
       this.appsService.registerApps(applications)
-        .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           data => {
             this.notificationService.success(`${data.length} App(s) registered.`);
@@ -116,8 +116,6 @@ export class AppsRegisterComponent implements OnInit, OnDestroy {
           },
           error => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
-          }, () => {
-            this.blockerService.unlock();
           }
         );
     }

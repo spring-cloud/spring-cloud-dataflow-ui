@@ -11,7 +11,7 @@ import { StreamsUndeployComponent } from '../streams-undeploy/streams-undeploy.c
 import { StreamsDestroyComponent } from '../streams-destroy/streams-destroy.component';
 import { SortParams, OrderParams, ListDefaultParams } from '../../shared/components/shared.interface';
 import { StreamListParams } from '../components/streams.interface';
-import { mergeMap, takeUntil, map } from 'rxjs/operators';
+import { mergeMap, takeUntil, map, finalize } from 'rxjs/operators';
 import { AppsService } from '../../apps/apps.service';
 import { AppRegistration } from '../../shared/model/app-registration.model';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -535,14 +535,12 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.blockerService.lock();
     this.streamsService
       .undeployDefinition(item)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe(data => {
         this.notificationService.success(`Successfully undeployed stream definition "${item.name}"`);
       }, () => {
         this.notificationService.error('An error occurred while undeploying Stream. ' +
           'Please check the server logs for more details.');
-      }, () => {
-        this.blockerService.unlock();
       });
   }
 

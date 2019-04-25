@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { AppsService } from '../../apps.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { BulkImportParams } from '../../components/apps.interface';
@@ -114,15 +114,13 @@ export class AppsBulkImportPropertiesComponent implements OnDestroy {
         this.form.get('properties').value.toString()
       );
       this.appsService.bulkImportApps(reqImportBulkApps)
-        .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(() => {
           this.notificationService.success('Apps Imported.');
           this.router.navigate(['apps']);
         }, () => {
           this.notificationService.error('An error occurred while importing Apps. ' +
             'Please check the server logs for more details.');
-        }, () => {
-          this.blockerService.unlock();
         });
     }
   }

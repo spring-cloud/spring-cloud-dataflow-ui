@@ -6,6 +6,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { finalize } from 'rxjs/operators';
 
 /**
  * Applications Unregister modal
@@ -64,7 +65,7 @@ export class AppsUnregisterComponent {
   unregister() {
     this.loggerService.log(`Proceeding to unregister ${this.applications.length} application(s).`, this.applications);
     this.blockerService.lock();
-    this.appsService.unregisterApps(this.applications).subscribe(
+    this.appsService.unregisterApps(this.applications).pipe(finalize(() => this.blockerService.unlock())).subscribe(
       data => {
         if (data.length === 1) {
           this.notificationService.success('Successfully removed app "'
@@ -77,8 +78,6 @@ export class AppsUnregisterComponent {
       }, error => {
         this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         this.close();
-      }, () => {
-        this.blockerService.unlock();
       });
   }
 

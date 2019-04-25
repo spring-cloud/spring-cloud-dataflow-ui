@@ -4,7 +4,7 @@ import { StreamDefinition } from '../model/stream-definition';
 import { StreamsService } from '../streams.service';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
@@ -60,7 +60,7 @@ export class StreamsUndeployComponent extends Modal implements OnDestroy {
     this.blockerService.lock();
     this.streamsService
       .undeployMultipleStreamDefinitions(this.streamDefinitions)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe((data) => {
         this.notificationService.success(`${data.length} stream definition(s) undeploy.`);
         this.confirm.emit('done');
@@ -70,8 +70,6 @@ export class StreamsUndeployComponent extends Modal implements OnDestroy {
           'Please check the server logs for more details.');
         this.confirm.emit('done');
         this.cancel();
-      }, () => {
-        this.blockerService.unlock();
       });
   }
 

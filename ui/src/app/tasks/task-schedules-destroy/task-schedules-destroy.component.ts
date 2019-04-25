@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { Modal } from '../../shared/components/modal/modal-abstract';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { TasksService } from '../tasks.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
@@ -67,7 +67,7 @@ export class TaskSchedulesDestroyComponent extends Modal implements OnDestroy {
     this.loggerService.log(`Proceeding to delete ${this.taskSchedules.length} task schedule(s).`, this.taskSchedules);
     this.blockerService.lock();
     this.tasksService.destroySchedules(this.taskSchedules)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe((data) => {
         this.notificationService.success(`${data.length} task schedule(s) deleted.`);
         this.confirm.emit('done');
@@ -77,8 +77,6 @@ export class TaskSchedulesDestroyComponent extends Modal implements OnDestroy {
           'Please check the server logs for more details.');
         this.confirm.emit('done');
         this.cancel();
-      }, () => {
-        this.blockerService.unlock();
       });
   }
 

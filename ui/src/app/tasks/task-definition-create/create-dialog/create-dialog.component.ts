@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { TasksService } from '../../tasks.service';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
@@ -107,7 +107,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
     } else {
       this.blockerService.lock();
       this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl })
-        .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           () => {
             this.loggerService.log('Succesfully created task', this.taskName.value, this.dsl);
@@ -120,8 +120,6 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
           (error) => {
             this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
             this.bsModalRef.hide();
-          }, () => {
-            this.blockerService.unlock();
           }
         );
     }
