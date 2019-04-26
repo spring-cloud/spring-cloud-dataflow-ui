@@ -220,6 +220,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    */
   private populateApp(builder?: any) {
     builder = builder || this.refBuilder;
+    if (!builder) {
+      return false;
+    }
     builder.formGroup.get('global').controls = [];
     builder.errors.app = [];
     const appNames: Array<string> = builder.streamDeployConfig.apps.map((app, index) => {
@@ -557,6 +560,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @returns {boolean}
    */
   isSubmittable(builder): boolean {
+    if (!builder) {
+      return false;
+    }
     return builder.formGroup.valid;
   }
 
