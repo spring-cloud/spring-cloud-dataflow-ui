@@ -19,6 +19,9 @@
 @import 'scss/components/datepicker';
 @import 'scss/components/timepicker';
 
+// Application styles
+@import 'scss/styles';
+
 // Layout
 @import 'scss/layout/typo';
 @import 'scss/layout/content';
@@ -26,5 +29,3 @@
 @import 'scss/layout/table';
 @import 'scss/layout/sidebar';
 
-// Application styles
-@import 'scss/styles';
