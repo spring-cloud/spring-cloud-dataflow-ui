@@ -15,6 +15,25 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     let inputType = Properties.InputType.TEXT;
     let validation: Properties.Validation;
     if (property.isSemantic) {
+
+      // valueHints mean we have a set of possible values, see if we can use those
+      if (property.hints && property.hints.valueHints) {
+
+        // array and we have hints, assume we can now use selector
+        if (Array.isArray(property.hints.valueHints) && property.hints.valueHints.length > 0) {
+          return new Properties.SelectControlModel(property,
+            Properties.InputType.SELECT, (<Array<any>> property.hints.valueHints)
+              .filter(o => o.value.length > 0)
+              .map(o => {
+                return {
+                  name: o.value,
+                  value: o.value === property.defaultValue ? undefined : o.value
+                };
+              }));
+        }
+      }
+
+      // then try to use type
       switch (property.type) {
         case 'java.lang.Long':
         case 'java.lang.Integer':
@@ -58,6 +77,8 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
           }
       }
     }
+
+    // fall back to generic
     return new Properties.GenericControlModel(property, inputType, validation);
   }
 
