@@ -50,6 +50,7 @@ describe('StreamDeployComponent', () => {
   const routingStateService = new MockRoutingStateService();
   const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any);
 
+  // Test
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
 
