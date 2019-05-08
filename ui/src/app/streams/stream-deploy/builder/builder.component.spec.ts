@@ -102,6 +102,39 @@ describe('StreamDeployBuilderComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('Get properties', () => {
+
+    it('deployment should have correct values', () => {
+      const builderDeploymentProperties  = {
+        global: [
+          {id: 'mock.my-string', defaultValue: 'foo', value: 'bar'},
+          {id: 'mock.my-boolean', defaultValue: true, value: false}
+        ],
+        apps: {}
+      };
+      const ret = component.getDeploymentProperties(builderDeploymentProperties);
+      expect(ret.length).toBe(2);
+      expect(ret[0].key).toBe('mock.my-string');
+      expect(ret[0].value).toBe('bar');
+      expect(ret[1].key).toBe('mock.my-boolean');
+      expect(ret[1].value).toBe(false);
+    });
+
+    it('apps should have correct values', () => {
+      const builderAppsProperties  = {
+        fake: [
+          {id: 'mock.my-string', defaultValue: 'foo', value: 'bar'},
+          {id: 'mock.my-boolean', defaultValue: true, value: false}
+        ]
+      };
+      const ret = component.getAppProperties(builderAppsProperties, 'fake');
+      expect(ret.length).toBe(2);
+      expect(ret[0].key).toBe('mock.my-string');
+      expect(ret[0].value).toBe('bar');
+      expect(ret[1].key).toBe('mock.my-boolean');
+      expect(ret[1].value).toBe(false);
+    });
+  });
 
   describe('Form values', () => {
 
