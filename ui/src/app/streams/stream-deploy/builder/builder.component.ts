@@ -625,14 +625,14 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @param {string} appId
    * @returns {Array}
    */
-  getDeploymentProperties(builderDeploymentProperties: {global: [], apps: {}}, appId?: string): Array<{ key: string, value: string }> {
+  getDeploymentProperties(builderDeploymentProperties: {global: any[], apps: any}, appId?: string): Array<{ key: string, value: any }> {
     const deploymentProperties = appId ? builderDeploymentProperties.apps[appId] : builderDeploymentProperties.global;
     if (!deploymentProperties) {
       return [];
     }
 
     return deploymentProperties.map((property: Properties.Property) => {
-      if (property.value && property.value !== undefined && property.value.toString() !== ''
+      if (property.value !== null && property.value !== undefined && property.value.toString() !== ''
         && property.value !== property.defaultValue) {
         return {
           key: `${property.id}`,
@@ -704,13 +704,13 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @param {string} appId
    * @returns {Array}
    */
-  getAppProperties(builderAppsProperties: {}, appId: string): Array<{ key: string, value: string }> {
+  getAppProperties(builderAppsProperties: {}, appId: string): Array<{ key: string, value: any }> {
     const appProperties = builderAppsProperties[appId];
     if (!appProperties) {
       return [];
     }
     return appProperties.map((property: Properties.Property) => {
-      if (property.value && property.value !== undefined && property.value.toString() !== ''
+      if (property.value !== null && property.value !== undefined && property.value.toString() !== ''
         && property.value !== property.defaultValue) {
         if (property.id.startsWith(`${appId}.`)) {
           return {
