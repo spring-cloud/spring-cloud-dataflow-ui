@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a href="https://cloud.spring.io/spring-cloud-dataflow/">
+  <a href="https://dataflow.spring.io/">
     <img alt="Spring Data Flow Dashboard" title="Spring Data Flow Dashboard" src="https://i.imgur.com/ZfEGBE4.png" width="450">
   </a>
 </p>
