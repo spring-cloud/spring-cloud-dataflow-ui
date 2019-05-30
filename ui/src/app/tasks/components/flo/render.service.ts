@@ -348,8 +348,8 @@ export class RenderService implements Flo.Renderer {
     const targetElement = paper.findViewByModel(targetId);
     const sourceLabel = sourceElement.model.attr('.label/text');
     const targetLabel = targetElement.model.attr('.label/text');
-    link.attr('.label/text', `Link from '${sourceLabel}' to '${targetLabel}'`);
-    this.refreshVisuals(link, 'props/ExitStatus', paper); // TODO this was set early on, why is this call required here?
+    // Set the visual label for exitStatus
+    this.refreshVisuals(link, 'props/ExitStatus', paper);
   }
 
   isSemanticProperty(propertyPath: string, element: dia.Cell) {
@@ -419,4 +419,5 @@ export class RenderService implements Flo.Renderer {
     });
 
   }
+
 }
