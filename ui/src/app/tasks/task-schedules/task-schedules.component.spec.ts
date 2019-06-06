@@ -210,7 +210,6 @@ describe('TaskSchedulesComponent', () => {
       expect(button).toBeTruthy();
       expect(component.form.q).toBe('');
     });
-    */
 
     it('should apply a search', () => {
       tasksService.taskSchedules = {
@@ -235,6 +234,7 @@ describe('TaskSchedulesComponent', () => {
       const noResult = fixture.debugElement.query(By.css('#taskSchedulesTable')).nativeElement;
       expect(noResult).toBeTruthy();
     });
+    */
 
   });
 

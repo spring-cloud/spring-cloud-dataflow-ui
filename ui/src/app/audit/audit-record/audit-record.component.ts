@@ -57,7 +57,7 @@ export class AuditRecordComponent implements OnInit, OnDestroy {
   /**
    * List Bar Component
    */
-  @ViewChild('listBar')
+  @ViewChild('listBar', { static: true })
   listBar: AuditRecordListBarComponent;
 
   /**

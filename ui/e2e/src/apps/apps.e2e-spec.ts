@@ -10,6 +10,7 @@ import { ElementHelper } from '../utils/element-helpers';
 import { protractor } from 'protractor/built/ptor';
 import { By } from 'selenium-webdriver';
 import 'jasmine-expect';
+
 /**
  * E2E spec for apps page.
  *
@@ -80,7 +81,7 @@ fdescribe('E2E spec for apps page', () => {
     });
 
     fit('should display a message related to the empty register app', async () => {
-      const empty : ElementFinder = await pageApps.getEmpty();
+      const empty: ElementFinder = await pageApps.getEmpty();
       expect(empty.isPresent()).toBeTruthy();
       expect(await empty.getText()).toContain('There is no application registered, yet.');
       expect(await empty.getText()).toContain('You can: Add Application(s) or Refresh the page.');
@@ -96,34 +97,34 @@ fdescribe('E2E spec for apps page', () => {
       const emptyBox: ElementFinder = await pageApps.getEmpty();
       await ElementHelper.clickElement(by.css('a'), true, emptyBox);
       const currentUrl = await browser.getCurrentUrl();
-      expect(currentUrl).toEndWith("#/apps/add");
+      expect(currentUrl).toEndWith('#/apps/add');
 
       await element.all(by.css('.page-step-1 a')).first().click();
       const registerAppUrl = await browser.getCurrentUrl();
-      expect(registerAppUrl).toEndWith("#/apps/add/register");
+      expect(registerAppUrl).toEndWith('#/apps/add/register');
     });
 
     fit('should navigate to the list app page', async () => {
       await pageRegisterApps.getCancel().click();
       const currentUrl = await browser.getCurrentUrl();
-      expect(currentUrl).toEndWith("#/apps");
+      expect(currentUrl).toEndWith('#/apps');
     });
 
     fit('should navigate to the bulk import page', async () => {
       const emptyBox = await pageApps.getEmpty();
       await (emptyBox).all(by.css('a')).first().click();
       const currentUrl = await browser.getCurrentUrl();
-      expect(currentUrl).toEndWith("#/apps/add");
+      expect(currentUrl).toEndWith('#/apps/add');
 
       await element.all(by.css('.page-step-1 a')).get(1).click();
       const registerAppUrl = await browser.getCurrentUrl();
-      expect(registerAppUrl).toEndWith("#/apps/add/import-from-uri");
+      expect(registerAppUrl).toEndWith('#/apps/add/import-from-uri');
     });
 
     fit('should navigate to the list app page', async () => {
       await pageBulkImportUriApps.getCancel().click();
       const currentUrl = await browser.getCurrentUrl();
-      expect(currentUrl).toEndWith("#/apps");
+      expect(currentUrl).toEndWith('#/apps');
     });
 
   });
@@ -143,12 +144,12 @@ fdescribe('E2E spec for apps page', () => {
       const emptyBox = await pageApps.getEmpty();
       await (emptyBox).all(by.css('a')).first().click();
       const currentUrl = await browser.getCurrentUrl();
-      expect(currentUrl).toEndWith("#/apps/add");
+      expect(currentUrl).toEndWith('#/apps/add');
       expect(await pageApps.getHeaderText()).toEqual('Add Application(s)');
 
       await element.all(by.css('.page-step-1 a')).first().click();
       const registerAppUrl = await browser.getCurrentUrl();
-      expect(registerAppUrl).toEndWith("#/apps/add/register");
+      expect(registerAppUrl).toEndWith('#/apps/add/register');
       expect(await pageApps.getSecondHeaderText()).toEqual('Register one or more applications');
     });
 

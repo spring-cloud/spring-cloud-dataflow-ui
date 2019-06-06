@@ -1,9 +1,8 @@
 import {
   AfterViewInit, Directive, ElementRef, Input, Output, EventEmitter, HostListener,
-  Renderer2
+  Renderer2, OnInit
 } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 /**

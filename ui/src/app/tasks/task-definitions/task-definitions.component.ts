@@ -50,7 +50,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   /**
    * List Bar Component
    */
-  @ViewChild('listBar')
+  @ViewChild('listBar', { static: true })
   listBar: ListBarComponent;
 
   /**

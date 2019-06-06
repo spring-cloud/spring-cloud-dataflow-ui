@@ -37,7 +37,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
 
   initSubject: Subject<void>;
 
-  @ViewChild(EditorComponent) flo;
+  @ViewChild(EditorComponent, { static: true }) flo;
 
   constructor(public metamodelService: MetamodelService,
               public renderService: RenderService,

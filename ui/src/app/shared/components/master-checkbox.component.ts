@@ -17,7 +17,7 @@ import { Component, Input, AfterViewInit, DoCheck, ViewChild, Output, EventEmitt
 })
 export class MasterCheckboxComponent implements DoCheck, AfterViewInit {
 
-  @ViewChild('ck') checkbox;
+  @ViewChild('ck', { static: true }) checkbox;
 
   @Input() items: Array<boolean>;
 
