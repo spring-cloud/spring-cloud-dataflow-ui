@@ -33,7 +33,7 @@ export class AppsPage {
    * Get the empty box
    * @returns {ElementFinder}
    */
-  async getEmpty() : Promise<ElementFinder> {
+  async getEmpty(): Promise<ElementFinder> {
     const e = await ElementHelper.getElementOrWait(by.css('#empty'));
     console.log('eeeee', e);
     return element(e);
@@ -51,13 +51,13 @@ export class AppsPage {
    * Get all the rows of the table
    * @returns {ElementArrayFinder}
    */
-  getTableRows() : any | ElementFinder[] {
+  getTableRows(): any | ElementFinder[] {
     const e = ElementHelper.getElementOrWait(by.css('#table tbody tr'));
     return e;
     return element.all(by.css('#table tbody tr'));
   }
 
-  async getTableRowCount() : Promise<number> {
+  async getTableRowCount(): Promise<number> {
     const e = await ElementHelper.getElementOrWait(by.css('#table tbody tr'));
     return element.all(e).count();
   }

@@ -74,7 +74,7 @@ export class AppsComponent implements OnInit, OnDestroy {
   /**
    * List Bar Component
    */
-  @ViewChild('listBar')
+  @ViewChild('listBar', { static: true })
   listBar: AppListBarComponent;
 
   /**
