@@ -140,16 +140,15 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
                   value = this.streamDeployService.cleanValueProperties(value);
                   let keyShort = key;
                   if (key.startsWith(`${appType}.`)) {
+                    ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
                     keyShort = key.substring(`${appType}.`.length, key.length);
                   }
                   properties.push(`app.${app}.${keyShort}=${value}`);
-                  ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
                 });
               }
             });
             this.properties = properties;
-            this.ignoreProperties = ignoreProperties;
-            this.ignoreProperties = Object.assign([], this.properties);
+            this.ignoreProperties = [ ...properties, ...ignoreProperties];
             config.streamDefinition = deploymentInfo;
             return config;
           }))
@@ -235,7 +234,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
           this.loggerService.error('Split line property', val);
         } else {
           // Workaround sensitive property: ignored property
-          if (arr[1] === `'******'`) {
+          if (arr[1] === `'******'` || arr[1] === `******`) {
             this.loggerService.log(`Sensitive property ${arr[0]} is ignored`);
           } else {
             propertiesMap[arr[0]] = cleanValue(arr[1]);
