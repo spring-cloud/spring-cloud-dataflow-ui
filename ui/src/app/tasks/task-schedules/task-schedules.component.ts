@@ -12,6 +12,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskSchedulesDestroyComponent } from '../task-schedules-destroy/task-schedules-destroy.component';
 import { ViewChild } from '@angular/core';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
+import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 
 /**
  * Provides {@link TaskSchedule} related services.
@@ -36,6 +37,12 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
    */
   @ViewChild('listBar', { static: true })
   listBar: ListBarComponent;
+
+  /**
+   * Tabulation
+   */
+  @ViewChild('tasksTabulation', { static: false })
+  tasksTabulation: TasksTabulationComponent;
 
   /**
    * Unsubscribe
@@ -212,6 +219,10 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
           this.notificationService.error(error);
         }
       );
+
+    if (this.tasksTabulation) {
+      this.tasksTabulation.forceRefresh();
+    }
   }
 
   /**

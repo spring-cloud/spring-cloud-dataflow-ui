@@ -1,4 +1,4 @@
-<app-tasks-tabulation id="tasks-list" *ngIf="taskDefinitions">
+<app-tasks-tabulation id="tasks-list" *ngIf="taskDefinitions" #tasksTabulation>
 
   <div dataflowLayoutType type="full">
     <app-list-bar [params]="params" [page]="taskDefinitions" [countSelected]="countSelected()" #listBar
