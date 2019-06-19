@@ -55,7 +55,7 @@ export class ListRowActionsComponent implements OnInit {
    */
   @Output() action: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('showButton', { static: true }) showButton;
+  @ViewChild('showButton', { static: false }) showButton;
 
   /**
    * List of actions
