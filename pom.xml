@@ -101,7 +101,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<nodeVersion>v10.8.0</nodeVersion>
+							<nodeVersion>v10.16.0</nodeVersion>
 						</configuration>
 					</execution>
 					<execution>
