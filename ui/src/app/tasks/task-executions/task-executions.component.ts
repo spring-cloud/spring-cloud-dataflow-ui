@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
@@ -12,6 +12,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
 import { AuthService } from '../../auth/auth.service';
 import { TaskDefinition } from '../model/task-definition';
+import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 
 /**
  * Component that display the Task Executions.
@@ -37,6 +38,11 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
 
+  /**
+   * Tabulation
+   */
+  @ViewChild('tasksTabulation', { static: false })
+  tasksTabulation: TasksTabulationComponent;
 
   /**
    * State of App List Params
@@ -162,6 +168,10 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
+
+    if (this.tasksTabulation) {
+      this.tasksTabulation.forceRefresh();
+    }
   }
 
   /**

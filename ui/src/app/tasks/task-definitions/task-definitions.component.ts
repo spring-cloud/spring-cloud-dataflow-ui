@@ -20,6 +20,7 @@ import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
 import { AppsService } from '../../apps/apps.service';
+import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -52,6 +53,12 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   @ViewChild('listBar')
   listBar: ListBarComponent;
+
+  /**
+   * Tabulation
+   */
+  @ViewChild('tasksTabulation', { static: false })
+  tasksTabulation: TasksTabulationComponent;
 
   /**
    * Modal reference
@@ -281,6 +288,10 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
+
+    if (this.tasksTabulation) {
+      this.tasksTabulation.forceRefresh();
+    }
   }
 
   /**

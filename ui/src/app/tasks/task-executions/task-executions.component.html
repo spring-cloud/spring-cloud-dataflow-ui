@@ -1,4 +1,4 @@
-<app-tasks-tabulation id="executions-list" *ngIf="taskExecutions">
+<app-tasks-tabulation id="executions-list" *ngIf="taskExecutions" #tasksTabulation>
 
   <div dataflowLayoutType type="full">
     <div class="list-bar" *ngIf="!(taskExecutions?.totalPages < 2 && taskExecutions.items.length === 0)">

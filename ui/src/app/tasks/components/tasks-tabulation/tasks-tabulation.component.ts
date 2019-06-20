@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, forkJoin, BehaviorSubject } from 'rxjs';
 import { TasksService } from '../../tasks.service';
 import { map, mergeMap, share } from 'rxjs/operators';
 import { Page } from '../../../shared/model/page';
@@ -27,6 +27,8 @@ export class TasksTabulationComponent implements OnInit {
 
   counters$: Observable<any>;
 
+  hardRefresh: BehaviorSubject<any> = new BehaviorSubject(new Date());
+
   /**
    * Constructor
    *
@@ -45,12 +47,24 @@ export class TasksTabulationComponent implements OnInit {
     this.refresh();
   }
 
+  forceRefresh() {
+    this.hardRefresh.next(new Date())
+  }
+
   refresh() {
     this.params$ = this.sharedAboutService.getFeatureInfo()
       .pipe(map((featureInfo: FeatureInfo) => ({
         schedulesEnabled: featureInfo.schedulesEnabled
       })));
     this.counters$ = this.sharedAboutService.getFeatureInfo()
+      .pipe(mergeMap(
+        (featureInfo: FeatureInfo) => {
+          return this.hardRefresh.pipe(map((a) => {
+              return featureInfo;
+            }
+          ));
+        }
+      ))
       .pipe(mergeMap(
         (featureInfo: FeatureInfo) => {
           const arr = [];
