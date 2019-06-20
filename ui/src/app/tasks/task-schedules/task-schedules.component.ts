@@ -41,7 +41,7 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   /**
    * Tabulation
    */
-  @ViewChild('tasksTabulation', { static: false })
+  @ViewChild('tasksTabulation')
   tasksTabulation: TasksTabulationComponent;
 
   /**
