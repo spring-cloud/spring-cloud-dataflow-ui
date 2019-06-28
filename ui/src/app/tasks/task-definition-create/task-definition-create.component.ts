@@ -27,7 +27,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
 
   dsl: string;
-  paletteSize = 170;
+  paletteSize = 310;
   editorContext: Flo.EditorContext;
 
   contentValidated = false;

@@ -36,7 +36,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   editorContext: Flo.EditorContext;
 
-  paletteSize = 170;
+  paletteSize = 310;
 
   hintOptions: any;
 
