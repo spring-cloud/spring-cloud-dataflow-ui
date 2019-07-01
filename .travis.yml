@@ -9,7 +9,7 @@ cache:
 dist: trusty
 language: java
 before_install:
-  - nvm install 9.5.0
+  - nvm install 10.9.0
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
