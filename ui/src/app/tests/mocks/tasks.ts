@@ -126,9 +126,13 @@ export class MockTasksService {
     return of('');
   }
 
-
   stopExecutions(taskExecutions: TaskExecution[]): Observable<Response> | Observable<any> {
     return of(Array.from({ length: taskExecutions.length }));
   }
 
+  destroyExecutions(taskExecutions: TaskExecution[]): Observable<any> {
+    return of(Array.from({ length: taskExecutions.length }).map(() => {
+      return {};
+    }));
+  }
 }

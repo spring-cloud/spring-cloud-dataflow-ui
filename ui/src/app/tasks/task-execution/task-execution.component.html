@@ -1,5 +1,4 @@
 <app-page *ngIf="taskExecution$ | async as task; else loading">
-
   <app-page-head>
     <app-page-head-back [defaultUrl]="'/tasks/executions'"
                         [isNotRegex]="'^(\/tasks\/executions\/)'"></app-page-head-back>
@@ -24,6 +23,12 @@
               [dataflowAppRoles]="['ROLE_CREATE']" [disabled]="!isRunning(task.task)">
         <span class="fa fa-stop"></span>
         Stop
+      </button>
+      <button name="stream-remove" type="button" (click)="destroy(task.task)" id="task-remove"
+              class="btn btn-danger btn-fa" title="Destroy" [dataflowAppRoles]="['ROLE_DESTROY']"
+              *ngIf="!task.task.parentExecutionId">
+        <span class="fa fa-trash"></span>
+        Task Execution cleanup
       </button>
     </app-page-head-actions>
   </app-page-head>

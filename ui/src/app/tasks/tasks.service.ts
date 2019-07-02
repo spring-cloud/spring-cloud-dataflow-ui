@@ -314,6 +314,36 @@ export class TasksService {
   }
 
   /**
+   * Destroy execution
+   *
+   * @param taskExecution
+   * @returns {Observable<Response[]>}
+   */
+  destroyExecution(taskExecution: TaskExecution): Observable<HttpResponse<any>> {
+    this.loggerService.log('Destroying...', taskExecution.executionId);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.httpClient
+      .delete(`${TasksService.URL.EXECUTIONS}/${taskExecution.executionId}?action=REMOVE_DATA`, {
+        headers: headers,
+        observe: 'response'
+      })
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
+
+  /**
+   * Destroy executions
+   *
+   * @param {TaskExecution[]} taskExecutions
+   * @returns {Observable<Response[]>}
+   */
+  destroyExecutions(taskExecutions: TaskExecution[]): Observable<any> {
+    return forkJoin(taskExecutions.map(execution => this.destroyExecution(execution)));
+  }
+
+  /**
    * Destroy a schedule
    *
    * @param {TaskSchedule} taskSchedules

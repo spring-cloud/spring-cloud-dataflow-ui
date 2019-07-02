@@ -8,6 +8,7 @@ import { RoutingStateService } from '../../shared/services/routing-state.service
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
 import { TaskExecutionsStopComponent } from '../task-executions-stop/task-executions-stop.component';
+import { TaskExecutionsDestroyComponent } from '../task-executions-destroy/task-executions-destroy.component';
 import { LoggerService } from '../../shared/services/logger.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
@@ -160,5 +161,16 @@ export class TaskExecutionComponent implements OnInit {
     });
   }
 
+  /**
+   * Destroy the task execution
+   * @param {TaskExecution} taskExecution
+   */
+  destroy(taskExecution: TaskExecution) {
+    this.loggerService.log(`Destroy ${taskExecution.executionId} task execution.`, taskExecution);
+    this.modal = this.modalService.show(TaskExecutionsDestroyComponent, { class: 'modal-md' });
+    this.modal.content.open({ taskExecutions: [taskExecution] }).subscribe(() => {
+      this.cancel();
+    });
+  }
 
 }

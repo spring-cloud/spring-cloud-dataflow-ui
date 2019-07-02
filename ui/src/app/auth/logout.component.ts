@@ -55,7 +55,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Will cleanup any {@link Subscription}s to prevent
+   * Will clean up any {@link Subscription}s to prevent
    * memory leaks.
    */
   ngOnDestroy() {

@@ -34,6 +34,8 @@ describe('TaskExecutionComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const routingStateService = new MockRoutingStateService();
+  const loggerService = new LoggerService();
+  const modalService = new MockModalService();
 
   const authService = new MockAuthService();
   const aboutService = new MocksSharedAboutService();
@@ -86,8 +88,8 @@ describe('TaskExecutionComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: NotificationService, useValue: notificationService },
         { provide: BsModalRef, useValue: bsModalRef },
-        { provide: BsModalService, useValue: modalServie },
-        LoggerService
+        { provide: BsModalService, useValue: modalService },
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();

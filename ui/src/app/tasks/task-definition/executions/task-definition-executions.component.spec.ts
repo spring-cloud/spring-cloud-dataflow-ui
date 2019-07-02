@@ -31,6 +31,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { MasterCheckboxComponent } from '../../../shared/components/master-checkbox.component';
 
 /**
  * Test {@link TaskDefinitionExecutionsComponent}.
@@ -57,6 +58,7 @@ describe('TaskDefinitionExecutionsComponent', () => {
       declarations: [
         RolesDirective,
         TaskDefinitionExecutionsComponent,
+        MasterCheckboxComponent,
         DataflowDateTimePipe,
         AppTypeComponent,
         TaskStatusComponent,
@@ -105,8 +107,8 @@ describe('TaskDefinitionExecutionsComponent', () => {
   it('should populate task executions', () => {
     fixture.detectChanges();
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=taskExecutionsTable] tr:first-child td'));
-    expect(des.length).toBe(5);
-    expect(des[0].nativeElement.textContent).toContain('#2');
+    expect(des.length).toBe(6);
+    expect(des[1].nativeElement.textContent).toContain('#2');
   });
 
   describe('no execution', () => {
@@ -276,7 +278,7 @@ describe('TaskDefinitionExecutionsComponent', () => {
     it('should navigate to the detail page', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskExecutionsTable tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');
-      line.query(By.css('.actions-btn button[name="task-details0"]')).nativeElement.click();
+      line.query(By.css('.actions button[name="details-execution0"]')).nativeElement.click();
       expect(navigate).toHaveBeenCalledWith(['tasks/executions/2']);
     });
 

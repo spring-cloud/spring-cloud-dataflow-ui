@@ -1,20 +1,20 @@
 <app-tasks-tabulation id="executions-list" *ngIf="taskExecutions" #tasksTabulation>
-
   <div dataflowLayoutType type="full">
-    <div class="list-bar" *ngIf="!(taskExecutions?.totalPages < 2 && taskExecutions.items.length === 0)">
-      <button class="btn btn-default btn-fa" (click)="refresh()" title="Refresh" type="button">
-        <span class="fa fa-refresh"></span>
-        Refresh
-      </button>
-    </div>
-
+    <app-list-bar [params]="params" [page]="taskExecutions" [countSelected]="countSelected()" #listBar
+                  (refresh)="refresh()" [hideSearch]="true" [actions]="executionsActions()"
+                  (action)="applyAction($event.action)">
+    </app-list-bar>
     <table *ngIf="taskExecutions?.items && taskExecutions.items.length > 0"
            class="table table-hover table-actions" id="taskExecutionsTable">
       <thead>
       <tr>
+        <th style="width: 30px" [dataflowAppRoles]="['ROLE_DESTROY']">
+          <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes" [dataflowAppRoles]="['ROLE_CREATE']"
+                               [items]="form.checkboxes"></app-master-checkbox>
+        </th>
         <th style="width: 140px">
           <app-sort id="sort-id" (change)="applySort($event)" [value]="'TASK_EXECUTION_ID'" [sort]="params">
-            Execution Id
+            Task Execution Id
           </app-sort>
         <th>
           <app-sort id="sort-task" (change)="applySort($event)" [value]="'TASK_NAME'" [sort]="params">
@@ -43,6 +43,10 @@
       <ng-container
         *ngFor="let item of taskExecutions.items | paginate: taskExecutions.getPaginationInstance(); index as i">
         <tr>
+          <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_DESTROY']">
+            <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
+                   [(ngModel)]="form.checkboxes[i]" *ngIf="!item.parentExecutionId"/>
+          </td>
           <td>
             <a (click)="details(item)" style="cursor:pointer;">#{{ item.executionId }}</a>
           </td>
@@ -66,11 +70,9 @@
       </ng-container>
       </tbody>
     </table>
-
     <app-list-pagination [page]="taskExecutions" [params]="params" (changed)="changePaginationPager($event)"
                          [item]="'task execution'" [items]="'task executions'">
     </app-list-pagination>
-
     <app-list-empty [page]="taskExecutions" [filters]="[]">
       <p>There is <strong>no task executed</strong>, yet.</p>
       <p>

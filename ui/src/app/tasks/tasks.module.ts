@@ -43,6 +43,7 @@ import { TaskDefinitionScheduleComponent } from './task-definition/schedules/tas
 import { TaskDefinitionExecutionsComponent } from './task-definition/executions/task-definition-executions.component';
 import { TaskSchedulesFilterPipe } from './task-schedules/task-schedules.filter';
 import { TaskExecutionsStopComponent } from './task-executions-stop/task-executions-stop.component';
+import { TaskExecutionsDestroyComponent } from './task-executions-destroy/task-executions-destroy.component';
 
 @NgModule({
   imports: [
@@ -85,7 +86,8 @@ import { TaskExecutionsStopComponent } from './task-executions-stop/task-executi
     TaskDefinitionScheduleComponent,
     TaskDefinitionExecutionsComponent,
     TaskSchedulesFilterPipe,
-    TaskExecutionsStopComponent
+    TaskExecutionsStopComponent,
+    TaskExecutionsDestroyComponent
   ],
   entryComponents: [
     TaskNodeComponent,
@@ -95,7 +97,8 @@ import { TaskExecutionsStopComponent } from './task-executions-stop/task-executi
     HandleComponent,
     TaskDefinitionsDestroyComponent,
     TaskSchedulesDestroyComponent,
-    TaskExecutionsStopComponent
+    TaskExecutionsStopComponent,
+    TaskExecutionsDestroyComponent
   ],
   providers: [
     TasksService,
