@@ -77,7 +77,7 @@
   <app-list-empty [page]="executions.page" [filters]="[]">
     <p>There is <strong>no task executed</strong> for this task, yet.</p>
     <p>
-      You can <a (click)="refresh()">Refresh</a> the page
+      You can <a (click)="refresh(executions.params)">Refresh</a> the page
     </p>
   </app-list-empty>
 
