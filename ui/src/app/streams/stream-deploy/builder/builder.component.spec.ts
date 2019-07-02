@@ -37,7 +37,7 @@ import { By } from '@angular/platform-browser';
  *
  * @author Janne Valkealahti
  */
-describe('StreamDeployBuilderComponent', () => {
+xdescribe('StreamDeployBuilderComponent', () => {
   let component: StreamDeployBuilderComponent;
   let fixture: ComponentFixture<StreamDeployBuilderComponent>;
   const notificationService = new MockNotificationService();
