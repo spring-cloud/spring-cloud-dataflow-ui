@@ -6,6 +6,7 @@ import { ListDefaultParams, OrderParams } from '../../shared/components/shared.i
 import { TaskSchedule } from '../../tasks/model/task-schedule';
 import { TaskLaunchParams, TaskListParams } from '../../tasks/components/tasks.interface';
 import { Platform } from '../../shared/model/platform';
+import { HttpResponse } from '@angular/common/http';
 
 /**
  * Mock for TasksService.
@@ -120,6 +121,12 @@ export class MockTasksService {
 
   launchDefinition(taskLaunchParams: TaskLaunchParams): Observable<any> {
     return of({});
+  }
+
+  destroyExecutions(taskExecutions: TaskExecution[]): Observable<any> {
+    return of(Array.from({ length: taskExecutions.length }).map(() => {
+      return {};
+    }));
   }
 
 }

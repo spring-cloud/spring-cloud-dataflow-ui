@@ -1,16 +1,18 @@
 <div *ngIf="executions$ | async as executions; else loading" id="executions-list" dataflowLayoutType type="full">
 
-  <div class="list-bar" *ngIf="!(executions.page.totalPages < 2 && executions.page.items.length === 0)">
-    <button class="btn btn-default btn-fa" (click)="refresh(executions.params)" title="Refresh" type="button">
-      <span class="fa fa-refresh"></span>
-      Refresh
-    </button>
-  </div>
+  <app-list-bar [params]="executions.params" [page]="executions.page" [countSelected]="countSelected()" #listBar
+                (refresh)="refresh(executions.params)" [hideSearch]="true" [actions]="executionsActions()"
+                (action)="applyAction($event.action, null, executions.params, executions.page)">
+  </app-list-bar>
 
   <table *ngIf="executions.page?.items && executions.page.items.length > 0"
          class="table table-hover table-actions" id="taskExecutionsTable">
     <thead>
     <tr>
+      <th style="width: 30px" [dataflowAppRoles]="['ROLE_DESTROY']">
+        <app-master-checkbox (change)="changeCheckboxes(executions.page)" *ngIf="form?.checkboxes"
+                             [dataflowAppRoles]="['ROLE_CREATE']" [items]="form.checkboxes"></app-master-checkbox>
+      </th>
       <th style="width: 140px">
         <app-sort id="sort-id" (change)="applySort(executions.params, $event)" [value]="'TASK_EXECUTION_ID'"
                   [sort]="executions.params">
@@ -42,6 +44,10 @@
     <ng-container
       *ngFor="let item of executions.page.items | paginate: executions.page.getPaginationInstance(); index as i">
       <tr>
+        <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_DESTROY']">
+          <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes(executions.page)"
+                 [(ngModel)]="form.checkboxes[i]"/>
+        </td>
         <td>
           <a (click)="details(item)" style="cursor: pointer">
             #{{ item.executionId }}
@@ -56,13 +62,11 @@
         <td>
           {{ item.exitCode }}
         </td>
+
         <td class="table-actions" width="10px" nowrap="">
-          <div class="actions-btn" role="group">
-            <button type="button" name="task-details{{ i }}" (click)="details(item)" class="btn btn-default"
-                    title="Details">
-              <span class="fa fa-info-circle"></span>
-            </button>
-          </div>
+          <app-list-row-actions [item]="item"
+                                (action)="applyAction($event.action, $event.args, executions.params, executions.page)"
+                                [actions]="executionActions(item, i)"></app-list-row-actions>
         </td>
       </tr>
     </ng-container>

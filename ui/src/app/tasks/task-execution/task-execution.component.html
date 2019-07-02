@@ -19,6 +19,11 @@
         <span class="fa fa-play"></span>
         Relaunch task
       </button>
+      <button name="stream-remove" type="button" (click)="destroy(taskExecution)" id="task-remove"
+              class="btn btn-danger btn-fa" title="Destroy" [dataflowAppRoles]="['ROLE_DESTROY']">
+        <span class="fa fa-trash"></span>
+        Destroy task execution
+      </button>
     </app-page-head-actions>
   </app-page-head>
 

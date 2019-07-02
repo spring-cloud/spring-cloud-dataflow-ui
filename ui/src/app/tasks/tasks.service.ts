@@ -312,6 +312,19 @@ export class TasksService {
     return forkJoin(taskDefinitions.map(task => this.destroyDefinition(task)));
   }
 
+
+  /**
+   * Destroy executions
+   *
+   * @param {TaskExecution[]} taskExecutions
+   * @returns {Observable<Response[]>}
+   */
+  destroyExecutions(taskExecutions: TaskExecution[]): Observable<any> {
+    return of(Array.from({ length: taskExecutions.length }).map(() => {
+      return {};
+    }));
+  }
+
   /**
    * Destroy a schedule
    *

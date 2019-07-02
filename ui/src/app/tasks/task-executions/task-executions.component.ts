@@ -4,7 +4,7 @@ import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
 import { TasksService } from '../tasks.service';
 import { Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
 import { NotificationService } from '../../shared/services/notification.service';
@@ -14,6 +14,8 @@ import { AuthService } from '../../auth/auth.service';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { TaskExecutionsDestroyComponent } from '../task-executions-destroy/task-executions-destroy.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 /**
  * Component that display the Task Executions.
@@ -46,6 +48,13 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   tasksTabulation: TasksTabulationComponent;
 
   /**
+   * Current forms value
+   */
+  form: any = {
+    checkboxes: []
+  };
+
+  /**
    * State of App List Params
    */
   params: TaskListParams = {
@@ -71,6 +80,17 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    */
   grafanaEnabled = false;
 
+  /*
+   * Contain a key application of each selected task executions
+   * @type {Array}
+   */
+  itemsSelected: Array<number> = [];
+
+  /**
+   * Modal reference
+   */
+  modal: BsModalRef;
+
   /**
    * Constructor
    *
@@ -78,6 +98,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {AuthService} authService
    * @param {LoggerService} loggerService
+   * @param {BsModalService} modalService
    * @param {Router} router
    * @param {GrafanaService} grafanaService
    */
@@ -85,8 +106,9 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
               public notificationService: NotificationService,
               private authService: AuthService,
               public loggerService: LoggerService,
-              private router: Router,
-              private grafanaService: GrafanaService) {
+              private grafanaService: GrafanaService,
+              private modalService: BsModalService,
+              private router: Router) {
   }
 
   /**
@@ -98,9 +120,10 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
     });
+    this.form = { checkboxes: [] };
+    this.itemsSelected = this.context.itemsSelected || [];
     this.refresh();
   }
-
 
   /**
    * Execution actions
@@ -146,6 +169,33 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         isDefault: false,
         hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
+      {
+        divider: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
+      },
+      {
+        id: 'destroy-task' + index,
+        icon: 'trash',
+        action: 'destroy',
+        title: 'Destroy execution',
+        isDefault: false,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
+      },
+    ];
+  }
+
+  /**
+   * Tasks Actions
+   */
+  executionsActions() {
+    return [
+      {
+        id: 'destroy-executions',
+        icon: 'trash',
+        action: 'destroySelected',
+        title: 'Destroy task execution(s)',
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+      }
     ];
   }
 
@@ -167,6 +217,11 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         break;
       case 'grafana':
         this.grafanaTaskExecutionDashboard(item);
+      case 'destroy':
+        this.destroyExecutions([item]);
+        break;
+      case 'destroySelected':
+        this.destroySelectedExecutions();
         break;
     }
   }
@@ -186,6 +241,12 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   refresh() {
     this.tasksService
       .getExecutions(this.params)
+      .pipe(map((page: Page<TaskExecution>) => {
+        this.form.checkboxes = page.items.map((task) => {
+          return this.itemsSelected.indexOf(task.executionId) > -1;
+        });
+        return page;
+      }))
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((page: Page<TaskExecution>) => {
           if (page.items.length === 0 && this.params.page > 0) {
@@ -194,6 +255,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
             return;
           }
           this.taskExecutions = page;
+          this.changeCheckboxes();
           this.updateContext();
         },
         error => {
@@ -215,6 +277,23 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     this.context.order = this.params.order;
     this.context.page = this.params.page;
     this.context.size = this.params.size;
+    this.context.itemsSelected = this.itemsSelected;
+  }
+
+  /**
+   * Update the list of selected checkbox
+   */
+  changeCheckboxes() {
+    if (!this.taskExecutions || (this.taskExecutions.items.length !== this.form.checkboxes.length)) {
+      return;
+    }
+    const value: Array<number> = this.taskExecutions.items.map((ex, index) => {
+      if (this.form.checkboxes[index]) {
+        return ex.executionId;
+      }
+    }).filter((a) => a != null);
+    this.itemsSelected = value;
+    this.updateContext();
   }
 
   /**
@@ -285,6 +364,45 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     this.grafanaService.getDashboardTaskExecution(taskExecution).subscribe((url: string) => {
       window.open(url);
     });
+  }
+
+  /**
+   * Starts the destroy process of multiple {@link TaskExecution}s
+   * by opening a confirmation modal dialog.
+   */
+  destroySelectedExecutions() {
+    const taskExecutions = this.taskExecutions.items
+      .filter((item) => this.itemsSelected.indexOf(item.executionId) > -1);
+    this.destroyExecutions(taskExecutions);
+  }
+
+  /**
+   * Starts the destroy the {@link TaskExecution}s in parameter
+   * by opening a confirmation modal dialog.
+   * @param {TaskExecution[]} taskExecutions
+   */
+  destroyExecutions(taskExecutions: TaskExecution[]) {
+    if (taskExecutions.length === 0) {
+      return;
+    }
+    this.loggerService.log(`Destroy ${taskExecutions} task execution(s).`, taskExecutions);
+    const className = taskExecutions.length > 1 ? 'modal-lg' : 'modal-md';
+    this.modal = this.modalService.show(TaskExecutionsDestroyComponent, { class: className });
+    this.modal.content.open({ taskExecutions: taskExecutions }).subscribe(() => {
+      if (this.taskExecutions.items.length === 0 &&
+        this.taskExecutions.pageNumber > 0) {
+        this.taskExecutions.pageNumber = this.taskExecutions.pageNumber - 1;
+      }
+      this.refresh();
+    });
+  }
+
+  /**
+   * Number of selected task executions
+   * @returns {number}
+   */
+  countSelected(): number {
+    return this.form.checkboxes.filter((a) => a).length;
   }
 
 }

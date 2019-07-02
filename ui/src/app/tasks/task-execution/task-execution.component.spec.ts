@@ -17,13 +17,15 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalService, TooltipModule } from 'ngx-bootstrap';
 import { DateTime } from 'luxon';
 import { RolesDirective } from '../../auth/directives/roles.directive';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { AuthService } from '../../auth/auth.service';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { LoggerService } from '../../shared/services/logger.service';
+import { MockModalService } from '../../tests/mocks/modal';
 
 describe('TaskExecutionsDetailsComponent', () => {
   let component: TaskExecutionComponent;
@@ -32,6 +34,8 @@ describe('TaskExecutionsDetailsComponent', () => {
   const notificationService = new MockNotificationService();
   const tasksService = new MockTasksService();
   const routingStateService = new MockRoutingStateService();
+  const loggerService = new LoggerService();
+  const modalService = new MockModalService();
 
   const authService = new MockAuthService();
   const aboutService = new MocksSharedAboutService();
@@ -93,6 +97,8 @@ describe('TaskExecutionsDetailsComponent', () => {
         { provide: TasksService, useValue: tasksService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: ActivatedRoute, useValue: activeRoute },
+        { provide: LoggerService, useValue: loggerService },
+        { provide: BsModalService, useValue: modalService },
         { provide: NotificationService, useValue: notificationService }
       ]
     })
