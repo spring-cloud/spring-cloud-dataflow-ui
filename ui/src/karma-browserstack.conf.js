@@ -8,11 +8,11 @@ module.exports = function (config) {
   };
 
   const customLaunchers = {
-    'BS_Mac_OS_HighSierra_Safari_12': Object.assign({
+    'BS_Mac_OS_HighSierra_Safari_11': Object.assign({
       'os'              : 'OS X',
       'os_version'      : 'High Sierra',
       'browser'         : 'Safari',
-      'browser_version' : '12.1'
+      'browser_version' : '11.1'
     }, BS_COMMON_CONFIG),
     'BS_Mac_OS_HighSierra_Chrome_75': Object.assign({
       'os'              : 'OS X',
