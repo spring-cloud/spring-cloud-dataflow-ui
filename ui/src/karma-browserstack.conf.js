@@ -8,41 +8,41 @@ module.exports = function (config) {
   };
 
   const customLaunchers = {
-    'BS_Mac_OS_HighSierra_Safari_11': Object.assign({
+    'BS_Mac_OS_HighSierra_Safari_12': Object.assign({
       'os'              : 'OS X',
       'os_version'      : 'High Sierra',
       'browser'         : 'Safari',
-      'browser_version' : '11.1'
+      'browser_version' : '12.1'
     }, BS_COMMON_CONFIG),
-    'BS_Mac_OS_HighSierra_Chrome_67': Object.assign({
+    'BS_Mac_OS_HighSierra_Chrome_75': Object.assign({
       'os'              : 'OS X',
       'os_version'      : 'High Sierra',
       'browser'         : 'Chrome',
-      'browser_version' : '67.0'
+      'browser_version' : '75.0'
     }, BS_COMMON_CONFIG),
-    'BS_Mac_OS_HighSierra_Firefox_59': Object.assign({
+    'BS_Mac_OS_HighSierra_Firefox_67': Object.assign({
       'os'              : 'OS X',
       'os_version'      : 'High Sierra',
       'browser'         : 'Firefox',
-      'browser_version' : '59.0'
+      'browser_version' : '67.0'
     }, BS_COMMON_CONFIG),
-    'BS_Windows_10_Firefox_59': Object.assign({
+    'BS_Windows_10_Firefox_67': Object.assign({
       'os'              : 'Windows',
       'os_version'      : '10',
       'browser'         : 'Firefox',
-      'browser_version' : '59.0'
+      'browser_version' : '67.0'
     }, BS_COMMON_CONFIG),
-    'BS_Windows_10_Edge_17': Object.assign({
+    'BS_Windows_10_Edge_18': Object.assign({
       'os'              : 'Windows',
       'os_version'      : '10',
       'browser'         : 'Edge',
-      'browser_version' : '17.0'
+      'browser_version' : '18.0'
     }, BS_COMMON_CONFIG),
-    'BS_Windows_10_Chrome_67': Object.assign({
+    'BS_Windows_10_Chrome_75': Object.assign({
       'os'              : 'Windows',
       'os_version'      : '10',
       'browser'         : 'Chrome',
-      'browser_version' : '67.0'
+      'browser_version' : '75.0'
     }, BS_COMMON_CONFIG)
   };
 
