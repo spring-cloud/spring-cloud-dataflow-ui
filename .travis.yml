@@ -38,8 +38,8 @@ jobs:
   include:
     - stage: Maven
       script: ./run-maven-build.sh
-    - script: ./run-npm-test-browserstack.sh
-      if: type != pull_request
+#    - script: ./run-npm-test-browserstack.sh
+#      if: type != pull_request
       after_success: skip
     - stage: E2E Local + SauceLabs + BrowserStack
       script: ./run-npm-e2e-local.sh
