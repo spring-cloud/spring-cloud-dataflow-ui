@@ -12,6 +12,16 @@ import { StreamAppPropertiesSource } from './stream-properties-source';
 // Workaround to load jshint to have linting working for JS snippet inside the props dialog
 import { JSHINT } from 'jshint';
 
+// CM extension necessary for snippet support syntax highlighting
+// Lint support
+import 'codemirror-minified/addon/lint/javascript-lint';
+// Supported languages until dynamic loading
+import 'codemirror-minified/mode/groovy/groovy';
+import 'codemirror-minified/mode/javascript/javascript';
+import 'codemirror-minified/mode/ruby/ruby';
+import 'codemirror-minified/mode/python/python';
+
+
 if (!(<any>window).JSHINT) {
   (<any>window).JSHINT = JSHINT;
 }
