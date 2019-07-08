@@ -1,0 +1,39 @@
+<div *ngIf="taskExecutions">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm Stop Task Execution</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="taskExecutions.length == 1">
+    <p>This action will stop the task execution <strong>{{ taskExecutions[0].executionId }}</strong> (task
+      <strong>{{ taskExecutions[0].taskName }}</strong>). Are you sure?</p>
+  </div>
+  <div class="modal-body" *ngIf="taskExecutions.length > 1">
+    <p>
+      This action will stop <strong>{{ taskExecutions.length }} task executions</strong>.
+      Are you sure?
+    </p>
+    <br/>
+    <table id="table-tasks" class="table table-striped">
+      <thead>
+      <tr>
+        <th>Task Execution ID</th>
+        <th>Task</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of taskExecutions">
+        <td>{{ item.executionId }}</td>
+        <td>{{ item.taskName }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer" style="text-align:center">
+    <button id="btn-cancel" type="button" class="btn btn-default" (click)="cancel()">No</button>
+    <button id="btn-stop" type="button" class="btn btn-primary" (click)="stop()">
+      Stop Task Execution(s)
+    </button>
+  </div>
+</div>

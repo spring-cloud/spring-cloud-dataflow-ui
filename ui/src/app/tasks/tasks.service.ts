@@ -390,4 +390,29 @@ export class TasksService {
       );
   }
 
+  /**
+   * Stop Task Execution
+   *
+   * @param taskExecution
+   * @returns {Observable<Response>}
+   */
+  stopExecution(taskExecution: TaskExecution): Observable<any> {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient
+      .post<any>(`${TasksService.URL.EXECUTIONS}/${taskExecution.executionId}`, { headers: httpHeaders })
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
+  /**
+   * Stop Task Executions
+   *
+   * @param {TaskExecution[]} taskExecutions
+   * @returns {Observable<Response[]>}
+   */
+  stopExecutions(taskExecutions: TaskExecution[]): Observable<any> {
+    return forkJoin(taskExecutions.map(execution => this.stopExecution(execution)));
+  }
+
 }

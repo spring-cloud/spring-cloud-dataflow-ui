@@ -17,15 +17,17 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalRef, BsModalService, TooltipModule } from 'ngx-bootstrap';
 import { DateTime } from 'luxon';
 import { RolesDirective } from '../../auth/directives/roles.directive';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { AuthService } from '../../auth/auth.service';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { LoggerService } from '../../shared/services/logger.service';
+import { MockModalService } from '../../tests/mocks/modal';
 
-describe('TaskExecutionsDetailsComponent', () => {
+describe('TaskExecutionComponent', () => {
   let component: TaskExecutionComponent;
   let fixture: ComponentFixture<TaskExecutionComponent>;
   let activeRoute: MockActivatedRoute;
@@ -35,6 +37,8 @@ describe('TaskExecutionsDetailsComponent', () => {
 
   const authService = new MockAuthService();
   const aboutService = new MocksSharedAboutService();
+  const bsModalRef = new BsModalRef();
+  const modalServie = new MockModalService();
 
   const commonTestParams = { id: '1' };
   const commonTestExecutionDetails = {
@@ -48,20 +52,7 @@ describe('TaskExecutionsDetailsComponent', () => {
       arguments: ['--spring.cloud.task.executionid=1'],
       jobExecutionIds: [],
       errorMessage: null,
-      externalExecutionId: 'footask-d465ffe7-6874-42f7-ab04-191e9e6c6376'
-    }
-  };
-  const commonTestExecutionDetailsWithJobIds = {
-    1: {
-      executionId: 1,
-      exitCode: 0,
-      taskName: 'footask',
-      startTime: DateTime.fromISO('2017-08-10T05:46:19.079Z'),
-      endTime: DateTime.fromISO('2017-08-10T05:46:19.098Z'),
-      exitMessage: null,
-      arguments: ['--spring.cloud.task.executionid=1'],
-      jobExecutionIds: [1, 2, 3],
-      errorMessage: null,
+      taskExecutionStatus: 'COMPLETE',
       externalExecutionId: 'footask-d465ffe7-6874-42f7-ab04-191e9e6c6376'
     }
   };
@@ -93,7 +84,10 @@ describe('TaskExecutionsDetailsComponent', () => {
         { provide: TasksService, useValue: tasksService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: ActivatedRoute, useValue: activeRoute },
-        { provide: NotificationService, useValue: notificationService }
+        { provide: NotificationService, useValue: notificationService },
+        { provide: BsModalRef, useValue: bsModalRef },
+        { provide: BsModalService, useValue: modalServie },
+        LoggerService
       ]
     })
       .compileComponents();

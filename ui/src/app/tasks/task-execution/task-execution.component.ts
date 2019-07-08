@@ -7,6 +7,9 @@ import { Observable, EMPTY, of } from 'rxjs';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
+import { TaskExecutionsStopComponent } from '../task-executions-stop/task-executions-stop.component';
+import { LoggerService } from '../../shared/services/logger.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 /**
  * Component that display a Task Execution.
@@ -27,11 +30,18 @@ export class TaskExecutionComponent implements OnInit {
   taskExecution$: Observable<any>;
 
   /**
+   * Modal reference
+   */
+  modal: BsModalRef;
+
+  /**
    * Constructor
    *
    * @param {TasksService} tasksService
    * @param {RoutingStateService} routingStateService
    * @param {NotificationService} notificationService
+   * @param {LoggerService} loggerService
+   * @param {BsModalService} modalService
    * @param {Router} router
    * @param {ActivatedRoute} route
    * @param {TasksService} tasksService
@@ -39,6 +49,8 @@ export class TaskExecutionComponent implements OnInit {
   constructor(private tasksService: TasksService,
               private routingStateService: RoutingStateService,
               private notificationService: NotificationService,
+              private loggerService: LoggerService,
+              private modalService: BsModalService,
               private router: Router,
               private route: ActivatedRoute) {
   }
@@ -47,6 +59,13 @@ export class TaskExecutionComponent implements OnInit {
    * Initialize component
    */
   ngOnInit() {
+    this.refresh();
+  }
+
+  /**
+   * Refresh Method
+   */
+  refresh() {
     this.taskExecution$ = this.route.params
       .pipe(
         mergeMap(
@@ -112,6 +131,33 @@ export class TaskExecutionComponent implements OnInit {
    */
   detailsTask(taskDefinitionName: string) {
     this.router.navigate([`tasks/definitions/${taskDefinitionName}`]);
+  }
+
+  /**
+   * Task Execution running
+   * @param {TaskExecution} execution
+   */
+  isRunning(execution: TaskExecution): boolean {
+    if (execution && (execution.taskExecutionStatus === 'COMPLETE' || execution.taskExecutionStatus === 'ERROR')) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Stop a task execution
+   * @param {TaskExecution} execution
+   */
+  stop(execution: TaskExecution) {
+    if (!this.isRunning(execution)) {
+      this.notificationService.error('The task execution can not be stopped, the execution is already terminated.');
+      return;
+    }
+    this.loggerService.log(`Stop ${execution} task execution`, execution);
+    this.modal = this.modalService.show(TaskExecutionsStopComponent, { class: 'modal-md' });
+    this.modal.content.open({ taskExecutions: [execution] }).subscribe(() => {
+      this.refresh();
+    });
   }
 
 

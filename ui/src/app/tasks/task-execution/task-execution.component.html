@@ -19,6 +19,12 @@
         <span class="fa fa-play"></span>
         Relaunch task
       </button>
+      <button name="task-launch" type="button" id="task-stop"
+              (click)="stop(taskExecution)" class="btn btn-primary btn-fa" title="Stop the task execution"
+              [dataflowAppRoles]="['ROLE_CREATE']" [disabled]="!isRunning(taskExecution)">
+        <span class="fa fa-stop"></span>
+        Stop execution
+      </button>
     </app-page-head-actions>
   </app-page-head>
 
