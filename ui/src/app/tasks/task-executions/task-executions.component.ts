@@ -14,7 +14,8 @@ import { AuthService } from '../../auth/auth.service';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
-
+import { TaskExecutionsStopComponent } from '../task-executions-stop/task-executions-stop.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 /**
  * Component that display the Task Executions.
  *
@@ -38,6 +39,11 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
+
+  /**
+   * Modal reference
+   */
+  modal: BsModalRef;
 
   /**
    * Tabulation
@@ -78,6 +84,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {AuthService} authService
    * @param {LoggerService} loggerService
+   * @param {BsModalService} modalService
    * @param {Router} router
    * @param {GrafanaService} grafanaService
    */
@@ -85,8 +92,9 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
               public notificationService: NotificationService,
               private authService: AuthService,
               public loggerService: LoggerService,
-              private router: Router,
-              private grafanaService: GrafanaService) {
+              private grafanaService: GrafanaService,
+              private modalService: BsModalService,
+              private router: Router) {
   }
 
   /**
@@ -108,6 +116,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {number} index
    */
   executionActions(item: TaskExecution, index: number) {
+    const isRunning = item.taskExecutionStatus !== 'COMPLETE' && item.taskExecutionStatus !== 'ERROR'
     return [
       {
         id: 'details-execution' + index,
@@ -146,6 +155,15 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         isDefault: false,
         hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
+      {
+        id: 'stop-task' + index,
+        icon: 'stop',
+        action: 'stop',
+        title: 'Stop task',
+        isDefault: false,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']),
+        disabled: !isRunning
+      },
     ];
   }
 
@@ -167,6 +185,8 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         break;
       case 'grafana':
         this.grafanaTaskExecutionDashboard(item);
+      case 'stop':
+        this.stop([item]);
         break;
     }
   }
@@ -284,6 +304,19 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   grafanaTaskExecutionDashboard(taskExecution: TaskExecution) {
     this.grafanaService.getDashboardTaskExecution(taskExecution).subscribe((url: string) => {
       window.open(url);
+    });
+  }
+
+  /**
+   * Stop a task execution
+   * @param taskExecutions
+   */
+  stop(taskExecutions: TaskExecution[]) {
+    this.loggerService.log(`Stop ${taskExecutions} task execution(s).`, taskExecutions);
+    const className = taskExecutions.length > 1 ? 'modal-lg' : 'modal-md';
+    this.modal = this.modalService.show(TaskExecutionsStopComponent, { class: className });
+    this.modal.content.open({ taskExecutions: taskExecutions }).subscribe(() => {
+      this.refresh();
     });
   }
 
