@@ -13,7 +13,7 @@ import {
 import { Subject } from 'rxjs';
 import { TrailPositionType } from './trail-position-type.model';
 import { TruncatorWidthProviderDirective } from './truncator-width-provider.directive';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 /**
  * Component that supports a button that can change its message based on count of items in a array.
@@ -68,9 +68,9 @@ export class TruncatorComponent implements AfterViewInit, AfterContentInit, OnDe
     private elementRef: ElementRef, private changeDetector: ChangeDetectorRef) {
 
     if (!this.truncatorWidthProviderComponent) {
-      this.resizeEvents
-        .debounceTime(200)
-        .pipe(takeUntil(this.ngUnsubscribe$))
+      this.resizeEvents.pipe(
+        debounceTime(200),
+        takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
           const innerWidth = this.getInnerWidth();
           this.doResizeInputString(innerWidth);

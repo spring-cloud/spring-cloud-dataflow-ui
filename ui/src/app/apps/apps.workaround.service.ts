@@ -9,6 +9,7 @@ import { Subscriber } from 'rxjs';
 import { AppListParams } from './components/apps.interface';
 import { ApplicationType } from '../shared/model/application-type';
 import { DateTime } from 'luxon';
+import { map } from 'rxjs/operators';
 
 
 /**
@@ -64,9 +65,9 @@ export class AppsWorkaroundService {
     return new Observable((subscriber: Subscriber<any>) => {
       let queue;
       if (!AppsWorkaroundService.cache.init || AppsWorkaroundService.cache.invalid) {
-        queue = this.run().map(() => {
+        queue = this.run().pipe(map(() => {
           AppsWorkaroundService.cache.init = true;
-        });
+        }));
       } else {
         queue = fakeApps;
       }
@@ -118,7 +119,7 @@ export class AppsWorkaroundService {
         sort: 'type',
         order: 'ASC'
       }])
-      .map((app: Page<AppRegistration>): AppVersion[] => {
+      .pipe(map((app: Page<AppRegistration>): AppVersion[] => {
         return app.items
           .map((a) => {
             return (a.name === appName && a.type.toString() === ApplicationType[appType].toString())
@@ -127,17 +128,17 @@ export class AppsWorkaroundService {
           })
           .filter((a) => a != null)
           .sort((a, b) => a.version < b.version ? -1 : 1);
-      });
+      }));
   }
 
   private run(): Observable<any> {
     return this.sharedAppsService
       .getApps(new PageRequest(0, 1000), null, '', [{ sort: 'name', order: 'ASC' }, { sort: 'type', order: 'ASC' }])
-      .map(page => {
+      .pipe(map(page => {
         page.items = page.items.sort((a, b) => a.name < b.name ? -1 : 1);
         return page;
-      })
-      .map(page => {
+      }),
+      map(page => {
         for (let i = 0; i < page.items.length; i++) {
           const item = page.items[i] as AppRegistration;
           if (!item) {
@@ -167,7 +168,7 @@ export class AppsWorkaroundService {
         page.items = page.items.filter(a => a != null);
         AppsWorkaroundService.cache.set(page);
         return page;
-      });
+      }));
   }
 
 }

@@ -1,26 +1,14 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import {ElementComponent} from "./shape-component";
+import {DocService} from "../../services/doc.service";
+import {Constants, Flo} from "spring-flo";
+import {Utils} from "./utils";
 import { dia } from 'jointjs';
-import { Flo, Constants } from 'spring-flo';
-import { ElementComponent } from '../../../../shared/flo/support/shape-component';
-import { Utils } from '../../../../shared/flo/support/utils';
 
-/**
-* Component for displaying application properties and capturing their values.
-*
-* @author Alex Boyko
-* @author Andy Clement
-*/
-@Component({
-  selector: 'app-flo-node',
-  templateUrl: 'node.component.html',
-  styleUrls: [ './node.component.scss' ],
-  encapsulation: ViewEncapsulation.None
-})
 export class NodeComponent extends ElementComponent {
 
   _description: string;
 
-  constructor() {
+  constructor(private docService: DocService) {
     super();
   }
 
@@ -73,7 +61,7 @@ export class NodeComponent extends ElementComponent {
   }
 
   get isDisabled(): boolean {
-    return !this.metadata || this.metadata.unresolved || this.cannotShowToolTip;
+    return !this.metadata || this.metadata.unresolved || this.docService.isMouseDown();
   }
 
   isCode(property: string): boolean {
@@ -85,4 +73,3 @@ export class NodeComponent extends ElementComponent {
   }
 
 }
-

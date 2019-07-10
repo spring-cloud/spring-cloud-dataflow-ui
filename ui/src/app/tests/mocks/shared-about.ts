@@ -1,6 +1,7 @@
 import { Observable, Subject, of } from 'rxjs';
 import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { AboutInfo } from '../../shared/model/about/about-info.model';
+import { map } from 'rxjs/operators';
 
 /**
  * Mock for SharedAboutService.
@@ -29,9 +30,9 @@ export class MocksSharedAboutService {
 
 
   getFeatureInfo(): Observable<FeatureInfo> {
-    return this.getAboutInfo().map(result => {
+    return this.getAboutInfo().pipe(map(result => {
       return new FeatureInfo().deserialize(result.featureInfo);
-    });
+    }));
   }
 
 }

@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { OrderParams } from '../../../shared/components/shared.interface';
+import { map, debounceTime } from 'rxjs/operators';
 
 /**
  * Navigation Search component
@@ -90,15 +91,15 @@ export class NavigationSearchComponent implements OnInit {
    * Subscribe to the input changes and perform the search
    */
   ngOnInit() {
-    this.q.valueChanges
-      .map((value) => {
+    this.q.valueChanges.pipe(
+      map((value) => {
         this.runningSearch.app = true;
         this.runningSearch.stream = true;
         this.runningSearch.task = true;
         this.quickSearch = (value !== '') || this.force;
         return value;
-      })
-      .debounceTime(300)
+      }),
+      debounceTime(300))
       .subscribe((value) => {
 
         this.resultSearch.app = null;

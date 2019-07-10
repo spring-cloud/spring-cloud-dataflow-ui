@@ -225,7 +225,7 @@ export class StreamDeployService {
    */
   appDetails(type: ApplicationType, name: string, version: string): Observable<Array<any>> {
     return this.sharedAppsService.getAppInfo(type, name, version)
-      .map((app: DetailedAppRegistration) => {
+      .pipe(map((app: DetailedAppRegistration) => {
         return app.options
           .map((option: ConfigurationMetadataProperty) => {
             const opt = {
@@ -276,7 +276,7 @@ export class StreamDeployService {
             }
             return opt;
           });
-      });
+      }));
   }
 
   /**

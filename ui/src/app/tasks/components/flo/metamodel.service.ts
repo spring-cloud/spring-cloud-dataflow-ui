@@ -6,6 +6,8 @@ import { CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, TAS
 import { ToolsService } from './tools.service';
 import { Graph, Link, Node, TaskConversion } from './model/models';
 import { AppMetadata } from '../../../shared/flo/support/app-metadata';
+import { map } from 'rxjs/operators';
+
 
 import * as _joint from 'jointjs';
 import { LoggerService } from '../../../shared/services/logger.service';
@@ -63,9 +65,9 @@ export class MetamodelService implements Flo.Metamodel {
     }
     const graphInCommonFormat = this.toGraph(graphInInternalFormat);
     return this.toolsService.convertTaskGraphToText(graphInCommonFormat)
-      .map(taskConversion => {
+      .pipe(map(taskConversion => {
         return taskConversion.dsl;
-      }).toPromise();
+      })).toPromise();
   }
 
   subscribe(listener: Flo.MetamodelListener) {

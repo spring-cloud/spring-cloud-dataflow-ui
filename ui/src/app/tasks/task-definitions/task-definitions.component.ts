@@ -267,13 +267,15 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   refresh() {
     this.tasksService
-      .getDefinitions(this.params).map((page: Page<TaskDefinition>) => {
-        this.form.checkboxes = page.items.map((task) => {
-          return this.itemsSelected.indexOf(task.name) > -1;
-        });
-        return page;
-      })
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .getDefinitions(this.params)
+      .pipe(
+        map((page: Page<TaskDefinition>) => {
+          this.form.checkboxes = page.items.map((task) => {
+            return this.itemsSelected.indexOf(task.name) > -1;
+          });
+          return page;
+        }),
+        takeUntil(this.ngUnsubscribe$))
       .subscribe((page: Page<TaskDefinition>) => {
           if (page.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;

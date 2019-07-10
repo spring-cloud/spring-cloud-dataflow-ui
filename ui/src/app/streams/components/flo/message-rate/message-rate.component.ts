@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { BaseShapeComponent } from '../../../../shared/flo/support/shape-component';
+import { ShapeComponent } from '../../../../shared/flo/support/shape-component';
 import { TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from '../support/shapes';
 
 const MAGNITUDE_NUMBERS = [ 1000000000, 1000000, 1000];
@@ -17,7 +17,7 @@ const MAGNITUDE_LITERALS = ['B', 'M', 'K'];
   styleUrls: [ 'message-rate.component.scss' ],
   encapsulation: ViewEncapsulation.None
 })
-export class MessageRateComponent extends BaseShapeComponent {
+export class MessageRateComponent extends ShapeComponent {
 
   get rate(): number {
     return this.data ? <number> this.data.rate : 0;

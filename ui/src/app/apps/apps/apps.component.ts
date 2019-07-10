@@ -10,7 +10,7 @@ import { AppVersionsComponent } from '../app-versions/app-versions.component';
 import { AppsWorkaroundService } from '../apps.workaround.service';
 import { AppListParams } from '../components/apps.interface';
 import { SortParams } from '../../shared/components/shared.interface';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AppError } from '../../shared/model/error.model';
@@ -185,12 +185,12 @@ export class AppsComponent implements OnInit, OnDestroy {
    * Build the form checkboxes (persist selection)
    */
   loadAppRegistrations() {
-    this.appsService.getApps(this.params).map((page: Page<AppRegistration>) => {
+    this.appsService.getApps(this.params).pipe(map((page: Page<AppRegistration>) => {
       this.form.checkboxes = page.items.map((app) => {
         return this.itemsSelected.indexOf(`${app.name}#${app.type}`) > -1;
       });
       return page;
-    }).pipe(takeUntil(this.ngUnsubscribe$))
+    }), takeUntil(this.ngUnsubscribe$))
       .subscribe((page: Page<AppRegistration>) => {
           if (page.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;

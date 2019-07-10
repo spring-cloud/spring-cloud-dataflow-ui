@@ -41,16 +41,14 @@
     "dagre": "0.8.4",
     "luxon": "1.11.2",
     "ng2-stomp-service": "1.2.2",
-    "ngx-bootstrap": "2.0.5",
+    "ngx-bootstrap": "5.1.0",
     "ngx-clipboard": "12.1.0",
     "ngx-pagination": "3.1.1",
     "ngx-toastr": "8.5.0",
     "sockjs-client": "1.1.4",
     "web-animations-js": "2.3.1",
     "stompjs": "2.3.3",
-    "jshint": "2.10.2",
     "spring-flo": "https://github.com/spring-projects/spring-flo#0fb3deb3e6f421c5fac08841f459dcab4b30cc30",
-    "rxjs-compat": "6.2.1",
     "uuid": "3.3.2"
   },
   "devDependencies": {

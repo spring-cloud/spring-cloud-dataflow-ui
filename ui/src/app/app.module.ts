@@ -15,6 +15,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { SharedAboutService } from './shared/services/shared-about.service';
 import { LayoutModule } from './layout/layout.module';
 import { AuditRecordModule } from './audit/audit-record.module';
+import { map } from 'rxjs/operators';
+
 
 
 /**
@@ -27,11 +29,14 @@ import { AuditRecordModule } from './audit/audit-record.module';
  */
 export function init(authService: AuthService, sharedAboutService: SharedAboutService) {
   return () => {
-    return authService.loadSecurityInfo(true).map(securityInfo => {
-      if (securityInfo.isAuthenticated || !securityInfo.isAuthenticationEnabled) {
-        sharedAboutService.loadAboutInfo();
-      }
-    }).toPromise();
+    return authService.loadSecurityInfo(true)
+      .pipe(
+        map(securityInfo => {
+          if (securityInfo.isAuthenticated || !securityInfo.isAuthenticationEnabled) {
+            sharedAboutService.loadAboutInfo();
+          }
+        })
+      ).toPromise();
   };
 }
 

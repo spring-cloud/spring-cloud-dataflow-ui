@@ -10,7 +10,7 @@ import { PropertiesGroupModel } from '../../../../shared/flo/support/properties-
 import { AppUiProperty } from '../../../../shared/flo/support/app-ui-property';
 import { StreamAppPropertiesSource } from './stream-properties-source';
 // Workaround to load jshint to have linting working for JS snippet inside the props dialog
-import { JSHINT } from 'jshint';
+// import { JSHINT } from 'jshint';
 
 // CM extension necessary for snippet support syntax highlighting
 // Lint support
@@ -22,9 +22,9 @@ import 'codemirror-minified/mode/ruby/ruby';
 import 'codemirror-minified/mode/python/python';
 
 
-if (!(<any>window).JSHINT) {
-  (<any>window).JSHINT = JSHINT;
-}
+// if (!(<any>window).JSHINT) {
+//   (<any>window).JSHINT = JSHINT;
+// }
 
 /**
  * Utility class for working with Properties.

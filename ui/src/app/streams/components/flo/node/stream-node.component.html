@@ -7,8 +7,8 @@
       <svg:text class="label2"/>
     </svg:g>
     <svg:text class="stream-label"/>
-    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
-    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
+    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
   </svg:g>
 
   <svg:g *ngSwitchDefault class="stream-module">
@@ -18,8 +18,8 @@
       <svg:text class="label2"/>
     </svg:g>
     <svg:text class="stream-label"/>
-    <svg:rect class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
-    <svg:rect class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:rect class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
+    <svg:rect class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
   </svg:g>
 
 </svg:g>

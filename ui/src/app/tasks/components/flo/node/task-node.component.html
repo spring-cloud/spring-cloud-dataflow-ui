@@ -5,7 +5,7 @@
       <svg:circle class="border"/>
       <svg:text class="label"/>
     </svg:g>
-    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
   </svg:g>
 
   <svg:g *ngSwitchCase="'END'" class="composed-task">
@@ -14,7 +14,7 @@
       <svg:circle class="outer"/>
       <svg:text class="label"/>
     </svg:g>
-    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
   </svg:g>
 
   <svg:g *ngSwitchCase="'SYNC'" class="composed-task">
@@ -22,8 +22,8 @@
       <svg:circle class="border"/>
       <svg:text class="label"/>
     </svg:g>
-    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
-    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
+    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
   </svg:g>
 
   <svg:g *ngSwitchDefault class="composed-task">
@@ -31,8 +31,8 @@
       <svg:rect class="border"/>
       <svg:text class="label"/>
     </svg:g>
-    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
-    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() && canvasNodeTooltip"/>
+    <svg:circle class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
+    <svg:circle class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"/>
   </svg:g>
 
 </svg:g>
