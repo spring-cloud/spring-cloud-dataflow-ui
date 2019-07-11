@@ -8,6 +8,7 @@ import { AboutInfo } from '../model/about/about-info.model';
 import { GrafanaInfo } from '../model/about/grafana.model';
 import { TaskDefinition } from '../../tasks/model/task-definition';
 import { TaskExecution } from '../../tasks/model/task-execution';
+import { JobExecution } from '../../jobs/model/job-execution.model';
 
 /**
  * Grafana Service.
@@ -145,6 +146,26 @@ export class GrafanaService {
           return grafanaInfo.url + '/d/scdf-tasks/tasks?refresh=' + grafanaInfo.refreshInterval +
             's&var-task_name=' + taskExecution.taskName + '&var-task_name=All' + '&var-task_execution_id='
             + taskExecution.executionId;
+        })
+      );
+  }
+
+  /**
+   * Return an observable which contains the URL to the job execution dashboard
+   * @param {JobExecution} jobExecution
+   */
+  getDashboardJobExecution(jobExecution: JobExecution): Observable<string> {
+    return this.sharedAboutService
+      .getAboutInfo()
+      .pipe(
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-tasks/tasks?refresh=' + grafanaInfo.refreshInterval +
+            's&var-job_name=' + jobExecution.name
+            + '&var-job_execution_id=' + jobExecution.jobExecutionId
+            + '&var-job_instance_id=' + jobExecution.jobInstanceId
+            + '&var-step_execution_count=' + jobExecution.stepExecutionCount
+            + '&var-task_execution_id=' + jobExecution.taskExecutionId;
         })
       );
   }
