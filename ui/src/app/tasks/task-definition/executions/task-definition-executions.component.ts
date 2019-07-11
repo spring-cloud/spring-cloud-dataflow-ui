@@ -76,8 +76,11 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
       this.executions$ = this.tasksService.getTaskExecutions(params)
         .pipe(map((page: Page<TaskExecution>) => {
           this.form.checkboxes = page.items.map((task) => {
-            return this.itemsSelected.indexOf(task.executionId) > -1;
-          });
+              if (task.parentTaskExecutionId) {
+                return null;
+              }
+              return this.itemsSelected.indexOf(task.executionId) > -1;
+            });
           return page;
         }))
         .pipe(map((page) => {
@@ -128,7 +131,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
         action: 'destroy',
         title: 'Destroy execution',
         isDefault: false,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
       },
     ];
   }
@@ -211,14 +214,21 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
    * Update the list of selected checkbox
    */
   changeCheckboxes(taskExecutions) {
-    if (!taskExecutions || (taskExecutions.items.length !== this.form.checkboxes.length)) {
+
+    if (!taskExecutions) {
       return;
     }
-    const value: Array<number> = taskExecutions.items.map((ex, index) => {
-      if (this.form.checkboxes[index]) {
-        return ex.executionId;
-      }
-    }).filter((a) => a != null);
+    const taskCheckable = taskExecutions.items;
+    if (taskCheckable.length !== this.form.checkboxes.length) {
+      return;
+    }
+    const value: Array<number> = taskCheckable
+      .map((ex, index) => {
+        if (this.form.checkboxes[index] && !ex.parentTaskExecutionId) {
+          return ex.executionId;
+        }
+      })
+      .filter((a) => a != null);
     this.itemsSelected = value;
   }
 
@@ -254,7 +264,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
    * @returns {number}
    */
   countSelected(): number {
-    return this.form.checkboxes.filter((a) => a).length;
+    return this.form.checkboxes.filter((a) => a && !a.parentTaskExecutionId).length;
   }
 
 }

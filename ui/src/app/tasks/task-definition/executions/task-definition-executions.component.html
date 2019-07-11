@@ -46,7 +46,7 @@
       <tr>
         <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_DESTROY']">
           <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes(executions.page)"
-                 [(ngModel)]="form.checkboxes[i]"/>
+                 [(ngModel)]="form.checkboxes[i]" *ngIf="!item.parentTaskExecutionId"/>
         </td>
         <td>
           <a (click)="details(item)" style="cursor: pointer">

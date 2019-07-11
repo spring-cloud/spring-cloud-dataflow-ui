@@ -171,7 +171,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
       },
       {
         id: 'destroy-task' + index,
@@ -179,7 +179,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         action: 'destroy',
         title: 'Destroy execution',
         isDefault: false,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
       },
     ];
   }
@@ -243,8 +243,11 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
       .getExecutions(this.params)
       .pipe(map((page: Page<TaskExecution>) => {
         this.form.checkboxes = page.items.map((task) => {
-          return this.itemsSelected.indexOf(task.executionId) > -1;
-        });
+            if (task.parentTaskExecutionId) {
+              return null;
+            }
+            return this.itemsSelected.indexOf(task.executionId) > -1;
+          });
         return page;
       }))
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -284,14 +287,20 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * Update the list of selected checkbox
    */
   changeCheckboxes() {
-    if (!this.taskExecutions || (this.taskExecutions.items.length !== this.form.checkboxes.length)) {
+    if (!this.taskExecutions) {
       return;
     }
-    const value: Array<number> = this.taskExecutions.items.map((ex, index) => {
-      if (this.form.checkboxes[index]) {
-        return ex.executionId;
-      }
-    }).filter((a) => a != null);
+    const taskCheckable = this.taskExecutions.items;
+    if (taskCheckable.length !== this.form.checkboxes.length) {
+      return;
+    }
+    const value: Array<number> = taskCheckable
+      .map((ex, index) => {
+        if (this.form.checkboxes[index] && !ex.parentTaskExecutionId) {
+          return ex.executionId;
+        }
+      })
+      .filter((a) => a != null);
     this.itemsSelected = value;
     this.updateContext();
   }
@@ -402,7 +411,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @returns {number}
    */
   countSelected(): number {
-    return this.form.checkboxes.filter((a) => a).length;
+    return this.form.checkboxes.filter((a) => a && !a.parentTaskExecutionId).length;
   }
 
 }
