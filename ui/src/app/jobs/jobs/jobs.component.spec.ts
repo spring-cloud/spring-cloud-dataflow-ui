@@ -24,6 +24,8 @@ import { FormsModule } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
+import { GrafanaModule } from '../../shared/grafana/grafana.module';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -50,14 +52,16 @@ describe('JobsComponent', () => {
         FormsModule,
         TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([]),
-        BsDropdownModule.forRoot()
+        BsDropdownModule.forRoot(),
+        GrafanaModule
       ],
       providers: [
         { provide: JobsService, useValue: jobsService },
         { provide: AuthService, useValue: authService },
         { provide: ConfirmService, useValue: comfirmService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: LoggerService, useValue: loggerService }
+        { provide: LoggerService, useValue: loggerService },
+        GrafanaService
       ]
     })
       .compileComponents();

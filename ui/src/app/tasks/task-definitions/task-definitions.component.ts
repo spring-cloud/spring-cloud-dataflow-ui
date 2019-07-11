@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Page } from '../../shared/model/page';
 import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskListParams } from '../components/tasks.interface';
@@ -21,6 +21,7 @@ import { ListBarComponent } from '../../shared/components/list/list-bar.componen
 import { AuthService } from '../../auth/auth.service';
 import { AppsService } from '../../apps/apps.service';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -29,6 +30,7 @@ import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-t
  * @author Gunnar Hillert
  * @author Glenn Renfro
  * @author Damien Vitrac
+ * @author Christian Tzolov
  *
  */
 @Component({
@@ -101,6 +103,16 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * Grafana Subscription
+   */
+  grafanaEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
    * Constructor
    *
    * @param {TasksService} tasksService
@@ -112,6 +124,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param {AuthService} authService
    * @param {SharedAboutService} sharedAboutService
    * @param {NotificationService} notificationService
+   * @param {GrafanaService} grafanaService
    */
   constructor(public tasksService: TasksService,
               private modalService: BsModalService,
@@ -121,8 +134,8 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
               private router: Router,
               private authService: AuthService,
               private sharedAboutService: SharedAboutService,
-              private notificationService: NotificationService) {
-
+              private notificationService: NotificationService,
+              private grafanaService: GrafanaService) {
   }
 
   /**
@@ -160,6 +173,19 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'details',
         title: 'Show details',
         isDefault: true
+      },
+      {
+        divider: true,
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
+      },
+      {
+        id: 'grafana-task' + index,
+        action: 'grafana',
+        icon: 'grafana',
+        custom: true,
+        title: 'Grafana Dashboard',
+        isDefault: true,
+        hidden: !this.grafanaEnabled
       },
       {
         divider: true,
@@ -235,6 +261,9 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
       case 'scheduleSelected':
         this.scheduleSelectedTasks();
         break;
+      case 'grafana':
+        this.grafanaTaskDashboard(args);
+        break;
     }
   }
 
@@ -252,12 +281,16 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         this.schedulesEnabled = !!featureInfo.schedulesEnabled;
         this.refresh();
       });
+    this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
+      this.grafanaEnabled = active;
+    });
   }
 
   /**
    * Close subscription
    */
   ngOnDestroy() {
+    this.grafanaEnabledSubscription.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
@@ -494,4 +527,13 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/apps/add']);
   }
 
+  /**
+   * Navigate to the grafana task Dashboard
+   * @param taskDefinition
+   */
+  grafanaTaskDashboard(taskDefinition: TaskDefinition) {
+    this.grafanaService.getDashboardTask(taskDefinition).subscribe((url: string) => {
+      window.open(url);
+    });
+  }
 }

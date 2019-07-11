@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
 import { TasksService } from '../tasks.service';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
@@ -13,6 +13,7 @@ import { AppError } from '../../shared/model/error.model';
 import { AuthService } from '../../auth/auth.service';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Component that display the Task Executions.
@@ -61,6 +62,16 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * Grafana Subscription
+   */
+  grafanaEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
    * Constructor
    *
    * @param {TasksService} tasksService
@@ -68,12 +79,14 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {AuthService} authService
    * @param {LoggerService} loggerService
    * @param {Router} router
+   * @param {GrafanaService} grafanaService
    */
   constructor(public tasksService: TasksService,
               public notificationService: NotificationService,
               private authService: AuthService,
               public loggerService: LoggerService,
-              private router: Router) {
+              private router: Router,
+              private grafanaService: GrafanaService) {
   }
 
   /**
@@ -82,6 +95,9 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.context = this.tasksService.executionsContext;
     this.params = { ...this.context };
+    this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
+      this.grafanaEnabled = active;
+    });
     this.refresh();
   }
 
@@ -99,6 +115,18 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         action: 'details',
         title: 'Show details',
         isDefault: true
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'grafana-task-execution' + index,
+        action: 'grafana',
+        icon: 'grafana',
+        custom: true,
+        title: 'Grafana Dashboard',
+        isDefault: true,
+        hidden: !this.grafanaEnabled
       },
       {
         divider: true
@@ -137,6 +165,9 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
       case 'launch':
         this.launch(item.taskName);
         break;
+      case 'grafana':
+        this.grafanaTaskExecutionDashboard(item);
+        break;
     }
   }
 
@@ -144,6 +175,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * Close subscription
    */
   ngOnDestroy() {
+    this.grafanaEnabledSubscription.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
@@ -245,5 +277,14 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     this.router.navigate([`tasks/definitions/launch/${taskDefinitionName}`]);
   }
 
+  /**
+   * Navigate to the grafana task Dashboard
+   * @param taskExecution
+   */
+  grafanaTaskExecutionDashboard(taskExecution: TaskExecution) {
+    this.grafanaService.getDashboardTaskExecution(taskExecution).subscribe((url: string) => {
+      window.open(url);
+    });
+  }
 
 }

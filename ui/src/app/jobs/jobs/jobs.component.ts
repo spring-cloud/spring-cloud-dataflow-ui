@@ -10,6 +10,7 @@ import { ConfirmService } from '../../shared/components/confirm/confirm.service'
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { AuthService } from '../../auth/auth.service';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Main entry point to the Jobs Module. Provides
@@ -51,6 +52,16 @@ export class JobsComponent implements OnInit, OnDestroy {
   context: any;
 
   /**
+   * Grafana Subscription
+   */
+  grafanaEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info
+   */
+  grafanaEnabled = false;
+
+  /**
    * Constructor
    *
    * @param {JobsService} jobsService
@@ -58,13 +69,15 @@ export class JobsComponent implements OnInit, OnDestroy {
    * @param {ConfirmService} confirmService
    * @param {LoggerService} loggerService
    * @param {Router} router
+   * @param {GrafanaService0} grafanaService
    */
   constructor(private jobsService: JobsService,
               private notificationService: NotificationService,
               private confirmService: ConfirmService,
               private authService: AuthService,
               private loggerService: LoggerService,
-              private router: Router) {
+              private router: Router,
+              private grafanaService: GrafanaService) {
   }
 
   /**
@@ -74,6 +87,9 @@ export class JobsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.context = this.jobsService.jobsContext;
     this.params = { ...this.context };
+    this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
+      this.grafanaEnabled = active;
+    });
     this.loadJobExecutions();
   }
 
@@ -82,6 +98,7 @@ export class JobsComponent implements OnInit, OnDestroy {
    * memory leaks.
    */
   ngOnDestroy() {
+    this.grafanaEnabledSubscription.unsubscribe();
     this.updateContext();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
@@ -100,6 +117,15 @@ export class JobsComponent implements OnInit, OnDestroy {
         action: 'view',
         title: 'Show details',
         isDefault: true
+      },
+      {
+        id: 'grafana-job' + index,
+        action: 'grafana',
+        icon: 'grafana',
+        custom: true,
+        title: 'Grafana Dashboard',
+        isDefault: true,
+        hidden: !this.grafanaEnabled
       },
       {
         id: 'job-restart' + index,
@@ -133,6 +159,9 @@ export class JobsComponent implements OnInit, OnDestroy {
         break;
       case 'stop':
         this.stopJob(item);
+        break;
+      case 'grafana':
+        this.grafanaJobDashboard(item);
         break;
     }
   }
@@ -242,4 +271,13 @@ export class JobsComponent implements OnInit, OnDestroy {
     this.router.navigate(['tasks/executions/' + item.taskExecutionId]);
   }
 
+  /**
+   * Navigate to the grafana job Dashboard
+   * @param jobExecution
+   */
+  grafanaJobDashboard(jobExecution: JobExecution) {
+    this.grafanaService.getDashboardJobExecution(jobExecution).subscribe((url: string) => {
+      window.open(url);
+    });
+  }
 }

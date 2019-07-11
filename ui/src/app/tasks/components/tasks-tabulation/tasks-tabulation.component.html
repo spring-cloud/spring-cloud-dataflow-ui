@@ -7,6 +7,11 @@
         <span class="fa fa-plus"></span>
         Create task(s)
       </button>
+      <button name="task-grafana" type="button" *ngIf="grafanaEnabled"
+              (click)="grafanaDashboard()" class="btn btn-primary btn-fa" title="Grafana Dashboard">
+        <span class="icon-custom icon-custom-grafana white"></span>
+        Grafana Dashboard
+      </button>
     </app-page-head-actions>
   </app-page-head>
 
