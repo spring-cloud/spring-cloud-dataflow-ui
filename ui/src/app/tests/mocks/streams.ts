@@ -95,4 +95,8 @@ export class MockStreamsService {
     return of([]);
   }
 
+  getLogs(stream: StreamDefinition): Observable<any> {
+    return of([]);
+  }
+
 }

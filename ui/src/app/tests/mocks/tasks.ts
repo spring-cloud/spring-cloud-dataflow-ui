@@ -122,4 +122,8 @@ export class MockTasksService {
     return of({});
   }
 
+  getTaskExecutionLogs(taskExecution: TaskExecution): Observable<any> {
+    return of('');
+  }
+
 }

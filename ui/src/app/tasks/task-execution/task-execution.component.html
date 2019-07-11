@@ -1,20 +1,20 @@
-<app-page *ngIf="taskExecution$ | async as taskExecution; else loading">
+<app-page *ngIf="taskExecution$ | async as task; else loading">
 
   <app-page-head>
     <app-page-head-back [defaultUrl]="'/tasks/executions'"
                         [isNotRegex]="'^(\/tasks\/executions\/)'"></app-page-head-back>
     <app-page-head-title>
-      Task Execution Details - <strong>Execution ID: {{ taskExecution.executionId }}</strong>
+      Task Execution Details - <strong>Execution ID: {{ task.task.executionId }}</strong>
     </app-page-head-title>
     <app-page-head-actions>
 
       <button name="task-view" type="button" id="task-view"
-              (click)="detailsTask(taskExecution.taskName)" class="btn btn-primary btn-fa" title="View details task">
+              (click)="detailsTask(task.task.taskName)" class="btn btn-primary btn-fa" title="View details task">
         <span class="fa fa-info-circle"></span>
         View task details
       </button>
       <button name="task-launch" type="button" id="task-launch"
-              (click)="launch(taskExecution.taskName)" class="btn btn-primary btn-fa" title="Relaunch the task"
+              (click)="launch(task.task.taskName)" class="btn btn-primary btn-fa" title="Relaunch the task"
               [dataflowAppRoles]="['ROLE_CREATE']">
         <span class="fa fa-play"></span>
         Relaunch task
@@ -23,7 +23,7 @@
   </app-page-head>
 
   <div dataflowLayoutType type="large">
-    <table *ngIf="taskExecution" class="table table-hover">
+    <table *ngIf="task.task" class="table table-hover">
       <thead>
       <tr>
         <th style="width: 200px">Property</th>
@@ -33,73 +33,81 @@
       <tbody>
       <tr>
         <td>Execution Id</td>
-        <td>{{ taskExecution.executionId }}</td>
+        <td>{{ task.task.executionId }}</td>
       </tr>
       <tr>
         <td>Task Name</td>
         <td>
-          <a [routerLink]="'/tasks/definitions/' + taskExecution.taskName">{{ taskExecution.taskName }}</a>
+          <a [routerLink]="'/tasks/definitions/' + task.task.taskName">{{ task.task.taskName }}</a>
         </td>
       </tr>
       <tr>
         <td>Arguments</td>
         <td>
-          <div *ngIf="taskExecution.arguments">
-            <div *ngFor="let arg of getArguments(taskExecution.arguments)">
+          <div *ngIf="task.task.arguments">
+            <div *ngFor="let arg of getArguments(task.task.arguments)">
               {{ arg[0] }}:
               <strong>{{ arg[1] }}</strong>
             </div>
           </div>
-          <div *ngIf="!taskExecution.arguments">
+          <div *ngIf="!task.task.arguments">
             N/A
           </div>
         </td>
       </tr>
       <tr>
         <td>External Execution Id</td>
-        <td>{{ taskExecution.externalExecutionId || 'N/A' }}</td>
+        <td>{{ task.task.externalExecutionId || 'N/A' }}</td>
       </tr>
       <tr>
         <td>Batch Job</td>
         <td>
-          <span *ngIf="taskExecution.jobExecutionIds.length > 0" class="glyphicon glyphicon-ok text-info"></span>
-          <span *ngIf="taskExecution.jobExecutionIds.length == 0" class="glyphicon glyphicon-remove text-danger"></span>
+          <span *ngIf="task.task.jobExecutionIds.length > 0" class="glyphicon glyphicon-ok text-info"></span>
+          <span *ngIf="task.task.jobExecutionIds.length == 0" class="glyphicon glyphicon-remove text-danger"></span>
         </td>
       </tr>
       <tr>
         <td>Job Execution Ids</td>
-        <td *ngIf="taskExecution.jobExecutionIds.length > 0" id="jobExecutionIds">
+        <td *ngIf="task.task.jobExecutionIds.length > 0" id="jobExecutionIds">
           <a [routerLink]="'/jobs/executions/' + jobExecutionId"
-             *ngFor="let jobExecutionId of taskExecution.jobExecutionIds">
+             *ngFor="let jobExecutionId of task.task.jobExecutionIds">
             {{ jobExecutionId }}
           </a>
         </td>
-        <td *ngIf="taskExecution.jobExecutionIds.length == 0">
+        <td *ngIf="task.task.jobExecutionIds.length == 0">
           N/A
         </td>
       </tr>
       <tr>
         <td>Start Time</td>
-        <td>{{ taskExecution.startTime | dataflowDateTime }}</td>
+        <td>{{ task.task.startTime | dataflowDateTime }}</td>
       </tr>
       <tr>
         <td>End Time</td>
-        <td>{{ taskExecution.endTime | dataflowDateTime }}</td>
+        <td>{{ task.task.endTime | dataflowDateTime }}</td>
       </tr>
       <tr>
         <td>Duration</td>
-        <td>{{ taskExecution.startTime | dataflowDuration: taskExecution.endTime }}</td>
+        <td>{{ task.task.startTime | dataflowDuration: task.task.endTime }}</td>
       </tr>
       <tr>
         <td>Exit Code</td>
-        <td>{{ taskExecution.exitCode }}</td>
+        <td>{{ task.task.exitCode }}</td>
       </tr>
       <tr>
         <td>Exit Message</td>
-        <td>{{ taskExecution.exitMessage || 'N/A' }}</td>
+        <td>{{ task.task.exitMessage || 'N/A' }}</td>
       </tr>
       </tbody>
     </table>
+
+    <div *ngIf="task.logs">
+      <h2 style="padding-bottom: 12px;">Logs</h2>
+      <div class="pui-log">
+        <pre><code>{{ task.logs }}</code></pre>
+      </div>
+    </div>
+
   </div>
 </app-page>
 <ng-template #loading>
