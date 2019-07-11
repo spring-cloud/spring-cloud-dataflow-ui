@@ -112,9 +112,9 @@ describe('TaskExecutionsComponent', () => {
     tasksService.taskExecutions = TASK_EXECUTIONS;
     fixture.detectChanges();
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=taskExecutionsTable] tr:first-child td'));
-    expect(des.length).toBe(6);
-    expect(des[0].nativeElement.textContent).toContain('#2');
-    expect(des[1].nativeElement.textContent).toContain('foo1');
+    expect(des.length).toBe(7);
+    expect(des[1].nativeElement.textContent).toContain('#2');
+    expect(des[2].nativeElement.textContent).toContain('foo1');
   });
 
   describe('no execution', () => {

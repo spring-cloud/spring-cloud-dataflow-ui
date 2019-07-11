@@ -57,6 +57,10 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
    * @param {ActivatedRoute} route
    * @param {Router} router
    * @param {AuthService} authService
+   * @param loggerService
+   * @param {BsModalService} modalService
+   * @param {LoggerService} loggerService
+   * @param {BsModalService} modalService
    * @param {TasksService} tasksService
    */
   constructor(private route: ActivatedRoute,
