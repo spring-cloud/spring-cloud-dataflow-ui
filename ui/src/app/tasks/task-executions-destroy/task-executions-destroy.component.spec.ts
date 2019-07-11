@@ -65,7 +65,7 @@ describe('TaskExecutionsDestroyComponent', () => {
     notificationService.clearAll();
   });
 
-  describe('1 tasks destroy', () => {
+  describe('1 task execution destroy', () => {
     const mock = [
       TaskExecution.fromJSON({
         executionId: '1',
@@ -86,13 +86,13 @@ describe('TaskExecutionsDestroyComponent', () => {
       fixture.detectChanges();
     });
 
-    it('Should display a dedicate message', () => {
+    it('Should display a dedicated message', () => {
       const message: HTMLElement = fixture.debugElement.query(By.css('.modal-body')).nativeElement;
-      expect(message.textContent).toContain(`This action will destroy and delete the task execution`);
+      expect(message.textContent).toContain(`This action will remove the data of the task execution with the id 1`);
       expect(message.textContent).toContain(`1`);
     });
 
-    it('Should call the service on validate destroy', () => {
+    it('Should call the service after validating the button click to destroy the task execution', () => {
       const spy = spyOn(tasksService, 'destroyExecutions').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
@@ -100,13 +100,13 @@ describe('TaskExecutionsDestroyComponent', () => {
       expect(spy).toHaveBeenCalledWith(mock);
     });
 
-    it('Should display a message after destroy one task', (() => {
+    it('Should display a message after destroying one task', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('1 task execution(s) destroyed.');
+      expect(notificationService.testSuccess[0]).toContain('1 task execution(s) cleanup.');
     }));
 
-    it('Should close the modal after a success destroy', (() => {
+    it('Should close the modal dialog after a successful destruction', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       const spy = spyOn(bsModalRef, 'hide');
       bt.click();
@@ -116,7 +116,7 @@ describe('TaskExecutionsDestroyComponent', () => {
 
   });
 
-  describe('Multiple tasks destroy', () => {
+  describe('Destruction of multiple task executions', () => {
 
     const mock = [
       TaskExecution.fromJSON({
@@ -150,7 +150,7 @@ describe('TaskExecutionsDestroyComponent', () => {
       fixture.detectChanges();
     });
 
-    it('Should display 2 tasks', () => {
+    it('Should display 2 task executions', () => {
       const tr: DebugElement[] = fixture.debugElement.queryAll(By.css('#table-tasks tbody tr'));
       const tr1: HTMLElement = tr[0].nativeElement;
       const tr2: HTMLElement = tr[1].nativeElement;
@@ -161,7 +161,7 @@ describe('TaskExecutionsDestroyComponent', () => {
       expect(tr2.textContent).toContain(mock[1].taskName);
     });
 
-    it('Should call the service on validate destroy', () => {
+    it('Should call the service upon validating the destruction of task executions', () => {
       const spy = spyOn(tasksService, 'destroyExecutions').and.callThrough();
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
@@ -169,13 +169,13 @@ describe('TaskExecutionsDestroyComponent', () => {
       expect(spy).toHaveBeenCalledWith(mock);
     });
 
-    it('Should display a message after destroy 2 tasks', (() => {
+    it('Should display a message after destroying 2 tasks', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('2 task execution(s) destroyed.');
+      expect(notificationService.testSuccess[0]).toContain('2 task execution(s) cleanup.');
     }));
 
-    it('Should close the modal after a success destroy', (() => {
+    it('Should close the modal after a successful destruction', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-destroy')).nativeElement;
       const spy = spyOn(bsModalRef, 'hide');
       bt.click();

@@ -31,7 +31,7 @@ export class TaskExecutionsDestroyComponent extends Modal implements OnDestroy {
   taskExecutions: TaskExecution[];
 
   /**
-   * Emit after destroy success
+   * Emit events after the successful destruction of a task execution
    */
   confirm: EventEmitter<string> = new EventEmitter();
 
@@ -61,7 +61,7 @@ export class TaskExecutionsDestroyComponent extends Modal implements OnDestroy {
   }
 
   /**
-   * Submit destroy task(s)
+   * Submit the destruction of task(s)
    * Blocking action
    */
   destroy() {
@@ -71,11 +71,11 @@ export class TaskExecutionsDestroyComponent extends Modal implements OnDestroy {
     this.tasksService.destroyExecutions(this.taskExecutions)
       .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe((data) => {
-        this.notificationService.success(`${data.length} task execution(s) destroyed.`);
+        this.notificationService.success(`${data.length} task execution(s) cleanup.`);
         this.confirm.emit('done');
         this.cancel();
       }, () => {
-        this.notificationService.error('An error occurred while bulk deleting task execution(s). ' +
+        this.notificationService.error('An error occurred while bulk cleanup task execution(s). ' +
           'Please check the server logs for more details.');
         this.confirm.emit('done');
         this.cancel();

@@ -18,7 +18,7 @@ import { TaskExecutionsDestroyComponent } from '../task-executions-destroy/task-
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 
 /**
- * Component that display the Task Executions.
+ * Component that displays the Task Executions.
  *
  * @author Janne Valkealahti
  * @author Gunnar Hillert
@@ -48,7 +48,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   tasksTabulation: TasksTabulationComponent;
 
   /**
-   * Current forms value
+   * Current form value
    */
   form: any = {
     checkboxes: []
@@ -81,7 +81,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   grafanaEnabled = false;
 
   /*
-   * Contain a key application of each selected task executions
+   * Contains a key application of each selected task executions
    * @type {Array}
    */
   itemsSelected: Array<number> = [];
@@ -177,7 +177,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         id: 'destroy-task' + index,
         icon: 'trash',
         action: 'destroy',
-        title: 'Destroy execution',
+        title: 'Task Execution cleanup',
         isDefault: false,
         hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
       },
@@ -185,7 +185,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Tasks Actions
+   * Task Actions
    */
   executionsActions() {
     return [
@@ -193,7 +193,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         id: 'destroy-executions',
         icon: 'trash',
         action: 'destroySelected',
-        title: 'Destroy task execution(s)',
+        title: 'Task Execution(s) cleanup',
         hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       }
     ];
@@ -284,7 +284,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Update the list of selected checkbox
+   * Update the list of selected checkboxes
    */
   changeCheckboxes() {
     if (!this.taskExecutions) {

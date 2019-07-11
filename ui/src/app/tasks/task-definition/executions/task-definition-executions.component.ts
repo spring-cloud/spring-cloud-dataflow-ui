@@ -133,7 +133,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
         id: 'destroy-task' + index,
         icon: 'trash',
         action: 'destroy',
-        title: 'Destroy execution',
+        title: 'Task Execution cleanup',
         isDefault: false,
         hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
       },
@@ -149,7 +149,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
         id: 'destroy-executions',
         icon: 'trash',
         action: 'destroySelected',
-        title: 'Destroy task execution(s)',
+        title: 'Task Execution(s) cleanup',
         hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
       }
     ];
@@ -247,8 +247,8 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Starts the destroy the {@link TaskExecution}s in parameter
-   * by opening a confirmation modal dialog.
+   * Destroys the {@link TaskExecution}s that are provided as via the taskExecutions parameter.
+   * Will open a confirmation modal dialog.
    * @param {TaskExecution[]} taskExecutions
    */
   destroyExecutions(taskExecutions: TaskExecution[], params) {
