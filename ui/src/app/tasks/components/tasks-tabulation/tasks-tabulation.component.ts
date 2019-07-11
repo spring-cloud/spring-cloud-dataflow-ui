@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {Observable, forkJoin, BehaviorSubject, Subscription} from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, forkJoin, BehaviorSubject, Subscription } from 'rxjs';
 import { TasksService } from '../../tasks.service';
 import { map, mergeMap, share } from 'rxjs/operators';
 import { Page } from '../../../shared/model/page';
@@ -23,7 +23,7 @@ import { GrafanaService } from '../../../shared/grafana/grafana.service';
   templateUrl: 'tasks-tabulation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TasksTabulationComponent implements OnInit {
+export class TasksTabulationComponent implements OnInit, OnDestroy {
 
   params$: Observable<any>;
 
@@ -68,7 +68,7 @@ export class TasksTabulationComponent implements OnInit {
   }
 
   forceRefresh() {
-    this.hardRefresh.next(new Date())
+    this.hardRefresh.next(new Date());
   }
 
   refresh() {

@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 import { FeatureInfo } from '../model/about/feature-info.model';
 import { AboutInfo } from '../model/about/about-info.model';
 import { GrafanaInfo } from '../model/about/grafana.model';
-import {TaskDefinition} from "../../tasks/model/task-definition";
-import {TaskExecution} from "../../tasks/model/task-execution";
+import { TaskDefinition } from '../../tasks/model/task-definition';
+import { TaskExecution } from '../../tasks/model/task-execution';
 
 /**
  * Grafana Service.

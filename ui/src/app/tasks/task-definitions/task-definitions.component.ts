@@ -1,27 +1,27 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Page} from '../../shared/model/page';
-import {Router} from '@angular/router';
-import {TaskDefinition} from '../model/task-definition';
-import {TasksService} from '../tasks.service';
-import {Subject, Subscription} from 'rxjs';
-import {map, takeUntil} from 'rxjs/operators';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {TaskListParams} from '../components/tasks.interface';
-import {ListDefaultParams, OrderParams, SortParams} from '../../shared/components/shared.interface';
-import {TaskDefinitionsDestroyComponent} from '../task-definitions-destroy/task-definitions-destroy.component';
-import {NotificationService} from '../../shared/services/notification.service';
-import {LoggerService} from '../../shared/services/logger.service';
-import {AppError} from '../../shared/model/error.model';
-import {TaskSchedule} from '../model/task-schedule';
-import {TaskSchedulesDestroyComponent} from '../task-schedules-destroy/task-schedules-destroy.component';
-import {GroupRouteService} from '../../shared/services/group-route.service';
-import {SharedAboutService} from '../../shared/services/shared-about.service';
-import {FeatureInfo} from '../../shared/model/about/feature-info.model';
-import {ListBarComponent} from '../../shared/components/list/list-bar.component';
-import {AuthService} from '../../auth/auth.service';
-import {AppsService} from '../../apps/apps.service';
-import {TasksTabulationComponent} from '../components/tasks-tabulation/tasks-tabulation.component';
-import {GrafanaService} from "../../shared/grafana/grafana.service";
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Page } from '../../shared/model/page';
+import { Router } from '@angular/router';
+import { TaskDefinition } from '../model/task-definition';
+import { TasksService } from '../tasks.service';
+import { Subject, Subscription } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { TaskListParams } from '../components/tasks.interface';
+import { ListDefaultParams, OrderParams, SortParams } from '../../shared/components/shared.interface';
+import { TaskDefinitionsDestroyComponent } from '../task-definitions-destroy/task-definitions-destroy.component';
+import { NotificationService } from '../../shared/services/notification.service';
+import { LoggerService } from '../../shared/services/logger.service';
+import { AppError } from '../../shared/model/error.model';
+import { TaskSchedule } from '../model/task-schedule';
+import { TaskSchedulesDestroyComponent } from '../task-schedules-destroy/task-schedules-destroy.component';
+import { GroupRouteService } from '../../shared/services/group-route.service';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
+import { ListBarComponent } from '../../shared/components/list/list-bar.component';
+import { AuthService } from '../../auth/auth.service';
+import { AppsService } from '../../apps/apps.service';
+import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -529,7 +529,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
 
   /**
    * Navigate to the grafana task Dashboard
-   * @param streamDefinition
+   * @param taskDefinition
    */
   grafanaTaskDashboard(taskDefinition: TaskDefinition) {
     this.grafanaService.getDashboardTask(taskDefinition).subscribe((url: string) => {

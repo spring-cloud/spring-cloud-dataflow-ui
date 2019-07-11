@@ -34,8 +34,8 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { AppsService } from '../../apps/apps.service';
-import {GrafanaModule} from "../../shared/grafana/grafana.module";
-import {GrafanaService} from "../../shared/grafana/grafana.service";
+import { GrafanaModule } from '../../shared/grafana/grafana.module';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Test {@link TaskDefinitionsComponent}.

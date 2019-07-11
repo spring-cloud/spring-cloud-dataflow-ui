@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Page } from '../../shared/model/page';
 import { TaskExecution } from '../model/task-execution';
 import { TasksService } from '../tasks.service';
-import {Subject, Subscription} from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TaskListParams } from '../components/tasks.interface';
 import { OrderParams, SortParams } from '../../shared/components/shared.interface';
@@ -13,7 +13,7 @@ import { AppError } from '../../shared/model/error.model';
 import { AuthService } from '../../auth/auth.service';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
-import {GrafanaService} from "../../shared/grafana/grafana.service";
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Component that display the Task Executions.

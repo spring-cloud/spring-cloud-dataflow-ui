@@ -33,8 +33,8 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
-import {GrafanaService} from "../../shared/grafana/grafana.service";
-import {GrafanaModule} from "../../shared/grafana/grafana.module";
+import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { GrafanaModule } from '../../shared/grafana/grafana.module';
 
 /**
  * Test {@link TaskExecutionsComponent}.
