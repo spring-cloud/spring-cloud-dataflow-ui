@@ -45,3 +45,14 @@ table.table {
     width: auto;
   }
 }
+
+.log-toolbar {
+  padding-bottom: 10px;
+  .dropdown {
+    display: inline;
+    margin-right: 4px;
+    ul li a {
+      cursor: pointer;
+    }
+  }
+}

@@ -245,3 +245,25 @@
     }
   }
 }
+
+.pui-log {
+  pre {
+    overflow: auto;
+    background-color: #fff;
+    border: 1px solid $navy-9;
+    color: $navy-3;
+    font-family: Consolas, Bitstream Vera Sans Mono, Courier New, Courier, monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    font-size: 12px;
+    code {
+      background-color: #fff;
+      border: 0 none;
+      word-break: keep-all;
+      white-space: pre;
+    }
+  }
+}

@@ -32,6 +32,11 @@ export class StreamSummaryComponent implements OnInit {
   modal: BsModalRef;
 
   /**
+   * Log Selected
+   */
+  logSelectedIndex = 0;
+
+  /**
    * Constructor
    *
    * @param {ActivatedRoute} route
@@ -78,11 +83,42 @@ export class StreamSummaryComponent implements OnInit {
         }
       ))
       .pipe(mergeMap(
+        (val: any) => {
+          if (val.runtimes.length > 0) {
+            return this.streamsService.getLogs(val.streamDefinition)
+              .pipe(map((logs) => {
+                return {
+                  streamDefinition: val.streamDefinition,
+                  runtimes: val.runtimes,
+                  logs: val.runtimes.map(runtime => {
+                    let log = '';
+                    if (logs && logs.hasOwnProperty('logs')) {
+                      log = logs.logs[runtime.id] ? logs.logs[runtime.id] : '';
+                    }
+                    return {
+                      id: runtime.id,
+                      log: log
+                    };
+                  })
+                };
+              }));
+          } else {
+            return of({
+              streamDefinition: val.streamDefinition,
+              runtimes: val.runtimes,
+              logs: []
+            });
+          }
+
+        }
+      ))
+      .pipe(mergeMap(
         (val: any) => of(Parser.parse(val.streamDefinition.dslText as string, 'stream'))
           .pipe(map((val2) => {
             return {
               streamDefinition: val.streamDefinition,
               runtimes: val.runtimes,
+              logs: val.logs,
               apps: val2.lines[0].nodes
                 .map((node) => ({
                   origin: node['name'],
@@ -93,6 +129,10 @@ export class StreamSummaryComponent implements OnInit {
           }))
         )
       );
+  }
+
+  changeLog(index) {
+    this.logSelectedIndex = index;
   }
 
   /**

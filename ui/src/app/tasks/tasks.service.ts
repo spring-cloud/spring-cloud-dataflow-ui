@@ -16,6 +16,7 @@ import {
 import { HttpResponse } from '@angular/common/http';
 import { Platform, PlatformTask } from '../shared/model/platform';
 import { DataflowEncoder } from '../shared/support/encoder.utils';
+import { StreamDefinition } from '../streams/model/stream-definition';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -370,6 +371,20 @@ export class TasksService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .post(TasksService.URL.EXECUTIONS, {}, { headers: headers, params: params })
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
+  /**
+   * Get task execution logs
+   * @param {TaskExecution} taskExecution
+   * @returns {Observable<HttpResponse<any>>}
+   */
+  getTaskExecutionLogs(taskExecution: TaskExecution): Observable<any> {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient
+      .get<any>(`/tasks/logs/${taskExecution.externalExecutionId}`, { headers: httpHeaders })
       .pipe(
         catchError(this.errorHandler.handleError)
       );

@@ -100,6 +100,36 @@
           </tbody>
         </table>
       </div>
+
+      <div class="row stream-summary-row">
+        <div class="col-md-3">
+          <strong>Logs:</strong>
+        </div>
+        <div class="col-md-21">
+          <div class="log-toolbar">
+            <div dropdown class="dropdown">
+              <a class="btn btn-default btn-dropdown" dropdownToggle>
+                <strong>{{ stream.logs[logSelectedIndex].id }}</strong>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" *dropdownMenu="">
+                <ng-template ngFor let-runtimeApp [ngForOf]="stream.runtimes" let-i="index">
+                  <li [class.active]="stream.logs[logSelectedIndex].id === runtimeApp.id">
+                    <a (click)="changeLog(i)">{{ runtimeApp.id }}</a>
+                  </li>
+                </ng-template>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="refresh()">
+              Refresh
+            </button>
+          </div>
+          <div class="pui-log" *ngIf="stream.logs[logSelectedIndex].log">
+            <pre><code>{{ stream.logs[logSelectedIndex].log }}</code></pre>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TaskExecution } from '../model/task-execution';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { catchError, mergeMap } from 'rxjs/operators';
-import { Observable, EMPTY } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
+import { Observable, EMPTY, of } from 'rxjs';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { AppError, HttpAppError } from '../../shared/model/error.model';
@@ -24,7 +24,7 @@ export class TaskExecutionComponent implements OnInit {
   /**
    * Observable of Task Execution
    */
-  taskExecution$: Observable<TaskExecution>;
+  taskExecution$: Observable<any>;
 
   /**
    * Constructor
@@ -51,6 +51,25 @@ export class TaskExecutionComponent implements OnInit {
       .pipe(
         mergeMap(
           (val) => this.tasksService.getExecution(val.id)
+        ),
+        mergeMap(
+          (val) => {
+            if (val.taskExecutionStatus === 'COMPLETE' || val.taskExecutionStatus === 'ERROR') {
+              return this.tasksService.getTaskExecutionLogs(val).pipe(
+                map(logs => {
+                  return {
+                    task: val,
+                    logs: logs
+                  };
+                })
+              );
+            } else {
+              return of({
+                task: val,
+                logs: null
+              });
+            }
+          }
         ),
         catchError(error => {
           if (HttpAppError.is404(error) || HttpAppError.is400(error)) {

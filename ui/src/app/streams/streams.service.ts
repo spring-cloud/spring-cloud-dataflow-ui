@@ -313,4 +313,18 @@ export class StreamsService {
       );
   }
 
+  /**
+   * Get stream logs
+   * @param {StreamDefinition} stream
+   * @returns {Observable<HttpResponse<any>>}
+   */
+  getLogs(stream: StreamDefinition): Observable<any> {
+    const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient
+      .get<any>(`/streams/logs/${stream.name}`, { headers: httpHeaders })
+      .pipe(
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
 }
