@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpLoaderService } from './http-loader.service';
+import { debounceTime} from 'rxjs/operators';
 
 /**
  * HttpLoaderComponent
@@ -36,8 +37,8 @@ export class HttpLoaderComponent implements OnInit {
    * On Init
    */
   ngOnInit(): void {
-    this.httpLoaderService.onChange
-      .debounceTime(200)
+    this.httpLoaderService.onChange.pipe(
+      debounceTime(200))
       .subscribe((running: boolean) => {
         this.show = running;
       });

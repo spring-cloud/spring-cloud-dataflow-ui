@@ -10,7 +10,7 @@ import {
 } from './support/shapes';
 import { layout } from './support/layout';
 import { ElementComponent } from '../../../shared/flo/support/shape-component';
-import { NodeComponent } from './node/node.component';
+import { TaskNodeComponent } from './node/task-node.component';
 import { DecorationComponent } from '../../../shared/flo/decoration/decoration.component';
 import { HandleComponent } from '../../../shared/flo/handle/handle.component';
 import * as _joint from 'jointjs';
@@ -32,7 +32,7 @@ const DECORATION_ICON_MAP = new Map<string, string>()
   .set(Constants.ERROR_DECORATION_KIND, 'assets/img/error.svg');
 
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
-  .set(joint.shapes.flo.NODE_TYPE, NodeComponent)
+  .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent)
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
   .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent);
 

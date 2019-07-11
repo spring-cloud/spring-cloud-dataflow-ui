@@ -17,7 +17,9 @@
     "mavenbuild-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeHeadless",
     "mavenbuild-without-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../target/classes/public/dashboard --base-href /dashboard/",
     "mavenbuild": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeHeadless && --max_old_space_size=4096 node ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../target/classes/public/dashboard --base-href /dashboard/",
-    "bundle-report": "webpack-bundle-analyzer dist/stats.json"
+    "bundle-report": "webpack-bundle-analyzer dist/stats.json",
+    "joint-core": "node switch-to-joint-core.js",
+    "prepare": "npm run joint-core"
   },
   "private": true,
   "dependencies": {
@@ -39,16 +41,14 @@
     "dagre": "0.8.4",
     "luxon": "1.11.2",
     "ng2-stomp-service": "1.2.2",
-    "ngx-bootstrap": "2.0.5",
+    "ngx-bootstrap": "5.1.0",
     "ngx-clipboard": "12.1.0",
     "ngx-pagination": "3.1.1",
     "ngx-toastr": "8.5.0",
     "sockjs-client": "1.1.4",
     "web-animations-js": "2.3.1",
     "stompjs": "2.3.3",
-    "jshint": "2.10.2",
-    "spring-flo": "0.8.11",
-    "rxjs-compat": "6.2.1",
+    "spring-flo": "https://github.com/spring-projects/spring-flo#0fb3deb3e6f421c5fac08841f459dcab4b30cc30",
     "uuid": "3.3.2"
   },
   "devDependencies": {
@@ -59,6 +59,7 @@
     "@types/jasmine": "3.3.8",
     "@types/jasminewd2": "2.0.5",
     "@types/node": "8.9.5",
+    "chalk": "^2.4.2",
     "codelyzer": "4.5.0",
     "jasmine-core": "2.99.1",
     "jasmine-spec-reporter": "4.2.1",
@@ -90,7 +91,8 @@
     "webpack-bundle-analyzer": "3.3.2",
     "protractor-docker-plugin": "file:protractor-docker-plugin",
     "jasmine-expect": "4.0.1",
-    "@types/jasmine-expect": "3.8.1"
+    "@types/jasmine-expect": "3.8.1",
+    "shelljs": "^0.8.3"
   },
   "napa-config": {
     "cache": false

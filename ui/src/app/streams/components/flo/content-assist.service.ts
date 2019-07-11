@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpUtils } from '../../../shared/support/http.utils';
+import { map } from 'rxjs/operators';
+
 
 @Injectable()
 export class ContentAssistService {
@@ -16,9 +18,9 @@ export class ContentAssistService {
     return this.httpClient.get<any>('/completions/stream', {
       headers: httpHeaders,
       params: params
-    }).map(jsonResponse => {
+    }).pipe(map(jsonResponse => {
       return jsonResponse.proposals;
-    });
+    }));
   }
 
 }

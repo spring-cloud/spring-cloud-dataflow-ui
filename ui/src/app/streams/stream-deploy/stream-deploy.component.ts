@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, Subject, EMPTY, of } from 'rxjs';
-import { catchError, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { catchError, debounceTime, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { saveAs } from 'file-saver/FileSaver';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { StreamsService } from '../streams.service';
@@ -94,8 +94,8 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.config$ = this.route.params
-      .debounceTime(400)
       .pipe(
+        debounceTime(400),
         map((params: Params) => {
           return {
             id: params.id,

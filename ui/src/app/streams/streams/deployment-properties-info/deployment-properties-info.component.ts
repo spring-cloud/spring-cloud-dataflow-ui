@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { StreamDefinition } from '../../model/stream-definition';
 import { StreamsService } from '../../streams.service';
 
@@ -42,10 +42,13 @@ export class DeploymentPropertiesInfoComponent {
     if (streamDef.deploymentProperties) {
       this.deploymentProperties = of(this.extractData(streamDef.deploymentProperties)).pipe(share());
     } else {
-      this.deploymentProperties = this.streamsService.getDeploymentInfo(streamDef.name.toString()).map(d => {
-        streamDef.deploymentProperties = d.deploymentProperties;
-        return this.extractData(streamDef.deploymentProperties);
-      }).pipe(share());
+      this.deploymentProperties = this.streamsService.getDeploymentInfo(streamDef.name.toString()).pipe(
+        map(d => {
+          streamDef.deploymentProperties = d.deploymentProperties;
+          return this.extractData(streamDef.deploymentProperties);
+        }),
+        share()
+      );
     }
   }
 

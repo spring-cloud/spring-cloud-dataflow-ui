@@ -16,7 +16,7 @@ import { TaskGraphViewComponent } from './components/flo/task-graph-view/task-gr
 import { MetamodelService } from './components/flo/metamodel.service';
 import { RenderService } from './components/flo/render.service';
 import { EditorService } from './components/flo/editor.service';
-import { NodeComponent } from './components/flo/node/node.component';
+import { TaskNodeComponent } from './components/flo/node/task-node.component';
 import { ToolsService } from './components/flo/tools.service';
 import { TaskPropertiesDialogComponent } from './components/flo/properties/task-properties-dialog-component';
 import { DecorationComponent } from '../shared/flo/decoration/decoration.component';
@@ -67,7 +67,7 @@ import { TaskSchedulesFilterPipe } from './task-schedules/task-schedules.filter'
     TaskExecutionComponent,
     TaskLaunchComponent,
     TaskGraphViewComponent,
-    NodeComponent,
+    TaskNodeComponent,
     TaskPropertiesDialogComponent,
     TaskDefinitionComponent,
     TaskStatusComponent,
@@ -86,7 +86,7 @@ import { TaskSchedulesFilterPipe } from './task-schedules/task-schedules.filter'
     TaskSchedulesFilterPipe
   ],
   entryComponents: [
-    NodeComponent,
+    TaskNodeComponent,
     TaskDefinitionCreateDialogComponent,
     TaskPropertiesDialogComponent,
     DecorationComponent,

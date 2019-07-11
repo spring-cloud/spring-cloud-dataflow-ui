@@ -1,10 +1,10 @@
 import { Shapes } from 'spring-flo';
 import { dia } from 'jointjs';
-import { RenderService } from '../render.service';
-import { NodeComponent } from './node.component';
+import { RenderService } from '../../../streams/components/flo/render.service';
+import { NodeComponent } from './node-component';
 import { Flo, Constants } from 'spring-flo';
-import { MockSharedAppService } from '../../../../tests/mocks/shared-app';
-import { MetamodelService } from '../metamodel.service';
+import { MockSharedAppService } from '../../../tests/mocks/shared-app';
+import { MetamodelService } from '../../../streams/components/flo/metamodel.service';
 import { async } from '@angular/core/testing';
 
 import * as _joint from 'jointjs';
@@ -21,10 +21,16 @@ function createMockView(cell: dia.Element, context?: string): any {
   };
 }
 
+class MockDocService {
+  mouseDown = false;
+  isMouseDown = () => { return this.mouseDown; };
+}
+
 describe('NodeComponent Tests.', () => {
 
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
   const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
+  const DOC_SERVICE = new MockDocService();
 
   let graph: dia.Graph;
   let component: NodeComponent;
@@ -33,7 +39,7 @@ describe('NodeComponent Tests.', () => {
   beforeEach(async(() => {
     METAMODEL_SERVICE.load().then(data => metamodel = data);
     graph = new joint.dia.Graph();
-    component = new NodeComponent();
+    component = new NodeComponent(<any>DOC_SERVICE);
   }));
 
   it('Component for regular app node', () => {
@@ -144,11 +150,11 @@ describe('NodeComponent Tests.', () => {
       props: properties
     });
     component.view = createMockView(node);
-    expect(component.cannotShowToolTip).toBeFalsy();
     expect(component.isDisabled).toBeFalsy();
-    component.cannotShowToolTip = true;
-    expect(component.cannotShowToolTip).toBeTruthy();
+    DOC_SERVICE.mouseDown = true;
     expect(component.isDisabled).toBeTruthy();
+    DOC_SERVICE.mouseDown = false;
+    expect(component.isDisabled).toBeFalsy();
   });
 
 });

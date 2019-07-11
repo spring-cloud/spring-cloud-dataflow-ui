@@ -16,10 +16,17 @@ function createMockView(cell: dia.Element): any {
   };
 }
 
+class MockDocService {
+  mouseDown = false;
+  isMouseDown = () => { return this.mouseDown; };
+}
+
+
 describe('DecorationComponent Tests.', () => {
 
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
   const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
+  const DOC_SERVICE = new MockDocService();
 
   let graph: dia.Graph;
   let component: DecorationComponent;
@@ -28,7 +35,7 @@ describe('DecorationComponent Tests.', () => {
   beforeEach(async(() => {
     METAMODEL_SERVICE.load().then(metamodel => {
       graph = new joint.dia.Graph();
-      component = new DecorationComponent();
+      component = new DecorationComponent(<any>DOC_SERVICE);
       parentNode = Shapes.Factory.createNode({
         metadata: metamodel.get('source').get('http'),
         renderer: RENDER_SERVICE,

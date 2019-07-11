@@ -32,12 +32,12 @@ export class SharedAboutService {
   }
 
   getFeatureInfo(): Observable<FeatureInfo> {
-    return this.getAboutInfo().map(result => {
+    return this.getAboutInfo().pipe(map(result => {
       if (!result) {
         return new FeatureInfo();
       }
       return new FeatureInfo().deserialize(result.featureInfo);
-    });
+    }));
   }
 
   loadAboutInfo(reload?: boolean): Observable<AboutInfo> {

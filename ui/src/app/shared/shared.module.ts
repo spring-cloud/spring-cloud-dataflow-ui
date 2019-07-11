@@ -52,6 +52,7 @@ import { HttpLoaderComponent } from './components/http-loader/http-loader.compon
 import { HttpLoaderInterceptor } from './components/http-loader/http-loader.interceptor';
 import { HttpLoaderService } from './components/http-loader/http-loader.service';
 import { BlockerService } from './components/blocker/blocker.service';
+import { DocService } from './services/doc.service';
 
 
 /**
@@ -134,6 +135,7 @@ import { BlockerService } from './components/blocker/blocker.service';
     LoggerService,
     GroupRouteService,
     HttpLoaderService,
+    DocService,
     BlockerService,
     {
       provide: HTTP_INTERCEPTORS,

@@ -22,10 +22,10 @@ import {
   ComponentRef
 } from '@angular/core';
 import { IMAGE_W, HORIZONTAL_PADDING } from './shapes';
-import { NodeComponent } from '../node/node.component';
+import { StreamNodeComponent } from '../node/stream-node.component';
 import { DecorationComponent } from '../../../../shared/flo/decoration/decoration.component';
 import { HandleComponent } from '../../../../shared/flo/handle/handle.component';
-import { BaseShapeComponent, ElementComponent } from '../../../../shared/flo/support/shape-component';
+import { ShapeComponent, ElementComponent } from '../../../../shared/flo/support/shape-component';
 import { TYPE_INSTANCE_DOT, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from './shapes';
 import { InstanceDotComponent } from '../instance-dot/instance-dot.component';
 import { MessageRateComponent } from '../message-rate/message-rate.component';
@@ -35,12 +35,12 @@ import * as _joint from 'jointjs';
 const joint: any = _joint;
 
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
-  .set(joint.shapes.flo.NODE_TYPE, NodeComponent)
+  .set(joint.shapes.flo.NODE_TYPE, StreamNodeComponent)
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
   .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
   .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
 
-const LINK_LABEL_COMPONENT_TYPE = new Map<string, Type<BaseShapeComponent>>()
+const LINK_LABEL_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()
   .set(TYPE_INCOMING_MESSAGE_RATE, MessageRateComponent)
   .set(TYPE_OUTGOING_MESSAGE_RATE, MessageRateComponent);
 
@@ -112,7 +112,7 @@ export class ViewHelper {
             const nodeComponentFactory = componentFactoryResolver
               .resolveComponentFactory(LINK_LABEL_COMPONENT_TYPE.get(label.type));
 
-            const componentRef: ComponentRef<BaseShapeComponent> = nodeComponentFactory.create(injector);
+            const componentRef: ComponentRef<ShapeComponent> = nodeComponentFactory.create(injector);
 
             if (!this._angularComponentRef) {
               this._angularComponentRef = {};
@@ -173,8 +173,8 @@ export class ViewHelper {
       options: joint.util.deepSupplement({}, joint.dia.ElementView.prototype.options),
 
       renderMarkup: function () {
-        // Not called often. It's fine to destro old component and create the new one, because old DOM
-        // may have been aletered by JointJS updates
+        // Not called often. It's fine to destroy old component and create the new one, because old DOM
+        // may have been altered by JointJS updates
         if (componentFactoryResolver && ELEMENT_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
 
           if (this._angularComponentRef) {
@@ -185,8 +185,8 @@ export class ViewHelper {
             .resolveComponentFactory(ELEMENT_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
 
           const componentRef: ComponentRef<ElementComponent> = nodeComponentFactory.create(injector);
-          applicationRef.attachView(componentRef.hostView);
           componentRef.instance.view = this;
+          applicationRef.attachView(componentRef.hostView);
           this._angularComponentRef = componentRef;
           const nodes = [];
           for (let i = 0; i < this._angularComponentRef.location.nativeElement.children.length; i++) {
