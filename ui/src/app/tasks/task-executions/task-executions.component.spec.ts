@@ -33,6 +33,8 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
+import {GrafanaService} from "../../shared/grafana/grafana.service";
+import {GrafanaModule} from "../../shared/grafana/grafana.module";
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -77,6 +79,7 @@ describe('TaskExecutionsComponent', () => {
         TooltipModule.forRoot(),
         FormsModule,
         FloModule,
+        GrafanaModule,
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([])
       ],
@@ -87,7 +90,8 @@ describe('TaskExecutionsComponent', () => {
         { provide: BsModalService, useValue: modalService },
         { provide: AppsService, useValue: appsService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: LoggerService, useValue: loggerService }
+        { provide: LoggerService, useValue: loggerService },
+        GrafanaService
       ]
     })
       .compileComponents();

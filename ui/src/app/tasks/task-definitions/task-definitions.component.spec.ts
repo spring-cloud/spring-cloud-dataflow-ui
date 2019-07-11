@@ -34,6 +34,8 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { AppsService } from '../../apps/apps.service';
+import {GrafanaModule} from "../../shared/grafana/grafana.module";
+import {GrafanaService} from "../../shared/grafana/grafana.service";
 
 /**
  * Test {@link TaskDefinitionsComponent}.
@@ -41,7 +43,7 @@ import { AppsService } from '../../apps/apps.service';
  * @author Damien Vitrac
  * @author Gunnar Hillert
  */
-describe('TaskDefinitionsComponent', () => {
+fdescribe('TaskDefinitionsComponent', () => {
   let component: TaskDefinitionsComponent;
   let fixture: ComponentFixture<TaskDefinitionsComponent>;
   const notificationService = new MockNotificationService();
@@ -80,6 +82,7 @@ describe('TaskDefinitionsComponent', () => {
         FormsModule,
         FloModule,
         ReactiveFormsModule,
+        GrafanaModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [
@@ -90,7 +93,8 @@ describe('TaskDefinitionsComponent', () => {
         { provide: TasksService, useValue: tasksService },
         { provide: GroupRouteService, useValue: groupRouteService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: LoggerService, useValue: loggerService }
+        { provide: LoggerService, useValue: loggerService },
+        GrafanaService
       ]
     })
       .compileComponents();

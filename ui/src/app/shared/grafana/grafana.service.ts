@@ -6,11 +6,14 @@ import { map } from 'rxjs/operators';
 import { FeatureInfo } from '../model/about/feature-info.model';
 import { AboutInfo } from '../model/about/about-info.model';
 import { GrafanaInfo } from '../model/about/grafana.model';
+import {TaskDefinition} from "../../tasks/model/task-definition";
+import {TaskExecution} from "../../tasks/model/task-execution";
 
 /**
  * Grafana Service.
  *
  * @author Damien Vitrac
+ * @author Christian Tzolov
  */
 @Injectable()
 export class GrafanaService {
@@ -94,6 +97,54 @@ export class GrafanaService {
           return grafanaInfo.url + '/d/scdf-applications/applications?refresh=' + grafanaInfo.refreshInterval +
             's&var-stream_name=' + streamName + '&var-application_name=' + appName +
             '&var-name=All&var-application_guid=' + guid;
+        })
+      );
+  }
+
+  /**
+   * Return an observable which contains the URL to the tasks dashboard
+   */
+  getDashboardTasks(): Observable<string> {
+    return this.sharedAboutService
+      .getAboutInfo()
+      .pipe(
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-tasks/tasks?refresh=' + grafanaInfo.refreshInterval + 's';
+        })
+      );
+  }
+
+
+  /**
+   * Return an observable which contains the URL to the task dashboard
+   * @param {TaskDefinition} stream
+   */
+  getDashboardTask(task: TaskDefinition): Observable<string> {
+    return this.sharedAboutService
+      .getAboutInfo()
+      .pipe(
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-tasks/tasks?refresh=' + grafanaInfo.refreshInterval +
+            's&var-task_name=' + task.name + '&var-task_name=All';
+        })
+      );
+  }
+
+  /**
+   * Return an observable which contains the URL to the task execution dashboard
+   * @param {TaskExecution} taskExecution
+   */
+  getDashboardTaskExecution(taskExecution: TaskExecution): Observable<string> {
+    return this.sharedAboutService
+      .getAboutInfo()
+      .pipe(
+        map((aboutInfo: AboutInfo): GrafanaInfo => aboutInfo.grafanaInfo),
+        map((grafanaInfo: GrafanaInfo): string => {
+          return grafanaInfo.url + '/d/scdf-tasks/tasks?refresh=' + grafanaInfo.refreshInterval +
+            's&var-task_name=' + taskExecution.taskName + '&var-task_name=All' + '&var-task_execution_id='
+            + taskExecution.executionId;
         })
       );
   }
