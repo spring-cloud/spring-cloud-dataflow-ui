@@ -36,6 +36,7 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { AppsService } from '../../apps/apps.service';
 import { TaskSchedule } from '../model/task-schedule';
+import { GrafanaService } from '../../shared/grafana/grafana.service';
 
 /**
  * Test {@link TaskSchedulesComponent}.
@@ -92,7 +93,8 @@ describe('TaskSchedulesComponent', () => {
         { provide: AppsService, useValue: appsService },
         { provide: TasksService, useValue: tasksService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: LoggerService, useValue: loggerService }
+        { provide: LoggerService, useValue: loggerService },
+        GrafanaService
       ]
     })
       .compileComponents();

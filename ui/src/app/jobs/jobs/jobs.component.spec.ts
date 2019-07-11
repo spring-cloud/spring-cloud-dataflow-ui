@@ -26,6 +26,8 @@ import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -35,6 +37,7 @@ describe('JobsComponent', () => {
   const jobsService = new MockJobsService();
   const comfirmService = new MockConfirmService();
   const authService = new MockAuthService();
+  const aboutService = new MocksSharedAboutService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -56,6 +59,7 @@ describe('JobsComponent', () => {
         GrafanaModule
       ],
       providers: [
+        { provide: SharedAboutService, useValue: aboutService },
         { provide: JobsService, useValue: jobsService },
         { provide: AuthService, useValue: authService },
         { provide: ConfirmService, useValue: comfirmService },
