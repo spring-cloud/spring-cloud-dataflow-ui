@@ -43,7 +43,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
  * @author Damien Vitrac
  * @author Gunnar Hillert
  */
-fdescribe('TaskDefinitionsComponent', () => {
+describe('TaskDefinitionsComponent', () => {
   let component: TaskDefinitionsComponent;
   let fixture: ComponentFixture<TaskDefinitionsComponent>;
   const notificationService = new MockNotificationService();
