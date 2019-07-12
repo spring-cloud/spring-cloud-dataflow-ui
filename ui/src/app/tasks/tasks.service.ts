@@ -399,7 +399,7 @@ export class TasksService {
   stopExecution(taskExecution: TaskExecution): Observable<any> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .post<any>(`${TasksService.URL.EXECUTIONS}/${taskExecution.externalExecutionId}`, { headers: httpHeaders })
+      .post<any>(`${TasksService.URL.EXECUTIONS}/${taskExecution.executionId}`, { headers: httpHeaders })
       .pipe(
         catchError(this.errorHandler.handleError)
       );
