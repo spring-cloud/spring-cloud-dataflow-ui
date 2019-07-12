@@ -13,7 +13,7 @@ export class TaskExecution {
   public jobExecutionIds: number[];
   public errorMessage: string;
   public externalExecutionId: string;
-  public parentTaskExecutionId: number;
+  public parentExecutionId: number;
 
   constructor(executionId: number,
               exitCode: number,
@@ -25,7 +25,7 @@ export class TaskExecution {
               jobExecutionIds: number[],
               errorMessage: string,
               externalExecutionId: string,
-              parentTaskExecutionId: number) {
+              parentExecutionId: number) {
     this.executionId = executionId;
     this.exitCode = exitCode;
     this.taskName = taskName;
@@ -36,7 +36,7 @@ export class TaskExecution {
     this.jobExecutionIds = jobExecutionIds;
     this.errorMessage = errorMessage;
     this.externalExecutionId = externalExecutionId;
-    this.parentTaskExecutionId = parentTaskExecutionId;
+    this.parentExecutionId = parentExecutionId;
   }
 
   static fromJSON(jsonItem): TaskExecution {
@@ -51,7 +51,7 @@ export class TaskExecution {
       jsonItem.jobExecutionIds,
       jsonItem.errorMessage,
       jsonItem.externalExecutionId,
-      jsonItem.parentTaskExecutionId);
+      jsonItem.parentExecutionId);
   }
 
   static pageFromJSON(input): Page<TaskExecution> {

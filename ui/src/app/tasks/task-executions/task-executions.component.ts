@@ -152,7 +152,8 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         hidden: !this.grafanaEnabled
       },
       {
-        divider: true
+        divider: true,
+        hidden: !this.grafanaEnabled
       },
       {
         id: 'details-task' + index,
@@ -171,7 +172,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentExecutionId
       },
       {
         id: 'destroy-task' + index,
@@ -179,7 +180,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         action: 'destroy',
         title: 'Task Execution cleanup',
         isDefault: false,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentExecutionId
       },
     ];
   }
@@ -243,11 +244,11 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
       .getExecutions(this.params)
       .pipe(map((page: Page<TaskExecution>) => {
         this.form.checkboxes = page.items.map((task) => {
-            if (task.parentTaskExecutionId) {
-              return null;
-            }
-            return this.itemsSelected.indexOf(task.executionId) > -1;
-          });
+          if (task.parentExecutionId) {
+            return null;
+          }
+          return this.itemsSelected.indexOf(task.executionId) > -1;
+        });
         return page;
       }))
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -296,7 +297,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     }
     const value: Array<number> = taskCheckable
       .map((ex, index) => {
-        if (this.form.checkboxes[index] && !ex.parentTaskExecutionId) {
+        if (this.form.checkboxes[index] && !ex.parentExecutionId) {
           return ex.executionId;
         }
       })
@@ -411,7 +412,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @returns {number}
    */
   countSelected(): number {
-    return this.form.checkboxes.filter((a) => a && !a.parentTaskExecutionId).length;
+    return this.form.checkboxes.filter((a) => a && !a.parentExecutionId).length;
   }
 
 }

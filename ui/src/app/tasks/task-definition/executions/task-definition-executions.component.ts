@@ -80,7 +80,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
       this.executions$ = this.tasksService.getTaskExecutions(params)
         .pipe(map((page: Page<TaskExecution>) => {
           this.form.checkboxes = page.items.map((task) => {
-              if (task.parentTaskExecutionId) {
+              if (task.parentExecutionId) {
                 return null;
               }
               return this.itemsSelected.indexOf(task.executionId) > -1;
@@ -135,7 +135,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
         action: 'destroy',
         title: 'Task Execution cleanup',
         isDefault: false,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentTaskExecutionId
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY']) || item.parentExecutionId
       },
     ];
   }
@@ -228,7 +228,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
     }
     const value: Array<number> = taskCheckable
       .map((ex, index) => {
-        if (this.form.checkboxes[index] && !ex.parentTaskExecutionId) {
+        if (this.form.checkboxes[index] && !ex.parentExecutionId) {
           return ex.executionId;
         }
       })
@@ -268,7 +268,7 @@ export class TaskDefinitionExecutionsComponent implements OnInit, OnDestroy {
    * @returns {number}
    */
   countSelected(): number {
-    return this.form.checkboxes.filter((a) => a && !a.parentTaskExecutionId).length;
+    return this.form.checkboxes.filter((a) => a && !a.parentExecutionId).length;
   }
 
 }
