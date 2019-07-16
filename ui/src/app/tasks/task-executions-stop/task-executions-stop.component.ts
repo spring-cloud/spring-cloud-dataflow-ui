@@ -70,7 +70,7 @@ export class TaskExecutionsStopComponent extends Modal implements OnDestroy {
     this.tasksService.stopExecutions(this.taskExecutions)
       .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe((data) => {
-        this.notificationService.success(`${data.length} task execution(s) stopped.`);
+        this.notificationService.success(`Request submitted to stop ${data.length} task execution(s).`);
         this.confirm.emit('done');
         this.cancel();
       }, () => {

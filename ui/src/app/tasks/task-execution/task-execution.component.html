@@ -11,19 +11,19 @@
       <button name="task-view" type="button" id="task-view"
               (click)="detailsTask(task.task.taskName)" class="btn btn-primary btn-fa" title="View details task">
         <span class="fa fa-info-circle"></span>
-        View task details
+        Details
       </button>
       <button name="task-launch" type="button" id="task-launch"
               (click)="launch(task.task.taskName)" class="btn btn-primary btn-fa" title="Relaunch the task"
               [dataflowAppRoles]="['ROLE_CREATE']">
         <span class="fa fa-play"></span>
-        Relaunch task
+        Relaunch
       </button>
       <button name="task-launch" type="button" id="task-stop"
-              (click)="stop(taskExecution)" class="btn btn-primary btn-fa" title="Stop the task execution"
-              [dataflowAppRoles]="['ROLE_CREATE']" [disabled]="!isRunning(taskExecution)">
+              (click)="stop(task.task)" class="btn btn-primary btn-fa" title="Stop the task execution"
+              [dataflowAppRoles]="['ROLE_CREATE']" [disabled]="!isRunning(task.task)">
         <span class="fa fa-stop"></span>
-        Stop execution
+        Stop
       </button>
     </app-page-head-actions>
   </app-page-head>

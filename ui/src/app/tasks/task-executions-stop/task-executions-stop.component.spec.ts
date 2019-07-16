@@ -97,10 +97,10 @@ describe('TaskExecutionsStopComponent', () => {
       expect(spy).toHaveBeenCalledWith(mock);
     });
 
-    it('Should display a message after stop one task', (() => {
+    it('Should display a message after stop request submitted for one task', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-stop')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('1 task execution(s) stopped.');
+      expect(notificationService.testSuccess[0]).toContain('Request submitted to stop 1 task execution(s)');
     }));
 
     it('Should close the modal after a success stop', (() => {
@@ -162,7 +162,7 @@ describe('TaskExecutionsStopComponent', () => {
     it('Should display a message after stop 2 tasks', (() => {
       const bt: HTMLElement = fixture.debugElement.query(By.css('#btn-stop')).nativeElement;
       bt.click();
-      expect(notificationService.testSuccess[0]).toContain('2 task execution(s) stopped.');
+      expect(notificationService.testSuccess[0]).toContain('Request submitted to stop 2 task execution(s).');
     }));
 
     it('Should close the modal after a success destroy', (() => {
