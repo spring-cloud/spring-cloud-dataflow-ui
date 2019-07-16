@@ -26,6 +26,7 @@ import { StreamHistoryStatusComponent } from '../../components/stream-history-st
 import { By } from '@angular/platform-browser';
 import { MockConfirmService } from '../../../tests/mocks/confirm';
 import { ConfirmService } from '../../../shared/components/confirm/confirm.service';
+import { DataflowDateTimePipe } from '../../../shared/pipes/dataflow-date-time.pipe';
 
 /**
  * Test {@link StreamHistoryComponent}.
@@ -57,7 +58,8 @@ describe('StreamHistoryComponent', () => {
         RolesDirective,
         DeploymentPropertiesInfoComponent,
         LoaderComponent,
-        StreamHistoryStatusComponent
+        StreamHistoryStatusComponent,
+        DataflowDateTimePipe
       ],
       imports: [
         RouterTestingModule.withRoutes([]),
