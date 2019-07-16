@@ -16,6 +16,7 @@ import { TaskSchedulesDestroyComponent } from './task-schedules-destroy.componen
 import { TaskSchedule } from '../model/task-schedule';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
 
 /**
  * Test {@link TaskSchedulesDestroyComponent}.
@@ -37,7 +38,8 @@ describe('TaskSchedulesDestroyComponent', () => {
       declarations: [
         TaskSchedulesDestroyComponent,
         LoaderComponent,
-        RolesDirective
+        RolesDirective,
+        DataflowDateTimePipe
       ],
       imports: [
         FormsModule,

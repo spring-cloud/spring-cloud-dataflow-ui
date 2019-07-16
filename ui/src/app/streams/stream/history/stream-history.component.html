@@ -23,7 +23,7 @@
       <td>
         <strong>{{ history.version }}</strong>
       </td>
-      <td>{{ history.firstDeployed | date: 'short'}}</td>
+      <td>{{ history.firstDeployed | dataflowDateTime}}</td>
       <td>
         <app-stream-history-status [status]="history.statusCode"></app-stream-history-status>
       </td>

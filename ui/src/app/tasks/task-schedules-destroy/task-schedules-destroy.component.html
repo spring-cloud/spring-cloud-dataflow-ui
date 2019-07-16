@@ -28,7 +28,7 @@
         <td>{{ item.name }}</td>
         <td>{{ item.taskName }}</td>
         <td>
-          <div *ngIf="item.dateTime">{{ item.dateTime | date: 'short' }}</div>
+          <div *ngIf="item.dateTime">{{ item.dateTime | dataflowDateTime }}</div>
           <div *ngIf="item.cronExpression">{{ item.cronExpression }}</div>
         </td>
       </tr>
