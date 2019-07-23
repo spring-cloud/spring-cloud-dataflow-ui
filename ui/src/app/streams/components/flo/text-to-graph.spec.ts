@@ -74,6 +74,14 @@ describe('text-to-graph', () => {
         expect(graph.links.length).toEqual(0);
     });
 
+    it('jsongraph: app properties computed dsl', () => {
+      const dsl = 'aaa --server.port=9002 --server.addr=uuu||bbb --server.port=4567';
+      graph = getGraph('aaa --server.port=9002 --server.addr=uuu||bbb --server.port=4567');
+      expect(graph.links.length).toEqual(0);
+      expect(graph.streamdefs.length).toEqual(1);
+      expect(graph.streamdefs[0].def).toEqual('aaa --server.port=9002 --server.addr=uuu || bbb --server.port=4567');
+    });
+
     it('jsongraph: two separate apps should be unconnected: 2', () => {
         graph = getGraph('aaa || bbb');
         expect(graph.streamdefs.length).toEqual(1);
