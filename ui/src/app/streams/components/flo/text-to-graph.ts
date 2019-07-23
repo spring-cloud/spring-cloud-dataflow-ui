@@ -169,7 +169,7 @@ export class TextToGraphConverter {
                         parsedNode.name) {
                         if (n > 0) {
                             if (parsedNode.type !== 'app') {
-                                streamdef = streamdef + '| ';
+                                streamdef = streamdef + ' | ';
                             } else {
                                 streamdef = streamdef + ' || ';
                             }
@@ -206,13 +206,12 @@ export class TextToGraphConverter {
                         if (parsedNode.label) {
                             streamdef = streamdef + parsedNode.label + ': ';
                         }
-                        streamdef = streamdef + graphNode.name + ((parsedNode.type !== 'app') ? ' ' : '' );
+                        streamdef = streamdef + graphNode.name;
                         if (parsedNode.options.size !== 0) {
                             graphNode.properties = parsedNode.options;
                             graphNode.propertiesranges = parsedNode.optionsranges;
-                            for (const key of Array.from(graphNode.properties.keys())) {
-                                streamdef = streamdef + '--' + key + '=' + graphNode.properties.get(key) + ' ';
-                            }
+                            // Add a space before each property to separate from the app node and between each property
+                            Array.from(graphNode.properties.keys()).forEach(key => streamdef  += ` --${key}=${graphNode.properties.get(key)}`);
                         }
                         if (parsedNode.range) {
                             graphNode.range = parsedNode.range;
@@ -251,7 +250,7 @@ export class TextToGraphConverter {
                         linkFrom = graphNode.id;
                         if (!parsedNode.sourceChannelName || parsedNode.name !== 'bridge') {
                             // if it is a bridge then the source channel already added a '>'
-                            streamdef = streamdef + '> ';
+                            streamdef = streamdef + ' > ';
                         }
                         streamdef = streamdef + ':' + channelText;
                     }
