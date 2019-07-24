@@ -530,10 +530,10 @@ em.required {
     display: inline-block;
     height: 17px;
     width: 17px;
-    background: url("/assets/img/grafana.png") no-repeat 0 0;
+    background: url("~src/assets/img/grafana.png") no-repeat 0 0;
     background-size: 17px 17px;
     &.white {
-      background: url("/assets/img/grafana_white.png") no-repeat 0 0;
+      background: url("~src/assets/img/grafana_white.png") no-repeat 0 0;
       background-size: 17px 17px;
     }
   }
