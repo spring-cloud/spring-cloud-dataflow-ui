@@ -223,7 +223,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE', 'ROLE_DEPLOY', 'ROLE_DESTROY'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_MODIFY', 'ROLE_DEPLOY', 'ROLE_CREATE'])
       },
       {
         id: 'deploy-stream' + index,
