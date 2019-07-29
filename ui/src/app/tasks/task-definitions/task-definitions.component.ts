@@ -148,7 +148,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         icon: 'trash',
         action: 'destroySelected',
         title: 'Destroy task(s)',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_CREATE'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
       },
       {
         id: 'schedule-tasks',
@@ -176,7 +176,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
       },
       {
         divider: true,
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
+        hidden: !this.grafanaEnabled
       },
       {
         id: 'grafana-task' + index,
