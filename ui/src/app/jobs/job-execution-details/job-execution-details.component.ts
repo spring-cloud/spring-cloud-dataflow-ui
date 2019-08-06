@@ -78,6 +78,14 @@ export class JobExecutionDetailsComponent implements OnInit {
     this.router.navigate([`jobs/executions/${jobExecution.jobExecutionId}/${item.id}`]);
   }
 
+  /**
+   * Navigates to the task execution page.
+   * @param executionId
+   */
+  viewExecution(executionId) {
+    this.router.navigate([`tasks/executions/${executionId}`]);
+  }
+
   back() {
     this.routingStateService.back('/jobs/executions', /^(\/jobs\/executions\/)/);
   }
