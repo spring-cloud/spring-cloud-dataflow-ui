@@ -22,9 +22,21 @@
         <span class="help-block" *ngIf="form.get('uri').invalid && submitted">
           Please provide a valid URI pointing to the respective properties file.
         </span>
-        <span class="help-block">e.g. https://bit.ly/Celsius-BUILD-SNAPSHOT-stream-applications-kafka-10-maven</span>
+        <span class="help-block">e.g. https://dataflow.spring.io/kafka-maven-latest</span>
       </div>
-      <div class="form-group">
+
+      <div class="dataflow-alert">
+        <p>You can pre-fill the URI field with the following set of applications:</p>
+        <ul>
+          <li><a (click)="fillUrl('https://dataflow.spring.io/kafka-maven-latest')">Stream Apps (Kafka/Maven)</a></li>
+          <li><a (click)="fillUrl('https://dataflow.spring.io/kafka-docker-latest')">Stream Apps (Kafka/Docker)</a></li>
+          <li><a (click)="fillUrl('https://dataflow.spring.io/rabbitmq-maven-latest')">Stream Apps (RabbitMQ/Maven)</a></li>
+          <li><a (click)="fillUrl('https://dataflow.spring.io/rabbitmq-docker-latest')">Stream Apps (RabbitMQ/Docker)</a></li>
+          <li><a (click)="fillUrl('https://dataflow.spring.io/task-maven-latest')">Task Apps (Maven)</a></li>
+          <li><a (click)="fillUrl('https://dataflow.spring.io/task-docker-latest')">Task Apps (Docker)</a></li>
+        </ul>
+      </div>
+      <div class="form-group form-group-line">
         <label class="checkbox-inline">
           <input formControlName="force" id="forceInput" name="force" type="checkbox"/>
           Force<span class="checkbox-description">, the applications will be imported and installed
