@@ -76,7 +76,7 @@ describe('AboutComponent', () => {
     expect(des.length).toBe(6);
     expect(des[0].nativeElement.textContent).toContain('Project Page');
     // expect(des[0].nativeElement.textContent).toContain('https://cloud.spring.io/spring-cloud-dataflow/');
-    expect(des[1].nativeElement.textContent).toContain('Sources');
+    expect(des[1].nativeElement.textContent).toContain('Source Code');
     // expect(des[1].nativeElement.textContent).toContain('https://github.com/spring-cloud/spring-cloud-dataflow');
     expect(des[2].nativeElement.textContent).toContain('Documentation');
     // expect(des[2].nativeElement.textContent).toContain('https://docs.spring.io/spring-cloud-dataflow/docs/BOO/reference/htmlsingle/');
