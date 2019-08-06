@@ -68,6 +68,14 @@ export class AppsBulkImportUriComponent implements OnDestroy {
   }
 
   /**
+   * Fill input with the URL in parameter
+   * @param url
+   */
+  fillUrl(url: string) {
+    this.form.get('uri').setValue(url);
+  }
+
+  /**
    * Bulk Import Apps.
    */
   submit() {

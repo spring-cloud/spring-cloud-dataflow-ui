@@ -10,3 +10,17 @@ p.checkbox-description {
 span.checkbox-description {
   font-weight: normal;
 }
+
+.dataflow-alert {
+  min-width: 500px;
+  ul {
+    margin: 0;
+    padding: 1rem 1rem 0.5rem 2.5rem;
+  }
+}
+
+.form-group-line {
+  border-top: 1px solid #DFE5E8;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+}
