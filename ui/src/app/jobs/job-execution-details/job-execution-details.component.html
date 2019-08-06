@@ -36,7 +36,9 @@
       </tr>
       <tr>
         <td>Task Execution Id</td>
-        <td>{{ jobExecution.taskExecutionId }}</td>
+        <td>
+          <a style="cursor: pointer" (click)="viewExecution(jobExecution.taskExecutionId)">{{ jobExecution.taskExecutionId }}</a>
+        </td>
       </tr>
       <tr>
         <td>Job Parameters</td>
