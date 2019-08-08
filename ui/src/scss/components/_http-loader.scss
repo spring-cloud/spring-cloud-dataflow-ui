@@ -1,5 +1,5 @@
 $progress-bar-infinite-bg: $navy-10;
-$progress-bar-infinite-active: $brand-8;
+$progress-bar-infinite-active: $blue-3;
 $progress-bar-infinite-height: 4px;
 $progress-bar-infinite-full-animation-duration: 2000ms;
 $progress-bar-infinite-piece-animation-duration: 250ms;
@@ -9,8 +9,26 @@ $progress-bar-infinite-piece-animation-duration: 250ms;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 999999;
+  z-index: 9999999;
   height: $progress-bar-infinite-height;
+
+  .loader-wrapper {
+    position: fixed;
+    left: 50%;
+    width: 150px;
+    background: rgba($navy-2, 0.9);
+    top: 0px;
+    margin-left: -75px;
+    padding: 10px 20px;
+    border-radius: 0 0 4px 4px;
+    div {
+      color: rgba(255,255,255,.9);
+      .icon {
+        top: 3px !important;
+      }
+    }
+  }
+
 }
 
 // Progress-bar
