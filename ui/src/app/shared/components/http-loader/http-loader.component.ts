@@ -16,6 +16,9 @@ import { debounceTime } from 'rxjs/operators';
              style="transform: scaleX(0);"></div>
         <div class="progress-bar-infinite-secondary progress-bar-infinite-fill progress-bar-infinite-element"></div>
       </div>
+      <div class="loader-wrapper">
+        <app-loader>Loading ...</app-loader>
+      </div>
     </div>
   `
 })
