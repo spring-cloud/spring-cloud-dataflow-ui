@@ -172,7 +172,7 @@ export class TaskScheduleCreateComponent implements OnInit {
       const cronExpression = this.form.get('cron').value;
       const scheduleParams = schedule.taskDefinitions
         .map((taskName: string, index: number) => ({
-            args: taskArguments.join(','),
+            args: taskArguments.join(' '),
             props: taskProperties.join(','),
             cronExpression: cronExpression,
             task: taskName,
