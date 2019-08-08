@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpLoaderService } from './http-loader.service';
-import { debounceTime} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * HttpLoaderComponent

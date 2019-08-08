@@ -131,7 +131,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {number} index
    */
   executionActions(item: TaskExecution, index: number) {
-    const isRunning = item.taskExecutionStatus !== 'COMPLETE' && item.taskExecutionStatus !== 'ERROR'
+    const isRunning = item.taskExecutionStatus !== 'COMPLETE' && item.taskExecutionStatus !== 'ERROR';
     return [
       {
         id: 'details-execution' + index,
@@ -228,6 +228,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         break;
       case 'grafana':
         this.grafanaTaskExecutionDashboard(item);
+        break;
       case 'stop':
         this.stop([item]);
         break;
