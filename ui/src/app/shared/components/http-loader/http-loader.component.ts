@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpLoaderService } from './http-loader.service';
-import { debounceTime} from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * HttpLoaderComponent
@@ -15,6 +15,9 @@ import { debounceTime} from 'rxjs/operators';
         <div class="progress-bar-infinite-primary progress-bar-infinite-fill progress-bar-infinite-element"
              style="transform: scaleX(0);"></div>
         <div class="progress-bar-infinite-secondary progress-bar-infinite-fill progress-bar-infinite-element"></div>
+      </div>
+      <div class="loader-wrapper">
+        <app-loader>Loading ...</app-loader>
       </div>
     </div>
   `
