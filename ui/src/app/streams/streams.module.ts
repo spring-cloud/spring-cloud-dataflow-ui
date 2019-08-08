@@ -22,7 +22,7 @@ import { StreamDeployBuilderComponent } from './stream-deploy/builder/builder.co
 import { StreamsComponent } from './streams/streams.component';
 import { StreamCreateDialogComponent } from './stream-create/create-dialog/create-dialog.component';
 import { StreamPropertiesDialogComponent } from './components/flo/properties/stream-properties-dialog.component';
-import { StreamNodeComponent} from './components/flo/node/stream-node.component';
+import { StreamNodeComponent } from './components/flo/node/stream-node.component';
 import { StreamGraphDefinitionComponent } from './components/stream-graph-definition/stream-graph-definition.component';
 import { InstanceDotComponent } from './components/flo/instance-dot/instance-dot.component';
 import { MessageRateComponent } from './components/flo/message-rate/message-rate.component';

@@ -1,7 +1,7 @@
-import {ElementComponent} from "./shape-component";
-import {DocService} from "../../services/doc.service";
-import {Constants, Flo} from "spring-flo";
-import {Utils} from "./utils";
+import { ElementComponent } from './shape-component';
+import { DocService } from '../../services/doc.service';
+import { Constants, Flo } from 'spring-flo';
+import { Utils } from './utils';
 import { dia } from 'jointjs';
 
 export class NodeComponent extends ElementComponent {

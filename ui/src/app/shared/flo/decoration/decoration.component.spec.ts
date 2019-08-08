@@ -8,6 +8,7 @@ import { MetamodelService } from '../../../streams/components/flo/metamodel.serv
 import { async } from '@angular/core/testing';
 
 import * as _joint from 'jointjs';
+
 const joint: any = _joint;
 
 function createMockView(cell: dia.Element): any {
@@ -18,7 +19,7 @@ function createMockView(cell: dia.Element): any {
 
 class MockDocService {
   mouseDown = false;
-  isMouseDown = () => { return this.mouseDown; };
+  isMouseDown = () => this.mouseDown;
 }
 
 
