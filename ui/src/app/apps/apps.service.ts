@@ -236,7 +236,7 @@ export class AppsService {
       order: 'name',
       sort: OrderParams.ASC
     });
-    return forkJoin(apps$, appsForTask$)
+    return forkJoin([apps$, appsForTask$])
       .pipe(map(obs => {
         const apps = obs[0].totalElements;
         const apssForTask = obs[1].totalElements;
