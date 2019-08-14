@@ -36,7 +36,7 @@
           <button dropdownToggle type="button" class="btn btn-dropdown btn-primary">
             Version: {{ versionSelect }}
             <span *ngIf="versionSelect == defaultVersion?.version">
-          <span placement="bottom" tooltip="Default version"
+          <span tippy [tippyOptions]="{ content: 'Default version', placement: 'bottom' }"
                 class="ico-current-version fa fa-star"></span>
         </span>
             <span class="caret"></span>
@@ -46,7 +46,7 @@
               <a style="cursor: pointer" (click)="selectVersion(version.version)">
                 {{ version.version }}
                 <span *ngIf="version.defaultVersion">
-              <span placement="bottom" tooltip="Default version"
+              <span tippy [tippyOptions]="{ content: 'Default version', placement: 'bottom' }"
                     class="ico-current-version fa fa-star"></span>
             </span>
               </a>

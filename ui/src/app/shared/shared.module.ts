@@ -53,6 +53,7 @@ import { HttpLoaderInterceptor } from './components/http-loader/http-loader.inte
 import { HttpLoaderService } from './components/http-loader/http-loader.service';
 import { BlockerService } from './components/blocker/blocker.service';
 import { DocService } from './services/doc.service';
+import { TippyDirective } from './directives/tippy.directive';
 
 
 /**
@@ -115,11 +116,13 @@ import { DocService } from './services/doc.service';
     PagerComponent,
     LayoutTypeDirective,
     FocusDirective,
+    TippyDirective,
     KvRichTextComponent,
     BlockerComponent,
     HttpLoaderComponent,
     DATAFLOW_LIST,
-    DATAFLOW_PAGE
+    DATAFLOW_PAGE,
+    TippyDirective
   ],
   entryComponents: [
     ConfirmComponent
@@ -173,11 +176,13 @@ import { DocService } from './services/doc.service';
     ToastContainerModule,
     LayoutTypeDirective,
     FocusDirective,
+    TippyDirective,
     KvRichTextComponent,
     BlockerComponent,
     HttpLoaderComponent,
     DATAFLOW_LIST,
-    DATAFLOW_PAGE
+    DATAFLOW_PAGE,
+    TippyDirective
   ]
 })
 export class SharedModule {

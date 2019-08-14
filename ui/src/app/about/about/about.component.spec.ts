@@ -18,6 +18,7 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -46,6 +47,7 @@ describe('AboutComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         PagerComponent,
+        TippyDirective
       ],
       providers: [
         { provide: AboutService, useValue: aboutService },

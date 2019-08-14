@@ -22,6 +22,7 @@ import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { MockNotificationService } from '../../tests/mocks/notification';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link TaskDefinitionCreateComponent}.
@@ -48,7 +49,8 @@ describe('TaskCreateComposedTaskComponent', () => {
         TaskDefinitionCreateComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
-        PagerComponent
+        PagerComponent,
+        TippyDirective
       ],
       imports: [
         FormsModule,

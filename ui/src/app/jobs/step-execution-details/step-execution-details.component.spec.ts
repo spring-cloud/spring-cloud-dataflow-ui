@@ -25,6 +25,7 @@ import { PagerComponent } from 'src/app/shared/components/pager/pager.component'
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('StepExecutionDetailsComponent', () => {
   let component: StepExecutionDetailsComponent;
@@ -48,7 +49,8 @@ describe('StepExecutionDetailsComponent', () => {
         LoaderComponent,
         PagerComponent,
         DATAFLOW_PAGE,
-        DATAFLOW_LIST
+        DATAFLOW_LIST,
+        TippyDirective
       ],
       imports: [
         FormsModule,

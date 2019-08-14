@@ -26,7 +26,8 @@ import { AppVersion } from '../../../shared/model/app-version';
               </div>
               <div *ngIf="v.defaultVersion">
                 <strong>{{ v.version }}</strong>
-                <span placement="bottom" tooltip="Default version" class="ico-current-version glyphicon glyphicon-star">
+                <span class="ico-current-version glyphicon glyphicon-star"
+                      tippy [tippyOptions]="{ content: 'Default version', placement: 'bottom' }">
                   </span>
               </div>
             </div>

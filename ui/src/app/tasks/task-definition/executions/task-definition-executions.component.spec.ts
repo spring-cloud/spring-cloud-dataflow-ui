@@ -32,6 +32,7 @@ import { By } from '@angular/platform-browser';
 import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { MasterCheckboxComponent } from '../../../shared/components/master-checkbox.component';
+import { TippyDirective } from '../../../shared/directives/tippy.directive';
 
 /**
  * Test {@link TaskDefinitionExecutionsComponent}.
@@ -67,7 +68,8 @@ describe('TaskDefinitionExecutionsComponent', () => {
         LoaderComponent,
         SortComponent,
         DATAFLOW_LIST,
-        DATAFLOW_PAGE
+        DATAFLOW_PAGE,
+        TippyDirective
       ],
       imports: [
         NgxPaginationModule,

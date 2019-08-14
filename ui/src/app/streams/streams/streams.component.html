@@ -79,9 +79,10 @@
           </td>
           <td>
             <a (click)="toggleExpand(i)" class="link-expand">
-              <span *ngIf="form.checkboxesExpand[i]" class="fa fa-chevron-down" tooltip="Hide graph" delay="500"></span>
-              <span *ngIf="!form.checkboxesExpand[i]" class="fa fa-chevron-right" tooltip="Show graph"
-                    delay="500"></span>
+              <span *ngIf="form.checkboxesExpand[i]" class="fa fa-chevron-down"
+                    tippy [tippyOptions]="{ content: 'Hide graph' }"></span>
+              <span *ngIf="!form.checkboxesExpand[i]" class="fa fa-chevron-right"
+                    tippy [tippyOptions]="{ content: 'Show graph' }"></span>
               <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
             </a>
           </td>

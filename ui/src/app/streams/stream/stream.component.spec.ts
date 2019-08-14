@@ -32,6 +32,7 @@ import { MockAuthService } from '../../tests/mocks/auth';
 import { AuthService } from '../../auth/auth.service';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link StreamComponent}.
@@ -65,7 +66,8 @@ describe('StreamComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         RolesDirective,
-        StreamStatusComponent
+        StreamStatusComponent,
+        TippyDirective
       ],
       imports: [
         FormsModule,

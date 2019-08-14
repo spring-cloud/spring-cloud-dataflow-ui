@@ -1,5 +1,6 @@
 <form [formGroup]="formGroup" (submit)="deployStream()" dataflowLayoutType type="large">
-  <p>Enter the list of properties into the text area field below. Alternatively, you can also select a file in your local file system, which is used to populate the text area field.</p>
+  <p>Enter the list of properties into the text area field below. Alternatively, you can also select a file in your
+    local file system, which is used to populate the text area field.</p>
   <div class="form-textarea">
     <div class="numbers">
       <ng-template ngFor let-item [ngForOf]="lines">
@@ -11,8 +12,9 @@
     <textarea dataflowAutoResize [dataflowFocus]="true" formControlName="input"></textarea>
   </div>
   <div class="input-file">
-    <label class="btn-file btn btn-default" placement="top" delay="500"
-           tooltip="Please provide a text file containing properties. This will be used to populate the text area above.">
+    <label class="btn-file btn btn-default"
+           tippy
+           [tippyOptions]="{ content: 'Please provide a text file containing properties. This will be used to populate the text area above.', placement: 'right' }">
       <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file"
              (change)="fileChange($event)"/>
       Import a local file

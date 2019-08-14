@@ -4,6 +4,13 @@ import {
 
 /**
  * List Row Actions
+ *
+ * <input tippy [tippyOptions]="{
+  arrow: true,
+  createPopperInstanceOnInit: true
+}" class="search-input" type="text" title="foobar">
+ [title]="action.title"
+
  */
 @Component({
   selector: 'app-list-row-actions',
@@ -11,8 +18,8 @@ import {
     <div *ngIf="actions" class="actions">
       <ng-container *ngFor="let action of actionsDefault">
         <button *ngIf="!action['divider'] && !action['hidden']" name="{{ action.id }}" type="button"
-                (click)="call(action)" class="btn btn-default" title="{{ action.title }}"
-                [disabled]="!!action?.disabled" [tooltip]="action.title" delay="500" container="body">
+                (click)="call(action)" class="btn btn-default" [disabled]="!!action?.disabled"
+                tippy [tippyOptions]="{ content: action.title }">
           <span *ngIf="!action['custom']" class="fa fa-{{ action.icon }}"></span>
           <span *ngIf="action['custom']" class="icon-custom icon-custom-{{ action.icon }}"></span>
         </button>

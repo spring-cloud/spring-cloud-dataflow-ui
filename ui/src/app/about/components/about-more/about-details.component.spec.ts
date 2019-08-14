@@ -17,6 +17,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { DATAFLOW_PAGE } from '../../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from '../../../shared/components/pager/pager.component';
+import { TippyDirective } from '../../../shared/directives/tippy.directive';
 
 describe('AboutDetailsComponent', () => {
   let component: AboutDetailsComponent;
@@ -46,7 +47,8 @@ describe('AboutDetailsComponent', () => {
         LoaderComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
-        PagerComponent
+        PagerComponent,
+        TippyDirective
       ],
       providers: [
         { provide: AboutService, useValue: aboutService },

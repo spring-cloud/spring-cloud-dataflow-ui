@@ -25,6 +25,7 @@ import { MockRoutingStateService } from 'src/app/tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -55,7 +56,8 @@ describe('StreamCreateComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         PagerComponent,
-        StreamStatusComponent
+        StreamStatusComponent,
+        TippyDirective
       ],
       imports: [
         FormsModule,

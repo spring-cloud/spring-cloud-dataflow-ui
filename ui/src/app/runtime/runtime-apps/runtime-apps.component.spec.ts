@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
@@ -37,7 +38,8 @@ describe('RuntimeAppsComponent', () => {
         LoaderComponent,
         PagerComponent,
         DATAFLOW_PAGE,
-        DATAFLOW_LIST
+        DATAFLOW_LIST,
+        TippyDirective
       ],
       imports: [
         FormsModule,

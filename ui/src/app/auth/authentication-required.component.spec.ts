@@ -3,6 +3,8 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { AuthenticationRequiredComponent } from './authentication-required.component';
 import { DATAFLOW_PAGE } from '../shared/components/page/page.component';
+import { PagerComponent } from '../shared/components/pager/pager.component';
+import { TippyDirective } from '../shared/directives/tippy.directive';
 
 describe('AuthenticationRequiredComponent', () => {
   let component: AuthenticationRequiredComponent;
@@ -13,7 +15,8 @@ describe('AuthenticationRequiredComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AuthenticationRequiredComponent,
-        DATAFLOW_PAGE
+        DATAFLOW_PAGE,
+        TippyDirective
       ],
     })
       .compileComponents();

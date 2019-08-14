@@ -13,6 +13,7 @@ import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link AppsAddComponent}.
@@ -33,7 +34,8 @@ describe('AppsAddComponent', () => {
         AppsAddComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
-        PagerComponent
+        PagerComponent,
+        TippyDirective
       ],
       imports: [
         ModalModule.forRoot(),
