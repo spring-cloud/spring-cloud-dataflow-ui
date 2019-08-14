@@ -26,6 +26,7 @@ import { MockAuthService } from '../../tests/mocks/auth';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { LoggerService } from '../../shared/services/logger.service';
 import { MockModalService } from '../../tests/mocks/modal';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('TaskExecutionComponent', () => {
   let component: TaskExecutionComponent;
@@ -70,7 +71,8 @@ describe('TaskExecutionComponent', () => {
         LoaderComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
-        PagerComponent
+        PagerComponent,
+        TippyDirective
       ],
       imports: [
         FormsModule,

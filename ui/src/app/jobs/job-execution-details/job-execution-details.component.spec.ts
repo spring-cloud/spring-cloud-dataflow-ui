@@ -25,6 +25,7 @@ import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DateTime } from 'luxon';
 import { DateTimeUtils } from '../../shared/support/date-time.utils';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('JobExecutionDetailsComponent', () => {
   let component: JobExecutionDetailsComponent;
@@ -49,7 +50,8 @@ describe('JobExecutionDetailsComponent', () => {
         LoaderComponent,
         PagerComponent,
         DATAFLOW_PAGE,
-        DATAFLOW_LIST
+        DATAFLOW_LIST,
+        TippyDirective
       ],
       imports: [
         FormsModule,

@@ -31,6 +31,7 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { BlockerService } from '../../../shared/components/blocker/blocker.service';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TippyDirective } from '../../../shared/directives/tippy.directive';
 
 /**
  * Test {@link StreamDeployBuilderComponent}.
@@ -63,7 +64,8 @@ xdescribe('StreamDeployBuilderComponent', () => {
         StreamDeployFreeTextComponent,
         StreamDeployBuilderComponent,
         StreamDeployBuilderErrorsComponent,
-        FocusDirective
+        FocusDirective,
+        TippyDirective
       ],
       imports: [
         FormsModule,

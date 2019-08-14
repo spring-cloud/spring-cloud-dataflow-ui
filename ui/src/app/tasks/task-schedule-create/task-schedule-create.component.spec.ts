@@ -31,6 +31,7 @@ import { PagerComponent } from 'src/app/shared/components/pager/pager.component'
 import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link TaskScheduleCreateComponent}.
@@ -61,7 +62,8 @@ describe('TaskScheduleCreateComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         PagerComponent,
-        KvRichTextComponent
+        KvRichTextComponent,
+        TippyDirective
       ],
       imports: [
         NgxPaginationModule,

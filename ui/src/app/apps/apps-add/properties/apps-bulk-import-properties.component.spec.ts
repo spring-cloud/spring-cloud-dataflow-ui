@@ -21,6 +21,7 @@ import { RoutingStateService } from '../../../shared/services/routing-state.serv
 import { MockRoutingStateService } from 'src/app/tests/mocks/routing-state';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
 import { BlockerService } from '../../../shared/components/blocker/blocker.service';
+import { TippyDirective } from '../../../shared/directives/tippy.directive';
 
 /**
  * Test {@link AppsBulkImportPropertiesComponent}.
@@ -45,7 +46,8 @@ describe('AppsBulkImportPropertiesComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         FocusDirective,
-        PagerComponent
+        PagerComponent,
+        TippyDirective
       ],
       imports: [
         ModalModule.forRoot(),

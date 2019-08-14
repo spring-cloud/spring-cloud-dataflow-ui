@@ -27,6 +27,7 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TaskStatusComponent } from '../components/task-status/task-status.component';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link TaskDefinitionComponent}.
@@ -57,7 +58,8 @@ describe('TaskDefinitionComponent', () => {
         LoaderComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
-        TaskStatusComponent
+        TaskStatusComponent,
+        TippyDirective
       ],
       imports: [
         NgxPaginationModule,

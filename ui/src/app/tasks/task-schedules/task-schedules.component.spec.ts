@@ -37,6 +37,7 @@ import { MockAppsService } from '../../tests/mocks/apps';
 import { AppsService } from '../../apps/apps.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link TaskSchedulesComponent}.
@@ -73,7 +74,8 @@ describe('TaskSchedulesComponent', () => {
         LoaderComponent,
         TaskSchedulesFilterPipe,
         DATAFLOW_PAGE,
-        DATAFLOW_LIST
+        DATAFLOW_LIST,
+        TippyDirective
       ],
       imports: [
         NgxPaginationModule,

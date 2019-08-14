@@ -31,6 +31,7 @@ import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppListBarComponent } from 'src/app/apps/components/app-list-bar/app-list-bar.component';
 import { of } from 'rxjs';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('AppsComponent', () => {
 
@@ -58,7 +59,8 @@ describe('AppsComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         RolesDirective,
-        AppListBarComponent
+        AppListBarComponent,
+        TippyDirective
       ],
       imports: [
         FormsModule,

@@ -41,6 +41,7 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link StreamsComponent}.
@@ -82,6 +83,7 @@ describe('StreamsComponent', () => {
         LoaderComponent,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
+        TippyDirective
       ],
       imports: [
         NgxPaginationModule,

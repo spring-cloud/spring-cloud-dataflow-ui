@@ -19,6 +19,7 @@ import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { AppTypeComponent } from '../../../apps/components/app-type/app-type.component';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
+import { TippyDirective } from '../../../shared/directives/tippy.directive';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -46,7 +47,8 @@ describe('StreamDeployFreeTextComponent', () => {
         DATAFLOW_LIST,
         LoaderComponent,
         AppTypeComponent,
-        FocusDirective
+        FocusDirective,
+        TippyDirective
       ],
       imports: [
         FormsModule,

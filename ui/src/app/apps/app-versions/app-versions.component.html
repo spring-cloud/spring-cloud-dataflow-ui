@@ -49,7 +49,7 @@
         <tr *ngFor="let version of versions | orderby:sort.sort:sort.order" [class.activeVersion]="version.defaultVersion">
           <td>
             <strong *ngIf="version.defaultVersion">
-            <span placement="bottom" tooltip="Default version"
+            <span tippy [tippyOptions]="{ content: 'Default version', placement: 'bottom' }"
                   class="ico-current-version glyphicon glyphicon-star"></span>
             </strong>
           </td>

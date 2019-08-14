@@ -23,6 +23,7 @@ import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { Platform } from '../../shared/model/platform';
 import { TaskDefinition } from '../model/task-definition';
 import { By } from '@angular/platform-browser';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -48,7 +49,8 @@ describe('TaskLaunchComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         KvRichTextComponent,
-        PagerComponent
+        PagerComponent,
+        TippyDirective
       ],
       imports: [
         FormsModule,

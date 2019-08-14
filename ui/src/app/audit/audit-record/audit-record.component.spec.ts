@@ -37,6 +37,7 @@ import { DataflowDateTimePipe } from 'src/app/shared/pipes/dataflow-date-time.pi
 import { AUDIT_RECORDS } from '../../tests/mocks/mock-data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('AuditRecordComponent', () => {
 
@@ -64,7 +65,8 @@ describe('AuditRecordComponent', () => {
         AuditRecordListBarComponent,
         AuditRecordActionComponent,
         AuditRecordOperationComponent,
-        DataflowDateTimePipe
+        DataflowDateTimePipe,
+        TippyDirective
       ],
       imports: [
         FormsModule,

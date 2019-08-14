@@ -30,6 +30,7 @@ import { MockSharedAppService } from 'src/app/tests/mocks/shared-app';
 import { MockAppsService } from '../../tests/mocks/apps';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -64,7 +65,8 @@ describe('StreamDeployComponent', () => {
         StreamDeployFreeTextComponent,
         StreamDeployBuilderComponent,
         StreamDeployBuilderErrorsComponent,
-        FocusDirective
+        FocusDirective,
+        TippyDirective
       ],
       imports: [
         FormsModule,

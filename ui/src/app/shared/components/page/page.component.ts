@@ -5,6 +5,7 @@ import { PageHeadBackComponent } from './page-head-back.component';
 import { PageHeadSubtitleComponent } from './page-head-subtitle.component';
 import { PageHeadTitleComponent } from './page-head-title.component';
 import { PageActionsComponent } from './page-actions.component';
+import { TippyDirective } from '../../directives/tippy.directive';
 
 /**
  * Application page

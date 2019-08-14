@@ -24,6 +24,7 @@ import { Observable, of } from 'rxjs';
 import { AuditRecordActionComponent } from '../components/audit-record-action/audit-record-action.component';
 import { AuditRecordOperationComponent } from '../components/audit-record-operation/audit-record-operation.component';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link AuditRecordDetailsComponent}.
@@ -52,7 +53,8 @@ describe('AuditRecordDetailsComponent', () => {
         PagerComponent,
         AuditRecordActionComponent,
         AuditRecordOperationComponent,
-        DataflowDateTimePipe
+        DataflowDateTimePipe,
+        TippyDirective
       ],
       imports: [
         ModalModule.forRoot(),

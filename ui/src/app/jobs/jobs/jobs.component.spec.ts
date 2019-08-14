@@ -28,6 +28,7 @@ import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -48,7 +49,8 @@ describe('JobsComponent', () => {
         DefinitionStatusComponent,
         PagerComponent,
         DATAFLOW_PAGE,
-        DATAFLOW_LIST
+        DATAFLOW_LIST,
+        TippyDirective
       ],
       imports: [
         NgxPaginationModule,

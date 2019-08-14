@@ -35,6 +35,7 @@ import { MockAppsService } from '../../tests/mocks/apps';
 import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -69,7 +70,8 @@ describe('TaskExecutionsComponent', () => {
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
         DataflowDateTimePipe,
-        LoaderComponent
+        LoaderComponent,
+        TippyDirective
       ],
       imports: [
         NgxPaginationModule,

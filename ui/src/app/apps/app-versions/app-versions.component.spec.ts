@@ -9,7 +9,7 @@ import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { AppTypeComponent } from '../components/app-type/app-type.component';
 import { AppVersionLabelComponent } from '../components/app-versions-label/app-versions-label.component';
 import { RolesDirective } from '../../auth/directives/roles.directive';
-import { BsModalRef, ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, BsModalRef, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppsService } from '../apps.service';
@@ -26,6 +26,12 @@ import { OrderByPipe } from '../../shared/pipes/orderby.pipe';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { ClipboardModule } from 'ngx-clipboard';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
 
 /**
  * Test {@link AppVersionsComponent}.
@@ -54,13 +60,20 @@ describe('AppVersionsComponent', () => {
         SortComponent,
         OrderByPipe,
         RolesDirective,
-        LoaderComponent
+        LoaderComponent,
+        DATAFLOW_PAGE,
+        DATAFLOW_LIST,
+        PagerComponent,
+        TippyDirective
       ],
       imports: [
+        BsDropdownModule.forRoot(),
+        ClipboardModule,
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
         ReactiveFormsModule,
         FormsModule,
+        NgxPaginationModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [

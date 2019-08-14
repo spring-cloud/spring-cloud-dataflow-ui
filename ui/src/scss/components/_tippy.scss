@@ -1,0 +1,38 @@
+@import "../pui-variables";
+
+$bg: rgba($navy-2, .9);
+
+.tippy-tooltip.scdf-theme {
+  background-color: $bg;
+  color: #fff;
+  font-size: 14px;
+}
+
+.tippy-tooltip.scdf-theme[data-animatefill] {
+  background-color: transparent;
+}
+
+.tippy-tooltip.scdf-theme .tippy-backdrop {
+  background-color: $bg;
+}
+
+.tippy-tooltip.scdf-theme[x-placement^='top'] .tippy-arrow {
+  border-top-color: $bg;
+}
+.tippy-tooltip.scdf-theme[x-placement^='bottom'] .tippy-arrow {
+  border-bottom-color: $bg;
+}
+.tippy-tooltip.scdf-theme[x-placement^='left'] .tippy-arrow {
+  border-left-color: $bg;
+}
+.tippy-tooltip.scdf-theme[x-placement^='right'] .tippy-arrow {
+  border-right-color: $bg;
+}
+
+.tippy-tooltip.scdf-theme .tippy-roundarrow {
+  fill: $bg;
+}
+
+.tippy-tooltip.scdf-theme .tippy-arrow {
+  transform: scale(.8);
+}
