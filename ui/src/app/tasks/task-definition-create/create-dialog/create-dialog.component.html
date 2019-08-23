@@ -35,13 +35,47 @@
           Name <em class="required">*</em>
         </label>
         <div class="col-sm-16">
-          <input class="form-control input-sm" id="name"
-                 name="name" formControlName="taskName"
-                 type="text" placeholder="<Task Name>"
-                 [dataflowFocus]="true"/>
-          <span *ngIf="form.controls.taskName.errors"
+          <div class="input-row">
+            <input
+                  class="form-control input-sm"
+                  id="name"
+                  name="name"
+                  formControlName="taskName"
+                  type="text"
+                  placeholder="<Task Name>"
+                  [dataflowFocus]="true"
+                  maxlength="500"/>
+            <label>{{ taskName.value.length }} / 255</label>
+          </div>
+          <span *ngIf="form.controls.taskName.errors && form.controls.taskName.errors.required"
                 class="help-block validation-block">
-            The format of your task name is invalid. {{ form.controls.taskName.errors.validateTaskName.reason }}
+            Task name is required!
+          </span>
+          <span *ngIf="form.controls.taskName.errors && form.controls.taskName.errors.maxlength"
+                class="help-block validation-block">
+            Task name must less than 255 characters!
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group" [class.has-error]="form.controls.taskDescription.errors">
+        <label [for]="description" class="control-label col-sm-4 control-label-sm">Description</label>
+        <div class="col-sm-16">
+          <div class="control-empty input-row">
+            <input
+                  class="form-control input-sm"
+                  id="description"
+                  name="description"
+                  formControlName="taskDescription"
+                  type="text"
+                  placeholder="<Task Description>"
+                  [dataflowFocus]="false"
+                  maxlength="500"/>
+            <label>{{ taskDescription.value.length }} / 255</label>
+          </div>
+          <span *ngIf="form.controls.taskDescription.errors && form.controls.taskDescription.errors.maxlength"
+                class="help-block validation-block">
+            Task description must less than 255 characters!
           </span>
         </div>
       </div>

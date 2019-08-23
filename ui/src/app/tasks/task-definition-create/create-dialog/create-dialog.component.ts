@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TasksService } from '../../tasks.service';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -48,7 +48,13 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
    * The FormControl used to capture the task name.
    * @type {FormControl}
    */
-  taskName = new FormControl('', validateTaskName);
+  taskName = new FormControl('', [Validators.required, Validators.maxLength(255)]);
+
+  /**
+   * The FormControl used to check the task description length.
+   * @type {FormControl}
+   */
+  taskDescription = new FormControl('', Validators.maxLength(255))
 
   /**
    * Callback to parent which is called when task is created succesfully.
@@ -62,7 +68,8 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
               private blockerService: BlockerService,
               private bsModalRef: BsModalRef) {
     this.form = fb.group({
-      'taskName': this.taskName
+      'taskName': this.taskName,
+      'taskDescription': this.taskDescription
     });
   }
 
@@ -106,7 +113,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
       this.blockerService.lock();
-      this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl })
+      this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl, description: this.taskDescription.value })
         .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           () => {
@@ -134,18 +141,4 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
     return this.form.valid;
   }
 
-}
-
-/**
- * Validates the task name.
- *
- * @param formControl the form that contains the task name input.
- * @returns {any} null if successful or the validateProperties message if a failure.
- */
-function validateTaskName(formControl: FormControl) {
-  if (formControl.value.length > 0) {
-    return null;
-  } else {
-    return { validateTaskName: { reason: 'Cannot be empty' } };
-  }
 }
