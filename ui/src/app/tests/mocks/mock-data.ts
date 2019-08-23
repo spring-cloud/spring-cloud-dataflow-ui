@@ -1172,6 +1172,7 @@ export const STREAM_DEFINITIONS = {
       {
         name: 'foo2',
         dslText: 'time |log ',
+        description: 'demo-stream',
         status: 'undeployed',
         statusDescription: 'The app or group is known to the system, but is not currently deployed',
         force: false,
@@ -1184,6 +1185,7 @@ export const STREAM_DEFINITIONS = {
       {
         name: 'foo3',
         dslText: 'time |log ',
+        description: 'demo-stream',
         status: 'undeployed',
         statusDescription: 'The app or group is known to the system, but is currently deployed',
         force: false,
@@ -1214,6 +1216,7 @@ export const TASK_DEFINITIONS = {
       {
         name: 'foo',
         dslText: 'bar',
+        description: 'demo-description',
         composed: true,
         status: 'unknown',
         _links: {
@@ -1225,6 +1228,7 @@ export const TASK_DEFINITIONS = {
       {
         name: 'bar2',
         dslText: 'task1',
+        description: 'demo-description',
         composed: false,
         status: 'unknown',
         _links: {

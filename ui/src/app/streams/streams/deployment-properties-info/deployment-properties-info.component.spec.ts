@@ -55,7 +55,7 @@ describe('DeploymentPropertiesInfoComponent', () => {
   });
 
   it('data from stream definition', (done) => {
-    const streamDef = new StreamDefinition('tick', 'time | log', 'deployed');
+    const streamDef = new StreamDefinition('tick', 'time | log', 'demo-description', 'deployed');
     streamDef.deploymentProperties = deploymentProperties;
     component.streamDefinition = streamDef;
     component.deploymentProperties.subscribe(data => {

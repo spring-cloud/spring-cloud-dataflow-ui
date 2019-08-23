@@ -266,12 +266,13 @@ describe('TasksService', () => {
 
       it('should call the create definition with the right url/params', () => {
         this.mockHttp.post.and.returnValue(of({}));
-        this.tasksService.createDefinition({ name: 'foo', definition: 'bar && foobar' });
+        this.tasksService.createDefinition({ name: 'foo', definition: 'bar && foobar', description: 'demo-description' });
         const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
         const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
         expect(httpUri).toEqual('/tasks/definitions');
         expect(httpParams.get('name')).toEqual('foo');
         expect(httpParams.get('definition')).toEqual('bar && foobar');
+        expect(httpParams.get('description')).toEqual('demo-description');
       });
 
       it('should call the destroy definition with the right url', () => {

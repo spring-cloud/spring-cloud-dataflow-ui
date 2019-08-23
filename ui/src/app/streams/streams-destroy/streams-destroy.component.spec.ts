@@ -68,7 +68,7 @@ describe('StreamsDestroyComponent', () => {
   describe('1 stream destroy', () => {
 
     const mock = [
-      new StreamDefinition('foo0', 'foo1|foo2', 'undeployed')
+      new StreamDefinition('foo0', 'foo1|foo2', 'demo-description', 'undeployed')
     ];
 
     beforeEach(() => {
@@ -109,8 +109,8 @@ describe('StreamsDestroyComponent', () => {
   describe('Multiple streams destroy', () => {
 
     const mock = [
-      new StreamDefinition('foo0', 'foo1|foo2', 'undeployed'),
-      new StreamDefinition('bar0', 'bar1|bar2', 'deployed')
+      new StreamDefinition('foo0', 'foo1|foo2', 'demo-description', 'undeployed'),
+      new StreamDefinition('bar0', 'bar1|bar2', 'demo-description', 'deployed')
     ];
 
     beforeEach(() => {
@@ -158,8 +158,8 @@ describe('StreamsDestroyComponent', () => {
     beforeEach(() => {
       component.open({
         streamDefinitions: [
-          new StreamDefinition('foo', 'time|log', 'undeployed'),
-          new StreamDefinition('bar', 'time|log', 'undeployed')
+          new StreamDefinition('foo', 'time|log', 'demo-description', 'undeployed'),
+          new StreamDefinition('bar', 'time|log', 'demo-description', 'undeployed')
         ]
       });
       fixture.detectChanges();

@@ -134,23 +134,25 @@ describe('StreamsService', () => {
 
     it('should call the create and deploy definition with the right url/params', () => {
       this.mockHttp.post.and.returnValue(of({}));
-      this.streamsService.createDefinition('foobar', 'foo | bar', true);
+      this.streamsService.createDefinition('foobar', 'foo | bar', 'demo-description', true);
       const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
       const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
       expect(httpUri).toEqual('/streams/definitions');
       expect(httpParams.get('name')).toEqual('foobar');
       expect(httpParams.get('definition')).toEqual('foo | bar');
+      expect(httpParams.get('description')).toEqual('demo-description');
       expect(httpParams.get('deploy')).toEqual('true');
     });
 
     it('should call the create definition with the right url/params', () => {
       this.mockHttp.post.and.returnValue(of({}));
-      this.streamsService.createDefinition('foobar', 'foo | bar', false);
+      this.streamsService.createDefinition('foobar', 'foo | bar', 'demo-description', false);
       const httpUri = this.mockHttp.post.calls.mostRecent().args[0];
       const httpParams = this.mockHttp.post.calls.mostRecent().args[2].params;
       expect(httpUri).toEqual('/streams/definitions');
       expect(httpParams.get('name')).toEqual('foobar');
       expect(httpParams.get('definition')).toEqual('foo | bar');
+      expect(httpParams.get('description')).toEqual('demo-description');
       expect(httpParams.get('deploy')).toBeNull();
     });
 
@@ -182,7 +184,7 @@ describe('StreamsService', () => {
 
       // expect(this.streamsService.streamDefinitions).toBeDefined();
 
-      const streamDefinition = new StreamDefinition('test', 'time|log', 'undeployed');
+      const streamDefinition = new StreamDefinition('test', 'time|log', 'demo-description', 'undeployed');
       this.streamsService.destroyDefinition(streamDefinition);
 
       const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
@@ -200,7 +202,7 @@ describe('StreamsService', () => {
 
       // expect(this.streamsService.streamDefinitions).toBeDefined();
 
-      const streamDefinition = new StreamDefinition('test', 'time|log', 'deployed');
+      const streamDefinition = new StreamDefinition('test', 'time|log', 'demo-description', 'deployed');
       this.streamsService.undeployDefinition(streamDefinition);
 
       const httpUri = this.mockHttp.delete.calls.mostRecent().args[0];
@@ -331,8 +333,8 @@ describe('StreamsService', () => {
       this.mockHttp.delete.and.returnValue(of(this.jsonData));
       // expect(this.streamsService.streamDefinitions).toBeDefined();
       const streamDefinitions = [
-        new StreamDefinition('stream1', 'file|filter|ftp', 'deployed'),
-        new StreamDefinition('stream2', 'ftp|filter|file', 'deployed')
+        new StreamDefinition('stream1', 'file|filter|ftp', 'demo-description', 'deployed'),
+        new StreamDefinition('stream2', 'ftp|filter|file', 'demo-description', 'deployed')
       ];
       this.streamsService.destroyMultipleStreamDefinitions(streamDefinitions);
 
@@ -356,8 +358,8 @@ describe('StreamsService', () => {
     it('should call the stream definition service with the right url to deploy multiple stream definitions', () => {
       this.mockHttp.post.and.returnValue(of(this.jsonData));
       // expect(this.streamsService.streamDefinitions).toBeDefined();
-      const stream1 = new StreamDefinition('stream1', 'file|filter|ftp', 'undeployed');
-      const stream2 = new StreamDefinition('stream2', 'file|filter|ftp', 'undeployed');
+      const stream1 = new StreamDefinition('stream1', 'file|filter|ftp', 'demo-description', 'undeployed');
+      const stream2 = new StreamDefinition('stream2', 'file|filter|ftp', 'demo-description', 'undeployed');
       stream1.deploymentProperties = { a: 'a' };
       this.streamsService.deployMultipleStreamDefinitions([stream1, stream2]);
 
@@ -386,8 +388,8 @@ describe('StreamsService', () => {
       this.mockHttp.delete.and.returnValue(of(this.jsonData));
       // expect(this.streamsService.streamDefinitions).toBeDefined();
       const streamDefinitions = [
-        new StreamDefinition('stream1', 'file|filter|ftp', 'deployed'),
-        new StreamDefinition('stream2', 'ftp|filter|file', 'deployed')
+        new StreamDefinition('stream1', 'file|filter|ftp', 'demo-description', 'deployed'),
+        new StreamDefinition('stream2', 'ftp|filter|file', 'demo-description', 'deployed')
       ];
       this.streamsService.undeployMultipleStreamDefinitions(streamDefinitions);
 
