@@ -7,7 +7,6 @@ import { Utils } from '../../components/flo/support/utils';
 import { StreamsService } from '../../streams.service';
 import { Properties } from 'spring-flo';
 import { Router } from '@angular/router';
-import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { Modal } from '../../../shared/components/modal/modal-abstract';
 import { NotificationService } from '../../../shared/services/notification.service';
@@ -96,7 +95,6 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    * @param {LoggerService} loggerService
    * @param {BlockerService} blockerService
    * @param {Router} router
-   * @param {SharedAboutService} aboutService
    */
   constructor(private bsModalRef: BsModalRef,
               private notificationService: NotificationService,
@@ -104,8 +102,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
               private streamService: StreamsService,
               private loggerService: LoggerService,
               private blockerService: BlockerService,
-              private router: Router,
-              private aboutService: SharedAboutService) {
+              private router: Router) {
     super(bsModalRef);
   }
 
@@ -163,9 +160,16 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
           streamDef.index = i;
           this.form.addControl(streamDef.index.toString(), new FormControl(streamDef.name || '', [
             Validators.required,
-            Validators.pattern(/^[\w\-]+$/)
+            Validators.pattern(/^[\w\-]+$/),
+            Validators.maxLength(255)
           ], [
             Properties.Validators.uniqueResource((value) => this.streamService.getDefinition(value), 500)
+          ]));
+
+          this.form.addControl(streamDef.index.toString()+'_desc', new FormControl(streamDef.description || '', [
+            Validators.maxLength(255)
+          ], [
+
           ]));
         });
 
@@ -251,6 +255,11 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
         this.streamDefs[i].def = depDef.replace(`:${oldName}.`, `:${newName}.`);
       });
     }
+  }
+
+  changeStreamDescription(index: number, description: string) {
+    const def = this.streamDefs[index];
+    def.description = description;
   }
 
   /**
@@ -346,7 +355,8 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
       // Send the request to create a stream
       const def = this.streamDefs[index];
       this.blockerService.lock();
-      this.streamService.createDefinition(def.name, def.def, false)
+      const description = def.description === undefined ? "" : def.description
+      this.streamService.createDefinition(def.name, def.def, description, false)
         .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(() => {
           this.loggerService.log('Stream ' + def.name + ' created OK');

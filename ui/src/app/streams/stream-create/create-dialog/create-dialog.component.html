@@ -26,27 +26,66 @@
             Name <em class="required">*</em>
           </label>
           <div class="col-sm-16">
-            <input [disabled]="isStreamCreationInProgress()" class="form-control input-sm" [id]="def.index.toString()"
-                   [name]="def.index.toString()" [formControlName]="def.index.toString()"
-                   type="text" placeholder="<Stream Name>" [ngModel]="def.name"
-                   [dataflowFocus]="i === 0"
-                   (ngModelChange)="changeStreamName(def.index, $event)"/>
+            <div class="input-row">
+              <input
+                    [disabled]="isStreamCreationInProgress()"
+                    class="form-control input-sm"
+                    [id]="def.index.toString()"
+                    [name]="def.index.toString()"
+                    [formControlName]="def.index.toString()"
+                    type="text"
+                    placeholder="<Stream Name>"
+                    [ngModel]="def.name"
+                    [dataflowFocus]="i === 0"
+                    (ngModelChange)="changeStreamName(def.index, $event)"
+                    maxlength="500"
+                />
+              <label>{{ def.name === undefined? 0 : def.name.length }} / 255</label>
+            </div>
             <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
                   class="help-block validation-block">
-            Stream name is required!
-          </span>
+              Stream name is required!
+            </span>
             <span
               *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource"
               class="help-block validation-block">
-            Stream name is already taken!
-          </span>
+              Stream name is already taken!
+            </span>
             <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern"
                   class="help-block validation-block">
-            Invalid stream name!
-          </span>
+              Invalid stream name!
+            </span>
             <span *ngIf="hasDuplicateName(def)" class="help-block validation-block">
-            Duplicate stream name on the form
-          </span>
+              Duplicate stream name on the form
+            </span>
+            <span *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.maxlength"
+            class="help-block validation-block">
+              Stream name must be less than 255 characters long!
+            </span>
+          </div>
+        </div>
+        <div class="form-group" [class.has-error]="getControl(def.index.toString()+'_desc').invalid">
+          <label [for]="def.index.toString()+'_desc'" class="control-label col-sm-4">Description</label>
+          <div class="col-sm-16">
+            <div class="control-empty input-row">
+              <input
+                    [id]="def.index.toString()+'_desc'"
+                    [name]="def.index.toString()+'_desc'"
+                    [formControlName]="def.index.toString()+'_desc'"
+                    [disabled]="isStreamCreationInProgress()"
+                    class="form-control input-sm"
+                    [ngModel]="def.description"
+                    (ngModelChange)="changeStreamDescription(def.index, $event)"
+                    placeholder="<Stream Description>"
+                    type="text"
+                    maxlength="500"
+              >
+              <label>{{ def.description === undefined? 0 : def.description.length }} / 255</label>
+            </div>
+            <span *ngIf="getControl(def.index.toString()+'_desc').errors && getControl(def.index.toString()+'_desc').errors.maxlength"
+            class="help-block validation-block">
+              Stream description must be less than 255 characters long!
+            </span>
           </div>
         </div>
       </div>

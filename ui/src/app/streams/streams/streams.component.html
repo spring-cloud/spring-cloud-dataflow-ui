@@ -39,6 +39,9 @@
           <app-sort id="sort-name" (change)="applySort($event)" [value]="'name'" [sort]="params">
             Name
           </app-sort>
+          <th style="width: 150px">
+              Description
+          </th>
         <th>
           <div class="head-dsl">
 
@@ -76,6 +79,10 @@
           </td>
           <td>
             <a style="cursor:pointer" (click)="details(item)">{{ item.name }}</a>
+          </td>
+          <td>
+              {{ item.description.substring(0,20) }}
+              <a *ngIf="item.description.length >= 20" style="cursor:pointer" (click)="details(item)">...</a>
           </td>
           <td>
             <a (click)="toggleExpand(i)" class="link-expand">

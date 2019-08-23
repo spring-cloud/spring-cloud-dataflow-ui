@@ -101,14 +101,16 @@ export class StreamsService {
    * Calls the Spring Cloud Data Flow server to create a {@link StreamDefinition}.
    * @param {string} name
    * @param {string} dsl
+   * @param {string} description
    * @param {boolean} deploy
    * @returns {Observable<HttpResponse<any>>}
    */
-  createDefinition(name: string, dsl: string, deploy?: boolean): Observable<HttpResponse<any>> {
+  createDefinition(name: string, dsl: string, description: string, deploy?: boolean): Observable<HttpResponse<any>> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
     let params = new HttpParams({ encoder: new DataflowEncoder() })
       .append('name', name)
-      .append('definition', dsl);
+      .append('definition', dsl)
+      .append('description', description);
     if (deploy) {
       params = params.set('deploy', deploy.toString());
     }
