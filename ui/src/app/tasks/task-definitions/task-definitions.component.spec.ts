@@ -118,11 +118,8 @@ describe('TaskDefinitionsComponent', () => {
     fixture.detectChanges();
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=taskDefinitionsTable] tr:first-child td'));
     expect(des.length).toBe(6);
-
-    console.log('itt2' + des[1].nativeElement.textContent+des[2].nativeElement.textContent+des[3].nativeElement.textContent+des[4].nativeElement.textContent);
-
     expect(des[1].nativeElement.textContent).toContain('foo');
-    expect(des[2].nativeElement.textContent).toContain('demo-description');
+    expect(des[2].nativeElement.textContent).toContain('demo');
     expect(des[3].nativeElement.textContent).toContain('bar');
     expect(des[4].nativeElement.textContent).toContain('UNKNOWN');
   });

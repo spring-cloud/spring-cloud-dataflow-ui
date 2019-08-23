@@ -47,8 +47,8 @@
             <a style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">{{ item.name }}</a>
           </td>
           <td>
-              {{ item.description.substring(0,20) }}
-              <a *ngIf="item.description.length >= 20" style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">...</a>
+              {{ item.description.substring(0,15) }}
+              <a *ngIf="item.description.length >= 15" style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">...</a>
           </td>
           <td>
             <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>

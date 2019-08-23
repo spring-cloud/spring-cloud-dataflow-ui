@@ -1216,7 +1216,7 @@ export const TASK_DEFINITIONS = {
       {
         name: 'foo',
         dslText: 'bar',
-        description: 'demo-description',
+        description: 'demo',
         composed: true,
         status: 'unknown',
         _links: {
@@ -1228,7 +1228,7 @@ export const TASK_DEFINITIONS = {
       {
         name: 'bar2',
         dslText: 'task1',
-        description: 'demo-description',
+        description: 'demo',
         composed: false,
         status: 'unknown',
         _links: {
