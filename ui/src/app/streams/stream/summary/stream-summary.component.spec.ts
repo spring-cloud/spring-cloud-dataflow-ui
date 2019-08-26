@@ -37,7 +37,6 @@ describe('StreamSummaryComponent', () => {
   const notificationService = new MockNotificationService();
   const modalService = new MockModalService();
   const authService = new MockAuthService();
-  const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
 
   beforeEach(async(() => {
@@ -61,7 +60,6 @@ describe('StreamSummaryComponent', () => {
         { provide: StreamsService, useValue: streamsService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: BsModalService, useValue: modalService },
-        { provide: SharedAboutService, useValue: aboutService },
         { provide: AuthService, useValue: authService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService }

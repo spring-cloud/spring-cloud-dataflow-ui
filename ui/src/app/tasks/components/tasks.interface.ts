@@ -17,6 +17,7 @@ export interface TaskLaunchParams {
 export interface TaskCreateParams {
   definition: string;
   name: string;
+  description: string;
 }
 
 export interface TaskScheduleCreateParams {

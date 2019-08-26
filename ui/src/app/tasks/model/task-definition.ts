@@ -4,21 +4,24 @@ export class TaskDefinition {
 
   public name: string;
 
+  public description: string;
+
   public dslText: string;
 
   public composed: boolean;
 
   public status: string;
 
-  constructor(name: string, dslText: string, composed: boolean, status: string) {
+  constructor(name: string, dslText: string, description: string, composed: boolean, status: string) {
     this.name = name;
     this.dslText = dslText;
     this.composed = composed;
     this.status = status;
+    this.description = description;
   }
 
   static fromJSON(input): TaskDefinition {
-    return new TaskDefinition(input.name, input.dslText, input.composed, input.status);
+    return new TaskDefinition(input.name, input.dslText, input.description, input.composed, input.status);
   }
 
   static pageFromJSON(input): Page<TaskDefinition> {

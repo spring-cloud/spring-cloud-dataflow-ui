@@ -74,8 +74,8 @@ describe('StreamsDeployComponent', () => {
   it('should display the stream definitions', () => {
     component.open({
       streamDefinitions: [
-        new StreamDefinition('foo', 'foo', 'foo'),
-        new StreamDefinition('bar', 'bar', 'bar'),
+        new StreamDefinition('foo', 'foo', 'demo-description', 'foo'),
+        new StreamDefinition('bar', 'bar', 'demo-description', 'bar'),
       ]
     });
     fixture.detectChanges();
@@ -88,7 +88,7 @@ describe('StreamsDeployComponent', () => {
   it('should display the parameter form when you click Edit deployment parameters', () => {
     component.open({
       streamDefinitions: [
-        new StreamDefinition('foo', 'foo', 'foo'),
+        new StreamDefinition('foo', 'foo', 'demo-description', 'foo'),
       ]
     });
     fixture.detectChanges();
@@ -104,8 +104,8 @@ describe('StreamsDeployComponent', () => {
   it('Should call the right Stream Service method when the multi deploy modal is validated', () => {
     component.open({
       streamDefinitions: [
-        new StreamDefinition('foo', 'foo', 'foo'),
-        new StreamDefinition('bar', 'bar', 'bar'),
+        new StreamDefinition('foo', 'foo', 'demo-description', 'foo'),
+        new StreamDefinition('bar', 'bar', 'demo-description', 'bar'),
       ]
     });
     fixture.detectChanges();
@@ -119,8 +119,8 @@ describe('StreamsDeployComponent', () => {
   it('Should call the close action (header close)', () => {
     component.open({
       streamDefinitions: [
-        new StreamDefinition('foo', 'foo', 'foo'),
-        new StreamDefinition('bar', 'bar', 'bar'),
+        new StreamDefinition('foo', 'foo', 'demo-description', 'foo'),
+        new StreamDefinition('bar', 'bar', 'demo-description', 'bar'),
       ]
     });
     fixture.detectChanges();
@@ -134,8 +134,8 @@ describe('StreamsDeployComponent', () => {
   it('Should call the close action (footer close)', () => {
     component.open({
       streamDefinitions: [
-        new StreamDefinition('foo', 'foo', 'foo'),
-        new StreamDefinition('bar', 'bar', 'bar'),
+        new StreamDefinition('foo', 'foo', 'demo-description', 'foo'),
+        new StreamDefinition('bar', 'bar', 'demo-description', 'bar'),
       ]
     });
     fixture.detectChanges();

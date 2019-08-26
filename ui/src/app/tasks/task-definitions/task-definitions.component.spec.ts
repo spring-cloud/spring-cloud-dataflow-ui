@@ -119,10 +119,11 @@ describe('TaskDefinitionsComponent', () => {
     tasksService.taskDefinitions = TASK_DEFINITIONS;
     fixture.detectChanges();
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=taskDefinitionsTable] tr:first-child td'));
-    expect(des.length).toBe(5);
+    expect(des.length).toBe(6);
     expect(des[1].nativeElement.textContent).toContain('foo');
-    expect(des[2].nativeElement.textContent).toContain('bar');
-    expect(des[3].nativeElement.textContent).toContain('UNKNOWN');
+    expect(des[2].nativeElement.textContent).toContain('demo');
+    expect(des[3].nativeElement.textContent).toContain('bar');
+    expect(des[4].nativeElement.textContent).toContain('UNKNOWN');
   });
 
   describe('no task', () => {
@@ -198,6 +199,7 @@ describe('TaskDefinitionsComponent', () => {
             return {
               name: `foo${i}`,
               dslText: 'foo && bar ',
+              description: 'demo-description',
               status: 'unknown',
               composed: true
             };

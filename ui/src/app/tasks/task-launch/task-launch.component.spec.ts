@@ -122,7 +122,7 @@ describe('TaskLaunchComponent', () => {
 
     it('Can select a platform', () => {
       const task = {
-        task: new TaskDefinition('foo', 'timestamp', false, 'COMPLETE'),
+        task: new TaskDefinition('foo', 'timestamp', 'demo-description', false, 'COMPLETE'),
         platforms: [
           new Platform('foo', 'foo', 'foo'),
           new Platform('bar', 'bar', 'bar'),
@@ -133,7 +133,7 @@ describe('TaskLaunchComponent', () => {
 
     it('Can not select a platform', () => {
       const task = {
-        task: new TaskDefinition('foo', 'timestamp', false, 'COMPLETE'),
+        task: new TaskDefinition('foo', 'timestamp', 'demo-description', false, 'COMPLETE'),
         platforms: [
           new Platform('foo', 'foo', 'foo')
         ]

@@ -19,6 +19,9 @@
             Name
           </app-sort>
         </th>
+        <th style="width: 150px">
+          Description
+        </th>
         <th>
           <div class="head-dsl">
             <app-sort id="sort-dsl" (change)="applySort($event)" [value]="'dslText'" [sort]="params">
@@ -42,6 +45,10 @@
           </td>
           <td width="200px">
             <a style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">{{ item.name }}</a>
+          </td>
+          <td>
+              {{ item.description.substring(0,15) }}
+              <a *ngIf="item.description.length >= 15" style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">...</a>
           </td>
           <td>
             <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>

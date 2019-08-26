@@ -13,16 +13,19 @@ export class StreamDefinition {
 
   public dslText: string;
 
+  public description: string;
+
   public status: string;
 
   public deploymentProperties: any;
 
   public force = false;
 
-  constructor(name: string, dslText: string, status: string) {
+  constructor(name: string, dslText: string, description: string, status: string) {
     this.name = name;
     this.dslText = dslText;
     this.status = status;
+    this.description = description;
   }
 
   /**
@@ -31,7 +34,7 @@ export class StreamDefinition {
    * @returns {StreamDefinition}
    */
   public static fromJSON(input): StreamDefinition {
-    const stream = new StreamDefinition(input.name, input.dslText, input.status);
+    const stream = new StreamDefinition(input.name, input.dslText, input.description, input.status);
     if (input.deploymentProperties && input.deploymentProperties.length > 0) {
       stream.deploymentProperties = JSON.parse(input.deploymentProperties);
     }

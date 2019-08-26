@@ -24,3 +24,17 @@
     font-weight: bold;
   }
 }
+
+.input-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  .input-sm {
+    width: 84%;
+  }
+
+  label {
+    font-size: 12px
+  }
+}

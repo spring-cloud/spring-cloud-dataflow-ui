@@ -1,6 +1,14 @@
 <div *ngIf="stream$ | async as stream; else loading">
 
   <div dataflowLayoutType type="large">
+    <div *ngIf="stream.streamDefinition.description.length > 0" class="row stream-summary-row">
+      <div class="col-md-3">
+        <strong>Description:</strong>
+      </div>
+      <div class="col-md-21">
+          {{ stream.streamDefinition.description }}
+      </div>
+    </div>
     <div class="row stream-summary-row">
       <div class="col-md-3">
         <strong>Definition:</strong>
