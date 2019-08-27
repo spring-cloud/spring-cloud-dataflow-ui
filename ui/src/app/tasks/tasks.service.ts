@@ -279,7 +279,7 @@ export class TasksService {
     const params = new HttpParams({ encoder: new DataflowEncoder() })
       .append('definition', taskCreateParams.definition)
       .append('name', taskCreateParams.name)
-      .append('description', taskCreateParams.description)
+      .append('description', taskCreateParams.description);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
       .post(TasksService.URL.DEFINITIONS, {}, { headers: headers, params: params })
