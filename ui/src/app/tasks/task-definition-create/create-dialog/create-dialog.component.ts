@@ -54,7 +54,7 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
    * The FormControl used to check the task description length.
    * @type {FormControl}
    */
-  taskDescription = new FormControl('', Validators.maxLength(255))
+  taskDescription = new FormControl('', Validators.maxLength(255));
 
   /**
    * Callback to parent which is called when task is created succesfully.
@@ -113,7 +113,11 @@ export class TaskDefinitionCreateDialogComponent implements OnInit, OnDestroy {
       this.notificationService.error('Some field(s) are missing or invalid.');
     } else {
       this.blockerService.lock();
-      this.tasksService.createDefinition({ name: this.taskName.value, definition: this.dsl, description: this.taskDescription.value })
+      this.tasksService.createDefinition({
+        name: this.taskName.value,
+        definition: this.dsl,
+        description: this.taskDescription.value
+      })
         .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           () => {

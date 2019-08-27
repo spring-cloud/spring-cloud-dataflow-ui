@@ -166,11 +166,9 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
             Properties.Validators.uniqueResource((value) => this.streamService.getDefinition(value), 500)
           ]));
 
-          this.form.addControl(streamDef.index.toString()+'_desc', new FormControl(streamDef.description || '', [
+          this.form.addControl(streamDef.index.toString() + '_desc', new FormControl(streamDef.description || '', [
             Validators.maxLength(255)
-          ], [
-
-          ]));
+          ], []));
         });
 
         graphAndErrors.graph.links.filter(l => l.linkType === 'tap').forEach(l => {
@@ -355,7 +353,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
       // Send the request to create a stream
       const def = this.streamDefs[index];
       this.blockerService.lock();
-      const description = def.description === undefined ? "" : def.description
+      const description = def.description === undefined ? '' : def.description;
       this.streamService.createDefinition(def.name, def.def, description, false)
         .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(() => {

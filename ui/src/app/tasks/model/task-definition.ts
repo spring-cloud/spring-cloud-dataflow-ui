@@ -17,7 +17,7 @@ export class TaskDefinition {
     this.dslText = dslText;
     this.composed = composed;
     this.status = status;
-    this.description = description;
+    this.description = description ? description : '';
   }
 
   static fromJSON(input): TaskDefinition {
