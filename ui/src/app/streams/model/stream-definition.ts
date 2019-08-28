@@ -25,7 +25,7 @@ export class StreamDefinition {
     this.name = name;
     this.dslText = dslText;
     this.status = status;
-    this.description = description;
+    this.description = description ? description : '';
   }
 
   /**

@@ -42,10 +42,9 @@
                   name="name"
                   formControlName="taskName"
                   type="text"
-                  placeholder="<Task Name>"
+                  placeholder="Task Name"
                   [dataflowFocus]="true"
-                  maxlength="500"/>
-            <label>{{ taskName.value.length }} / 255</label>
+                  maxlength="255"/>
           </div>
           <span *ngIf="form.controls.taskName.errors && form.controls.taskName.errors.required"
                 class="help-block validation-block">
@@ -68,10 +67,9 @@
                   name="description"
                   formControlName="taskDescription"
                   type="text"
-                  placeholder="<Task Description>"
+                  placeholder="Task Description"
                   [dataflowFocus]="false"
-                  maxlength="500"/>
-            <label>{{ taskDescription.value.length }} / 255</label>
+                  maxlength="255"/>
           </div>
           <span *ngIf="form.controls.taskDescription.errors && form.controls.taskDescription.errors.maxlength"
                 class="help-block validation-block">
