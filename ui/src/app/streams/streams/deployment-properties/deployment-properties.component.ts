@@ -65,6 +65,7 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
    * Parse the current parameters and populate fields
    */
   ngOnInit() {
+    const keyPlatform = 'spring.cloud.dataflow.skipper.platformName';
     this.subscriptionPlatforms = this.streamsService.getPlatforms()
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((platforms: Platform[]) => {
@@ -76,8 +77,11 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
       if (this.stream.deploymentProperties.platformName) {
         this.deploymentPlatform.setValue(this.stream.deploymentProperties.platformName);
       }
+      if (this.stream.deploymentProperties[keyPlatform]) {
+        this.deploymentPlatform.setValue(this.stream.deploymentProperties[keyPlatform])
+      }
       this.deploymentProperties.setValue(Object.keys(this.stream.deploymentProperties)
-        .filter(a => a !== 'spring.cloud.dataflow.skipper.platformName')
+        .filter(a => a !== keyPlatform)
         .map(a => {
           return a + '=' + this.stream.deploymentProperties[a];
         }).join('\n'));
