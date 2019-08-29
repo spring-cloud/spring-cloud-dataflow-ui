@@ -98,9 +98,14 @@
 
         <div class="row form-group" [class.has-error]="form.get('args').invalid && submitted">
           <div class="col-xs-4">
-            <label class="control-label">Arguments:</label>
+            <label class="control-label">
+              Arguments:
+              <a #childPopover="bs-popover" containerClass="task-help-popover" [popover]="popArguments" placement="bottom"
+                 [outsideClick]="true" title="Help for arguments" style="cursor: pointer">
+                <span class="fa fa-question-circle"></span></a>
+            </label>
           </div>
-          <div class="col-xs-10">
+          <div class="col-xs-12">
             <app-kv-rich-text [validators]="kvValidators.args" [formControl]="form.get('args')"
                               placeholder="--myarg=myvalue"></app-kv-rich-text>
             <span class="help-block" *ngIf="form.get('args').invalid && submitted">
@@ -112,9 +117,14 @@
 
         <div class="row form-group" [class.has-error]="form.get('props').invalid && submitted">
           <div class="col-xs-4">
-            <label class="control-label">Parameters:</label>
+            <label class="control-label">
+              Parameters:
+              <a #childPopover="bs-popover" containerClass="task-help-popover" [popover]="popParameters" placement="bottom"
+                 [outsideClick]="true" title="Help for parameters" style="cursor: pointer">
+                <span class="fa fa-question-circle"></span></a>
+            </label>
           </div>
-          <div class="col-xs-10">
+          <div class="col-xs-12">
             <app-kv-rich-text [validators]="kvValidators.props" [formControl]="form.get('props')"
                               placeholder="app.myparam=myvalue"></app-kv-rich-text>
             <span class="help-block" *ngIf="form.get('props').invalid && submitted">
@@ -122,112 +132,6 @@
           </span>
           </div>
         </div>
-
-        <!--
-        <div class="builder">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="col-1-layout" formArrayName="args">
-                <h3>Task Arguments</h3>
-                <p>You can add optional task arguments before launching the task.</p>
-                <table class="table table-actions table-form">
-                  <thead>
-                  <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                    <th>&nbsp;</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let f of form.get('args').controls;let i = index"
-                      [formGroupName]="i">
-                    <td>
-                      <div [class.has-error]="submitted && form.get('args.' + i).invalid">
-                        <input formControlName="key" type="text" class="form-control input-sm"/>
-                        <div *ngIf="submitted && form.get('args.' + i + '.key').invalid"
-                             class="help-block">Invalid key
-                        </div>
-                        <div *ngIf="submitted && form.get('args.' + i).invalid" class="help-block">
-                          Invalid key
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div [class.has-error]="submitted && form.get('args.' + i).invalid">
-                        <input formControlName="val" type="text" class="form-control input-sm"/>
-                        <div *ngIf="submitted && form.get('args.' + i + '.val').invalid"
-                             class="help-block">Invalid value
-                        </div>
-                      </div>
-                    </td>
-                    <td class="table-actions" width="10px" nowrap="">
-                      <div class="actions-btn" role="group">
-                        <button [disabled]="form.get('args').controls.length == (i+1)" type="button"
-                                class="btn btn-danger"
-                                (click)="form.get('args').removeAt(i)">
-                          <span class="fa fa-times" style="margin-top: 2px"></span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="col-2-layout" formArrayName="params">
-                <h3>Task Properties</h3>
-                <p>You can add optional task properties before launching the task.</p>
-                <table class="table table-actions table-form">
-                  <thead>
-                  <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                    <th>&nbsp;</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let f of form.get('params').controls;let i = index"
-                      [formGroupName]="i">
-                    <td>
-                      <div [class.has-error]="submitted && form.get('params.' + i).invalid">
-                        <input formControlName="key" type="text" class="form-control input-sm"/>
-                        <div *ngIf="submitted && form.get('params.' + i + '.key').invalid" class="help-block">
-                          The key should start with `app.` or `deployer.` or `scheduler.`.
-                        </div>
-                        <div class="help-block"
-                             *ngIf="submitted && form.get('params.' + i).invalid && !form.get('params.' + i + '.key').invalid">
-                          Invalid key
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div [class.has-error]="form.get('params.' + i).invalid">
-                        <input formControlName="val" type="text" class="form-control input-sm"/>
-                        <div *ngIf="submitted && form.get('params.' + i + '.val').invalid" class="help-block">Invalid
-                          value
-                        </div>
-                      </div>
-                    </td>
-                    <td class="table-actions" width="10px" nowrap="">
-                      <div class="actions-btn" role="group">
-                        <button [disabled]="form.get('params').controls.length == (i + 1)" type="button"
-                                class="btn btn-danger" (click)="form.get('params').removeAt(i)">
-                          <span class="fa fa-times" style="margin-top: 2px"></span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
-
-
-
       </div>
       <app-page-actions>
         <button (click)="cancel()" type="button" class="btn btn-default">Cancel</button>
@@ -236,6 +140,25 @@
     </form>
   </div>
 </app-page>
+
+<ng-template #popArguments>
+  <div class="task-help-content">
+    Arguments can be prefixed by <code>--</code> (optional).<br/>
+    Example:<br/>
+    <pre><code>--myarg1=value1
+--myarg2=value2</code></pre>
+  </div>
+</ng-template>
+
+<ng-template #popParameters>
+  <div class="task-help-content">
+    Parameters should start with an app name or <code>deployer.</code>.<br/>
+    Example:<br/>
+    <pre><code>app.myparam=value1
+deployer.myparam2=value2</code></pre>
+  </div>
+</ng-template>
+
 <ng-template #loading>
   <app-loader></app-loader>
 </ng-template>

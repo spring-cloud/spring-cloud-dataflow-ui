@@ -72,6 +72,7 @@ describe('TaskScheduleCreateComponent', () => {
         BsDropdownModule.forRoot(),
         BsDatepickerModule.forRoot(),
         TooltipModule.forRoot(),
+        PopoverModule.forRoot(),
         FormsModule,
         FloModule,
         ReactiveFormsModule,

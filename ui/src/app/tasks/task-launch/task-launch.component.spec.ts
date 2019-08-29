@@ -17,7 +17,7 @@ import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
 import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
-import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
+import { BsDropdownModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
 import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { Platform } from '../../shared/model/platform';
@@ -59,6 +59,7 @@ describe('TaskLaunchComponent', () => {
         ClipboardModule,
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
+        PopoverModule.forRoot(),
         RouterTestingModule.withRoutes([])
       ],
       providers: [
