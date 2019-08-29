@@ -670,3 +670,46 @@ app-kv-rich-text {
 #palette-paper-container {
   background: #EEEEEE !important;
 }
+
+.popover {
+  border: 0 none;
+  box-shadow: none;
+  background-color: rgba(35, 43, 47, 0.9);
+  color: white;
+  font-size: 15px;
+  &.left {
+    margin-top: 8px;
+  }
+  &.left > .arrow {
+    box-shadow: none;
+    border: 0 none;
+    &:after {
+      border-left-color: rgba(35, 43, 47, 0.9);
+    }
+  }
+  &.bottom > .arrow {
+    box-shadow: none;
+    border: 0 none;
+    &:after {
+      border-bottom-color: rgba(35, 43, 47, 0.9);
+    }
+  }
+}
+
+.task-help-popover {
+  min-width: 340px;
+  pre {
+    margin-top: 10px;
+    background: rgba(255,255,255,.2);
+    color: white;
+    border: 0 none;
+    font-size: 13px;
+    code {
+      background: transparent;
+    }
+  }
+  code {
+    background: rgba(255,255,255,.2);
+    color: white;
+  }
+}
