@@ -44,26 +44,26 @@ describe('DeploymentPropertiesComponent', () => {
   });
 
   it('should be created', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should populate properties input', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     component.stream.deploymentProperties = { a: 'a', b: 'b' };
     fixture.detectChanges();
     expect(component.deploymentProperties.value).toBe('a=a\nb=b');
   });
 
   it('should not populate properties input (empty)', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     fixture.detectChanges();
     expect(component.deploymentProperties.value).toBe('');
   });
 
   it('should display the platform input (skipper integration)', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     component.stream.deploymentProperties = {};
     fixture.detectChanges();
     const de: DebugElement = fixture.debugElement.query(By.css('#groupPlatform'));
@@ -74,14 +74,14 @@ describe('DeploymentPropertiesComponent', () => {
   });
 
   it('should not populate properties input (invalid data)', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     component.stream.deploymentProperties = 'aa';
     fixture.detectChanges();
     expect(component.deploymentProperties.value).toBe('');
   });
 
   it('should emit cancel event on cancel action', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     fixture.detectChanges();
     const cancelEvent = spyOn(component.cancel, 'emit');
     component.cancelDeployment();
@@ -89,7 +89,7 @@ describe('DeploymentPropertiesComponent', () => {
   });
 
   it('should update the stream definition to deploy and emit event Submit on submit', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     fixture.detectChanges();
     const submitEvent = spyOn(component.submit, 'emit');
     component.deploymentProperties.setValue('a=a');
@@ -99,7 +99,7 @@ describe('DeploymentPropertiesComponent', () => {
   });
 
   it('should update the stream definition to deploy with multiple properties and emit event Submit on submit', () => {
-    component.stream = new StreamDefinition('foo2', 'time |log', 'demo-description', 'undeployed');
+    component.stream = new StreamDefinition('foo2', 'time |log', 'time | log','demo-description', 'undeployed');
     fixture.detectChanges();
     const submitEvent = spyOn(component.submit, 'emit');
     component.deploymentProperties.setValue('a=a\nb=c=d\ne=f');
