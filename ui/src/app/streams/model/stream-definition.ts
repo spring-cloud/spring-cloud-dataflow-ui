@@ -1,4 +1,4 @@
-import { Page } from '../../shared/model/page';
+import {Page} from '../../shared/model/page';
 
 /**
  * Represents a StreamDefiniton.
@@ -15,17 +15,20 @@ export class StreamDefinition {
 
   public description: string;
 
+  public originalDslText: string;
+
   public status: string;
 
   public deploymentProperties: any;
 
   public force = false;
 
-  constructor(name: string, dslText: string, description: string, status: string) {
+  constructor(name: string, dslText: string, originalDslText: string, description: string, status: string) {
     this.name = name;
     this.dslText = dslText;
-    this.status = status;
+    this.originalDslText = originalDslText;
     this.description = description ? description : '';
+    this.status = status;
   }
 
   /**
@@ -34,7 +37,7 @@ export class StreamDefinition {
    * @returns {StreamDefinition}
    */
   public static fromJSON(input): StreamDefinition {
-    const stream = new StreamDefinition(input.name, input.dslText, input.description, input.status);
+    const stream = new StreamDefinition(input.name, input.dslText, input.originalDslText, input.description, input.status);
     if (input.deploymentProperties && input.deploymentProperties.length > 0) {
       stream.deploymentProperties = JSON.parse(input.deploymentProperties);
     }

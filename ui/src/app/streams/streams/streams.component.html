@@ -90,7 +90,7 @@
                     tippy [tippyOptions]="{ content: 'Hide graph' }"></span>
               <span *ngIf="!form.checkboxesExpand[i]" class="fa fa-chevron-right"
                     tippy [tippyOptions]="{ content: 'Show graph' }"></span>
-              <app-stream-dsl>{{ item.dslText | truncate: 120 }}</app-stream-dsl>
+              <app-stream-dsl>{{ item.originalDslText | truncate: 120 }}</app-stream-dsl>
             </a>
           </td>
           <td *ngIf="canShowDeploymentInfo(item); else deployment_status_only_content">
