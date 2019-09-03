@@ -200,8 +200,11 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
    */
   uniqueStreamNames() {
     const streamDefs = this.streamDefs;
-    return (control: AbstractControl): { [key: string]: any } => {
-      const duplicates = Utils.findDuplicates(streamDefs.filter(s => s.name).map(s => s.name));
+    return (control: FormGroup): { [key: string]: any } => {
+      const values = streamDefs.map((s, index) => {
+        return control.get(index.toString()) ? control.get(index.toString()).value : '';
+      }).filter(s => !!s);
+      const duplicates = Utils.findDuplicates(values);
       return duplicates.length === 0 ? null : { 'uniqueStreamNames': duplicates };
     };
   }
