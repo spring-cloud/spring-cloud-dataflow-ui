@@ -284,7 +284,7 @@ export class TextToGraphConverter {
   }
 
   private matchGroup(name: string, incoming: number, outgoing: number): string {
-    const match1 = Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
+    const matches = Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
       grp => this.metamodel.get(grp).get(name)).map(match => {
       let score = 0;
       switch (match.group) {
@@ -336,15 +336,21 @@ export class TextToGraphConverter {
         match,
         score
       };
-    }).reduce((bestMatch, currentMatch) => {
-      if (bestMatch) {
-        if (currentMatch.score > bestMatch.score) {
-          return currentMatch;
-        }
-      }
-      return bestMatch;
     });
-    return match1 ? match1.match.group : ApplicationType[ApplicationType.app];
+    if (matches && matches.length > 0) {
+      const match1 = matches.reduce((bestMatch, currentMatch) => {
+        if (bestMatch) {
+          if (currentMatch.score > bestMatch.score) {
+            return currentMatch;
+          }
+        }
+        return bestMatch;
+      });
+      if (match1) {
+        return match1.match.group;
+      }
+    }
+    return ApplicationType[ApplicationType.app];
   }
 
   /**
