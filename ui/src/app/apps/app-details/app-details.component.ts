@@ -211,7 +211,7 @@ export class AppDetailsComponent implements OnInit, OnDestroy {
     modal.content.open([this.application])
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => {
-        this.refresh();
+        this.cancel();
       });
   }
 
