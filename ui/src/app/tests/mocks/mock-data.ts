@@ -1186,6 +1186,7 @@ export const STREAM_DEFINITIONS = {
       {
         name: 'foo3',
         dslText: 'time |log ',
+        originalDslText: 'time | log',
         description: 'demo-stream',
         status: 'undeployed',
         statusDescription: 'The app or group is known to the system, but is currently deployed',

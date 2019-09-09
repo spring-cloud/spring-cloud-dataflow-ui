@@ -131,8 +131,8 @@ describe('StreamsComponent', () => {
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=streamDefinitionsTable] tr:first-child td'));
     expect(des.length).toBe(6);
     expect(des[1].nativeElement.textContent).toContain('foo2');
-    expect(des[2].nativeElement.textContent).toContain('time | log',);
-    expect(des[3].nativeElement.textContent).toContain('demo-stream');
+    expect(des[2].nativeElement.textContent).toContain('demo-stream',);
+    expect(des[3].nativeElement.textContent).toContain('time | log');
     expect(des[4].nativeElement.textContent).toContain('UNDEPLOYED');
   });
 
@@ -235,6 +235,7 @@ describe('StreamsComponent', () => {
             return {
               name: `foo${i}`,
               dslText: 'time |log ',
+              originalDslText: 'time | log',
               description: 'demo-stream',
               status: 'undeployed',
               statusDescription: 'The app or group is known to the system, but is not currently deployed',
