@@ -102,7 +102,7 @@ const taskRoutes: Routes = [
       {
         path: 'schedules/create/:id',
         component: TaskScheduleCreateComponent,
-      },
+      }
     ]
   }
 ];
