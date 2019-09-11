@@ -262,6 +262,12 @@ describe('TaskSchedulesComponent', () => {
       expect(navigate).toHaveBeenCalledWith(['tasks/schedules/foo1']);
     });
 
+    it('should navigate to the add new schedule', () => {
+      const navigate = spyOn((<any>component).router, 'navigate');
+      component.applyAction('create', TaskSchedule.fromJSON(tasksService.taskSchedules._embedded.scheduleInfoResourceList[0]));
+      expect(navigate).toHaveBeenCalledWith(['tasks/schedules/create/bar1']);
+    });
+
     it('should navigate to the detail schedule (link)', () => {
       const line: DebugElement = fixture.debugElement.queryAll(By.css('#taskSchedulesTable tbody tr'))[0];
       const navigate = spyOn((<any>component).router, 'navigate');

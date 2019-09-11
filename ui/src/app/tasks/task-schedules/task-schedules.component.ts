@@ -158,6 +158,15 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
         icon: 'trash',
         action: 'destroy',
         title: 'Delete schedule'
+      },
+      {
+        divider: true
+      },
+      {
+        id: 'create-schedule' + index,
+        icon: 'clock-o',
+        action: 'create',
+        title: 'Add new schedule'
       }
     ];
   }
@@ -165,7 +174,7 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   /**
    * Apply Action
    * @param action
-   * @param arg
+   * @param args
    */
   applyAction(action: string, args?: any) {
     switch (action) {
@@ -177,6 +186,9 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
         break;
       case 'destroySelected':
         this.destroySelectedSchedules();
+        break;
+      case 'create':
+        this.createNewSchedule(args);
         break;
     }
   }
@@ -311,6 +323,14 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
    */
   taskDetails(taskSchedule: TaskSchedule) {
     this.router.navigate([`tasks/definitions/${taskSchedule.taskName}`]);
+  }
+
+  /**
+   * Route to create {@link TaskSchedule} page.
+   * @param {TaskSchedule} taskSchedule
+   */
+  createNewSchedule(taskSchedule: TaskSchedule) {
+    this.router.navigate([`tasks/schedules/create/${taskSchedule.taskName}`]);
   }
 
 }
