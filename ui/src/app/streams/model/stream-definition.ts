@@ -1,4 +1,4 @@
-import {Page} from '../../shared/model/page';
+import { Page } from '../../shared/model/page';
 
 /**
  * Represents a StreamDefiniton.
