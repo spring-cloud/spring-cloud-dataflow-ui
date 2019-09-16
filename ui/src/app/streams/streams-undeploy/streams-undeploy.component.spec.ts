@@ -68,7 +68,7 @@ describe('StreamsUndeployComponent', () => {
   describe('1 stream undeploy', () => {
 
     const mock = [
-      new StreamDefinition('foo0', 'foo1|foo2', 'foo1|foo2','demo-description', 'undeployed')
+      new StreamDefinition('foo0', 'foo1|foo2', 'foo1|foo2', 'demo-description', 'undeployed')
     ];
 
     beforeEach(() => {
@@ -109,8 +109,8 @@ describe('StreamsUndeployComponent', () => {
   describe('Multiple streams undeploy', () => {
 
     const mock = [
-      new StreamDefinition('foo0', 'foo1|foo2', 'foo1|foo2','demo-description', 'undeployed'),
-      new StreamDefinition('bar0', 'bar1|bar2', 'bar1|bar2','demo-description', 'deployed')
+      new StreamDefinition('foo0', 'foo1|foo2', 'foo1|foo2', 'demo-description', 'undeployed'),
+      new StreamDefinition('bar0', 'bar1|bar2', 'bar1|bar2', 'demo-description', 'deployed')
     ];
 
     beforeEach(() => {
@@ -159,7 +159,7 @@ describe('StreamsUndeployComponent', () => {
       component.open({
         streamDefinitions: [
           new StreamDefinition('foo', 'time|log', 'time|log', 'demo-description', 'undeployed'),
-          new StreamDefinition('bar', 'time|log', 'time|log','demo-description', 'undeployed')
+          new StreamDefinition('bar', 'time|log', 'time|log', 'demo-description', 'undeployed')
         ]
       });
       fixture.detectChanges();

@@ -63,7 +63,7 @@ describe('StreamGraphDefinitionComponent', () => {
   });
 
   it('check stream in the view', (done) => {
-    component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'http | filter | null','demo description', 'deployed');
+    component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'http | filter | null', 'demo description', 'deployed');
     const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
       subscription.unsubscribe();
       expect(component.flo.getGraph().getElements().length).toEqual(3);
@@ -75,7 +75,7 @@ describe('StreamGraphDefinitionComponent', () => {
   });
 
   it('verify dots in the view', (done) => {
-    component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'http | filter | null','demo description', 'deployed');
+    component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'http | filter | null', 'demo description', 'deployed');
 
     const httpMetrics = createStreamStatus('source', 'http', 2);
     const filterMetrics = createStreamStatus('processor', 'filter', 40);

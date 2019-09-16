@@ -78,7 +78,7 @@ export class DeploymentPropertiesComponent implements OnInit, OnDestroy {
         this.deploymentPlatform.setValue(this.stream.deploymentProperties.platformName);
       }
       if (this.stream.deploymentProperties[keyPlatform]) {
-        this.deploymentPlatform.setValue(this.stream.deploymentProperties[keyPlatform])
+        this.deploymentPlatform.setValue(this.stream.deploymentProperties[keyPlatform]);
       }
       this.deploymentProperties.setValue(Object.keys(this.stream.deploymentProperties)
         .filter(a => a !== keyPlatform)
