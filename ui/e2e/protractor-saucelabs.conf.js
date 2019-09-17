@@ -25,7 +25,7 @@ exports.config = {
     {
       name: 'E2E Chrome/Mac',
       browserName: 'chrome',
-      version: '73.0',
+      version: '77.0',
       platform: 'Windows 10',
       idleTimeout: 512
     },
