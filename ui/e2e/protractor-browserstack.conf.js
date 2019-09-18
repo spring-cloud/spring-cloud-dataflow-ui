@@ -20,7 +20,7 @@ exports.config = {
   plugins: [
     {
       path: '../protractor-docker-plugin/index.js',
-      dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server-local/docker-compose.yml',
+      dockerComposeUri: 'https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/master/spring-cloud-dataflow-server/docker-compose.yml',
       useCachedoDockerComposeFile: true,
       dockerComposeWaitTime: 512000
     }

@@ -13,8 +13,8 @@ class ProtractorDockerPlugin implements ProtractorPlugin {
   private readonly destinationFileName = 'docker-compose.yml';
   private readonly destinationFilePath = '.docker/' + this.destinationFileName;
   private readonly dockerComposeCommand = 'docker-compose';
-  private readonly defaultDataflowDockerTag = '2.1.0.BUILD-SNAPSHOT';
-  private readonly defaultSkipperDockerTag = '2.0.2.RC1';
+  private readonly defaultDataflowDockerTag = '2.3.0.BUILD-SNAPSHOT';
+  private readonly defaultSkipperDockerTag = '2.2.0.M1';
 
   public async setup() {
 

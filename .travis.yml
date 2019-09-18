@@ -6,21 +6,20 @@ env:
 cache:
   directories:
     - $HOME/.m2
-dist: trusty
+dist: xenial
 language: java
 before_install:
-  - nvm install 10.9.0
+  - nvm install 10.16.3
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  
 addons:
   chrome: stable
   hosts:
     - dataflow.local
 jdk:
-  - oraclejdk8
+  - openjdk8
 install: true
 script:
   - '[ "${TRAVIS_PULL_REQUEST}" != "false" ] || ./mvnw package'

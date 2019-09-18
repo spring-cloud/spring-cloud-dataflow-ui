@@ -18,8 +18,8 @@ class ProtractorDockerPlugin {
         this.destinationFileName = 'docker-compose.yml';
         this.destinationFilePath = '.docker/' + this.destinationFileName;
         this.dockerComposeCommand = 'docker-compose';
-        this.defaultDataflowDockerTag = '2.1.0.BUILD-SNAPSHOT';
-        this.defaultSkipperDockerTag = '2.0.2.RC1';
+        this.defaultDataflowDockerTag = '2.3.0.BUILD-SNAPSHOT';
+        this.defaultSkipperDockerTag = '2.2.0.M1';
     }
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
