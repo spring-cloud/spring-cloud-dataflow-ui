@@ -43,6 +43,10 @@ import { StreamsDestroyComponent } from './streams-destroy/streams-destroy.compo
 import { StreamHistoryComponent } from './stream/history/stream-history.component';
 import { StreamHistoryStatusComponent } from './components/stream-history-status/stream-status.component';
 import { PropertiesGroupsDialogComponent } from '../shared/flo/properties-groups/properties-groups-dialog.component';
+import { StreamsUtilsComponent } from './streams-utils/streams-utils.component';
+import { StreamsImportComponent } from './streams-utils/streams-import/streams-import.component';
+import { StreamsExportComponent } from './streams-utils/streams-export/streams-export.component';
+import { StreamsUtilsService } from './streams-utils/streams-utils.service';
 
 @NgModule({
   imports: [
@@ -85,7 +89,10 @@ import { PropertiesGroupsDialogComponent } from '../shared/flo/properties-groups
     StreamsUndeployComponent,
     StreamsDestroyComponent,
     StreamHistoryComponent,
-    StreamHistoryStatusComponent
+    StreamHistoryStatusComponent,
+    StreamsUtilsComponent,
+    StreamsImportComponent,
+    StreamsExportComponent
   ],
   entryComponents: [
     StreamCreateDialogComponent,
@@ -107,7 +114,8 @@ import { PropertiesGroupsDialogComponent } from '../shared/flo/properties-groups
     RenderService,
     EditorService,
     ContentAssistService,
-    StreamDeployService
+    StreamDeployService,
+    StreamsUtilsService
   ],
   exports: [
     StreamStatusComponent

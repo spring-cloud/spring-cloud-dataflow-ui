@@ -1,4 +1,5 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Confirm Service.
@@ -13,6 +14,8 @@ export class BlockerService {
    */
   private renderer: Renderer2;
 
+  public changeState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   /**
    * Constructor
    * @param rendererFactory
@@ -26,6 +29,7 @@ export class BlockerService {
    */
   lock() {
     this.renderer.addClass(document.body, 'blocked');
+    this.changeState.next(true);
   }
 
   /**
@@ -33,6 +37,7 @@ export class BlockerService {
    */
   unlock() {
     this.renderer.removeClass(document.body, 'blocked');
+    this.changeState.next(false);
   }
 
 }

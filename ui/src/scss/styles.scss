@@ -211,6 +211,19 @@ div.tooltip-version {
     padding: 16px 0 12px 15px;
     line-height: 32px;
   }
+
+  .btn-default {
+    $c: #DFE5E8;
+    background-color: $c;
+    border-color: $c;
+    &:hover {
+      background-color: darken($c, 6);
+      border-color: darken($c, 6);
+    }
+  }
+  .btn-fa-utils {
+    padding-left: 30px;
+  }
 }
 
 app-list-row-actions {

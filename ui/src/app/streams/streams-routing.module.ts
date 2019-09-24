@@ -8,6 +8,9 @@ import { StreamComponent } from './stream/stream.component';
 import { StreamGraphComponent } from './stream/graph/stream-graph.component';
 import { StreamSummaryComponent } from './stream/summary/stream-summary.component';
 import { StreamHistoryComponent } from './stream/history/stream-history.component';
+import { StreamsUtilsComponent } from './streams-utils/streams-utils.component';
+import { StreamsExportComponent } from './streams-utils/streams-export/streams-export.component';
+import { StreamsImportComponent } from './streams-utils/streams-import/streams-import.component';
 
 const streamRoutes: Routes = [
   {
@@ -63,6 +66,20 @@ const streamRoutes: Routes = [
       {
         path: 'create',
         component: StreamCreateComponent
+      },
+      {
+        path: 'utils',
+        component: StreamsUtilsComponent,
+        children: [
+          {
+            path: 'export',
+            component: StreamsExportComponent
+          },
+          {
+            path: 'import',
+            component: StreamsImportComponent
+          },
+        ]
       }
     ]
   }

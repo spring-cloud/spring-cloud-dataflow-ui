@@ -172,3 +172,25 @@ table.table-checkbox {
     padding-left: 1.5rem;
   }
 }
+
+table.table-styled-1 {
+  tr {
+    td:first-child {
+      font-weight: bold;
+    }
+  }
+  tr.created {
+    td:first-child {
+      color: #51A351;
+    }
+  }
+  tr.error {
+    color: $navy-6;
+    td:first-child {
+      color: #BD362F;
+    }
+    .error {
+      color: #BD362F;
+    }
+  }
+}
