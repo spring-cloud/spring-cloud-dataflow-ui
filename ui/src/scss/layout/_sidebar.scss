@@ -378,7 +378,7 @@ $sidebar-active: #00a79d;
 .page-step-2 {
   left: $sidebar-width + 500px;
   .dataflow-page-head {
-    left: $sidebar-width + 500px -1px;
+    left: $sidebar-width + 500px - 1px;
   }
 }
 
@@ -434,7 +434,7 @@ $sidebar-active: #00a79d;
   .page-step-2 {
     left: $sidebar-width-large + 500px;
     .dataflow-page-head {
-      left: $sidebar-width-large + 500px -1px;
+      left: $sidebar-width-large + 500px - 1px;
       app-page-head-back {
         display: none;
       }

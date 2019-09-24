@@ -1,0 +1,74 @@
+@import '../../../scss/pui-variables.scss';
+@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+
+div.dataflow-page-actions-sticky {
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+  padding-bottom: 20px;
+}
+
+h3 {
+  font-weight: bold;
+  padding-bottom: 8px;
+  &.error {
+    color: #BD362F;
+  }
+}
+
+.control-file {
+  $h: 36px;
+  display: block;
+  border: 1px solid #DFE5E8;
+  max-width: 450px;
+  height: $h;
+  font-size: $btn-font-size;
+  position: relative;
+  cursor: pointer;
+  border-radius: 3px;
+  @include transition(border-color .1s);
+  span.filename {
+    display: block;
+    height: $h;
+    line-height: $h;
+    padding-right: 200px;
+    color: #243641;
+    padding-left: 12px;
+    font-weight: normal;
+  }
+  span.button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    display: inline-block;
+    background: #F5F6F7;
+    height: $h - 4px;
+    line-height: $h - 4px;
+    width: 140px;
+    font-weight: normal;
+    text-align: center;
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+    @include transition(background-color .1s);
+  }
+  input {
+    display: none;
+  }
+  &:hover {
+    border-color: #607580;
+    span.button {
+      background-color: #DFE5E8;
+    }
+  }
+}
+
+.form-group-options {
+  .options-title {
+    padding-top: 12px;
+    padding-bottom: 6px;
+  }
+}
+
+.dataflow-alert-info {
+  margin-bottom: 20px;
+}

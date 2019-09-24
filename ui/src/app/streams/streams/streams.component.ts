@@ -687,6 +687,13 @@ export class StreamsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Navigate to the utils streams page
+   */
+  utils() {
+    this.router.navigate(['/streams/utils']);
+  }
+
+  /**
    * Navigate to the register app
    */
   registerApps() {

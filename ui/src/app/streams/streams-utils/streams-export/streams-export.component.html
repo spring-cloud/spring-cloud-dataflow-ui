@@ -1,0 +1,69 @@
+<app-page-head class="step2">
+  <app-page-head-back [defaultUrl]="'/streams/utils'" [isNotRegex]="'^(\/streams\/utils\/)'"></app-page-head-back>
+  <app-page-head-title><strong>Export your streams</strong></app-page-head-title>
+</app-page-head>
+
+<div dataflowLayoutType type="medium">
+
+
+  <div class="dataflow-alert dataflow-alert-info">
+    <p>You can create an export of your <strong>selected streams</strong>.</p>
+    <p>This operation will generate and download a <strong>JSON file</strong>.</p>
+  </div>
+
+  <div *ngIf="streams$ | async as streams; else loading">
+
+    <div id="empty" class="dataflow-alert" *ngIf="streams.totalElements === 0">
+      <p>There is <strong>no stream registered</strong>, yet.</p>
+    </div>
+
+    <div id="streams-export" *ngIf="streams.totalElements > 0">
+      <table class="table table-checkbox">
+        <thead>
+        <tr>
+          <th style="width: 30px">
+            <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
+                                 [items]="form.checkboxes"></app-master-checkbox>
+          </th>
+          <th>Stream name</th>
+          <th>DSL</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let item of streams.items; index as i">
+          <tr>
+            <td style="width: 30px">
+              <input type="checkbox" (change)="changeCheckboxes()"
+                     [(ngModel)]="form.checkboxes[i]"/>
+            </td>
+            <td>
+              <strong>{{ item.name }}</strong>
+            </td>
+            <td>
+              <app-stream-dsl>{{ item.dslText }}</app-stream-dsl>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+
+      <div class="dataflow-page-actions-sticky">
+        <app-page-actions>
+          <button name="cancel" type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+          <button id="btn-export" name="export" type="button" class="btn btn-primary"
+                  (click)="exportStreams(streams.items)">
+            <span *ngIf="selected > 1">Export the {{ selected }} streams</span>
+            <span *ngIf="selected === 1">Export the stream</span>
+            <span *ngIf="selected === 0">Export streams</span>
+          </button>
+        </app-page-actions>
+      </div>
+    </div>
+  </div>
+
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+</div>
