@@ -70,7 +70,7 @@ export class StreamsUtilsService {
               });
             return {
               name: line.name,
-              dsl: line.dslText,
+              dsl: line.originalDslText,
               description: line.description,
               application: apps,
               parent: parent

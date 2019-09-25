@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 /**
- * Applications Add
+ * Streams Utils
  *
  * @author Damien Vitrac
  */
