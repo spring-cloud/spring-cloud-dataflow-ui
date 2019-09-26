@@ -1,0 +1,69 @@
+<app-page-head class="step2">
+  <app-page-head-back [defaultUrl]="'/tasks/utils'" [isNotRegex]="'^(\/tasks\/utils\/)'"></app-page-head-back>
+  <app-page-head-title><strong>Export your tasks</strong></app-page-head-title>
+</app-page-head>
+
+<div dataflowLayoutType type="medium">
+
+
+  <div class="dataflow-alert dataflow-alert-info">
+    <p>You can create an export of your <strong>selected tasks</strong>.</p>
+    <p>This operation will generate and download a <strong>JSON file</strong>.</p>
+  </div>
+
+  <div *ngIf="tasks$ | async as tasks; else loading">
+
+    <div id="empty" class="dataflow-alert" *ngIf="tasks.totalElements === 0">
+      <p>There is <strong>no task registered</strong>, yet.</p>
+    </div>
+
+    <div id="tasks-export" *ngIf="tasks.totalElements > 0">
+      <table class="table table-checkbox">
+        <thead>
+        <tr>
+          <th style="width: 30px">
+            <app-master-checkbox (change)="changeCheckboxes()" *ngIf="form?.checkboxes"
+                                 [items]="form.checkboxes"></app-master-checkbox>
+          </th>
+          <th>Task name</th>
+          <th>DSL</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let item of tasks.items; index as i">
+          <tr>
+            <td style="width: 30px">
+              <input type="checkbox" (change)="changeCheckboxes()"
+                     [(ngModel)]="form.checkboxes[i]"/>
+            </td>
+            <td>
+              <strong>{{ item.name }}</strong>
+            </td>
+            <td>
+              <app-stream-dsl>{{ item.dslText }}</app-stream-dsl>
+            </td>
+          </tr>
+        </ng-container>
+        </tbody>
+      </table>
+
+      <div class="dataflow-page-actions-sticky">
+        <app-page-actions>
+          <button name="cancel" type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+          <button id="btn-export" name="export" type="button" class="btn btn-primary"
+                  (click)="exportTasks(tasks.items)">
+            <span *ngIf="selected > 1">Export the {{ selected }} tasks</span>
+            <span *ngIf="selected === 1">Export the task</span>
+            <span *ngIf="selected === 0">Export tasks</span>
+          </button>
+        </app-page-actions>
+      </div>
+    </div>
+  </div>
+
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+</div>

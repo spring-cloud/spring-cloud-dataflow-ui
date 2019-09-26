@@ -44,6 +44,10 @@ import { TaskDefinitionExecutionsComponent } from './task-definition/executions/
 import { TaskSchedulesFilterPipe } from './task-schedules/task-schedules.filter';
 import { TaskExecutionsStopComponent } from './task-executions-stop/task-executions-stop.component';
 import { TaskExecutionsDestroyComponent } from './task-executions-destroy/task-executions-destroy.component';
+import { TasksUtilsComponent } from './tasks-utils/tasks-utils.component';
+import { TasksImportComponent } from './tasks-utils/tasks-import/tasks-import.component';
+import { TasksExportComponent } from './tasks-utils/tasks-export/tasks-export.component';
+import { TasksUtilsService } from './tasks-utils/tasks-utils.service';
 
 @NgModule({
   imports: [
@@ -87,7 +91,10 @@ import { TaskExecutionsDestroyComponent } from './task-executions-destroy/task-e
     TaskDefinitionExecutionsComponent,
     TaskSchedulesFilterPipe,
     TaskExecutionsStopComponent,
-    TaskExecutionsDestroyComponent
+    TaskExecutionsDestroyComponent,
+    TasksUtilsComponent,
+    TasksImportComponent,
+    TasksExportComponent
   ],
   entryComponents: [
     TaskNodeComponent,
@@ -106,7 +113,8 @@ import { TaskExecutionsDestroyComponent } from './task-executions-destroy/task-e
     RenderService,
     EditorService,
     ToolsService,
-    ContentAssistService
+    ContentAssistService,
+    TasksUtilsService
   ],
   exports: [
     TaskStatusComponent

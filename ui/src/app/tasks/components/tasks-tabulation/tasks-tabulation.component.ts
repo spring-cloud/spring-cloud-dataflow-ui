@@ -122,4 +122,12 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
       window.open(url);
     });
   }
+
+  /**
+   * Navigate to the utils page
+   */
+  utils() {
+    this.router.navigate(['/tasks/utils']);
+  }
+
 }
