@@ -16,6 +16,9 @@ import { TaskScheduleComponent } from './task-schedule/task-schedule.component';
 import { TaskScheduleSummaryComponent } from './task-schedule/summary/task-schedule-summary.component';
 import { TaskDefinitionScheduleComponent } from './task-definition/schedules/task-definition-schedules.component';
 import { TaskDefinitionExecutionsComponent } from './task-definition/executions/task-definition-executions.component';
+import { TasksUtilsComponent } from './tasks-utils/tasks-utils.component';
+import { TasksExportComponent } from './tasks-utils/tasks-export/tasks-export.component';
+import { TasksImportComponent } from './tasks-utils/tasks-import/tasks-import.component';
 
 const taskRoutes: Routes = [
   {
@@ -102,6 +105,20 @@ const taskRoutes: Routes = [
       {
         path: 'schedules/create/:id',
         component: TaskScheduleCreateComponent,
+      },
+      {
+        path: 'utils',
+        component: TasksUtilsComponent,
+        children: [
+          {
+            path: 'export',
+            component: TasksExportComponent
+          },
+          {
+            path: 'import',
+            component: TasksImportComponent
+          },
+        ]
       }
     ]
   }

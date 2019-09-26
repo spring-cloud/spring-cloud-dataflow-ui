@@ -1,0 +1,37 @@
+<app-page>
+
+  <div *ngIf="!isSmallDisplay || radio === '/tasks/utils'">
+    <app-page-head>
+      <app-page-head-back [defaultUrl]="'/tasks'" [isNotRegex]="'^(\/tasks\/utils)'"></app-page-head-back>
+      <app-page-head-title><strong>Tasks Utils</strong></app-page-head-title>
+    </app-page-head>
+    <div class="page-step page-step-1">
+      <div class="page-step-content">
+        <p style="margin-bottom:0">
+          You can <strong>Import</strong> or <strong>export</strong> your task(s).
+        </p>
+      </div>
+      <ul class="step">
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="export">
+            <input type="radio" [(ngModel)]="radio" value="/tasks/utils/export"/>
+            <strong>Export your tasks</strong><br/>Create a JSON file with the selected tasks
+          </a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a routerLink="import">
+            <input type="radio" [(ngModel)]="radio" value="/tasks/utils/import"/>
+            <strong>Import your tasks</strong><br/>Import tasks from a JSON file
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div [class.page-step]="!isSmallDisplay" [class.page-step-2]="!isSmallDisplay">
+    <div class="page-step-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+</app-page>
