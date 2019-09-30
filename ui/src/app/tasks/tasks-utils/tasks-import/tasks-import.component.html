@@ -10,6 +10,7 @@
 
       <div class="dataflow-alert dataflow-alert-info">
         <p>You can import your tasks from a <strong>JSON file</strong>.</p>
+        <p>The file needs to be modified for sensitive properties before importing.</p>
       </div>
 
 
@@ -27,8 +28,8 @@
         </div>
         <div>
           <label class="checkbox-inline">
-            <input type="checkbox" [(ngModel)]="options.optimize"/>
-            Optimize the import (sort)
+            <input type="checkbox" [(ngModel)]="options.excludeChildren"/>
+            Exclude children from composed task
           </label>
         </div>
       </div>

@@ -51,7 +51,9 @@ export class TasksUtilsService {
       }
     }).pipe(
       map((json) => {
-
+        if (!options.excludeChildren) {
+          return json.tasks;
+        }
         const composedName = json.tasks.reduce((p, c) => {
           if (c.composed) {
             p.push(`${c.name}-`);
@@ -60,7 +62,7 @@ export class TasksUtilsService {
         }, []);
 
         let tasks = json.tasks.filter(item => {
-          return !composedName.find(name => item.name.startsWith(name))
+          return !composedName.find(name => item.name.startsWith(name));
         });
         return tasks;
       }),
