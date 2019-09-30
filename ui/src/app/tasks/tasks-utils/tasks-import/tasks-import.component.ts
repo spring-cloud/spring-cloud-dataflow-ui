@@ -42,7 +42,7 @@ export class TasksImportComponent {
    * Import options
    */
   options = {
-    optimize: false
+    excludeChildren: true
   };
 
   /**
