@@ -109,6 +109,38 @@
         <td>Exit Message</td>
         <td>{{ task.task.exitMessage || 'N/A' }}</td>
       </tr>
+      <tr>
+        <td>Resource URL</td>
+        <td>{{ task.task.resourceUrl || 'N/A' }}</td>
+      </tr>
+      <tr>
+        <td>Application Properties</td>
+        <td>
+          <div *ngIf="getObject(task.task.appProperties).length > 0">
+            <div *ngFor="let arg of getObject(task.task.appProperties)">
+              {{ arg[0] }}:
+              <strong>{{ arg[1] }}</strong>
+            </div>
+          </div>
+          <div *ngIf="getObject(task.task.appProperties).length === 0">
+            N/A
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Deployment Properties</td>
+        <td>
+          <div *ngIf="getObject(task.task.deploymentProperties).length > 0">
+            <div *ngFor="let arg of getObject(task.task.deploymentProperties)">
+              {{ arg[0] }}:
+              <strong>{{ arg[1] }}</strong>
+            </div>
+          </div>
+          <div *ngIf="getObject(task.task.deploymentProperties).length === 0">
+            N/A
+          </div>
+        </td>
+      </tr>
       </tbody>
     </table>
 
