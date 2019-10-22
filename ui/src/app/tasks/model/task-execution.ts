@@ -16,6 +16,10 @@ export class TaskExecution {
   public taskExecutionStatus: string;
   public parentExecutionId: number;
 
+  public resourceUrl: string;
+  public appProperties: Object;
+  public deploymentProperties: Object;
+
   constructor(executionId: number,
               exitCode: number,
               taskName: string,
@@ -27,7 +31,10 @@ export class TaskExecution {
               errorMessage: string,
               externalExecutionId: string,
               taskExecutionStatus: string,
-              parentExecutionId: number) {
+              parentExecutionId: number,
+              resourceUrl: string,
+              appProperties: Object,
+              deploymentProperties: Object) {
     this.executionId = executionId;
     this.exitCode = exitCode;
     this.taskName = taskName;
@@ -40,6 +47,9 @@ export class TaskExecution {
     this.taskExecutionStatus = taskExecutionStatus;
     this.externalExecutionId = externalExecutionId;
     this.parentExecutionId = parentExecutionId;
+    this.resourceUrl = resourceUrl;
+    this.appProperties = appProperties;
+    this.deploymentProperties = deploymentProperties;
   }
 
   static fromJSON(jsonItem): TaskExecution {
@@ -55,7 +65,10 @@ export class TaskExecution {
       jsonItem.errorMessage,
       jsonItem.externalExecutionId,
       jsonItem.taskExecutionStatus,
-      jsonItem.parentExecutionId);
+      jsonItem.parentExecutionId,
+      jsonItem.resourceUrl,
+      jsonItem.appProperties,
+      jsonItem.deploymentProperties);
   }
 
   static pageFromJSON(input): Page<TaskExecution> {

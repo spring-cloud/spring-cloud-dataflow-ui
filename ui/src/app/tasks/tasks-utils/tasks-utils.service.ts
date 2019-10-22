@@ -61,7 +61,7 @@ export class TasksUtilsService {
           return p;
         }, []);
 
-        let tasks = json.tasks.filter(item => {
+        const tasks = json.tasks.filter(item => {
           return !composedName.find(name => item.name.startsWith(name));
         });
         return tasks;
