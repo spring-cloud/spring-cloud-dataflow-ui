@@ -23,7 +23,7 @@ import { TasksImportComponent } from './tasks-import.component';
 import { MockTasksService } from '../../../tests/mocks/tasks';
 import { TasksService } from '../../tasks.service';
 
-fdescribe('TasksImportComponent', () => {
+describe('TasksImportComponent', () => {
 
   let component: TasksImportComponent;
   let fixture: ComponentFixture<TasksImportComponent>;

@@ -23,7 +23,7 @@ import { StreamsImportComponent } from './streams-import.component';
 import { MockStreamsUtilsService } from '../../../tests/mocks/streams-utils';
 import { By } from '@angular/platform-browser';
 
-fdescribe('StreamsImportComponent', () => {
+describe('StreamsImportComponent', () => {
 
   let component: StreamsImportComponent;
   let fixture: ComponentFixture<StreamsImportComponent>;
