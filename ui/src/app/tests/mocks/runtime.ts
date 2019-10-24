@@ -23,7 +23,7 @@ export class MockRuntimeAppsService {
 
   public testRuntimeApps: any;
 
-  public getRuntimeApps(): Observable<Page<RuntimeApp>> {
+  public getRuntimeApps(args): Observable<Page<RuntimeApp>> {
     return of(RuntimeApp.pageFromJSON(this.testRuntimeApps));
   }
 }

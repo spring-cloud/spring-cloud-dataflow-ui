@@ -470,6 +470,7 @@ describe('TaskDefinitionsComponent', () => {
         open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+      component.itemsSelected = ['foo', 'bar2'];
       component.destroySelectedTasks();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith(TaskDefinitionsDestroyComponent, { class: 'modal-lg' });

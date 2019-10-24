@@ -464,6 +464,7 @@ describe('StreamsComponent', () => {
       mockBsModalRef.content = {
         open: () => of('testing')
       };
+      component.itemsSelected = ['foo2', 'foo3'];
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
       component.deploySelectedStreams();
       fixture.detectChanges();

@@ -306,6 +306,7 @@ describe('TaskSchedulesComponent', () => {
         open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
+      component.itemsSelected = ['foo1', 'foo2'];
       component.destroySelectedSchedules();
       expect(spy).toHaveBeenCalledWith(TaskSchedulesDestroyComponent, { class: 'modal-lg' });
     }));

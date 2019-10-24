@@ -21,7 +21,7 @@ export class GrafanaInfo implements Serializable<GrafanaInfo> {
     if (input) {
       this.url = input['url'] ? input['url'] : '';
       this.token = input['token'] ? input['token'] : '';
-      this.refreshInterval = isNumber(input['refreshInterval']) ? input['refreshInterval'] : 10;
+      this.refreshInterval = ((typeof input['refreshInterval'] === 'number') ? input['refreshInterval'] : 10);
     }
     return this;
   }
