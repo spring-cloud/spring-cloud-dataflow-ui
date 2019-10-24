@@ -119,19 +119,6 @@ export class TaskExecutionComponent implements OnInit {
   }
 
   /**
-   * transform an Object to an array
-   * @param args
-   */
-  getObject(args: Object): Array<any> {
-    if (!args) {
-      return [];
-    }
-    return Object.keys(args).map((key) => {
-      return [key, args[key]];
-    });
-  }
-
-  /**
    * Route to {@link TaskDefinition} launch page.
    * @param {taskDefinitionName} taskDefinitionName
    */

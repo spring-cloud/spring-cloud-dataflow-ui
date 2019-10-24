@@ -116,13 +116,13 @@
       <tr>
         <td>Application Properties</td>
         <td>
-          <div *ngIf="getObject(task.task.appProperties).length > 0">
-            <div *ngFor="let arg of getObject(task.task.appProperties)">
-              {{ arg[0] }}:
-              <strong>{{ arg[1] }}</strong>
+          <div *ngIf="(task.task.appProperties | keyvalue)?.length > 0">
+            <div *ngFor="let arg of (task.task.appProperties | keyvalue)">
+              {{ arg.key }}:
+              <strong>{{ arg.value }}</strong>
             </div>
           </div>
-          <div *ngIf="getObject(task.task.appProperties).length === 0">
+          <div *ngIf="(task.task.appProperties | keyvalue)?.length === 0">
             N/A
           </div>
         </td>
@@ -130,13 +130,13 @@
       <tr>
         <td>Deployment Properties</td>
         <td>
-          <div *ngIf="getObject(task.task.deploymentProperties).length > 0">
-            <div *ngFor="let arg of getObject(task.task.deploymentProperties)">
-              {{ arg[0] }}:
-              <strong>{{ arg[1] }}</strong>
+          <div *ngIf="(task.task.deploymentProperties | keyvalue)?.length > 0">
+            <div *ngFor="let arg of (task.task.deploymentProperties | keyvalue)">
+              {{ arg.key }}:
+              <strong>{{ arg.value }}</strong>
             </div>
           </div>
-          <div *ngIf="getObject(task.task.deploymentProperties).length === 0">
+          <div *ngIf="(task.task.deploymentProperties | keyvalue)?.length === 0">
             N/A
           </div>
         </td>
