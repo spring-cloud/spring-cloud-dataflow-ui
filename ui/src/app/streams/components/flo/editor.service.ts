@@ -162,12 +162,12 @@ export class EditorService implements Flo.Editor {
                 outgoingSourceLinks.splice(idx, 1);
             }
 
-            if (targetIncomingLinks.length > 0) {
-                // It is ok if the target is a destination
-                if (cellViewT.model.attr('metadata/name') !== 'destination') {
-                    return false;
-                }
-            }
+            // if (targetIncomingLinks.length > 0) {
+            //     // It is ok if the target is a destination
+            //     if (cellViewT.model.attr('metadata/name') !== 'destination') {
+            //         return false;
+            //     }
+            // }
 
             if (outgoingSourceLinks.length > 0) {
                 // Make sure there is no link between this source and target already
@@ -331,12 +331,12 @@ export class EditorService implements Flo.Editor {
                     message: EditorService.VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION,
                     range: element.attr('range')
                 });
-            } else if (nontaplinks > 1) {
-                errors.push({
-                    severity: Flo.Severity.Error,
-                    message: EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE,
-                    range: element.attr('range')
-                });
+            // } else if (nontaplinks > 1) {
+            //     errors.push({
+            //         severity: Flo.Severity.Error,
+            //         message: EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE,
+            //         range: element.attr('range')
+            //     });
             }
         }
     }
@@ -354,7 +354,7 @@ export class EditorService implements Flo.Editor {
 
     private validateProcessor(element: dia.Element, incoming: Array<dia.Link>,
                               outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        if (incoming.length !== 1) {
+        if (incoming.length < 1) {
             errors.push({
                 severity: Flo.Severity.Error,
                 message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
@@ -375,19 +375,19 @@ export class EditorService implements Flo.Editor {
                     message: EditorService.VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION,
                     range: element.attr('range')
                 });
-            } else if (nontaplinks > 1) {
-                errors.push({
-                    severity: Flo.Severity.Error,
-                    message: EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR,
-                    range: element.attr('range')
-                });
+            // } else if (nontaplinks > 1) {
+            //     errors.push({
+            //         severity: Flo.Severity.Error,
+            //         message: EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR,
+            //         range: element.attr('range')
+            //     });
             }
         }
     }
 
     private validateSink(element: dia.Element, incoming: Array<dia.Link>,
                          outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        if (incoming.length !== 1) {
+        if (incoming.length < 1) {
             errors.push({
                 severity: Flo.Severity.Error,
                 message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
@@ -405,7 +405,7 @@ export class EditorService implements Flo.Editor {
 
     private validateTask(element: dia.Element, incoming: Array<dia.Link>,
                          outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        if (incoming.length !== 1) {
+        if (incoming.length < 1) {
             errors.push({
                 severity: Flo.Severity.Error,
                 message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',

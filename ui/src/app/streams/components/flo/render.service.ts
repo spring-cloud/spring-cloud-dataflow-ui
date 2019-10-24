@@ -159,13 +159,13 @@ export class RenderService implements Flo.Renderer {
       const target = graph.getCell(targetId);
 
       // If reconnecting source anchor to a shape with existing primary link switch the link to tap link
-      if (newSource) {
-        const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
-        const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
-
-        link.attr('props/isTapLink', primaryLink ? true : false);
-        this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
-      }
+      // if (newSource) {
+      //   const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
+      //   const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
+      //
+      //   link.attr('props/isTapLink', primaryLink ? true : false);
+      //   this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
+      // }
 
       // Show input port for 'destination' if outgoing links are gone
       if (oldSource && oldSource.attr('metadata/name') === 'destination'
@@ -354,13 +354,13 @@ export class RenderService implements Flo.Renderer {
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
     LoggerService.log('render-service.handleLinkAdded');
-    if (!target && source && !this.isChannel(source)) {
-      // this is a new link being drawn in the UI (it is not connected to anything yet).
-      // Need to decide whether to make it a tap link
-      const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
-      const primaryLinkExists = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink')) ? true : false;
-      link.attr('props/isTapLink', primaryLinkExists ? true : false);
-    }
+    // if (!target && source && !this.isChannel(source)) {
+    //   // this is a new link being drawn in the UI (it is not connected to anything yet).
+    //   // Need to decide whether to make it a tap link
+    //   const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
+    //   const primaryLinkExists = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink')) ? true : false;
+    //   link.attr('props/isTapLink', primaryLinkExists ? true : false);
+    // }
     if (link.attr('props/isTapLink') === true) {
       this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
     }

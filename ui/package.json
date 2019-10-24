@@ -49,9 +49,9 @@
     "sockjs-client": "1.4.0",
     "web-animations-js": "2.3.2",
     "stompjs": "2.3.3",
-    "tippy.js": "5.1.0",
-    "spring-flo": "0.8.12",
-    "uuid": "3.3.3"
+    "tippy.js": "4.3.5",
+    "spring-flo": "git+file:///Users/aboyko/git/spring-flo#cm-regular",
+    "uuid": "3.3.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.803.14",
