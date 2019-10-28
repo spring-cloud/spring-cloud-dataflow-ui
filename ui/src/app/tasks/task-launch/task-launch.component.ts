@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TasksService } from '../tasks.service';
-import { catchError, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { catchError, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { TaskDefinition } from '../model/task-definition';
 import { FormControl, FormGroup, Validator, Validators } from '@angular/forms';
@@ -11,6 +11,7 @@ import { RoutingStateService } from '../../shared/services/routing-state.service
 import { TaskLaunchParams } from '../components/tasks.interface';
 import { TaskLaunchValidator } from './task-launch.validator';
 import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component that provides a launcher of task.
@@ -72,6 +73,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   constructor(private tasksService: TasksService,
               private notificationService: NotificationService,
               private routingStateService: RoutingStateService,
+              private blockerService: BlockerService,
               private route: ActivatedRoute,
               private router: Router) {
   }
@@ -163,8 +165,9 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
       const taskArguments = this.form.get('args').value.toString().split('\n');
       const taskProperties = this.form.get('props').value.toString().split('\n');
       const platform = this.form.get('platform').value;
+      this.blockerService.lock();
       this.tasksService.launchDefinition(this.prepareParams(name, taskArguments, taskProperties, platform))
-        .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           data => {
             this.notificationService.success('Successfully launched task "' + name + '"');

@@ -24,6 +24,7 @@ import { Platform } from '../../shared/model/platform';
 import { TaskDefinition } from '../model/task-definition';
 import { By } from '@angular/platform-browser';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -67,7 +68,8 @@ describe('TaskLaunchComponent', () => {
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
-        ClipboardService
+        ClipboardService,
+        BlockerService
       ]
     })
       .compileComponents();
