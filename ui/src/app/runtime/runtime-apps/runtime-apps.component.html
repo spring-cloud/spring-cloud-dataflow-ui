@@ -37,13 +37,15 @@
               <app-runtime-state [runtimeApp]="runtimeApp"></app-runtime-state>
             </td>
             <td>
-              {{ runtimeApp.instances._embedded.appInstanceStatusResourceList.length }}
-              <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length == 1">
-              instance
-            </span>
-              <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length > 1">
-              instances
-            </span>
+              <span *ngIf="runtimeApp.instances?._embedded?.appInstanceStatusResourceList?.length > 0">
+                {{ runtimeApp.instances._embedded.appInstanceStatusResourceList.length }}
+                <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length == 1">
+                  instance
+                </span>
+                <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length > 1">
+                  instances
+                </span>
+              </span>
             </td>
             <td class="table-actions" width="10px" nowrap="">
               <app-list-row-actions [item]="runtimeApp" (action)="applyAction($event.action, $event.args)"
