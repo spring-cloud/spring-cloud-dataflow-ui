@@ -17,7 +17,7 @@
           <label class="control-label col-sm-4">Definition</label>
           <div class="col-sm-18">
             <div class="control-empty">
-              <app-stream-dsl>{{ def.def }}</app-stream-dsl>
+              <app-stream-dsl>{{ def.def | truncate: 90 }}</app-stream-dsl>
             </div>
           </div>
         </div>
