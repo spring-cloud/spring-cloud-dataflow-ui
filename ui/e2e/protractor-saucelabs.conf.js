@@ -29,12 +29,12 @@ exports.config = {
       platform: 'Windows 10',
       idleTimeout: 512
     },
-    {
-      name: 'E2E Safari/Mac',
-      browserName: 'safari',
-      platform: 'macOS 10.13',
-      idleTimeout: 512
-    }
+    // {
+    //   name: 'E2E Safari/Mac',
+    //   browserName: 'safari',
+    //   platform: 'macOS 10.13',
+    //   idleTimeout: 512
+    // }
     // {
     //   name: 'E2E Edge/Win10',
     //   browserName: 'MicrosoftEdge',
