@@ -27,7 +27,11 @@ export class RuntimeApp {
     const page = Page.fromJSON<RuntimeApp>(input);
     if (input && input._embedded && input._embedded.appStatusResourceList) {
       page.items = (input._embedded.appStatusResourceList as RuntimeApp[]).map((item) => {
-        item.appInstances = item.instances._embedded.appInstanceStatusResourceList;
+        if (!!item.instances._embedded && !!item.instances._embedded.appInstanceStatusResourceList) {
+          item.appInstances = item.instances._embedded.appInstanceStatusResourceList;
+        } else {
+          item.appInstances = []
+        }
         return item;
       });
     }
