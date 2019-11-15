@@ -44,9 +44,9 @@ jobs:
       script: ./run-npm-e2e-local.sh
       after_success: skip
     - script: ./run-npm-e2e-saucelabs.sh
-      if: type != pull_request
+#      if: type != pull_request
       after_success: skip
     - script: ./run-npm-e2e-browserstack.sh
-      if: type != pull_request
+#      if: type != pull_request
       after_success: skip
 

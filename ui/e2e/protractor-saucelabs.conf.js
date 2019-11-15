@@ -29,12 +29,13 @@ exports.config = {
       platform: 'Windows 10',
       idleTimeout: 512
     },
-    // {
-    //   name: 'E2E Safari/Mac',
-    //   browserName: 'safari',
-    //   platform: 'macOS 10.13',
-    //   idleTimeout: 512
-    // }
+    {
+      name: 'E2E Safari/Mac',
+      browserName: 'safari',
+      browserVersion: 'latest',
+      platformName: 'macOS 10.14',
+      idleTimeout: 1024
+    }
     // {
     //   name: 'E2E Edge/Win10',
     //   browserName: 'MicrosoftEdge',
@@ -53,7 +54,7 @@ exports.config = {
   framework: 'jasmine',
   beforeLaunch: function() {
     const q = require('q');
-    const deferred = q.defer(); 
+    const deferred = q.defer();
     startSauceConnect(deferred);
     return deferred.promise;
   },
