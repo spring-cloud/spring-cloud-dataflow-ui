@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap';
+import {BsModalService, isSameMonth} from 'ngx-bootstrap';
 import { ApplicationType } from '../../../shared/model';
 import { Flo, Constants } from 'spring-flo';
 import { dia, g } from 'jointjs';
@@ -24,6 +24,8 @@ import { Utils } from './support/utils';
 import { Utils as SharedUtils } from '../../../shared/flo/support/utils';
 import * as _joint from 'jointjs';
 import { StreamGraphPropertiesSource, StreamHead } from './properties/stream-properties-source';
+import * as _ from 'lodash';
+import {AppMetadata} from "../../../shared/flo/support/app-metadata";
 
 const joint: any = _joint;
 
@@ -55,6 +57,23 @@ export class EditorService implements Flo.Editor {
       vertexAdd: false
     };
 
+    get highlighting() {
+      return {
+        connecting: {
+          name: 'addParentClass',
+          options: {
+            className: 'connecting'
+          }
+        },
+        default: {
+          name: 'addClass',
+          options: {
+            className: 'highlighted'
+          }
+        }
+      };
+    };
+
     createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
                                                          action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
         if (owner.model instanceof joint.dia.Link) {
@@ -64,12 +83,12 @@ export class EditorService implements Flo.Editor {
             const bbox = element.getBBox();
 
             // Delete handle
-            let pt = bbox.origin().offset(bbox.width + 3, bbox.height + 3);
+            let pt = bbox.origin().offset(bbox.width/2 + 5, -5);
             createHandle(owner, Constants.REMOVE_HANDLE_TYPE, flo.deleteSelectedNode, pt);
 
             // Properties handle
             if (!SharedUtils.isUnresolved(element)) {
-                pt = bbox.origin().offset(-14, bbox.height + 3);
+                pt = bbox.origin().offset(bbox.width/2 - 5, -5);
                 createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
                     const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
                     modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
@@ -91,6 +110,9 @@ export class EditorService implements Flo.Editor {
                     } : undefined;
                   modalRef.content.setData(new StreamGraphPropertiesSource(element, streamHead));
                 }, pt);
+
+                // Separator handle for cosmetic purposes
+                createHandle(owner, 'separator', () => {}, bbox.origin().offset(bbox.width/2, -5));
             }
         }
     }
@@ -100,7 +122,7 @@ export class EditorService implements Flo.Editor {
         let idx: number;
 
         // Prevent linking FROM node input port
-        if (magnetS && magnetS.getAttribute('type') === 'input') {
+        if (magnetS && magnetS.getAttribute('port') === 'input') {
             return false;
         }
 
@@ -110,7 +132,7 @@ export class EditorService implements Flo.Editor {
         }
 
         // Prevent linking TO node output port
-        if (magnetT && magnetT.getAttribute('type') === 'output') {
+        if (magnetT && magnetT.getAttribute('port') === 'output') {
             return false;
         }
 
@@ -162,20 +184,31 @@ export class EditorService implements Flo.Editor {
                 outgoingSourceLinks.splice(idx, 1);
             }
 
-            // if (targetIncomingLinks.length > 0) {
-            //     // It is ok if the target is a destination
-            //     if (cellViewT.model.attr('metadata/name') !== 'destination') {
-            //         return false;
-            //     }
-            // }
+            if (targetIncomingLinks.length > 0) {
+                // It is ok if the target is a destination
+                if (cellViewT.model.attr('metadata/name') !== 'destination') {
+                    if (!linkView.model.attr('props/isTapLink') && targetIncomingLinks.length > 0) {
+                      const targetMagnetSelector = cellViewT.getSelector(magnetT);
+                      const sameTarget = targetIncomingLinks
+                        .filter(l => !l.attr('props/isTapLink'))
+                        .map(l => l.target())
+                        .find(target => {
+                          return target.id === cellViewT.model.id && target.port === magnetT.getAttribute('port') && target.selector === targetMagnetSelector;
+                        });
+                      if (sameTarget) {
+                        return false;
+                      }
+                    }
+                }
+            }
 
-            if (outgoingSourceLinks.length > 0) {
+            if (!linkView.model.attr('props/isTapLink') && outgoingSourceLinks.length > 0) {
+                const sourceMagnetSelector = cellViewS.getSelector(magnetS);
                 // Make sure there is no link between this source and target already
                 const anotherLink = outgoingSourceLinks
-                    .map(l => l.get('target').id)
-                    .filter(id => typeof id === 'string')
-                    .map(id => graph.getCell(id))
-                    .find(t => t && t === cellViewT.model);
+                    .filter(l => !l.attr('props/isTapLink'))
+                    .map(l => l.source())
+                    .find(source => source.id === cellViewS.model.id && source.port === magnetS.getAttribute('port') && source.selector === sourceMagnetSelector);
                 if (anotherLink) {
                     return false;
                 }
@@ -354,13 +387,13 @@ export class EditorService implements Flo.Editor {
 
     private validateProcessor(element: dia.Element, incoming: Array<dia.Link>,
                               outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        if (incoming.length < 1) {
-            errors.push({
-                severity: Flo.Severity.Error,
-                message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
-                range: element.attr('range')
-            });
-        }
+        // if (incoming.length !== 1) {
+        //     errors.push({
+        //         severity: Flo.Severity.Error,
+        //         message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
+        //         range: element.attr('range')
+        //     });
+        // }
         if (outgoing.length === 0) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -387,13 +420,13 @@ export class EditorService implements Flo.Editor {
 
     private validateSink(element: dia.Element, incoming: Array<dia.Link>,
                          outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        if (incoming.length < 1) {
-            errors.push({
-                severity: Flo.Severity.Error,
-                message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
-                range: element.attr('range')
-            });
-        }
+        // if (incoming.length !== 1) {
+        //     errors.push({
+        //         severity: Flo.Severity.Error,
+        //         message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
+        //         range: element.attr('range')
+        //     });
+        // }
         if (outgoing.length !== 0) {
             errors.push({
                 severity: Flo.Severity.Error,
@@ -405,7 +438,7 @@ export class EditorService implements Flo.Editor {
 
     private validateTask(element: dia.Element, incoming: Array<dia.Link>,
                          outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
-        if (incoming.length < 1) {
+        if (incoming.length !== 1) {
             errors.push({
                 severity: Flo.Severity.Error,
                 message: incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
@@ -475,7 +508,8 @@ export class EditorService implements Flo.Editor {
         return link.attr('props/isTapLink') === true;
     }
 
-    private validateConnectedLinks(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
+    private validateConnectedLinks(paper: dia.Paper, element: dia.Element, errors: Array<Flo.Marker>) {
+        const graph = paper.model;
         const group = element.attr('metadata/group');
         const type = element.attr('metadata/name');
         const incoming: Array<dia.Link> = [];
@@ -542,6 +576,71 @@ export class EditorService implements Flo.Editor {
                     this.validateDestination(element, incoming, outgoing, tap, errors);
                 }
         }
+
+        this.validatePortLinks(paper, element, errors, incoming, outgoing);
+    }
+
+    private validatePortLinks(paper: dia.Paper, element: dia.Element, errors: Array<Flo.Marker>,
+                              incoming: Array<dia.Link>, outgoing: Array<dia.Link>) {
+
+      const incomingGroups = _.groupBy(incoming, link => link.attr('props/inputChannel') || '');
+      Object.keys(incomingGroups).forEach(channel => {
+        const group = incomingGroups[channel];
+
+        // Error on unresolved channels not present in metamodel
+        if (channel && element.attr('metadata') instanceof AppMetadata) {
+          const inputChannels = (<AppMetadata> element.attr('metadata')).inputChannels;
+          if (!Array.isArray(inputChannels) || inputChannels.indexOf(channel) < 0) {
+            errors.push({
+              severity: Flo.Severity.Error,
+              message: `Incoming link to unresolved channel '${channel}'`,
+              range: element.attr('range')
+            });
+          }
+        }
+
+        // More than one incoming primary link on the same channel is disallowed
+        const primaryLinks = group.filter(l => !l.attr('props/isTapLink'));
+        if (primaryLinks.length > 1) {
+          const label = channel ? `More than one incoming non-tap links to channel ${channel}`
+            : `More than one incoming non-tap link to element`;
+          errors.push({
+            severity: Flo.Severity.Error,
+            message: label,
+            range: element.attr('range')
+          });
+        }
+      });
+
+      const outgoingGroups = _.groupBy(outgoing, link => link.attr('props/outputChannel') || '');
+      Object.keys(outgoingGroups).forEach(channel => {
+        const group = outgoingGroups[channel];
+
+        // Error on unresolved channels not present in metamodel
+        if (channel && element.attr('metadata') instanceof AppMetadata) {
+          const outputChannels = (<AppMetadata> element.attr('metadata')).outputChannels;
+          if (!Array.isArray(outputChannels) || outputChannels.indexOf(channel) < 0) {
+            errors.push({
+              severity: Flo.Severity.Error,
+              message: `Outgoing link from unresolved channel '${channel}'`,
+              range: element.attr('range')
+            });
+          }
+        }
+
+        // More than one outgoing primary link on the same channel is disallowed
+        const primaryLinks = group.filter(l => !l.attr('props/isTapLink'));
+        if (primaryLinks.length > 1) {
+          const label = channel ? `More than one outgoing non-tap links from channel ${channel}`
+            : `More than one outgoing non-tap link from element`;
+          errors.push({
+            severity: Flo.Severity.Error,
+            message: label,
+            range: element.attr('range')
+          });
+        }
+      });
+
     }
 
     /**
@@ -596,11 +695,11 @@ export class EditorService implements Flo.Editor {
         }
     }
 
-    private validateNode(graph: dia.Graph, element: dia.Element): Promise<Array<Flo.Marker>> {
+    private validateNode(paper: dia.Paper, element: dia.Element): Promise<Array<Flo.Marker>> {
         return new Promise((resolve) => {
             const markers: Array<Flo.Marker> = [];
             this.validateMetadata(element, markers);
-            this.validateConnectedLinks(graph, element, markers);
+            this.validateConnectedLinks(paper, element, markers);
             this.validateProperties(element, markers).then(() => {
                 resolve(markers);
             });
@@ -613,7 +712,7 @@ export class EditorService implements Flo.Editor {
             const promises: Promise<void>[] = [];
             graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
                 promises.push(new Promise<void>((nodeFinished) => {
-                    this.validateNode(graph, e).then((result) => {
+                    this.validateNode(flo.getPaper(), e).then((result) => {
                         markers.set(e.id, result);
                         nodeFinished();
                     });

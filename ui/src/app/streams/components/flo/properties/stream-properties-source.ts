@@ -4,6 +4,7 @@ import { AppUiProperty } from '../../../../shared/flo/support/app-ui-property';
 import { Flo, Properties } from 'spring-flo';
 import { dia } from 'jointjs';
 import PropertiesSource = Properties.PropertiesSource;
+import {AppMetadata} from "../../../../shared/flo/support/app-metadata";
 
 export interface StreamHead {
   presentStreamNames: string[];
@@ -51,7 +52,38 @@ export class StreamGraphPropertiesSource extends GraphNodePropertiesSource imple
         isSemantic: false
       });
     }
+
     return notationalProperties;
+  }
+
+  protected createProperty(metadata: Flo.PropertyMetadata): AppUiProperty {
+    const property: any = super.createProperty(metadata);
+    if (this.cell instanceof dia.Link) {
+      const link = <dia.Link> this.cell;
+      switch (metadata.id) {
+        case 'outputChannel':
+          property.type = Properties.InputType[Properties.InputType.SELECT];
+          const sourceMetadata = link.getSourceElement().attr('metadata')
+          if (sourceMetadata instanceof AppMetadata) {
+            const sourceAppMetadata = <AppMetadata> sourceMetadata;
+            property.valueOptions = sourceAppMetadata.outputChannels || [];
+          } else {
+            property.valueOptions = [];
+          }
+          break;
+        case 'inputChannel':
+          property.type = Properties.InputType[Properties.InputType.SELECT];
+          const targetMetadata = link.getTargetElement().attr('metadata')
+          if (targetMetadata instanceof AppMetadata) {
+            const targetAppMetadata = <AppMetadata> targetMetadata;
+            property.valueOptions = targetAppMetadata.inputChannels || [];
+          } else {
+            property.valueOptions = [];
+          }
+          break;
+      }
+    }
+    return property;
   }
 
   protected determineAttributeName(metadata: Flo.PropertyMetadata): string {

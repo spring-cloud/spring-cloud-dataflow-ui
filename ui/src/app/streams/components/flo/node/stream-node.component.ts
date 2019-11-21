@@ -20,5 +20,12 @@ export class StreamNodeComponent extends NodeComponent {
     super(docService);
   }
 
+  isSingleOutputPort(): boolean {
+    return this.view.model.attr('.output-port');
+  }
+
+  isSingleIntputPort(): boolean {
+    return this.view.model.attr('.input-port');
+  }
 }
 

@@ -7,7 +7,7 @@ $btn-default-border: #DFE5E8;
 $spring-light-grey: #EEEEEE;
 $btn-default-color: white;
 $btn-default-bg: #607580;
-$flo-shape-fill-color: #eeeeee;
+$flo-shape-fill-color: #f1f1f1;
 $spring-grey: #DFE5E8;
 
 .stream-editor {
@@ -83,20 +83,12 @@ $spring-grey: #DFE5E8;
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-.available-magnet {
-  stroke-width: 3;
-}
-
 /* Otherwise ports, link labels, embedded shapes get outline on focus */
 svg * {
   outline: none;
 }
 
-.input-port {
-  cursor: pointer;
-}
-
-.output-port {
+.port-shape-group {
   cursor: pointer;
 }
 
@@ -104,19 +96,19 @@ svg * {
   cursor: pointer;
 }
 
-.joint-element.highlighted circle {
-  stroke: #34302d;
-  stroke-width: 3;
-}
-
-.joint-element.highlighted path {
-  stroke: #34302d;
-  stroke-width: 3;
-}
-
-.joint-link.highlighted path {
-  stroke-width: 3;
-}
+//.joint-element.highlighted circle {
+//  stroke: #34302d;
+//  stroke-width: 3;
+//}
+//
+//.joint-element.highlighted path {
+//  stroke: #34302d;
+//  stroke-width: 3;
+//}
+//
+//.joint-link.highlighted path {
+//  stroke-width: 3;
+//}
 
 // Make transparent the circle around the link-tools (cog) icon. It'll allow shape to have a circle clicking area
 .link-tools .tool-options circle {
@@ -202,12 +194,12 @@ svg * {
 }
 
 .palette-paper {
-  background-color: $spring-light-grey;
+  background-color: white;
   border-color: $btn-default-border;
 }
 
 .palette-paper.joint-paper.joint-theme-default {
-  background-color: $spring-light-grey;
+  background-color: white;
 }
 
 .dataflow-main-container .palette-filter {
@@ -243,12 +235,14 @@ svg * {
 }
 
 .stream-module .box {
-  stroke: $spring-green;
+  stroke: none;
   fill: $flo-shape-fill-color;
+  rx: 8;
+  ry: 8;
 }
 
 .destination .box {
-  stroke: $spring-green;
+  stroke: none;
   fill: $flo-shape-fill-color;
 }
 
@@ -354,6 +348,34 @@ svg * {
   display: block;
 }
 
+.link-tool.create-stream .tool-options {
+  display: block;
+}
+
+.flo-port-label {
+  fill: black;
+}
+
+.flo-port-label-bg {
+  fill: lightblue;
+  stroke: lightblue;
+  stroke-width: 7px;
+  rx: 3;
+  ry: 3;
+  refWidth: 1;
+  refHeight: 1;
+}
+
+.joint-link:hover .link-channel-label {
+  opacity: 1;
+}
+
+.link-channel-label {
+  opacity: 0;
+}
+
+
+
 @keyframes flash-stroke-width {
   0%    { stroke-width: 1; }
   50%   { stroke-width: 4; }
@@ -455,4 +477,110 @@ table.zoom-canvas-control {
   border-color: $btn-default-border;
 }
 
+.connecting .flo-input-port {
+  fill: $spring-green;
+  r: 4;
+}
 
+.connecting .flo-output-port {
+  fill: $spring-green;
+  r: 4;
+}
+
+.connecting .label-group {
+  display: block;
+}
+
+.label-group {
+  display: none;
+}
+
+.flo-port {
+  fill: rgb(24, 41, 50);
+  stroke: white;
+  stroke-width: 2px;
+}
+
+.flo-port-inner-circle {
+  fill: white;
+  stroke: none;
+}
+
+.available-magnet .flo-port {
+  stroke: none;
+}
+
+
+.flo-input-multiport {
+  fill: #777777;
+  stroke-width: 1px;
+  stroke: #34302d;
+}
+
+.flo-output-multiport {
+  fill: #777777;
+  stroke-width: 1px;
+  stroke: #34302d;
+}
+
+.flo-port-label {
+  fill: black;
+}
+
+.flo-port-label-bg {
+  fill: lightblue;
+  stroke: lightblue;
+  stroke-width: 7px;
+  rx: 3;
+  ry: 3;
+  refWidth: 1;
+  refHeight: 1;
+}
+
+.select-1, .select-2, .select-3, .select-4, .select-5, .select-6 {
+  fill: #fff;
+  opacity: 0;
+  width: 3px;
+  height: 3px;
+}
+
+.select-outline {
+  opacity: 0;
+  rx: 8;
+  ry: 8;
+  fill: rgb(208, 231, 255);
+  stroke: rgb(208, 231, 255);
+  stroke-width: 1px;
+}
+
+.joint-element.highlighted .box {
+  stroke: #222;
+  stroke-width: 1px;
+  fill: #fff;
+}
+
+.joint-element.highlighted .select-1, .joint-element.highlighted .select-2, .joint-element.highlighted .select-3,
+.joint-element.highlighted .select-4, .joint-element.highlighted .select-5, .joint-element.highlighted .select-6 {
+  opacity: 1;
+  stroke-width: 1px;
+  width: 3px;
+  height: 3px;
+}
+
+.joint-element.highlighted .select-outline {
+  opacity: 1;
+  fill: rgb(208, 231, 255);
+  stroke: rgb(208, 231, 255);
+  stroke-width: 10px;
+}
+
+.handle-label {
+  fill: rgb(116,116,116);
+  font-size: 12px;
+  font-family: "Source Sans Pro", sans-serif;
+  text-decoration: underline;
+}
+
+.handle-label:hover {
+  font-weight: bolder;
+}

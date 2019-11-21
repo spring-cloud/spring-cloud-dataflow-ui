@@ -19,7 +19,7 @@ import {
   Injectable, ComponentFactoryResolver, Injector, ApplicationRef
 } from '@angular/core';
 import { MetamodelService } from './metamodel.service';
-import { Flo } from 'spring-flo';
+import {Constants, Flo} from 'spring-flo';
 import { dia } from 'jointjs';
 import { Utils } from './support/utils';
 import { ViewHelper } from './support/view-helper';
@@ -27,6 +27,11 @@ import { NodeHelper } from './support/node-helper';
 import { layout } from './support/layout';
 import * as _joint from 'jointjs';
 import { LoggerService } from '../../../shared/services/logger.service';
+import {BsModalService} from "ngx-bootstrap";
+import {StreamPropertiesDialogComponent} from "./properties/stream-properties-dialog.component";
+import {StreamGraphPropertiesSource} from "./properties/stream-properties-source";
+import {AppMetadata} from "../../../shared/flo/support/app-metadata";
+import * as _ from 'lodash';
 
 const joint: any = _joint;
 
@@ -40,6 +45,7 @@ const joint: any = _joint;
 export class RenderService implements Flo.Renderer {
 
   constructor(private metamodelService: MetamodelService,
+              private bsModalService: BsModalService,
               private componentFactoryResolver?: ComponentFactoryResolver,
               private injector?: Injector,
               private applicationRef?: ApplicationRef) {
@@ -53,8 +59,13 @@ export class RenderService implements Flo.Renderer {
     return NodeHelper.createDecoration(kind);
   }
 
-  createNode(metadata: Flo.ElementMetadata): dia.Element {
-    return NodeHelper.createNode(metadata);
+  createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
+    const element =  NodeHelper.createNode(metadata);
+    const isPalette = viewerDescriptor.graph.get('type') === Constants.PALETTE_CONTEXT;
+    if (!isPalette) {
+      NodeHelper.createPorts(element, metadata);
+    }
+    return element;
   }
 
   initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor) {
@@ -73,8 +84,13 @@ export class RenderService implements Flo.Renderer {
     if (cell instanceof joint.dia.Element) {
       const element = <dia.Element> cell;
       if (changedPropertyPath === 'stream-name') {
-        element.attr('.stream-label/text', element.attr('stream-name'));
         element.attr('.stream-label/display', Utils.canBeHeadOfStream(paper.model, <dia.Element>element) ? 'block' : 'none');
+        if (element.attr('stream-name') ) {
+          element.attr('.stream-label/text', element.attr('stream-name'));
+        } else {
+          element.attr('.stream-label/text', '');
+          element.removeAttr('.stream-label/text');
+        }
       } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
         // fitLabel() calls update as necessary, so set label text silently
         element.attr('.label1/text', element.attr('props/name') ? element.attr('props/name') : element.attr('metadata/name'));
@@ -101,47 +117,173 @@ export class RenderService implements Flo.Renderer {
 
     if (cell instanceof joint.dia.Link) {
       const link = <dia.Link> cell;
-      if (changedPropertyPath === 'props/isTapLink') {
-        const isTapLink = link.attr('props/isTapLink');
-        const linkView = paper ? paper.findViewByModel(link) : undefined;
-        if (linkView) {
-          if (isTapLink) {
-            linkView.$('.connection, .marker-source, .marker-target').toArray()
-              .forEach(connection => joint.V(connection).addClass('tapped-output-from-app'));
-          } else {
-            linkView.$('.connection, .marker-source, .marker-target').toArray()
-              .forEach(connection => joint.V(connection).removeClass('tapped-output-from-app'));
+      switch (changedPropertyPath) {
+        case 'props/isTapLink':
+          const isTapLink = link.attr('props/isTapLink');
+          const linkView = paper ? paper.findViewByModel(link) : undefined;
+          if (linkView) {
+            const cssClasses = link.attr('.connection/class') || '';
+            if (isTapLink) {
+              link.attr('.connection/class', cssClasses + ' tapped-output-from-app');
+              // linkView.$('.connection, .marker-source, .marker-target').toArray()
+              //   .forEach(connection => joint.V(connection).addClass('tapped-output-from-app'));
+            } else {
+              link.attr('.connection/class', cssClasses.replace(' tapped-output-from-app', '') || 'connection');
+              // linkView.$('.connection, .marker-source, .marker-target').toArray()
+              //   .forEach(connection => joint.V(connection).removeClass('tapped-output-from-app'));
+            }
           }
+          break;
+        case 'props/inputChannel': {
+          const port = link.attr('props/inputChannel');
+          if (port) {
+            const target = link.target();
+            const targetElement = link.getTargetElement();
+            const elementView = paper.findViewByModel(targetElement);
+            if (elementView) {
+              let portElement;
+              portElement = elementView.$(`[channel='${port}']`);
+              if (portElement && portElement.length) {
+                // If port DOM element found set the new link target.
+                // Otherwise, assume it's a "multiport" single port for a large number of input channels
+                target.port = portElement.attr('port');
+                target.selector = elementView.getSelector(<SVGElement>portElement[0]);
+                link.target(target);
+              }
+            }
+          }
+          this.updateTargetLabel(link);
+          break;
+        }
+        case 'props/outputChannel': {
+          const port = link.attr('props/outputChannel');
+          if (port) {
+            const source = link.source();
+            const sourceElement = link.getSourceElement();
+            const elementView = paper.findViewByModel(sourceElement);
+            if (elementView) {
+              let portElement = elementView.$(`[channel='${port}']`);
+              if (portElement && portElement.length) {
+                // If port DOM element found set the new link target.
+                // Otherwise, assume it's a "multiport" single port for a large number of input channels
+                source.port = portElement.attr('port');
+                source.selector = elementView.getSelector(<any>portElement[0]);
+                link.source(source);
+              }
+            }
+          }
+          this.updateSourceLabel(link);
+          break;
         }
       }
       LoggerService.log('link being refreshed');
     }
   }
 
-  initializeNewNode(node: dia.Element, viewerDescriptor: Flo.ViewerDescriptor): void {
-    const metadata: Flo.ElementMetadata = node.attr('metadata');
-    if (metadata) {
-      const paper = viewerDescriptor.paper;
-      if (paper) {
-        const isPalette = paper.model.get('type') === joint.shapes.flo.PALETTE_TYPE;
-        const isCanvas = paper.model.get('type') === joint.shapes.flo.CANVAS_TYPE;
-        if (metadata.name === 'tap') {
-          this.refreshVisuals(node, 'props/name', paper);
-        } else if (metadata.name === 'destination') {
-          this.refreshVisuals(node, 'props/name', paper);
-        } else {
-          this.refreshVisuals(node, 'node-name', paper);
-        }
-
-        if (isCanvas) {
-          this.refreshVisuals(node, 'stream-name', paper);
+  private updateSourceLabel(link: joint.dia.Link) {
+    const labelText = link.attr('props/outputChannel');
+    setTimeout(() => {
+      let idx = -1;
+      for (let i = 0; idx < 0 && i < link.labels().length; i++) {
+        if (link.labels()[i].attrs.text.id === 'source-channel-label') {
+          idx = i;
         }
       }
-    }
+      if (idx >= 0) {
+        link.removeLabel(idx);
+      }
+      if (labelText) {
+        link.appendLabel({
+          attrs: {
+            text: {
+              id: 'source-channel-label',
+              text: labelText,
+              class: 'link-channel-label',
+              'text-anchor': 'start'
+            },
+            rect: {
+              class: 'link-channel-label'
+            }
+          },
+          position: {
+            args: {
+              keepGradient: true,
+              ensureLegibility: true
+            },
+            distance: 20,
+            offset: 20
+          },
+        });
+      }
+    });
+  }
+
+
+  private updateTargetLabel(link: joint.dia.Link) {
+    const labelText = link.attr('props/inputChannel');
+    setTimeout(() => {
+      let idx = -1;
+      for (let i = 0; idx < 0 && i < link.labels().length; i++) {
+        if (link.labels()[i].attrs.text.id === 'target-channel-label') {
+          idx = i;
+        }
+      }
+      if (idx >= 0) {
+        link.removeLabel(idx);
+      }
+      if (labelText) {
+        link.appendLabel({
+          attrs: {
+            text: {
+              id: 'target-channel-label',
+              text: labelText,
+              class: 'link-channel-label',
+              'text-anchor': 'end'
+            },
+            rect: {
+              class: 'link-channel-label'
+            }
+          },
+          position: {
+            args: {
+              keepGradient: true,
+              ensureLegibility: true
+            },
+            distance: -20,
+            offset: 20
+          },
+        });
+      }
+    });
+  }
+
+  initializeNewNode(node: dia.Element, viewerDescriptor: Flo.ViewerDescriptor): void {
+    const paper = viewerDescriptor.paper;
+    if (paper) {
+      const isCanvas = paper.model.get('type') === Constants.CANVAS_CONTEXT;
+      const metadata: Flo.ElementMetadata = node.attr('metadata');
+      if (metadata) {
+          if (metadata.name === 'tap') {
+            this.refreshVisuals(node, 'props/name', paper);
+          } else if (metadata.name === 'destination') {
+            this.refreshVisuals(node, 'props/name', paper);
+          } else {
+            this.refreshVisuals(node, 'node-name', paper);
+          }
+
+          if (isCanvas) {
+            this.refreshVisuals(node, 'stream-name', paper);
+          }
+        }
+      }
   }
 
   createLink(source: Flo.LinkEnd, target: Flo.LinkEnd) {
-    return new joint.shapes.flo.LinkDataflow();
+    const link =  new joint.shapes.flo.LinkDataflow();
+    this.metamodelService.load().then(function (metamodel) {
+      link.attr('metadata', metamodel.get('links').get('link'));
+    });
+    return link;
   }
 
   layout(paper) {
@@ -153,19 +295,22 @@ export class RenderService implements Flo.Renderer {
     const newSourceId = link.get('source').id;
     const oldSourceId = link.previous('source').id;
     const targetId = link.get('target').id;
+
+    this.updateLinkSourceChannel(link, flo.getPaper());
+
     if (newSourceId !== oldSourceId) {
       const newSource = graph.getCell(newSourceId);
       const oldSource = graph.getCell(oldSourceId);
       const target = graph.getCell(targetId);
 
       // If reconnecting source anchor to a shape with existing primary link switch the link to tap link
-      // if (newSource) {
-      //   const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
-      //   const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
-      //
-      //   link.attr('props/isTapLink', primaryLink ? true : false);
-      //   this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
-      // }
+      if (newSource) {
+        const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
+        const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
+
+        link.attr('props/isTapLink', primaryLink ? true : false);
+        this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
+      }
 
       // Show input port for 'destination' if outgoing links are gone
       if (oldSource && oldSource.attr('metadata/name') === 'destination'
@@ -198,10 +343,91 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
+  private findPort(selector: string, element: dia.Element, paper: dia.Paper) {
+    const view = paper.findViewByModel(element);
+    if (view) {
+      const matches = view.findBySelector(selector);
+      if (matches && matches.length) {
+        return matches[0];
+      }
+    }
+  }
+
+  private updateLinkTargetChannel(link: dia.Link, paper: dia.Paper) {
+    const portElement = this.findPort(link.target().selector, link.getTargetElement(), paper);
+    if (portElement) {
+      const newTargetPort = portElement.getAttribute('channel');
+      if (newTargetPort) {
+        link.attr('props/inputChannel', newTargetPort);
+      } else {
+        if (portElement.classList.contains('flo-input-multiport')) {
+          const targetElement = link.getTargetElement();
+          const metadata = targetElement.attr('metadata');
+          const channels = metadata instanceof AppMetadata ? (<AppMetadata>metadata).inputChannels : undefined;
+          if (Array.isArray(channels) && channels.length > 0) {
+            const availableChannels = [...channels];
+            paper.model.getConnectedLinks(targetElement, {inbound: true}).filter(l => l !== link).forEach(l => {
+              const idx = availableChannels.indexOf(l.attr('props/inputChannel'));
+              if (idx >= 0) {
+                availableChannels.splice(idx, 1);
+              }
+            });
+            if (availableChannels.length > 0) {
+              link.attr('props/inputChannel', availableChannels[0]);
+            } else {
+              link.attr('props/inputChannel', '');
+              link.removeAttr('props/inputChannel');
+            }
+          }
+        } else {
+          link.attr('props/inputChannel', '');
+          link.removeAttr('props/inputChannel');
+        }
+      }
+    }
+  }
+
+  private updateLinkSourceChannel(link: dia.Link, paper: dia.Paper) {
+    const portElement = this.findPort(link.source().selector, link.getSourceElement(), paper);
+    if (portElement) {
+      const newSourcePort = portElement.getAttribute('channel');
+      if (newSourcePort) {
+        link.attr('props/outputChannel', newSourcePort);
+      } else {
+        if (portElement.classList.contains('flo-output-multiport')) {
+          const sourceElement = link.getSourceElement();
+          const metadata = sourceElement.attr('metadata');
+          const channels = metadata instanceof AppMetadata ? (<AppMetadata>metadata).outputChannels : undefined;
+          if (Array.isArray(channels) && channels.length > 0) {
+            const availableChannels = [...channels];
+            paper.model.getConnectedLinks(sourceElement, {outbound: true}).filter(l => l !== link).forEach(l => {
+              const idx = availableChannels.indexOf(l.attr('props/outputChannel'));
+              if (idx >= 0) {
+                availableChannels.splice(idx, 1);
+              }
+            });
+            if (availableChannels.length > 0) {
+              link.attr('props/outputChannel', availableChannels[0]);
+            } else {
+              link.attr('props/outputChannel', '');
+              link.removeAttr('props/outputChannel');
+            }
+          }
+        } else {
+          link.attr('props/outputChannel', '');
+          link.removeAttr('props/outputChannel');
+        }
+      }
+    }
+  }
+
   handleLinkTargetChanged(link: dia.Link, flo: Flo.EditorContext) {
     const graph = flo.getGraph();
     const newTargetId = link.get('target').id;
     const oldTargetId = link.previous('target').id;
+
+    this.updateLinkTargetChannel(link, flo.getPaper());
+
     if (newTargetId !== oldTargetId) {
       const oldTarget = graph.getCell(oldTargetId);
       if (oldTarget) {
@@ -325,7 +551,7 @@ export class RenderService implements Flo.Renderer {
 
   handleLinkSwitch(link: dia.Link, flo: Flo.EditorContext) {
     const graph = flo.getGraph();
-    const source = graph.getCell(link.get('source').id);
+    const source = link.getSourceElement();
     // var target = graph.getCell(link.get('target').id);
     const isTapLink = link.attr('props/isTapLink');
     // This does nothing if the source is a destination/tap - there are no tap links allowed from destinations
@@ -336,12 +562,12 @@ export class RenderService implements Flo.Renderer {
       LoggerService.log(`Converting link ${this.toLinkString(graph, link)} into a primary link`);
       link.attr('props/isTapLink', false);
       // Need to ensure no other links are still primary, that isn't allowed
-      const primaryLink = graph.getConnectedLinks(source, {outbound: true})
-        .find(l => l !== link && l.attr('props/isTapLink'));
-      if (primaryLink) {
-        primaryLink.attr('props/isTapLink', true);
-        this.refreshVisuals(primaryLink, 'props/isTapLink', flo.getPaper());
-      }
+      // const primaryLink = graph.getConnectedLinks(source, {outbound: true})
+      //   .find(l => l !== link && l.attr('props/isTapLink'));
+      // if (primaryLink) {
+      //   primaryLink.attr('props/isTapLink', true);
+      //   this.refreshVisuals(primaryLink, 'props/isTapLink', flo.getPaper());
+      // }
     } else {
       LoggerService.log(`Converting link ${this.toLinkString(graph, link)} into a tap link`);
       link.attr('props/isTapLink', true);
@@ -353,14 +579,16 @@ export class RenderService implements Flo.Renderer {
     const graph = flo.getGraph();
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
+    this.updateLinkSourceChannel(link, flo.getPaper());
+    this.updateLinkTargetChannel(link, flo.getPaper());
     LoggerService.log('render-service.handleLinkAdded');
-    // if (!target && source && !this.isChannel(source)) {
-    //   // this is a new link being drawn in the UI (it is not connected to anything yet).
-    //   // Need to decide whether to make it a tap link
-    //   const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
-    //   const primaryLinkExists = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink')) ? true : false;
-    //   link.attr('props/isTapLink', primaryLinkExists ? true : false);
-    // }
+    if (!target && source && !this.isChannel(source)) {
+      // this is a new link being drawn in the UI (it is not connected to anything yet).
+      // Need to decide whether to make it a tap link
+      const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
+      const primaryLinkExists = outgoingLinks.find(ol => ol !== link && _.isEqual(link.source(), ol.source()) && !ol.attr('props/isTapLink')) ? true : false;
+      link.attr('props/isTapLink', primaryLinkExists);
+    }
     if (link.attr('props/isTapLink') === true) {
       this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
     }
@@ -384,27 +612,39 @@ export class RenderService implements Flo.Renderer {
   }
 
   handleLinkEvent(flo: Flo.EditorContext, event: string, link: dia.Link) {
-    if (event === 'change:source') {
-      this.handleLinkSourceChanged(link, flo);
-    } else if (event === 'change:target') {
-      this.handleLinkTargetChanged(link, flo);
-    } else if (event === 'remove') {
-      this.handleLinkRemoved(link, flo);
-    } else if (event === 'add') {
-      this.handleLinkAdded(link, flo);
-      flo.getPaper().findViewByModel(link).on('switch', () => this.handleLinkEvent(flo, 'switch', link));
-      flo.getPaper().findViewByModel(link).on('insert-channel', () => this.handleLinkEvent(flo, 'insert-channel', link));
-    } else if (event === 'switch') {
-      this.handleLinkSwitch(link, flo);
-    } else if (event === 'insert-channel') {
-      this.handleLinkInsertChannel(link, flo);
+    switch (event) {
+      case 'options':
+        const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
+        modalRef.content.title = `Properties for ${link.attr('metadata/name').toUpperCase()}`;
+        modalRef.content.setData(new StreamGraphPropertiesSource(link, null));
+        break;
+      case 'change:source':
+        this.handleLinkSourceChanged(link, flo);
+        break;
+      case 'change:target':
+        this.handleLinkTargetChanged(link, flo);
+        break;
+      case 'remove':
+        this.handleLinkRemoved(link, flo);
+        break;
+      case 'add':
+        this.handleLinkAdded(link, flo);
+        flo.getPaper().findViewByModel(link).on('switch', () => this.handleLinkEvent(flo, 'switch', link));
+        flo.getPaper().findViewByModel(link).on('insert-channel', () => this.handleLinkEvent(flo, 'insert-channel', link));
+        break;
+      case 'switch':
+        this.handleLinkSwitch(link, flo);
+        break;
+      case 'insert-channel':
+        this.handleLinkInsertChannel(link, flo);
+        break;
     }
   }
 
   getLinkAnchorPoint(linkView: dia.LinkView, view: dia.ElementView, magnet: SVGElement, reference: dia.Point) {
     if (magnet) {
       const paper: dia.Paper = (<any>linkView).paper;
-      const type = magnet.getAttribute('type');
+      const type = magnet.getAttribute('port');
       const bbox = joint.V(magnet).bbox(false, paper.viewport);
       const rect = joint.g.rect(bbox);
       if (type === 'input') {

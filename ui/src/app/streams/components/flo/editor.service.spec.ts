@@ -74,30 +74,30 @@ describe('Streams Editor Service', () => {
         });
     });
 
-    // it('too many primary links from source', (done) => {
-    //     const timeSource = createSource('time');
-    //     createLink(timeSource, createSink('log'));
-    //     createLink(timeSource, createSink('log'));
-    //     editorService.validate(graph, null, null).then((markers) => {
-    //         expectMarkerCount(markers, 1);
-    //         const m = getMarkersOn(markers, timeSource);
-    //         expectMarker(m[0], Flo.Severity.Error, EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE);
-    //         done();
-    //     });
-    // });
-    //
-    // it('too many primary links from processor', (done) => {
-    //     const transformProcessor = createProcessor('transform');
-    //     createLink(createSource('time'), transformProcessor);
-    //     createLink(transformProcessor, createSink('log'));
-    //     createLink(transformProcessor, createSink('log'));
-    //     editorService.validate(graph, null, null).then((markers) => {
-    //         expectMarkerCount(markers, 1);
-    //         const m = getMarkersOn(markers, transformProcessor);
-    //         expectMarker(m[0], Flo.Severity.Error, EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR);
-    //         done();
-    //     });
-    // });
+    it('too many primary links from source', (done) => {
+        const timeSource = createSource('time');
+        createLink(timeSource, createSink('log'));
+        createLink(timeSource, createSink('log'));
+        editorService.validate(graph, null, null).then((markers) => {
+            expectMarkerCount(markers, 1);
+            const m = getMarkersOn(markers, timeSource);
+            expectMarker(m[0], Flo.Severity.Error, EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE);
+            done();
+        });
+    });
+
+    it('too many primary links from processor', (done) => {
+        const transformProcessor = createProcessor('transform');
+        createLink(createSource('time'), transformProcessor);
+        createLink(transformProcessor, createSink('log'));
+        createLink(transformProcessor, createSink('log'));
+        editorService.validate(graph, null, null).then((markers) => {
+            expectMarkerCount(markers, 1);
+            const m = getMarkersOn(markers, transformProcessor);
+            expectMarker(m[0], Flo.Severity.Error, EditorService.VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR);
+            done();
+        });
+    });
 
     it('link in to a source', (done) => {
         const timeSource = createSource('time');

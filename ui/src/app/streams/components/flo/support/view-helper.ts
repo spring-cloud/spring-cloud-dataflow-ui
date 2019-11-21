@@ -37,7 +37,7 @@ const joint: any = _joint;
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, StreamNodeComponent)
   .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
-  .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
+  // .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
   .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
 
 const LINK_LABEL_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()

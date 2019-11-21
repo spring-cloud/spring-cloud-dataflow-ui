@@ -27,6 +27,10 @@ export class NodeComponent extends ElementComponent {
     return this.paper.model.get('type') === Constants.CANVAS_CONTEXT;
   }
 
+  isPalette(): boolean {
+    return this.paper.model.get('type') === Constants.PALETTE_CONTEXT;
+  }
+
   get paper(): dia.Paper {
     return this.view ? (<any>this.view).paper : undefined;
   }

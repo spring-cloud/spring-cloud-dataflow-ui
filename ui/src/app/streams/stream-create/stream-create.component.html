@@ -9,8 +9,9 @@
 
   <div id="flo-container" class="stream-editor" dataflowLayoutType type="full">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [paletteSize]="paletteSize" [(dsl)]="dsl" [paperPadding]="55"
-                (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
+                [editor]="editorService" [paletteSize]="paletteSize" [paletteEntryPadding]="{width: 2, height: 2}"
+                [(dsl)]="dsl" [paperPadding]="55" (contentValidated)="contentValidated=$event"
+                (validationMarkers)="validationMarkers = $event">
 
       <div class="flow-definition-container">
         <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"

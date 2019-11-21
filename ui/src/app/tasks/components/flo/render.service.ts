@@ -62,14 +62,19 @@ export class RenderService implements Flo.Renderer {
    */
   createHandle(kind: string, parent: dia.Cell) {
     LoggerService.log('createHandle', kind);
-    return new joint.shapes.flo.ErrorDecoration({
-      size: HANDLE_ICON_SIZE.get(kind),
-      attrs: {
-        'image': {
-          'xlink:href': HANDLE_ICON_MAP.get(kind)
-        }
-      }
-    });
+    switch (kind) {
+      case Constants.REMOVE_HANDLE_TYPE:
+
+      default:
+        return new joint.shapes.flo.ErrorDecoration({
+          size: HANDLE_ICON_SIZE.get(kind),
+          attrs: {
+            'image': {
+              'xlink:href': HANDLE_ICON_MAP.get(kind)
+            }
+          }
+        });
+    }
   }
 
   /**
@@ -97,7 +102,7 @@ export class RenderService implements Flo.Renderer {
    * @param {Flo.ElementMetadata} metadata the element metadata
    * @returns {dia.Element} the created element
    */
-  createNode(metadata: Flo.ElementMetadata): dia.Element {
+  createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
     switch (metadata.name) {
       case START_NODE_TYPE:
         return new BatchStartShape(

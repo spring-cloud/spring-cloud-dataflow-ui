@@ -23,6 +23,8 @@ import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './support/shapes';
 import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 import { LoggerService } from '../../../shared/services/logger.service';
+import {from} from "rxjs/internal/observable/from";
+import {DetailedAppRegistration} from "../../../shared/model";
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -96,9 +98,46 @@ export class MetamodelService implements Flo.Metamodel {
                         if (group.has(item.name)) {
                             LoggerService.error(`Group '${item.type}' has duplicate element '${item.name}'`);
                         } else {
-                            group.set(item.name, this.createEntry(item.type, item.name, item.version));
+                            group.set(item.name, this.createEntry(item.type, item.name, item.version, [], []));
                         }
                     });
+                    // HACK to add CUSTOM processor with multiple input and output ports
+                    if (metamodel.get('processor')) {
+                      const entry = new AppMetadata(
+                        'processor',
+                        'CUSTOM',
+                        '1.0.0',
+                        this.generatePortArray('input-', 5),
+                        this.generatePortArray('output-', 3),
+                        from(Promise.resolve(new DetailedAppRegistration('CUSTOM', ApplicationType.processor))),
+                        undefined
+                      );
+                      metamodel.get('processor').set('CUSTOM', entry);
+
+                      const multi1_entry = new AppMetadata(
+                        'processor',
+                        'MULTI-1',
+                        '1.0.0',
+                        this.generatePortArray('input-', 5),
+                        this.generatePortArray('output-', 10),
+                        from(Promise.resolve(new DetailedAppRegistration('MULTI-1', ApplicationType.processor))),
+                        undefined
+                      );
+                      metamodel.get('processor').set('MULTI-1', multi1_entry);
+
+                      const giant = new AppMetadata(
+                        'processor',
+                        'GIANT',
+                        '1.0.0',
+                        this.generatePortArray('input-', 30),
+                        this.generatePortArray('output-', 40),
+                        from(Promise.resolve(new DetailedAppRegistration('GIANT', ApplicationType.processor))),
+                        undefined
+                      );
+                      metamodel.get('processor').set('GIANT', giant);
+
+                      this.addLinksGroup(metamodel);
+                    }
                     resolve(metamodel);
                 },
                 error => {
@@ -110,11 +149,40 @@ export class MetamodelService implements Flo.Metamodel {
         return this.request;
     }
 
-    private createEntry(type: ApplicationType, name: string, version: string, metadata?: Flo.ExtraMetadata): AppMetadata {
+    generatePortArray(portPrefix: string, n: number) {
+      const ports = [];
+      for (let i = 1; i <= n; i++) {
+        ports.push(portPrefix + i);
+      }
+      return ports;
+    }
+
+    private addLinksGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
+      const metadata = this.createMetadata('link', 'links', 'Link between channels',
+        new Map<string, Flo.PropertyMetadata>().set('inputChannel', {
+          id: 'inputChannel',
+          name: 'Input Channel',
+          defaultValue: '',
+          description: 'Input Channel'
+        }).set('outputChannel', {
+          id: 'outputChannel',
+          name: 'Output Channel',
+          defaultValue: '',
+          description: 'Output Channel'
+        }), {
+          unselectable: true
+        });
+      metamodel.set(metadata.group, new Map<string, Flo.ElementMetadata>().set(metadata.name, metadata));
+    }
+
+
+    private createEntry(type: ApplicationType, name: string, version: string, inputChannels: string[], outputChannels: string[], metadata?: Flo.ExtraMetadata): AppMetadata {
       return new AppMetadata(
         type.toString(),
         name,
         version,
+        inputChannels,
+        outputChannels,
         this.appsService.getAppInfo(type, name),
         metadata
       );
