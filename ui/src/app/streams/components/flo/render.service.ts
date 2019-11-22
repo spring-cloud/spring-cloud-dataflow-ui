@@ -55,23 +55,21 @@ export class RenderService implements Flo.Renderer {
     return NodeHelper.createHandle(kind);
   }
 
-  createDecoration(kind: string, parent: dia.Cell) {
-    return NodeHelper.createDecoration(kind);
-  }
+  // createDecoration(kind: string, parent: dia.Cell) {
+  //   return NodeHelper.createDecoration(kind, parent);
+  // }
 
   createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
     const element =  NodeHelper.createNode(metadata);
     const isPalette = viewerDescriptor.graph.get('type') === Constants.PALETTE_CONTEXT;
     if (!isPalette) {
-      element.size(155, 60);
-      element.attr('.name-label/refY2', -2);
-      element.attr('.name-label/y-alignment', 'bottom');
-      // ports may change the size of the shape
       NodeHelper.createPorts(element, metadata);
     } else {
       element.size(120, 30);
-      element.attr('.name-label/refY2', '0');
-      element.attr('.name-label/y-alignment', 'middle');
+      const iconSize = 16;
+      element.attr('.type-icon/width', iconSize);
+      element.attr('.type-icon/height', iconSize);
+      element.attr('.type-icon/refY2', -iconSize / 2);
     }
     return element;
   }
@@ -102,10 +100,12 @@ export class RenderService implements Flo.Renderer {
       } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
         // fitLabel() calls update as necessary, so set label text silently
         element.attr('.name-label/text', element.attr('props/name') ? element.attr('props/name') : element.attr('metadata/name'));
-        ViewHelper.fitLabel(paper, element, '.name-label');
         const view = paper.findViewByModel(element);
-        if (paper.model.get('type') !== Constants.PALETTE_CONTEXT && view) {
-          joint.V(view.el).toggleClass('default-name', !element.attr('props/name'));
+        if (view) {
+          if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
+            ViewHelper.fitLabel(paper, element, '.name-label', 5);
+            joint.V(view.el).toggleClass('default-name', !element.attr('props/name'));
+          }
         }
       } else if (changedPropertyPath === 'props/language') {
         /*
@@ -123,10 +123,12 @@ export class RenderService implements Flo.Renderer {
         const nodeName = element.attr('node-name');
         // fitLabel() calls update as necessary, so set label text silently
         element.attr('.name-label/text', nodeName ? nodeName : element.attr('metadata/name'));
-        ViewHelper.fitLabel(paper, element, '.name-label');
         const view = paper.findViewByModel(element);
-        if (paper.model.get('type') !== Constants.PALETTE_CONTEXT && view) {
-          joint.V(view.el).toggleClass('default-name', !nodeName);
+        if (view) {
+          if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
+            ViewHelper.fitLabel(paper, element, '.name-label', 5);
+            joint.V(view.el).toggleClass('default-name', !nodeName);
+          }
         }
       }
     }
@@ -277,20 +279,25 @@ export class RenderService implements Flo.Renderer {
     const paper = viewerDescriptor.paper;
     if (paper) {
       const isCanvas = paper.model.get('type') === Constants.CANVAS_CONTEXT;
+      const isPalette = paper.model.get('type') === Constants.PALETTE_CONTEXT;
       const metadata: Flo.ElementMetadata = node.attr('metadata');
       if (metadata) {
-          if (metadata.name === 'tap') {
-            this.refreshVisuals(node, 'props/name', paper);
-          } else if (metadata.name === 'destination') {
-            this.refreshVisuals(node, 'props/name', paper);
+          if (isPalette) {
+            ViewHelper.fitLabel(paper, node, '.palette-entry-name-label', 5);
           } else {
-            this.refreshVisuals(node, 'node-name', paper);
-          }
+            ViewHelper.fitLabel(paper, node, '.type-label', 10, 15);
+            if (metadata.name === 'tap') {
+              this.refreshVisuals(node, 'props/name', paper);
+            } else if (metadata.name === 'destination') {
+              this.refreshVisuals(node, 'props/name', paper);
+            } else {
+              this.refreshVisuals(node, 'node-name', paper);
+            }
 
-          if (isCanvas) {
-            this.refreshVisuals(node, 'stream-name', paper);
+            if (isCanvas) {
+              this.refreshVisuals(node, 'stream-name', paper);
+            }
           }
-
         }
       }
   }
@@ -680,6 +687,14 @@ export class RenderService implements Flo.Renderer {
 
   getLinkView(): dia.LinkView {
     return ViewHelper.createLinkView(this.injector, this.applicationRef, this.componentFactoryResolver);
+  }
+
+  markersChanged(cell: dia.Cell, paper: dia.Paper) {
+    const markers: Array<Flo.Marker> = cell.get('markers');
+    const view = paper.findViewByModel(cell);
+    if (view) {
+      joint.V(view.el).toggleClass('validation-errors', markers.length > 0);
+    }
   }
 
 }

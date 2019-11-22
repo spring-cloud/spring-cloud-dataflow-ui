@@ -57,6 +57,10 @@ const GROUP_ICONS_2 = new Map<string, string>()
   .set('task', 'assets/img/source.svg') // 2609   ⚙=2699 gear (rubbish)
   .set('destination', 'assets/img/source.svg') // 2982
   .set('tap', 'assets/img/source.svg') // 2982
+
+  .set('other', 'assets/img/source.svg') // 2982
+  .set('unresolved', 'assets/img/source.svg') // 2982
+
 ;
 
 /**
@@ -68,10 +72,11 @@ const GROUP_ICONS_2 = new Map<string, string>()
 export class NodeHelper {
 
   static createNode(metadata: Flo.ElementMetadata): dia.Element {
+    let node: dia.Element = null;
     switch (metadata.group) {
 
       case ApplicationType[ApplicationType.app]:
-        return new joint.shapes.flo.DataFlowApp(
+        node = new joint.shapes.flo.DataFlowApp(
           joint.util.deepSupplement({
             attrs: {
               '.box': {
@@ -80,18 +85,18 @@ export class NodeHelper {
               '.shape': {
                 class: 'shape app-module'
               },
-              '.type-label': {
-                text: metadata.group.toUpperCase()
-              },
+              // '.type-label': {
+              //   text: metadata.group.toUpperCase()
+              // },
               '.type-icon': {
                 'xlink:href': GROUP_ICONS_2.get(metadata.group),
               }
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
         );
-
+        break;
       case ApplicationType[ApplicationType.source]:
-        return new joint.shapes.flo.DataFlowApp(
+        node = new joint.shapes.flo.DataFlowApp(
           joint.util.deepSupplement({
             attrs: {
               '.box': {
@@ -100,18 +105,18 @@ export class NodeHelper {
               '.shape': {
                 class: 'shape source-module'
               },
-              '.type-label': {
-                text: metadata.group.toUpperCase()
-              },
+              // '.type-label': {
+              //   text: metadata.group.toUpperCase()
+              // },
               '.type-icon': {
                 'xlink:href': GROUP_ICONS_2.get(metadata.group),
               }
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
         );
-
+        break;
       case ApplicationType[ApplicationType.processor]:
-        return new joint.shapes.flo.DataFlowApp(
+        node = new joint.shapes.flo.DataFlowApp(
           joint.util.deepSupplement({
             attrs: {
               '.box': {
@@ -120,9 +125,9 @@ export class NodeHelper {
               '.shape': {
                 class: 'shape processor-module'
               },
-              '.type-label': {
-                text: metadata.group.toUpperCase()
-              },
+              // '.type-label': {
+              //   text: metadata.group.toUpperCase()
+              // },
               '.type-icon': {
                 'xlink:href': GROUP_ICONS_2.get(metadata.group),
               },
@@ -132,9 +137,9 @@ export class NodeHelper {
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
         );
-
+        break;
       case ApplicationType[ApplicationType.sink]:
-        return new joint.shapes.flo.DataFlowApp(
+        node = new joint.shapes.flo.DataFlowApp(
           joint.util.deepSupplement({
             attrs: {
               '.box': {
@@ -143,9 +148,9 @@ export class NodeHelper {
               '.shape': {
                 class: 'shape sink-module'
               },
-              '.type-label': {
-                text: metadata.group.toUpperCase()
-              },
+              // '.type-label': {
+              //   text: metadata.group.toUpperCase()
+              // },
               '.type-icon': {
                 'xlink:href': GROUP_ICONS_2.get(metadata.group),
               },
@@ -155,9 +160,9 @@ export class NodeHelper {
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
         );
-
+        break;
       case ApplicationType[ApplicationType.task]:
-        return new joint.shapes.flo.DataFlowApp(
+        node = new joint.shapes.flo.DataFlowApp(
           joint.util.deepSupplement({
             attrs: {
               '.box': {
@@ -166,9 +171,9 @@ export class NodeHelper {
               '.shape': {
                 class: 'shape task-module'
               },
-              '.type-label': {
-                text: metadata.group.toUpperCase()
-              },
+              // '.type-label': {
+              //   text: metadata.group.toUpperCase()
+              // },
               '.type-icon': {
                 'xlink:href': GROUP_ICONS_2.get(metadata.group),
               },
@@ -178,10 +183,10 @@ export class NodeHelper {
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
         );
-
+        break;
       default:
         if (metadata.name === 'tap') {
-          return new joint.shapes.flo.DataFlowApp(
+          node = new joint.shapes.flo.DataFlowApp(
             joint.util.deepSupplement({
               attrs: {
                 '.box': {
@@ -191,9 +196,9 @@ export class NodeHelper {
                 '.shape': {
                   class: 'shape other-module'
                 },
-                '.type-label': {
-                  text: metadata.group.toUpperCase()
-                },
+                // '.type-label': {
+                //   text: metadata.group.toUpperCase()
+                // },
                 '.type-icon': {
                   'xlink:href': GROUP_ICONS_2.get(metadata.group),
                 }
@@ -201,7 +206,7 @@ export class NodeHelper {
             }, joint.shapes.flo.DataFlowApp.prototype.defaults)
           );
         } else if (metadata.name === 'destination') {
-          return new joint.shapes.flo.Destination(
+          node = new joint.shapes.flo.Destination(
             joint.util.deepSupplement({
               attrs: {
                 '.box': {
@@ -211,9 +216,9 @@ export class NodeHelper {
                 '.shape': {
                   class: 'shape other-module'
                 },
-                '.type-label': {
-                  text: metadata.group.toUpperCase()
-                },
+                // '.type-label': {
+                //   text: metadata.group.toUpperCase()
+                // },
                 '.type-icon': {
                   'xlink:href': GROUP_ICONS_2.get(metadata.group),
                 }
@@ -221,9 +226,13 @@ export class NodeHelper {
             }, joint.shapes.flo.Destination.prototype.defaults)
           );
         } else {
-          return new joint.shapes.flo.DataFlowApp();
+          node = new joint.shapes.flo.DataFlowApp();
         }
     }
+    node.attr('.palette-entry-name-label/text', metadata.name);
+    node.attr('.name-label/text', metadata.name);
+    node.attr('.type-label/text', metadata.name.toUpperCase());
+    return node;
   }
 
   static createPorts(node: dia.Element, metadata: Flo.ElementMetadata) {
@@ -459,16 +468,25 @@ export class NodeHelper {
     }
   }
 
-  static createDecoration(kind: string) {
-    return new joint.shapes.flo.ErrorDecoration({
+  static createDecoration(kind: string, parent: dia.Cell) {
+    const error = new joint.shapes.flo.ErrorDecoration({
       size: {width: 16, height: 16},
       attrs: {
         'image': {
-          'xlink:href': DECORATION_ICON_MAP.get(kind),
-          'display': 'none'
+          'xlink:href': DECORATION_ICON_MAP.get(kind)
         }
       }
     });
+
+    const border_padding = 5;
+
+    if (parent instanceof joint.dia.Element) {
+      const pt = (<dia.Element> parent).getBBox().topRight().offset(-error.size().width - border_padding, border_padding);
+      error.position(pt.x, pt.y);
+    } else {
+      // TODO: do something for the link perhaps?
+    }
+    return error;
   }
 
 }

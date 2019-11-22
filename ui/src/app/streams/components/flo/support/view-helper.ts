@@ -21,7 +21,6 @@ import {
   Type,
   ComponentRef
 } from '@angular/core';
-import { IMAGE_W, HORIZONTAL_PADDING } from './shapes';
 import { StreamNodeComponent } from '../node/stream-node.component';
 import { DecorationComponent } from '../../../../shared/flo/decoration/decoration.component';
 import { HandleComponent } from '../../../../shared/flo/handle/handle.component';
@@ -31,7 +30,6 @@ import { InstanceDotComponent } from '../instance-dot/instance-dot.component';
 import { MessageRateComponent } from '../message-rate/message-rate.component';
 import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
-import {text} from "d3-fetch";
 
 const joint: any = _joint;
 
@@ -214,11 +212,17 @@ export class ViewHelper {
     });
   }
 
-  static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string): void {
+  static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string, paddingLeft: number, paddingRight?: number): void {
+    if (isNaN(paddingRight)) {
+      paddingRight = paddingLeft;
+    }
     const label: string = node.attr(`${labelPath}/text`);
     const view = paper.findViewByModel(node);
     if (view && label) {
       const labelElement = view.findBySelector(labelPath)[0];
+      if (!labelElement) {
+        return;
+      }
       let offset = 0;
       if (node.attr('.type-icon')) {
         const label2View = view.findBySelector('.type-icon')[0];
@@ -260,7 +264,7 @@ export class ViewHelper {
         }
       }
 
-      const threshold = boundingBox.width - HORIZONTAL_PADDING - HORIZONTAL_PADDING - offset;
+      const threshold = boundingBox.width - paddingLeft - paddingRight - offset;
 
       let width = joint.V(labelElement).bbox(false, paper.viewport).width;
 
@@ -303,7 +307,7 @@ export class ViewHelper {
           }
 
           if (offset) {
-            node.attr(`${labelPath}/refX`, Math.max((offset + HORIZONTAL_PADDING + width / 2) / boundingBox.width, 0.5), {silent: true});
+            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), {silent: true});
           }
           // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
           node.attr(`${labelPath}/text`, textNode.data);
@@ -311,7 +315,7 @@ export class ViewHelper {
           document.body.removeChild(svgDocument);
         }
       } else {
-       node.attr(`${labelPath}/refX`, Math.max((offset + HORIZONTAL_PADDING + width / 2) / boundingBox.width, 0.5));
+       node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5));
       }
     }
   }

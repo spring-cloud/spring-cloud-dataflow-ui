@@ -241,7 +241,26 @@ svg * {
   ry: 8;
 }
 
+.validation-errors .stream-module .box {
+  fill: rgb(254, 227, 227);
+}
+
+.error-marker {
+  display: none;
+}
+
+.validation-errors .error-marker {
+  display: block;
+}
+
 .stream-module .name-label {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  fill: #222;
+}
+
+.stream-module .palette-entry-name-label {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 12px;
   font-weight: normal;
@@ -546,6 +565,10 @@ table.zoom-canvas-control {
   stroke-width: 2px;
 }
 
+.validation-errors .flo-port {
+  fill: red;
+}
+
 .flo-port-inner-circle {
   fill: white;
   stroke: none;
@@ -628,4 +651,33 @@ table.zoom-canvas-control {
 
 .handle-label:hover {
   font-weight: bolder;
+}
+
+// Error marker tooltip on the shape
+
+.error-marker-tooltip .tooltip-inner {
+  background-color: red;
+  max-width: 400px;
+  padding: 2px;
+}
+
+.tooltip.error-marker-tooltip .tooltip-arrow {
+  border-top-color: red;
+}
+
+.marker-tooltip {
+
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    border-bottom: 1px solid white;
+    text-align: left;
+  }
+
+  li:last-child {
+    border: none;
+  }
+
 }

@@ -27,5 +27,6 @@ export class StreamNodeComponent extends NodeComponent {
   isSingleIntputPort(): boolean {
     return this.view.model.attr('.input-port');
   }
+
 }
 

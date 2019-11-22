@@ -8,7 +8,7 @@
         <svg:image class="type-icon"/>
       </svg:g>
       <svg:g *ngIf="isPalette(); else shapeLabelsTemplate">
-        <svg:text class="name-label"/>
+        <svg:text class="palette-entry-name-label"/>
       </svg:g>
     </svg:g>
     <svg:text *ngIf="isCanvas()" class="stream-label"/>
@@ -40,7 +40,7 @@
         <svg:image class="type-icon"/>
       </svg:g>
       <svg:g *ngIf="isPalette(); else shapeLabelsTemplate">
-        <svg:text class="name-label"/>
+        <svg:text class="palette-entry-name-label"/>
       </svg:g>
     </svg:g>
     <svg:text *ngIf="isCanvas()" class="stream-label"/>
@@ -58,6 +58,8 @@
         </svg:g>
       </svg:g>
     </svg:g>
+    <svg:image *ngIf="isCanvas()" class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip"
+      placement="top" containerClass="error-marker-tooltip" container="body" [isDisabled]="isDisabled"/>
     <svg:g *ngIf="false && isCanvas()" class="highlight-handles-group">
       <svg:rect class="select-1"/>
       <svg:rect class="select-2"/>
@@ -121,4 +123,10 @@
     </tr>
     </tbody>
   </table>
+</ng-template>
+
+<ng-template #markerTooltip>
+  <ul class="marker-tooltip">
+    <li *ngFor="let msg of getErrorMessages()">{{ msg }}</li>
+  </ul>
 </ng-template>

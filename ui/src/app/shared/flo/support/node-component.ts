@@ -76,4 +76,13 @@ export class NodeComponent extends ElementComponent {
     return Object.keys(o);
   }
 
+  get markers(): Flo.Marker[] {
+    console.log('Calculating markers');
+    return this.view.model.get('markers') || [];
+  }
+
+  getErrorMessages(): string[] {
+    return this.markers.map(m => m.message);
+  }
+
 }

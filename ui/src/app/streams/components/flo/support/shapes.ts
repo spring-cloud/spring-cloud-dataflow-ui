@@ -5,8 +5,8 @@ const joint: any = _joint;
 import 'spring-flo';
 import '../../../../shared/flo/support/shared-shapes';
 
-export const IMAGE_W = 120;
-export const IMAGE_H = 30;
+export const IMAGE_W = 150;
+export const IMAGE_H = 50;
 export const HORIZONTAL_PADDING = 5;
 
 export const SELECT_SQUARE_SIZE = 4;
@@ -17,6 +17,9 @@ export const TYPE_INSTANCE_LABEL = 'dataflow-InstanceLabel';
 export const TYPE_INSTANCE_DOT = 'dataflow-InstanceDot';
 export const TYPE_INCOMING_MESSAGE_RATE = 'dataflow-incoming-rate';
 export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
+
+const ERROR_MARKER_SIZE = {width: 12, height: 12};
+const TYPE_ICON_SIZE = {width: 24, height: 24};
 
 export const IS_FF = window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 export const LABEL2_OFFSET_Y = IS_FF  ? '38%' : '53%';
@@ -83,6 +86,15 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               fill: 'black',
               'font-size': 14
             },
+            '.palette-entry-name-label': {
+              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refY': 0.5,
+              'y-alignment': 'middle',
+              'x-alignment': 'middle',
+              ref: '.box', // jointjs specific: element for ref-x, ref-y
+              fill: 'black',
+              'font-size': 14
+            },
             '.name-label': {
                 'refX': 0.5, // jointjs specific: relative position to ref'd element
                 'refY': 0.5,
@@ -113,9 +125,19 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             },
             '.type-icon': {
               ref: '.box',
+              width: TYPE_ICON_SIZE.width,
+              heigth: TYPE_ICON_SIZE.height,
               refX: 10,
               refY: 0.5,
-              refY2: -10,
+              refY2: -TYPE_ICON_SIZE.height/2,
+            },
+            '.error-marker': {
+              width: ERROR_MARKER_SIZE.width,
+              height: ERROR_MARKER_SIZE.height,
+              ref: '.box',
+              refX: "100%",
+              refX2: -5 - ERROR_MARKER_SIZE.width,
+              refY: 5
             },
             '.stream-label': {
                 'x-alignment': 'middle',
@@ -243,6 +265,15 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
             //     'stroke-width': 1,
             //   class: 'output-port flo-output-port'
             // },
+            '.palette-entry-name-label': {
+              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refY': 0.5,
+              'y-alignment': 'middle',
+              'x-alignment': 'middle',
+              ref: '.box', // jointjs specific: element for ref-x, ref-y
+              fill: 'black',
+              'font-size': 14
+            },
             '.name-label': {
               'refX': 0.5, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
@@ -273,9 +304,19 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
             },
             '.type-icon': {
               ref: '.box',
+              width: TYPE_ICON_SIZE.width,
+              heigth: TYPE_ICON_SIZE.height,
               refX: 10,
               refY: 0.5,
-              refY2: -10,
+              refY2: -TYPE_ICON_SIZE.height/2,
+            },
+            '.error-marker': {
+              width: ERROR_MARKER_SIZE.width,
+              height: ERROR_MARKER_SIZE.height,
+              ref: '.box',
+              refX: "100%",
+              refX2: -5 - ERROR_MARKER_SIZE.width,
+              refY: 5
             },
             '.stream-label': {
                 'x-alignment': 'middle',
