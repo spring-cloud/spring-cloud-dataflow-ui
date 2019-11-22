@@ -95,26 +95,45 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               fill: 'black',
               'font-size': 14
             },
+            // '.name-label': {
+            //     'refX': 0.5, // jointjs specific: relative position to ref'd element
+            //     'refY': 0.5,
+            //     'refY2': -2,
+            //     'y-alignment': 'bottom',
+            //     'x-alignment': 'middle',
+            //     ref: '.box', // jointjs specific: element for ref-x, ref-y
+            //     fill: 'black',
+            //     'font-size': 14
+            // },
+            // '.type-label': {
+            //   'refX': 0.5, // jointjs specific: relative position to ref'd element
+            //   'refY': 0.5,
+            //   'refY2': 2,
+            //   'y-alignment': 'top',
+            //   'x-alignment': 'middle',
+            //   ref: '.box', // jointjs specific: element for ref-x, ref-y
+            //   fill: 'black',
+            //   'font-size': 14,
+            //   text: 'UNRESOLVED'
+            // },
             '.name-label': {
-                'refX': 0.5, // jointjs specific: relative position to ref'd element
-                'refY': 0.5,
-                'refY2': -2,
-                'y-alignment': 'bottom',
-                'x-alignment': 'middle',
-                ref: '.box', // jointjs specific: element for ref-x, ref-y
-                fill: 'black',
-                'font-size': 14
-            },
-            '.type-label': {
-              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refX': 10 + TYPE_ICON_SIZE.width + 10, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
-              'refY2': 2,
-              'y-alignment': 'top',
-              'x-alignment': 'middle',
+              'refY2': -2,
+              'y-alignment': 'bottom',
               ref: '.box', // jointjs specific: element for ref-x, ref-y
               fill: 'black',
-              'font-size': 14,
-              text: 'UNRESOLVED'
+              'font-size': 14
+            },
+            '.type-label': {
+                'refX': 10 + TYPE_ICON_SIZE.width + 10,
+                'refY': 0.5,
+                'refY2': 2,
+                'y-alignment': 'top',
+                ref: '.box', // jointjs specific: element for ref-x, ref-y
+                fill: 'black',
+                'font-size': 14,
+                text: 'UNRESOLVED'
             },
             '.type-label-bg': {
               ref: '.type-label',
@@ -274,12 +293,21 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
               fill: 'black',
               'font-size': 14
             },
+            // '.name-label': {
+            //   'refX': 0.5, // jointjs specific: relative position to ref'd element
+            //   'refY': 0.5,
+            //   'refY2': -2,
+            //   'y-alignment': 'bottom',
+            //   'x-alignment': 'middle',
+            //   ref: '.box', // jointjs specific: element for ref-x, ref-y
+            //   fill: 'black',
+            //   'font-size': 14
+            // },
             '.name-label': {
-              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refX': 10 + TYPE_ICON_SIZE.width + 10, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
               'refY2': -2,
               'y-alignment': 'bottom',
-              'x-alignment': 'middle',
               ref: '.box', // jointjs specific: element for ref-x, ref-y
               fill: 'black',
               'font-size': 14

@@ -22,7 +22,7 @@
         <svg:circle class="port-inner-circle-output"/>
       </svg:g>
     </svg:g>
-    <svg:g *ngIf="false && isCanvas()" class="highlight-handles-group">
+    <svg:g *ngIf="isCanvas()" class="highlight-handles-group">
       <svg:rect class="select-1"/>
       <svg:rect class="select-2"/>
       <svg:rect class="select-3"/>
@@ -60,7 +60,7 @@
     </svg:g>
     <svg:image *ngIf="isCanvas()" class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip"
       placement="top" containerClass="error-marker-tooltip" container="body" [isDisabled]="isDisabled"/>
-    <svg:g *ngIf="false && isCanvas()" class="highlight-handles-group">
+    <svg:g *ngIf="isCanvas()" class="highlight-handles-group">
       <svg:rect class="select-1"/>
       <svg:rect class="select-2"/>
       <svg:rect class="select-3"/>
