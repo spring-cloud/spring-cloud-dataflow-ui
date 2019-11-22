@@ -63,13 +63,21 @@ export class RenderService implements Flo.Renderer {
     const element =  NodeHelper.createNode(metadata);
     const isPalette = viewerDescriptor.graph.get('type') === Constants.PALETTE_CONTEXT;
     if (!isPalette) {
+      element.size(155, 60);
+      element.attr('.name-label/refY2', -2);
+      element.attr('.name-label/y-alignment', 'bottom');
+      // ports may change the size of the shape
       NodeHelper.createPorts(element, metadata);
+    } else {
+      element.size(120, 30);
+      element.attr('.name-label/refY2', '0');
+      element.attr('.name-label/y-alignment', 'middle');
     }
     return element;
   }
 
   initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor) {
-    link.set('connector/name', 'smoothHorizontal');
+    // link.set('connector/name', 'smoothHorizontal');
     link.attr('metadata/metadata/unselectable', true);
   }
 
@@ -93,8 +101,12 @@ export class RenderService implements Flo.Renderer {
         }
       } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
         // fitLabel() calls update as necessary, so set label text silently
-        element.attr('.label1/text', element.attr('props/name') ? element.attr('props/name') : element.attr('metadata/name'));
-        ViewHelper.fitLabel(paper, element, '.label1/text');
+        element.attr('.name-label/text', element.attr('props/name') ? element.attr('props/name') : element.attr('metadata/name'));
+        ViewHelper.fitLabel(paper, element, '.name-label');
+        const view = paper.findViewByModel(element);
+        if (paper.model.get('type') !== Constants.PALETTE_CONTEXT && view) {
+          joint.V(view.el).toggleClass('default-name', !element.attr('props/name'));
+        }
       } else if (changedPropertyPath === 'props/language') {
         /*
          * Check if 'language' property has changed and 'script' property is present
@@ -110,8 +122,12 @@ export class RenderService implements Flo.Renderer {
       } else if (changedPropertyPath === 'node-name') {
         const nodeName = element.attr('node-name');
         // fitLabel() calls update as necessary, so set label text silently
-        element.attr('.label1/text', nodeName ? nodeName : element.attr('metadata/name'));
-        ViewHelper.fitLabel(paper, element, '.label1/text');
+        element.attr('.name-label/text', nodeName ? nodeName : element.attr('metadata/name'));
+        ViewHelper.fitLabel(paper, element, '.name-label');
+        const view = paper.findViewByModel(element);
+        if (paper.model.get('type') !== Constants.PALETTE_CONTEXT && view) {
+          joint.V(view.el).toggleClass('default-name', !nodeName);
+        }
       }
     }
 
@@ -274,6 +290,7 @@ export class RenderService implements Flo.Renderer {
           if (isCanvas) {
             this.refreshVisuals(node, 'stream-name', paper);
           }
+
         }
       }
   }

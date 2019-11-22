@@ -241,6 +241,51 @@ svg * {
   ry: 8;
 }
 
+.stream-module .name-label {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  fill: #222;
+}
+
+.default-name .stream-module .name-label {
+  fill: #777777;
+}
+
+.stream-module .type-label {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  fill: white;
+}
+
+.type-label-bg {
+  fill: black;
+  stroke: none;
+  rx: 8;
+  ry: 8;
+}
+
+.source-module .type-label-bg {
+  fill: #0096ff;
+}
+
+.processor-module .type-label-bg {
+  fill: #80b600;
+}
+
+.sink-module .type-label-bg {
+  fill: #f5be00;
+}
+
+.app-module .type-label-bg {
+  fill: #ff00de;
+}
+
+.other-module .type-label-bg {
+  fill: #777777;
+}
+
 .destination .box {
   stroke: none;
   fill: $flo-shape-fill-color;

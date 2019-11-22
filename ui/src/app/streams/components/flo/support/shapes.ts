@@ -6,7 +6,7 @@ import 'spring-flo';
 import '../../../../shared/flo/support/shared-shapes';
 
 export const IMAGE_W = 120;
-export const IMAGE_H = 40;
+export const IMAGE_H = 30;
 export const HORIZONTAL_PADDING = 5;
 
 export const SELECT_SQUARE_SIZE = 4;
@@ -74,22 +74,48 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             //     stroke: '#34302d',
             //     'stroke-width': 1,
             // },
-            '.label1': {
-                'ref-x': 0.5, // jointjs specific: relative position to ref'd element
-                'ref-y': 0.525,
-                'y-alignment': 'middle',
+            '.palette-name-label': {
+              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refY': 0.5,
+              'y-alignment': 'middle',
+              'x-alignment': 'middle',
+              ref: '.box', // jointjs specific: element for ref-x, ref-y
+              fill: 'black',
+              'font-size': 14
+            },
+            '.name-label': {
+                'refX': 0.5, // jointjs specific: relative position to ref'd element
+                'refY': 0.5,
+                'refY2': -2,
+                'y-alignment': 'bottom',
                 'x-alignment': 'middle',
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
                 fill: 'black',
                 'font-size': 14
             },
-            '.label2': {
-                'y-alignment': 'middle',
-                'ref-x': HORIZONTAL_PADDING + 2, // jointjs specific: relative position to ref'd element
-                'ref-y': LABEL2_OFFSET_Y, // jointjs specific: relative position to ref'd element
-                ref: '.box', // jointjs specific: element for ref-x, ref-y
-                fill: 'black',
-                'font-size': 20
+            '.type-label': {
+              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refY': 0.5,
+              'refY2': 2,
+              'y-alignment': 'top',
+              'x-alignment': 'middle',
+              ref: '.box', // jointjs specific: element for ref-x, ref-y
+              fill: 'black',
+              'font-size': 14,
+              text: 'UNRESOLVED'
+            },
+            '.type-label-bg': {
+              ref: '.type-label',
+              refX: -7,
+              refY: -2,
+              refWidth: 14,
+              refHeight: 4
+            },
+            '.type-icon': {
+              ref: '.box',
+              refX: 10,
+              refY: 0.5,
+              refY2: -10,
             },
             '.stream-label': {
                 'x-alignment': 'middle',
@@ -185,8 +211,10 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
                 magnet: false,
             },
             '.box': {
-                width: IMAGE_W,
-                height: IMAGE_H / 2,
+                // d: 'm6,10 a12,12 0 0,0 0,20 l108,0 a12,12 0 0,0 0,-20 l0,0 z',
+                refWidth: 1,
+                refHeight: 0.5,
+                refY: 0.25,
                 rx: 2,
                 ry: 2,
                 // 'fill-opacity':0, // see through
@@ -194,43 +222,60 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
                 fill: '#eeeeee',
                 'stroke-width': 2,
             },
-            '.input-port': {
-                port: 'input',
-                r: 4, // height: 8, width: 8,
-                magnet: true,
-                fill: '#eeeeee',
-                // transform: 'translate(' + -4 + ',' + ((IMAGE_H/2)-4) + ')',
-                transform: 'translate(1,' + ((IMAGE_H / 2)) + ')',
-                stroke: '#34302d',
-                'stroke-width': 1,
-                class: 'input-port flo-input-port'
+            // '.input-port': {
+            //     port: 'input',
+            //     r: 4, // height: 8, width: 8,
+            //     magnet: true,
+            //     fill: '#eeeeee',
+            //     // transform: 'translate(' + -4 + ',' + ((IMAGE_H/2)-4) + ')',
+            //     transform: 'translate(1,' + ((IMAGE_H / 2)) + ')',
+            //     stroke: '#34302d',
+            //     'stroke-width': 1,
+            //     class: 'input-port flo-input-port'
+            // },
+            // '.output-port': {
+            //     port: 'output',
+            //     r: 4, // height: 8, width: 8,
+            //     magnet: true,
+            //     fill: '#eeeeee',
+            //     transform: 'translate(' + (IMAGE_W - 1) + ',' + ((IMAGE_H / 2)) + ')',
+            //     stroke: '#34302d',
+            //     'stroke-width': 1,
+            //   class: 'output-port flo-output-port'
+            // },
+            '.name-label': {
+              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refY': 0.5,
+              'refY2': -2,
+              'y-alignment': 'bottom',
+              'x-alignment': 'middle',
+              ref: '.box', // jointjs specific: element for ref-x, ref-y
+              fill: 'black',
+              'font-size': 14
             },
-            '.output-port': {
-                port: 'output',
-                r: 4, // height: 8, width: 8,
-                magnet: true,
-                fill: '#eeeeee',
-                transform: 'translate(' + (IMAGE_W - 1) + ',' + ((IMAGE_H / 2)) + ')',
-                stroke: '#34302d',
-                'stroke-width': 1,
-              class: 'output-port flo-output-port'
+            '.type-label': {
+              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refY': 0.5,
+              'refY2': 2,
+              'y-alignment': 'top',
+              'x-alignment': 'middle',
+              ref: '.box', // jointjs specific: element for ref-x, ref-y
+              fill: 'black',
+              'font-size': 14,
+              text: 'UNRESOLVED'
             },
-            '.label1': {
-                'ref-x': 0.5, // jointjs specific: relative position to ref'd element
-                'ref-y': 0.525,
-                'y-alignment': 'middle',
-                'x-alignment': 'middle',
-                ref: '.box', // jointjs specific: element for ref-x, ref-y
-                fill: 'black',
-                'font-size': 14
+            '.type-label-bg': {
+              ref: '.type-label',
+              refX: 0,
+              refY: 0,
+              refWidth: 10,
+              refHeight: 8
             },
-            '.label2': {
-                'y-alignment': 'middle',
-                'ref-x': HORIZONTAL_PADDING + 2, // jointjs specific: relative position to ref'd element
-                'ref-y': LABEL2_OFFSET_Y, // jointjs specific: relative position to ref'd element
-                ref: '.box', // jointjs specific: element for ref-x, ref-y
-                fill: 'black',
-                'font-size': 20
+            '.type-icon': {
+              ref: '.box',
+              refX: 10,
+              refY: 0.5,
+              refY2: -10,
             },
             '.stream-label': {
                 'x-alignment': 'middle',
@@ -303,12 +348,12 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
         options: {
             linkToolsOffset: 1000,
         },
-        connector: {
-          name: 'smoothHorizontal'
-        },
+        // connector: {
+        //   name: 'smoothHorizontal'
+        // },
 //      router: { name: 'metro' },
         attrs: {
-            '.connection': { stroke: '#34302d', 'stroke-width': 2, 'class': 'connection' },
+            '.connection': { stroke: '#f1f1f1', 'stroke-width': 2, 'class': 'connection' },
             '.connection-wrap': { display: 'none' },
             // '.marker-arrowheads': { display: 'none' },
             '.tool-options': { display: 'block' },

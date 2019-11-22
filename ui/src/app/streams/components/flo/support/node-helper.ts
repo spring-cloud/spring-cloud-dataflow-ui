@@ -48,6 +48,17 @@ const GROUP_ICONS = new Map<string, string>()
   .set('tap', '⦂') // 2982
 ;
 
+// Default icons (unicode chars) for each group member, unless they override
+const GROUP_ICONS_2 = new Map<string, string>()
+  .set('app', 'assets/img/source.svg') // U+2338 (Quad equal symbol)
+  .set('source', 'assets/img/source.svg')// 21D2
+  .set('processor', 'assets/img/processor.svg') // 3bb  //flux capacitor? 1D21B
+  .set('sink', 'assets/img/sink.svg') // 21D2
+  .set('task', 'assets/img/source.svg') // 2609   ⚙=2699 gear (rubbish)
+  .set('destination', 'assets/img/source.svg') // 2982
+  .set('tap', 'assets/img/source.svg') // 2982
+;
+
 /**
  * Node Helper for Flo based Stream Definition graph editor.
  * Static utility method for creating joint model objects.
@@ -66,19 +77,14 @@ export class NodeHelper {
               '.box': {
                 'fill': '#eef4ee',
               },
-              // '.input-port': {
-              //   display: 'none',
-              //   magnet: false
-              // },
-              // '.output-port': {
-              //   display: 'none',
-              //   magnet: false
-              // },
-              '.label1': {
-                'text': metadata.name
+              '.shape': {
+                class: 'shape app-module'
               },
-              '.label2': {
-                'text': GROUP_ICONS.get(metadata.group)
+              '.type-label': {
+                text: metadata.group.toUpperCase()
+              },
+              '.type-icon': {
+                'xlink:href': GROUP_ICONS_2.get(metadata.group),
               }
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -91,14 +97,14 @@ export class NodeHelper {
               '.box': {
                 'fill': '#eef4ee'
               },
-              // '.input-port': {
-              //   display: 'none'
-              // },
-              '.label1': {
-                'text': metadata.name
+              '.shape': {
+                class: 'shape source-module'
               },
-              '.label2': {
-                'text': GROUP_ICONS.get(metadata.group)
+              '.type-label': {
+                text: metadata.group.toUpperCase()
+              },
+              '.type-icon': {
+                'xlink:href': GROUP_ICONS_2.get(metadata.group),
               }
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -111,11 +117,14 @@ export class NodeHelper {
               '.box': {
                 'fill': '#eef4ee'
               },
-              '.label1': {
-                'text': metadata.name
+              '.shape': {
+                class: 'shape processor-module'
               },
-              '.label2': {
-                'text': GROUP_ICONS.get(metadata.group)
+              '.type-label': {
+                text: metadata.group.toUpperCase()
+              },
+              '.type-icon': {
+                'xlink:href': GROUP_ICONS_2.get(metadata.group),
               },
               '.stream-label': {
                 display: 'none'
@@ -131,14 +140,14 @@ export class NodeHelper {
               '.box': {
                 'fill': '#eef4ee'
               },
-              // '.output-port': {
-              //   display: 'none'
-              // },
-              '.label1': {
-                'text': metadata.name
+              '.shape': {
+                class: 'shape sink-module'
               },
-              '.label2': {
-                'text': GROUP_ICONS.get(metadata.group)
+              '.type-label': {
+                text: metadata.group.toUpperCase()
+              },
+              '.type-icon': {
+                'xlink:href': GROUP_ICONS_2.get(metadata.group),
               },
               '.stream-label': {
                 display: 'none'
@@ -154,14 +163,14 @@ export class NodeHelper {
               '.box': {
                 'fill': '#eef4ee'
               },
-              // '.output-port': {
-              //   display: 'none'
-              // },
-              '.label1': {
-                'text': metadata.name
+              '.shape': {
+                class: 'shape task-module'
               },
-              '.label2': {
-                'text': GROUP_ICONS.get(metadata.group)
+              '.type-label': {
+                text: metadata.group.toUpperCase()
+              },
+              '.type-icon': {
+                'xlink:href': GROUP_ICONS_2.get(metadata.group),
               },
               '.stream-label': {
                 display: 'none'
@@ -179,14 +188,14 @@ export class NodeHelper {
                   'fill': '#eeeeff',
                   'stroke': '#0000ff'
                 },
-                // '.input-port': {
-                //   display: 'none'
-                // },
-                '.label1': {
-                  'text': metadata.name
+                '.shape': {
+                  class: 'shape other-module'
                 },
-                '.label2': {
-                  'text': GROUP_ICONS.get(metadata.name)
+                '.type-label': {
+                  text: metadata.group.toUpperCase()
+                },
+                '.type-icon': {
+                  'xlink:href': GROUP_ICONS_2.get(metadata.group),
                 }
               }
             }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -199,11 +208,14 @@ export class NodeHelper {
                   'fill': '#eeeeff',
                   'stroke': '#0000ff'
                 },
-                '.label1': {
-                  'text': metadata.name
+                '.shape': {
+                  class: 'shape other-module'
                 },
-                '.label2': {
-                  'text': GROUP_ICONS.get(metadata.name)
+                '.type-label': {
+                  text: metadata.group.toUpperCase()
+                },
+                '.type-icon': {
+                  'xlink:href': GROUP_ICONS_2.get(metadata.group),
                 }
               }
             }, joint.shapes.flo.Destination.prototype.defaults)

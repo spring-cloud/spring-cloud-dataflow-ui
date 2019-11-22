@@ -31,6 +31,7 @@ import { InstanceDotComponent } from '../instance-dot/instance-dot.component';
 import { MessageRateComponent } from '../message-rate/message-rate.component';
 import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
+import {text} from "d3-fetch";
 
 const joint: any = _joint;
 
@@ -214,24 +215,57 @@ export class ViewHelper {
   }
 
   static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string): void {
-    const label: string = node.attr(labelPath);
+    const label: string = node.attr(`${labelPath}/text`);
     const view = paper.findViewByModel(node);
     if (view && label) {
-      const textView = view.findBySelector(labelPath.substr(0, labelPath.indexOf('/')))[0];
+      const labelElement = view.findBySelector(labelPath)[0];
       let offset = 0;
-      if (node.attr('.label2/text')) {
+      if (node.attr('.type-icon')) {
+        const label2View = view.findBySelector('.type-icon')[0];
+        if (label2View) {
+          const box = joint.V(label2View).bbox(false, paper.viewport);
+          let padding = 0;
+          if (node.attr('.type-icon/ref')) {
+            const refView = view.findBySelector(node.attr('.type-icon/ref'))[0];
+            if (refView) {
+              padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+            }
+          } else {
+            padding = box.x - view.getBBox().x;
+          }
+          offset = padding + box.width;
+        }
+      } else if (node.attr('.label2/text')) {
         const label2View = view.findBySelector('.label2')[0];
         if (label2View) {
           const box = joint.V(label2View).bbox(false, paper.viewport);
-          offset = HORIZONTAL_PADDING + box.width;
+          let padding = 0;
+          if (node.attr('.label2/ref')) {
+            const refView = view.findBySelector(node.attr('.label2/ref'))[0];
+            if (refView) {
+              padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+            }
+          } else {
+            padding = box.x - view.getBBox().x;
+          }
+          offset = padding + box.width;
         }
       }
-      const threshold = IMAGE_W - HORIZONTAL_PADDING - HORIZONTAL_PADDING - offset;
 
-      let width = joint.V(textView).bbox(false, paper.viewport).width;
+      let boundingBox = view.getBBox();
+      if (node.attr(`${labelPath}/ref`)) {
+        const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
+        if (refElement) {
+          boundingBox = joint.V(refElement).bbox(false, paper.viewport);
+        }
+      }
+
+      const threshold = boundingBox.width - HORIZONTAL_PADDING - HORIZONTAL_PADDING - offset;
+
+      let width = joint.V(labelElement).bbox(false, paper.viewport).width;
 
       if (width > threshold) {
-        const styles = getComputedStyle(textView);
+        const styles = getComputedStyle(labelElement);
         const stylesObj: {} = {};
         for (let i = 0; i < styles.length; i++) {
           const property = styles.item(i);
@@ -269,14 +303,15 @@ export class ViewHelper {
           }
 
           if (offset) {
-            (<any>node).attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5), {silent: true});
+            node.attr(`${labelPath}/refX`, Math.max((offset + HORIZONTAL_PADDING + width / 2) / boundingBox.width, 0.5), {silent: true});
           }
-          (<any>node).attr(labelPath, textNode.data);
+          // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
+          node.attr(`${labelPath}/text`, textNode.data);
         } finally {
           document.body.removeChild(svgDocument);
         }
       } else {
-        (<any>node).attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5));
+       node.attr(`${labelPath}/refX`, Math.max((offset + HORIZONTAL_PADDING + width / 2) / boundingBox.width, 0.5));
       }
     }
   }
