@@ -608,8 +608,7 @@ table.zoom-canvas-control {
 .select-1, .select-2, .select-3, .select-4, .select-5, .select-6 {
   fill: #fff;
   opacity: 0;
-  width: 3px;
-  height: 3px;
+  stroke: #222
 }
 
 .select-outline {
@@ -631,8 +630,6 @@ table.zoom-canvas-control {
 .joint-element.highlighted .select-4, .joint-element.highlighted .select-5, .joint-element.highlighted .select-6 {
   opacity: 1;
   stroke-width: 1px;
-  width: 3px;
-  height: 3px;
 }
 
 .joint-element.highlighted .select-outline {
