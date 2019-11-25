@@ -350,7 +350,7 @@ export class TextToGraphConverter {
         return match1.match.group;
       }
     }
-    return ApplicationType[ApplicationType.app];
+    // return ApplicationType[ApplicationType.app];
   }
 
   /**

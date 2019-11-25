@@ -10,6 +10,12 @@ $btn-default-bg: #607580;
 $flo-shape-fill-color: #f1f1f1;
 $spring-grey: #DFE5E8;
 
+$source-color: #0096ff;
+$processor-color: #80b600;
+$sink-color: #f5be00;
+$app-color: #ff00de;
+$other-color: #777777;
+
 .stream-editor {
   position: relative;
   .canvas-controls-container {
@@ -160,10 +166,6 @@ svg * {
   stroke-width: 2;
 }
 
-.available-magnet {
-  stroke-width: 3;
-}
-
 .label1 {
   font-family: inherit;
 }
@@ -193,6 +195,11 @@ svg * {
   background-color: $spring-light-grey;
 }
 
+.stream-editor #palette-paper-container {
+  height: calc(100% - 37px);
+  width: 100%;
+}
+
 .palette-paper {
   background-color: white;
   border-color: $btn-default-border;
@@ -208,30 +215,17 @@ svg * {
 
 .flow-view .palette-filter {
   border-color: #ebf0f2;
+  input[type=search] {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    color: $btn-default-border;
+  }
 }
 
-.joint-type-palette-groupheader rect {
-  fill: $btn-default-bg;
-  stroke: $btn-default-border;
-}
-
-.dataflow-main-container #sidebar-resizer {
-  background-color: $btn-default-bg;
-}
-
-.groupheader > text {
-  fill: $btn-default-color;
-}
-
-.groupheader .scalable > rect {
-  fill: darken($btn-default-bg, 5%);
-  stroke: darken($btn-default-border, 5%);
-  stroke-width: 2px;
-}
-
-.groupheader .rotatable > path {
-  fill: $btn-default-color;
-  stroke: $btn-default-color;
+.stream-editor #sidebar-resizer {
+  background-color: #dfe5e8;
+  width: 1px;
 }
 
 .stream-module .box {
@@ -281,28 +275,29 @@ svg * {
 .type-label-bg {
   fill: black;
   stroke: none;
+  fill: red;
   rx: 8;
   ry: 8;
 }
 
 .source-module .type-label-bg {
-  fill: #0096ff;
+  fill: $source-color;
 }
 
 .processor-module .type-label-bg {
-  fill: #80b600;
+  fill: $processor-color;
 }
 
 .sink-module .type-label-bg {
-  fill: #f5be00;
+  fill: $sink-color;
 }
 
 .app-module .type-label-bg {
-  fill: #ff00de;
+  fill: $app-color;
 }
 
 .other-module .type-label-bg {
-  fill: #777777;
+  fill: $other-color;
 }
 
 .destination .box {
@@ -678,3 +673,42 @@ table.zoom-canvas-control {
   }
 
 }
+
+.joint-type-palette-groupheader {
+  .outer {
+    fill: transparent;
+  }
+  .group-label-bg {
+    rx: 8;
+    ry: 8;
+    fill: red;
+  }
+  .group-label-bg.source {
+    fill: $source-color;
+  }
+  .group-label-bg.processor {
+    fill: $processor-color;
+  }
+  .group-label-bg.sink {
+    fill: $sink-color;
+  }
+  .group-label-bg.other {
+    fill: $other-color;
+  }
+  .group-label-bg.app {
+    fill: $app-color;
+  }
+  .group-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: white;
+  }
+  .group-line {
+    stroke: #BBBBBB;
+    stroke-width: 1px;
+    stroke-linecap: round;
+  }
+}
+
+
