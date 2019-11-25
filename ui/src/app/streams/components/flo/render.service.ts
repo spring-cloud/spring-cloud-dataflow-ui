@@ -679,8 +679,6 @@ export class RenderService implements Flo.Renderer {
       } else {
         return joint.g.point(rect.x + rect.width, rect.y + rect.height / 2);
       }
-    } else {
-      return reference;
     }
   }
 

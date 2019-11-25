@@ -47,6 +47,7 @@ import { StreamsUtilsComponent } from './streams-utils/streams-utils.component';
 import { StreamsImportComponent } from './streams-utils/streams-import/streams-import.component';
 import { StreamsExportComponent } from './streams-utils/streams-export/streams-export.component';
 import { StreamsUtilsService } from './streams-utils/streams-utils.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { StreamsUtilsService } from './streams-utils/streams-utils.service';
     SharedModule,
     NgxPaginationModule,
     ReactiveFormsModule,
+    CommonModule,
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),

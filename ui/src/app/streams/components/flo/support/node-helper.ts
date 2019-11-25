@@ -206,7 +206,7 @@ export class NodeHelper {
             }, joint.shapes.flo.DataFlowApp.prototype.defaults)
           );
         } else if (metadata.name === 'destination') {
-          node = new joint.shapes.flo.Destination(
+          node = new joint.shapes.flo.DataFlowApp(
             joint.util.deepSupplement({
               attrs: {
                 '.box': {
@@ -223,7 +223,7 @@ export class NodeHelper {
                   'xlink:href': GROUP_ICONS_2.get(metadata.group),
                 }
               }
-            }, joint.shapes.flo.Destination.prototype.defaults)
+            }, joint.shapes.flo.DataFlowApp.prototype.defaults)
           );
         } else {
           node = new joint.shapes.flo.DataFlowApp();

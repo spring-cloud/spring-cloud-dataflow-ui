@@ -1,28 +1,45 @@
-<svg:g [ngSwitch]="metaName">
+<svg:g>
+  <ng-container *ngIf="isPalette(); then paletteShape else canvasShape"></ng-container>
+</svg:g>
 
-  <svg:g *ngSwitchCase="'destination'" class="destination">
-    <svg:rect *ngIf="isCanvas()" class="select-outline"/>
+<ng-template #paletteShape>
+  <svg:g class="stream-module">
+    <svg:g class="shape" [tooltip]="paletteNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
+      <svg:rect class="box"/>
+      <svg:image class="type-icon"/>
+      <svg:text class="palette-entry-name-label"/>
+    </svg:g>
+  </svg:g>
+</ng-template>
+
+<ng-template #canvasShape>
+  <svg:g class="stream-module">
+    <svg:rect class="select-outline"/>
     <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
       <svg:rect class="box"/>
+      <svg:image class="type-icon"/>
       <svg:g>
-        <svg:image class="type-icon"/>
+        <svg:rect class="type-label-bg"/>
+        <svg:text class="name-label"/>
+        <svg:text class="type-label"/>
       </svg:g>
-      <svg:g *ngIf="isPalette(); else shapeLabelsTemplate">
-        <svg:text class="palette-entry-name-label"/>
-      </svg:g>
+      <svg:image class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip" placement="top"
+                 containerClass="error-marker-tooltip" container="body" [isDisabled]="isDisabled"/>
     </svg:g>
-    <svg:text *ngIf="isCanvas()" class="stream-label"/>
-    <svg:g *ngIf="!isPalette()">
-      <svg:g *ngIf="!isPalette()"  class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
+    <svg:text class="stream-label"/>
+    <svg:g class="input-port-group" *ngIf="isSingleIntputPort(); else inputPortsTemplate">
+      <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
         <svg:circle class="port-outer-circle-input"/>
         <svg:circle class="port-inner-circle-input"/>
       </svg:g>
-      <svg:g *ngIf="!isPalette()" class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
+    </svg:g>
+    <svg:g class="output-port-group" *ngIf="isSingleOutputPort(); else outputPortsTemplate">
+      <svg:g class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
         <svg:circle class="port-outer-circle-output"/>
         <svg:circle class="port-inner-circle-output"/>
       </svg:g>
     </svg:g>
-    <svg:g *ngIf="isCanvas()" class="highlight-handles-group">
+    <svg:g class="highlight-handles-group">
       <svg:rect class="select-1"/>
       <svg:rect class="select-2"/>
       <svg:rect class="select-3"/>
@@ -30,53 +47,6 @@
       <svg:rect class="select-5"/>
       <svg:rect class="select-6"/>
     </svg:g>
-  </svg:g>
-
-  <svg:g *ngSwitchDefault class="stream-module">
-    <svg:rect *ngIf="isCanvas()" class="select-outline"/>
-    <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip" [isDisabled]="isDisabled">
-      <svg:rect class="box"/>
-      <svg:g>
-        <svg:image class="type-icon"/>
-      </svg:g>
-      <svg:g *ngIf="isPalette(); else shapeLabelsTemplate">
-        <svg:text class="palette-entry-name-label"/>
-      </svg:g>
-    </svg:g>
-    <svg:text *ngIf="isCanvas()" class="stream-label"/>
-    <svg:g *ngIf="!isPalette()">
-      <svg:g class="input-port-group" *ngIf="isSingleIntputPort(); else inputPortsTemplate">
-        <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
-          <svg:circle class="port-outer-circle-input"/>
-          <svg:circle class="port-inner-circle-input"/>
-        </svg:g>
-      </svg:g>
-      <svg:g class="output-port-group" *ngIf="isSingleOutputPort(); else outputPortsTemplate">
-        <svg:g class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
-          <svg:circle class="port-outer-circle-output"/>
-          <svg:circle class="port-inner-circle-output"/>
-        </svg:g>
-      </svg:g>
-    </svg:g>
-    <svg:image *ngIf="isCanvas()" class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip"
-      placement="top" containerClass="error-marker-tooltip" container="body" [isDisabled]="isDisabled"/>
-    <svg:g *ngIf="isCanvas()" class="highlight-handles-group">
-      <svg:rect class="select-1"/>
-      <svg:rect class="select-2"/>
-      <svg:rect class="select-3"/>
-      <svg:rect class="select-4"/>
-      <svg:rect class="select-5"/>
-      <svg:rect class="select-6"/>
-    </svg:g>
-  </svg:g>
-
-</svg:g>
-
-<ng-template #shapeLabelsTemplate>
-  <svg:g>
-    <svg:rect class="type-label-bg"/>
-    <svg:text class="name-label"/>
-    <svg:text class="type-label"/>
   </svg:g>
 </ng-template>
 
@@ -106,6 +76,15 @@
   </svg:g>
 </ng-template>
 
+<ng-template #paletteNodeTooltip>
+  <div ng-if="cell.attr('metadata/name')">
+    <span><strong>{{ metaName | uppercase }}</strong></span>
+    <span><strong>{{ '(' + (metaGroup | capitalize) + ')' }}</strong></span>
+  </div>
+  <div *ngIf="description">
+    <span>{{ description }}</span>
+  </div>
+</ng-template>
 
 <ng-template #canvasNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">

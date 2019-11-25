@@ -219,7 +219,9 @@ svg * {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 12px;
     font-weight: normal;
-    color: $btn-default-border;
+  }
+  ::placeholder {
+    color: $navy-8;
   }
 }
 
@@ -235,6 +237,8 @@ svg * {
   ry: 8;
 }
 
+
+
 .validation-errors .stream-module .box {
   fill: rgb(254, 227, 227);
 }
@@ -247,29 +251,33 @@ svg * {
   display: block;
 }
 
-.stream-module .name-label {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  fill: #222;
-}
-
-.stream-module .palette-entry-name-label {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  fill: #222;
+.stream-module {
+  .stream-label {
+    fill: #AAAAAA;
+    font-size: 15;
+  }
+  .name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .palette-entry-name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .type-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: white;
+  }
 }
 
 .default-name .stream-module .name-label {
   fill: #777777;
-}
-
-.stream-module .type-label {
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  fill: white;
 }
 
 .type-label-bg {
@@ -388,18 +396,11 @@ svg * {
 }
 
 .connection.tapped-output-from-app {
-  stroke: #777777;
   stroke-dasharray: 5,2;
 }
 
-.marker-source.tapped-output-from-app {
-  stroke: #777777;
-  fill: #777777;
-}
-
-.marker-target.tapped-output-from-app {
-  stroke: #777777;
-  fill: #777777;
+.connection {
+  stroke: #f1f1f1;
 }
 
 // Link Tools handle shows up on a link in Composed Task editor

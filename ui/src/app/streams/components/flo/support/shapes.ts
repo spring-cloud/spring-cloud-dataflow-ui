@@ -160,12 +160,11 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             },
             '.stream-label': {
                 'x-alignment': 'middle',
-                'y-alignment': -0.999999,
-                'ref-x': 0.5, // jointjs specific: relative position to ref'd element
-                'ref-y': 0, // jointjs specific: relative position to ref'd element
+                'y-alignment': 'top',
+                refX: 0.5, // jointjs specific: relative position to ref'd element
+                refY: '100%', // jointjs specific: relative position to ref'd element
+                refY2: 10,
                 ref: '.box', // jointjs specific: element for ref-x, ref-y
-                fill: '#AAAAAA',
-                'font-size': 15
             },
             '.select-outline': {
               ref: '.box',
