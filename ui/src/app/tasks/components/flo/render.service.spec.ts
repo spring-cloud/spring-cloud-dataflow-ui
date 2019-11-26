@@ -67,7 +67,7 @@ describe('Task RenderService', () => {
   });
 
   it('Create Task Node', () => {
-    const taskA = RENDER_SERVICE.createNode(METAMODEL.get('task').get('a'));
+    const taskA = RENDER_SERVICE.createNode({}, METAMODEL.get('task').get('a'));
     expect(taskA.attr('.label/text')).toBe(METAMODEL.get('task').get('a').name);
     expect(taskA.attr('.output-port')).toBeDefined();
     expect(taskA.attr('.input-port')).toBeDefined();
@@ -77,7 +77,7 @@ describe('Task RenderService', () => {
   });
 
   it('Create Start Node', () => {
-    const taskA = RENDER_SERVICE.createNode(METAMODEL.get('control nodes').get('START'));
+    const taskA = RENDER_SERVICE.createNode({}, METAMODEL.get('control nodes').get('START'));
     expect(taskA.attr('.label/text')).toBe('START');
     expect(taskA.attr('.output-port')).toBeDefined();
     expect(taskA.attr('.input-port')).toBeUndefined();
@@ -87,7 +87,7 @@ describe('Task RenderService', () => {
   });
 
   it('Create End Node', () => {
-    const taskA = RENDER_SERVICE.createNode(METAMODEL.get('control nodes').get('END'));
+    const taskA = RENDER_SERVICE.createNode({}, METAMODEL.get('control nodes').get('END'));
     expect(taskA.attr('.label/text')).toBe('END');
     expect(taskA.attr('.output-port')).toBeUndefined();
     expect(taskA.attr('.input-port')).toBeDefined();
@@ -97,7 +97,7 @@ describe('Task RenderService', () => {
   });
 
   it('Create Sync Node', () => {
-    const taskA = RENDER_SERVICE.createNode(METAMODEL.get('control nodes').get('SYNC'));
+    const taskA = RENDER_SERVICE.createNode({}, METAMODEL.get('control nodes').get('SYNC'));
     expect(taskA.attr('.label/text')).toBe('SYNC');
     expect(taskA.attr('.output-port')).toBeDefined();
     expect(taskA.attr('.input-port')).toBeDefined();

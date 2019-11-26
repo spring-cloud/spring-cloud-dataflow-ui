@@ -45,7 +45,7 @@ const joint: any = _joint;
 export class RenderService implements Flo.Renderer {
 
   constructor(private metamodelService: MetamodelService,
-              private bsModalService: BsModalService,
+              private bsModalService?: BsModalService,
               private componentFactoryResolver?: ComponentFactoryResolver,
               private injector?: Injector,
               private applicationRef?: ApplicationRef) {
@@ -504,7 +504,9 @@ export class RenderService implements Flo.Renderer {
       // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
       // Set silently, last attr call would refresh the view
       source.attr('.stream-label/display', 'none', {silent: true});
-      source.removeAttr('.input-port/display');
+
+      // TODO: Why is the port hiddon/removed when link is deleted??? Probably leftovers of some old functionality...
+      // source.removeAttr('.input-port');
       view = flo.getPaper().findViewByModel(source);
       if (view) {
         (<any>view).update();
@@ -515,7 +517,8 @@ export class RenderService implements Flo.Renderer {
       // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
       // Set silently, last attr call would refresh the view
       target.attr('.stream-label/display', 'none', {silent: true});
-      target.removeAttr('.output-port/display');
+      // TODO: Why is the port hiddon/removed when link is deleted??? Probably leftovers of some old functionality...
+      // target.removeAttr('.output-port');
       view = flo.getPaper().findViewByModel(target);
       if (view) {
         (<any>view).update();
@@ -641,9 +644,11 @@ export class RenderService implements Flo.Renderer {
   handleLinkEvent(flo: Flo.EditorContext, event: string, link: dia.Link) {
     switch (event) {
       case 'options':
-        const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
-        modalRef.content.title = `Properties for ${link.attr('metadata/name').toUpperCase()}`;
-        modalRef.content.setData(new StreamGraphPropertiesSource(link, null));
+        if (this.bsModalService) {
+          const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
+          modalRef.content.title = `Properties for ${link.attr('metadata/name').toUpperCase()}`;
+          modalRef.content.setData(new StreamGraphPropertiesSource(link, null));
+        }
         break;
       case 'change:source':
         this.handleLinkSourceChanged(link, flo);

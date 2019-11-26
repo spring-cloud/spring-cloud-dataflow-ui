@@ -384,6 +384,10 @@ export class NodeHelper {
           case 'tap':
             NodeHelper.createCommonInputPort(node);
             break;
+          case 'destination':
+            NodeHelper.createCommonOutputPort(node);
+            NodeHelper.createCommonInputPort(node);
+            break;
         }
         break;
     }

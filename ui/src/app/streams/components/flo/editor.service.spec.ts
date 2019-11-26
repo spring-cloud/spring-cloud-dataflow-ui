@@ -15,10 +15,15 @@ const $: any = _$;
 describe('Streams Editor Service', () => {
     const editorService = new EditorService(null);
 
-    let graph: dia.Graph;
+    const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
+    const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
+
+
+  let graph: dia.Graph;
 
     beforeEach(() => {
         graph = new dia.Graph();
+        graph.set('type', Constants.CANVAS_CONTEXT);
     });
 
     it('no problems on simple valid stream', (done) => {
@@ -337,11 +342,9 @@ describe('Streams Editor Service', () => {
 
     // If you do not supply the group it is undefined and a way to check unresolved metadata
     function createNode(appname: string, group?: string, metadata?: Flo.ElementMetadata): dia.Element {
-        const params: Shapes.ElementCreationParams = {};
-        if (metadata) {
-            params.metadata = metadata;
-        } else {
-            params.metadata = {
+
+        if (!metadata) {
+            metadata = {
                 name: appname,
                 group: group,
                 get(property: String): Promise<Flo.PropertyMetadata> {
@@ -355,8 +358,12 @@ describe('Streams Editor Service', () => {
                 }
             };
         }
+        const params: Shapes.ElementCreationParams = {
+          metadata: metadata,
+          graph: graph,
+          renderer: RENDER_SERVICE
+        };
         const newNode: dia.Element = Shapes.Factory.createNode(params);
-        graph.addCell(newNode);
         return newNode;
     }
 

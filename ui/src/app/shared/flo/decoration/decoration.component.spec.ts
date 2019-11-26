@@ -8,6 +8,7 @@ import { MetamodelService } from '../../../streams/components/flo/metamodel.serv
 import { async } from '@angular/core/testing';
 
 import * as _joint from 'jointjs';
+import {NodeHelper} from "../../../streams/components/flo/support/node-helper";
 
 const joint: any = _joint;
 
@@ -22,11 +23,18 @@ class MockDocService {
   isMouseDown = () => this.mouseDown;
 }
 
+class CutomRenderService extends RenderService {
+
+  createDecoration(kind: string, parent: dia.Cell) {
+    return NodeHelper.createDecoration(kind, parent);
+  }
+}
+
 
 describe('DecorationComponent Tests.', () => {
 
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
-  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
+  const RENDER_SERVICE = new CutomRenderService(METAMODEL_SERVICE);
   const DOC_SERVICE = new MockDocService();
 
   let graph: dia.Graph;
