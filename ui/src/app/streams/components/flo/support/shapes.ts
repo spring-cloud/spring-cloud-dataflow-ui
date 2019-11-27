@@ -149,6 +149,7 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               refX: 10,
               refY: 0.5,
               refY2: -TYPE_ICON_SIZE.height/2,
+              'xlink:href': 'assets/img/unknown.svg',
             },
             '.error-marker': {
               width: ERROR_MARKER_SIZE.width,
@@ -472,7 +473,7 @@ joint.shapes.flo.DataFlowLabelHandle = joint.shapes.basic.Generic.extend({
 
 joint.shapes.flo.StreamModuleGroupHeader = joint.shapes.basic.Generic.extend({
   // The path is the open/close arrow, defaults to vertical (open)
-  markup: '<g><rect class="outer"/><rect class="group-label-bg"/><text class="group-label"/><polyline class="group-line"/></g>',
+  markup: '<g><rect class="outer"/><rect class="group-label-bg"/><text class="group-label"/><image class="collapse-handle"/><polyline class="group-line"/></g>',
   defaults: joint.util.deepSupplement({
     type: 'palette.groupheader',
     size: {width: 170, height: 40},
@@ -494,9 +495,18 @@ joint.shapes.flo.StreamModuleGroupHeader = joint.shapes.basic.Generic.extend({
       },
       '.group-label': {
         ref: '.outer',
-        'ref-x': 15,
-        'ref-y': 0.5,
+        refX: 15,
+        refY: 0.5,
         'y-alignment': 'middle'
+      },
+      '.collapse-handle': {
+        width: 10,
+        height: 10,
+        ref: '.outer',
+        refX: '100%',
+        refX2: '-15 - 10',
+        refY: '50%',
+        refY2: -5
       },
       '.group-line': {
         ref: '.outer',

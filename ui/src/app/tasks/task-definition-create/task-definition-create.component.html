@@ -12,13 +12,13 @@
                 [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="55" [(dsl)]="dsl"
                 (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
 
-      <div class="flow-definition-container">
+      <div header class="flow-definition-container">
         <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
                     (focus)="editorContext.graphToTextSync=false" placeholder="Enter task definitions here..."
                     [lintOptions]="lintOptions"></dsl-editor>
       </div>
 
-      <div class="flow-actions">
+      <div canvas class="flow-actions">
         <button (click)="clearGraph()" class="btn btn-default" type="button">Clear</button>
         <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
         <button class="btn" (click)="gridOn = !gridOn"

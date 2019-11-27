@@ -106,7 +106,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   resizeFloGraph(height?: number) {
-    const viewEditor = this.flo.element.nativeElement.children[2];
+    const viewEditor = this.flo.element.nativeElement.children[1];
     if (height) {
       height = height - 330;
     } else {
@@ -140,6 +140,10 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   set gridOn(on: boolean) {
     this.editorContext.gridSize = on ? 40 : 1;
+  }
+
+  changeZoom(change: number) {
+    this.editorContext.zoomPercent = this.editorContext.zoomPercent + change;
   }
 
   arrangeAll() {

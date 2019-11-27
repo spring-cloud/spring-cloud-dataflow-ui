@@ -281,9 +281,9 @@ export class EditorService implements Flo.Editor {
                       && view.model.attr('.output-port/display') !== 'none') ||
                         view.model.attr('.tap-port') && view.model.attr('.tap-port/display') !== 'none';
                     view.$('[magnet]').each((index, magnet) => {
-                        const type = magnet.getAttribute('type');
-                        if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort)
-                          || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
+                        const port = magnet.getAttribute('port');
+                        if ((port === 'input' && targetHasIncomingPort && hasOutgoingPort)
+                          || (port === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
                             const bbox = joint.V(magnet).bbox(false, paper.viewport);
                             const distance = point.distance({
                                 x: bbox.x + bbox.width / 2,
@@ -294,7 +294,7 @@ export class EditorService implements Flo.Editor {
                                 closestData = {
                                     sourceComponent: sourceComponent,
                                     source: {
-                                        cssClassSelector: type === 'output' ? '.input-port' : '.output-port',
+                                        cssClassSelector: port === 'output' ? '.input-port' : '.output-port',
                                         view: draggedView
                                     },
                                     target: {

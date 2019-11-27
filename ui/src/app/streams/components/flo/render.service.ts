@@ -710,6 +710,10 @@ export class RenderService implements Flo.Renderer {
         group.attr('.group-label/text', title.toUpperCase());
         // Add CSS class to rectangle 'group-label-bg'. If class is not set then it is 'group-label-bg'
         group.attr('.group-label-bg/class', `${group.attr('.group-label-bg/class') || 'group-label-bg'} ${title}`);
+        group.attr('.collapse-handle/xlink:href', isOpen ? 'assets/img/chevron-down.svg' : 'assets/img/chevron-left.svg');
+        group.on('change:isOpen', () => {
+          group.attr('.collapse-handle/xlink:href', isOpen ? 'assets/img/chevron-down.svg' : 'assets/img/chevron-left.svg');
+        });
         return group;
       }
     }

@@ -80,7 +80,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   }
 
   resizeFloGraph(height?: number) {
-    const viewEditor = this.flo.element.nativeElement.children[2];
+    const viewEditor = this.flo.element.nativeElement.children[1];
     if (height) {
       height = height - 330;
     } else {

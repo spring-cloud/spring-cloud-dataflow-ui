@@ -23,8 +23,9 @@ $other-color: #777777;
   }
   .flow-actions {
     position: absolute;
-    top: 110px;
-    right: 200px;
+    display: inline-flex;
+    bottom: 10px;
+    left: 5px;
     z-index: 2;
     .btn {
       margin-left: 2px;
@@ -209,12 +210,9 @@ svg * {
   background-color: white;
 }
 
-.dataflow-main-container .palette-filter {
-  border-color: $btn-default-border;
-}
-
 .flow-view .palette-filter {
   border-color: #ebf0f2;
+  border-width: 2px;
   input[type=search] {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 12px;

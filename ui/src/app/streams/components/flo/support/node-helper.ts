@@ -50,16 +50,13 @@ const GROUP_ICONS = new Map<string, string>()
 
 // Default icons (unicode chars) for each group member, unless they override
 const GROUP_ICONS_2 = new Map<string, string>()
-  .set('app', 'assets/img/source.svg') // U+2338 (Quad equal symbol)
+  .set('app', 'assets/img/app.svg') // U+2338 (Quad equal symbol)
   .set('source', 'assets/img/source.svg')// 21D2
   .set('processor', 'assets/img/processor.svg') // 3bb  //flux capacitor? 1D21B
   .set('sink', 'assets/img/sink.svg') // 21D2
-  .set('task', 'assets/img/source.svg') // 2609   ⚙=2699 gear (rubbish)
-  .set('destination', 'assets/img/source.svg') // 2982
-  .set('tap', 'assets/img/source.svg') // 2982
-
-  .set('other', 'assets/img/source.svg') // 2982
-  .set('unresolved', 'assets/img/source.svg') // 2982
+  .set('task', 'assets/img/unknown.svg') // 2609   ⚙=2699 gear (rubbish)
+  .set('other', 'assets/img/tap.svg') // 2982
+  .set('unresolved', 'assets/img/unknown.svg') // 2982
 
 ;
 
