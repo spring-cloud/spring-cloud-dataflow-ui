@@ -748,8 +748,9 @@ app-kv-rich-text {
   display: inline-flex;
   background-color:white;
   border:solid grey 1px;
-  width:120px;
-  line-height:32px;
+  border-radius: 2px;
+  width:77px;
+  height:32px;
 }
 .select-editable select {
   position:absolute;
@@ -757,17 +758,19 @@ app-kv-rich-text {
   left:0px;
   font-size:14px;
   border:none;
-  width:120px;
+  width:75px;
   margin:0;
+  height: 30px;
 }
 .select-editable input {
   color: #777777;
   position:absolute;
   top:0px;
   left:0px;
-  width:100px;
+  width:55px;
   padding:1px;
   border:none;
+  height: 30px;
 }
 .select-editable select:focus, .select-editable input:focus {
   outline:none;

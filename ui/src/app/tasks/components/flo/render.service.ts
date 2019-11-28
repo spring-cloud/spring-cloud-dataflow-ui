@@ -255,20 +255,17 @@ export class RenderService implements Flo.Renderer {
     }
 
     if (element instanceof joint.dia.Link && element.attr('metadata')) {
+
       if (changedPropertyPath === 'props/ExitStatus') {
         // If the exitstatus has been changed from blank to something then this
         // may leave no default link from the node at the source of the link since 'element' was
         // previously the default link. In this case add a new default link if a suitable
         // target can be determined. If no target can be computed, a validation error will remind
         // the user that they must add one.
-        const newExitStatus = element.attr('props/ExitStatus') || '';
-        const currentLabels = element.get('labels');
-        let currentText = '';
-        try {
-            currentText = currentLabels[0].attrs.text.text;
-        } catch (e) {
-            // Label or label value not accessible (so not set)
-        }
+        const link = <joint.dia.Link> element;
+        const newExitStatus = link.attr('props/ExitStatus') || '';
+        const currentLabels = link.labels();
+        let currentText = Array.isArray(currentLabels) && currentLabels.length > 0 ? currentLabels[0].attrs.text.text : '';
         if (newExitStatus.length !== 0 && currentText.length === 0) {
             let hasDefaultLink = false;
             const relatedLinks = paper.model.getConnectedLinks(element.get('source'), {outbound: true});
@@ -312,23 +309,27 @@ export class RenderService implements Flo.Renderer {
         }
 
 
-        element.set('labels', [
-          {
-            position: 0.5,
-            attrs: {
-              text: {
-                text: newExitStatus,
-                'stroke': 'black',
-                'stroke-width': 1,
-                'fill': 'black'
+        setTimeout(() => {
+          link.labels([
+            {
+              position: {
+                distance: 0.5
               },
-              rect: {
-                'fill': 'transparent',
-                'stroke-width': 0
+              attrs: {
+                text: {
+                  text: newExitStatus,
+                  'stroke': 'black',
+                  'stroke-width': 1,
+                  'fill': 'black'
+                },
+                rect: {
+                  'fill': 'transparent',
+                  'stroke-width': 0
+                }
               }
             }
-          }
-        ]);
+          ]);
+        });
         const view = paper.findViewByModel(element);
         if (element.attr('props/ExitStatus')) {
           view.$('.connection, .marker-source, .marker-target').toArray()
