@@ -725,15 +725,14 @@ table.zoom-canvas-control {
   fill: rgb(116,116,116);
   font-size: 12px;
   font-family: "Source Sans Pro", sans-serif;
-  text-decoration: underline;
   display: none;
   .handle {
     cursor: pointer;
+    text-decoration: underline;
     :hover {
       font-weight: bolder;
     }
   }
-
 }
 
 .joint-element.highlighted .flo-handles {

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import './shapes';
 import { ApplicationType } from '../../../../shared/model';
 import { dia } from 'jointjs';
 import { Flo, Constants } from 'spring-flo';
 import * as _joint from 'jointjs';
-import {AppMetadata} from "../../../../shared/flo/support/app-metadata";
+import {AppMetadata} from '../../../../shared/flo/support/app-metadata';
+import {Utils as SharedUtils} from "../../../../shared/flo/support/utils";
 
 const joint: any = _joint;
 
@@ -36,20 +36,12 @@ const DECORATION_ICON_MAP = new Map<string, string>()
 
 const PORT_RADIUS = 6;
 
+const HANDLE_SHAPE_SPACING = 10;
+const BETWEEN_HANDLE_SPACING = 5;
+
 
 // Default icons (unicode chars) for each group member, unless they override
 const GROUP_ICONS = new Map<string, string>()
-  .set('app', '⌸') // U+2338 (Quad equal symbol)
-  .set('source', '⇒')// 21D2
-  .set('processor', 'λ') // 3bb  //flux capacitor? 1D21B
-  .set('sink', '⇒') // 21D2
-  .set('task', '☉') // 2609   ⚙=2699 gear (rubbish)
-  .set('destination', '⦂') // 2982
-  .set('tap', '⦂') // 2982
-;
-
-// Default icons (unicode chars) for each group member, unless they override
-const GROUP_ICONS_2 = new Map<string, string>()
   .set('app', 'assets/img/app.svg') // U+2338 (Quad equal symbol)
   .set('source', 'assets/img/source.svg')// 21D2
   .set('processor', 'assets/img/processor.svg') // 3bb  //flux capacitor? 1D21B
@@ -57,7 +49,6 @@ const GROUP_ICONS_2 = new Map<string, string>()
   .set('task', 'assets/img/unknown.svg') // 2609   ⚙=2699 gear (rubbish)
   .set('other', 'assets/img/tap.svg') // 2982
   .set('unresolved', 'assets/img/unknown.svg') // 2982
-
 ;
 
 /**
@@ -86,7 +77,7 @@ export class NodeHelper {
               //   text: metadata.group.toUpperCase()
               // },
               '.type-icon': {
-                'xlink:href': GROUP_ICONS_2.get(metadata.group),
+                'xlink:href': GROUP_ICONS.get(metadata.group),
               }
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -106,7 +97,7 @@ export class NodeHelper {
               //   text: metadata.group.toUpperCase()
               // },
               '.type-icon': {
-                'xlink:href': GROUP_ICONS_2.get(metadata.group),
+                'xlink:href': GROUP_ICONS.get(metadata.group),
               }
             }
           }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -126,7 +117,7 @@ export class NodeHelper {
               //   text: metadata.group.toUpperCase()
               // },
               '.type-icon': {
-                'xlink:href': GROUP_ICONS_2.get(metadata.group),
+                'xlink:href': GROUP_ICONS.get(metadata.group),
               },
               '.stream-label': {
                 display: 'none'
@@ -149,7 +140,7 @@ export class NodeHelper {
               //   text: metadata.group.toUpperCase()
               // },
               '.type-icon': {
-                'xlink:href': GROUP_ICONS_2.get(metadata.group),
+                'xlink:href': GROUP_ICONS.get(metadata.group),
               },
               '.stream-label': {
                 display: 'none'
@@ -172,7 +163,7 @@ export class NodeHelper {
               //   text: metadata.group.toUpperCase()
               // },
               '.type-icon': {
-                'xlink:href': GROUP_ICONS_2.get(metadata.group),
+                'xlink:href': GROUP_ICONS.get(metadata.group),
               },
               '.stream-label': {
                 display: 'none'
@@ -197,7 +188,7 @@ export class NodeHelper {
                 //   text: metadata.group.toUpperCase()
                 // },
                 '.type-icon': {
-                  'xlink:href': GROUP_ICONS_2.get(metadata.group),
+                  'xlink:href': GROUP_ICONS.get(metadata.group),
                 }
               }
             }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -217,7 +208,7 @@ export class NodeHelper {
                 //   text: metadata.group.toUpperCase()
                 // },
                 '.type-icon': {
-                  'xlink:href': GROUP_ICONS_2.get(metadata.group),
+                  'xlink:href': GROUP_ICONS.get(metadata.group),
                 }
               }
             }, joint.shapes.flo.DataFlowApp.prototype.defaults)
@@ -229,7 +220,48 @@ export class NodeHelper {
     node.attr('.palette-entry-name-label/text', metadata.name);
     node.attr('.name-label/text', metadata.name);
     node.attr('.type-label/text', metadata.name.toUpperCase());
+
+    NodeHelper.createHandles(node, metadata);
     return node;
+  }
+
+  static createHandles(node: dia.Element, metadata: Flo.ElementMetadata) {
+    if (!metadata || SharedUtils.isUnresolvedMetadata(metadata)) {
+      node.attr('.delete-handle', {
+        text: 'Delete',
+        ref: '.box',
+        refX: '50%',
+        refY: -HANDLE_SHAPE_SPACING,
+        yAlignment: 'bottom',
+        xAlignment: 'middle'
+      });
+    } else {
+      node.attr('.options-handle', {
+        text: 'Options',
+          ref: '.box',
+          refX: '50%',
+          refX2: -BETWEEN_HANDLE_SPACING,
+          refY: -HANDLE_SHAPE_SPACING,
+          yAlignment: 'bottom',
+          textAnchor: 'end'
+      });
+      node.attr('.handle-separator', {
+        text: '|',
+          ref: '.box',
+          refX: '50%',
+          refY: -HANDLE_SHAPE_SPACING,
+          yAlignment: 'bottom',
+          xAlignment: 'middle'
+      });
+      node.attr('.delete-handle', {
+        text: 'Delete',
+          ref: '.box',
+          refX: '50%',
+          refX2: BETWEEN_HANDLE_SPACING,
+        refY: -HANDLE_SHAPE_SPACING,
+          yAlignment: 'bottom',
+      });
+    }
   }
 
   static createPorts(node: dia.Element, metadata: Flo.ElementMetadata) {

@@ -1,6 +1,11 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NodeComponent } from '../../../../shared/flo/support/node-component';
 import { DocService } from '../../../../shared/services/doc.service';
+import {BsModalService} from 'ngx-bootstrap';
+import {StreamGraphPropertiesSource, StreamHead} from '../properties/stream-properties-source';
+import {StreamPropertiesDialogComponent} from '../properties/stream-properties-dialog.component';
+import {Utils} from '../support/utils';
+import { dia } from 'jointjs';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -16,7 +21,7 @@ import { DocService } from '../../../../shared/services/doc.service';
 })
 export class StreamNodeComponent extends NodeComponent {
 
-  constructor(docService: DocService) {
+  constructor(docService: DocService, private bsModalService: BsModalService) {
     super(docService);
   }
 
@@ -26,6 +31,29 @@ export class StreamNodeComponent extends NodeComponent {
 
   isSingleIntputPort(): boolean {
     return this.view.model.attr('.input-port');
+  }
+
+  showOptions() {
+    const element = this.view.model;
+    const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
+    modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
+    if (element.attr('metadata/version')) {
+      modalRef.content.title += ` (${element.attr('metadata/version')})`;
+    }
+    // const streamHeads: dia.Cell[] = flo.getGraph().getElements().filter(e => Utils.canBeHeadOfStream(flo.getGraph(), e));
+    // const streamNames = streamHeads
+    //   .filter(e => e.attr('stream-name') && e !== c)
+    //   .map(e => e.attr('stream-name'));
+
+    const graph = this.paper.model;
+    const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
+
+    const streamHead: StreamHead = streamHeads.indexOf(element) >= 0 ? {
+      presentStreamNames: streamHeads
+        .filter(e => e.attr('stream-name') && e !== element)
+        .map(e => e.attr('stream-name'))
+    } : undefined;
+    modalRef.content.setData(new StreamGraphPropertiesSource(element, streamHead));
   }
 
 }

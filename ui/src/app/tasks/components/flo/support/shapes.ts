@@ -22,14 +22,6 @@ export const START_NODE_TYPE = 'Start';
 export const END_NODE_TYPE = 'End';
 export const SYNC_NODE_TYPE = 'SYNC';
 
-const CONTROL_NODE_SIZE = {
-  width: 40,
-  height: 40
-};
-
-const START_END_NODE_CENTRE_TRANSFORM =
-  'translate(' + CONTROL_NODE_SIZE.width / 2 + ' ' + CONTROL_NODE_SIZE.height / 2 + ')';
-
 export const TaskAppShape = joint.shapes.basic.Generic.extend({
 
   defaults: defaultsDeep({
@@ -225,7 +217,6 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
 export const BatchSyncShape = joint.shapes.basic.Generic.extend({
   defaults: defaultsDeep({
     type: joint.shapes.flo.NODE_TYPE,
-    size: CONTROL_NODE_SIZE,
     attrs: {
       '.box': {
         refRx: '30%',

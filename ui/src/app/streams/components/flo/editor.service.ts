@@ -74,48 +74,48 @@ export class EditorService implements Flo.Editor {
       };
     };
 
-    createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
-                                                         action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
-        if (owner.model instanceof joint.dia.Link) {
-            return;
-        } else if (owner.model instanceof joint.dia.Element) {
-            const element = <dia.Element> owner.model;
-            const bbox = element.getBBox();
-
-            // Delete handle
-            let pt = bbox.origin().offset(bbox.width/2 + 5, -5);
-            createHandle(owner, Constants.REMOVE_HANDLE_TYPE, flo.deleteSelectedNode, pt);
-
-            // Properties handle
-            if (!SharedUtils.isUnresolved(element)) {
-                pt = bbox.origin().offset(bbox.width/2 - 5, -5);
-                createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
-                    const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
-                    modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
-                    if (element.attr('metadata/version')) {
-                      modalRef.content.title += ` (${element.attr('metadata/version')})`;
-                    }
-                  // const streamHeads: dia.Cell[] = flo.getGraph().getElements().filter(e => Utils.canBeHeadOfStream(flo.getGraph(), e));
-                  // const streamNames = streamHeads
-                  //   .filter(e => e.attr('stream-name') && e !== c)
-                  //   .map(e => e.attr('stream-name'));
-
-                  const graph = flo.getGraph();
-                  const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
-
-                  const streamHead: StreamHead = streamHeads.indexOf(element) >= 0 ? {
-                      presentStreamNames: streamHeads
-                        .filter(e => e.attr('stream-name') && e !== element)
-                        .map(e => e.attr('stream-name'))
-                    } : undefined;
-                  modalRef.content.setData(new StreamGraphPropertiesSource(element, streamHead));
-                }, pt);
-
-                // Separator handle for cosmetic purposes
-                createHandle(owner, 'separator', () => {}, bbox.origin().offset(bbox.width/2, -5));
-            }
-        }
-    }
+    // createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
+    //                                                      action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
+    //     if (owner.model instanceof joint.dia.Link) {
+    //         return;
+    //     } else if (owner.model instanceof joint.dia.Element) {
+    //         const element = <dia.Element> owner.model;
+    //         const bbox = element.getBBox();
+    //
+    //         // Delete handle
+    //         let pt = bbox.origin().offset(bbox.width/2 + 5, -5);
+    //         createHandle(owner, Constants.REMOVE_HANDLE_TYPE, flo.deleteSelectedNode, pt);
+    //
+    //         // Properties handle
+    //         if (!SharedUtils.isUnresolved(element)) {
+    //             pt = bbox.origin().offset(bbox.width/2 - 5, -5);
+    //             createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
+    //                 const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
+    //                 modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
+    //                 if (element.attr('metadata/version')) {
+    //                   modalRef.content.title += ` (${element.attr('metadata/version')})`;
+    //                 }
+    //               // const streamHeads: dia.Cell[] = flo.getGraph().getElements().filter(e => Utils.canBeHeadOfStream(flo.getGraph(), e));
+    //               // const streamNames = streamHeads
+    //               //   .filter(e => e.attr('stream-name') && e !== c)
+    //               //   .map(e => e.attr('stream-name'));
+    //
+    //               const graph = flo.getGraph();
+    //               const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
+    //
+    //               const streamHead: StreamHead = streamHeads.indexOf(element) >= 0 ? {
+    //                   presentStreamNames: streamHeads
+    //                     .filter(e => e.attr('stream-name') && e !== element)
+    //                     .map(e => e.attr('stream-name'))
+    //                 } : undefined;
+    //               modalRef.content.setData(new StreamGraphPropertiesSource(element, streamHead));
+    //             }, pt);
+    //
+    //             // Separator handle for cosmetic purposes
+    //             createHandle(owner, 'separator', () => {}, bbox.origin().offset(bbox.width/2, -5));
+    //         }
+    //     }
+    // }
 
     validateLink(flo: Flo.EditorContext, cellViewS: dia.ElementView, magnetS: SVGElement,
                  cellViewT: dia.ElementView, magnetT: SVGElement, isSource: boolean, linkView: dia.LinkView): boolean {

@@ -23,9 +23,9 @@
         <svg:text class="name-label"/>
         <svg:text class="type-label"/>
       </svg:g>
-      <svg:image class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip" placement="top"
-                 containerClass="error-marker-tooltip" container="body" [isDisabled]="isDisabled"/>
     </svg:g>
+    <svg:image class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip" placement="top"
+               containerClass="error-marker-tooltip" container="body" [isDisabled]="isDisabled"/>
     <svg:text class="stream-label"/>
     <svg:g class="input-port-group" *ngIf="isSingleIntputPort(); else inputPortsTemplate">
       <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
@@ -38,6 +38,11 @@
         <svg:circle class="port-outer-circle-output"/>
         <svg:circle class="port-inner-circle-output"/>
       </svg:g>
+    </svg:g>
+    <svg:g class="flo-handles">
+      <svg:text class="options-handle handle" (click)="showOptions()"></svg:text>
+      <svg:text class="handle-separator" (click)="showOptions()"></svg:text>
+      <svg:text class="delete-handle handle" (click)="delete()"></svg:text>
     </svg:g>
     <svg:g class="highlight-handles-group">
       <svg:rect class="select-1"/>

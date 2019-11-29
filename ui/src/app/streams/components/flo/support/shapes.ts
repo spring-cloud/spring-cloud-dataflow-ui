@@ -21,23 +21,7 @@ export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
 const ERROR_MARKER_SIZE = {width: 12, height: 12};
 const TYPE_ICON_SIZE = {width: 24, height: 24};
 
-export const IS_FF = window.navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-export const LABEL2_OFFSET_Y = IS_FF  ? '38%' : '53%';
-
 joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
-
-    markup:
-    '<g class="stream-module">' +
-    '<g class="shape">' +
-    '<rect class="box"/>' +
-    '<text class="label1"/>' +
-    '<text class="label2"/>' +
-    '</g>' +
-    '<text class="stream-label"/>' +
-    '<rect class="input-port" />' +
-    '<rect class="output-port"/>' +
-    '</g>',
-
     defaults: joint.util.deepSupplement({
 
         type: joint.shapes.flo.NODE_TYPE,
@@ -56,26 +40,6 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
                 fill: '#eeeeee',
                 'stroke-width': 2,
             },
-            // '.input-port': {
-            //     type: 'input',
-            //     port: 'input',
-            //     height: 8, width: 8,
-            //     magnet: true,
-            //     fill: '#eeeeee',
-            //     transform: 'translate(' + -4 + ',' + ((IMAGE_H / 2) - 4) + ')',
-            //     stroke: '#34302d',
-            //     'stroke-width': 1,
-            // },
-            // '.output-port': {
-            //     type: 'output',
-            //     port: 'output',
-            //     height: 8, width: 8,
-            //     magnet: true,
-            //     fill: '#eeeeee',
-            //     transform: 'translate(' + (IMAGE_W - 4) + ',' + ((IMAGE_H / 2) - 4) + ')',
-            //     stroke: '#34302d',
-            //     'stroke-width': 1,
-            // },
             '.palette-name-label': {
               'refX': 0.5, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
@@ -159,12 +123,12 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               refY: 5
             },
             '.stream-label': {
-                'x-alignment': 'middle',
-                'y-alignment': 'top',
-                refX: 0.5, // jointjs specific: relative position to ref'd element
-                refY: '100%', // jointjs specific: relative position to ref'd element
-                refY2: 10,
-                ref: '.box', // jointjs specific: element for ref-x, ref-y
+              'x-alignment': 'middle',
+              'y-alignment': 'top',
+              refX: 0.5, // jointjs specific: relative position to ref'd element
+              refY: '100%', // jointjs specific: relative position to ref'd element
+              refY2: 10,
+              ref: '.box', // jointjs specific: element for ref-x, ref-y
             },
             '.select-outline': {
               ref: '.box',
@@ -229,20 +193,6 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
 });
 
 joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
-
-    markup:
-    '<g class="destination">' +
-    '<g class="shape">' +
-    '<path d="m6,10 a12,12 0 0,0 0,20 l108,0 a12,12 0 0,0 0,-20 l0,0 z" class="box"/>' +
-    // '<rect transform="translate(100, -11)" class="box"/>'+
-    '<text class="label1"/>' +
-    '<text class="label2"/>' +
-    '</g>' +
-    '<text class="stream-label"/>' +
-    '<circle class="input-port" />' +
-    '<circle class="output-port"/>' +
-    '</g>',
-
     defaults: joint.util.deepSupplement({
 
         type: joint.shapes.flo.NODE_TYPE,
@@ -264,27 +214,6 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
                 fill: '#eeeeee',
                 'stroke-width': 2,
             },
-            // '.input-port': {
-            //     port: 'input',
-            //     r: 4, // height: 8, width: 8,
-            //     magnet: true,
-            //     fill: '#eeeeee',
-            //     // transform: 'translate(' + -4 + ',' + ((IMAGE_H/2)-4) + ')',
-            //     transform: 'translate(1,' + ((IMAGE_H / 2)) + ')',
-            //     stroke: '#34302d',
-            //     'stroke-width': 1,
-            //     class: 'input-port flo-input-port'
-            // },
-            // '.output-port': {
-            //     port: 'output',
-            //     r: 4, // height: 8, width: 8,
-            //     magnet: true,
-            //     fill: '#eeeeee',
-            //     transform: 'translate(' + (IMAGE_W - 1) + ',' + ((IMAGE_H / 2)) + ')',
-            //     stroke: '#34302d',
-            //     'stroke-width': 1,
-            //   class: 'output-port flo-output-port'
-            // },
             '.palette-entry-name-label': {
               'refX': 0.5, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
@@ -425,7 +354,7 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
         attrs: {
             '.connection': { stroke: '#f1f1f1', 'stroke-width': 2, 'class': 'connection' },
             '.connection-wrap': { display: 'none' },
-            // '.marker-arrowheads': { display: 'none' },
+            '.marker-arrowheads': { display: 'none' },
             '.tool-options': { display: 'block' },
             targetMarker: {
               'type': 'path',
