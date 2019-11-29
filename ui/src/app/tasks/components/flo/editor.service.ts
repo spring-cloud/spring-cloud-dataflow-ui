@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { Constants, Flo } from 'spring-flo';
-import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE } from './support/shapes';
+import {CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE} from './support/shapes';
 import { dia, g } from 'jointjs';
 import * as _joint from 'jointjs';
-import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
-import { TaskGraphPropertiesSource } from './properties/task-properties-source';
 import { Utils } from '../../../shared/flo/support/utils';
 import { arrangeAll } from './support/layout';
 
@@ -26,43 +24,6 @@ export class EditorService implements Flo.Editor {
   }
 
   allowLinkVertexEdit = true;
-
-
-
-  /**
-   * Creates cell handles.
-   *
-   * @param {Flo.EditorContext} flo the flo editor context
-   * @param {(owner: dia.CellView, kind: string, action: () => void, location: dia.Point) => void} createHandle the create function
-   * @param {dia.CellView} owner the owner cell
-   */
-  createHandles(flo: Flo.EditorContext, createHandle: (owner: dia.CellView, kind: string,
-                                                       action: () => void, location: dia.Point) => void, owner: dia.CellView): void {
-    if (owner.model instanceof joint.dia.Link) {
-      return;
-    } else if (owner.model instanceof joint.dia.Element) {
-      const element = <dia.Element> owner.model;
-      const bbox = element.getBBox();
-
-      // Delete handle
-      let pt = bbox.origin().offset(bbox.width + 3, bbox.height + 3);
-
-      if (element.attr('metadata/group') !== CONTROL_GROUP_TYPE
-        || (element.attr('metadata/name') !== START_NODE_TYPE && element.attr('metadata/name') !== END_NODE_TYPE)) {
-        createHandle(owner, Constants.REMOVE_HANDLE_TYPE, flo.deleteSelectedNode, pt);
-      }
-
-      // Properties handle
-      if (!Utils.isUnresolved(element) && !element.attr('metadata/metadata/noEditableProps')) {
-        pt = bbox.origin().offset(-14, bbox.height + 3);
-        createHandle(owner, Constants.PROPERTIES_HANDLE_TYPE, () => {
-          const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
-          modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
-          modalRef.content.setData(new TaskGraphPropertiesSource(element));
-        }, pt);
-      }
-    }
-  }
 
   /**
    * Creates a default content for flo editor. These are outside of what
@@ -118,14 +79,6 @@ export class EditorService implements Flo.Editor {
      */
 
     return true;
-  }
-
-  preDelete(flo: Flo.EditorContext, deletedElement: dia.Cell): void {
-    if (deletedElement instanceof joint.dia.Element) {
-      flo.getGraph().getConnectedLinks(deletedElement).forEach(function (link) {
-        link.remove();
-      });
-    }
   }
 
   private validateConnectedLinks(graph: dia.Graph, element: dia.Element, markers: Array<Flo.Marker>) {

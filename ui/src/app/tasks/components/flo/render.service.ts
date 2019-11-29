@@ -6,13 +6,11 @@ import { BsModalService } from 'ngx-bootstrap';
 import { MetamodelService } from './metamodel.service';
 import {
   TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape,
-  CONTROL_GROUP_TYPE, IMAGE_W, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE
+  CONTROL_GROUP_TYPE, IMAGE_W, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE
 } from './support/shapes';
 import { layout } from './support/layout';
 import { ElementComponent } from '../../../shared/flo/support/shape-component';
 import { TaskNodeComponent } from './node/task-node.component';
-import { DecorationComponent } from '../../../shared/flo/decoration/decoration.component';
-import { HandleComponent } from '../../../shared/flo/handle/handle.component';
 import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
@@ -20,23 +18,15 @@ import { LoggerService } from '../../../shared/services/logger.service';
 
 const joint: any = _joint;
 
-const HANDLE_ICON_MAP = new Map<string, string>()
-  .set(Constants.REMOVE_HANDLE_TYPE, 'assets/img/delete.svg')
-  .set(Constants.PROPERTIES_HANDLE_TYPE, 'assets/img/cog.svg');
-
-const HANDLE_ICON_SIZE = new Map<string, dia.Size>()
-  .set(Constants.REMOVE_HANDLE_TYPE, { width: 10, height: 10 })
-  .set(Constants.PROPERTIES_HANDLE_TYPE, { width: 11, height: 11 });
-
-const DECORATION_ICON_MAP = new Map<string, string>()
-  .set(Constants.ERROR_DECORATION_KIND, 'assets/img/error.svg');
-
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
-  .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent)
-  .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
-  .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent);
+  .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent);
 
 const HORIZONTAL_PADDING = 5;
+
+const COMPOSED_TASK_PALETTE_SIZE = {width: 120, height: 30};
+const COMPOSED_TASK_CANVAS_SIZE = {width: 150, height: 50};
+const SYNC_PALETTE_SIZE = {width: 60, height: 30};
+const SYNC_CANVAS_SIZE = {width: 70, height: 40};
 
 /**
  * Flo service class for its Renderer used for composed tasks.
@@ -54,45 +44,13 @@ export class RenderService implements Flo.Renderer {
               private applicationRef?: ApplicationRef) {
   }
 
-  /**
-   * Creates handle in flo cells.
-   *
-   * @param {string} kind the cell type
-   * @param {dia.Cell} parent the owner
-   */
-  createHandle(kind: string, parent: dia.Cell) {
-    LoggerService.log('createHandle', kind);
-    switch (kind) {
-      case Constants.REMOVE_HANDLE_TYPE:
 
-      default:
-        return new joint.shapes.flo.ErrorDecoration({
-          size: HANDLE_ICON_SIZE.get(kind),
-          attrs: {
-            'image': {
-              'xlink:href': HANDLE_ICON_MAP.get(kind)
-            }
-          }
-        });
+  markersChanged(cell: dia.Cell, paper: dia.Paper) {
+    const markers: Array<Flo.Marker> = cell.get('markers');
+    const view = paper.findViewByModel(cell);
+    if (view) {
+      joint.V(view.el).toggleClass('validation-errors', markers.length > 0);
     }
-  }
-
-  /**
-   * Creates decuration in flo cells.
-   *
-   * @param {string} kind the cell type
-   * @param {dia.Cell} parent the owner
-   */
-  createDecoration(kind: string, parent: dia.Cell) {
-    LoggerService.log('createDecoration', kind);
-    return new joint.shapes.flo.ErrorDecoration({
-      size: { width: 16, height: 16 },
-      attrs: {
-        'image': {
-          'xlink:href': DECORATION_ICON_MAP.get(kind)
-        }
-      }
-    });
   }
 
   /**
@@ -103,12 +61,13 @@ export class RenderService implements Flo.Renderer {
    * @returns {dia.Element} the created element
    */
   createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
+    const isPalette = viewerDescriptor.paper.model.get('type') === Constants.PALETTE_CONTEXT;
     switch (metadata.name) {
       case START_NODE_TYPE:
         return new BatchStartShape(
           defaultsDeep({
             attrs: {
-              '.label': {
+              '.name-label': {
                 'text': metadata.name
               }
             }
@@ -118,7 +77,7 @@ export class RenderService implements Flo.Renderer {
         return new BatchEndShape(
           defaultsDeep({
             attrs: {
-              '.label': {
+              '.name-label': {
                 'text': metadata.name
               }
             }
@@ -127,9 +86,16 @@ export class RenderService implements Flo.Renderer {
       case SYNC_NODE_TYPE:
         return new BatchSyncShape(
           defaultsDeep({
+            size: isPalette ? SYNC_PALETTE_SIZE : SYNC_CANVAS_SIZE,
             attrs: {
-              '.label': {
+              '.name-label': {
                 'text': metadata.name
+              },
+              '.palette-entry-name-label': {
+                text: metadata.name
+              },
+              '.type-label': {
+                text: metadata.name.toUpperCase()
               }
             }
           }, BatchSyncShape.prototype.defaults)
@@ -137,9 +103,16 @@ export class RenderService implements Flo.Renderer {
       default:
         return new TaskAppShape(
           defaultsDeep({
+            size: isPalette ? COMPOSED_TASK_PALETTE_SIZE : COMPOSED_TASK_CANVAS_SIZE,
             attrs: {
-              '.label': {
+              '.name-label': {
                 'text': metadata.name
+              },
+              '.palette-entry-name-label': {
+                text: metadata.name
+              },
+              '.type-label': {
+                text: metadata.name.toUpperCase()
               }
             }
           }, TaskAppShape.prototype.defaults)
@@ -157,60 +130,6 @@ export class RenderService implements Flo.Renderer {
       link.attr('metadata', metamodel.get('links').get('transition'));
     });
     return link;
-  }
-
-  fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string) {
-    const view = paper.findViewByModel(node);
-    if (view) {
-      // (<any>view).update();
-      const textView = view.findBySelector(labelPath.substr(0, labelPath.indexOf('/')))[0];
-      let width = joint.V(textView).bbox(false, paper.viewport).width;
-      const label = node.attr(labelPath);
-      const threshold = IMAGE_W - HORIZONTAL_PADDING - HORIZONTAL_PADDING;
-
-      if (width > threshold) {
-        const styles = getComputedStyle(textView);
-        const stylesObj: {} = {};
-        for (let i = 0; i < styles.length; i++) {
-          const property = styles.item(i);
-          if (!property.startsWith('-')) {
-            stylesObj[property] = styles.getPropertyValue(property);
-          }
-        }
-
-        const svgDocument = joint.V('svg').node;
-        const textSpan = joint.V('tspan').node;
-        const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
-        const textNode = document.createTextNode(label);
-
-        // Prevent flickering
-        textElement.style.opacity = 0;
-        // Prevent FF from throwing an uncaught exception when `getBBox()`
-        // called on element that is not in the render tree (is not measurable).
-        // <tspan>.getComputedTextLength() returns always 0 in this case.
-        // Note that the `textElement` resp. `textSpan` can become hidden
-        // when it's appended to the DOM and a `display: none` CSS stylesheet
-        // rule gets applied.
-        textElement.style.display = 'block';
-        textSpan.style.display = 'block';
-
-        textSpan.appendChild(textNode);
-        svgDocument.appendChild(textElement);
-
-        document.body.appendChild(svgDocument);
-
-        try {
-          width = textSpan.getComputedTextLength();
-          for (let i = 1; i < width && width > threshold; i++) {
-            textNode.data = label.substr(0, label.length - i) + '\u2026';
-            width = textSpan.getComputedTextLength();
-          }
-          node.attr(labelPath, textNode.data);
-        } finally {
-          document.body.removeChild(svgDocument);
-        }
-      }
-    }
   }
 
   /**
@@ -238,7 +157,13 @@ export class RenderService implements Flo.Renderer {
       } else {
         node.attr('.image/xlink:href', metadata && metadata.icon ? metadata.icon : 'icons/xd/unknown.png');
         if (viewerDescriptor.paper) {
-          this.fitLabel(viewerDescriptor.paper, node, '.label/text');
+          const isPalette = viewerDescriptor.paper.model.get('type') === Constants.PALETTE_CONTEXT;
+          if (isPalette) {
+            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node,  '.palette-entry-name-label', node.attr('.palette-entry-name-label/refX'));
+          } else {
+            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node,  '.name-label', node.attr('.name-label/refX'));
+            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.type-label', node.attr('.type-label/refX'));
+          }
         }
       }
     }
@@ -249,8 +174,8 @@ export class RenderService implements Flo.Renderer {
       if (changedPropertyPath === 'node-label') {
         const nodeLabel = element.attr('node-label');
         // fitLabel() calls update as necessary, so set label text silently
-        element.attr('.label/text', nodeLabel ? nodeLabel : element.attr('metadata/name'));
-        this.fitLabel(paper, <dia.Element> element, '.label/text');
+        element.attr('.name-label/text', nodeLabel ? nodeLabel : element.attr('metadata/name'));
+        this.fitLabelWithFixedLocation(paper, <dia.Element> element, '.name-label', element.attr('.name-label/refX'));
       }
     }
 
@@ -352,8 +277,8 @@ export class RenderService implements Flo.Renderer {
     const targetId = link.get('target');
     const sourceElement = paper.findViewByModel(sourceId);
     const targetElement = paper.findViewByModel(targetId);
-    const sourceLabel = sourceElement.model.attr('.label/text');
-    const targetLabel = targetElement.model.attr('.label/text');
+    const sourceLabel = sourceElement.model.attr('.name-label/text');
+    const targetLabel = targetElement.model.attr('.name-label/text');
     // Set the visual label for exitStatus
     this.refreshVisuals(link, 'props/ExitStatus', paper);
   }
@@ -425,5 +350,81 @@ export class RenderService implements Flo.Renderer {
     });
 
   }
+
+  fitLabelWithFixedLocation(paper: dia.Paper, node: dia.Element, labelPath: string, paddingRight?: number): void {
+    if (isNaN(paddingRight)) {
+      paddingRight = 0;
+    }
+    const label: string = node.attr(`${labelPath}/text`);
+    const view = paper.findViewByModel(node);
+    if (view && label) {
+      const labelElement = view.findBySelector(labelPath)[0];
+      if (!labelElement) {
+        return;
+      }
+
+      let boundingBox = view.getBBox();
+      if (node.attr(`${labelPath}/ref`)) {
+        const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
+        if (refElement) {
+          boundingBox = joint.V(refElement).bbox(false, paper.viewport);
+        }
+      }
+
+      const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
+
+      const locationX = labelInitialBox.x - boundingBox.x;
+
+      const threshold = boundingBox.width - paddingRight - locationX;
+
+      let width = labelInitialBox.width;
+
+      if (width > threshold) {
+        const styles = getComputedStyle(labelElement);
+        const stylesObj: {} = {};
+        for (let i = 0; i < styles.length; i++) {
+          const property = styles.item(i);
+          if (!property.startsWith('-')) {
+            stylesObj[property] = styles.getPropertyValue(property);
+          }
+        }
+
+        const svgDocument = joint.V('svg').node;
+        const textSpan = joint.V('tspan').node;
+        const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
+        const textNode = document.createTextNode(label);
+
+        // Prevent flickering
+        textElement.style.opacity = 0;
+        // Prevent FF from throwing an uncaught exception when `getBBox()`
+        // called on element that is not in the render tree (is not measurable).
+        // <tspan>.getComputedTextLength() returns always 0 in this case.
+        // Note that the `textElement` resp. `textSpan` can become hidden
+        // when it's appended to the DOM and a `display: none` CSS stylesheet
+        // rule gets applied.
+        textElement.style.display = 'block';
+        textSpan.style.display = 'block';
+
+        textSpan.appendChild(textNode);
+        svgDocument.appendChild(textElement);
+
+        document.body.appendChild(svgDocument);
+
+        try {
+          width = textSpan.getComputedTextLength();
+          for (let i = 1; i < width && width > threshold; i++) {
+            textNode.data = label.substr(0, label.length - i) + '\u2026';
+            width = textSpan.getComputedTextLength();
+          }
+
+          // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
+          node.attr(`${labelPath}/text`, textNode.data);
+        } finally {
+          document.body.removeChild(svgDocument);
+        }
+      }
+    }
+  }
+
 
 }

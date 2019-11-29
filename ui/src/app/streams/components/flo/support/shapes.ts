@@ -50,9 +50,8 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             '.box': {
                 refWidth: 1,
                 refHeight: 1,
-                rx: 2,
-                ry: 2,
-                // 'fill-opacity':0, // see through
+                rx: 8,
+                ry: 8,
                 stroke: '#6db33f',
                 fill: '#eeeeee',
                 'stroke-width': 2,
@@ -170,7 +169,9 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             '.select-outline': {
               ref: '.box',
               refWidth: 1,
-              refHeight: 1
+              refHeight: 1,
+              rx: 8,
+              ry: 8,
             },
             '.select-1': {
               width: SELECT_SQUARE_SIZE,

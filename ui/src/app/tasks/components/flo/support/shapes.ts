@@ -6,13 +6,20 @@ import '../../../../shared/flo/support/shared-shapes';
 
 const joint: any = _joint;
 
-export const IMAGE_W = 120;
-export const IMAGE_H = 40;
+const ERROR_MARKER_SIZE = {width: 12, height: 12};
+const START_NODE_SIZE = {width: 15, height: 15};
+const END_NODE_SIZE = {width: 15, height: 15};
+const PORT_RADIUS = 6;
+
+const CANVAS_LABEL_PADDING = 15;
+
+export const IMAGE_W = 150;
+export const IMAGE_H = 50;
 export const CONTROL_GROUP_TYPE = 'control nodes';
 export const TASK_GROUP_TYPE = 'task';
 
-export const START_NODE_TYPE = 'START';
-export const END_NODE_TYPE = 'END';
+export const START_NODE_TYPE = 'Start';
+export const END_NODE_TYPE = 'End';
 export const SYNC_NODE_TYPE = 'SYNC';
 
 const CONTROL_NODE_SIZE = {
@@ -24,15 +31,6 @@ const START_END_NODE_CENTRE_TRANSFORM =
   'translate(' + CONTROL_NODE_SIZE.width / 2 + ' ' + CONTROL_NODE_SIZE.height / 2 + ')';
 
 export const TaskAppShape = joint.shapes.basic.Generic.extend({
-  markup:
-  '<g class="composed-task">' +
-  '<g class="shape">' +
-  '<rect class="border"/>' +
-  '<text class="label"/>' +
-  '</g>' +
-  '<circle class="input-port" />' +
-  '<circle class="output-port" />' +
-  '</g>',
 
   defaults: defaultsDeep({
     type: joint.shapes.flo.NODE_TYPE,
@@ -40,45 +38,105 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
     size: { width: IMAGE_W, height: IMAGE_H },
     attrs: {
       '.': { magnet: false },
-      '.border': {
-        width: IMAGE_W,
-        height: IMAGE_H,
-        rx: 5,
-        ry: 5,
-        'stroke-width': 1,
-        'stroke': '#34302D',
-        fill: '#6db33f'
+      '.box': {
+        refWidth: 1,
+        refHeight: 1,
+        rx: 8,
+        ry: 8,
       },
-      '.input-port': {
-        r: 7,
-        type: 'input',
-        magnet: true,
-        port: 'input',
-        fill: '#5fa134',
-        'ref-x': 0.5,
-        'ref-y': 0,
-        ref: '.border',
-        stroke: '#34302D'
+      '.palette-entry-name-label': {
+        refX: 10, // jointjs specific: relative position to ref'd element
+        refY: 0.5,
+        'y-alignment': 'middle',
+        ref: '.box', // jointjs specific: element for ref-x, ref-y
+      },
+      '.name-label': {
+        refX: CANVAS_LABEL_PADDING,
+        refY: 0.5,
+        refY2: -2,
+        'y-alignment': 'bottom',
+        ref: '.box',
+      },
+      '.type-label': {
+        'refX': CANVAS_LABEL_PADDING,
+        'refY': 0.5,
+        'refY2': 2,
+        'y-alignment': 'top',
+        ref: '.box', // jointjs specific: element for ref-x, ref-y
+        text: 'UNRESOLVED'
+      },
+      '.type-label-bg': {
+        ref: '.type-label',
+        refX: -7,
+        refY: -2,
+        refWidth: 14,
+        refHeight: 4
+      },
+      '.error-marker': {
+        width: ERROR_MARKER_SIZE.width,
+        height: ERROR_MARKER_SIZE.height,
+        ref: '.box',
+        refX: "100%",
+        refX2: -5 - ERROR_MARKER_SIZE.width,
+        refY: 5
       },
       '.output-port': {
-        r: 7,
-        type: 'output',
-        magnet: true,
         port: 'output',
-        fill: '#5fa134',
-        'ref-x': 0.5,
-        'ref-y': 0.99999999,
-        ref: '.border',
-        stroke: '#34302D',
+        magnet: true,
       },
-      '.label': {
-        'ref-x': 0.5,
-        'ref-y': 0.5,
-        'y-alignment': 'middle',
-        'x-alignment': 'middle',
-        ref: '.border',
-        fill: 'white',
-        'font-family': 'Monospace',
+      '.port-outer-circle-output': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: '100%',
+        r: PORT_RADIUS,
+        class: 'port-outer-circle-output flo-port'
+      },
+      '.port-inner-circle-output': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: '100%',
+        r: PORT_RADIUS - 3,
+        class: 'port-inner-circle-output flo-port-inner-circle'
+      },
+      '.input-port': {
+        port: 'input',
+        magnet: true,
+      },
+      '.port-outer-circle-input': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: 0,
+        r: PORT_RADIUS,
+        class: 'port-outer-circle-input flo-port'
+      },
+      '.port-inner-circle-input': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: 0,
+        r: PORT_RADIUS - 3,
+        class: 'port-inner-circle-input flo-port-inner-circle'
+      },
+      '.select-outline': {
+        ref: '.box',
+        refWidth: 1,
+        refHeight: 1,
+        rx: 8,
+        ry: 8,
+      },
+      '.options-handle': {
+        text: 'Options',
+        ref: '.box',
+        refX: 0,
+        refY: -5,
+        yAlignment: 'bottom'
+      },
+      '.delete-handle': {
+        text: 'Delete',
+        ref: '.box',
+        refX: '100%',
+        refY: -5,
+        yAlignment: 'bottom',
+        textAnchor: 'end',
       },
       '.shape': {}
     },
@@ -86,43 +144,39 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
 });
 
 export const BatchStartShape = joint.shapes.basic.Generic.extend({
-  markup:
-  '<g class="composed-task">' +
-  '<g class="shape">' +
-  '<circle class="border"/>' +
-  '<text class="label"/>' +
-  '</g>' +
-  '<circle class="output-port"/>' +
-  '</g>',
-
   defaults: defaultsDeep({
-    size: CONTROL_NODE_SIZE,
+    size: START_NODE_SIZE,
+    position: {x: 20, y: 20},
     attrs: {
-      '.output-port': {
-        r: 7,
-        type: 'output',
+      '.start-circle': {
         magnet: true,
         port: 'output',
-        fill: '#5fa134',
-        'ref-x': 0.5,
-        'ref-y': 0.99999999,
-        ref: '.border',
-        stroke: '#34302D',
+        r: START_NODE_SIZE.width / 2,
       },
-      '.border': {
-        r: CONTROL_NODE_SIZE.width / 2,
-        'stroke-width': 1,
-        fill: '#6db33f',
-        stroke: '#34302D',
-        transform: START_END_NODE_CENTRE_TRANSFORM
+      '.select-outline': {
+        r: START_NODE_SIZE.width / 2,
       },
-      '.label': {
-        'text-anchor': 'middle',
-        transform: 'translate(' + CONTROL_NODE_SIZE.width / 2 + ' -12)',
-        fill: 'black',
-        'font-family': 'Monospace',
-        'font-size': 20,
-        text: 'START'
+      '.name-label': {
+        ref: '.start-circle',
+        refX: 0.5,
+        refY: -5,
+        xAlignment: 'middle',
+        yAlignment: 'bottom',
+      },
+      '.options-handle': {
+        ref: '.start-circle',
+        text: 'Options',
+        refX: '100%',
+        refX2: 10,
+        refY: '50%',
+        yAlignment: 'middle'
+      },
+      '.error-marker': {
+        width: ERROR_MARKER_SIZE.width,
+        height: ERROR_MARKER_SIZE.height,
+        ref: '.start-circle',
+        refX: '100%',
+        refY: 0
       },
       '.shape': {}
     }
@@ -130,53 +184,38 @@ export const BatchStartShape = joint.shapes.basic.Generic.extend({
 });
 
 export const BatchEndShape = joint.shapes.basic.Generic.extend({
-  markup:
-  '<g class="composed-task">' +
-  '<g class="shape">' +
-  '<circle class="inner"/>' +
-  '<circle class="outer"/>' +
-  '<text class="label"/>' +
-  '</g>' +
-  '<circle class="input-port"/>' +
-  '</g>',
-
   defaults: defaultsDeep({
-    size: CONTROL_NODE_SIZE,
+    size: END_NODE_SIZE,
     attrs: {
       '.inner': {
-        fill: '#6db33f',
-        stroke: '#34302D',
-        transform: START_END_NODE_CENTRE_TRANSFORM,
-        r: CONTROL_NODE_SIZE.width / 2 - 10
+        refRx: '35%',
+        refRy: '35%'
       },
       '.outer': {
-        fill: 'transparent',
-        stroke: '#34302D',
-        'stroke-width': 1,
-        transform: START_END_NODE_CENTRE_TRANSFORM,
-        r: CONTROL_NODE_SIZE.width / 2
-      },
-      '.input-port': {
-        r: 7,
-        type: 'input',
+        refRx: '50%',
+        refRy: '50%',
         magnet: true,
-        port: 'input',
-        fill: '#5fa134',
-        'ref-x': 0.5,
-        'ref-y': 0,
-        ref: '.outer',
-        stroke: '#34302D',
+        port: 'input'
       },
-      '.label': {
-        'ref-x': 0.5,
-        'ref-y': 0.52,
-        'x-alignment': 'middle',
-        'y-alignment': 'middle',
-        ref: '.outer',
-        fill: 'white',
-        'font-family': 'Monospace',
-        'font-size': 10,
-        text: 'END'
+      '.name-label': {
+        refX: '50%',
+        refY: '100%',
+        refY2: 15,
+        xAlignment: 'middle',
+        yAlignment: 'top',
+        ref: '.outer'
+      },
+      '.select-outline': {
+        refRx: '100%',
+        refRy: '100%'
+      },
+      '.error-marker': {
+        width: ERROR_MARKER_SIZE.width,
+        height: ERROR_MARKER_SIZE.height,
+        ref: '.shape',
+        refX: '100%',
+        refY: '100%'
+        // refX2: - ERROR_MARKER_SIZE.width,
       },
       '.shape': {}
     }
@@ -184,58 +223,87 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
 });
 
 export const BatchSyncShape = joint.shapes.basic.Generic.extend({
-  markup:
-  '<g class="composed-task">' +
-  '<g class="shape">' +
-  '<circle class="border"/>' +
-  '<text class="label"/>' +
-  '</g>' +
-  '<circle class="input-port"/>' +
-  '<circle class="output-port" />' +
-  '</g>',
-
   defaults: defaultsDeep({
     type: joint.shapes.flo.NODE_TYPE,
     size: CONTROL_NODE_SIZE,
     attrs: {
-      '.input-port': {
-        r: 7,
-        type: 'input',
-        magnet: true,
-        port: 'input',
-        fill: '#5fa134',
-        'ref-x': 0.5,
-        'ref-y': 0,
-        ref: '.border',
-        stroke: '#34302D'
+      '.box': {
+        refRx: '30%',
+        refRy: '50%',
+        refWidth: '100%',
+        refHeight: '100%'
+      },
+      '.select-outline': {
+        refRx: '30%',
+        refRy: '50%',
+        refWidth: '100%',
+        refHeight: '100%'
+      },
+      '.name-label': {
+        refX: '50%',
+        refY: '50%',
+        xAlignment: 'middle',
+        yAlignment: 'middle',
+        ref: '.box'
+      },
+      '.palette-entry-name-label': {
+        refX: '50%',
+        refY: '50%',
+        xAlignment: 'middle',
+        yAlignment: 'middle',
+        ref: '.box'
+      },
+      '.delete-handle': {
+        text: 'Delete',
+        ref: '.box',
+        refX: '100%',
+        refY: -5,
+        yAlignment: 'bottom',
+        textAnchor: 'end',
+      },
+      '.error-marker': {
+        width: ERROR_MARKER_SIZE.width,
+        height: ERROR_MARKER_SIZE.height,
+        ref: '.box',
+        refX: "100%",
+        refX2: -5 - ERROR_MARKER_SIZE.width,
+        refY: 5
       },
       '.output-port': {
-        r: 7,
-        type: 'output',
-        magnet: true,
         port: 'output',
-        fill: '#5fa134',
-        'ref-x': 0.5,
-        'ref-y': 0.99999999,
-        ref: '.border',
-        stroke: '#34302D',
+        magnet: true,
       },
-      '.border': {
-        r: CONTROL_NODE_SIZE.width / 2,
-        'stroke-width': 1,
-        fill: '#6db33f',
-        stroke: '#34302D',
-        transform: START_END_NODE_CENTRE_TRANSFORM
+      '.port-outer-circle-output': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: '100%',
+        r: PORT_RADIUS,
+        class: 'port-outer-circle-output flo-port'
       },
-      '.label': {
-        'ref-x': 0.5,
-        'ref-y': 0.52,
-        'y-alignment': 'middle',
-        'x-alignment': 'middle',
-        ref: '.border',
-        fill: 'white',
-        'font-family': 'Monospace',
-        text: 'SYNC'
+      '.port-inner-circle-output': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: '100%',
+        r: PORT_RADIUS - 3,
+        class: 'port-inner-circle-output flo-port-inner-circle'
+      },
+      '.input-port': {
+        port: 'input',
+        magnet: true,
+      },
+      '.port-outer-circle-input': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: 0,
+        r: PORT_RADIUS,
+        class: 'port-outer-circle-input flo-port'
+      },
+      '.port-inner-circle-input': {
+        ref: '.box',
+        refCx: '50%',
+        refCy: 0,
+        r: PORT_RADIUS - 3,
+        class: 'port-inner-circle-input flo-port-inner-circle'
       },
       '.shape': {}
     }

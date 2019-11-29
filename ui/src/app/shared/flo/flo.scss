@@ -228,16 +228,18 @@ svg * {
   width: 1px;
 }
 
-.stream-module .box {
+.box {
   stroke: none;
   fill: $flo-shape-fill-color;
-  rx: 8;
-  ry: 8;
+}
+
+.sync-box {
+  stroke: none;
+  fill: $flo-shape-fill-color;
 }
 
 
-
-.validation-errors .stream-module .box {
+.validation-errors .box {
   fill: rgb(254, 227, 227);
 }
 
@@ -274,16 +276,51 @@ svg * {
   }
 }
 
+.composed-task {
+  .name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .palette-entry-name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .type-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: white;
+  }
+
+  .start-circle {
+    fill: rgb(27, 41, 49);
+    stroke: none;
+  }
+  .inner {
+    fill: rgb(27, 41, 49);
+    stroke: none;
+  }
+  .outer {
+    fill: white;
+    stroke: rgb(27, 41, 49);
+    stroke-width: 1px;
+  }
+}
+
 .default-name .stream-module .name-label {
   fill: #777777;
 }
 
 .type-label-bg {
+  rx: 8;
+  ry: 8;
   fill: black;
   stroke: none;
   fill: red;
-  rx: 8;
-  ry: 8;
 }
 
 .source-module .type-label-bg {
@@ -306,6 +343,10 @@ svg * {
   fill: $other-color;
 }
 
+.composed-task .type-label-bg {
+  fill: #FF5400;
+}
+
 .destination .box {
   stroke: none;
   fill: $flo-shape-fill-color;
@@ -323,43 +364,9 @@ svg * {
   height: 400px;
 }
 
-.composed-task .border {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-green;
-  stroke-width: 2;
-}
-
-.composed-task .outer {
-  fill: transparent;
-  stroke: $spring-green;
-  stroke-width: 2;
-}
-
-.composed-task .inner {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-green;
-  stroke-width: 2;
-}
-
-.composed-task .input-port {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-brown;
-}
-
-.composed-task .output-port {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-brown;
-}
-
 .fail-cross {
   fill: $spring-green;
   stroke: $spring-green;
-}
-
-.composed-task .label {
-  font-family: inherit;
-  fill: $spring-brown;
-  font-size: 85%;
 }
 
 .connection.composed-task-graph-transition {
@@ -607,8 +614,6 @@ table.zoom-canvas-control {
 
 .select-outline {
   opacity: 0;
-  rx: 8;
-  ry: 8;
   fill: rgb(208, 231, 255);
   stroke: rgb(208, 231, 255);
   stroke-width: 1px;
@@ -709,5 +714,26 @@ table.zoom-canvas-control {
     stroke-linecap: round;
   }
 }
+
+.flo-handles {
+  fill: rgb(116,116,116);
+  font-size: 12px;
+  font-family: "Source Sans Pro", sans-serif;
+  text-decoration: underline;
+  display: none;
+  .handle {
+    cursor: pointer;
+    :hover {
+      font-weight: bolder;
+    }
+  }
+
+}
+
+.joint-element.highlighted .flo-handles {
+  display: block;
+}
+
+
 
 

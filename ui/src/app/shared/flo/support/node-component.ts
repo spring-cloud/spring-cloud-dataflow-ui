@@ -85,4 +85,8 @@ export class NodeComponent extends ElementComponent {
     return this.markers.map(m => m.message);
   }
 
+  delete() {
+    this.paper.model.trigger('startDeletion', this.view.model);
+  }
+
 }

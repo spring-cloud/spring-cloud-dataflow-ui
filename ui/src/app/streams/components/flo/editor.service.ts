@@ -743,27 +743,30 @@ export class EditorService implements Flo.Editor {
          */
         if (sources.length === 1) {
             const source = sources[0];
-            // TODO: replace selector CSS class with the result of view.getSelector(...)
-            targets.forEach(target => flo.createLink({
+            if (flo.getGraph().getCell(source).attr('.output-port')) {
+              targets.filter(t => flo.getGraph().getCell(t).attr('.input-port')).forEach(target => flo.createLink({
                 'id': source,
                 'selector': '.output-port',
                 'port': 'output'
-            }, {
+              }, {
                 'id': target,
                 'selector': '.input-port',
                 'port': 'input'
-            }));
+              }));
+            }
         } else if (targets.length === 1) {
             const target = targets[0];
-            sources.forEach(source => flo.createLink({
+            if (flo.getGraph().getCell(target).attr('.input-port')) {
+              sources.filter(s => flo.getGraph().getCell(s).attr('.output-port')).forEach(source => flo.createLink({
                 'id': sources[i],
                 'selector': '.output-port',
                 'port': 'output'
-            }, {
+              }, {
                 'id': target,
                 'selector': '.input-port',
                 'port': 'input'
-            }));
+              }));
+            }
         }
     }
 
@@ -789,6 +792,7 @@ export class EditorService implements Flo.Editor {
         if (cell instanceof joint.dia.Element) {
             this.repairDamage(flo, <dia.Element> cell);
         }
+        return true;
     }
 
     private moveNodeOnNode(flo: Flo.EditorContext, node: dia.Element, pivotNode: dia.Element, side: string, shouldRepairDamage: boolean) {
