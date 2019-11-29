@@ -197,7 +197,7 @@ svg * {
 }
 
 .stream-editor #palette-paper-container {
-  height: calc(100% - 37px);
+  height: calc(100% - 32px);
   width: 100%;
 }
 
@@ -701,6 +701,12 @@ table.zoom-canvas-control {
   }
   .group-label-bg.app {
     fill: $app-color;
+  }
+  .group-label-bg.task {
+    fill: #FF5400;
+  }
+  .group-label-bg.control-nodes {
+    fill: #FF5400;
   }
   .group-label {
     font-family: "Source Sans Pro", sans-serif;

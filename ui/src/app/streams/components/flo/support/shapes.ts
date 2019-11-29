@@ -472,54 +472,6 @@ joint.shapes.flo.DataFlowLabelHandle = joint.shapes.basic.Generic.extend({
 
 });
 
-joint.shapes.flo.StreamModuleGroupHeader = joint.shapes.basic.Generic.extend({
-  // The path is the open/close arrow, defaults to vertical (open)
-  markup: '<g><rect class="outer"/><rect class="group-label-bg"/><text class="group-label"/><image class="collapse-handle"/><polyline class="group-line"/></g>',
-  defaults: joint.util.deepSupplement({
-    type: 'palette.groupheader',
-    size: {width: 170, height: 40},
-    position: {x: 0, y: 0},
-    attrs: {
-      '.outer': {
-        refWidth: 1,
-        refHeight: 1,
-        refX: 0,
-        refY: 0,
-      },
-      '.group-label-bg': {
-        ref: '.group-label',
-        refWidth: 14,
-        refHeight: 4,
-        refX: -7,
-        refY: -2,
-        'follow-scale': true,
-      },
-      '.group-label': {
-        ref: '.outer',
-        refX: 15,
-        refY: 0.5,
-        'y-alignment': 'middle'
-      },
-      '.collapse-handle': {
-        width: 10,
-        height: 10,
-        ref: '.outer',
-        refX: '100%',
-        refX2: '-15 - 10',
-        refY: '50%',
-        refY2: -5
-      },
-      '.group-line': {
-        ref: '.outer',
-        refPointsKeepOffset: '1,39 169,39'
-      }
-    },
-    // custom properties
-    isOpen: true
-  }, joint.shapes.basic.Generic.prototype.defaults)
-});
-
-
 
 
 

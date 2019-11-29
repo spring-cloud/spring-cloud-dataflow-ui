@@ -27,11 +27,12 @@ import { NodeHelper } from './support/node-helper';
 import { layout } from './support/layout';
 import * as _joint from 'jointjs';
 import { LoggerService } from '../../../shared/services/logger.service';
-import {BsModalService} from "ngx-bootstrap";
-import {StreamPropertiesDialogComponent} from "./properties/stream-properties-dialog.component";
-import {StreamGraphPropertiesSource} from "./properties/stream-properties-source";
-import {AppMetadata} from "../../../shared/flo/support/app-metadata";
+import {BsModalService} from 'ngx-bootstrap';
+import {StreamPropertiesDialogComponent} from './properties/stream-properties-dialog.component';
+import {StreamGraphPropertiesSource} from './properties/stream-properties-source';
+import {AppMetadata} from '../../../shared/flo/support/app-metadata';
 import * as _ from 'lodash';
+import {createPaletteGroupHeader} from '../../../shared/flo/support/shared-shapes';
 
 const joint: any = _joint;
 
@@ -705,19 +706,8 @@ export class RenderService implements Flo.Renderer {
 
   getPaletteRenderer() {
     return {
-      createGroupHeader: (title: string, isOpen: boolean) => {
-        const group = new joint.shapes.flo.StreamModuleGroupHeader();
-        group.attr('.group-label/text', title.toUpperCase());
-        // Add CSS class to rectangle 'group-label-bg'. If class is not set then it is 'group-label-bg'
-        group.attr('.group-label-bg/class', `${group.attr('.group-label-bg/class') || 'group-label-bg'} ${title}`);
-        group.attr('.collapse-handle/xlink:href', isOpen ? 'assets/img/chevron-down.svg' : 'assets/img/chevron-left.svg');
-        group.on('change:isOpen', () => {
-          group.attr('.collapse-handle/xlink:href', isOpen ? 'assets/img/chevron-down.svg' : 'assets/img/chevron-left.svg');
-        });
-        return group;
-      }
-    }
+      createGroupHeader: createPaletteGroupHeader
+    };
   }
-
 
 }

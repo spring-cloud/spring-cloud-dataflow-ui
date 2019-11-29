@@ -6,7 +6,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { MetamodelService } from './metamodel.service';
 import {
   TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape,
-  CONTROL_GROUP_TYPE, IMAGE_W, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE
+  CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE
 } from './support/shapes';
 import { layout } from './support/layout';
 import { ElementComponent } from '../../../shared/flo/support/shape-component';
@@ -15,13 +15,12 @@ import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
 import { LoggerService } from '../../../shared/services/logger.service';
+import {createPaletteGroupHeader} from '../../../shared/flo/support/shared-shapes';
 
 const joint: any = _joint;
 
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent);
-
-const HORIZONTAL_PADDING = 5;
 
 const COMPOSED_TASK_PALETTE_SIZE = {width: 120, height: 30};
 const COMPOSED_TASK_CANVAS_SIZE = {width: 150, height: 50};
@@ -426,5 +425,9 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-
+  getPaletteRenderer() {
+    return {
+      createGroupHeader: createPaletteGroupHeader
+    };
+  }
 }
