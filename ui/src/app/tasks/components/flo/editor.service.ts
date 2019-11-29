@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap';
-import { Constants, Flo } from 'spring-flo';
+import { Flo } from 'spring-flo';
 import {CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE} from './support/shapes';
 import { dia, g } from 'jointjs';
 import * as _joint from 'jointjs';
@@ -20,7 +19,7 @@ const DND_ENABLED = true; // Is smart DnD enabled?
 @Injectable()
 export class EditorService implements Flo.Editor {
 
-  constructor(private bsModalService: BsModalService) {
+  constructor() {
   }
 
   allowLinkVertexEdit = true;
@@ -307,9 +306,9 @@ export class EditorService implements Flo.Editor {
           const targetHasIncomingPort = this.hasOutgoingPort(targetModel);
           const targetHasOutgoingPort = this.hasOutgoingPort(targetModel);
           view.$('[magnet]').each((index, magnet) => {
-            const type = magnet.getAttribute('type');
-            if ((type === 'input' && targetHasIncomingPort && hasOutgoingPort)
-              || (type === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
+            const port = magnet.getAttribute('port');
+            if ((port === 'input' && targetHasIncomingPort && hasOutgoingPort)
+              || (port === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
               const bbox = joint.V(magnet).bbox(false, paper.viewport);
               const distance = point.distance({
                 x: bbox.x + bbox.width / 2,
@@ -320,7 +319,7 @@ export class EditorService implements Flo.Editor {
                 closestData = {
                   sourceComponent: sourceComponent,
                   source: {
-                    cssClassSelector: type === 'output' ? '.input-port' : '.output-port',
+                    cssClassSelector: port === 'output' ? '.input-port' : '.output-port',
                     view: draggedView
                   },
                   target: {

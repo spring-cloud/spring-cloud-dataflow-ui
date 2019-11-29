@@ -296,15 +296,19 @@ svg * {
     fill: white;
   }
 
-  .start-circle {
+  .start-outer {
     fill: rgb(27, 41, 49);
     stroke: none;
   }
-  .inner {
+  .start-inner {
     fill: rgb(27, 41, 49);
     stroke: none;
   }
-  .outer {
+  .end-inner {
+    fill: rgb(27, 41, 49);
+    stroke: none;
+  }
+  .end-outer {
     fill: white;
     stroke: rgb(27, 41, 49);
     stroke-width: 1px;
@@ -370,34 +374,11 @@ svg * {
 }
 
 .connection.composed-task-graph-transition {
-  stroke: #777777;
   stroke-dasharray: 1,5;
 }
 
-.marker-source.composed-task-graph-transition {
-  stroke: #777777;
-  fill: #777777;
-}
-
-.marker-target.composed-task-graph-transition {
-  stroke: #777777;
-  fill: #777777;
-}
-
-
 .connection.primary-output-from-app {
-  stroke: #000000;
   stroke-dasharray: 1,0;
-}
-
-.marker-source.primary-output-from-app {
-  stroke: #000000;
-  fill: #000000;
-}
-
-.marker-target.primary-output-from-app {
-  stroke: #000000;
-  fill: #000000;
 }
 
 .connection.tapped-output-from-app {
@@ -406,6 +387,16 @@ svg * {
 
 .connection {
   stroke: #f1f1f1;
+}
+
+.marker-source {
+  stroke: #AAAAAA;
+  fill: #AAAAAA;
+}
+
+.marker-target {
+  stroke: #AAAAAA;
+  fill: #AAAAAA;
 }
 
 // Link Tools handle shows up on a link in Composed Task editor

@@ -16,8 +16,6 @@ import { SharedAppsService } from './services/shared-apps.service';
 import { DataflowDateTimePipe } from './pipes/dataflow-date-time.pipe';
 import { DataflowDurationPipe } from './pipes/dataflow-duration.pipe';
 import { FloModule } from 'spring-flo';
-import { HandleComponent } from './flo/handle/handle.component';
-import { DecorationComponent } from './flo/decoration/decoration.component';
 import { PropertiesDialogComponent } from './flo/properties/properties-dialog.component';
 import { PropertiesGroupsDialogComponent } from './flo/properties-groups/properties-groups-dialog.component';
 import { GraphViewComponent } from './flo/graph-view/graph-view.component';
@@ -101,8 +99,6 @@ import { TippyDirective } from './directives/tippy.directive';
     TabComponent,
     DataflowDateTimePipe,
     DataflowDurationPipe,
-    DecorationComponent,
-    HandleComponent,
     PropertiesDialogComponent,
     PropertiesGroupsDialogComponent,
     GraphViewComponent,
@@ -158,10 +154,8 @@ import { TippyDirective } from './directives/tippy.directive';
     DataflowDurationPipe,
     SearchfilterPipe,
     ProgressbarModule,
-    DecorationComponent,
     MasterCheckboxComponent,
     SortComponent,
-    HandleComponent,
     PropertiesDialogComponent,
     PropertiesGroupsDialogComponent,
     GraphViewComponent,

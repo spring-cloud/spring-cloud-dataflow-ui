@@ -1,31 +1,19 @@
 import { StreamCreateComponent } from './stream-create.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockActivatedRoute } from '../../tests/mocks/activated-route';
 import { MockStreamsService } from '../../tests/mocks/streams';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StreamsService } from '../streams.service';
 import { MetamodelService } from '../components/flo/metamodel.service';
-import { EditorService } from '../components/flo/editor.service';
-import { RenderService } from '../components/flo/render.service';
 import { ActivatedRoute } from '@angular/router';
-import { FloModule } from 'spring-flo';
-import { ModalModule, BsModalService, BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
-import { ContentAssistService } from '../components/flo/content-assist.service';
 import { ParserService } from '../../shared/services/parser.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { LoggerService } from '../../shared/services/logger.service';
-import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
-import { StreamStatusComponent } from 'src/app/streams/components/stream-status/stream-status.component';
-import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
-import { FormsModule } from '@angular/forms';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { MockRoutingStateService } from 'src/app/tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
-import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { StreamsModule } from '../streams.module';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -38,9 +26,7 @@ describe('StreamCreateComponent', () => {
   let activeRoute: MockActivatedRoute;
   const streamsService = new MockStreamsService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
-  const renderService = new RenderService(metamodelService);
   const parserService = new ParserService();
-  const editorService = new EditorService(null);
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
   const notificationService = new MockNotificationService();
@@ -51,35 +37,17 @@ describe('StreamCreateComponent', () => {
     activeRoute = new MockActivatedRoute();
 
     TestBed.configureTestingModule({
-      declarations: [
-        StreamCreateComponent,
-        DATAFLOW_PAGE,
-        DATAFLOW_LIST,
-        PagerComponent,
-        StreamStatusComponent,
-        TippyDirective
-      ],
       imports: [
-        FormsModule,
-        NgxPaginationModule,
-        BsDropdownModule.forRoot(),
         RouterTestingModule.withRoutes([]),
-        ModalModule,
-        FloModule,
-        TooltipModule.forRoot(),
-        NoopAnimationsModule
+        StreamsModule
       ],
       providers: [
         { provide: StreamsService, useValue: streamsService },
         { provide: MetamodelService, useValue: metamodelService },
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: RenderService, useValue: renderService },
-        { provide: ContentAssistService },
-        { provide: BsModalService },
         { provide: ActivatedRoute, useValue: activeRoute },
         { provide: ParserService, useValue: parserService },
-        { provide: EditorService, useValue: editorService },
         { provide: LoggerService, useValue: loggerService }
       ]
     })

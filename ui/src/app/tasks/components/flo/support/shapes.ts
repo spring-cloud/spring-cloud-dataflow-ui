@@ -18,8 +18,8 @@ export const IMAGE_H = 50;
 export const CONTROL_GROUP_TYPE = 'control nodes';
 export const TASK_GROUP_TYPE = 'task';
 
-export const START_NODE_TYPE = 'Start';
-export const END_NODE_TYPE = 'End';
+export const START_NODE_TYPE = 'START';
+export const END_NODE_TYPE = 'END';
 export const SYNC_NODE_TYPE = 'SYNC';
 
 export const TaskAppShape = joint.shapes.basic.Generic.extend({
@@ -140,23 +140,26 @@ export const BatchStartShape = joint.shapes.basic.Generic.extend({
     size: START_NODE_SIZE,
     position: {x: 20, y: 20},
     attrs: {
-      '.start-circle': {
+      '.start-outer': {
         magnet: true,
         port: 'output',
         r: START_NODE_SIZE.width / 2,
+      },
+      '.start-inner': {
+        r: START_NODE_SIZE.width / 4,
       },
       '.select-outline': {
         r: START_NODE_SIZE.width / 2,
       },
       '.name-label': {
-        ref: '.start-circle',
+        ref: '.start-outer',
         refX: 0.5,
         refY: -5,
         xAlignment: 'middle',
         yAlignment: 'bottom',
       },
       '.options-handle': {
-        ref: '.start-circle',
+        ref: '.start-outer',
         text: 'Options',
         refX: '100%',
         refX2: 10,
@@ -166,7 +169,7 @@ export const BatchStartShape = joint.shapes.basic.Generic.extend({
       '.error-marker': {
         width: ERROR_MARKER_SIZE.width,
         height: ERROR_MARKER_SIZE.height,
-        ref: '.start-circle',
+        ref: '.start-outer',
         refX: '100%',
         refY: 0
       },
@@ -179,11 +182,11 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
   defaults: defaultsDeep({
     size: END_NODE_SIZE,
     attrs: {
-      '.inner': {
+      '.end-inner': {
         refRx: '35%',
         refRy: '35%'
       },
-      '.outer': {
+      '.end-outer': {
         refRx: '50%',
         refRy: '50%',
         magnet: true,
@@ -195,11 +198,11 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
         refY2: 15,
         xAlignment: 'middle',
         yAlignment: 'top',
-        ref: '.outer'
+        ref: '.end-outer'
       },
       '.select-outline': {
-        refRx: '100%',
-        refRy: '100%'
+        refRx: '50%',
+        refRy: '50%',
       },
       '.error-marker': {
         width: ERROR_MARKER_SIZE.width,

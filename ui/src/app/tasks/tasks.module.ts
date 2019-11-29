@@ -19,8 +19,6 @@ import { EditorService } from './components/flo/editor.service';
 import { TaskNodeComponent } from './components/flo/node/task-node.component';
 import { ToolsService } from './components/flo/tools.service';
 import { TaskPropertiesDialogComponent } from './components/flo/properties/task-properties-dialog-component';
-import { DecorationComponent } from '../shared/flo/decoration/decoration.component';
-import { HandleComponent } from '../shared/flo/handle/handle.component';
 import { ContentAssistService } from './components/flo/content-assist.service';
 import { TasksComponent } from './tasks/tasks.components';
 import { TaskDefinitionCreateComponent } from './task-definition-create/task-definition-create.component';
@@ -100,8 +98,6 @@ import { TasksUtilsService } from './tasks-utils/tasks-utils.service';
     TaskNodeComponent,
     TaskDefinitionCreateDialogComponent,
     TaskPropertiesDialogComponent,
-    DecorationComponent,
-    HandleComponent,
     TaskDefinitionsDestroyComponent,
     TaskSchedulesDestroyComponent,
     TaskExecutionsStopComponent,

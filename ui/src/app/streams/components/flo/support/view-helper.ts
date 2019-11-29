@@ -22,8 +22,6 @@ import {
   ComponentRef
 } from '@angular/core';
 import { StreamNodeComponent } from '../node/stream-node.component';
-import { DecorationComponent } from '../../../../shared/flo/decoration/decoration.component';
-import { HandleComponent } from '../../../../shared/flo/handle/handle.component';
 import { ShapeComponent, ElementComponent } from '../../../../shared/flo/support/shape-component';
 import { TYPE_INSTANCE_DOT, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from './shapes';
 import { InstanceDotComponent } from '../instance-dot/instance-dot.component';
@@ -35,8 +33,6 @@ const joint: any = _joint;
 
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, StreamNodeComponent)
-  .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
-  // .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
   .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
 
 const LINK_LABEL_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()

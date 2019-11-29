@@ -12,7 +12,7 @@ import { TaskGraphPropertiesSource } from '../properties/task-properties-source'
  * @author Andy Clement
  */
 @Component({
-  selector: 'app-flo-node',
+  selector: 'task-flo-node',
   templateUrl: 'task-node.component.html',
   styleUrls: ['./task-node.component.scss'],
   encapsulation: ViewEncapsulation.None

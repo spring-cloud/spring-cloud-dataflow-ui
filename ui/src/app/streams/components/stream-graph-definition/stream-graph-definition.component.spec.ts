@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import { StreamDefinition } from '../../model/stream-definition';
 import { GraphViewComponent } from '../../../shared/flo/graph-view/graph-view.component';
 import { StreamGraphDefinitionComponent } from './stream-graph-definition.component';
@@ -15,6 +15,9 @@ import {
   TYPE_INSTANCE_LABEL
 } from '../flo/support/shapes';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
+import {ApplicationRef, ComponentFactoryResolver} from "@angular/core";
+import {BsModalService} from "ngx-bootstrap";
+import {StreamsModule} from "../../streams.module";
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -25,28 +28,44 @@ describe('StreamGraphDefinitionComponent', () => {
   let component: StreamGraphDefinitionComponent;
   let fixture: ComponentFixture<StreamGraphDefinitionComponent>;
   const metamodelService = new MetamodelService(new MockSharedAppService());
-  const renderService = new RenderService(metamodelService);
+
+  let applicationRef: ApplicationRef;
+  let resolver: ComponentFactoryResolver;
+  let bsModalService: BsModalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        GraphViewComponent,
-        StreamGraphDefinitionComponent
-      ],
       imports: [
-        FloModule
+        StreamsModule
       ],
-      providers: [
-        { provide: MetamodelService, useValue: metamodelService },
-        { provide: RenderService, useValue: renderService }
-      ]
     })
-      .compileComponents();
   }));
+
+  beforeEach(
+    inject(
+      [
+        ApplicationRef,
+        BsModalService,
+        ComponentFactoryResolver
+      ],
+      (
+        _applicationRef: ApplicationRef,
+        _bsModalService: BsModalService,
+        _resolver: ComponentFactoryResolver
+      ) => {
+        applicationRef = _applicationRef;
+        bsModalService = _bsModalService;
+        resolver = _resolver;
+      }
+    )
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamGraphDefinitionComponent);
     component = fixture.componentInstance;
+    fixture.componentInstance.metamodel = metamodelService;
+    fixture.componentInstance.renderer = new RenderService(metamodelService, bsModalService, resolver,
+      fixture.debugElement.injector, applicationRef);
     fixture.detectChanges();
   });
 

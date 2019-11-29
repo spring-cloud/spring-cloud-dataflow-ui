@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import { FloModule, EditorComponent } from 'spring-flo';
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
@@ -9,11 +9,14 @@ import { EditorService } from './editor.service';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { LoggerService } from '../../../shared/services/logger.service';
 import * as _$ from 'jquery';
+import {ApplicationRef, ComponentFactoryResolver} from "@angular/core";
+import {BsModalService} from "ngx-bootstrap";
+import {StreamsModule} from "../../streams.module";
 
 const $: any = _$;
 
 describe('Streams Editor Service', () => {
-    const editorService = new EditorService(null);
+    const editorService = new EditorService();
 
     const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
     const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
@@ -404,9 +407,11 @@ describe('editor.service : Auto-Link', () => {
   let component: EditorComponent;
   let fixture: ComponentFixture<EditorComponent>;
   const metamodelService = new MetamodelService(new MockSharedAppService());
-  const renderService = new RenderService(metamodelService);
-  const editorService = new EditorService(null);
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
+
+  let applicationRef: ApplicationRef;
+  let resolver: ComponentFactoryResolver;
+  let bsModalService: BsModalService;
 
   let flo: Flo.EditorContext;
 
@@ -414,23 +419,36 @@ describe('editor.service : Auto-Link', () => {
     metamodelService.load().then(data => metamodel = data);
     TestBed.configureTestingModule({
       imports: [
-        FloModule
-      ],
-      providers: [
-        {provide: MetamodelService, useValue: metamodelService},
-        {provide: RenderService, useValue: renderService},
-        {provide: EditorService, useValue: editorService}
+        StreamsModule
       ]
     })
-      .compileComponents();
   }));
+
+  beforeEach(
+    inject(
+      [
+        ApplicationRef,
+        BsModalService,
+        ComponentFactoryResolver
+      ],
+      (
+        _applicationRef: ApplicationRef,
+        _bsModalService: BsModalService,
+        _resolver: ComponentFactoryResolver
+      ) => {
+        applicationRef = _applicationRef;
+        bsModalService = _bsModalService;
+        resolver = _resolver;
+      }
+    )
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = metamodelService;
-    component.renderer = renderService;
-    component.editor = editorService;
+    component.renderer = new RenderService(metamodelService, bsModalService, resolver, fixture.debugElement.injector, applicationRef);
+    component.editor = new EditorService();
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();
       flo = f;

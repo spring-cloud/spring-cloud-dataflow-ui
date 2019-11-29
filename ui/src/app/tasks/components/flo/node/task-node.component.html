@@ -1,10 +1,11 @@
 <svg:g [ngSwitch]="metaName">
 
-  <svg:g *ngSwitchCase="'Start'" class="composed-task">
+  <svg:g *ngSwitchCase="'START'" class="composed-task">
     <svg:circle class="select-outline"/>
     <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
            [isDisabled]="isDisabled">
-      <svg:circle class="start-circle"/>
+      <svg:circle class="start-outer"/>
+      <svg:circle class="start-inner"/>
     </svg:g>
     <svg:text class="name-label"/>
     <svg:image class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip" placement="top"
@@ -14,12 +15,12 @@
     </svg:g>
   </svg:g>
 
-  <svg:g *ngSwitchCase="'End'" class="composed-task">
+  <svg:g *ngSwitchCase="'END'" class="composed-task">
     <svg:ellipse class="select-outline"/>
     <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
            [isDisabled]="isDisabled">
-      <svg:ellipse class="outer"/>
-      <svg:ellipse class="inner"/>
+      <svg:ellipse class="end-outer"/>
+      <svg:ellipse class="end-inner"/>
     </svg:g>
     <svg:text class="name-label"/>
     <svg:image class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip" placement="top"

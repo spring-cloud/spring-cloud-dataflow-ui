@@ -11,8 +11,6 @@ import { FloModule } from 'spring-flo';
 import { AuthModule } from '../auth/auth.module';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { TooltipModule } from 'ngx-bootstrap';
-import { DecorationComponent } from '../shared/flo/decoration/decoration.component';
-import { HandleComponent } from '../shared/flo/handle/handle.component';
 import { AppsModule } from '../apps/apps.module';
 import { StreamDeployService } from './stream-deploy/stream-deploy.service';
 import { StreamDeployAppPropertiesComponent } from './stream-deploy/app-properties/app-properties.component';
@@ -101,8 +99,6 @@ import { CommonModule } from '@angular/common';
     StreamPropertiesDialogComponent,
     StreamNodeComponent,
     StreamsDeployComponent,
-    DecorationComponent,
-    HandleComponent,
     InstanceDotComponent,
     MessageRateComponent,
     StreamsUndeployComponent,

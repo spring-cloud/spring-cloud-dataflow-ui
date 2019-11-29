@@ -52,14 +52,6 @@ export class RenderService implements Flo.Renderer {
               private applicationRef?: ApplicationRef) {
   }
 
-  createHandle(kind: string, parent: dia.Cell) {
-    return NodeHelper.createHandle(kind);
-  }
-
-  // createDecoration(kind: string, parent: dia.Cell) {
-  //   return NodeHelper.createDecoration(kind, parent);
-  // }
-
   createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
     const element =  NodeHelper.createNode(metadata);
     const isPalette = viewerDescriptor.graph.get('type') === Constants.PALETTE_CONTEXT;
