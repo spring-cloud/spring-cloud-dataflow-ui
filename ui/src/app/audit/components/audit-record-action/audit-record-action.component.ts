@@ -56,5 +56,4 @@ export class AuditRecordActionComponent implements OnChanges {
     }
   }
 
-
 }
