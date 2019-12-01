@@ -1359,6 +1359,7 @@ export const AUDIT_RECORDS = {
         createdOn: '2018-10-16T13:36:01.720Z',
         auditAction: 'CREATE',
         auditOperation: 'APP_REGISTRATION',
+        platformName: 'kubernetes',
         _links: {
           self: {
             self: 'http://localhost:4200/audit-records/1'
