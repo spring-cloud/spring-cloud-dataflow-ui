@@ -103,6 +103,8 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               refX: -7,
               refY: -2,
               refWidth: 14,
+              rx: 8,
+              ry: 8,
               refHeight: 4
             },
             '.type-icon': {

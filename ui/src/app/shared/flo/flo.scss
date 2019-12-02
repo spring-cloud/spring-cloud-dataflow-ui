@@ -320,8 +320,10 @@ svg * {
 }
 
 .type-label-bg {
-  rx: 8;
-  ry: 8;
+  // These SVG attributes commented out below are removed by angular prod compiler due to 'buildOptimizer' on in angular.json
+  // Therefore these would need to added for each shape in Stream and ST editors.
+  //rx: 8;
+  //ry: 8;
   fill: black;
   stroke: none;
   fill: red;

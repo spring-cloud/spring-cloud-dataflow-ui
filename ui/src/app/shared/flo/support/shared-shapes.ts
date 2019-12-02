@@ -93,6 +93,8 @@ joint.shapes.flo.DataflowPaletteGroupHeader = joint.shapes.basic.Generic.extend(
         refHeight: 4,
         refX: -7,
         refY: -2,
+        rx: 8,
+        ry: 8,
         'follow-scale': true,
       },
       '.group-label': {

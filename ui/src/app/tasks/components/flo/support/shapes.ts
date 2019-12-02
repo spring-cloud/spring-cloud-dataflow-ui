@@ -62,7 +62,9 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         refX: -7,
         refY: -2,
         refWidth: 14,
-        refHeight: 4
+        refHeight: 4,
+        rx: 8,
+        ry: 8
       },
       '.error-marker': {
         width: ERROR_MARKER_SIZE.width,
