@@ -21,6 +21,9 @@ export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
 const ERROR_MARKER_SIZE = {width: 12, height: 12};
 const TYPE_ICON_SIZE = {width: 24, height: 24};
 
+export const TYPE_ICON_PADDING_PALETTE = 7;
+export const TYPE_ICON_SIZE_PALETTE = {width: 16, height: 16};
+
 joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
     defaults: joint.util.deepSupplement({
 
@@ -50,10 +53,9 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               'font-size': 14
             },
             '.palette-entry-name-label': {
-              'refX': 0.5, // jointjs specific: relative position to ref'd element
+              'refX': 10 + TYPE_ICON_SIZE_PALETTE.width + TYPE_ICON_PADDING_PALETTE, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
               'y-alignment': 'middle',
-              'x-alignment': 'middle',
               ref: '.box', // jointjs specific: element for ref-x, ref-y
               fill: 'black',
               'font-size': 14

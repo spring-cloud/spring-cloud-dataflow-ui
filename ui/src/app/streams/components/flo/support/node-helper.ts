@@ -309,6 +309,8 @@ export class NodeHelper {
             refHeight: 1,
             refX: 0,
             refY: 0,
+            rx: 3,
+            ry: 3,
             class: `.${channel}-label-bg flo-port-label-bg`
           });
         });
@@ -367,6 +369,8 @@ export class NodeHelper {
             refHeight: 1,
             refX: 0,
             refY: 0,
+            rx: 3,
+            ry: 3,
             class: `.${channel}-label-bg flo-port-label-bg`
           });
         });

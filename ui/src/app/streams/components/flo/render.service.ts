@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import './support/shapes';
+import {TYPE_ICON_PADDING_PALETTE, TYPE_ICON_SIZE_PALETTE} from './support/shapes';
 import {
   Injectable, ComponentFactoryResolver, Injector, ApplicationRef
 } from '@angular/core';
@@ -59,10 +59,9 @@ export class RenderService implements Flo.Renderer {
       NodeHelper.createPorts(element, metadata);
     } else {
       element.size(120, 30);
-      const iconSize = 16;
-      element.attr('.type-icon/width', iconSize);
-      element.attr('.type-icon/height', iconSize);
-      element.attr('.type-icon/refY2', -iconSize / 2);
+      element.attr('.type-icon/width', TYPE_ICON_SIZE_PALETTE.width);
+      element.attr('.type-icon/height', TYPE_ICON_SIZE_PALETTE.height);
+      element.attr('.type-icon/refY2', -TYPE_ICON_SIZE_PALETTE.height / 2);
     }
     return element;
   }
@@ -279,7 +278,7 @@ export class RenderService implements Flo.Renderer {
       const metadata: Flo.ElementMetadata = node.attr('metadata');
       if (metadata) {
           if (isPalette) {
-            ViewHelper.fitLabel(paper, node, '.palette-entry-name-label', 5);
+            ViewHelper.fitLabelWithFixedLocation(paper, node, '.palette-entry-name-label', TYPE_ICON_PADDING_PALETTE);
           } else {
             ViewHelper.fitLabelWithFixedLocation(paper, node, '.type-label', 15);
             if (metadata.name === 'tap') {

@@ -36,7 +36,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   editorContext: Flo.EditorContext;
 
-  paletteSize = 255;
+  paletteSize = 265;
 
   hintOptions: any;
 
@@ -132,10 +132,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
           }
         });
     }
-  }
-
-  paletteSizeChange(width) {
-    this.paletteSize = width
   }
 
   get gridOn(): boolean {
