@@ -51,6 +51,8 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   initSubject: Subject<void>;
 
+  zoomValues = [25, 50, 75, 100, 125, 150];
+
   @ViewChild(EditorComponent, { static: true }) flo;
 
   constructor(public metamodelService: MetamodelService,
@@ -144,7 +146,16 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   changeZoom(change: number) {
-    this.editorContext.zoomPercent = this.editorContext.zoomPercent + change;
+    if (this.zoomValues.indexOf(this.editorContext.zoomPercent) > -1) {
+      this.editorContext.zoomPercent = this.editorContext.zoomPercent + change;
+    } else {
+      const index = Math.max(Math.round(this.editorContext.zoomPercent / 25) - 1, 0);
+      if (change > 0) {
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)]
+      } else {
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)]
+      }
+    }
   }
 
   arrangeAll() {

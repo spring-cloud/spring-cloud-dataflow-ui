@@ -24,12 +24,56 @@ $other-color: #777777;
   .flow-actions {
     position: absolute;
     display: inline-flex;
-    bottom: 10px;
+    bottom: 0px;
     z-index: 2;
     .btn {
       margin-left: 2px;
       padding-left: 10px;
       padding-right: 10px;
+    }
+    .dropdown {
+      height: 30px;
+      margin-left: 2px;
+      .dropdown-value {
+        display: inline-block;
+        width: 36px;
+      }
+      .form-control {
+        font-size: 14px;
+        padding: 4px 8px 2px;
+        height: 30px;
+        cursor: pointer;
+        &:hover {
+          background: $gray-10;
+          border-color: $navy-7;
+        }
+      }
+      &.open {
+        .form-control {
+          border-color: $navy-7;
+        }
+      }
+      .dropdown-menu {
+        min-width: 85px;
+        > li > a {
+          padding: 2px 10px;
+        }
+      }
+    }
+    .btn {
+      height: 30px;
+      line-height: 28px;
+      padding: 0 8px;
+      font-size: 14px;
+    }
+    .btn-fa-transparent {
+      padding: 0 8px;
+      height: 30px;
+      font-size: 20px;
+      color: $navy-2;
+      &:hover {
+        background-color: $navy-11;
+      }
     }
   }
   .canvas {
@@ -49,7 +93,7 @@ $other-color: #777777;
 }
 
 .stream-editor #flow-view {
-  height:625px;
+  height: 625px;
   font-family: inherit;
 }
 
@@ -69,49 +113,50 @@ $other-color: #777777;
   /*background-color: $body-bg;*/
   font-family: monospace;
   z-index: 2;
-  width:100%;
-  height:100px;
+  width: 100%;
+  height: 100px;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
 }
 
 .flow-definition {
   border: 5px;
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 100%;
   font-size: 16px;
   resize: none;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
 }
 
 .flow-definition-container {
   border: 1px solid;
-  border-color: /*$spring-green*/$btn-default-border;
+  border-color: /*$spring-green*/
+    $btn-default-border;
   border-radius: 2px;
   margin-top: 3px;
   background-color: $body-bg;
   font-family: monospace;
   z-index: 2;
-  width:100%;
-  height:100px;
+  width: 100%;
+  height: 100px;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
   margin-bottom: 16px;
 }
 
 .flow-definition {
   border: 5px;
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 100%;
   font-size: 16px;
   resize: none;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
 }
 
 /* Otherwise ports, link labels, embedded shapes get outline on focus */
@@ -297,7 +342,6 @@ svg * {
   fill: $flo-shape-fill-color;
 }
 
-
 .validation-errors .box {
   fill: rgb(254, 227, 227);
 }
@@ -435,15 +479,15 @@ svg * {
 }
 
 .connection.composed-task-graph-transition {
-  stroke-dasharray: 1,5;
+  stroke-dasharray: 1, 5;
 }
 
 .connection.primary-output-from-app {
-  stroke-dasharray: 1,0;
+  stroke-dasharray: 1, 0;
 }
 
 .connection.tapped-output-from-app {
-  stroke-dasharray: 5,2;
+  stroke-dasharray: 5, 2;
 }
 
 .connection {
@@ -487,18 +531,23 @@ svg * {
   opacity: 0;
 }
 
-
-
 @keyframes flash-stroke-width {
-  0%    { stroke-width: 1; }
-  50%   { stroke-width: 4; }
-  100%  { stroke-width: 1; }
+  0% {
+    stroke-width: 1;
+  }
+  50% {
+    stroke-width: 4;
+  }
+  100% {
+    stroke-width: 1;
+  }
 }
 
 // Stream modules DnD shape animation
 .dnd-source-feedback .stream-module .box {
   animation: flash-stroke-width 2s linear infinite;
 }
+
 .dnd-target-feedback .stream-module .box {
   animation: flash-stroke-width 2s linear infinite;
 }
@@ -507,6 +556,7 @@ svg * {
 .dnd-source-feedback .destination .box {
   animation: flash-stroke-width 2s linear infinite;
 }
+
 .dnd-target-feedback .destination .box {
   animation: flash-stroke-width 2s linear infinite;
 }
@@ -515,6 +565,7 @@ svg * {
 .dnd-source-feedback .composed-task .border {
   animation: flash-stroke-width 2s linear infinite;
 }
+
 .dnd-target-feedback .composed-task .border {
   animation: flash-stroke-width 2s linear infinite;
 }
@@ -523,12 +574,15 @@ svg * {
 .dnd-source-feedback.input-port {
   animation: flash-stroke-width 2s linear infinite;
 }
+
 .dnd-source-feedback.output-port {
   animation: flash-stroke-width 2s linear infinite;
 }
+
 .dnd-target-feedback.input-port {
   animation: flash-stroke-width 2s linear infinite;
 }
+
 .dnd-target-feedback.output-port {
   animation: flash-stroke-width 2s linear infinite;
 }
@@ -537,6 +591,7 @@ svg * {
 .dnd-source-feedback .connection {
   animation: flash-stroke-width 2s linear infinite;
 }
+
 .dnd-target-feedback .connection {
   animation: flash-stroke-width 2s linear infinite;
 }
@@ -627,7 +682,6 @@ table.zoom-canvas-control {
   stroke: none;
 }
 
-
 .flo-input-multiport {
   fill: #777777;
   stroke-width: 1px;
@@ -683,7 +737,7 @@ table.zoom-canvas-control {
 }
 
 .handle-label {
-  fill: rgb(116,116,116);
+  fill: rgb(116, 116, 116);
   font-size: 12px;
   font-family: "Source Sans Pro", sans-serif;
   text-decoration: underline;
@@ -765,7 +819,7 @@ table.zoom-canvas-control {
 }
 
 .flo-handles {
-  fill: rgb(116,116,116);
+  fill: rgb(116, 116, 116);
   font-size: 12px;
   font-family: "Source Sans Pro", sans-serif;
   display: none;
