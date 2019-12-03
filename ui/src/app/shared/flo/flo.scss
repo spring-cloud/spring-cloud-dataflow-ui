@@ -198,8 +198,8 @@ svg * {
 }
 
 .link-tools .tool-remove circle {
-  fill: red;
-  stroke: red;
+  fill: #da0000;
+  stroke: #da0000;
 }
 
 .link-tools .tool-remove path {
@@ -361,7 +361,7 @@ svg * {
   }
   .name-label {
     font-family: "Source Sans Pro", sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: normal;
     fill: #222;
   }
@@ -429,7 +429,7 @@ svg * {
   //ry: 8;
   fill: black;
   stroke: none;
-  fill: red;
+  fill: #da0000;
 }
 
 .source-module .type-label-bg {
@@ -491,7 +491,7 @@ svg * {
 }
 
 .connection {
-  stroke: #f1f1f1;
+  stroke: $navy-8;
 }
 
 .marker-source {
@@ -670,7 +670,7 @@ table.zoom-canvas-control {
 }
 
 .validation-errors .flo-port {
-  fill: red;
+  fill: #da0000;
 }
 
 .flo-port-inner-circle {
@@ -750,13 +750,16 @@ table.zoom-canvas-control {
 // Error marker tooltip on the shape
 
 .error-marker-tooltip .tooltip-inner {
-  background-color: red;
+  background-color: #da0000;
   max-width: 400px;
-  padding: 2px;
+  //padding: 2px;
 }
 
 .tooltip.error-marker-tooltip .tooltip-arrow {
-  border-top-color: red;
+  border-top-color: #da0000;
+}
+
+.app-tooltip .tooltip-inner {
 }
 
 .marker-tooltip {
@@ -782,7 +785,7 @@ table.zoom-canvas-control {
     fill: transparent;
   }
   .group-label-bg {
-    fill: red;
+    fill: #da0000;
   }
   .group-label-bg.source {
     fill: $source-color;
@@ -819,16 +822,19 @@ table.zoom-canvas-control {
 }
 
 .flo-handles {
-  fill: rgb(116, 116, 116);
+  fill: $navy-6;
   font-size: 12px;
   font-family: "Source Sans Pro", sans-serif;
   display: none;
   .handle {
     cursor: pointer;
     text-decoration: underline;
-    :hover {
-      font-weight: bolder;
+    &:hover {
+      fill: $blue-4;
     }
+  }
+  .handle-separator {
+    fill: $navy-8;
   }
 }
 

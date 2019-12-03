@@ -5,8 +5,8 @@ const joint: any = _joint;
 import 'spring-flo';
 import '../../../../shared/flo/support/shared-shapes';
 
-export const IMAGE_W = 150;
-export const IMAGE_H = 50;
+export const IMAGE_W = 180;
+export const IMAGE_H = 70;
 export const HORIZONTAL_PADDING = 5;
 
 export const SELECT_SQUARE_SIZE = 4;
@@ -18,7 +18,7 @@ export const TYPE_INSTANCE_DOT = 'dataflow-InstanceDot';
 export const TYPE_INCOMING_MESSAGE_RATE = 'dataflow-incoming-rate';
 export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
 
-const ERROR_MARKER_SIZE = {width: 12, height: 12};
+const ERROR_MARKER_SIZE = {width: 20, height: 20};
 const TYPE_ICON_SIZE = {width: 24, height: 24};
 
 export const TYPE_ICON_PADDING_PALETTE = 7;
@@ -84,14 +84,14 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             '.name-label': {
               'refX': 10 + TYPE_ICON_SIZE.width + 10, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
-              'refY2': -2,
+              'refY2': -4,
               'y-alignment': 'bottom',
               ref: '.box', // jointjs specific: element for ref-x, ref-y
               fill: 'black',
               'font-size': 14
             },
             '.type-label': {
-                'refX': 10 + TYPE_ICON_SIZE.width + 10,
+                'refX': 10 + TYPE_ICON_SIZE.width + 16,
                 'refY': 0.5,
                 'refY2': 2,
                 'y-alignment': 'top',
@@ -102,12 +102,12 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             },
             '.type-label-bg': {
               ref: '.type-label',
-              refX: -7,
-              refY: -2,
-              refWidth: 14,
-              rx: 8,
-              ry: 8,
-              refHeight: 4
+              refX: -10,
+              refY: -3,
+              refWidth: 20,
+              rx: 11,
+              ry: 11,
+              refHeight: 6
             },
             '.type-icon': {
               ref: '.box',
@@ -123,8 +123,8 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               height: ERROR_MARKER_SIZE.height,
               ref: '.box',
               refX: "100%",
-              refX2: -5 - ERROR_MARKER_SIZE.width,
-              refY: 5
+              refX2: -1 - ERROR_MARKER_SIZE.width,
+              refY: 1
             },
             '.stream-label': {
               'x-alignment': 'middle',
@@ -356,7 +356,7 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
         // },
 //      router: { name: 'metro' },
         attrs: {
-            '.connection': { stroke: '#f1f1f1', 'stroke-width': 2, 'class': 'connection' },
+            '.connection': { stroke: '#f1f1f1', 'stroke-width': 3, 'class': 'connection' },
             '.connection-wrap': { display: 'none' },
             '.marker-arrowheads': { display: 'none' },
             '.tool-options': { display: 'block' },

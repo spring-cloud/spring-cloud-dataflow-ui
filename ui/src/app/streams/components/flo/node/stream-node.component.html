@@ -83,8 +83,8 @@
 
 <ng-template #paletteNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
-    <span><strong>{{ metaName | uppercase }}</strong></span>
-    <span><strong>{{ '(' + (metaGroup | capitalize) + ')' }}</strong></span>
+    <span>{{ metaName | uppercase }}</span>
+    <span>{{ '(' + (metaGroup | capitalize) + ')' }}</span>
   </div>
   <div *ngIf="description">
     <span>{{ description }}</span>
@@ -93,8 +93,8 @@
 
 <ng-template #canvasNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
-    <span><strong>{{ metaName | uppercase }}</strong></span>
-    <span><strong>{{ '(' + (metaGroup | capitalize) + ')' }}</strong></span>
+    <span>{{ metaName | uppercase }}</span>
+    <span>{{ '(' + (metaGroup | capitalize) + ')' }}</span>
   </div>
   <div *ngIf="description">
     <span>{{ description }}</span>
