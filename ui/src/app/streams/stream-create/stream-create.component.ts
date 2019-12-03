@@ -36,7 +36,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   editorContext: Flo.EditorContext;
 
-  paletteSize = 265;
+  paletteSize = 255;
 
   hintOptions: any;
 
@@ -108,9 +108,9 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   resizeFloGraph(height?: number) {
     const viewEditor = this.flo.element.nativeElement.children[1];
     if (height) {
-      height = height - 330;
+      height = height - 340;
     } else {
-      height = document.documentElement.clientHeight - 330;
+      height = document.documentElement.clientHeight - 340;
     }
     this.renderer.setStyle(viewEditor, 'height', `${Math.max(height, 300)}px`);
   }
@@ -132,6 +132,10 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  paletteSizeChange(width) {
+    this.paletteSize = width
   }
 
   get gridOn(): boolean {

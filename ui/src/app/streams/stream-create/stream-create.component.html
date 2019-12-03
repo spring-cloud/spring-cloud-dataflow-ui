@@ -9,9 +9,10 @@
 
   <div id="flo-container" class="stream-editor" dataflowLayoutType type="full">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [paletteSize]="paletteSize" [paletteEntryPadding]="{width: 2, height: 2}"
+                [editor]="editorService" [paletteSize]="paletteSize" [paletteEntryPadding]="{width: 1.5, height: 1.5}"
                 [(dsl)]="dsl" [paperPadding]="55" (contentValidated)="contentValidated=$event"
-                (validationMarkers)="validationMarkers = $event">
+                (validationMarkers)="validationMarkers = $event"
+                (paletteSizeChange)="paletteSizeChange($event)">
 
       <div header class="flow-definition-container">
         <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
@@ -19,49 +20,46 @@
                     [hintOptions]="hintOptions" [lintOptions]="lintOptions"></dsl-editor>
       </div>
 
-      <div canvas class="flow-actions">
-        <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(-5)">
-          <i class="fa fa-search-minus"></i>
-        </button>
-        <div class="select-editable">
-          <select (change)="editorContext.zoomPercent = $event.target.value">
-            <option value="25">100%</option>
-            <option value="50">50%</option>
-            <option value="75">75%</option>
-            <option value="100">100%</option>
-            <option value="125">125%</option>
-            <option value="150">150%</option>
-            <option value="175">175%</option>
-            <option value="200">200%</option>
-          </select>
-          <input type="number" [(ngModel)]="editorContext.zoomPercent" />
-        </div>
-        <!--<input class="zoom-input" list="zoom" type="number" [(ngModel)]="editorContext.zoomPercent">-->
-        <!--<datalist id="zoom">-->
-          <!--<option value="25"></option>-->
-          <!--<option value="50"></option>-->
-          <!--<option value="75"></option>-->
-          <!--<option value="100"></option>-->
-          <!--<option value="125"></option>-->
-          <!--<option value="150"></option>-->
-          <!--<option value="175%">175</option>-->
-          <!--<option value="200%">200</option>-->
-        <!--</datalist>-->
-        <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(5)">
-          <i class="fa fa-search-plus"></i>
-        </button>
-        <!--<button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>-->
-        <button (click)="arrangeAll()" class="btn btn-default" type="button">Fit to Content</button>
-        <!--<button class="btn" (click)="editorContext.autolink = !editorContext.autolink"-->
-                <!--[ngClass]="{'btn-default-alt': !editorContext.autolink, 'btn-default': editorContext.autolink}">Auto-->
-          <!--Link-->
-        <!--</button>-->
-        <!--<button class="btn" (click)="gridOn = !gridOn"-->
-                <!--[ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid-->
-        <!--</button>-->
-      </div>
-
     </flo-editor>
+    <div canvas class="flow-actions" [ngStyle]="{left: (paletteSize + 40) + 'px'}">
+      <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(-25)">
+        <i class="fa fa-search-minus"></i>
+      </button>
+      <div class="select-editable">
+        <select (change)="editorContext.zoomPercent = $event.target.value">
+          <option value="25">25%</option>
+          <option value="50">50%</option>
+          <option value="75">75%</option>
+          <option value="100">100%</option>
+          <option value="125">125%</option>
+          <option value="150">150%</option>
+        </select>
+        <input type="number" [(ngModel)]="editorContext.zoomPercent" />
+      </div>
+      <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(25)">
+        <i class="fa fa-search-plus"></i>
+      </button>
+      <button (click)="arrangeAll()" class="btn btn-default" type="button">Fit to Content</button>
+      <!--<input class="zoom-input" list="zoom" type="number" [(ngModel)]="editorContext.zoomPercent">-->
+      <!--<datalist id="zoom">-->
+      <!--<option value="25"></option>-->
+      <!--<option value="50"></option>-->
+      <!--<option value="75"></option>-->
+      <!--<option value="100"></option>-->
+      <!--<option value="125"></option>-->
+      <!--<option value="150"></option>-->
+      <!--<option value="175%">175</option>-->
+      <!--<option value="200%">200</option>-->
+      <!--</datalist>-->
+      <!--<button (click)="editorContext.clearGraph()" class="btn btn-default" type="button">Clear</button>-->
+      <!--<button class="btn" (click)="editorContext.autolink = !editorContext.autolink"-->
+      <!--[ngClass]="{'btn-default-alt': !editorContext.autolink, 'btn-default': editorContext.autolink}">Auto-->
+      <!--Link-->
+      <!--</button>-->
+      <!--<button class="btn" (click)="gridOn = !gridOn"-->
+      <!--[ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid-->
+      <!--</button>-->
+    </div>
   </div>
 
   <app-page-actions>

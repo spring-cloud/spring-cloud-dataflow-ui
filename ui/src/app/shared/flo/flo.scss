@@ -25,17 +25,40 @@ $other-color: #777777;
     position: absolute;
     display: inline-flex;
     bottom: 10px;
-    left: 5px;
     z-index: 2;
     .btn {
       margin-left: 2px;
+      padding-left: 10px;
+      padding-right: 10px;
     }
   }
+  .canvas {
+    border: 0 none;
+  }
+}
+
+.zoom-canvas-control {
+  display: none;
+}
+
+.dataflow-page-actions {
+  padding: 15px 0;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-bottom: 0;
 }
 
 .stream-editor #flow-view {
   height:625px;
   font-family: inherit;
+}
+
+.stream-editor #sidebar-resizer {
+  width: 1px;
+  border-left: 12px solid white;
+  border-right: 1px solid #dfe5e8;
+  z-index: 1000;
+  cursor: col-resize;
 }
 
 .flow-definition-container {
@@ -77,6 +100,7 @@ $other-color: #777777;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
+  margin-bottom: 16px;
 }
 
 .flow-definition {
@@ -199,6 +223,7 @@ svg * {
 .stream-editor #palette-paper-container {
   height: calc(100% - 32px);
   width: 100%;
+  padding-right: 20px;
 }
 
 .palette-paper {
@@ -212,20 +237,54 @@ svg * {
 
 .flow-view .palette-filter {
   border-color: #ebf0f2;
-  border-width: 2px;
+  border-width: 0;
+  .palette-filter-label {
+    position: relative;
+    display: block;
+    margin-bottom: 0;
+    &:after {
+      position: absolute;
+      font-family: "FontAwesome";
+      content: "\f002";
+      width: 20px;
+      height: 24px;
+      top: 0;
+      right: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  }
   input[type=search] {
     font-family: "Source Sans Pro", sans-serif;
-    font-size: 12px;
-    font-weight: normal;
-  }
-  ::placeholder {
-    color: $navy-8;
-  }
-}
 
-.stream-editor #sidebar-resizer {
-  background-color: #dfe5e8;
-  width: 1px;
+    display: block;
+    width: 100%;
+    height: ($base-unit*4);
+    padding: 4px $base-unit;
+    /* The 6px vertically centers text on FF, ignored by Webkit */
+    font-size: 14px;
+    background-color: #fff;
+    border: 0;
+    border-bottom: 1px solid #c1c7ca;
+    border-radius: 0;
+    -webkit-appearance: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: $dark-2;
+    padding-bottom: 12px;
+    font-weight: normal;
+    &::placeholder {
+      color: $dark-2;
+      font-weight: 600;
+    }
+    &:focus {
+      box-shadow: none;
+      border: 0;
+      border-bottom: 1px solid #607580;
+      outline: none;
+    }
+  }
+
 }
 
 .box {
@@ -254,7 +313,7 @@ svg * {
 .stream-module {
   .stream-label {
     fill: #AAAAAA;
-    font-size: 15;
+    font-size: 15px;
   }
   .name-label {
     font-family: "Source Sans Pro", sans-serif;
@@ -672,12 +731,13 @@ table.zoom-canvas-control {
 }
 
 .joint-type-palette-groupheader {
+  cursor: pointer;
   .outer {
     fill: transparent;
   }
   .group-label-bg {
-    rx: 8;
-    ry: 8;
+    rx: 11;
+    ry: 11;
     fill: red;
   }
   .group-label-bg.source {
@@ -708,7 +768,7 @@ table.zoom-canvas-control {
     fill: white;
   }
   .group-line {
-    stroke: #BBBBBB;
+    stroke: #dfe5e8;
     stroke-width: 1px;
     stroke-linecap: round;
   }

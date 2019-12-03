@@ -83,38 +83,38 @@ joint.shapes.flo.DataflowPaletteGroupHeader = joint.shapes.basic.Generic.extend(
     attrs: {
       '.outer': {
         refWidth: 1,
-        refHeight: 1,
+        refHeight: 8,
         refX: 0,
         refY: 0,
       },
       '.group-label-bg': {
         ref: '.group-label',
-        refWidth: 14,
-        refHeight: 4,
-        refX: -7,
-        refY: -2,
-        rx: 8,
-        ry: 8,
+        refWidth: 20,
+        refHeight: 6,
+        refX: -10,
+        refY: -3,
+        rx: 10,
+        ry: 10,
         'follow-scale': true,
       },
       '.group-label': {
         ref: '.outer',
-        refX: 15,
+        refX: 10,
         refY: 0.5,
         'y-alignment': 'middle'
       },
       '.collapse-handle': {
-        width: 10,
-        height: 10,
+        width: 30,
+        height: 14,
         ref: '.outer',
         refX: '100%',
-        refX2: '-15 - 10',
+        refX2: '-30 - 20',
         refY: '50%',
         refY2: -5
       },
       '.group-line': {
         ref: '.outer',
-        refPointsKeepOffset: '1,39 169,39'
+        refPointsKeepOffset: '1,42 169,42'
       }
     },
     // custom properties
