@@ -6,17 +6,17 @@ import '../../../../shared/flo/support/shared-shapes';
 
 const joint: any = _joint;
 
-const ERROR_MARKER_SIZE = {width: 12, height: 12};
+const ERROR_MARKER_SIZE = {width: 20, height: 20};
 const START_NODE_SIZE = {width: 15, height: 15};
-const END_NODE_SIZE = {width: 15, height: 15};
+const END_NODE_SIZE = {width: 20, height: 20};
 const PORT_RADIUS = 6;
 
 const CANVAS_LABEL_PADDING = 15;
 export const NODE_ROUNDED_CORNER = 8;
 export const NODE_ROUNDED_CORNER_PALETTE = 3;
 
-export const IMAGE_W = 150;
-export const IMAGE_H = 50;
+export const IMAGE_W = 180;
+export const IMAGE_H = 64;
 export const CONTROL_GROUP_TYPE = 'control nodes';
 export const TASK_GROUP_TYPE = 'task';
 
@@ -45,36 +45,38 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         ref: '.box', // jointjs specific: element for ref-x, ref-y
       },
       '.name-label': {
-        refX: CANVAS_LABEL_PADDING,
+        'refX': '50%',
         refY: 0.5,
-        refY2: -2,
+        refY2: -4,
         'y-alignment': 'bottom',
+        'x-alignment': 'middle',
         ref: '.box',
       },
       '.type-label': {
-        'refX': CANVAS_LABEL_PADDING,
+        'refX': '50%',
         'refY': 0.5,
         'refY2': 2,
         'y-alignment': 'top',
+        'x-alignment': 'middle',
         ref: '.box', // jointjs specific: element for ref-x, ref-y
         text: 'UNRESOLVED'
       },
       '.type-label-bg': {
         ref: '.type-label',
-        refX: -7,
-        refY: -2,
-        refWidth: 14,
-        refHeight: 4,
-        rx: 8,
-        ry: 8
+        refX: -10,
+        refY: -3,
+        refWidth: 20,
+        rx: 11,
+        ry: 11,
+        refHeight: 6
       },
       '.error-marker': {
         width: ERROR_MARKER_SIZE.width,
         height: ERROR_MARKER_SIZE.height,
         ref: '.box',
         refX: "100%",
-        refX2: -5 - ERROR_MARKER_SIZE.width,
-        refY: 5
+        refX2: - ERROR_MARKER_SIZE.width,
+        refY: 0
       },
       '.output-port': {
         port: 'output',
@@ -224,9 +226,10 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
 export const BatchSyncShape = joint.shapes.basic.Generic.extend({
   defaults: defaultsDeep({
     type: joint.shapes.flo.NODE_TYPE,
+    size: { width: 50, height: 20 },
     attrs: {
       '.box': {
-        refRx: '30%',
+        refRx: '20%',
         refRy: '50%',
         refWidth: '100%',
         refHeight: '100%'

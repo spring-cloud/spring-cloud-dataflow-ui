@@ -3,7 +3,7 @@
   <svg:g *ngSwitchCase="'START'" class="composed-task">
     <svg:circle class="select-outline"/>
     <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-           [isDisabled]="isDisabled">
+           [isDisabled]="isDisabled" [delay]="300">
       <svg:circle class="start-outer"/>
       <svg:circle class="start-inner"/>
     </svg:g>
@@ -18,7 +18,7 @@
   <svg:g *ngSwitchCase="'END'" class="composed-task">
     <svg:ellipse class="select-outline"/>
     <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-           [isDisabled]="isDisabled">
+           [isDisabled]="isDisabled" [delay]="300">
       <svg:ellipse class="end-outer"/>
       <svg:ellipse class="end-inner"/>
     </svg:g>
@@ -40,7 +40,7 @@
 <ng-template #canvasComposedTaskShape>
   <svg:rect class="select-outline"/>
   <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-         [isDisabled]="isDisabled || !canShowCanvasNodeTooltip">
+         [isDisabled]="isDisabled || !canShowCanvasNodeTooltip" [delay]="300">
     <svg:rect class="box"/>
     <svg:text class="name-label"/>
     <svg:image class="type-icon"/>
@@ -51,13 +51,15 @@
     </svg:g>
   </svg:g>
   <svg:g class="input-port-group">
-    <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
+    <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"
+           [delay]="300">
       <svg:circle class="port-outer-circle-input"/>
       <svg:circle class="port-inner-circle-input"/>
     </svg:g>
   </svg:g>
   <svg:g class="output-port-group">
-    <svg:g class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
+    <svg:g class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"
+           [delay]="300">
       <svg:circle class="port-outer-circle-output"/>
       <svg:circle class="port-inner-circle-output"/>
     </svg:g>
@@ -72,7 +74,7 @@
 
 <ng-template #paletteComposedTaskShape>
   <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-         [isDisabled]="isDisabled || !canShowPaletteNodeTooltip">
+         [isDisabled]="isDisabled || !canShowPaletteNodeTooltip" [delay]="300">
     <svg:rect class="box"/>
     <svg:text class="palette-entry-name-label"/>
   </svg:g>
@@ -85,13 +87,15 @@
     <svg:text class="name-label"/>
   </svg:g>
   <svg:g class="input-port-group">
-    <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
+    <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"
+           [delay]="300">
       <svg:circle class="port-outer-circle-input"/>
       <svg:circle class="port-inner-circle-input"/>
     </svg:g>
   </svg:g>
   <svg:g class="output-port-group">
-    <svg:g class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled">
+    <svg:g class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"
+           [delay]="300">
       <svg:circle class="port-outer-circle-output"/>
       <svg:circle class="port-inner-circle-output"/>
     </svg:g>
@@ -105,7 +109,7 @@
 
 <ng-template #paletteSyncShape>
   <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-         [isDisabled]="isDisabled">
+         [isDisabled]="isDisabled" [delay]="300">
     <svg:rect class="box"/>
     <svg:text class="palette-entry-name-label"/>
   </svg:g>
@@ -113,8 +117,7 @@
 
 <ng-template #canvasNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
-    <span><strong>{{ metaName | uppercase }}</strong></span>
-    <span><strong>{{ '(' + (metaGroup | capitalize) + ')' }}</strong></span>
+    <span>{{ metaName | uppercase }}</span>&nbsp;<span>{{ '(' + (metaGroup | capitalize) + ')' }}</span>
   </div>
   <div *ngIf="description">
     <span>{{ description }}</span>

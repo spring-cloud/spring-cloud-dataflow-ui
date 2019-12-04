@@ -34,7 +34,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   lintOptions: CodeMirror.LintOptions;
   validationMarkers: Map<string, Flo.Marker[]>;
   parseErrors: any[];
-
+  zoomValues = [25, 50, 75, 100, 125, 150];
   initSubject: Subject<void>;
 
   @ViewChild(EditorComponent, { static: true }) flo;
@@ -82,9 +82,9 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   resizeFloGraph(height?: number) {
     const viewEditor = this.flo.element.nativeElement.children[1];
     if (height) {
-      height = height - 330;
+      height = height - 305;
     } else {
-      height = document.documentElement.clientHeight - 330;
+      height = document.documentElement.clientHeight - 305;
     }
     this.renderer.setStyle(viewEditor, 'height', `${Math.max(height, 300)}px`);
   }
@@ -92,6 +92,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   setEditorContext(editorContext: Flo.EditorContext) {
     this.editorContext = editorContext;
     if (this.editorContext) {
+      this.editorContext.gridSize = 10;
       const subscription = this.editorContext.paletteReady.subscribe(ready => {
         if (ready) {
           subscription.unsubscribe();
@@ -110,17 +111,34 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
     this.editorContext.clearGraph();
   }
 
+  changeZoom(change: number) {
+    if (this.zoomValues.indexOf(this.editorContext.zoomPercent) > -1) {
+      this.editorContext.zoomPercent = this.editorContext.zoomPercent + change;
+    } else {
+      const index = Math.max(Math.round(this.editorContext.zoomPercent / 25) - 1, 0);
+      if (change > 0) {
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)];
+      } else {
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)];
+      }
+    }
+  }
+
   createTaskDefs() {
+    if (!this.dsl || !this.dsl.trim()) {
+      this.notificationService.error('Please, enter a valid task.');
+      return;
+    }
     if (this.isCreateComposedTaskDisabled) {
       this.notificationService.error('Some field(s) are missing or invalid.');
-    } else {
-      this.loggerService.log('createTaskDefs');
-      const bsModalRef = this.bsModalService.show(TaskDefinitionCreateDialogComponent, { class: 'modal-lg' });
-      bsModalRef.content.setDsl(this.dsl);
-      bsModalRef.content.successCallback = () => {
-        this.router.navigate([`tasks/definitions`]);
-      };
+      return;
     }
+    this.loggerService.log('createTaskDefs');
+    const bsModalRef = this.bsModalService.show(TaskDefinitionCreateDialogComponent, { class: 'modal-lg' });
+    bsModalRef.content.setDsl(this.dsl);
+    bsModalRef.content.successCallback = () => {
+      this.router.navigate([`tasks/definitions`]);
+    };
   }
 
   lint(dsl: string, updateLintingCallback: CodeMirror.UpdateLintingCallback, editor: CodeMirror.Editor): void {
