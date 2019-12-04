@@ -18,6 +18,9 @@ export const TYPE_INSTANCE_DOT = 'dataflow-InstanceDot';
 export const TYPE_INCOMING_MESSAGE_RATE = 'dataflow-incoming-rate';
 export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
 
+export const NODE_ROUNDED_CORNER = 8;
+export const NODE_ROUNDED_CORNER_PALETTE = 3;
+
 const ERROR_MARKER_SIZE = {width: 20, height: 20};
 const TYPE_ICON_SIZE = {width: 24, height: 24};
 
@@ -37,8 +40,8 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
             '.box': {
                 refWidth: 1,
                 refHeight: 1,
-                rx: 8,
-                ry: 8,
+                rx: NODE_ROUNDED_CORNER,
+                ry: NODE_ROUNDED_CORNER,
                 stroke: '#6db33f',
                 fill: '#eeeeee',
                 'stroke-width': 2,
@@ -60,27 +63,6 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               fill: 'black',
               'font-size': 14
             },
-            // '.name-label': {
-            //     'refX': 0.5, // jointjs specific: relative position to ref'd element
-            //     'refY': 0.5,
-            //     'refY2': -2,
-            //     'y-alignment': 'bottom',
-            //     'x-alignment': 'middle',
-            //     ref: '.box', // jointjs specific: element for ref-x, ref-y
-            //     fill: 'black',
-            //     'font-size': 14
-            // },
-            // '.type-label': {
-            //   'refX': 0.5, // jointjs specific: relative position to ref'd element
-            //   'refY': 0.5,
-            //   'refY2': 2,
-            //   'y-alignment': 'top',
-            //   'x-alignment': 'middle',
-            //   ref: '.box', // jointjs specific: element for ref-x, ref-y
-            //   fill: 'black',
-            //   'font-size': 14,
-            //   text: 'UNRESOLVED'
-            // },
             '.name-label': {
               'refX': 10 + TYPE_ICON_SIZE.width + 10, // jointjs specific: relative position to ref'd element
               'refY': 0.5,
@@ -138,8 +120,8 @@ joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
               ref: '.box',
               refWidth: 1,
               refHeight: 1,
-              rx: 8,
-              ry: 8,
+              rx: NODE_ROUNDED_CORNER,
+              ry: NODE_ROUNDED_CORNER,
             },
             '.select-1': {
               width: SELECT_SQUARE_SIZE,

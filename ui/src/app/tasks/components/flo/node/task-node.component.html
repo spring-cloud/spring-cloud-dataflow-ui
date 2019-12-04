@@ -40,7 +40,7 @@
 <ng-template #canvasComposedTaskShape>
   <svg:rect class="select-outline"/>
   <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-         [isDisabled]="isDisabled">
+         [isDisabled]="isDisabled || !canShowCanvasNodeTooltip">
     <svg:rect class="box"/>
     <svg:text class="name-label"/>
     <svg:image class="type-icon"/>
@@ -72,7 +72,7 @@
 
 <ng-template #paletteComposedTaskShape>
   <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-         [isDisabled]="isDisabled">
+         [isDisabled]="isDisabled || !canShowPaletteNodeTooltip">
     <svg:rect class="box"/>
     <svg:text class="palette-entry-name-label"/>
   </svg:g>
@@ -80,8 +80,7 @@
 
 <ng-template #canvasSyncShape>
   <svg:rect class="select-outline"/>
-  <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-         [isDisabled]="isDisabled">
+  <svg:g class="shape">
     <svg:rect class="box"/>
     <svg:text class="name-label"/>
   </svg:g>

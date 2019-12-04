@@ -6,7 +6,7 @@ import { BsModalService } from 'ngx-bootstrap';
 import { MetamodelService } from './metamodel.service';
 import {
   TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape,
-  CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE
+  CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, NODE_ROUNDED_CORNER, NODE_ROUNDED_CORNER_PALETTE
 } from './support/shapes';
 import { layout } from './support/layout';
 import { ElementComponent } from '../../../shared/flo/support/shape-component';
@@ -104,6 +104,10 @@ export class RenderService implements Flo.Renderer {
           defaultsDeep({
             size: isPalette ? COMPOSED_TASK_PALETTE_SIZE : COMPOSED_TASK_CANVAS_SIZE,
             attrs: {
+              '.box': {
+                rx: isPalette ? NODE_ROUNDED_CORNER_PALETTE : NODE_ROUNDED_CORNER,
+                ry: isPalette ? NODE_ROUNDED_CORNER_PALETTE : NODE_ROUNDED_CORNER,
+              },
               '.name-label': {
                 'text': metadata.name
               },

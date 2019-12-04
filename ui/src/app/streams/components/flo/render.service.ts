@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {TYPE_ICON_PADDING_PALETTE, TYPE_ICON_SIZE_PALETTE} from './support/shapes';
+import {NODE_ROUNDED_CORNER_PALETTE, TYPE_ICON_PADDING_PALETTE, TYPE_ICON_SIZE_PALETTE} from './support/shapes';
 import {
   Injectable, ComponentFactoryResolver, Injector, ApplicationRef
 } from '@angular/core';
@@ -62,6 +62,8 @@ export class RenderService implements Flo.Renderer {
       element.attr('.type-icon/width', TYPE_ICON_SIZE_PALETTE.width);
       element.attr('.type-icon/height', TYPE_ICON_SIZE_PALETTE.height);
       element.attr('.type-icon/refY2', -TYPE_ICON_SIZE_PALETTE.height / 2);
+      element.attr('.box/rx', NODE_ROUNDED_CORNER_PALETTE);
+      element.attr('.box/ry', NODE_ROUNDED_CORNER_PALETTE);
     }
     return element;
   }

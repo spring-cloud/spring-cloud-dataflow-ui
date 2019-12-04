@@ -23,17 +23,6 @@ import {Utils as SharedUtils} from "../../../../shared/flo/support/utils";
 
 const joint: any = _joint;
 
-const HANDLE_ICON_MAP = new Map<string, string>()
-  .set(Constants.REMOVE_HANDLE_TYPE, 'assets/img/delete.svg')
-  .set(Constants.PROPERTIES_HANDLE_TYPE, 'assets/img/cog.svg');
-
-const HANDLE_ICON_SIZE = new Map<string, dia.Size>()
-  .set(Constants.REMOVE_HANDLE_TYPE, {width: 10, height: 10})
-  .set(Constants.PROPERTIES_HANDLE_TYPE, {width: 11, height: 11});
-
-const DECORATION_ICON_MAP = new Map<string, string>()
-  .set(Constants.ERROR_DECORATION_KIND, 'assets/img/error.svg');
-
 const PORT_RADIUS = 6;
 
 const HANDLE_SHAPE_SPACING = 10;
@@ -466,64 +455,6 @@ export class NodeHelper {
       r: PORT_RADIUS - 3,
       class: 'port-inner-circle-input flo-port-inner-circle'
     });
-  }
-
-  static createHandle(kind: string) {
-    switch (kind) {
-      case Constants.REMOVE_HANDLE_TYPE:
-        const deleteHandle = new joint.shapes.flo.DataFlowLabelHandle();
-        deleteHandle.attr('.handle-label', {
-          'y-alignment': 'bottom',
-          'text': 'Delete'
-        });
-        return deleteHandle;
-      case Constants.PROPERTIES_HANDLE_TYPE:
-        const optionsHandle = new joint.shapes.flo.DataFlowLabelHandle();
-        optionsHandle.attr('.handle-label', {
-          'y-alignment': 'bottom',
-          'text-anchor': 'end',
-          'text': 'Options'
-        });
-        return optionsHandle;
-      case 'separator':
-        const separatorHandle = new joint.shapes.flo.DataFlowLabelHandle();
-        separatorHandle.attr('.handle-label', {
-          'y-alignment': 'bottom',
-          'x-alignment': 'middle',
-          'text': '|'
-        });
-        return separatorHandle;
-      default:
-        return new joint.shapes.flo.ErrorDecoration({
-          size: HANDLE_ICON_SIZE.get(kind),
-          attrs: {
-            'image': {
-              'xlink:href': HANDLE_ICON_MAP.get(kind)
-            }
-          }
-        });
-    }
-  }
-
-  static createDecoration(kind: string, parent: dia.Cell) {
-    const error = new joint.shapes.flo.ErrorDecoration({
-      size: {width: 16, height: 16},
-      attrs: {
-        'image': {
-          'xlink:href': DECORATION_ICON_MAP.get(kind)
-        }
-      }
-    });
-
-    const border_padding = 5;
-
-    if (parent instanceof joint.dia.Element) {
-      const pt = (<dia.Element> parent).getBBox().topRight().offset(-error.size().width - border_padding, border_padding);
-      error.position(pt.x, pt.y);
-    } else {
-      // TODO: do something for the link perhaps?
-    }
-    return error;
   }
 
 }

@@ -68,6 +68,26 @@ export class NodeComponent extends ElementComponent {
     return !this.metadata || this.metadata.unresolved || this.docService.isMouseDown();
   }
 
+  get canShowCanvasNodeTooltip(): boolean {
+    return this.isAnyPropertySet() || this.isLabelTruncated('./name-label') || this.isLabelTruncated('.type-label/text');
+  }
+
+  get canShowPaletteNodeTooltip() {
+    return this.isLabelTruncated('.palette-entry-name-label/text') /*|| this.description*/;
+  }
+
+  private isLabelTruncated(labelProperty: string) {
+    const displayedLabel = this.view.model.attr(labelProperty);
+    if (typeof displayedLabel === 'string') {
+      return (<string>displayedLabel).endsWith('\u2026');
+    }
+  }
+
+  private isAnyPropertySet() {
+    const properties = this.allProperties;
+    return properties && Object.keys(properties).length > 0;
+  }
+
   isCode(property: string): boolean {
     return Utils.isCodeTypeProperty(this.metadata, property);
   }

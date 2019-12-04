@@ -5,7 +5,7 @@
 <ng-template #paletteShape>
   <svg:g class="stream-module">
     <svg:g class="shape" [tooltip]="paletteNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-           [isDisabled]="isDisabled" [delay]="300">
+           [isDisabled]="isDisabled || !canShowPaletteNodeTooltip" [delay]="300">
       <svg:rect class="box"/>
       <svg:image class="type-icon"/>
       <svg:text class="palette-entry-name-label"/>
@@ -17,7 +17,7 @@
   <svg:g class="stream-module">
     <svg:rect class="select-outline"/>
     <svg:g class="shape" [tooltip]="canvasNodeTooltip" container="body" placement="bottom" containerClass="app-tooltip"
-           [isDisabled]="isDisabled" [delay]="300">
+           [isDisabled]="isDisabled || !canShowCanvasNodeTooltip" [delay]="300">
       <svg:rect class="box"/>
       <svg:image class="type-icon"/>
       <svg:g>
