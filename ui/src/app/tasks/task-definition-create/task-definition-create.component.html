@@ -11,7 +11,8 @@
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
                 [editor]="editorService" [paletteSize]="paletteSize" [paletteEntryPadding]="{width: 2, height: 2}"
                 [paperPadding]="55" [(dsl)]="dsl" (contentValidated)="contentValidated=$event"
-                (validationMarkers)="validationMarkers = $event">
+                (validationMarkers)="validationMarkers = $event"
+                searchFilterPlaceHolder="Applications">
 
       <div header class="flow-definition-container">
         <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"

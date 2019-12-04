@@ -97,10 +97,10 @@ describe('StreamGraphDefinitionComponent', () => {
     component.stream = new StreamDefinition('test-stream', 'http | filter | null', 'http | filter | null', 'demo description', 'deployed');
 
     const httpMetrics = createStreamStatus('source', 'http', 2);
-    const filterMetrics = createStreamStatus('processor', 'filter', 40);
+    const filterMetrics = createStreamStatus('processor', 'filter', 60);
     const nullMetrics = createStreamStatus('sink', 'null', 3);
 
-    // Remove 3 instances to have 37/40 label
+    // Remove 3 instances to have 57/60 label
     filterMetrics.instances.pop();
     filterMetrics.instances.pop();
     filterMetrics.instances.pop();
@@ -131,7 +131,7 @@ describe('StreamGraphDefinitionComponent', () => {
       expect(filter.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_DOT)).toBeUndefined();
       const filterEmbeds = filter.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_LABEL);
       expect(filterEmbeds.length).toEqual(1);
-      expect(filterEmbeds[0].attr('.label/text')).toEqual('37/37');
+      expect(filterEmbeds[0].attr('.label/text')).toEqual('57/57');
 
       // verify null dots
       const nullApp = <dia.Element> component.flo.getGraph().getElements().find(e => e.attr('metadata/name') === 'null');
