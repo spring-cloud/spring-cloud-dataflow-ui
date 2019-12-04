@@ -23,7 +23,7 @@ import {Utils as SharedUtils} from "../../../../shared/flo/support/utils";
 
 const joint: any = _joint;
 
-const PORT_RADIUS = 6;
+const PORT_RADIUS = 7;
 
 const HANDLE_SHAPE_SPACING = 10;
 const BETWEEN_HANDLE_SPACING = 5;
@@ -281,7 +281,7 @@ export class NodeHelper {
             ref: `.box`,
             refCx: 0,
             refCy: (i + 1) * separatingSpace,
-            r: PORT_RADIUS - 3,
+            r: PORT_RADIUS - 4,
             class: `port-inner-circle-${channel} flo-port-inner-circle`
           });
           node.attr(`.${channel}-label`, {
@@ -341,7 +341,7 @@ export class NodeHelper {
             ref: '.box',
             refCx: 1,
             refCy: (i + 1) * separatingSpace,
-            r: PORT_RADIUS - 3,
+            r: PORT_RADIUS - 4,
             class: `port-inner-circle-${channel} flo-port-inner-circle`
           });
           node.attr(`.${channel}-label`, {
@@ -431,7 +431,7 @@ export class NodeHelper {
       ref: '.box',
       refCx: 1,
       refCy: 0.5,
-      r: PORT_RADIUS - 3,
+      r: PORT_RADIUS - 4,
       class: 'port-inner-circle-output flo-port-inner-circle'
     });
   }
@@ -452,7 +452,7 @@ export class NodeHelper {
       ref: '.box',
       refCx: 0,
       refCy: 0.5,
-      r: PORT_RADIUS - 3,
+      r: PORT_RADIUS - 4,
       class: 'port-inner-circle-input flo-port-inner-circle'
     });
   }

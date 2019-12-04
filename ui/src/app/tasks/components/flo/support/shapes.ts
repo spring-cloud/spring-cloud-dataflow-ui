@@ -9,7 +9,7 @@ const joint: any = _joint;
 const ERROR_MARKER_SIZE = {width: 20, height: 20};
 const START_NODE_SIZE = {width: 15, height: 15};
 const END_NODE_SIZE = {width: 20, height: 20};
-const PORT_RADIUS = 6;
+const PORT_RADIUS = 7;
 
 const CANVAS_LABEL_PADDING = 15;
 export const NODE_ROUNDED_CORNER = 8;
@@ -93,7 +93,7 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         ref: '.box',
         refCx: '50%',
         refCy: '100%',
-        r: PORT_RADIUS - 3,
+        r: PORT_RADIUS - 4,
         class: 'port-inner-circle-output flo-port-inner-circle'
       },
       '.input-port': {
@@ -111,7 +111,7 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         ref: '.box',
         refCx: '50%',
         refCy: 0,
-        r: PORT_RADIUS - 3,
+        r: PORT_RADIUS - 4,
         class: 'port-inner-circle-input flo-port-inner-circle'
       },
       '.select-outline': {
