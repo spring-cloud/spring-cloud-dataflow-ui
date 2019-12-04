@@ -1,6 +1,8 @@
 import { dia } from 'jointjs';
 import { IMAGE_H } from './shapes';
 import * as dagre from 'dagre';
+import {shiftGraphHorizontallyOnPaper} from "../../../../shared/flo/support/shared-shapes";
+import {Flo} from "spring-flo";
 
 export function layout(paper: dia.Paper) {
     const graph = paper.model;
@@ -40,4 +42,14 @@ export function layout(paper: dia.Paper) {
 
     g.edges().forEach(o => g.edge(o));
 
+}
+
+export function arrangeAll(editorContext: Flo.EditorContext): Promise<void> {
+  return editorContext.performLayout().then(() => {
+    editorContext.fitToPage();
+    const currentScale = editorContext.getPaper().scale();
+    if (currentScale.sx > 1 || currentScale.sy > 1) {
+      editorContext.getPaper().scale(1);
+    }
+  });
 }

@@ -17,6 +17,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../../shared/services/logger.service';
 import { EditorComponent } from 'spring-flo';
 import { NotificationService } from '../../shared/services/notification.service';
+import { arrangeAll } from '../components/flo/support/layout';
 
 
 /**
@@ -147,7 +148,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   arrangeAll() {
-    this.editorContext.performLayout().then(() => this.editorContext.fitToPage());
+    arrangeAll(this.editorContext);
   }
 
   createStreamDefs() {

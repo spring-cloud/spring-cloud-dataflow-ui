@@ -17,6 +17,7 @@ import { Flo } from 'spring-flo';
 import { Parser } from '../../../shared/services/parser';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { ApplicationType } from '../../../shared/model';
+import { arrangeAll } from './support/layout';
 
 /**
  * Build a graph representation from text dsl.
@@ -444,8 +445,7 @@ export class TextToGraphConverter {
 
     }
 
-    this.floEditorContext.performLayout();
-    this.floEditorContext.fitToPage();
+    arrangeAll(this.floEditorContext);
   }
 
   public convert() {

@@ -86,6 +86,11 @@ export function layout(paper: dia.Paper) {
 export function arrangeAll(editorContext: Flo.EditorContext): Promise<void> {
   return editorContext.performLayout().then(() => {
     editorContext.fitToPage();
+    const currentScale = editorContext.getPaper().scale();
+    if (currentScale.sx > 1 || currentScale.sy > 1) {
+      editorContext.getPaper().scale(1);
+    }
+
     shiftGraphHorizontallyOnPaper(editorContext.getPaper(), 1 / 5);
   });
 }
