@@ -86,7 +86,7 @@ describe('Task RenderService', () => {
     const links = METAMODEL.get('links');
     const controlNodes = METAMODEL.get(CONTROL_GROUP_TYPE);
     const tasks = METAMODEL.get(TASK_GROUP_TYPE);
-    expect(Array.from(tasks.keys())).toEqual(['a', 'b', 'c', 'd', 'super-very-long-task-name']);
+    expect(Array.from(tasks.keys())).toEqual(['a', 'b', 'c', 'd', 'super-very-very-very-looooooooong-task-name']);
     expect(Array.from(controlNodes.keys())).toEqual(['START', 'END', 'SYNC']);
     expect(Array.from(links.keys())).toEqual(['transition']);
   });
@@ -135,9 +135,9 @@ describe('Task RenderService', () => {
   });
 
   it('fit label - label is truncated', () => {
-    const node = flo.createNode(METAMODEL.get(TASK_GROUP_TYPE).get('super-very-long-task-name'));
+    const node = flo.createNode(METAMODEL.get(TASK_GROUP_TYPE).get('super-very-very-very-looooooooong-task-name'));
     expect(node.attr('.name-label/text').endsWith('\u2026')).toBeTruthy();
-    expect(node.attr('.name-label/text').length < 'super-very-long-task-name'.length).toBeTruthy();
+    expect(node.attr('.name-label/text').length < 'super-very-very-very-looooooooong-task-name'.length).toBeTruthy();
   });
 
 });

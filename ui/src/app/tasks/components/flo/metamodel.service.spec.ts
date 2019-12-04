@@ -24,7 +24,7 @@ describe('Task MetamodelService', () => {
       const links = metamodel.get('links');
       const controlNodes = metamodel.get('control nodes');
       const tasks = metamodel.get('task');
-      expect(Array.from(tasks.keys())).toEqual(['a', 'b', 'c', 'd', 'super-very-long-task-name']);
+      expect(Array.from(tasks.keys())).toEqual(['a', 'b', 'c', 'd', 'super-very-very-very-looooooooong-task-name']);
       expect(Array.from(controlNodes.keys())).toEqual(['START', 'END', 'SYNC']);
       expect(Array.from(links.keys())).toEqual(['transition']);
     });
