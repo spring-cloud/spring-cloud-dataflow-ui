@@ -4,14 +4,13 @@ import * as dagre from 'dagre';
 import { shiftGraphHorizontallyOnPaper } from '../../../../shared/flo/support/shared-shapes';
 import { Flo } from 'spring-flo';
 
+const NODE_SEPARATION = 60.0;
+const RANK_SEPARATION = 60.0;
+const EDGE_SEPARATION = 30.0;
+
 export function layout(paper: dia.Paper) {
   let start, end, empty = true;
   const graph = paper.model;
-
-  let gridSize = paper.options.gridSize;
-  if (gridSize <= 1) {
-    gridSize = IMAGE_H / 2;
-  }
 
   const g = new dagre.graphlib.Graph();
   g.setGraph({});
@@ -41,10 +40,12 @@ export function layout(paper: dia.Paper) {
     link.set('vertices', []);
   });
 
+
+  const gridSize = paper.options.gridSize;
   g.graph().rankdir = 'TB';
-  g.graph().nodesep = 2 * gridSize;
-  g.graph().ranksep = 2 * gridSize;
-  g.graph().edgesep = gridSize;
+  g.graph().nodesep = gridSize <= 1 ? NODE_SEPARATION : Math.round(NODE_SEPARATION / gridSize) * gridSize;
+  g.graph().ranksep = gridSize <= 1 ? RANK_SEPARATION : Math.round(RANK_SEPARATION / gridSize) * gridSize;
+  g.graph().edgesep = gridSize <= 1 ? EDGE_SEPARATION : Math.round(EDGE_SEPARATION / gridSize) * gridSize;
 
   if (empty && start && end) {
     // Only start and end node are present
