@@ -874,6 +874,16 @@ table.zoom-canvas-control {
   display: block;
 }
 
+.overlay-loader {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  top: 110px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
 
 
 

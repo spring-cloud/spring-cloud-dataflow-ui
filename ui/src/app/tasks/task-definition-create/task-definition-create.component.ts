@@ -29,6 +29,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
   dsl: string;
   paletteSize = 265;
   editorContext: Flo.EditorContext;
+  isReady = false
 
   contentValidated = false;
   lintOptions: CodeMirror.LintOptions;
@@ -98,6 +99,7 @@ export class TaskDefinitionCreateComponent implements OnInit, OnDestroy {
           subscription.unsubscribe();
           this.initSubject.next();
           this.initSubject.complete();
+          this.isReady = true
         }
       });
     }

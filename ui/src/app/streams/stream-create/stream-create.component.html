@@ -63,6 +63,11 @@
       <!--[ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid-->
       <!--</button>-->
     </div>
+    <div class="overlay-loader" *ngIf="!isReady">
+      <div style="padding: 10px 0;">
+        <app-loader></app-loader>
+      </div>
+    </div>
   </div>
 
   <app-page-actions>

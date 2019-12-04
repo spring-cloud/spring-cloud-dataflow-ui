@@ -53,6 +53,8 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   zoomValues = [25, 50, 75, 100, 125, 150];
 
+  isReady = false
+
   @ViewChild(EditorComponent, { static: true }) flo;
 
   constructor(public metamodelService: MetamodelService,
@@ -133,6 +135,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
             subscription.unsubscribe();
             this.initSubject.next();
             this.initSubject.complete();
+            this.isReady = true
           }
         });
     }
