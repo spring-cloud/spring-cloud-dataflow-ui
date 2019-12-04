@@ -154,6 +154,12 @@ $other-color: $navy-3;
   box-sizing: border-box; /* Opera/IE 8+ */
 }
 
+.flow-view {
+  .no-matches-label {
+    fill: $navy-7;
+  }
+}
+
 /* Otherwise ports, link labels, embedded shapes get outline on focus */
 svg * {
   outline: none;
@@ -499,6 +505,7 @@ svg * {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEE4NzZFOEUwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEE4NzZFOEYwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0QTg3NkU4QzBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0QTg3NkU4RDBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsaUPvYAAAB5SURBVHja1JJhDoAgCIWhdSxOYsfFzkUq2kyhrfoV27c5eW+yhyAiYBASXAmWBhwjE5FkqnnSYHHPJYioB+3jKFjgZX0yhgTnqTqm0Tu4eFoQQ9OlBfZ41DOsbmeXai8YFRPbj9axOveRNL583t2Ubj55CcLSHAIMAKPx5IkLGakxAAAAAElFTkSuQmCC');
   background-size: 7px 7px;
 }
+
 .CodeMirror-lint-marker-error, .CodeMirror-lint-message-error {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEE4NzZFOEEwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEE4NzZFOEIwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0QTg3NkU4ODBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0QTg3NkU4OTBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pkia0RcAAAKfSURBVHja5JdLaFNBFIbPTRPbCBoVxfpIWgWRit2IuKhSIQiCXVRxI1hXgUoLbrrTbaFg14KbQpHiIlDrY1EEqe40RUVdGMWkWCERoUbJq6+0vf4TJxCZ+zjTW+jCgQ8uh3vP/HPmzLlnDNM0aTOHjzZ5+GsPKcPgvH8InAOnwEEQBuLDjOQNeAbSbo6OyMgbtS1wEXAW3ACXmQt7Au5IMZ4EBMBdEFtnhO+D66BsJ8ApB1rBRw+Ti3EVJEGbbhKKvX0rhG5AnkVkbhzlChB78RLs2sBk3yp9NtqegrpxT2a47TCCQWpsb8eDzBvs53IySWulktNnYkFxcNEpAifANbflhHp7KTw9TeFE4i94DvX3cyLRDc44CRjieDECAdXm93O347adgGZwnuNhJZNRbKtzc1wBHfXJXS/gEtfDWj6v2hYWdJKy20pAB1tAsajYTOcEtIqCImAf92tzaclrBA5bCTjAjkC5rNoKBR0BO6wEGOwIVCqqbX5eR4BhVYiyduVSOQXZLJUnJ8nw+Uj8zIyGBqrMzOgIyFsJ+MGOAFb7vauL/JFIVURldla3NH+12oKEjoe9IyPUmk5TSypFzWNjRIiCxnhlJeAh9+tQXx9tj8WqFVFUwG09PbRzYEBHwCMrAaK8vWD92qJRxRbs7ORO/hp8tvsX3OJ4KI2Pq7aJCa6Am04/I5EHD9w8FONx+jU4WK3/q7kc/R4epsLoKGdy0SNO/XMeLXrCLfJI7nY9zE1NWIKPWwNErd4v9Lv1hMvgNHD1ai4ucidfkX1AkdsTfgEnZSS8jp/yHvFB92b0SXazcQ+TPwbHwLv1Xs1EyK6AC+CpxsRTsvcTOHYq3JtRbRwHUbmfLWCPtOfAN9n5Pgfvta9m/+3t+I8AAwBkCMrn+ncNlgAAAABJRU5ErkJggg==');
   background-size: 16px 16px;
@@ -570,65 +577,65 @@ svg * {
 }
 
 // Stream modules DnD shape animation
-.dnd-source-feedback .stream-module .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.dnd-target-feedback .stream-module .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Stream modules DnD shape animation
-.dnd-source-feedback .destination .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.dnd-target-feedback .destination .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Composed Task DnD shape animation
-.dnd-source-feedback .composed-task .border {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.dnd-target-feedback .composed-task .border {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Ports DnD animation
-.dnd-source-feedback.input-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.dnd-source-feedback.output-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.dnd-target-feedback.input-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.dnd-target-feedback.output-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Links DnD feedback animation
-.dnd-source-feedback .connection {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.dnd-target-feedback .connection {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.stream-deploying .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.instance-dot:hover {
-  stroke-width: 3;
-}
+//.dnd-source-feedback .stream-module .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .stream-module .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Stream modules DnD shape animation
+//.dnd-source-feedback .destination .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .destination .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Composed Task DnD shape animation
+//.dnd-source-feedback .composed-task .border {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .composed-task .border {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Ports DnD animation
+//.dnd-source-feedback.input-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-source-feedback.output-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback.input-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback.output-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Links DnD feedback animation
+//.dnd-source-feedback .connection {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .connection {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.stream-deploying .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.instance-dot:hover {
+//  stroke-width: 3;
+//}
 
 .joint-type-dataflow-instancedot.joint-element.deployed {
   stroke: $spring-green;
