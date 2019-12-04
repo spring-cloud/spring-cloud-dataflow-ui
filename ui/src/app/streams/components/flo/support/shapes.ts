@@ -277,7 +277,7 @@ joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
     }, joint.shapes.basic.Generic.prototype.defaults)
 });
 
-joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
+joint.shapes.flo.LinkDataflow = joint.shapes.flo.Link.extend({
 
     toolMarkup: [
         '<g class="link-tool create-stream">',
@@ -330,9 +330,6 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
 
     defaults: joint.util.deepSupplement({
         type: joint.shapes.flo.LINK_TYPE,
-        options: {
-            linkToolsOffset: 1000,
-        },
         // connector: {
         //   name: 'smoothHorizontal'
         // },
@@ -347,7 +344,7 @@ joint.shapes.flo.LinkDataflow = joint.dia.Link.extend({
               'd': 'M 10 -5 0 0 10 5 z'
             }
         },
-    }, joint.dia.Link.prototype.defaults)
+    }, joint.shapes.flo.Link.prototype.defaults)
 });
 
 joint.shapes.flo.InstanceLabel = joint.shapes.basic.Generic.extend({
