@@ -111,9 +111,9 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   resizeFloGraph(height?: number) {
     const viewEditor = this.flo.element.nativeElement.children[1];
     if (height) {
-      height = height - 340;
+      height = height - 305;
     } else {
-      height = document.documentElement.clientHeight - 340;
+      height = document.documentElement.clientHeight - 305;
     }
     this.renderer.setStyle(viewEditor, 'height', `${Math.max(height, 300)}px`);
   }
@@ -121,6 +121,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   setEditorContext(editorContext: Flo.EditorContext) {
     this.editorContext = editorContext;
     if (this.editorContext) {
+      this.editorContext.gridSize = 20;
       const subscription = this.editorContext.paletteReady
         .pipe(takeUntil(this.ngUnsubscribe$))
         .pipe(map((value) => {
@@ -151,9 +152,9 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     } else {
       const index = Math.max(Math.round(this.editorContext.zoomPercent / 25) - 1, 0);
       if (change > 0) {
-        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)]
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)];
       } else {
-        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)]
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)];
       }
     }
   }
@@ -163,16 +164,20 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   createStreamDefs() {
+    if (!this.dsl || !this.dsl.trim()) {
+      this.notificationService.error('Please, enter one or more valid streams.');
+      return
+    }
     if (this.isCreateStreamsDisabled) {
       this.notificationService.error('Some field(s) are missing or invalid.');
-    } else {
-      const bsModalRef = this.bsModalService
-        .show(StreamCreateDialogComponent, { class: 'modal-lg' });
-
-      bsModalRef.content.open({ dsl: this.dsl }).subscribe(() => {
-        this.editorContext.clearGraph();
-      });
+      return;
     }
+    const bsModalRef = this.bsModalService
+      .show(StreamCreateDialogComponent, { class: 'modal-lg' });
+
+    bsModalRef.content.open({ dsl: this.dsl }).subscribe(() => {
+      this.editorContext.clearGraph();
+    });
   }
 
   contentAssist(doc: CodeMirror.EditorFromTextArea) {

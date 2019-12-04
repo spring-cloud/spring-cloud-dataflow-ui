@@ -6,7 +6,7 @@ import 'spring-flo';
 import '../../../../shared/flo/support/shared-shapes';
 
 export const IMAGE_W = 180;
-export const IMAGE_H = 70;
+export const IMAGE_H = 64;
 export const HORIZONTAL_PADDING = 5;
 
 export const SELECT_SQUARE_SIZE = 4;

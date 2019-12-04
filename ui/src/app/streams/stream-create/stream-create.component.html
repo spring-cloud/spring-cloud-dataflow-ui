@@ -5,8 +5,6 @@
     <app-page-head-title><strong>Create a stream</strong></app-page-head-title>
   </app-page-head>
 
-  <p>Create a stream using text based input or the visual editor.</p>
-
   <div id="flo-container" class="stream-editor" dataflowLayoutType type="full">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
                 [editor]="editorService" [(paletteSize)]="paletteSize" [paletteEntryPadding]="{width: 1.5, height: 1.5}"
@@ -43,6 +41,7 @@
               [disabled]="editorContext.zoomPercent >= 150">
         <i class="fa fa-search-plus"></i>
       </button>
+      <div class="divider"></div>
       <button (click)="arrangeAll()" class="btn btn-default" type="button">Fit to Content</button>
       <!--<input class="zoom-input" list="zoom" type="number" [(ngModel)]="editorContext.zoomPercent">-->
       <!--<datalist id="zoom">-->
@@ -70,13 +69,9 @@
     <button id="back-button" type="button" class="btn btn-default" routerLink="/streams">
       Cancel
     </button>
-    <span style="margin-left: 8px;"
-          tooltip="Disabled whilst stream definition(s) invalid !" [isDisabled]="!isCreateStreamsDisabled"
-          container="body" triggers="click:mouseleave" placement="right">
-      <button (click)="createStreamDefs()" class="btn btn-primary" type="button" [disabled]="isCreateStreamsDisabled">
-        Create Stream
-      </button>
-    </span>
+    <button (click)="createStreamDefs()" class="btn btn-primary" type="button">
+      Create Stream(s)
+    </button>
   </app-page-actions>
 
 </app-page>
