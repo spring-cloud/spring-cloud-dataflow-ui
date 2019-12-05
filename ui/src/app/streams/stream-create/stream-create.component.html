@@ -11,6 +11,7 @@
                 [paletteEntryPadding]="{width: 1.5, height: 1.5}"
                 [(dsl)]="dsl" [paperPadding]="55" (contentValidated)="contentValidated=$event"
                 (validationMarkers)="validationMarkers = $event"
+                (onProperties)="renderService.handleLinkEvent(editorContext, 'options', $event)"
                 searchFilterPlaceHolder="Applications">
 
       <div header class="flow-definition-container">
