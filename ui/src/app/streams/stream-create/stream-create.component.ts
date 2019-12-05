@@ -123,7 +123,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   setEditorContext(editorContext: Flo.EditorContext) {
     this.editorContext = editorContext;
     if (this.editorContext) {
-      this.editorContext.gridSize = 20;
+      this.editorContext.gridSize = 10;
       const subscription = this.editorContext.paletteReady
         .pipe(takeUntil(this.ngUnsubscribe$))
         .pipe(map((value) => {

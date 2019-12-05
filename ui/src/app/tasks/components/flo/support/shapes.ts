@@ -235,7 +235,7 @@ export const BatchSyncShape = joint.shapes.basic.Generic.extend({
         refHeight: '100%'
       },
       '.select-outline': {
-        refRx: '30%',
+        refRx: '20%',
         refRy: '50%',
         refWidth: '100%',
         refHeight: '100%'
