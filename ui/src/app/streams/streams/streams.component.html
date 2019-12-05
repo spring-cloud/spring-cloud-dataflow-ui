@@ -135,7 +135,7 @@
       <p>There is <strong>no stream registered</strong>, yet.</p>
       <div *ngIf="appsState$ | async as appsState">
         <p *ngIf="appsState.streams > 0" [dataflowAppRoles]="['ROLE_CREATE']">
-          You can <a (click)="createStream()">Create Streams(s)</a> or <a (click)="refresh()">Refresh</a> the page
+          You can <a (click)="createStream()">Create Stream(s)</a> or <a (click)="refresh()">Refresh</a> the page
         </p>
         <p *ngIf="appsState.streams == 0" [dataflowAppRoles]="['ROLE_CREATE']">
           To create stream(s), you have to <a (click)="registerApps()">register Apps</a> first.<br/>
