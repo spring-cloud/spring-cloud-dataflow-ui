@@ -2,7 +2,7 @@
 
   <app-page-head>
     <app-page-head-back [defaultUrl]="'/streams/definitions'"></app-page-head-back>
-    <app-page-head-title><strong>Create a stream {{editorService.STREAM_PALETTE_WIDTH}}</strong></app-page-head-title>
+    <app-page-head-title><strong>Create a stream</strong></app-page-head-title>
   </app-page-head>
 
   <div id="flo-container" class="stream-editor" dataflowLayoutType type="full">
@@ -16,6 +16,7 @@
       <div header class="flow-definition-container">
         <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
                     (focus)="editorContext.graphToTextSync=false" placeholder="Enter stream definition..."
+                    (blur)="editorContext.graphToTextSync=true"
                     [hintOptions]="hintOptions" [lintOptions]="lintOptions"></dsl-editor>
       </div>
 

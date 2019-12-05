@@ -88,6 +88,13 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.editorService.STREAM_PALETTE_WIDTH === 1) {
+      let width = 256;
+      if (document.documentElement.clientWidth > 1600) {
+        width = 380;
+      }
+      this.editorService.STREAM_PALETTE_WIDTH = width;
+    }
     this.resizeFloGraph();
   }
 
