@@ -45,6 +45,8 @@ export class EditorService implements Flo.Editor {
     static VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR = 'Only one non-tap link allowed from processor';
     static VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION = 'Element needs exactly one non-tapping output connection';
 
+    STREAM_PALETTE_WIDTH = 265;
+
     constructor() {}
 
     interactive: dia.CellView.InteractivityOptions = {

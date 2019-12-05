@@ -2,12 +2,13 @@
 
   <app-page-head>
     <app-page-head-back [defaultUrl]="'/streams/definitions'"></app-page-head-back>
-    <app-page-head-title><strong>Create a stream</strong></app-page-head-title>
+    <app-page-head-title><strong>Create a stream {{editorService.TASK_PALETTE_WIDTH}}</strong></app-page-head-title>
   </app-page-head>
 
   <div id="flo-container" class="stream-editor" dataflowLayoutType type="full">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [(paletteSize)]="paletteSize" [paletteEntryPadding]="{width: 1.5, height: 1.5}"
+                [editor]="editorService" [(paletteSize)]="editorService.STREAM_PALETTE_WIDTH"
+                [paletteEntryPadding]="{width: 1.5, height: 1.5}"
                 [(dsl)]="dsl" [paperPadding]="55" (contentValidated)="contentValidated=$event"
                 (validationMarkers)="validationMarkers = $event"
                 searchFilterPlaceHolder="Applications">
@@ -19,7 +20,7 @@
       </div>
 
     </flo-editor>
-    <div canvas class="flow-actions" [ngStyle]="{left: (paletteSize + 20) + 'px'}">
+    <div canvas class="flow-actions" [ngStyle]="{left: (editorService.STREAM_PALETTE_WIDTH + 20) + 'px'}">
       <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(-25)"
               [disabled]="editorContext.zoomPercent <= 25">
         <i class="fa fa-search-minus"></i>

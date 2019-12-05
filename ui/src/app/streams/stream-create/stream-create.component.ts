@@ -37,8 +37,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   editorContext: Flo.EditorContext;
 
-  paletteSize = 265;
-
   hintOptions: any;
 
   lintOptions: CodeMirror.LintOptions;
@@ -53,7 +51,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   zoomValues = [25, 50, 75, 100, 125, 150];
 
-  isReady = false
+  isReady = false;
 
   @ViewChild(EditorComponent, { static: true }) flo;
 
@@ -135,7 +133,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
             subscription.unsubscribe();
             this.initSubject.next();
             this.initSubject.complete();
-            this.isReady = true
+            this.isReady = true;
           }
         });
     }
@@ -169,7 +167,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   createStreamDefs() {
     if (!this.dsl || !this.dsl.trim()) {
       this.notificationService.error('Please, enter one or more valid streams.');
-      return
+      return;
     }
     if (this.isCreateStreamsDisabled) {
       this.notificationService.error('Some field(s) are missing or invalid.');

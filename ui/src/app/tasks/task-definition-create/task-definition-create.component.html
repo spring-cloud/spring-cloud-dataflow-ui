@@ -7,7 +7,8 @@
 
   <div id="flo-container" class="stream-editor">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [paletteSize]="paletteSize" [paletteEntryPadding]="{width: 2, height: 2}"
+                [editor]="editorService" [(paletteSize)]="editorService.TASK_PALETTE_WIDTH"
+                [paletteEntryPadding]="{width: 2, height: 2}"
                 [paperPadding]="55" [(dsl)]="dsl" (contentValidated)="contentValidated=$event"
                 (validationMarkers)="validationMarkers = $event"
                 searchFilterPlaceHolder="Applications">
@@ -18,7 +19,7 @@
                     [lintOptions]="lintOptions"></dsl-editor>
       </div>
     </flo-editor>
-    <div canvas class="flow-actions" [ngStyle]="{left: (paletteSize + 20) + 'px'}">
+    <div canvas class="flow-actions" [ngStyle]="{left: (editorService.TASK_PALETTE_WIDTH + 20) + 'px'}">
       <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(-25)"
               [disabled]="editorContext.zoomPercent <= 25">
         <i class="fa fa-search-minus"></i>

@@ -19,6 +19,8 @@ const DND_ENABLED = true; // Is smart DnD enabled?
 @Injectable()
 export class EditorService implements Flo.Editor {
 
+  TASK_PALETTE_WIDTH = 265;
+
   constructor() {
   }
 
