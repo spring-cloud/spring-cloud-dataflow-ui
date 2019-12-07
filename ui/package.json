@@ -50,7 +50,7 @@
     "web-animations-js": "2.3.2",
     "stompjs": "2.3.3",
     "tippy.js": "5.1.0",
-    "spring-flo": "https://github.com/BoykoAlex/spring-flo.git#cm-regular",
+    "spring-flo": "https://github.com/spring-projects/spring-flo.git#master",
     "uuid": "3.3.3"
   },
   "devDependencies": {
