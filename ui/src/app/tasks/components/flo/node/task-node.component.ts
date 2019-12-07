@@ -27,6 +27,8 @@ export class TaskNodeComponent extends NodeComponent {
     const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
     const element = this.view.model;
     modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
+    modalRef.content.name = element.attr('metadata/name');
+    modalRef.content.type = 'TASK';
     modalRef.content.setData(new TaskGraphPropertiesSource(element));
   }
 

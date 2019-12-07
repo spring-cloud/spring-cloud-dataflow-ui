@@ -6,6 +6,7 @@ import {StreamGraphPropertiesSource, StreamHead} from '../properties/stream-prop
 import {StreamPropertiesDialogComponent} from '../properties/stream-properties-dialog.component';
 import {Utils} from '../support/utils';
 import { dia } from 'jointjs';
+import { StreamsDeployComponent } from '../../../streams-deploy/streams-deploy.component';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -35,11 +36,10 @@ export class StreamNodeComponent extends NodeComponent {
 
   showOptions() {
     const element = this.view.model;
-    const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
-    modalRef.content.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
-    if (element.attr('metadata/version')) {
-      modalRef.content.title += ` (${element.attr('metadata/version')})`;
-    }
+    const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent, { class: 'modal-properties' });
+    modalRef.content.name = `${element.attr('metadata/name')}`;
+    modalRef.content.version = `${element.attr('metadata/version')}`;
+    modalRef.content.type = `${element.attr('metadata/group').toUpperCase()}`;
     // const streamHeads: dia.Cell[] = flo.getGraph().getElements().filter(e => Utils.canBeHeadOfStream(flo.getGraph(), e));
     // const streamNames = streamHeads
     //   .filter(e => e.attr('stream-name') && e !== c)

@@ -146,8 +146,9 @@ export class RenderService implements Flo.Renderer {
    */
   handleLinkEvent(context: Flo.EditorContext, event: string, link: dia.Link): void {
     if (event === 'options') {
-      const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent);
-      modalRef.content.title = `Properties for ${link.attr('metadata/name').toUpperCase()}`;
+      const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent, { class: 'modal-properties'});
+      modalRef.content.name = `${link.attr('metadata/name')}`;
+      modalRef.content.type = `TASK`;
       modalRef.content.setData(new TaskGraphPropertiesSource(link));
     }
   }

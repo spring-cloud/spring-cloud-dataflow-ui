@@ -639,8 +639,10 @@ export class RenderService implements Flo.Renderer {
     switch (event) {
       case 'options':
         if (this.bsModalService) {
-          const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent);
-          modalRef.content.title = `Properties for ${link.attr('metadata/name').toUpperCase()}`;
+          const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent, { class: 'modal-properties' });
+          modalRef.content.name = `${link.attr('metadata/name')}`;
+          modalRef.content.version = `${link.attr('metadata/version')}`;
+          modalRef.content.type = `${link.attr('metadata/group').toUpperCase()}`;
           modalRef.content.setData(new StreamGraphPropertiesSource(link, null));
         }
         break;
