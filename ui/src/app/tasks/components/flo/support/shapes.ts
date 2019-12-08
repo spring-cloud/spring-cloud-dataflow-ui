@@ -6,9 +6,9 @@ import '../../../../shared/flo/support/shared-shapes';
 
 const joint: any = _joint;
 
-const ERROR_MARKER_SIZE = {width: 20, height: 20};
-const START_NODE_SIZE = {width: 15, height: 15};
-const END_NODE_SIZE = {width: 20, height: 20};
+const ERROR_MARKER_SIZE = { width: 20, height: 20 };
+const START_NODE_SIZE = { width: 15, height: 15 };
+const END_NODE_SIZE = { width: 20, height: 20 };
 const PORT_RADIUS = 7;
 
 const CANVAS_LABEL_PADDING = 15;
@@ -74,8 +74,8 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         width: ERROR_MARKER_SIZE.width,
         height: ERROR_MARKER_SIZE.height,
         ref: '.box',
-        refX: "100%",
-        refX2: - ERROR_MARKER_SIZE.width,
+        refX: '100%',
+        refX2: -ERROR_MARKER_SIZE.width,
         refY: 0
       },
       '.output-port': {
@@ -144,7 +144,7 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
 export const BatchStartShape = joint.shapes.basic.Generic.extend({
   defaults: defaultsDeep({
     size: START_NODE_SIZE,
-    position: {x: 20, y: 20},
+    position: { x: 20, y: 20 },
     attrs: {
       '.start-outer': {
         magnet: true,
@@ -266,7 +266,7 @@ export const BatchSyncShape = joint.shapes.basic.Generic.extend({
         width: ERROR_MARKER_SIZE.width,
         height: ERROR_MARKER_SIZE.height,
         ref: '.box',
-        refX: "100%",
+        refX: '100%',
         refX2: -5 - ERROR_MARKER_SIZE.width,
         refY: 5
       },

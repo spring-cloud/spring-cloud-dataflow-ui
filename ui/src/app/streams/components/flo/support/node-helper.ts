@@ -18,8 +18,8 @@ import { ApplicationType } from '../../../../shared/model';
 import { dia } from 'jointjs';
 import { Flo, Constants } from 'spring-flo';
 import * as _joint from 'jointjs';
-import {AppMetadata} from '../../../../shared/flo/support/app-metadata';
-import {Utils as SharedUtils} from "../../../../shared/flo/support/utils";
+import { AppMetadata } from '../../../../shared/flo/support/app-metadata';
+import { Utils as SharedUtils } from '../../../../shared/flo/support/utils';
 
 const joint: any = _joint;
 
@@ -227,28 +227,28 @@ export class NodeHelper {
     } else {
       node.attr('.options-handle', {
         text: 'Options',
-          ref: '.box',
-          refX: '50%',
-          refX2: -BETWEEN_HANDLE_SPACING,
-          refY: -HANDLE_SHAPE_SPACING,
-          yAlignment: 'bottom',
-          textAnchor: 'end'
+        ref: '.box',
+        refX: '50%',
+        refX2: -BETWEEN_HANDLE_SPACING,
+        refY: -HANDLE_SHAPE_SPACING,
+        yAlignment: 'bottom',
+        textAnchor: 'end'
       });
       node.attr('.handle-separator', {
         text: '|',
-          ref: '.box',
-          refX: '50%',
-          refY: -HANDLE_SHAPE_SPACING,
-          yAlignment: 'bottom',
-          xAlignment: 'middle'
+        ref: '.box',
+        refX: '50%',
+        refY: -HANDLE_SHAPE_SPACING,
+        yAlignment: 'bottom',
+        xAlignment: 'middle'
       });
       node.attr('.delete-handle', {
         text: 'Delete',
-          ref: '.box',
-          refX: '50%',
-          refX2: BETWEEN_HANDLE_SPACING,
+        ref: '.box',
+        refX: '50%',
+        refX2: BETWEEN_HANDLE_SPACING,
         refY: -HANDLE_SHAPE_SPACING,
-          yAlignment: 'bottom',
+        yAlignment: 'bottom',
       });
     }
   }
@@ -258,8 +258,8 @@ export class NodeHelper {
       const appData = <AppMetadata> metadata;
       if (Array.isArray(appData.inputChannels) && appData.inputChannels.length > 0) {
 
-        if (2*(PORT_RADIUS+0.5) * appData.inputChannels.length >= node.size().height) {
-          node.size(node.size().width, 2*(PORT_RADIUS+0.5) * (appData.inputChannels.length + 3));
+        if (2 * (PORT_RADIUS + 0.5) * appData.inputChannels.length >= node.size().height) {
+          node.size(node.size().width, 2 * (PORT_RADIUS + 0.5) * (appData.inputChannels.length + 3));
         }
 
         // if (2*(PORT_RADIUS+0.5) * appData.inputChannels.length < node.size().height) {
@@ -318,8 +318,8 @@ export class NodeHelper {
 
       if (Array.isArray(appData.outputChannels) && appData.outputChannels.length > 0) {
 
-        if (2*(PORT_RADIUS+1) * (appData.outputChannels.length + 3) >= node.size().height) {
-          node.size(node.size().width, 2*(PORT_RADIUS+0.5) * (appData.outputChannels.length + 3));
+        if (2 * (PORT_RADIUS + 1) * (appData.outputChannels.length + 3) >= node.size().height) {
+          node.size(node.size().width, 2 * (PORT_RADIUS + 0.5) * (appData.outputChannels.length + 3));
         }
 
         // if (2*(PORT_RADIUS+0.5) * appData.outputChannels.length < node.size().height) {

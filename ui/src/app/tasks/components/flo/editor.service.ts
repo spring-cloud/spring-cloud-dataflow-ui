@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Flo } from 'spring-flo';
-import {CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE} from './support/shapes';
+import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
 import { dia, g } from 'jointjs';
 import * as _joint from 'jointjs';
 import { Utils } from '../../../shared/flo/support/utils';
@@ -171,14 +171,14 @@ export class EditorService implements Flo.Editor {
             range: element.attr('range')
           });
         } else {
-            link = outgoing.find(l => !l.attr('props/ExitStatus'));
-            if (!link) {
-                markers.push({
-                    severity: Flo.Severity.Error,
-                    message: 'Must have at least one outgoing link with no Exit Status condition specified',
-                    range: element.attr('range')
-                });
-            }
+          link = outgoing.find(l => !l.attr('props/ExitStatus'));
+          if (!link) {
+            markers.push({
+              severity: Flo.Severity.Error,
+              message: 'Must have at least one outgoing link with no Exit Status condition specified',
+              range: element.attr('range')
+            });
+          }
         }
       }
     }
@@ -206,7 +206,7 @@ export class EditorService implements Flo.Editor {
               markers.push({
                 severity: Flo.Severity.Error,
                 message: 'unrecognized option \'' + propertyName + '\' for app \'' +
-                element.attr('metadata/name') + '\'',
+                  element.attr('metadata/name') + '\'',
                 range: range
               });
             }

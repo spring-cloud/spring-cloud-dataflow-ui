@@ -15,17 +15,17 @@ import * as _joint from 'jointjs';
 import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
 import { LoggerService } from '../../../shared/services/logger.service';
-import {createPaletteGroupHeader} from '../../../shared/flo/support/shared-shapes';
+import { createPaletteGroupHeader } from '../../../shared/flo/support/shared-shapes';
 
 const joint: any = _joint;
 
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent);
 
-const COMPOSED_TASK_PALETTE_SIZE = {width: 120, height: 30};
-const COMPOSED_TASK_CANVAS_SIZE = {width: 180, height: 64};
-const SYNC_PALETTE_SIZE = {width: 80, height: 30};
-const SYNC_CANVAS_SIZE = {width: 100, height: 40};
+const COMPOSED_TASK_PALETTE_SIZE = { width: 120, height: 30 };
+const COMPOSED_TASK_CANVAS_SIZE = { width: 180, height: 64 };
+const SYNC_PALETTE_SIZE = { width: 80, height: 30 };
+const SYNC_CANVAS_SIZE = { width: 100, height: 40 };
 
 /**
  * Flo service class for its Renderer used for composed tasks.
@@ -146,7 +146,7 @@ export class RenderService implements Flo.Renderer {
    */
   handleLinkEvent(context: Flo.EditorContext, event: string, link: dia.Link): void {
     if (event === 'options') {
-      const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent, { class: 'modal-properties'});
+      const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent, { class: 'modal-properties' });
       modalRef.content.name = `${link.attr('metadata/name')}`;
       modalRef.content.type = `TASK`;
       modalRef.content.setData(new TaskGraphPropertiesSource(link));
@@ -163,9 +163,9 @@ export class RenderService implements Flo.Renderer {
         if (viewerDescriptor.paper) {
           const isPalette = viewerDescriptor.paper.model.get('type') === Constants.PALETTE_CONTEXT;
           if (isPalette) {
-            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node,  '.palette-entry-name-label', node.attr('.palette-entry-name-label/refX'));
+            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.palette-entry-name-label', node.attr('.palette-entry-name-label/refX'));
           } else {
-            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node,  '.name-label', node.attr('.name-label/refX'));
+            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.name-label', node.attr('.name-label/refX'));
             this.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.type-label', node.attr('.type-label/refX'));
           }
         }
@@ -194,47 +194,47 @@ export class RenderService implements Flo.Renderer {
         const link = <joint.dia.Link> element;
         const newExitStatus = link.attr('props/ExitStatus') || '';
         const currentLabels = link.labels();
-        let currentText = Array.isArray(currentLabels) && currentLabels.length > 0 ? currentLabels[0].attrs.text.text : '';
+        const currentText = Array.isArray(currentLabels) && currentLabels.length > 0 ? currentLabels[0].attrs.text.text : '';
         if (newExitStatus.length !== 0 && currentText.length === 0) {
-            let hasDefaultLink = false;
-            const relatedLinks = paper.model.getConnectedLinks(element.get('source'), {outbound: true});
-            for (let i = 0; i < relatedLinks.length; i++) {
-                const relatedLink = relatedLinks[i];
-                if (relatedLink === element) {
-                  continue;
-                }
-                const exitStatus = relatedLink.attr('props/ExitStatus') || '';
-                if (exitStatus.length === 0) {
-                    // This is a 'default' link
-                    hasDefaultLink = true;
-                    break;
-                }
+          let hasDefaultLink = false;
+          const relatedLinks = paper.model.getConnectedLinks(element.get('source'), { outbound: true });
+          for (let i = 0; i < relatedLinks.length; i++) {
+            const relatedLink = relatedLinks[i];
+            if (relatedLink === element) {
+              continue;
             }
-            if (!hasDefaultLink) {
-                // Create a new default (no specified exit status) link
-                const newDefaultLink = this.createLink();
-                const sourceNodeId = element.get('source').id;
-                const outgoingLinks = paper.model.getConnectedLinks(element.get('target'), {outbound: true});
-                const defaultLink = outgoingLinks.find(l => {
-                        const exitStatus = l.attr('props/ExitStatus');
-                        return !exitStatus || exitStatus.length === 0;
-                    });
-                if (defaultLink) {
-                    // configure link from existing source to targets target
-                    newDefaultLink.set('source', {
-                        id: sourceNodeId,
-                        port: 'output',
-                        selector: '.output-port'
-                    });
-                    newDefaultLink.set('target', {
-                        id: defaultLink.get('target').id,
-                        port: 'input',
-                        selector: '.input-port'
-                    });
-                    paper.model.addCell(newDefaultLink);
-                    newDefaultLink.attr('.marker-vertices/display', 'none');
-                }
+            const exitStatus = relatedLink.attr('props/ExitStatus') || '';
+            if (exitStatus.length === 0) {
+              // This is a 'default' link
+              hasDefaultLink = true;
+              break;
             }
+          }
+          if (!hasDefaultLink) {
+            // Create a new default (no specified exit status) link
+            const newDefaultLink = this.createLink();
+            const sourceNodeId = element.get('source').id;
+            const outgoingLinks = paper.model.getConnectedLinks(element.get('target'), { outbound: true });
+            const defaultLink = outgoingLinks.find(l => {
+              const exitStatus = l.attr('props/ExitStatus');
+              return !exitStatus || exitStatus.length === 0;
+            });
+            if (defaultLink) {
+              // configure link from existing source to targets target
+              newDefaultLink.set('source', {
+                id: sourceNodeId,
+                port: 'output',
+                selector: '.output-port'
+              });
+              newDefaultLink.set('target', {
+                id: defaultLink.get('target').id,
+                port: 'input',
+                selector: '.input-port'
+              });
+              paper.model.addCell(newDefaultLink);
+              newDefaultLink.attr('.marker-vertices/display', 'none');
+            }
+          }
         }
 
 

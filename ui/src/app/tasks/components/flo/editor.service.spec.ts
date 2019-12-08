@@ -1,6 +1,6 @@
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { Constants, EditorComponent, Flo, FloModule } from 'spring-flo';
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
 import { EditorService } from './editor.service';
@@ -9,9 +9,9 @@ import * as _joint from 'jointjs';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { LoggerService } from '../../../shared/services/logger.service';
 import * as _$ from 'jquery';
-import {ApplicationRef, ComponentFactoryResolver} from "@angular/core";
-import {BsModalService} from "ngx-bootstrap";
-import {TasksModule} from "../../tasks.module";
+import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap';
+import { TasksModule } from '../../tasks.module';
 
 const $: any = _$;
 const joint: any = _joint;

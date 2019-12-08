@@ -6,9 +6,9 @@ import { RenderService } from '../../../streams/components/flo/render.service';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { MetamodelService } from '../../../streams/components/flo/metamodel.service';
 import { ComponentFactoryResolver } from '@angular/core';
-import {BsModalService, ModalModule, TooltipModule} from 'ngx-bootstrap';
-import {SharedModule} from "../../shared.module";
-import {StreamsModule} from "../../../streams/streams.module";
+import { BsModalService, ModalModule, TooltipModule } from 'ngx-bootstrap';
+import { SharedModule } from '../../shared.module';
+import { StreamsModule } from '../../../streams/streams.module';
 
 /**
  * Test {@link GraphViewComponent}.
@@ -54,7 +54,7 @@ describe('StreamGraphViewComponent', () => {
     )
   );
 
-  beforeEach( () => {
+  beforeEach(() => {
     TestBed.compileComponents();
     fixture = TestBed.createComponent(GraphViewComponent);
     component = fixture.componentInstance;

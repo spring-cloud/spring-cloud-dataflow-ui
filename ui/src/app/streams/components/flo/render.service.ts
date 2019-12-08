@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import {NODE_ROUNDED_CORNER_PALETTE, TYPE_ICON_PADDING_PALETTE, TYPE_ICON_SIZE_PALETTE} from './support/shapes';
+import { NODE_ROUNDED_CORNER_PALETTE, TYPE_ICON_PADDING_PALETTE, TYPE_ICON_SIZE_PALETTE } from './support/shapes';
 import {
   Injectable, ComponentFactoryResolver, Injector, ApplicationRef
 } from '@angular/core';
 import { MetamodelService } from './metamodel.service';
-import {Constants, Flo} from 'spring-flo';
+import { Constants, Flo } from 'spring-flo';
 import { dia } from 'jointjs';
 import { Utils } from './support/utils';
 import { ViewHelper } from './support/view-helper';
@@ -27,12 +27,12 @@ import { NodeHelper } from './support/node-helper';
 import { layout } from './support/layout';
 import * as _joint from 'jointjs';
 import { LoggerService } from '../../../shared/services/logger.service';
-import {BsModalService} from 'ngx-bootstrap';
-import {StreamPropertiesDialogComponent} from './properties/stream-properties-dialog.component';
-import {StreamGraphPropertiesSource} from './properties/stream-properties-source';
-import {AppMetadata} from '../../../shared/flo/support/app-metadata';
+import { BsModalService } from 'ngx-bootstrap';
+import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
+import { StreamGraphPropertiesSource } from './properties/stream-properties-source';
+import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 import * as _ from 'lodash';
-import {createPaletteGroupHeader} from '../../../shared/flo/support/shared-shapes';
+import { createPaletteGroupHeader } from '../../../shared/flo/support/shared-shapes';
 
 const joint: any = _joint;
 
@@ -53,7 +53,7 @@ export class RenderService implements Flo.Renderer {
   }
 
   createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
-    const element =  NodeHelper.createNode(metadata);
+    const element = NodeHelper.createNode(metadata);
     const isPalette = viewerDescriptor.graph.get('type') === Constants.PALETTE_CONTEXT;
     if (!isPalette) {
       NodeHelper.createPorts(element, metadata);
@@ -85,7 +85,7 @@ export class RenderService implements Flo.Renderer {
       const element = <dia.Element> cell;
       if (changedPropertyPath === 'stream-name') {
         element.attr('.stream-label/display', Utils.canBeHeadOfStream(paper.model, <dia.Element>element) ? 'block' : 'none');
-        if (element.attr('stream-name') ) {
+        if (element.attr('stream-name')) {
           element.attr('.stream-label/text', element.attr('stream-name'));
         } else {
           element.attr('.stream-label/text', '');
@@ -177,7 +177,7 @@ export class RenderService implements Flo.Renderer {
             const sourceElement = link.getSourceElement();
             const elementView = paper.findViewByModel(sourceElement);
             if (elementView) {
-              let portElement = elementView.$(`[channel='${port}']`);
+              const portElement = elementView.$(`[channel='${port}']`);
               if (portElement && portElement.length) {
                 // If port DOM element found set the new link target.
                 // Otherwise, assume it's a "multiport" single port for a large number of input channels
@@ -279,28 +279,28 @@ export class RenderService implements Flo.Renderer {
       const isPalette = paper.model.get('type') === Constants.PALETTE_CONTEXT;
       const metadata: Flo.ElementMetadata = node.attr('metadata');
       if (metadata) {
-          if (isPalette) {
-            ViewHelper.fitLabelWithFixedLocation(paper, node, '.palette-entry-name-label', TYPE_ICON_PADDING_PALETTE);
+        if (isPalette) {
+          ViewHelper.fitLabelWithFixedLocation(paper, node, '.palette-entry-name-label', TYPE_ICON_PADDING_PALETTE);
+        } else {
+          ViewHelper.fitLabelWithFixedLocation(paper, node, '.type-label', 15);
+          if (metadata.name === 'tap') {
+            this.refreshVisuals(node, 'props/name', paper);
+          } else if (metadata.name === 'destination') {
+            this.refreshVisuals(node, 'props/name', paper);
           } else {
-            ViewHelper.fitLabelWithFixedLocation(paper, node, '.type-label', 15);
-            if (metadata.name === 'tap') {
-              this.refreshVisuals(node, 'props/name', paper);
-            } else if (metadata.name === 'destination') {
-              this.refreshVisuals(node, 'props/name', paper);
-            } else {
-              this.refreshVisuals(node, 'node-name', paper);
-            }
+            this.refreshVisuals(node, 'node-name', paper);
+          }
 
-            if (isCanvas) {
-              this.refreshVisuals(node, 'stream-name', paper);
-            }
+          if (isCanvas) {
+            this.refreshVisuals(node, 'stream-name', paper);
           }
         }
       }
+    }
   }
 
   createLink(source: Flo.LinkEnd, target: Flo.LinkEnd) {
-    const link =  new joint.shapes.flo.LinkDataflow();
+    const link = new joint.shapes.flo.LinkDataflow();
     this.metamodelService.load().then(function (metamodel) {
       link.attr('metadata', metamodel.get('links').get('link'));
     });
@@ -326,7 +326,7 @@ export class RenderService implements Flo.Renderer {
 
       // If reconnecting source anchor to a shape with existing primary link switch the link to tap link
       if (newSource) {
-        const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
+        const outgoingLinks = graph.getConnectedLinks(newSource, { outbound: true });
         const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
 
         link.attr('props/isTapLink', primaryLink ? true : false);
@@ -338,7 +338,7 @@ export class RenderService implements Flo.Renderer {
       /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
         // No outgoing links -> hide stream name label
         // Set silently, last attr call would refresh the view
-        oldSource.attr('.stream-label/display', 'none', {silent: true});
+        oldSource.attr('.stream-label/display', 'none', { silent: true });
 
         //     // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
         //     oldSource.attr('.input-port/display', 'block');
@@ -347,7 +347,7 @@ export class RenderService implements Flo.Renderer {
       if (newSource && newSource.attr('metadata/name') === 'destination') {
         // Has outgoing link, there shouldn't be any incoming links yet -> show stream name label
         // Set silently, last attr call would refresh the view
-        newSource.attr('.stream-label/display', 'block', {silent: true});
+        newSource.attr('.stream-label/display', 'block', { silent: true });
 
         //     newSource.attr('.input-port/display', 'none');
       }
@@ -387,7 +387,7 @@ export class RenderService implements Flo.Renderer {
           const channels = metadata instanceof AppMetadata ? (<AppMetadata>metadata).inputChannels : undefined;
           if (Array.isArray(channels) && channels.length > 0) {
             const availableChannels = [...channels];
-            paper.model.getConnectedLinks(targetElement, {inbound: true}).filter(l => l !== link).forEach(l => {
+            paper.model.getConnectedLinks(targetElement, { inbound: true }).filter(l => l !== link).forEach(l => {
               const idx = availableChannels.indexOf(l.attr('props/inputChannel'));
               if (idx >= 0) {
                 availableChannels.splice(idx, 1);
@@ -421,7 +421,7 @@ export class RenderService implements Flo.Renderer {
           const channels = metadata instanceof AppMetadata ? (<AppMetadata>metadata).outputChannels : undefined;
           if (Array.isArray(channels) && channels.length > 0) {
             const availableChannels = [...channels];
-            paper.model.getConnectedLinks(sourceElement, {outbound: true}).filter(l => l !== link).forEach(l => {
+            paper.model.getConnectedLinks(sourceElement, { outbound: true }).filter(l => l !== link).forEach(l => {
               const idx = availableChannels.indexOf(l.attr('props/outputChannel'));
               if (idx >= 0) {
                 availableChannels.splice(idx, 1);
@@ -457,7 +457,7 @@ export class RenderService implements Flo.Renderer {
 
           // No more incoming links, there shouldn't be any outgoing links yet -> indeterminate, hide stream label
           // Set silently, last attr call would refresh the view
-          oldTarget.attr('.stream-label/display', 'none', {silent: true});
+          oldTarget.attr('.stream-label/display', 'none', { silent: true });
 
           //     // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
           //     oldTarget.attr('.output-port/display', 'block');
@@ -468,7 +468,7 @@ export class RenderService implements Flo.Renderer {
         if (newTarget.attr('metadata/name') === 'destination') {
           // Incoming link -> hide stream name label
           // Set silently, last attr call would refresh the view
-          newTarget.attr('.stream-label/display', 'none', {silent: true});
+          newTarget.attr('.stream-label/display', 'none', { silent: true });
 
           // // new target is destination? Hide output port then.
           // newTarget.attr('.output-port/display', 'none');
@@ -494,10 +494,10 @@ export class RenderService implements Flo.Renderer {
     const target = graph.getCell(link.get('target').id);
     let view: dia.CellView;
     if (source && source.attr('metadata/name') === 'destination'
-      && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
+      && graph.getConnectedLinks(source, { outbound: true }).length === 0) {
       // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
       // Set silently, last attr call would refresh the view
-      source.attr('.stream-label/display', 'none', {silent: true});
+      source.attr('.stream-label/display', 'none', { silent: true });
 
       // TODO: Why is the port hiddon/removed when link is deleted??? Probably leftovers of some old functionality...
       // source.removeAttr('.input-port');
@@ -507,10 +507,10 @@ export class RenderService implements Flo.Renderer {
       }
     }
     if (target && target.attr('metadata/name') === 'destination'
-      && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
+      && graph.getConnectedLinks(target, { inbound: true }).length === 0) {
       // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
       // Set silently, last attr call would refresh the view
-      target.attr('.stream-label/display', 'none', {silent: true});
+      target.attr('.stream-label/display', 'none', { silent: true });
       // TODO: Why is the port hiddon/removed when link is deleted??? Probably leftovers of some old functionality...
       // target.removeAttr('.output-port');
       view = flo.getPaper().findViewByModel(target);
@@ -561,7 +561,7 @@ export class RenderService implements Flo.Renderer {
 
       // New link to connect original source to new target
       flo.createLink(previousSource,
-        {'id': newDestinationNode.id, 'port': 'input', 'selector': '.input-port'},
+        { 'id': newDestinationNode.id, 'port': 'input', 'selector': '.input-port' },
         null,
         new Map<string, any>().set('isTapLink', existingIsTap ? true : false));
 
@@ -609,8 +609,9 @@ export class RenderService implements Flo.Renderer {
     if (!target && source && !this.isChannel(source)) {
       // this is a new link being drawn in the UI (it is not connected to anything yet).
       // Need to decide whether to make it a tap link
-      const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
-      const primaryLinkExists = outgoingLinks.find(ol => ol !== link && _.isEqual(link.source(), ol.source()) && !ol.attr('props/isTapLink')) ? true : false;
+      const outgoingLinks = graph.getConnectedLinks(source, { outbound: true });
+      const primaryLinkExists = outgoingLinks.find(ol => ol !== link && _.isEqual(link.source(),
+        ol.source()) && !ol.attr('props/isTapLink')) ? true : false;
       link.attr('props/isTapLink', primaryLinkExists);
     }
     if (link.attr('props/isTapLink') === true) {
@@ -626,7 +627,7 @@ export class RenderService implements Flo.Renderer {
     if (target && target.attr('metadata/name') === 'destination') {
       // Incoming link has been added -> hide stream label
       // Set silently because update will be called for the next property setting
-      target.attr('.stream-label/display', 'none', {silent: true});
+      target.attr('.stream-label/display', 'none', { silent: true });
       // XXX target.attr('.output-port/display', 'none');
     }
     // If tap link has been added update the stream-label for the target

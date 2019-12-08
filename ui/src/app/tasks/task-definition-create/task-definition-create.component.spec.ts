@@ -6,7 +6,7 @@ import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { MockToolsService } from '../../tests/mocks/mock-tools';
 import { TaskDefinitionCreateComponent } from './task-definition-create.component';
 import { LoggerService } from '../../shared/services/logger.service';
-import {TasksModule} from "../tasks.module";
+import { TasksModule } from '../tasks.module';
 
 /**
  * Test {@link TaskDefinitionCreateComponent}.

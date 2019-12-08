@@ -1,6 +1,6 @@
-import {dia} from 'jointjs';
+import { dia } from 'jointjs';
 import * as dagre from 'dagre';
-import {Flo} from "spring-flo";
+import { Flo } from 'spring-flo';
 
 const NODE_SEPARATION = 60.0;
 const RANK_SEPARATION = 60.0;
@@ -19,7 +19,7 @@ export function layout(paper: dia.Paper) {
 
   graph.getLinks().filter(link => link.get('source').id && link.get('target').id).forEach(link => {
     g.setEdge(link.get('source').id, link.get('target').id,
-      {weight: (link.get('source').port === 'output' ? 200 : 1)});
+      { weight: (link.get('source').port === 'output' ? 200 : 1) });
     link.set('vertices', []);
   });
 

@@ -6,15 +6,15 @@
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { EditorComponent, Flo, FloModule } from 'spring-flo';
 import { MockToolsService } from '../../../tests/mocks/mock-tools';
 import { LoggerService } from '../../../shared/services/logger.service';
 import * as _$ from 'jquery';
-import {CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE} from "./support/shapes";
-import {TasksModule} from "../../tasks.module";
-import {ApplicationRef, ComponentFactoryResolver} from "@angular/core";
-import {BsModalService} from "ngx-bootstrap";
+import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
+import { TasksModule } from '../../tasks.module';
+import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap';
 
 const $: any = _$;
 
@@ -40,9 +40,9 @@ describe('Task RenderService', () => {
         TasksModule
       ],
       providers: [
-        {provide: MetamodelService, useValue: METAMODEL_SERVICE},
+        { provide: MetamodelService, useValue: METAMODEL_SERVICE },
       ]
-    })
+    });
   }));
 
   beforeEach(

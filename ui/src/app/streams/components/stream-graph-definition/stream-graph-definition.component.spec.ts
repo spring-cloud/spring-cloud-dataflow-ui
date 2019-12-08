@@ -1,4 +1,4 @@
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { StreamDefinition } from '../../model/stream-definition';
 import { GraphViewComponent } from '../../../shared/flo/graph-view/graph-view.component';
 import { StreamGraphDefinitionComponent } from './stream-graph-definition.component';
@@ -15,9 +15,9 @@ import {
   TYPE_INSTANCE_LABEL
 } from '../flo/support/shapes';
 import { MockSharedAppService } from '../../../tests/mocks/shared-app';
-import {ApplicationRef, ComponentFactoryResolver} from "@angular/core";
-import {BsModalService} from "ngx-bootstrap";
-import {StreamsModule} from "../../streams.module";
+import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
+import { BsModalService } from 'ngx-bootstrap';
+import { StreamsModule } from '../../streams.module';
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -38,7 +38,7 @@ describe('StreamGraphDefinitionComponent', () => {
       imports: [
         StreamsModule
       ],
-    })
+    });
   }));
 
   beforeEach(

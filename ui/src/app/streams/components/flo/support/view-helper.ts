@@ -123,7 +123,7 @@ export class ViewHelper {
               selectors = labelMarkup.selectors;
 
             } else {
-              const builtinDefaultLabel =  model._builtins.defaultLabel;
+              const builtinDefaultLabel = model._builtins.defaultLabel;
               const builtinDefaultLabelMarkup = this._normalizeLabelMarkup(this._getLabelMarkup(builtinDefaultLabel.markup));
 
               const defaultLabel = model._getDefaultLabel();
@@ -296,7 +296,7 @@ export class ViewHelper {
           }
 
           if (offset) {
-            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), {silent: true});
+            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), { silent: true });
           }
           // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
           node.attr(`${labelPath}/text`, textNode.data);
@@ -304,7 +304,7 @@ export class ViewHelper {
           document.body.removeChild(svgDocument);
         }
       } else {
-       node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5));
+        node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5));
       }
     }
   }

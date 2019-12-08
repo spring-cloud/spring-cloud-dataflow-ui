@@ -1,12 +1,11 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NodeComponent } from '../../../../shared/flo/support/node-component';
 import { DocService } from '../../../../shared/services/doc.service';
-import {BsModalService} from 'ngx-bootstrap';
-import {StreamGraphPropertiesSource, StreamHead} from '../properties/stream-properties-source';
-import {StreamPropertiesDialogComponent} from '../properties/stream-properties-dialog.component';
-import {Utils} from '../support/utils';
+import { BsModalService } from 'ngx-bootstrap';
+import { StreamGraphPropertiesSource, StreamHead } from '../properties/stream-properties-source';
+import { StreamPropertiesDialogComponent } from '../properties/stream-properties-dialog.component';
+import { Utils } from '../support/utils';
 import { dia } from 'jointjs';
-import { StreamsDeployComponent } from '../../../streams-deploy/streams-deploy.component';
 
 /**
  * Component for displaying application properties and capturing their values.
