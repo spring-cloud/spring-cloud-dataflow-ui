@@ -65,7 +65,7 @@ export class PropertiesDialogComponent implements OnInit {
   /**
    * Define label and css class
    */
-  private getTypeClass() {
+  getTypeClass() {
     switch (this.type) {
       case 'APP':
         return 'app';
