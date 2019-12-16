@@ -22,8 +22,8 @@
     <img src="https://saucelabs.com/buildstatus/ghillert"
          alt="Sauce Test Status">
   </a>
-  <a href="https://www.browserstack.com/automate/public-build/T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c">
-    <img src="https://www.browserstack.com/automate/badge.svg?badge_key=T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c"
+  <a href="https://automate.browserstack.com/badge.svg?badge_key=YlBHTm56MnorQTdkZFIrb25pS0JFMVMxUElwZUdTY0txUUtPK1dHUG9sWT0tLVBlRFlNUjVpcWFWYmtpTXpWcEF4Nnc9PQ==--e7540bc0493a63d0ffee84ef2062037d6495b28b">
+    <img src="https://automate.browserstack.com/badge.svg?badge_key=YlBHTm56MnorQTdkZFIrb25pS0JFMVMxUElwZUdTY0txUUtPK1dHUG9sWT0tLVBlRFlNUjVpcWFWYmtpTXpWcEF4Nnc9PQ==--e7540bc0493a63d0ffee84ef2062037d6495b28b"
          alt="BrowserStack Status">
   </a>
 </p>
