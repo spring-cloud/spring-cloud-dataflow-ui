@@ -1,5 +1,5 @@
 import { RuntimeAppInstance } from './runtime-app-instance';
-import { Page } from '../../shared/model/page';
+import { Page } from '../../shared/model';
 
 /**
  * Runtime application model that corresponds to AppStatusResource from SCDF server.
@@ -30,7 +30,7 @@ export class RuntimeApp {
         if (!!item.instances._embedded && !!item.instances._embedded.appInstanceStatusResourceList) {
           item.appInstances = item.instances._embedded.appInstanceStatusResourceList;
         } else {
-          item.appInstances = []
+          item.appInstances = [];
         }
         return item;
       });
