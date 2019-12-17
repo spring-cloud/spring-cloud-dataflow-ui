@@ -27,10 +27,6 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
 
   params$: Observable<any>;
 
-  counters$: Observable<any>;
-
-  hardRefresh: BehaviorSubject<any> = new BehaviorSubject(new Date());
-
   /**
    * Grafana Subscription
    */
@@ -46,7 +42,8 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
    *
    * @param {TasksService} tasksService
    * @param {SharedAboutService} sharedAboutService
-   * @param appsService
+   * @param {AppsService} appsService
+   * @param {GrafanaService} grafanaService
    * @param {Router} router
    */
   constructor(private tasksService: TasksService,
@@ -67,47 +64,11 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
     this.grafanaEnabledSubscription.unsubscribe();
   }
 
-  forceRefresh() {
-    this.hardRefresh.next(new Date());
-  }
-
   refresh() {
     this.params$ = this.sharedAboutService.getFeatureInfo()
       .pipe(map((featureInfo: FeatureInfo) => ({
         schedulesEnabled: featureInfo.schedulesEnabled
       })));
-    this.counters$ = this.sharedAboutService.getFeatureInfo()
-      .pipe(mergeMap(
-        (featureInfo: FeatureInfo) => {
-          return this.hardRefresh.pipe(map((a) => {
-              return featureInfo;
-            }
-          ));
-        }
-      ))
-      .pipe(mergeMap(
-        (featureInfo: FeatureInfo) => {
-          const arr = [];
-          arr.push(this.tasksService.getDefinitions({ q: '', size: 1, page: 0, sort: null, order: null }),
-            this.tasksService.getExecutions({ q: '', size: 1, page: 0, sort: null, order: null }));
-          if (featureInfo.schedulesEnabled) {
-            arr.push(this.tasksService.getSchedules({ q: '', size: 1, page: 0, sort: null, order: null }));
-          }
-          return forkJoin([...arr])
-            .pipe(map((counters) => {
-              const result = {
-                schedulesEnabled: featureInfo.schedulesEnabled,
-                definitions: (counters[0] as Page<TaskDefinition>).totalElements,
-                executions: (counters[1] as Page<TaskExecution>).totalElements
-              };
-              if (result.schedulesEnabled) {
-                result['schedules'] = (counters[2] as Page<TaskSchedule>).totalElements;
-              }
-              return result;
-            }));
-        }
-      ))
-      .pipe(share());
   }
 
   createTask() {

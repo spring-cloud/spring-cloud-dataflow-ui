@@ -47,12 +47,6 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
   modal: BsModalRef;
 
   /**
-   * Tabulation
-   */
-  @ViewChild('tasksTabulation', { static: false })
-  tasksTabulation: TasksTabulationComponent;
-
-  /**
    * Current form value
    */
   form: any = {
@@ -280,10 +274,6 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
-
-    if (this.tasksTabulation) {
-      this.tasksTabulation.forceRefresh();
-    }
   }
 
   /**

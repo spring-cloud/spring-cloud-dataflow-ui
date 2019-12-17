@@ -39,12 +39,6 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   listBar: ListBarComponent;
 
   /**
-   * Tabulation
-   */
-  @ViewChild('tasksTabulation', { static: false })
-  tasksTabulation: TasksTabulationComponent;
-
-  /**
    * Unsubscribe
    */
   private ngUnsubscribe$: Subject<any> = new Subject();
@@ -231,10 +225,6 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
           this.notificationService.error(error);
         }
       );
-
-    if (this.tasksTabulation) {
-      this.tasksTabulation.forceRefresh();
-    }
   }
 
   /**

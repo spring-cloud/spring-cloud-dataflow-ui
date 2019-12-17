@@ -57,12 +57,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   listBar: ListBarComponent;
 
   /**
-   * Tabulation
-   */
-  @ViewChild('tasksTabulation', { static: false })
-  tasksTabulation: TasksTabulationComponent;
-
-  /**
    * Modal reference
    */
   modal: BsModalRef;
@@ -323,10 +317,6 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
           this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
         }
       );
-
-    if (this.tasksTabulation) {
-      this.tasksTabulation.forceRefresh();
-    }
   }
 
   /**
