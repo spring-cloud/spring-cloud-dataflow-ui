@@ -120,7 +120,7 @@ describe('AuditRecordComponent', () => {
 
     it('should populate audit records', () => {
       const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#table tr td'));
-      expect(des.length).toBe(8 * 4);
+      expect(des.length).toBe(9 * 4);
       expect(des[0].nativeElement.textContent).toContain('1');
       // expect(des[1].nativeElement.textContent).toContain('2018-10-16T13:36:01.720Z');
       expect(des[2].nativeElement.textContent).toContain('CREATE');
@@ -128,6 +128,7 @@ describe('AuditRecordComponent', () => {
       expect(des[4].nativeElement.textContent).toContain('foo1');
       expect(des[5].nativeElement.textContent).toContain('N/A');
       expect(des[6].nativeElement.textContent).toContain('bar1');
+      expect(des[7].nativeElement.textContent).toContain('kubernetes');
     });
 
     it('should refresh the page', () => {

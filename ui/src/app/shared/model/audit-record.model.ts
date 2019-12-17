@@ -16,6 +16,7 @@ export class AuditRecord implements Serializable<AuditRecord> {
   public createdOn: DateTime;
   public auditAction: string;
   public auditOperation: string;
+  public platformName: string;
 
   public static fromJSON(input) {
     return new AuditRecord().deserialize(input);
@@ -44,6 +45,7 @@ export class AuditRecord implements Serializable<AuditRecord> {
     this.createdOn = DateTime.fromISO(input.createdOn);
     this.auditAction = input.auditAction;
     this.auditOperation = input.auditOperation;
+    this.platformName = input.platformName;
     return this;
   }
 

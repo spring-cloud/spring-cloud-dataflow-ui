@@ -54,6 +54,11 @@
                     id="sort-auditData">Data
           </app-sort>
         </th>
+        <th>
+          <app-sort [indeterminate]="true" (change)="applySort($event)" [value]="'platformName'" [sort]="params"
+                    id="sort-auditData">Platform name
+          </app-sort>
+        </th>
         <th class="text-center">&nbsp;</th>
       </tr>
       </thead>
@@ -79,6 +84,9 @@
         </td>
         <td class="dataflow-truncator-width">
           <dataflow-truncator [input]="item.auditData" trailPosition="start" trail="…"></dataflow-truncator>
+        </td>
+        <td nowrap="">
+          {{item.platformName || 'N/A'}}
         </td>
         <td class="table-actions" width="10px" nowrap="">
           <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"

@@ -64,7 +64,14 @@
         <pre class="audit-pre">{{ auditRecord.auditData | json }}</pre>
       </div>
     </div>
-
+    <div class="row audit-summary-row">
+      <div class="col-md-3">
+        <strong>Platform Name:</strong>
+      </div>
+      <div class="col-md-21">
+        {{ auditRecord.platformName ? auditRecord.platformName : 'N/A' }}
+      </div>
+    </div>
   </div>
 
 </app-page>
