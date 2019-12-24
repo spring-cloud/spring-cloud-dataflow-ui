@@ -60,7 +60,7 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
             Validators.pattern(/^[\w_]+[\w_-]*$/),
             Properties.Validators.noneOf((<StreamAppPropertiesSource>this.propertiesSource).getStreamHead().presentStreamNames)
           ],
-          asyncValidator: Properties.Validators.uniqueResource((value) => this.streamService.getDefinition(value), 500),
+          asyncValidator: Properties.Validators.uniqueResource((value) => this.streamService.isUniqueStreamName(value), 500),
           errorData: [
             {id: 'pattern', message: 'Invalid stream name!'},
             {id: 'uniqueResource', message: 'Stream name already exists!'},

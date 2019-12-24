@@ -163,7 +163,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
             Validators.pattern(/^[\w\-]+$/),
             Validators.maxLength(255)
           ], [
-            Properties.Validators.uniqueResource((value) => this.streamService.getDefinition(value), 500)
+            Properties.Validators.uniqueResource((value) => this.streamService.isUniqueStreamName(value), 500)
           ]));
 
           this.form.addControl(streamDef.index.toString() + '_desc', new FormControl(streamDef.description || '', [
