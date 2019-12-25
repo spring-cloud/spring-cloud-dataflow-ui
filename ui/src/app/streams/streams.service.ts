@@ -99,9 +99,22 @@ export class StreamsService {
 
   isUniqueStreamName(name: string): Observable<boolean> {
     return new Observable<boolean>(obs => {
-      this.getDefinition(name).subscribe(def => {
-        return def ? true : false;
-      }, () => true)
+      if (name) {
+        this.getDefinition(name).subscribe(def => {
+          if (def) {
+            obs.next(false);
+          } else {
+            obs.next(true);
+          }
+          obs.complete();
+        }, () => {
+          obs.next(true);
+          obs.complete();
+        })
+      } else {
+        obs.next(true);
+        obs.complete();
+      }
     });
   }
 
