@@ -17,6 +17,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../../shared/services/logger.service';
 import { EditorComponent } from 'spring-flo';
 import { NotificationService } from '../../shared/services/notification.service';
+import { arrangeAll } from '../components/flo/support/layout';
 
 
 /**
@@ -36,8 +37,6 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
 
   editorContext: Flo.EditorContext;
 
-  paletteSize = 310;
-
   hintOptions: any;
 
   lintOptions: CodeMirror.LintOptions;
@@ -49,6 +48,10 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   contentValidated = false;
 
   initSubject: Subject<void>;
+
+  zoomValues = [25, 50, 75, 100, 125, 150];
+
+  isReady = false;
 
   @ViewChild(EditorComponent, { static: true }) flo;
 
@@ -85,6 +88,13 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.editorService.STREAM_PALETTE_WIDTH === 1) {
+      let width = 256;
+      if (document.documentElement.clientWidth > 1600) {
+        width = 380;
+      }
+      this.editorService.STREAM_PALETTE_WIDTH = width;
+    }
     this.resizeFloGraph();
   }
 
@@ -106,11 +116,11 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   }
 
   resizeFloGraph(height?: number) {
-    const viewEditor = this.flo.element.nativeElement.children[2];
+    const viewEditor = this.flo.element.nativeElement.children[1];
     if (height) {
-      height = height - 330;
+      height = height - 305;
     } else {
-      height = document.documentElement.clientHeight - 330;
+      height = document.documentElement.clientHeight - 305;
     }
     this.renderer.setStyle(viewEditor, 'height', `${Math.max(height, 300)}px`);
   }
@@ -118,6 +128,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
   setEditorContext(editorContext: Flo.EditorContext) {
     this.editorContext = editorContext;
     if (this.editorContext) {
+      this.editorContext.gridSize = 10;
       const subscription = this.editorContext.paletteReady
         .pipe(takeUntil(this.ngUnsubscribe$))
         .pipe(map((value) => {
@@ -129,6 +140,7 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
             subscription.unsubscribe();
             this.initSubject.next();
             this.initSubject.complete();
+            this.isReady = true;
           }
         });
     }
@@ -142,21 +154,38 @@ export class StreamCreateComponent implements OnInit, OnDestroy {
     this.editorContext.gridSize = on ? 40 : 1;
   }
 
+  changeZoom(change: number) {
+    if (this.zoomValues.indexOf(this.editorContext.zoomPercent) > -1) {
+      this.editorContext.zoomPercent = this.editorContext.zoomPercent + change;
+    } else {
+      const index = Math.max(Math.round(this.editorContext.zoomPercent / 25) - 1, 0);
+      if (change > 0) {
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)];
+      } else {
+        this.editorContext.zoomPercent = this.zoomValues[Math.min(index, 5)];
+      }
+    }
+  }
+
   arrangeAll() {
-    this.editorContext.performLayout().then(() => this.editorContext.fitToPage());
+    arrangeAll(this.editorContext);
   }
 
   createStreamDefs() {
+    if (!this.dsl || !this.dsl.trim()) {
+      this.notificationService.error('Please, enter one or more valid streams.');
+      return;
+    }
     if (this.isCreateStreamsDisabled) {
       this.notificationService.error('Some field(s) are missing or invalid.');
-    } else {
-      const bsModalRef = this.bsModalService
-        .show(StreamCreateDialogComponent, { class: 'modal-lg' });
-
-      bsModalRef.content.open({ dsl: this.dsl }).subscribe(() => {
-        this.editorContext.clearGraph();
-      });
+      return;
     }
+    const bsModalRef = this.bsModalService
+      .show(StreamCreateDialogComponent, { class: 'modal-lg' });
+
+    bsModalRef.content.open({ dsl: this.dsl }).subscribe(() => {
+      this.editorContext.clearGraph();
+    });
   }
 
   contentAssist(doc: CodeMirror.EditorFromTextArea) {

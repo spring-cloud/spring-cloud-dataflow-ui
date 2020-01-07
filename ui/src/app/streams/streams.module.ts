@@ -11,8 +11,6 @@ import { FloModule } from 'spring-flo';
 import { AuthModule } from '../auth/auth.module';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { TooltipModule } from 'ngx-bootstrap';
-import { DecorationComponent } from '../shared/flo/decoration/decoration.component';
-import { HandleComponent } from '../shared/flo/handle/handle.component';
 import { AppsModule } from '../apps/apps.module';
 import { StreamDeployService } from './stream-deploy/stream-deploy.service';
 import { StreamDeployAppPropertiesComponent } from './stream-deploy/app-properties/app-properties.component';
@@ -47,6 +45,7 @@ import { StreamsUtilsComponent } from './streams-utils/streams-utils.component';
 import { StreamsImportComponent } from './streams-utils/streams-import/streams-import.component';
 import { StreamsExportComponent } from './streams-utils/streams-export/streams-export.component';
 import { StreamsUtilsService } from './streams-utils/streams-utils.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -54,6 +53,7 @@ import { StreamsUtilsService } from './streams-utils/streams-utils.service';
     SharedModule,
     NgxPaginationModule,
     ReactiveFormsModule,
+    CommonModule,
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     PopoverModule.forRoot(),
@@ -99,8 +99,6 @@ import { StreamsUtilsService } from './streams-utils/streams-utils.service';
     StreamPropertiesDialogComponent,
     StreamNodeComponent,
     StreamsDeployComponent,
-    DecorationComponent,
-    HandleComponent,
     InstanceDotComponent,
     MessageRateComponent,
     StreamsUndeployComponent,

@@ -97,6 +97,27 @@ export class StreamsService {
       );
   }
 
+  isUniqueStreamName(name: string): Observable<boolean> {
+    return new Observable<boolean>(obs => {
+      if (name) {
+        this.getDefinition(name).subscribe(def => {
+          if (def) {
+            obs.next(false);
+          } else {
+            obs.next(true);
+          }
+          obs.complete();
+        }, () => {
+          obs.next(true);
+          obs.complete();
+        })
+      } else {
+        obs.next(true);
+        obs.complete();
+      }
+    });
+  }
+
   /**
    * Calls the Spring Cloud Data Flow server to create a {@link StreamDefinition}.
    * @param {string} name

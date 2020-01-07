@@ -303,9 +303,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
         });
         if (platform) {
           platform.options.forEach(o => {
-            builder.builderDeploymentProperties.global.push(Object.assign({isSemantic: true}, o));
+            builder.builderDeploymentProperties.global.push(Object.assign({ isSemantic: true }, o));
             builder.streamDeployConfig.apps.forEach((app: any) => {
-              builder.builderDeploymentProperties.apps[app.name].push(Object.assign({isSemantic: true}, o));
+              builder.builderDeploymentProperties.apps[app.name].push(Object.assign({ isSemantic: true }, o));
             });
           });
         }
@@ -390,7 +390,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
 
     const getValue = (defaultValue) => !defaultValue ? '' : defaultValue;
     const builderAppsProperties = {};
-    const builderDeploymentProperties = {global: [], apps: {}};
+    const builderDeploymentProperties = { global: [], apps: {} };
 
     // Platform
     const platformControl = new FormControl(getValue(streamDeployConfig.platform.defaultValue),
@@ -415,9 +415,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       const platform = streamDeployConfig.platform.values.find(p => p.name === value);
       if (platform) {
         platform.options.forEach(o => {
-          builderDeploymentProperties.global.push(Object.assign({isSemantic: true}, o));
+          builderDeploymentProperties.global.push(Object.assign({ isSemantic: true }, o));
           streamDeployConfig.apps.forEach((app: any) => {
-            builderDeploymentProperties.apps[app.name].push(Object.assign({isSemantic: true}, o));
+            builderDeploymentProperties.apps[app.name].push(Object.assign({ isSemantic: true }, o));
           });
         });
       }
@@ -625,7 +625,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @param {string} appId
    * @returns {Array}
    */
-  getDeploymentProperties(builderDeploymentProperties: {global: any[], apps: any}, appId?: string): Array<{ key: string, value: any }> {
+  getDeploymentProperties(builderDeploymentProperties: { global: any[], apps: any }, appId?: string): Array<{ key: string, value: any }> {
     const deploymentProperties = appId ? builderDeploymentProperties.apps[appId] : builderDeploymentProperties.global;
     if (!deploymentProperties) {
       return [];
@@ -737,12 +737,10 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
   openApp(builder, app: any) {
     const version = builder.formGroup.get('appsVersion').get(app.name).value || app.version;
     const options = builder.builderAppsProperties[app.name] ? builder.builderAppsProperties[app.name] : app.options;
-    const modal = this.bsModalService.show(StreamDeployAppPropertiesComponent);
-
-    modal.content.title = `Properties for ${app.name}`;
-    if (version) {
-      modal.content.title += ` (${version})`;
-    }
+    const modal = this.bsModalService.show(StreamDeployAppPropertiesComponent, { class: 'modal-properties' });
+    modal.content.name = app.name;
+    modal.content.type = app.type.toUpperCase();
+    modal.content.version = app.version;
     const appPropertiesSource = new AppPropertiesSource(Object.assign([], options
       .map((property) => Object.assign({}, property))));
 

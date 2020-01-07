@@ -51,7 +51,11 @@ export class Utils {
   }
 
   static isUnresolved(element: dia.Cell): boolean {
-    return element.attr('metadata/metadata/unresolved');
+    return Utils.isUnresolvedMetadata(element.attr('metadata'));
+  }
+
+  static isUnresolvedMetadata(metadata: Flo.ElementMetadata) {
+    return !metadata || (metadata.metadata && metadata.metadata.unresolved);
   }
 
 }

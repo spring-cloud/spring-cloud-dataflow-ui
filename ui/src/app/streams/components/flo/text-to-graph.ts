@@ -17,6 +17,7 @@ import { Flo } from 'spring-flo';
 import { Parser } from '../../../shared/services/parser';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { ApplicationType } from '../../../shared/model';
+import { arrangeAll } from './support/layout';
 
 /**
  * Build a graph representation from text dsl.
@@ -350,7 +351,7 @@ export class TextToGraphConverter {
         return match1.match.group;
       }
     }
-    return ApplicationType[ApplicationType.app];
+    // return ApplicationType[ApplicationType.app];
   }
 
   /**
@@ -437,14 +438,14 @@ export class TextToGraphConverter {
       const props: Map<string, any> = new Map();
       props.set('isTapLink', (link.linkType && link.linkType === 'tap') ? true : false);
       this.floEditorContext.createLink(
-        { 'id': nodesIndex[link.from], 'selector': '.output-port', 'port': 'output' },
-        { 'id': nodesIndex[link.to], 'selector': '.input-port', 'port': 'input' },
+        { id: nodesIndex[link.from], selector: '.output-port', port: 'output' },
+        { id: nodesIndex[link.to], selector: '.input-port', port: 'input' },
         null,
         props);
+
     }
 
-    this.floEditorContext.performLayout();
-    this.floEditorContext.fitToPage();
+    arrangeAll(this.floEditorContext);
   }
 
   public convert() {

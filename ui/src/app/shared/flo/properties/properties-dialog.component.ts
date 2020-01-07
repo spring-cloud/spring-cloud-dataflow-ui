@@ -15,12 +15,16 @@ import PropertiesSource = Properties.PropertiesSource;
 @Component({
   selector: 'app-properties-dialog-content',
   templateUrl: 'properties-dialog.component.html',
-  styleUrls: [ 'properties-dialog.component.scss' ],
+  styleUrls: ['properties-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class PropertiesDialogComponent implements OnInit {
 
-  public title: string;
+  public name: string;
+
+  public version: string;
+
+  public type: string;
 
   propertiesGroupModel: PropertiesGroupModel;
 
@@ -56,6 +60,25 @@ export class PropertiesDialogComponent implements OnInit {
     this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
     this.propertiesGroupModel.loadedSubject.subscribe();
+  }
+
+  /**
+   * Define label and css class
+   */
+  getTypeClass() {
+    switch (this.type) {
+      case 'APP':
+        return 'app';
+      case 'TASK':
+        return 'danger';
+      case 'SINK':
+        return 'warning';
+      case 'PROCESSOR':
+        return 'success';
+      default:
+      case 'SOURCE':
+        return 'info';
+    }
   }
 
 }

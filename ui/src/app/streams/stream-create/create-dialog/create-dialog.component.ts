@@ -158,12 +158,12 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
         this.streamDefs.forEach((streamDef, i) => {
           streamDef.created = false;
           streamDef.index = i;
-          this.form.addControl(streamDef.index.toString(), new FormControl(streamDef.name || '', [
+          this.form.addControl(streamDef.index.toString(), new FormControl('', [
             Validators.required,
             Validators.pattern(/^[\w\-]+$/),
             Validators.maxLength(255)
           ], [
-            Properties.Validators.uniqueResource((value) => this.streamService.getDefinition(value), 500)
+            Properties.Validators.uniqueResource((value) => this.streamService.isUniqueStreamName(value), 500)
           ]));
 
           this.form.addControl(streamDef.index.toString() + '_desc', new FormControl(streamDef.description || '', [

@@ -1,5 +1,4 @@
 import * as dagre from 'dagre';
-import { IMAGE_H } from './shapes';
 import { centerAlignRanks, verticalLinksOverlapping } from './layout';
 import * as _ from 'lodash';
 
@@ -12,7 +11,7 @@ describe('tasks layout', () => {
     g.setDefaultEdgeLabel(function () {
       return {};
     });
-    const gridSize = IMAGE_H / 2;
+    const gridSize = 20;
     g.graph().rankdir = 'TB';
     g.graph().nodesep = 2 * gridSize;
     g.graph().ranksep = 2 * gridSize;
@@ -40,7 +39,7 @@ describe('tasks layout', () => {
     g.setDefaultEdgeLabel(function () {
       return {};
     });
-    const gridSize = IMAGE_H / 2;
+    const gridSize = 20;
     g.graph().rankdir = 'TB';
     g.graph().nodesep = 2 * gridSize;
     g.graph().ranksep = 2 * gridSize;
@@ -73,7 +72,7 @@ describe('tasks layout', () => {
     g.setDefaultEdgeLabel(function () {
       return {};
     });
-    const gridSize = IMAGE_H / 2;
+    const gridSize = 20;
     g.graph().rankdir = 'TB';
     g.graph().nodesep = 2 * gridSize;
     g.graph().ranksep = 2 * gridSize;

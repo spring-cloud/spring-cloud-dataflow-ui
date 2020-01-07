@@ -5,28 +5,59 @@
     <app-page-head-title><strong>Create a task</strong></app-page-head-title>
   </app-page-head>
 
-  <p> Create a task using text based input or the visual editor.</p>
-
   <div id="flo-container" class="stream-editor">
     <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                [editor]="editorService" [paletteSize]="paletteSize" [paperPadding]="55" [(dsl)]="dsl"
-                (contentValidated)="contentValidated=$event" (validationMarkers)="validationMarkers = $event">
+                [editor]="editorService" [(paletteSize)]="editorService.TASK_PALETTE_WIDTH"
+                [paletteEntryPadding]="{width: 2, height: 2}"
+                [paperPadding]="55" [(dsl)]="dsl" (contentValidated)="contentValidated=$event"
+                (validationMarkers)="validationMarkers = $event"
+                (onProperties)="renderService.handleLinkEvent(editorContext, 'options', $event)"
+                searchFilterPlaceHolder="Applications">
 
-      <div class="flow-definition-container">
+      <div header class="flow-definition-container">
         <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
                     (focus)="editorContext.graphToTextSync=false" placeholder="Enter task definitions here..."
+                    (blur)="editorContext.graphToTextSync=true"
                     [lintOptions]="lintOptions"></dsl-editor>
       </div>
-
-      <div class="flow-actions">
-        <button (click)="clearGraph()" class="btn btn-default" type="button">Clear</button>
-        <button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>
-        <button class="btn" (click)="gridOn = !gridOn"
-                [ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid
-        </button>
-
-      </div>
     </flo-editor>
+    <div canvas class="flow-actions" [ngStyle]="{left: (editorService.TASK_PALETTE_WIDTH + 20) + 'px'}">
+      <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(-25)"
+              [disabled]="editorContext.zoomPercent <= 25">
+        <i class="fa fa-search-minus"></i>
+      </button>
+      <div id="dropdown-zoom" class="dropdown" dropdown [dropup]="true">
+        <span dropdownToggle class="form-control">
+          <span class="dropdown-value">{{ editorContext.zoomPercent }}%</span>
+          <span class="fa fa-chevron-down"></span>
+        </span>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-up">
+          <li *ngFor="let val of zoomValues" [class.active]="editorContext.zoomPercent === val">
+            <a style="cursor: pointer" (click)="editorContext.zoomPercent = val">
+              {{ val }}%
+            </a>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-default btn-fa-transparent" type="button" (click)="changeZoom(25)"
+              [disabled]="editorContext.zoomPercent >= 150">
+        <i class="fa fa-search-plus"></i>
+      </button>
+      <div class="divider"></div>
+      <button (click)="arrangeAll()" class="btn btn-default" type="button">Fit to Content</button>
+
+      <!--<button (click)="clearGraph()" class="btn btn-default" type="button">Clear</button>-->
+      <!--<button (click)="arrangeAll()" class="btn btn-default" type="button">Layout</button>-->
+      <!--<button class="btn" (click)="gridOn = !gridOn"-->
+      <!--[ngClass]="{'btn-default-alt': !gridOn, 'btn-default': gridOn}">Grid-->
+      <!--</button>-->
+
+    </div>
+    <div class="overlay-loader" *ngIf="!isReady">
+      <div style="padding: 10px 0;">
+        <app-loader></app-loader>
+      </div>
+    </div>
   </div>
 
   <app-page-actions>

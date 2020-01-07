@@ -1,23 +1,29 @@
 @import '../../../../scss/pui-variables';
 
-@keyframes flash-stroke-width {
-  0%    { stroke-width: 1; }
-  50%   { stroke-width: 4; }
-  100%  { stroke-width: 1; }
+//@keyframes flash-stroke-width {
+//  0%    { stroke-width: 1; }
+//  50%   { stroke-width: 4; }
+//  100%  { stroke-width: 1; }
+//}
+
+.deploying .stream-module {
+  .flo-port {
+    fill: $blue-3;
+  }
 }
 
-.deploying .stream-module .box {
-  animation: flash-stroke-width 2s linear infinite;
-  stroke: $gray-light;
-  fill: $gray-lighter;
+.undeployed .stream-module {
+  .flo-port {
+    fill: $navy-7;
+  }
 }
 
-.undeployed .stream-module .box {
-  stroke: $gray-light;
-  fill: $gray-lighter;
+.unknown .stream-module {
+
 }
 
-.unknown .stream-module .box {
-  stroke: $gray-light;
-  fill: $gray-lighter;
+.deployed .stream-module {
+  .flo-port {
+    fill: #80b600;
+  }
 }

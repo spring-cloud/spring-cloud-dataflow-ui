@@ -21,10 +21,7 @@ import {
   Type,
   ComponentRef
 } from '@angular/core';
-import { IMAGE_W, HORIZONTAL_PADDING } from './shapes';
 import { StreamNodeComponent } from '../node/stream-node.component';
-import { DecorationComponent } from '../../../../shared/flo/decoration/decoration.component';
-import { HandleComponent } from '../../../../shared/flo/handle/handle.component';
 import { ShapeComponent, ElementComponent } from '../../../../shared/flo/support/shape-component';
 import { TYPE_INSTANCE_DOT, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from './shapes';
 import { InstanceDotComponent } from '../instance-dot/instance-dot.component';
@@ -36,8 +33,6 @@ const joint: any = _joint;
 
 const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, StreamNodeComponent)
-  .set(joint.shapes.flo.DECORATION_TYPE, DecorationComponent)
-  .set(joint.shapes.flo.HANDLE_TYPE, HandleComponent)
   .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
 
 const LINK_LABEL_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()
@@ -59,14 +54,7 @@ export class ViewHelper {
     const V = joint.V;
 
     return joint.shapes.flo.LinkView.extend({
-      options: {
-        shortLinkLength: 0,
-        doubleLinkTools: false,
-        longLinkLength: 160,
-        linkToolsOffset: 30,
-        doubleLinkToolsOffset: 60,
-        sampleInterval: 50
-      },
+
       renderLabels: function () {
 
         const cache = this._V;
@@ -135,7 +123,7 @@ export class ViewHelper {
               selectors = labelMarkup.selectors;
 
             } else {
-              const builtinDefaultLabel =  model._builtins.defaultLabel;
+              const builtinDefaultLabel = model._builtins.defaultLabel;
               const builtinDefaultLabelMarkup = this._normalizeLabelMarkup(this._getLabelMarkup(builtinDefaultLabel.markup));
 
               const defaultLabel = model._getDefaultLabel();
@@ -213,25 +201,64 @@ export class ViewHelper {
     });
   }
 
-  static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string): void {
-    const label: string = node.attr(labelPath);
+  static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string, paddingLeft: number, paddingRight?: number): void {
+    if (isNaN(paddingRight)) {
+      paddingRight = paddingLeft;
+    }
+    const label: string = node.attr(`${labelPath}/text`);
     const view = paper.findViewByModel(node);
     if (view && label) {
-      const textView = view.findBySelector(labelPath.substr(0, labelPath.indexOf('/')))[0];
+      const labelElement = view.findBySelector(labelPath)[0];
+      if (!labelElement) {
+        return;
+      }
       let offset = 0;
-      if (node.attr('.label2/text')) {
+      if (node.attr('.type-icon')) {
+        const label2View = view.findBySelector('.type-icon')[0];
+        if (label2View) {
+          const box = joint.V(label2View).bbox(false, paper.viewport);
+          let padding = 0;
+          if (node.attr('.type-icon/ref')) {
+            const refView = view.findBySelector(node.attr('.type-icon/ref'))[0];
+            if (refView) {
+              padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+            }
+          } else {
+            padding = box.x - view.getBBox().x;
+          }
+          offset = padding + box.width;
+        }
+      } else if (node.attr('.label2/text')) {
         const label2View = view.findBySelector('.label2')[0];
         if (label2View) {
           const box = joint.V(label2View).bbox(false, paper.viewport);
-          offset = HORIZONTAL_PADDING + box.width;
+          let padding = 0;
+          if (node.attr('.label2/ref')) {
+            const refView = view.findBySelector(node.attr('.label2/ref'))[0];
+            if (refView) {
+              padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+            }
+          } else {
+            padding = box.x - view.getBBox().x;
+          }
+          offset = padding + box.width;
         }
       }
-      const threshold = IMAGE_W - HORIZONTAL_PADDING - HORIZONTAL_PADDING - offset;
 
-      let width = joint.V(textView).bbox(false, paper.viewport).width;
+      let boundingBox = view.getBBox();
+      if (node.attr(`${labelPath}/ref`)) {
+        const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
+        if (refElement) {
+          boundingBox = joint.V(refElement).bbox(false, paper.viewport);
+        }
+      }
+
+      const threshold = boundingBox.width - paddingLeft - paddingRight - offset;
+
+      let width = joint.V(labelElement).bbox(false, paper.viewport).width;
 
       if (width > threshold) {
-        const styles = getComputedStyle(textView);
+        const styles = getComputedStyle(labelElement);
         const stylesObj: {} = {};
         for (let i = 0; i < styles.length; i++) {
           const property = styles.item(i);
@@ -269,14 +296,90 @@ export class ViewHelper {
           }
 
           if (offset) {
-            (<any>node).attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5), {silent: true});
+            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), { silent: true });
           }
-          (<any>node).attr(labelPath, textNode.data);
+          // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
+          node.attr(`${labelPath}/text`, textNode.data);
         } finally {
           document.body.removeChild(svgDocument);
         }
       } else {
-        (<any>node).attr('.label1/ref-x', Math.max((offset + HORIZONTAL_PADDING + width / 2) / IMAGE_W, 0.5));
+        node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5));
+      }
+    }
+  }
+
+  static fitLabelWithFixedLocation(paper: dia.Paper, node: dia.Element, labelPath: string, paddingRight?: number): void {
+    if (isNaN(paddingRight)) {
+      paddingRight = 0;
+    }
+    const label: string = node.attr(`${labelPath}/text`);
+    const view = paper.findViewByModel(node);
+    if (view && label) {
+      const labelElement = view.findBySelector(labelPath)[0];
+      if (!labelElement) {
+        return;
+      }
+
+      let boundingBox = view.getBBox();
+      if (node.attr(`${labelPath}/ref`)) {
+        const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
+        if (refElement) {
+          boundingBox = joint.V(refElement).bbox(false, paper.viewport);
+        }
+      }
+
+      const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
+
+      const locationX = labelInitialBox.x - boundingBox.x;
+
+      const threshold = boundingBox.width - paddingRight - locationX;
+
+      let width = labelInitialBox.width;
+
+      if (width > threshold) {
+        const styles = getComputedStyle(labelElement);
+        const stylesObj: {} = {};
+        for (let i = 0; i < styles.length; i++) {
+          const property = styles.item(i);
+          if (!property.startsWith('-')) {
+            stylesObj[property] = styles.getPropertyValue(property);
+          }
+        }
+
+        const svgDocument = joint.V('svg').node;
+        const textSpan = joint.V('tspan').node;
+        const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
+        const textNode = document.createTextNode(label);
+
+        // Prevent flickering
+        textElement.style.opacity = 0;
+        // Prevent FF from throwing an uncaught exception when `getBBox()`
+        // called on element that is not in the render tree (is not measurable).
+        // <tspan>.getComputedTextLength() returns always 0 in this case.
+        // Note that the `textElement` resp. `textSpan` can become hidden
+        // when it's appended to the DOM and a `display: none` CSS stylesheet
+        // rule gets applied.
+        textElement.style.display = 'block';
+        textSpan.style.display = 'block';
+
+        textSpan.appendChild(textNode);
+        svgDocument.appendChild(textElement);
+
+        document.body.appendChild(svgDocument);
+
+        try {
+          width = textSpan.getComputedTextLength();
+          for (let i = 1; i < width && width > threshold; i++) {
+            textNode.data = label.substr(0, label.length - i) + '\u2026';
+            width = textSpan.getComputedTextLength();
+          }
+
+          // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
+          node.attr(`${labelPath}/text`, textNode.data);
+        } finally {
+          document.body.removeChild(svgDocument);
+        }
       }
     }
   }

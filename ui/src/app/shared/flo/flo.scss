@@ -7,8 +7,14 @@ $btn-default-border: #DFE5E8;
 $spring-light-grey: #EEEEEE;
 $btn-default-color: white;
 $btn-default-bg: #607580;
-$flo-shape-fill-color: #eeeeee;
+$flo-shape-fill-color: #f1f1f1;
 $spring-grey: #DFE5E8;
+
+$source-color: #0096ff;
+$processor-color: #80b600;
+$sink-color: #f5be00;
+$app-color: #ff00de;
+$other-color: $navy-3;
 
 .stream-editor {
   position: relative;
@@ -17,74 +23,145 @@ $spring-grey: #DFE5E8;
   }
   .flow-actions {
     position: absolute;
-    top: 110px;
-    right: 200px;
+    display: inline-flex;
+    bottom: 0px;
     z-index: 2;
+    .divider {
+      height: 16px;
+      border-right: 2px solid $navy-8;
+      margin: 0 10px;
+      margin-top: 6px;
+    }
     .btn {
       margin-left: 2px;
+      padding-left: 10px;
+      padding-right: 10px;
     }
+    .dropdown {
+      height: 30px;
+      margin-left: 2px;
+      .dropdown-value {
+        display: inline-block;
+        width: 36px;
+      }
+      .form-control {
+        font-size: 14px;
+        padding: 4px 8px 2px;
+        height: 30px;
+        cursor: pointer;
+        &:hover {
+          background: $gray-10;
+          border-color: $navy-7;
+        }
+      }
+      &.open {
+        .form-control {
+          border-color: $navy-7;
+        }
+      }
+      .dropdown-menu {
+        min-width: 85px;
+        > li > a {
+          padding: 2px 10px;
+        }
+      }
+    }
+    .btn {
+      height: 30px;
+      line-height: 28px;
+      padding: 0 8px;
+      font-size: 14px;
+    }
+    .btn-fa-transparent {
+      padding: 0 8px;
+      height: 30px;
+      font-size: 20px;
+      color: $navy-2;
+      &:hover {
+        background-color: $navy-11;
+      }
+    }
+  }
+  .canvas {
+    border: 0 none;
+  }
+
+  #paper-container {
+    margin-left: 7px;
   }
 }
 
+.zoom-canvas-control {
+  display: none;
+}
+
+.dataflow-page-actions {
+  padding: 15px 0;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-bottom: 0;
+}
+
 .stream-editor #flow-view {
-  height:625px;
+  height: 625px;
   font-family: inherit;
 }
 
+.stream-editor #sidebar-resizer {
+  width: 1px;
+  border-left: 12px solid white;
+  border-right: 1px solid #dfe5e8;
+  margin-right: 1px;
+  cursor: col-resize;
+}
+
 .flow-definition-container {
-  border: 1px solid;
+  border: 1px solid #c1c7ca;
   /*border-color: $spring-green;*/
   border-radius: 2px;
   margin-top: 3px;
   /*background-color: $body-bg;*/
   font-family: monospace;
   z-index: 2;
-  width:100%;
-  height:100px;
+  width: 100%;
+  height: 100px;
+  font-size: 14px;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
-}
-
-.flow-definition {
-  border: 5px;
-  height:100%;
-  width:100%;
-  font-size: 16px;
-  resize: none;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
-}
-
-.flow-definition-container {
-  border: 1px solid;
-  border-color: /*$spring-green*/$btn-default-border;
-  border-radius: 2px;
-  margin-top: 3px;
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
   background-color: $body-bg;
-  font-family: monospace;
-  z-index: 2;
-  width:100%;
-  height:100px;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  margin-bottom: 16px;
+  .CodeMirror {
+    color: $navy-2;
+  }
 }
 
 .flow-definition {
   border: 5px;
-  height:100%;
-  width:100%;
+  height: 100%;
+  width: 100%;
   font-size: 16px;
   resize: none;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
 }
 
-.available-magnet {
-  stroke-width: 3;
+.flow-definition {
+  border: 5px;
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  resize: none;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+.flow-view {
+  .no-matches-label {
+    fill: $navy-7;
+  }
 }
 
 /* Otherwise ports, link labels, embedded shapes get outline on focus */
@@ -92,11 +169,7 @@ svg * {
   outline: none;
 }
 
-.input-port {
-  cursor: pointer;
-}
-
-.output-port {
+.port-shape-group {
   cursor: pointer;
 }
 
@@ -104,19 +177,19 @@ svg * {
   cursor: pointer;
 }
 
-.joint-element.highlighted circle {
-  stroke: #34302d;
-  stroke-width: 3;
-}
-
-.joint-element.highlighted path {
-  stroke: #34302d;
-  stroke-width: 3;
-}
-
-.joint-link.highlighted path {
-  stroke-width: 3;
-}
+//.joint-element.highlighted circle {
+//  stroke: #34302d;
+//  stroke-width: 3;
+//}
+//
+//.joint-element.highlighted path {
+//  stroke: #34302d;
+//  stroke-width: 3;
+//}
+//
+//.joint-link.highlighted path {
+//  stroke-width: 3;
+//}
 
 // Make transparent the circle around the link-tools (cog) icon. It'll allow shape to have a circle clicking area
 .link-tools .tool-options circle {
@@ -130,8 +203,8 @@ svg * {
 }
 
 .link-tools .tool-remove circle {
-  fill: red;
-  stroke: red;
+  fill: #da0000;
+  stroke: #da0000;
 }
 
 .link-tools .tool-remove path {
@@ -168,10 +241,6 @@ svg * {
   stroke-width: 2;
 }
 
-.available-magnet {
-  stroke-width: 3;
-}
-
 .label1 {
   font-family: inherit;
 }
@@ -187,6 +256,18 @@ svg * {
 
 .CodeMirror-lint-tooltip {
   z-index: 2000;
+  background: rgba(#da0000, .95);
+  border: 0 none;
+  color: white;
+  font-size: 13px;
+  font-family: "Source Code Pro", sans-serif;
+  padding: 2px 12px;
+  text-indent: 0;
+  .CodeMirror-lint-message-error {
+    background: none;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .dataflow-main-container .canvas {
@@ -201,54 +282,201 @@ svg * {
   background-color: $spring-light-grey;
 }
 
+.stream-editor #palette-paper-container {
+  height: calc(100% - 32px);
+  width: 100%;
+  padding-right: 20px;
+}
+
 .palette-paper {
-  background-color: $spring-light-grey;
+  background-color: white;
   border-color: $btn-default-border;
 }
 
 .palette-paper.joint-paper.joint-theme-default {
-  background-color: $spring-light-grey;
-}
-
-.dataflow-main-container .palette-filter {
-  border-color: $btn-default-border;
+  background-color: white;
 }
 
 .flow-view .palette-filter {
   border-color: #ebf0f2;
+  border-width: 0;
+  .palette-filter-label {
+    position: relative;
+    display: block;
+    margin-bottom: 0;
+    &:after {
+      position: absolute;
+      font-family: "FontAwesome";
+      content: "\f002";
+      width: 20px;
+      height: 24px;
+      top: 0;
+      right: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  }
+  input[type=search] {
+    font-family: "Source Sans Pro", sans-serif;
+
+    display: block;
+    width: 100%;
+    height: ($base-unit*4);
+    padding: 4px $base-unit;
+    /* The 6px vertically centers text on FF, ignored by Webkit */
+    font-size: 14px;
+    background-color: #fff;
+    border: 0;
+    border-bottom: 1px solid #c1c7ca;
+    border-radius: 0;
+    -webkit-appearance: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: $dark-2;
+    padding-bottom: 12px;
+    font-weight: normal;
+    &::placeholder {
+      color: $dark-2;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    &:focus {
+      box-shadow: none;
+      border: 0;
+      border-bottom: 1px solid #607580;
+      outline: none;
+    }
+  }
+
 }
 
-.joint-type-palette-groupheader rect {
-  fill: $btn-default-bg;
-  stroke: $btn-default-border;
-}
-
-.dataflow-main-container #sidebar-resizer {
-  background-color: $btn-default-bg;
-}
-
-.groupheader > text {
-  fill: $btn-default-color;
-}
-
-.groupheader .scalable > rect {
-  fill: darken($btn-default-bg, 5%);
-  stroke: darken($btn-default-border, 5%);
-  stroke-width: 2px;
-}
-
-.groupheader .rotatable > path {
-  fill: $btn-default-color;
-  stroke: $btn-default-color;
-}
-
-.stream-module .box {
-  stroke: $spring-green;
+.box {
+  stroke: none;
   fill: $flo-shape-fill-color;
 }
 
+.sync-box {
+  stroke: none;
+  fill: $flo-shape-fill-color;
+}
+
+.validation-errors .box {
+  fill: rgb(254, 227, 227);
+}
+
+.error-marker {
+  display: none;
+}
+
+.validation-errors .error-marker {
+  display: block;
+}
+
+.stream-module {
+  .stream-label {
+    fill: $navy-2;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .palette-entry-name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .type-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: white;
+  }
+}
+
+.composed-task {
+  .name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .palette-entry-name-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: #222;
+  }
+  .type-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: white;
+  }
+
+  .start-outer {
+    fill: rgb(27, 41, 49);
+    stroke: none;
+  }
+  .start-inner {
+    fill: rgb(27, 41, 49);
+    stroke: none;
+  }
+  .end-inner {
+    fill: rgb(27, 41, 49);
+    stroke: none;
+  }
+  .end-outer {
+    fill: white;
+    stroke: rgb(27, 41, 49);
+    stroke-width: 1px;
+  }
+}
+
+.default-name .stream-module .name-label {
+  fill: #777777;
+}
+
+.type-label-bg {
+  // These SVG attributes commented out below are removed by angular prod compiler due to 'buildOptimizer' on in angular.json
+  // Therefore these would need to added for each shape in Stream and ST editors.
+  //rx: 8;
+  //ry: 8;
+  fill: black;
+  stroke: none;
+  fill: #da0000;
+}
+
+.source-module .type-label-bg {
+  fill: $source-color;
+}
+
+.processor-module .type-label-bg {
+  fill: $processor-color;
+}
+
+.sink-module .type-label-bg {
+  fill: $sink-color;
+}
+
+.app-module .type-label-bg {
+  fill: $app-color;
+}
+
+.other-module .type-label-bg {
+  fill: $other-color;
+}
+
+.composed-task .type-label-bg {
+  fill: #FF5400;
+}
+
 .destination .box {
-  stroke: $spring-green;
+  stroke: none;
   fill: $flo-shape-fill-color;
 }
 
@@ -256,40 +484,20 @@ svg * {
   height: 200px;
 }
 
+.CodeMirror-gutters {
+  background: $navy-11;
+}
+
 .CodeMirror pre.CodeMirror-placeholder {
-  color: $spring-grey;
+  color: $navy-7;
 }
 
 .dsl-editor-page {
   height: 400px;
 }
 
-.composed-task .border {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-green;
-  stroke-width: 2;
-}
-
-.composed-task .outer {
-  fill: transparent;
-  stroke: $spring-green;
-  stroke-width: 2;
-}
-
-.composed-task .inner {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-green;
-  stroke-width: 2;
-}
-
-.composed-task .input-port {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-brown;
-}
-
-.composed-task .output-port {
-  fill: $flo-shape-fill-color;
-  stroke: $spring-brown;
+.joint-paper-grid {
+  display: none;
 }
 
 .fail-cross {
@@ -297,56 +505,40 @@ svg * {
   stroke: $spring-green;
 }
 
-.composed-task .label {
-  font-family: inherit;
-  fill: $spring-brown;
-  font-size: 85%;
+.CodeMirror-lint-marker-multiple {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEE4NzZFOEUwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEE4NzZFOEYwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0QTg3NkU4QzBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0QTg3NkU4RDBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsaUPvYAAAB5SURBVHja1JJhDoAgCIWhdSxOYsfFzkUq2kyhrfoV27c5eW+yhyAiYBASXAmWBhwjE5FkqnnSYHHPJYioB+3jKFjgZX0yhgTnqTqm0Tu4eFoQQ9OlBfZ41DOsbmeXai8YFRPbj9axOveRNL583t2Ubj55CcLSHAIMAKPx5IkLGakxAAAAAElFTkSuQmCC');
+  background-size: 7px 7px;
+}
+
+.CodeMirror-lint-marker-error, .CodeMirror-lint-message-error {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NEE4NzZFOEEwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NEE4NzZFOEIwRTY1MTFFQTk3MDhDRjA2MDJBMTA4NDciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0QTg3NkU4ODBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0QTg3NkU4OTBFNjUxMUVBOTcwOENGMDYwMkExMDg0NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pkia0RcAAAKfSURBVHja5JdLaFNBFIbPTRPbCBoVxfpIWgWRit2IuKhSIQiCXVRxI1hXgUoLbrrTbaFg14KbQpHiIlDrY1EEqe40RUVdGMWkWCERoUbJq6+0vf4TJxCZ+zjTW+jCgQ8uh3vP/HPmzLlnDNM0aTOHjzZ5+GsPKcPgvH8InAOnwEEQBuLDjOQNeAbSbo6OyMgbtS1wEXAW3ACXmQt7Au5IMZ4EBMBdEFtnhO+D66BsJ8ApB1rBRw+Ti3EVJEGbbhKKvX0rhG5AnkVkbhzlChB78RLs2sBk3yp9NtqegrpxT2a47TCCQWpsb8eDzBvs53IySWulktNnYkFxcNEpAifANbflhHp7KTw9TeFE4i94DvX3cyLRDc44CRjieDECAdXm93O347adgGZwnuNhJZNRbKtzc1wBHfXJXS/gEtfDWj6v2hYWdJKy20pAB1tAsajYTOcEtIqCImAf92tzaclrBA5bCTjAjkC5rNoKBR0BO6wEGOwIVCqqbX5eR4BhVYiyduVSOQXZLJUnJ8nw+Uj8zIyGBqrMzOgIyFsJ+MGOAFb7vauL/JFIVURldla3NH+12oKEjoe9IyPUmk5TSypFzWNjRIiCxnhlJeAh9+tQXx9tj8WqFVFUwG09PbRzYEBHwCMrAaK8vWD92qJRxRbs7ORO/hp8tvsX3OJ4KI2Pq7aJCa6Am04/I5EHD9w8FONx+jU4WK3/q7kc/R4epsLoKGdy0SNO/XMeLXrCLfJI7nY9zE1NWIKPWwNErd4v9Lv1hMvgNHD1ai4ucidfkX1AkdsTfgEnZSS8jp/yHvFB92b0SXazcQ+TPwbHwLv1Xs1EyK6AC+CpxsRTsvcTOHYq3JtRbRwHUbmfLWCPtOfAN9n5Pgfvta9m/+3t+I8AAwBkCMrn+ncNlgAAAABJRU5ErkJggg==');
+  background-size: 16px 16px;
 }
 
 .connection.composed-task-graph-transition {
-  stroke: #777777;
-  stroke-dasharray: 1,5;
+  stroke-dasharray: 1, 5;
 }
-
-.marker-source.composed-task-graph-transition {
-  stroke: #777777;
-  fill: #777777;
-}
-
-.marker-target.composed-task-graph-transition {
-  stroke: #777777;
-  fill: #777777;
-}
-
 
 .connection.primary-output-from-app {
-  stroke: #000000;
-  stroke-dasharray: 1,0;
-}
-
-.marker-source.primary-output-from-app {
-  stroke: #000000;
-  fill: #000000;
-}
-
-.marker-target.primary-output-from-app {
-  stroke: #000000;
-  fill: #000000;
+  stroke-dasharray: 1, 0;
 }
 
 .connection.tapped-output-from-app {
-  stroke: #777777;
-  stroke-dasharray: 5,2;
+  stroke-dasharray: 5, 2;
 }
 
-.marker-source.tapped-output-from-app {
-  stroke: #777777;
-  fill: #777777;
+.connection {
+  stroke: $navy-8;
 }
 
-.marker-target.tapped-output-from-app {
-  stroke: #777777;
-  fill: #777777;
+.marker-source {
+  stroke: #AAAAAA;
+  fill: #AAAAAA;
+}
+
+.marker-target {
+  stroke: #AAAAAA;
+  fill: #AAAAAA;
 }
 
 // Link Tools handle shows up on a link in Composed Task editor
@@ -354,65 +546,100 @@ svg * {
   display: block;
 }
 
+.link-tool.create-stream .tool-options {
+  display: block;
+}
+
+.flo-port-label {
+  fill: black;
+}
+
+.flo-port-label-bg {
+  fill: lightblue;
+  stroke: lightblue;
+  stroke-width: 7px;
+}
+
+.joint-link:hover .link-channel-label {
+  opacity: 1;
+}
+
+.link-channel-label {
+  opacity: 0;
+}
+
 @keyframes flash-stroke-width {
-  0%    { stroke-width: 1; }
-  50%   { stroke-width: 4; }
-  100%  { stroke-width: 1; }
+  0% {
+    stroke-width: 1;
+  }
+  50% {
+    stroke-width: 4;
+  }
+  100% {
+    stroke-width: 1;
+  }
 }
 
 // Stream modules DnD shape animation
-.dnd-source-feedback .stream-module .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-.dnd-target-feedback .stream-module .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Stream modules DnD shape animation
-.dnd-source-feedback .destination .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-.dnd-target-feedback .destination .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Composed Task DnD shape animation
-.dnd-source-feedback .composed-task .border {
-  animation: flash-stroke-width 2s linear infinite;
-}
-.dnd-target-feedback .composed-task .border {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Ports DnD animation
-.dnd-source-feedback.input-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-.dnd-source-feedback.output-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-.dnd-target-feedback.input-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-.dnd-target-feedback.output-port {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-// Links DnD feedback animation
-.dnd-source-feedback .connection {
-  animation: flash-stroke-width 2s linear infinite;
-}
-.dnd-target-feedback .connection {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.stream-deploying .box {
-  animation: flash-stroke-width 2s linear infinite;
-}
-
-.instance-dot:hover {
-  stroke-width: 3;
-}
+//.dnd-source-feedback .stream-module .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .stream-module .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Stream modules DnD shape animation
+//.dnd-source-feedback .destination .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .destination .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Composed Task DnD shape animation
+//.dnd-source-feedback .composed-task .border {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .composed-task .border {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Ports DnD animation
+//.dnd-source-feedback.input-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-source-feedback.output-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback.input-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback.output-port {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//// Links DnD feedback animation
+//.dnd-source-feedback .connection {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.dnd-target-feedback .connection {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.stream-deploying .box {
+//  animation: flash-stroke-width 2s linear infinite;
+//}
+//
+//.instance-dot:hover {
+//  stroke-width: 3;
+//}
 
 .joint-type-dataflow-instancedot.joint-element.deployed {
   stroke: $spring-green;
@@ -454,5 +681,220 @@ table.zoom-canvas-control {
   border: 1px solid;
   border-color: $btn-default-border;
 }
+
+.connecting .flo-input-port {
+  fill: $spring-green;
+  r: 4;
+}
+
+.connecting .flo-output-port {
+  fill: $spring-green;
+  r: 4;
+}
+
+.connecting .label-group {
+  display: block;
+}
+
+.label-group {
+  display: none;
+}
+
+.flo-port {
+  fill: rgb(24, 41, 50);
+  stroke: white;
+  stroke-width: 2px;
+}
+
+.validation-errors .flo-port {
+  fill: #da0000;
+}
+
+.flo-port-inner-circle {
+  fill: white;
+  stroke: none;
+}
+
+.available-magnet .flo-port {
+  stroke: none;
+}
+
+.flo-input-multiport {
+  fill: #777777;
+  stroke-width: 1px;
+  stroke: #34302d;
+}
+
+.flo-output-multiport {
+  fill: #777777;
+  stroke-width: 1px;
+  stroke: #34302d;
+}
+
+.flo-port-label {
+  fill: black;
+}
+
+.flo-port-label-bg {
+  fill: lightblue;
+  stroke: lightblue;
+  stroke-width: 7px;
+}
+
+.select-1, .select-2, .select-3, .select-4, .select-5, .select-6 {
+  fill: #fff;
+  opacity: 0;
+  stroke: #222
+}
+
+.select-outline {
+  opacity: 0;
+  fill: rgb(208, 231, 255);
+  stroke: rgb(208, 231, 255);
+  stroke-width: 1px;
+}
+
+.joint-element.highlighted .box {
+  stroke: #222;
+  stroke-width: 1px;
+  fill: #fff;
+}
+
+.joint-element.highlighted .select-1, .joint-element.highlighted .select-2, .joint-element.highlighted .select-3,
+.joint-element.highlighted .select-4, .joint-element.highlighted .select-5, .joint-element.highlighted .select-6 {
+  opacity: 1;
+  stroke-width: 1px;
+}
+
+.joint-element.highlighted .select-outline {
+  opacity: 1;
+  fill: rgb(208, 231, 255);
+  stroke: rgb(208, 231, 255);
+  stroke-width: 10px;
+}
+
+.handle-label {
+  fill: rgb(116, 116, 116);
+  font-size: 12px;
+  font-family: "Source Sans Pro", sans-serif;
+  text-decoration: underline;
+}
+
+.handle-label:hover {
+  font-weight: bolder;
+}
+
+// Error marker tooltip on the shape
+
+.error-marker-tooltip .tooltip-inner {
+  background-color: #da0000;
+  max-width: 400px;
+  //padding: 2px;
+}
+
+.tooltip.error-marker-tooltip .tooltip-arrow {
+  border-top-color: #da0000;
+}
+
+.app-tooltip .tooltip-inner {
+}
+
+.marker-tooltip {
+
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    text-align: left;
+  }
+
+  li:last-child {
+    border: none;
+  }
+
+}
+
+.joint-type-palette-groupheader {
+  cursor: pointer;
+  .outer {
+    fill: transparent;
+  }
+  .group-label-bg {
+    fill: #da0000;
+  }
+  .group-label-bg.source {
+    fill: $source-color;
+  }
+  .group-label-bg.processor {
+    fill: $processor-color;
+  }
+  .group-label-bg.sink {
+    fill: $sink-color;
+  }
+  .group-label-bg.other {
+    fill: $other-color;
+  }
+  .group-label-bg.app {
+    fill: $app-color;
+  }
+  .group-label-bg.task {
+    fill: #FF5400;
+  }
+  .group-label-bg.control-nodes {
+    fill: $navy-2;
+  }
+  .group-label {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    fill: white;
+  }
+  .group-line {
+    stroke: #dfe5e8;
+    stroke-width: 1px;
+    stroke-linecap: round;
+  }
+}
+
+.flo-handles {
+  fill: $navy-6;
+  font-size: 12px;
+  font-family: "Source Sans Pro", sans-serif;
+  display: none;
+  .handle {
+    cursor: pointer;
+    text-decoration: underline;
+    &:hover {
+      fill: $blue-4;
+    }
+  }
+  .handle-separator {
+    fill: $navy-8;
+  }
+}
+
+.joint-element.highlighted .flo-handles {
+  display: block;
+}
+
+.overlay-loader {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  top: 110px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.flow-view {
+  [magnet=true]:not(.element),
+  .joint-element {
+    cursor: default;
+  }
+}
+
+
 
 

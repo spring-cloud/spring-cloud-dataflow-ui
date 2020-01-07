@@ -125,7 +125,7 @@ const METAMODEL_DATA: Array<RawMetadata> = [
   }, {
     name: 'd', type: 'task', description: 'Task d', options: []
   }, {
-    name: 'super-very-long-task-name', type: 'task', description: 'Task d', options: []
+    name: 'super-very-very-very-looooooooong-task-name', type: 'task', description: 'Task d', options: []
   }];
 
 interface RawMetadata {

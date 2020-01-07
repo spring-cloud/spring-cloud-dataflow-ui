@@ -680,10 +680,6 @@ app-kv-rich-text {
   text-align: left;
 }
 
-#palette-paper-container {
-  background: #EEEEEE !important;
-}
-
 .popover {
   border: 0 none;
   box-shadow: none;
@@ -725,4 +721,57 @@ app-kv-rich-text {
     background: rgba(255,255,255,.2);
     color: white;
   }
+}
+
+.btn.btn-fa-transparent {
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: transparent;
+  border: none;
+  color: #64757f
+}
+
+.btn.btn-fa-transparent:hover {
+  background-color: transparent;
+  color: black;
+}
+.btn.btn-fa-transparent:focus {
+  background-color: transparent;
+}
+.btn.btn-fa-transparent:active {
+  background-color: transparent;
+}
+
+
+.select-editable {
+  position: relative;
+  display: inline-flex;
+  background-color:white;
+  border:solid grey 1px;
+  border-radius: 2px;
+  width:77px;
+  height:32px;
+}
+.select-editable select {
+  position:absolute;
+  top:0px;
+  left:0px;
+  font-size:14px;
+  border:none;
+  width:75px;
+  margin:0;
+  height: 30px;
+}
+.select-editable input {
+  color: #777777;
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:55px;
+  padding:1px;
+  border:none;
+  height: 30px;
+}
+.select-editable select:focus, .select-editable input:focus {
+  outline:none;
 }
