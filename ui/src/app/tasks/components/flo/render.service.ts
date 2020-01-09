@@ -16,6 +16,7 @@ import { TaskPropertiesDialogComponent } from './properties/task-properties-dial
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { createPaletteGroupHeader } from '../../../shared/flo/support/shared-shapes';
+import {ViewUtils} from '../../../shared/flo/support/view-utils';
 
 const joint: any = _joint;
 
@@ -23,7 +24,7 @@ const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent);
 
 const COMPOSED_TASK_PALETTE_SIZE = { width: 120, height: 30 };
-const COMPOSED_TASK_CANVAS_SIZE = { width: 180, height: 64 };
+const COMPOSED_TASK_CANVAS_SIZE = { width: 180, height: 42 };
 const SYNC_PALETTE_SIZE = { width: 80, height: 30 };
 const SYNC_CANVAS_SIZE = { width: 100, height: 40 };
 
@@ -163,10 +164,14 @@ export class RenderService implements Flo.Renderer {
         if (viewerDescriptor.paper) {
           const isPalette = viewerDescriptor.paper.model.get('type') === Constants.PALETTE_CONTEXT;
           if (isPalette) {
-            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.palette-entry-name-label', node.attr('.palette-entry-name-label/refX'));
+            ViewUtils.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.palette-entry-name-label', node.attr('.palette-entry-name-label/refX'));
+            // ViewUtils.fitLabel(viewerDescriptor.paper, node, '.palette-entry-name-label', 10, 10);
+
           } else {
-            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.name-label', node.attr('.name-label/refX'));
-            this.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.type-label', node.attr('.type-label/refX'));
+            ViewUtils.fitLabel(viewerDescriptor.paper, node, '.name-label', 10, 10);
+
+            // ViewUtils.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.name-label', node.attr('.name-label/refX'));
+            // ViewUtils.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.type-label', node.attr('.type-label/refX'));
           }
         }
       }
@@ -179,7 +184,11 @@ export class RenderService implements Flo.Renderer {
         const nodeLabel = element.attr('node-label');
         // fitLabel() calls update as necessary, so set label text silently
         element.attr('.name-label/text', nodeLabel ? nodeLabel : element.attr('metadata/name'));
-        this.fitLabelWithFixedLocation(paper, <dia.Element> element, '.name-label', element.attr('.name-label/refX'));
+        // ViewUtils.fitLabelWithFixedLocation(paper, <dia.Element> element, '.name-label', element.attr('.name-label/refX'));
+
+        // Update the view to get default label visuals showing without truncation.
+        (<dia.ElementView>paper.findViewByModel(element)).update();
+        ViewUtils.fitLabel(paper, <dia.Element> element, '.name-label', 10, 10);
       }
     }
 
@@ -353,81 +362,6 @@ export class RenderService implements Flo.Renderer {
 
     });
 
-  }
-
-  fitLabelWithFixedLocation(paper: dia.Paper, node: dia.Element, labelPath: string, paddingRight?: number): void {
-    if (isNaN(paddingRight)) {
-      paddingRight = 0;
-    }
-    const label: string = node.attr(`${labelPath}/text`);
-    const view = paper.findViewByModel(node);
-    if (view && label) {
-      const labelElement = view.findBySelector(labelPath)[0];
-      if (!labelElement) {
-        return;
-      }
-
-      let boundingBox = view.getBBox();
-      if (node.attr(`${labelPath}/ref`)) {
-        const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
-        if (refElement) {
-          boundingBox = joint.V(refElement).bbox(false, paper.viewport);
-        }
-      }
-
-      const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
-
-      const locationX = labelInitialBox.x - boundingBox.x;
-
-      const threshold = boundingBox.width - paddingRight - locationX;
-
-      let width = labelInitialBox.width;
-
-      if (width > threshold) {
-        const styles = getComputedStyle(labelElement);
-        const stylesObj: {} = {};
-        for (let i = 0; i < styles.length; i++) {
-          const property = styles.item(i);
-          if (!property.startsWith('-')) {
-            stylesObj[property] = styles.getPropertyValue(property);
-          }
-        }
-
-        const svgDocument = joint.V('svg').node;
-        const textSpan = joint.V('tspan').node;
-        const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
-        const textNode = document.createTextNode(label);
-
-        // Prevent flickering
-        textElement.style.opacity = 0;
-        // Prevent FF from throwing an uncaught exception when `getBBox()`
-        // called on element that is not in the render tree (is not measurable).
-        // <tspan>.getComputedTextLength() returns always 0 in this case.
-        // Note that the `textElement` resp. `textSpan` can become hidden
-        // when it's appended to the DOM and a `display: none` CSS stylesheet
-        // rule gets applied.
-        textElement.style.display = 'block';
-        textSpan.style.display = 'block';
-
-        textSpan.appendChild(textNode);
-        svgDocument.appendChild(textElement);
-
-        document.body.appendChild(svgDocument);
-
-        try {
-          width = textSpan.getComputedTextLength();
-          for (let i = 1; i < width && width > threshold; i++) {
-            textNode.data = label.substr(0, label.length - i) + '\u2026';
-            width = textSpan.getComputedTextLength();
-          }
-
-          // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
-          node.attr(`${labelPath}/text`, textNode.data);
-        } finally {
-          document.body.removeChild(svgDocument);
-        }
-      }
-    }
   }
 
   getPaletteRenderer() {

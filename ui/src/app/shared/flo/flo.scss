@@ -3,12 +3,12 @@
 $spring-green: #1BB3A8;
 $spring-brown: #17232a;
 $body-bg: inherit;
-$btn-default-border: #DFE5E8;
+$btn-default-border: #EAEDEF;
 $spring-light-grey: #EEEEEE;
 $btn-default-color: white;
 $btn-default-bg: #607580;
-$flo-shape-fill-color: #f1f1f1;
-$spring-grey: #DFE5E8;
+$flo-shape-fill-color: #EAEDEF;
+$spring-grey: #EAEDEF;
 
 $source-color: #0096ff;
 $processor-color: #80b600;
@@ -351,7 +351,8 @@ svg * {
 }
 
 .box {
-  stroke: none;
+  stroke-width: 1px;
+  stroke: $navy-7;
   fill: $flo-shape-fill-color;
 }
 
@@ -362,6 +363,7 @@ svg * {
 
 .validation-errors .box {
   fill: rgb(254, 227, 227);
+  stroke: #da0000;
 }
 
 .error-marker {
@@ -376,13 +378,13 @@ svg * {
   .stream-label {
     fill: $navy-2;
     font-size: 15px;
-    font-weight: bold;
+    font-weight: normal;
   }
   .name-label {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 14px;
-    font-weight: normal;
     fill: #222;
+    font-weight: bold;
   }
   .palette-entry-name-label {
     font-family: "Source Sans Pro", sans-serif;
@@ -401,7 +403,7 @@ svg * {
 .composed-task {
   .name-label {
     font-family: "Source Sans Pro", sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: normal;
     fill: #222;
   }
@@ -439,6 +441,7 @@ svg * {
 
 .default-name .stream-module .name-label {
   fill: #777777;
+  font-weight: normal;
 }
 
 .type-label-bg {

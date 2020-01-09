@@ -33,6 +33,7 @@ import { StreamGraphPropertiesSource } from './properties/stream-properties-sour
 import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 import * as _ from 'lodash';
 import { createPaletteGroupHeader } from '../../../shared/flo/support/shared-shapes';
+import {ViewUtils} from '../../../shared/flo/support/view-utils';
 
 const joint: any = _joint;
 
@@ -98,7 +99,7 @@ export class RenderService implements Flo.Renderer {
         if (view) {
           if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
             // ViewHelper.fitLabel(paper, element, '.name-label', 5);
-            ViewHelper.fitLabelWithFixedLocation(paper, element, '.name-label', 5);
+            ViewUtils.fitLabelWithFixedLocation(paper, element, '.name-label', 5);
             joint.V(view.el).toggleClass('default-name', !element.attr('props/name'));
           }
         }
@@ -123,7 +124,7 @@ export class RenderService implements Flo.Renderer {
           view.update(element);
           if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
             // ViewHelper.fitLabel(paper, element, '.name-label', 5);
-            ViewHelper.fitLabelWithFixedLocation(paper, element, '.name-label', 5);
+            ViewUtils.fitLabelWithFixedLocation(paper, element, '.name-label', 5);
             joint.V(view.el).toggleClass('default-name', !nodeName);
           }
         }
@@ -280,9 +281,9 @@ export class RenderService implements Flo.Renderer {
       const metadata: Flo.ElementMetadata = node.attr('metadata');
       if (metadata) {
         if (isPalette) {
-          ViewHelper.fitLabelWithFixedLocation(paper, node, '.palette-entry-name-label', TYPE_ICON_PADDING_PALETTE);
+          ViewUtils.fitLabelWithFixedLocation(paper, node, '.palette-entry-name-label', TYPE_ICON_PADDING_PALETTE);
         } else {
-          ViewHelper.fitLabelWithFixedLocation(paper, node, '.type-label', 15);
+          ViewUtils.fitLabelWithFixedLocation(paper, node, '.type-label', 15);
           if (metadata.name === 'tap') {
             this.refreshVisuals(node, 'props/name', paper);
           } else if (metadata.name === 'destination') {
