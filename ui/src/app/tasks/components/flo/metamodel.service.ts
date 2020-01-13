@@ -297,8 +297,8 @@ export class MetamodelService implements Flo.Metamodel {
         props.set('ExitStatus', link.properties.transitionName);
       }
       // TODO safe to delete from/to/nodesIndex now?
-      const otherfrom = { 'id': builtNodesMap[link.from], 'selector': '.output-port' };
-      const otherto = { 'id': builtNodesMap[link.to], 'selector': '.input-port' };
+      const otherfrom = { 'id': builtNodesMap[link.from], 'selector': this.determineOutputSelector(link.from, inputnodes) };
+      const otherto = { 'id': builtNodesMap[link.to], 'selector': this.determineInputSelector(link.to, inputnodes) };
 
       const metadata2 = metamodel.get('links').get('transition');
       flo.createLink(otherfrom, otherto, metadata2, props);
@@ -308,6 +308,26 @@ export class MetamodelService implements Flo.Metamodel {
 
     // Graph is empty? Ensure there are at least start and end nodes created!
     nodesIndex.length ? arrangeAll(flo) : flo.clearGraph();
+  }
+
+  private determineOutputSelector(id: number, inputNodes: Node[]): string {
+    switch (inputNodes[id].name) {
+      case START_NODE_TYPE:
+        return '.start-outer';
+      case END_NODE_TYPE:
+        return '.end-outer';
+    }
+    return '.output-port';
+  }
+
+  private determineInputSelector(id: number, inputNodes: Node[]): string {
+    switch (inputNodes[id].name) {
+      case START_NODE_TYPE:
+        return '.start-outer';
+      case END_NODE_TYPE:
+        return '.end-outer';
+    }
+    return '.input-port';
   }
 
   clearCachedData() {

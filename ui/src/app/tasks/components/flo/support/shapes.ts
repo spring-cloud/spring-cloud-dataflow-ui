@@ -144,18 +144,23 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
 export const BatchStartShape = joint.shapes.basic.Generic.extend({
   defaults: defaultsDeep({
     size: START_NODE_SIZE,
-    position: { x: 20, y: 20 },
     attrs: {
       '.start-outer': {
         magnet: true,
         port: 'output',
         r: START_NODE_SIZE.width / 2,
+        refCx: 0.5,
+        refCy: 0.5
       },
       '.start-inner': {
         r: START_NODE_SIZE.width / 4,
+        refCx: 0.5,
+        refCy: 0.5
       },
       '.select-outline': {
         r: START_NODE_SIZE.width / 2,
+        refCx: 0.5,
+        refCy: 0.5
       },
       '.name-label': {
         ref: '.start-outer',
@@ -190,11 +195,15 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
     attrs: {
       '.end-inner': {
         refRx: '35%',
-        refRy: '35%'
+        refRy: '35%',
+        refCx: 0.5,
+        refCy: 0.5
       },
       '.end-outer': {
         refRx: '50%',
         refRy: '50%',
+        refCx: 0.5,
+        refCy: 0.5,
         magnet: true,
         port: 'input'
       },
@@ -209,6 +218,8 @@ export const BatchEndShape = joint.shapes.basic.Generic.extend({
       '.select-outline': {
         refRx: '50%',
         refRy: '50%',
+        refCx: 0.5,
+        refCy: 0.5
       },
       '.error-marker': {
         width: ERROR_MARKER_SIZE.width,
