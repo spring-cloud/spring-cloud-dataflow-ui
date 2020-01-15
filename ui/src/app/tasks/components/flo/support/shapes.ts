@@ -47,7 +47,7 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
       '.name-label': {
         'refX': '50%',
         refY: 0.5,
-        refY2: -4,
+        refY2: 7,
         'y-alignment': 'bottom',
         'x-alignment': 'middle',
         ref: '.box',
