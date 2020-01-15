@@ -7,7 +7,7 @@
     max-width: 850px;
     .modal-body {
       padding: 24px 42px 24px 24px;
-      max-height: 80vh;
+      max-height: 70vh;
       overflow-y: auto;
     }
   }
@@ -19,7 +19,7 @@
 
 .df-property-row {
   width: 100%;
-  display:inline-table;
+  display: inline-table;
 }
 
 .df-property-label-cell {
@@ -33,6 +33,7 @@
 .df-property-control {
   width: 100%;
 }
+
 //
 //.modal-body.app-properties {
 //  max-height: 80vh;
@@ -59,18 +60,17 @@ label.df-property-control {
 }
 
 .modal-title {
-.label {
-  margin: 0 2px;
-}
+  .label {
+    margin: 0 2px;
+  }
 
-.label-version {
-  background: #999;
-}
+  .label-version {
+    background: #999;
+  }
   strong {
     margin-right: 12px;
   }
 }
-
 
 .modal-properties {
 
@@ -119,5 +119,29 @@ label.df-property-control {
   &:last-child {
     border-bottom: 0 none;
     margin-bottom: 0;
+  }
+}
+
+.modal-search {
+  display: block;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid $input-border;
+  padding: 8px 5rem;
+  input.form-control {
+    display: block;
+    border-radius: 17px;
+    height: 34px;
+    font-weight: normal;
+    padding: 5px 15px;
+  }
+  span.fa {
+    position: absolute;
+    right: 14px;
+    top: 8px;
+    color: #888;
+  }
+  span.search-wrapper {
+    display: block;
+    position: relative;
   }
 }

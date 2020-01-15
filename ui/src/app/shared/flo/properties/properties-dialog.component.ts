@@ -1,10 +1,11 @@
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { PropertiesGroupModel } from '../support/properties-group-model';
+import { Subject } from 'rxjs';
+import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
 import { Properties } from 'spring-flo';
 import PropertiesSource = Properties.PropertiesSource;
+import {debounceTime} from "rxjs/operators";
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -32,9 +33,16 @@ export class PropertiesDialogComponent implements OnInit {
 
   showProperties = false;
 
+  private _searchFilterText = '';
+
+  private _searchFilterTextSubject;
+
+  propertiesFilter = new SearchTextFilter();
+
   constructor(private bsModalRef: BsModalRef
   ) {
     this.propertiesFormGroup = new FormGroup({});
+    this._searchFilterTextSubject = new Subject<string>();
   }
 
   handleOk() {
@@ -54,6 +62,7 @@ export class PropertiesDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text)
   }
 
   setData(propertiesSource: PropertiesSource) {
@@ -79,6 +88,15 @@ export class PropertiesDialogComponent implements OnInit {
       case 'SOURCE':
         return 'info';
     }
+  }
+
+  get searchFilterText() {
+    return this._searchFilterText;
+  }
+
+  set searchFilterText(text: string) {
+    this._searchFilterText = text;
+    this._searchFilterTextSubject.next(text);
   }
 
 }

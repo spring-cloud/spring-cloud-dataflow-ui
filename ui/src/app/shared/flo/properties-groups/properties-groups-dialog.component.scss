@@ -77,3 +77,28 @@ label.df-property-control {
     }
   }
 }
+
+.modal-search {
+  display: block;
+  background-color: #f2f2f2;
+  border-bottom: 1px solid $input-border;
+  padding: 8px 5rem;
+  input.form-control {
+    display: block;
+    border-radius: 17px;
+    height: 34px;
+    font-weight: normal;
+    padding: 5px 15px;
+  }
+  span.fa {
+    position: absolute;
+    right: 14px;
+    top: 8px;
+    color: #888;
+  }
+  span.search-wrapper {
+    display: block;
+    position: relative;
+  }
+}
+

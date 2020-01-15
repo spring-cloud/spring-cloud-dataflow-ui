@@ -3,8 +3,10 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 import { Properties } from 'spring-flo';
-import { PropertiesGroupModel } from '../support/properties-group-model';
+import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
 import PropertiesSource = Properties.PropertiesSource;
+import {Subject} from "rxjs/index";
+import {debounceTime} from "rxjs/operators";
 
 /**
  * Class to add group title to a model.
@@ -85,6 +87,13 @@ export class PropertiesGroupsDialogComponent implements OnInit {
 
   private groupPropertiesSources: GroupPropertiesSources;
 
+  private _searchFilterText = '';
+
+  private _searchFilterTextSubject;
+
+  propertiesFilter = new SearchTextFilter();
+
+
   /**
    * Collapse states for groups are kept here.
    * i.e. {my.group1: true, my.group2: false}
@@ -94,6 +103,7 @@ export class PropertiesGroupsDialogComponent implements OnInit {
   constructor(private bsModalRef: BsModalRef
   ) {
     this.propertiesFormGroup = new FormGroup({});
+    this._searchFilterTextSubject = new Subject<string>();
   }
 
   handleOk() {
@@ -131,6 +141,7 @@ export class PropertiesGroupsDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text)
   }
 
   setData(groupPropertiesSources: GroupPropertiesSources) {
@@ -145,4 +156,14 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     });
     this.groupPropertiesSources = groupPropertiesSources;
   }
+
+  get searchFilterText() {
+    return this._searchFilterText;
+  }
+
+  set searchFilterText(text: string) {
+    this._searchFilterText = text;
+    this._searchFilterTextSubject.next(text);
+  }
+
 }
