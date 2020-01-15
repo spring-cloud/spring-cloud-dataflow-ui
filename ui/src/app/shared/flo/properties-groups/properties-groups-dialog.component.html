@@ -4,8 +4,14 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<form name="app-properties" (submit)="handleOk()" class="modal-body app-properties">
 
+<label class="modal-search">
+    <span class="search-wrapper">
+      <input type="text" class="form-control" placeholder="Seach properties ..."/>
+      <span class="fa fa-search"></span>
+    </span>
+</label>
+<form name="app-properties" (submit)="handleOk()" class="modal-body app-properties">
   <div class="properties"
        *ngFor="let group of propertiesGroupModels">
     <div class="line-toggle">

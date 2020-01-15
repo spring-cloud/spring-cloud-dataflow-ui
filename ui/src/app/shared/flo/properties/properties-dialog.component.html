@@ -9,9 +9,16 @@
   </button>
 </div>
 <form name="app-properties" (submit)="handleOk()">
-  <div class="modal-body app-properties">
-    <div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading">
 
+  <div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading">
+
+    <label class="modal-search">
+      <span class="search-wrapper">
+        <input type="text" class="form-control" placeholder="Seach properties ..." />
+        <span class="fa fa-search"></span>
+      </span>
+    </label>
+    <div class="modal-body app-properties">
       <div *ngIf="propertiesGroupModel.getControlsModels().length > 50 && !showProperties"
            class="dataflow-alert dataflow-alert-info" style="display: block">
         <p style="padding-bottom: 5px;">
@@ -27,9 +34,11 @@
                           [form]="propertiesFormGroup"></properties-group>
       </div>
     </div>
+  </div>
 
-    <div *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading"
-         style="padding-bottom: 20px;padding-left:10px;padding-top: 10px;">
+
+  <div class="modal-body app-properties" *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading">
+    <div style="padding-bottom: 20px;padding-left:10px;padding-top: 10px;">
       <app-loader></app-loader>
     </div>
   </div>

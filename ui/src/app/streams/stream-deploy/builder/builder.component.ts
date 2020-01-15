@@ -651,7 +651,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @param app
    */
   openDeploymentProperties(builder, appId?: string) {
-    const modal = this.bsModalService.show(PropertiesGroupsDialogComponent);
+    const modal = this.bsModalService.show(PropertiesGroupsDialogComponent, { class: 'modal-lg'});
     const options = appId ? builder.builderDeploymentProperties.apps[appId] : builder.builderDeploymentProperties.global;
     modal.content.title = `Deployment properties for platform`;
 
