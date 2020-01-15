@@ -2,10 +2,9 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { PropertiesGroupModel } from '../support/properties-group-model';
+import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
 import { Properties } from 'spring-flo';
 import PropertiesSource = Properties.PropertiesSource;
-import Property = Properties.Property;
 import {debounceTime} from "rxjs/operators";
 
 /**
@@ -100,12 +99,4 @@ export class PropertiesDialogComponent implements OnInit {
     this._searchFilterTextSubject.next(text);
   }
 
-}
-
-class SearchTextFilter implements Properties.PropertyFilter {
-  textFilter = '';
-
-  accept(property: Property) {
-    return !this.textFilter || property.name.startsWith(this.textFilter);
-  }
 }

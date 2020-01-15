@@ -83,3 +83,12 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
   }
 
 }
+
+export class SearchTextFilter implements Properties.PropertyFilter {
+  textFilter = '';
+
+  accept(property: Properties.Property) {
+    return !this.textFilter || property.name.startsWith(this.textFilter);
+  }
+}
+
