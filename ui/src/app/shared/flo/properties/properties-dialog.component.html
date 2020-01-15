@@ -14,7 +14,7 @@
 
     <label class="modal-search">
       <span class="search-wrapper">
-        <input type="text" class="form-control" placeholder="Seach properties ..." />
+        <input type="search" class="form-control" placeholder="Search properties ..." [(ngModel)]="searchFilterText" [ngModelOptions]="{standalone: true}"/>
         <span class="fa fa-search"></span>
       </span>
     </label>
@@ -31,7 +31,7 @@
       <div *ngIf="propertiesGroupModel.getControlsModels().length <= 50 || showProperties">
 
         <properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
-                          [form]="propertiesFormGroup"></properties-group>
+                          [form]="propertiesFormGroup" [filter]="propertiesFilter"></properties-group>
       </div>
     </div>
   </div>
