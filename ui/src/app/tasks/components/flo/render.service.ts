@@ -23,7 +23,7 @@ const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
   .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent);
 
 const COMPOSED_TASK_PALETTE_SIZE = { width: 120, height: 30 };
-const COMPOSED_TASK_CANVAS_SIZE = { width: 180, height: 32 };
+const COMPOSED_TASK_CANVAS_SIZE = { width: 180, height: 42 };
 const SYNC_PALETTE_SIZE = { width: 80, height: 30 };
 const SYNC_CANVAS_SIZE = { width: 100, height: 40 };
 
