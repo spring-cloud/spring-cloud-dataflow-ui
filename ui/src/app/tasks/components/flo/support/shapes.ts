@@ -11,7 +11,6 @@ const START_NODE_SIZE = { width: 15, height: 15 };
 const END_NODE_SIZE = { width: 20, height: 20 };
 const PORT_RADIUS = 7;
 
-const CANVAS_LABEL_PADDING = 15;
 export const NODE_ROUNDED_CORNER = 8;
 export const NODE_ROUNDED_CORNER_PALETTE = 3;
 
@@ -45,10 +44,9 @@ export const TaskAppShape = joint.shapes.basic.Generic.extend({
         ref: '.box', // jointjs specific: element for ref-x, ref-y
       },
       '.name-label': {
-        'refX': '50%',
+        refX: 0.5,
         refY: 0.5,
-        refY2: 8,
-        'y-alignment': 'bottom',
+        'y-alignment': 'middle',
         'x-alignment': 'middle',
         ref: '.box',
       },
