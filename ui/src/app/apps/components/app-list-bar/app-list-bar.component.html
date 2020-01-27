@@ -9,7 +9,7 @@
       <span class="caret"></span>
     </button>
     <ul *dropdownMenu class="dropdown-menu">
-      <li *ngFor="let action of actions">
+      <li *ngFor="let action of _actions">
         <a *ngIf="!action.hidden" id="{{ action.id }}" style="cursor: pointer" (click)="fire(action.action)">
           {{ action.title }}
         </a>
