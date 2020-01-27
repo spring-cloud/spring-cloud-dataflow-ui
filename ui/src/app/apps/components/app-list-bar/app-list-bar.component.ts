@@ -50,6 +50,11 @@ export class AppListBarComponent implements OnInit {
   @Input() actions: Array<object>;
 
   /**
+   * Copy of actions
+   */
+  _actions: Array<any>;
+
+  /**
    * Form
    */
   form = { q: '', type: null };
@@ -66,6 +71,7 @@ export class AppListBarComponent implements OnInit {
   ngOnInit() {
     this.form.q = this.params.q;
     this.form.type = this.params.type;
+    this._actions = this.actions;
   }
 
   /**
@@ -109,13 +115,13 @@ export class AppListBarComponent implements OnInit {
   }
 
   hasActions() {
-    if (!this.actions) {
+    if (!this._actions) {
       return false;
     }
-    if (this.actions.length === 0) {
+    if (this._actions.length === 0) {
       return false;
     }
-    if (this.actions.filter((ac) => !ac['hidden']).length === 0) {
+    if (this._actions.filter((ac) => !ac['hidden']).length === 0) {
       return false;
     }
     return true;
