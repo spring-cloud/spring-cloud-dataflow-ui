@@ -124,8 +124,8 @@ export class StreamGraphDefinitionComponent implements OnDestroy {
       const x = position.x + size.width / 2;
       const y = position.y + size.height + 7;
 
-      const diameter = 6;
-      const padding = 3;
+      const diameter = 14;
+      const padding = 4;
       const maxLanes = 2;
       // Calculate max number of dots that we can fit on one lane under the shape
       const maxDotsPerLine = Math.ceil((size.width - padding) / (padding + diameter));
