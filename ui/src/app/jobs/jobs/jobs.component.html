@@ -37,7 +37,7 @@
           {{ item.jobExecutionId }}
         </td>
         <td>
-          <a style="cursor: pointer" (click)="viewJob(item)">{{ item.name }}</a>
+          <a style="cursor: pointer;margin-right:10px;" (click)="viewJob(item)">{{ item.name }}</a>
           <app-definition-status [jobExecution]="item"></app-definition-status>
         </td>
         <td>
