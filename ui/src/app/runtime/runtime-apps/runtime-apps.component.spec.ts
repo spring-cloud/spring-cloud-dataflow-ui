@@ -62,7 +62,7 @@ describe('RuntimeAppsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RuntimeAppsComponent);
     component = fixture.componentInstance;
-    modalService = TestBed.get(BsModalService);
+    modalService = TestBed.inject(BsModalService);
   });
 
   it('should be created', () => {

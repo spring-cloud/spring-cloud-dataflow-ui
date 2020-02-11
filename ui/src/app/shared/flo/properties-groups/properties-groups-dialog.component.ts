@@ -3,10 +3,10 @@ import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 import { Properties } from 'spring-flo';
-import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
+import { PropertiesGroupModel, SearchTextFilter } from '../support/properties-group-model';
 import PropertiesSource = Properties.PropertiesSource;
-import {Subject} from "rxjs/index";
-import {debounceTime} from "rxjs/operators";
+import { Subject } from 'rxjs/index';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * Class to add group title to a model.
@@ -65,7 +65,7 @@ export class GroupPropertiesSources {
 @Component({
   selector: 'app-properties-groups-dialog-content',
   templateUrl: 'properties-groups-dialog.component.html',
-  styleUrls: [ 'properties-groups-dialog.component.scss' ],
+  styleUrls: ['properties-groups-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class PropertiesGroupsDialogComponent implements OnInit {
@@ -141,7 +141,7 @@ export class PropertiesGroupsDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text)
+    this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text);
   }
 
   setData(groupPropertiesSources: GroupPropertiesSources) {

@@ -107,7 +107,7 @@ describe('AppDetailsComponent', () => {
     component = fixture.componentInstance;
     notificationService.clearAll();
     appsService.mock = Object.assign({}, sourceMock);
-    modalService = TestBed.get(BsModalService);
+    modalService = TestBed.inject(BsModalService);
   });
 
   describe('Application properties', () => {

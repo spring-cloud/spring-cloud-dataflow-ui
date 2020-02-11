@@ -33,7 +33,7 @@ import { StreamGraphPropertiesSource } from './properties/stream-properties-sour
 import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 import * as _ from 'lodash';
 import { createPaletteGroupHeader } from '../../../shared/flo/support/shared-shapes';
-import {ViewUtils} from '../../../shared/flo/support/view-utils';
+import { ViewUtils } from '../../../shared/flo/support/view-utils';
 
 const joint: any = _joint;
 

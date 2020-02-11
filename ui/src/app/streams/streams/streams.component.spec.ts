@@ -113,11 +113,10 @@ describe('StreamsComponent', () => {
   }));
 
   beforeEach(() => {
-    modalService = TestBed.get(BsModalService);
+    modalService = TestBed.inject(BsModalService);
     fixture = TestBed.createComponent(StreamsComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
-    modalService = TestBed.get(BsModalService);
   });
 
   it('should be created', () => {

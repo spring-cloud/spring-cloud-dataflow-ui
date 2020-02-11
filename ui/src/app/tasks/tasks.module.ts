@@ -8,7 +8,7 @@ import { TasksService } from './tasks.service';
 import { TasksRoutingModule } from './tasks-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
-  BsDatepickerModule, BsDropdownModule, ModalModule, PopoverModule, TimepickerModule,
+  BsDropdownModule, ModalModule, PopoverModule, TimepickerModule,
   TooltipModule
 } from 'ngx-bootstrap';
 import { AuthModule } from '../auth/auth.module';
@@ -46,6 +46,8 @@ import { TasksUtilsComponent } from './tasks-utils/tasks-utils.component';
 import { TasksImportComponent } from './tasks-utils/tasks-import/tasks-import.component';
 import { TasksExportComponent } from './tasks-utils/tasks-export/tasks-export.component';
 import { TasksUtilsService } from './tasks-utils/tasks-utils.service';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 
 @NgModule({
   imports: [

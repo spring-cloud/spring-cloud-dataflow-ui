@@ -103,11 +103,10 @@ describe('TaskDefinitionsComponent', () => {
   }));
 
   beforeEach(() => {
-    modalService = TestBed.get(BsModalService);
+    modalService = TestBed.inject(BsModalService);
     fixture = TestBed.createComponent(TaskDefinitionsComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
-    modalService = TestBed.get(BsModalService);
   });
 
   it('should be created', () => {

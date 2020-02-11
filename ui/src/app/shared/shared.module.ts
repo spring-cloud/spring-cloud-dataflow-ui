@@ -84,7 +84,7 @@ import { TippyDirective } from './directives/tippy.directive';
       maxOpened: 6,
       enableHtml: true
     }),
-    LocalStorageModule.withConfig({
+    LocalStorageModule.forRoot({
       prefix: 'dataflow-',
       storageType: 'localStorage'
     })
