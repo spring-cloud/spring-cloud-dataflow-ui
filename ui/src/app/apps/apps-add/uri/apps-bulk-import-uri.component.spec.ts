@@ -70,7 +70,7 @@ describe('AppsBulkImportUriComponent', () => {
     fixture = TestBed.createComponent(AppsBulkImportUriComponent);
     component = fixture.componentInstance;
     notificationService.clearAll();
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
   });
 
   it('should be created', () => {

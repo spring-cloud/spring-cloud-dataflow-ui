@@ -110,7 +110,7 @@ export class StreamsService {
         }, () => {
           obs.next(true);
           obs.complete();
-        })
+        });
       } else {
         obs.next(true);
         obs.complete();

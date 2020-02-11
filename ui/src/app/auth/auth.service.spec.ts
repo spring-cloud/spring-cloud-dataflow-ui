@@ -5,13 +5,17 @@ import { of } from 'rxjs';
 
 describe('AuthService', () => {
 
+  let mockHttp;
+  let jsonData;
+  let authService;
+  
   beforeEach(() => {
-    this.mockHttp = {
+    mockHttp = {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post')
     };
-    this.jsonData = {
+    jsonData = {
       'authenticationEnabled': true,
       'authenticated': true,
       'username': 'foo',
@@ -29,18 +33,18 @@ describe('AuthService', () => {
 
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
-    this.authService = new AuthService(this.mockHttp, errorHandler, loggerService);
+    authService = new AuthService(mockHttp, errorHandler, loggerService);
   });
 
   describe('loadSecurityInfo', () => {
     it('should call the "security/info" REST endpoint', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
+      mockHttp.get.and.returnValue(of(jsonData));
 
-      expect(this.authService.securityInfo).toBeUndefined();
-      this.authService.loadSecurityInfo();
+      expect(authService.securityInfo).toBeUndefined();
+      authService.loadSecurityInfo();
 
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
       expect(httpUri).toEqual('/security/info');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
@@ -50,11 +54,11 @@ describe('AuthService', () => {
 
   describe('logout', () => {
     it('should call logout REST endpoint', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.authService.logout();
+      mockHttp.get.and.returnValue(of(jsonData));
+      authService.logout();
 
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
       expect(httpUri).toEqual('/dashboard/logout');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');

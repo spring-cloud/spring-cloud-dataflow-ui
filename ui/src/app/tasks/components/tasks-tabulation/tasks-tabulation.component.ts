@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, forkJoin, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TasksService } from '../../tasks.service';
-import { map, mergeMap, share } from 'rxjs/operators';
-import { Page } from '../../../shared/model/page';
-import { TaskDefinition } from '../../model/task-definition';
-import { TaskExecution } from '../../model/task-execution';
-import { TaskSchedule } from '../../model/task-schedule';
+import { map } from 'rxjs/operators';
 import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Router } from '@angular/router';

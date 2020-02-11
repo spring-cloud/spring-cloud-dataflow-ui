@@ -16,7 +16,7 @@ import { TaskPropertiesDialogComponent } from './properties/task-properties-dial
 import { TaskGraphPropertiesSource } from './properties/task-properties-source';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { createPaletteGroupHeader } from '../../../shared/flo/support/shared-shapes';
-import {ViewUtils} from '../../../shared/flo/support/view-utils';
+import { ViewUtils } from '../../../shared/flo/support/view-utils';
 
 const joint: any = _joint;
 

@@ -46,24 +46,29 @@ describe('ToolsService', () => {
     dsl: null,
     errors: []
   };
+  
+  let mockHttp;
+  let jsonData;
+  let toolsService;
+  
 
   beforeEach(() => {
-    this.mockHttp = {
+    mockHttp = {
       post: jasmine.createSpy('post')
     };
-    this.jsonData = {};
+    jsonData = {};
     const errorHandler = new ErrorHandler();
-    this.toolsService = new ToolsService(this.mockHttp, errorHandler);
+    toolsService = new ToolsService(mockHttp, errorHandler);
   });
 
   describe('parseTaskTextToGraph', () => {
     it('should call the tools service to parse dsl to graph', () => {
-      this.mockHttp.post.and.returnValue(of(this.jsonData));
-      this.toolsService.parseTaskTextToGraph('fakedsl');
+      mockHttp.post.and.returnValue(of(jsonData));
+      toolsService.parseTaskTextToGraph('fakedsl');
 
-      const httpUri1 = this.mockHttp.post.calls.mostRecent().args[0];
-      const body = this.mockHttp.post.calls.mostRecent().args[1];
-      const headerArgs1 = this.mockHttp.post.calls.mostRecent().args[2].headers;
+      const httpUri1 = mockHttp.post.calls.mostRecent().args[0];
+      const body = mockHttp.post.calls.mostRecent().args[1];
+      const headerArgs1 = mockHttp.post.calls.mostRecent().args[2].headers;
 
       expect(httpUri1).toEqual('/tools/parseTaskTextToGraph');
       expect(body).toEqual(`{"dsl":"fakedsl","name":"unknown"}`);
@@ -72,7 +77,7 @@ describe('ToolsService', () => {
 
     });
     it('empty DSL case', (done) => {
-      this.toolsService.parseTaskTextToGraph('').toPromise().then(result => {
+      toolsService.parseTaskTextToGraph('').toPromise().then(result => {
         expect(result.errors).toEqual([]);
         expect(result.dsl).toEqual('');
         expect(result.graph).toBeDefined();
@@ -83,7 +88,7 @@ describe('ToolsService', () => {
     });
     it('Multi-line DSL case', (done) => {
       const dsl = 'task ||\nanothertask';
-      this.toolsService.parseTaskTextToGraph(dsl).toPromise().then(result => {
+      toolsService.parseTaskTextToGraph(dsl).toPromise().then(result => {
         expect(result.errors).toBeDefined();
         expect(result.errors.length).toBe(1);
         expect(result.errors[0].position).toBe(0);
@@ -97,13 +102,13 @@ describe('ToolsService', () => {
 
   describe('convertTaskGraphToText', () => {
     it('should call the tools service to parse graph to dsl', () => {
-      this.mockHttp.post.and.returnValue(of(this.jsonData));
+      mockHttp.post.and.returnValue(of(jsonData));
       const graph = new Graph(new Array(), new Array());
-      this.toolsService.convertTaskGraphToText(graph);
+      toolsService.convertTaskGraphToText(graph);
 
-      const httpUri1 = this.mockHttp.post.calls.mostRecent().args[0];
-      const body = this.mockHttp.post.calls.mostRecent().args[1];
-      const headerArgs1 = this.mockHttp.post.calls.mostRecent().args[2].headers;
+      const httpUri1 = mockHttp.post.calls.mostRecent().args[0];
+      const body = mockHttp.post.calls.mostRecent().args[1];
+      const headerArgs1 = mockHttp.post.calls.mostRecent().args[2].headers;
 
       expect(httpUri1).toEqual('/tools/convertTaskGraphToText');
       expect(body).toEqual(`{"nodes":[],"links":[]}`);
@@ -114,9 +119,9 @@ describe('ToolsService', () => {
 
   describe('extractConversionData', () => {
     it('should do correct conversion', () => {
-      let taskConversion = this.toolsService.extractConversionData(CONVERSION_RESPONSE_1);
+      let taskConversion = toolsService.extractConversionData(CONVERSION_RESPONSE_1);
       expect(taskConversion.dsl).toBe('timestamp');
-      taskConversion = this.toolsService.extractConversionData(CONVERSION_RESPONSE_2);
+      taskConversion = toolsService.extractConversionData(CONVERSION_RESPONSE_2);
       expect(taskConversion.graph).toBeTruthy();
       expect(taskConversion.graph.nodes.length).toBe(3);
       expect(taskConversion.graph.links.length).toBe(2);
