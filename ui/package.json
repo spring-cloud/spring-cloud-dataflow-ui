@@ -46,7 +46,7 @@
     "npm-check-updates": "^4.0.1",
     "rxjs": "6.5.4",
     "sockjs-client": "1.4.0",
-    "spring-flo": "0.9.0",
+    "spring-flo": "https://github.com/spring-projects/spring-flo.git#angular9-plus",
     "stompjs": "2.3.3",
     "tippy.js": "5.2.0",
     "tslib": "1.10.0",
