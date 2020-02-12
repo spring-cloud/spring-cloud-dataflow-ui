@@ -20,7 +20,8 @@
     "protractor": "5.1.2",
     "typescript": "2.5.3",
     "@types/request": "^2.47.1",
-    "@types/request-promise-native": "^1.0.15"
+    "@types/request-promise-native": "^1.0.15",
+    "change-case": "^4.1.1"
   },
   "dependencies": {
     "request": "2.87.0",

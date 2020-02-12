@@ -61,7 +61,7 @@ fdescribe('E2E spec for apps page', () => {
    * - navigate to the bulk import and the register applications pages
    * - inform the user there is no application
    */
-  fdescribe('Initial state (no application register)', () => {
+  describe('Initial state (no application register)', () => {
 
     fit('should display apps title', async () => {
       await pageApps.navigateTo();
@@ -104,13 +104,13 @@ fdescribe('E2E spec for apps page', () => {
       expect(registerAppUrl).toEndWith('#/apps/add/register');
     });
 
-    fit('should navigate to the list app page', async () => {
+    it('should navigate to the list app page', async () => {
       await pageRegisterApps.getCancel().click();
       const currentUrl = await browser.getCurrentUrl();
       expect(currentUrl).toEndWith('#/apps');
     });
 
-    fit('should navigate to the bulk import page', async () => {
+    it('should navigate to the bulk import page', async () => {
       const emptyBox = await pageApps.getEmpty();
       await (emptyBox).all(by.css('a')).first().click();
       const currentUrl = await browser.getCurrentUrl();
@@ -121,7 +121,7 @@ fdescribe('E2E spec for apps page', () => {
       expect(registerAppUrl).toEndWith('#/apps/add/import-from-uri');
     });
 
-    fit('should navigate to the list app page', async () => {
+    it('should navigate to the list app page', async () => {
       await pageBulkImportUriApps.getCancel().click();
       const currentUrl = await browser.getCurrentUrl();
       expect(currentUrl).toEndWith('#/apps');
