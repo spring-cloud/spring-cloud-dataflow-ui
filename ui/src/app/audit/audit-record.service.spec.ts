@@ -7,16 +7,20 @@ import { of } from 'rxjs';
 
 describe('AuditRecordService', () => {
 
+  let mockHttp;
+  let jsonData;
+  let auditRecordService;
+
   beforeEach(() => {
 
-    this.mockHttp = {
+    mockHttp = {
       get: jasmine.createSpy('get')
     };
 
-    this.jsonData = {};
+    jsonData = {};
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
-    this.auditRecordService = new AuditRecordService(this.mockHttp, errorHandler, loggerService);
+    auditRecordService = new AuditRecordService(mockHttp, errorHandler, loggerService);
   });
 
   describe('getAuditRecords', () => {
@@ -39,10 +43,10 @@ describe('AuditRecordService', () => {
         order: 'ASC'
       };
 
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.auditRecordService.getAuditRecords(auditRecordListParams);
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
+      mockHttp.get.and.returnValue(of(jsonData));
+      auditRecordService.getAuditRecords(auditRecordListParams);
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
       expect(httpUri).toEqual('/audit-records');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
@@ -70,11 +74,11 @@ describe('AuditRecordService', () => {
         order: 'DESC'
       };
 
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.auditRecordService.getAuditRecords(auditRecordListParams);
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
-      const httpParams1 = this.mockHttp.get.calls.mostRecent().args[1].params;
+      mockHttp.get.and.returnValue(of(jsonData));
+      auditRecordService.getAuditRecords(auditRecordListParams);
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams1 = mockHttp.get.calls.mostRecent().args[1].params;
       expect(httpUri).toEqual('/audit-records');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
@@ -91,16 +95,16 @@ describe('AuditRecordService', () => {
   describe('loadAuditOperationTypes / loadAuditActionTypes', () => {
 
     it('should call the audit record service with the right url to get all audit operation types', () => {
-      this.mockHttp.get.and.returnValue(of({}));
-      this.auditRecordService.loadAuditOperationTypes();
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      mockHttp.get.and.returnValue(of({}));
+      auditRecordService.loadAuditOperationTypes();
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri).toEqual('/audit-records/audit-operation-types');
     });
 
     it('should call the audit record service with the right url to get all audit action types', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.auditRecordService.loadAuditActionTypes();
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      mockHttp.get.and.returnValue(of(jsonData));
+      auditRecordService.loadAuditActionTypes();
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri).toEqual('/audit-records/audit-action-types');
     });
 
@@ -109,9 +113,9 @@ describe('AuditRecordService', () => {
   describe('getAuditRecordDetails', () => {
 
     it('should call the audit record details service with the right url', () => {
-      this.mockHttp.get.and.returnValue(of({}));
-      this.auditRecordService.getAuditRecordDetails('foobar');
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
+      mockHttp.get.and.returnValue(of({}));
+      auditRecordService.getAuditRecordDetails('foobar');
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
       expect(httpUri).toEqual('/audit-records/foobar');
     });
 

@@ -7,54 +7,58 @@ import { of } from 'rxjs';
 
 describe('JobsService', () => {
 
+  let mockHttp;
+  let jsonData;
+  let jobsService;
+  
   beforeEach(() => {
 
-    this.mockHttp = {
+    mockHttp = {
       get: jasmine.createSpy('get'),
       put: jasmine.createSpy('put')
     };
 
-    this.jsonData = {};
+    jsonData = {};
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
-    this.jobsService = new JobsService(this.mockHttp, loggerService, errorHandler);
+    jobsService = new JobsService(mockHttp, loggerService, errorHandler);
   });
 
   describe('getJobExecutions', () => {
     it('should call the jobs service with the right url to get all job executions', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
+      mockHttp.get.and.returnValue(of(jsonData));
 
-      expect(this.jobsService.jobExecutions).toBeUndefined();
+      expect(jobsService.jobExecutions).toBeUndefined();
 
       const params = HttpUtils.getPaginationParams(0, 10);
 
-      this.jobsService.getJobExecutions({ page: 0, size: 10 });
+      jobsService.getJobExecutions({ page: 0, size: 10 });
 
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/thinexecutions', { params: params });
+      expect(mockHttp.get).toHaveBeenCalledWith('/jobs/thinexecutions', { params: params });
     });
   });
 
   describe('getJobExecution', () => {
     it('should call the jobs service with the right url to get job execution', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.jobsService.getJobExecution('1');
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1', {});
+      mockHttp.get.and.returnValue(of(jsonData));
+      jobsService.getJobExecution('1');
+      expect(mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1', {});
     });
   });
 
   describe('getStepExecution', () => {
     it('should call the jobs service with the right url to get step execution', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.jobsService.getStepExecution('1', '1');
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1/steps/1', {});
+      mockHttp.get.and.returnValue(of(jsonData));
+      jobsService.getStepExecution('1', '1');
+      expect(mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1/steps/1', {});
     });
   });
 
   describe('getStepExecutionProgress', () => {
     it('should call the jobs service with the right url to get step execution progress', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
-      this.jobsService.getStepExecutionProgress('1', '1');
-      expect(this.mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1/steps/1/progress', {});
+      mockHttp.get.and.returnValue(of(jsonData));
+      jobsService.getStepExecutionProgress('1', '1');
+      expect(mockHttp.get).toHaveBeenCalledWith('/jobs/executions/1/steps/1/progress', {});
     });
   });
 
@@ -63,11 +67,11 @@ describe('JobsService', () => {
       const jobExecution: JobExecution = new JobExecution();
       jobExecution.jobExecutionId = 1;
       jobExecution.name = 'foo';
-      this.mockHttp.put.and.returnValue(of(this.jsonData));
-      this.jobsService.restartJob(jobExecution);
+      mockHttp.put.and.returnValue(of(jsonData));
+      jobsService.restartJob(jobExecution);
 
-      const httpUri = this.mockHttp.put.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttp.put.calls.mostRecent().args[1].headers;
+      const httpUri = mockHttp.put.calls.mostRecent().args[0];
+      const headerArgs = mockHttp.put.calls.mostRecent().args[1].headers;
       expect(httpUri).toEqual('/jobs/executions/1?restart=true');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
@@ -80,11 +84,11 @@ describe('JobsService', () => {
       jobExecution.jobExecutionId = 1;
       jobExecution.name = 'foo';
 
-      this.mockHttp.put.and.returnValue(of(this.jsonData));
-      this.jobsService.stopJob(jobExecution);
+      mockHttp.put.and.returnValue(of(jsonData));
+      jobsService.stopJob(jobExecution);
 
-      const httpUri = this.mockHttp.put.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttp.put.calls.mostRecent().args[1].headers;
+      const httpUri = mockHttp.put.calls.mostRecent().args[0];
+      const headerArgs = mockHttp.put.calls.mostRecent().args[1].headers;
       expect(httpUri).toEqual('/jobs/executions/1?stop=true');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');

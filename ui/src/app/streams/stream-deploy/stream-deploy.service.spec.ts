@@ -14,25 +14,30 @@ import { of } from 'rxjs';
  */
 describe('StreamDeployService', () => {
 
+  let mockHttpSharedAppsService;
+  let mockHttpStreamsService;
+  let mockHttpAppsService;
+  let streamDeployService;
+  
   beforeEach(() => {
 
-    this.mockHttpSharedAppsService = {
+    mockHttpSharedAppsService = {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post')
     };
-    this.mockHttpStreamsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
-    this.mockHttpAppsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+    mockHttpStreamsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
+    mockHttpAppsService = jasmine.createSpyObj('mockHttp', ['delete', 'get', 'post']);
 
     const errorHandler = new ErrorHandler();
 
     const loggerService = new LoggerService();
-    const sharedAppsService = new SharedAppsService(this.mockHttpSharedAppsService, loggerService, errorHandler);
+    const sharedAppsService = new SharedAppsService(mockHttpSharedAppsService, loggerService, errorHandler);
     const workAroundService = new AppsWorkaroundService(sharedAppsService);
-    const streamsService = new StreamsService(this.mockHttpStreamsService, loggerService, errorHandler);
-    const appsService = new AppsService(this.mockHttpAppsService, errorHandler, loggerService, workAroundService, sharedAppsService);
+    const streamsService = new StreamsService(mockHttpStreamsService, loggerService, errorHandler);
+    const appsService = new AppsService(mockHttpAppsService, errorHandler, loggerService, workAroundService, sharedAppsService);
 
-    this.streamDeployService = new StreamDeployService(streamsService, sharedAppsService, appsService);
+    streamDeployService = new StreamDeployService(streamsService, sharedAppsService, appsService);
   });
 
   describe('app', () => {
@@ -40,13 +45,13 @@ describe('StreamDeployService', () => {
     it('should call the shared apps service with the right url to get a app details', () => {
       const applicationType = 'source';
       const applicationName = 'foo';
-      this.mockHttpSharedAppsService.get.and.returnValue(of({
+      mockHttpSharedAppsService.get.and.returnValue(of({
         options: []
       }));
-      this.streamDeployService.appDetails(applicationType, applicationName);
+      streamDeployService.appDetails(applicationType, applicationName);
 
-      const httpUri = this.mockHttpSharedAppsService.get.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttpSharedAppsService.get.calls.mostRecent().args[1].headers;
+      const httpUri = mockHttpSharedAppsService.get.calls.mostRecent().args[0];
+      const headerArgs = mockHttpSharedAppsService.get.calls.mostRecent().args[1].headers;
       expect(httpUri).toEqual('/apps/' + applicationType + '/' + applicationName);
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
@@ -56,7 +61,7 @@ describe('StreamDeployService', () => {
     it('should return an array of options formatted', () => {
       const applicationType = 'source';
       const applicationName = 'foo';
-      this.mockHttpSharedAppsService.get.and.returnValue(of({
+      mockHttpSharedAppsService.get.and.returnValue(of({
           name: applicationName,
           type: applicationType,
           options: [
@@ -74,7 +79,7 @@ describe('StreamDeployService', () => {
           ]
         })
       );
-      this.streamDeployService.appDetails(applicationType, applicationName).subscribe((options) => {
+      streamDeployService.appDetails(applicationType, applicationName).subscribe((options) => {
         expect(options.length).toBe(1);
         expect(options[0]['valueOptions'].length).toBe(7);
         expect(options[0]['valueOptions'][0]).toBe('NANOSECONDS');
@@ -95,7 +100,7 @@ describe('StreamDeployService', () => {
         'foo\'',
         'foo barr"'
       ].forEach((mock) => {
-        expect(this.streamDeployService.cleanValueProperties(mock)).toBe(mock);
+        expect(streamDeployService.cleanValueProperties(mock)).toBe(mock);
       });
     });
 
@@ -107,7 +112,7 @@ describe('StreamDeployService', () => {
         ['\"foo \' bar\"', 'foo \' bar'],
         ['\"foo \" bar\"', 'foo \" bar']
       ].forEach((mock) => {
-        expect(this.streamDeployService.cleanValueProperties(mock[0])).toBe(mock[1]);
+        expect(streamDeployService.cleanValueProperties(mock[0])).toBe(mock[1]);
       });
     });
 

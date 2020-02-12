@@ -5,34 +5,38 @@ import { of } from 'rxjs';
 
 describe('AboutService', () => {
 
+  let mockHttp;
+  let sharedAboutService;
+  let aboutService;
+
   const jsonData = {
-      'featureInfo':
+    'featureInfo':
       {
-          'streamsEnabled': true,
-          'tasksEnabled': true,
+        'streamsEnabled': true,
+        'tasksEnabled': true,
       },
-      'versionInfo':
+    'versionInfo':
       {
-          'implementation':
+        'implementation':
           {
-              'name': 'spring-cloud-dataflow-server-local',
-              'version': '1.2.3.BUILD-SNAPSHOT',
-              'checksumSha1': 'checksumSample1',
-              'checksumSha256': 'checksumSample256'
+            'name': 'spring-cloud-dataflow-server-local',
+            'version': '1.2.3.BUILD-SNAPSHOT',
+            'checksumSha1': 'checksumSample1',
+            'checksumSha256': 'checksumSample256'
           },
-          'core':
+        'core':
           {
-              'name': 'Spring Cloud Data Flow Core',
-              'version': '1.2.3.BUILD-SNAPSHOT',
-              'checksumSha1': 'checksumSample1',
-              'checksumSha256': 'checksumSample256'
+            'name': 'Spring Cloud Data Flow Core',
+            'version': '1.2.3.BUILD-SNAPSHOT',
+            'checksumSha1': 'checksumSample1',
+            'checksumSha256': 'checksumSample256'
           },
-          'dashboard':
+        'dashboard':
           {
-              'name': 'Spring Cloud Dataflow UI',
-              'version': '1.2.3.RELEASE',
-              'checksumSha1': 'checksumSample1',
-              'checksumSha256': 'checksumSample256'
+            'name': 'Spring Cloud Dataflow UI',
+            'version': '1.2.3.RELEASE',
+            'checksumSha1': 'checksumSample1',
+            'checksumSha256': 'checksumSample256'
           },
         'shell':
           {
@@ -42,84 +46,80 @@ describe('AboutService', () => {
             'checksumSha256': 'checksumSample256'
           }
       },
-      'securityInfo':
+    'securityInfo':
       {
-          'authenticationEnabled': false,
-          'authenticated': false,
-          'username': null,
-          'roles':
-          [
-          ]
+        'authenticationEnabled': false,
+        'authenticated': false,
+        'username': null,
+        'roles':
+          []
       },
-      'runtimeEnvironment':
+    'runtimeEnvironment':
       {
-          'appDeployer':
+        'appDeployer':
           {
-              'deployerImplementationVersion': '1.2.2.BUILD-SNAPSHOT',
-              'deployerName': 'LocalAppDeployer',
-              'deployerSpiVersion': '1.2.1.RELEASE',
-              'javaVersion': '1.8.0_60',
-              'platformApiVersion': 'Mac OS X 10.11.6',
-              'platformClientVersion': '10.11.6',
-              'platformHostVersion': '10.11.6',
-              'platformSpecificInfo':
-              {
-              },
-              'platformType': 'Local',
-              'springBootVersion': '1.5.4.RELEASE',
-              'springVersion': '4.3.9.RELEASE'
+            'deployerImplementationVersion': '1.2.2.BUILD-SNAPSHOT',
+            'deployerName': 'LocalAppDeployer',
+            'deployerSpiVersion': '1.2.1.RELEASE',
+            'javaVersion': '1.8.0_60',
+            'platformApiVersion': 'Mac OS X 10.11.6',
+            'platformClientVersion': '10.11.6',
+            'platformHostVersion': '10.11.6',
+            'platformSpecificInfo':
+              {},
+            'platformType': 'Local',
+            'springBootVersion': '1.5.4.RELEASE',
+            'springVersion': '4.3.9.RELEASE'
           },
-          'taskLaunchers':
+        'taskLaunchers':
           [{
-              'deployerImplementationVersion': '1.2.2.BUILD-SNAPSHOT',
-              'deployerName': 'LocalTaskLauncher',
-              'deployerSpiVersion': '1.2.1.RELEASE',
-              'javaVersion': '1.8.0_60',
-              'platformApiVersion': 'Mac OS X 10.11.6',
-              'platformClientVersion': '10.11.6',
-              'platformHostVersion': '10.11.6',
-              'platformSpecificInfo':
-              {
-              },
-              'platformType': 'Local',
-              'springBootVersion': '1.5.4.RELEASE',
-              'springVersion': '4.3.9.RELEASE'
+            'deployerImplementationVersion': '1.2.2.BUILD-SNAPSHOT',
+            'deployerName': 'LocalTaskLauncher',
+            'deployerSpiVersion': '1.2.1.RELEASE',
+            'javaVersion': '1.8.0_60',
+            'platformApiVersion': 'Mac OS X 10.11.6',
+            'platformClientVersion': '10.11.6',
+            'platformHostVersion': '10.11.6',
+            'platformSpecificInfo':
+              {},
+            'platformType': 'Local',
+            'springBootVersion': '1.5.4.RELEASE',
+            'springVersion': '4.3.9.RELEASE'
           }]
       },
-      '_links':
+    '_links':
       {
-          'self':
+        'self':
           {
-              'href': 'http://localhost:9393/about'
+            'href': 'http://localhost:9393/about'
           }
       }
-    };
+  };
 
   beforeEach(() => {
-    this.mockHttp = {
-        get: jasmine.createSpy('get'),
-      };
-    this.mockHttp.get.and.returnValue(of(jsonData));
+    mockHttp = {
+      get: jasmine.createSpy('get'),
+    };
+    mockHttp.get.and.returnValue(of(jsonData));
     const errorHandler = new ErrorHandler();
-    this.sharedAboutService = new SharedAboutService(this.mockHttp, errorHandler);
-    this.aboutService = new AboutService(this.sharedAboutService);
+    sharedAboutService = new SharedAboutService(mockHttp, errorHandler);
+    aboutService = new AboutService(sharedAboutService);
   });
 
   it('should call the about service with the right url', () => {
-    this.aboutService.getAboutInfo(true);
-
-    const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
-    const headerArgs = this.mockHttp.get.calls.mostRecent().args[1];
+    aboutService.getAboutInfo(true);
+    const httpUri = mockHttp.get.calls.mostRecent().args[0];
+    const headerArgs = mockHttp.get.calls.mostRecent().args[1];
     expect(httpUri).toEqual('/about');
     expect(headerArgs).toBeUndefined();
   });
 
   it('should return the correct json data', () => {
-    this.aboutService.getAboutInfo().toPromise().then(result => {
-      expect(JSON.stringify(result)).toBe(JSON.stringify(jsonData));
-    },
-    error => {
-      fail('The test should not have called the error handler.');
-    });
+    aboutService.getAboutInfo().toPromise().then(result => {
+        expect(JSON.stringify(result)).toBe(JSON.stringify(jsonData));
+      },
+      error => {
+        fail('The test should not have called the error handler.');
+      });
   });
 });

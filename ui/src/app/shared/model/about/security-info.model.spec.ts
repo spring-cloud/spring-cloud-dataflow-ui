@@ -2,32 +2,35 @@ import { SecurityInfo } from './security-info.model';
 
 describe('SecurityInfo', () => {
 
+  
   describe('hasAnyRoleOf', () => {
 
+    let securityInfo;
+    
     beforeEach(() => {
-      this.securityInfo = new SecurityInfo();
-      this.securityInfo.roles = ['VIEW', 'EDIT', 'MANAGE'];
+      securityInfo = new SecurityInfo();
+      securityInfo.roles = ['VIEW', 'EDIT', 'MANAGE'];
     });
 
     it('should have the VIEW role', () => {
-      expect(this.securityInfo.hasAnyRoleOf(['VIEW'])).toBe(true);
+      expect(securityInfo.hasAnyRoleOf(['VIEW'])).toBe(true);
     });
 
     it('should have not any role', () => {
-      this.securityInfo.roles = [];
-      expect(this.securityInfo.hasAnyRoleOf(['VIEW'])).toBe(false);
+      securityInfo.roles = [];
+      expect(securityInfo.hasAnyRoleOf(['VIEW'])).toBe(false);
     });
 
     it('should NOT have the NOTHING role', () => {
-      expect(this.securityInfo.hasAnyRoleOf(['NOTHING'])).toBe(false);
+      expect(securityInfo.hasAnyRoleOf(['NOTHING'])).toBe(false);
     });
 
     it('should have the VIEW role (2 roles passed-in)', () => {
-      expect(this.securityInfo.hasAnyRoleOf(['VIEW', 'SOMETHING_ELSE'])).toBe(true);
+      expect(securityInfo.hasAnyRoleOf(['VIEW', 'SOMETHING_ELSE'])).toBe(true);
     });
 
     it('should have the VIEW or EDIT role (3 roles passed-in, non-existing-role first)', () => {
-      expect(this.securityInfo.hasAnyRoleOf(['SOMETHING_ELSE', 'VIEW', 'EDIT'])).toBe(true);
+      expect(securityInfo.hasAnyRoleOf(['SOMETHING_ELSE', 'VIEW', 'EDIT'])).toBe(true);
     });
   });
 

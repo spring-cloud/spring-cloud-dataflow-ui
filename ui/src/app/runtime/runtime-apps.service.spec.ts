@@ -8,27 +8,29 @@ import { of } from 'rxjs';
 describe('RuntimeAppsService', () => {
 
   let runtimeAppsService: RuntimeAppsService;
+  let mockHttp;
+  let jsonData;
 
   beforeEach(() => {
-    this.mockHttp = {
+    mockHttp = {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post')
     };
-    this.jsonData = {};
+    jsonData = {};
     const errorHandler = new ErrorHandler();
-    runtimeAppsService = new RuntimeAppsService(this.mockHttp, errorHandler);
+    runtimeAppsService = new RuntimeAppsService(mockHttp, errorHandler);
   });
 
   describe('getRuntimeApps', () => {
 
     it('should call the runtime apps service with the right url to get apps', () => {
-      this.mockHttp.get.and.returnValue(of(this.jsonData));
+      mockHttp.get.and.returnValue(of(jsonData));
       runtimeAppsService.getRuntimeApps({page: 0, size: 10});
 
-      const httpUri = this.mockHttp.get.calls.mostRecent().args[0];
-      const headerArgs = this.mockHttp.get.calls.mostRecent().args[1].headers;
-      const httpParams = this.mockHttp.get.calls.mostRecent().args[1].params;
+      const httpUri = mockHttp.get.calls.mostRecent().args[0];
+      const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
+      const httpParams = mockHttp.get.calls.mostRecent().args[1].params;
       expect(httpUri).toEqual('/runtime/apps');
       expect(headerArgs).toBeUndefined();
       expect(httpParams.get('page')).toEqual('0');
@@ -37,7 +39,7 @@ describe('RuntimeAppsService', () => {
     });
 
     it('should parse the json', () => {
-      this.mockHttp.get.and.returnValue(of(RUNTIME_APPS));
+      mockHttp.get.and.returnValue(of(RUNTIME_APPS));
       runtimeAppsService.getRuntimeApps({page: 0, size: 10}).subscribe((page: Page<RuntimeApp>) => {
         expect(page.items.length).toBe(2);
       });
