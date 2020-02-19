@@ -23,6 +23,7 @@ import { Observable, Subject } from 'rxjs';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 
 @Component({
   selector: 'app-streams',
@@ -131,6 +132,11 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * Featured Info
    */
   grafanaEnabled = false;
+
+  /**
+   * Metrics
+   */
+  metricsEnabled = false;
 
   /**
    * Runtime Statuses Subscription
@@ -311,7 +317,10 @@ export class StreamsComponent implements OnInit, OnDestroy {
       this.grafanaEnabled = active;
     });
     this.appsState$ = this.appsService.appsState();
-    this.refresh();
+    this.sharedAboutService.getFeatureInfo().subscribe((feature: FeatureInfo) => {
+      this.metricsEnabled = feature.metricsEnabled;
+      this.refresh();
+    });
   }
 
   /**
@@ -372,7 +381,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
           this.changeCheckboxes();
           this.updateContext();
 
-          if (!this.timeSubscription) {
+          if (!this.timeSubscription && this.metricsEnabled) {
             this.loadStreamMetrics();
             this.timeSubscription = timer(0, 10 * 1000)
               .subscribe(() => {

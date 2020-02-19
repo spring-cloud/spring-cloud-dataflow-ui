@@ -50,6 +50,15 @@
             <span class="fa fa-close"></span>
           </strong>
         </div>
+        <div class="line">
+          <span>Metrics: </span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.metricsEnabled" id="metricsEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.metricsEnabled" id="metricsDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
       </div>
     </div>
 

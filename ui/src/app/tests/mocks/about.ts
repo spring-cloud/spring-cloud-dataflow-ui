@@ -107,6 +107,7 @@ export class MockAboutService {
     featureInfo.tasksEnabled = true;
     featureInfo.schedulesEnabled = true;
     featureInfo.grafanaEnabled = true;
+    featureInfo.metricsEnabled = true;
     return featureInfo;
   }
 
@@ -176,6 +177,7 @@ export class MockAboutService {
         dataFlowVersion.featureInfo.tasksEnabled = false;
         dataFlowVersion.featureInfo.schedulesEnabled = false;
         dataFlowVersion.featureInfo.grafanaEnabled = false;
+        dataFlowVersion.featureInfo.metricsEnabled = false;
       }
       if (!this._isPlatformSpecificInformationAvailable) {
         for (const taskLauncher of dataFlowVersion.runtimeEnvironment.taskLaunchers) {

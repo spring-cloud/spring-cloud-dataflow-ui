@@ -7,13 +7,15 @@ describe('FeatureInfo', () => {
         {
           "streamsEnabled": false,
           "grafanaEnabled": false,
-          "tasksEnabled": true
+          "tasksEnabled": true,
+          "metricsEnabled": true
         }
       `);
 
       const featureInfo = new FeatureInfo().deserialize(jsonFeatureInfo);
       expect(featureInfo.streamsEnabled).toBe(false);
       expect(featureInfo.tasksEnabled).toBe(true);
+      expect(featureInfo.metricsEnabled).toBe(true);
     });
   });
   describe('reset', () => {
@@ -23,20 +25,24 @@ describe('FeatureInfo', () => {
       expect(featureInfo.streamsEnabled).toBe(false);
       expect(featureInfo.tasksEnabled).toBe(false);
       expect(featureInfo.grafanaEnabled).toBe(false);
+      expect(featureInfo.metricsEnabled).toBe(false);
 
       featureInfo.streamsEnabled = true;
       featureInfo.tasksEnabled = true;
       featureInfo.grafanaEnabled = true;
+      featureInfo.metricsEnabled = true;
 
       expect(featureInfo.streamsEnabled).toBe(true);
       expect(featureInfo.tasksEnabled).toBe(true);
       expect(featureInfo.grafanaEnabled).toBe(true);
+      expect(featureInfo.metricsEnabled).toBe(true);
 
       featureInfo.reset();
 
       expect(featureInfo.streamsEnabled).toBe(false);
       expect(featureInfo.tasksEnabled).toBe(false);
       expect(featureInfo.grafanaEnabled).toBe(false);
+      expect(featureInfo.metricsEnabled).toBe(false);
     });
   });
   describe('isFeatureEnabled', () => {
@@ -46,16 +52,19 @@ describe('FeatureInfo', () => {
       featureInfo.streamsEnabled = true;
       featureInfo.tasksEnabled = true;
       featureInfo.grafanaEnabled = true;
+      featureInfo.metricsEnabled = true;
 
       expect(featureInfo.isFeatureEnabled('streamsEnabled')).toBe(true);
       expect(featureInfo.isFeatureEnabled('tasksEnabled')).toBe(true);
       expect(featureInfo.isFeatureEnabled('grafanaEnabled')).toBe(true);
+      expect(featureInfo.isFeatureEnabled('metricsEnabled')).toBe(true);
     });
     it('should show that the standard features are disabled by default', () => {
       const featureInfo = new FeatureInfo();
       expect(featureInfo.isFeatureEnabled('streamsEnabled')).toBe(false);
       expect(featureInfo.isFeatureEnabled('tasksEnabled')).toBe(false);
       expect(featureInfo.isFeatureEnabled('grafanaEnabled')).toBe(false);
+      expect(featureInfo.isFeatureEnabled('metricsEnabled')).toBe(false);
     });
     it('should show that unsupported features return false', () => {
       const featureInfo = new FeatureInfo();
