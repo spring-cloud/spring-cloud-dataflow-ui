@@ -83,7 +83,7 @@ export class MetamodelService implements Flo.Metamodel {
     const metamodel = new Map<string, Map<string, Flo.ElementMetadata>>();
     this.addOtherGroup(metamodel);
     this.request = new Promise(resolve => {
-      this.appsService.getApps({ page: 0, size: 1000 }).subscribe(
+      this.appsService.getApps({ page: 0, size: 10000 }).subscribe(
         data => {
           data.items.filter(item => {
             return item.type.toString() === ApplicationType[ApplicationType.app]

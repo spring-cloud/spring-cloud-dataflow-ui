@@ -115,7 +115,7 @@ export class AppsWorkaroundService {
 
   appVersions(appType: ApplicationType, appName: string): Observable<AppVersion[]> {
     return this.sharedAppsService
-      .getApps(new PageRequest(0, 1000), appType, appName, [{ sort: 'name', order: 'ASC' }, {
+      .getApps(new PageRequest(0, 10000), appType, appName, [{ sort: 'name', order: 'ASC' }, {
         sort: 'type',
         order: 'ASC'
       }])
@@ -133,7 +133,7 @@ export class AppsWorkaroundService {
 
   private run(): Observable<any> {
     return this.sharedAppsService
-      .getApps(new PageRequest(0, 1000), null, '', [{ sort: 'name', order: 'ASC' }, { sort: 'type', order: 'ASC' }])
+      .getApps(new PageRequest(0, 10000), null, '', [{ sort: 'name', order: 'ASC' }, { sort: 'type', order: 'ASC' }])
       .pipe(map(page => {
         page.items = page.items.sort((a, b) => a.name < b.name ? -1 : 1);
         return page;
