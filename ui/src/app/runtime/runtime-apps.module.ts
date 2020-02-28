@@ -7,13 +7,17 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ModalModule } from 'ngx-bootstrap';
 import { RuntimeAppComponent } from './runtime-app/runtime-app.component';
 import { RuntimeAppStateComponent } from './components/runtime-app-state/runtime-app-state.component';
+import { AppsModule } from '../apps/apps.module';
+import { StreamsModule } from '../streams/streams.module';
 
 @NgModule({
   imports: [
     RuntimeAppsRoutingModule,
     SharedModule,
     NgxPaginationModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    AppsModule,
+    StreamsModule
   ],
   declarations: [
     RuntimeAppsComponent,

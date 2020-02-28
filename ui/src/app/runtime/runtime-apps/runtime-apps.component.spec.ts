@@ -7,7 +7,7 @@ import { RuntimeAppsComponent } from './runtime-apps.component';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockRuntimeAppsService } from '../../tests/mocks/runtime';
 import { RuntimeAppsService } from '../runtime-apps.service';
-import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
+import { RUNTIME_SREAMS } from '../../tests/mocks/mock-data';
 import { RuntimeAppStateComponent } from '../components/runtime-app-state/runtime-app-state.component';
 import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -21,6 +21,8 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { AppsModule } from '../../apps/apps.module';
+import { StreamsModule } from '../../streams/streams.module';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
@@ -46,7 +48,9 @@ describe('RuntimeAppsComponent', () => {
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        AppsModule,
+        StreamsModule
       ],
       providers: [
         { provide: SharedAboutService, useValue: sharedAboutService },
@@ -74,19 +78,17 @@ describe('RuntimeAppsComponent', () => {
   describe('1 page', () => {
 
     beforeEach(() => {
-      runtimeAppsService.testRuntimeApps = RUNTIME_APPS;
+      runtimeAppsService.testRuntimeStreams = RUNTIME_SREAMS;
       fixture.detectChanges();
     });
 
     it('should populate runtime apps', () => {
-      const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#table tr td'));
-      expect(des.length).toBe(8);
-      expect(des[0].nativeElement.textContent).toContain('foostream.log');
-      expect(des[1].nativeElement.textContent).toContain('DEPLOYED');
-      expect(des[2].nativeElement.textContent).toContain('1');
-      expect(des[4].nativeElement.textContent).toContain('foostream.time');
-      expect(des[5].nativeElement.textContent).toContain('DEPLOYING');
-      expect(des[6].nativeElement.textContent).toContain('1');
+      const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#list .runtime-stream'));
+      expect(des.length).toBe(2);
+      expect(des[0].nativeElement.textContent).toContain('a1.log-v1');
+      expect(des[0].nativeElement.textContent).toContain('a1.time-v1');
+      expect(des[1].nativeElement.textContent).toContain('a2.log-v1');
+      expect(des[1].nativeElement.textContent).toContain('a2.time-v1');
     });
 
     it('should not display the pagination', () => {
@@ -94,20 +96,20 @@ describe('RuntimeAppsComponent', () => {
     });
 
     it('should call open modal', () => {
-      const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#table tr td'));
+      const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#list .runtime-stream a'));
       const mockBsModalRef =  new BsModalRef();
       mockBsModalRef.content = {
         open: () => of('testing')
       };
       const spy = spyOn(modalService, 'show').and.returnValue(mockBsModalRef);
 
-      des[3].query(By.css('.btn-default')).nativeElement.click();
+      des[0].nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith(RuntimeAppComponent, { class: 'modal-xl' });
     });
 
     it('should refresh the page', () => {
-      const spy = spyOn(component, 'loadRuntimeApps');
+      const spy = spyOn(component, 'loadRuntimeStreams');
       fixture.debugElement.query(By.css('button[name=refresh]')).nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();
@@ -118,15 +120,24 @@ describe('RuntimeAppsComponent', () => {
   describe('2 pages', () => {
 
     beforeEach(() => {
-      runtimeAppsService.testRuntimeApps = {
+      runtimeAppsService.testRuntimeStreams = {
         _embedded: {
-          appStatusResourceList: Array.from({ length: 10 }).map((a, index) => {
+          streamStatusResourceList: Array.from({ length: 15 }).map((a, index) => {
             return {
-              deploymentId: `foostream${{ index }}.time`,
-              state: `deploying`,
-              instances: { _embedded: { appInstanceStatusResourceList: [] } },
-              _links: { self: { href: `http://localhost:9393/runtime/apps/foostream${{ index }}.time` } }
-            };
+              name: `foo${index}.time`,
+              applications: {
+                _embedded: {
+                  appStatusResourceList: Array.from({ length: 2 }).map((b, index2) => {
+                    return {
+                      deploymentId: `foo${{ index2 }}.time`,
+                      state: `deploying`,
+                      instances: { _embedded: { appInstanceStatusResourceList: [] } },
+                      _links: { self: { href: `http://localhost:9393/runtime/streams/foo${index}.time-${{ index2 }}.time` } }
+                    };
+                  })
+                }
+              }
+            }
           })
         },
         page: {
@@ -141,14 +152,14 @@ describe('RuntimeAppsComponent', () => {
     });
 
     it('should refresh the page', () => {
-      const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
+      const spy = spyOn(runtimeAppsService, 'getRuntimeStreams');
       fixture.debugElement.query(By.css('button[name=refresh]')).nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith({ page: 0, size: 10 });
     });
 
     it('should navigation to the page 2', () => {
-      const spy = spyOn(runtimeAppsService, 'getRuntimeApps');
+      const spy = spyOn(runtimeAppsService, 'getRuntimeStreams');
       fixture.debugElement.queryAll(By.css('#pagination a'))[0].nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalledWith({ page: 1, size: 10 });
@@ -159,7 +170,7 @@ describe('RuntimeAppsComponent', () => {
   describe('No result', () => {
 
     beforeEach(() => {
-      runtimeAppsService.testRuntimeApps = {
+      runtimeAppsService.testRuntimeStreams = {
         page: {
           totalElements: 0,
           totalPages: 0,
@@ -176,11 +187,11 @@ describe('RuntimeAppsComponent', () => {
 
     it('should not display the table and the pagination', () => {
       expect(fixture.debugElement.query(By.css('#pagination'))).toBeNull();
-      expect(fixture.debugElement.query(By.css('#table'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('#list'))).toBeNull();
     });
 
     it('should refresh the result', () => {
-      const spy = spyOn(component, 'loadRuntimeApps');
+      const spy = spyOn(component, 'loadRuntimeStreams');
       fixture.debugElement.queryAll(By.css('#empty a'))[0].nativeElement.click();
       fixture.detectChanges();
       expect(spy).toHaveBeenCalled();

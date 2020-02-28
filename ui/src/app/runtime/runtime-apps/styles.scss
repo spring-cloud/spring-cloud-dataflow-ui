@@ -1,0 +1,54 @@
+$navy-1: #232B2F;
+$navy-9: #DFE5E8;
+$navy-11: #F5F6F7;
+$navy-5: #607580;
+
+.runtime-stream {
+  padding: 12px 0 22px;
+  border-bottom: 1px solid $navy-9;
+  h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    font-weight: normal;
+  }
+  .runtime-apps {
+    padding-top: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 8px 10px;
+
+    a.runtime-app {
+      border: 1px solid $navy-9;
+      cursor: pointer;
+      display: block;
+      color: $navy-1;
+      padding: 1rem 1.5rem;
+      transition: all .15s;
+      app-type {
+        margin-left: 4px;
+      }
+      h3 {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: $navy-1;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+        color: $navy-5;
+      }
+      &:hover {
+        text-decoration: none;
+        background: white;
+        transform: scale(1.02);
+        border-color: $navy-5;
+      }
+    }
+  }
+  &:last-child {
+    border: 0 none;
+  }
+}

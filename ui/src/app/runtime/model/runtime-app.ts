@@ -11,7 +11,7 @@ export class RuntimeApp {
   public deploymentId: string;
   public state: string;
   public instances: any;
-  public appInstances: RuntimeAppInstance[];
+  public appInstances: any;
 
   constructor(deploymentId: string,
               state: string,
@@ -23,10 +23,18 @@ export class RuntimeApp {
     this.appInstances = appInstances;
   }
 
+  public static fromJSON(input): RuntimeApp {
+    let instances = [];
+    if (input.instances._embedded.appInstanceStatusResourceList) {
+      instances = input.instances._embedded.appInstanceStatusResourceList;
+    }
+    return new RuntimeApp(input.deploymentId, input.state, input.instances, instances);
+  }
+
   public static pageFromJSON(input): Page<RuntimeApp> {
     const page = Page.fromJSON<RuntimeApp>(input);
     if (input && input._embedded && input._embedded.appStatusResourceList) {
-      page.items = (input._embedded.appStatusResourceList as RuntimeApp[]).map((item) => {
+      page.items = input._embedded.appStatusResourceList.map((item) => {
         if (!!item.instances._embedded && !!item.instances._embedded.appInstanceStatusResourceList) {
           item.appInstances = item.instances._embedded.appInstanceStatusResourceList;
         } else {

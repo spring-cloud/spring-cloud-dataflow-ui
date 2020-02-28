@@ -974,87 +974,203 @@ export const JOBS_EXECUTIONS_1_STEPS_1_PROGRESS = {
   }
 };
 
-export const RUNTIME_APPS = {
-  _embedded: {
-    appStatusResourceList: [
+export const RUNTIME_SREAMS = {
+  '_embedded': {
+    'streamStatusResourceList': [
       {
-        deploymentId: 'foostream.log',
-        state: 'deployed',
-        instances: {
-          _embedded: {
-            appInstanceStatusResourceList: [
+        'name': 'a1',
+        'applications': {
+          '_embedded': {
+            'appStatusResourceList': [
               {
-                instanceId: 'foostream.log-0',
-                state: 'deployed',
-                attributes: {
-                  guid: '36395',
-                  pid: '18337',
-                  port: '36395',
-                  stderr: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log/stderr_0.log',
-                  stdout: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log/stdout_0.log',
-                  url: 'https://127.0.1.1:36395',
-                  'working.dir': '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384837599/foostream.log'
+                'deploymentId': 'a1.log-v1',
+                'state': 'deployed',
+                'instances': {
+                  '_embedded': {
+                    'appInstanceStatusResourceList': [
+                      {
+                        'instanceId': 'a1.log-v1-0',
+                        'state': 'deployed',
+                        'attributes': {
+                          'guid': '39968',
+                          'pid': '41612',
+                          'port': '39968',
+                          'skipper.application.name': 'log',
+                          'skipper.release.name': 'a1',
+                          'skipper.release.version': '1',
+                          'stderr': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271871/a1.log-v1/stderr_0.log',
+                          'stdout': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271871/a1.log-v1/stdout_0.log',
+                          'url': 'http://10.104.14.168:39968',
+                          'working.dir': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271871/a1.log-v1'
+                        },
+                        'guid': '39968',
+                        '_links': {
+                          'self': {
+                            'href': 'http://localhost:9393/runtime/apps/a1.log-v1/instances/a1.log-v1-0'
+                          }
+                        }
+                      }
+                    ]
+                  }
                 },
-                _links: {
-                  self: {
-                    href: 'http://localhost:9393/runtime/apps/foostream.log/instances/foostream.log-0'
+                'name': 'log',
+                '_links': {
+                  'self': {
+                    'href': 'http://localhost:9393/runtime/apps/a1.log-v1'
+                  }
+                }
+              },
+              {
+                'deploymentId': 'a1.time-v1',
+                'state': 'deployed',
+                'instances': {
+                  '_embedded': {
+                    'appInstanceStatusResourceList': [
+                      {
+                        'instanceId': 'a1.time-v1-0',
+                        'state': 'deployed',
+                        'attributes': {
+                          'guid': '46740',
+                          'pid': '41611',
+                          'port': '46740',
+                          'skipper.application.name': 'time',
+                          'skipper.release.name': 'a1',
+                          'skipper.release.version': '1',
+                          'stderr': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271476/a1.time-v1/stderr_0.log',
+                          'stdout': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271476/a1.time-v1/stdout_0.log',
+                          'url': 'http://10.104.14.168:46740',
+                          'working.dir': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271476/a1.time-v1'
+                        },
+                        'guid': '46740',
+                        '_links': {
+                          'self': {
+                            'href': 'http://localhost:9393/runtime/apps/a1.time-v1/instances/a1.time-v1-0'
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                'name': 'time',
+                '_links': {
+                  'self': {
+                    'href': 'http://localhost:9393/runtime/apps/a1.time-v1'
                   }
                 }
               }
             ]
           }
         },
-        _links: {
-          self: {
-            href: 'http://localhost:9393/runtime/apps/foostream.log'
+        'version': '1',
+        '_links': {
+          'self': {
+            'href': 'http://localhost:9393/runtime/streams/a1'
           }
         }
       },
       {
-        deploymentId: 'foostream.time',
-        state: 'deploying',
-        instances: {
-          _embedded: {
-            appInstanceStatusResourceList: [
+        'name': 'a2',
+        'applications': {
+          '_embedded': {
+            'appStatusResourceList': [
               {
-                instanceId: 'foostream.time-0',
-                state: 'deployed',
-                attributes: {
-                  guid: '49401',
-                  pid: '18395',
-                  port: '49401',
-                  stderr: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time/stderr_0.log',
-                  stdout: '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time/stdout_0.log',
-                  url: 'https://127.0.1.1:49401',
-                  'working.dir': '/tmp/spring-cloud-dataflow-6123292284556332480/foostream-1503384843640/foostream.time'
+                'deploymentId': 'a2.log-v1',
+                'state': 'deployed',
+                'instances': {
+                  '_embedded': {
+                    'appInstanceStatusResourceList': [
+                      {
+                        'instanceId': 'a2.log-v1-0',
+                        'state': 'deployed',
+                        'attributes': {
+                          'guid': '39968',
+                          'pid': '41612',
+                          'port': '39968',
+                          'skipper.application.name': 'log',
+                          'skipper.release.name': 'a1',
+                          'skipper.release.version': '1',
+                          'stderr': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271871/a1.log-v1/stderr_0.log',
+                          'stdout': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271871/a1.log-v1/stdout_0.log',
+                          'url': 'http://10.104.14.168:39968',
+                          'working.dir': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271871/a1.log-v1'
+                        },
+                        'guid': '39968',
+                        '_links': {
+                          'self': {
+                            'href': 'http://localhost:9393/runtime/apps/a1.log-v1/instances/a1.log-v1-0'
+                          }
+                        }
+                      }
+                    ]
+                  }
                 },
-                _links: {
-                  self: {
-                    href: 'http://localhost:9393/runtime/apps/foostream.time/instances/foostream.time-0'
+                'name': 'log',
+                '_links': {
+                  'self': {
+                    'href': 'http://localhost:9393/runtime/apps/a1.log-v1'
+                  }
+                }
+              },
+              {
+                'deploymentId': 'a2.time-v1',
+                'state': 'deployed',
+                'instances': {
+                  '_embedded': {
+                    'appInstanceStatusResourceList': [
+                      {
+                        'instanceId': 'a1.time-v1-0',
+                        'state': 'deployed',
+                        'attributes': {
+                          'guid': '46740',
+                          'pid': '41611',
+                          'port': '46740',
+                          'skipper.application.name': 'time',
+                          'skipper.release.name': 'a1',
+                          'skipper.release.version': '1',
+                          'stderr': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271476/a1.time-v1/stderr_0.log',
+                          'stdout': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271476/a1.time-v1/stdout_0.log',
+                          'url': 'http://10.104.14.168:46740',
+                          'working.dir': '/var/folders/_p/csftb5612z33pgd9ltfbp0mr0000gn/T/1582815271476/a1.time-v1'
+                        },
+                        'guid': '46740',
+                        '_links': {
+                          'self': {
+                            'href': 'http://localhost:9393/runtime/apps/a1.time-v1/instances/a1.time-v1-0'
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                'name': 'time',
+                '_links': {
+                  'self': {
+                    'href': 'http://localhost:9393/runtime/apps/a1.time-v1'
                   }
                 }
               }
             ]
           }
         },
-        _links: {
-          self: {
-            href: 'http://localhost:9393/runtime/apps/foostream.time'
+        'version': '1',
+        '_links': {
+          'self': {
+            'href': 'http://localhost:9393/runtime/streams/a1'
           }
         }
       }
     ]
   },
-  _links: {
-    self: {
-      href: 'http://localhost:9393/runtime/apps?page=0&size=10'
+  '_links': {
+    'self': {
+      'href': 'http://localhost:9393/runtime/streams/a1,a2?page=0&size=20'
     }
   },
-  page: {
-    size: 2,
-    totalElements: 1,
-    totalPages: 1,
-    number: 0
+  'page': {
+    'size': 20,
+    'totalElements': 2,
+    'totalPages': 1,
+    'number': 0
   }
 };
 

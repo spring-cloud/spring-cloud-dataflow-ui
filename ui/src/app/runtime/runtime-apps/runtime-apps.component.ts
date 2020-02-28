@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
-import { Page } from '../../shared/model/page';
+import { Page } from '../../shared/model';
 import { RuntimeAppsService } from '../runtime-apps.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { RuntimeAppComponent } from '../runtime-app/runtime-app.component';
 import { PaginationParams } from '../../shared/components/shared.interface';
 import { RuntimeAppInstance } from '../model/runtime-app-instance';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { RuntimeStream } from '../model/runtime-stream';
 
 /**
  * Component that loads Runtime applications.
@@ -18,6 +19,7 @@ import { NotificationService } from '../../shared/services/notification.service'
  */
 @Component({
   selector: 'app-runtime-apps',
+  styleUrls: ['./styles.scss'],
   templateUrl: './runtime-apps.component.html',
 })
 export class RuntimeAppsComponent implements OnInit, OnDestroy {
@@ -25,7 +27,7 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
   /**
    * Observable of a runtime applications page
    */
-  runtimeApps$: Observable<Page<RuntimeApp>>;
+  runtimeStreams$: Observable<Page<RuntimeStream>>;
 
   /**
    * Pagination state
@@ -65,7 +67,7 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
    * Initialize
    */
   ngOnInit() {
-    this.loadRuntimeApps();
+    this.loadRuntimeStreams();
   }
 
   /**
@@ -118,11 +120,11 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
   /**
    * Load runtime applications, request the dedicate service
    */
-  loadRuntimeApps() {
+  loadRuntimeStreams() {
     this.grafanaSubscription = this.grafanaService.isAllowed().subscribe((active) => {
       this.grafanaEnabled = active;
     });
-    this.runtimeApps$ = this.runtimeAppsService.getRuntimeApps(this.pagination);
+    this.runtimeStreams$ = this.runtimeAppsService.getRuntimeStreams(this.pagination);
   }
 
 
@@ -133,7 +135,7 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
   changePaginationPager(params) {
     this.pagination.page = params.page;
     this.pagination.size = params.size;
-    this.loadRuntimeApps();
+    this.loadRuntimeStreams();
   }
 
   /**
