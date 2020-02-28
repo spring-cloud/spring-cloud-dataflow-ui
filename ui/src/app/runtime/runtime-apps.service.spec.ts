@@ -1,9 +1,9 @@
 import { ErrorHandler } from '../shared/model';
 import { RuntimeAppsService } from './runtime-apps.service';
-import { RUNTIME_APPS } from '../tests/mocks/mock-data';
-import { RuntimeApp } from './model/runtime-app';
+import { RUNTIME_SREAMS } from '../tests/mocks/mock-data';
 import { Page } from '../shared/model';
 import { of } from 'rxjs';
+import { RuntimeStream } from './model/runtime-stream';
 
 describe('RuntimeAppsService', () => {
 
@@ -26,12 +26,12 @@ describe('RuntimeAppsService', () => {
 
     it('should call the runtime apps service with the right url to get apps', () => {
       mockHttp.get.and.returnValue(of(jsonData));
-      runtimeAppsService.getRuntimeApps({page: 0, size: 10});
+      runtimeAppsService.getRuntimeStreams({ page: 0, size: 10 });
 
       const httpUri = mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
       const httpParams = mockHttp.get.calls.mostRecent().args[1].params;
-      expect(httpUri).toEqual('/runtime/apps');
+      expect(httpUri).toEqual('/runtime/streams');
       expect(headerArgs).toBeUndefined();
       expect(httpParams.get('page')).toEqual('0');
       expect(httpParams.get('size')).toEqual('10');
@@ -39,8 +39,8 @@ describe('RuntimeAppsService', () => {
     });
 
     it('should parse the json', () => {
-      mockHttp.get.and.returnValue(of(RUNTIME_APPS));
-      runtimeAppsService.getRuntimeApps({page: 0, size: 10}).subscribe((page: Page<RuntimeApp>) => {
+      mockHttp.get.and.returnValue(of(RUNTIME_SREAMS));
+      runtimeAppsService.getRuntimeStreams({ page: 0, size: 10 }).subscribe((page: Page<RuntimeStream>) => {
         expect(page.items.length).toBe(2);
       });
     });

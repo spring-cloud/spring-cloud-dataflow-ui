@@ -52,7 +52,6 @@ export class RuntimeAppComponent {
       .pipe(
         map((active) => {
           this.grafanaEnabled = active;
-          console.log(runtimeApp);
           return runtimeApp;
         })
       );

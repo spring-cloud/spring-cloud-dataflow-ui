@@ -4,13 +4,13 @@
  * @author Ilayaperumal Gopinathan
  */
 export class RuntimeAppInstance {
-    public instanceId: String;
-    public state: String;
+    public instanceId: string;
+    public state: string;
     public attributes: any;
 
     constructor(
-        instanceId: String,
-        state: String,
+        instanceId: string,
+        state: string,
         attributes: any) {
         this.instanceId = instanceId;
         this.state = state;

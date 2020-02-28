@@ -7,7 +7,7 @@ import { RuntimeAppsService } from '../runtime-apps.service';
 import { RuntimeAppStateComponent } from '../components/runtime-app-state/runtime-app-state.component';
 import { RuntimeAppComponent } from './runtime-app.component';
 import { By } from '@angular/platform-browser';
-import { RUNTIME_APPS } from '../../tests/mocks/mock-data';
+import { RUNTIME_SREAMS } from '../../tests/mocks/mock-data';
 import { RuntimeApp } from '../model/runtime-app';
 import { RuntimeAppInstance } from '../model/runtime-app-instance';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -31,7 +31,7 @@ describe('RuntimeAppComponent', () => {
   const runtimeAppsService = new MockRuntimeAppsService();
   const sharedAboutService = new MocksSharedAboutService();
   const bsModalRef = new BsModalRef();
-  const mock: any = RUNTIME_APPS;
+  const mock: any = RUNTIME_SREAMS;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -100,7 +100,7 @@ describe('RuntimeAppComponent', () => {
   describe('Modal cancel', () => {
 
     beforeEach(() => {
-      component.open(mock._embedded.appStatusResourceList[0] as RuntimeApp);
+      component.open(mock._embedded.streamStatusResourceList[0].applications._embedded.appStatusResourceList[0] as RuntimeApp);
       fixture.detectChanges();
     });
 

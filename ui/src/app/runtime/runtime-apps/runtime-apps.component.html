@@ -9,61 +9,48 @@
       This section shows the list of all running apps.
     </p>
 
-    <div *ngIf="runtimeApps$ | async as runtimeApps; else loading">
+    <div *ngIf="runtimeStreams$ | async as runtimeStreams; else loading">
 
-      <div class="list-bar" *ngIf="!(runtimeApps?.totalPages < 2 && runtimeApps.items.length === 0)">
-        <button name="refresh" class="btn btn-default btn-fa" (click)="loadRuntimeApps()" title="Refresh" type="button">
+      <div class="list-bar" *ngIf="!(runtimeStreams?.totalPages < 2 && runtimeStreams.items.length === 0)">
+        <button name="refresh" class="btn btn-default btn-fa" (click)="loadRuntimeStreams()" title="Refresh"
+                type="button">
           <span class="fa fa-refresh"></span>
           Refresh
         </button>
       </div>
 
-      <table id="table" *ngIf="runtimeApps.items.length > 0" class="table table-actions table-hover">
-        <thead>
-        <tr>
-          <th>App Id</th>
-          <th>Status</th>
-          <th># of Instances</th>
-          <th>&nbsp;</th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-template ngFor let-runtimeApp [ngForOf]="runtimeApps.items | paginate: runtimeApps.getPaginationInstance()">
-          <tr class="align-middle">
-            <td>
-              <a style="cursor: pointer" (click)="view(runtimeApp)">{{ runtimeApp.deploymentId }}</a>
-            </td>
-            <td>
-              <app-runtime-state [runtimeApp]="runtimeApp"></app-runtime-state>
-            </td>
-            <td>
-              <span *ngIf="runtimeApp.instances?._embedded?.appInstanceStatusResourceList?.length > 0">
-                {{ runtimeApp.instances._embedded.appInstanceStatusResourceList.length }}
-                <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length == 1">
-                  instance
-                </span>
-                <span *ngIf="runtimeApp.instances._embedded.appInstanceStatusResourceList.length > 1">
-                  instances
-                </span>
-              </span>
-            </td>
-            <td class="table-actions" width="10px" nowrap="">
-              <app-list-row-actions [item]="runtimeApp" (action)="applyAction($event.action, $event.args)"
-                                    [actions]="runtimeActions(runtimeApp, i)"></app-list-row-actions>
-            </td>
-          </tr>
+      <div *ngIf="runtimeStreams.items.length > 0" class="table table-actions table-hover" id="list">
+        <ng-template ngFor let-runtimeStream
+                     [ngForOf]="runtimeStreams.items | paginate: runtimeStreams.getPaginationInstance()">
+          <div class="runtime-stream">
+            <h2>Stream <strong>{{ runtimeStream.name }}</strong></h2>
+            <div class="runtime-apps">
+              <ng-template ngFor let-runtimeApp [ngForOf]="runtimeStream.apps">
+                <a class="runtime-app" (click)="view(runtimeApp)">
+                  <h3>
+                    {{ runtimeApp.deploymentId }}
+                    <app-stream-status [streamDefinition]="{status: runtimeApp.state}"></app-stream-status>
+                  </h3>
+                  <p>
+                    {{ runtimeApp.appInstances.length }}
+                    <span *ngIf="runtimeApp.appInstances.length > 1">instances</span>
+                    <span *ngIf="!(runtimeApp.appInstances.length > 1)">instance</span>
+                  </p>
+                </a>
+              </ng-template>
+            </div>
+          </div>
         </ng-template>
-        </tbody>
-      </table>
+      </div>
 
-      <app-list-pagination [page]="runtimeApps" [params]="pagination" (changed)="changePaginationPager($event)"
-                           [item]="'application runtime'" [items]="'application runtimes'">
+      <app-list-pagination [page]="runtimeStreams" [params]="pagination" (changed)="changePaginationPager($event)"
+                           [item]="'stream definition'" [items]="'stream definitions'">
       </app-list-pagination>
 
-      <app-list-empty [page]="runtimeApps" [filters]="[]">
+      <app-list-empty [page]="runtimeStreams" [filters]="[]">
         <p>There are <strong>no running applications</strong> currently available.</p>
         <p>
-          You can <a (click)="loadRuntimeApps()">Refresh</a> the page.
+          You can <a (click)="loadRuntimeStreams()">Refresh</a> the page.
         </p>
       </app-list-empty>
 
