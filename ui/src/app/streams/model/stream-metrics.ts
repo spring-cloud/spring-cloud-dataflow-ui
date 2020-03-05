@@ -18,20 +18,22 @@ export class InstanceStatus {
     instanceStatus.state = input.state;
     return instanceStatus;
   }
-
 }
 
 export class StreamStatus {
   name: string;
-  id: string;
+  deploymentId: string;
+  state: string;
   instances: InstanceStatus[];
 
   static fromJSON(input) {
     const streamStatus = new StreamStatus();
-    streamStatus.id = input.id;
+    streamStatus.deploymentId = input.deploymentId;
+    streamStatus.state = input.state;
     streamStatus.name = input.name;
-    if (Array.isArray(input.instances)) {
-      streamStatus.instances = input.instances.map(InstanceStatus.fromJSON);
+    if (input && input.instances && input.instances._embedded && input.instances._embedded.appInstanceStatusResourceList &&
+      Array.isArray(input.instances._embedded.appInstanceStatusResourceList)) {
+      streamStatus.instances = input.instances._embedded.appInstanceStatusResourceList.map(InstanceStatus.fromJSON);
     } else {
       streamStatus.instances = [];
     }
@@ -46,8 +48,9 @@ export class StreamStatuses {
   static fromJSON(input): StreamStatuses {
     const streamStatuses = new StreamStatuses();
     streamStatuses.name = input.name;
-    if (Array.isArray(input.applications)) {
-      streamStatuses.applications = input.applications.map(StreamStatus.fromJSON);
+    if (input.applications && input.applications._embedded && input.applications._embedded.appStatusResourceList &&
+      Array.isArray(input.applications._embedded.appStatusResourceList)) {
+      streamStatuses.applications = input.applications._embedded.appStatusResourceList.map(StreamStatus.fromJSON);
     } else {
       streamStatuses.applications = [];
     }
@@ -55,8 +58,9 @@ export class StreamStatuses {
   }
 
   static listFromJSON(input): Array<StreamStatuses> {
-    if (Array.isArray(input)) {
-      return input.map(StreamStatuses.fromJSON);
+    if (input && input._embedded && input._embedded.streamStatusResourceList
+      && Array.isArray(input._embedded.streamStatusResourceList)) {
+      return input._embedded.streamStatusResourceList.map(StreamStatuses.fromJSON);
     }
     return [];
   }

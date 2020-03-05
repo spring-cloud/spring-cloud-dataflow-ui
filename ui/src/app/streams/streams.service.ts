@@ -280,7 +280,7 @@ export class StreamsService {
    */
   getRuntimeStreamStatuses(streamNames?: string[]): Observable<StreamStatuses[]> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
-    let params = new HttpParams();
+    let params = HttpUtils.getPaginationParams(0, 100);
     if (streamNames) {
       params = params.append('names', streamNames.join(','));
     }
