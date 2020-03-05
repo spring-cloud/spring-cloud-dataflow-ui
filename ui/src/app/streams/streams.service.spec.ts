@@ -307,7 +307,7 @@ describe('StreamsService', () => {
       streamsService.getRuntimeStreamStatuses();
       const httpUri = mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
-      expect(httpUri).toEqual('/runtime/streams/status');
+      expect(httpUri).toEqual('/runtime/streams');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
     });
@@ -322,7 +322,7 @@ describe('StreamsService', () => {
       const httpUri = mockHttp.get.calls.mostRecent().args[0];
       const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
       const httpParams = mockHttp.get.calls.mostRecent().args[1].params;
-      expect(httpUri).toEqual('/runtime/streams/status');
+      expect(httpUri).toEqual('/runtime/streams');
       expect(headerArgs.get('Content-Type')).toEqual('application/json');
       expect(headerArgs.get('Accept')).toEqual('application/json');
       expect(httpParams.get('names')).toEqual('test1,test2');
