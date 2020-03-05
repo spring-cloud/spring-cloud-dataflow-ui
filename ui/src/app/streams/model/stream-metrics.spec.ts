@@ -45,16 +45,21 @@ describe('StreamStatus', () => {
   it('Deserialize general case', () => {
     const a = StreamStatus.fromJSON({
       name: 'my-app',
-      instances: [
-        {
-          guid: 'i1',
-          index: 0
-        },
-        {
-          guid: 'i2',
-          index: 1
-        },
-      ]
+
+      instances: {
+        _embedded: {
+          appInstanceStatusResourceList: [
+            {
+              guid: 'i1',
+              index: 0
+            },
+            {
+              guid: 'i2',
+              index: 1
+            },
+          ]
+        }
+      }
     });
     expect(a.name).toEqual('my-app');
 
@@ -77,16 +82,20 @@ describe('StreamStatuses', () => {
     expect(s.applications).toEqual([]);
   });
 
-  it ('General case for deserialize', () => {
+  it('General case for deserialize', () => {
     const s = StreamStatuses.fromJSON({
-      applications: [
-        {
-          name: 'app-1'
-        },
-        {
-          name: 'app-2'
+      applications: {
+        _embedded: {
+          appStatusResourceList: [
+            {
+              name: 'app-1'
+            },
+            {
+              name: 'app-2'
+            }
+          ]
         }
-      ]
+      },
     });
     expect(s.name).toBeUndefined();
     expect(s.applications.length).toEqual(2);

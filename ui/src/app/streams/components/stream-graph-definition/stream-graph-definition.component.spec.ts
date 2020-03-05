@@ -158,7 +158,11 @@ describe('StreamGraphDefinitionComponent', () => {
     }
     return StreamStatus.fromJSON({
       name: name,
-      instances: instances
+      instances: {
+        _embedded: {
+          appInstanceStatusResourceList: instances
+        }
+      }
     });
   }
 
