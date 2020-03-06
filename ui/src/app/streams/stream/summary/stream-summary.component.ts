@@ -93,10 +93,10 @@ export class StreamSummaryComponent implements OnInit {
                   logs: val.runtimes.map(runtime => {
                     let log = '';
                     if (logs && logs.hasOwnProperty('logs')) {
-                      log = logs.logs[runtime.id] ? logs.logs[runtime.id] : '';
+                      log = logs.logs[runtime.deploymentId] ? logs.logs[runtime.deploymentId] : '';
                     }
                     return {
-                      id: runtime.id,
+                      deploymentId: runtime.deploymentId,
                       log: log
                     };
                   })

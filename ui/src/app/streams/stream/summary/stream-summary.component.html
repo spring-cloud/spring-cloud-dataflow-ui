@@ -92,7 +92,7 @@
           <ng-template ngFor let-runtimeApp [ngForOf]="stream.runtimes">
             <tr class="align-middle">
               <td>
-                {{ runtimeApp.id }}
+                {{ runtimeApp.deploymentId }}
               </td>
               <td>
                 {{ runtimeApp.instances.length }}
@@ -117,13 +117,13 @@
           <div class="log-toolbar">
             <div dropdown class="dropdown">
               <a class="btn btn-default btn-dropdown" dropdownToggle>
-                <strong>{{ stream.logs[logSelectedIndex].id }}</strong>
+                <strong>{{ stream.logs[logSelectedIndex].deploymentId }}</strong>
                 <span class="caret"></span>
               </a>
-              <ul class="dropdown-menu" *dropdownMenu="">
+              <ul class="dropdown-menu" *dropdownMenu>
                 <ng-template ngFor let-runtimeApp [ngForOf]="stream.runtimes" let-i="index">
-                  <li [class.active]="stream.logs[logSelectedIndex].id === runtimeApp.id">
-                    <a (click)="changeLog(i)">{{ runtimeApp.id }}</a>
+                  <li [class.active]="stream.logs[logSelectedIndex].deploymentId === runtimeApp.deploymentId">
+                    <a (click)="changeLog(i)">{{ runtimeApp.deploymentId }}</a>
                   </li>
                 </ng-template>
               </ul>
