@@ -12,6 +12,7 @@ import { TaskLaunchParams } from '../components/tasks.interface';
 import { TaskLaunchValidator } from './task-launch.validator';
 import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { OrderParams } from '../../shared/components/shared.interface';
 
 /**
  * Component that provides a launcher of task.
@@ -67,6 +68,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
    * @param {TasksService} tasksService
    * @param {NotificationService} notificationService
    * @param {RoutingStateService} routingStateService
+   * @param {BlockerService} blockerService
    * @param {ActivatedRoute} route
    * @param {Router} router
    */
@@ -86,19 +88,46 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
     this.task$ = this.route.params
       .pipe(
         mergeMap(val => this.tasksService.getDefinition(val.id)),
+        mergeMap(val => this.tasksService.getTaskExecutions({
+          sort: 'TASK_EXECUTION_ID',
+          order: OrderParams.DESC,
+          page: 0,
+          size: 1,
+          q: val.name
+        }).pipe(
+          map(val2 => {
+            let parameters = '';
+            if (val2.items.length === 1) {
+              if (val2.items[0].deploymentProperties) {
+                parameters = Object.keys(val2.items[0].deploymentProperties).map(key => {
+                  if (val2.items[0].deploymentProperties[key] === '******') {
+                    return '';
+                  }
+                  return `${key}=${val2.items[0].deploymentProperties[key]}`;
+                })
+                  .filter(param => !!param)
+                  .join('\n');
+              }
+            }
+            return {
+              taskDefinition: val,
+              parameters
+            };
+          })
+        )),
         mergeMap(
           val => this.tasksService.getPlatforms()
             .pipe(map(val2 => {
               if (val2.length === 0) {
                 this.form = new FormGroup({
                   args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
-                  props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
+                  props: new FormControl(val.parameters, KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
                   platform: new FormControl('')
                 });
               } else {
                 this.form = new FormGroup({
                   args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
-                  props: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
+                  props: new FormControl(val.parameters, KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
                   platform: new FormControl('', Validators.required)
                 });
               }
@@ -106,7 +135,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
                 this.form.get('platform').setValue(val2[0].name);
               }
               return {
-                taskDefinition: val,
+                taskDefinition: val.taskDefinition,
                 platforms: val2
               };
             }))
