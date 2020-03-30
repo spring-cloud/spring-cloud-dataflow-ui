@@ -12,7 +12,6 @@ describe('AppsService', () => {
   let mockHttp;
   let appsService;
   let jsonData = {};
-  
   beforeEach(() => {
 
     mockHttp = {
@@ -45,7 +44,7 @@ describe('AppsService', () => {
 
     it('should call the unregisterAppVersion service with the right url to get all apps', () => {
       mockHttp.delete.and.returnValue(of(jsonData));
-      appsService.unregisterAppVersion({name: 'foo', type: 'bar'}, '1.0.0');
+      appsService.unregisterAppVersion({ name: 'foo', type: 'bar' }, '1.0.0');
       const httpUri1 = mockHttp.delete.calls.mostRecent().args[0];
       expect(httpUri1).toEqual('/apps/bar/foo/1.0.0');
     });
@@ -57,8 +56,8 @@ describe('AppsService', () => {
     it('should call the unregisterAppVersion service with the right url to get all apps', () => {
       mockHttp.delete.and.returnValue(of(jsonData));
       appsService.unregisterApps([
-        {name: 'foo', type: 'bar'},
-        {name: 'foo2', type: 'bar2'}
+        { name: 'foo', type: 'bar' },
+        { name: 'foo2', type: 'bar2' }
       ]);
       let httpUri = mockHttp.delete.calls.argsFor(0)[0];
       expect(httpUri).toEqual('/apps/bar/foo');
@@ -90,7 +89,7 @@ describe('AppsService', () => {
 
     it('should call the apps service with the right url to get all apps', () => {
 
-      const appRegistrationImport = {force: true, properties: [], uri: 'https://blubba'};
+      const appRegistrationImport = { force: true, properties: [], uri: 'https://blubba' };
       mockHttp.post.and.returnValue(of(true));
       appsService.bulkImportApps(appRegistrationImport);
 

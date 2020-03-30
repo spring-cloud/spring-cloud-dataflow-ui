@@ -38,6 +38,7 @@ import { AUDIT_RECORDS } from '../../tests/mocks/mock-data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AuditRecordComponent', () => {
 
@@ -71,6 +72,7 @@ describe('AuditRecordComponent', () => {
       imports: [
         FormsModule,
         NgxPaginationModule,
+        BrowserAnimationsModule,
         RouterTestingModule.withRoutes([]),
         TooltipModule.forRoot(),
         ModalModule.forRoot(),

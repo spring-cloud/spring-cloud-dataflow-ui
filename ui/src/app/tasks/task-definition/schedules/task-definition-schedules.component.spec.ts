@@ -34,6 +34,7 @@ import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
 import { TaskSchedule } from '../../model/task-schedule';
 import { TippyDirective } from '../../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link TaskDefinitionScheduleComponent}.
@@ -76,6 +77,7 @@ describe('TaskDefinitionScheduleComponent', () => {
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
+        BrowserAnimationsModule,
         TooltipModule.forRoot(),
         FormsModule,
         ReactiveFormsModule,

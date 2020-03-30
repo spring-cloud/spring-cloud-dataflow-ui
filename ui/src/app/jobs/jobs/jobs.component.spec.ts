@@ -29,6 +29,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -55,6 +56,7 @@ describe('JobsComponent', () => {
       imports: [
         NgxPaginationModule,
         FormsModule,
+        BrowserAnimationsModule,
         TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([]),
         BsDropdownModule.forRoot(),

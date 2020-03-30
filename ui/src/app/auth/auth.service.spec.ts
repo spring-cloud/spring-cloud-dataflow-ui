@@ -8,7 +8,6 @@ describe('AuthService', () => {
   let mockHttp;
   let jsonData;
   let authService;
-  
   beforeEach(() => {
     mockHttp = {
       delete: jasmine.createSpy('delete'),
@@ -20,16 +19,15 @@ describe('AuthService', () => {
       'authenticated': true,
       'username': 'foo',
       'roles':
-      [
-      ],
+        [],
       '_links':
-      {
-        'self':
-          {
-            'href': 'http://localhost:9393/security/info'
-          }
+        {
+          'self':
+            {
+              'href': 'http://localhost:9393/security/info'
+            }
         }
-      };
+    };
 
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();

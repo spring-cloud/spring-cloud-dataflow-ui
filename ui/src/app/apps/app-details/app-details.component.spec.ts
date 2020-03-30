@@ -34,6 +34,7 @@ import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link AppDetailsComponent}.
@@ -84,6 +85,7 @@ describe('AppDetailsComponent', () => {
         NgxPaginationModule,
         ReactiveFormsModule,
         FormsModule,
+        BrowserAnimationsModule,
         RouterTestingModule.withRoutes([])
       ],
       providers: [

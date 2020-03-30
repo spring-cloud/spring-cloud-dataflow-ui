@@ -18,7 +18,6 @@ describe('StreamDeployService', () => {
   let mockHttpStreamsService;
   let mockHttpAppsService;
   let streamDeployService;
-  
   beforeEach(() => {
 
     mockHttpSharedAppsService = {

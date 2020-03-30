@@ -8,7 +8,6 @@ describe('TasksService', () => {
   let mockHttp;
   let jsonData;
   let tasksService;
-  
   beforeEach(() => {
     mockHttp = {
       delete: jasmine.createSpy('delete'),

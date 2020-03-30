@@ -2,7 +2,7 @@ import { throwError } from 'rxjs';
 import { AppError, HttpAppError } from './error.model';
 import { LoggerService } from '../services/logger.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ErrorHandler {

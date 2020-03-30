@@ -10,12 +10,11 @@ describe('SharedAppsService', () => {
   let mockHttp;
   let jsonData;
   let sharedServices;
-  
   beforeEach(() => {
     mockHttp = {
       get: jasmine.createSpy('get')
     };
-    jsonData = { };
+    jsonData = {};
     const errorHandler = new ErrorHandler();
     const loggerService = new LoggerService();
     sharedServices = new SharedAppsService(mockHttp, loggerService, errorHandler);

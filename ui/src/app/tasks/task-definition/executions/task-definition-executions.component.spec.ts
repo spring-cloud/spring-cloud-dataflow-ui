@@ -33,6 +33,7 @@ import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
 import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
 import { MasterCheckboxComponent } from '../../../shared/components/master-checkbox.component';
 import { TippyDirective } from '../../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link TaskDefinitionExecutionsComponent}.
@@ -75,6 +76,7 @@ describe('TaskDefinitionExecutionsComponent', () => {
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
         FormsModule,
+        BrowserAnimationsModule,
         ReactiveFormsModule,
         TooltipModule.forRoot(),
         RouterTestingModule.withRoutes([])

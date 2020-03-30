@@ -7,6 +7,7 @@ import { MockToolsService } from '../../tests/mocks/mock-tools';
 import { TaskDefinitionCreateComponent } from './task-definition-create.component';
 import { LoggerService } from '../../shared/services/logger.service';
 import { TasksModule } from '../tasks.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link TaskDefinitionCreateComponent}.
@@ -28,6 +29,7 @@ describe('TaskCreateComposedTaskComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         TasksModule,
+        BrowserAnimationsModule,
         RouterTestingModule.withRoutes([]),
       ],
       providers: [
