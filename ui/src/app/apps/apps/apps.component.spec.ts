@@ -32,6 +32,7 @@ import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppListBarComponent } from 'src/app/apps/components/app-list-bar/app-list-bar.component';
 import { of } from 'rxjs';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppsComponent', () => {
 
@@ -69,6 +70,7 @@ describe('AppsComponent', () => {
         TooltipModule.forRoot(),
         ModalModule.forRoot(),
         PopoverModule.forRoot(),
+        BrowserAnimationsModule,
         BsDropdownModule.forRoot()
       ],
       providers: [

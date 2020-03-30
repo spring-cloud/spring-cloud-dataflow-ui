@@ -10,7 +10,6 @@ describe('JobsService', () => {
   let mockHttp;
   let jsonData;
   let jobsService;
-  
   beforeEach(() => {
 
     mockHttp = {

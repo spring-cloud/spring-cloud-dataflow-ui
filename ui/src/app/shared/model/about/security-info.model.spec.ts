@@ -2,11 +2,9 @@ import { SecurityInfo } from './security-info.model';
 
 describe('SecurityInfo', () => {
 
-  
   describe('hasAnyRoleOf', () => {
 
     let securityInfo;
-    
     beforeEach(() => {
       securityInfo = new SecurityInfo();
       securityInfo.roles = ['VIEW', 'EDIT', 'MANAGE'];

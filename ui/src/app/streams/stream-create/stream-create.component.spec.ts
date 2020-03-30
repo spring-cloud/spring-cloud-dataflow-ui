@@ -14,6 +14,7 @@ import { RoutingStateService } from '../../shared/services/routing-state.service
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';
 import { StreamsModule } from '../streams.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -39,6 +40,7 @@ describe('StreamCreateComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule,
         StreamsModule
       ],
       providers: [

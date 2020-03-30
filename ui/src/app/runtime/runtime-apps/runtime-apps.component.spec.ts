@@ -23,6 +23,7 @@ import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { AppsModule } from '../../apps/apps.module';
 import { StreamsModule } from '../../streams/streams.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('RuntimeAppsComponent', () => {
   let component: RuntimeAppsComponent;
@@ -45,6 +46,7 @@ describe('RuntimeAppsComponent', () => {
       ],
       imports: [
         FormsModule,
+        BrowserAnimationsModule,
         NgxPaginationModule,
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
@@ -97,7 +99,7 @@ describe('RuntimeAppsComponent', () => {
 
     it('should call open modal', () => {
       const des: DebugElement[] = fixture.debugElement.queryAll(By.css('#list .runtime-stream a'));
-      const mockBsModalRef =  new BsModalRef();
+      const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
         open: () => of('testing')
       };
@@ -137,7 +139,7 @@ describe('RuntimeAppsComponent', () => {
                   })
                 }
               }
-            }
+            };
           })
         },
         page: {

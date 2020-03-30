@@ -37,6 +37,7 @@ import { AppsService } from '../../apps/apps.service';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link TaskDefinitionsComponent}.
@@ -81,6 +82,7 @@ describe('TaskDefinitionsComponent', () => {
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
+        BrowserAnimationsModule,
         FormsModule,
         FloModule,
         ReactiveFormsModule,

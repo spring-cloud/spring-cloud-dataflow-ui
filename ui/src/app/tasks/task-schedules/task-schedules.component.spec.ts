@@ -38,6 +38,7 @@ import { AppsService } from '../../apps/apps.service';
 import { TaskSchedule } from '../model/task-schedule';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link TaskSchedulesComponent}.
@@ -83,6 +84,7 @@ describe('TaskSchedulesComponent', () => {
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
+        BrowserAnimationsModule,
         FormsModule,
         FloModule,
         ReactiveFormsModule,

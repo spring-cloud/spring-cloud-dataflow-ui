@@ -36,6 +36,7 @@ import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -79,6 +80,7 @@ describe('TaskExecutionsComponent', () => {
         PopoverModule.forRoot(),
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
+        BrowserAnimationsModule,
         FormsModule,
         FloModule,
         GrafanaModule,

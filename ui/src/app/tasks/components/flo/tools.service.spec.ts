@@ -46,11 +46,9 @@ describe('ToolsService', () => {
     dsl: null,
     errors: []
   };
-  
   let mockHttp;
   let jsonData;
   let toolsService;
-  
 
   beforeEach(() => {
     mockHttp = {
