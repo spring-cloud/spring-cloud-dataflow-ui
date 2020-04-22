@@ -414,8 +414,17 @@ export class TasksService {
    */
   getTaskExecutionLogs(taskExecution: TaskExecution): Observable<any> {
     const httpHeaders = HttpUtils.getDefaultHttpHeaders();
+    let platform = '';
+    if (taskExecution.arguments) {
+      taskExecution.arguments.forEach(arg => {
+        const split = arg.split('=');
+        if (split[0] === '--spring.cloud.data.flow.platformname') {
+          platform = `?platformName=${split[1]}`;
+        }
+      });
+    }
     return this.httpClient
-      .get<any>(`/tasks/logs/${taskExecution.externalExecutionId}`, { headers: httpHeaders })
+      .get<any>(`/tasks/logs/${taskExecution.externalExecutionId}${platform}`, { headers: httpHeaders })
       .pipe(
         catchError(this.errorHandler.handleError)
       );
