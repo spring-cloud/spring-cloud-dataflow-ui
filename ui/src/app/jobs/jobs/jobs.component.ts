@@ -132,6 +132,7 @@ export class JobsComponent implements OnInit, OnDestroy {
         icon: 'repeat',
         action: 'restart',
         title: 'Restart the job',
+        disabled: item.status?.toUpperCase() !== 'FAILED',
         hidden: !this.authService.securityInfo.canAccess(['ROLE_DEPLOY'])
       },
       {
