@@ -29,7 +29,7 @@ import { LoggerService } from '../../shared/services/logger.service';
 import { MockGroupRouteService } from '../../tests/mocks/group-route';
 import { GroupRouteService } from '../../shared/services/group-route.service';
 import { Observable, of } from 'rxjs';
-import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { MockAppsService } from '../../tests/mocks/apps';

@@ -15,7 +15,7 @@ import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DATAFLOW_PAGE } from '../../../shared/components/page/page.component';
-import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
 import { PagerComponent } from '../../../shared/components/pager/pager.component';
 import { TippyDirective } from '../../../shared/directives/tippy.directive';
 

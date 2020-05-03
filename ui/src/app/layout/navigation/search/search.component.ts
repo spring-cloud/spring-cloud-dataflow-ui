@@ -1,16 +1,16 @@
 import { Component, DoCheck, Input, OnInit, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { TasksService } from 'src/app/tasks/tasks.service';
-import { StreamsService } from 'src/app/streams/streams.service';
+import { StreamsService } from '../../../streams/streams.service';
 import { AppsService } from '../../../apps/apps.service';
-import { AppRegistration } from '../../../shared/model/app-registration.model';
-import { Page } from '../../../shared/model/page';
+import { AppRegistration } from '../../../shared/model';
+import { Page } from '../../../shared/model';
 import { StreamDefinition } from '../../../streams/model/stream-definition';
-import { TaskDefinition } from 'src/app/tasks/model/task-definition';
+import { TaskDefinition } from '../../../tasks/model/task-definition';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 import { OrderParams } from '../../../shared/components/shared.interface';
 import { map, debounceTime } from 'rxjs/operators';
+import { TasksService } from '../../../tasks/tasks.service';
 
 /**
  * Navigation Search component

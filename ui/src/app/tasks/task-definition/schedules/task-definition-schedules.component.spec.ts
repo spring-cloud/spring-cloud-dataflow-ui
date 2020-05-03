@@ -30,7 +30,7 @@ import { SortComponent } from '../../../shared/components/sort/sort.component';
 import { MasterCheckboxComponent } from '../../../shared/components/master-checkbox.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_PAGE } from '../../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
 import { TaskSchedule } from '../../model/task-schedule';
 import { TippyDirective } from '../../../shared/directives/tippy.directive';

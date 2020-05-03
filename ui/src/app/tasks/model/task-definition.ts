@@ -1,4 +1,4 @@
-import { Page } from 'src/app/shared/model';
+import { Page } from '../../shared/model';
 
 export class TaskDefinition {
 

@@ -13,7 +13,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { NotificationService } from '../../shared/services/notification.service';
-import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination';

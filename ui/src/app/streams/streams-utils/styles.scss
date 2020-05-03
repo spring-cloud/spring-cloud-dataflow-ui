@@ -1,5 +1,5 @@
 @import '../../../scss/pui-variables.scss';
-@import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
+// @import '../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins';
 
 div.dataflow-page-actions-sticky {
   position: sticky;
@@ -26,7 +26,7 @@ h3 {
   position: relative;
   cursor: pointer;
   border-radius: 3px;
-  @include transition(border-color .1s);
+  // @include transition(border-color .1s);
   span.filename {
     display: block;
     height: $h;
@@ -49,7 +49,7 @@ h3 {
     text-align: center;
     border-bottom-right-radius: 3px;
     border-top-right-radius: 3px;
-    @include transition(background-color .1s);
+    // @include transition(background-color .1s);
   }
   input {
     display: none;

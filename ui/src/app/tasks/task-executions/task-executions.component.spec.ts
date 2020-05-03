@@ -28,7 +28,7 @@ import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
-import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { AppsService } from '../../apps/apps.service';
 import { MockAppsService } from '../../tests/mocks/apps';

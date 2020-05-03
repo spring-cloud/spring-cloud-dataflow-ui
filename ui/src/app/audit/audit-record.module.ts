@@ -15,8 +15,8 @@ import { AuthModule } from '../auth/auth.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuditRecordListBarComponent } from './components/audit-record-list-bar/audit-record-list-bar.component';
 import { AuditRecordActionComponent } from './components/audit-record-action/audit-record-action.component';
-import { AuditRecordOperationComponent } from 'src/app/audit/components/audit-record-operation/audit-record-operation.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { AuditRecordOperationComponent } from './components/audit-record-operation/audit-record-operation.component';
 
 @NgModule({
   imports: [
