@@ -14,7 +14,7 @@
     "e2e-saucelabs-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-saucelabs.conf.js --prod",
     "e2e-browserstack-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-browserstack.conf.js --prod",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json -n \"Spring Cloud Data Flow Dashboard Documentation\"",
-    "mavenbuild-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeHeadless",
+    "mavenbuild-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeCustom",
     "mavenbuild-without-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../target/classes/public/dashboard --base-href /dashboard/",
     "mavenbuild": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeHeadless && --max_old_space_size=4096 node ./node_modules/@angular/cli/bin/ng build --prod --output-path ./../target/classes/public/dashboard --base-href /dashboard/",
     "bundle-report": "webpack-bundle-analyzer dist/stats.json",
