@@ -281,6 +281,7 @@ export class NodeHelper {
             ref: `.box`,
             refCx: 0,
             refCy: (i + 1) * separatingSpace,
+            r: PORT_RADIUS - 4,
             class: `port-inner-circle-${channel} flo-port-inner-circle`
           });
           node.attr(`.${channel}-label`, {
