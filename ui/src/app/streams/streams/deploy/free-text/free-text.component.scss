@@ -1,0 +1,74 @@
+
+.form-textarea {
+  $h: 400px;
+  border: 1px solid #ccc;
+  display: flex;
+  min-height: $h;
+  border-radius: 3px;
+  margin-top: .6rem;
+  overflow: auto;
+
+  div.numbers {
+    width: 50px;
+    min-height: $h;
+    background: var(--clr-global-app-background, #fafafa);
+    flex: 0 0 40px;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    padding: 10px 0 10px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+
+    .number {
+      display: block;
+      text-align: right;
+
+      span {
+        display: inline-block;
+        line-height: 18px;
+        padding: 3px 10px 0;
+
+        &.invalid {
+          background: var(--clr-forms-invalid-color, #c21d00);
+          color: var(--clr-forms-textarea-background-color, #fff);
+        }
+      }
+    }
+  }
+
+  textarea {
+    margin: 0;
+    overflow: hidden;
+    overflow-x: scroll;
+    white-space: nowrap;
+    border: 0 none;
+    border-radius: 0;
+    height: 20px;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    padding: 10px 10px 0;
+    width: 100%;
+    outline: none;
+
+    color: var(--clr-forms-text-color, #000);
+    background: var(--clr-forms-textarea-background-color, #fff);
+  }
+}
+
+.bar {
+  padding: .4rem 0;
+  .btn {
+    display: inline-block;
+    width: auto;
+    flex: none;
+  }
+}
+
+.btn-file {
+  width: auto;
+  flex: none;
+
+  input {
+    display: none;
+  }
+}

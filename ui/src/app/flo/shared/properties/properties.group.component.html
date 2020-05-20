@@ -1,0 +1,12 @@
+<div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading" class="properties-group-container"
+     [formGroup]="form">
+  <div
+    *ngIf="propertiesGroupModel.getControlsModels().length > 0 && controlModelsToDisplay.length === 0; else propertiesList"
+    class="no-matches-label">No results found.
+  </div>
+</div>
+
+<ng-template #propertiesList>
+  <clr-df-property *ngFor="let model of controlModelsToDisplay" [model]="model" [form]="form"
+               class="property-row"></clr-df-property>
+</ng-template>

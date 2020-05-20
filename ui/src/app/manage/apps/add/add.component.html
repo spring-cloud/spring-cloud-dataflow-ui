@@ -1,0 +1,31 @@
+<h1>Add application(s)</h1>
+<div>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco</p>
+</div>
+<clr-accordion>
+  <clr-accordion-panel>
+    <clr-accordion-title>Register one or more applications</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <app-add-register></app-add-register>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+  <clr-accordion-panel>
+    <clr-accordion-title>Import application coordinates from an HTTP URI location</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <app-add-uri></app-add-uri>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+  <clr-accordion-panel>
+    <clr-accordion-title>Import application coordinates from a properties file</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <app-add-props></app-add-props>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+  <clr-accordion-panel [clrAccordionPanelOpen]="true">
+    <clr-accordion-title>Import application starters from dataflow.spring.io.</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <app-add-website-starters></app-add-website-starters>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>

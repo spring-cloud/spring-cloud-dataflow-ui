@@ -1,0 +1,12 @@
+<div class="card dataflow-card" [class.active]="active">
+  <div class="card-header">
+    <a href="/#" (click)="toggle()">
+      <clr-icon class="icon" shape="angle"></clr-icon>
+      {{titleModal}}
+    </a>
+  </div>
+  <div class="card-block" *ngIf="active">
+    <ng-container [ngTemplateOutlet]="template"></ng-container>
+  </div>
+  <ng-content select="div.card-footer"></ng-content>
+</div>

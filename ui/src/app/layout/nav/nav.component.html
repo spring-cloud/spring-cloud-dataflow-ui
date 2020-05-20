@@ -1,0 +1,71 @@
+<clr-vertical-nav [clrVerticalNavCollapsible]="true">
+  <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="true">
+    <clr-icon shape="cloud-scale" clrVerticalNavIcon></clr-icon>
+    Streams
+    <clr-vertical-nav-group-children>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="streams/list">
+        Streams
+      </a>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="streams/runtime">
+        Runtime
+      </a>
+    </clr-vertical-nav-group-children>
+  </clr-vertical-nav-group>
+
+  <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="true">
+    <clr-icon shape="tasks" clrVerticalNavIcon></clr-icon>
+    Tasks / Jobs
+    <clr-vertical-nav-group-children>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="tasks-jobs/tasks">
+        Tasks
+      </a>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="tasks-jobs/task-executions">
+        Tasks executions
+      </a>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="tasks-jobs/job-executions">
+        Jobs executions
+      </a>
+    </clr-vertical-nav-group-children>
+  </clr-vertical-nav-group>
+
+  <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="false">
+    <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
+    Manage
+    <clr-vertical-nav-group-children>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="manage/apps">
+        Applications
+      </a>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="manage/records">
+        Records
+      </a>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="manage/import-export">
+        Import / Export
+      </a>
+
+    </clr-vertical-nav-group-children>
+  </clr-vertical-nav-group>
+</clr-vertical-nav>

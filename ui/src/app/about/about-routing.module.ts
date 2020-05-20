@@ -1,27 +1,23 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AboutComponent } from './about/about.component';
-import { AuthGuard } from '../auth/support/auth.guard';
+import { Routes, RouterModule } from '@angular/router';
+import { InfoComponent } from './info/info.component';
+import { SecurityGuard } from '../security/support/security.guard';
 
-const aboutRoutes: Routes = [
+
+const routes: Routes = [
   {
     path: 'about',
-    canActivate: [AuthGuard],
+    component: InfoComponent,
+    canActivate: [SecurityGuard],
     data: {
       authenticate: true,
-      roles: ['ROLE_VIEW']
+      roles: ['ROLE_VIEW'],
     },
-    children: [
-      {
-        path: '',
-        component: AboutComponent
-      }
-    ]
-  }
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(aboutRoutes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class AboutRoutingModule {

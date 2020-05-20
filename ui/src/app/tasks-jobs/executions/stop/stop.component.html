@@ -1,0 +1,13 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="execution">
+  <h3 class="modal-title">Confirm Stop Task Execution</h3>
+  <div class="modal-body">
+    <p>This action will stop the task execution <strong>{{execution.executionId}}</strong> (task
+      <strong>{{execution.taskName}}</strong>). Are you sure?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false">Cancel</button>
+    <button id="btn-stop" type="button" class="btn btn-primary" (click)="stop()">
+      Stop Task Execution(s)
+    </button>
+  </div>
+</clr-modal>

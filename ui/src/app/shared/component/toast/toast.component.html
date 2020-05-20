@@ -1,0 +1,26 @@
+<button *ngIf="options.closeButton" (click)="remove()" class="toast-close-button" aria-label="Close">
+  <clr-icon shape="times"></clr-icon>
+</button>
+
+<clr-icon *ngIf="toastPackage.toastType === 'toast-info'" shape="info-circle" class="toast-icon is-solid"></clr-icon>
+<clr-icon *ngIf="toastPackage.toastType === 'toast-error'" shape="exclamation-circle"
+          class="toast-icon is-solid"></clr-icon>
+<clr-icon *ngIf="toastPackage.toastType === 'toast-warning'" shape="exclamation-triangle"
+          class="toast-icon is-solid"></clr-icon>
+<clr-icon *ngIf="toastPackage.toastType === 'toast-success'" shape="check-circle"
+          class="toast-icon is-solid"></clr-icon>
+
+<div *ngIf="title" [class]="options.titleClass" [attr.aria-label]="title">
+  {{title}}
+  <ng-container *ngIf="duplicatesCount">[{{duplicatesCount + 1}}]</ng-container>
+</div>
+<div *ngIf="message && options.enableHtml" role="alertdialog" aria-live="polite"
+     [class]="options.messageClass" [innerHTML]="message">
+</div>
+<div *ngIf="message && !options.enableHtml" role="alertdialog" aria-live="polite"
+     [class]="options.messageClass" [attr.aria-label]="message">
+  {{message}}
+</div>
+<div *ngIf="options.progressBar">
+  <div class="toast-progress" [style.width]="width + '%'"></div>
+</div>

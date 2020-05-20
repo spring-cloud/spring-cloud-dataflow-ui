@@ -1,35 +1,370 @@
+/* You can add global styles to this file, and also import other style files */
 
-// Bootstrap
-@import 'scss/pui-variables';
-@import '../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap';
-@import 'scss/pui-variables';
-
-// Flo
 @import '../node_modules/spring-flo/dist/flo.css';
+@import 'app/flo/shared/flo.scss';
 
-// Font awesome
-@import '../node_modules/@compodoc/compodoc/src/resources/styles/font-awesome.min.css';
+h1 {
+  margin-top: 0;
+}
 
-// Components
-@import 'scss/components/http-loader';
-@import 'scss/components/blocker';
-@import 'scss/components/forms';
-@import 'scss/components/select';
-@import 'scss/components/spinner';
-@import 'scss/components/toastr';
-@import 'scss/components/modal';
-@import 'scss/components/buttons';
-@import 'scss/components/datepicker';
-@import 'scss/components/timepicker';
-@import 'scss/components/tippy';
+.datagrid-action-bar {
+  margin-top: .6rem;
+}
 
-// Application styles
-@import 'scss/styles';
+.key-value-wrapper {
+  .clr-input-wrapper, .key-value-wrapper .clr-input {
+    max-height: none;
+    height: auto;
+    border-bottom: 0 none;
+  }
 
-// Layout
-@import 'scss/layout/typo';
-@import 'scss/layout/content';
-@import 'scss/layout/footer';
-@import 'scss/layout/table';
-@import 'scss/layout/sidebar';
+  clr-control-helper {
+    pre {
+      display: inline-block;
+      margin: 0.1rem 0;
+      padding: 0.2rem;
 
+      code {
+        border: 0 none;
+        padding: 0;
+        border-radius: 0;
+      }
+    }
+
+    code {
+      border: 1px solid var(--clr-color-neutral-400, #cccccc);
+      border-radius: 2px;
+      padding: 0 .2rem;
+    }
+  }
+
+  .clr-error {
+    code {
+      border: 1px solid var(--clr-color-danger-300, #c21d00);
+      border-radius: 2px;
+      padding: 0 .2rem;
+    }
+  }
+}
+
+.key-value-wrapper {
+  clr-icon {
+    vertical-align: top;
+  }
+}
+
+.clr-log {
+  padding: 1rem 0;
+
+  pre {
+    overflow: scroll;
+    background: var(--clr-header-6-bg-color, #00364d);
+    padding: 1rem;
+    color: var(--clr-header-title-color, #fafafa);
+    border: 0 none;
+    margin: 0;
+  }
+}
+
+.logo {
+  height: 30px;
+  width: 42px;
+  color: white;
+  margin-right: 16px;
+}
+
+.toast-container {
+  pointer-events: none;
+  position: fixed;
+  z-index: 999999;
+  top: 82px;
+  right: 12px;
+}
+
+.branding {
+  width: 240px;
+}
+
+.datagrid-row .datagrid-row-sticky {
+  div.datagrid-cell + div.datagrid-cell {
+    position: relative;
+
+    &:after {
+      content: ' ';
+      width: 1px;
+      position: absolute;
+      right: 0;
+      top: 4px;
+      bottom: 6px;
+      height: auto;
+      background-color: var(--clr-table-border-color, #cccccc);
+    }
+
+    &:before {
+      content: ' ';
+      width: 1px;
+      position: absolute;
+      left: 0;
+      top: 4px;
+      height: 30px;
+      background-color: var(--clr-table-border-color, #cccccc);
+    }
+  }
+}
+
+a:link, a:visited {
+  color: #0072a3;
+  color: var(--clr-link-color, #0072a3);
+}
+
+.label-uppercase {
+  text-transform: uppercase;
+}
+
+.stream-flo-view, .task-flo-view {
+  height: 300px;
+  overflow: hidden;
+
+  #paper {
+    overflow: hidden !important;
+    background-color: transparent;
+
+    &:focus, &:active {
+      border: 0 none;
+      outline: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  #paper-container {
+    background-color: transparent;
+  }
+
+  .canvas {
+    border: 0 none;
+    margin: 0;
+  }
+
+  .flow-view {
+    height: 300px;
+    overflow: hidden;
+  }
+}
+
+.datagrid-row-detail {
+  border-top: 1px dashed var(--clr-table-border-color, #cccccc);
+  padding: 0;
+  margin: 0 .4rem;
+}
+
+.clr-detail-flo {
+  display: block;
+  height: 300px;
+  width: 100%;
+}
+
+.dsl-text {
+  background: var(--clr-label-info-bg-color, #e3f5fc);
+  color: var(--clr-label-info-font-color, #00567a);
+  padding: .3rem .5rem;
+  border-radius: 3px;
+  display: inline-block;
+  line-height: .6rem;
+  margin-top: -3px;
+}
+
+.dsl-truncate {
+  max-width: 100%;
+  overflow: hidden;
+  height: 26px;
+  white-space: nowrap;
+  line-height: 22px;
+  padding: 0.1rem 0.5rem;
+  text-overflow: ellipsis;
+}
+
+.text-truncate {
+  max-width: 100%;
+  overflow: hidden;
+  height: 24px;
+  white-space: nowrap;
+  line-height: 19px;
+  padding: 0;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.datagrid-scrolling-cells {
+  height: 42px;
+}
+
+.clr-datagrid-no-fixed-height {
+  .datagrid-scrolling-cells {
+    height: auto;
+  }
+}
+
+.clr-accordion-content {
+  background-color: var(--clr-global-app-background, #fafafa);
+  border-color: var(--clr-accordion-border-color, #cccccc);
+}
+
+.modal-fixed {
+  .modal {
+    justify-content: start;
+  }
+}
+
+// App Labels
+.label-app {
+  text-transform: uppercase;
+
+  &.source {
+    background: var(--clr-custom-app-label-source-bg, hsl(198, 80%, 46%));
+    border-color: var(--clr-custom-app-label-source-bg, hsl(198, 80%, 46%));
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.sink {
+    background: var(--clr-custom-app-label-sink-bg, hsl(46, 100%, 45%));
+    border-color: var(--clr-custom-app-label-sink-bg, hsl(46, 100%, 45%));
+    color: var(--clr-custom-app-label-sink-text, white);
+  }
+
+  &.processor {
+    background: var(--clr-custom-app-label-processor-bg, hsl(93, 67%, 38%));
+    border-color: var(--clr-custom-app-label-processor-bg, hsl(93, 67%, 38%));
+    color: var(--clr-custom-app-label-processor-text, white);
+  }
+
+  &.app {
+    background: var(--clr-custom-app-label-app-bg, hsl(282, 43%, 54%));
+    border-color: var(--clr-custom-app-label-app-bg, hsl(282, 43%, 54%));
+    color: var(--clr-custom-app-label-app-text, white);
+  }
+
+  &.task {
+    background: var(--clr-custom-app-label-task-bg, #dc5a4f);
+    border-color: var(--clr-custom-app-label-task-bg, #dc5a4f);
+    color: var(--clr-custom-app-label-task-text, white);
+  }
+}
+
+.card-block-keyvalue {
+  .row {
+    padding: .2rem 0;
+    display: flex;
+
+    .key {
+      min-width: 120px;
+      max-width: 120px;
+      font-weight: bold;
+    }
+
+    .value {
+      word-break: break-all;
+    }
+  }
+  &.lg-key {
+    .key {
+      min-width: 220px;
+      max-width: 220px;
+      font-weight: bold;
+    }
+  }
+
+  .list-item {
+    padding: .4rem 0;
+    border-bottom: 1px solid var(--clr-card-border-color, #dedede);
+
+    &:last-child {
+      border-bottom: 0 none;
+    }
+
+    h4 {
+      padding: .2rem 0;
+      margin: 0;
+      font-size: 15px;
+    }
+  }
+}
+
+.dataflow-card {
+  .card-header {
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    a {
+      text-decoration: none;
+    }
+    .icon {
+      transition: transform .15s;
+      transform: rotate(90deg);
+    }
+  }
+  &.active {
+    .card-header {
+      .icon {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+.clr-vertical-nav-bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.register-item, .register-item-empty {
+  border: 1px solid var(--clr-card-border-color, #dedede);
+  padding: 0 1rem 1rem 1rem;
+  margin: 2rem 0 0 0;
+}
+
+.register-item-empty {
+  text-align: center;
+  min-height: 150px;
+  align-items: center;
+  display: flex;
+  .btn {
+    margin: 0 auto;
+  }
+}
+
+.clr-accordion-footer {
+  padding: 1rem 0;
+}
+
+.clr-file-input-wrapper {
+  input {
+    display: none;
+  }
+  label {
+    display: inline-block;
+    border-bottom: 1px solid var(--clr-forms-border-color,#b3b3b3);
+    padding-bottom: 1px;
+  }
+  span.filename {
+    display: inline-block;
+    vertical-align: middle;
+    width: 200px;
+    .text-truncate {
+      height: 22px;
+    }
+  }
+  span.btn {
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+  }
+}
+
+.title-select {
+  padding-top: 1rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid var(--clr-forms-border-color,#b3b3b3);
+}

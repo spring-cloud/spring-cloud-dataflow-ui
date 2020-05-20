@@ -1,0 +1,212 @@
+<h1>
+  Stream <strong>{{stream?.name}}</strong>&nbsp;
+  <span *ngIf="stream?.status" class="label label-{{stream.statusColor()}}">{{stream.status}}</span>
+</h1>
+<div *ngIf="!loading">
+  <div class="datagrid-action-bar">
+    <button *ngIf="stream.status === 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()">
+      Deploy stream
+    </button>
+    <button *ngIf="stream.status !== 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()">
+      Update stream
+    </button>
+    <button *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
+            type="button" class="btn btn-sm btn-secondary" (click)="undeploy()">
+      Undeploy stream
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()">
+      Destroy stream
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary"
+            grafanaDashboardStream [stream]="stream">
+      Grafana Dashboard
+    </button>
+  </div>
+
+  <div class="clr-row">
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
+      <app-view-card titleModal="Informations" name="{{stream.name}}" keyContext="stream" id="info">
+        <ng-template>
+          <div class="block card-block-keyvalue">
+            <div *ngIf="stream.description" class="row">
+              <div class="key">Description</div>
+              <div class="value">{{stream.description}}</div>
+            </div>
+            <div class="row">
+              <div class="key">Definition</div>
+              <div class="value"><span class="dsl-text">{{stream.dslText}}</span></div>
+            </div>
+            <div class="row">
+              <div class="key">Status</div>
+              <div class="value"><span class="label label-{{stream.statusColor()}}">{{stream.status}}</span></div>
+            </div>
+            <div class="row">
+              <div class="key">Applications</div>
+              <div class="value">
+                <div *ngFor="let app of applications">
+                  <strong>{{app.name}}</strong>&nbsp;
+                  <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </app-view-card>
+    </div>
+
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" *ngIf="streamsRelated.length > 1">
+      <app-view-card titleModal="Related stream(s)" name="{{stream.name}}" keyContext="stream" id="related">
+        <ng-template>
+          <div class="block card-block-keyvalue">
+            <div *ngFor="let related of streamsRelated" class="clr-row list-item">
+              <div class="clr-col-xl-4">
+                <a routerLink="/streams/list/{{related.name}}" class="text-truncate">{{related.name}}</a>
+              </div>
+              <div class="clr-col-xl-5"><span class="dsl-text dsl-truncate">{{related.dslText}}</span></div>
+              <div class="clr-col-xl-2">
+                <span class="label label-{{related.statusColor()}}">{{related.status}}</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </app-view-card>
+    </div>
+
+    <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
+      <app-view-card name="{{stream.name}}" keyContext="stream" id="visualize" titleModal="Visualize">
+        <ng-template>
+          <app-stream-flo-view [id]="stream.name" class="stream-details"></app-stream-flo-view>
+        </ng-template>
+      </app-view-card>
+    </div>
+
+
+    <div class="clr-col-xl-6 clr-col-lg-12 clr-col-md-12 clr-col-12" *ngIf="canShowDeploymentInfo()">
+      <app-view-card titleModal="Deployment Info" keyContext="stream" name="{{stream.name}}" id="deploymentInfo">
+        <ng-template>
+          <div class="block card-block-keyvalue">
+            <div *ngIf="!loadingDeploymentInfo">
+              <div *ngFor="let app of stream.deploymentProperties | keyvalue" class="list-item">
+                <h4>
+                  <strong>{{app.key}}</strong>&nbsp;
+                  <span *ngIf="getAppType(app.key)"
+                        class="label label-app {{getAppType(app.key)}}">{{getOrigin(app.key)}}</span>
+                </h4>
+                <table class="table table-noborder table-compact" style="margin: 0;">
+                  <tbody>
+                  <tr *ngFor="let prop of app.value | keyvalue">
+                    <td class="left">{{prop.key}}</td>
+                    <td class="left">{{prop.value}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div *ngIf="loadingDeploymentInfo">
+              <clr-spinner clrInline clrSmall></clr-spinner>
+              Loading deployment info...
+            </div>
+          </div>
+        </ng-template>
+      </app-view-card>
+    </div>
+    <div class="clr-col-xl-6 clr-col-lg-12 clr-col-md-12 clr-col-12" *ngIf="canShowDeploymentInfo()">
+      <app-view-card titleModal="Runtime" keyContext="stream" name="{{stream.name}}" id="runtime">
+        <ng-template>
+          <div class="block card-block-keyvalue">
+            <div *ngIf="!loadingRuntime">
+              <table class="table table-noborder table-compact" style="margin: 0;">
+                <tbody>
+                <tr *ngFor="let app of runtime.applications">
+                  <td class="left">
+                    <strong>{{app.name}}</strong>&nbsp;
+                    <span *ngIf="getAppType(app.name)"
+                          class="label label-app {{getAppType(app.name)}}">{{getOrigin(app.name)}}</span>
+                  </td>
+                  <td class="left">{{app.deploymentId}}</td>
+                  <td class="left">{{app.instances?.length || 'n/a'}} instance(s)</td>
+                  <td class="left" style="width: 20px">
+                    <button type="button" (click)="showLog(app.deploymentId, getAppType(app.name))"
+                            class="btn btn-sm btn-secondary" [disabled]="!hasLog(app.deploymentId)">
+                      View Log
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="loadingRuntime">
+              <clr-spinner clrInline clrSmall></clr-spinner>
+              Loading runtime...
+            </div>
+          </div>
+        </ng-template>
+      </app-view-card>
+    </div>
+
+    <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
+      <app-view-card titleModal="History" keyContext="stream" name="{{stream.name}}" id="history">
+        <ng-template>
+          <div class="block card-block-keyvalue" *ngIf="!loadingHistory && history.length > 0">
+            <table class="table table-noborder" style="margin-top: 0">
+              <thead>
+              <tr>
+                <th class="left">Version</th>
+                <th class="left">Date</th>
+                <th class="left">Stream status</th>
+                <th class="left">Description</th>
+                <th class="left">Platform</th>
+                <th class="left" style="width: 20px">&nbsp;</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let hist of history">
+                <td class="left">{{hist.version}}</td>
+                <td class="left">{{hist.firstDeployed | datetime}}</td>
+                <td class="left"><span class="label">{{hist.statusCode}}</span></td>
+                <td class="left">{{hist.description}}</td>
+                <td class="left">{{hist.platformName}}</td>
+                <td class="left">
+                  <button type="button" (click)="rollback(hist)"
+                          class="btn btn-sm btn-secondary" [disabled]="!canRollback(hist)">
+                    Rollback
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="history.length === 0">
+            There is no history yet.
+          </div>
+          <div *ngIf="loadingHistory">
+            <clr-spinner clrInline clrSmall></clr-spinner>
+            Loading runtime...
+          </div>
+        </ng-template>
+      </app-view-card>
+    </div>
+  </div>
+
+</div>
+
+<clr-modal [(clrModalOpen)]="isLogOpen" *ngIf="log" clrModalSize="xl">
+  <h3 class="modal-title">
+    Log {{log.name}}
+    <span class="label label-app {{log.type}}">{{log.type}}</span>
+  </h3>
+  <div class="modal-body" *ngIf="!loadingLogs">
+    <pre style="overflow: scroll;max-height: 500px;font-size: 13px;"><code>{{log.log}}</code></pre>
+  </div>
+  <div class="modal-body" *ngIf="loadingLogs">
+    <clr-spinner clrInline clrSmall></clr-spinner>
+    Loading log(s)...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isLogOpen = false">Close</button>
+  </div>
+</clr-modal>
+
+
+<app-stream-destroy #destroyModal (onDestroyed)="back()"></app-stream-destroy>
+<app-stream-undeploy #undeployModal (onUndeployed)="refresh()"></app-stream-undeploy>

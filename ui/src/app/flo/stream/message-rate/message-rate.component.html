@@ -1,0 +1,13 @@
+<svg:g class="label" [ngClass]="cssClasses">
+  <svg:rect/>
+  <svg:text>
+    {{rateLabel}}
+  </svg:text>
+</svg:g>
+
+<!--
+TODO:
+[tooltip]="content" container="body" [placement]="tooltipPlacement"
+-->
+
+<ng-template #content>{{rateTooltip}}</ng-template>

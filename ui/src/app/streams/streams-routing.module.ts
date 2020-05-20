@@ -1,92 +1,48 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
+import { RuntimeComponent } from './runtime/runtime.component';
 import { StreamsComponent } from './streams/streams.component';
-import { StreamCreateComponent } from './stream-create/stream-create.component';
-import { StreamDeployComponent } from './stream-deploy/stream-deploy.component';
-import { AuthGuard } from '../auth/support/auth.guard';
-import { StreamComponent } from './stream/stream.component';
-import { StreamGraphComponent } from './stream/graph/stream-graph.component';
-import { StreamSummaryComponent } from './stream/summary/stream-summary.component';
-import { StreamHistoryComponent } from './stream/history/stream-history.component';
-import { StreamsUtilsComponent } from './streams-utils/streams-utils.component';
-import { StreamsExportComponent } from './streams-utils/streams-export/streams-export.component';
-import { StreamsImportComponent } from './streams-utils/streams-import/streams-import.component';
+import { StreamComponent } from './streams/stream/stream.component';
+import { CreateComponent } from './streams/create/create.component';
+import { DeployComponent } from './streams/deploy/deploy.component';
+import { SecurityGuard } from '../security/support/security.guard';
 
-const streamRoutes: Routes = [
+const routes: Routes = [
   {
     path: 'streams',
-    canActivate: [AuthGuard],
+    canActivate: [SecurityGuard],
     data: {
       authenticate: true,
       roles: ['ROLE_VIEW'],
-      feature: 'streamsEnabled'
+      feature: 'streams'
     },
     children: [
       {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'definitions'
-      },
-      {
-        path: 'definitions',
+        path: 'list',
         component: StreamsComponent,
       },
       {
-        path: 'definitions/:id',
+        path: 'list/create',
+        component: CreateComponent,
+      },
+      {
+        path: 'list/:name',
         component: StreamComponent,
-        children: [
-          {
-            path: '',
-            redirectTo: 'summary',
-            pathMatch: 'full'
-          },
-          {
-            path: 'graph',
-            component: StreamGraphComponent,
-          },
-          {
-            path: 'summary',
-            component: StreamSummaryComponent,
-          },
-          {
-            path: 'history',
-            component: StreamHistoryComponent,
-          }
-        ]
       },
       {
-        path: 'definitions/:id/deploy',
-        component: StreamDeployComponent,
-        canActivate: [AuthGuard],
-        data: {
-          authenticate: true,
-          roles: ['ROLE_CREATE']
-        },
+        path: 'list/:name/deploy',
+        component: DeployComponent,
       },
       {
-        path: 'create',
-        component: StreamCreateComponent
-      },
-      {
-        path: 'utils',
-        component: StreamsUtilsComponent,
-        children: [
-          {
-            path: 'export',
-            component: StreamsExportComponent
-          },
-          {
-            path: 'import',
-            component: StreamsImportComponent
-          },
-        ]
+        path: 'runtime',
+        component: RuntimeComponent,
       }
     ]
-  }
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(streamRoutes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class StreamsRoutingModule {

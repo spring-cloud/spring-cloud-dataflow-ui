@@ -1,0 +1,133 @@
+:host {
+  position: relative;
+  padding-left: 1rem;
+  --clr-search-width: 600px;
+
+  &:after {
+    display: inline-block;
+    position: absolute;
+    content: "";
+    background: #fafafa;
+    background: var(--clr-header-font-color, #fafafa);
+    opacity: var(--clr-header-divider-opacity, 0.15);
+    height: 2rem;
+    width: var(--clr-global-borderwidth, 0.05rem);
+    top: .5rem;
+    left: 0;
+  }
+
+  .icon-search, .spinner {
+    position: absolute;
+    left: 29px;
+    top: 16px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .spinner {
+    left: 32px;
+    height: 20px;
+    width: 20px;
+    top: 19px;
+  }
+
+  .btn-clear {
+    position: absolute;
+    top: 15px;
+    right: 4px;
+    color: var(--clr-header-7-bg-color, #00364d);
+    opacity: .5;
+    cursor: pointer;
+    background: transparent;
+    border: 0 none;
+    margin: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  input {
+    background: var(--clr-header-7-bg-color, #00364d);
+    border: 1px solid var(--clr-header-7-bg-color, #00364d);
+    color: white;
+    margin: 0.5rem 0;
+    padding: .3rem 2rem .3rem 2rem;
+    border-radius: 3px;
+    outline: none;
+    box-shadow: none;
+    width: var(--clr-search-width, 600px);
+
+    &:hover {
+      background: rgba(white, .1);
+    }
+  }
+
+  .focus {
+    input {
+      background: white;
+      color: var(--clr-h6-color, #333);
+    }
+
+    .icon-search {
+      color: var(--clr-link-color, #0072a3);
+    }
+  }
+
+  .result {
+    background: white;
+    position: fixed;
+    padding: .4rem 0;
+    top: 60px;
+    width: var(--clr-search-width, 600px);
+    z-index: 1001;
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
+    color: var(--clr-h6-color, #333);
+
+    h4 {
+      margin: 0;
+      padding: .3rem 1rem;
+    }
+
+    ul li {
+      list-style: none;
+
+      a {
+        display: block;
+        padding: .3rem 1rem;
+        color: var(--clr-h6-color, #333);
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      &.active {
+        a {
+          background: hsl(198, 0%, 91%);
+        }
+      }
+    }
+
+    div {
+      padding: .5rem 0;
+    }
+
+    div.searching, div.no-result {
+      padding: 0 0 0rem 1rem;
+    }
+
+    div + div {
+      border-top: 1px solid var(--clr-global-selection-color);
+    }
+  }
+
+  .backdrop {
+    position: fixed;
+    background: rgba(#000, .2);
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+}

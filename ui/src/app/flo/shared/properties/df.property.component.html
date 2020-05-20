@@ -1,0 +1,93 @@
+<div [formGroup]="form">
+
+  <clr-control-container *ngIf="model.type === types.CODE">
+    <label class="clr-col-12 clr-col-md-4" [attr.for]="model.id">
+      <span class="text-truncate">{{model.name}}</span>
+    </label>
+    <textarea clrTextarea
+              class="clr-col-12 clr-col-md-8"
+              [id]="model.id"
+              style="width: 100%"
+              [(ngModel)]="model.value"
+              [formControlName]="model.id"></textarea>
+    <clr-control-helper>{{model.description}}</clr-control-helper>
+    <clr-control-error>Invalid value.</clr-control-error>
+  </clr-control-container>
+
+  <clr-select-container *ngIf="model.type === types.SELECT">
+    <label class="clr-col-12 clr-col-md-4" [attr.for]="model.id">
+      <span class="text-truncate">{{model.name}}</span>
+    </label>
+    <select clrSelect
+            class="clr-select clr-col-12 clr-col-md-8"
+            [id]="model.id"
+            [formControlName]="model.id"
+            [(ngModel)]="model.value">
+      <option *ngFor="let o of model['options']" [ngValue]="o.value">{{o.name}}</option>
+    </select>
+    <clr-control-helper>{{model.description}}</clr-control-helper>
+    <clr-control-error>Invalid value.</clr-control-error>
+  </clr-select-container>
+  <clr-control-container *ngIf="model.type !== types.SELECT && model.type !== types.CODE">
+    <label class="clr-col-12 clr-col-md-4" [attr.for]="model.id">
+      <span class="text-truncate">{{model.name}}</span>
+    </label>
+    <ng-container [ngSwitch]="model.type">
+      <input clrCheckbox
+             *ngSwitchCase="types.CHECKBOX"
+             class="clr-col-12 clr-col-md-8"
+             type="checkbox"
+             [id]="model.id"
+             [(ngModel)]="model.value"
+             [formControlName]="model.id">
+
+      <input clrControl
+             *ngSwitchCase="types.EMAIL"
+             type="email"
+             class="clr-col-12 clr-col-md-8"
+             style="width: 100%"
+             [id]="model.id"
+             [formControlName]="model.id"
+             [placeholder]="model.defaultValue || ''"
+             [(ngModel)]="model.value">
+      <input clrControl
+             *ngSwitchCase="types.URL"
+             type="url"
+             class="clr-col-12 clr-col-md-8"
+             style="width: 100%"
+             [id]="model.id"
+             [formControlName]="model.id"
+             [placeholder]="model.defaultValue || ''"
+             [(ngModel)]="model.value">
+      <input clrControl
+             *ngSwitchCase="types.NUMBER"
+             type="number"
+             class="clr-col-12 clr-col-md-8"
+             style="width: 100%;"
+             [id]="model.id"
+             [formControlName]="model.id"
+             [placeholder]="model.defaultValue || ''"
+             [(ngModel)]="model.value">
+      <input clrControl
+             *ngSwitchCase="types.PASSWORD"
+             type="password"
+             class="clr-col-12 clr-col-md-8"
+             style="width: 100%"
+             [id]="model.id"
+             [formControlName]="model.id"
+             [placeholder]="model.defaultValue || ''"
+             [(ngModel)]="model.value">
+      <input clrControl
+             *ngSwitchDefault
+             [id]="model.id"
+             class="clr-col-12 clr-col-md-8"
+             style="width: 100%"
+             [formControlName]="model.id"
+             [placeholder]="model.defaultValue || ''"
+             [(ngModel)]="model.value">
+    </ng-container>
+    <clr-control-helper>{{model.description}}</clr-control-helper>
+    <clr-control-error>Invalid value.</clr-control-error>
+  </clr-control-container>
+</div>
+

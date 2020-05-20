@@ -1,0 +1,182 @@
+<h1>Task execution - Execution ID: <strong *ngIf="execution">{{execution?.executionId}}</strong></h1>
+
+<div *ngIf="!loading">
+  <div class="datagrid-action-bar">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="stop()"
+            [disabled]="execution.taskExecutionStatus === 'ERROR' || execution.taskExecutionStatus === 'COMPLETE'">
+      Stop execution
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="cleanup()" *ngIf="!execution.parentExecutionId">
+      Clean up task execution
+    </button>
+  </div>
+
+  <div class="clr-row">
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
+      <app-view-card titleModal="Informations" keyContext="execution" name="{{task.name}}" id="info">
+        <ng-template>
+          <div class="block card-block-keyvalue lg-key" *ngIf="!loading">
+            <div *ngIf="execution">
+              <div class="row">
+                <div class="key">Execution Id</div>
+                <div class="value">{{execution.executionId}}</div>
+              </div>
+              <div class="row">
+                <div class="key">Arguments</div>
+                <div class="value">
+                  <div *ngIf="execution.getArgumentsToArray().length > 0">
+                    <div *ngFor="let arg of execution.getArgumentsToArray()">
+                      {{arg[0]}}:
+                      <strong>{{arg[1]}}</strong>
+                    </div>
+                  </div>
+                  <div *ngIf="execution.getArgumentsToArray().length === 0">
+                    N/A
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">External Execution Id</div>
+                <div class="value">
+                  <a [routerLink]="'/jobs/executions/' + jobExecutionId"
+                     *ngFor="let jobExecutionId of execution.jobExecutionIds">
+                    {{jobExecutionId}}
+                  </a>
+                  <div *ngIf="execution.jobExecutionIds?.length == 0">
+                    N/A
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Batch Job</div>
+                <div class="value">
+                  <clr-icon *ngIf="execution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
+                  <clr-icon *ngIf="execution.jobExecutionIds?.length == 0" shape="success-standard"></clr-icon>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Job Execution Ids</div>
+                <div class="value">
+                  {{execution.externalExecutionId || 'N/A'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Start Time</div>
+                <div class="value">
+                  {{execution.startTime | datetime}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">End Time</div>
+                <div class="value">
+                  {{execution.endTime | datetime}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Duration</div>
+                <div class="value">
+                  {{execution.startTime | duration: execution.endTime}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Exit Code</div>
+                <div class="value">
+                  {{execution.exitCode}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Exit Message</div>
+                <div class="value">
+                  {{execution.exitMessage || 'N/A'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Resource URL</div>
+                <div class="value">
+                  {{execution.resourceUrl || 'N/A'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Application Properties</div>
+                <div class="value">
+                  <div *ngIf="execution.getAppPropertiesToArray().length > 0">
+                    <div *ngFor="let arg of execution.getAppPropertiesToArray()">
+                      {{arg.key}}:
+                      <strong>{{arg.value}}</strong>
+                    </div>
+                  </div>
+                  <div *ngIf="execution.getAppPropertiesToArray().length === 0">
+                    N/A
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Platform Properties</div>
+                <div class="value">
+                  <div *ngIf="execution.getDeploymentPropertiesToArray().length > 0">
+                    <div *ngFor="let arg of execution.getDeploymentPropertiesToArray()">
+                      {{arg.key}}:
+                      <strong>{{arg.value}}</strong>
+                    </div>
+                  </div>
+                  <div *ngIf="execution.getDeploymentPropertiesToArray().length === 0">
+                    N/A
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!execution">
+              No execution yet.
+            </div>
+          </div>
+        </ng-template>
+        <div class="card-footer" *ngIf="execution">
+          <button class="btn btn-sm btn-secondary" (click)="log()">View log</button>
+        </div>
+      </app-view-card>
+    </div>
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
+      <app-view-card titleModal="Task" keyContext="execution" name="{{task.name}}" id="task">
+        <ng-template>
+          <div *ngIf="!loadingTask">
+            <div class="block card-block-keyvalue">
+              <div *ngIf="task.description" class="row">
+                <div class="key">Description</div>
+                <div class="value">{{task.description}}</div>
+              </div>
+              <div class="row">
+                <div class="key">Definition</div>
+                <div class="value"><span class="dsl-text">{{task.dslText}}</span></div>
+              </div>
+              <div class="row">
+                <div class="key">Status</div>
+                <div class="value"><span class="label label-{{task.statusColor()}}">{{task.status}}</span></div>
+              </div>
+              <div class="row">
+                <div class="key">Applications</div>
+                <div class="value">
+                  <div *ngFor="let app of applications">
+                    <strong>{{app.name}}</strong>&nbsp;
+                    <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="loadingTask">
+            <clr-spinner clrInline clrSmall></clr-spinner>
+            Loading task...
+          </div>
+        </ng-template>
+        <div class="card-footer" *ngIf="task">
+          <button class="btn btn-sm btn-secondary" (click)="navigateTask()">View task</button>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="relaunch()">Relaunch Task</button>
+        </div>
+      </app-view-card>
+    </div>
+  </div>
+</div>
+
+<app-task-execution-log #logModal></app-task-execution-log>
+<app-execution-stop #stopModal></app-execution-stop>
+<app-execution-cleanup #cleanModal (onCleaned)="back()"></app-execution-cleanup>
