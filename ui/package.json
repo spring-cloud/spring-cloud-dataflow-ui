@@ -41,7 +41,7 @@
     "luxon": "1.23.0",
     "ngx-toastr": "12.0.1",
     "rxjs": "6.5.4",
-    "spring-flo": "https://github.com/spring-projects/spring-flo.git#0d7c637598638c4fdd67e3d3516ce13e8a298f85",
+    "spring-flo": "https://github.com/spring-projects/spring-flo.git#61fc24f0a08427ee125870cdfcb6eaa991a056ae",
     "tslib": "1.10.0",
     "zone.js": "0.10.2"
   },
