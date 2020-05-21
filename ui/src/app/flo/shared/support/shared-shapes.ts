@@ -1,9 +1,13 @@
 import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 
+import { loadShapes } from 'spring-flo';
+
 const joint: any = _joint;
 const g = joint.g;
 const V = joint.V;
+
+loadShapes();
 
 joint.connectors.smoothHorizontal = function(sourcePoint, targetPoint, route, opt) {
 

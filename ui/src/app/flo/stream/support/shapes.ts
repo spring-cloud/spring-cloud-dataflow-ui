@@ -3,7 +3,6 @@ import * as _joint from 'jointjs';
 const joint: any = _joint;
 
 // Load changes into joint object
-import 'spring-flo';
 import '../../shared/support/shared-shapes';
 
 export const IMAGE_W = 180;
