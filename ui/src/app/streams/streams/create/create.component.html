@@ -1,0 +1,99 @@
+<h1>Create stream(s)</h1>
+
+<app-stream-flo-create #flo></app-stream-flo-create>
+
+<button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
+<button class="btn btn-primary" type="button" (click)="createStream()">
+  Create stream(s)
+</button>
+
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!progressData" clrModalSize="lg">
+  <h3 class="modal-title" *ngIf="!progressData">Create Stream(s)</h3>
+  <h3 class="modal-title" *ngIf="progressData">Creating Stream(s)...</h3>
+  <div *ngIf="progressData" class="modal-body">
+    <div>
+      <div class="progress-static labeled">
+        <clr-progress-bar [clrValue]="progressData.percent" clrMax="100" clrSuccess clrLabeled></clr-progress-bar>
+      </div>
+      {{operationRunning}}
+    </div>
+  </div>
+
+  <div class="modal-body" *ngIf="!progressData">
+    <form clrForm clrLayout="horizontal" (submit)="submit()" [formGroup]="form" clrLabelSize="4">
+      <div *ngIf="errors && errors.length > 0" class="alert alert-error">
+        <div *ngFor="let error of errors">• {{error}}</div>
+      </div>
+      <div style="margin-bottom: .8rem;">This action will create the following <strong>stream(s)</strong>:</div>
+      <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
+        <div class="alert-items">
+          <div class="alert-item static">
+            <div class="alert-icon-wrapper">
+              <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <div class="alert-text">
+              Duplicate stream name, please check input names.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let def of getStreams(); let i = index" class="card" style="padding: 10px 0;">
+        <div class="card-block">
+          <div class="clr-form-control clr-row" style="margin-top:0;max-height: 16px">
+            <label class="clr-control-label clr-col-12 clr-col-md-2">Definition</label>
+            <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
+              <!--                <app-stream-dsl>{{def.def | truncate: 90}}</app-stream-dsl>-->
+              <span class="dsl-text dsl-truncate">{{def.def}}</span>
+            </div>
+          </div>
+          <clr-control-container>
+            <label [for]="def.index.toString()">
+              Name
+            </label>
+            <input
+              [id]="def.index.toString()"
+              [name]="def.index.toString()"
+              [formControlName]="def.index.toString()"
+              [dataflowFocus]="i == 0"
+              clrControl
+              type="text"
+              placeholder="Stream Name"
+              [ngModel]="def.name"
+              (ngModelChange)="changeStreamName(def.index, $event)"
+              maxlength="255"
+              style="width: 360px"
+            />
+            <clr-control-error *clrIfError="'required'">Stream name is required!</clr-control-error>
+            <clr-control-error *clrIfError="'uniqueResource'">Stream name is already taken!</clr-control-error>
+            <clr-control-error *clrIfError="'pattern'">Invalid stream name!</clr-control-error>
+            <clr-control-error *clrIfError="'maxlength'">Stream name must be less than 255 characters long!
+            </clr-control-error>
+          </clr-control-container>
+          <clr-control-container class="form-group">
+            <label [for]="def.index.toString()+'_desc'">Description</label>
+            <input
+              [id]="def.index.toString()+'_desc'"
+              [name]="def.index.toString()+'_desc'"
+              [formControlName]="def.index.toString()+'_desc'"
+              [disabled]="isStreamCreationInProgress()"
+              clrControl
+              [ngModel]="def.description"
+              (ngModelChange)="changeStreamDescription(def.index, $event)"
+              placeholder="Stream Description"
+              maxlength="255"
+              style="width: 560px"
+            >
+            <clr-control-error *clrIfError="'maxlength'">Stream description must be less than 255 characters long!
+            </clr-control-error>
+          </clr-control-container>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="progressData">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="progressData || !canSubmit()">
+      Create the stream(s)
+    </button>
+  </div>
+</clr-modal>

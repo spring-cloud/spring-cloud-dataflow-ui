@@ -1,0 +1,19 @@
+@import '../../shared/flo';
+
+.instance-dot:hover circle {
+  stroke: $navy-6;
+}
+
+.joint-type-dataflow-instancedot.joint-element {
+  .deployed {
+    // stroke: $spring-green;
+    stroke: #80b600;
+  }
+  .failed {
+    // stroke: red;
+    stroke: #ff5400;
+  }
+  stroke: gray;
+  fill: transparent;
+  cursor: initial;
+}

@@ -10,7 +10,7 @@ export class HttpUtils {
   public static getDefaultHttpHeaders() {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      Accept: 'application/json'
     });
     return headers;
   }

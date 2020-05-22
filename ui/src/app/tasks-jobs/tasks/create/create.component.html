@@ -1,0 +1,95 @@
+<h1>Create a task</h1>
+
+<app-task-create-view #flo></app-task-create-view>
+
+<button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
+<button class="btn btn-primary" type="button" (click)="createTask()">
+  Create task
+</button>
+
+
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!isCreating" [clrModalSize]="isCreating ? 'md' : 'lg'">
+  <h3 class="modal-title">Create task</h3>
+  <div *ngIf="isCreating" class="modal-body">
+    <div>
+      <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
+      Creating task...
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="true">
+        Create the task
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-body" *ngIf="!isCreating">
+    <form clrForm clrLayout="horizontal" (submit)="submit()" [formGroup]="form" clrLabelSize="4">
+      <div *ngIf="errors && errors.length > 0" class="alert alert-error">
+        <div *ngFor="let error of errors">• {{error}}</div>
+      </div>
+      <div style="margin-bottom: .8rem;">This action will create the following <strong>stream(s)</strong>:</div>
+      <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
+        <div class="alert-items">
+          <div class="alert-item static">
+            <div class="alert-icon-wrapper">
+              <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <div class="alert-text">
+              Duplicate task name, please check input names.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="clr-form-control clr-row" style="margin-top:0;max-height: 16px">
+        <label class="clr-control-label clr-col-12 clr-col-md-2">Definition</label>
+        <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
+          <span class="dsl-text dsl-truncate">{{dsl}}</span>
+        </div>
+      </div>
+      <clr-control-container>
+        <label for="name">
+          Name
+        </label>
+        <input
+          id="name"
+          name="name"
+          [formControl]="taskName"
+          [dataflowFocus]="true"
+          clrControl
+          type="text"
+          placeholder="Task Name"
+          maxlength="255"
+          style="width: 360px"
+        />
+        <clr-control-error *clrIfError="'required'">Task name is required!</clr-control-error>
+        <clr-control-error *clrIfError="'uniqueResource'">Task name is already taken!</clr-control-error>
+        <clr-control-error *clrIfError="'pattern'">Invalid task name!</clr-control-error>
+        <clr-control-error *clrIfError="'maxlength'">Task name must be less than 255 characters long!
+        </clr-control-error>
+      </clr-control-container>
+      <clr-control-container class="form-group">
+        <label for="desc">Description</label>
+        <input
+          id="desc"
+          name="desc"
+          [formControl]="taskDescription"
+          clrControl
+          placeholder="Task Description"
+          maxlength="255"
+          style="width: 560px"
+        >
+        <clr-control-error *clrIfError="'maxlength'">Task description must be less than 255 characters long!
+        </clr-control-error>
+      </clr-control-container>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="isCreating">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+          Create the task
+        </button>
+      </div>
+    </form>
+  </div>
+
+</clr-modal>

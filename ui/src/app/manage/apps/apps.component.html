@@ -1,0 +1,98 @@
+<h1>Applications</h1>
+<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
+              *ngIf="isInit">
+  <clr-dg-action-bar *ngIf="grouped">
+    <button *ngIf="grouped" type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
+      Cancel
+    </button>
+    <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
+            (click)="unregistersApp(selected)">
+      Unregister application(s)
+    </button>
+  </clr-dg-action-bar>
+  <clr-dg-action-bar *ngIf="!grouped">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+      Group Actions
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="add()">
+      Add application(s)
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      <clr-icon shape="refresh"></clr-icon>
+      Refresh
+    </button>
+  </clr-dg-action-bar>
+  <clr-dg-column [clrDgField]="'name'"
+                 [clrDgSortOrder]="(context.by === 'name') ? context.reverse ? -1 : 1 : 0"
+                 (clrDgColumnResize)="updateContext('sizeName', $event)"
+                 [style.width.px]="context.sizeName || 'auto'"
+                 [clrFilterValue]="context.name">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+      Name
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'type'"
+                 (clrDgColumnResize)="updateContext('sizeType', $event)"
+                 [clrDgSortOrder]="(context.by === 'type') ? context.reverse ? -1 : 1 : 0"
+                 [style.width.px]="context.sizeType || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+      Type
+    </ng-container>
+    <clr-dg-filter [clrDgFilter]="typeFilter">
+      <app-clr-datagrid-type-filter [value]="context.type" #typeFilter></app-clr-datagrid-type-filter>
+    </clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'version'"
+                 [clrDgSortOrder]="(context.by === 'version') ? context.reverse ? -1 : 1 : 0"
+                 (clrDgColumnResize)="updateContext('sizeVersion', $event)"
+                 [style.width.px]="context.sizeVersion || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+      Version
+      <clr-dg-filter style="display:none;"></clr-dg-filter>
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'uri'"
+                 (clrDgColumnResize)="updateContext('sizeUri', $event)"
+                 [clrDgSortOrder]="(context.by === 'uri') ? context.reverse ? -1 : 1 : 0"
+                 [style.width.px]="context.sizeUri || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[3])}">
+      URI
+      <clr-dg-filter style="display:none;"></clr-dg-filter>
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column (clrDgColumnResize)="updateContext('sizeMetadataUri', $event)"
+                 [style.width.px]="context.sizeMetadataUri || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[4])}">
+      Metadata URI
+      <clr-dg-filter style="display:none;"></clr-dg-filter>
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-row *ngFor="let app of page?.items" [clrDgItem]="app">
+    <clr-dg-cell>
+      <a class="text-truncate" routerLink="/manage/apps/{{app.type}}/{{app.name}}">{{app.name}}</a>
+    </clr-dg-cell>
+    <clr-dg-cell><span class="label-uppercase label label-{{app.typeColor()}}">{{app.type}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="label">{{app.version}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="text-truncate">{{app.uri}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="text-truncate">{{app.metaDataUri}}</span></clr-dg-cell>
+    <clr-dg-action-overflow *ngIf="!grouped">
+      <button class="action-item" (click)="details(app)">Details</button>
+      <button class="action-item" (click)="unregistersApp([app])">Unregister</button>
+    </clr-dg-action-overflow>
+  </clr-dg-row>
+  <clr-dg-placeholder>We couldn't find any applications!</clr-dg-placeholder>
+  <clr-dg-footer>
+    <clr-dg-column-toggle>
+      <clr-dg-column-toggle-title>Show Columns</clr-dg-column-toggle-title>
+      <clr-dg-column-toggle-button>Select All Button</clr-dg-column-toggle-button>
+    </clr-dg-column-toggle>
+    <clr-dg-pagination #pagination [clrDgTotalItems]="page?.total"
+                       [clrDgPageSize]="context.size" [clrDgPage]="context.current">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Applications per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+      of {{page?.total}} applications
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<app-unregister #unregisterModal (onUnregistered)="refresh(state)"></app-unregister>

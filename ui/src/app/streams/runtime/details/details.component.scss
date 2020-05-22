@@ -1,0 +1,22 @@
+h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+input {
+  display: inline-block;
+  width: 100%;
+  border: 1px solid var(--clr-forms-border-color, #b3b3b3);
+  padding: 1px 8px;
+  color: var(--clr-forms-text-color,#000);
+
+  &:focus {
+    box-shadow: none;
+    outline: none;
+    border: 1px solid var(--clr-forms-focused-color, #0072a3);
+  }
+}
+
+.clr-row {
+  padding: .3rem 0;
+}

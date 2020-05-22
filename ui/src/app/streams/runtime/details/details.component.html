@@ -1,0 +1,48 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="runtimeApp" [clrModalSize]="'lg'">
+  <h3 class="modal-title">
+    Instances for app
+    <strong>{{runtimeApp.deploymentId}}</strong>&nbsp;
+    <span class="label label-{{runtimeApp.stateColor()}}">{{runtimeApp.state}}</span>
+    <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeApp [runtimeApp]="runtimeApp">
+      Grafana dashboard
+    </button>
+  </h3>
+  <div class="modal-body">
+
+    <ng-template ngFor let-item [ngForOf]="runtimeApp.appInstances">
+      <div>
+        <h4>
+          Instance
+          <strong>{{item.instanceId}}</strong>&nbsp;
+          <span class="label label-{{item.stateColor()}}">{{item.state}}</span>
+          <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeInstance [instance]="item">
+            Grafana dashboard
+          </button>
+        </h4>
+
+        <!--          <span *ngIf="grafanaEnabled" style="margin-left: 1rem; float: right;margin-top:-4px;">-->
+        <!--            <button type="button" (click)="grafanaInstanceDashboard(item)" class="btn btn-default btn-fa"-->
+        <!--                    titleModal="Grafana Dashboard">-->
+        <!--              <span class="icon-custom icon-custom-grafana"></span>-->
+        <!--              Grafana Dashboard-->
+        <!--            </button>-->
+        <!--          </span>-->
+        <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalue">
+          <div class="clr-row">
+            <div class="clr-col-5">
+              <strong>{{item.key}}</strong>
+            </div>
+            <div class="clr-col-7">
+              <input type="text" readonly [value]="item.value">
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </ng-template>
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
+  </div>
+</clr-modal>

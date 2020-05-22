@@ -1,72 +1,78 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { AboutModule } from './about/about.module';
-import { AppsModule } from './apps/apps.module';
-import { JobsModule } from './jobs/jobs.module';
-import { RuntimeAppsModule } from './runtime/runtime-apps.module';
-import { SharedModule } from './shared/shared.module';
-import { StreamsModule } from './streams/streams.module';
-import { TasksModule } from './tasks/tasks.module';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthService } from './auth/auth.service';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { SharedAboutService } from './shared/services/shared-about.service';
+import { HttpClientModule } from '@angular/common/http';
+import { AppService } from './shared/api/app.service';
+import { RecordService } from './shared/api/record.service';
+import { TaskService } from './shared/api/task.service';
+import { JobService } from './shared/api/job.service';
 import { LayoutModule } from './layout/layout.module';
-import { AuditRecordModule } from './audit/audit-record.module';
-import { map } from 'rxjs/operators';
-
-
-
-/**
- * Executed when the app starts up. Will load the security
- * meta information. The Observable is converted to a Promise
- * and Angular will ensure that the application will not start
- * before the Promise has resolved.
- *
- * @param authService
- */
-export function init(authService: AuthService, sharedAboutService: SharedAboutService) {
-  return () => {
-    return authService.loadSecurityInfo(true)
-      .pipe(
-        map(securityInfo => {
-          if (securityInfo.isAuthenticated || !securityInfo.isAuthenticationEnabled) {
-            sharedAboutService.loadAboutInfo();
-          }
-        })
-      ).toPromise();
-  };
-}
+import { FormsModule } from '@angular/forms';
+import { AboutModule } from './about/about.module';
+import { AboutService } from './shared/api/about.service';
+import { SharedModule } from './shared/shared.module';
+import { ThemeService } from './layout/theme/theme.service';
+import { StreamsModule } from './streams/streams.module';
+import { TasksJobsModule } from './tasks-jobs/tasks-jobs.module';
+import { ManageModule } from './manage/manage.module';
+import { SecurityModule } from './security/security.module';
+import { SecurityService } from './security/service/security.service';
+import { map, mergeMap } from 'rxjs/operators';
+import { Security } from './shared/model/security.model';
+import { of } from 'rxjs';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
-    AboutModule,
-    AppsModule,
-    AuditRecordModule,
     BrowserModule,
     AppRoutingModule,
+    ClarityModule,
     BrowserAnimationsModule,
-    JobsModule,
-    RuntimeAppsModule,
     SharedModule,
-    StreamsModule,
-    TasksModule,
+    AboutModule,
+    HttpClientModule,
+    FormsModule,
     LayoutModule,
-    BsDropdownModule.forRoot()
+    StreamsModule,
+    TasksJobsModule,
+    ManageModule,
+    SecurityModule
   ],
   providers: [
+    AppService,
+    RecordService,
+    TaskService,
+    JobService,
+    ThemeService,
     {
-      'provide': APP_INITIALIZER,
-      'useFactory': init,
-      'deps': [ AuthService, SharedAboutService ],
-      'multi': true
+      provide: APP_INITIALIZER,
+      useFactory: (securityService: SecurityService, aboutService: AboutService) => {
+        return () => {
+          return securityService.load(true)
+            .pipe(
+              mergeMap((security: Security) => {
+                if (security.isAuthenticated || !security.isAuthenticationEnabled) {
+                  return aboutService.load()
+                    .pipe(
+                      map(about => security)
+                    );
+                }
+                return of(security);
+              })
+            ).toPromise();
+        };
+      },
+      deps: [SecurityService, AboutService],
+      multi: true
     }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+
+export class AppModule {
+}

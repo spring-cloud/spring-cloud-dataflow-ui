@@ -1,25 +1,16 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../shared/shared.module';
-
-import { AboutComponent } from './about/about.component';
-import { AboutDetailsComponent } from './components/about-more/about-details.component';
-import { AboutService } from './about.service';
+import { CommonModule } from '@angular/common';
 import { AboutRoutingModule } from './about-routing.module';
+import { InfoComponent } from './info/info.component';
+import { ClarityModule } from '@clr/angular';
 
-import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
+  declarations: [InfoComponent],
   imports: [
-    AboutRoutingModule,
-    SharedModule,
-    ClipboardModule
-  ],
-  declarations: [
-    AboutComponent,
-    AboutDetailsComponent
-  ],
-  providers: [
-    AboutService
+    CommonModule,
+    ClarityModule,
+    AboutRoutingModule
   ]
 })
 export class AboutModule {

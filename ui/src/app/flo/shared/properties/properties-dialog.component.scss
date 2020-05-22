@@ -1,0 +1,141 @@
+$error-3: #B31B22;
+$input-border: #DFE5E8;
+$navy-10: #EAEDEF;
+$navy-8: #C5CED3;
+$dark-2: #243641;
+
+.modal-properties {
+  .property-row {
+    width: 100%;
+    display: inline-table;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--clr-forms-border-color);
+  }
+
+  .clr-form-control {
+    margin-bottom: .6rem;
+  }
+}
+
+.invalid-property-value .df-form-label {
+  color: $error-3;
+}
+
+.invalid-property-value .df-property-control {
+  outline-color: $error-3;
+  border-color: $error-3;
+  color: $error-3
+}
+
+.validation-error-block {
+  color: $error-3;
+}
+
+.modal-title {
+  .label {
+    margin: 0 2px;
+  }
+
+  .label-version {
+    background: #999;
+  }
+
+  strong {
+    margin-right: 12px;
+  }
+}
+//
+//.modal-properties {
+//
+//  input.df-property-control, select.df-property-control {
+//    display: block;
+//    width: 100%;
+//    height: 38px;
+//    padding: 4px 12px;
+//    /* The 6px vertically centers text on FF, ignored by Webkit */
+//    font-size: 14px;
+//    background-color: #fff;
+//    border: 1px solid $input-border;
+//    border-radius: 3px;
+//    -webkit-appearance: none;
+//    box-shadow: none;
+//    box-sizing: border-box;
+//    color: $dark-2;
+//    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+//    outline: none;
+//
+//    &:focus {
+//      border-color: #607580;
+//      box-shadow: none;
+//    }
+//
+//    &::placeholder {
+//      color: $navy-8;
+//    }
+//
+//    &::-ms-expand {
+//      display: none;
+//    }
+//  }
+//
+//  .help-block {
+//    font-size: 14px;
+//    padding: 2px 0;
+//    line-height: 24px;
+//  }
+//
+//  input[type=checkbox] {
+//    margin-right: 4px;
+//  }
+//}
+//
+//.property-row {
+//  border-bottom: 1px solid $navy-10;
+//  margin-bottom: 20px;
+//
+//  &:last-child {
+//    border-bottom: 0 none;
+//    margin-bottom: 0;
+//  }
+//}
+
+.modal-search {
+  display: block;
+  background-color: var(--clr-custom-background-highlight, #f2f2f2);
+  // padding: 8px 5rem;
+  max-width: none;
+  margin-top: 1rem;
+  position: relative;
+  margin-bottom: -20px;
+
+  input.clr-input {
+    padding: 5px 15px 5px 32px;
+    max-height: 1.8rem;
+    height: 1.8rem;
+    width: 100%;
+  }
+
+  clr-icon {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+
+  //input.form-control {
+  //  display: block;
+  //  border-radius: 17px;
+  //  height: 34px;
+  //  font-weight: normal;
+  //  padding: 5px 15px;
+  //}
+  //span.fa {
+  //  position: absolute;
+  //  right: 14px;
+  //  top: 8px;
+  //  color: #888;
+  //}
+  //span.search-wrapper {
+  //  display: block;
+  //  position: relative;
+  //}
+}

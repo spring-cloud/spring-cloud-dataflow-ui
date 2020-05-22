@@ -1,0 +1,50 @@
+<h1>Runtime</h1>
+
+<!--<div class="alert alert-info">-->
+<!--  <div class="alert-items">-->
+<!--    <div class="alert-item static">-->
+<!--      <div class="alert-icon-wrapper">-->
+<!--        <clr-icon class="alert-icon" shape="info-circle"></clr-icon>-->
+<!--      </div>-->
+<!--      <span class="alert-text">Work in progress</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<div *ngIf="!loading">
+  <div class="datagrid-action-bar">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh()">
+      <clr-icon shape="refresh"></clr-icon>
+      Refresh
+    </button>
+  </div>
+  <div *ngFor="let runtimeStream of page.items">
+    <h3>Stream <strong>{{runtimeStream.name}}</strong></h3>
+    <div class="clr-row">
+      <ng-template ngFor let-runtimeApp [ngForOf]="runtimeStream.apps">
+        <div class="clr-col-12 clr-col-sm-3">
+          <div class="card">
+            <div class="card-block">
+              <h4 class="card-title">
+                {{runtimeApp.deploymentId}}
+                <span class="label label-{{runtimeApp.stateColor()}}"> {{runtimeApp.state}}</span>
+              </h4>
+              <p class="card-text">
+                {{runtimeApp.appInstances.length}}
+                <span *ngIf="runtimeApp.appInstances.length > 1">instances</span>
+                <span *ngIf="!(runtimeApp.appInstances.length > 1)">instance</span>
+              </p>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-sm btn-link" (click)="details(runtimeApp)">View details</button>
+              <button class="btn btn-sm btn-link" grafanaDashboardRuntimeApp [runtimeApp]="runtimeApp">
+                Grafana dashboard
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<app-runtime-details #detailsModal></app-runtime-details>

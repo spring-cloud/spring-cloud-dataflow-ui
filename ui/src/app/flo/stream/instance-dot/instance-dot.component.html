@@ -1,0 +1,25 @@
+<svg:g class="root" placement="bottom" container="body"
+       [ngClass]="{deployed: state == 'deployed', failed: state == 'failed'}">
+  <svg:rect class="instance-dot"/>
+</svg:g>
+<!--
+TODO
+[tooltip]="dotTooltip"  [delay]="300"
+<ng-template #dotTooltip>
+  <table *ngIf="instance; else noData" class="table-hover table-condensed container-details-table">
+    <tbody>
+    <tr>
+      <td nowrap class="text-left tooltip-property-key"><strong>Guid</strong></td>
+      <td class="text-left tooltip-property-value">{{guid}}</td>
+    </tr>
+    <tr>
+      <td nowrap class="text-left tooltip-property-key"><strong>State</strong></td>
+      <td class="text-left tooltip-property-value">{{state}}</td>
+    </tr>
+    </tbody>
+  </table>
+</ng-template>
+-->
+<ng-template #noData>
+  <span>App instance either is down or not deployed</span>
+</ng-template>

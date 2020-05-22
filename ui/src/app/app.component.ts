@@ -1,20 +1,29 @@
-import { Component } from '@angular/core';
-import { Renderer2 } from '@angular/core';
-import { OnInit } from '@angular/core';
-import { RoutingStateService } from './shared/services/routing-state.service';
+import { Component, OnInit } from '@angular/core';
+import { NotificationService } from './shared/service/notification.service';
+import { ThemeService } from './layout/theme/theme.service';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+  title = 'Spring Cloud Data Flow';
 
-  constructor(private renderer: Renderer2,
-              private routingStateService: RoutingStateService) {
+  darkThemeIsActive = false;
+
+  toggleDarkTheme() {
+    if (this.darkThemeIsActive) {
+      this.themeService.switchTheme('default');
+      this.darkThemeIsActive = false;
+    } else {
+      this.themeService.switchTheme('dark');
+      this.darkThemeIsActive = true;
+    }
   }
 
-  ngOnInit() {
-    this.routingStateService.watchRouting();
+  constructor(private themeService: ThemeService) {
+    // themeService.switchTheme('dark');
+    // this.darkThemeIsActive = true;
   }
 
 }

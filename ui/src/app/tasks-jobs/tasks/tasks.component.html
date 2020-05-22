@@ -1,0 +1,86 @@
+<h1>Tasks</h1>
+
+<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
+              *ngIf="isInit">
+  <clr-dg-action-bar *ngIf="grouped">
+    <button type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
+      Cancel
+    </button>
+    <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
+            (click)="destroyTasks(selected)">
+      Destroy task(s)
+    </button>
+  </clr-dg-action-bar>
+  <clr-dg-action-bar *ngIf="!grouped">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+      Group Actions
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="createTask()">
+      Create task
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>
+      Grafana Dashboard
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      <clr-icon shape="refresh"></clr-icon>
+      Refresh
+    </button>
+  </clr-dg-action-bar>
+  <clr-dg-column [clrDgField]="'taskName'"
+                 [clrDgSortOrder]="(context.by === 'taskName') ? context.reverse ? -1 : 1 : 0"
+                 (clrDgColumnResize)="updateContext('sizeName', $event)"
+                 [style.width.px]="context.sizeName || 'auto'"
+                 [clrFilterValue]="context.taskName">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+      Name
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column (clrDgColumnResize)="updateContext('sizeDescription', $event)"
+                 [style.width.px]="context.sizeDescription || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+      Description
+    </ng-container>
+    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'dslText'"
+                 [clrDgSortOrder]="(context.by === 'dslText') ? context.reverse ? -1 : 1 : 0"
+                 (clrDgColumnResize)="updateContext('sizeDsl', $event)"
+                 [style.width.px]="context.sizeDsl || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+      Definition
+    </ng-container>
+    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-column (clrDgColumnResize)="updateContext('sizeStatus', $event)"
+                 [style.width.px]="context.sizeStatus || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[3])}">
+      Status
+    </ng-container>
+    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-row *ngFor="let task of page?.items" [clrDgItem]="task">
+    <clr-dg-cell><a routerLink="/tasks-jobs/tasks/{{task.name}}">{{task.name}}</a></clr-dg-cell>
+    <clr-dg-cell>{{task.description}}</clr-dg-cell>
+    <clr-dg-cell><span class="dsl-text">{{task.dslText}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="label label-{{task.statusColor()}}">{{task.status}}</span></clr-dg-cell>
+    <clr-dg-action-overflow *ngIf="!grouped">
+      <button class="action-item" (click)="details(task)">Details</button>
+      <button class="action-item" (click)="launch(task)">Launch</button>
+      <button class="action-item" (click)="destroyTasks([task])">Destroy</button>
+      <button class="action-item" grafanaDashboardTask [task]="task">
+        Grafana Dashboard
+      </button>
+    </clr-dg-action-overflow>
+  </clr-dg-row>
+  <clr-dg-placeholder>We couldn't find any tasks!</clr-dg-placeholder>
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgTotalItems]="page?.total"
+                       [clrDgPageSize]="context.size" [clrDgPage]="context.current">
+      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Tasks per page</clr-dg-page-size>
+      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+      of {{page?.total}} tasks
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>
+
+<app-task-destroy #destroyModal (onDestroyed)="refresh(state)"></app-task-destroy>

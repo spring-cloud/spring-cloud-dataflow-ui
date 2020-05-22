@@ -1,0 +1,123 @@
+/* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
+
+:host {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  margin: 0 0 10px;
+  padding: 10px 15px 10px 45px;
+  width: 400px;
+  border-radius: 3px 3px 3px 3px;
+  background-color: #28333c;
+  pointer-events: auto;
+  box-sizing: border-box;
+  //background-position: 15px center;
+  //background-repeat: no-repeat;
+  //background-size: 24px;
+  box-shadow: 0 0 8px rgba(#28333c, 0.4);
+  color: #FFFFFF;
+
+  .toast-container {
+    pointer-events: none;
+    position: fixed;
+    z-index: 999999;
+    top: 82px;
+    right: 12px;
+  }
+  &.toast-success {
+    .toast-icon {
+      color: var(--clr-color-success-400);
+    }
+  }
+
+  &.toast-error {
+    .toast-icon {
+      color: var(--clr-color-danger-800);
+    }
+  }
+
+  &.toast-info {
+    .toast-icon {
+      color: var(--clr-color-action-400);
+    }
+  }
+
+  &.toast-warning {
+    .toast-icon {
+      color: var(--clr-color-warning-400);
+    }
+  }
+
+  .toast-icon {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    width: 28px;
+    height: 28px;
+  }
+
+
+  .toast-title {
+    font-weight: bold;
+  }
+
+  .toast-message {
+    word-wrap: break-word;
+    color: #9da8b1;
+  }
+
+  .toast-close-button {
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    font-size: 20px;
+    color: #9da8b1;
+  }
+
+  .toast-close-button:hover,
+  .toast-close-button:focus {
+    color: #FFF;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  button.toast-close-button {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+  }
+}
+
+
+//
+//
+///* Responsive Design */
+//@media all and (max-width: 240px) {
+//  .toast-container .ngx-toastr.div {
+//    padding: 8px 8px 8px 50px;
+//    width: 11em;
+//  }
+//  .toast-container .toast-close-button {
+//    right: -0.2em;
+//    top: -0.2em;
+//  }
+//}
+//
+//@media all and (min-width: 241px) and (max-width: 480px) {
+//  .toast-container .ngx-toastr.div {
+//    padding: 8px 8px 8px 50px;
+//    width: 18em;
+//  }
+//  .toast-container .toast-close-button {
+//    right: -0.2em;
+//    top: -0.2em;
+//  }
+//}
+//
+//@media all and (min-width: 481px) and (max-width: 768px) {
+//  .toast-container .ngx-toastr.div {
+//    padding: 15px 15px 15px 50px;
+//    width: 25em;
+//  }
+//}

@@ -1,0 +1,53 @@
+<form clrForm (submit)="submit()">
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut:</p>
+  <clr-radio-container>
+    <clr-radio-wrapper>
+      <input [(ngModel)]="value" type="radio" clrRadio value="stream.kafka.maven" name="type"/>
+      <label>Stream application starters for Kafka/Maven</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input [(ngModel)]="value" type="radio" clrRadio value="stream.kafka.docker" name="type"/>
+      <label>Stream application starters for Kafka/Docker</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input [(ngModel)]="value" type="radio" clrRadio value="stream.rabbitmq.maven" name="type"/>
+      <label>Stream application starters for RabbitMQ/Maven</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input [(ngModel)]="value" type="radio" clrRadio value="stream.rabbitmq.docker" name="type"/>
+      <label>Stream application starters for RabbitMQ/Docker</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input [(ngModel)]="value" type="radio" clrRadio value="task.maven" name="type"/>
+      <label>Task application starters for Maven</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input [(ngModel)]="value" type="radio" clrRadio value="task.docker" name="type"/>
+      <label>Task application starters for Docker</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+  <clr-checkbox-container>
+    <clr-checkbox-wrapper>
+      <input [(ngModel)]="force" type="checkbox" clrCheckbox value="false" name="force"/>
+      <label>Force, the applications will be imported and installed even if it already exists but only if not being used
+        already.</label>
+    </clr-checkbox-wrapper>
+  </clr-checkbox-container>
+  <div class="clr-accordion-footer">
+    <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
+    <button class="btn btn-primary" type="submit">Import Application(s)</button>
+  </div>
+</form>
+
+<clr-modal [(clrModalOpen)]="isImporting" *ngIf="isImporting" clrModalClosable="false" clrModalSize="md">
+  <h3 class="modal-title">Import application(s)</h3>
+  <div class="modal-body">
+    <div>
+      <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
+      Importing application(s)...
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
+    </div>
+  </div>
+</clr-modal>

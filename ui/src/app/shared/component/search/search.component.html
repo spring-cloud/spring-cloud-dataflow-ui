@@ -1,0 +1,59 @@
+<form class="quick-search focus" [class.focus]="isFocus">
+  <label for="quick_search">
+    <clr-spinner *ngIf="isSearching()" clrSmall></clr-spinner>
+    <clr-icon *ngIf="!isSearching()" class="icon-search" shape="search"></clr-icon>
+    <input [formControl]="search" autocomplete="off" (focus)="onInputFocus()" (blur)="onInputBlur()" (keydown)="onKeyDown($event)"
+           id="quick_search" type="text" placeholder="Search for keywords..." #inputQuickSearch>
+    <button type="button" (click)="clear()" (mousedown)="onInputFocus()" class="btn-clear" *ngIf="isSearch()">
+      <clr-icon class="icon-clear is-solid" shape="times-circle"></clr-icon>
+    </button>
+  </label>
+  <div></div>
+  <div class="result" *ngIf="isFocus && isSearch()">
+    <div *ngIf="isSearching()">
+      <div class="searching">
+        Searching for results...
+      </div>
+    </div>
+    <div *ngIf="!isSearching()">
+      <div class="no-result" *ngIf="isNoResult()">
+        There are no search results for "<strong>{{search.value}}</strong>"
+      </div>
+      <div *ngIf="results.apps && results.apps.total > 0">
+        <h4>Application(s)</h4>
+        <ul>
+          <li *ngFor="let app of results.apps.items;let i = index" [class.active]="selected === i">
+            <a (mouseover)="selected = i" (click)="navigate('/manage/apps/' + app.type + '/' + app.name)">
+              {{app.name}} <span class="label label-{{app.typeColor()}}">{{app.type}}</span>
+              <span class="label}}">{{app.version}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="results.streams && results.streams.total > 0">
+        <h4>Streams(s)</h4>
+        <ul>
+          <li *ngFor="let stream of results.streams.items;let i = index"
+              [class.active]="selected === ( i +results.apps.items.length)">
+            <a (mouseover)="selected = (i + results.apps.items.length)" (click)="navigate('/streams/list/' + stream.name)">
+              {{stream.name}} <span class="label label-{{stream.statusColor()}}">{{stream.status}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="results.tasks && results.tasks.total > 0">
+        <h4>Task(s)</h4>
+        <ul>
+          <li *ngFor="let task of results.tasks.items;let i = index"
+              [class.active]="selected === (i + results.apps.items.length + results.streams.items.length)">
+            <a (mouseover)="selected = (i + results.apps.items.length + results.streams.items.length)"
+               (click)="navigate('/tasks-jobs/tasks/' + task.name)">
+              {{task.name}} <span class="label label-{{task.statusColor()}}">{{task.status}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="backdrop" *ngIf="isFocus && isSearch()"></div>
+</form>
