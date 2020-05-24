@@ -21,6 +21,8 @@ import {
   GrafanaTaskDirective,
   GrafanaTasksDirective
 } from './grafana/grafana.directive';
+import { TippyDirective } from './directive/tippy.directive';
+import { CapitalizePipe } from './pipe/capitalize.pipe';
 
 @NgModule({
   entryComponents: [
@@ -29,6 +31,7 @@ import {
   declarations: [
     KeyValueComponent,
     DatetimePipe,
+    CapitalizePipe,
     OrderByPipe,
     DurationPipe,
     ConfirmComponent,
@@ -44,6 +47,7 @@ import {
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
+    TippyDirective
   ],
   imports: [
     CommonModule,
@@ -65,6 +69,7 @@ import {
     KeyValueComponent,
     ConfirmComponent,
     DatetimePipe,
+    CapitalizePipe,
     OrderByPipe,
     DurationPipe,
     SearchComponent,
@@ -77,6 +82,7 @@ import {
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
+    TippyDirective
   ]
 })
 export class SharedModule {

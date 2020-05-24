@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import {Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import { TaskPropertiesDialogComponent } from '../properties/task-properties-dialog-component';
 import { TaskGraphPropertiesSource } from '../properties/task-properties-source';
 import { NodeComponent } from '../../shared/support/node-component';
@@ -17,6 +17,12 @@ import { DocService } from '../../shared/service/doc.service';
   encapsulation: ViewEncapsulation.None
 })
 export class TaskNodeComponent extends NodeComponent {
+
+  @ViewChild('markerTooltip')
+  markerTooltipElement: ElementRef;
+
+  @ViewChild('nodeTooltip')
+  nodeTooltipElement: ElementRef;
 
   constructor(docService: DocService) {
     super(docService);

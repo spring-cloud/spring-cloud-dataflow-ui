@@ -18,6 +18,7 @@ import { StreamFloCreateComponent } from './stream/component/create.component';
 import { ContentAssistService } from './stream/content-assist.service';
 import { ClarityModule } from '@clr/angular';
 import { SharedFloModule } from './shared-flo.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SharedFloModule } from './shared-flo.module';
     ClarityModule,
     FloModule,
     SharedFloModule,
+    SharedModule
   ],
   providers: [
     DocService,

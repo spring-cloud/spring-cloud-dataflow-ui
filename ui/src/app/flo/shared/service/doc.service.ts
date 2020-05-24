@@ -11,6 +11,10 @@ export class DocService {
     document.body.addEventListener('mousedown', () => this.mouseDown = true);
   }
 
+  body() {
+    return this.document.body;
+  }
+
   isMouseDown() {
     return this.mouseDown;
   }
