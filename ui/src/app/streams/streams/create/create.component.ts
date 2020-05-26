@@ -9,7 +9,6 @@ import { ParserService } from '../../../flo/shared/service/parser.service';
 import { Properties } from 'spring-flo';
 import { StreamService } from '../../../shared/api/stream.service';
 import { Observable, timer } from 'rxjs';
-import { LoggerService } from '../../../shared/service/logger.service';
 
 class ProgressData {
   constructor(public count, public total) {
@@ -44,7 +43,6 @@ export class CreateComponent implements OnInit {
   constructor(private router: Router,
               private parserService: ParserService,
               private streamService: StreamService,
-              private loggerService: LoggerService,
               private notificationService: NotificationService) {
     this.form = new FormGroup({}, this.uniqueStreamNames());
   }
@@ -184,7 +182,7 @@ export class CreateComponent implements OnInit {
     this.isOpen = false;
   }
 
-  submit = function() {
+  submit = function () {
     // this.form.mark
     if (this.canSubmit()) {
       // Find index of the first not yet created stream
@@ -231,7 +229,6 @@ export class CreateComponent implements OnInit {
         .createStream(def.name, def.def, description)
         // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(() => {
-          this.loggerService.log('Stream ' + def.name + ' created OK');
           // Stream created successfully, mark it as created
           def.created = true;
           this.progressData.count++;
@@ -268,16 +265,13 @@ export class CreateComponent implements OnInit {
   waitForStreamDef(streamDefNameToWaitFor: string, attemptCount: number): Promise<void> {
     return new Promise(resolve => {
       if (attemptCount === 10) {
-        this.loggerService.error('Aborting after 10 attempts, cannot find the stream: ' + streamDefNameToWaitFor);
         resolve();
       }
       this.streamService.getStream(streamDefNameToWaitFor)
         // .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(() => {
-          this.loggerService.log('Stream ' + streamDefNameToWaitFor + ' is ok!');
           resolve();
         }, () => {
-          this.loggerService.log('Stream ' + streamDefNameToWaitFor + ' is not there yet (attempt=#' + attemptCount + ')');
           setTimeout(() => {
             this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
               resolve();

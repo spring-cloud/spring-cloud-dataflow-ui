@@ -7,6 +7,7 @@ import { DestroyComponent } from './destroy/destroy.component';
 import { UndeployComponent } from './undeploy/undeploy.component';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
+import { MultiDeployComponent } from './multi-deploy/multi-deploy.component';
 
 @Component({
   selector: 'app-streams-list',
@@ -17,6 +18,7 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
   expended: object;
   @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
   @ViewChild('undeployModal', { static: true }) undeployModal: UndeployComponent;
+  @ViewChild('multiDeployModal', { static: true }) multiDeployModal: MultiDeployComponent;
 
   constructor(private streamService: StreamService,
               protected contextService: ContextService,
@@ -63,9 +65,8 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
     if (streams.length === 1) {
       this.router.navigateByUrl(`streams/list/${streams[0].name}/deploy`);
     } else {
-      // TODO
+      this.multiDeployModal.open(streams);
     }
-    // this.router.navigateByUrl(`streams/list/${stream.name}`);
   }
 
   undeploy(streams: Stream[]) {

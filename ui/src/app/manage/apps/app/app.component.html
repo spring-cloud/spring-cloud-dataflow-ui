@@ -6,10 +6,11 @@
 
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="unregister()">
+    <button id="btnUnregister" type="button" class="btn btn-sm btn-secondary" (click)="unregister()">
       Unregister Application
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="manageVersions()" *ngIf="versions?.length > 1">
+    <button id="btnVersion" type="button" class="btn btn-sm btn-secondary" (click)="manageVersions()"
+            *ngIf="versions?.length > 1">
       Manage versions
     </button>
   </div>
@@ -61,7 +62,7 @@
         <app-view-card titleModal="Application properties" name="{{app.name}}.{{app.type}}" keyContext="app" id="props">
           <ng-template>
             <div class="block card-block-keyvalue lg-key" *ngIf="detailedApp.options?.length > 0">
-              <div class="row"  *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
+              <div class="row" *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
                 <div class="key">
                   {{property.name}}
                   <div *ngIf="property.isDeprecated">

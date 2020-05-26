@@ -56,19 +56,25 @@ export class RecordService {
     return this.httpClient
       .get<any>('/audit-records/audit-operation-types', { headers: HttpUtils.getDefaultHttpHeaders() })
       .pipe(
-        map(response => response.map(RecordOperationType.parse)),
+        map(response => {
+          this.operationTypes = response.map(RecordOperationType.parse);
+          return this.operationTypes;
+        }),
         catchError(ErrorUtils.catchError)
       );
   }
 
-  getActionTypes() {
+  getActionTypes(): Observable<RecordActionType[]> {
     if (this.actionTypes) {
       return of(this.actionTypes);
     }
     return this.httpClient
       .get<any>('/audit-records/audit-action-types', { headers: HttpUtils.getDefaultHttpHeaders() })
       .pipe(
-        map(response => response.map(RecordActionType.parse)),
+        map(response => {
+          this.actionTypes = response.map(RecordActionType.parse);
+          return this.actionTypes;
+        }),
         catchError(ErrorUtils.catchError)
       );
   }

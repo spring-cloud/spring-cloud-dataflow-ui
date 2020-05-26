@@ -7,16 +7,16 @@
       Cancel
     </button>
     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
-            (click)="destroy(selected)">
-      Destroy stream(s)
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
             (click)="deploy(selected)">
       Deploy stream(s)
     </button>
     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
             (click)="undeploy(selected)">
       Undeploy stream(s)
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
+            (click)="destroy(selected)">
+      Destroy stream(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
@@ -111,3 +111,4 @@
 
 <app-stream-destroy #destroyModal (onDestroyed)="refresh(state)"></app-stream-destroy>
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh(state)"></app-stream-undeploy>
+<app-stream-multi-deploy #multiDeployModal (onDeployed)="refresh(state)"></app-stream-multi-deploy>

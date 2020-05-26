@@ -5,8 +5,8 @@ import { App } from '../../../shared/model/app.model';
 import { DetailedApp } from '../../../shared/model/detailed-app.model';
 import { UnregisterComponent } from '../unregister/unregister.component';
 import { NotificationService } from '../../../shared/service/notification.service';
-import { HttpError } from '../../../shared/model/error.model';
 import { VersionComponent } from '../version/version.component';
+import { HttpError } from '../../../shared/model/error.model';
 
 @Component({
   selector: 'app-app',
@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
         },
         error => {
           this.notificationService.error('An error occurred', error);
-          // this.notificationService.error(AppError.is(error) ? error.getMessage() : error);
+          this.back();
         });
   }
 

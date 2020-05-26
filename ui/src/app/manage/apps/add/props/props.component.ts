@@ -4,7 +4,6 @@ import { NotificationService } from '../../../../shared/service/notification.ser
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { KeyValueValidator } from '../../../../shared/component/key-value/key-value.validator';
-import { TaskPropValidator } from '../../../../tasks-jobs/tasks/task-prop.validator';
 
 @Component({
   selector: 'app-add-props',
@@ -41,7 +40,7 @@ export class PropsComponent {
         // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(() => {
           this.notificationService.success('Import application(s)', 'Application(s) Imported.');
-          this.router.navigate(['manage/apps']);
+          this.back();
         }, () => {
           this.isImporting = false;
           this.notificationService.error('An error occurred', 'An error occurred while importing Apps. ' +

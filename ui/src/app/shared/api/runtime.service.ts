@@ -13,7 +13,7 @@ export class RuntimeService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getRuntime(page: number, size: number): Observable<RuntimeStreamPage> {
+  getRuntime(page: number, size: number): Observable<RuntimeStreamPage> {
     const params = HttpUtils.getPaginationParams(page, size);
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient

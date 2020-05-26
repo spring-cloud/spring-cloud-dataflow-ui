@@ -44,7 +44,7 @@ export class TaskService {
       );
   }
 
-  createTask(name: string, definition: string, description: string) {
+  createTask(name: string, definition: string, description: string): Observable<any> {
     const params = new HttpParams({ encoder: new DataflowEncoder() })
       .append('definition', definition)
       .append('name', name)

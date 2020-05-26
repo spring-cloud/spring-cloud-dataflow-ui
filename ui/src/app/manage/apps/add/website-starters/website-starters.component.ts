@@ -37,10 +37,10 @@ export class WebsiteStartersComponent {
       .importUri(this.uris[this.value], this.force)
       // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe(data => {
-        this.notificationService.success('Import starters', 'Apps Imported.');
-        this.router.navigate(['manage/apps']);
+        this.notificationService.success('Import starters', 'Application(s) Imported.');
+        this.back();
       }, (error) => {
-        this.notificationService.error('An error occured', error);
+        this.notificationService.error('An error occurred', error);
         this.isImporting = false;
       });
   }

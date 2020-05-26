@@ -36,7 +36,7 @@ export class App {
   }
 
   typeColor() {
-    switch (this.type.toString()) {
+    switch ((this.type || '').toString()) {
       case 'source':
         return 'app source';
       case 'sink':

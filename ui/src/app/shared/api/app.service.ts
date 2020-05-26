@@ -6,7 +6,6 @@ import { App, ApplicationType, AppPage } from '../model/app.model';
 import { catchError, map } from 'rxjs/operators';
 import { DetailedApp } from '../model/detailed-app.model';
 import { ErrorUtils } from '../support/error.utils';
-import { HttpError } from '../model/error.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,7 @@ export class AppService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public getApps(page: number, size: number, search?: string, type?: ApplicationType, sort?: string, order?: string): Observable<AppPage> {
+  getApps(page: number, size: number, search?: string, type?: ApplicationType, sort?: string, order?: string): Observable<AppPage> {
     let params = HttpUtils.getPaginationParams(page, size);
     const headers = HttpUtils.getDefaultHttpHeaders();
     if (sort && order) {
@@ -77,10 +76,10 @@ export class AppService {
     return forkJoin(apps.map(app => this.unregisterApp(app)));
   }
 
-  defaultVersion(apps: App): Observable<any> {
+  defaultVersion(app: App): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .put(`/apps/${apps.type}/${apps.name}/${apps.version}`, { headers })
+      .put(`/apps/${app.type}/${app.name}/${app.version}`, { headers })
       .pipe(
         catchError(ErrorUtils.catchError)
       );
@@ -118,7 +117,6 @@ export class AppService {
       params = params.append('metadata-uri', prop.metaDataUri);
     }
     const headers = HttpUtils.getDefaultHttpHeaders();
-
     return this.httpClient
       .post(`/apps/${ApplicationType[prop.type]}/${prop.name}`, {}, { params, headers })
       .pipe(

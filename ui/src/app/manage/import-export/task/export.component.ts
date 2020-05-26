@@ -66,7 +66,7 @@ export class TaskExportComponent {
       this.isRunning = true;
       this.importExportService.tasksExport(this.selected)
         .subscribe(() => {
-          this.notificationService.success('Task(s) export', 'task(s) has been exported.');
+          this.notificationService.success('Task(s) export', 'Task(s) has been exported.');
           this.isOpen = false;
         });
     }

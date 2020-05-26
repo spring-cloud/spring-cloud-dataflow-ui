@@ -10,7 +10,7 @@
 <form clrForm clrLayout="horizontal" (submit)="register()">
 
   <div class="clr-row">
-    <div [formGroup]="forms[i]" *ngFor="let form of forms; let i = index" class="clr-col-6">
+    <div [formGroup]="forms[i]" *ngFor="let form of forms; let i = index" class="clr-col-6 app-group">
       <div class="register-item">
         <div class="clr-form-control clr-row"
              [class.clr-error]="submitted && form.get('name').invalid && !isFormEmpty(form)">

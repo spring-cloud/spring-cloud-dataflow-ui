@@ -37,14 +37,7 @@ export class MetamodelService implements Flo.Metamodel {
 
   private request: Promise<Map<string, Map<string, Flo.ElementMetadata>>>;
 
-  /**
-   * Creates instance.
-   * @param http handler for making calls to the data flow restful api
-   * @param errorHandler used to generate the error messages.
-   */
-  constructor(
-    private appService: AppService
-  ) {
+  constructor(private appService: AppService) {
   }
 
   textToGraph(flo: Flo.EditorContext, dsl: string): Promise<any> {
