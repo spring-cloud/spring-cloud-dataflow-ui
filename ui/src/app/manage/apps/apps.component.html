@@ -5,19 +5,19 @@
     <button *ngIf="grouped" type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
       Cancel
     </button>
-    <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
-            (click)="unregistersApp(selected)">
+    <button id="btnUnregisterApplications" type="button" [disabled]="selected?.length === 0"
+            class="btn btn-sm btn-secondary" (click)="unregistersApp(selected)">
       Unregister application(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+    <button id="btnGroupActions" type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
       Group Actions
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="add()">
+    <button id="btnAddApplications" type="button" class="btn btn-sm btn-secondary" (click)="add()">
       Add application(s)
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+    <button id="btnRefresh" type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
       <clr-icon shape="refresh"></clr-icon>
       Refresh
     </button>
@@ -69,7 +69,7 @@
   </clr-dg-column>
   <clr-dg-row *ngFor="let app of page?.items" [clrDgItem]="app">
     <clr-dg-cell>
-      <a class="text-truncate" routerLink="/manage/apps/{{app.type}}/{{app.name}}">{{app.name}}</a>
+      <a class="link text-truncate" (click)="details(app)">{{app.name}}</a>
     </clr-dg-cell>
     <clr-dg-cell><span class="label-uppercase label label-{{app.typeColor()}}">{{app.type}}</span></clr-dg-cell>
     <clr-dg-cell><span class="label">{{app.version}}</span></clr-dg-cell>

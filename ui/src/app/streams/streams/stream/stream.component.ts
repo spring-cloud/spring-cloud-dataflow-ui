@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Stream, StreamHistory } from '../../../shared/model/stream.model';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StreamService } from '../../../shared/api/stream.service';
 import { mergeMap } from 'rxjs/operators';
 import { HttpError } from '../../../shared/model/error.model';
@@ -9,10 +9,7 @@ import { DestroyComponent } from '../destroy/destroy.component';
 import { UndeployComponent } from '../undeploy/undeploy.component';
 import { Parser } from '../../../flo/shared/service/parser';
 import get from 'lodash.get';
-import set from 'lodash.set';
-import { StreamStatus, StreamStatuses } from '../../../shared/model/metrics.model';
-import { MetamodelService } from '../../../flo/stream/metamodel.service';
-import { RenderService } from '../../../flo/stream/render.service';
+import { StreamStatus } from '../../../shared/model/metrics.model';
 
 @Component({
   selector: 'app-stream',
@@ -42,8 +39,6 @@ export class StreamComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private notificationService: NotificationService,
-              public metamodelService: MetamodelService,
-              public renderService: RenderService,
               private streamService: StreamService) {
   }
 

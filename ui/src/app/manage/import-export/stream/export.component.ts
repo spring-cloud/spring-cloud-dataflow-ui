@@ -61,7 +61,7 @@ export class StreamExportComponent {
 
   run() {
     if (this.selected.length === 0) {
-      this.notificationService.error('No stream selected', 'Please, select streams to export.');
+      this.notificationService.error('No stream selected', 'Please, select stream(s) to export.');
     } else {
       this.isRunning = true;
       this.importExportService.streamsExport(this.selected)

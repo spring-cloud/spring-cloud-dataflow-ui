@@ -19,6 +19,7 @@ ui/coverage
 ui/libpeerconnection.log
 ui/npm-debug.log
 ui/testem.log
+ui/local.log
 ui/typings
 
 

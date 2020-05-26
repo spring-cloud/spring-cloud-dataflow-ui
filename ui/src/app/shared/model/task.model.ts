@@ -25,6 +25,8 @@ export class Task {
         return 'success';
       case 'ERROR':
         return 'danger';
+      case 'RUNNING':
+        return 'warning';
       default:
         return 'info';
     }

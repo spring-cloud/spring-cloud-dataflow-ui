@@ -24,7 +24,10 @@ export class DatagridComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.context = { ...this.contextService.get(this.contextName), cols: [...this.contextService.get(`${this.contextName}.cols`)] };
+    this.context = {
+      ...this.contextService.get(this.contextName),
+      cols: [...this.contextService.get(`${this.contextName}.cols`)]
+    };
     this.isInit = true;
   }
 
@@ -60,7 +63,7 @@ export class DatagridComponent implements OnInit, OnDestroy {
   attachColumns() {
     if (this.first) {
       this.first = false;
-      this.columns.forEach((col: ClrDatagridHideableColumn, index) => {
+      (this.columns || []).forEach((col: ClrDatagridHideableColumn, index) => {
         col.hiddenChange
           .subscribe((data) => {
             const state = [...this.context.cols];

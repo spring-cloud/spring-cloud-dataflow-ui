@@ -16,6 +16,7 @@ import { CreateComponent } from './streams/create/create.component';
 import { DeployFreeTextComponent } from './streams/deploy/free-text/free-text.component';
 import { StreamDeployBuilderComponent } from './streams/deploy/builder/builder.component';
 import { StreamDeployBuilderErrorsComponent } from './streams/deploy/builder/errors/errors.component';
+import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { StreamDeployBuilderErrorsComponent } from './streams/deploy/builder/err
     CreateComponent,
     DeployFreeTextComponent,
     StreamDeployBuilderComponent,
-    StreamDeployBuilderErrorsComponent
+    StreamDeployBuilderErrorsComponent,
+    MultiDeployComponent
   ],
 })
 export class StreamsModule { }

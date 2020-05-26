@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { Page } from './page.model';
+import get from 'lodash.get';
 
 export class JobExecution {
   public name: string;
@@ -26,24 +27,28 @@ export class JobExecution {
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.stepExecutions = [];
     jobExecution.name = input.name;
-    jobExecution.startTime = DateTime.fromISO(input.jobExecution.startTime);
+    if (get(input, 'jobExecution.startTime')) {
+      jobExecution.startTime = DateTime.fromISO(input.jobExecution.startTime);
+    }
     jobExecution.stepExecutionCount = input.stepExecutionCount;
-    jobExecution.status = input.jobExecution.status;
-    jobExecution.jobExecutionId = input.jobExecution.id;
+    if (get(input, 'jobExecution.status')) {
+      jobExecution.status = input.jobExecution.status;
+    }
+    jobExecution.jobExecutionId = get(input, 'jobExecution.id');
     jobExecution.taskExecutionId = input.taskExecutionId;
-    jobExecution.jobInstanceId = input.jobExecution.jobInstance.id;
+    jobExecution.jobInstanceId = get(input, 'jobExecution.jobInstance.id');
     jobExecution.restartable = input.restartable;
     jobExecution.abandonable = input.abandonable;
     jobExecution.stoppable = input.stoppable;
     jobExecution.defined = input.defined;
     jobExecution.jobParametersString = input.jobParametersString;
-    if (input.jobExecution.stepExecutions) {
+    if (get(input, 'jobExecution.stepExecutions')) {
       jobExecution.stepExecutions = input.jobExecution.stepExecutions.map(ExecutionStep.parse);
     }
-    if (input.jobExecution.endTime) {
+    if (get(input, 'jobExecution.endTime')) {
       jobExecution.endTime = DateTime.fromISO(input.jobExecution.endTime);
     }
-    if (input.jobExecution.exitStatus) {
+    if (get(input, 'jobExecution.exitStatus')) {
       jobExecution.exitCode = input.jobExecution.exitStatus.exitCode;
       jobExecution.exitMessage = input.jobExecution.exitStatus.exitDescription;
     }
@@ -54,7 +59,9 @@ export class JobExecution {
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.stepExecutions = [];
     jobExecution.name = input.name;
-    jobExecution.startTime = DateTime.fromISO(input.startDateTime);
+    if (get(input, 'startDateTime')) {
+      jobExecution.startTime = DateTime.fromISO(input.startDateTime);
+    }
     jobExecution.stepExecutionCount = input.stepExecutionCount;
     jobExecution.status = input.status;
     jobExecution.jobExecutionId = input.executionId;

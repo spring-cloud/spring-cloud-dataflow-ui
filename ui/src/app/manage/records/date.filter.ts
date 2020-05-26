@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { App, ApplicationType } from '../../shared/model/app.model';
 import { DateTime } from 'luxon';
 
 @Component({
@@ -98,7 +97,7 @@ export class DateFilterComponent implements OnInit {
     this.pchanges.next(true);
   }
 
-  accepts(application: App) {
+  accepts() {
     return true;
   }
 

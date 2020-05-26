@@ -1,0 +1,36 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning" clrModalSize="lg">
+  <h3 class="modal-title">Deploy Streams</h3>
+  <div class="modal-body" *ngIf="!isRunning">
+    <p>
+      Please specify any <strong>optional</strong> deployment properties. You can either enter deployment properties
+      directly into the text-area field below or alternatively, you can point to an external properties file, which will
+      be used to populate the text-area field.
+    </p>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="left">Name</th>
+        <th class="left">Definition</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let stream of streams">
+        <td class="left"><strong class="text-truncate" style="max-width: 230px">{{stream.name}}</strong></td>
+        <td class="left">
+          <span class="dsl-text dsl-truncate" style="max-width: 200px">{{stream.dslText}}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-body" *ngIf="isRunning">
+    <clr-spinner clrInline clrSmall></clr-spinner>
+    Deploying stream(s) ...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="deploy()" [disabled]="isRunning">
+      Deploy the streams
+    </button>
+  </div>
+</clr-modal>

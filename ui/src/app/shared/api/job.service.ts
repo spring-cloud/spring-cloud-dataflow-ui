@@ -33,10 +33,10 @@ export class JobService {
       );
   }
 
-  restart(item: JobExecution): Observable<any> {
+  restart(execution: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .put(`/jobs/executions/${item.jobExecutionId}?restart=true`, { headers })
+      .put(`/jobs/executions/${execution.jobExecutionId}?restart=true`, { headers })
       .pipe(
         catchError(ErrorUtils.catchError)
       );

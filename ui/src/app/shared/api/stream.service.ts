@@ -88,7 +88,7 @@ export class StreamService {
       .append('definition', dsl)
       .append('description', description);
     return this.httpClient
-      .post<any>('/streams/definitions/', null, { headers, observe: 'response', params })
+      .post<any>('/streams/definitions', null, { headers, observe: 'response', params })
       .pipe(
         catchError(ErrorUtils.catchError)
       );
