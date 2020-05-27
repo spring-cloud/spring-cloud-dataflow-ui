@@ -1,10 +1,13 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, Input, AfterViewInit, ViewContainerRef, Inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { PropertiesGroupModel, SearchTextFilter } from '../support/properties-group-model';
 import { debounceTime } from 'rxjs/operators';
 import { App, ApplicationType } from '../../../shared/model/app.model';
 import { GraphNodePropertiesSource } from '../support/graph-node-properties-source';
+import { Properties } from 'spring-flo';
+import PropertiesSource = Properties.PropertiesSource;
+import { DOCUMENT } from '@angular/common';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -20,7 +23,10 @@ import { GraphNodePropertiesSource } from '../support/graph-node-properties-sour
 })
 export class PropertiesDialogComponent implements OnInit {
 
-  isOpen = false;
+  @Input('body')
+  body = false;
+
+  _open = false;
 
   app: App;
 
@@ -36,7 +42,7 @@ export class PropertiesDialogComponent implements OnInit {
 
   propertiesFilter = new SearchTextFilter();
 
-  constructor() {
+  constructor(@Inject(DOCUMENT) private document: Document, private viewContainerRef: ViewContainerRef) {
     this.propertiesFormGroup = new FormGroup({});
     this._searchFilterTextSubject = new Subject<string>();
   }
@@ -70,18 +76,15 @@ export class PropertiesDialogComponent implements OnInit {
     this.app.name = name;
     this.app.type = (type as any) as ApplicationType;
     this.app.version = version;
-    this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
-    this.propertiesGroupModel.load();
-    this.propertiesGroupModel.loadedSubject.subscribe();
+    this.setData(propertiesSource);
     this.isOpen = true;
   }
 
-  /*
   setData(propertiesSource: PropertiesSource) {
     this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
     this.propertiesGroupModel.loadedSubject.subscribe();
-  }*/
+  }
 
   get searchFilterText() {
     return this._searchFilterText;
@@ -90,6 +93,25 @@ export class PropertiesDialogComponent implements OnInit {
   set searchFilterText(text: string) {
     this._searchFilterText = text;
     this._searchFilterTextSubject.next(text);
+  }
+
+  set isOpen(open: boolean) {
+    if (this._open !== open) {
+      this._open = open;
+      if (open) {
+        if (this.body) {
+          this.document.body.appendChild(this.viewContainerRef.element.nativeElement);
+        }
+      } else {
+        if (this.body) {
+          this.document.body.removeChild(this.viewContainerRef.element.nativeElement);
+        }
+      }
+    }
+  }
+
+  get isOpen() {
+    return this._open;
   }
 
 }

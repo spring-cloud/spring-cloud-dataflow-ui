@@ -1,7 +1,13 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import { StreamAppPropertiesSource } from './stream-properties-source';
+import { PropertiesGroupModel } from '../../shared/support/properties-group-model';
+import { StreamService } from '../../../shared/api/stream.service';
+import { Observable } from 'rxjs';
+import { AppUiProperty } from '../../shared/support/app-ui-property';
+import { PropertiesDialogComponent } from '../../shared/properties/properties-dialog.component';
+import { DOCUMENT } from '@angular/common';
 
 // CM extension necessary for snippet support syntax highlighting
 // Lint support
@@ -11,11 +17,6 @@ import 'codemirror-minified/mode/groovy/groovy';
 import 'codemirror-minified/mode/javascript/javascript';
 import 'codemirror-minified/mode/ruby/ruby';
 import 'codemirror-minified/mode/python/python';
-import { PropertiesGroupModel } from '../../shared/support/properties-group-model';
-import { StreamService } from '../../../shared/api/stream.service';
-import { Observable } from 'rxjs';
-import { AppUiProperty } from '../../shared/support/app-ui-property';
-import { PropertiesDialogComponent } from '../../shared/properties/properties-dialog.component';
 
 
 /**
@@ -103,9 +104,9 @@ export class StreamPropertiesDialogComponent extends PropertiesDialogComponent {
 
   public title: string;
 
-  constructor(private streamsService: StreamService) {
+  constructor(@Inject(DOCUMENT) document: Document, viewContainerRef: ViewContainerRef, private streamsService: StreamService) {
     // super(bsModalRef);
-    super();
+    super(document, viewContainerRef);
   }
 
   setData(propertiesSource: StreamAppPropertiesSource) {

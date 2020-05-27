@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, ElementRef, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
-import { StreamHead } from '../properties/stream-properties-source';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { StreamGraphPropertiesSource, StreamHead } from '../properties/stream-properties-source';
 import { Utils } from '../support/utils';
 import { dia } from 'jointjs';
 import { NodeComponent } from '../../shared/support/node-component';
 import { DocService } from '../../shared/service/doc.service';
+import { StreamPropertiesDialogComponent } from '../properties/stream-properties-dialog.component';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -12,53 +13,54 @@ import { DocService } from '../../shared/service/doc.service';
  * @author Andy Clement
  */
 @Component({
-    selector: 'app-flo-node',
-    templateUrl: './stream-node.component.html',
-    styleUrls: ['./stream-node.component.scss'],
-    encapsulation: ViewEncapsulation.None
+  selector: 'app-flo-node',
+  templateUrl: './stream-node.component.html',
+  styleUrls: ['./stream-node.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class StreamNodeComponent extends NodeComponent {
 
-    @ViewChild('markerTooltip')
-    markerTooltipElement: ElementRef;
+  @ViewChild('markerTooltip')
+  markerTooltipElement: ElementRef;
 
-    @ViewChild('canvasNodeTooltip')
-    canvasTooltipElement: ElementRef;
+  @ViewChild('canvasNodeTooltip')
+  canvasTooltipElement: ElementRef;
 
-    @ViewChild('paletteNodeTooltip')
-    paletteTooltipElement: ElementRef;
+  @ViewChild('paletteNodeTooltip')
+  paletteTooltipElement: ElementRef;
 
-    constructor(docService: DocService) {
-        super(docService);
-    }
+  @ViewChild('options_modal', { static: true }) optionsModal: StreamPropertiesDialogComponent;
 
-    isSingleOutputPort(): boolean {
-        return this.view.model.attr('.output-port');
-    }
+  constructor(docService: DocService) {
+    super(docService);
+  }
 
-    isSingleIntputPort(): boolean {
-        return this.view.model.attr('.input-port');
-    }
+  isSingleOutputPort(): boolean {
+    return this.view.model.attr('.output-port');
+  }
 
-    showOptions() {
-        // this.
-        const element = this.view.model;
-        alert('TODO: StreamNodeComponent');
-        // this.view
-        // TODO
-        // const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent, { class: 'modal-properties' });
-        // modalRef.content.name = `${element.attr('metadata/name')}`;
-        // modalRef.content.version = `${element.attr('metadata/version')}`;
-        // modalRef.content.type = `${element.attr('metadata/group').toUpperCase()}`;
-        // const graph = this.paper.model;
-        // const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
-        // const streamHead: StreamHead = streamHeads.indexOf(element) >= 0 ? {
-        //   presentStreamNames: streamHeads
-        //     .filter(e => e.attr('stream-name') && e !== element)
-        //     .map(e => e.attr('stream-name'))
-        // } : undefined;
-        // modalRef.content.setData(new StreamGraphPropertiesSource(element, streamHead));
-    }
+  isSingleIntputPort(): boolean {
+    return this.view.model.attr('.input-port');
+  }
+
+  showOptions() {
+    // this.
+    const element = this.view.model;
+    const graph = this.paper.model;
+    const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
+    const streamHead: StreamHead = streamHeads.indexOf(element) >= 0 ? {
+      presentStreamNames: streamHeads
+        .filter(e => e.attr('stream-name') && e !== element)
+        .map(e => e.attr('stream-name'))
+    } : undefined;
+
+    this.optionsModal.open(`${element.attr('metadata/name')}`,
+      `${element.attr('metadata/group').toUpperCase()}`,
+      `${element.attr('metadata/version')}`,
+      new StreamGraphPropertiesSource(element, streamHead)
+    );
+
+  }
 
 }
 
