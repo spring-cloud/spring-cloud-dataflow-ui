@@ -21,8 +21,10 @@ import { PropertiesGroupsDialogComponent } from '../../../flo/shared/properties-
 import { FloModule } from 'spring-flo';
 import { PropertiesDialogComponent } from '../../../flo/shared/properties/properties-dialog.component';
 import { DocService } from '../../../flo/shared/service/doc.service';
+import { DestroyComponent } from '../destroy/destroy.component';
+import { UpperCasePipe } from '@angular/common';
 
-describe('streams/streams/create/create.component.ts', () => {
+xdescribe('streams/streams/create/create.component.ts', () => {
   let component: CreateComponent;
   let fixture: ComponentFixture<CreateComponent>;
   const metamodelService = new MetamodelService(AppServiceMock.provider.useValue);
@@ -33,7 +35,8 @@ describe('streams/streams/create/create.component.ts', () => {
         CreateComponent,
         StreamFloCreateComponent,
         PropertiesGroupsDialogComponent,
-        PropertiesDialogComponent
+          PropertiesDialogComponent,
+          UpperCasePipe
       ],
       imports: [
         FormsModule,

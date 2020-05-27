@@ -12,6 +12,7 @@ import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { Stream } from '../../../shared/model/stream.model';
+import { UpperCasePipe } from '@angular/common';
 
 describe('streams/streams/destroy/destroy.component.ts', () => {
 
@@ -22,7 +23,8 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        DestroyComponent
+        DestroyComponent,
+        UpperCasePipe
       ],
       imports: [
         FormsModule,
