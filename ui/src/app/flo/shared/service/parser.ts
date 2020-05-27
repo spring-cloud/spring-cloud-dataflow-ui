@@ -822,4 +822,9 @@ export namespace Parser {
   export function parse(definitionsText: string, mode: string): ParseResult {
     return new InternalParser(definitionsText, mode).parse();
   }
+
+  export function simplify(dsl: string): string {
+    const result = dsl.replace(/\s+--\S+=([^\s"]*)|(".*")/g, ' ').replace(/\s+/g, ' ').trim();
+    return result;
+  }
 }
