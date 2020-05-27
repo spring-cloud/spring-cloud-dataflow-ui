@@ -16,6 +16,7 @@ import { ViewComponent } from './task/component/view.component';
 import { TaskFloCreateComponent } from './task/component/create.component';
 import { ToolsService } from './task/tools.service';
 import { SharedFloModule } from './shared-flo.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SharedFloModule } from './shared-flo.module';
     ClarityModule,
     FloModule,
     SharedFloModule,
+    SharedModule
   ],
   providers: [
     DocService,

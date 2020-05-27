@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, TemplateRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import { StreamHead } from '../properties/stream-properties-source';
 import { Utils } from '../support/utils';
 import { dia } from 'jointjs';
@@ -13,11 +13,20 @@ import { DocService } from '../../shared/service/doc.service';
  */
 @Component({
     selector: 'app-flo-node',
-    templateUrl: 'stream-node.component.html',
+    templateUrl: './stream-node.component.html',
     styleUrls: ['./stream-node.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class StreamNodeComponent extends NodeComponent {
+
+    @ViewChild('markerTooltip')
+    markerTooltipElement: ElementRef;
+
+    @ViewChild('canvasNodeTooltip')
+    canvasTooltipElement: ElementRef;
+
+    @ViewChild('paletteNodeTooltip')
+    paletteTooltipElement: ElementRef;
 
     constructor(docService: DocService) {
         super(docService);

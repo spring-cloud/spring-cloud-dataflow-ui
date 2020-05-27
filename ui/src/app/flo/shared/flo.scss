@@ -976,6 +976,24 @@ table.zoom-canvas-control {
   }
 }
 
+.tippy-box[data-theme~='error'] {
+  background-color: #c21d00;
+  color: hsl(198, 0%, 100%);
+}
+.tippy-box[data-theme~='error'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: #c21d00;
+}
+.tippy-box[data-theme~='error'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: #c21d00;
+}
+.tippy-box[data-theme~='error'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: #c21d00;
+}
+.tippy-box[data-theme~='error'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: #c21d00;
+}
+
+
 
 
 

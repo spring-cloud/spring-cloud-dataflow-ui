@@ -108,4 +108,7 @@ export class NodeComponent extends ElementComponent {
     this.paper.model.trigger('startDeletion', this.view.model);
   }
 
+  docBody() {
+    return this.docService.body();
+  }
 }
