@@ -110,7 +110,7 @@ export class MetamodelService implements Flo.Metamodel {
     this.addLinksGroup(metamodel);
     this.addOtherGroup(metamodel);
     return this.request = new Promise(resolve => {
-      this.appsService.getApps(0, 10000, null, ('task' as any) as ApplicationType, 'name', 'DESC').subscribe(
+      this.appsService.getApps(0, 10000, null, ApplicationType.task, 'name', 'DESC').subscribe(
         data => {
           data.items.forEach(item => {
             if (!metamodel.has(item.type.toString())) {
