@@ -13,8 +13,8 @@ import { AboutDetailsComponent } from '../components/about-more/about-details.co
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
-import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
-import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

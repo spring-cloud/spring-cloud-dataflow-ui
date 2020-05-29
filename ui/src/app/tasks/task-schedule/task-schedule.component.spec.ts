@@ -30,8 +30,8 @@ import { TaskScheduleComponent } from './task-schedule.component';
 import { MockModalService } from '../../tests/mocks/modal';
 import { LoggerService } from '../../shared/services/logger.service';
 import { By } from '@angular/platform-browser';
-import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
-import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 

@@ -1,7 +1,7 @@
 import { Component, DoCheck, HostListener, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { SecurityInfo } from '../../shared/model/about/security-info.model';
 import { AuthService } from '../../auth/auth.service';
-import { SharedAboutService } from 'src/app/shared/services/shared-about.service';
+import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

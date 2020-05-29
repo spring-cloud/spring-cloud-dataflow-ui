@@ -30,7 +30,7 @@ import { TaskDefinitionExecutionsComponent } from './task-definition-executions.
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DATAFLOW_LIST } from '../../../shared/components/list/list.component';
-import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_PAGE } from '../../../shared/components/page/page.component';
 import { MasterCheckboxComponent } from '../../../shared/components/master-checkbox.component';
 import { TippyDirective } from '../../../shared/directives/tippy.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

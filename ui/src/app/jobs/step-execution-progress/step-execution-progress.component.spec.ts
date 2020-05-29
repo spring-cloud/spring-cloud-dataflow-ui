@@ -18,7 +18,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
-import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { FormsModule } from '@angular/forms';

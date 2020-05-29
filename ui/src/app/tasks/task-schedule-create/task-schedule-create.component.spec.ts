@@ -27,7 +27,7 @@ import { TASK_DEFINITIONS, TASK_SCHEDULES } from '../../tests/mocks/mock-data';
 import { By } from '@angular/platform-browser';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
-import { PagerComponent } from 'src/app/shared/components/pager/pager.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';

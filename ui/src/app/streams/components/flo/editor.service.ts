@@ -284,7 +284,7 @@ export class EditorService implements Flo.Editor {
     }
   }
 
-  private validateSource(element: dia.Element, incoming: Array<dia.Link>,
+  protected validateSource(element: dia.Element, incoming: Array<dia.Link>,
                          outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
     if (incoming.length !== 0) {
       errors.push({
@@ -328,7 +328,7 @@ export class EditorService implements Flo.Editor {
     return nonTapLinkCount;
   }
 
-  private validateProcessor(element: dia.Element, incoming: Array<dia.Link>,
+  protected validateProcessor(element: dia.Element, incoming: Array<dia.Link>,
                             outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
     if (incoming.length !== 1) {
       errors.push({
@@ -361,7 +361,7 @@ export class EditorService implements Flo.Editor {
     }
   }
 
-  private validateSink(element: dia.Element, incoming: Array<dia.Link>,
+  protected validateSink(element: dia.Element, incoming: Array<dia.Link>,
                        outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
     if (incoming.length !== 1) {
       errors.push({
@@ -404,7 +404,7 @@ export class EditorService implements Flo.Editor {
     }
   }
 
-  private validateTap(element: dia.Element, incoming: Array<dia.Link>,
+  protected validateTap(element: dia.Element, incoming: Array<dia.Link>,
                       outgoing: Array<dia.Link>, tap: Array<dia.Link>, errors: Array<Flo.Marker>) {
     if (incoming.length !== 0) {
       errors.push({
@@ -429,7 +429,7 @@ export class EditorService implements Flo.Editor {
     }
   }
 
-  private validateDestination(element: dia.Element, incoming: Array<dia.Link>,
+  protected validateDestination(element: dia.Element, incoming: Array<dia.Link>,
                               outgoing: Array<dia.Link>, tapLinks: Array<dia.Link>, errors: Array<Flo.Marker>) {
     if (tapLinks.length !== 0) {
       errors.push({
@@ -447,11 +447,11 @@ export class EditorService implements Flo.Editor {
     }
   }
 
-  private isTapLink(link): boolean {
+  protected isTapLink(link): boolean {
     return link.attr('props/isTapLink') === true;
   }
 
-  private validateConnectedLinks(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
+  protected validateConnectedLinks(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
     const group = element.attr('metadata/group');
     const type = element.attr('metadata/name');
     const incoming: Array<dia.Link> = [];
@@ -528,7 +528,7 @@ export class EditorService implements Flo.Editor {
     this.validatePortLinks(element, errors, incoming, outgoing);
   }
 
-  private validatePortLinks(element: dia.Element, errors: Array<Flo.Marker>,
+  protected validatePortLinks(element: dia.Element, errors: Array<Flo.Marker>,
                             incoming: Array<dia.Link>, outgoing: Array<dia.Link>) {
 
     // TODO This validation below is commented out until multiple ports support is a go

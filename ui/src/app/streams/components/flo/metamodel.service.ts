@@ -102,42 +102,8 @@ export class MetamodelService implements Flo.Metamodel {
               group.set(item.name, this.createEntry(item.type, item.name, item.version, [], []));
             }
           });
-          // HACK to add CUSTOM processor with multiple input and output ports
-          // if (metamodel.get('processor')) {
-          //   const entry = new AppMetadata(
-          //     'processor',
-          //     'CUSTOM',
-          //     '1.0.0',
-          //     this.generatePortArray('input-', 5),
-          //     this.generatePortArray('output-', 3),
-          //     from(Promise.resolve(new DetailedAppRegistration('CUSTOM', ApplicationType.processor))),
-          //     undefined
-          //   );
-          //   metamodel.get('processor').set('CUSTOM', entry);
-          //
-          //   const multi1_entry = new AppMetadata(
-          //     'processor',
-          //     'MULTI-1',
-          //     '1.0.0',
-          //     this.generatePortArray('input-', 5),
-          //     this.generatePortArray('output-', 10),
-          //     from(Promise.resolve(new DetailedAppRegistration('MULTI-1', ApplicationType.processor))),
-          //     undefined
-          //   );
-          //   metamodel.get('processor').set('MULTI-1', multi1_entry);
-          //
-          //   const giant = new AppMetadata(
-          //     'processor',
-          //     'GIANT',
-          //     '1.0.0',
-          //     this.generatePortArray('input-', 30),
-          //     this.generatePortArray('output-', 40),
-          //     from(Promise.resolve(new DetailedAppRegistration('GIANT', ApplicationType.processor))),
-          //     undefined
-          //   );
-          //   metamodel.get('processor').set('GIANT', giant);
-          //
-          // }
+
+          this.addExtras(metamodel);
 
           this.addLinksGroup(metamodel);
           resolve(metamodel);
@@ -151,13 +117,9 @@ export class MetamodelService implements Flo.Metamodel {
     return this.request;
   }
 
-  // generatePortArray(portPrefix: string, n: number) {
-  //   const ports = [];
-  //   for (let i = 1; i <= n; i++) {
-  //     ports.push(portPrefix + i);
-  //   }
-  //   return ports;
-  // }
+  protected addExtras(metamodel: Map<string, Map<string, Flo.ElementMetadata>>) {
+
+  }
 
   private addLinksGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
     const metadata = this.createMetadata('link', 'links', 'Link between channels',

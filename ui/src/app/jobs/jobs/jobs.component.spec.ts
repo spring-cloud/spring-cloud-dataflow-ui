@@ -18,7 +18,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { DateTimeUtils } from '../../shared/support/date-time.utils';
 import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
-import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { FormsModule } from '@angular/forms';
 import { DateTime } from 'luxon';

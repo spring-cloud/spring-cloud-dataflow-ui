@@ -15,8 +15,8 @@ import { RoutingStateService } from '../../shared/services/routing-state.service
 import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
-import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
-import { DATAFLOW_LIST } from 'src/app/shared/components/list/list.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
 import { MockAuditRecordService } from '../../tests/mocks/audit';

@@ -29,10 +29,10 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
-import { AppListBarComponent } from 'src/app/apps/components/app-list-bar/app-list-bar.component';
 import { of } from 'rxjs';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppListBarComponent } from '../components/app-list-bar/app-list-bar.component';
 
 describe('AppsComponent', () => {
 

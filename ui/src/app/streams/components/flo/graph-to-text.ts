@@ -15,7 +15,6 @@
  */
 
 import { dia } from 'jointjs';
-import * as _ from 'lodash';
 import { JsonGraph } from './text-to-graph';
 import { LoggerService } from '../../../shared/services/logger.service';
 
@@ -25,7 +24,7 @@ import { LoggerService } from '../../../shared/services/logger.service';
  * @author Andy Clement
  * @author Alex Boyko
  */
-class GraphToTextConverter {
+export class GraphToTextConverter {
 
     static DEBUG = true;
 

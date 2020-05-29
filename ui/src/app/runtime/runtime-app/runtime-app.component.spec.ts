@@ -14,7 +14,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
 import { TruncatorComponent } from '../../shared/components/truncator/truncator.component';
 import { TruncatorWidthProviderDirective } from '../../shared/components/truncator/truncator-width-provider.directive';
 import { NotificationService } from '../../shared/services/notification.service';
-import { DATAFLOW_PAGE } from 'src/app/shared/components/page/page.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
 import { PagerComponent } from '../../shared/components/pager/pager.component';
 import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
 import { FormsModule } from '@angular/forms';

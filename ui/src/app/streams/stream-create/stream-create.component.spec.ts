@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ParserService } from '../../shared/services/parser.service';
 import { MockSharedAppService } from '../../tests/mocks/shared-app';
 import { LoggerService } from '../../shared/services/logger.service';
-import { MockRoutingStateService } from 'src/app/tests/mocks/routing-state';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
 import { MockNotificationService } from '../../tests/mocks/notification';
 import { NotificationService } from '../../shared/services/notification.service';

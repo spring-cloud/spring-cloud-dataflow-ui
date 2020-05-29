@@ -33,7 +33,7 @@ import { MockAuditRecordService } from '../../tests/mocks/audit';
 import { AuditRecordListBarComponent } from '../components/audit-record-list-bar/audit-record-list-bar.component';
 import { AuditRecordActionComponent } from '../components/audit-record-action/audit-record-action.component';
 import { AuditRecordOperationComponent } from '../components/audit-record-operation/audit-record-operation.component';
-import { DataflowDateTimePipe } from 'src/app/shared/pipes/dataflow-date-time.pipe';
+import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
 import { AUDIT_RECORDS } from '../../tests/mocks/mock-data';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
