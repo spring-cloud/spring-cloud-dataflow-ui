@@ -86,11 +86,13 @@
       <button class="action-item" (click)="destroy([stream])">Destroy</button>
       <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
     </clr-dg-action-overflow>
-    <ng-template [(clrIfExpanded)]="expended[stream.name]"
+    <ng-template [clrIfExpanded]="expanded[stream.name]" (clrIfExpandedChange)="toggleExpand(stream.name)"
                  ngProjectAs="clr-dg-row-detail">
       <clr-dg-row-detail>
         <div class="clr-detail-flo">
-          <app-stream-flo-view id="{{stream.name}}"></app-stream-flo-view>
+          <!--<app-stream-flo-view id="{{stream.name}}"></app-stream-flo-view>-->
+          <app-runtime-stream-flo-view [stream]="stream" [metrics]="metricsForStream(stream.name)">
+          </app-runtime-stream-flo-view>
         </div>
       </clr-dg-row-detail>
     </ng-template>

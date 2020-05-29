@@ -19,6 +19,7 @@ import { ContentAssistService } from './stream/content-assist.service';
 import { ClarityModule } from '@clr/angular';
 import { SharedFloModule } from './shared-flo.module';
 import { SharedModule } from '../shared/shared.module';
+import { RuntimeStreamFloViewComponent } from './stream/component/runtime-view.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SharedModule } from '../shared/shared.module';
     StreamNodeComponent,
     StreamPropertiesDialogComponent,
     StreamFloViewComponent,
+    RuntimeStreamFloViewComponent,
     StreamFloCreateComponent,
   ],
   imports: [
@@ -50,6 +52,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   exports: [
     StreamFloViewComponent,
+    RuntimeStreamFloViewComponent,
     StreamFloCreateComponent
   ]
 })
