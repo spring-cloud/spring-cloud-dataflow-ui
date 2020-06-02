@@ -1,6 +1,4 @@
 <h1>Job execution <strong *ngIf="!loading">{{execution.name}} ({{execution.jobExecutionId}})</strong></h1>
-
-
 <div *ngIf="!loading">
 
   <div class="datagrid-action-bar">
@@ -98,9 +96,15 @@
               <div class="row">
                 <div class="key">Applications</div>
                 <div class="value">
-                  <div *ngFor="let app of applications">
-                    <strong>{{app.name}}</strong>&nbsp;
-                    <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                  <div *ngIf="!loadingApplications">
+                    <div *ngFor="let app of applications">
+                      <strong>{{app.name}}</strong>&nbsp;
+                      <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="loadingApplications">
+                    <clr-spinner clrInline clrSmall></clr-spinner>
+                    Loading application(s)...
                   </div>
                 </div>
               </div>
@@ -282,6 +286,11 @@
       </app-view-card>
     </div>
   </div>
+</div>
+
+<div *ngIf="loading" style="padding:1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading job execution...
 </div>
 
 <app-confirm #restartModal (onConfirmed)="restartJob()" title="Confirm restart the job execution" yes="Restart">

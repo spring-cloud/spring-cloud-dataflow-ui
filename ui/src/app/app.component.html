@@ -8,11 +8,8 @@
     </div>
     <app-search></app-search>
     <div class="header-actions">
-      <a routerLink="about" class="nav-link nav-icon" aria-label="settings">
-        <clr-icon shape="info-standard"></clr-icon>
-      </a>
+      <app-about-signpost></app-about-signpost>
     </div>
-    <!--    <app-user-header-action class="header-actions"></app-user-header-action>-->
   </clr-header>
   <div class="content-container">
     <clr-vertical-nav>
@@ -73,10 +70,10 @@
           <a
             clrVerticalNavLink
             routerLinkActive="active"
-            routerLink="tasks-jobs/scheduler"
+            routerLink="tasks-jobs/schedules"
             appRole
             appFeature="schedules">
-            Scheduler
+            Schedules
           </a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>

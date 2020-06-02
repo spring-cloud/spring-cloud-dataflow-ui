@@ -7,6 +7,7 @@ import { DestroyComponent } from './destroy/destroy.component';
 import { Router } from '@angular/router';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
+import { GroupService } from '../../shared/service/group.service';
 
 @Component({
   selector: 'app-tasks',
@@ -18,6 +19,7 @@ export class TasksComponent extends DatagridComponent {
 
   constructor(private taskService: TaskService,
               private router: Router,
+              private groupService: GroupService,
               protected contextService: ContextService) {
     super(contextService, 'tasks');
   }
@@ -50,9 +52,13 @@ export class TasksComponent extends DatagridComponent {
     this.router.navigateByUrl(`tasks-jobs/tasks/${task.name}/launch`);
   }
 
-  setMode(grouped: boolean) {
-    this.grouped = grouped;
-    this.selected = [];
+  scheduleTasks(tasks: Task[]) {
+    const group = this.groupService.create(tasks.map(task => task.name));
+    this.router.navigateByUrl(`tasks-jobs/schedules/${group}/create`);
+  }
+
+  schedule(task: Task) {
+    this.router.navigateByUrl(`tasks-jobs/schedules/${task.name}/create`);
   }
 
   destroyTasks(tasks: Task[]) {

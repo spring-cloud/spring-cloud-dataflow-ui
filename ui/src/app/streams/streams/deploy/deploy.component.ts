@@ -59,49 +59,11 @@ export class DeployComponent implements OnInit, OnDestroy {
         })
       )
       .pipe(mergeMap(
-        config => this.streamService.getDeploymentInfo(config.id)
-          .pipe(map((deploymentInfo) => {
-            const properties = [];
-            const ignoreProperties = [];
-            // Deployer properties
-            if (deploymentInfo.deploymentProperties) {
-              Object.keys(deploymentInfo.deploymentProperties).map(app => {
-                Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
-                  const value = this.streamDeployService.cleanValueProperties(deploymentInfo.deploymentProperties[app][key]);
-                  if (key === StreamDeployService.version.keyEdit) {
-                    properties.push(`version.${app}=${value}`);
-                  } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
-                    const keyShort = key.substring(StreamDeployService.deployer.keyEdit.length, key.length);
-                    if (keyShort !== 'group') {
-                      properties.push(`deployer.${app}.${keyShort}=${value}`);
-                    } else {
-                      this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
-                    }
-                  } else {
-                    this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
-                  }
-                });
-              });
-            }
-
-            // Application properties
-            const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
-            dslTextParsed.lines[0].nodes.forEach((node) => {
-              const app = get(node, 'label') || get(node, 'name');
-              const appType = get(node, 'name');
-              get(node, 'options', []).forEach((value, key) => {
-                value = this.streamDeployService.cleanValueProperties(value);
-                let keyShort = key;
-                if (key.startsWith(`${appType}.`)) {
-                  ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
-                  keyShort = key.substring(`${appType}.`.length, key.length);
-                }
-                properties.push(`app.${app}.${keyShort}=${value}`);
-              });
-            });
-            this.properties = properties;
-            this.ignoreProperties = [...properties, ...ignoreProperties];
-            config.stream = deploymentInfo;
+        config => this.streamDeployService.deploymentProperties(config.id)
+          .pipe(map((deploymentProperties) => {
+            this.properties = deploymentProperties.properties;
+            this.ignoreProperties = deploymentProperties.ignoreProperties;
+            config.stream = deploymentProperties.stream;
             return config;
           }))
       ))

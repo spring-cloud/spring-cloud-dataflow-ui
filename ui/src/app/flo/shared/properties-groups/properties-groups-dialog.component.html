@@ -1,34 +1,40 @@
-<div class="modal-header">
-  <h4 class="modal-title pull-left">{{title}}</h4>
-  <button type="button" class="close pull-right" aria-label="Close" (click)="handleCancel()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-
-<label class="modal-search">
-    <span class="search-wrapper">
-      <input type="text" class="form-control" placeholder="Seach properties ..." [(ngModel)]="searchFilterText"/>
-      <span class="fa fa-search"></span>
-    </span>
-</label>
-<form name="app-properties" (submit)="handleOk()" class="modal-body app-properties">
-  <div class="properties"
-       *ngFor="let group of propertiesGroupModels">
-    <div class="line-toggle">
-      <a class="toggle" (click)="collapse(group.title)">
-                <span class="fa" [class.fa-chevron-down]="state[group.title]"
-                      [class.fa-chevron-right]="!state[group.title]"></span>
-        {{group.title}}
-      </a>
-    </div>
-    <div *ngIf="state[group.title]">
-      <properties-group [propertiesGroupModel]="group"
-                        [form]="propertiesFormGroup" [filter]="propertiesFilter"></properties-group>
+<clr-modal [(clrModalOpen)]="isOpen" clrModalSize="lg" class="modal-fixed modal-properties">
+  <div class="modal-title">
+    <h3 style="margin-top:0.2rem">{{title}}</h3>
+    <label class="modal-search">
+        <span class="search-wrapper">
+          <input type="search" class="clr-input" placeholder="Search properties ..." [(ngModel)]="searchFilterText"
+                 [ngModelOptions]="{standalone: true}"/>
+          <clr-icon shape="search"></clr-icon>
+        </span>
+    </label>
+  </div>
+  <div class="modal-body app-properties" *ngIf="propertiesGroupModels.length > 0" style="max-height: 600px">
+    <form name="app-properties" clrForm clrLayout="horizontal" (submit)="handleOk()">
+      <div class="properties" *ngFor="let group of propertiesGroupModels">
+        <div class="line-toggle">
+          <a class="toggle" (click)="collapse(group.title)">
+            <clr-icon [class.open]="state[group.title]" shape="angle"></clr-icon>
+            {{group.title}}
+          </a>
+        </div>
+        <div *ngIf="state[group.title]">
+          <clr-properties-group [propertiesGroupModel]="group"
+                                [form]="propertiesFormGroup"
+                                [filter]="propertiesFilter">
+          </clr-properties-group>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-body app-properties" *ngIf="propertiesGroupModels.length === 0">
+    <div style="padding: 10px 0;">
+      <clr-spinner clrSmall clrInline></clr-spinner>&nbsp;
+      Loading...
     </div>
   </div>
-
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="handleCancel()">Close</button>
-    <button type="submit" class="btn btn-primary" [disabled]="okDisabled">OK</button>
+    <button type="button" class="btn btn-default" (click)="handleCancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary" (click)="handleOk()">Update</button>
   </div>
-</form>
+</clr-modal>

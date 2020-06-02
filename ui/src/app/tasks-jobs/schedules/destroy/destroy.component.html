@@ -1,0 +1,37 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="schedules" [clrModalClosable]="!isRunning">
+  <h3 *ngIf="schedules?.length == 1" class="modal-title">Confirm Delete Schedule</h3>
+  <h3 *ngIf="schedules?.length > 1" class="modal-title">Confirm Delete Schedules</h3>
+  <div class="modal-body" *ngIf="schedules.length == 1 && !isRunning">
+    This action will delete the schedule <u><strong>{{schedules[0].name}}</strong></u>. Are you sure?
+  </div>
+  <div class="modal-body" *ngIf="schedules?.length > 1 && !isRunning">
+    This action will delete the <u><strong>{{schedules.length}}
+    schedule{{schedules?.length > 1 ? 's' : ''}}</strong></u> listed below.<br/>Are you sure?
+    <br/>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th class="left">Name</th>
+        <th class="left">Task name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let schedule of schedules">
+        <td class="left"><strong>{{schedule.name}}</strong></td>
+        <td class="left">{{schedule.taskName}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-body" *ngIf="isRunning">
+    <clr-spinner clrInline clrSmall></clr-spinner>
+    Deleting schedule(s) ...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="destroy()" [disabled]="isRunning">
+      <span *ngIf="schedules.length == 1">Delete the schedule</span>
+      <span *ngIf="schedules.length > 1">Delete the schedules</span>
+    </button>
+  </div>
+</clr-modal>

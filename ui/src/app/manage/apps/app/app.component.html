@@ -15,7 +15,7 @@
     </button>
   </div>
 
-  <div class="title-select" *ngIf="versions?.length > 1">
+  <div class="title-select" *ngIf="detailedApp && versions?.length > 1">
     Version
     <clr-dropdown>
       <button class="btn btn-sm btn-secondary" clrDropdownTrigger>
@@ -35,49 +35,61 @@
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Informations" name="{{app.name}}.{{app.type}}" keyContext="app" id="info">
+      <app-view-card titleModal="Information" name="{{app.name}}.{{app.type}}" keyContext="app" id="info">
         <ng-template>
-          <div class="block card-block-keyvalue">
-            <div *ngIf="detailedApp.uri" class="row">
-              <div class="key">Uri</div>
-              <div class="value">{{detailedApp.uri}}</div>
+          <div *ngIf="!loadingProperties">
+            <div class="block card-block-keyvalue">
+              <div *ngIf="detailedApp.uri" class="row">
+                <div class="key">Uri</div>
+                <div class="value">{{detailedApp.uri}}</div>
+              </div>
+              <div class="row">
+                <div class="key">Metadata Uri</div>
+                <div class="value">{{detailedApp.metaDataUri || 'N/A'}}</div>
+              </div>
+              <div class="row" *ngIf="versions">
+                <div class="key">Version(s)</div>
+                <div class="value">{{versions.length}}</div>
+              </div>
             </div>
-            <div class="row">
-              <div class="key">Metadata Uri</div>
-              <div class="value">{{detailedApp.metaDataUri || 'N/A'}}</div>
-            </div>
-            <div class="row" *ngIf="versions">
-              <div class="key">Version(s)</div>
-              <div class="value">{{versions.length}}</div>
-            </div>
+          </div>
+          <div *ngIf="loadingProperties">
+            <clr-spinner clrInline clrSmall></clr-spinner>
+            Loading information...
           </div>
         </ng-template>
       </app-view-card>
     </div>
   </div>
 
-  <div *ngIf="detailedApp">
+  <div>
     <div class="clr-row">
       <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
         <app-view-card titleModal="Application properties" name="{{app.name}}.{{app.type}}" keyContext="app" id="props">
           <ng-template>
-            <div class="block card-block-keyvalue lg-key" *ngIf="detailedApp.options?.length > 0">
-              <div class="row" *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
-                <div class="key">
-                  {{property.name}}
-                  <div *ngIf="property.isDeprecated">
-                    <span class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
+            <div *ngIf="!loadingProperties">
+              <div class="block card-block-keyvalue lg-key" *ngIf="detailedApp.options?.length > 0">
+                <div class="row" *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
+                  <div class="key">
+                    {{property.name}}
+                    <div *ngIf="property.isDeprecated">
+                      <span class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
+                    </div>
+                  </div>
+                  <div class="value">
+                    <div>{{property.description ? property.description : '(No Description Available)'}}</div>
+                    <div class="type-block"><code>{{property.type}}</code>&nbsp;<span
+                      *ngIf="property.defaultValue">(Default value: <code>{{property.defaultValue}}</code>)</span></div>
                   </div>
                 </div>
-                <div class="value">
-                  <div>{{property.description ? property.description : '(No Description Available)'}}</div>
-                  <div class="type-block"><code>{{property.type}}</code>&nbsp;<span
-                    *ngIf="property.defaultValue">(Default value: <code>{{property.defaultValue}}</code>)</span></div>
-                </div>
+              </div>
+              <div *ngIf="!(detailedApp.options?.length > 0)">
+                No property
               </div>
             </div>
-            <div *ngIf="!(detailedApp.options?.length > 0)">
-              No property
+            <div *ngIf="loadingProperties">
+              <clr-spinner clrInline clrSmall></clr-spinner>
+              Loading properties...
             </div>
           </ng-template>
         </app-view-card>
@@ -85,6 +97,11 @@
     </div>
 
   </div>
+</div>
+
+<div *ngIf="loading" style="padding:1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading application...
 </div>
 
 <app-unregister #unregisterModal (onUnregistered)="back()"></app-unregister>

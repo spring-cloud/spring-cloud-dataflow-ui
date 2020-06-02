@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import PropertyFilter = Properties.PropertyFilter;
 import { Properties } from 'spring-flo';
+import PropertyFilter = Properties.PropertyFilter;
 
 @Component({
   selector: 'clr-properties-group',

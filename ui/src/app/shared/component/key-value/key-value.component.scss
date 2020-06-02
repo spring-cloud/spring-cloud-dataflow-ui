@@ -19,21 +19,19 @@
       background: var(--clr-global-app-background, #fafafa);
       flex: 0 0 40px;
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-      font-size: 15px;
+      font-size: 13px;
       padding: 10px 0 10px;
       border-top-left-radius: 3px;
       border-bottom-left-radius: 3px;
       color: var(--clr-forms-text-color, #000);
-
+      line-height: 20px;
       .number {
         display: block;
         text-align: right;
-
         span {
           display: inline-block;
-          line-height: 18px;
-          padding: 3px 10px 0;
-
+          padding: 0 10px 0 10px;
+          border-radius: 2px;
           &.invalid {
             background: var(--clr-forms-invalid-color, #c21d00);
             color: var(--clr-forms-textarea-background-color, #fff);
@@ -50,12 +48,13 @@
       border: 0 none;
       border-radius: 0;
       font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-      font-size: 15px;
+      font-size: 13px;
       padding: 10px 10px 0;
       width: 100%;
       min-width: 500px;
       color: var(--clr-forms-text-color, #000);
       background: var(--clr-forms-textarea-background-color, #fff);
+      line-height: 20px;
 
       &:focus {
         box-shadow: none;

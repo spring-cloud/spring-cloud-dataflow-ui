@@ -3,15 +3,19 @@
 <div *ngIf="!loading">
 
   <div class="datagrid-action-bar">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()">
-      Destroy task
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="launch()">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="launch()" [appRole]="['ROLE_DEPLOY']">
       Launch task
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="schedule()" [appRole]="['ROLE_SCHEDULE']"
+            appFeature="schedules">
+      Schedule
     </button>
     <button type="button" class="btn btn-sm btn-secondary"
             grafanaDashboardTask [task]="task">
       Grafana Dashboard
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()" [appRole]="['ROLE_DESTROY']">
+      Destroy task
     </button>
   </div>
 
@@ -35,9 +39,15 @@
             <div class="row">
               <div class="key">Applications</div>
               <div class="value">
-                <div *ngFor="let app of applications">
-                  <strong>{{app.name}}</strong>&nbsp;
-                  <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                <div *ngIf="!loadingApplications">
+                  <div *ngFor="let app of applications">
+                    <strong>{{app.name}}</strong>&nbsp;
+                    <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                  </div>
+                </div>
+                <div *ngIf="loadingApplications">
+                  <clr-spinner clrInline clrSmall></clr-spinner>
+                  Loading application(s)...
                 </div>
               </div>
             </div>
@@ -171,6 +181,10 @@
               No execution yet.
             </div>
           </div>
+          <div *ngIf="loadingExecution">
+            <clr-spinner clrInline clrSmall></clr-spinner>
+            Loading execution...
+          </div>
         </ng-template>
         <div class="card-footer" *ngIf="execution">
           <button class="btn btn-sm btn-secondary" (click)="navigateExecution(execution.executionId)">
@@ -182,32 +196,38 @@
     </div>
 
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Latest executions" keyContext="task" name="{{task.name}}" id="executions">
+      <app-view-card titleModal="Latest execution(s)" keyContext="task" name="{{task.name}}" id="executions">
         <ng-template>
-          <table class="table table-noborder table-compact" style="margin:0;" *ngIf="executions?.total > 0">
-            <thead>
-            <tr>
-              <th class="left" nowrap="">Execution ID</th>
-              <th class="left" nowrap="">Start time</th>
-              <th class="left" nowrap="">End time</th>
-              <th class="left" nowrap="">Duration</th>
-              <th class="left" nowrap="">Exit code</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let execution of executions?.items">
-              <td class="left">
-                <a routerLink="/tasks-jobs/task-executions/{{execution.executionId}}">{{execution.executionId}}</a>
-              </td>
-              <td class="left">{{execution.startTime | datetime}}</td>
-              <td class="left">{{execution.endTime | datetime}}</td>
-              <td class="left">{{execution.startTime | duration: execution.endTime}}</td>
-              <td class="left">{{execution.exitCode}}</td>
-            </tr>
-            </tbody>
-          </table>
-          <div *ngIf="!executions?.total">
-            No execution yet.
+          <div *ngIf="!loadingExecution">
+            <table class="table table-noborder table-compact" style="margin:0;" *ngIf="executions?.total > 0">
+              <thead>
+              <tr>
+                <th class="left" nowrap="">Execution ID</th>
+                <th class="left" nowrap="">Start time</th>
+                <th class="left" nowrap="">End time</th>
+                <th class="left" nowrap="">Duration</th>
+                <th class="left" nowrap="">Exit code</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let execution of executions?.items">
+                <td class="left">
+                  <a routerLink="/tasks-jobs/task-executions/{{execution.executionId}}">{{execution.executionId}}</a>
+                </td>
+                <td class="left">{{execution.startTime | datetime}}</td>
+                <td class="left">{{execution.endTime | datetime}}</td>
+                <td class="left">{{execution.startTime | duration: execution.endTime}}</td>
+                <td class="left">{{execution.exitCode}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <div *ngIf="!executions?.total">
+              No execution yet.
+            </div>
+          </div>
+          <div *ngIf="loadingExecution">
+            <clr-spinner clrInline clrSmall></clr-spinner>
+            Loading execution(s)...
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="executions?.total > 0 && executions.items.length < executions?.total">
@@ -218,6 +238,11 @@
 
   </div>
 
+</div>
+
+<div *ngIf="loading" style="padding:1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading task...
 </div>
 
 <app-task-destroy #destroyModal (onDestroyed)="back()"></app-task-destroy>

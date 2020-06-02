@@ -1,6 +1,6 @@
 import { Observable, of } from 'rxjs';
-import {ToolsService} from "../../flo/task/tools.service";
-import {Graph, TaskConversion} from "../../flo/task/model/models";
+import { ToolsService } from '../../flo/task/tools.service';
+import { Graph, TaskConversion } from '../../flo/task/model/models';
 
 export class MockToolsService extends ToolsService {
 

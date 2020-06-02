@@ -2,19 +2,22 @@
   Stream <strong>{{stream?.name}}</strong>&nbsp;
   <span *ngIf="stream?.status" class="label label-{{stream.statusColor()}}">{{stream.status}}</span>
 </h1>
+
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
-    <button *ngIf="stream.status === 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()">
+    <button *ngIf="stream.status === 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()"
+            [appRole]="['ROLE_DEPLOY']">
       Deploy stream
     </button>
-    <button *ngIf="stream.status !== 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()">
+    <button *ngIf="stream.status !== 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()"
+            [appRole]="['ROLE_UPDATE']">
       Update stream
     </button>
     <button *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
-            type="button" class="btn btn-sm btn-secondary" (click)="undeploy()">
+            type="button" class="btn btn-sm btn-secondary" (click)="undeploy()" [appRole]="['ROLE_CREATE']">
       Undeploy stream
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()" [appRole]="['ROLE_DESTROY']">
       Destroy stream
     </button>
     <button type="button" class="btn btn-sm btn-secondary"
@@ -34,7 +37,7 @@
             </div>
             <div class="row">
               <div class="key">Definition</div>
-              <div class="value"><span class="dsl-text"><stream-dsl [dsl]="stream.dslText"></stream-dsl></span></div>
+              <div class="value"><span class="dsl-text"><app-stream-dsl [dsl]="stream.dslText"></app-stream-dsl></span></div>
             </div>
             <div class="row">
               <div class="key">Status</div>
@@ -54,7 +57,7 @@
       </app-view-card>
     </div>
 
-    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" *ngIf="streamsRelated.length > 1">
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" *ngIf="streamsRelated?.length > 1">
       <app-view-card titleModal="Related stream(s)" name="{{stream.name}}" keyContext="stream" id="related">
         <ng-template>
           <div class="block card-block-keyvalue">
@@ -147,8 +150,8 @@
     <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
       <app-view-card titleModal="History" keyContext="stream" name="{{stream.name}}" id="history">
         <ng-template>
-          <div class="block card-block-keyvalue" *ngIf="!loadingHistory && history.length > 0">
-            <table class="table table-noborder" style="margin-top: 0">
+          <div class="block card-block-keyvalue" *ngIf="!loadingHistory">
+            <table *ngIf="history.length > 0" class="table table-noborder" style="margin-top: 0">
               <thead>
               <tr>
                 <th class="left">Version</th>
@@ -175,19 +178,24 @@
               </tr>
               </tbody>
             </table>
-          </div>
-          <div *ngIf="history.length === 0">
-            There is no history yet.
+            <div *ngIf="history.length === 0">
+              There is no history yet.
+            </div>
           </div>
           <div *ngIf="loadingHistory">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading runtime...
+            Loading history...
           </div>
         </ng-template>
       </app-view-card>
     </div>
   </div>
 
+</div>
+
+<div *ngIf="loading" style="padding:1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading stream...
 </div>
 
 <clr-modal [(clrModalOpen)]="isLogOpen" *ngIf="log" clrModalSize="xl">

@@ -1,0 +1,60 @@
+<h1>Schedules</h1>
+
+<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
+              *ngIf="isInit">
+  <clr-dg-action-bar *ngIf="grouped">
+    <button type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
+      Cancel
+    </button>
+    <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
+            (click)="destroySchedules(selected)">
+      Delete schedules(s)
+    </button>
+  </clr-dg-action-bar>
+  <clr-dg-action-bar *ngIf="!grouped">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+      Group Actions
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      <clr-icon shape="refresh"></clr-icon>
+      Refresh
+    </button>
+  </clr-dg-action-bar>
+  <clr-dg-column (clrDgColumnResize)="updateContext('sizeName', $event)"
+                 [style.width.px]="context.sizeName || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+      Name
+    </ng-container>
+  </clr-dg-column>
+  <clr-dg-column (clrDgColumnResize)="updateContext('sizeTaskName', $event)"
+                 [style.width.px]="context.sizeTaskName || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+      Task name
+    </ng-container>
+    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-column (clrDgColumnResize)="updateContext('sizeCronExpression', $event)"
+                 [style.width.px]="context.sizeCronExpression || 'auto'">
+    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+      Cron Expression
+    </ng-container>
+    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-row *ngFor="let schedule of page?.items" [clrDgItem]="schedule">
+    <clr-dg-cell><a routerLink="/tasks-jobs/schedules/{{schedule.name}}">{{schedule.name}}</a></clr-dg-cell>
+    <clr-dg-cell><a [routerLink]="'/tasks-jobs/tasks/' + schedule.taskName">{{schedule.taskName}}</a></clr-dg-cell>
+    <clr-dg-cell>{{schedule.cronExpression || 'N/A'}}</clr-dg-cell>
+    <clr-dg-action-overflow *ngIf="!grouped">
+      <button class="action-item" (click)="details(schedule)">Details</button>
+      <button class="action-item" (click)="taskDetails(schedule)">Task details</button>
+      <button class="action-item" (click)="createSchedule(schedule)">Add new schedule</button>
+      <button class="action-item" (click)="destroySchedules([schedule])">Destroy</button>
+    </clr-dg-action-overflow>
+  </clr-dg-row>
+  <clr-dg-placeholder>We couldn't find any schedules!</clr-dg-placeholder>
+  <clr-dg-footer>
+    {{page?.total}} schedules
+  </clr-dg-footer>
+</clr-datagrid>
+
+<app-schedule-destroy #destroyModal (onDestroyed)="refresh(state)"></app-schedule-destroy>

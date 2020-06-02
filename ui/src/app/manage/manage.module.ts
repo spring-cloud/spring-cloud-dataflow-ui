@@ -24,6 +24,7 @@ import { StreamExportComponent } from './import-export/stream/export.component';
 import { TaskExportComponent } from './import-export/task/export.component';
 import { TaskImportComponent } from './import-export/task/import.component';
 import { VersionComponent } from './apps/version/version.component';
+import { SecurityModule } from '../security/security.module';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { VersionComponent } from './apps/version/version.component';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    ClarityModule
+    ClarityModule,
+    SecurityModule
   ],
   providers: []
 })

@@ -8,6 +8,7 @@ import { ExecutionsComponent } from './executions/executions.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { DestroyComponent } from './tasks/destroy/destroy.component';
+import { DestroyComponent as DestroyScheduleComponent } from './schedules/destroy/destroy.component';
 import { TaskComponent } from './tasks/task/task.component';
 import { LaunchComponent } from './tasks/launch/launch.component';
 import { SharedModule } from '../shared/shared.module';
@@ -17,8 +18,12 @@ import { StopComponent } from './executions/stop/stop.component';
 import { CleanupComponent } from './executions/cleanup/cleanup.component';
 import { StepComponent } from './jobs/step/step.component';
 import { CreateComponent } from './tasks/create/create.component';
+import { CreateComponent as CreateScheduleComponent } from './schedules/create/create.component';
 import { TaskFloModule } from '../flo/task-flo.module';
 import { LogComponent } from './executions/execution/log/log.component';
+import { SchedulesComponent } from './schedules/schedules.component';
+import { ScheduleComponent } from './schedules/schedule/schedule.component';
+import { SecurityModule } from '../security/security.module';
 
 
 @NgModule({
@@ -35,7 +40,11 @@ import { LogComponent } from './executions/execution/log/log.component';
     JobExecutionComponent,
     StepComponent,
     CreateComponent,
-    LogComponent
+    LogComponent,
+    SchedulesComponent,
+    DestroyScheduleComponent,
+    ScheduleComponent,
+    CreateScheduleComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +54,8 @@ import { LogComponent } from './executions/execution/log/log.component';
     TasksJobsRoutingModule,
     FormsModule,
     TaskFloModule,
+    SecurityModule
   ]
 })
-export class TasksJobsModule { }
+export class TasksJobsModule {
+}

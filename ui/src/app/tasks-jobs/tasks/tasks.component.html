@@ -7,15 +7,20 @@
       Cancel
     </button>
     <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
-            (click)="destroyTasks(selected)">
+            (click)="scheduleTasks(selected)" [appRole]="['ROLE_SCHEDULE']" appFeature="schedules">
+      Schedule task(s)
+    </button>
+    <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
+            (click)="destroyTasks(selected)" [appRole]="['ROLE_DESTROY']">
       Destroy task(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
+            [appRole]="['ROLE_DESTROY', 'ROLE_SCHEDULE']">
       Group Actions
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="createTask()">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="createTask()" [appRole]="['ROLE_CREATE']">
       Create task
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>
@@ -65,8 +70,11 @@
     <clr-dg-cell><span class="label label-{{task.statusColor()}}">{{task.status}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(task)">Details</button>
-      <button class="action-item" (click)="launch(task)">Launch</button>
-      <button class="action-item" (click)="destroyTasks([task])">Destroy</button>
+      <button class="action-item" (click)="launch(task)" [appRole]="['ROLE_DEPLOY']">Launch</button>
+      <button class="action-item" (click)="schedule(task)" [appRole]="['ROLE_SCHEDULE']" appFeature="schedules">
+        Schedule
+      </button>
+      <button class="action-item" (click)="destroyTasks([task])" [appRole]="['ROLE_DESTROY']">Destroy</button>
       <button class="action-item" grafanaDashboardTask [task]="task">
         Grafana Dashboard
       </button>

@@ -10,6 +10,7 @@ export class AppComponent {
   title = 'Spring Cloud Data Flow';
 
   darkThemeIsActive = false;
+  isAboutOpen = false;
 
   toggleDarkTheme() {
     if (this.darkThemeIsActive) {
@@ -26,4 +27,7 @@ export class AppComponent {
     // this.darkThemeIsActive = true;
   }
 
+  toggleAbout() {
+    this.isAboutOpen = !this.isAboutOpen;
+  }
 }

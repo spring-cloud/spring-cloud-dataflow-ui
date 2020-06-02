@@ -19,6 +19,7 @@ import { LogComponent } from '../../executions/execution/log/log.component';
 export class TaskComponent implements OnInit {
   loading = true;
   loadingExecution = true;
+  loadingApplications = true;
   task: Task;
   applications: Array<any>;
   executions: TaskExecutionPage;
@@ -59,6 +60,7 @@ export class TaskComponent implements OnInit {
   }
 
   getApplications() {
+    this.loadingApplications = true;
     this.toolsService
       .parseTaskTextToGraph(this.task.dslText, this.task.name)
       .subscribe((taskConversion: TaskConversion) => {
@@ -80,6 +82,9 @@ export class TaskComponent implements OnInit {
           }).filter((app) => app !== null);
         }
         this.applications = apps;
+        this.loadingApplications = false;
+      }, () => {
+        this.loadingApplications = false;
       });
   }
 
@@ -112,6 +117,10 @@ export class TaskComponent implements OnInit {
 
   launch() {
     this.router.navigateByUrl(`tasks-jobs/tasks/${this.task.name}/launch`);
+  }
+
+  schedule() {
+    this.router.navigateByUrl(`tasks-jobs/schedules/${this.task.name}/create`);
   }
 
   back() {

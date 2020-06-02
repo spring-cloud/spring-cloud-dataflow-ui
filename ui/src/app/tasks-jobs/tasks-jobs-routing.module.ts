@@ -10,6 +10,9 @@ import { ExecutionComponent as JobExecutionComponent } from './jobs/execution/ex
 import { StepComponent } from './jobs/step/step.component';
 import { CreateComponent } from './tasks/create/create.component';
 import { SecurityGuard } from '../security/support/security.guard';
+import { SchedulesComponent } from './schedules/schedules.component';
+import { ScheduleComponent } from './schedules/schedule/schedule.component';
+import { CreateComponent as CreateScheduleComponent } from './schedules/create/create.component';
 
 const routes: Routes = [
   {
@@ -56,6 +59,33 @@ const routes: Routes = [
       {
         path: 'job-executions/:executionId/:stepId',
         component: StepComponent
+      },
+      {
+        path: 'schedules',
+        component: SchedulesComponent,
+        data: {
+          authenticate: true,
+          roles: ['ROLE_VIEW'],
+          feature: 'schedules'
+        },
+      },
+      {
+        path: 'schedules/:id/create',
+        component: CreateScheduleComponent,
+        data: {
+          authenticate: true,
+          roles: ['ROLE_VIEW'],
+          feature: 'schedules'
+        },
+      },
+      {
+        path: 'schedules/:id',
+        component: ScheduleComponent,
+        data: {
+          authenticate: true,
+          roles: ['ROLE_VIEW'],
+          feature: 'schedules'
+        },
       },
     ]
   },

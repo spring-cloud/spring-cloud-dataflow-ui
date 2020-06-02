@@ -115,11 +115,12 @@ export class PropertiesGroupsDialogComponent implements OnInit {
       });
     });
     this.groupPropertiesSources.applyChanges(properties);
-    // this.bsModalRef.hide();
+    this.handleCancel();
   }
 
   handleCancel() {
-    // this.bsModalRef.hide();
+    this.propertiesGroupModels = [];
+    this.isOpen = false;
   }
 
   collapse(id: string) {

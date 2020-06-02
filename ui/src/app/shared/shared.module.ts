@@ -23,6 +23,8 @@ import {
 } from './grafana/grafana.directive';
 import { TippyDirective } from './directive/tippy.directive';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
+import { LocalStorageModule } from 'angular-2-local-storage';
+import { StreamDslComponent } from './component/stream-dsl/stream-dsl.component';
 
 @NgModule({
   entryComponents: [
@@ -47,7 +49,8 @@ import { CapitalizePipe } from './pipe/capitalize.pipe';
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
-    TippyDirective
+    TippyDirective,
+    StreamDslComponent
   ],
   imports: [
     CommonModule,
@@ -63,6 +66,10 @@ import { CapitalizePipe } from './pipe/capitalize.pipe';
       enableHtml: true,
       closeButton: true,
       toastComponent: ToastComponent
+    }),
+    LocalStorageModule.forRoot({
+      prefix: 'dataflow-',
+      storageType: 'localStorage'
     })
   ],
   exports: [
@@ -82,7 +89,8 @@ import { CapitalizePipe } from './pipe/capitalize.pipe';
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
-    TippyDirective
+    TippyDirective,
+    StreamDslComponent
   ]
 })
 export class SharedModule {

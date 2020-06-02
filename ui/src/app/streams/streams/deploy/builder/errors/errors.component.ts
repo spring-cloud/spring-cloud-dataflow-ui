@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from '@angular/core';
 
 /**
- * StreamDeployBuilderErrorsComponent
+ * ErrorsComponent
  *
  * @author Damien Vitrac
  */
@@ -11,7 +11,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, } from
   styleUrls: ['errors.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StreamDeployBuilderErrorsComponent {
+export class ErrorsComponent {
 
   /**
    * Error Object

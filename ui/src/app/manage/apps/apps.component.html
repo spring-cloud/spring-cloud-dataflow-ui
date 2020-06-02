@@ -6,15 +6,18 @@
       Cancel
     </button>
     <button id="btnUnregisterApplications" type="button" [disabled]="selected?.length === 0"
-            class="btn btn-sm btn-secondary" (click)="unregistersApp(selected)">
+            class="btn btn-sm btn-secondary" (click)="unregistersApp(selected)"
+            [appRole]="['ROLE_DESTROY']">
       Unregister application(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button id="btnGroupActions" type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+    <button id="btnGroupActions" type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
+            [appRole]="['ROLE_DESTROY']">
       Group Actions
     </button>
-    <button id="btnAddApplications" type="button" class="btn btn-sm btn-secondary" (click)="add()">
+    <button id="btnAddApplications" type="button" class="btn btn-sm btn-secondary" (click)="add()"
+            [appRole]="['ROLE_CREATE']">
       Add application(s)
     </button>
     <button id="btnRefresh" type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
@@ -77,7 +80,7 @@
     <clr-dg-cell><span class="text-truncate">{{app.metaDataUri}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(app)">Details</button>
-      <button class="action-item" (click)="unregistersApp([app])">Unregister</button>
+      <button class="action-item" [appRole]="['ROLE_DESTROY']" (click)="unregistersApp([app])">Unregister</button>
     </clr-dg-action-overflow>
   </clr-dg-row>
   <clr-dg-placeholder>We couldn't find any applications!</clr-dg-placeholder>

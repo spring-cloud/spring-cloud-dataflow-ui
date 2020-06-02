@@ -23,8 +23,7 @@ import { DOCUMENT } from '@angular/common';
 })
 export class PropertiesDialogComponent implements OnInit {
 
-  @Input('body')
-  body = false;
+  @Input() body = false;
 
   _open = false;
 
@@ -67,9 +66,10 @@ export class PropertiesDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text);
+    this._searchFilterTextSubject
+      .pipe(debounceTime(500))
+      .subscribe(text => this.propertiesFilter.textFilter = text);
   }
-
 
   open(name: string, type: string, version: string, propertiesSource: GraphNodePropertiesSource) {
     this.app = new App();

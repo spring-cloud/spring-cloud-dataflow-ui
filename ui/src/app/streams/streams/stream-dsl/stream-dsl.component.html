@@ -1,5 +1,0 @@
-<ng-container [ngSwitch]="getState()">
-  <span *ngSwitchCase="'unexpandable'">{{dsl}}</span>
-  <span *ngSwitchCase="'expanded'">{{dsl}} <a class="less" href="" (click)="$event.preventDefault(); collapse()">&lt;&lt;</a></span>
-  <span *ngSwitchCase="'collapsed'">{{shortDsl}} <a class="more" href="" (click)="$event.preventDefault(); expand()">&gt;&gt;</a></span>
-</ng-container>
