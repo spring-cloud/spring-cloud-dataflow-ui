@@ -17,6 +17,7 @@ import { DeployFreeTextComponent } from './streams/deploy/free-text/free-text.co
 import { StreamDeployBuilderComponent } from './streams/deploy/builder/builder.component';
 import { StreamDeployBuilderErrorsComponent } from './streams/deploy/builder/errors/errors.component';
 import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.component';
+import { StreamDslComponent } from './streams/stream-dsl/stream-dsl.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.compon
     DeployFreeTextComponent,
     StreamDeployBuilderComponent,
     StreamDeployBuilderErrorsComponent,
-    MultiDeployComponent
+    MultiDeployComponent,
+    StreamDslComponent
   ],
 })
 export class StreamsModule { }

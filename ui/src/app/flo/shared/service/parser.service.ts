@@ -11,4 +11,8 @@ export class ParserService {
         return Parser.parse(text, mode);
     }
 
+    simplifyDsl(dsl: string) {
+      return Parser.simplify(dsl);
+    }
+
 }
