@@ -158,8 +158,9 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * Task Actions
    * @param {TaskDefinition} item
    * @param {number} index
+   * @param {boolean} composedTaskElement
    */
-  taskActions(index: number) {
+  taskActions(index: number, composedTaskElement: boolean) {
     return [
       {
         id: 'details-task' + index,
@@ -203,7 +204,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'schedule',
         title: 'Schedule task',
         disabled: !this.schedulesEnabled,
-        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
+        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE']) || composedTaskElement
       },
       {
         id: 'delete-schedules' + index,
@@ -211,7 +212,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         action: 'delete-schedules',
         title: 'Delete schedule',
         disabled: !this.schedulesEnabled,
-        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE'])
+        hidden: !this.schedulesEnabled || !this.authService.securityInfo.canAccess(['ROLE_SCHEDULE']) || composedTaskElement
       },
       {
         divider: true,
@@ -222,7 +223,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         icon: 'trash',
         action: 'destroy',
         title: 'Destroy task',
-        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY'])
+        hidden: !this.authService.securityInfo.canAccess(['ROLE_DESTROY']) || composedTaskElement
       },
     ];
   }

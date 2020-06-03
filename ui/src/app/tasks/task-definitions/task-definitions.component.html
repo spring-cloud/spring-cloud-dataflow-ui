@@ -41,7 +41,7 @@
         <tr>
           <td class="cell-checkbox" [dataflowAppRoles]="['ROLE_DESTROY']">
             <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
-                   [(ngModel)]="form.checkboxes[i]"/>
+                   [(ngModel)]="form.checkboxes[i]" *ngIf="!item.composedTaskElement"/>
           </td>
           <td width="200px">
             <a style="cursor:pointer" [routerLink]="'/tasks/definitions/' + item.name">{{ item.name }}</a>
@@ -58,7 +58,7 @@
           </td>
           <td class="table-actions" width="10px" nowrap="">
             <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"
-                                  [actions]="taskActions(i)"></app-list-row-actions>
+                                  [actions]="taskActions(i, item.composedTaskElement)"></app-list-row-actions>
           </td>
         </tr>
       </ng-container>

@@ -11,6 +11,7 @@ describe('TaskDefinition', () => {
       expect(taskDefinition.name).toBe('foo');
       expect(taskDefinition.dslText).toBe('bar');
       expect(taskDefinition.composed).toBe(true);
+      expect(taskDefinition.composedTaskElement).toBe(false);
       expect(taskDefinition.status).toBe('unknown');
     });
 
