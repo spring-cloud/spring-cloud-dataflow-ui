@@ -376,6 +376,65 @@ describe('TaskDefinitionsComponent', () => {
 
   });
 
+  const TASK_DEFINITIONS_SAMPLE = {
+    _embedded: {
+      taskDefinitionResourceList: [
+        {
+          name: 'foo',
+          dslText: 'bar',
+          description: 'demo',
+          composed: true,
+          status: 'unknown',
+          composedTaskElement: true,
+          _links: {
+            self: {
+              href: 'http://localhost:4200/tasks/definitions/foo'
+            }
+          }
+        }
+      ]
+    },
+    _links: {
+      self: {
+        href: 'http://localhost:4200/tasks/definitions?page=0&size=20&sort=taskName,asc'
+      }
+    },
+    page: {
+      size: 20,
+      totalElements: 1,
+      totalPages: 1,
+      number: 0
+    }
+  };
+
+  describe('Task action on composed task elements', () => {
+
+    beforeEach(() => {
+      tasksService.tasksContext.page = 0;
+      tasksService.taskDefinitions = TASK_DEFINITIONS;
+      fixture.detectChanges();
+    });
+
+    it('should not delete a task', () => {
+      const spy = spyOn(component, 'destroy');
+      component.applyAction('destroy', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      !expect(spy).toHaveBeenCalled();
+    });
+
+    it('should navigate to the detail task', () => {
+      const navigate = spyOn((<any>component).router, 'navigate');
+      component.applyAction('details', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      expect(navigate).toHaveBeenCalledWith(['tasks/definitions/foo']);
+    });
+
+    it('Should navigate to the launch page.', () => {
+      const navigate = spyOn((<any>component).router, 'navigate');
+      component.applyAction('launch', tasksService.taskDefinitions._embedded.taskDefinitionResourceList[0]);
+      expect(navigate).toHaveBeenCalledWith(['tasks/definitions/launch/foo']);
+    });
+
+  });
+
   describe('Task Schedule enable', () => {
 
     beforeEach(() => {

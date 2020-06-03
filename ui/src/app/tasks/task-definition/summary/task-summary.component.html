@@ -15,7 +15,7 @@
       </div>
       <div class="col-md-21">
         <app-stream-dsl>
-          {{ task.taskDefinition.dslText }}
+          {{ task.taskDefinition.dslText.replace('--spring.cloud.dataflow.task.composed-task-element=true', '') }}
         </app-stream-dsl>
       </div>
     </div>

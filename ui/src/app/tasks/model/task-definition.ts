@@ -1,4 +1,4 @@
-import { Page } from 'src/app/shared/model';
+import {Page} from 'src/app/shared/model';
 
 export class TaskDefinition {
 
@@ -12,16 +12,19 @@ export class TaskDefinition {
 
   public status: string;
 
-  constructor(name: string, dslText: string, description: string, composed: boolean, status: string) {
+  public composedTaskElement: boolean;
+
+  constructor(name: string, dslText: string, description: string, composed: boolean, status: string, composedTaskElement: boolean) {
     this.name = name;
     this.dslText = dslText;
     this.composed = composed;
     this.status = status;
     this.description = description ? description : '';
+    this.composedTaskElement = composedTaskElement;
   }
 
   static fromJSON(input): TaskDefinition {
-    return new TaskDefinition(input.name, input.dslText, input.description, input.composed, input.status);
+    return new TaskDefinition(input.name, input.dslText, input.description, input.composed, input.status, input.composedTaskElement);
   }
 
   static pageFromJSON(input): Page<TaskDefinition> {
@@ -31,5 +34,4 @@ export class TaskDefinition {
     }
     return page;
   }
-
 }

@@ -1337,6 +1337,7 @@ export const TASK_DEFINITIONS = {
         description: 'demo',
         composed: true,
         status: 'unknown',
+        composedTaskElement: false,
         _links: {
           self: {
             href: 'http://localhost:4200/tasks/definitions/foo'
@@ -1348,6 +1349,7 @@ export const TASK_DEFINITIONS = {
         dslText: 'task1',
         description: 'demo',
         composed: false,
+        composedTaskElement: false,
         status: 'unknown',
         _links: {
           self: {

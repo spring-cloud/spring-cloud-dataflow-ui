@@ -19,7 +19,7 @@
         Schedule
       </button>
       <button name="stream-remove" type="button" (click)="destroy(task.definition)" id="task-remove"
-              class="btn btn-danger btn-fa" title="Destroy" [dataflowAppRoles]="['ROLE_DESTROY']">
+              class="btn btn-danger btn-fa" title="Destroy" [dataflowAppRoles]="['ROLE_DESTROY']" *ngIf="!(task.definition.composedTaskElement)">
         <span class="fa fa-trash"></span>
         Destroy task
       </button>
