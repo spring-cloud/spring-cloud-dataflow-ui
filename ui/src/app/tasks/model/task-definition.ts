@@ -1,4 +1,5 @@
 import { Page } from '../../shared/model';
+import {TaskExecution} from "./task-execution";
 
 export class TaskDefinition {
 
@@ -12,16 +13,19 @@ export class TaskDefinition {
 
   public status: string;
 
-  constructor(name: string, dslText: string, description: string, composed: boolean, status: string) {
+  public lastTaskExecution: TaskExecution
+
+  constructor(name: string, dslText: string, description: string, composed: boolean, status: string, lastTaskExecution: TaskExecution) {
     this.name = name;
     this.dslText = dslText;
     this.composed = composed;
     this.status = status;
     this.description = description ? description : '';
+    this.lastTaskExecution = lastTaskExecution;
   }
 
   static fromJSON(input): TaskDefinition {
-    return new TaskDefinition(input.name, input.dslText, input.description, input.composed, input.status);
+    return new TaskDefinition(input.name, input.dslText, input.description, input.composed, input.status, input.lastTaskExecution);
   }
 
   static pageFromJSON(input): Page<TaskDefinition> {

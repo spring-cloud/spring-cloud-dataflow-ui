@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { TasksService } from '../tasks.service';
-import { catchError, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
-import { EMPTY, Observable, Subject } from 'rxjs';
-import { TaskDefinition } from '../model/task-definition';
-import { FormControl, FormGroup, Validator, Validators } from '@angular/forms';
-import { NotificationService } from '../../shared/services/notification.service';
-import { AppError, HttpAppError } from '../../shared/model/error.model';
-import { RoutingStateService } from '../../shared/services/routing-state.service';
-import { TaskLaunchParams } from '../components/tasks.interface';
-import { TaskLaunchValidator } from './task-launch.validator';
-import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
-import { BlockerService } from '../../shared/components/blocker/blocker.service';
-import { OrderParams } from '../../shared/components/shared.interface';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TasksService} from '../tasks.service';
+import {catchError, finalize, map, mergeMap, takeUntil} from 'rxjs/operators';
+import {EMPTY, Observable, Subject} from 'rxjs';
+import {TaskDefinition} from '../model/task-definition';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {NotificationService} from '../../shared/services/notification.service';
+import {AppError, HttpAppError} from '../../shared/model/error.model';
+import {RoutingStateService} from '../../shared/services/routing-state.service';
+import {TaskLaunchParams} from '../components/tasks.interface';
+import {TaskLaunchValidator} from './task-launch.validator';
+import {KvRichTextValidator} from '../../shared/components/kv-rich-text/kv-rich-text.validator';
+import {BlockerService} from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component that provides a launcher of task.
@@ -87,56 +86,47 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.task$ = this.route.params
       .pipe(
-        mergeMap(val => this.tasksService.getDefinition(val.id)),
-        mergeMap(val => this.tasksService.getTaskExecutions({
-          sort: 'TASK_EXECUTION_ID',
-          order: OrderParams.DESC,
-          page: 0,
-          size: 1,
-          q: val.name
-        }).pipe(
-          map(val2 => {
+        mergeMap(taskName => this.tasksService.getDefinitionWithManifest(taskName.id).pipe(
+          map(taskDefinition => {
             let parameters = '';
-            if (val2.items.length === 1) {
-              if (val2.items[0].deploymentProperties) {
-                parameters = Object.keys(val2.items[0].deploymentProperties).map(key => {
-                  if (val2.items[0].deploymentProperties[key] === '******') {
+            if (taskDefinition.lastTaskExecution && taskDefinition.lastTaskExecution.deploymentProperties) {
+                parameters = Object.keys(taskDefinition.lastTaskExecution.deploymentProperties).map(key => {
+                  if (taskDefinition.lastTaskExecution.deploymentProperties[key] === '******') {
                     return '';
                   }
-                  return `${key}=${val2.items[0].deploymentProperties[key]}`;
+                  return `${key}=${taskDefinition.lastTaskExecution.deploymentProperties[key]}`;
                 })
                   .filter(param => !!param)
                   .join('\n');
-              }
             }
             return {
-              taskDefinition: val,
+              taskDefinition: taskDefinition,
               parameters
             };
           })
         )),
         mergeMap(
-          val => this.tasksService.getPlatforms()
-            .pipe(map(val2 => {
-              if (val2.length === 0) {
+          taskDefinition => this.tasksService.getPlatforms()
+            .pipe(map(platforms => {
+              if (platforms.length === 0) {
                 this.form = new FormGroup({
                   args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
-                  props: new FormControl(val.parameters, KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
+                  props: new FormControl(taskDefinition.parameters, KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
                   platform: new FormControl('')
                 });
               } else {
                 this.form = new FormGroup({
                   args: new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
-                  props: new FormControl(val.parameters, KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
+                  props: new FormControl(taskDefinition.parameters, KvRichTextValidator.validateKvRichText(this.kvValidators.props)),
                   platform: new FormControl('', Validators.required)
                 });
               }
-              if (val2.length === 1) {
-                this.form.get('platform').setValue(val2[0].name);
+              if (platforms.length === 1) {
+                this.form.get('platform').setValue(platforms[0].name);
               }
               return {
-                taskDefinition: val.taskDefinition,
-                platforms: val2
+                taskDefinition: taskDefinition.taskDefinition,
+                platforms: platforms
               };
             }))
         ),
