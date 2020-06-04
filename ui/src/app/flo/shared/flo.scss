@@ -21,6 +21,7 @@ $navy-2: #243641;
 $navy-11: #F5F6F7;
 $base-unit: 8px;
 $navy-6: #788E9A;
+$blue-3: hsl(198, 66%, 57%);
 $blue-4: #1F8ACC;
 $dark-2: $navy-2;
 
@@ -991,6 +992,28 @@ table.zoom-canvas-control {
 }
 .tippy-box[data-theme~='error'][data-placement^='right'] > .tippy-arrow::before {
   border-right-color: #c21d00;
+}
+
+.deploying .stream-module {
+  .flo-port {
+    fill: $blue-3;
+  }
+}
+
+.undeployed .stream-module {
+  .flo-port {
+    fill: $navy-7;
+  }
+}
+
+.unknown .stream-module {
+
+}
+
+.deployed .stream-module {
+  .flo-port {
+    fill: #80b600;
+  }
 }
 
 

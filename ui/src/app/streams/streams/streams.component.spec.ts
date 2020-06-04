@@ -61,6 +61,7 @@ describe('streams/streams/streams.component.ts', () => {
   });
 
   it('should display the datagrid, pagination, action bar', async (done) => {
+    component.timeSubscription = <any> {}; // hack to disable setting the timer, otherwise it times out
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
