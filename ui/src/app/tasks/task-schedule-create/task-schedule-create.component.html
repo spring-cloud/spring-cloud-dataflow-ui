@@ -118,17 +118,17 @@
         <div class="row form-group" [class.has-error]="form.get('props').invalid && submitted">
           <div class="col-xs-4">
             <label class="control-label">
-              Parameters:
-              <a #childPopover="bs-popover" containerClass="task-help-popover" [popover]="popParameters" placement="bottom"
-                 [outsideClick]="true" title="Help for parameters" style="cursor: pointer">
+              Properties:
+              <a #childPopover="bs-popover" containerClass="task-help-popover" [popover]="popProperties" placement="bottom"
+                 [outsideClick]="true" title="Help for properties" style="cursor: pointer">
                 <span class="fa fa-question-circle"></span></a>
             </label>
           </div>
           <div class="col-xs-12">
             <app-kv-rich-text [validators]="kvValidators.props" [formControl]="form.get('props')"
-                              placeholder="app.myparam=myvalue"></app-kv-rich-text>
+                              placeholder="app.myprop=myvalue"></app-kv-rich-text>
             <span class="help-block" *ngIf="form.get('props').invalid && submitted">
-          One or more parameters are invalid.<br/>Example: <code>app.myarg=myvalue</code>.
+          One or more properties are invalid.<br/>Example: <code>app.myarg=myvalue</code>.
           </span>
           </div>
         </div>
@@ -150,12 +150,12 @@
   </div>
 </ng-template>
 
-<ng-template #popParameters>
+<ng-template #popProperties>
   <div class="task-help-content">
-    Parameters should start with an <code>app.</code> or <code>deployer.</code>.<br/>
+    Properties should start with an <code>app.</code> or <code>deployer.</code>.<br/>
     Example:<br/>
-    <pre><code>app.myparam=value1
-deployer.myparam2=value2</code></pre>
+    <pre><code>app.myprop1=value1
+deployer.myprop2=value2</code></pre>
   </div>
 </ng-template>
 
