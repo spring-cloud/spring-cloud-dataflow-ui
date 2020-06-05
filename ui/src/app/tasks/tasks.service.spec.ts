@@ -31,6 +31,19 @@ describe('TasksService', () => {
 
   });
 
+  describe('getDefinition with the manifest', () => {
+
+    it('should call the definition service with the right url and the param', () => {
+      mockHttp.get.and.returnValue(of({}));
+      tasksService.getDefinitionWithManifest('foo');
+      const httpUri1 = mockHttp.get.calls.mostRecent().args[0];
+      const httpParam1 = mockHttp.get.calls.mostRecent().args[1].params;
+      expect(httpUri1).toEqual('/tasks/definitions/foo');
+      expect(httpParam1.get('manifest')).toEqual('true');
+    });
+
+  });
+
   describe('getDefinitions', () => {
 
     it('should call the definitions service with the right url [no sort params]', () => {

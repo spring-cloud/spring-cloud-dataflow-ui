@@ -173,6 +173,23 @@ export class TasksService {
   }
 
   /**
+   * Get the details of a definition with an option to retrieve task manifest.
+   *
+   * @param {string} taskname
+   * @returns {Observable<TaskDefinition>}
+   */
+  getDefinitionWithManifest(taskname: string): Observable<TaskDefinition> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const params = new HttpParams().append('manifest', 'true');
+    return this.httpClient
+      .get<any>(`${TasksService.URL.DEFINITIONS}/${taskname}`, { headers: headers, params: params })
+      .pipe(
+        map(TaskDefinition.fromJSON),
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
+  /**
    * Calls the Spring Cloud Data Flow server to get task definitions the specified {@link TaskDefinition}.
    *
    * @returns {Observable<R|T>} that will call the subscribed funtions to handle

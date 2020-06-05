@@ -86,7 +86,7 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.task$ = this.route.params
       .pipe(
-        mergeMap(taskName => this.tasksService.getDefinition(taskName.id).pipe(
+        mergeMap(taskName => this.tasksService.getDefinitionWithManifest(taskName.id).pipe(
           map(taskDefinition => {
             let parameters = '';
             if (taskDefinition.lastTaskExecution && taskDefinition.lastTaskExecution.deploymentProperties) {

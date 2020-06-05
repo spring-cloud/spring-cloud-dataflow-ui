@@ -99,6 +99,10 @@ export class MockTasksService {
     return of(TaskDefinition.fromJSON(this.taskDefinitions._embedded.taskDefinitionResourceList[0]));
   }
 
+  getDefinitionWithManifest(name: string): Observable<any> {
+    return of(TaskDefinition.fromJSON(this.taskDefinitions._embedded.taskDefinitionResourceList[0]));
+  }
+
   destroySchedules(taskSchedules: TaskSchedule[]): Observable<any> {
     return of(Array.from({ length: taskSchedules.length }));
   }
