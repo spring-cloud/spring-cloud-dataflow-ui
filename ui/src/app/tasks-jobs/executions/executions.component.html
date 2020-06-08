@@ -7,12 +7,12 @@
       Cancel
     </button>
     <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
-            (click)="cleanup(selected)">
+            (click)="cleanup(selected)" [appRole]="['ROLE_DESTROY']">
       Clean Up task execution(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)" [appRole]="['ROLE_DESTROY']">
       Group Actions
     </button>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
@@ -85,12 +85,16 @@
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(execution)">Details</button>
       <button class="action-item" (click)="taskDetails(execution)">Task details</button>
-      <button class="action-item" (click)="relaunch(execution)">Relaunch task</button>
+      <button class="action-item" (click)="relaunch(execution)" [appRole]="['ROLE_DEPLOY']">Relaunch task</button>
       <button class="action-item" (click)="stop(execution)"
+              [appRole]="['ROLE_DEPLOY']"
               [disabled]="!(execution.taskExecutionStatus !== 'COMPLETE' && execution.taskExecutionStatus !== 'ERROR')">
         Stop task
       </button>
-      <button class="action-item" (click)="cleanup([execution])">Clean up task execution</button>
+      <button class="action-item" (click)="cleanup([execution])"
+              [appRole]="['ROLE_DESTROY']">
+        Clean up task execution
+      </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
   <clr-dg-placeholder>We couldn't find any task executions!</clr-dg-placeholder>

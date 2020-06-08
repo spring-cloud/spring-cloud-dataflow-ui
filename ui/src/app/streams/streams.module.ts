@@ -13,11 +13,12 @@ import { DestroyComponent } from './streams/destroy/destroy.component';
 import { DetailsComponent } from './runtime/details/details.component';
 import { StreamFloModule } from '../flo/stream-flo.module';
 import { CreateComponent } from './streams/create/create.component';
-import { DeployFreeTextComponent } from './streams/deploy/free-text/free-text.component';
-import { StreamDeployBuilderComponent } from './streams/deploy/builder/builder.component';
-import { StreamDeployBuilderErrorsComponent } from './streams/deploy/builder/errors/errors.component';
+import { FreeTextComponent } from './streams/deploy/free-text/free-text.component';
+import { BuilderComponent } from './streams/deploy/builder/builder.component';
+import { ErrorsComponent } from './streams/deploy/builder/errors/errors.component';
 import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.component';
-import { StreamDslComponent } from './streams/stream-dsl/stream-dsl.component';
+import { SharedFloModule } from '../flo/shared-flo.module';
+import { SecurityModule } from '../security/security.module';
 
 @NgModule({
   imports: [
@@ -27,7 +28,9 @@ import { StreamDslComponent } from './streams/stream-dsl/stream-dsl.component';
     ReactiveFormsModule,
     SharedModule,
     StreamsRoutingModule,
-    StreamFloModule
+    SharedFloModule,
+    StreamFloModule,
+    SecurityModule
   ],
   declarations: [
     RuntimeComponent,
@@ -38,11 +41,10 @@ import { StreamDslComponent } from './streams/stream-dsl/stream-dsl.component';
     UndeployComponent,
     DestroyComponent,
     CreateComponent,
-    DeployFreeTextComponent,
-    StreamDeployBuilderComponent,
-    StreamDeployBuilderErrorsComponent,
+    FreeTextComponent,
+    BuilderComponent,
+    ErrorsComponent,
     MultiDeployComponent,
-    StreamDslComponent
   ],
 })
 export class StreamsModule { }

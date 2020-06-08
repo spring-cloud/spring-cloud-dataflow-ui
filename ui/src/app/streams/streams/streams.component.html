@@ -7,23 +7,24 @@
       Cancel
     </button>
     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
-            (click)="deploy(selected)">
+            (click)="deploy(selected)" [appRole]="['ROLE_DEPLOY']">
       Deploy stream(s)
     </button>
     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
-            (click)="undeploy(selected)">
+            (click)="undeploy(selected)" [appRole]="['ROLE_CREATE']">
       Undeploy stream(s)
     </button>
     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
-            (click)="destroy(selected)">
+            (click)="destroy(selected)" [appRole]="['ROLE_DESTROY']">
       Destroy stream(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
+            [appRole]="['ROLE_DEPLOY', 'ROLE_CREATE', 'ROLE_DESTROY']">
       Group Actions
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="create()">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="create()" [appRole]="['ROLE_CREATE']">
       Create stream(s)
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>
@@ -69,34 +70,43 @@
   <clr-dg-row *ngFor="let stream of page?.items; let i = index" [clrDgItem]="stream">
     <clr-dg-cell><a class="text-truncate" routerLink="/streams/list/{{stream.name}}">{{stream.name}}</a></clr-dg-cell>
     <clr-dg-cell><span class="text-truncate">{{stream.description}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="dsl-text dsl-truncate">{{stream.originalDslText}}</span></clr-dg-cell>
+    <clr-dg-cell>
+      <span class="dsl-text dsl-truncate">
+        <app-stream-dsl [dsl]="stream.dslText" expandable="false"></app-stream-dsl>
+      </span>
+    </clr-dg-cell>
     <clr-dg-cell><span class="label label-{{stream.statusColor()}}">{{stream.status}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(stream)">Details</button>
-      <button class="action-item" (click)="deploy([stream])" *ngIf="stream.status === 'UNDEPLOYED'">
+      <button class="action-item" (click)="deploy([stream])" *ngIf="stream.status === 'UNDEPLOYED'"
+              [appRole]="['ROLE_DEPLOY']">
         Deploy
       </button>
-      <button class="action-item" (click)="deploy([stream])" *ngIf="stream.status !== 'UNDEPLOYED'">
+      <button class="action-item" (click)="deploy([stream])" *ngIf="stream.status !== 'UNDEPLOYED'"
+              [appRole]="['ROLE_UPDATE']">
         Update
       </button>
       <button class="action-item" (click)="undeploy([stream])"
-              *ngIf="stream.status !== 'UNDEPLOYED' || stream.status !== 'INCOMPLETE'">
+              *ngIf="stream.status !== 'UNDEPLOYED' || stream.status !== 'INCOMPLETE'"
+              [appRole]="['ROLE_CREATE']">
         Undeploy
       </button>
-      <button class="action-item" (click)="destroy([stream])">Destroy</button>
+      <button class="action-item" (click)="destroy([stream])"
+              [appRole]="['ROLE_DESTROY']">
+        Destroy
+      </button>
       <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
     </clr-dg-action-overflow>
-    <ng-template [clrIfExpanded]="expanded[stream.name]" (clrIfExpandedChange)="toggleExpand(stream.name)"
+    <ng-template [(clrIfExpanded)]="expanded[stream.name]"
+                 (clrIfExpandedChange)="toggleExpand()"
                  ngProjectAs="clr-dg-row-detail">
       <clr-dg-row-detail>
         <div class="clr-detail-flo">
-          <!--<app-stream-flo-view id="{{stream.name}}"></app-stream-flo-view>-->
           <app-runtime-stream-flo-view [stream]="stream" [metrics]="metricsForStream(stream.name)">
           </app-runtime-stream-flo-view>
         </div>
       </clr-dg-row-detail>
     </ng-template>
-    <div>Test</div>
   </clr-dg-row>
   <clr-dg-placeholder>We couldn't find any streams!</clr-dg-placeholder>
   <clr-dg-footer>
@@ -113,4 +123,3 @@
 
 <app-stream-destroy #destroyModal (onDestroyed)="refresh(state)"></app-stream-destroy>
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh(state)"></app-stream-undeploy>
-<app-stream-multi-deploy #multiDeployModal (onDeployed)="refresh(state)"></app-stream-multi-deploy>

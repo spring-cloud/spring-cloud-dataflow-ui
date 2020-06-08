@@ -135,6 +135,7 @@ export class ImportExportService {
                 })
               );
           });
+          /* tslint:disable-next-line */
           return combineLatest(streams$);
         }
       ),
@@ -204,6 +205,7 @@ export class ImportExportService {
                 })
               );
           });
+          /* tslint:disable-next-line */
           return combineLatest(tasks$);
         }
       ),

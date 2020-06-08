@@ -261,6 +261,56 @@ export class StreamDeployService {
       }));
   }
 
+  deploymentProperties(name: string): Observable<any> {
+    return this.streamService.getDeploymentInfo(name)
+      .pipe(
+        map((deploymentInfo: Stream) => {
+          const properties = [];
+          const ignoreProperties = [];
+          // Deployer properties
+          if (deploymentInfo.deploymentProperties) {
+            Object.keys(deploymentInfo.deploymentProperties).map(app => {
+              Object.keys(deploymentInfo.deploymentProperties[app]).forEach((key: string) => {
+                const value = this.cleanValueProperties(deploymentInfo.deploymentProperties[app][key]);
+                if (key === StreamDeployService.version.keyEdit) {
+                  properties.push(`version.${app}=${value}`);
+                } else if (key.startsWith(StreamDeployService.deployer.keyEdit)) {
+                  const keyShort = key.substring(StreamDeployService.deployer.keyEdit.length, key.length);
+                  if (keyShort !== 'group') {
+                    properties.push(`deployer.${app}.${keyShort}=${value}`);
+                  } else {
+                    // this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+                  }
+                } else {
+                  // this.loggerService.log(`${key} is bypassed (app: ${app}, value: ${value})`);
+                }
+              });
+            });
+          }
+          // Application properties
+          const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
+          dslTextParsed.lines[0].nodes.forEach((node) => {
+            const app = get(node, 'label') || get(node, 'name');
+            const appType = get(node, 'name');
+            get(node, 'options', []).forEach((value, key) => {
+              value = this.cleanValueProperties(value);
+              let keyShort = key;
+              if (key.startsWith(`${appType}.`)) {
+                ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
+                keyShort = key.substring(`${appType}.`.length, key.length);
+              }
+              properties.push(`app.${app}.${keyShort}=${value}`);
+            });
+          });
+          return {
+            properties,
+            ignoreProperties: [...properties, ...ignoreProperties],
+            stream: deploymentInfo
+          };
+        })
+      );
+  }
+
   /**
    * Clean value properties
    * @param {string} value

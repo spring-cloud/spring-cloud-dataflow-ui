@@ -1,11 +1,12 @@
 import { Page } from './page.model';
 
 export class Task {
-  public name: string;
-  public description: string;
-  public dslText: string;
-  public composed: boolean;
-  public status: string;
+  name: string;
+  description: string;
+  dslText: string;
+  composed: boolean;
+  status: string;
+  composedTaskElement: boolean;
 
   static parse(input) {
     const task = new Task();
@@ -13,6 +14,7 @@ export class Task {
     task.dslText = input.dslText;
     task.composed = input.composed;
     task.status = input.status;
+    task.composedTaskElement = input.composedTaskElement;
     task.description = input.description || '';
 
     return task;

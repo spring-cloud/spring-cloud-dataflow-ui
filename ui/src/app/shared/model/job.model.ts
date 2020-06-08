@@ -2,120 +2,6 @@ import { DateTime } from 'luxon';
 import { Page } from './page.model';
 import get from 'lodash.get';
 
-export class JobExecution {
-  public name: string;
-  public taskExecutionId: number;
-  public jobInstanceId: number;
-  public jobExecutionId: number;
-  public startTime: DateTime;
-  public endTime: DateTime;
-  public stepExecutionCount: number;
-  public status: string;
-  public jobParametersString: string;
-  public exitCode: string;
-  public exitMessage: string;
-  public stepExecutions: ExecutionStep[];
-  public restartable: boolean;
-  public abandonable: boolean;
-  public stoppable: boolean;
-  public defined: boolean;
-
-  constructor() {
-  }
-
-  static parse(input): JobExecution {
-    const jobExecution: JobExecution = new JobExecution();
-    jobExecution.stepExecutions = [];
-    jobExecution.name = input.name;
-    if (get(input, 'jobExecution.startTime')) {
-      jobExecution.startTime = DateTime.fromISO(input.jobExecution.startTime);
-    }
-    jobExecution.stepExecutionCount = input.stepExecutionCount;
-    if (get(input, 'jobExecution.status')) {
-      jobExecution.status = input.jobExecution.status;
-    }
-    jobExecution.jobExecutionId = get(input, 'jobExecution.id');
-    jobExecution.taskExecutionId = input.taskExecutionId;
-    jobExecution.jobInstanceId = get(input, 'jobExecution.jobInstance.id');
-    jobExecution.restartable = input.restartable;
-    jobExecution.abandonable = input.abandonable;
-    jobExecution.stoppable = input.stoppable;
-    jobExecution.defined = input.defined;
-    jobExecution.jobParametersString = input.jobParametersString;
-    if (get(input, 'jobExecution.stepExecutions')) {
-      jobExecution.stepExecutions = input.jobExecution.stepExecutions.map(ExecutionStep.parse);
-    }
-    if (get(input, 'jobExecution.endTime')) {
-      jobExecution.endTime = DateTime.fromISO(input.jobExecution.endTime);
-    }
-    if (get(input, 'jobExecution.exitStatus')) {
-      jobExecution.exitCode = input.jobExecution.exitStatus.exitCode;
-      jobExecution.exitMessage = input.jobExecution.exitStatus.exitDescription;
-    }
-    return jobExecution;
-  }
-
-  static parseThin(input): JobExecution {
-    const jobExecution: JobExecution = new JobExecution();
-    jobExecution.stepExecutions = [];
-    jobExecution.name = input.name;
-    if (get(input, 'startDateTime')) {
-      jobExecution.startTime = DateTime.fromISO(input.startDateTime);
-    }
-    jobExecution.stepExecutionCount = input.stepExecutionCount;
-    jobExecution.status = input.status;
-    jobExecution.jobExecutionId = input.executionId;
-    jobExecution.taskExecutionId = input.taskExecutionId;
-    jobExecution.jobInstanceId = input.instanceId;
-    jobExecution.restartable = input.restartable;
-    jobExecution.abandonable = input.abandonable;
-    jobExecution.stoppable = input.stoppable;
-    jobExecution.defined = input.defined;
-    jobExecution.jobParametersString = input.jobParametersString;
-    return jobExecution;
-  }
-
-  statusColor() {
-    switch (this.status) {
-      case 'COMPLETED':
-        return 'success';
-      case 'ERROR':
-      case 'FAILED':
-        return 'danger';
-      default:
-        return 'info';
-    }
-  }
-
-  exitCodeColor() {
-    switch (this.exitCode) {
-      case 'COMPLETED':
-        return 'success';
-      case 'ERROR':
-      case 'FAILED':
-        return 'danger';
-      default:
-        return 'info';
-    }
-  }
-
-}
-
-export class JobExecutionPage extends Page<JobExecution> {
-  public static parse(input): Page<JobExecution> {
-    const page = Page.fromJSON<JobExecution>(input);
-    if (input && input._embedded) {
-      if (input._embedded.jobExecutionResourceList) {
-        page.items = input._embedded.jobExecutionResourceList.map(JobExecution.parse);
-      }
-      if (input._embedded.jobExecutionThinResourceList) {
-        page.items = input._embedded.jobExecutionThinResourceList.map(JobExecution.parseThin);
-      }
-    }
-    return page;
-  }
-}
-
 export class ExecutionContext {
 
   public dirty: boolean;
@@ -279,3 +165,117 @@ export class ExecutionStepProgress {
   }
 }
 
+
+export class JobExecution {
+  public name: string;
+  public taskExecutionId: number;
+  public jobInstanceId: number;
+  public jobExecutionId: number;
+  public startTime: DateTime;
+  public endTime: DateTime;
+  public stepExecutionCount: number;
+  public status: string;
+  public jobParametersString: string;
+  public exitCode: string;
+  public exitMessage: string;
+  public stepExecutions: ExecutionStep[];
+  public restartable: boolean;
+  public abandonable: boolean;
+  public stoppable: boolean;
+  public defined: boolean;
+
+  constructor() {
+  }
+
+  static parse(input): JobExecution {
+    const jobExecution: JobExecution = new JobExecution();
+    jobExecution.stepExecutions = [];
+    jobExecution.name = input.name;
+    if (get(input, 'jobExecution.startTime')) {
+      jobExecution.startTime = DateTime.fromISO(input.jobExecution.startTime);
+    }
+    jobExecution.stepExecutionCount = input.stepExecutionCount;
+    if (get(input, 'jobExecution.status')) {
+      jobExecution.status = input.jobExecution.status;
+    }
+    jobExecution.jobExecutionId = get(input, 'jobExecution.id');
+    jobExecution.taskExecutionId = input.taskExecutionId;
+    jobExecution.jobInstanceId = get(input, 'jobExecution.jobInstance.id');
+    jobExecution.restartable = input.restartable;
+    jobExecution.abandonable = input.abandonable;
+    jobExecution.stoppable = input.stoppable;
+    jobExecution.defined = input.defined;
+    jobExecution.jobParametersString = input.jobParametersString;
+    if (get(input, 'jobExecution.stepExecutions')) {
+      jobExecution.stepExecutions = input.jobExecution.stepExecutions.map(ExecutionStep.parse);
+    }
+    if (get(input, 'jobExecution.endTime')) {
+      jobExecution.endTime = DateTime.fromISO(input.jobExecution.endTime);
+    }
+    if (get(input, 'jobExecution.exitStatus')) {
+      jobExecution.exitCode = input.jobExecution.exitStatus.exitCode;
+      jobExecution.exitMessage = input.jobExecution.exitStatus.exitDescription;
+    }
+    return jobExecution;
+  }
+
+  static parseThin(input): JobExecution {
+    const jobExecution: JobExecution = new JobExecution();
+    jobExecution.stepExecutions = [];
+    jobExecution.name = input.name;
+    if (get(input, 'startDateTime')) {
+      jobExecution.startTime = DateTime.fromISO(input.startDateTime);
+    }
+    jobExecution.stepExecutionCount = input.stepExecutionCount;
+    jobExecution.status = input.status;
+    jobExecution.jobExecutionId = input.executionId;
+    jobExecution.taskExecutionId = input.taskExecutionId;
+    jobExecution.jobInstanceId = input.instanceId;
+    jobExecution.restartable = input.restartable;
+    jobExecution.abandonable = input.abandonable;
+    jobExecution.stoppable = input.stoppable;
+    jobExecution.defined = input.defined;
+    jobExecution.jobParametersString = input.jobParametersString;
+    return jobExecution;
+  }
+
+  statusColor() {
+    switch (this.status) {
+      case 'COMPLETED':
+        return 'success';
+      case 'ERROR':
+      case 'FAILED':
+        return 'danger';
+      default:
+        return 'info';
+    }
+  }
+
+  exitCodeColor() {
+    switch (this.exitCode) {
+      case 'COMPLETED':
+        return 'success';
+      case 'ERROR':
+      case 'FAILED':
+        return 'danger';
+      default:
+        return 'info';
+    }
+  }
+
+}
+
+export class JobExecutionPage extends Page<JobExecution> {
+  public static parse(input): Page<JobExecution> {
+    const page = Page.fromJSON<JobExecution>(input);
+    if (input && input._embedded) {
+      if (input._embedded.jobExecutionResourceList) {
+        page.items = input._embedded.jobExecutionResourceList.map(JobExecution.parse);
+      }
+      if (input._embedded.jobExecutionThinResourceList) {
+        page.items = input._embedded.jobExecutionThinResourceList.map(JobExecution.parseThin);
+      }
+    }
+    return page;
+  }
+}

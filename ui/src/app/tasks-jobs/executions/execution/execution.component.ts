@@ -21,6 +21,7 @@ export class ExecutionComponent implements OnInit {
 
   loading = true;
   loadingTask = true;
+  loadingApplication = false;
   execution: TaskExecution;
   task: Task;
   applications: any;
@@ -48,8 +49,8 @@ export class ExecutionComponent implements OnInit {
       )
       .subscribe((execution) => {
         this.execution = execution;
-        this.getTask();
         this.loading = false;
+        this.getTask();
       }, (error) => {
         this.notificationService.error('An error occurred', error);
         if (HttpError.is404(error)) {
@@ -71,6 +72,7 @@ export class ExecutionComponent implements OnInit {
   }
 
   getApplications() {
+    this.loadingApplication = true;
     this.toolsService
       .parseTaskTextToGraph(this.task.dslText, this.task.name)
       .subscribe((taskConversion: TaskConversion) => {
@@ -92,6 +94,9 @@ export class ExecutionComponent implements OnInit {
           }).filter((app) => app !== null);
         }
         this.applications = apps;
+        this.loadingApplication = false;
+      }, () => {
+        this.loadingApplication = false;
       });
   }
 

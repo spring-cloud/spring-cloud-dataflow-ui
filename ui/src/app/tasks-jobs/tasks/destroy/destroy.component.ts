@@ -34,7 +34,7 @@ export class DestroyComponent {
           this.isOpen = false;
           this.tasks = null;
         }, error => {
-          this.notificationService.error('An error occurred', 'An error occurred while bulk deleting Composed Tasks. ' +
+          this.notificationService.error('An error occurred', 'An error occurred while destroying tasks. ' +
             'Please check the server logs for more details.');
           this.isOpen = false;
           this.tasks = null;

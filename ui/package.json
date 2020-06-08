@@ -34,6 +34,7 @@
     "@clr/icons": "3.0.0",
     "@clr/ui": "3.0.0",
     "@webcomponents/webcomponentsjs": "2.0.0",
+    "angular-2-local-storage": "^3.0.2",
     "angular-http-server": "1.9.0",
     "file-saver": "2.0.2",
     "lodash.get": "4.4.2",
@@ -42,8 +43,9 @@
     "ngx-toastr": "12.0.1",
     "rxjs": "6.5.4",
     "spring-flo": "https://github.com/spring-projects/spring-flo.git#a84ec4f57965a9e64ea2477145615772312de962",
-    "tippy.js": "^6.2.3",
+    "tippy.js": "6.2.3",
     "tslib": "1.10.0",
+    "uuid": "8.1.0",
     "zone.js": "0.10.2"
   },
   "devDependencies": {
@@ -59,7 +61,6 @@
     "@types/jquery": "3.3.37",
     "@types/luxon": "1.22.0",
     "@types/node": "12.11.1",
-    "@types/uuid": "3.4.7",
     "@types/lodash": "4.14.149",
     "@types/jasmine-expect": "3.8.1",
     "codelyzer": "5.2.2",

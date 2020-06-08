@@ -6,6 +6,7 @@ import { StreamComponent } from './streams/stream/stream.component';
 import { CreateComponent } from './streams/create/create.component';
 import { DeployComponent } from './streams/deploy/deploy.component';
 import { SecurityGuard } from '../security/support/security.guard';
+import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'list/:name/deploy',
         component: DeployComponent,
+      },
+      {
+        path: 'list/:group/multi-deploy',
+        component: MultiDeployComponent,
       },
       {
         path: 'runtime',

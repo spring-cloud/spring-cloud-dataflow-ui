@@ -8,7 +8,6 @@
 
 <div *ngIf="!loading">
 
-
   <div class="datagrid-action-bar">
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh()">
       Refresh
@@ -105,8 +104,8 @@
 
       <app-view-card titleModal="Exit Description" keyContext="step" name="{{stepResource.stepExecution.id}}" id="exit">
         <ng-template>
-          <div *ngIf="stepResource?.stepExecution?.exitMessage">
-            <pre class="exit" style="overflow:auto;">{{stepResource?.stepExecution?.exitMessage || 'N/A'}}</pre>
+          <div class="clr-log">
+            <pre style="margin:0">{{stepResource?.stepExecution?.exitMessage || 'N/A'}}</pre>
           </div>
         </ng-template>
       </app-view-card>
@@ -246,9 +245,15 @@
               <div class="row">
                 <div class="key">Applications</div>
                 <div class="value">
-                  <div *ngFor="let app of applications">
-                    <strong>{{app.name}}</strong>&nbsp;
-                    <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                  <div *ngIf="!loadingApplications">
+                    <div *ngFor="let app of applications">
+                      <strong>{{app.name}}</strong>&nbsp;
+                      <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="loadingApplications">
+                    <clr-spinner clrInline clrSmall></clr-spinner>
+                    Loading application(s)...
                   </div>
                 </div>
               </div>
@@ -393,4 +398,10 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="loading" style="padding:1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading job step execution...
+</div>
+
 <app-task-execution-log #logModal></app-task-execution-log>

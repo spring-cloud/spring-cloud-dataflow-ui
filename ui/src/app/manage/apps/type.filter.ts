@@ -23,6 +23,10 @@ import { App, ApplicationType } from '../../shared/model/app.model';
         <label>Sink</label>
       </clr-radio-wrapper>
       <clr-radio-wrapper>
+        <input type="radio" clrRadio (change)="change()" [(ngModel)]="val" value="task" name="options"/>
+        <label>Task</label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
         <input type="radio" clrRadio (change)="change()" [(ngModel)]="val" value="app" name="options"/>
         <label>App</label>
       </clr-radio-wrapper>

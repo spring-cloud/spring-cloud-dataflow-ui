@@ -1,5 +1,5 @@
-import {Directive, Input, OnInit, ElementRef, AfterViewInit, AfterContentInit} from '@angular/core';
-import tippy, {Props, Content, Instance} from 'tippy.js';
+import { Directive, Input, OnInit, ElementRef } from '@angular/core';
+import tippy, { Props, Content } from 'tippy.js';
 
 @Directive({
   /* tslint:disable-next-line */
@@ -9,7 +9,7 @@ export class TippyDirective implements OnInit {
 
   private instance;
 
-  @Input('tippyOptions') public tippyOptions: Props;
+  @Input() public tippyOptions: Props;
 
   @Input('content')
   set content(c: Content) {

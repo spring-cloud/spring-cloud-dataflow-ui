@@ -15,7 +15,7 @@ import { NotificationService } from '../../../../shared/service/notification.ser
   styleUrls: ['free-text.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DeployFreeTextComponent implements OnInit, OnDestroy {
+export class FreeTextComponent implements OnInit, OnDestroy {
 
   /**
    * Stream ID

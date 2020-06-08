@@ -1,0 +1,53 @@
+<clr-signpost>
+  <a class="nav-link nav-icon" aria-label="settings" clrSignpostTrigger>
+    <clr-icon shape="info-standard"></clr-icon>
+  </a>
+  <clr-signpost-content #signpost class="signpost-about" clrPosition="bottom-left" *clrIfOpen>
+    <h3 style="margin-top: 0">Spring Cloud Data Flow</h3>
+    <p>
+      Data Flow Server Implementation<br/>
+      <strong>Name</strong>: {{about.versions.implementation.name || 'n/a'}}<br/>
+      <strong>Version</strong>: {{about.versions.implementation.version || 'n/a'}}<br/>
+      <button class="btn btn-sm btn-primary" (click)="more()">More info</button>
+    </p>
+    <ul>
+      <ul>
+        <li>
+          <a target="_blank" href="https://cloud.spring.io/spring-cloud-dataflow/">
+            Project Page
+          </a>
+        </li>
+        <li>
+          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow">
+            Source Code
+          </a>
+        </li>
+        <li>
+          <a target="_blank"
+             href="https://docs.spring.io/spring-cloud-dataflow/docs/{{about.versions.core.version}}/reference/htmlsingle/">
+            Documentation
+          </a>
+        </li>
+        <li>
+          <a target="_blank"
+             href="https://docs.spring.io/spring-cloud-dataflow/docs/{{about.versions.core.version}}/reference/htmlsingle/#api-guide-resources">
+            API Docs
+          </a>
+        </li>
+        <li>
+          <a target="_blank" href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow">
+            Support Forum
+          </a>
+        </li>
+        <li>
+          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues">
+            Issue Tracker
+          </a>
+        </li>
+      </ul>
+
+    </ul>
+  </clr-signpost-content>
+</clr-signpost>
+
+<app-about-info #infoModal></app-about-info>

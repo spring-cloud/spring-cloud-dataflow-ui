@@ -7,8 +7,6 @@ import { ConfirmComponent } from '../../shared/component/confirm/confirm.compone
 import { NotificationService } from '../../shared/service/notification.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
-import { TaskExecution } from '../../shared/model/task-execution.model';
-import { Task } from '../../shared/model/task.model';
 
 @Component({
   selector: 'app-jobs',

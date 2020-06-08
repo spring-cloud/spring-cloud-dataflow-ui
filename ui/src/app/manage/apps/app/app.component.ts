@@ -15,6 +15,7 @@ import { HttpError } from '../../../shared/model/error.model';
 export class AppComponent implements OnInit {
 
   loading = true;
+  loadingProperties = true;
   app: App;
   versions: App[];
   defaultApp: App;
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit {
             this.app = this.defaultApp;
           }
           this.changeVersion(this.defaultApp ? this.defaultApp : this.versions[0]);
+          this.loading = false;
         },
         error => {
           this.notificationService.error('An error occurred', error);
@@ -59,6 +61,7 @@ export class AppComponent implements OnInit {
   }
 
   getProperties(app: App) {
+    this.loadingProperties = true;
     this.selectedApp = app;
     this.appsService.getApp(app.name, app.type, app.version)
       .subscribe((detailedApp: DetailedApp) => {
@@ -66,7 +69,7 @@ export class AppComponent implements OnInit {
           // this.showProperties = !this.tooManyProperties;
           // this.detailedAppRegistration = detailed;
           this.detailedApp = detailedApp;
-          this.loading = false;
+          this.loadingProperties = false;
         },
         error => {
           this.notificationService.error('An error occurred', error);
@@ -79,7 +82,7 @@ export class AppComponent implements OnInit {
             type: app.type,
             defaultVersion: app.defaultVersion
           });
-          this.loading = false;
+          this.loadingProperties = false;
         });
   }
 

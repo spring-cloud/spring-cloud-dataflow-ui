@@ -143,7 +143,7 @@ export class MockSharedAppService extends AppService {
     const appPage = new AppPage();
     const seekType = ApplicationType[type];
     const apps = METAMODEL_DATA
-      .filter(d => !type || d.type === ApplicationType[type])
+      .filter(d => !type || d.type === type.toString())
       .map(App.parse);
     appPage.items = apps;
     appPage.page = 0;
@@ -154,7 +154,7 @@ export class MockSharedAppService extends AppService {
   }
 
   getApp(name: string, type: ApplicationType, appVersion?: string): Observable<DetailedApp> {
-    const rawData = METAMODEL_DATA.find(d => d.name === name && (!type || d.type === ApplicationType[type]));
+    const rawData = METAMODEL_DATA.find(d => d.name === name && (!type || d.type === type.toString()));
     if (rawData) {
       return of(DetailedApp.parse(rawData));
     } else {

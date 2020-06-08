@@ -1,36 +1,74 @@
-<clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning" clrModalSize="lg">
-  <h3 class="modal-title">Deploy Streams</h3>
-  <div class="modal-body" *ngIf="!isRunning">
-    <p>
-      Please specify any <strong>optional</strong> deployment properties. You can either enter deployment properties
-      directly into the text-area field below or alternatively, you can point to an external properties file, which will
-      be used to populate the text-area field.
-    </p>
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th class="left">Name</th>
-        <th class="left">Definition</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let stream of streams">
-        <td class="left"><strong class="text-truncate" style="max-width: 230px">{{stream.name}}</strong></td>
-        <td class="left">
-          <span class="dsl-text dsl-truncate" style="max-width: 200px">{{stream.dslText}}</span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="modal-body" *ngIf="isRunning">
+<h1>Deploy Streams</h1>
+
+<div *ngIf="!isLoading" class="multi-deploy">
+  <form clrForm clrLayout="horizontal" (submit)="runDeploy()" spellcheck="false">
+    <div class="card" *ngFor="let streamConfig of streamConfigs;let i = index" [formGroup]="form[i]">
+      <div class="card-header">
+        <span *ngIf="streamConfig.stream.status === 'UNDEPLOYED'">Deploy</span>
+        <span *ngIf="streamConfig.stream.status !== 'UNDEPLOYED'">Update</span>
+        <strong>&nbsp;{{streamConfig.stream.name}}</strong>
+      </div>
+      <div class="card-block">
+        <div class="card-text">
+          <div class="clr-form-control clr-row">
+            <div class="clr-col-md-1 clr-control-label">DSL Text</div>
+            <div class="clr-col-10">
+              <span class="dsl-text">
+                <app-stream-dsl [dsl]="streamConfig.stream.dslText" expandable="false"></app-stream-dsl>
+              </span>
+            </div>
+          </div>
+          <div class="clr-form-control clr-row">
+            <div class="clr-col-md-1 clr-control-label">Status</div>
+            <div class="clr-col-10">
+              <span class="label label-{{streamConfig.stream.statusColor()}}">{{streamConfig.stream.status}}</span>
+            </div>
+          </div>
+          <clr-select-container *ngIf="platforms.length > 1">
+            <label class="clr-col-md-1">
+              Platform
+            </label>
+            <select clrSelect tabindex="1" formControlName="platform">
+              <option *ngFor="let platform of platforms" [value]="platform.name">
+                {{platform.name}}
+                ({{platform.type}})
+              </option>
+            </select>
+            <clr-control-error>
+              Select a platform.
+            </clr-control-error>
+          </clr-select-container>
+
+          <clr-control-container class="key-value-wrapper">
+            <label class="clr-col-md-1">Properties</label>
+            <app-key-value clrControl formControlName="properties"></app-key-value>
+            <!--            <clr-control-helper>-->
+            <!--              Arguments can be prefixed by <code>&#45;&#45;</code> (optional). Example:<br/>-->
+            <!--              <pre><code>&#45;&#45;myarg1=value1-->
+            <!--&#45;&#45;myarg2=value2</code></pre>-->
+            <!--            </clr-control-helper>-->
+            <clr-control-error>
+              One or more arguments are invalid.<br/>Example: <code>myarg=myvalue</code>.
+            </clr-control-error>
+          </clr-control-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
+      <button class="btn btn-primary" type="submit">Deploy the streams</button>
+    </div>
+  </form>
+</div>
+
+<clr-modal [(clrModalOpen)]="isRunning" [clrModalClosable]="false">
+  <h3 class="modal-title">Deploy streams</h3>
+  <div class="modal-body">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Deploying stream(s) ...
+    Deploying streams...
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="deploy()" [disabled]="isRunning">
-      Deploy the streams
-    </button>
+    <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
   </div>
 </clr-modal>

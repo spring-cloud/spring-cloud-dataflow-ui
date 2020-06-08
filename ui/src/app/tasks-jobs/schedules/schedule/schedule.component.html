@@ -1,0 +1,68 @@
+<h1>Schedule <strong>{{ schedule?.name }}</strong></h1>
+
+<div class="datagrid-action-bar">
+  <button type="button" class="btn btn-sm btn-secondary" (click)="detailsTask()">
+    Task details
+  </button>
+  <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()">
+    Delete schedule
+  </button>
+  <button type="button" class="btn btn-sm btn-secondary" (click)="create()">
+    Add new schedule
+  </button>
+</div>
+
+<div *ngIf="!isLoading">
+  <div class="clr-row">
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
+      <app-view-card titleModal="Informations" keyContext="schedule" name="{{schedule.name}}" id="info">
+        <ng-template>
+          <div class="block card-block-keyvalue">
+            <div class="row">
+              <div class="key">Name</div>
+              <div class="value">{{schedule.name}}</div>
+            </div>
+            <div class="row">
+              <div class="key">Task name</div>
+              <div class="value">
+                <a [routerLink]="'/tasks-jobs/tasks/' + schedule.taskName">{{schedule.taskName}}</a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="key">Cron Expr.</div>
+              <div class="value">{{schedule.cronExpression || 'N/A'}}</div>
+            </div>
+          </div>
+        </ng-template>
+      </app-view-card>
+    </div>
+
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
+      <app-view-card titleModal="Task Informations" keyContext="schedule" name="{{schedule.name}}" id="task">
+        <ng-template>
+          <div class="block card-block-keyvalue">
+            <div class="row">
+              <div class="key">Name</div>
+              <div class="value"><a [routerLink]="'/tasks-jobs/tasks/' + task.name">{{task.name}}</a></div>
+            </div>
+            <div class="row">
+              <div class="key">Definition</div>
+              <div class="value"><span class="dsl-text">{{task.dslText}}</span></div>
+            </div>
+            <div class="row">
+              <div class="key">Status</div>
+              <div class="value"><span class="label label-{{task.statusColor()}}">{{task.status}}</span></div>
+            </div>
+          </div>
+        </ng-template>
+      </app-view-card>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="isLoading">
+  loading
+</div>
+
+<app-schedule-destroy #destroyModal (onDestroyed)="back()"></app-schedule-destroy>

@@ -1,32 +1,55 @@
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit,
-  Output
+  Output, ViewChild
 } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { StreamDeployService } from '../stream-deploy.service';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { StreamDeployValidator } from '../stream-deploy.validator';
 import { Properties } from 'spring-flo';
 import { NotificationService } from '../../../../shared/service/notification.service';
 import { StreamDeployConfig } from '../../../../shared/model/stream.model';
 import {
-  GroupPropertiesSource, GroupPropertiesSources
+  GroupPropertiesSource, GroupPropertiesSources, PropertiesGroupsDialogComponent
 } from '../../../../flo/shared/properties-groups/properties-groups-dialog.component';
+import { App } from '../../../../shared/model/app.model';
+import { PropertiesDialogComponent } from '../../../../flo/shared/properties/properties-dialog.component';
+import { StreamAppPropertiesSource, StreamHead } from '../../../../flo/stream/properties/stream-properties-source';
 
-/**
- * TODO
- *
- * @author Damien Vitrac
- * @author Janne Valkealahti
- */
+export class AppPropertiesSource implements StreamAppPropertiesSource {
+
+  private options: Array<any>;
+  public confirm = new EventEmitter();
+
+  constructor(options: Array<any>) {
+    this.options = options;
+  }
+
+  getStreamHead(): StreamHead {
+    return { presentStreamNames: [] };
+  }
+
+  getProperties(): Promise<Properties.Property[]> {
+    return of(this.options).toPromise();
+  }
+
+  applyChanges(properties: Properties.Property[]): void {
+    this.confirm.emit(properties);
+  }
+
+}
+
 @Component({
   selector: 'app-stream-deploy-builder',
   templateUrl: 'builder.component.html',
   styleUrls: ['builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
+export class BuilderComponent implements OnInit, OnDestroy {
+
+  @ViewChild('appPropertiesModal', { static: true }) appPropertiesModal: PropertiesDialogComponent;
+  @ViewChild('groupsPropertiesModal', { static: true }) groupsPropertiesModal: PropertiesGroupsDialogComponent;
 
   /**
    * Stream ID
@@ -647,9 +670,7 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
    * @param app
    */
   openDeploymentProperties(builder, appId?: string) {
-    // const modal = this.bsModalService.show(PropertiesGroupsDialogComponent, { class: 'modal-lg'});
     const options = appId ? builder.builderDeploymentProperties.apps[appId] : builder.builderDeploymentProperties.global;
-    // modal.content.titleModal = `Deployment properties for platform`;
 
     // jee.foo.bar-xxx -> jee.foo
     const deduceKey = (key) => {
@@ -689,9 +710,9 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
       }
       this.changeDetector.markForCheck();
     });
-
-    // TODO
-    // modal.content.setData(groupPropertiesSources);
+    this.groupsPropertiesModal.setData(groupPropertiesSources);
+    this.groupsPropertiesModal.title = `Deployment properties for platform`;
+    this.groupsPropertiesModal.isOpen = true;
   }
 
   /**
@@ -734,19 +755,18 @@ export class StreamDeployBuilderComponent implements OnInit, OnDestroy {
   openApp(builder, app: any) {
     const version = builder.formGroup.get('appsVersion').get(app.name).value || app.version;
     const options = builder.builderAppsProperties[app.name] ? builder.builderAppsProperties[app.name] : app.options;
-    // TODO
-    // const modal = this.bsModalService.show(StreamDeployAppPropertiesComponent, { class: 'modal-properties' });
-    // modal.content.name = app.name;
-    // modal.content.type = app.type.toUpperCase();
-    // modal.content.version = app.version;
-    // const appPropertiesSource = new AppPropertiesSource(Object.assign([], options
-    //   .map((property) => Object.assign({}, property))));
-    //
-    // appPropertiesSource.confirm.subscribe((properties: Array<any>) => {
-    //   builder.builderAppsProperties[app.name] = properties;
-    //   this.changeDetector.markForCheck();
-    // });
-    // modal.content.setData(appPropertiesSource);
+    const appPropertiesSource = new AppPropertiesSource(Object.assign([], options
+      .map((property) => Object.assign({}, property))));
+    appPropertiesSource.confirm.subscribe((properties: Array<any>) => {
+      builder.builderAppsProperties[app.name] = properties;
+      this.changeDetector.markForCheck();
+    });
+    this.appPropertiesModal.app = new App();
+    this.appPropertiesModal.app.name = app.name;
+    this.appPropertiesModal.app.type = app.type;
+    this.appPropertiesModal.app.version = version;
+    this.appPropertiesModal.setData(appPropertiesSource);
+    this.appPropertiesModal.isOpen = true;
   }
 
   /**

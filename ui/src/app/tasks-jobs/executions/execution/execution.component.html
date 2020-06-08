@@ -2,20 +2,26 @@
 
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="relaunch()"
+            [appRole]="['ROLE_DEPLOY']">
+      Relaunch task
+    </button>
     <button type="button" class="btn btn-sm btn-secondary" (click)="stop()"
-            [disabled]="execution.taskExecutionStatus === 'ERROR' || execution.taskExecutionStatus === 'COMPLETE'">
+            [disabled]="execution.taskExecutionStatus === 'ERROR' || execution.taskExecutionStatus === 'COMPLETE'"
+            [appRole]="['ROLE_DEPLOY']">
       Stop execution
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="cleanup()" *ngIf="!execution.parentExecutionId">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="cleanup()" *ngIf="!execution.parentExecutionId"
+            [appRole]="['ROLE_DESTROY']">
       Clean up task execution
     </button>
   </div>
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Informations" keyContext="execution" name="{{task.name}}" id="info">
+      <app-view-card titleModal="Informations" keyContext="execution" name="{{execution?.executionId}}" id="info">
         <ng-template>
-          <div class="block card-block-keyvalue lg-key" *ngIf="!loading">
+          <div class="block card-block-keyvalue lg-key">
             <div *ngIf="execution">
               <div class="row">
                 <div class="key">Execution Id</div>
@@ -136,7 +142,7 @@
       </app-view-card>
     </div>
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Task" keyContext="execution" name="{{task.name}}" id="task">
+      <app-view-card titleModal="Task" keyContext="execution" name="{{execution?.executionId}}" id="task">
         <ng-template>
           <div *ngIf="!loadingTask">
             <div class="block card-block-keyvalue">
@@ -155,9 +161,15 @@
               <div class="row">
                 <div class="key">Applications</div>
                 <div class="value">
-                  <div *ngFor="let app of applications">
-                    <strong>{{app.name}}</strong>&nbsp;
-                    <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                  <div *ngIf="!loadingApplication">
+                    <div *ngFor="let app of applications">
+                      <strong>{{app.name}}</strong>&nbsp;
+                      <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="loadingApplication">
+                    <clr-spinner clrInline clrSmall></clr-spinner>
+                    Loading application(s)...
                   </div>
                 </div>
               </div>
@@ -175,8 +187,13 @@
       </app-view-card>
     </div>
   </div>
+
+  <app-task-execution-log #logModal></app-task-execution-log>
+  <app-execution-stop #stopModal></app-execution-stop>
+  <app-execution-cleanup #cleanModal (onCleaned)="back()"></app-execution-cleanup>
 </div>
 
-<app-task-execution-log #logModal></app-task-execution-log>
-<app-execution-stop #stopModal></app-execution-stop>
-<app-execution-cleanup #cleanModal (onCleaned)="back()"></app-execution-cleanup>
+<div *ngIf="loading" style="padding:1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading execution...
+</div>

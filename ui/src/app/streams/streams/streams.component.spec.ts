@@ -12,9 +12,9 @@ import { NotificationServiceMock } from '../../tests/service/notification.servic
 import { StreamServiceMock } from '../../tests/api/stream.service.mock';
 import { ContextService } from '../../shared/service/context.service';
 import { By } from '@angular/platform-browser';
-import { MultiDeployComponent } from './multi-deploy/multi-deploy.component';
 import { GrafanaStreamDirective, GrafanaStreamsDirective } from '../../shared/grafana/grafana.directive';
 import { GrafanaServiceMock } from '../../tests/service/grafana.service.mock';
+import { GroupServiceMock } from '../../tests/service/group.service.mock';
 
 describe('streams/streams/streams.component.ts', () => {
 
@@ -26,7 +26,6 @@ describe('streams/streams/streams.component.ts', () => {
       declarations: [
         StreamsComponent,
         DestroyComponent,
-        MultiDeployComponent,
         UndeployComponent,
         GrafanaStreamsDirective,
         GrafanaStreamDirective
@@ -35,7 +34,7 @@ describe('streams/streams/streams.component.ts', () => {
         FormsModule,
         ClarityModule,
         RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
+        BrowserAnimationsModule
       ],
       providers: [
         SecurityServiceMock.provider,
@@ -43,7 +42,8 @@ describe('streams/streams/streams.component.ts', () => {
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
         GrafanaServiceMock.provider,
-        ContextService
+        GroupServiceMock.provider,
+        ContextService,
       ]
     })
       .compileComponents();

@@ -23,7 +23,7 @@ export class TaskNodeComponent extends NodeComponent {
 
   @ViewChild('nodeTooltip')
   nodeTooltipElement: ElementRef;
-  
+
   @ViewChild('options_modal', { static: true })
   optionsModal: StreamPropertiesDialogComponent;
 

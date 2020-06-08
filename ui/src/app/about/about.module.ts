@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AboutRoutingModule } from './about-routing.module';
 import { InfoComponent } from './info/info.component';
 import { ClarityModule } from '@clr/angular';
+import { SignpostComponent } from './signpost/signpost.component';
 
 
 @NgModule({
-  declarations: [InfoComponent],
+  declarations: [
+    InfoComponent,
+    SignpostComponent
+  ],
   imports: [
     CommonModule,
     ClarityModule,
-    AboutRoutingModule
+  ],
+  exports: [
+    SignpostComponent
   ]
 })
 export class AboutModule {

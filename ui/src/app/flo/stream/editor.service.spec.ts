@@ -8,7 +8,7 @@ import { Shapes } from 'spring-flo';
 import { EditorService } from './editor.service';
 import * as _$ from 'jquery';
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
-import { MockSharedAppService } from "../../tests/service/app.service.mock";
+import { MockSharedAppService } from '../../tests/service/app.service.mock';
 import { LoggerService } from '../../shared/service/logger.service';
 import { StreamsModule } from '../../streams/streams.module';
 

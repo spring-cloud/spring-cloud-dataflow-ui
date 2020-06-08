@@ -86,6 +86,14 @@ export class ContextService {
       sizePlatformName: 160,
       cols: [true, true, true, true, true, true, true]
     },
+    schedules: {
+      current: 1,
+      size: 1000,
+      sizeName: (this.size / 3) - 10,
+      sizeTaskName: (this.size / 3) - 10,
+      sizeCronExpression: (this.size / 3) - 10,
+      cols: [true, true, true]
+    },
     stream: {
       visualize: false,
       child: {}
@@ -98,6 +106,9 @@ export class ContextService {
       child: {}
     },
     job: {
+      child: {}
+    },
+    schedule: {
       child: {}
     }
   };
