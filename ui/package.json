@@ -46,7 +46,7 @@
     "npm-check-updates": "^4.1.0",
     "rxjs": "6.5.4",
     "sockjs-client": "1.4.0",
-    "spring-flo": "https://github.com/spring-projects/spring-flo.git#0d7c637598638c4fdd67e3d3516ce13e8a298f85",
+    "spring-flo": "https://github.com/spring-projects/spring-flo.git#1e7d8b9606e45b1f7f6085532f0575d7a0021e53",
     "stompjs": "2.3.3",
     "tippy.js": "5.2.1",
     "tslib": "1.11.1",

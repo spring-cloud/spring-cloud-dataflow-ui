@@ -23,8 +23,7 @@ import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './support/shapes';
 import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 import { LoggerService } from '../../../shared/services/logger.service';
-import { from } from 'rxjs/internal/observable/from';
-import { DetailedAppRegistration } from '../../../shared/model';
+import { AppRegistration } from '../../../shared/model';
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -45,7 +44,7 @@ export class MetamodelService implements Flo.Metamodel {
    * @param errorHandler used to generate the error messages.
    */
   constructor(
-    private appsService: SharedAppsService
+    protected appsService: SharedAppsService
   ) {
   }
 
@@ -99,13 +98,12 @@ export class MetamodelService implements Flo.Metamodel {
             if (group.has(item.name)) {
               LoggerService.error(`Group '${item.type}' has duplicate element '${item.name}'`);
             } else {
-              group.set(item.name, this.createEntry(item.type, item.name, item.version, [], []));
+              group.set(item.name, this.createEntry(item));
             }
           });
 
           this.addExtras(metamodel);
 
-          this.addLinksGroup(metamodel);
           resolve(metamodel);
         },
         error => {
@@ -121,34 +119,12 @@ export class MetamodelService implements Flo.Metamodel {
 
   }
 
-  private addLinksGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
-    const metadata = this.createMetadata('link', 'links', 'Link between channels',
-      new Map<string, Flo.PropertyMetadata>().set('inputChannel', {
-        id: 'inputChannel',
-        name: 'Input Channel',
-        defaultValue: '',
-        description: 'Input Channel'
-      }).set('outputChannel', {
-        id: 'outputChannel',
-        name: 'Output Channel',
-        defaultValue: '',
-        description: 'Output Channel'
-      }), {
-        unselectable: true
-      });
-    metamodel.set(metadata.group, new Map<string, Flo.ElementMetadata>().set(metadata.name, metadata));
-  }
-
-
-  private createEntry(type: ApplicationType, name: string, version: string, inputChannels: string[],
-                      outputChannels: string[], metadata?: Flo.ExtraMetadata): AppMetadata {
+  protected createEntry(reg: AppRegistration, metadata?: Flo.ExtraMetadata): AppMetadata {
     return new AppMetadata(
-      type.toString(),
-      name,
-      version,
-      inputChannels,
-      outputChannels,
-      this.appsService.getAppInfo(type, name),
+      reg.type.toString(),
+      reg.name,
+      reg.version,
+      this.appsService.getAppInfo(reg.type, reg.name),
       metadata
     );
   }
@@ -184,7 +160,7 @@ export class MetamodelService implements Flo.Metamodel {
     metamodel.set(OTHER_GROUP_TYPE, elements);
   }
 
-  private createMetadata(name: string, group: string, description: string,
+  protected createMetadata(name: string, group: string, description: string,
                          properties: Map<string, Flo.PropertyMetadata>, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
     return {
       name: name,
