@@ -19,6 +19,7 @@ import { ErrorsComponent } from './streams/deploy/builder/errors/errors.componen
 import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.component';
 import { SharedFloModule } from '../flo/shared-flo.module';
 import { SecurityModule } from '../security/security.module';
+import { StatusComponent } from './streams/status/status.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { SecurityModule } from '../security/security.module';
     BuilderComponent,
     ErrorsComponent,
     MultiDeployComponent,
+    StatusComponent
   ],
 })
 export class StreamsModule { }

@@ -487,3 +487,23 @@ a:link, a:visited {
     }
   }
 }
+
+.list-status {
+  > div {
+    display: flex;
+    padding: .4rem 0;
+    border-bottom: 1px solid var(--clr-forms-border-color, #b3b3b3);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  span.desc {
+    flex: 1 1 500px;
+  }
+
+  span.status {
+    width: 200px;
+  }
+}

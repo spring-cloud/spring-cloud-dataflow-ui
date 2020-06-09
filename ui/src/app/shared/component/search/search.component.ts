@@ -9,6 +9,9 @@ import { StreamPage } from '../../model/stream.model';
 import { TaskPage } from '../../model/task.model';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
+import { AboutService } from '../../api/about.service';
+import { About } from '../../model/about.model';
+import { NotificationService } from '../../service/notification.service';
 
 @Component({
   selector: 'app-search',
@@ -50,60 +53,76 @@ export class SearchComponent implements OnInit {
   constructor(private appService: AppService,
               private streamService: StreamService,
               private taskService: TaskService,
+              private aboutService: AboutService,
+              private notificationService: NotificationService,
               private router: Router) {
   }
 
   ngOnInit(): void {
-    this.search.valueChanges.pipe(
-      map((value) => {
-        this.searching.apps = true;
-        this.searching.streams = true;
-        this.searching.tasks = true;
-        // this.quickSearch = (value !== '') || this.force;
-        return value;
-      }),
-      debounceTime(300))
-      .subscribe((value) => {
-        this.results = {
-          apps: null,
-          streams: null,
-          tasks: null
-        };
-        if (this.subscriptions.apps) {
-          this.subscriptions.apps.unsubscribe();
-        }
-        if (this.subscriptions.streams) {
-          this.subscriptions.streams.unsubscribe();
-        }
-        if (this.subscriptions.tasks) {
-          this.subscriptions.tasks.unsubscribe();
-        }
-        this.selected = 0;
-        if (this.isSearch()) {
-          this.subscriptions.apps = this.appService
-            .getApps(0, 5, `${value}`, null, 'name', 'ASC')
-            .subscribe((page: AppPage) => {
-              this.results.apps = page;
-              this.searching.apps = false;
-            });
-          this.subscriptions.streams = this.streamService
-            .getStreams(0, 5, `${value}`, 'name', 'ASC')
-            .subscribe((page: StreamPage) => {
-              this.results.streams = page;
-              this.searching.streams = false;
-            });
-          this.subscriptions.tasks = this.taskService
-            .getTasks(0, 5, `${value}`, 'taskName', 'ASC')
-            .subscribe((page: TaskPage) => {
-              this.results.tasks = page;
-              this.searching.tasks = false;
-            });
-        } else {
-          this.searching.apps = false;
-          this.searching.streams = false;
-          this.searching.tasks = false;
-        }
+    this.aboutService.getAbout()
+      .subscribe((about: About) => {
+        //this.searching.streams = about.features.streams;
+        //this.searching.tasks = about.features.tasks;
       });
+    this.search.valueChanges
+      .pipe(
+        map(val => {
+          this.searching.streams = true;
+          this.searching.tasks = true;
+          this.searching.apps = true;
+          return val;
+        }),
+        debounceTime(300)
+      ).subscribe((value) => {
+      this.results = {
+        apps: null,
+        streams: null,
+        tasks: null
+      };
+      if (this.subscriptions.apps) {
+        this.subscriptions.apps.unsubscribe();
+      }
+      if (this.subscriptions.streams) {
+        this.subscriptions.streams.unsubscribe();
+      }
+      if (this.subscriptions.tasks) {
+        this.subscriptions.tasks.unsubscribe();
+      }
+      this.selected = 0;
+      if (this.isSearch()) {
+        this.subscriptions.apps = this.appService
+          .getApps(0, 5, `${value}`, null, 'name', 'ASC')
+          .subscribe((page: AppPage) => {
+            this.results.apps = page;
+            this.searching.apps = false;
+          }, error => {
+            this.notificationService.error('An error occurred', error);
+            this.searching.apps = false;
+          });
+        this.subscriptions.streams = this.streamService
+          .getStreams(0, 5, `${value}`, 'name', 'ASC')
+          .subscribe((page: StreamPage) => {
+            this.results.streams = page;
+            this.searching.streams = false;
+          }, error => {
+            this.notificationService.error('An error occurred', error);
+            this.searching.streams = false;
+          });
+        this.subscriptions.tasks = this.taskService
+          .getTasks(0, 5, `${value}`, 'taskName', 'ASC')
+          .subscribe((page: TaskPage) => {
+            this.results.tasks = page;
+            this.searching.tasks = false;
+          }, error => {
+            this.notificationService.error('An error occurred', error);
+            this.searching.tasks = false;
+          });
+      } else {
+        this.searching.apps = false;
+        this.searching.streams = false;
+        this.searching.tasks = false;
+      }
+    });
   }
 
   isSearch() {
@@ -206,9 +225,9 @@ export class SearchComponent implements OnInit {
       case 9: // Tab
         event.preventDefault();
         break;
-      case 91: // Command
-      case 93: // Command
-        this.selected = 0;
+      // case 91: // Command
+      // case 93: // Command
+      //   this.selected = 0;
     }
   }
 

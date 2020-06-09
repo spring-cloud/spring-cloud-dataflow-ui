@@ -3,8 +3,9 @@ import { runCssVarsPolyfill } from '@clr/core';
 import { Theme } from './types';
 import { defaultTheme } from './default-theme';
 import { darkTheme } from './dark-theme';
+import { LocalStorageService } from 'angular-2-local-storage';
 
-const themePrefix = 'custom-theme_';
+const themePrefix = 'scdf-theme_';
 
 @Injectable({
   providedIn: 'root'
@@ -14,44 +15,36 @@ export class ThemeService {
   private themes: Theme[] = [defaultTheme, darkTheme];
   active = 'default';
 
-  constructor() {
+  constructor(private localStorageService: LocalStorageService) {
   }
 
-  public toggleExistingThemes(name: string) {
-    const themeToEnableId = themePrefix + name;
-    const themeIds = [];
-
-    this.themes.forEach(t => themeIds.push(themePrefix + t.name));
-
-    themeIds.filter(t => t !== themeToEnableId).forEach(t => {
-      const themeNode = document.getElementById(t);
-      if (themeNode !== null) {
-        (themeNode as any).sheet.disabled = true;
-      }
-    });
-
-    if (document.getElementById(themeToEnableId) !== null) {
-      (document.getElementById(themeToEnableId) as any).sheet.disabled = false;
-      return true;
+  getTheme() {
+    if (this.localStorageService.get('theme')) {
+      return this.localStorageService.get('theme');
     }
-
-    return false;
+    return this.active;
   }
 
-  public switchTheme(name: string) {
-    if (this.toggleExistingThemes(name)) {
-      return;
+  removeThemes() {
+    const dark = themePrefix + 'dark';
+    if (document.getElementById(dark) !== null) {
+      document.getElementById(dark).remove();
     }
+    const light = themePrefix + 'default';
+    if (document.getElementById(light) !== null) {
+      document.getElementById(light).remove();
+    }
+  }
 
+  switchTheme(name: string) {
     const style = document.createElement('style');
     const theme = this.themes.find(t => t.name === name);
     if (!theme) {
       throw new Error(`Theme not found: '${name}'`);
     }
-
+    this.removeThemes();
     document.head.appendChild(style);
     style.id = themePrefix + name;
-
     const styles = [':root { '];
     for (const item in theme.properties) {
       if (theme.properties.hasOwnProperty(item)) {
@@ -64,10 +57,9 @@ export class ThemeService {
     styles.push('}');
     styles.push(theme.other);
     style.innerHTML = styles.join('');
-
     runCssVarsPolyfill();
-
     this.active = name;
+    this.localStorageService.set('theme', name);
     return name;
   }
 

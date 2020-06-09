@@ -3,27 +3,25 @@ import { ParserService } from '../../../flo/shared/service/parser.service';
 
 @Component({
   selector: 'app-stream-dsl',
-  template: `
-    <ng-container [ngSwitch]="expandable">
-      <ng-container *ngIf="true">
-        <span>
-          {{shortDslText}}
-        </span>
-      </ng-container>
-      <ng-container *ngSwitchCase="false">
+  template: `<span class="stream-dsl">
+    {{expandable}}
+      <span *ngIf="!expandable">
+        {{shortDslText}}
+      </span>
+      <span *ngIf="expandable">
         <span *ngIf="getState() === 'unexpandable'">
-          {{dsl}}
+          {{dslText}}
         </span>
         <span *ngIf="getState() === 'expanded'">
-          {{dsl}}
+          {{dslText}}
           <a class="less" href="" (click)="$event.preventDefault(); collapse()">&lt;&lt;</a>
         </span>
         <span *ngIf="getState() === 'collapsed'">
           {{shortDslText}}
           <a class="less" href="" (click)="$event.preventDefault(); expand()">&gt;&gt;</a>
         </span>
-      </ng-container>
-    </ng-container>
+      </span>
+    </span>
   `,
   encapsulation: ViewEncapsulation.None
 })

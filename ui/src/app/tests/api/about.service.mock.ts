@@ -25,21 +25,23 @@ export class AboutServiceMock {
   }
 
   load(): Observable<About> {
-    return of(LOAD)
-      .pipe(
-        map(About.parse),
-        map((about: About) => {
-          this.aboutSubject.next(about);
-          this.about = about;
-          return about;
-        }),
-        catchError(ErrorUtils.catchError)
-      );
+    return of(this.about);
+    // .pipe(
+    //   map(About.parse),
+    //   map((about: About) => {
+    //     this.aboutSubject.next(about);
+    //     this.about = about;
+    //     return about;
+    //   }),
+    //   catchError(ErrorUtils.catchError)
+    // );
   }
 
   static get provider() {
     if (!AboutServiceMock.mock) {
       AboutServiceMock.mock = new AboutServiceMock();
+      AboutServiceMock.mock.about = About.parse(LOAD);
+      AboutServiceMock.mock.aboutSubject.next(AboutServiceMock.mock.about)
     }
     return { provide: AboutService, useValue: AboutServiceMock.mock };
   }

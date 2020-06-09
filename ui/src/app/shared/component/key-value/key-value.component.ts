@@ -9,7 +9,7 @@ import {
 import { KeyValueValidator } from './key-value.validator';
 import { KeyValueValidators } from './key-value.interface';
 import { ClipboardCopyService } from '../../service/clipboard-copy.service';
-import { UnregisterComponent } from '../../../manage/apps/unregister/unregister.component';
+import { NotificationService } from '../../service/notification.service';
 
 @Component({
   selector: 'app-key-value',
@@ -54,7 +54,8 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
   lines: Array<any> = [];
   @ViewChild('propertiesFile', { static: true }) propertiesFile;
 
-  constructor(private clipboardCopyService: ClipboardCopyService) {
+  constructor(private clipboardCopyService: ClipboardCopyService,
+              private notificationService: NotificationService) {
     this.form = new FormGroup({
       textarea: new FormControl(''),
       file: new FormControl('')
@@ -142,7 +143,7 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
       return;
     }
     this.clipboardCopyService.executeCopy(this.form.get('textarea').value);
-    // this.notificationService.success('The content have been copied to your clipboard.');
+    this.notificationService.success('Content copied', 'The content have been copied to your clipboard.');
   }
 
 }

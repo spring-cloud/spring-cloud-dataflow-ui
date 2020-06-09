@@ -10,6 +10,7 @@ import { DatagridComponent } from '../../shared/component/datagrid/datagrid.comp
 import { ContextService } from '../../shared/service/context.service';
 import { StreamStatus } from '../../shared/model/metrics.model';
 import { GroupService } from '../../shared/service/group.service';
+import { StatusComponent } from './status/status.component';
 
 @Component({
   selector: 'app-streams-list',
@@ -20,6 +21,7 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
   expanded: {};
   @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
   @ViewChild('undeployModal', { static: true }) undeployModal: UndeployComponent;
+  @ViewChild('statusModal', { static: true }) statusModal: StatusComponent;
   metricsSubscription: Subscription;
   streamStatuses: StreamStatus[] = [];
   timeSubscription: Subscription;

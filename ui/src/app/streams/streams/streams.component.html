@@ -64,6 +64,10 @@
                  [style.width.px]="context.sizeStatus || 'auto'">
     <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[3])}">
       Status
+      &nbsp;
+      <button class="datagrid-column-title" style="width: 20px;flex:0" (click)="statusModal.open()">
+        <clr-icon shape="info-standard"></clr-icon>
+      </button>
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
@@ -72,7 +76,7 @@
     <clr-dg-cell><span class="text-truncate">{{stream.description}}</span></clr-dg-cell>
     <clr-dg-cell>
       <span class="dsl-text dsl-truncate">
-        <app-stream-dsl [dsl]="stream.dslText" expandable="false"></app-stream-dsl>
+        <app-stream-dsl [dsl]="stream.dslText" [expandable]="false"></app-stream-dsl>
       </span>
     </clr-dg-cell>
     <clr-dg-cell><span class="label label-{{stream.statusColor()}}">{{stream.status}}</span></clr-dg-cell>
@@ -123,3 +127,4 @@
 
 <app-stream-destroy #destroyModal (onDestroyed)="refresh(state)"></app-stream-destroy>
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh(state)"></app-stream-undeploy>
+<app-stream-status #statusModal></app-stream-status>

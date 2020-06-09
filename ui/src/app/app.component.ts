@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NotificationService } from './shared/service/notification.service';
+import { Component } from '@angular/core';
 import { ThemeService } from './layout/theme/theme.service';
 
 @Component({
@@ -7,27 +6,17 @@ import { ThemeService } from './layout/theme/theme.service';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  title = 'Spring Cloud Data Flow';
-
-  darkThemeIsActive = false;
-  isAboutOpen = false;
-
   toggleDarkTheme() {
-    if (this.darkThemeIsActive) {
-      this.themeService.switchTheme('default');
-      this.darkThemeIsActive = false;
-    } else {
-      this.themeService.switchTheme('dark');
-      this.darkThemeIsActive = true;
-    }
+    this.themeService.switchTheme(this.themeService.getTheme() === 'dark' ? 'default' : 'dark');
+  }
+
+  get darkThemeIsActive() {
+    return this.themeService.getTheme() === 'dark';
   }
 
   constructor(private themeService: ThemeService) {
-    // themeService.switchTheme('dark');
-    // this.darkThemeIsActive = true;
-  }
-
-  toggleAbout() {
-    this.isAboutOpen = !this.isAboutOpen;
+    if (this.themeService.getTheme() === 'dark') {
+      themeService.switchTheme('dark');
+    }
   }
 }

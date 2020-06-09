@@ -14,19 +14,14 @@
     </button>
   </div>
 
-  <!--  <div *ngIf="stepProgress.percentageComplete < 1">-->
-  <!--    <h4>Step Execution Progress</h4>-->
-  <!--    <progressbar [animate]="false" max="100"-->
-  <!--                 [value]="stepProgress.percentageComplete * 100"-->
-  <!--                 type="success">-->
-  <!--      <b>{{stepProgress.percentageComplete * 100}}%</b>-->
-  <!--    </progressbar>-->
-  <!--  </div>-->
-
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
       <app-view-card titleModal="Informations" keyContext="step" name="{{stepResource.stepExecution.id}}" id="info">
         <ng-template>
+          <div class="progress" *ngIf="stepProgress.percentageComplete < 1">
+            <progress [value]="stepProgress.percentageComplete * 100" max="100"></progress>
+          </div>
+
           <div *ngIf="!stepResource.stepExecution">
             No Step Execution available.
           </div>

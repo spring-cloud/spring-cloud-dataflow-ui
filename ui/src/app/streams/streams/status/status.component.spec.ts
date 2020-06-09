@@ -8,24 +8,19 @@ import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { ContextService } from '../../../shared/service/context.service';
-import { StreamComponent } from './stream.component';
-import { DestroyComponent } from '../destroy/destroy.component';
-import { UndeployComponent } from '../undeploy/undeploy.component';
-import { GrafanaStreamDirective } from '../../../shared/grafana/grafana.directive';
 import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
+import { StatusComponent } from './status.component';
+import { By } from '@angular/platform-browser';
 
 describe('streams/streams/stream/stream.component.ts', () => {
 
-  let component: StreamComponent;
-  let fixture: ComponentFixture<StreamComponent>;
+  let component: StatusComponent;
+  let fixture: ComponentFixture<StatusComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        StreamComponent,
-        DestroyComponent,
-        UndeployComponent,
-        GrafanaStreamDirective
+        StatusComponent,
       ],
       imports: [
         FormsModule,
@@ -46,14 +41,20 @@ describe('streams/streams/stream/stream.component.ts', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StreamComponent);
+    fixture = TestBed.createComponent(StatusComponent);
     component = fixture.componentInstance;
     NotificationServiceMock.mock.clearAll();
   });
 
   it('should be created', () => {
+    component.open();
     fixture.detectChanges();
+    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(component).toBeTruthy();
+    expect(title.textContent).toContain('Stream status');
+    component.close();
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.css('.modal-title-wrapper'))).toBeFalsy();
   });
 
 });
