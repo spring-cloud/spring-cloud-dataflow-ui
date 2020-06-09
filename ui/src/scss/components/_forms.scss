@@ -419,3 +419,12 @@ textarea.valid {
     }
   }
 }
+
+app-master-checkbox {
+  display: block;
+  height: 14px;
+  width: 14px;
+  input[type=checkbox] {
+    margin: 0;
+  }
+}
