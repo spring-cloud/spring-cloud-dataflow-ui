@@ -11,6 +11,8 @@ import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
 import { MockSharedAppService } from '../../tests/service/app.service.mock';
 import { LoggerService } from '../../shared/service/logger.service';
 import { StreamsModule } from '../../streams/streams.module';
+import { NodeHelper } from './node-helper.service';
+import { PropertiesEditor } from './properties-editor.service';
 
 const $: any = _$;
 
@@ -18,7 +20,7 @@ describe('Streams Editor Service', () => {
   const editorService = new EditorService();
 
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
-  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
+  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE, new NodeHelper());
 
 
   let graph: dia.Graph;
@@ -410,6 +412,8 @@ describe('editor.service : Auto-Link', () => {
 
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
+  let propertiesEditor: PropertiesEditor;
+  let nodeHelper: NodeHelper;
 
   let flo: Flo.EditorContext;
 
@@ -426,14 +430,20 @@ describe('editor.service : Auto-Link', () => {
     inject(
       [
         ApplicationRef,
-        ComponentFactoryResolver
+        ComponentFactoryResolver,
+        NodeHelper,
+        PropertiesEditor,
       ],
       (
         _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver
+        _resolver: ComponentFactoryResolver,
+        _nodeHelper: NodeHelper,
+        _propertiesEditor: PropertiesEditor,
       ) => {
         applicationRef = _applicationRef;
         resolver = _resolver;
+        nodeHelper = _nodeHelper;
+        propertiesEditor = _propertiesEditor;
       }
     )
   );
@@ -442,7 +452,7 @@ describe('editor.service : Auto-Link', () => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = metamodelService;
-    component.renderer = new RenderService(metamodelService, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver, fixture.debugElement.injector, applicationRef);
     component.editor = new EditorService();
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();

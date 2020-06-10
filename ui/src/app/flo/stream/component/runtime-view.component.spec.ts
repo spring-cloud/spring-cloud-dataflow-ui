@@ -9,6 +9,8 @@ import { RenderService } from '../render.service';
 import { Stream } from '../../../shared/model/stream.model';
 import { TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL } from '../support/shapes';
 import { AppStatus, StreamStatus } from '../../../shared/model/metrics.model';
+import { NodeHelper } from '../node-helper.service';
+import { PropertiesEditor } from '../properties-editor.service';
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -22,6 +24,8 @@ describe('RuntimeStreamFloViewComponent', () => {
 
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
+  let propertiesEditor: PropertiesEditor;
+  let nodeHelper: NodeHelper;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,14 +39,20 @@ describe('RuntimeStreamFloViewComponent', () => {
     inject(
       [
         ApplicationRef,
-        ComponentFactoryResolver
+        ComponentFactoryResolver,
+        NodeHelper,
+        PropertiesEditor,
       ],
       (
         _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver
+        _resolver: ComponentFactoryResolver,
+        _nodeHelper: NodeHelper,
+        _propertiesEditor: PropertiesEditor,
       ) => {
         applicationRef = _applicationRef;
         resolver = _resolver;
+        nodeHelper = _nodeHelper;
+        propertiesEditor = _propertiesEditor;
       }
     )
   );
@@ -51,7 +61,7 @@ describe('RuntimeStreamFloViewComponent', () => {
     fixture = TestBed.createComponent(RuntimeStreamFloViewComponent);
     component = fixture.componentInstance;
     fixture.componentInstance.metamodel = metamodelService;
-    fixture.componentInstance.renderer = new RenderService(metamodelService, resolver,
+    fixture.componentInstance.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver,
       fixture.debugElement.injector, applicationRef);
     fixture.detectChanges();
   });

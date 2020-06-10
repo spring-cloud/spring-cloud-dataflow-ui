@@ -5,6 +5,7 @@ import { MetamodelService } from '../metamodel.service';
 import { async } from '@angular/core/testing';
 import { Utils } from './utils';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
+import { NodeHelper } from '../node-helper.service';
 
 import * as _joint from 'jointjs';
 
@@ -14,7 +15,7 @@ const joint: any = _joint;
 describe('utils', () => {
 
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
-  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
+  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE, new NodeHelper());
 
   let graph: dia.Graph;
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;

@@ -184,8 +184,6 @@ export class MetamodelService implements Flo.Metamodel {
       type.toString(),
       name,
       version,
-      [],
-      [],
       this.appsService.getApp(name, type),
       metadata
     );

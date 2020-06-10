@@ -20,6 +20,8 @@ import { ClarityModule } from '@clr/angular';
 import { SharedFloModule } from './shared-flo.module';
 import { SharedModule } from '../shared/shared.module';
 import { RuntimeStreamFloViewComponent } from './stream/component/runtime-view.component';
+import { NodeHelper } from './stream/node-helper.service';
+import { PropertiesEditor } from './stream/properties-editor.service';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { RuntimeStreamFloViewComponent } from './stream/component/runtime-view.c
     RenderService,
     ParserService,
     ContentAssistService,
+    NodeHelper,
+    PropertiesEditor
   ],
   exports: [
     StreamFloViewComponent,

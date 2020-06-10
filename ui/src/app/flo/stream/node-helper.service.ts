@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 the original author or authors.
+ * Copyright 2016-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
+import { Injectable } from '@angular/core';
 import { dia } from 'jointjs';
 import { Flo } from 'spring-flo';
-import * as _joint from 'jointjs';
-import { Utils as SharedUtils } from '../../shared/support/utils';
-import { ApplicationType } from '../../../shared/model/app.model';
-import { AppMetadata } from '../../shared/support/app-metadata';
+import { Utils as SharedUtils } from '../shared/support/utils';
+import { ApplicationType } from '../../shared/model/app.model';
 
+import * as _joint from 'jointjs';
 const joint: any = _joint;
 
-const PORT_RADIUS = 7;
+export const PORT_RADIUS = 7;
 
 const HANDLE_SHAPE_SPACING = 10;
 const BETWEEN_HANDLE_SPACING = 5;
@@ -46,9 +46,10 @@ const GROUP_ICONS = new Map<string, string>()
  *
  * @author Alex Boyko
  */
+@Injectable()
 export class NodeHelper {
 
-  static createNode(metadata: Flo.ElementMetadata): dia.Element {
+  createNode(metadata: Flo.ElementMetadata): dia.Element {
     let node: dia.Element = null;
     switch (metadata.group) {
 
@@ -57,7 +58,7 @@ export class NodeHelper {
           joint.util.deepSupplement({
             attrs: {
               '.box': {
-                fill: '#eef4ee',
+                'fill': '#eef4ee',
               },
               '.shape': {
                 class: 'shape app-module'
@@ -77,7 +78,7 @@ export class NodeHelper {
           joint.util.deepSupplement({
             attrs: {
               '.box': {
-                fill: '#eef4ee'
+                'fill': '#eef4ee'
               },
               '.shape': {
                 class: 'shape source-module'
@@ -97,7 +98,7 @@ export class NodeHelper {
           joint.util.deepSupplement({
             attrs: {
               '.box': {
-                fill: '#eef4ee'
+                'fill': '#eef4ee'
               },
               '.shape': {
                 class: 'shape processor-module'
@@ -120,7 +121,7 @@ export class NodeHelper {
           joint.util.deepSupplement({
             attrs: {
               '.box': {
-                fill: '#eef4ee'
+                'fill': '#eef4ee'
               },
               '.shape': {
                 class: 'shape sink-module'
@@ -143,7 +144,7 @@ export class NodeHelper {
           joint.util.deepSupplement({
             attrs: {
               '.box': {
-                fill: '#eef4ee'
+                'fill': '#eef4ee'
               },
               '.shape': {
                 class: 'shape task-module'
@@ -167,8 +168,8 @@ export class NodeHelper {
             joint.util.deepSupplement({
               attrs: {
                 '.box': {
-                  fill: '#eeeeff',
-                  stroke: '#0000ff'
+                  'fill': '#eeeeff',
+                  'stroke': '#0000ff'
                 },
                 '.shape': {
                   class: 'shape other-module'
@@ -187,8 +188,8 @@ export class NodeHelper {
             joint.util.deepSupplement({
               attrs: {
                 '.box': {
-                  fill: '#eeeeff',
-                  stroke: '#0000ff'
+                  'fill': '#eeeeff',
+                  'stroke': '#0000ff'
                 },
                 '.shape': {
                   class: 'shape other-module'
@@ -210,11 +211,11 @@ export class NodeHelper {
     node.attr('.name-label/text', metadata.name);
     node.attr('.type-label/text', metadata.name.toUpperCase());
 
-    NodeHelper.createHandles(node, metadata);
+    this.createHandles(node, metadata);
     return node;
   }
 
-  static createHandles(node: dia.Element, metadata: Flo.ElementMetadata) {
+  createHandles(node: dia.Element, metadata: Flo.ElementMetadata) {
     if (!metadata || SharedUtils.isUnresolvedMetadata(metadata)) {
       node.attr('.delete-handle', {
         text: 'Delete',
@@ -253,168 +254,33 @@ export class NodeHelper {
     }
   }
 
-  static createPorts(node: dia.Element, metadata: Flo.ElementMetadata) {
-    if (metadata instanceof AppMetadata) {
-      const appData = metadata as AppMetadata;
-      if (Array.isArray(appData.inputChannels) && appData.inputChannels.length > 0) {
-
-        if (2 * (PORT_RADIUS + 0.5) * appData.inputChannels.length >= node.size().height) {
-          node.size(node.size().width, 2 * (PORT_RADIUS + 0.5) * (appData.inputChannels.length + 3));
-        }
-
-        // if (2*(PORT_RADIUS+0.5) * appData.inputChannels.length < node.size().height) {
-        const separatingSpace = 1 / (appData.inputChannels.length + 1);
-        appData.inputChannels.forEach((channel, i) => {
-          node.attr(`.input-port-${channel}`, {
-            port: 'input',
-            channel,
-            magnet: true,
-          });
-          node.attr(`.port-outer-circle-${channel}`, {
-            ref: '.box',
-            refCx: 0,
-            refCy: (i + 1) * separatingSpace,
-            r: PORT_RADIUS,
-            class: `port-outer-circle-${channel} flo-port`
-          });
-          node.attr(`.port-inner-circle-${channel}`, {
-            ref: `.box`,
-            refCx: 0,
-            refCy: (i + 1) * separatingSpace,
-            class: `port-inner-circle-${channel} flo-port-inner-circle`
-          });
-          node.attr(`.${channel}-label`, {
-            ref: `.input-port-${channel}`,
-            'ref-x': 15,
-            'ref-y': 0,
-            'text-anchor': 'start',
-            text: channel,
-            class: `${channel}-label flo-port-label`
-          });
-          node.attr(`.${channel}-label-bg`, {
-            ref: `.${channel}-label`,
-            refWidth: 1,
-            refHeight: 1,
-            refX: 0,
-            refY: 0,
-            rx: 3,
-            ry: 3,
-            class: `.${channel}-label-bg flo-port-label-bg`
-          });
-        });
-        // } else {
-        //   node.attr(`.input-port`, {
-        //     port: 'input',
-        //     ref: '.box',
-        //     refCx: 0,
-        //     refCy: 0.5,
-        //     r: PORT_RADIUS + 2,
-        //     magnet: true,
-        //     class: 'input-port flo-input-multiport'
-        //   });
-        // }
-      }
-
-      if (Array.isArray(appData.outputChannels) && appData.outputChannels.length > 0) {
-
-        if (2 * (PORT_RADIUS + 1) * (appData.outputChannels.length + 3) >= node.size().height) {
-          node.size(node.size().width, 2 * (PORT_RADIUS + 0.5) * (appData.outputChannels.length + 3));
-        }
-
-        // if (2*(PORT_RADIUS+0.5) * appData.outputChannels.length < node.size().height) {
-        const separatingSpace = 1 / (appData.outputChannels.length + 1);
-        appData.outputChannels.forEach((channel, i) => {
-          node.attr(`.output-port-${channel}`, {
-            port: 'output',
-            channel,
-            magnet: true,
-          });
-          node.attr(`.port-outer-circle-${channel}`, {
-            ref: '.box',
-            refCx: 1,
-            refCy: (i + 1) * separatingSpace,
-            r: PORT_RADIUS,
-            class: `port-outer-circle-${channel} flo-port`
-          });
-          node.attr(`.port-inner-circle-${channel}`, {
-            ref: '.box',
-            refCx: 1,
-            refCy: (i + 1) * separatingSpace,
-            r: PORT_RADIUS - 4,
-            class: `port-inner-circle-${channel} flo-port-inner-circle`
-          });
-          node.attr(`.${channel}-label`, {
-            ref: `.output-port-${channel}`,
-            'ref-x': -15,
-            'ref-y': 0,
-            'text-anchor': 'end',
-            text: channel,
-            class: `${channel}-label flo-port-label`
-          });
-          node.attr(`.${channel}-label-bg`, {
-            ref: `.${channel}-label`,
-            refWidth: 1,
-            refHeight: 1,
-            refX: 0,
-            refY: 0,
-            rx: 3,
-            ry: 3,
-            class: `.${channel}-label-bg flo-port-label-bg`
-          });
-        });
-        // } else {
-        //   node.attr(`.output-port`, {
-        //     port: 'output',
-        //     ref: '.box',
-        //     refCx: 1,
-        //     refCy: 0.5,
-        //     r: PORT_RADIUS + 2,
-        //     magnet: true,
-        //     class: 'output-port flo-output-multiport'
-        //   });
-        // }
-      }
-      if ((!appData.inputChannels || !appData.inputChannels.length) && (!appData.outputChannels || !appData.outputChannels.length)) {
-        NodeHelper.createCommonPorts(node, metadata);
-      }
-    } else {
-      NodeHelper.createCommonPorts(node, metadata);
-    }
-  }
-
-  // static createNodeWithMultiPorts(metadata: Flo.ElementMetadata) {
-  //   const node = NodeHelper.createNode(metadata);
-  //
-  //   return node;
-  // }
-
-  static createCommonPorts(node: dia.Element, metadata: Flo.ElementMetadata) {
+  createPorts(node: dia.Element, metadata: Flo.ElementMetadata) {
     switch (metadata.group) {
       case ApplicationType[ApplicationType.source]:
-        NodeHelper.createCommonOutputPort(node);
+        this.createCommonOutputPort(node);
         break;
       case ApplicationType[ApplicationType.processor]:
-        NodeHelper.createCommonOutputPort(node);
-        NodeHelper.createCommonInputPort(node);
+        this.createCommonOutputPort(node);
+        this.createCommonInputPort(node);
         break;
       case ApplicationType[ApplicationType.sink]:
-        NodeHelper.createCommonInputPort(node);
+        this.createCommonInputPort(node);
         break;
       case 'other':
         switch (metadata.name) {
           case 'tap':
-            NodeHelper.createCommonInputPort(node);
+            this.createCommonInputPort(node);
             break;
           case 'destination':
-            NodeHelper.createCommonOutputPort(node);
-            NodeHelper.createCommonInputPort(node);
+            this.createCommonOutputPort(node);
+            this.createCommonInputPort(node);
             break;
         }
         break;
     }
   }
 
-  static createCommonOutputPort(node: dia.Element) {
+  protected createCommonOutputPort(node: dia.Element) {
     node.attr('.output-port', {
       port: 'output',
       magnet: true,
@@ -435,7 +301,7 @@ export class NodeHelper {
     });
   }
 
-  static createCommonInputPort(node: dia.Element) {
+  protected createCommonInputPort(node: dia.Element) {
     node.attr('.input-port', {
       port: 'input',
       magnet: true,
