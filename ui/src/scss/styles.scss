@@ -229,8 +229,8 @@ div.tooltip-version {
 app-list-row-actions {
   white-space: nowrap;
   .btn, .btn + .btn {
-    margin: 2px 4px 2px 0;
-    padding: 0 8px;
+    margin: 2px   4px 2px 0;
+    padding: 5px 8px;
     height: 32px;
     &:last-child {
       margin-right: 0;
@@ -257,7 +257,7 @@ app-list-row-actions {
         cursor: pointer;
         .fa, .icon-custom {
           position: absolute;
-          top: 8px;
+          top: 6px;
           left: 12px;
         }
         .icon-custom-grafana {
