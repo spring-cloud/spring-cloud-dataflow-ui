@@ -18,10 +18,11 @@ export class SignpostComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.aboutService.getAbout().subscribe((about: About) => {
-      this.about = about;
-      this.loading = false;
-    });
+    this.aboutService.getAbout()
+      .subscribe((about: About) => {
+        this.about = about;
+        this.loading = false;
+      });
   }
 
   more() {

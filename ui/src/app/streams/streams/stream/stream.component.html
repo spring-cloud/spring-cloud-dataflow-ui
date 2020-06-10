@@ -5,22 +5,23 @@
 
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
-    <button *ngIf="stream.status === 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()"
-            [appRole]="['ROLE_DEPLOY']">
+    <button id="btn-deploy" *ngIf="stream.status === 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary"
+            (click)="deploy()" [appRole]="['ROLE_DEPLOY']">
       Deploy stream
     </button>
-    <button *ngIf="stream.status !== 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary" (click)="deploy()"
-            [appRole]="['ROLE_UPDATE']">
+    <button id="btn-update" *ngIf="stream.status !== 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary"
+            (click)="deploy()" [appRole]="['ROLE_UPDATE']">
       Update stream
     </button>
-    <button *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
+    <button id="btn-undeploy" *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
             type="button" class="btn btn-sm btn-secondary" (click)="undeploy()" [appRole]="['ROLE_CREATE']">
       Undeploy stream
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()" [appRole]="['ROLE_DESTROY']">
+    <button id="btn-destroy" type="button" class="btn btn-sm btn-secondary" (click)="destroy()"
+            [appRole]="['ROLE_DESTROY']">
       Destroy stream
     </button>
-    <button type="button" class="btn btn-sm btn-secondary"
+    <button id="btn-grafana" type="button" class="btn btn-sm btn-secondary"
             grafanaDashboardStream [stream]="stream">
       Grafana Dashboard
     </button>
@@ -120,7 +121,7 @@
             <div *ngIf="!loadingRuntime">
               <table class="table table-noborder table-compact" style="margin: 0;">
                 <tbody>
-                <tr *ngFor="let app of runtime.applications">
+                <tr *ngFor="let app of runtime?.applications">
                   <td class="left">
                     <strong>{{app.name}}</strong>&nbsp;
                     <span *ngIf="getAppType(app.name)"
@@ -218,3 +219,4 @@
 
 <app-stream-destroy #destroyModal (onDestroyed)="back()"></app-stream-destroy>
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh()"></app-stream-undeploy>
+<app-stream-rollback #rollbackModal (onRollback)="refresh()"></app-stream-rollback>

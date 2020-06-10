@@ -7,7 +7,6 @@ import { AboutService } from '../../shared/api/about.service';
   templateUrl: './info.component.html'
 })
 export class InfoComponent implements OnInit {
-
   loading = true;
   about: About;
   @Input() isOpen = false;
@@ -16,19 +15,11 @@ export class InfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.aboutService.getAbout().subscribe((about: About) => {
-      this.about = about;
-      this.loading = false;
-    });
-  }
-
-  isEmpty(obj) {
-    for (const prop in obj) {
-      if (obj.hasOwnProperty(prop)) {
-        return false;
-      }
-    }
-    return true;
+    this.aboutService.getAbout()
+      .subscribe((about: About) => {
+        this.about = about;
+        this.loading = false;
+      });
   }
 
 }

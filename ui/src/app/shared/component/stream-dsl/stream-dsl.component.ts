@@ -4,7 +4,6 @@ import { ParserService } from '../../../flo/shared/service/parser.service';
 @Component({
   selector: 'app-stream-dsl',
   template: `<span class="stream-dsl">
-    {{expandable}}
       <span *ngIf="!expandable">
         {{shortDslText}}
       </span>

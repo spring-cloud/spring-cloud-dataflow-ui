@@ -8,11 +8,9 @@ import { HttpError } from '../../../shared/model/error.model';
 import { of, Subject } from 'rxjs';
 import { LoggerService } from '../../../shared/service/logger.service';
 import { ClipboardCopyService } from '../../../shared/service/clipboard-copy.service';
-import { Parser } from '../../../flo/shared/service/parser';
 import { DateTime } from 'luxon';
 import { StreamDeployService } from './stream-deploy.service';
 import { saveAs } from 'file-saver';
-import get from 'lodash.get';
 
 @Component({
   selector: 'app-deploy',

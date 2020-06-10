@@ -20,19 +20,9 @@ import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.compon
 import { SharedFloModule } from '../flo/shared-flo.module';
 import { SecurityModule } from '../security/security.module';
 import { StatusComponent } from './streams/status/status.component';
+import { RollbackComponent } from './streams/rollback/rollback.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ClarityModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    StreamsRoutingModule,
-    SharedFloModule,
-    StreamFloModule,
-    SecurityModule
-  ],
   declarations: [
     RuntimeComponent,
     DetailsComponent,
@@ -46,7 +36,20 @@ import { StatusComponent } from './streams/status/status.component';
     BuilderComponent,
     ErrorsComponent,
     MultiDeployComponent,
-    StatusComponent
+    StatusComponent,
+    RollbackComponent
+  ],
+  imports: [
+    CommonModule,
+    ClarityModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    StreamsRoutingModule,
+    SharedFloModule,
+    StreamFloModule,
+    SecurityModule
   ],
 })
-export class StreamsModule { }
+export class StreamsModule {
+}

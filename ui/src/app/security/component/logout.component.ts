@@ -21,7 +21,7 @@ export class LogoutComponent implements OnInit, OnDestroy {
     private router: Router) {
   }
 
-  public ngOnInit() {
+  ngOnInit() {
     if (!this.securityService.security.isAuthenticationEnabled) {
       this.loggerService.log('No need to logout. Authentication is not enabled.');
       this.router.navigate(['']);

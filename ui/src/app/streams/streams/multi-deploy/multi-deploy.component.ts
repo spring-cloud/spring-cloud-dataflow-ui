@@ -7,11 +7,8 @@ import { map, mergeMap } from 'rxjs/operators';
 import { forkJoin, Observable, throwError } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { StreamDeployService } from '../deploy/stream-deploy.service';
-import get from 'lodash.get';
 import { NotificationService } from '../../../shared/service/notification.service';
-import { ApplicationType } from '../../../shared/model/app.model';
 import { ParserService } from '../../../flo/shared/service/parser.service';
-import { Stream } from '../../../shared/model/stream.model';
 
 @Component({
   selector: 'app-stream-multi-deploy',

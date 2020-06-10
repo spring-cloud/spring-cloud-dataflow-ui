@@ -18,7 +18,7 @@ export class GroupServiceMock {
   }
 
   group(name) {
-    return 'foo';
+    return ['foo', 'bar'];
   }
 
   static get provider() {

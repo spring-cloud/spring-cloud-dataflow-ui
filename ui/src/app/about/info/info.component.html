@@ -125,10 +125,10 @@
       <div>
         <h3>Runtime Environment - Task Launcher</h3>
         <div>
-          <ul *ngIf="isEmpty(about.runtimeEnvironment.taskLaunchers)">
+          <ul *ngIf="!(about?.runtimeEnvironment?.taskLaunchers)">
             <li><strong>No Task Launcher information is available.</strong></li>
           </ul>
-          <ul *ngIf="!isEmpty(about.runtimeEnvironment.taskLaunchers)" id="taskLauncherTable">
+          <ul *ngIf="(about?.runtimeEnvironment?.taskLaunchers)" id="taskLauncherTable">
             <ng-template ngFor let-item [ngForOf]="about.runtimeEnvironment.taskLaunchers">
               <li>
                 <strong>Implementation Version: </strong> {{item.deployerImplementationVersion}}

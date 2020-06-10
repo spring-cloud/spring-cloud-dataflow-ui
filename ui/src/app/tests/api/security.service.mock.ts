@@ -6,6 +6,7 @@ import { LOAD } from '../data/security';
 export class SecurityServiceMock {
 
   static mock: SecurityServiceMock = null;
+  security: Security = Security.parse(LOAD);
 
   constructor() {
   }
