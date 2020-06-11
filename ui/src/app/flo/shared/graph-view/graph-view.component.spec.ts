@@ -8,6 +8,8 @@ import { SharedModule } from '../../../shared/shared.module';
 import { MetamodelService } from '../../stream/metamodel.service';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
 import { RenderService } from '../../stream/render.service';
+import { NodeHelper } from '../../stream/node-helper.service';
+import { PropertiesEditor } from '../../stream/properties-editor.service';
 
 /**
  * Test {@link GraphViewComponent}.
@@ -19,6 +21,8 @@ describe('StreamGraphViewComponent', () => {
   let fixture: ComponentFixture<GraphViewComponent>;
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
+  let propertiesEditor: PropertiesEditor;
+  let nodeHelper: NodeHelper;
 
   beforeEach(async(() =>
     TestBed.configureTestingModule({
@@ -35,14 +39,20 @@ describe('StreamGraphViewComponent', () => {
     inject(
       [
         ApplicationRef,
-        ComponentFactoryResolver
+        ComponentFactoryResolver,
+        NodeHelper,
+        PropertiesEditor
       ],
       (
         _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver
+        _resolver: ComponentFactoryResolver,
+        _nodeHelper: NodeHelper,
+        _propertiesEditor: PropertiesEditor
       ) => {
         applicationRef = _applicationRef;
         resolver = _resolver;
+        nodeHelper = _nodeHelper;
+        propertiesEditor = _propertiesEditor;
       }
     )
   );
@@ -53,7 +63,7 @@ describe('StreamGraphViewComponent', () => {
     component = fixture.componentInstance;
     const metamodel = new MetamodelService(new MockSharedAppService());
     component.metamodel = metamodel;
-    component.renderer = new RenderService(metamodel, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(metamodel, nodeHelper, propertiesEditor, resolver, fixture.debugElement.injector, applicationRef);
   });
 
   it('should be created', () => {

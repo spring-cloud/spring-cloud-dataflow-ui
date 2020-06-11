@@ -42,7 +42,7 @@
     "luxon": "1.23.0",
     "ngx-toastr": "12.0.1",
     "rxjs": "6.5.4",
-    "spring-flo": "https://github.com/spring-projects/spring-flo.git#a84ec4f57965a9e64ea2477145615772312de962",
+    "spring-flo": "https://github.com/spring-projects/spring-flo.git#1e7d8b9606e45b1f7f6085532f0575d7a0021e53",
     "tippy.js": "6.2.3",
     "tslib": "1.10.0",
     "uuid": "8.1.0",

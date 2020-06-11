@@ -10,6 +10,7 @@ import { NotificationService } from '../../../shared/service/notification.servic
 import { StreamFloViewComponent } from './view.component';
 import { StreamService } from '../../../shared/api/stream.service';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
+import { NodeHelper } from '../node-helper.service';
 
 
 /**
@@ -24,7 +25,7 @@ describe('StreamGraphComponent', () => {
   const streamsService = new MockStreamsService();
   const notificationService = new NotificationServiceMock();
   const metamodelService = new MetamodelService(new MockSharedAppService());
-  const renderService = new RenderService(metamodelService);
+  const renderService = new RenderService(metamodelService, new NodeHelper());
 
   beforeEach(async(() => {
 

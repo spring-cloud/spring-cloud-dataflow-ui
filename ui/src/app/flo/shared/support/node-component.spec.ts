@@ -6,6 +6,7 @@ import { MockSharedAppService } from '../../../tests/service/app.service.mock';
 import { async } from '@angular/core/testing';
 import { MetamodelService } from '../../stream/metamodel.service';
 import { RenderService } from '../../stream/render.service';
+import { NodeHelper } from '../../stream/node-helper.service';
 
 import * as _joint from 'jointjs';
 
@@ -30,7 +31,7 @@ class MockDocService {
 describe('NodeComponent Tests.', () => {
 
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
-  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE);
+  const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE, new NodeHelper());
   const DOC_SERVICE = new MockDocService();
 
   let graph: dia.Graph;

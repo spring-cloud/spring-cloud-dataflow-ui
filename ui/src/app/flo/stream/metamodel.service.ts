@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 the original author or authors.
+ * Copyright 2015-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import { convertTextToGraph } from './text-to-graph';
 import { OTHER_GROUP_TYPE } from './support/shapes';
 import { AppService } from '../../shared/api/app.service';
 import { LoggerService } from '../../shared/service/logger.service';
-import { ApplicationType } from '../../shared/model/app.model';
+import { App, ApplicationType } from '../../shared/model/app.model';
 import { AppMetadata } from '../shared/support/app-metadata';
 
 /**
@@ -37,7 +37,7 @@ export class MetamodelService implements Flo.Metamodel {
 
   private request: Promise<Map<string, Map<string, Flo.ElementMetadata>>>;
 
-  constructor(private appService: AppService) {
+  constructor(protected appService: AppService) {
   }
 
   textToGraph(flo: Flo.EditorContext, dsl: string): Promise<any> {
@@ -90,47 +90,10 @@ export class MetamodelService implements Flo.Metamodel {
             if (group.has(item.name)) {
               LoggerService.error(`Group '${item.type}' has duplicate element '${item.name}'`);
             } else {
-              group.set(item.name, this.createEntry(item.type, item.name, item.version, [], []));
+              group.set(item.name, this.createEntry(item));
             }
           });
-          // HACK to add CUSTOM processor with multiple input and output ports
-          // if (metamodel.get('processor')) {
-          //   const entry = new AppMetadata(
-          //     'processor',
-          //     'CUSTOM',
-          //     '1.0.0',
-          //     this.generatePortArray('input-', 5),
-          //     this.generatePortArray('output-', 3),
-          //     from(Promise.resolve(new DetailedAppRegistration('CUSTOM', ApplicationType.processor))),
-          //     undefined
-          //   );
-          //   metamodel.get('processor').set('CUSTOM', entry);
-          //
-          //   const multi1_entry = new AppMetadata(
-          //     'processor',
-          //     'MULTI-1',
-          //     '1.0.0',
-          //     this.generatePortArray('input-', 5),
-          //     this.generatePortArray('output-', 10),
-          //     from(Promise.resolve(new DetailedAppRegistration('MULTI-1', ApplicationType.processor))),
-          //     undefined
-          //   );
-          //   metamodel.get('processor').set('MULTI-1', multi1_entry);
-          //
-          //   const giant = new AppMetadata(
-          //     'processor',
-          //     'GIANT',
-          //     '1.0.0',
-          //     this.generatePortArray('input-', 30),
-          //     this.generatePortArray('output-', 40),
-          //     from(Promise.resolve(new DetailedAppRegistration('GIANT', ApplicationType.processor))),
-          //     undefined
-          //   );
-          //   metamodel.get('processor').set('GIANT', giant);
-          //
-          // }
 
-          this.addLinksGroup(metamodel);
           resolve(metamodel);
         },
         error => {
@@ -141,14 +104,6 @@ export class MetamodelService implements Flo.Metamodel {
     });
     return this.request;
   }
-
-  // generatePortArray(portPrefix: string, n: number) {
-  //   const ports = [];
-  //   for (let i = 1; i <= n; i++) {
-  //     ports.push(portPrefix + i);
-  //   }
-  //   return ports;
-  // }
 
   private addLinksGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
     const metadata = this.createMetadata('link', 'links', 'Link between channels',
@@ -168,16 +123,12 @@ export class MetamodelService implements Flo.Metamodel {
     metamodel.set(metadata.group, new Map<string, Flo.ElementMetadata>().set(metadata.name, metadata));
   }
 
-
-  private createEntry(type: ApplicationType, name: string, version: string, inputChannels: string[],
-                      outputChannels: string[], metadata?: Flo.ExtraMetadata): AppMetadata {
+  protected createEntry(reg: App, metadata?: Flo.ExtraMetadata): AppMetadata {
     return new AppMetadata(
-      type.toString(),
-      name,
-      version,
-      inputChannels,
-      outputChannels,
-      this.appService.getApp(name, type),
+      reg.type.toString(),
+      reg.name,
+      reg.version,
+      this.appService.getApp(reg.name, reg.type),
       metadata
     );
   }
@@ -213,7 +164,7 @@ export class MetamodelService implements Flo.Metamodel {
     metamodel.set(OTHER_GROUP_TYPE, elements);
   }
 
-  private createMetadata(name: string, group: string, description: string,
+  protected createMetadata(name: string, group: string, description: string,
                          properties: Map<string, Flo.PropertyMetadata>, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
     return {
       name,
