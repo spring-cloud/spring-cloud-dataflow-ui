@@ -53,8 +53,6 @@ export class AppMetadata implements Flo.ElementMetadata {
     private _group: string,
     private _name: string,
     private _version: string,
-    private _inputChannels: string[],
-    private _outputChannels: string[],
     private _dataObs: Observable<DetailedAppRegistration>,
     private _metadata?: Flo.ExtraMetadata
   ) {}
@@ -70,7 +68,7 @@ export class AppMetadata implements Flo.ElementMetadata {
     if (!this._propertiesPromise) {
       this._propertiesPromise = new Promise(resolve => this.dataPromise.then((data: DetailedAppRegistration) => {
         const properties = new Map<string, AppPropertyMetadata>();
-        if (data) {
+        if (data && data.options) {
           data.options.map((o: ConfigurationMetadataProperty) => {
             const propertyMetadata: AppPropertyMetadata = new AppPropertyMetadata(o);
             if (o.sourceType === Utils.SCRIPTABLE_TRANSFORM_SOURCE_TYPE) {
@@ -142,14 +140,6 @@ export class AppMetadata implements Flo.ElementMetadata {
 
   get version(): string {
     return this._version;
-  }
-
-  get inputChannels(): string[] {
-    return this._inputChannels;
-  }
-
-  get outputChannels(): string[] {
-    return this._outputChannels;
   }
 
 }

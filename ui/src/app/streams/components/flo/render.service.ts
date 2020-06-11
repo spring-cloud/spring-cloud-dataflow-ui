@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 the original author or authors.
+ * Copyright 2016-2020s the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,42 @@
  * limitations under the License.
  */
 
-import { NODE_ROUNDED_CORNER_PALETTE, TYPE_ICON_PADDING_PALETTE, TYPE_ICON_SIZE_PALETTE } from './support/shapes';
 import {
-  Injectable, ComponentFactoryResolver, Injector, ApplicationRef
+  NODE_ROUNDED_CORNER_PALETTE,
+  TYPE_ICON_PADDING_PALETTE,
+  TYPE_ICON_SIZE_PALETTE,
+  TYPE_INCOMING_MESSAGE_RATE, TYPE_INSTANCE_DOT, TYPE_OUTGOING_MESSAGE_RATE
+} from './support/shapes';
+import {
+  Injectable, ComponentFactoryResolver, Injector, ApplicationRef, Type
 } from '@angular/core';
 import { MetamodelService } from './metamodel.service';
 import { Constants, Flo } from 'spring-flo';
 import { dia } from 'jointjs';
 import { Utils } from './support/utils';
 import { ViewHelper } from './support/view-helper';
-import { NodeHelper } from './support/node-helper';
+import { NodeHelper } from './node-helper.service';
 import { layout } from './support/layout';
 import * as _joint from 'jointjs';
 import { LoggerService } from '../../../shared/services/logger.service';
-import { BsModalService } from 'ngx-bootstrap';
-import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
-import { StreamGraphPropertiesSource } from './properties/stream-properties-source';
-import { AppMetadata } from '../../../shared/flo/support/app-metadata';
 import * as _ from 'lodash';
 import { createPaletteGroupHeader } from '../../../shared/flo/support/shared-shapes';
 import { ViewUtils } from '../../../shared/flo/support/view-utils';
+import { MessageRateComponent } from './message-rate/message-rate.component';
+import { InstanceDotComponent } from './instance-dot/instance-dot.component';
+import { ElementComponent, ShapeComponent } from '../../../shared/flo/support/shape-component';
+import { StreamNodeComponent } from './node/stream-node.component';
+import { PropertiesEditor } from './properties-editor.service';
 
 const joint: any = _joint;
+
+export const ELEMENT_TYPE_COMPONENT_TYPES = new Map<string, Type<ElementComponent>>()
+  .set(joint.shapes.flo.NODE_TYPE, StreamNodeComponent)
+  .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
+
+export const LINK_LABEL_COMPONENT_TYPES = new Map<string, Type<ShapeComponent>>()
+  .set(TYPE_INCOMING_MESSAGE_RATE, MessageRateComponent)
+  .set(TYPE_OUTGOING_MESSAGE_RATE, MessageRateComponent);
 
 /**
  * Render Service for Flo based Stream Definition graph editor
@@ -46,18 +60,19 @@ const joint: any = _joint;
 @Injectable()
 export class RenderService implements Flo.Renderer {
 
-  constructor(private metamodelService: MetamodelService,
-              private bsModalService?: BsModalService,
-              private componentFactoryResolver?: ComponentFactoryResolver,
-              private injector?: Injector,
-              private applicationRef?: ApplicationRef) {
+  constructor(protected metamodelService: MetamodelService,
+              protected nodeHelper: NodeHelper,
+              protected propertiesEditor?: PropertiesEditor,
+              protected componentFactoryResolver?: ComponentFactoryResolver,
+              protected injector?: Injector,
+              protected applicationRef?: ApplicationRef) {
   }
 
   createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
-    const element = NodeHelper.createNode(metadata);
+    const element = this.nodeHelper.createNode(metadata);
     const isPalette = viewerDescriptor.graph.get('type') === Constants.PALETTE_CONTEXT;
     if (!isPalette) {
-      NodeHelper.createPorts(element, metadata);
+      this.nodeHelper.createPorts(element, metadata);
     } else {
       element.size(120, 30);
       element.attr('.type-icon/width', TYPE_ICON_SIZE_PALETTE.width);
@@ -150,127 +165,9 @@ export class RenderService implements Flo.Renderer {
             }
           }
           break;
-        case 'props/inputChannel': {
-          const port = link.attr('props/inputChannel');
-          if (port) {
-            const target = link.target();
-            const targetElement = link.getTargetElement();
-            const elementView = paper.findViewByModel(targetElement);
-            if (elementView) {
-              let portElement;
-              portElement = elementView.$(`[channel='${port}']`);
-              if (portElement && portElement.length) {
-                // If port DOM element found set the new link target.
-                // Otherwise, assume it's a "multiport" single port for a large number of input channels
-                target.port = portElement.attr('port');
-                target.selector = elementView.getSelector(<SVGElement>portElement[0]);
-                link.target(target);
-              }
-            }
-          }
-          this.updateTargetLabel(link);
-          break;
-        }
-        case 'props/outputChannel': {
-          const port = link.attr('props/outputChannel');
-          if (port) {
-            const source = link.source();
-            const sourceElement = link.getSourceElement();
-            const elementView = paper.findViewByModel(sourceElement);
-            if (elementView) {
-              const portElement = elementView.$(`[channel='${port}']`);
-              if (portElement && portElement.length) {
-                // If port DOM element found set the new link target.
-                // Otherwise, assume it's a "multiport" single port for a large number of input channels
-                source.port = portElement.attr('port');
-                source.selector = elementView.getSelector(<any>portElement[0]);
-                link.source(source);
-              }
-            }
-          }
-          this.updateSourceLabel(link);
-          break;
-        }
       }
       LoggerService.log('link being refreshed');
     }
-  }
-
-  private updateSourceLabel(link: joint.dia.Link) {
-    const labelText = link.attr('props/outputChannel');
-    setTimeout(() => {
-      let idx = -1;
-      for (let i = 0; idx < 0 && i < link.labels().length; i++) {
-        if (link.labels()[i].attrs.text.id === 'source-channel-label') {
-          idx = i;
-        }
-      }
-      if (idx >= 0) {
-        link.removeLabel(idx);
-      }
-      if (labelText) {
-        link.appendLabel({
-          attrs: {
-            text: {
-              id: 'source-channel-label',
-              text: labelText,
-              class: 'link-channel-label',
-              'text-anchor': 'start'
-            },
-            rect: {
-              class: 'link-channel-label'
-            }
-          },
-          position: {
-            args: {
-              keepGradient: true,
-              ensureLegibility: true
-            },
-            distance: 20,
-            offset: 20
-          },
-        });
-      }
-    });
-  }
-
-
-  private updateTargetLabel(link: joint.dia.Link) {
-    const labelText = link.attr('props/inputChannel');
-    setTimeout(() => {
-      let idx = -1;
-      for (let i = 0; idx < 0 && i < link.labels().length; i++) {
-        if (link.labels()[i].attrs.text.id === 'target-channel-label') {
-          idx = i;
-        }
-      }
-      if (idx >= 0) {
-        link.removeLabel(idx);
-      }
-      if (labelText) {
-        link.appendLabel({
-          attrs: {
-            text: {
-              id: 'target-channel-label',
-              text: labelText,
-              class: 'link-channel-label',
-              'text-anchor': 'end'
-            },
-            rect: {
-              class: 'link-channel-label'
-            }
-          },
-          position: {
-            args: {
-              keepGradient: true,
-              ensureLegibility: true
-            },
-            distance: -20,
-            offset: 20
-          },
-        });
-      }
-    });
   }
 
   initializeNewNode(node: dia.Element, viewerDescriptor: Flo.ViewerDescriptor): void {
@@ -301,11 +198,7 @@ export class RenderService implements Flo.Renderer {
   }
 
   createLink(source: Flo.LinkEnd, target: Flo.LinkEnd) {
-    const link = new joint.shapes.flo.LinkDataflow();
-    this.metamodelService.load().then(function (metamodel) {
-      link.attr('metadata', metamodel.get('links').get('link'));
-    });
-    return link;
+    return new joint.shapes.flo.LinkDataflow();
   }
 
   layout(paper) {
@@ -317,8 +210,6 @@ export class RenderService implements Flo.Renderer {
     const newSourceId = link.get('source').id;
     const oldSourceId = link.previous('source').id;
     const targetId = link.get('target').id;
-
-    this.updateLinkSourceChannel(link, flo.getPaper());
 
     if (newSourceId !== oldSourceId) {
       const newSource = graph.getCell(newSourceId);
@@ -365,90 +256,10 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  private findPort(selector: string, element: dia.Element, paper: dia.Paper) {
-    const view = paper.findViewByModel(element);
-    if (view) {
-      const matches = view.findBySelector(selector);
-      if (matches && matches.length) {
-        return matches[0];
-      }
-    }
-  }
-
-  private updateLinkTargetChannel(link: dia.Link, paper: dia.Paper) {
-    const portElement = this.findPort(link.target().selector, link.getTargetElement(), paper);
-    if (portElement) {
-      const newTargetPort = portElement.getAttribute('channel');
-      if (newTargetPort) {
-        link.attr('props/inputChannel', newTargetPort);
-      } else {
-        if (portElement.classList.contains('flo-input-multiport')) {
-          const targetElement = link.getTargetElement();
-          const metadata = targetElement.attr('metadata');
-          const channels = metadata instanceof AppMetadata ? (<AppMetadata>metadata).inputChannels : undefined;
-          if (Array.isArray(channels) && channels.length > 0) {
-            const availableChannels = [...channels];
-            paper.model.getConnectedLinks(targetElement, { inbound: true }).filter(l => l !== link).forEach(l => {
-              const idx = availableChannels.indexOf(l.attr('props/inputChannel'));
-              if (idx >= 0) {
-                availableChannels.splice(idx, 1);
-              }
-            });
-            if (availableChannels.length > 0) {
-              link.attr('props/inputChannel', availableChannels[0]);
-            } else {
-              link.attr('props/inputChannel', '');
-              link.removeAttr('props/inputChannel');
-            }
-          }
-        } else {
-          link.attr('props/inputChannel', '');
-          link.removeAttr('props/inputChannel');
-        }
-      }
-    }
-  }
-
-  private updateLinkSourceChannel(link: dia.Link, paper: dia.Paper) {
-    const portElement = this.findPort(link.source().selector, link.getSourceElement(), paper);
-    if (portElement) {
-      const newSourcePort = portElement.getAttribute('channel');
-      if (newSourcePort) {
-        link.attr('props/outputChannel', newSourcePort);
-      } else {
-        if (portElement.classList.contains('flo-output-multiport')) {
-          const sourceElement = link.getSourceElement();
-          const metadata = sourceElement.attr('metadata');
-          const channels = metadata instanceof AppMetadata ? (<AppMetadata>metadata).outputChannels : undefined;
-          if (Array.isArray(channels) && channels.length > 0) {
-            const availableChannels = [...channels];
-            paper.model.getConnectedLinks(sourceElement, { outbound: true }).filter(l => l !== link).forEach(l => {
-              const idx = availableChannels.indexOf(l.attr('props/outputChannel'));
-              if (idx >= 0) {
-                availableChannels.splice(idx, 1);
-              }
-            });
-            if (availableChannels.length > 0) {
-              link.attr('props/outputChannel', availableChannels[0]);
-            } else {
-              link.attr('props/outputChannel', '');
-              link.removeAttr('props/outputChannel');
-            }
-          }
-        } else {
-          link.attr('props/outputChannel', '');
-          link.removeAttr('props/outputChannel');
-        }
-      }
-    }
-  }
-
   handleLinkTargetChanged(link: dia.Link, flo: Flo.EditorContext) {
     const graph = flo.getGraph();
     const newTargetId = link.get('target').id;
     const oldTargetId = link.previous('target').id;
-
-    this.updateLinkTargetChannel(link, flo.getPaper());
 
     if (newTargetId !== oldTargetId) {
       const oldTarget = graph.getCell(oldTargetId);
@@ -604,8 +415,6 @@ export class RenderService implements Flo.Renderer {
     const graph = flo.getGraph();
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
-    this.updateLinkSourceChannel(link, flo.getPaper());
-    this.updateLinkTargetChannel(link, flo.getPaper());
     LoggerService.log('render-service.handleLinkAdded');
     if (!target && source && !this.isChannel(source)) {
       // this is a new link being drawn in the UI (it is not connected to anything yet).
@@ -640,12 +449,8 @@ export class RenderService implements Flo.Renderer {
   handleLinkEvent(flo: Flo.EditorContext, event: string, link: dia.Link) {
     switch (event) {
       case 'options':
-        if (this.bsModalService) {
-          const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent, { class: 'modal-properties' });
-          modalRef.content.name = `${link.attr('metadata/name')}`;
-          modalRef.content.version = `${link.attr('metadata/version')}`;
-          modalRef.content.type = `${link.attr('metadata/group').toUpperCase()}`;
-          modalRef.content.setData(new StreamGraphPropertiesSource(link, null));
+        if (this.propertiesEditor) {
+          this.propertiesEditor.showForLink(link);
         }
         break;
       case 'change:source':
@@ -686,11 +491,11 @@ export class RenderService implements Flo.Renderer {
   }
 
   getNodeView(): dia.ElementView {
-    return ViewHelper.createNodeView(this.injector, this.applicationRef, this.componentFactoryResolver);
+    return ViewHelper.createNodeView(this.injector, this.applicationRef, this.componentFactoryResolver, ELEMENT_TYPE_COMPONENT_TYPES);
   }
 
   getLinkView(): dia.LinkView {
-    return ViewHelper.createLinkView(this.injector, this.applicationRef, this.componentFactoryResolver);
+    return ViewHelper.createLinkView(this.injector, this.applicationRef, this.componentFactoryResolver, LINK_LABEL_COMPONENT_TYPES);
   }
 
   markersChanged(cell: dia.Cell, paper: dia.Paper) {

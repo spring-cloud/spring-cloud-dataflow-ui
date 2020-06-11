@@ -9,6 +9,8 @@ import { ComponentFactoryResolver } from '@angular/core';
 import { BsModalService, ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { SharedModule } from '../../shared.module';
 import { StreamsModule } from '../../../streams/streams.module';
+import { NodeHelper } from '../../../streams/components/flo/node-helper.service';
+import { PropertiesEditor } from '../../../streams/components/flo/properties-editor.service';
 
 /**
  * Test {@link GraphViewComponent}.
@@ -21,6 +23,8 @@ describe('StreamGraphViewComponent', () => {
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
   let bsModalService: BsModalService;
+  let propertiesEditor: PropertiesEditor;
+  let nodeHelper: NodeHelper;
 
   beforeEach(async(() =>
     TestBed.configureTestingModule({
@@ -40,15 +44,21 @@ describe('StreamGraphViewComponent', () => {
       [
         ApplicationRef,
         BsModalService,
+        NodeHelper,
+        PropertiesEditor,
         ComponentFactoryResolver
       ],
       (
         _applicationRef: ApplicationRef,
         _bsModalService: BsModalService,
+        _nodeHelper: NodeHelper,
+        _propertiesEditor: PropertiesEditor,
         _resolver: ComponentFactoryResolver
       ) => {
         applicationRef = _applicationRef;
         bsModalService = _bsModalService;
+        nodeHelper = _nodeHelper;
+        propertiesEditor = _propertiesEditor;
         resolver = _resolver;
       }
     )
@@ -60,7 +70,7 @@ describe('StreamGraphViewComponent', () => {
     component = fixture.componentInstance;
     const metamodel = new MetamodelService(new MockSharedAppService());
     component.metamodel = metamodel;
-    component.renderer = new RenderService(metamodel, bsModalService, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(metamodel, nodeHelper, propertiesEditor, resolver, fixture.debugElement.injector, applicationRef);
   });
 
   it('should be created', () => {

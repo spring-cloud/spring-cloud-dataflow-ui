@@ -29,14 +29,14 @@
     <svg:image class="error-marker" xlink:href="assets/img/error.svg" [tooltip]="markerTooltip" placement="top"
                containerClass="error-marker-tooltip" container="body" [isDisabled]="isDisabled"/>
     <svg:text class="stream-label"/>
-    <svg:g class="input-port-group" *ngIf="isSingleIntputPort(); else inputPortsTemplate">
+    <svg:g class="input-port-group">
       <svg:g class="input-port" tooltip="Input Port" container="body" [isDisabled]="!isCanvas() || isDisabled"
              [delay]="300">
         <svg:circle class="port-outer-circle-input"/>
         <svg:circle class="port-inner-circle-input"/>
       </svg:g>
     </svg:g>
-    <svg:g class="output-port-group" *ngIf="isSingleOutputPort(); else outputPortsTemplate">
+    <svg:g class="output-port-group">
       <svg:g class="output-port" tooltip="Output Port" container="body" [isDisabled]="!isCanvas() || isDisabled"
              [delay]="300">
         <svg:circle class="port-outer-circle-output"/>
@@ -47,34 +47,6 @@
       <svg:text class="options-handle handle" (click)="showOptions()"></svg:text>
       <svg:text class="handle-separator" (click)="showOptions()"></svg:text>
       <svg:text class="delete-handle handle" (click)="delete()"></svg:text>
-    </svg:g>
-  </svg:g>
-</ng-template>
-
-<ng-template #inputPortsTemplate>
-  <svg:g [ngClass]="'input-port-group-' + channel" *ngFor="let channel of metadata.inputChannels">
-    <svg:g [ngClass]="'input-port-' + channel" [tooltip]="channel" container="body"
-           [isDisabled]="!isCanvas() || isDisabled">
-      <svg:circle [ngClass]="'port-outer-circle-' + channel"/>
-      <svg:circle [ngClass]="'port-inner-circle-' + channel"/>
-    </svg:g>
-    <svg:g class="label-group">
-      <svg:rect [ngClass]="channel + '-label-bg'"/>
-      <svg:text [ngClass]="channel + '-label'"></svg:text>
-    </svg:g>
-  </svg:g>
-</ng-template>
-
-<ng-template #outputPortsTemplate>
-  <svg:g [ngClass]="'output-port-group-' + channel" *ngFor="let channel of metadata.outputChannels">
-    <svg:g [ngClass]="'output-port-' + channel" [tooltip]="channel" container="body"
-           [isDisabled]="!isCanvas() || isDisabled">
-      <svg:circle [ngClass]="'port-outer-circle-' + channel"/>
-      <svg:circle [ngClass]="'port-inner-circle-' + channel"/>
-    </svg:g>
-    <svg:g class="label-group">
-      <svg:rect [ngClass]="channel + '-label-bg'"/>
-      <svg:text [ngClass]="channel + '-label'"></svg:text>
     </svg:g>
   </svg:g>
 </ng-template>

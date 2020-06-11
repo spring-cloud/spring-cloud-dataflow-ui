@@ -46,6 +46,8 @@ import { StreamsImportComponent } from './streams-utils/streams-import/streams-i
 import { StreamsExportComponent } from './streams-utils/streams-export/streams-export.component';
 import { StreamsUtilsService } from './streams-utils/streams-utils.service';
 import { CommonModule } from '@angular/common';
+import { NodeHelper } from './components/flo/node-helper.service';
+import { PropertiesEditor } from './components/flo/properties-editor.service';
 
 @NgModule({
   imports: [
@@ -113,7 +115,9 @@ import { CommonModule } from '@angular/common';
     EditorService,
     ContentAssistService,
     StreamDeployService,
-    StreamsUtilsService
+    StreamsUtilsService,
+    NodeHelper,
+    PropertiesEditor
   ],
   exports: [
     StreamStatusComponent

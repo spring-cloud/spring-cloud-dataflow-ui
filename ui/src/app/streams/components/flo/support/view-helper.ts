@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2017 the original author or authors.
+ * Copyright 2016-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,22 +21,10 @@ import {
   Type,
   ComponentRef
 } from '@angular/core';
-import { StreamNodeComponent } from '../node/stream-node.component';
 import { ShapeComponent, ElementComponent } from '../../../../shared/flo/support/shape-component';
-import { TYPE_INSTANCE_DOT, TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from './shapes';
-import { InstanceDotComponent } from '../instance-dot/instance-dot.component';
-import { MessageRateComponent } from '../message-rate/message-rate.component';
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;
-
-const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
-  .set(joint.shapes.flo.NODE_TYPE, StreamNodeComponent)
-  .set(TYPE_INSTANCE_DOT, InstanceDotComponent);
-
-const LINK_LABEL_COMPONENT_TYPE = new Map<string, Type<ShapeComponent>>()
-  .set(TYPE_INCOMING_MESSAGE_RATE, MessageRateComponent)
-  .set(TYPE_OUTGOING_MESSAGE_RATE, MessageRateComponent);
 
 /**
  * Render Helper for Flo based Stream Definition graph editor.
@@ -48,7 +36,8 @@ export class ViewHelper {
 
   static createLinkView(injector: Injector,
                         applicationRef: ApplicationRef,
-                        componentFactoryResolver: ComponentFactoryResolver) {
+                        componentFactoryResolver: ComponentFactoryResolver,
+                        labelComponentRegistry: Map<string, Type<ShapeComponent>>) {
 
     const V = joint.V;
 
@@ -90,14 +79,14 @@ export class ViewHelper {
           let node;
           let selectors;
 
-          if (componentFactoryResolver && LINK_LABEL_COMPONENT_TYPE.has(label.type)) {
+          if (componentFactoryResolver && labelComponentRegistry.has(label.type)) {
             // Inject link label component and take its DOM
             if (this._angularComponentRef && this._angularComponentRef[i]) {
               this._angularComponentRef[i].destroy();
             }
 
             const nodeComponentFactory = componentFactoryResolver
-              .resolveComponentFactory(LINK_LABEL_COMPONENT_TYPE.get(label.type));
+              .resolveComponentFactory(labelComponentRegistry.get(label.type));
 
             const componentRef: ComponentRef<ShapeComponent> = nodeComponentFactory.create(injector);
 
@@ -155,21 +144,22 @@ export class ViewHelper {
 
   static createNodeView(injector: Injector,
                         applicationRef: ApplicationRef,
-                        componentFactoryResolver: ComponentFactoryResolver) {
+                        componentFactoryResolver: ComponentFactoryResolver,
+                        componentRegistry: Map<string, Type<ElementComponent>>) {
     return joint.shapes.flo.ElementView.extend({
       options: joint.util.deepSupplement({}, joint.dia.ElementView.prototype.options),
 
       renderMarkup: function () {
         // Not called often. It's fine to destroy old component and create the new one, because old DOM
         // may have been altered by JointJS updates
-        if (componentFactoryResolver && ELEMENT_TYPE_COMPONENT_TYPE.has(this.model.get('type'))) {
+        if (componentFactoryResolver && componentRegistry.has(this.model.get('type'))) {
 
           if (this._angularComponentRef) {
             this._angularComponentRef.destroy();
           }
 
           const nodeComponentFactory = componentFactoryResolver
-            .resolveComponentFactory(ELEMENT_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
+            .resolveComponentFactory(componentRegistry.get(this.model.get('type')));
 
           const componentRef: ComponentRef<ElementComponent> = nodeComponentFactory.create(injector);
           componentRef.instance.view = this;

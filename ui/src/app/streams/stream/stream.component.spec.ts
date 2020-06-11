@@ -33,6 +33,7 @@ import { AuthService } from '../../auth/auth.service';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { NodeHelper } from '../components/flo/node-helper.service';
 
 /**
  * Test {@link StreamComponent}.
@@ -43,11 +44,12 @@ describe('StreamComponent', () => {
   let component: StreamComponent;
   let fixture: ComponentFixture<StreamComponent>;
   let activeRoute: MockActivatedRoute;
+  const nodeHelper = new NodeHelper();
   const streamsService = new MockStreamsService();
   const commonTestParams = { id: '1' };
   const notificationService = new MockNotificationService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
-  const renderService = new RenderService(metamodelService);
+  const renderService = new RenderService(metamodelService, nodeHelper);
   const routingStateService = new MockRoutingStateService();
   const aboutService = new MocksSharedAboutService();
   const loggerService = new LoggerService();
@@ -89,6 +91,7 @@ describe('StreamComponent', () => {
         { provide: MetamodelService, useValue: metamodelService },
         { provide: LoggerService, useValue: loggerService },
         { provide: RenderService, useValue: renderService },
+        { provide: NodeHelper, useValue: nodeHelper },
         GrafanaService
       ]
     })

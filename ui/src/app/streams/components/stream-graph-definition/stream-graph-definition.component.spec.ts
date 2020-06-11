@@ -18,6 +18,8 @@ import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { StreamsModule } from '../../streams.module';
+import { NodeHelper } from '../flo/node-helper.service';
+import { PropertiesEditor } from '../flo/properties-editor.service';
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -32,6 +34,8 @@ describe('StreamGraphDefinitionComponent', () => {
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
   let bsModalService: BsModalService;
+  let propertiesEditor: PropertiesEditor;
+  let nodeHelper: NodeHelper;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -46,15 +50,21 @@ describe('StreamGraphDefinitionComponent', () => {
       [
         ApplicationRef,
         BsModalService,
+        NodeHelper,
+        PropertiesEditor,
         ComponentFactoryResolver
       ],
       (
         _applicationRef: ApplicationRef,
         _bsModalService: BsModalService,
+        _nodeHelper: NodeHelper,
+        _propertiesEditor: PropertiesEditor,
         _resolver: ComponentFactoryResolver
       ) => {
         applicationRef = _applicationRef;
         bsModalService = _bsModalService;
+        nodeHelper = _nodeHelper;
+        propertiesEditor = _propertiesEditor;
         resolver = _resolver;
       }
     )
@@ -64,7 +74,7 @@ describe('StreamGraphDefinitionComponent', () => {
     fixture = TestBed.createComponent(StreamGraphDefinitionComponent);
     component = fixture.componentInstance;
     fixture.componentInstance.metamodel = metamodelService;
-    fixture.componentInstance.renderer = new RenderService(metamodelService, bsModalService, resolver,
+    fixture.componentInstance.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver,
       fixture.debugElement.injector, applicationRef);
     fixture.detectChanges();
   });

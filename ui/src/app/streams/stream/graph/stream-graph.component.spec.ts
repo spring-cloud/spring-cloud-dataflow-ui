@@ -13,6 +13,7 @@ import { MockSharedAppService } from '../../../tests/mocks/shared-app';
 import { StreamGraphComponent } from './stream-graph.component';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { NodeHelper } from '../../components/flo/node-helper.service';
 
 
 /**
@@ -29,7 +30,7 @@ describe('StreamGraphComponent', () => {
   const commonTestParams = { id: '1' };
   const notificationService = new MockNotificationService();
   const metamodelService = new MetamodelService(new MockSharedAppService());
-  const renderService = new RenderService(metamodelService);
+  const renderService = new RenderService(metamodelService, new NodeHelper());
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
