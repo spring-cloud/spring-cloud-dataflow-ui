@@ -11,6 +11,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SchedulesCreateValidator } from './create.validator';
 import { KeyValueValidator } from '../../../shared/component/key-value/key-value.validator';
 import { TaskPropValidator } from '../../tasks/task-prop.validator';
+import { Task } from '../../../shared/model/task.model';
 
 @Component({
   selector: 'app-schedules-create',
@@ -104,11 +105,11 @@ export class CreateComponent implements OnInit {
       const taskProperties = getClean(this.form.get('props').value);
       const cronExpression = this.form.get('cron').value;
       const scheduleParams = tasks
-        .map((taskName: string, index: number) => ({
+        .map((task: Task, index: number) => ({
             args: taskArguments.join(' '),
             props: taskProperties.join(','),
             cronExpression: cronExpression,
-            task: taskName,
+            task: task.name,
             schedulerName: (this.form.get('names') as FormArray).controls
               .map((control: FormControl) => control.value)[index]
           })
