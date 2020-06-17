@@ -3,19 +3,22 @@ import { CommonModule } from '@angular/common';
 import { InfoComponent } from './info/info.component';
 import { ClarityModule } from '@clr/angular';
 import { SignpostComponent } from './signpost/signpost.component';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
   declarations: [
     InfoComponent,
-    SignpostComponent
+    SignpostComponent,
+    UserComponent
   ],
   imports: [
     CommonModule,
     ClarityModule,
   ],
   exports: [
-    SignpostComponent
+    SignpostComponent,
+    UserComponent
   ]
 })
 export class AboutModule {

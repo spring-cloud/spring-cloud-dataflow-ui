@@ -11,13 +11,13 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const securityService = this.inj.get(SecurityService);
-    if (securityService.xAuthToken) {
-      request = request.clone({
-        setHeaders: {
-          'x-auth-token': `${securityService.xAuthToken}`
-        }
-      });
-    }
+    // if (securityService.xAuthToken) {
+    //   request = request.clone({
+    //     setHeaders: {
+    //       'x-auth-token': `${securityService.xAuthToken}`
+    //     }
+    //   });
+    // }
     return next.handle(request);
   }
 }

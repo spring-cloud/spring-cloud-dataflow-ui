@@ -1,5 +1,6 @@
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 import { dia } from 'jointjs';
 import { RuntimeStreamFloViewComponent } from './runtime-view.component';
 import { MetamodelService } from '../metamodel.service';
@@ -30,7 +31,8 @@ describe('RuntimeStreamFloViewComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        StreamsModule
+        StreamsModule,
+        StoreModule.forRoot({})
       ],
     });
   }));
