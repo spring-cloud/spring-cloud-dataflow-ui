@@ -87,6 +87,10 @@ export class About {
     roles: []
   };
 
+  getRolesString() {
+    return (this.security.roles || []).join(', ');
+  }
+
   static parse(input) {
     const about = new About();
     about.versions = {

@@ -1,6 +1,6 @@
 <h1>Import / Export</h1>
 
-<div class="clr-row" [appRole]="['ROLE_CREATE']">
+<div class="clr-row">
   <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" appRole appFeature="streams">
     <app-view-card titleModal="Streams" keyContext="import-export" name="import-export" id="streams">
       <ng-template>
@@ -8,7 +8,7 @@
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
           <a href="/#" (click)="run('export-stream')">Export stream(s): Create a JSON file with the selected streams</a>
         </div>
-        <div>
+        <div [appRole]="['ROLE_CREATE']">
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
           <a href="/#" (click)="run('import-stream')">Import stream(s): Import streams from a JSON file</a>
         </div>
@@ -22,7 +22,7 @@
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
           <a href="/#" (click)="run('export-task')">Export task(s): Create a JSON file with the selected tasks</a>
         </div>
-        <div>
+        <div [appRole]="['ROLE_CREATE']">
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
           <a href="/#" (click)="run('import-task')">Import task(s): Import tasks from a JSON file</a>
         </div>

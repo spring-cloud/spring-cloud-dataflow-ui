@@ -45,9 +45,9 @@
         <li *ngIf="about.security.username">
           <strong>Username: </strong> {{about.security.username || 'N/A'}}
         </li>
-        <div *ngIf="about.security.roles?.length > 0">
-          <strong>Roles: </strong> {{about.security.roles}}
-        </div>
+        <li *ngIf="about.security.roles?.length > 0">
+          <strong>Roles: </strong> {{about.getRolesString()}}
+        </li>
       </ul>
       <h3>Versions</h3>
       <ul>

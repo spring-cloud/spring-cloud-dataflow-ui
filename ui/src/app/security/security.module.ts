@@ -11,7 +11,7 @@ import { SecurityRoutingModule } from './security-routing.module';
 import { SecurityGuard } from './support/security.guard';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './support/token.interceptor';
-import * as fromSecurity from './reducers/security.reducer';
+import * as fromSecurity from './store/security.reducer';
 
 @NgModule({
   declarations: [

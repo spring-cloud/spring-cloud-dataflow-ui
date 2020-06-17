@@ -475,6 +475,7 @@ a:link, a:visited {
 
 .modal-about {
   color: var(--clr-global-font-color, #222222);
+  white-space: normal;
 
   .modal-body {
     padding-left: 4px;
@@ -505,5 +506,17 @@ a:link, a:visited {
 
   span.status {
     width: 200px;
+  }
+}
+
+.header-actions {
+  .divider {
+    display: inline-block;
+    background: #fafafa;
+    background: var(--clr-header-font-color, #fafafa);
+    opacity: var(--clr-header-divider-opacity, 0.15);
+    height: 2rem;
+    width: var(--clr-global-borderwidth, 0.05rem);
+    margin-top: 0.5rem;
   }
 }

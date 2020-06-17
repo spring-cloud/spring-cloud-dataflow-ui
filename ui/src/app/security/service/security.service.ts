@@ -6,8 +6,8 @@ import { catchError, flatMap, take } from 'rxjs/operators';
 import { HttpUtils } from '../../shared/support/http.utils';
 import { ErrorUtils } from '../../shared/support/error.utils';
 import { Security } from '../../shared/model/security.model';
-import { State, getUsername, getRoles, getEnabled, getShouldProtect } from '../reducers/security.reducer';
-import { loaded, logout } from '../actions/security.actions';
+import { State, getUsername, getRoles, getEnabled, getShouldProtect } from '../store/security.reducer';
+import { loaded, logout } from '../store/security.actions';
 
 @Injectable({
   providedIn: 'root'

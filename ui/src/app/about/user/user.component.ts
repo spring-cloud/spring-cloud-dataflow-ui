@@ -4,8 +4,7 @@ import { SecurityService } from 'src/app/security/service/security.service';
 
 @Component({
   selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  templateUrl: './user.component.html'
 })
 export class UserComponent implements OnInit {
 
@@ -14,7 +13,8 @@ export class UserComponent implements OnInit {
   constructor(
     private securityService: SecurityService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }

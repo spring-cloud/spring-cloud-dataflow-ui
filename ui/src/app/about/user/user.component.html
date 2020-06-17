@@ -6,7 +6,7 @@
 
 <div *ngIf="(loggedinUser$|async) as user" class="header-actions">
   <clr-dropdown>
-    <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+    <button class="nav-text nav-icon-text" clrDropdownTrigger aria-label="open user profile">
       {{user}}
       <clr-icon shape="caret down"></clr-icon>
     </button>
