@@ -6,16 +6,29 @@
         <span class="title">Data Flow</span>
       </a>
     </div>
-    <app-search></app-search>
+    <app-search *ngIf="!(shouldProtect|async)"></app-search>
     <div class="header-actions">
+      <app-user *ngIf="securityEnabled|async"></app-user>
       <app-about-signpost></app-about-signpost>
     </div>
   </clr-header>
   <div class="content-container">
-    <clr-vertical-nav>
+    <clr-vertical-nav *ngIf="!(shouldProtect|async)">
       <clr-vertical-nav-group routerLinkActive="active"
                               clrVerticalNavGroupExpanded="true"
-                              appRole appFeature="streams">
+                              [appRole]="[]" appFeature="streams">
+      <!--      <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="true">-->
+      <!--        <clr-icon shape="dashboard" clrVerticalNavIcon></clr-icon>-->
+      <!--        Dashboards-->
+      <!--        <clr-vertical-nav-group-children>-->
+      <!--          <a-->
+      <!--            clrVerticalNavLink-->
+      <!--            routerLinkActive="active"-->
+      <!--            routerLink="dashboard/my-dashboard">-->
+      <!--            My Dashboard-->
+      <!--          </a>-->
+      <!--        </clr-vertical-nav-group-children>-->
+      <!--      </clr-vertical-nav-group>-->
         <clr-icon shape="cloud-scale" clrVerticalNavIcon></clr-icon>
         Streams
         <clr-vertical-nav-group-children>
@@ -33,9 +46,8 @@
           </a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>
-      <clr-vertical-nav-group routerLinkActive="active"
-                              clrVerticalNavGroupExpanded="true"
-                              appRole appFeature="tasks">
+      <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="true"
+                              [appRole]="[]" appFeature="tasks">
         <clr-icon shape="blocks-group" clrVerticalNavIcon></clr-icon>
         Tasks / Jobs
         <clr-vertical-nav-group-children>
@@ -61,7 +73,7 @@
             clrVerticalNavLink
             routerLinkActive="active"
             routerLink="tasks-jobs/schedules"
-            appRole
+            [appRole]="[]"
             appFeature="schedules">
             Schedules
           </a>
@@ -88,7 +100,7 @@
             clrVerticalNavLink
             routerLinkActive="active"
             routerLink="manage/import-export"
-            appRole
+            [appRole]="[]"
             appFeature="streams,tasks">
             Import / Export
           </a>

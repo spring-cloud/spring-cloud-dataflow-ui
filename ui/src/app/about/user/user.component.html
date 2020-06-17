@@ -1,0 +1,17 @@
+<div *ngIf="!(loggedinUser$|async)">
+  <a href="/login" class="nav-link nav-icon-text">
+    Log In
+  </a>
+</div>
+
+<div *ngIf="(loggedinUser$|async) as user" class="header-actions">
+  <clr-dropdown>
+    <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+      {{user}}
+      <clr-icon shape="caret down"></clr-icon>
+    </button>
+    <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+      <a (click)="logout()" clrDropdownItem>Log out</a>
+    </clr-dropdown-menu>
+  </clr-dropdown>
+</div>

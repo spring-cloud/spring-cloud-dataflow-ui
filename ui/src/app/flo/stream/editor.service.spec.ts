@@ -13,6 +13,7 @@ import { LoggerService } from '../../shared/service/logger.service';
 import { StreamsModule } from '../../streams/streams.module';
 import { NodeHelper } from './node-helper.service';
 import { PropertiesEditor } from './properties-editor.service';
+import { StoreModule } from '@ngrx/store';
 
 const $: any = _$;
 
@@ -421,7 +422,8 @@ describe('editor.service : Auto-Link', () => {
     metamodelService.load().then(data => metamodel = data);
     TestBed.configureTestingModule({
       imports: [
-        StreamsModule
+        StreamsModule,
+        StoreModule.forRoot({})
       ]
     });
   }));

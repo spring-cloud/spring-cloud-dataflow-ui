@@ -12,6 +12,7 @@ import { TaskFloModule } from '../task-flo.module';
 import { dia } from 'jointjs';
 import * as _joint from 'jointjs';
 import * as _$ from 'jquery';
+import { StoreModule } from '@ngrx/store';
 
 const $: any = _$;
 const joint: any = _joint;
@@ -34,7 +35,8 @@ describe('Task RenderService', () => {
     METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
     TestBed.configureTestingModule({
       imports: [
-        TaskFloModule
+        TaskFloModule,
+        StoreModule.forRoot({})
       ]
     })
       .compileComponents();

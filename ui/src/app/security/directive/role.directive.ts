@@ -10,6 +10,9 @@ import { SecurityService } from '../service/security.service';
 export class RoleDirective implements AfterViewInit {
 
   @Input()
+  public grantedRole: string[];
+
+  @Input()
   public appRole: string[];
 
   @Input()
@@ -23,7 +26,7 @@ export class RoleDirective implements AfterViewInit {
     private elem: ElementRef, private renderer: Renderer2) {
   }
 
-  private checkRoles() {
+  private async checkRoles() {
     if (this.appFeature) {
       const features = this.appFeature.split(',');
       this.aboutService.getAbout()
@@ -41,8 +44,8 @@ export class RoleDirective implements AfterViewInit {
     }
   }
 
-  private checkRoleAccess(featureEnabled: boolean) {
-    const hasRoleAccess = this.securityService.security.canAccess(this.appRole);
+  private async checkRoleAccess(featureEnabled: boolean) {
+    const hasRoleAccess = await this.securityService.canAccess(this.appRole);
     if (!featureEnabled || !hasRoleAccess) {
       this.renderer.setStyle(this.elem.nativeElement, 'display', 'none');
     } else {
@@ -58,13 +61,4 @@ export class RoleDirective implements AfterViewInit {
     this.existingDisplayPropertyValue = this.elem.nativeElement.style.display;
     this.checkRoles();
   }
-
-  // ngOnInit() {
-  //   this.aboutService..forEach(event => {
-  //     this.checkRoles();
-  //   });
-  //   this.aboutService.featureInfoSubject.forEach(event => {
-  //     this.checkRoles();
-  //   });
-  // }
 }

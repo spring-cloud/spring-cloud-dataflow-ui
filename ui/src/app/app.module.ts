@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClarityModule } from '@clr/angular';
@@ -18,10 +20,11 @@ import { SecurityService } from './security/service/security.service';
 import { map, mergeMap } from 'rxjs/operators';
 import { Security } from './shared/model/security.model';
 import { of } from 'rxjs';
+import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -36,17 +39,28 @@ import { of } from 'rxjs';
     StreamsModule,
     TasksJobsModule,
     ManageModule,
-    SecurityModule
+    SecurityModule,
+    StoreModule.forRoot(ROOT_REDUCERS, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateSerializability: true,
+        strictActionSerializability: true,
+        strictActionWithinNgZone: true,
+        strictActionTypeUniqueness: true,
+      },
+    }),
+    StoreRouterConnectingModule.forRoot()
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: (securityService: SecurityService, aboutService: AboutService) => {
         return () => {
-          return securityService.load(true)
+          return securityService.load()
             .pipe(
               mergeMap((security: Security) => {
-                if (security.isAuthenticated || !security.isAuthenticationEnabled) {
+                securityService.loaded(security.authenticationEnabled, security.authenticated, security.username, security.roles);
+                if (security.authenticated || !security.authenticationEnabled) {
                   return aboutService.load()
                     .pipe(
                       map(about => security)

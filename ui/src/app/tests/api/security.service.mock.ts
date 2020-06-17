@@ -6,17 +6,20 @@ import { LOAD } from '../data/security';
 export class SecurityServiceMock {
 
   static mock: SecurityServiceMock = null;
-  security: Security = Security.parse(LOAD);
 
   constructor() {
   }
 
-  load(reconstituteSecurity = false): Observable<Security> {
-    return of(Security.parse(LOAD));
+  load(): Observable<Security> {
+    return of(LOAD as Security);
   }
 
   logout(): Observable<any> {
-    return of(Security.parse(LOAD));
+    return of(LOAD as Security);
+  }
+
+  loggedinUser(): Observable<string> {
+    return of(undefined);
   }
 
   clearLocalSecurity() {
