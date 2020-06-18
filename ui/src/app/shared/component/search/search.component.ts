@@ -9,8 +9,6 @@ import { StreamPage } from '../../model/stream.model';
 import { TaskPage } from '../../model/task.model';
 import { Router } from '@angular/router';
 import { timer } from 'rxjs';
-import { AboutService } from '../../api/about.service';
-import { About } from '../../model/about.model';
 import { NotificationService } from '../../service/notification.service';
 
 @Component({
@@ -53,17 +51,16 @@ export class SearchComponent implements OnInit {
   constructor(private appService: AppService,
               private streamService: StreamService,
               private taskService: TaskService,
-              private aboutService: AboutService,
               private notificationService: NotificationService,
               private router: Router) {
   }
 
   ngOnInit(): void {
-    this.aboutService.getAbout()
-      .subscribe((about: About) => {
-        //this.searching.streams = about.features.streams;
-        //this.searching.tasks = about.features.tasks;
-      });
+    // this.aboutService.getAbout()
+    //   .subscribe((about: About) => {
+    //     //this.searching.streams = about.features.streams;
+    //     //this.searching.tasks = about.features.tasks;
+    //   });
     this.search.valueChanges
       .pipe(
         map(val => {

@@ -1,5 +1,5 @@
 import { createReducer, createSelector, on } from '@ngrx/store';
-import * as SecurityActions from './security.actions';
+import * as SecurityActions from './security.action';
 import * as fromRoot from '../../reducers/reducer';
 
 export const securityFeatureKey = 'security';
