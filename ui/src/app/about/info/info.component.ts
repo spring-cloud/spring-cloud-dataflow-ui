@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { aboutFeatureKey, AboutState, getAbout, State } from '../../shared/store/about.reducer';
 import { select, Store } from '@ngrx/store';
+import { AboutService } from '../../shared/api/about.service';
 
 @Component({
   selector: 'app-about-info',
@@ -11,13 +12,12 @@ export class InfoComponent implements OnInit {
   about: AboutState;
   @Input() isOpen = false;
 
-  constructor(private store: Store<State>) {
+  constructor(private aboutService: AboutService) {
   }
 
   ngOnInit(): void {
-    this.store
-      .pipe(select(getAbout))
-      .subscribe((about => {
+    this.aboutService.getAbout()
+      .subscribe(((about: AboutState) => {
         this.about = about;
         this.loading = false;
       }));

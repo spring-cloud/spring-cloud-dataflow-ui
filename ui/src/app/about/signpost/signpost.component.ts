@@ -15,14 +15,12 @@ export class SignpostComponent implements OnInit {
   @ViewChild('infoModal', { static: true }) infoModal: InfoComponent;
   @ViewChild('signpost') signpost: ClrSignpostContent;
 
-  constructor(private aboutService: AboutService,
-              private store: Store<State>) {
+  constructor(private aboutService: AboutService) {
   }
 
   ngOnInit(): void {
-    this.store
-      .pipe(select(getAbout))
-      .subscribe((about => {
+    this.aboutService.getAbout()
+      .subscribe(((about: AboutState) => {
         this.about = about;
         this.loading = false;
       }));
