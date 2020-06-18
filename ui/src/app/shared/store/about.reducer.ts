@@ -85,7 +85,7 @@ export const getSecurity = (state: State) => {
   return state[aboutFeatureKey].security;
 };
 
-const initialState: AboutState = {
+export const initialState: AboutState = {
   versions: {
     implementation: null,
     core: null,
