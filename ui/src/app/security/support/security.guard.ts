@@ -15,11 +15,12 @@ export class SecurityGuard implements CanActivate {
   }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const features = this.aboutService.about?.features;
     const rolesNeeded: string[] = route.data.roles;
     const featureNeeded: string = route.data.feature;
-    if (featureNeeded && features && !get(features, featureNeeded, false)) {
-      this.router.navigate(['feature-disabled']);
+    if (featureNeeded) {
+      if (await this.aboutService.isFeatureEnabled(featureNeeded) === false) {
+        this.router.navigate(['feature-disabled']);
+      }
     }
 
     const canAccess = await this.securityService.canAccess(rolesNeeded);

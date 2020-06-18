@@ -4,6 +4,8 @@ import { InfoComponent } from './info/info.component';
 import { ClarityModule } from '@clr/angular';
 import { SignpostComponent } from './signpost/signpost.component';
 import { UserComponent } from './user/user.component';
+import { StoreModule } from '@ngrx/store';
+import * as fromAbout from '../shared/store/about.reducer';
 
 
 @NgModule({
@@ -15,6 +17,7 @@ import { UserComponent } from './user/user.component';
   imports: [
     CommonModule,
     ClarityModule,
+    StoreModule.forFeature(fromAbout.aboutFeatureKey, fromAbout.reducer)
   ],
   exports: [
     SignpostComponent,

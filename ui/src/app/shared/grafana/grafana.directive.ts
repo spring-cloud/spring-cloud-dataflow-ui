@@ -16,7 +16,7 @@ export class GrafanaStreamsDirective implements OnInit {
 
   ngOnInit(): void {
     this.grafanaService.isAllowed()
-      .subscribe(allow => {
+      .then(allow => {
         this.hidden = !allow;
       });
   }
@@ -43,7 +43,7 @@ export class GrafanaStreamDirective implements OnInit {
   ngOnInit(): void {
     this.disabled = this.stream.status !== 'DEPLOYED';
     this.grafanaService.isAllowed()
-      .subscribe(allow => {
+      .then(allow => {
         this.hidden = !allow;
       });
   }
@@ -68,7 +68,7 @@ export class GrafanaTasksDirective implements OnInit {
 
   ngOnInit(): void {
     this.grafanaService.isAllowed()
-      .subscribe(allow => {
+      .then(allow => {
         this.hidden = !allow;
       });
   }
@@ -94,7 +94,7 @@ export class GrafanaTaskDirective implements OnInit {
 
   ngOnInit(): void {
     this.grafanaService.isAllowed()
-      .subscribe(allow => {
+      .then(allow => {
         this.hidden = !allow;
       });
   }
@@ -123,7 +123,7 @@ export class GrafanaRuntimeAppDirective implements OnInit {
 
   ngOnInit(): void {
     this.grafanaService.isAllowed()
-      .subscribe(allow => {
+      .then(allow => {
         this.hidden = !allow;
       });
     if (this.runtimeApp.appInstances && this.runtimeApp.appInstances.length > 0) {
@@ -163,7 +163,7 @@ export class GrafanaRuntimeInstanceDirective implements OnInit {
 
   ngOnInit(): void {
     this.grafanaService.isAllowed()
-      .subscribe(allow => {
+      .then(allow => {
         this.hidden = !allow;
       });
     if (this.instance.attributes) {

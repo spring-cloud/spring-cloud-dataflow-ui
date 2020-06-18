@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AboutService } from '../api/about.service';
-import { About } from '../model/about.model';
 import { Stream } from '../model/stream.model';
 import { Task } from '../model/task.model';
 import { TaskExecution } from '../model/task-execution.model';
@@ -17,17 +16,15 @@ export class GrafanaService {
   constructor(private aboutService: AboutService) {
   }
 
-  isAllowed(): Observable<boolean> {
+  isAllowed(): Promise<boolean> {
     return this.aboutService
-      .getAbout()
-      .pipe(map((about: About) => about.features.grafana));
+      .isFeatureEnabled('grafana')
   }
 
   getDashboardStreams(): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return `${info.url}/d/scdf-streams/streams?refresh=${info.refreshInterval}s`;
         })
@@ -36,9 +33,8 @@ export class GrafanaService {
 
   getDashboardStream(stream: Stream): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
             's&var-stream_name=' + stream.name + '&var-application_name=All';
@@ -48,9 +44,8 @@ export class GrafanaService {
 
   getDashboardApplication(streamName: string, appName: string): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
             's&var-stream_name=' + streamName + '&var-application_name=' + appName + '&var-name=All';
@@ -60,9 +55,8 @@ export class GrafanaService {
 
   getDashboardApplicationInstance(streamName: string, appName: string, guid: string): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
             's&var-stream_name=' + streamName + '&var-application_name=' + appName +
@@ -73,9 +67,8 @@ export class GrafanaService {
 
   getDashboardTasks(): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval + 's';
         })
@@ -84,9 +77,8 @@ export class GrafanaService {
 
   getDashboardTask(task: Task): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
             's&var-task_name=' + task.name + '&var-task_name=All';
@@ -96,9 +88,8 @@ export class GrafanaService {
 
   getDashboardTaskExecution(execution: TaskExecution): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
             's&var-task_name=' + execution.taskName + '&var-task_name=All' + '&var-task_execution_id='
@@ -109,9 +100,8 @@ export class GrafanaService {
 
   getDashboardJobExecution(jobExecution: JobExecution): Observable<string> {
     return this.aboutService
-      .getAbout()
+      .getGrafana()
       .pipe(
-        map((about: About): any => about.grafana),
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
             's&var-job_name=' + jobExecution.name

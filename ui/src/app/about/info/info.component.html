@@ -46,7 +46,12 @@
           <strong>Username: </strong> {{about.security.username || 'N/A'}}
         </li>
         <li *ngIf="about.security.roles?.length > 0">
-          <strong>Roles: </strong> {{about.getRolesString()}}
+          <strong>Roles: </strong>
+          <ul>
+            <li *ngFor="let role of about.security.roles">
+              {{role}}
+            </li>
+          </ul>
         </li>
       </ul>
       <h3>Versions</h3>
@@ -109,14 +114,14 @@
       <h3>Platform-specific Information of the Skipper Deployer</h3>
       <ul>
         <ng-template
-          *ngIf="about.runtimeEnvironment.appDeployer.platformSpecificInfo && about.runtimeEnvironment.appDeployer.platformSpecificInfo.size > 0"
+          *ngIf="about.runtimeEnvironment.appDeployer.platformSpecificInfo && (about.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalue).length > 0"
           ngFor let-item [ngForOf]="about.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalue">
           <li>
             <strong>{{item.key}}: </strong> {{item.value}}
           </li>
         </ng-template>
         <li
-          *ngIf="!about.runtimeEnvironment.appDeployer.platformSpecificInfo || about.runtimeEnvironment.appDeployer.platformSpecificInfo.size == 0">
+          *ngIf="!about.runtimeEnvironment.appDeployer.platformSpecificInfo || (about.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalue).length == 0">
           <strong>
             No platform-specific app deployer information available.
           </strong>
@@ -163,15 +168,13 @@
               <li>
                 <strong>Platform-specific Information of the Task Launcher</strong>
                 <ul>
-                  <ng-template
-                    *ngIf="item.platformSpecificInfo && item.platformSpecificInfo.size > 0"
-                    ngFor let-item
-                    [ngForOf]="item.platformSpecificInfo | keyvalue">
+                  <ng-template *ngIf="item.platformSpecificInfo && (item.platformSpecificInfo | keyvalue).length > 0"
+                               ngFor let-item [ngForOf]="item.platformSpecificInfo | keyvalue">
                     <li>
                       <strong>{{item.key}}: </strong> {{item.value}}
                     </li>
                   </ng-template>
-                  <li *ngIf="!item.platformSpecificInfo || item.platformSpecificInfo.size == 0">
+                  <li *ngIf="!item.platformSpecificInfo || (item.platformSpecificInfo | keyvalue).length === 0">
                     <strong>
                       No platform-specific task launcher information available.
                     </strong>

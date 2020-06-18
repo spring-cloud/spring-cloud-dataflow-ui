@@ -1,7 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 import get from 'lodash.get';
 import { AboutService } from '../../shared/api/about.service';
-import { About } from '../../shared/model/about.model';
 import { SecurityService } from '../service/security.service';
 
 @Directive({
@@ -23,22 +22,20 @@ export class RoleDirective implements AfterViewInit {
   constructor(
     private aboutService: AboutService,
     private securityService: SecurityService,
-    private elem: ElementRef, private renderer: Renderer2) {
+    private elem: ElementRef,
+    private renderer: Renderer2) {
   }
 
   private async checkRoles() {
     if (this.appFeature) {
       const features = this.appFeature.split(',');
-      this.aboutService.getAbout()
-        .subscribe((about: About) => {
-          let featureEnabled = true;
-          if (this.appFeature) {
-            featureEnabled = !!features.find((feature) => {
-              return get(about.features, feature, false);
-            });
-          }
-          this.checkRoleAccess(featureEnabled);
+      if (this.appFeature) {
+        let featureEnabled = true;
+        featureEnabled = !!features.find(async (feature) => {
+          return await this.aboutService.isFeatureEnabled(feature);
         });
+        this.checkRoleAccess(featureEnabled);
+      }
     } else {
       this.checkRoleAccess(true);
     }

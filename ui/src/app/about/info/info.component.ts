@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { About } from '../../shared/model/about.model';
+import { AboutState } from '../../shared/store/about.reducer';
 import { AboutService } from '../../shared/api/about.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { AboutService } from '../../shared/api/about.service';
 })
 export class InfoComponent implements OnInit {
   loading = true;
-  about: About;
+  about: AboutState;
   @Input() isOpen = false;
 
   constructor(private aboutService: AboutService) {
@@ -16,10 +16,10 @@ export class InfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.aboutService.getAbout()
-      .subscribe((about: About) => {
+      .subscribe(((about: AboutState) => {
         this.about = about;
         this.loading = false;
-      });
+      }));
   }
 
 }
