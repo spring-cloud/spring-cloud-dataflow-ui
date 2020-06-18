@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { aboutFeatureKey, AboutState, getAbout, State } from '../../shared/store/about.reducer';
-import { select, Store } from '@ngrx/store';
+import { AboutState } from '../../shared/store/about.reducer';
 import { AboutService } from '../../shared/api/about.service';
 
 @Component({

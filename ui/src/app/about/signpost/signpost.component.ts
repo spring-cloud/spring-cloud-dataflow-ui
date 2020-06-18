@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AboutService } from '../../shared/api/about.service';
 import { InfoComponent } from '../info/info.component';
 import { ClrSignpostContent } from '@clr/angular';
-import { select, Store } from '@ngrx/store';
-import { aboutFeatureKey, AboutState, getAbout, State } from '../../shared/store/about.reducer';
+import { AboutState } from '../../shared/store/about.reducer';
 
 @Component({
   selector: 'app-about-signpost',
