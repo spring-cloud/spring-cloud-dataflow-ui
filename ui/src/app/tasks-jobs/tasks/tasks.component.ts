@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Task } from '../../shared/model/task.model';
-import { ClrDatagridStateInterface } from '@clr/angular';
+import { ClrDatagrid, ClrDatagridStateInterface } from '@clr/angular';
 import { TaskPage } from '../../shared/model/task.model';
 import { TaskService } from '../../shared/api/task.service';
 import { DestroyComponent } from './destroy/destroy.component';
@@ -16,6 +16,7 @@ import { GroupService } from '../../shared/service/group.service';
 export class TasksComponent extends DatagridComponent {
   page: TaskPage;
   @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
+  @ViewChild('datagrid') datagrid: ClrDatagrid;
 
   constructor(private taskService: TaskService,
               private router: Router,
@@ -38,6 +39,17 @@ export class TasksComponent extends DatagridComponent {
           this.loading = false;
         });
     }
+  }
+
+  setMode(grouped: boolean) {
+    this.grouped = grouped;
+    this.selected = [];
+    // Hack (clarity/refresh lockItem)
+    setTimeout(() => {
+      this.datagrid.rows.map(row => {
+        this.datagrid.selection.lockItem(row.item, row.item.composedTaskElement)
+      })
+    });
   }
 
   details(task: Task) {

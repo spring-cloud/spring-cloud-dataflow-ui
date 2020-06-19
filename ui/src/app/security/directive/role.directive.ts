@@ -30,10 +30,8 @@ export class RoleDirective implements AfterViewInit {
     if (this.appFeature) {
       const features = this.appFeature.split(',');
       if (this.appFeature) {
-        let featureEnabled = true;
-        featureEnabled = !!features.find(async (feature) => {
-          return await this.aboutService.isFeatureEnabled(feature);
-        });
+        const result = await Promise.all([...features.map(feature => this.aboutService.isFeatureEnabled(feature))]);
+        const featureEnabled = result.filter(item => item === true).length > 0;
         this.checkRoleAccess(featureEnabled);
       }
     } else {

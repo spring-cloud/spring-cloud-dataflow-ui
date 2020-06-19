@@ -67,22 +67,22 @@
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
       <app-view-card titleModal="Last execution" keyContext="task" name="{{task.name}}" id="execution">
         <ng-template>
-          <div class="block card-block-keyvalue lg-key" *ngIf="!loadingExecution">
-            <div *ngIf="execution">
+          <div class="block card-block-keyvalue lg-key">
+            <div *ngIf="task.lastTaskExecution">
               <div class="row">
                 <div class="key">Execution Id</div>
-                <div class="value">{{execution.executionId}}</div>
+                <div class="value">{{task.lastTaskExecution.executionId}}</div>
               </div>
               <div class="row">
                 <div class="key">Arguments</div>
                 <div class="value">
-                  <div *ngIf="execution.getArgumentsToArray().length > 0">
-                    <div *ngFor="let arg of execution.getArgumentsToArray()">
+                  <div *ngIf="task.lastTaskExecution.getArgumentsToArray().length > 0">
+                    <div *ngFor="let arg of task.lastTaskExecution.getArgumentsToArray()">
                       {{arg[0]}}:
                       <strong>{{arg[1]}}</strong>
                     </div>
                   </div>
-                  <div *ngIf="execution.getArgumentsToArray().length === 0">
+                  <div *ngIf="task.lastTaskExecution.getArgumentsToArray().length === 0">
                     N/A
                   </div>
                 </div>
@@ -91,10 +91,10 @@
                 <div class="key">External Execution Id</div>
                 <div class="value">
                   <a [routerLink]="'/jobs/executions/' + jobExecutionId"
-                     *ngFor="let jobExecutionId of execution.jobExecutionIds">
+                     *ngFor="let jobExecutionId of task.lastTaskExecution.jobExecutionIds">
                     {{jobExecutionId}}
                   </a>
-                  <div *ngIf="execution.jobExecutionIds?.length == 0">
+                  <div *ngIf="task.lastTaskExecution.jobExecutionIds?.length == 0">
                     N/A
                   </div>
                 </div>
@@ -102,62 +102,62 @@
               <div class="row">
                 <div class="key">Batch Job</div>
                 <div class="value">
-                  <clr-icon *ngIf="execution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
-                  <clr-icon *ngIf="execution.jobExecutionIds?.length == 0" shape="success-standard"></clr-icon>
+                  <clr-icon *ngIf="task.lastTaskExecution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
+                  <clr-icon *ngIf="task.lastTaskExecution.jobExecutionIds?.length == 0" shape="success-standard"></clr-icon>
                 </div>
               </div>
               <div class="row">
                 <div class="key">Job Execution Ids</div>
                 <div class="value">
-                  {{execution.externalExecutionId || 'N/A'}}
+                  {{task.lastTaskExecution.externalExecutionId || 'N/A'}}
                 </div>
               </div>
               <div class="row">
                 <div class="key">Start Time</div>
                 <div class="value">
-                  {{execution.startTime | datetime}}
+                  {{task.lastTaskExecution.startTime | datetime}}
                 </div>
               </div>
               <div class="row">
                 <div class="key">End Time</div>
                 <div class="value">
-                  {{execution.endTime | datetime}}
+                  {{task.lastTaskExecution.endTime | datetime}}
                 </div>
               </div>
               <div class="row">
                 <div class="key">Duration</div>
                 <div class="value">
-                  {{execution.startTime | duration: execution.endTime}}
+                  {{task.lastTaskExecution.startTime | duration: task.lastTaskExecution.endTime}}
                 </div>
               </div>
               <div class="row">
                 <div class="key">Exit Code</div>
                 <div class="value">
-                  {{execution.exitCode}}
+                  {{task.lastTaskExecution.exitCode}}
                 </div>
               </div>
               <div class="row">
                 <div class="key">Exit Message</div>
                 <div class="value">
-                  {{execution.exitMessage || 'N/A'}}
+                  {{task.lastTaskExecution.exitMessage || 'N/A'}}
                 </div>
               </div>
               <div class="row">
                 <div class="key">Resource URL</div>
                 <div class="value">
-                  {{execution.resourceUrl || 'N/A'}}
+                  {{task.lastTaskExecution.resourceUrl || 'N/A'}}
                 </div>
               </div>
               <div class="row">
                 <div class="key">Application Properties</div>
                 <div class="value">
-                  <div *ngIf="execution.getAppPropertiesToArray().length > 0">
-                    <div *ngFor="let arg of execution.getAppPropertiesToArray()">
+                  <div *ngIf="task.lastTaskExecution.getAppPropertiesToArray().length > 0">
+                    <div *ngFor="let arg of task.lastTaskExecution.getAppPropertiesToArray()">
                       {{arg.key}}:
                       <strong>{{arg.value}}</strong>
                     </div>
                   </div>
-                  <div *ngIf="execution.getAppPropertiesToArray().length === 0">
+                  <div *ngIf="task.lastTaskExecution.getAppPropertiesToArray().length === 0">
                     N/A
                   </div>
                 </div>
@@ -165,32 +165,28 @@
               <div class="row">
                 <div class="key">Platform Properties</div>
                 <div class="value">
-                  <div *ngIf="execution.getDeploymentPropertiesToArray().length > 0">
-                    <div *ngFor="let arg of execution.getDeploymentPropertiesToArray()">
+                  <div *ngIf="task.lastTaskExecution.getDeploymentPropertiesToArray().length > 0">
+                    <div *ngFor="let arg of task.lastTaskExecution.getDeploymentPropertiesToArray()">
                       {{arg.key}}:
                       <strong>{{arg.value}}</strong>
                     </div>
                   </div>
-                  <div *ngIf="execution.getDeploymentPropertiesToArray().length === 0">
+                  <div *ngIf="task.lastTaskExecution.getDeploymentPropertiesToArray().length === 0">
                     N/A
                   </div>
                 </div>
               </div>
             </div>
-            <div *ngIf="!execution">
+            <div *ngIf="!task.lastTaskExecution">
               No execution yet.
             </div>
           </div>
-          <div *ngIf="loadingExecution">
-            <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading execution...
-          </div>
         </ng-template>
-        <div class="card-footer" *ngIf="execution">
-          <button class="btn btn-sm btn-secondary" (click)="navigateExecution(execution.executionId)">
+        <div class="card-footer" *ngIf="task.lastTaskExecution">
+          <button class="btn btn-sm btn-secondary" (click)="navigateExecution(task.lastTaskExecution.executionId)">
             View task execution
           </button>
-          <button class="btn btn-sm btn-secondary" (click)="openLog(execution)">View log</button>
+          <button class="btn btn-sm btn-secondary" (click)="openLog(task.lastTaskExecution)">View log</button>
         </div>
       </app-view-card>
     </div>
