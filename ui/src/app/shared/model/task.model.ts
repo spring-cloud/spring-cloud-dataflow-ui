@@ -1,4 +1,5 @@
 import { Page } from './page.model';
+import { TaskExecution } from './task-execution.model';
 
 export class Task {
   name: string;
@@ -7,6 +8,7 @@ export class Task {
   composed: boolean;
   status: string;
   composedTaskElement: boolean;
+  lastTaskExecution: TaskExecution;
 
   static parse(input) {
     const task = new Task();
@@ -16,7 +18,9 @@ export class Task {
     task.status = input.status;
     task.composedTaskElement = input.composedTaskElement;
     task.description = input.description || '';
-
+    if (input.lastTaskExecution) {
+      task.lastTaskExecution = TaskExecution.parse(input.lastTaskExecution);
+    }
     return task;
   }
 

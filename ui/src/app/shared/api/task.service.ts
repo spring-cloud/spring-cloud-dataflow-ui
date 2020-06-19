@@ -34,10 +34,10 @@ export class TaskService {
       );
   }
 
-  getTask(name: string): Observable<Task> {
+  getTask(name: string, manifest = false): Observable<Task> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any>(`/tasks/definitions/${name}`, { headers })
+      .get<any>(`/tasks/definitions/${name}?manifest=${manifest}`, { headers })
       .pipe(
         map(Task.parse),
         catchError(ErrorUtils.catchError)

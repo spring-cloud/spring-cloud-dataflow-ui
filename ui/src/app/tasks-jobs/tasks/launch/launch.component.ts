@@ -3,7 +3,7 @@ import { Task } from '../../../shared/model/task.model';
 import { TaskService } from '../../../shared/api/task.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, mergeMap } from 'rxjs/operators';
-import { Form, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { KeyValueValidator } from '../../../shared/component/key-value/key-value.validator';
 import { TaskPropValidator } from '../task-prop.validator';
 import { Platform } from '../../../shared/model/platform.model';
@@ -16,7 +16,6 @@ import { HttpError } from '../../../shared/model/error.model';
   styles: []
 })
 export class LaunchComponent implements OnInit {
-
   loading = true;
   submitting = false;
   task: Task;
@@ -36,27 +35,25 @@ export class LaunchComponent implements OnInit {
           params => {
             this.task = new Task();
             this.task.name = params.name;
-            return this.taskService.getTask(params.name);
+            return this.taskService.getTask(params.name, true);
           }
         ),
-        mergeMap(task => this.taskService.getExecutions(0, 1, task.name, 'TASK_EXECUTION_ID', 'DESC').pipe(
-          map(executionPage => {
-            let parameters = '';
-            if (executionPage.items.length === 1 && executionPage.items[0].deploymentProperties) {
-              parameters = Object.keys(executionPage.items[0].deploymentProperties)
-                .map(key => (executionPage.items[0].deploymentProperties[key] === '******')
-                  ? ''
-                  : `${key}=${executionPage.items[0].deploymentProperties[key]}`
-                )
-                .filter(param => !!param)
-                .join('\n');
-            }
-            return {
-              task,
-              parameters
-            };
-          })
-        )),
+        map((task: Task) => {
+          let parameters = '';
+          if (task.lastTaskExecution && task.lastTaskExecution.deploymentProperties) {
+            parameters = Object.keys(task.lastTaskExecution.deploymentProperties)
+              .map(key => (task.lastTaskExecution.deploymentProperties[key] === '******')
+                ? ''
+                : `${key}=${task.lastTaskExecution.deploymentProperties[key]}`
+              )
+              .filter(param => !!param)
+              .join('\n');
+          }
+          return {
+            task,
+            parameters
+          };
+        }),
         mergeMap(
           ({ task, parameters }) => this.taskService.getPlatforms().pipe(
             map(platforms => ({

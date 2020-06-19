@@ -23,7 +23,6 @@ export class TaskComponent implements OnInit {
   task: Task;
   applications: Array<any>;
   executions: TaskExecutionPage;
-  execution: TaskExecution;
 
   @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
   @ViewChild('logModal', { static: true }) logModal: LogComponent;
@@ -42,7 +41,7 @@ export class TaskComponent implements OnInit {
           val => {
             this.task = new Task();
             this.task.name = val.name;
-            return this.taskService.getTask(val.name);
+            return this.taskService.getTask(val.name, true);
           }
         ),
       )
@@ -93,9 +92,6 @@ export class TaskComponent implements OnInit {
     this.taskService.getExecutions(0, 10, this.task.name, 'TASK_EXECUTION_ID', 'DESC')
       .subscribe((page: TaskExecutionPage) => {
         this.executions = page;
-        if (this.executions.total > 0) {
-          this.execution = this.executions.items[0];
-        }
         this.loadingExecution = false;
       }, (error) => {
         this.loadingExecution = false;
