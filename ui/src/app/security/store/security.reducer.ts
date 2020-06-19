@@ -37,7 +37,7 @@ export const getShouldProtect = createSelector(
   (enabled, authenticated) => !enabled ? false : (enabled && !authenticated)
 );
 
-const initialState: SecurityState = {
+export const initialState: SecurityState = {
   enabled: true,
   authenticated: false,
   username: undefined,
