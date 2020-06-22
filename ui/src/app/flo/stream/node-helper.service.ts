@@ -284,6 +284,7 @@ export class NodeHelper {
     node.attr('.output-port', {
       port: 'output',
       magnet: true,
+      'joint-selector': '.output-port'
     });
     node.attr('.port-outer-circle-output', {
       ref: '.box',
@@ -305,6 +306,7 @@ export class NodeHelper {
     node.attr('.input-port', {
       port: 'input',
       magnet: true,
+      'joint-selector': '.input-port'
     });
     node.attr('.port-outer-circle-input', {
       ref: '.box',

@@ -520,11 +520,11 @@ describe('editor.service : Auto-Link', () => {
     const nullNode = flo.createNode(metamodel.get('sink').get('null'));
     flo.createLink({
       id: httpNode.id,
-      selector: '.output-port',
+      magnet: '.output-port',
       port: 'output'
     }, {
       id: nullNode.id,
-      selector: '.input-port',
+      magnet: '.input-port',
       port: 'input'
     }, null, null);
     expect(flo.getGraph().getElements().length).toEqual(2);
@@ -540,11 +540,11 @@ describe('editor.service : Auto-Link', () => {
     const nullNode = flo.createNode(metamodel.get('sink').get('null'));
     flo.createLink({
       id: httpNode.id,
-      selector: '.output-port',
+      magnet: '.output-port',
       port: 'output'
     }, {
       id: nullNode.id,
-      selector: '.input-port',
+      magnet: '.input-port',
       port: 'input'
     }, null, new Map<string, any>().set('isTapLink', true));
     expect(flo.getGraph().getElements().length).toEqual(2);
