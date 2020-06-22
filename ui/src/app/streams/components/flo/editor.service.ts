@@ -700,11 +700,11 @@ export class EditorService implements Flo.Editor {
       if (flo.getGraph().getCell(source).attr('.output-port')) {
         targets.filter(t => flo.getGraph().getCell(t).attr('.input-port')).forEach(target => flo.createLink({
           'id': source,
-          'selector': '.output-port',
+          'magnet': '.output-port',
           'port': 'output'
         }, {
           'id': target,
-          'selector': '.input-port',
+          'magnet': '.input-port',
           'port': 'input'
         }));
       }
@@ -713,11 +713,11 @@ export class EditorService implements Flo.Editor {
       if (flo.getGraph().getCell(target).attr('.input-port')) {
         sources.filter(s => flo.getGraph().getCell(s).attr('.output-port')).forEach(source => flo.createLink({
           'id': sources[i],
-          'selector': '.output-port',
+          'magnet': '.output-port',
           'port': 'output'
         }, {
           'id': target,
-          'selector': '.input-port',
+          'magnet': '.input-port',
           'port': 'input'
         }));
       }
@@ -765,21 +765,21 @@ export class EditorService implements Flo.Editor {
         sources.forEach(source => {
           flo.createLink({
             'id': source,
-            'selector': '.output-port',
+            'magnet': '.output-port',
             'port': 'output'
           }, {
             'id': node.id,
-            'selector': '.input-port',
+            'magnet': '.input-port',
             'port': 'input'
           });
         });
         flo.createLink({
           'id': node.id,
-          'selector': '.output-port',
+          'magnet': '.output-port',
           'port': 'output'
         }, {
           'id': pivotNode.id,
-          'selector': '.input-port',
+          'magnet': '.input-port',
           'port': 'input'
         });
       } else if (side === 'right') {
@@ -791,25 +791,24 @@ export class EditorService implements Flo.Editor {
           targets.push(link.get('target').id);
           link.remove();
         });
-        // TODO: replace selector CSS class with the result of view.getSelector(...)
         targets.forEach(target => {
           flo.createLink({
             'id': node.id,
-            'selector': '.output-port',
+            'magnet': '.output-port',
             'port': 'output'
           }, {
             'id': target,
-            'selector': '.input-port',
+            'magnet': '.input-port',
             'port': 'input'
           });
         });
         flo.createLink({
           'id': pivotNode.id,
-          'selector': '.output-port',
+          'magnet': '.output-port',
           'port': 'output'
         }, {
           'id': node.id,
-          'selector': '.input-port',
+          'magnet': '.input-port',
           'port': 'input'
         });
       }
@@ -827,26 +826,25 @@ export class EditorService implements Flo.Editor {
     }
     link.remove();
 
-    // TODO: replace selector CSS class with the result of view.getSelector(...)
     if (source) {
       flo.createLink({
         'id': source,
-        'selector': sourceTap ? '.tap-port' : '.output-port',
+        'magnet': sourceTap ? '.tap-port' : '.output-port',
         'port': sourceTap ? 'tap' : 'output'
       }, {
         'id': node.id,
-        'selector': '.input-port',
+        'magnet': '.input-port',
         'port': 'input'
       });
     }
     if (target) {
       flo.createLink({
         'id': node.id,
-        'selector': '.output-port',
+        'magnet': '.output-port',
         'port': 'output'
       }, {
         'id': target,
-        'selector': '.input-port',
+        'magnet': '.input-port',
         'port': 'input'
       });
     }
@@ -867,15 +865,14 @@ export class EditorService implements Flo.Editor {
         this.moveNodeOnNode(flo, <dia.Element> source, <dia.Element> target, 'left', true);
         relinking = true;
       } else if (dragDescriptor.target.cssClassSelector === '.tap-port') {
-        // TODO: replace selector CSS class with the result of view.getSelector(...)
         flo.createLink({
           'id': target.id,
-          'selector': dragDescriptor.target.cssClassSelector,
-          // 'port': dragDescriptor.target.port
+          'magnet': dragDescriptor.target.cssClassSelector,
+          'port': 'output'
         }, {
           'id': source.id,
-          'selector': dragDescriptor.source.cssClassSelector,
-          // 'port': dragDescriptor.source.port
+          'magnet': dragDescriptor.source.cssClassSelector,
+          'port': 'input'
         });
       }
     } else if (target instanceof joint.dia.Link && type !== 'tap' && type !== 'destination') {
@@ -952,11 +949,11 @@ export class EditorService implements Flo.Editor {
       }
       flo.createLink({
         id: sourceView.model.id,
-        selector: sourceView.getSelector(Flo.findMagnetByClass(sourceView, '.output-port'), null),
+        magnet: '.output-port',
         port: 'output'
       }, {
         id: targetView.model.id,
-        selector: targetView.getSelector(Flo.findMagnetByClass(targetView, '.input-port'), null),
+        magnet: '.input-port',
         port: 'input'
       });
     }

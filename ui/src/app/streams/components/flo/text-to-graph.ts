@@ -438,8 +438,8 @@ export class TextToGraphConverter {
       const props: Map<string, any> = new Map();
       props.set('isTapLink', (link.linkType && link.linkType === 'tap') ? true : false);
       this.floEditorContext.createLink(
-        { id: nodesIndex[link.from], selector: '.output-port', port: 'output' },
-        { id: nodesIndex[link.to], selector: '.input-port', port: 'input' },
+        { id: nodesIndex[link.from], magnet: '.output-port', port: 'output' },
+        { id: nodesIndex[link.to], magnet: '.input-port', port: 'input' },
         null,
         props);
 
