@@ -129,15 +129,15 @@ describe('Streams Editor Service', () => {
     const transformProcessor = createProcessor('transform');
     // invalid links
     let linkParams: Shapes.LinkCreationParams = {
-      source: { 'id': timeSource.id, 'port': 'input', 'selector': '.output-port' }, // incorrect port
-      target: { 'id': transformProcessor.id, 'port': 'input', 'selector': '.input-port' }
+      source: { 'id': timeSource.id, 'port': 'input', 'magnet': '.output-port' }, // incorrect port
+      target: { 'id': transformProcessor.id, 'port': 'input', 'magnet': '.input-port' }
     };
     let link = Shapes.Factory.createLink(linkParams);
     graph.addCell(link);
 
     linkParams = {
-      source: { 'id': timeSource.id, 'port': 'output', 'selector': '.output-port' },
-      target: { 'id': transformProcessor.id, 'port': 'output', 'selector': '.input-port' } // incorrect port
+      source: { 'id': timeSource.id, 'port': 'output', 'magnet': '.output-port' },
+      target: { 'id': transformProcessor.id, 'port': 'output', 'magnet': '.input-port' } // incorrect port
     };
     link = Shapes.Factory.createLink(linkParams);
     graph.addCell(link);
@@ -378,8 +378,8 @@ describe('Streams Editor Service', () => {
 
   function createLink(from, to, isTapLink?: boolean): dia.Link {
     const linkParams: Shapes.LinkCreationParams = {
-      source: { 'id': from.id, 'port': 'output', 'selector': '.output-port' },
-      target: { 'id': to.id, 'port': 'input', 'selector': '.input-port' }
+      source: { 'id': from.id, 'port': 'output', 'magnet': '.output-port' },
+      target: { 'id': to.id, 'port': 'input', 'magnet': '.input-port' }
     };
     const link = Shapes.Factory.createLink(linkParams);
     link.attr('props/isTapLink', isTapLink ? true : false);
@@ -523,11 +523,11 @@ describe('editor.service : Auto-Link', () => {
     const nullNode = flo.createNode(metamodel.get('sink').get('null'));
     flo.createLink({
       id: httpNode.id,
-      selector: '.output-port',
+      magnet: '.output-port',
       port: 'output'
     }, {
       id: nullNode.id,
-      selector: '.input-port',
+      magnet: '.input-port',
       port: 'input'
     }, null, null);
     expect(flo.getGraph().getElements().length).toEqual(2);
@@ -543,11 +543,11 @@ describe('editor.service : Auto-Link', () => {
     const nullNode = flo.createNode(metamodel.get('sink').get('null'));
     flo.createLink({
       id: httpNode.id,
-      selector: '.output-port',
+      magnet: '.output-port',
       port: 'output'
     }, {
       id: nullNode.id,
-      selector: '.input-port',
+      magnet: '.input-port',
       port: 'input'
     }, null, new Map<string, any>().set('isTapLink', true));
     expect(flo.getGraph().getElements().length).toEqual(2);
