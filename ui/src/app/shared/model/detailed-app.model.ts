@@ -2,9 +2,9 @@ import { App, ApplicationType } from './app.model';
 
 export class Deprecation {
 
-  public level: string;
-  public reason: string;
-  public replacement: string;
+  level: string;
+  reason: string;
+  replacement: string;
 
   static parse(input) {
     const deprecation = new Deprecation();
@@ -17,15 +17,15 @@ export class Deprecation {
 
 export class ConfigurationMetadataProperty {
 
-  public id: string;
-  public name: string;
-  public type: string;
-  public description: string;
-  public shortDescription: string;
-  public defaultValue: string;
-  public deprecation: Deprecation;
-  public sourceType: string;
-  public isDeprecated: boolean;
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  shortDescription: string;
+  defaultValue: string;
+  deprecation: Deprecation;
+  sourceType: string;
+  isDeprecated: boolean;
 
   static parse(input) {
     const config = new ConfigurationMetadataProperty();
@@ -43,7 +43,7 @@ export class ConfigurationMetadataProperty {
 }
 
 export class DetailedApp extends App {
-  public options: ConfigurationMetadataProperty[];
+  options: ConfigurationMetadataProperty[];
 
   static parse(input): DetailedApp {
     const app: DetailedApp = new DetailedApp();
@@ -51,6 +51,7 @@ export class DetailedApp extends App {
     app.type = input.type as ApplicationType;
     app.uri = input.uri;
     app.version = input.version;
+    app.versions = input.versions;
     app.defaultVersion = input.defaultVersion;
     if (input.options) {
       app.options = [];

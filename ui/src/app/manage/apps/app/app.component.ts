@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
   }
 
   getVersions() {
+    this.loading = true;
     this.appsService
       .getAppVersions(this.app.name, this.app.type)
       .subscribe((apps: App[]) => {
@@ -79,6 +80,7 @@ export class AppComponent implements OnInit {
           this.detailedApp = DetailedApp.parse({
             name: app.name,
             version: app.version,
+            versions: app.versions,
             type: app.type,
             defaultVersion: app.defaultVersion
           });
@@ -90,7 +92,6 @@ export class AppComponent implements OnInit {
     if (this.selectedApp?.version === app?.version) {
       return;
     }
-    this.loading = true;
     this.getProperties(app);
   }
 

@@ -9,7 +9,7 @@ const V = joint.V;
 
 loadShapes();
 
-joint.connectors.smoothHorizontal = function(sourcePoint, targetPoint, route, opt) {
+joint.connectors.smoothHorizontal = function (sourcePoint, targetPoint, route, opt) {
 
   const raw = opt && opt.raw;
   let path;
@@ -43,7 +43,7 @@ joint.connectors.smoothHorizontal = function(sourcePoint, targetPoint, route, op
   return (raw) ? path : path.serialize();
 };
 
-joint.connectors.smoothVertical = function(sourcePoint, targetPoint, route, opt) {
+joint.connectors.smoothVertical = function (sourcePoint, targetPoint, route, opt) {
 
   const raw = opt && opt.raw;
   let path;
@@ -79,11 +79,11 @@ joint.connectors.smoothVertical = function(sourcePoint, targetPoint, route, opt)
 
 joint.shapes.flo.DataflowPaletteGroupHeader = joint.shapes.basic.Generic.extend({
   // The path is the open/close arrow, defaults to vertical (open)
-  markup: '<g><rect class="outer"/><rect class="group-label-bg"/><text class="group-label"/><image class="collapse-handle"/><polyline class="group-line"/></g>',
+  markup: '<g><rect class="outer"/><rect class="group-label-bg"/><text class="group-label"/><image class="collapse-handle light"/><image class="collapse-handle2 dark"/><polyline class="group-line"/></g>',
   defaults: joint.util.deepSupplement({
     type: 'palette.groupheader',
-    size: {width: 170, height: 40},
-    position: {x: 0, y: 0},
+    size: { width: 170, height: 40 },
+    position: { x: 0, y: 0 },
     attrs: {
       '.outer': {
         refWidth: 1,
@@ -116,6 +116,15 @@ joint.shapes.flo.DataflowPaletteGroupHeader = joint.shapes.basic.Generic.extend(
         refY: '50%',
         refY2: -5
       },
+      '.collapse-handle2': {
+        width: 30,
+        height: 14,
+        ref: '.outer',
+        refX: '100%',
+        refX2: '-30 - 20',
+        refY: '50%',
+        refY2: -5
+      },
       '.group-line': {
         ref: '.outer',
         refPointsKeepOffset: '1,42 169,42'
@@ -132,8 +141,10 @@ export function createPaletteGroupHeader(title: string, isOpen: boolean) {
   // Add CSS class to rectangle 'group-label-bg'. If class is not set then it is 'group-label-bg'
   group.attr('.group-label-bg/class', `${group.attr('.group-label-bg/class') || 'group-label-bg'} ${title.replace(' ', '-')}`);
   group.attr('.collapse-handle/xlink:href', isOpen ? 'assets/img/chevron-down.svg' : 'assets/img/chevron-left.svg');
+  group.attr('.collapse-handle2/xlink:href', isOpen ? 'assets/img/chevron-down-white.svg' : 'assets/img/chevron-left-white.svg');
   group.on('change:isOpen', (cell, newValue) => {
     group.attr('.collapse-handle/xlink:href', newValue ? 'assets/img/chevron-down.svg' : 'assets/img/chevron-left.svg');
+    group.attr('.collapse-handle2/xlink:href', newValue ? 'assets/img/chevron-down-white.svg' : 'assets/img/chevron-left-white.svg');
   });
   return group;
 }

@@ -12,6 +12,7 @@ export namespace ApplicationType {
   export function getKeys(): number[] {
     return Object.keys(ApplicationType).filter(isNumber).map(value => Number(value));
   }
+
   function isNumber(element, index, array) {
     return !isNaN(element);
   }
@@ -24,6 +25,7 @@ export class App {
   metaDataUri: string;
   version: string;
   defaultVersion: boolean;
+  versions: Array<string>;
 
   public static parse(input) {
     const app = new App();
@@ -32,6 +34,7 @@ export class App {
     app.uri = input.uri;
     app.version = input.version;
     app.defaultVersion = input.defaultVersion;
+    app.versions = input.versions;
     return app;
   }
 

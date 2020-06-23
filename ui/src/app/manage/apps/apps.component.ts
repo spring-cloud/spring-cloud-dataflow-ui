@@ -26,7 +26,7 @@ export class AppsComponent extends DatagridComponent {
       super.refresh(state);
       const params = this.getParams(state, { name: '', type: '' });
       this.appService.getApps(params.current - 1, params.size, params.name, params.type,
-        `${params.by || 'name'}`, `${params.reverse ? 'DESC' : 'ASC'}`)
+        `${params.by || 'name'}`, `${params.reverse ? 'DESC' : 'ASC'}`, true)
         .subscribe((page: AppPage) => {
           this.attachColumns();
           this.page = page;
