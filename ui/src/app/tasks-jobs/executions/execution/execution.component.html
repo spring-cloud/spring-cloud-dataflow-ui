@@ -187,13 +187,13 @@
       </app-view-card>
     </div>
   </div>
-
-  <app-task-execution-log #logModal></app-task-execution-log>
-  <app-execution-stop #stopModal></app-execution-stop>
-  <app-execution-cleanup #cleanModal (onCleaned)="back()"></app-execution-cleanup>
 </div>
 
 <div *ngIf="loading" style="padding:1rem 0;">
   <clr-spinner clrInline clrSmall></clr-spinner>
   Loading execution...
 </div>
+
+<app-task-execution-log #logModal></app-task-execution-log>
+<app-execution-stop #stopModal></app-execution-stop>
+<app-execution-cleanup #cleanModal (onCleaned)="back()"></app-execution-cleanup>
