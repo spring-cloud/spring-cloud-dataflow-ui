@@ -134,12 +134,12 @@ describe('utils', () => {
       source: {
         id: http.id,
         port: 'output',
-        selector: '.output-port'
+        magnet: '.output-port'
       },
       target: {
         id: transform.id,
         port: 'input',
-        selector: '.input-port'
+        magnet: '.input-port'
       },
       renderer: RENDER_SERVICE,
       graph: graph,

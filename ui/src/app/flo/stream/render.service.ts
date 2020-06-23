@@ -370,12 +370,12 @@ export class RenderService implements Flo.Renderer {
       link.set('source', {
         id: newDestinationNode.id,
         port: 'output',
-        selector: '.output-port'
+        magnet: '.output-port'
       });
 
       // New link to connect original source to new target
       flo.createLink(previousSource,
-        { id: newDestinationNode.id, port: 'input', selector: '.input-port' },
+        { id: newDestinationNode.id, port: 'input', magnet: '.input-port' },
         null,
         new Map<string, any>().set('isTapLink', existingIsTap ? true : false));
 
