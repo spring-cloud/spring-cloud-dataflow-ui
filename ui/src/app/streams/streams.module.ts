@@ -48,6 +48,7 @@ import { StreamsUtilsService } from './streams-utils/streams-utils.service';
 import { CommonModule } from '@angular/common';
 import { NodeHelper } from './components/flo/node-helper.service';
 import { PropertiesEditor } from './components/flo/properties-editor.service';
+import { SanitizeDsl } from './components/flo/sanitize-dsl.service';
 
 @NgModule({
   imports: [
@@ -117,7 +118,8 @@ import { PropertiesEditor } from './components/flo/properties-editor.service';
     StreamDeployService,
     StreamsUtilsService,
     NodeHelper,
-    PropertiesEditor
+    PropertiesEditor,
+    SanitizeDsl,
   ],
   exports: [
     StreamStatusComponent

@@ -2,7 +2,6 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy, EventEmitter } from '@
 import { BsModalRef } from 'ngx-bootstrap';
 import { FormGroup, FormControl, AbstractControl, Validators } from '@angular/forms';
 import { ParserService } from '../../../shared/services/parser.service';
-import { convertParseResponseToJsonGraph } from '../../components/flo/text-to-graph';
 import { Utils } from '../../components/flo/support/utils';
 import { StreamsService } from '../../streams.service';
 import { Properties } from 'spring-flo';
@@ -13,6 +12,7 @@ import { NotificationService } from '../../../shared/services/notification.servi
 import { LoggerService } from '../../../shared/services/logger.service';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { BlockerService } from '../../../shared/components/blocker/blocker.service';
+import { SanitizeDsl } from '../../components/flo/sanitize-dsl.service';
 
 /**
  * Stores progress percentage.
@@ -102,7 +102,8 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
               private streamService: StreamsService,
               private loggerService: LoggerService,
               private blockerService: BlockerService,
-              private router: Router) {
+              private router: Router,
+              private sanitizeDsl: SanitizeDsl) {
     super(bsModalRef);
   }
 
@@ -152,7 +153,7 @@ export class StreamCreateDialogComponent extends Modal implements OnInit, OnDest
     this.dependencies = new Map();
     if (text) {
       // TODO: Adopt to parser types once they are available
-      const graphAndErrors = convertParseResponseToJsonGraph(text, this.parserService.parseDsl(text));
+      const graphAndErrors = this.sanitizeDsl.convert(text, this.parserService.parseDsl(text));
       if (graphAndErrors.graph) {
         this.streamDefs.push(...graphAndErrors.graph.streamdefs);
         this.streamDefs.forEach((streamDef, i) => {
