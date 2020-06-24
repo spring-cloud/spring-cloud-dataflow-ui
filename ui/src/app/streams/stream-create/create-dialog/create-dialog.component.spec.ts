@@ -17,6 +17,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { of } from 'rxjs';
 import { Platform } from '../../../shared/model/platform';
 import { BlockerService } from '../../../shared/components/blocker/blocker.service';
+import {SanitizeDsl} from '../../components/flo/sanitize-dsl.service';
 
 /**
  * Test {@link StreamCreateDialogComponent}.
@@ -31,6 +32,7 @@ describe('StreamCreateDialogComponent', () => {
   const parserService = new ParserService();
   const notificationService = new MockNotificationService();
   const aboutService = new MocksSharedAboutService();
+  const sanitizeDsl = new SanitizeDsl();
 
 
   beforeEach(async () => {
@@ -54,6 +56,7 @@ describe('StreamCreateDialogComponent', () => {
         { provide: NotificationService, useValue: notificationService },
         { provide: SharedAboutService, useValue: aboutService },
         { provide: BsModalRef, useValue: null },
+        { provide: SanitizeDsl, useValue: sanitizeDsl },
         BlockerService
       ]
     })
