@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AboutService } from '../../shared/api/about.service';
 import { SecurityService } from '../service/security.service';
-import get from 'lodash.get';
 import { take } from 'rxjs/operators';
 
 @Injectable()

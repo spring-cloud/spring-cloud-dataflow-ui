@@ -1,0 +1,115 @@
+<h1>Dev. Dashboard</h1>
+
+<div *ngIf="processing">
+  <div class="alert alert-warning" role="alert" style="margin: 1rem 0 .4rem;">
+    <div class="alert-items">
+      <div class="alert-item static">
+        <div class="alert-icon-wrapper">
+          <clr-spinner clrInline clrSmall></clr-spinner>
+        </div>
+        <div class="alert-text">
+          Processing the operation...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="clr-row">
+  <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
+    <app-view-card titleModal="Actions" name="dev" keyContext="dev" id="actions">
+      <ng-template>
+        <div>
+          <button [disabled]="processing" (click)="importApps()" class="btn btn-sm btn-primary">
+            Import Apps Starters
+          </button>
+          <button [disabled]="processing" (click)="createStreams()" class=" btn btn-sm btn-primary">
+            Create Streams
+          </button>
+          <button [disabled]="processing" (click)="createTasks()" class=" btn btn-sm btn-primary">
+            Create tasks
+          </button>
+        </div>
+      </ng-template>
+    </app-view-card>
+  </div>
+  <div class="clr-col-lg-8 clr-col-md-12 clr-col-12">
+    <app-view-card titleModal="Labels" name="dev" keyContext="dev" id="labeld">
+      <ng-template>
+        <div style="padding:.4rem 0">
+          Application types:
+          <span class="label label-app label-uppercase processor">processor</span>
+          <span class="label label-app label-uppercase source">source</span>
+          <span class="label label-app label-uppercase sink">sink</span>
+          <span class="label label-app label-uppercase task">task</span>
+          <span class="label label-app label-uppercase app">app</span>
+        </div>
+        <div style="padding:.4rem 0">
+          Versions:
+          <span class="label">1.2.2.RELEASE</span>
+          <span class="label">
+            1.2.2.RELEASE
+            <span class="badge badge-light-blue">2</span>
+          </span>
+        </div>
+        <div style="padding:.4rem 0">
+          Stream statuses:
+          <span class="label label-info">DEPLOYING</span>
+          <span class="label label-success">DEPLOYED</span>
+          <span class="label label-warning">INCOMPLETE</span>
+          <span class="label label-danger">FAILED</span>
+          <span class="label label-deploying">UNDEPLOYED</span>
+        </div>
+        <div style="padding:.4rem 0">
+          Task statuses:
+          <span class="label label-info">UNKNOWN</span>
+          <span class="label label-success">COMPLETE</span>
+          <span class="label label-danger">ERROR</span>
+          <span class="label label-warning">RUNNING</span>
+        </div>
+        <div style="padding:.4rem 0">
+          Job execution statuses:
+          <span class="label label-success">COMPLETED</span>
+          <span class="label label-danger">ERROR</span>
+        </div>
+        <div style="padding:.4rem 0">
+          Record actions statuses:
+          <span class="label label-info">DEPLOY</span>
+          <span class="label label-success">CREATE</span>
+          <span class="label label-danger">DELETE</span>
+          <span class="label label-info">ROLLBACK</span>
+          <span class="label label-info">UNDEPLOY</span>
+          <span class="label label-info">UPDATE</span>
+        </div>
+        <div style="padding:.4rem 0">
+          Record operations statuses:
+          <span class="label">APP_REGISTRATION</span>
+          <span class="label">SCHEDULE</span>
+          <span class="label">TASK</span>
+          <span class="label">STREAM</span>
+        </div>
+      </ng-template>
+    </app-view-card>
+  </div>
+</div>
+
+<app-view-card titleModal="Stores" name="dev" keyContext="dev" id="store">
+  <ng-template>
+    <clr-select-container style="margin:0;">
+      <select clrSelect name="options" [(ngModel)]="storesName" (ngModelChange)="getStore()">
+        <option value="">Select a store</option>
+        <option value="about">About</option>
+        <option value="security">Security</option>
+      </select>
+    </clr-select-container>
+    <div *ngIf="store">
+      <pre><code>{{store | json}}</code></pre>
+    </div>
+  </ng-template>
+</app-view-card>
+
+<app-dev-stream-create #streamCreateModal></app-dev-stream-create>
+<app-dev-task-create #taskCreateModal></app-dev-task-create>
+<app-confirm #importAppsModal (onConfirmed)="runOperation('IMPORT_APPS')" title="Confirm Import Apps Starters" yes="Import Apps Starters">
+  Are you sure?
+</app-confirm>

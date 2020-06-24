@@ -107,6 +107,11 @@
           </a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>
+      <a clrVerticalNavLink routerLink="dev/dashboard" routerLinkActive="active" *ngIf="isDevEnv">
+        <clr-icon shape="bug" clrVerticalNavIcon></clr-icon>
+        Dev. mode
+      </a>
+
       <div class="clr-vertical-nav-bottom">
         <button class="btn btn-sm btn-link" (click)="toggleDarkTheme()">
           <clr-icon shape="sun" *ngIf="darkThemeIsActive"></clr-icon>

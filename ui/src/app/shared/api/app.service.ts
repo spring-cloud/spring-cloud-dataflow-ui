@@ -88,7 +88,7 @@ export class AppService {
       );
   }
 
-  importUri(uri: string, force: boolean): Observable<any> {
+  importUri(uri: string, force: boolean = false): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams()
       .append('uri', uri)

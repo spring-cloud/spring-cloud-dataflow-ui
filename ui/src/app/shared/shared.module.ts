@@ -25,6 +25,7 @@ import { TippyDirective } from './directive/tippy.directive';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StreamDslComponent } from './component/stream-dsl/stream-dsl.component';
+import { DevGuard } from './support/dev.guard';
 
 @NgModule({
   entryComponents: [
@@ -91,6 +92,9 @@ import { StreamDslComponent } from './component/stream-dsl/stream-dsl.component'
     GrafanaRuntimeInstanceDirective,
     TippyDirective,
     StreamDslComponent
+  ],
+  providers: [
+    DevGuard
   ]
 })
 export class SharedModule {

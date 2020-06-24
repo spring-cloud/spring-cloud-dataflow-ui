@@ -143,8 +143,8 @@ export class StreamComponent implements OnInit {
         this.loadingHistory = false;
         this.history = history;
       }, (error) => {
-        // Error: TODO
-        this.loadingRuntime = false;
+        this.loadingHistory = false;
+        this.history = [];
       });
   }
 

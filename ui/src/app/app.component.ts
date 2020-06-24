@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ThemeService } from './layout/theme/theme.service';
 import { SecurityService } from './security/service/security.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,10 @@ export class AppComponent {
 
   get darkThemeIsActive() {
     return this.themeService.getTheme() === 'dark';
+  }
+
+  get isDevEnv() {
+    return !environment.production;
   }
 
   constructor(

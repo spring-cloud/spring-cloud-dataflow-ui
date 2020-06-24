@@ -75,11 +75,17 @@
       <a class="link text-truncate" (click)="details(app)">{{app.name}}</a>
     </clr-dg-cell>
     <clr-dg-cell><span class="label-uppercase label label-{{app.typeColor()}}">{{app.type}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="label">{{app.version}}</span></clr-dg-cell>
+    <clr-dg-cell>
+      <span class="label">
+        {{app.version}}
+        <span *ngIf="app.versions?.length > 1" class="badge badge-light-blue">{{app.versions.length}}</span>
+      </span>
+    </clr-dg-cell>
     <clr-dg-cell><span class="text-truncate">{{app.uri}}</span></clr-dg-cell>
     <clr-dg-cell><span class="text-truncate">{{app.metaDataUri}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(app)">Details</button>
+      <button class="action-item" *ngIf="app.versions.length > 1" (click)="manageVersion(app)">Manage Version</button>
       <button class="action-item" [appRole]="['ROLE_DESTROY']" (click)="unregistersApp([app])">Unregister</button>
     </clr-dg-action-overflow>
   </clr-dg-row>
@@ -98,4 +104,5 @@
   </clr-dg-footer>
 </clr-datagrid>
 
+<app-version #versionModal (onChange)="refresh(state)"></app-version>
 <app-unregister #unregisterModal (onUnregistered)="refresh(state)"></app-unregister>

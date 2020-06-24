@@ -6,7 +6,7 @@ import { catchError, flatMap, take } from 'rxjs/operators';
 import { HttpUtils } from '../../shared/support/http.utils';
 import { ErrorUtils } from '../../shared/support/error.utils';
 import { Security } from '../../shared/model/security.model';
-import { State, getUsername, getRoles, getEnabled, getShouldProtect } from '../store/security.reducer';
+import { State, getUsername, getRoles, getEnabled, getShouldProtect, getSecurity } from '../store/security.reducer';
 import { loaded, logout } from '../store/security.action';
 
 @Injectable({
@@ -63,6 +63,10 @@ export class SecurityService {
       .pipe(
         catchError(ErrorUtils.catchError)
       );
+  }
+
+  getSecurity() {
+    return this.store.pipe(select(getSecurity));
   }
 
   logout(): Observable<Security> {

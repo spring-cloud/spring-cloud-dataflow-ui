@@ -21,6 +21,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { Security } from './shared/model/security.model';
 import { of } from 'rxjs';
 import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
+import { DevModule } from './dev/dev.module';
 
 @NgModule({
   declarations: [

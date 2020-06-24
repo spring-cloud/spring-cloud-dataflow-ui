@@ -15,6 +15,10 @@ export interface State extends fromRoot.State {
   [securityFeatureKey]: SecurityState;
 }
 
+export const getSecurity = (state: State) => {
+  return state[securityFeatureKey];
+};
+
 export const getEnabled = (state: State) => {
   return state[securityFeatureKey].enabled;
 };

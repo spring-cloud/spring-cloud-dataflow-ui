@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DevGuard } from './shared/support/dev.guard';
 
 const routes: Routes = [
   {
@@ -7,10 +8,11 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'apps'
   },
-  // {
-  //   path: 'streams',
-  //   loadChildren: () => import('./streams/streams.module').then(m => m.StreamsModule)
-  // },
+  {
+    path: 'dev',
+    loadChildren: () => import('./dev/dev.module').then(m => m.DevModule),
+    canLoad: [DevGuard]
+  },
   // {
   //   path: 'manage',
   //   loadChildren: () => import('./manage/manage.module').then(m => m.ManageModule)

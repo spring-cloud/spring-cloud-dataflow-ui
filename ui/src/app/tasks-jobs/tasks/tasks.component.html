@@ -65,7 +65,7 @@
   </clr-dg-column>
   <clr-dg-row *clrDgItems="let task of page?.items" [clrDgItem]="task" [clrDgSelectable]="!task.composedTaskElement">
     <clr-dg-cell><a routerLink="/tasks-jobs/tasks/{{task.name}}">{{task.name}}</a></clr-dg-cell>
-    <clr-dg-cell>{{task.description}} {{task.composedTaskElement}}</clr-dg-cell>
+    <clr-dg-cell>{{task.description}}</clr-dg-cell>
     <clr-dg-cell><span class="dsl-text">{{task.dslText}}</span></clr-dg-cell>
     <clr-dg-cell><span class="label label-{{task.statusColor()}}">{{task.status}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">

@@ -6,6 +6,7 @@ import { UnregisterComponent } from './unregister/unregister.component';
 import { Router } from '@angular/router';
 import { ContextService } from '../../shared/service/context.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
+import { VersionComponent } from './version/version.component';
 
 @Component({
   selector: 'app-apps-list',
@@ -14,6 +15,7 @@ import { DatagridComponent } from '../../shared/component/datagrid/datagrid.comp
 export class AppsComponent extends DatagridComponent {
   page: AppPage;
   @ViewChild('unregisterModal', { static: true }) unregisterModal: UnregisterComponent;
+  @ViewChild('versionModal', { static: true }) versionModal: VersionComponent;
 
   constructor(private appService: AppService,
               private router: Router,
@@ -47,6 +49,10 @@ export class AppsComponent extends DatagridComponent {
 
   unregistersApp(apps: App[]) {
     this.unregisterModal.open(apps);
+  }
+
+  manageVersion(app: App) {
+    this.versionModal.open(app.name, app.type);
   }
 
 }
