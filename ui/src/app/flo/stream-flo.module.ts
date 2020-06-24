@@ -22,6 +22,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RuntimeStreamFloViewComponent } from './stream/component/runtime-view.component';
 import { NodeHelper } from './stream/node-helper.service';
 import { PropertiesEditor } from './stream/properties-editor.service';
+import { SanitizeDsl } from './stream/dsl-sanitize.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { PropertiesEditor } from './stream/properties-editor.service';
     ParserService,
     ContentAssistService,
     NodeHelper,
-    PropertiesEditor
+    PropertiesEditor,
+    SanitizeDsl,
   ],
   exports: [
     StreamFloViewComponent,

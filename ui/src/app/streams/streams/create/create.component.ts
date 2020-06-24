@@ -4,11 +4,11 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { Utils } from '../../../flo/stream/support/utils';
 import { StreamFloCreateComponent } from '../../../flo/stream/component/create.component';
 import { NotificationService } from '../../../shared/service/notification.service';
-import { convertParseResponseToJsonGraph } from '../../../flo/stream/text-to-graph';
 import { ParserService } from '../../../flo/shared/service/parser.service';
 import { Properties } from 'spring-flo';
 import { StreamService } from '../../../shared/api/stream.service';
 import { Observable, timer } from 'rxjs';
+import { SanitizeDsl } from '../../../flo/stream/dsl-sanitize.service';
 
 class ProgressData {
   constructor(public count, public total) {
@@ -43,7 +43,8 @@ export class CreateComponent implements OnInit {
   constructor(private router: Router,
               private parserService: ParserService,
               private streamService: StreamService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private sanitizeDsl: SanitizeDsl) {
     this.form = new FormGroup({}, this.uniqueStreamNames());
   }
 
@@ -114,7 +115,7 @@ export class CreateComponent implements OnInit {
 
     this.dependencies = new Map();
     if (text) {
-      const graphAndErrors = convertParseResponseToJsonGraph(text, this.parserService.parseDsl(text));
+      const graphAndErrors = this.sanitizeDsl.convert(text, this.parserService.parseDsl(text));
       if (graphAndErrors.graph) {
         this.streams.push(...graphAndErrors.graph.streamdefs);
         this.streams.forEach((streamDef, i) => {
