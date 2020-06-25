@@ -23,6 +23,7 @@ import { PropertiesDialogComponent } from '../../../flo/shared/properties/proper
 import { DocService } from '../../../flo/shared/service/doc.service';
 import { DestroyComponent } from '../destroy/destroy.component';
 import { UpperCasePipe } from '@angular/common';
+import { SanitizeDsl } from '../../../flo/stream/dsl-sanitize.service';
 
 xdescribe('streams/streams/create/create.component.ts', () => {
   let component: CreateComponent;
@@ -57,6 +58,7 @@ xdescribe('streams/streams/create/create.component.ts', () => {
         ParserService,
         EditorService,
         RenderService,
+        SanitizeDsl,
         DocService,
       ]
     })
