@@ -7,7 +7,8 @@
       <label class="clr-col-md-1">
         Platform
       </label>
-      <select clrSelect tabindex="1" formControlName="platform">
+      <select clrSelect tabindex="1" formControlName="platform"
+              [dataflowFocus]="true">
         <option *ngFor="let platform of platforms" [value]="platform.name">
           {{platform.name}}
           ({{platform.type}})
@@ -20,7 +21,8 @@
 
     <clr-control-container class="key-value-wrapper">
       <label class="clr-col-md-1">Arguments</label>
-      <app-key-value clrControl formControlName="args"></app-key-value>
+      <app-key-value clrControl formControlName="args"
+                     [kvFocus]="platforms.length < 2"></app-key-value>
       <clr-control-helper>
         Arguments can be prefixed by <code>--</code> (optional). Example:<br/>
         <pre><code>--myarg1=value1

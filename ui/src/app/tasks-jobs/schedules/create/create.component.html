@@ -10,7 +10,8 @@
       </div>
       <clr-input-container>
         <label class="clr-col-md-1">Schedule</label>
-        <input clrInput type="text" [formControl]="form.get('names').controls[0]" name="example"/>
+        <input clrInput type="text" [formControl]="form.get('names').controls[0]" name="example"
+               [dataflowFocus]="true"/>
         <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
         <clr-control-error *clrIfError="'exist'">The name already exists.</clr-control-error>
       </clr-input-container>
@@ -35,7 +36,8 @@
         </div>
         <clr-input-container>
           <label class="clr-col-md-1">Schedule</label>
-          <input clrInput type="text" [formControl]="form.get('names').controls[i]" name="example"/>
+          <input clrInput type="text" [formControl]="form.get('names').controls[i]" name="example"
+                 [dataflowFocus]="i === 0"/>
           <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
           <clr-control-error *clrIfError="'exist'">The name already exists.</clr-control-error>
           <clr-control-error *clrIfError="'notUnique'">The name already exists.</clr-control-error>

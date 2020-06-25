@@ -24,7 +24,8 @@ import { NotificationService } from '../../service/notification.service';
           </ng-template>
         </div>
         <textarea dataflowAutoResize [formControl]="form.get('textarea')" rows="5" cols="20"
-                  (blur)="onBlur()" (focus)="onFocus()" placeholder="{{placeholder}}"></textarea>
+                  (blur)="onBlur()" (focus)="onFocus()" placeholder="{{placeholder}}"
+                  [dataflowFocus]="kvFocus"></textarea>
       </div>
     </div>
     <div class="bar">
@@ -47,6 +48,7 @@ import { NotificationService } from '../../service/notification.service';
 export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnInit {
   @Input() validators: KeyValueValidators = { key: [], value: [] };
   @Input() placeholder: string;
+  @Input() kvFocus: boolean = false;
   isDisabled = false;
   isInvalid = false;
   isFocus = false;
