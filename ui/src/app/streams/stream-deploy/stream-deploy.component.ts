@@ -6,7 +6,6 @@ import { saveAs } from 'file-saver/FileSaver';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { StreamsService } from '../streams.service';
 import { StreamDefinition } from '../model/stream-definition';
-import { Parser } from '../../shared/services/parser';
 import { StreamDeployService } from './stream-deploy.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
@@ -14,6 +13,7 @@ import { HttpAppError, AppError } from '../../shared/model/error.model';
 import { ClipboardService } from 'ngx-clipboard';
 import { DateTime } from 'luxon';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { ParserService } from '../../shared/services/parser.service';
 
 /**
  * Component used to deploy stream definitions.
@@ -85,7 +85,8 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
               private router: Router,
               private clipboardService: ClipboardService,
               private blockerService: BlockerService,
-              private sharedAboutService: SharedAboutService) {
+              private sharedAboutService: SharedAboutService,
+              private parserService: ParserService) {
   }
 
   /**
@@ -131,7 +132,7 @@ export class StreamDeployComponent implements OnInit, OnDestroy {
             }
 
             // Application properties
-            const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
+            const dslTextParsed = this.parserService.parseDsl(deploymentInfo.dslText, 'stream');
             dslTextParsed.lines[0].nodes.forEach((node) => {
               const app = node['label'] || node['name'];
               const appType = node['name'];

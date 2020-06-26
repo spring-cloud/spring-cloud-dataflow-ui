@@ -31,6 +31,7 @@ import { MockAppsService } from '../../tests/mocks/apps';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import {ParserService} from '../../shared/services/parser.service';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -49,7 +50,8 @@ describe('StreamDeployComponent', () => {
   const commonTestParams = { id: '1' };
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
-  const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any);
+  const parserService = new ParserService();
+  const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any, parserService);
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -86,6 +88,7 @@ describe('StreamDeployComponent', () => {
         { provide: RoutingStateService, useValue: routingStateService },
         { provide: StreamDeployService, useValue: streamDeployService },
         { provide: LoggerService, useValue: loggerService },
+        { provide: ParserService, useValue: parserService },
         ClipboardService,
         BlockerService
       ]

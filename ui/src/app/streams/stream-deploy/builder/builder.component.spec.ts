@@ -32,6 +32,7 @@ import { BlockerService } from '../../../shared/components/blocker/blocker.servi
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { TippyDirective } from '../../../shared/directives/tippy.directive';
+import { ParserService } from '../../../shared/services/parser.service';
 
 /**
  * Test {@link StreamDeployBuilderComponent}.
@@ -49,7 +50,7 @@ xdescribe('StreamDeployBuilderComponent', () => {
   let activeRoute: MockActivatedRoute;
   const loggerService = new LoggerService();
   const routingStateService = new MockRoutingStateService();
-  const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any);
+  const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any, new ParserService());
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();

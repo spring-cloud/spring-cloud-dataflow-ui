@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { mergeMap, map } from 'rxjs/operators';
 import { StreamDefinition } from '../../model/stream-definition';
 import { Observable, of } from 'rxjs';
-import { Parser } from '../../../shared/services/parser';
 import { BsModalRef } from 'ngx-bootstrap';
 import { StreamStatuses } from '../../model/stream-metrics';
+import { ParserService } from '../../../shared/services/parser.service';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -43,7 +43,8 @@ export class StreamSummaryComponent implements OnInit {
    * @param {StreamsService} streamsService
    */
   constructor(private route: ActivatedRoute,
-              private streamsService: StreamsService) {
+              private streamsService: StreamsService,
+              private parserService: ParserService) {
   }
 
   /**
@@ -113,7 +114,7 @@ export class StreamSummaryComponent implements OnInit {
         }
       ))
       .pipe(mergeMap(
-        (val: any) => of(Parser.parse(val.streamDefinition.dslText as string, 'stream'))
+        (val: any) => of(this.parserService.parseDsl(val.streamDefinition.dslText as string, 'stream'))
           .pipe(map((val2) => {
             return {
               streamDefinition: val.streamDefinition,

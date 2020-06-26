@@ -6,6 +6,7 @@ import { AppsWorkaroundService } from '../../apps/apps.workaround.service';
 import { StreamDeployService } from './stream-deploy.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { of } from 'rxjs';
+import { ParserService } from '../../shared/services/parser.service';
 
 /**
  * Test Stream Deploy Services.
@@ -35,8 +36,9 @@ describe('StreamDeployService', () => {
     const workAroundService = new AppsWorkaroundService(sharedAppsService);
     const streamsService = new StreamsService(mockHttpStreamsService, loggerService, errorHandler);
     const appsService = new AppsService(mockHttpAppsService, errorHandler, loggerService, workAroundService, sharedAppsService);
+    const parserService = new ParserService();
 
-    streamDeployService = new StreamDeployService(streamsService, sharedAppsService, appsService);
+    streamDeployService = new StreamDeployService(streamsService, sharedAppsService, appsService, parserService);
   });
 
   describe('app', () => {
