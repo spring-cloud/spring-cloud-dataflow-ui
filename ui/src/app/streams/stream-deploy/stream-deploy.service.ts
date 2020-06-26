@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { StreamsService } from '../streams.service';
-import { Parser } from '../../shared/services/parser';
 import { ApplicationType } from '../../shared/model/application-type';
 import { SharedAppsService } from '../../shared/services/shared-apps.service';
 import { AppVersion } from '../../shared/model/app-version';
@@ -15,6 +14,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { StreamDefinition } from '../model/stream-definition';
 import { Observable, forkJoin, of } from 'rxjs';
 import { Platform } from '../../shared/model/platform';
+import { ParserService } from '../../shared/services/parser.service';
 
 /**
  * Provides {@link StreamDeployConfig} related services.
@@ -88,7 +88,8 @@ export class StreamDeployService {
    */
   constructor(private streamsService: StreamsService,
               private sharedAppsService: SharedAppsService,
-              private appsService: AppsService) {
+              private appsService: AppsService,
+              private parserService: ParserService) {
   }
 
   /**
@@ -102,7 +103,7 @@ export class StreamDeployService {
       .pipe(
         mergeMap(
           (val: StreamDefinition) => {
-            const observablesApplications = Parser.parse(val.dslText as string, 'stream')
+            const observablesApplications = this.parserService.parseDsl(val.dslText as string, 'stream')
               .lines[0].nodes
               .map((node) => {
                   return of({

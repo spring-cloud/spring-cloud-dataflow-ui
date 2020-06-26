@@ -20,6 +20,7 @@ import { LoaderComponent } from '../../../shared/components/loader/loader.compon
 import { AppTypeComponent } from '../../../apps/components/app-type/app-type.component';
 import { FocusDirective } from '../../../shared/directives/focus.directive';
 import { TippyDirective } from '../../../shared/directives/tippy.directive';
+import { ParserService } from '../../../shared/services/parser.service';
 
 /**
  * Test {@link StreamDeployComponent}.
@@ -35,7 +36,7 @@ describe('StreamDeployFreeTextComponent', () => {
   const appsService = new MockAppsService();
   const sharedAppService = new MockSharedAppService();
   const loggerService = new LoggerService();
-  const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any);
+  const streamDeployService = new StreamDeployService(streamsService as any, sharedAppService, appsService as any, new ParserService());
 
   beforeEach(async(() => {
 

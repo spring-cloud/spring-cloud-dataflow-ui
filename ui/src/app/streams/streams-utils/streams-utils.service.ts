@@ -5,13 +5,14 @@ import { DateTime } from 'luxon';
 import { saveAs } from 'file-saver/FileSaver';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { StreamDefinition } from '../model/stream-definition';
-import { Parser } from '../../shared/services/parser';
 import { StreamsService } from '../streams.service';
+import { ParserService } from '../../shared/services/parser.service';
 
 @Injectable()
 export class StreamsUtilsService {
 
-  constructor(private streamsService: StreamsService) {
+  constructor(private streamsService: StreamsService,
+              private parserService: ParserService) {
   }
 
   createFile(streams: StreamDefinition[]) {
@@ -53,7 +54,7 @@ export class StreamsUtilsService {
       map((json) => {
         let streams = json.streams.map(
           line => {
-            const parser = Parser.parse(line.dslText as string, 'stream');
+            const parser = this.parserService.parseDsl(line.dslText as string, 'stream');
             let parent = '';
             const apps = parser.lines[0].nodes
               .map((node) => {
