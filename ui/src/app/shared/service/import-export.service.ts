@@ -5,11 +5,11 @@ import { saveAs } from 'file-saver';
 import { Task } from '../model/task.model';
 import { combineLatest, Observable, of, Subscriber } from 'rxjs';
 import get from 'lodash.get';
-import { Parser } from '../../flo/shared/service/parser';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { StreamService } from '../api/stream.service';
 import { TaskService } from '../api/task.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { ParserService } from '../../flo/shared/service/parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,8 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 export class ImportExportService {
 
   constructor(private streamService: StreamService,
-              private taskService: TaskService) {
+              private taskService: TaskService,
+              private parserService: ParserService) {
   }
 
   streamsExport(streams: Stream[]): Observable<any> {
@@ -77,7 +78,7 @@ export class ImportExportService {
       map((json) => {
         let streams = json.streams.map(
           line => {
-            const parser = Parser.parse(line.dslText as string, 'stream');
+            const parser = this.parserService.parseDsl(line.dslText as string, 'stream');
             let parent = '';
             const apps = parser.lines[0].nodes
               .map((node) => {

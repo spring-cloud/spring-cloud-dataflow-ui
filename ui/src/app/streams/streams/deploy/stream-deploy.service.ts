@@ -11,6 +11,7 @@ import { Utils } from '../../../flo/shared/support/utils';
 import { Parser } from '../../../flo/shared/service/parser';
 import get from 'lodash.get';
 import set from 'lodash.set';
+import {ParserService} from '../../../flo/shared/service/parser.service';
 
 /**
  * Provides {@link StreamDeployConfig} related services.
@@ -76,7 +77,8 @@ export class StreamDeployService {
   };
 
   constructor(private streamService: StreamService,
-              private appService: AppService) {
+              private appService: AppService,
+              private parserService: ParserService) {
   }
 
   /**
@@ -90,7 +92,7 @@ export class StreamDeployService {
       .pipe(
         mergeMap(
           (val: Stream) => {
-            const observablesApplications = Parser.parse(val.dslText as string, 'stream')
+            const observablesApplications = this.parserService.parseDsl(val.dslText as string, 'stream')
               .lines[0].nodes
               .map((node) => {
                   return of({
@@ -288,7 +290,7 @@ export class StreamDeployService {
             });
           }
           // Application properties
-          const dslTextParsed = Parser.parse(deploymentInfo.dslText, 'stream');
+          const dslTextParsed = this.parserService.parseDsl(deploymentInfo.dslText, 'stream');
           dslTextParsed.lines[0].nodes.forEach((node) => {
             const app = get(node, 'label') || get(node, 'name');
             const appType = get(node, 'name');
