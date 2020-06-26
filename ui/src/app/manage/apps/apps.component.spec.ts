@@ -14,6 +14,7 @@ import { NotificationServiceMock } from '../../tests/service/notification.servic
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { VersionComponent } from './version/version.component';
+import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 
 describe('manage/apps/apps.component.ts', () => {
 
@@ -26,7 +27,8 @@ describe('manage/apps/apps.component.ts', () => {
         AppsComponent,
         TypeFilterComponent,
         UnregisterComponent,
-        VersionComponent
+        VersionComponent,
+        ConfirmComponent
       ],
       imports: [
         FormsModule,

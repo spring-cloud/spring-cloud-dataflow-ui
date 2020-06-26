@@ -469,269 +469,175 @@ export const GET_APP = {
 
 export const GET_APPS = {
   '_embedded': {
-    'appRegistrationResourceList': [
-      {
-        'name': 'aggregator',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/aggregator-processor-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': false,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/aggregator/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'aggregator',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/aggregator-processor-kafka:2.1.1.RELEASE',
-        'version': '2.1.1.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/aggregator/2.1.1.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'bridge',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/bridge-processor-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/bridge/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'cassandra',
-        'type': 'sink',
-        'uri': 'docker:springcloudstream/cassandra-sink-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/sink/cassandra/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'cdc-debezium',
-        'type': 'source',
-        'uri': 'docker:springcloudstream/cdc-debezium-source-kafka:1.0.1.RELEASE',
-        'version': '1.0.1.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/source/cdc-debezium/1.0.1.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'composed-task-runner',
-        'type': 'task',
-        'uri': 'maven://org.springframework.cloud.task.app:composedtaskrunner-task:2.1.4.RELEASE',
-        'version': '2.1.4.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/task/composed-task-runner/2.1.4.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'counter',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/counter-processor-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/counter/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'counter',
-        'type': 'sink',
-        'uri': 'docker:springcloudstream/counter-sink-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/sink/counter/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'file',
-        'type': 'sink',
-        'uri': 'docker:springcloudstream/file-sink-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/sink/file/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'file',
-        'type': 'source',
-        'uri': 'docker:springcloudstream/file-source-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/source/file/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'filter',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/filter-processor-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/filter/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'ftp',
-        'type': 'sink',
-        'uri': 'docker:springcloudstream/ftp-sink-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/sink/ftp/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'ftp',
-        'type': 'source',
-        'uri': 'docker:springcloudstream/ftp-source-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/source/ftp/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'gemfire',
-        'type': 'source',
-        'uri': 'docker:springcloudstream/gemfire-source-kafka:2.1.4.RELEASE',
-        'version': '2.1.4.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/source/gemfire/2.1.4.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'gemfire',
-        'type': 'sink',
-        'uri': 'docker:springcloudstream/gemfire-sink-kafka:2.1.4.RELEASE',
-        'version': '2.1.4.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/sink/gemfire/2.1.4.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'gemfire-cq',
-        'type': 'source',
-        'uri': 'docker:springcloudstream/gemfire-cq-source-kafka:2.1.4.RELEASE',
-        'version': '2.1.4.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/source/gemfire-cq/2.1.4.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'groovy-filter',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/groovy-filter-processor-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/groovy-filter/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'groovy-transform',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/groovy-transform-processor-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/groovy-transform/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'grpc',
-        'type': 'processor',
-        'uri': 'docker:springcloudstream/grpc-processor-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/processor/grpc/2.1.2.RELEASE'
-          }
-        }
-      },
-      {
-        'name': 'hdfs',
-        'type': 'sink',
-        'uri': 'docker:springcloudstream/hdfs-sink-kafka:2.1.2.RELEASE',
-        'version': '2.1.2.RELEASE',
-        'defaultVersion': true,
-        '_links': {
-          'self': {
-            'href': 'http://localhost:4200/apps/sink/hdfs/2.1.2.RELEASE'
-          }
-        }
-      }
-    ]
+    'appRegistrationResourceList': [{
+      'name': 'aggregator',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:aggregator-processor-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.1.RELEASE', '2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/aggregator/2.1.2.RELEASE' } }
+    }, {
+      'name': 'bridge',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:bridge-processor-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/bridge/2.1.2.RELEASE' } }
+    }, {
+      'name': 'cassandra',
+      'type': 'sink',
+      'uri': 'maven://org.springframework.cloud.stream.app:cassandra-sink-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/sink/cassandra/2.1.2.RELEASE' } }
+    }, {
+      'name': 'cdc-debezium',
+      'type': 'source',
+      'uri': 'maven://org.springframework.cloud.stream.app:cdc-debezium-source-kafka:1.0.1.RELEASE',
+      'version': '1.0.1.RELEASE',
+      'defaultVersion': true,
+      'versions': ['1.0.1.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/source/cdc-debezium/1.0.1.RELEASE' } }
+    }, {
+      'name': 'composed-task-runner',
+      'type': 'task',
+      'uri': 'maven://org.springframework.cloud.task.app:composedtaskrunner-task:2.1.4.RELEASE',
+      'version': '2.1.4.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.4.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/task/composed-task-runner/2.1.4.RELEASE' } }
+    }, {
+      'name': 'counter',
+      'type': 'sink',
+      'uri': 'maven://org.springframework.cloud.stream.app:counter-sink-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/sink/counter/2.1.2.RELEASE' } }
+    }, {
+      'name': 'counter',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:counter-processor-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/counter/2.1.2.RELEASE' } }
+    }, {
+      'name': 'file',
+      'type': 'source',
+      'uri': 'maven://org.springframework.cloud.stream.app:file-source-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/source/file/2.1.2.RELEASE' } }
+    }, {
+      'name': 'file',
+      'type': 'sink',
+      'uri': 'maven://org.springframework.cloud.stream.app:file-sink-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/sink/file/2.1.2.RELEASE' } }
+    }, {
+      'name': 'filter',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:filter-processor-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/filter/2.1.2.RELEASE' } }
+    }, {
+      'name': 'ftp',
+      'type': 'source',
+      'uri': 'maven://org.springframework.cloud.stream.app:ftp-source-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/source/ftp/2.1.2.RELEASE' } }
+    }, {
+      'name': 'ftp',
+      'type': 'sink',
+      'uri': 'maven://org.springframework.cloud.stream.app:ftp-sink-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/sink/ftp/2.1.2.RELEASE' } }
+    }, {
+      'name': 'gemfire',
+      'type': 'sink',
+      'uri': 'maven://org.springframework.cloud.stream.app:gemfire-sink-kafka:2.1.4.RELEASE',
+      'version': '2.1.4.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.4.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/sink/gemfire/2.1.4.RELEASE' } }
+    }, {
+      'name': 'gemfire',
+      'type': 'source',
+      'uri': 'maven://org.springframework.cloud.stream.app:gemfire-source-kafka:2.1.4.RELEASE',
+      'version': '2.1.4.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.4.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/source/gemfire/2.1.4.RELEASE' } }
+    }, {
+      'name': 'gemfire-cq',
+      'type': 'source',
+      'uri': 'maven://org.springframework.cloud.stream.app:gemfire-cq-source-kafka:2.1.4.RELEASE',
+      'version': '2.1.4.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.4.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/source/gemfire-cq/2.1.4.RELEASE' } }
+    }, {
+      'name': 'groovy-filter',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:groovy-filter-processor-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/groovy-filter/2.1.2.RELEASE' } }
+    }, {
+      'name': 'groovy-transform',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:groovy-transform-processor-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/groovy-transform/2.1.2.RELEASE' } }
+    }, {
+      'name': 'grpc',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:grpc-processor-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/grpc/2.1.2.RELEASE' } }
+    }, {
+      'name': 'hdfs',
+      'type': 'sink',
+      'uri': 'maven://org.springframework.cloud.stream.app:hdfs-sink-kafka:2.1.2.RELEASE',
+      'version': '2.1.2.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.2.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/sink/hdfs/2.1.2.RELEASE' } }
+    }, {
+      'name': 'header-enricher',
+      'type': 'processor',
+      'uri': 'maven://org.springframework.cloud.stream.app:header-enricher-processor-kafka:2.1.3.RELEASE',
+      'version': '2.1.3.RELEASE',
+      'defaultVersion': true,
+      'versions': ['2.1.3.RELEASE'],
+      '_links': { 'self': { 'href': 'http://localhost:4200/apps/processor/header-enricher/2.1.3.RELEASE' } }
+    }]
   },
   '_links': {
-    'first': {
-      'href': 'http://localhost:4200/apps?page=0&size=20&sort=name,asc'
-    },
-    'self': {
-      'href': 'http://localhost:4200/apps?page=0&size=20&sort=name,asc'
-    },
-    'next': {
-      'href': 'http://localhost:4200/apps?page=1&size=20&sort=name,asc'
-    },
-    'last': {
-      'href': 'http://localhost:4200/apps?page=3&size=20&sort=name,asc'
-    }
+    'first': { 'href': 'http://localhost:4200/apps?page=0&size=20&sort=name,asc' },
+    'self': { 'href': 'http://localhost:4200/apps?page=0&size=20&sort=name,asc' },
+    'next': { 'href': 'http://localhost:4200/apps?page=1&size=20&sort=name,asc' },
+    'last': { 'href': 'http://localhost:4200/apps?page=3&size=20&sort=name,asc' }
   },
-  'page': {
-    'size': 20,
-    'totalElements': 76,
-    'totalPages': 4,
-    'number': 0
-  }
+  'page': { 'size': 20, 'totalElements': 69, 'totalPages': 4, 'number': 0 }
 };
 
 export const GET_APP_VERSIONS = {
