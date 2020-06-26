@@ -48,7 +48,7 @@ import { NotificationService } from '../../service/notification.service';
 export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnInit {
   @Input() validators: KeyValueValidators = { key: [], value: [] };
   @Input() placeholder: string;
-  @Input() kvFocus: boolean = false;
+  @Input() kvFocus = false;
   isDisabled = false;
   isInvalid = false;
   isFocus = false;

@@ -454,7 +454,8 @@ describe('editor.service : Auto-Link', () => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = metamodelService;
-    component.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver,
+      fixture.debugElement.injector, applicationRef);
     component.editor = new EditorService();
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();

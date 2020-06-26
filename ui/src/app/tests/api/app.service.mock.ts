@@ -11,7 +11,8 @@ export class AppServiceMock {
 
   static mock: any = null;
 
-  getApps(page: number, size: number, search?: string, type?: ApplicationType, sort?: string, order?: string, defaultVersion = false): Observable<AppPage> {
+  getApps(page: number, size: number, search?: string, type?: ApplicationType, sort?: string, order?: string,
+          defaultVersion = false): Observable<AppPage> {
     return of(GET_APPS)
       .pipe(
         delay(1),

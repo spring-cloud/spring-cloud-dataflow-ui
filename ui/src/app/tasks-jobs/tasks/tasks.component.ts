@@ -47,8 +47,8 @@ export class TasksComponent extends DatagridComponent {
     // Hack (clarity/refresh lockItem)
     setTimeout(() => {
       this.datagrid.rows.map(row => {
-        this.datagrid.selection.lockItem(row.item, row.item.composedTaskElement)
-      })
+        this.datagrid.selection.lockItem(row.item, row.item.composedTaskElement);
+      });
     });
   }
 

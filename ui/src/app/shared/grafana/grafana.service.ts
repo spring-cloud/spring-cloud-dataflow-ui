@@ -18,7 +18,7 @@ export class GrafanaService {
 
   isAllowed(): Promise<boolean> {
     return this.aboutService
-      .isFeatureEnabled('grafana')
+      .isFeatureEnabled('grafana');
   }
 
   getDashboardStreams(): Observable<string> {

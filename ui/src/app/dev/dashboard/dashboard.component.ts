@@ -40,9 +40,6 @@ export class DashboardComponent implements OnDestroy {
     }
   }
 
-  ngOnInit() {
-  }
-
   runOperation(operation: string) {
     if (this.operationSubscription) {
       this.operationSubscription.unsubscribe();

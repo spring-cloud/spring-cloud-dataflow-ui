@@ -10,7 +10,7 @@ export class GrafanaServiceMock {
   static mock: GrafanaServiceMock = null;
 
   isAllowed(): Promise<boolean> {
-    return new Promise<boolean>(() => { return  true });
+    return new Promise<boolean>(() => true);
   }
 
   getDashboardStreams(): Observable<string> {

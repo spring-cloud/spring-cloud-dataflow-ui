@@ -48,8 +48,10 @@ export const CONFIG = {
         'id': 'spring.cloud.deployer.local.use-spring-application-json',
         'name': 'use-spring-application-json',
         'type': 'java.lang.Boolean',
-        'description': 'Flag to indicate whether application properties are passed as command line args or in a SPRING_APPLICATION_JSON environment variable. Default value is {@code true}.',
-        'shortDescription': 'Flag to indicate whether application properties are passed as command line args or in a SPRING_APPLICATION_JSON environment variable.',
+        'description': 'Flag to indicate whether application properties are passed as command line args or in a ' +
+          'SPRING_APPLICATION_JSON environment variable. Default value is {@code true}.',
+        'shortDescription': 'Flag to indicate whether application properties are passed as command line args or ' +
+          'in a SPRING_APPLICATION_JSON environment variable.',
         'defaultValue': true,
         'hints': { 'keyHints': [], 'keyProviders': [], 'valueHints': [], 'valueProviders': [] },
         'deprecation': null,
@@ -88,8 +90,10 @@ export const CONFIG = {
         'id': 'spring.cloud.deployer.local.env-vars-to-inherit',
         'name': 'env-vars-to-inherit',
         'type': 'java.lang.String[]',
-        'description': 'Array of regular expression patterns for environment variables that should be passed to launched applications.',
-        'shortDescription': 'Array of regular expression patterns for environment variables that should be passed to launched applications.',
+        'description': 'Array of regular expression patterns for environment variables that should be passed to ' +
+          'launched applications.',
+        'shortDescription': 'Array of regular expression patterns for environment variables that should be ' +
+          'passed to launched applications.',
         'defaultValue': null,
         'hints': { 'keyHints': [], 'keyProviders': [], 'valueHints': [], 'valueProviders': [] },
         'deprecation': null,
@@ -108,8 +112,10 @@ export const CONFIG = {
         'id': 'spring.cloud.deployer.local.shutdown-timeout',
         'name': 'shutdown-timeout',
         'type': 'java.lang.Integer',
-        'description': 'Maximum number of seconds to wait for application shutdown. via the {@code /shutdown} endpoint. A timeout value of 0 specifies an infinite timeout. Default is 30 seconds.',
-        'shortDescription': 'Maximum number of seconds to wait for application shutdown. via the {@code /shutdown} endpoint.',
+        'description': 'Maximum number of seconds to wait for application shutdown. via the {@code /shutdown} ' +
+          'endpoint. A timeout value of 0 specifies an infinite timeout. Default is 30 seconds.',
+        'shortDescription': 'Maximum number of seconds to wait for application shutdown. via the {@code /shutdown} ' +
+          'endpoint.',
         'defaultValue': 30,
         'hints': { 'keyHints': [], 'keyProviders': [], 'valueHints': [], 'valueProviders': [] },
         'deprecation': null,

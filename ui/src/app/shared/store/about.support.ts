@@ -13,7 +13,7 @@ const parseDependency = (input): DependencyState => {
 
 const parsePlatformSpecificInfo = (input) => {
   if (input) {
-    let map = {};
+    const map = {};
     Object.keys(input).forEach(key => {
       set(map, key, input[key]);
     });

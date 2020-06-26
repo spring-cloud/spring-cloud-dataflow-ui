@@ -15,7 +15,8 @@ export class AppService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getApps(page: number, size: number, search?: string, type?: ApplicationType, sort?: string, order?: string, defaultVersion = false): Observable<AppPage> {
+  getApps(page: number, size: number, search?: string, type?: ApplicationType, sort?: string, order?: string,
+          defaultVersion = false): Observable<AppPage> {
     let params = HttpUtils.getPaginationParams(page, size);
     const headers = HttpUtils.getDefaultHttpHeaders();
     if (sort && order) {

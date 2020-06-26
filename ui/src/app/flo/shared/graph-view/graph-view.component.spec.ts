@@ -65,7 +65,8 @@ describe('StreamGraphViewComponent', () => {
     component = fixture.componentInstance;
     const metamodel = new MetamodelService(new MockSharedAppService());
     component.metamodel = metamodel;
-    component.renderer = new RenderService(metamodel, nodeHelper, propertiesEditor, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(metamodel, nodeHelper, propertiesEditor, resolver,
+      fixture.debugElement.injector, applicationRef);
   });
 
   it('should be created', () => {
