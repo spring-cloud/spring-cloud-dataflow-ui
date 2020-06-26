@@ -7,10 +7,10 @@ import { HttpError } from '../../../shared/model/error.model';
 import { NotificationService } from '../../../shared/service/notification.service';
 import { DestroyComponent } from '../destroy/destroy.component';
 import { UndeployComponent } from '../undeploy/undeploy.component';
-import { Parser } from '../../../flo/shared/service/parser';
 import get from 'lodash.get';
 import { StreamStatus } from '../../../shared/model/metrics.model';
 import { RollbackComponent } from '../rollback/rollback.component';
+import { ParserService } from '../../../flo/shared/service/parser.service';
 
 @Component({
   selector: 'app-stream',
@@ -41,7 +41,8 @@ export class StreamComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private notificationService: NotificationService,
-              private streamService: StreamService) {
+              private streamService: StreamService,
+              private parserService: ParserService) {
   }
 
   ngOnInit(): void {
@@ -78,7 +79,7 @@ export class StreamComponent implements OnInit {
   }
 
   parseApplications(dsl: string) {
-    const parser = Parser.parse(dsl, 'stream');
+    const parser = this.parserService.parseDsl(dsl, 'stream');
     return parser.lines[0].nodes
       .map((node) => {
         return {
