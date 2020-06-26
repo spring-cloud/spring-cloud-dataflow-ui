@@ -24,17 +24,17 @@ export class Task {
     return task;
   }
 
-  statusColor() {
+  labelStatusClass() {
     switch (this.status) {
       case 'COMPLETE':
       case 'SUCCESS':
-        return 'success';
+        return 'label label-task complete ';
       case 'ERROR':
-        return 'danger';
+        return 'label label-task error';
       case 'RUNNING':
-        return 'warning';
+        return 'label label-task running';
       default:
-        return 'info';
+        return 'label label-task unknown';
     }
   }
 }

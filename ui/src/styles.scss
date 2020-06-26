@@ -223,41 +223,6 @@ a:link, a:visited {
   }
 }
 
-// App Labels
-.label-app {
-  text-transform: uppercase;
-
-  &.source {
-    background: var(--clr-custom-app-label-source-bg, hsl(198, 80%, 46%));
-    border-color: var(--clr-custom-app-label-source-bg, hsl(198, 80%, 46%));
-    color: var(--clr-custom-app-label-source-text, white);
-  }
-
-  &.sink {
-    background: var(--clr-custom-app-label-sink-bg, hsl(46, 100%, 45%));
-    border-color: var(--clr-custom-app-label-sink-bg, hsl(46, 100%, 45%));
-    color: var(--clr-custom-app-label-sink-text, white);
-  }
-
-  &.processor {
-    background: var(--clr-custom-app-label-processor-bg, hsl(93, 67%, 38%));
-    border-color: var(--clr-custom-app-label-processor-bg, hsl(93, 67%, 38%));
-    color: var(--clr-custom-app-label-processor-text, white);
-  }
-
-  &.app {
-    background: var(--clr-custom-app-label-app-bg, hsl(282, 43%, 54%));
-    border-color: var(--clr-custom-app-label-app-bg, hsl(282, 43%, 54%));
-    color: var(--clr-custom-app-label-app-text, white);
-  }
-
-  &.task {
-    background: var(--clr-custom-app-label-task-bg, #dc5a4f);
-    border-color: var(--clr-custom-app-label-task-bg, #dc5a4f);
-    color: var(--clr-custom-app-label-task-text, white);
-  }
-}
-
 .card-block-keyvalue {
   .row {
     padding: .2rem 0;
@@ -519,4 +484,175 @@ a:link, a:visited {
     width: var(--clr-global-borderwidth, 0.05rem);
     margin-top: 0.5rem;
   }
+}
+
+// Labels
+
+// App Labels
+
+.label-app {
+  text-transform: uppercase;
+  border: 0 none;
+  $source1: var(--clr-custom-app-label-source-bg-1, #459ace);
+  $source2: var(--clr-custom-app-label-source-bg-2, #39afd6);
+  $sink1: var(--clr-custom-app-label-sink-bg-1, #dfb13d);
+  $sink2: var(--clr-custom-app-label-sink-bg-2, #ef8b42);
+  $processor1: var(--clr-custom-app-label-processor-bg-1, #6a9f39);
+  $processor2: var(--clr-custom-app-label-processor-bg-2, #519b63);
+  $app1: var(--clr-custom-app-label-app-bg-1, #7151d8);
+  $app2: var(--clr-custom-app-label-app-bg-2, #9655ce);
+  $task1: var(--clr-custom-app-label-task-bg-1, #ce6256);
+  $task2: var(--clr-custom-app-label-task-bg-2, #da5897);
+
+  &.source {
+    background: $source1;
+    background: linear-gradient(90deg, $source1 0%, $source2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.sink {
+    background: $sink1;
+    background: linear-gradient(90deg, $sink1 0%, $sink2 100%);
+    color: var(--clr-custom-app-label-sink-text, white);
+  }
+
+  &.processor {
+    background: $processor1;
+    background: linear-gradient(90deg, $processor1 0%, $processor2 100%);
+    color: var(--clr-custom-app-label-processor-text, white);
+  }
+
+  &.app {
+    background: $app1;
+    background: linear-gradient(90deg, $app1 0%, $app2 100%);
+    color: var(--clr-custom-app-label-app-text, white);
+  }
+
+  &.task {
+    background: $task1;
+    background: linear-gradient(90deg, $task1 0%, $task2 100%);
+    color: var(--clr-custom-app-label-task-text, white);
+  }
+}
+
+// Label Streams
+
+.label-stream {
+  text-transform: uppercase;
+  border: 0 none;
+  $deploying1: var(--clr-custom-stream-label-deploying-bg-1, #459ace);
+  $deploying2: var(--clr-custom-stream-label-deploying-bg-2, #39afd6);
+  $deployed1: var(--clr-custom-stream-label-deployed-bg-1, #6a9f39);
+  $deployed2: var(--clr-custom-stream-label-deployed-bg-2, #7a9c22);
+  $incomplete1: var(--clr-custom-stream-label-incomplete-bg-1, #dfb13d);
+  $incomplete2: var(--clr-custom-stream-label-incomplete-bg-2, #efc359);
+  $failed1: var(--clr-custom-stream-label-failed-bg-1, #cb5719);
+  $failed2: var(--clr-custom-stream-label-failed-bg-2, #cf2117);
+  $undeployed1: var(--clr-custom-stream-label-undeployed-bg-1, #7d7088);
+  $undeployed2: var(--clr-custom-stream-label-undeployed-bg-2, #5a5076);
+
+  &.deploying {
+    background: $deploying1;
+    background: linear-gradient(90deg, $deploying1 0%, $deploying2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.deployed {
+    background: $deployed1;
+    background: linear-gradient(90deg, $deployed1 0%, $deployed2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.incomplete, &.partial {
+    background: $incomplete1;
+    background: linear-gradient(90deg, $incomplete1 0%, $incomplete2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.failed {
+    background: $failed1;
+    background: linear-gradient(90deg, $failed1 0%, $failed2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.undeployed {
+    background: $undeployed1;
+    background: linear-gradient(90deg, $undeployed1 0%, $undeployed2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+}
+
+// Label Tasks
+.label-task {
+  text-transform: uppercase;
+  border: 0 none;
+  $unknown1: var(--clr-custom-task-label-unknown-bg-1, #dfb13d);
+  $unknown2: var(--clr-custom-task-label-unknown-bg-2, #efc359);
+  $complete1: var(--clr-custom-task-label-complete-bg-1, #6a9f39);
+  $complete2: var(--clr-custom-task-label-complete-bg-2, #7a9c22);
+  $error1: var(--clr-custom-task-label-error-bg-1, #cb5719);
+  $error2: var(--clr-custom-task-label-error-bg-2, #cf2117);
+  $running1: var(--clr-custom-task-label-running-bg-1, #459ace);
+  $running2: var(--clr-custom-task-label-running-bg-2, #39afd6);
+
+  &.unknown {
+    background: $unknown1;
+    background: linear-gradient(90deg, $unknown1 0%, $unknown2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.complete {
+    background: $complete1;
+    background: linear-gradient(90deg, $complete1 0%, $complete2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.error {
+    background: $error1;
+    background: linear-gradient(90deg, $error1 0%, $error2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.running {
+    background: $running1;
+    background: linear-gradient(90deg, $running1 0%, $running2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+}
+
+.label-job, .label-execution, .label-exit-code {
+  text-transform: uppercase;
+  border: 0 none;
+
+  $completed1: var(--clr-custom-execution-label-completed-bg-1, #6a9f39);
+  $completed2: var(--clr-custom-execution-label-completed-bg-2, #7a9c22);
+  $error1: var(--clr-custom-execution-label-error-bg-1, #cb5719);
+  $error2: var(--clr-custom-execution-label-error-bg-2, #cf2117);
+
+  &.completed {
+    background: $completed1;
+    background: linear-gradient(90deg, $completed1 0%, $completed2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+
+  &.error {
+    background: $error1;
+    background: linear-gradient(90deg, $error1 0%, $error2 100%);
+    color: var(--clr-custom-app-label-source-text, white);
+  }
+}
+
+
+.label-record-action {
+  text-transform: uppercase;
+  border: 0 none;
+  $label1: var(--clr-custom-record-action-label-running-bg-1, #136bc6);
+  $label2: var(--clr-custom-record-action-label-running-bg-2, #1d7ddd);
+  background: $label1;
+  background: linear-gradient(90deg, $label1 0%, $label2 100%);
+  color: var(--clr-custom-app-label-source-text, white);
+}
+
+.label-record-operation {
+
 }

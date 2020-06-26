@@ -1,6 +1,6 @@
 <h1>
   Stream <strong>{{stream?.name}}</strong>&nbsp;
-  <span *ngIf="stream?.status" class="label label-{{stream.statusColor()}}">{{stream.status}}</span>
+  <span *ngIf="stream?.status" class="{{stream.labelStatusClass()}}">{{stream.status}}</span>
 </h1>
 
 <div *ngIf="!loading">
@@ -42,7 +42,7 @@
             </div>
             <div class="row">
               <div class="key">Status</div>
-              <div class="value"><span class="label label-{{stream.statusColor()}}">{{stream.status}}</span></div>
+              <div class="value"><span class="{{stream.labelStatusClass()}}">{{stream.status}}</span></div>
             </div>
             <div class="row">
               <div class="key">Applications</div>
@@ -68,7 +68,7 @@
               </div>
               <div class="clr-col-xl-5"><span class="dsl-text dsl-truncate">{{related.dslText}}</span></div>
               <div class="clr-col-xl-2">
-                <span class="label label-{{related.statusColor()}}">{{related.status}}</span>
+                <span class="{{related.labelStatusClass()}}">{{related.status}}</span>
               </div>
             </div>
           </div>

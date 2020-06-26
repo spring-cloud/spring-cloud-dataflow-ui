@@ -21,7 +21,7 @@
           <div class="clr-form-control clr-row">
             <div class="clr-col-md-1 clr-control-label">Status</div>
             <div class="clr-col-10">
-              <span class="label label-{{streamConfig.stream.statusColor()}}">{{streamConfig.stream.status}}</span>
+              <span class="label label-{{streamConfig.stream.labelStatusClass()}}">{{streamConfig.stream.status}}</span>
             </div>
           </div>
           <clr-select-container *ngIf="platforms.length > 1">

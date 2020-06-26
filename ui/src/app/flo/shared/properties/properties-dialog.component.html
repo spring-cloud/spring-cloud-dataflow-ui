@@ -2,7 +2,7 @@
   <div class="modal-title">
     <h3 *ngIf="app" style="margin-top:0.2rem">
       Properties for <strong>{{app.name}}</strong>
-      <span class="label label-uppercase label-{{app.typeColor()}}">{{app.type}}</span>
+      <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
       <span class="label" *ngIf="app.version"><span>{{app.version}}</span></span>
     </h3>
     <label class="modal-search">

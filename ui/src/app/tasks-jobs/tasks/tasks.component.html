@@ -67,7 +67,7 @@
     <clr-dg-cell><a routerLink="/tasks-jobs/tasks/{{task.name}}">{{task.name}}</a></clr-dg-cell>
     <clr-dg-cell>{{task.description}}</clr-dg-cell>
     <clr-dg-cell><span class="dsl-text">{{task.dslText}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="label label-{{task.statusColor()}}">{{task.status}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="{{task.labelStatusClass()}}">{{task.status}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(task)">Details</button>
       <button class="action-item" (click)="launch(task)" [appRole]="['ROLE_DEPLOY']">Launch</button>

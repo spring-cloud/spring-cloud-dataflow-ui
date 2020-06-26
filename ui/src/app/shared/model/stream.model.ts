@@ -24,19 +24,20 @@ export class Stream {
     return stream;
   }
 
-  statusColor() {
+  labelStatusClass() {
     switch (this.status) {
       case 'UNDEPLOYED':
-        return '';
+        return 'label label-stream undeployed';
       case 'DEPLOYED':
-        return 'success';
+        return 'label label-stream deployed';
       case 'DEPLOYING':
-        return 'warning';
+        return 'label label-stream deploying';
       case 'ERROR':
       case 'FAILED':
-        return 'danger';
+        return 'label label-stream failed';
+      case 'INCOMPLETE':
       default:
-        return 'info';
+        return 'label label-stream incomplete';
     }
   }
 }

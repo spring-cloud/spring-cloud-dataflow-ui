@@ -85,7 +85,7 @@
   <clr-dg-row *ngFor="let record of page?.items" [clrDgItem]="record">
     <clr-dg-cell class="cell-id">{{record.auditRecordId}}</clr-dg-cell>
     <clr-dg-cell>{{record.createdOn | datetime}}</clr-dg-cell>
-    <clr-dg-cell><span class="label label-{{record.auditActionColor()}}">{{record.auditAction}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="{{record.labelActionClass()}}">{{record.auditAction}}</span></clr-dg-cell>
     <clr-dg-cell><span class="label">{{record.auditOperation}}</span></clr-dg-cell>
     <clr-dg-cell><span class="text-truncate">{{record.correlationId}}</span></clr-dg-cell>
     <clr-dg-cell><span class="text-truncate">{{record.createdBy || 'N/A'}}</span></clr-dg-cell>
@@ -109,7 +109,7 @@
         </tr>
         <tr>
           <td class="left"><strong>Actions</strong></td>
-          <td class="left"><span class="label label-{{detail.auditActionColor()}}">{{detail.auditAction}}</span></td>
+          <td class="left"><span class="{{detail.labelActionClass()}}">{{detail.auditAction}}</span></td>
         </tr>
         <tr>
           <td class="left"><strong>Operations</strong></td>

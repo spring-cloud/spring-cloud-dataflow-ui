@@ -38,19 +38,19 @@ export class App {
     return app;
   }
 
-  typeColor() {
+  labelTypeClass() {
     switch ((this.type || '').toString()) {
       case 'source':
-        return 'app source';
+        return 'label label-app source';
       case 'sink':
-        return 'app sink';
+        return 'label label-app sink';
       case 'processor':
-        return 'app processor';
+        return 'label label-app processor';
       case 'task':
-        return 'app task';
+        return 'label label-app task';
       default:
       case 'app':
-        return 'app app';
+        return 'label label-app app';
     }
   }
 }

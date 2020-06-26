@@ -1,6 +1,6 @@
 <h1>
   Application <strong>{{app.name}}</strong>&nbsp;
-  <span class="label-uppercase label label-{{app.typeColor()}}">{{app.type}}</span>
+  <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
   <span *ngIf="defaultApp" class="label">{{defaultApp.version}}</span>
 </h1>
 

@@ -78,15 +78,15 @@ export class ExecutionStep {
     return executionStep;
   }
 
-  statusColor() {
+  labelStatusClass() {
     switch (this.status) {
       case 'COMPLETED':
-        return 'success';
+        return 'label label-job completed';
       case 'ERROR':
       case 'FAILED':
-        return 'danger';
+        return 'label label-job error';
       default:
-        return 'info';
+        return 'label label-job unknown';
     }
   }
 }
@@ -239,27 +239,27 @@ export class JobExecution {
     return jobExecution;
   }
 
-  statusColor() {
+  labelStatusClass() {
     switch (this.status) {
       case 'COMPLETED':
-        return 'success';
+        return 'label label-execution completed';
       case 'ERROR':
       case 'FAILED':
-        return 'danger';
+        return 'label label-execution error';
       default:
-        return 'info';
+        return 'label label-execution unknown';
     }
   }
 
-  exitCodeColor() {
+  labelExitCodeClass() {
     switch (this.exitCode) {
       case 'COMPLETED':
-        return 'success';
+        return 'label label-exit-code completed';
       case 'ERROR':
       case 'FAILED':
-        return 'danger';
+        return 'label label-exit-code error';
       default:
-        return 'info';
+        return 'label label-exit-code unknown';
     }
   }
 

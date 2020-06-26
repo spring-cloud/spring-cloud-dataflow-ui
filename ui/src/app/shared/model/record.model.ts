@@ -25,14 +25,14 @@ export class Record {
     return record;
   }
 
-  auditActionColor() {
+  labelActionClass() {
     switch (this.auditAction) {
       case 'CREATE':
-        return 'success';
+        return 'label label-record-action create';
       case 'DELETE':
-        return 'danger';
+        return 'label label-record-action delete';
       default:
-        return 'info';
+        return 'label label-record-action';
     }
   }
 }

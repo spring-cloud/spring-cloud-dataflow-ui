@@ -45,7 +45,7 @@
 
 <app-confirm #unregisterModal (onConfirmed)="unregister()" title="Confirm unregister version" yes="Unregister">
   This action will unregister the <strong>version {{selected?.version}}</strong> of the application
-  <strong>{{selected?.name}}</strong>&nbsp;<span class="label label-{{selected?.typeColor()}}">{{selected?.type}}</span>.
+  <strong>{{selected?.name}}</strong>&nbsp;<span class="{{selected?.labelTypeClass()}}">{{selected?.type}}</span>.
   <br/>
   Are you sure?
 </app-confirm>
@@ -54,7 +54,7 @@
 <app-confirm #makeDefaultModal (onConfirmed)="makeDefault()" title="Confirm make default version" yes="Make default">
   This action will make the version <strong>{{selected?.version}}</strong> as the default version for the application
   <strong>{{selected?.name}}</strong>&nbsp;
-  <span class="label label-{{selected?.typeColor()}}">{{selected?.type}}</span>.
+  <span class="{{selected?.labelTypeClass()}}">{{selected?.type}}</span>.
   <br/>
   Are you sure?
 </app-confirm>

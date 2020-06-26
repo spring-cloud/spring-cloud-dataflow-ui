@@ -13,6 +13,7 @@ import { UnregisterComponent } from './unregister/unregister.component';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { VersionComponent } from './version/version.component';
 
 describe('manage/apps/apps.component.ts', () => {
 
@@ -24,7 +25,8 @@ describe('manage/apps/apps.component.ts', () => {
       declarations: [
         AppsComponent,
         TypeFilterComponent,
-        UnregisterComponent
+        UnregisterComponent,
+        VersionComponent
       ],
       imports: [
         FormsModule,

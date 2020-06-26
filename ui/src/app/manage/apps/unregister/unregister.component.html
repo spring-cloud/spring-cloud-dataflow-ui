@@ -4,7 +4,7 @@
   <div class="modal-body" *ngIf="apps.length == 1 && !isRunning">
     This action will unregister and delete application
     <u><strong>{{apps[0].name}}</strong></u>
-    of type <span class="label label-{{apps[0].typeColor()}}">{{apps[0].type}}</span>.
+    of type <span class="{{apps[0].labelTypeClass()}}">{{apps[0].type}}</span>.
     Are you sure?
   </div>
   <div class="modal-body" *ngIf="apps?.length > 1 && !isRunning">
@@ -22,7 +22,7 @@
       <tr *ngFor="let app of apps">
         <td class="left"><strong>{{app.name}}</strong></td>
         <td class="left">
-          <span class="label-uppercase  label label-{{app.typeColor()}}">{{app.type}}</span>
+          <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
         </td>
       </tr>
       </tbody>

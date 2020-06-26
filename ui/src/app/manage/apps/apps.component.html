@@ -74,7 +74,7 @@
     <clr-dg-cell>
       <a class="link text-truncate" (click)="details(app)">{{app.name}}</a>
     </clr-dg-cell>
-    <clr-dg-cell><span class="label-uppercase label label-{{app.typeColor()}}">{{app.type}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="{{app.labelTypeClass()}}">{{app.type}}</span></clr-dg-cell>
     <clr-dg-cell>
       <span class="label">
         {{app.version}}

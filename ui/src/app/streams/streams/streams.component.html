@@ -79,7 +79,7 @@
         <app-stream-dsl [dsl]="stream.dslText" [expandable]="false"></app-stream-dsl>
       </span>
     </clr-dg-cell>
-    <clr-dg-cell><span class="label label-{{stream.statusColor()}}">{{stream.status}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="{{stream.labelStatusClass()}}">{{stream.status}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(stream)">Details</button>
       <button class="action-item" (click)="deploy([stream])" *ngIf="stream.status === 'UNDEPLOYED'"
