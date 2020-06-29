@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { dia } from 'jointjs';
-import {BsModalService} from 'ngx-bootstrap';
-import {StreamPropertiesDialogComponent} from './properties/stream-properties-dialog.component';
+import { BsModalService } from 'ngx-bootstrap';
+import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 import {
   StreamAppPropertiesSource,
   StreamGraphPropertiesSource,
   StreamHead
 } from './properties/stream-properties-source';
-import {Utils} from './support/utils';
+import { Utils } from './support/utils';
 
 /**
  * Service for creating properties source for properties dialog component
@@ -17,7 +17,8 @@ import {Utils} from './support/utils';
 @Injectable()
 export class PropertiesEditor {
 
-  constructor(protected bsModalService: BsModalService) {}
+  constructor(protected bsModalService: BsModalService) {
+  }
 
   showForNode(element: dia.Element, graph: dia.Graph) {
     const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent, { class: 'modal-properties' });

@@ -17,7 +17,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { of } from 'rxjs';
 import { Platform } from '../../../shared/model/platform';
 import { BlockerService } from '../../../shared/components/blocker/blocker.service';
-import {SanitizeDsl} from '../../components/flo/sanitize-dsl.service';
+import { SanitizeDsl } from '../../components/flo/sanitize-dsl.service';
 
 /**
  * Test {@link StreamCreateDialogComponent}.

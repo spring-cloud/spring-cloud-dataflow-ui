@@ -12,10 +12,10 @@ body {
 @mixin font-helper($name, $weight, $style) {
   @font-face {
     font-family: 'SourceSansPro';
-    src: url("fonts/#{$name}.eot");
-    src: url("fonts/#{$name}.eot?#iefix") format("embedded-opentype"),
-    url("fonts/#{$name}.woff") format("woff"),
-    url("fonts/#{$name}.ttf") format("truetype");
+    src: url("./../../fonts/#{$name}.eot");
+    src: url("./../../fonts/#{$name}.eot?#iefix") format("embedded-opentype"),
+    url("./../../fonts/#{$name}.woff") format("woff"),
+    url("./../../fonts/#{$name}.ttf") format("truetype");
     font-weight: $weight;
     font-style: $style;
   }

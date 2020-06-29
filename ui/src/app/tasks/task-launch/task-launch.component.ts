@@ -1,17 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {TasksService} from '../tasks.service';
-import {catchError, finalize, map, mergeMap, takeUntil} from 'rxjs/operators';
-import {EMPTY, Observable, Subject} from 'rxjs';
-import {TaskDefinition} from '../model/task-definition';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {NotificationService} from '../../shared/services/notification.service';
-import {AppError, HttpAppError} from '../../shared/model/error.model';
-import {RoutingStateService} from '../../shared/services/routing-state.service';
-import {TaskLaunchParams} from '../components/tasks.interface';
-import {TaskLaunchValidator} from './task-launch.validator';
-import {KvRichTextValidator} from '../../shared/components/kv-rich-text/kv-rich-text.validator';
-import {BlockerService} from '../../shared/components/blocker/blocker.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TasksService } from '../tasks.service';
+import { catchError, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { TaskDefinition } from '../model/task-definition';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '../../shared/services/notification.service';
+import { AppError, HttpAppError } from '../../shared/model/error.model';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { TaskLaunchParams } from '../components/tasks.interface';
+import { TaskLaunchValidator } from './task-launch.validator';
+import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Component that provides a launcher of task.
@@ -90,14 +90,14 @@ export class TaskLaunchComponent implements OnInit, OnDestroy {
           map(taskDefinition => {
             let parameters = '';
             if (taskDefinition.lastTaskExecution && taskDefinition.lastTaskExecution.deploymentProperties) {
-                parameters = Object.keys(taskDefinition.lastTaskExecution.deploymentProperties).map(key => {
-                  if (taskDefinition.lastTaskExecution.deploymentProperties[key] === '******') {
-                    return '';
-                  }
-                  return `${key}=${taskDefinition.lastTaskExecution.deploymentProperties[key]}`;
-                })
-                  .filter(param => !!param)
-                  .join('\n');
+              parameters = Object.keys(taskDefinition.lastTaskExecution.deploymentProperties).map(key => {
+                if (taskDefinition.lastTaskExecution.deploymentProperties[key] === '******') {
+                  return '';
+                }
+                return `${key}=${taskDefinition.lastTaskExecution.deploymentProperties[key]}`;
+              })
+                .filter(param => !!param)
+                .join('\n');
             }
             return {
               taskDefinition: taskDefinition,

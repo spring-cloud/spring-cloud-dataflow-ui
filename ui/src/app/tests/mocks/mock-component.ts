@@ -1,4 +1,4 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { OnDestroy, OnInit, Directive } from '@angular/core';
 
 
 /**
@@ -9,6 +9,7 @@ import { OnDestroy, OnInit } from '@angular/core';
  *
  * @author Glenn Renfro
  */
+@Directive()
 export class MockComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }

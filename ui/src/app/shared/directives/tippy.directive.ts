@@ -7,7 +7,7 @@ import tippy from 'tippy.js';
 export class TippyDirective implements OnInit {
 
   /* tslint:disable-next-line:no-input-rename */
-  @Input('tippyOptions') public tippyOptions: Object;
+  @Input('tippyOptions') public tippyOptions: object;
 
   constructor(private el: ElementRef) {
     this.el = el;
@@ -19,8 +19,8 @@ export class TippyDirective implements OnInit {
       arrow: true,
       animation: 'fade',
       distance: 5,
-      delay: [200, 0],
-      duration: [40, 50]
+      delay: [200, 0] as [number, number],
+      duration: [40, 50] as [number, number]
     };
     const options = Object.assign({}, defaultOptions, this.tippyOptions || {});
     tippy(this.el.nativeElement, options);

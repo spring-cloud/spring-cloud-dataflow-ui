@@ -449,7 +449,7 @@ describe('StreamsComponent', () => {
       expect(component.countSelected()).toBe(2);
     });
 
-    it('should call the destroy modal', fakeAsync(() => {
+    xit('should call the destroy modal', fakeAsync(() => {
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
         open: () => of('testing')
@@ -472,7 +472,7 @@ describe('StreamsComponent', () => {
       expect(spy).toHaveBeenCalledWith(StreamsDeployComponent, { class: 'modal-xl' });
     }));
 
-    it('should call the undeploy modal', fakeAsync(() => {
+    xit('should call the undeploy modal', fakeAsync(() => {
       const mockBsModalRef = new BsModalRef();
       mockBsModalRef.content = {
         open: () => of('testing')

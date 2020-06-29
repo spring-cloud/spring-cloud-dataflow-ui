@@ -31,7 +31,7 @@ import { MockAppsService } from '../../tests/mocks/apps';
 import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
-import {ParserService} from '../../shared/services/parser.service';
+import { ParserService } from '../../shared/services/parser.service';
 
 /**
  * Test {@link StreamDeployComponent}.

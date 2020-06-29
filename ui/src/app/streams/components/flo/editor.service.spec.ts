@@ -13,7 +13,7 @@ import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
 import { BsModalService } from 'ngx-bootstrap';
 import { StreamsModule } from '../../streams.module';
 import { NodeHelper } from './node-helper.service';
-import {PropertiesEditor} from './properties-editor.service';
+import { PropertiesEditor } from './properties-editor.service';
 
 const $: any = _$;
 
@@ -457,7 +457,8 @@ describe('editor.service : Auto-Link', () => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = metamodelService;
-    component.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver,
+      fixture.debugElement.injector, applicationRef);
     component.editor = new EditorService();
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();
