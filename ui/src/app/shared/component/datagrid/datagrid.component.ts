@@ -1,9 +1,10 @@
-import { OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Directive, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ContextService } from '../../service/context.service';
 import { ClrDatagridHideableColumn, ClrDatagridStateInterface } from '@clr/angular';
 import { Page } from '../../model/page.model';
 
-export class DatagridComponent implements OnInit, OnDestroy {
+@Directive()
+export abstract class DatagridComponent implements OnInit, OnDestroy {
 
   protected page: Page<any>;
   protected contextName = 'default';
