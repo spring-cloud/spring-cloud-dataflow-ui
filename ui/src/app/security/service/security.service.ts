@@ -7,7 +7,7 @@ import { HttpUtils } from '../../shared/support/http.utils';
 import { ErrorUtils } from '../../shared/support/error.utils';
 import { Security } from '../../shared/model/security.model';
 import { State, getUsername, getRoles, getEnabled, getShouldProtect, getSecurity } from '../store/security.reducer';
-import { loaded, logout } from '../store/security.action';
+import { loaded, logout, unauthorised } from '../store/security.action';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,10 @@ export class SecurityService {
 
   loaded(enabled: boolean, authenticated: boolean, username: string, roles: string[]) {
     this.store.dispatch(loaded({enabled, authenticated, username, roles}));
+  }
+
+  unauthorised() {
+    this.store.dispatch(unauthorised());
   }
 
   securityEnabled(): Observable<boolean> {

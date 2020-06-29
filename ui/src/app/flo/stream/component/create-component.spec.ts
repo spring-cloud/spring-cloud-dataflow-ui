@@ -2,6 +2,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { MetamodelService } from '../metamodel.service';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
 import { ParserService } from '../../shared/service/parser.service';
@@ -39,7 +40,8 @@ describe('StreamCreateComponent', () => {
         BrowserAnimationsModule,
         SharedModule,
         StreamsModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([])
       ],
       providers: [
         { provide: StreamService, useValue: streamsService },

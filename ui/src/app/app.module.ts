@@ -22,6 +22,7 @@ import { Security } from './shared/model/security.model';
 import { of } from 'rxjs';
 import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
 import { DevModule } from './dev/dev.module';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { DevModule } from './dev/dev.module';
         strictActionTypeUniqueness: true,
       },
     }),
-    StoreRouterConnectingModule.forRoot()
+    StoreRouterConnectingModule.forRoot(),
+    EffectsModule.forRoot([])
   ],
   providers: [
     {

@@ -1,6 +1,8 @@
 import { async, inject, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApplicationRef } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { GraphViewComponent } from './graph-view.component';
 import { FloModule } from 'spring-flo';
 import { ComponentFactoryResolver } from '@angular/core';
@@ -31,7 +33,9 @@ describe('StreamGraphViewComponent', () => {
         FloModule,
         SharedModule,
         StreamsModule,
-        StoreModule.forRoot({})
+        RouterTestingModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([])
       ]
     })
       .compileComponents()

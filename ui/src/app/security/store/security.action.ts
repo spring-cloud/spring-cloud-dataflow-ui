@@ -5,3 +5,4 @@ export const loaded = createAction(
     props<{ enabled: boolean, authenticated: boolean, username: string, roles: string[] }>()
 );
 export const logout = createAction('[Security] Logout');
+export const unauthorised = createAction('[Security] Unauthorised');
