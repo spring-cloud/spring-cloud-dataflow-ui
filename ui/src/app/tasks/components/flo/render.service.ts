@@ -131,7 +131,7 @@ export class RenderService implements Flo.Renderer {
   createLink() {
     const link = new BatchLink();
     this.metamodelService.load().then(function (metamodel) {
-      link.attr('metadata', metamodel.get('links').get('transition'));
+      link.set('metadata', metamodel.get('links').get('transition'));
     });
     return link;
   }
@@ -148,14 +148,14 @@ export class RenderService implements Flo.Renderer {
   handleLinkEvent(context: Flo.EditorContext, event: string, link: dia.Link): void {
     if (event === 'options') {
       const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent, { class: 'modal-properties' });
-      modalRef.content.name = `${link.attr('metadata/name')}`;
+      modalRef.content.name = `${link.get('metadata')?.name}`;
       modalRef.content.type = `TASK`;
       modalRef.content.setData(new TaskGraphPropertiesSource(link));
     }
   }
 
   initializeNewNode(node: dia.Element, viewerDescriptor: Flo.ViewerDescriptor) {
-    const metadata: Flo.ElementMetadata = node.attr('metadata');
+    const metadata: Flo.ElementMetadata = node.get('metadata');
     if (metadata) {
       if (metadata.group === CONTROL_GROUP_TYPE) {
         // nothing to do here yet for control nodes
@@ -179,11 +179,11 @@ export class RenderService implements Flo.Renderer {
   }
 
   refreshVisuals(element: dia.Cell, changedPropertyPath: string, paper: dia.Paper) {
-    if (element instanceof joint.dia.Element && element.attr('metadata')) {
+    if (element instanceof joint.dia.Element && element.get('metadata')) {
       if (changedPropertyPath === 'node-label') {
         const nodeLabel = element.attr('node-label');
         // fitLabel() calls update as necessary, so set label text silently
-        element.attr('.name-label/text', nodeLabel ? nodeLabel : element.attr('metadata/name'));
+        element.attr('.name-label/text', nodeLabel ? nodeLabel : element.get('metadata')?.name);
         // ViewUtils.fitLabelWithFixedLocation(paper, <dia.Element> element, '.name-label', element.attr('.name-label/refX'));
 
         // Update the view to get default label visuals showing without truncation.
@@ -192,7 +192,7 @@ export class RenderService implements Flo.Renderer {
       }
     }
 
-    if (element instanceof joint.dia.Link && element.attr('metadata')) {
+    if (element instanceof joint.dia.Link && element.get('metadata')) {
 
       if (changedPropertyPath === 'props/ExitStatus') {
         // If the exitstatus has been changed from blank to something then this

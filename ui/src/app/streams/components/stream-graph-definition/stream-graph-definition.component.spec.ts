@@ -128,7 +128,7 @@ describe('StreamGraphDefinitionComponent', () => {
       subscription.unsubscribe();
 
       // verify http dots
-      const http = <dia.Element> component.flo.getGraph().getElements().find(e => e.attr('metadata/name') === 'http');
+      const http = <dia.Element> component.flo.getGraph().getElements().find(e => e.get('metadata')?.name === 'http');
       expect(http).toBeDefined();
       const httpEmbeds = http.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_DOT);
       expect(http.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_LABEL)).toBeUndefined();
@@ -136,7 +136,7 @@ describe('StreamGraphDefinitionComponent', () => {
       httpMetrics.instances.forEach((instance, i) => expect(httpEmbeds[i].attr('instance')).toEqual(instance));
 
       // verify filter label
-      const filter = <dia.Element> component.flo.getGraph().getElements().find(e => e.attr('metadata/name') === 'filter');
+      const filter = <dia.Element> component.flo.getGraph().getElements().find(e => e.get('metadata')?.name === 'filter');
       expect(filter).toBeDefined();
       expect(filter.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_DOT)).toBeUndefined();
       const filterEmbeds = filter.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_LABEL);
@@ -144,7 +144,7 @@ describe('StreamGraphDefinitionComponent', () => {
       expect(filterEmbeds[0].attr('.label/text')).toEqual('57/57');
 
       // verify null dots
-      const nullApp = <dia.Element> component.flo.getGraph().getElements().find(e => e.attr('metadata/name') === 'null');
+      const nullApp = <dia.Element> component.flo.getGraph().getElements().find(e => e.get('metadata')?.name === 'null');
       expect(nullApp).toBeDefined();
       const nullEmbeds = nullApp.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_DOT);
       expect(nullApp.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_LABEL)).toBeUndefined();

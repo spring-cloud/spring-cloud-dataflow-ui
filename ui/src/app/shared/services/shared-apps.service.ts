@@ -13,7 +13,7 @@ export class SharedAppsService {
   /**
    * URL App
    */
-  private static appsUrl = '/apps';
+  protected static appsUrl = '/apps';
 
   /**
    * Constructor
@@ -21,9 +21,9 @@ export class SharedAppsService {
    * @param {LoggerService} loggerService
    * @param {ErrorHandler} errorHandler
    */
-  constructor(private httpClient: HttpClient,
-              private loggerService: LoggerService,
-              private errorHandler: ErrorHandler) {
+  constructor(protected httpClient: HttpClient,
+              protected loggerService: LoggerService,
+              protected errorHandler: ErrorHandler) {
   }
 
   /**

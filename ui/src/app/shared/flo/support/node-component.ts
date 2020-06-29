@@ -36,7 +36,7 @@ export class NodeComponent extends ElementComponent {
   }
 
   get metadata(): Flo.ElementMetadata {
-    return this.view ? this.view.model.attr('metadata') : undefined;
+    return this.view ? this.view.model.get('metadata') : undefined;
   }
 
   get metaName(): string {
@@ -52,7 +52,7 @@ export class NodeComponent extends ElementComponent {
   }
 
   get isPropertiesShown(): boolean {
-    return this.view ? !this.view.model.attr('metadata/metadata/hide-tooltip-options') : false;
+    return this.view ? !this.view.model.get('metadata')?.metadata?.['hide-tooltip-options'] : false;
   }
 
   get description(): string {
