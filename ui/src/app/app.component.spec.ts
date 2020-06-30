@@ -18,6 +18,7 @@ import { SecurityModule } from './security/security.module';
 import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
 import * as fromSecurity from './security/store/security.reducer';
 import * as fromAbout from './shared/store/about.reducer';
+import { EffectsModule } from '@ngrx/effects';
 
 describe('app.component.ts', () => {
 
@@ -121,7 +122,8 @@ describe('app.component.ts', () => {
         ManageModule,
         SecurityModule,
         RouterTestingModule,
-        StoreModule.forRoot(ROOT_REDUCERS, {metaReducers})
+        StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
+        EffectsModule.forRoot([])
       ],
       providers: [
         provideMockStore({ initialState })

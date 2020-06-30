@@ -1,4 +1,7 @@
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { EditorComponent } from 'spring-flo';
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
@@ -13,7 +16,6 @@ import { LoggerService } from '../../shared/service/logger.service';
 import { StreamsModule } from '../../streams/streams.module';
 import { NodeHelper } from './node-helper.service';
 import { PropertiesEditor } from './properties-editor.service';
-import { StoreModule } from '@ngrx/store';
 
 const $: any = _$;
 
@@ -423,7 +425,9 @@ describe('editor.service : Auto-Link', () => {
     TestBed.configureTestingModule({
       imports: [
         StreamsModule,
-        StoreModule.forRoot({})
+        RouterTestingModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([])
       ]
     });
   }));
