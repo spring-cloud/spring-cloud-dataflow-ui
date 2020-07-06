@@ -27,9 +27,9 @@ export function layout(paper: dia.Paper) {
       g.setNode(node.id, node.get('size'));
 
       // Determine start and end node
-      if (node.attr('metadata/name') === START_NODE_TYPE && node.attr('metadata/group') === CONTROL_GROUP_TYPE) {
+      if (node.prop('metadata/name') === START_NODE_TYPE && node.prop('metadata/group') === CONTROL_GROUP_TYPE) {
         start = node;
-      } else if (node.attr('metadata/name') === END_NODE_TYPE && node.attr('metadata/group') === CONTROL_GROUP_TYPE) {
+      } else if (node.prop('metadata/name') === END_NODE_TYPE && node.prop('metadata/group') === CONTROL_GROUP_TYPE) {
         end = node;
       } else {
         empty = false;

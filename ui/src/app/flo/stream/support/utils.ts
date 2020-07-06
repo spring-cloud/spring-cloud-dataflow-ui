@@ -25,9 +25,9 @@ import { ApplicationType } from '../../../shared/model/app.model';
 export class Utils {
 
   static canBeHeadOfStream(graph: dia.Graph, element: dia.Element): boolean {
-    if (element.attr('metadata')) {
-      if (!element.attr('.input-port') || element.attr('.input-port/display') === 'none') {
-        if (element.attr('metadata/group') === ApplicationType[ApplicationType.app]) {
+    if (element.prop('metadata')) {
+      if (!Utils.hasVisibleInputPorts(element)) {
+        if (element.prop('metadata/group') === ApplicationType[ApplicationType.app]) {
           // For APP nodes if one has `stream-name` set then others cannot have `stream-name` property
           // Check current element. If it has `stream-name` property then it's allowed to have it
           if (element.attr('stream-name')) {
@@ -35,7 +35,7 @@ export class Utils {
           }
           // Otherwise check the rest of APP nodes don't have `stream-name` set
           return !graph.getElements()
-            .filter(e => e.attr('metadata/group') === ApplicationType[ApplicationType.app] && e !== element)
+            .filter(e => e.prop('metadata/group') === ApplicationType[ApplicationType.app] && e !== element)
             .find(e => e.attr('stream-name'));
         } else {
           return true;
@@ -44,6 +44,21 @@ export class Utils {
         const incoming = graph.getConnectedLinks(element, { inbound: true });
         const tapLink = incoming.find(l => l.attr('props/isTapLink'));
         if (tapLink) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static hasVisibleInputPorts(element: dia.Element) {
+    const attrs = element.attributes.attrs;
+    const keys = Object.keys(element.attributes.attrs);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      if (attrs[key] && attrs[key].magnet && attrs[key].port) {
+        // Port should have magnet and port properties
+        if (attrs[key].port === 'input' && (!attrs[key].display || attrs[key].display === 'block')) {
           return true;
         }
       }

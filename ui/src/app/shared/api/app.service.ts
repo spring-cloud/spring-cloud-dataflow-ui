@@ -12,7 +12,7 @@ import { ErrorUtils } from '../support/error.utils';
 })
 export class AppService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(protected httpClient: HttpClient) {
   }
 
   getApps(page: number, size: number, search?: string, type?: ApplicationType, sort?: string, order?: string,

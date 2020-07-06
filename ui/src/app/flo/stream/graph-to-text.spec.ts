@@ -662,7 +662,7 @@ describe('graph-to-text', () => {
   }
 
   function getName(element: dia.Cell) {
-    return element.attr('metadata/name');
+    return element.prop('metadata/name');
   }
 
   function setLabel(element: dia.Cell, label: string) {
