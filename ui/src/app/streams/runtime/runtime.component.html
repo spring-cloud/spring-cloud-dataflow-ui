@@ -26,7 +26,7 @@
             <div class="card-block">
               <h4 class="card-title">
                 {{runtimeApp.deploymentId}}
-                <span class="label label-{{runtimeApp.stateColor()}}"> {{runtimeApp.state}}</span>
+                <span class="{{runtimeApp.stateColor()}}"> {{runtimeApp.state}}</span>
               </h4>
               <p class="card-text">
                 {{runtimeApp.appInstances.length}}

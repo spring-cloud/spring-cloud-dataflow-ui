@@ -537,7 +537,7 @@ a:link, a:visited {
 
 // Label Streams
 
-.label-stream {
+.label-stream, .label-runtime {
   text-transform: uppercase;
   border: 0 none;
   $deploying1: var(--clr-custom-stream-label-deploying-bg-1, #459ace);
@@ -551,7 +551,7 @@ a:link, a:visited {
   $undeployed1: var(--clr-custom-stream-label-undeployed-bg-1, #7d7088);
   $undeployed2: var(--clr-custom-stream-label-undeployed-bg-2, #5a5076);
 
-  &.deploying {
+  &.deploying, &.unknown {
     background: $deploying1;
     background: linear-gradient(90deg, $deploying1 0%, $deploying2 100%);
     color: var(--clr-custom-app-label-source-text, white);

@@ -14,12 +14,12 @@ export class RuntimeAppInstance {
   stateColor() {
     switch (this.state) {
       case 'DEPLOYED':
-        return 'success';
+        return 'label label-runtime deployed';
       case 'ERROR':
       case 'FAILED':
-        return 'danger';
+        return 'label label-runtime failed';
       default:
-        return 'info';
+        return 'label label-runtime unknown';
     }
   }
 }
@@ -44,12 +44,12 @@ export class RuntimeApp {
   stateColor() {
     switch (this.state) {
       case 'DEPLOYED':
-        return 'success';
+        return 'label label-runtime deployed';
       case 'ERROR':
       case 'FAILED':
-        return 'danger';
+        return 'label label-runtime failed';
       default:
-        return 'info';
+        return 'label label-runtime unknown';
     }
   }
 }

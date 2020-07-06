@@ -2,7 +2,7 @@
   <h3 class="modal-title">
     Instances for app
     <strong>{{runtimeApp.deploymentId}}</strong>&nbsp;
-    <span class="label label-{{runtimeApp.stateColor()}}">{{runtimeApp.state}}</span>
+    <span class="{{runtimeApp.stateColor()}}">{{runtimeApp.state}}</span>
     <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeApp [runtimeApp]="runtimeApp">
       Grafana dashboard
     </button>
@@ -14,7 +14,7 @@
         <h4>
           Instance
           <strong>{{item.instanceId}}</strong>&nbsp;
-          <span class="label label-{{item.stateColor()}}">{{item.state}}</span>
+          <span class="{{item.stateColor()}}">{{item.state}}</span>
           <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeInstance [instance]="item">
             Grafana dashboard
           </button>
