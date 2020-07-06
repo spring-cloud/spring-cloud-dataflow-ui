@@ -66,7 +66,7 @@
   .focus {
     input {
       background: white;
-      color: var(--clr-h6-color, #333);
+      color: #333;
     }
 
     .icon-search {
@@ -75,7 +75,7 @@
   }
 
   .result {
-    background: white;
+    background: var(--clr-global-selection-color, white);
     position: fixed;
     padding: .4rem 0;
     top: 60px;
@@ -83,7 +83,7 @@
     z-index: 1001;
     border-radius: 0 0 3px 3px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
-    color: var(--clr-h6-color, #333);
+    color: var(--clr-h1-color, #333);
 
     h4 {
       margin: 0;
@@ -103,7 +103,7 @@
 
       &.active {
         a {
-          background: hsl(198, 0%, 91%);
+          background: var(--clr-global-app-background, hsl(198, 0%, 91%));
         }
       }
     }
@@ -123,7 +123,8 @@
 
   .backdrop {
     position: fixed;
-    background: rgba(#000, .2);
+    background: #000;
+    opacity: var(--clr-custom-search-bg-opacity, .2);
     top: 60px;
     bottom: 0;
     left: 0;
