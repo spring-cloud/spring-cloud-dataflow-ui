@@ -73,8 +73,9 @@ export class TaskExecutionComponent implements OnInit {
           (val) => this.tasksService.getExecution(val.id)
         ),
         mergeMap(
-          (val) => {
-            if (val.taskExecutionStatus === 'COMPLETE' || val.taskExecutionStatus === 'ERROR') {
+          (val: TaskExecution) => {
+            if ((val.taskExecutionStatus === 'COMPLETE' || val.taskExecutionStatus === 'ERROR')
+              && val.externalExecutionId) {
               return this.tasksService.getTaskExecutionLogs(val).pipe(
                 map(logs => {
                   return {
