@@ -221,7 +221,8 @@ export class RenderService implements Flo.Renderer {
       // If reconnecting source anchor to a shape with existing primary link switch the link to tap link
       if (newSource) {
         const outgoingLinks = graph.getConnectedLinks(newSource, { outbound: true });
-        const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink'));
+        const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink')
+          && _.isEqual(ol.source(), link.source()));
 
         link.attr('props/isTapLink', primaryLink ? true : false);
         this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
