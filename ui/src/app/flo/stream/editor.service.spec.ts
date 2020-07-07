@@ -487,7 +487,7 @@ describe('editor.service : Auto-Link', () => {
   it('DnD on empty canvas', () => {
     dropOnCanvas(metamodel.get('source').get('http'));
     expect(flo.getGraph().getElements().length).toEqual(1);
-    expect(flo.getGraph().getElements()[0].attr('metadata/name')).toEqual('http');
+    expect(flo.getGraph().getElements()[0].prop('metadata/name')).toEqual('http');
   });
 
   it('Auto-Link: OFF. Drop processor with available source port', () => {

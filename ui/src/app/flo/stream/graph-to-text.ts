@@ -71,7 +71,7 @@ class GraphToTextConverter {
             // What to do depends on the combination of in/out links
             if (linksIn.length === 0) {
                 if (linksOut.length === 0) {
-                    if (node.attr('metadata/group') === 'app') {
+                    if (node.prop('metadata/group') === 'app') {
                         appStream.push(node);
                     } else {
                         // Isolated node, let's put it in the DSL so it is not lost, the graph is a work in progress.
@@ -241,13 +241,13 @@ class GraphToTextConverter {
                     if (this.isChannel(node) || this.isChannel(stream[i + 1])) {
                         text += ' > ';
                     } else {
-                        if (node.attr('metadata/group') === 'app') {
+                        if (node.prop('metadata/group') === 'app') {
                             text += ' || ';
                         } else {
                             text += ' | ';
                         }
                     }
-                } else if (node.attr('metadata/name') === 'tap') {
+                } else if (node.prop('metadata/name') === 'tap') {
                     text += ' >'; // the graph isn't well formed but convenient to put this on end of DSL
                 }
             }
@@ -303,11 +303,11 @@ class GraphToTextConverter {
     }
 
     private isNode(element: dia.Element): boolean {
-        return element.attr('metadata/name');
+        return element.prop('metadata/name');
     }
 
     private isChannel(e: dia.Cell): boolean {
-        return e && (e.attr('metadata/name') === 'tap' || e.attr('metadata/name') === 'destination');
+        return e && (e.prop('metadata/name') === 'tap' || e.prop('metadata/name') === 'destination');
     }
 
     private findPrimaryLink(links: dia.Link[]): dia.Link {
@@ -333,7 +333,7 @@ class GraphToTextConverter {
     }
 
     private getName(node: dia.Cell): string {
-        const name: string = node.attr('metadata/name');
+        const name: string = node.prop('metadata/name');
         if (name === 'destination') {
             return ':' + node.attr('props/name');
         } else {
@@ -346,7 +346,7 @@ class GraphToTextConverter {
     private toTapString(node: dia.Cell): string {
         let appname: string = node.attr('node-name');
         if (!appname) {
-            appname = node.attr('metadata/name');
+            appname = node.prop('metadata/name');
         }
         // Note: not allowed to tap a destination
         return GraphToTextConverter.DESTINATION_DSL_PREFIX + this.findStreamName(node) + '.' + appname;
@@ -386,7 +386,7 @@ class GraphToTextConverter {
         let text = '';
         const props = node.attr('props');
         // Tap nodes less likely when fan-in/fan-out supported but may still occur
-        if ('tap' === node.attr('metadata/name') || 'destination' === node.attr('metadata/name')) {
+        if ('tap' === node.prop('metadata/name') || 'destination' === node.prop('metadata/name')) {
             if (props && props.name) {
                 text += GraphToTextConverter.DESTINATION_DSL_PREFIX + props.name;
             } else {
@@ -398,7 +398,7 @@ class GraphToTextConverter {
             if (label) { // label
                 text += label + ': ';
             }
-            text += node.attr('metadata/name');
+            text += node.prop('metadata/name');
             if (props) {
                 const propertiesRanges: Map<string, JsonGraph.Range> = new Map();
                 let propertyStart = startCh + text.length;

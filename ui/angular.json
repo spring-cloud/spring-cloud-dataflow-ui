@@ -143,5 +143,8 @@
       }
     }
   },
-  "defaultProject": "dataflow"
+  "defaultProject": "dataflow",
+  "cli": {
+    "analytics": false
+  }
 }

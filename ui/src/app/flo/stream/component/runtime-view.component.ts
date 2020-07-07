@@ -88,11 +88,11 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
   private updateDots() {
     if (this.flo) {
       this.flo.getGraph().getElements().forEach((element) => {
-        const group = element.attr('metadata/group');
+        const group = element.prop('metadata/group');
         if (typeof ApplicationType[group] === 'number') {
           let label = element.attr('node-name');
           if (!label) {
-            label = element.attr('metadata/name');
+            label = element.prop('metadata/name');
           }
           this.updateInstanceDecorations(element, this.findModuleMetrics(label));
         }

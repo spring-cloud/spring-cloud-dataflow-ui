@@ -203,9 +203,9 @@ export class StreamFloCreateComponent implements OnInit, OnDestroy {
   }
 
   handleLinkEvent(link) {
-    const name = (link.attr('metadata/name'));
-    const version = (link.attr('metadata/version'));
-    const type = (link.attr('metadata/group'));
+    const name = (link.prop('metadata/name'));
+    const version = (link.prop('metadata/version'));
+    const type = (link.prop('metadata/group'));
     const props = new StreamGraphPropertiesSource(link, null);
     this.propertiesDialog.open(name, type, version, props);
   }

@@ -27,12 +27,12 @@ export class StreamGraphPropertiesSource extends GraphNodePropertiesSource imple
 
   protected createNotationalProperties(): AppUiProperty[] {
     const notationalProperties = [];
-    if (typeof ApplicationType[this.cell.attr('metadata/group')] === 'number') {
+    if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
       notationalProperties.push({
         id: 'label',
         name: 'label',
         type: null,
-        defaultValue: this.cell.attr('metadata/name'),
+        defaultValue: this.cell.prop('metadata/name'),
         attr: 'node-name',
         value: this.cell.attr('node-name'),
         description: 'Label of the app',
@@ -56,7 +56,7 @@ export class StreamGraphPropertiesSource extends GraphNodePropertiesSource imple
   }
 
   protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
-    if (this.cell.attr('metadata/group') === 'other') {
+    if (this.cell.prop('metadata/group') === 'other') {
       // For something in the other group (like tap) use the id not the name of the property
       return `props/${metadata.id}`;
     }

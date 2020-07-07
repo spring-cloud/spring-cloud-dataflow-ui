@@ -33,8 +33,8 @@ export class TaskNodeComponent extends NodeComponent {
 
   showOptions() {
     const element = this.view.model;
-    this.optionsModal.title = `Properties for ${element.attr('metadata/name').toUpperCase()}`;
-    this.optionsModal.open(element.attr('metadata/name'), 'TASK', null, new TaskGraphPropertiesSource(element));
+    this.optionsModal.title = `Properties for ${element.prop('metadata/name').toUpperCase()}`;
+    this.optionsModal.open(element.prop('metadata/name'), 'TASK', null, new TaskGraphPropertiesSource(element));
   }
 
 }

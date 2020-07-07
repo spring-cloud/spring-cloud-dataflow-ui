@@ -18,9 +18,9 @@ export class PropertiesEditor {
   constructor() {}
 
   showForNode(propertiesDialog: PropertiesDialogComponent, element: dia.Element, graph: dia.Graph) {
-    const name = `${element.attr('metadata/name')}`;
-    const version = `${element.attr('metadata/version')}`;
-    const type = `${element.attr('metadata/group').toUpperCase()}`;
+    const name = `${element.prop('metadata/name')}`;
+    const version = `${element.prop('metadata/version')}`;
+    const type = `${element.prop('metadata/group').toUpperCase()}`;
 
     const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
 
@@ -38,9 +38,9 @@ export class PropertiesEditor {
   }
 
   showForLink(propertiesDialog: PropertiesDialogComponent, link: dia.Link) {
-    const name = `${link.attr('metadata/name')}`;
-    const version = `${link.attr('metadata/version')}`;
-    const type = `${link.attr('metadata/group').toUpperCase()}`;
+    const name = `${link.prop('metadata/name')}`;
+    const version = `${link.prop('metadata/version')}`;
+    const type = `${link.prop('metadata/group').toUpperCase()}`;
     propertiesDialog.open(name, type, version, this.createPropertiesSourceForLink(link));
 
   }

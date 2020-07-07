@@ -105,8 +105,8 @@ export class EditorService implements Flo.Editor {
       // }
     }
 
-    if (cellViewS.model.attr('metadata') && cellViewT.model.attr('metadata')) {
-      const targetGroup = cellViewT.model.attr('metadata/group');
+    if (cellViewS.model.prop('metadata') && cellViewT.model.prop('metadata')) {
+      const targetGroup = cellViewT.model.prop('metadata/group');
 
       // Target is a SOURCE node? Disallow link!
       // Target is APP type node? Disallow link!
@@ -115,11 +115,11 @@ export class EditorService implements Flo.Editor {
         return false;
       }
       // Target is an explicit tap? Disallow link!
-      if (cellViewT.model.attr('metadata/name') === 'tap') {
+      if (cellViewT.model.prop('metadata/name') === 'tap') {
         return false;
       }
 
-      const sourceGroup = cellViewS.model.attr('metadata/group');
+      const sourceGroup = cellViewS.model.prop('metadata/group');
       // SINK, TASK, APP cannot have outgoing links
       if (sourceGroup === ApplicationType[ApplicationType.sink]
         || sourceGroup === ApplicationType[ApplicationType.task]
@@ -140,7 +140,7 @@ export class EditorService implements Flo.Editor {
 
       if (targetIncomingLinks.length > 0) {
         // It is ok if the target is a destination
-        if (cellViewT.model.attr('metadata/name') !== 'destination') {
+        if (cellViewT.model.prop('metadata/name') !== 'destination') {
           return false;
         }
       }
@@ -158,7 +158,7 @@ export class EditorService implements Flo.Editor {
 
         // Invalid if output-port has more than one outgoing link (if not destination)
         // if (magnetS.getAttribute('class') === 'output-port' &&
-        //     cellViewS.model.attr('metadata/name') !== 'destination') {
+        //     cellViewS.model.prop('metadata/name') !== 'destination') {
         //     for (i = 0; i < outgoingSourceLinks.length; i++) {
         //         var selector = outgoingSourceLinks[i].get('source').selector;
         //         // Another link from the 'output-port' is present
@@ -190,8 +190,8 @@ export class EditorService implements Flo.Editor {
     const targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
     // If node dropping not enabled then short-circuit
     if (!NODE_DROPPING && !(targetUnderMouse instanceof joint.dia.Link
-      && targetUnderMouse.attr('metadata/name') !== 'tap'
-      && targetUnderMouse.attr('metadata/name') !== 'destination')) {
+      && targetUnderMouse.prop('metadata/name') !== 'tap'
+      && targetUnderMouse.prop('metadata/name') !== 'destination')) {
       return {
         sourceComponent,
         source: {
@@ -200,7 +200,7 @@ export class EditorService implements Flo.Editor {
       };
     }
     // check if it's a tap being dragged
-    if ((targetUnderMouse instanceof joint.dia.Element) && source.attr('metadata/name') === 'tap') {
+    if ((targetUnderMouse instanceof joint.dia.Element) && source.prop('metadata/name') === 'tap') {
       return {
         sourceComponent,
         source: {
@@ -268,8 +268,8 @@ export class EditorService implements Flo.Editor {
     }
 
     // Check if drop on a link is allowed
-    const sourceType = source.attr('metadata/name');
-    const sourceGroup = source.attr('metadata/group');
+    const sourceType = source.prop('metadata/name');
+    const sourceGroup = source.prop('metadata/group');
     if (targetUnderMouse instanceof joint.dia.Link && !(sourceType === 'destination'
       || sourceGroup === 'sink' || sourceGroup === 'source') && graph.getConnectedLinks(source).length === 0) {
       return {
@@ -452,8 +452,8 @@ export class EditorService implements Flo.Editor {
   }
 
   private validateConnectedLinks(graph: dia.Graph, element: dia.Element, errors: Array<Flo.Marker>) {
-    const group = element.attr('metadata/group');
-    const type = element.attr('metadata/name');
+    const group = element.prop('metadata/group');
+    const type = element.prop('metadata/name');
     const incoming: Array<dia.Link> = [];
     const outgoing: Array<dia.Link> = [];
     const tap: Array<dia.Link> = [];
@@ -538,8 +538,8 @@ export class EditorService implements Flo.Editor {
     //   const group = incomingGroups[channel];
     //
     //   // Error on unresolved channels not present in metamodel
-    //   if (channel && element.attr('metadata') instanceof AppMetadata) {
-    //     const inputChannels = (<AppMetadata> element.attr('metadata')).inputChannels;
+    //   if (channel && element.prop('metadata') instanceof AppMetadata) {
+    //     const inputChannels = (<AppMetadata> element.prop('metadata')).inputChannels;
     //     if (!Array.isArray(inputChannels) || inputChannels.indexOf(channel) < 0) {
     //       errors.push({
     //         severity: Flo.Severity.Error,
@@ -567,8 +567,8 @@ export class EditorService implements Flo.Editor {
     //   const group = outgoingGroups[channel];
     //
     //   // Error on unresolved channels not present in metamodel
-    //   if (channel && element.attr('metadata') instanceof AppMetadata) {
-    //     const outputChannels = (<AppMetadata> element.attr('metadata')).outputChannels;
+    //   if (channel && element.prop('metadata') instanceof AppMetadata) {
+    //     const outputChannels = (<AppMetadata> element.prop('metadata')).outputChannels;
     //     if (!Array.isArray(outputChannels) || outputChannels.indexOf(channel) < 0) {
     //       errors.push({
     //         severity: Flo.Severity.Error,
@@ -603,7 +603,7 @@ export class EditorService implements Flo.Editor {
       // const specifiedProperties = element.attr('props');
       // if (specifiedProperties) {
       //     const propertiesRanges = element.attr('propertiesranges');
-      //     const appSchema = element.attr('metadata');
+      //     const appSchema = element.prop('metadata');
       //     appSchema.properties().then(appSchemaProperties => {
       //         if (!appSchemaProperties) {
       //             appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
@@ -616,7 +616,7 @@ export class EditorService implements Flo.Editor {
       //                 markers.push({
       //                     severity: Flo.Severity.Error,
       //                     message: 'unrecognized option \'' + propertyName + '\' for app \'' +
-      //                                 element.attr('metadata/name') + '\'',
+      //                                 element.prop('metadata/name') + '\'',
       //                     range: range
       //                 });
       //             }
@@ -632,10 +632,10 @@ export class EditorService implements Flo.Editor {
 
   private validateMetadata(element: dia.Cell, errors: Array<Flo.Marker>) {
     // Unresolved elements validation
-    if (!element.attr('metadata') || SharedUtils.isUnresolved(element)) {
-      let msg = 'Unknown element \'' + element.attr('metadata/name') + '\'';
-      if (element.attr('metadata/group')) {
-        msg += ' from group \'' + element.attr('metadata/group') + '\'.';
+    if (!element.prop('metadata') || SharedUtils.isUnresolved(element)) {
+      let msg = 'Unknown element \'' + element.prop('metadata/name') + '\'';
+      if (element.prop('metadata/group')) {
+        msg += ' from group \'' + element.prop('metadata/group') + '\'.';
       }
       errors.push({
         severity: Flo.Severity.Error,
@@ -660,7 +660,7 @@ export class EditorService implements Flo.Editor {
     return new Promise(resolve => {
       const markers: Map<string | number, Array<Flo.Marker>> = new Map();
       const promises: Promise<void>[] = [];
-      graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
+      graph.getElements().filter(e => !e.get('parent') && e.prop('metadata')).forEach(e => {
         promises.push(new Promise<void>((nodeFinished) => {
           this.validateNode(graph, e).then((result) => {
             markers.set(e.id, result);
@@ -859,9 +859,9 @@ export class EditorService implements Flo.Editor {
     const graph = flo.getGraph();
     const source = dragDescriptor.source ? dragDescriptor.source.view.model : undefined;
     const target = dragDescriptor.target ? dragDescriptor.target.view.model : undefined;
-    const type = source.attr('metadata/name');
+    const type = source.prop('metadata/name');
     // NODE DROPPING TURNED OFF FOR NOW
-    if (NODE_DROPPING && target instanceof joint.dia.Element && target.attr('metadata/name')) {
+    if (NODE_DROPPING && target instanceof joint.dia.Element && target.prop('metadata/name')) {
       if (dragDescriptor.target.cssClassSelector === '.output-port') {
         this.moveNodeOnNode(flo, source as dia.Element, target as dia.Element, 'right', true);
         relinking = true;
@@ -890,7 +890,7 @@ export class EditorService implements Flo.Editor {
   private performAutoLinking(flo: Flo.EditorContext, view: dia.CellView) {
     // Search the graph for open ports - if only 1 is found, and it matches what
     // the dropped node needs, join it up!
-    const group = view.model.attr('metadata/group');
+    const group = view.model.prop('metadata/group');
     const graph = flo.getGraph();
     let wantOpenInputPort = false; // want something with an open input port
     let wantOpenOutputPort = false; // want something with an open output port
@@ -905,8 +905,8 @@ export class EditorService implements Flo.Editor {
     const openPorts = [];
     let linksIn;
 
-    graph.getElements().filter(e => e.id !== view.model.id && e.attr('metadata/name')).forEach(element => {
-      switch (element.attr('metadata/group')) {
+    graph.getElements().filter(e => e.id !== view.model.id && e.prop('metadata/name')).forEach(element => {
+      switch (element.prop('metadata/group')) {
         case ApplicationType[ApplicationType.source]:
           if (wantOpenOutputPort) {
             const primaryLink = graph.getConnectedLinks(element, { outbound: true }).find(l => !l.attr('props/isTapLink'));
