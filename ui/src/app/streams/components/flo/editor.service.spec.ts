@@ -301,7 +301,7 @@ describe('Streams Editor Service', () => {
   }
 
   function getName(element: dia.Cell) {
-    return element.attr('metadata/name');
+    return element.get('metadata')?.name;
   }
 
   function setLabel(element: dia.Cell, label: string) {
@@ -485,7 +485,7 @@ describe('editor.service : Auto-Link', () => {
   it('DnD on empty canvas', () => {
     dropOnCanvas(metamodel.get('source').get('http'));
     expect(flo.getGraph().getElements().length).toEqual(1);
-    expect(flo.getGraph().getElements()[0].attr('metadata/name')).toEqual('http');
+    expect(flo.getGraph().getElements()[0].get('metadata')?.name).toEqual('http');
   });
 
   it('Auto-Link: OFF. Drop processor with available source port', () => {

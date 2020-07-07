@@ -83,8 +83,8 @@ export class EditorService implements Flo.Editor {
   }
 
   private validateConnectedLinks(graph: dia.Graph, element: dia.Element, markers: Array<Flo.Marker>) {
-    if (element.attr('metadata') && !Utils.isUnresolved(element)) {
-      const type = element.attr('metadata/name');
+    if (element.get('metadata') && !Utils.isUnresolved(element)) {
+      const type = element.get('metadata')?.name;
       const incoming = graph.getConnectedLinks(element, { inbound: true });
       const outgoing = graph.getConnectedLinks(element, { outbound: true });
 
@@ -193,7 +193,7 @@ export class EditorService implements Flo.Editor {
       const specifiedProperties = element.attr('props');
       if (specifiedProperties) {
         const propertiesRanges = element.attr('propertiesranges');
-        const appSchema = element.attr('metadata');
+        const appSchema = element.get('metadata');
         appSchema.properties().then(appSchemaProperties => {
           if (!appSchemaProperties) {
             appSchemaProperties = new Map<string, Flo.PropertyMetadata>();
@@ -206,7 +206,7 @@ export class EditorService implements Flo.Editor {
               markers.push({
                 severity: Flo.Severity.Error,
                 message: 'unrecognized option \'' + propertyName + '\' for app \'' +
-                  element.attr('metadata/name') + '\'',
+                  element.get('metadata')?.name + '\'',
                 range: range
               });
             }
@@ -222,10 +222,10 @@ export class EditorService implements Flo.Editor {
 
   private validateMetadata(element: dia.Cell, errors: Array<Flo.Marker>) {
     // Unresolved elements validation
-    if (!element.attr('metadata') || Utils.isUnresolved(element)) {
-      let msg = `Unknown element '${element.attr('metadata/name')}'`;
+    if (!element.get('metadata') || Utils.isUnresolved(element)) {
+      let msg = `Unknown element '${element.get('metadata')?.name}'`;
       if (element.attr('metadata/group')) {
-        msg += ` from group '${element.attr('metadata/group')}'.`;
+        msg += ` from group '${element.get('metadata')?.group}'.`;
       }
       errors.push({
         severity: Flo.Severity.Error,
@@ -250,7 +250,7 @@ export class EditorService implements Flo.Editor {
     return new Promise(resolve => {
       const markers: Map<string | number, Array<Flo.Marker>> = new Map();
       const promises: Promise<void>[] = [];
-      graph.getElements().filter(e => !e.get('parent') && e.attr('metadata')).forEach(e => {
+      graph.getElements().filter(e => !e.get('parent') && e.get('metadata')).forEach(e => {
         promises.push(new Promise<void>((nodeFinished) => {
           this.validateNode(graph, e).then((result) => {
             markers.set(e.id, result);
@@ -265,11 +265,11 @@ export class EditorService implements Flo.Editor {
   }
 
   private hasIncomingPort(element: dia.Element): boolean {
-    return element.attr('metadata/group') !== CONTROL_GROUP_TYPE || element.attr('metadata/name') !== START_NODE_TYPE;
+    return element.get('metadata')?.group !== CONTROL_GROUP_TYPE || element.get('metadata')?.name !== START_NODE_TYPE;
   }
 
   private hasOutgoingPort(element: dia.Element): boolean {
-    return element.attr('metadata/group') !== CONTROL_GROUP_TYPE || element.attr('metadata/name') !== END_NODE_TYPE;
+    return element.get('metadata')?.group !== CONTROL_GROUP_TYPE || element.get('metadata')?.name !== END_NODE_TYPE;
   }
 
   calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,

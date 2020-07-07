@@ -86,7 +86,17 @@ export class RenderService implements Flo.Renderer {
 
   initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor) {
     // link.set('connector/name', 'smoothHorizontal');
-    link.attr('metadata/metadata/unselectable', true);
+    const metadata = link.get('metadata');
+    if (metadata) {
+      metadata.metadata = metadata.metadata || {};
+      metadata.metadata.unselectable = true;
+    } else {
+      link.set('metadata', {
+        metadata: {
+          unselectable: true
+        }
+      });
+    }
   }
 
   isSemanticProperty(propertyPath: string): boolean {
@@ -94,7 +104,7 @@ export class RenderService implements Flo.Renderer {
   }
 
   refreshVisuals(cell: dia.Cell, changedPropertyPath: string, paper: dia.Paper): void {
-    const metadata: Flo.ElementMetadata = cell.attr('metadata');
+    const metadata: Flo.ElementMetadata = cell.get('metadata');
     const type = metadata ? metadata.name : undefined;
 
     if (cell instanceof joint.dia.Element) {
@@ -109,7 +119,7 @@ export class RenderService implements Flo.Renderer {
         }
       } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
         // fitLabel() calls update as necessary, so set label text silently
-        element.attr('.name-label/text', element.attr('props/name') ? element.attr('props/name') : element.attr('metadata/name'));
+        element.attr('.name-label/text', element.attr('props/name') ? element.attr('props/name') : element.get('metadata')?.name);
         const view = paper.findViewByModel(element);
         if (view) {
           if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
@@ -133,7 +143,7 @@ export class RenderService implements Flo.Renderer {
       } else if (changedPropertyPath === 'node-name') {
         const nodeName = element.attr('node-name');
         // fitLabel() calls update as necessary, so set label text silently
-        element.attr('.name-label/text', nodeName ? nodeName : element.attr('metadata/name'));
+        element.attr('.name-label/text', nodeName ? nodeName : element.get('metadata')?.name);
         const view = paper.findViewByModel(element);
         if (view instanceof dia.ElementView) {
           view.update(element);
@@ -175,7 +185,7 @@ export class RenderService implements Flo.Renderer {
     if (paper) {
       const isCanvas = paper.model.get('type') === Constants.CANVAS_CONTEXT;
       const isPalette = paper.model.get('type') === Constants.PALETTE_CONTEXT;
-      const metadata: Flo.ElementMetadata = node.attr('metadata');
+      const metadata: Flo.ElementMetadata = node.get('metadata');
       if (metadata) {
         if (isPalette) {
           ViewUtils.fitLabelWithFixedLocation(paper, node, '.palette-entry-name-label', TYPE_ICON_PADDING_PALETTE);
@@ -226,7 +236,7 @@ export class RenderService implements Flo.Renderer {
       }
 
       // Show input port for 'destination' if outgoing links are gone
-      if (oldSource && oldSource.attr('metadata/name') === 'destination'
+      if (oldSource && oldSource.get('metadata')?.name === 'destination'
       /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
         // No outgoing links -> hide stream name label
         // Set silently, last attr call would refresh the view
@@ -236,7 +246,7 @@ export class RenderService implements Flo.Renderer {
         //     oldSource.attr('.input-port/display', 'block');
       }
       // // Hide input port for destination if it has a new outgoing link
-      if (newSource && newSource.attr('metadata/name') === 'destination') {
+      if (newSource && newSource.get('metadata')?.name === 'destination') {
         // Has outgoing link, there shouldn't be any incoming links yet -> show stream name label
         // Set silently, last attr call would refresh the view
         newSource.attr('.stream-label/display', 'block', { silent: true });
@@ -264,7 +274,7 @@ export class RenderService implements Flo.Renderer {
     if (newTargetId !== oldTargetId) {
       const oldTarget = graph.getCell(oldTargetId);
       if (oldTarget) {
-        if (oldTarget.attr('metadata/name') === 'destination') {
+        if (oldTarget.get('metadata')?.name === 'destination') {
           // old target is a destination. Ensure output port is showing now since incoming links are gone
 
           // No more incoming links, there shouldn't be any outgoing links yet -> indeterminate, hide stream label
@@ -277,7 +287,7 @@ export class RenderService implements Flo.Renderer {
       }
       const newTarget = graph.getCell(newTargetId);
       if (newTarget) {
-        if (newTarget.attr('metadata/name') === 'destination') {
+        if (newTarget.get('metadata')?.name === 'destination') {
           // Incoming link -> hide stream name label
           // Set silently, last attr call would refresh the view
           newTarget.attr('.stream-label/display', 'none', { silent: true });
@@ -305,7 +315,7 @@ export class RenderService implements Flo.Renderer {
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
     let view: dia.CellView;
-    if (source && source.attr('metadata/name') === 'destination'
+    if (source && source.get('metadata')?.name === 'destination'
       && graph.getConnectedLinks(source, { outbound: true }).length === 0) {
       // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
       // Set silently, last attr call would refresh the view
@@ -318,7 +328,7 @@ export class RenderService implements Flo.Renderer {
         (<any>view).update();
       }
     }
-    if (target && target.attr('metadata/name') === 'destination'
+    if (target && target.get('metadata')?.name === 'destination'
       && graph.getConnectedLinks(target, { inbound: true }).length === 0) {
       // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
       // Set silently, last attr call would refresh the view
@@ -339,7 +349,7 @@ export class RenderService implements Flo.Renderer {
   toLinkString(graph: dia.Graph, link: dia.Link): string {
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
-    return `${source ? source.attr('metadata/name') : '?'} -> ${target ? target.attr('metadata/name') : '?'}`;
+    return `${source ? source.get('metadata')?.name : '?'} -> ${target ? target.get('metadata')?.name : '?'}`;
   }
 
   // Should pass use Flo.EditorContext and pass metadata, props etc.
@@ -350,11 +360,11 @@ export class RenderService implements Flo.Renderer {
     // Create a node
     this.metamodelService.load().then(mm => {
 
-      let sourceName = source.attr('metadata/name');
+      let sourceName = source.get('metadata')?.name;
       if (sourceName === 'destination') {
         sourceName = source.attr('props/name');
       }
-      let targetName = target.attr('metadata/name');
+      let targetName = target.get('metadata')?.name;
       if (targetName === 'destination') {
         targetName = target.attr('props/name');
       }
@@ -382,7 +392,7 @@ export class RenderService implements Flo.Renderer {
   }
 
   isChannel(e: dia.Cell): boolean {
-    return e && (e.attr('metadata/name') === 'tap' || e.attr('metadata/name') === 'destination');
+    return e && (e.get('metadata')?.name === 'tap' || e.get('metadata')?.name === 'destination');
   }
 
   handleLinkSwitch(link: dia.Link, flo: Flo.EditorContext) {
@@ -427,14 +437,14 @@ export class RenderService implements Flo.Renderer {
     if (link.attr('props/isTapLink') === true) {
       this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
     }
-    if (source && source.attr('metadata/name') === 'destination' && target) {
+    if (source && source.get('metadata')?.name === 'destination' && target) {
       // A link is added from a source destination to a target. In these cases the
       // target will show the label (whether a real app or another destination).
       // This is done so that if a destination is connected to 5 outputs, this destination
       // won't track the 5 stream names, the nodes it links to will instead.
       target.attr('.stream-label/display', 'block'); // , { silent: true });
     }
-    if (target && target.attr('metadata/name') === 'destination') {
+    if (target && target.get('metadata')?.name === 'destination') {
       // Incoming link has been added -> hide stream label
       // Set silently because update will be called for the next property setting
       target.attr('.stream-label/display', 'none', { silent: true });

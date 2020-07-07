@@ -119,14 +119,14 @@ describe('Task RenderService', () => {
     component.editor.setDefaultContent(flo, METAMODEL);
     const nodes = flo.getGraph().getElements();
     expect(nodes.length).toBe(2);
-    expect(nodes[0].attr('metadata/name')).toBe('START');
-    expect(nodes[1].attr('metadata/name')).toBe('END');
+    expect(nodes[0].get('metadata')?.name).toBe('START');
+    expect(nodes[1].get('metadata')?.name).toBe('END');
     expect(flo.getGraph().getLinks().length).toBe(0);
   });
 
   it('simple dnd', () => {
     const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 200 });
-    expect(taskA.attr('metadata/name')).toBe('a');
+    expect(taskA.get('metadata')?.name).toBe('a');
     expect(taskA.get('position').x).toBe(100);
     expect(taskA.get('position').y).toBe(200);
     expect(flo.getPaper().findViewByModel(taskA)).toBeDefined();

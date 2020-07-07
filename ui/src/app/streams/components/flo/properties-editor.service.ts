@@ -21,9 +21,9 @@ export class PropertiesEditor {
 
   showForNode(element: dia.Element, graph: dia.Graph) {
     const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent, { class: 'modal-properties' });
-    modalRef.content.name = `${element.attr('metadata/name')}`;
-    modalRef.content.version = `${element.attr('metadata/version')}`;
-    modalRef.content.type = `${element.attr('metadata/group').toUpperCase()}`;
+    modalRef.content.name = `${element.get('metadata')?.name}`;
+    modalRef.content.version = `${element.get('metadata')?.version}`;
+    modalRef.content.type = `${element.get('metadata')?.group.toUpperCase()}`;
     // const streamHeads: dia.Cell[] = flo.getGraph().getElements().filter(e => Utils.canBeHeadOfStream(flo.getGraph(), e));
     // const streamNames = streamHeads
     //   .filter(e => e.attr('stream-name') && e !== c)
@@ -46,9 +46,9 @@ export class PropertiesEditor {
 
   showForLink(link: dia.Link) {
     const modalRef = this.bsModalService.show(StreamPropertiesDialogComponent, { class: 'modal-properties' });
-    modalRef.content.name = `${link.attr('metadata/name')}`;
-    modalRef.content.version = `${link.attr('metadata/version')}`;
-    modalRef.content.type = `${link.attr('metadata/group').toUpperCase()}`;
+    modalRef.content.name = `${link.get('metadata')?.name}`;
+    modalRef.content.version = `${link.get('metadata')?.version}`;
+    modalRef.content.type = `${link.get('metadata')?.group.toUpperCase()}`;
     modalRef.content.setData(this.createPropertiesSourceForLink(link));
   }
 

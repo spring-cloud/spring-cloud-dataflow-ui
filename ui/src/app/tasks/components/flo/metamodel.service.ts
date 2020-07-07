@@ -219,7 +219,7 @@ export class MetamodelService implements Flo.Metamodel {
       } else if ((element.get('type') === joint.shapes.flo.LINK_TYPE)
         && element.get('source').id && element.get('target').id) {
         const properties = {};
-        if (element.attr('metadata') && element.attr('props/ExitStatus')) {
+        if (element.get('metadata') && element.attr('props/ExitStatus')) {
           properties['transitionName'] = element.attr('props/ExitStatus');
         }
         links.push(new Link(element.get('source').id, element.get('target').id, properties));

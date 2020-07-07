@@ -13,11 +13,11 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
 
   protected createNotationalProperties(): Array<AppUiProperty> {
     const notationalProperties = [];
-    if (typeof ApplicationType[this.cell.attr('metadata/group')] === 'number') {
+    if (typeof ApplicationType[this.cell.get('metadata')?.group] === 'number') {
       notationalProperties.push({
         id: 'label',
         name: 'label',
-        defaultValue: this.cell.attr('metadata/name'),
+        defaultValue: this.cell.get('metadata')?.name,
         attr: 'node-label',
         value: this.cell.attr('node-label'),
         description: 'Label of the task',
