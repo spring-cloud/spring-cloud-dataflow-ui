@@ -16,13 +16,15 @@ import { StreamsModule } from './streams/streams.module';
 import { TasksJobsModule } from './tasks-jobs/tasks-jobs.module';
 import { ManageModule } from './manage/manage.module';
 import { SecurityModule } from './security/security.module';
+import { SettingsModule } from './settings/settings.module';
 import { SecurityService } from './security/service/security.service';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { Security } from './shared/model/security.model';
 import { of } from 'rxjs';
 import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
 import { DevModule } from './dev/dev.module';
 import { EffectsModule } from '@ngrx/effects';
+import { SettingsService } from './settings/service/settings.service';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { EffectsModule } from '@ngrx/effects';
     TasksJobsModule,
     ManageModule,
     SecurityModule,
+    SettingsModule,
     StoreModule.forRoot(ROOT_REDUCERS, {
       metaReducers,
       runtimeChecks: {
@@ -57,7 +60,7 @@ import { EffectsModule } from '@ngrx/effects';
   providers: [
     {
       provide: APP_INITIALIZER,
-      useFactory: (securityService: SecurityService, aboutService: AboutService) => {
+      useFactory: (securityService: SecurityService, aboutService: AboutService, settingsService: SettingsService) => {
         return () => {
           return securityService.load()
             .pipe(
@@ -71,10 +74,14 @@ import { EffectsModule } from '@ngrx/effects';
                 }
                 return of(security);
               })
-            ).toPromise();
+            )
+            .pipe(
+              switchMap(() => settingsService.load())
+            )
+            .toPromise();
         };
       },
-      deps: [SecurityService, AboutService],
+      deps: [SecurityService, AboutService, SettingsService],
       multi: true
     }
   ],
