@@ -82,7 +82,7 @@
       </clr-vertical-nav-group>
       <clr-vertical-nav-group routerLinkActive="active"
                               clrVerticalNavGroupExpanded="false">
-        <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
+        <clr-icon shape="briefcase" clrVerticalNavIcon></clr-icon>
         Manage
         <clr-vertical-nav-group-children>
           <a
@@ -107,18 +107,14 @@
           </a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>
+      <a clrVerticalNavLink routerLink="settings" routerLinkActive="active">
+        <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
+        Settings
+      </a>
       <a clrVerticalNavLink routerLink="dev/dashboard" routerLinkActive="active" *ngIf="isDevEnv">
         <clr-icon shape="bug" clrVerticalNavIcon></clr-icon>
         Dev. mode
       </a>
-
-      <div class="clr-vertical-nav-bottom">
-        <button class="btn btn-sm btn-link" (click)="toggleDarkTheme()">
-          <clr-icon shape="sun" *ngIf="darkThemeIsActive"></clr-icon>
-          <clr-icon shape="moon" *ngIf="!darkThemeIsActive"></clr-icon>
-          {{!darkThemeIsActive ? 'Dark' : 'Light'}}
-        </button>
-      </div>
     </clr-vertical-nav>
     <div class="content-area">
       <router-outlet></router-outlet>
