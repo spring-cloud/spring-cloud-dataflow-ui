@@ -44,16 +44,13 @@
           <tr *ngFor="let app of stream.apps">
             <td>
               <strong>{{ app.name }}</strong>
-              <span *ngIf="app.origin !== app.name">
-                  ({{ app.origin }})
-                </span>
             </td>
             <td>
               <app-type [application]="app"></app-type>
             </td>
             <td class="table-actions" width="10px" nowrap="">
               <div class="actions-btn" role="group">
-                <a routerLink="/apps/{{ app.type }}/{{ app.origin }}" class="btn btn-default" title="Details">
+                <a routerLink="/apps/{{ app.type }}/{{ app.name }}" class="btn btn-default" title="Details">
                   <span class="fa fa-info-circle"></span>
                 </a>
               </div>

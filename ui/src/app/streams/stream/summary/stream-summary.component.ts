@@ -43,8 +43,7 @@ export class StreamSummaryComponent implements OnInit {
    * @param {StreamsService} streamsService
    */
   constructor(private route: ActivatedRoute,
-              private streamsService: StreamsService,
-              private parserService: ParserService) {
+              private streamsService: StreamsService) {
   }
 
   /**
@@ -114,21 +113,17 @@ export class StreamSummaryComponent implements OnInit {
         }
       ))
       .pipe(mergeMap(
-        (val: any) => of(this.parserService.parseDsl(val.streamDefinition.dslText as string, 'stream'))
-          .pipe(map((val2) => {
-            return {
-              streamDefinition: val.streamDefinition,
-              runtimes: val.runtimes,
-              logs: val.logs,
-              apps: val2.lines[0].nodes
-                .map((node) => ({
-                  origin: node['name'],
-                  name: node['label'] || node['name'],
-                  type: node.type.toString()
-                }))
-            };
-          }))
-        )
+        (val: any) => {
+          return this.streamsService.getApplications(val.streamDefinition.name as string)
+            .pipe(map((apps) => {
+              return {
+                streamDefinition: val.streamDefinition,
+                runtimes: val.runtimes,
+                logs: val.logs,
+                apps: apps
+              };
+            }))
+        })
       );
   }
 
