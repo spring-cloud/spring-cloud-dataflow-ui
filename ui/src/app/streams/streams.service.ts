@@ -13,7 +13,7 @@ import { StreamHistory } from './model/stream-history';
 import { catchError, map } from 'rxjs/operators';
 import { Platform } from '../shared/model/platform';
 import { DataflowEncoder } from '../shared/support/encoder.utils';
-import { AppRegistration } from "../shared/model";
+import { AppRegistration } from '../shared/model';
 
 /**
  * Provides {@link StreamDefinition} related services.
