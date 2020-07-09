@@ -16,13 +16,10 @@ import { StreamDslComponent } from '../../../shared/components/dsl/dsl.component
 import { STREAM_DEFINITIONS } from '../../../tests/mocks/mock-data';
 import { MockAuthService } from '../../../tests/mocks/auth';
 import { AuthService } from '../../../auth/auth.service';
-import { MocksSharedAboutService } from '../../../tests/mocks/shared-about';
-import { SharedAboutService } from '../../../shared/services/shared-about.service';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
 import { DeploymentPropertiesInfoComponent } from '../../streams/deployment-properties-info/deployment-properties-info.component';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { LoggerService } from '../../../shared/services/logger.service';
-import { ParserService } from '../../../shared/services/parser.service';
 
 /**
  * Test {@link StreamSummaryComponent}.
@@ -39,7 +36,6 @@ describe('StreamSummaryComponent', () => {
   const modalService = new MockModalService();
   const authService = new MockAuthService();
   const loggerService = new LoggerService();
-  const parserService = new ParserService();
 
   beforeEach(async(() => {
     activeRoute = new MockActivatedRoute();
@@ -64,8 +60,7 @@ describe('StreamSummaryComponent', () => {
         { provide: BsModalService, useValue: modalService },
         { provide: AuthService, useValue: authService },
         { provide: NotificationService, useValue: notificationService },
-        { provide: LoggerService, useValue: loggerService },
-        { provide: ParserService, useValue: parserService }
+        { provide: LoggerService, useValue: loggerService }
       ]
     })
       .compileComponents();
