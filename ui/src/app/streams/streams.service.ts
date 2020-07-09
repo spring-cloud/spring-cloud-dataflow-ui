@@ -359,5 +359,4 @@ export class StreamsService {
         catchError(this.errorHandler.handleError)
       );
   }
-
 }
