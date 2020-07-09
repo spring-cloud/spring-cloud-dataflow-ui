@@ -68,7 +68,7 @@ describe('TaskSchedulesDestroyComponent', () => {
   describe('1 task schedule delete', () => {
 
     const mock = [
-      new TaskSchedule('schedule_1', 'task_1', '')
+      new TaskSchedule('schedule_1', 'task_1', '', 'default')
     ];
 
     beforeEach(() => {
@@ -109,8 +109,8 @@ describe('TaskSchedulesDestroyComponent', () => {
   describe('Multiple task schedules delete', () => {
 
     const mock = [
-      new TaskSchedule('schedule_1', 'task_1', ''),
-      new TaskSchedule('schedule_2', 'task_1', '0 0 0 0 0 0 0 0')
+      new TaskSchedule('schedule_1', 'task_1', '', 'default'),
+      new TaskSchedule('schedule_2', 'task_1', '0 0 0 0 0 0 0 0', 'default')
     ];
 
     beforeEach(() => {
@@ -156,8 +156,8 @@ describe('TaskSchedulesDestroyComponent', () => {
     beforeEach(() => {
       component.open({
         taskSchedules: [
-          new TaskSchedule('schedule_1', 'task_1', ''),
-          new TaskSchedule('schedule_2', 'task_1', '0 0 0 0 0 0 0 0')
+          new TaskSchedule('schedule_1', 'task_1', '', 'default'),
+          new TaskSchedule('schedule_2', 'task_1', '0 0 0 0 0 0 0 0', 'default')
         ]
       });
       fixture.detectChanges();

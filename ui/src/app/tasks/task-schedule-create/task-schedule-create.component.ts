@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RoutingStateService } from '../../shared/services/routing-state.service';
-import { Observable, EMPTY, Subject, of, throwError } from 'rxjs';
+import { Observable, EMPTY, Subject, of, throwError, forkJoin } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { catchError, finalize, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { TasksService } from '../tasks.service';
@@ -14,6 +14,8 @@ import { Page } from '../../shared/model/page';
 import { AppError } from '../../shared/model/error.model';
 import { KvRichTextValidator } from '../../shared/components/kv-rich-text/kv-rich-text.validator';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { Platform } from '../../shared/model/platform';
+import { Task } from 'protractor/built/taskScheduler';
 
 /**
  * Component handling a creation of a task schedule.
@@ -116,18 +118,43 @@ export class TaskScheduleCreateComponent implements OnInit {
           }
         ),
         mergeMap(
-          (schedule) => this.tasksService.getSchedules({ q: '', page: 0, size: 10000, sort: null, order: null })
-            .pipe(map((schedules: Page<TaskSchedule>) => {
+          ({ params, taskDefinitions }) => this.tasksService.getPlatforms()
+            .pipe(map((platforms) => {
               return {
-                params: schedule.params,
-                taskDefinitions: schedule.taskDefinitions,
-                schedules: schedules.items.map((item) => item.name.toLowerCase())
+                params,
+                taskDefinitions,
+                platforms
               };
-            })),
+            }))
         ),
-        map((schedule) => {
-          this.buildForm(schedule);
-          return schedule;
+        mergeMap(
+          (config) => forkJoin([...config.platforms.map((platform) =>
+            this.tasksService.getSchedules({
+              q: '',
+              page: 0,
+              size: 10000,
+              sort: null,
+              order: null,
+              platform: platform.name
+            })
+          )]).pipe(
+            map((schedules: Page<TaskSchedule>[]) => {
+              const names = [];
+              schedules.forEach((page: Page<TaskSchedule>) => {
+                names.push(...page.items.map((item) => item.name.toLowerCase()));
+              });
+              return {
+                params: config.params,
+                platforms: config.platforms,
+                taskDefinitions: config.taskDefinitions,
+                schedules: names
+              };
+            })
+          )
+        ),
+        map((config) => {
+          this.buildForm(config);
+          return config;
         }),
         catchError((error) => {
           this.notificationService.error(error.toString());
@@ -140,17 +167,18 @@ export class TaskScheduleCreateComponent implements OnInit {
   /**
    * Build the form
    */
-  buildForm(schedule) {
-    const names = new FormArray(schedule.taskDefinitions.map(() => {
+  buildForm(config) {
+    const names = new FormArray(config.taskDefinitions.map(() => {
       return new FormControl('', [
         Validators.required, ((control: FormControl) => {
-          return TaskScheduleCreateValidator.existName(control, schedule.schedules);
+          return TaskScheduleCreateValidator.existName(control, config.schedules);
         })
       ]);
     }), [TaskScheduleCreateValidator.uniqueName]);
     this.form = new FormGroup({
       'cron': new FormControl('', [Validators.required, TaskScheduleCreateValidator.cron]),
       'names': names,
+      'platform': new FormControl(config.platforms.length > 1 ? '' : 'default', [Validators.required]),
       'args': new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.args)),
       'props': new FormControl('', KvRichTextValidator.validateKvRichText(this.kvValidators.props))
     });
@@ -169,6 +197,7 @@ export class TaskScheduleCreateComponent implements OnInit {
 
       const taskArguments = getClean(this.form.get('args').value);
       const taskProperties = getClean(this.form.get('props').value);
+      const platform = getClean(this.form.get('platform').value);
       const cronExpression = this.form.get('cron').value;
       const scheduleParams = schedule.taskDefinitions
         .map((taskName: string, index: number) => ({
@@ -176,6 +205,7 @@ export class TaskScheduleCreateComponent implements OnInit {
             props: taskProperties.join(','),
             cronExpression: cronExpression,
             task: taskName,
+            platform: platform,
             schedulerName: (this.form.get('names') as FormArray).controls
               .map((control: FormControl) => control.value)[index]
           })

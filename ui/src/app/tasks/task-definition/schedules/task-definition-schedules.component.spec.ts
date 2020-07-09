@@ -227,7 +227,7 @@ describe('TaskDefinitionScheduleComponent', () => {
         input.click();
       });
       fixture.detectChanges();
-      expect(component.countSelected()).toBe(2);
+      expect(component.countSelected()).toBe(4);
     });
 
     /*

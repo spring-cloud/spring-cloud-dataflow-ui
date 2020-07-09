@@ -2,12 +2,12 @@
 
   <div id="schedules-list" *ngIf="isLoaded && taskSchedules" dataflowLayoutType type="full">
 
-    <app-list-bar [params]="params" [page]="taskSchedules" [countSelected]="countSelected()" #listBar
+    <app-schedules-list-bar [params]="params" [page]="taskSchedules" [countSelected]="countSelected()" #listBar
                   (refresh)="refresh()" (search)="search($event)" [actions]="schedulesActions()"
-                  (action)="applyAction($event.action)">
-    </app-list-bar>
+                  (action)="applyAction($event.action)" [platforms]="platforms">
+    </app-schedules-list-bar>
 
-    <table *ngIf="taskSchedules && (taskSchedules.items | filterSchedules: q).length > 0"
+    <table *ngIf="taskSchedules && (taskSchedules.items).length > 0"
            class="table table-hover table-checkbox" id="taskSchedulesTable">
       <thead>
       <tr>
@@ -24,12 +24,15 @@
         <th nowrap="">
           Cron Expression
         </th>
+        <th nowrap="">
+          Platform
+        </th>
         <th>&nbsp;</th>
       </tr>
       </thead>
       <tbody>
       <ng-container
-        *ngFor="let item of taskSchedules.items | filterSchedules: q; index as i">
+        *ngFor="let item of taskSchedules.items; index as i">
         <tr>
           <td class="cell-checkbox">
             <input [dataflowAppRoles]="['ROLE_CREATE']" type="checkbox" (change)="changeCheckboxes()"
@@ -43,6 +46,9 @@
           </td>
           <td>
             {{ item.cronExpression }}
+          </td>
+          <td>
+            {{ item.platform || 'n/a' }}
           </td>
           <td class="table-actions" width="10px" nowrap="">
             <app-list-row-actions [item]="item" (action)="applyAction($event.action, $event.args)"

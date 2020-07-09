@@ -170,6 +170,11 @@
       }
     }
   }
+  .list-bar-dropdown-lg {
+    .filter-dropdown-toggle {
+      width: 240px;
+    }
+  }
   .list-bar-filter {
     border: 1px solid #bfc7cb;
     border-radius: 3px;
@@ -194,7 +199,10 @@
     margin: 2px 0;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    padding: 0 10px
+    padding: 0 10px;
+    .fa {
+      margin-top: 5px;
+    }
   }
 }
 
@@ -206,6 +214,12 @@
     li a {
       cursor: pointer;
     }
+  }
+}
+
+.list-bar-schedules {
+  .form-control {
+    width: 245px;
   }
 }
 
@@ -228,6 +242,12 @@
   .list-bar-audit {
     .list-bar-filter {
       width: 530px;
+    }
+  }
+
+  .list-bar-schedules {
+    .form-control {
+      width: 445px;
     }
   }
 }

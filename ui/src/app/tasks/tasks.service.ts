@@ -9,14 +9,13 @@ import { ListDefaultParams, OrderParams } from '../shared/components/shared.inte
 import { HttpUtils } from '../shared/support/http.utils';
 import { catchError, map } from 'rxjs/operators';
 import { LoggerService } from '../shared/services/logger.service';
-import { TaskSchedule } from './model/task-schedule';
+import { ListSchedulesParams, TaskSchedule } from './model/task-schedule';
 import {
   TaskCreateParams, TaskLaunchParams, TaskListParams, TaskScheduleCreateParams
 } from './components/tasks.interface';
 import { HttpResponse } from '@angular/common/http';
 import { Platform, PlatformTask } from '../shared/model/platform';
 import { DataflowEncoder } from '../shared/support/encoder.utils';
-import { StreamDefinition } from '../streams/model/stream-definition';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -73,6 +72,7 @@ export class TasksService {
    */
   public schedulesContext = {
     q: '',
+    platform: '',
     page: 0,
     size: 30,
     sort: 'SCHEDULE_NAME',
@@ -220,16 +220,16 @@ export class TasksService {
    * the results when returned from the Spring Cloud Data Flow server.
    * @returns {Observable<Page<TaskSchedule>>}
    */
-  getSchedules(params: ListDefaultParams): Observable<Page<TaskSchedule>> {
-    params = params || { q: '', page: 0, size: 20, sort: null, order: null };
+  getSchedules(params: ListSchedulesParams): Observable<Page<TaskSchedule>> {
+    params = params || { q: '', page: 0, size: 20, sort: null, order: null, platform: '' };
     let url = TasksService.URL.SCHEDULES;
     if (params.q) {
       url = `${url}/instances/${params.q}`;
     }
     return this.httpClient
-      .get<any>(url)
+      .get<any>(`${url}?platform=${params?.platform}`)
       .pipe(
-        map(TaskSchedule.pageFromJSON),
+        map((json) => TaskSchedule.pageFromJSON(json, params.platform)),
         catchError(this.errorHandler.handleError)
       );
   }
@@ -274,6 +274,7 @@ export class TasksService {
     const params = new HttpParams()
       .append('scheduleName', taskScheduleCreateParams.schedulerName)
       .append('taskDefinitionName', taskScheduleCreateParams.task)
+      .append('platform', taskScheduleCreateParams.platform)
       .append('arguments', taskScheduleCreateParams.args)
       .append('properties', props.filter((prop) => !!prop).join(','));
 
@@ -370,8 +371,12 @@ export class TasksService {
   destroySchedule(taskSchedules: TaskSchedule): Observable<HttpResponse<any>> {
     this.loggerService.log('Destroying...', taskSchedules.name);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let url = TasksService.URL.SCHEDULES + '/' + taskSchedules.name;
+    if (taskSchedules.platform) {
+      url = `${url}?platform=${taskSchedules.platform}`;
+    }
     return this.httpClient
-      .delete(TasksService.URL.SCHEDULES + '/' + taskSchedules.name, { headers: headers, observe: 'response' })
+      .delete(url, { headers: headers, observe: 'response' })
       .pipe(
         catchError(this.errorHandler.handleError)
       );

@@ -34,7 +34,7 @@ export class TaskDefinitionComponent implements OnInit {
    */
   task$: Observable<any>;
 
-  counters$: Observable<any>;
+  // counters$: Observable<any>;
 
   /**
    * Modal reference
@@ -96,36 +96,36 @@ export class TaskDefinitionComponent implements OnInit {
         })
       );
 
-    this.counters$ = this.route.params
-      .pipe(
-        mergeMap(
-          (params: Params) => this.sharedAboutService.getFeatureInfo()
-            .pipe(map((featureInfo: FeatureInfo) => {
-              return {
-                id: params.id,
-                schedulesEnabled: featureInfo.schedulesEnabled
-              };
-            }))
-        ),
-        mergeMap(
-          (params: any) => {
-            const arr = [];
-            arr.push(this.tasksService.getTaskExecutions({ q: params.id, size: 1, page: 0, sort: null, order: null }));
-            if (params.schedulesEnabled) {
-              arr.push(this.tasksService.getSchedules({ q: params.id, size: 1, page: 0, sort: null, order: null }));
-            }
-            return forkJoin([...arr])
-              .pipe(map((forks) => {
-                const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
-                if (params.schedulesEnabled) {
-                  result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
-                }
-                return result;
-              }));
-          }
-        ),
-        share()
-      );
+    // this.counters$ = this.route.params
+    //   .pipe(
+    //     mergeMap(
+    //       (params: Params) => this.sharedAboutService.getFeatureInfo()
+    //         .pipe(map((featureInfo: FeatureInfo) => {
+    //           return {
+    //             id: params.id,
+    //             schedulesEnabled: featureInfo.schedulesEnabled
+    //           };
+    //         }))
+    //     ),
+    //     mergeMap(
+    //       (params: any) => {
+    //         const arr = [];
+    //         arr.push(this.tasksService.getTaskExecutions({ q: params.id, size: 1, page: 0, sort: null, order: null }));
+    //         if (params.schedulesEnabled) {
+    //           arr.push(this.tasksService.getSchedules({ q: params.id, size: 1, page: 0, sort: null, order: null }));
+    //         }
+    //         return forkJoin([...arr])
+    //           .pipe(map((forks) => {
+    //             const result = { executions: (forks[0] as Page<TaskExecution>).totalElements };
+    //             if (params.schedulesEnabled) {
+    //               result['schedules'] = (forks[1] as Page<TaskSchedule>).totalElements;
+    //             }
+    //             return result;
+    //           }));
+    //       }
+    //     ),
+    //     share()
+    //   );
   }
 
 

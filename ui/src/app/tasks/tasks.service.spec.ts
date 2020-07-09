@@ -206,14 +206,14 @@ describe('TasksService', () => {
         mockHttp.get.and.returnValue(of({}));
         tasksService.getSchedules(null);
         const httpUri1 = mockHttp.get.calls.mostRecent().args[0];
-        expect(httpUri1).toEqual('/tasks/schedules');
+        expect(httpUri1).toEqual('/tasks/schedules?platform=');
       });
 
       it('should call the scheduler with the right url (search)', () => {
         mockHttp.get.and.returnValue(of({}));
-        tasksService.getSchedules({ q: 'foo', page: 0, size: 40, sort: null, order: null });
+        tasksService.getSchedules({ q: 'foo', page: 0, size: 40, sort: null, order: null, platform: 'bar' });
         const httpUri1 = mockHttp.get.calls.mostRecent().args[0];
-        expect(httpUri1).toEqual('/tasks/schedules/instances/foo');
+        expect(httpUri1).toEqual('/tasks/schedules/instances/foo?platform=bar');
       });
 
     });

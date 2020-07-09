@@ -6,13 +6,15 @@ import { TasksService } from '../tasks.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { LoggerService } from '../../shared/services/logger.service';
 import { Router } from '@angular/router';
-import { TaskSchedule } from '../model/task-schedule';
+import { ListSchedulesParams, TaskSchedule } from '../model/task-schedule';
 import { map, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskSchedulesDestroyComponent } from '../task-schedules-destroy/task-schedules-destroy.component';
 import { ViewChild } from '@angular/core';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
+import { Platform } from '../../shared/model/platform';
+import { SchedulesListBarComponent } from '../components/schedules-list-bar/schedules-list-bar.compontent';
 
 /**
  * Provides {@link TaskSchedule} related services.
@@ -36,7 +38,12 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
    * List Bar Component
    */
   @ViewChild('listBar', { static: true })
-  listBar: ListBarComponent;
+  listBar: SchedulesListBarComponent;
+
+  /**
+   * Task platforms
+   */
+  platforms: Array<Platform>;
 
   /**
    * Unsubscribe
@@ -58,12 +65,13 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
   /**
    * State of App List Params
    */
-  params: ListDefaultParams = {
+  params: ListSchedulesParams = {
     sort: 'SCHEDULE_ID',
     order: OrderParams.ASC,
     page: 0,
     size: 100000,
-    q: ''
+    q: '',
+    platform: ''
   };
 
   /**
@@ -106,7 +114,14 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
     this.context = this.tasksService.schedulesContext;
     this.params = { ...this.context };
     this.itemsSelected = this.context.itemsSelected || [];
-    this.refresh();
+    this.tasksService.getPlatforms()
+      .subscribe((platforms) => {
+        this.platforms = platforms;
+        if (!this.params.platform && this.platforms.length > 0) {
+          this.params.platform = this.platforms[0].name;
+        }
+        this.refresh();
+      });
   }
 
   /**
@@ -192,6 +207,7 @@ export class TaskSchedulesComponent implements OnInit, OnDestroy {
    */
   updateContext() {
     this.context.q = this.params.q;
+    this.context.platform = this.params.platform;
     this.context.sort = this.params.sort;
     this.context.order = this.params.order;
     this.context.page = this.params.page;

@@ -6,15 +6,15 @@
  */
 export class Platform {
 
-  public name: String;
+  public name: string;
 
-  public type: String;
+  public type: string;
 
-  public description: String;
+  public description: string;
 
   public options: Array<any>;
 
-  constructor(name: String = '', type: String = '', description: String = '', options: Array<any> = []) {
+  constructor(name: string = '', type: string = '', description: string = '', options: Array<any> = []) {
     this.name = name;
     this.type = type;
     this.description = description;
@@ -51,7 +51,7 @@ export class Platform {
  */
 export class PlatformTask extends Platform {
 
-  constructor(name: String = '', type: String = '', description: String = '') {
+  constructor(name: string = '', type: string = '', description: string = '') {
     super(name, type, description);
   }
 
