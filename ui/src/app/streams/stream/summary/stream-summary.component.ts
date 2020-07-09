@@ -114,7 +114,7 @@ export class StreamSummaryComponent implements OnInit {
       ))
       .pipe(mergeMap(
         (val: any) => {
-          return this.streamsService.getApplications(val.streamDefinition.name as string)
+          return this.streamsService.getApplications(val.streamDefinition.name)
             .pipe(map((apps) => {
               return {
                 streamDefinition: val.streamDefinition,

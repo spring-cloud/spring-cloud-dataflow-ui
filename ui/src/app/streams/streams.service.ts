@@ -351,6 +351,11 @@ export class StreamsService {
       );
   }
 
+  /**
+   * Get Stream applications
+   * @param {string} the name of the stream
+   * @returns {Observable<AppRegistration[]>}
+   */
   getApplications(name: string): Observable<AppRegistration[]> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient

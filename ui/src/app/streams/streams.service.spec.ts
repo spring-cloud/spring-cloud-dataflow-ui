@@ -435,4 +435,15 @@ describe('StreamsService', () => {
 
   });
 
+  describe('getApplications', () => {
+
+    it('should call the stream service with the right url', () => {
+      mockHttp.get.and.returnValue(of({}));
+      streamsService.getApplications('foobar');
+      const httpUri1 = mockHttp.get.calls.mostRecent().args[0];
+      expect(httpUri1).toEqual('/streams/definitions/foobar/applications');
+    });
+
+  });
+
 });
