@@ -26,4 +26,5 @@ export interface TaskScheduleCreateParams {
   args?: string;
   props?: string;
   cronExpression: string;
+  platform: string;
 }

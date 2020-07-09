@@ -47,6 +47,7 @@ import { TasksImportComponent } from './tasks-utils/tasks-import/tasks-import.co
 import { TasksExportComponent } from './tasks-utils/tasks-export/tasks-export.component';
 import { TasksUtilsService } from './tasks-utils/tasks-utils.service';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SchedulesListBarComponent } from './components/schedules-list-bar/schedules-list-bar.compontent';
 
 
 @NgModule({
@@ -94,7 +95,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     TaskExecutionsDestroyComponent,
     TasksUtilsComponent,
     TasksImportComponent,
-    TasksExportComponent
+    TasksExportComponent,
+    SchedulesListBarComponent
   ],
   entryComponents: [
     TaskNodeComponent,

@@ -3,8 +3,8 @@ import { Page } from '../../shared/model/page';
 import { Router } from '@angular/router';
 import { TaskDefinition } from '../model/task-definition';
 import { TasksService } from '../tasks.service';
-import { Subject, Subscription } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { forkJoin, Subject, Subscription } from 'rxjs';
+import { map, mergeMap, takeUntil } from 'rxjs/operators';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TaskListParams } from '../components/tasks.interface';
 import { ListDefaultParams, OrderParams, SortParams } from '../../shared/components/shared.interface';
@@ -22,6 +22,8 @@ import { AuthService } from '../../auth/auth.service';
 import { AppsService } from '../../apps/apps.service';
 import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { Platform } from '../../shared/model/platform';
+import { Task } from 'protractor/built/taskScheduler';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -105,6 +107,11 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * Featured Info
    */
   grafanaEnabled = false;
+
+  /**
+   * Platforms list
+   */
+  platforms: Platform[];
 
   /**
    * Constructor
@@ -270,12 +277,21 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.params = { ...this.context };
     this.form = { q: this.context.q, checkboxes: [] };
     this.itemsSelected = this.context.itemsSelected || [];
-
-    this.sharedAboutService.getFeatureInfo()
+    this.tasksService.getPlatforms()
+      .pipe(
+        map((platforms: Platform[]) => {
+          this.platforms = platforms;
+          return platforms;
+        }),
+        mergeMap(
+          () => this.sharedAboutService.getFeatureInfo()
+        )
+      )
       .subscribe((featureInfo: FeatureInfo) => {
         this.schedulesEnabled = !!featureInfo.schedulesEnabled;
         this.refresh();
       });
+
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
     });
@@ -303,7 +319,8 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
           });
           return page;
         }),
-        takeUntil(this.ngUnsubscribe$))
+        takeUntil(this.ngUnsubscribe$)
+      )
       .subscribe((page: Page<TaskDefinition>) => {
           if (page.items.length === 0 && this.params.page > 0) {
             this.params.page = 0;
@@ -444,25 +461,33 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   destroySchedules(taskDefinition: TaskDefinition) {
     this.modal = this.modalService.show(TaskSchedulesDestroyComponent, { class: 'modal-lg' });
-    this.tasksService
-      .getSchedules({
-        q: taskDefinition.name,
-        sort: 'SCHEDULE_ID',
-        order: OrderParams.ASC,
-        page: 0,
-        size: 1000
-      }).pipe(map((page: Page<TaskSchedule>) => {
-      if (page.totalElements === 0) {
-        this.notificationService.error('No schedule exists for this task.');
-        this.modal.hide();
-      } else {
-        this.loggerService.log(`Delete ${page.items} task schedule(s).`, page.items);
-        this.modal.content.open({ taskSchedules: page.items }).subscribe(() => {
-          this.refresh();
+    forkJoin(this.platforms.map((platform: Platform) => {
+      return this.tasksService
+        .getSchedules({
+          q: taskDefinition.name,
+          sort: 'SCHEDULE_ID',
+          order: OrderParams.ASC,
+          page: 0,
+          size: 1000,
+          platform: platform.name
         });
-      }
-      return page;
-    })).subscribe();
+    })).pipe(
+      map((pages: Page<TaskSchedule>[]) => {
+        const items = [];
+        pages.forEach((page: Page<TaskSchedule>) => {
+          items.push(...page.items);
+        });
+        if (items.length === 0) {
+          this.notificationService.error('No schedule exists for this task.');
+          this.modal.hide();
+        } else {
+          this.loggerService.log(`Delete ${items} task schedule(s).`, items);
+          this.modal.content.open({ taskSchedules: items }).subscribe(() => {
+            this.refresh();
+          });
+        }
+      })
+    ).subscribe();
   }
 
   /**

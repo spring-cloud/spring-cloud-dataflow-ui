@@ -21,6 +21,7 @@
         <th>Schedule Name</th>
         <th>Task Name</th>
         <th>Schedule Trigger</th>
+        <th>Platform</th>
       </tr>
       </thead>
       <tbody>
@@ -28,8 +29,10 @@
         <td>{{ item.name }}</td>
         <td>{{ item.taskName }}</td>
         <td>
-          <div *ngIf="item.dateTime">{{ item.dateTime | dataflowDateTime }}</div>
           <div *ngIf="item.cronExpression">{{ item.cronExpression }}</div>
+        </td>
+        <td>
+          {{item.platform || 'n/a'}}
         </td>
       </tr>
       </tbody>
@@ -37,7 +40,7 @@
   </div>
   <div class="modal-footer" style="text-align:center">
     <button id="btn-cancel" type="button" class="btn btn-default" (click)="cancel()">No</button>
-    <button id="btn-destroy" type="button" class="btn btn-primary" (click)="destroy(taskSchedules)">
+    <button id="btn-destroy" type="button" class="btn btn-primary" (click)="destroy()">
       Delete Task Schedule(s)
     </button>
   </div>

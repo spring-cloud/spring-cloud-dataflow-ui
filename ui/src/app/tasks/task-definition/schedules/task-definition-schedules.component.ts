@@ -1,14 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { map, share } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
+import { map, mergeMap, share } from 'rxjs/operators';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { TasksService } from '../../tasks.service';
 import { LoggerService } from '../../../shared/services/logger.service';
 import { TaskSchedule } from '../../model/task-schedule';
 import { TaskSchedulesDestroyComponent } from '../../task-schedules-destroy/task-schedules-destroy.component';
 import { ListDefaultParams, OrderParams } from '../../../shared/components/shared.interface';
-import { Page } from '../../../shared/model/page';
+import { Page } from '../../../shared/model';
+import { Platform } from '../../../shared/model/platform';
 
 /**
  * Component that shows the executions of a Stream Schedule
@@ -56,6 +57,11 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
   modal: BsModalRef;
 
   /**
+   * Platform list
+   */
+  platforms: Platform[];
+
+  /**
    * Constructor
    *
    * @param {ActivatedRoute} route
@@ -77,7 +83,28 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.params$.subscribe((params: ListDefaultParams) => {
-      this.schedules$ = this.tasksService.getSchedules(params)
+      this.schedules$ = forkJoin([...this.platforms.map((platform) =>
+        this.tasksService.getSchedules({
+          q: params.q,
+          page: 0,
+          size: 10000,
+          sort: null,
+          order: null,
+          platform: platform.name
+        })
+      )]).pipe(
+        map((pages: Page<TaskSchedule>[]) => {
+          const page = new Page<TaskSchedule>();
+          const items = [];
+          pages.forEach((p: Page<TaskSchedule>) => {
+            items.push(...p.items);
+          });
+          page.items = items;
+          page.totalElements = items.length;
+          page.totalPages = 1;
+          return page;
+        })
+      )
         .pipe(map((page: Page<TaskSchedule>) => {
           this.form.checkboxes = page.items.map((schedule) => {
             return this.itemsSelected.indexOf(schedule.name) > -1;
@@ -94,15 +121,22 @@ export class TaskDefinitionScheduleComponent implements OnInit, OnDestroy {
         .pipe(share());
     });
 
-    this.route.parent.params.subscribe((params: Params) => {
-      this.refresh({
-        q: params.id,
-        sort: 'SCHEDULE_ID',
-        order: OrderParams.ASC,
-        page: 0,
-        size: 100000
+    this.tasksService.getPlatforms()
+      .pipe(
+        mergeMap((platforms: Platform[]) => {
+          this.platforms = platforms;
+          return this.route.parent.params;
+        })
+      )
+      .subscribe((params: Params) => {
+        this.refresh({
+          q: params.id,
+          sort: 'SCHEDULE_ID',
+          order: OrderParams.ASC,
+          page: 0,
+          size: 100000
+        });
       });
-    });
   }
 
   /**

@@ -39,6 +39,7 @@ import { TaskSchedule } from '../model/task-schedule';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SchedulesListBarComponent } from '../components/schedules-list-bar/schedules-list-bar.compontent';
 
 /**
  * Test {@link TaskSchedulesComponent}.
@@ -76,6 +77,7 @@ describe('TaskSchedulesComponent', () => {
         TaskSchedulesFilterPipe,
         DATAFLOW_PAGE,
         DATAFLOW_LIST,
+        SchedulesListBarComponent,
         TippyDirective
       ],
       imports: [
@@ -120,7 +122,7 @@ describe('TaskSchedulesComponent', () => {
     tasksService.taskSchedules = TASK_SCHEDULES;
     fixture.detectChanges();
     const des: DebugElement[] = fixture.debugElement.queryAll(By.css('table[id=taskSchedulesTable] tr:first-child td'));
-    expect(des.length).toBe(5);
+    expect(des.length).toBe(6);
     expect(des[1].nativeElement.textContent).toContain('foo1');
     expect(des[2].nativeElement.textContent).toContain('bar1');
   });
@@ -171,6 +173,7 @@ describe('TaskSchedulesComponent', () => {
             return {
               scheduleName: `foo${i}`,
               taskDefinitionName: `bar${i}`,
+              platform: 'default',
               cronExpression: ''
             };
           })

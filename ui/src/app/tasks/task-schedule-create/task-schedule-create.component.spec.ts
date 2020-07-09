@@ -112,6 +112,7 @@ describe('TaskScheduleCreateComponent', () => {
     fixture.detectChanges();
     (component.form.get('names') as FormArray).controls[0].setValue('myschedule');
     component.form.get('cron').setValue('0 0 0 0 0');
+    component.form.get('platform').setValue('default');
     fixture.detectChanges();
     fixture.debugElement.query(By.css('#btn-submit')).nativeElement.click();
     expect(notificationService.testSuccess[0]).toContain('Successfully schedule creation');
@@ -128,6 +129,7 @@ describe('TaskScheduleCreateComponent', () => {
       fixture.detectChanges();
       (component.form.get('names') as FormArray).controls[0].setValue('');
       component.form.get('cron').setValue('0 0 0 0 0');
+      component.form.get('platform').setValue('default');
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('.errors-name')).nativeElement.textContent).toContain('The name is required.');
     });
@@ -136,6 +138,7 @@ describe('TaskScheduleCreateComponent', () => {
       fixture.detectChanges();
       (component.form.get('names') as FormArray).controls[0].setValue('myschedule');
       component.form.get('cron').setValue('');
+      component.form.get('platform').setValue('default');
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('.errors-cron')).nativeElement.textContent).toContain('The cron expression is required.');
     });
@@ -144,6 +147,7 @@ describe('TaskScheduleCreateComponent', () => {
       fixture.detectChanges();
       (component.form.get('names') as FormArray).controls[0].setValue('foo1');
       component.form.get('cron').setValue('0 0 0 0 0');
+      component.form.get('platform').setValue('default');
       fixture.detectChanges();
       expect(fixture.debugElement.query(By.css('.errors-name')).nativeElement.textContent).toContain('The name already exists.');
     });

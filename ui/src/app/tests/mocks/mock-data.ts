@@ -1440,6 +1440,7 @@ export const TASK_SCHEDULES = {
       {
         scheduleName: 'foo1',
         taskDefinitionName: 'bar1',
+        platformName: 'default',
         scheduleProperties: { 'spring.cloud.scheduler.cron.expression': '0 0 0 * 8 1'},
         _links: {
           self: {
@@ -1450,6 +1451,7 @@ export const TASK_SCHEDULES = {
       {
         scheduleName: 'foo2',
         taskDefinitionName: 'bar2',
+        platformName: 'default',
         scheduleProperties: { 'spring.cloud.scheduler.cron.expression': '0 0 0 * 8 1'},
         _links: {
           self: {
