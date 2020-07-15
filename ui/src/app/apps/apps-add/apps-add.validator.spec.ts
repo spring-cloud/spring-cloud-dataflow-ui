@@ -45,6 +45,11 @@ describe('AppsAddValidator', () => {
     it('valid', () => {
       [
         'foo=https://foo.ly/foo',
+        'foo = https://foo.ly/foo',
+        'foo= https://foo.ly/foo',
+        'foo =https://foo.ly/foo',
+        ' foo=https://foo.ly/foo',
+        ' foo=https://foo.ly/foo ',
         'bar=https://foo.bar:bar.foo-foo:bar-bar',
         'source.user-producer=docker:sabby/user-producer:0.0.1-SNAPSHOT',
         'processor.user-by-region=docker:sabby/user-consumer:0.0.1-SNAPSHOT',
