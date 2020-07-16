@@ -1,16 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { SecurityService } from '../../security/service/security.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
-  styles: []
+  styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
 
-  constructor() { }
+  shouldProtect = this.securityService.shouldProtect();
+  securityEnabled = this.securityService.securityEnabled();
+
+  get isDevEnv() {
+    return !environment.production;
+  }
+
+  constructor(
+    private securityService: SecurityService
+  ) { }
 
   ngOnInit(): void {
   }
-
 }

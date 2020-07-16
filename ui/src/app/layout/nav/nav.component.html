@@ -1,5 +1,8 @@
-<clr-vertical-nav [clrVerticalNavCollapsible]="true">
-  <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="true">
+<clr-vertical-nav *ngIf="!(shouldProtect|async)" [clrVerticalNavCollapsible]="true">
+
+  <clr-vertical-nav-group routerLinkActive="active"
+                          clrVerticalNavGroupExpanded="true"
+                          [appRole]="[]" appFeature="streams">
     <clr-icon shape="cloud-scale" clrVerticalNavIcon></clr-icon>
     Streams
     <clr-vertical-nav-group-children>
@@ -18,8 +21,9 @@
     </clr-vertical-nav-group-children>
   </clr-vertical-nav-group>
 
-  <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="true">
-    <clr-icon shape="tasks" clrVerticalNavIcon></clr-icon>
+  <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="true"
+                          [appRole]="[]" appFeature="tasks">
+    <clr-icon shape="blocks-group" clrVerticalNavIcon></clr-icon>
     Tasks / Jobs
     <clr-vertical-nav-group-children>
       <a
@@ -40,11 +44,20 @@
         routerLink="tasks-jobs/job-executions">
         Jobs executions
       </a>
+      <a
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="tasks-jobs/schedules"
+        [appRole]="[]"
+        appFeature="schedules">
+        Schedules
+      </a>
     </clr-vertical-nav-group-children>
   </clr-vertical-nav-group>
 
-  <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="false">
-    <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
+  <clr-vertical-nav-group routerLinkActive="active"
+                          clrVerticalNavGroupExpanded="false">
+    <clr-icon shape="briefcase" clrVerticalNavIcon></clr-icon>
     Manage
     <clr-vertical-nav-group-children>
       <a
@@ -62,10 +75,21 @@
       <a
         clrVerticalNavLink
         routerLinkActive="active"
-        routerLink="manage/import-export">
+        routerLink="manage/import-export"
+        [appRole]="[]"
+        appFeature="streams,tasks">
         Import / Export
       </a>
-
     </clr-vertical-nav-group-children>
   </clr-vertical-nav-group>
+
+  <a clrVerticalNavLink routerLink="settings" routerLinkActive="active">
+    <clr-icon shape="cog" clrVerticalNavIcon></clr-icon>
+    Settings
+  </a>
+  <a clrVerticalNavLink routerLink="dev/dashboard" routerLinkActive="active" *ngIf="isDevEnv">
+    <clr-icon shape="bug" clrVerticalNavIcon></clr-icon>
+    Dev. mode
+  </a>
+
 </clr-vertical-nav>
