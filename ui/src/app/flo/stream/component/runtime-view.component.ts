@@ -18,7 +18,6 @@ const joint: any = _joint;
 @Component({
   selector: 'app-runtime-stream-flo-view',
   styleUrls: [
-    '../../../../../node_modules/spring-flo/dist/flo.css',
     '../../shared/flo.scss',
   ],
   template: `

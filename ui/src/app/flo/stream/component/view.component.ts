@@ -8,7 +8,6 @@ import { delay } from 'rxjs/operators';
 @Component({
   selector: 'app-stream-flo-view',
   styleUrls: [
-    '../../../../../node_modules/spring-flo/dist/flo.css',
     '../../shared/flo.scss'
   ],
   template: `
