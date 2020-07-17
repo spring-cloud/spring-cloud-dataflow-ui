@@ -21,7 +21,6 @@ import { PropertiesDialogComponent } from '../../shared/properties/properties-di
 @Component({
   selector: 'app-stream-flo-create',
   styleUrls: [
-    '../../../../../node_modules/spring-flo/dist/flo.css',
     '../../shared/flo.scss'
   ],
   template: `

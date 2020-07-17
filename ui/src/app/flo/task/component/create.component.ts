@@ -18,7 +18,6 @@ import { TaskGraphPropertiesSource } from '../properties/task-properties-source'
 @Component({
   selector: 'app-task-create-view',
   styleUrls: [
-    '../../../../../node_modules/spring-flo/dist/flo.css',
     '../../shared/flo.scss'
   ],
   template: `
