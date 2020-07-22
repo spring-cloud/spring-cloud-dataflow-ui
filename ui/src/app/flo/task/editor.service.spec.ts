@@ -63,7 +63,7 @@ describe('Task RenderService', () => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = METAMODEL_SERVICE;
-    component.renderer = new RenderService(METAMODEL_SERVICE, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(METAMODEL_SERVICE, null, resolver, fixture.debugElement.injector, applicationRef);
     component.editor = new EditorService();
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();

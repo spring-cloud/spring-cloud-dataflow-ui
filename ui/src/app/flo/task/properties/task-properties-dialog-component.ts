@@ -1,13 +1,12 @@
 /* tslint:disable:no-access-missing-member */
 
-import { Component, Inject, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import PropertiesSource = Properties.PropertiesSource;
 import { AppUiProperty } from '../../shared/support/app-ui-property';
 import { PropertiesDialogComponent } from '../../shared/properties/properties-dialog.component';
 import { PropertiesGroupModel } from '../../shared/support/properties-group-model';
-import { DOCUMENT } from '@angular/common';
 
 
 /**
@@ -53,12 +52,10 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
 })
 export class TaskPropertiesDialogComponent extends PropertiesDialogComponent {
 
-  isOpen = false;
   public title: string;
 
-  constructor(@Inject(DOCUMENT) document: Document, viewContainerRef: ViewContainerRef) {
-    // super(bsModalRef);
-    super(document, viewContainerRef);
+  constructor() {
+    super();
   }
 
   setData(propertiesSource: PropertiesSource) {

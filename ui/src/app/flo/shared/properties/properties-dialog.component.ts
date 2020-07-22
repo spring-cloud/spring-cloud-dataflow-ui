@@ -1,13 +1,12 @@
-import { Component, ViewEncapsulation, OnInit, Input, AfterViewInit, ViewContainerRef, Inject } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { PropertiesGroupModel, SearchTextFilter } from '../support/properties-group-model';
 import { debounceTime } from 'rxjs/operators';
 import { App, ApplicationType } from '../../../shared/model/app.model';
-import { GraphNodePropertiesSource } from '../support/graph-node-properties-source';
+import { ModalDialog } from '../../../shared/service/modal.service';
 import { Properties } from 'spring-flo';
 import PropertiesSource = Properties.PropertiesSource;
-import { DOCUMENT } from '@angular/common';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -21,11 +20,7 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['properties-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class PropertiesDialogComponent implements OnInit {
-
-  @Input() body = false;
-
-  _open = false;
+export class PropertiesDialogComponent extends ModalDialog implements OnInit {
 
   app: App;
 
@@ -41,7 +36,8 @@ export class PropertiesDialogComponent implements OnInit {
 
   propertiesFilter = new SearchTextFilter();
 
-  constructor(@Inject(DOCUMENT) private document: Document, private viewContainerRef: ViewContainerRef) {
+  constructor() {
+    super();
     this.propertiesFormGroup = new FormGroup({});
     this._searchFilterTextSubject = new Subject<string>();
   }
@@ -54,7 +50,6 @@ export class PropertiesDialogComponent implements OnInit {
   }
 
   handleCancel() {
-    // this.bsModalRef.hide();
     this.isOpen = false;
   }
 
@@ -69,15 +64,6 @@ export class PropertiesDialogComponent implements OnInit {
     this._searchFilterTextSubject
       .pipe(debounceTime(500))
       .subscribe(text => this.propertiesFilter.textFilter = text);
-  }
-
-  open(name: string, type: string, version: string, propertiesSource: GraphNodePropertiesSource) {
-    this.app = new App();
-    this.app.name = name;
-    this.app.type = (type as any) as ApplicationType;
-    this.app.version = version;
-    this.setData(propertiesSource);
-    this.isOpen = true;
   }
 
   setData(propertiesSource: PropertiesSource) {
@@ -95,23 +81,17 @@ export class PropertiesDialogComponent implements OnInit {
     this._searchFilterTextSubject.next(text);
   }
 
-  set isOpen(open: boolean) {
-    if (this._open !== open) {
-      this._open = open;
-      if (open) {
-        if (this.body) {
-          this.document.body.appendChild(this.viewContainerRef.element.nativeElement);
-        }
-      } else {
-        if (this.body) {
-          this.document.body.removeChild(this.viewContainerRef.element.nativeElement);
+  get typeString() {
+    if (this.app) {
+      if (this.app.type) {
+        if (typeof this.app.type === 'string') {
+          return <string> this.app.type;
+        } else if (ApplicationType[this.app.type]) {
+          return ApplicationType[this.app.type].toString();
         }
       }
     }
-  }
-
-  get isOpen() {
-    return this._open;
+    return 'UNKNOWN';
   }
 
 }
