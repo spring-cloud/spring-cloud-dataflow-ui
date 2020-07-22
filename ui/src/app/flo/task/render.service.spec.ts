@@ -6,7 +6,7 @@
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
 import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { EditorComponent, Flo, FloModule } from 'spring-flo';
+import { EditorComponent, Flo } from 'spring-flo';
 import * as _$ from 'jquery';
 import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
@@ -63,7 +63,7 @@ describe('Task RenderService', () => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = METAMODEL_SERVICE;
-    component.renderer = new RenderService(METAMODEL_SERVICE, resolver,
+    component.renderer = new RenderService(METAMODEL_SERVICE, null, resolver,
       fixture.debugElement.injector, applicationRef);
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();

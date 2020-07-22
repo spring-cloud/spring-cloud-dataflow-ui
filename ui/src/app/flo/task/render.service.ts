@@ -16,6 +16,8 @@ import { ElementComponent } from '../shared/support/shape-component';
 import { ViewUtils } from '../shared/support/view-utils';
 import { LoggerService } from '../../shared/service/logger.service';
 import { createPaletteGroupHeader } from '../shared/support/shared-shapes';
+import { App, ApplicationType } from '../../shared/model/app.model';
+import { ModalService } from '../../shared/service/modal.service';
 
 const joint: any = _joint;
 
@@ -37,6 +39,7 @@ const SYNC_CANVAS_SIZE = { width: 100, height: 40 };
 export class RenderService implements Flo.Renderer {
 
   constructor(private metamodelService: MetamodelService,
+              private modalService?: ModalService,
               private componentFactoryResolver?: ComponentFactoryResolver,
               private injector?: Injector,
               private applicationRef?: ApplicationRef) {
@@ -145,11 +148,12 @@ export class RenderService implements Flo.Renderer {
    */
   handleLinkEvent(context: Flo.EditorContext, event: string, link: dia.Link): void {
     if (event === 'options') {
-      // TODO
-      // const modalRef = this.bsModalService.show(TaskPropertiesDialogComponent, { class: 'modal-properties' });
-      // modalRef.content.name = `${link.prop('metadata/name')}`;
-      // modalRef.content.type = `TASK`;
-      // modalRef.content.setData(new TaskGraphPropertiesSource(link));
+      const app = new App();
+      app.name = `${link.prop('metadata/name')}`;
+      app.type = ApplicationType.task;
+      const modal = this.modalService.show(TaskPropertiesDialogComponent);
+      modal.app = app;
+      modal.setData(new TaskGraphPropertiesSource(link));
     }
   }
 

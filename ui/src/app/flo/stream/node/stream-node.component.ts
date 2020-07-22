@@ -2,7 +2,6 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
 import { dia } from 'jointjs';
 import { NodeComponent } from '../../shared/support/node-component';
 import { DocService } from '../../shared/service/doc.service';
-import { StreamPropertiesDialogComponent } from '../properties/stream-properties-dialog.component';
 import { PropertiesEditor } from '../properties-editor.service';
 
 /**
@@ -28,14 +27,12 @@ export class StreamNodeComponent extends NodeComponent {
   @ViewChild('paletteNodeTooltip')
   paletteTooltipElement: ElementRef;
 
-  @ViewChild('options_modal', { static: true }) optionsModal: StreamPropertiesDialogComponent;
-
   constructor(docService: DocService, private propertiesEditor: PropertiesEditor) {
     super(docService);
   }
 
   showOptions() {
-    this.propertiesEditor.showForNode(this.optionsModal, <dia.Element> this.view.model, this.paper.model);
+    this.propertiesEditor.showForNode(<dia.Element> this.view.model, this.paper.model);
   }
 
 }

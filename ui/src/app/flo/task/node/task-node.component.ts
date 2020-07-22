@@ -2,7 +2,9 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
 import { TaskGraphPropertiesSource } from '../properties/task-properties-source';
 import { NodeComponent } from '../../shared/support/node-component';
 import { DocService } from '../../shared/service/doc.service';
-import { StreamPropertiesDialogComponent } from '../../stream/properties/stream-properties-dialog.component';
+import { ModalService } from '../../../shared/service/modal.service';
+import { App, ApplicationType } from '../../../shared/model/app.model';
+import { TaskPropertiesDialogComponent } from '../properties/task-properties-dialog-component';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -24,17 +26,20 @@ export class TaskNodeComponent extends NodeComponent {
   @ViewChild('nodeTooltip')
   nodeTooltipElement: ElementRef;
 
-  @ViewChild('options_modal', { static: true })
-  optionsModal: StreamPropertiesDialogComponent;
-
-  constructor(docService: DocService) {
+  constructor(docService: DocService,
+              private modalService?: ModalService) {
     super(docService);
   }
 
   showOptions() {
     const element = this.view.model;
-    this.optionsModal.title = `Properties for ${element.prop('metadata/name').toUpperCase()}`;
-    this.optionsModal.open(element.prop('metadata/name'), 'TASK', null, new TaskGraphPropertiesSource(element));
+    const modal = this.modalService.show(TaskPropertiesDialogComponent);
+    const app = new App();
+    app.name = element.prop('metadata/name');
+    app.type = ApplicationType.task;
+    modal.app = app;
+    modal.title = `Properties for ${element.prop('metadata/name').toUpperCase()}`;
+    modal.setData(new TaskGraphPropertiesSource(element));
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Inject, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Properties } from 'spring-flo';
 import { Validators } from '@angular/forms';
 import { StreamAppPropertiesSource } from './stream-properties-source';
@@ -7,7 +7,6 @@ import { StreamService } from '../../../shared/api/stream.service';
 import { Observable } from 'rxjs';
 import { AppUiProperty } from '../../shared/support/app-ui-property';
 import { PropertiesDialogComponent } from '../../shared/properties/properties-dialog.component';
-import { DOCUMENT } from '@angular/common';
 
 // CM extension necessary for snippet support syntax highlighting
 // Lint support
@@ -104,9 +103,8 @@ export class StreamPropertiesDialogComponent extends PropertiesDialogComponent {
 
   public title: string;
 
-  constructor(@Inject(DOCUMENT) document: Document, viewContainerRef: ViewContainerRef, private streamsService: StreamService) {
-    // super(bsModalRef);
-    super(document, viewContainerRef);
+  constructor(private streamsService: StreamService) {
+    super();
   }
 
   setData(propertiesSource: StreamAppPropertiesSource) {

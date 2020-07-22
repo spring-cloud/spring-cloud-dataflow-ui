@@ -6,6 +6,9 @@ import {
 } from './properties/stream-properties-source';
 import { Utils } from './support/utils';
 import { PropertiesDialogComponent } from '../shared/properties/properties-dialog.component';
+import { ModalService } from '../../shared/service/modal.service';
+import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
+import { App, ApplicationType } from '../../shared/model/app.model';
 
 /**
  * Service for creating properties source for properties dialog component
@@ -15,12 +18,16 @@ import { PropertiesDialogComponent } from '../shared/properties/properties-dialo
 @Injectable()
 export class PropertiesEditor {
 
-  constructor() {}
+  constructor(protected modalService: ModalService) {}
 
-  showForNode(propertiesDialog: PropertiesDialogComponent, element: dia.Element, graph: dia.Graph) {
-    const name = `${element.prop('metadata/name')}`;
-    const version = `${element.prop('metadata/version')}`;
-    const type = `${element.prop('metadata/group').toUpperCase()}`;
+  showForNode(element: dia.Element, graph: dia.Graph) {
+    const app = new App();
+    app.name = `${element.prop('metadata/name')}`;
+    app.type = (`${element.prop('metadata/group').toUpperCase()}` as any) as ApplicationType;
+    app.version = `${element.prop('metadata/version')}`;
+
+    const modal = this.modalService.show(StreamPropertiesDialogComponent);
+    modal.app = app;
 
     const streamHeads: dia.Cell[] = graph.getElements().filter(e => Utils.canBeHeadOfStream(graph, e));
 
@@ -30,7 +37,7 @@ export class PropertiesEditor {
         .map(e => e.attr('stream-name'))
     } : undefined;
 
-    propertiesDialog.open(name, type, version, this.createPropertiesSourceForNode(element, streamHead));
+    modal.setData(this.createPropertiesSourceForNode(element, streamHead));
   }
 
   protected createPropertiesSourceForNode(element: dia.Element, streamHead: StreamHead): StreamGraphPropertiesSource {
@@ -38,10 +45,15 @@ export class PropertiesEditor {
   }
 
   showForLink(propertiesDialog: PropertiesDialogComponent, link: dia.Link) {
-    const name = `${link.prop('metadata/name')}`;
-    const version = `${link.prop('metadata/version')}`;
-    const type = `${link.prop('metadata/group').toUpperCase()}`;
-    propertiesDialog.open(name, type, version, this.createPropertiesSourceForLink(link));
+    const app = new App();
+    app.name = `${link.prop('metadata/name')}`;
+    app.type = (`${link.prop('metadata/group').toUpperCase()}` as any) as ApplicationType;
+    app.version = `${link.prop('metadata/version')}`;
+
+    const modal = this.modalService.show(StreamPropertiesDialogComponent);
+    modal.app = app;
+
+    modal.setData(this.createPropertiesSourceForLink(link));
 
   }
 
