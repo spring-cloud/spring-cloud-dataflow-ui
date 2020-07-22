@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { Injectable, isDevMode } from '@angular/core';
 
 /**
  * A service for global logs.
@@ -15,7 +14,7 @@ export class LoggerService {
   }
 
   static log(value: any, ...rest: any[]) {
-    if (!environment.production) {
+    if (isDevMode()) {
       console.log(value, ...rest);
     }
   }
