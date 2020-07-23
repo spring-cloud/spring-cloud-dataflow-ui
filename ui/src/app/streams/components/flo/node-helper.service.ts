@@ -269,7 +269,7 @@ export class NodeHelper {
       case 'other':
         switch (metadata.name) {
           case 'tap':
-            this.createCommonInputPort(node);
+            this.createCommonOutputPort(node);
             break;
           case 'destination':
             this.createCommonOutputPort(node);
