@@ -233,7 +233,6 @@ describe('parser:', () => {
     expectRange(error.range, 3, 0, 4, 0);
 
     parseResult = Parser.parse('aaa | filter --expression=\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'', 'stream');
-    console.log(parseResult);
     expect(parseResult.lines[0].nodes[1].options.get('expression')).
     toEqual('\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'');
 
