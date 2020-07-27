@@ -97,7 +97,6 @@ export class NodeComponent extends ElementComponent {
   }
 
   get markers(): Flo.Marker[] {
-    console.log('Calculating markers');
     return this.view.model.get('markers') || [];
   }
 
