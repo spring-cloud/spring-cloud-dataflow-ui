@@ -19,6 +19,7 @@ import { ApplicationType } from '../../../shared/model';
 import { Flo, Constants } from 'spring-flo';
 import { dia, g } from 'jointjs';
 import { Utils as SharedUtils } from '../../../shared/flo/support/utils';
+import { LoggerService } from '../../../shared/services/logger.service';
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;
@@ -461,10 +462,9 @@ export class EditorService implements Flo.Editor {
     const invalidOutgoing: Array<dia.Link> = [];
     let port: string;
 
-    console.log(`Validating '${group}' of '${type}'`);
+    LoggerService.log(`Validating '${group}' of '${type}'`);
     graph.getConnectedLinks(element).forEach(link => {
       if (link.get('source').id === element.id) {
-        console.log('Outgoing link end ' + JSON.stringify(link.get('source')));
         port = link.get('source').port;
         if (port === 'output') {
           outgoing.push(link);
@@ -475,7 +475,6 @@ export class EditorService implements Flo.Editor {
           tap.push(link);
         }
       } else if (link.get('target').id === element.id) {
-        console.log('Incoming link end ' + JSON.stringify(link.get('target')));
         port = link.get('target').port;
         if (port === 'input') {
           incoming.push(link);
@@ -484,9 +483,6 @@ export class EditorService implements Flo.Editor {
         }
       }
     });
-
-    console.log('Outgoing number ' + outgoing.length);
-    console.log('Incoming number ' + incoming.length);
 
     if (invalidIncoming.length > 0) {
       errors.push({
