@@ -39,7 +39,7 @@ export class AppsAddValidator {
           }
           const val: string = tmp[1];
           const startWidth = ['http://', 'https://', 'docker:', 'maven://'];
-          if (startWidth.filter((b) => val.startsWith(b)).length === 0) {
+          if (startWidth.filter((b) => val.trim().startsWith(b)).length === 0) {
             throw new Error();
           }
         });
