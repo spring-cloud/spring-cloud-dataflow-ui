@@ -1,5 +1,5 @@
-import {Page} from '../../shared/model';
-import {TaskExecution} from "./task-execution";
+import { Page } from '../../shared/model';
+import { TaskExecution } from './task-execution';
 
 export class TaskDefinition {
 
@@ -17,7 +17,8 @@ export class TaskDefinition {
 
   public lastTaskExecution: TaskExecution;
 
-  constructor(name: string, dslText: string, description: string, composed: boolean, status: string, composedTaskElement: boolean, lastTaskExecution: TaskExecution) {
+  constructor(name: string, dslText: string, description: string, composed: boolean, status: string,
+              composedTaskElement: boolean, lastTaskExecution: TaskExecution) {
     this.name = name;
     this.dslText = dslText;
     this.composed = composed;
@@ -28,7 +29,8 @@ export class TaskDefinition {
   }
 
   static fromJSON(input): TaskDefinition {
-    return new TaskDefinition(input.name, input.dslText, input.description, input.composed, input.status, input.composedTaskElement, input.lastTaskExecution);
+    return new TaskDefinition(input.name, input.dslText, input.description, input.composed, input.status,
+      input.composedTaskElement, input.lastTaskExecution);
   }
 
   static pageFromJSON(input): Page<TaskDefinition> {

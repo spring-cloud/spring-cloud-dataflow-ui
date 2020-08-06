@@ -40,6 +40,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SchedulesListBarComponent } from '../components/schedules-list-bar/schedules-list-bar.compontent';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Test {@link TaskSchedulesComponent}.
@@ -100,7 +101,8 @@ describe('TaskSchedulesComponent', () => {
         { provide: TasksService, useValue: tasksService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService },
-        GrafanaService
+        GrafanaService,
+        WavefrontService
       ]
     })
       .compileComponents();

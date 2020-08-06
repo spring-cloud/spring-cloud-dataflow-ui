@@ -67,9 +67,10 @@ export class JobsComponent implements OnInit, OnDestroy {
    * @param {JobsService} jobsService
    * @param {NotificationService} notificationService
    * @param {ConfirmService} confirmService
+   * @param {AuthService} authService
    * @param {LoggerService} loggerService
    * @param {Router} router
-   * @param {GrafanaService0} grafanaService
+   * @param {GrafanaService} grafanaService
    */
   constructor(private jobsService: JobsService,
               private notificationService: NotificationService,
@@ -281,4 +282,5 @@ export class JobsComponent implements OnInit, OnDestroy {
       window.open(url);
     });
   }
+
 }

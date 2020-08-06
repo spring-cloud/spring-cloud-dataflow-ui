@@ -23,6 +23,7 @@ import { Observable, Subject } from 'rxjs';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 @Component({
   selector: 'app-streams',
@@ -128,9 +129,19 @@ export class StreamsComponent implements OnInit, OnDestroy {
   grafanaEnabledSubscription: Subscription;
 
   /**
-   * Featured Info
+   * Featured Info Grafana
    */
   grafanaEnabled = false;
+
+  /**
+   * Wavefront Subscription
+   */
+  wavefrontEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info Wavefront
+   */
+  wavefrontEnabled = false;
 
   /**
    * Runtime Statuses Subscription
@@ -153,6 +164,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param authService
    * @param sharedAboutService
    * @param grafanaService
+   * @param wavefrontService
    * @param blockerService
    * @param router
    */
@@ -164,6 +176,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               private sharedAboutService: SharedAboutService,
               private grafanaService: GrafanaService,
+              private wavefrontService: WavefrontService,
               private blockerService: BlockerService,
               private router: Router) {
   }
@@ -220,6 +233,16 @@ export class StreamsComponent implements OnInit, OnDestroy {
         isDefault: true,
         disabled: (item.status === 'undeployed'),
         hidden: !this.grafanaEnabled
+      },
+      {
+        id: 'wavefront-stream' + index,
+        action: 'wavefront',
+        icon: 'wavefront',
+        custom: true,
+        title: 'Wavefront Dashboard',
+        isDefault: true,
+        disabled: (item.status === 'undeployed'),
+        hidden: !this.wavefrontEnabled
       },
       {
         divider: true,
@@ -295,6 +318,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
       case 'grafana':
         this.grafanaStreamDashboard(args);
         break;
+      case 'wavefront':
+        this.wavefrontStreamDashboard(args);
+        break;
     }
   }
 
@@ -309,6 +335,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
     this.itemsExpanded = this.context.itemsExpanded || [];
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
+    });
+    this.wavefrontEnabledSubscription = this.wavefrontService.isAllowed().subscribe((active: boolean) => {
+      this.wavefrontEnabled = active;
     });
     this.appsState$ = this.appsService.appsState();
     this.refresh();
@@ -328,6 +357,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
       this.runtimeStreamStatusesSubscription.unsubscribe();
     }
     this.grafanaEnabledSubscription.unsubscribe();
+    this.wavefrontEnabledSubscription.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
@@ -719,6 +749,15 @@ export class StreamsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Navigate to the wavefront Dashboard
+   */
+  wavefrontDashboard() {
+    this.wavefrontService.getDashboardStreams().subscribe((url: string) => {
+      window.open(url);
+    });
+  }
+
+  /**
    * Navigate to the grafana stream Dashboard
    * @param streamDefinition
    */
@@ -728,4 +767,13 @@ export class StreamsComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Navigate to the wavefront stream Dashboard
+   * @param streamDefinition
+   */
+  wavefrontStreamDashboard(streamDefinition: StreamDefinition) {
+    this.wavefrontService.getDashboardStream(streamDefinition).subscribe((url: string) => {
+      window.open(url);
+    });
+  }
 }

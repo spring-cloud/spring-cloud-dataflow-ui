@@ -50,6 +50,15 @@
             <span class="fa fa-close"></span>
           </strong>
         </div>
+        <div class="line">
+          <span>Wavefront: </span>
+          <strong *ngIf="dataflowVersionInfo.featureInfo.wavefrontEnabled" id="wavefrontEnabled">
+            <span class="fa fa-check"></span>
+          </strong>
+          <strong *ngIf="!dataflowVersionInfo.featureInfo.wavefrontEnabled" id="wavefrontDisabled">
+            <span class="fa fa-close"></span>
+          </strong>
+        </div>
       </div>
     </div>
 

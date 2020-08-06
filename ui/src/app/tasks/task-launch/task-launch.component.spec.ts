@@ -1,30 +1,30 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterTestingModule} from '@angular/router/testing';
-import {TasksService} from '../tasks.service';
-import {MockActivatedRoute} from '../../tests/mocks/activated-route';
-import {MockNotificationService} from '../../tests/mocks/notification';
-import {DataflowDateTimePipe} from '../../shared/pipes/dataflow-date-time.pipe';
-import {MockTasksService} from '../../tests/mocks/tasks';
-import {TASK_DEFINITIONS} from '../../tests/mocks/mock-data';
-import {TaskLaunchComponent} from './task-launch.component';
-import {LoaderComponent} from '../../shared/components/loader/loader.component';
-import {NotificationService} from '../../shared/services/notification.service';
-import {MockRoutingStateService} from '../../tests/mocks/routing-state';
-import {RoutingStateService} from '../../shared/services/routing-state.service';
-import {DATAFLOW_LIST} from '../../shared/components/list/list.component';
-import {PagerComponent} from '../../shared/components/pager/pager.component';
-import {DATAFLOW_PAGE} from '../../shared/components/page/page.component';
-import {NgxPaginationModule} from 'ngx-pagination/dist/ngx-pagination';
-import {BsDropdownModule, PopoverModule, TooltipModule} from 'ngx-bootstrap';
-import {KvRichTextComponent} from '../../shared/components/kv-rich-text/kv-rich-text.component';
-import {ClipboardModule, ClipboardService} from 'ngx-clipboard';
-import {Platform} from '../../shared/model/platform';
-import {TaskDefinition} from '../model/task-definition';
-import {By} from '@angular/platform-browser';
-import {TippyDirective} from '../../shared/directives/tippy.directive';
-import {BlockerService} from '../../shared/components/blocker/blocker.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TasksService } from '../tasks.service';
+import { MockActivatedRoute } from '../../tests/mocks/activated-route';
+import { MockNotificationService } from '../../tests/mocks/notification';
+import { DataflowDateTimePipe } from '../../shared/pipes/dataflow-date-time.pipe';
+import { MockTasksService } from '../../tests/mocks/tasks';
+import { TASK_DEFINITIONS } from '../../tests/mocks/mock-data';
+import { TaskLaunchComponent } from './task-launch.component';
+import { LoaderComponent } from '../../shared/components/loader/loader.component';
+import { NotificationService } from '../../shared/services/notification.service';
+import { MockRoutingStateService } from '../../tests/mocks/routing-state';
+import { RoutingStateService } from '../../shared/services/routing-state.service';
+import { DATAFLOW_LIST } from '../../shared/components/list/list.component';
+import { PagerComponent } from '../../shared/components/pager/pager.component';
+import { DATAFLOW_PAGE } from '../../shared/components/page/page.component';
+import { NgxPaginationModule } from 'ngx-pagination/dist/ngx-pagination';
+import { BsDropdownModule, PopoverModule, TooltipModule } from 'ngx-bootstrap';
+import { KvRichTextComponent } from '../../shared/components/kv-rich-text/kv-rich-text.component';
+import { ClipboardModule, ClipboardService } from 'ngx-clipboard';
+import { Platform } from '../../shared/model/platform';
+import { TaskDefinition } from '../model/task-definition';
+import { By } from '@angular/platform-browser';
+import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { BlockerService } from '../../shared/components/blocker/blocker.service';
 
 /**
  * Test {@link TaskLaunchComponent}.
@@ -136,7 +136,7 @@ describe('TaskLaunchComponent', () => {
 
     it('Can not select a platform', () => {
       const task = {
-        task: new TaskDefinition('foo', 'timestamp', 'demo-description', false, 'COMPLETE', false,null),
+        task: new TaskDefinition('foo', 'timestamp', 'demo-description', false, 'COMPLETE', false, null),
         platforms: [
           new Platform('foo', 'foo', 'foo')
         ]

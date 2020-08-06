@@ -23,6 +23,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 describe('RuntimeAppComponent', () => {
   let component: RuntimeAppComponent;
@@ -59,7 +60,8 @@ describe('RuntimeAppComponent', () => {
         { provide: RuntimeAppsService, useValue: runtimeAppsService },
         { provide: BsModalRef, useValue: bsModalRef },
         { provide: NotificationService, useValue: notificationService },
-        GrafanaService
+        GrafanaService,
+        WavefrontService
       ]
     })
       .compileComponents();

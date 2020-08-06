@@ -10,6 +10,7 @@ import { RuntimeAppInstance } from '../model/runtime-app-instance';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { RuntimeStream } from '../model/runtime-stream';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Component that loads Runtime applications.
@@ -50,15 +51,27 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
   grafanaSubscription: Subscription;
 
   /**
+   * Featured Info
+   */
+  wavefrontEnabled = false;
+
+  /**
+   * Grafana Subscription
+   */
+  wavefrontSubscription: Subscription;
+
+  /**
    * Contructor
    *
    * @param {RuntimeAppsService} runtimeAppsService
    * @param {GrafanaService} grafanaService
+   * @param {WavefrontService} wavefrontService
    * @param {NotificationService} notificationService
    * @param {BsModalService} modalService
    */
   constructor(private runtimeAppsService: RuntimeAppsService,
               private grafanaService: GrafanaService,
+              private wavefrontService: WavefrontService,
               private notificationService: NotificationService,
               private modalService: BsModalService) {
   }
@@ -75,6 +88,7 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.grafanaSubscription.unsubscribe();
+    this.wavefrontSubscription.unsubscribe();
   }
 
   /**
@@ -98,10 +112,18 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
         isDefault: true,
         hidden: !this.grafanaEnabled
       },
+      {
+        id: 'wavefront' + index,
+        action: 'wavefront',
+        icon: 'wavefront',
+        custom: true,
+        title: 'Wavefront Dashboard',
+        isDefault: true,
+        hidden: !this.wavefrontEnabled
+      },
     ];
   }
 
-// appFeature="streamsEnabled"
   /**
    * Apply Action (row)
    * @param action
@@ -114,6 +136,9 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
         break;
       case 'grafana':
         this.grafanaDashboard(item);
+        break;
+      case 'wavefront':
+        this.wavefrontDashboard(item);
     }
   }
 
@@ -123,6 +148,9 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
   loadRuntimeStreams() {
     this.grafanaSubscription = this.grafanaService.isAllowed().subscribe((active) => {
       this.grafanaEnabled = active;
+    });
+    this.wavefrontSubscription = this.wavefrontService.isAllowed().subscribe((active) => {
+      this.wavefrontEnabled = active;
     });
     this.runtimeStreams$ = this.runtimeAppsService.getRuntimeStreams(this.pagination);
   }
@@ -165,6 +193,28 @@ export class RuntimeAppsComponent implements OnInit, OnDestroy {
       });
     } else {
       this.notificationService.error('Sorry, we can\' open this grafana dashboard');
+    }
+  }
+
+  /**
+   * Open the wavefront dashboard application
+   */
+  wavefrontDashboard(runtimeApp: RuntimeApp): void {
+    let appName = '';
+    let streamName = '';
+    if (runtimeApp.appInstances && runtimeApp.appInstances.length > 0) {
+      const firstInstance: RuntimeAppInstance = runtimeApp.appInstances[0];
+      if (firstInstance.attributes) {
+        appName = firstInstance.attributes['skipper.application.name'];
+        streamName = firstInstance.attributes['skipper.release.name'];
+      }
+    }
+    if (streamName && appName) {
+      this.wavefrontService.getDashboardApplication(streamName, appName).subscribe((url: string) => {
+        window.open(url);
+      });
+    } else {
+      this.notificationService.error('Sorry, we can\' open this wavefront dashboard');
     }
   }
 

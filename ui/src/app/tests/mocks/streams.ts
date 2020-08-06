@@ -1,11 +1,11 @@
-import {Page} from '../../shared/model/page';
-import {StreamDefinition} from '../../streams/model/stream-definition';
-import {StreamStatuses} from '../../streams/model/stream-metrics';
-import {OrderParams} from '../../shared/components/shared.interface';
-import {StreamHistory} from '../../streams/model/stream-history';
-import {Observable, of} from 'rxjs';
-import {Platform} from '../../shared/model/platform';
-import {AppRegistration} from "../../shared/model";
+import { Page } from '../../shared/model/page';
+import { StreamDefinition } from '../../streams/model/stream-definition';
+import { StreamStatuses } from '../../streams/model/stream-metrics';
+import { OrderParams } from '../../shared/components/shared.interface';
+import { StreamHistory } from '../../streams/model/stream-history';
+import { Observable, of } from 'rxjs';
+import { Platform } from '../../shared/model/platform';
+import { AppRegistration } from '../../shared/model';
 
 /**
  * Mock for StreamsService.
@@ -64,10 +64,11 @@ export class MockStreamsService {
 
   getPlatforms(): Observable<Platform[]> {
     return of([
-      Platform.fromJSON({name: 'default', type: 'local', description: '',
-        options: [{id: 'spring.cloud.deployer.local.opt1', name: 'opt1'}]
+      Platform.fromJSON({
+        name: 'default', type: 'local', description: '',
+        options: [{ id: 'spring.cloud.deployer.local.opt1', name: 'opt1' }]
       }),
-      Platform.fromJSON({name: 'foo', type: 'bar', description: 'foobar'})
+      Platform.fromJSON({ name: 'foo', type: 'bar', description: 'foobar' })
     ]);
   }
 

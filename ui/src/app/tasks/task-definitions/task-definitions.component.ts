@@ -20,10 +20,9 @@ import { FeatureInfo } from '../../shared/model/about/feature-info.model';
 import { ListBarComponent } from '../../shared/components/list/list-bar.component';
 import { AuthService } from '../../auth/auth.service';
 import { AppsService } from '../../apps/apps.service';
-import { TasksTabulationComponent } from '../components/tasks-tabulation/tasks-tabulation.component';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { Platform } from '../../shared/model/platform';
-import { Task } from 'protractor/built/taskScheduler';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Provides {@link TaskDefinition} related services.
@@ -109,6 +108,16 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
   grafanaEnabled = false;
 
   /**
+   * Wavefront Subscription
+   */
+  wavefrontEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info wavefront
+   */
+  wavefrontEnabled = false;
+
+  /**
    * Platforms list
    */
   platforms: Platform[];
@@ -126,6 +135,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param {SharedAboutService} sharedAboutService
    * @param {NotificationService} notificationService
    * @param {GrafanaService} grafanaService
+   * @param wavefrontService
    */
   constructor(public tasksService: TasksService,
               private modalService: BsModalService,
@@ -136,7 +146,8 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               private sharedAboutService: SharedAboutService,
               private notificationService: NotificationService,
-              private grafanaService: GrafanaService) {
+              private grafanaService: GrafanaService,
+              private wavefrontService: WavefrontService) {
   }
 
   /**
@@ -188,6 +199,15 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
         title: 'Grafana Dashboard',
         isDefault: true,
         hidden: !this.grafanaEnabled
+      },
+      {
+        id: 'wavefront-task' + index,
+        action: 'wavefront',
+        icon: 'wavefront',
+        custom: true,
+        title: 'Wavefront Dashboard',
+        isDefault: true,
+        hidden: !this.wavefrontEnabled
       },
       {
         divider: true,
@@ -266,6 +286,9 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
       case 'grafana':
         this.grafanaTaskDashboard(args);
         break;
+      case 'wavefront':
+        this.wavefrontTaskDashboard(args);
+        break;
     }
   }
 
@@ -295,6 +318,10 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
     });
+
+    this.wavefrontEnabledSubscription = this.wavefrontService.isAllowed().subscribe((active: boolean) => {
+      this.wavefrontEnabled = active;
+    });
   }
 
   /**
@@ -302,6 +329,7 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.grafanaEnabledSubscription.unsubscribe();
+    this.wavefrontEnabledSubscription.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
@@ -551,6 +579,16 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    */
   grafanaTaskDashboard(taskDefinition: TaskDefinition) {
     this.grafanaService.getDashboardTask(taskDefinition).subscribe((url: string) => {
+      window.open(url);
+    });
+  }
+
+  /**
+   * Navigate to the wavefront task Dashboard
+   * @param taskDefinition
+   */
+  wavefrontTaskDashboard(taskDefinition: TaskDefinition) {
+    this.wavefrontService.getDashboardTask(taskDefinition).subscribe((url: string) => {
       window.open(url);
     });
   }

@@ -30,6 +30,7 @@ import { MocksSharedAboutService } from '../../tests/mocks/shared-about';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 describe('JobsComponent', () => {
   let component: JobsComponent;
@@ -69,7 +70,8 @@ describe('JobsComponent', () => {
         { provide: ConfirmService, useValue: comfirmService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService },
-        GrafanaService
+        GrafanaService,
+        WavefrontService
       ]
     })
       .compileComponents();

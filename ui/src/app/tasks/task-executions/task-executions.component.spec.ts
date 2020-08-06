@@ -37,6 +37,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Test {@link TaskExecutionsComponent}.
@@ -95,7 +96,8 @@ describe('TaskExecutionsComponent', () => {
         { provide: AppsService, useValue: appsService },
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService },
-        GrafanaService
+        GrafanaService,
+        WavefrontService
       ]
     })
       .compileComponents();
