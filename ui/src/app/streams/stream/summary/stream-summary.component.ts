@@ -6,7 +6,6 @@ import { StreamDefinition } from '../../model/stream-definition';
 import { Observable, of } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap';
 import { StreamStatuses } from '../../model/stream-metrics';
-import { ParserService } from '../../../shared/services/parser.service';
 
 /**
  * Component that shows the summary details of a Stream Definition
@@ -122,7 +121,7 @@ export class StreamSummaryComponent implements OnInit {
                 logs: val.logs,
                 apps: apps
               };
-            }))
+            }));
         })
       );
   }

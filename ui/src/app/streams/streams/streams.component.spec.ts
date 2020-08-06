@@ -43,6 +43,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { BlockerService } from '../../shared/components/blocker/blocker.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Test {@link StreamsComponent}.
@@ -108,7 +109,8 @@ describe('StreamsComponent', () => {
         { provide: NotificationService, useValue: notificationService },
         { provide: LoggerService, useValue: loggerService },
         GrafanaService,
-        BlockerService
+        BlockerService,
+        WavefrontService
       ]
     })
       .compileComponents();

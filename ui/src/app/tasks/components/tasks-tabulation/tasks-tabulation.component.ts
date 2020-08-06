@@ -7,6 +7,7 @@ import { FeatureInfo } from '../../../shared/model/about/feature-info.model';
 import { Router } from '@angular/router';
 import { AppsService } from '../../../apps/apps.service';
 import { GrafanaService } from '../../../shared/grafana/grafana.service';
+import { WavefrontService } from '../../../shared/wavefront/wavefront.service';
 
 /**
  * Component used to display the tabulation with counters.
@@ -29,9 +30,19 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
   grafanaEnabledSubscription: Subscription;
 
   /**
-   * Featured Info
+   * Featured Info grafana
    */
   grafanaEnabled = false;
+
+  /**
+   * Grafana Subscription
+   */
+  wavefrontEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info wavefront
+   */
+  wavefrontEnabled = false;
 
   /**
    * Constructor
@@ -40,12 +51,14 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
    * @param {SharedAboutService} sharedAboutService
    * @param {AppsService} appsService
    * @param {GrafanaService} grafanaService
+   * @param {WavefrontService} wavefrontService
    * @param {Router} router
    */
   constructor(private tasksService: TasksService,
               private sharedAboutService: SharedAboutService,
               private appsService: AppsService,
               private grafanaService: GrafanaService,
+              private wavefrontService: WavefrontService,
               private router: Router) {
   }
 
@@ -53,11 +66,15 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
     });
+    this.wavefrontEnabledSubscription = this.wavefrontService.isAllowed().subscribe((active: boolean) => {
+      this.wavefrontEnabled = active;
+    });
     this.refresh();
   }
 
   ngOnDestroy() {
     this.grafanaEnabledSubscription.unsubscribe();
+    this.wavefrontEnabledSubscription.unsubscribe();
   }
 
   refresh() {
@@ -78,6 +95,12 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
     this.grafanaService.getDashboardTasks().subscribe((url: string) => {
       window.open(url);
     });
+  }
+
+  /**
+   * Navigate to the wavefront Dashboard
+   */
+  wavefrontDashboard() {
   }
 
   /**

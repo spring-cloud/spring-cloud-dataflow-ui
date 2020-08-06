@@ -11,6 +11,7 @@ import { NotificationService } from '../../shared/services/notification.service'
 import { LoggerService } from '../../shared/services/logger.service';
 import { AuthService } from '../../auth/auth.service';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Main entry point to the Jobs Module. Provides
@@ -62,14 +63,26 @@ export class JobsComponent implements OnInit, OnDestroy {
   grafanaEnabled = false;
 
   /**
+   * Wavefront Subscription
+   */
+  wavefrontEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info wavefront
+   */
+  wavefrontEnabled = false;
+
+  /**
    * Constructor
    *
    * @param {JobsService} jobsService
    * @param {NotificationService} notificationService
    * @param {ConfirmService} confirmService
+   * @param {AuthService} authService
    * @param {LoggerService} loggerService
    * @param {Router} router
-   * @param {GrafanaService0} grafanaService
+   * @param {GrafanaService} grafanaService
+   * @param {WavefrontService} wavefrontService
    */
   constructor(private jobsService: JobsService,
               private notificationService: NotificationService,
@@ -77,7 +90,8 @@ export class JobsComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               private loggerService: LoggerService,
               private router: Router,
-              private grafanaService: GrafanaService) {
+              private grafanaService: GrafanaService,
+              private wavefrontService: WavefrontService) {
   }
 
   /**
@@ -90,6 +104,9 @@ export class JobsComponent implements OnInit, OnDestroy {
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
     });
+    this.wavefrontEnabledSubscription = this.wavefrontService.isAllowed().subscribe((active: boolean) => {
+      this.wavefrontEnabled = active;
+    });
     this.loadJobExecutions();
   }
 
@@ -99,6 +116,7 @@ export class JobsComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.grafanaEnabledSubscription.unsubscribe();
+    this.wavefrontEnabledSubscription.unsubscribe();
     this.updateContext();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
@@ -126,6 +144,15 @@ export class JobsComponent implements OnInit, OnDestroy {
         title: 'Grafana Dashboard',
         isDefault: true,
         hidden: !this.grafanaEnabled
+      },
+      {
+        id: 'wavefront-job' + index,
+        action: 'wavefront',
+        icon: 'wavefront',
+        custom: true,
+        title: 'Wavefront Dashboard',
+        isDefault: true,
+        hidden: !this.wavefrontEnabled
       },
       {
         id: 'job-restart' + index,
@@ -163,6 +190,9 @@ export class JobsComponent implements OnInit, OnDestroy {
         break;
       case 'grafana':
         this.grafanaJobDashboard(item);
+        break;
+      case 'wavefront':
+        this.wavefrontJobDashboard(item);
         break;
     }
   }
@@ -280,5 +310,12 @@ export class JobsComponent implements OnInit, OnDestroy {
     this.grafanaService.getDashboardJobExecution(jobExecution).subscribe((url: string) => {
       window.open(url);
     });
+  }
+
+  /**
+   * Navigate to the wavefront job Dashboard
+   * @param jobExecution
+   */
+  wavefrontJobDashboard(jobExecution: JobExecution) {
   }
 }

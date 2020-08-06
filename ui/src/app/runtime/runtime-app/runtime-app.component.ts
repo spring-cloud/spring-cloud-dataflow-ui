@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RuntimeApp } from '../model/runtime-app';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BsModalRef } from 'ngx-bootstrap';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
-import { map } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 import { RuntimeAppInstance } from '../model/runtime-app-instance';
 import { NotificationService } from '../../shared/services/notification.service';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Component that display a Runtime application.
@@ -26,19 +27,26 @@ export class RuntimeAppComponent {
   runtimeApp$: Observable<RuntimeApp>;
 
   /**
-   * Featured Info
+   * Featured Info Grafana
    */
   grafanaEnabled = false;
+
+  /**
+   * Featured Info Wavefront
+   */
+  wavefrontEnabled = false;
 
   /**
    * Constructor
    *
    * @param modalRef
    * @param notificationService
+   * @param wavefrontService
    * @param grafanaService
    */
   constructor(private modalRef: BsModalRef,
               private notificationService: NotificationService,
+              private wavefrontService: WavefrontService,
               private grafanaService: GrafanaService) {
   }
 
@@ -53,7 +61,16 @@ export class RuntimeAppComponent {
         map((active) => {
           this.grafanaEnabled = active;
           return runtimeApp;
-        })
+        }),
+        mergeMap(
+          val => this.wavefrontService.isAllowed()
+            .pipe(
+              map(active => {
+                this.wavefrontEnabled = active;
+                return val;
+              })
+            )
+        )
       );
   }
 
@@ -105,6 +122,14 @@ export class RuntimeAppComponent {
     } else {
       this.notificationService.error('Sorry, we can\' open this grafana dashboard');
     }
+  }
+
+  wavefrontDashboard(runtimeApp: RuntimeApp): void {
+
+  }
+
+  wavefrontInstanceDashboard(instance: RuntimeAppInstance): void {
+
   }
 
 }

@@ -38,6 +38,12 @@
         <span class="icon-custom icon-custom-grafana white"></span>
         Grafana Dashboard
       </button>
+      <button name="stream-grafana" type="button" *ngIf="streamDefinition.wavefrontEnabled"
+              [disabled]="!(streamDefinition.streamDefinition.status === 'deployed')"
+              (click)="wavefrontDashboard(streamDefinition.streamDefinition)" class="btn btn-primary btn-fa" title="Wavefront Dashboard">
+        <span class="icon-custom icon-custom-wavefront white"></span>
+        Wavefront Dashboard
+      </button>
     </app-page-head-actions>
   </app-page-head>
 

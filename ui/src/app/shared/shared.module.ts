@@ -52,6 +52,7 @@ import { HttpLoaderService } from './components/http-loader/http-loader.service'
 import { BlockerService } from './components/blocker/blocker.service';
 import { DocService } from './services/doc.service';
 import { TippyDirective } from './directives/tippy.directive';
+import { WavefrontModule } from './wavefront/wavefront.module';
 
 
 /**
@@ -77,6 +78,7 @@ import { TippyDirective } from './directives/tippy.directive';
     ToastContainerModule,
     ProgressbarModule.forRoot(),
     GrafanaModule,
+    WavefrontModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       positionClass: 'toast-top-right',

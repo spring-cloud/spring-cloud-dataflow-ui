@@ -34,6 +34,7 @@ import { GrafanaModule } from '../../shared/grafana/grafana.module';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { TippyDirective } from '../../shared/directives/tippy.directive';
 import { NodeHelper } from '../components/flo/node-helper.service';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Test {@link StreamComponent}.
@@ -92,7 +93,8 @@ describe('StreamComponent', () => {
         { provide: LoggerService, useValue: loggerService },
         { provide: RenderService, useValue: renderService },
         { provide: NodeHelper, useValue: nodeHelper },
-        GrafanaService
+        GrafanaService,
+        WavefrontService
       ]
     })
       .compileComponents();

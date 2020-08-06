@@ -13,6 +13,7 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
   public tasksEnabled = false;
   public schedulesEnabled = false;
   public grafanaEnabled = false;
+  public wavefrontEnabled = false;
 
 
   /**
@@ -23,13 +24,15 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
     this.tasksEnabled = false;
     this.schedulesEnabled = false;
     this.grafanaEnabled = false;
+    this.wavefrontEnabled = false;
   }
 
   public deserialize(input) {
     this.streamsEnabled = input['streamsEnabled'] === true;
     this.tasksEnabled = input['tasksEnabled'] === true;
     this.schedulesEnabled = input['schedulesEnabled'] === true;
-    this.grafanaEnabled = input['grafanaEnabled'] === true;
+    this.wavefrontEnabled = true; // input['wavefrontEnabled'] === true;
+    this.grafanaEnabled = input['grafanaEnabled'] === true && !this.wavefrontEnabled;
     return this;
   }
 
@@ -53,6 +56,9 @@ export class FeatureInfo implements Serializable<FeatureInfo> {
         }
         case 'grafanaEnabled': {
           return this.grafanaEnabled;
+        }
+        case 'wavefrontEnabled': {
+          return this.wavefrontEnabled;
         }
         default: {
           LoggerService.error(`Unsupported feature parameter '${feature}'.`);

@@ -16,6 +16,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
 import { TaskExecutionsStopComponent } from '../task-executions-stop/task-executions-stop.component';
 import { TaskExecutionsDestroyComponent } from '../task-executions-destroy/task-executions-destroy.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Component that displays the Task Executions.
@@ -79,6 +80,16 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    */
   grafanaEnabled = false;
 
+  /**
+   * Wavefront Subscription
+   */
+  wavefrontEnabledSubscription: Subscription;
+
+  /**
+   * Featured Info
+   */
+  wavefrontEnabled = false;
+
   /*
    * Contains a key application of each selected task executions
    * @type {Array}
@@ -92,6 +103,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param {NotificationService} notificationService
    * @param {AuthService} authService
    * @param {LoggerService} loggerService
+   * @param {WavefrontService} wavefrontService
    * @param {BsModalService} modalService
    * @param {Router} router
    * @param {GrafanaService} grafanaService
@@ -101,6 +113,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
               private authService: AuthService,
               public loggerService: LoggerService,
               private grafanaService: GrafanaService,
+              private wavefrontService: WavefrontService,
               private modalService: BsModalService,
               private router: Router) {
   }
@@ -113,6 +126,9 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     this.params = { ...this.context };
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
+    });
+    this.wavefrontEnabledSubscription = this.wavefrontService.isAllowed().subscribe((active: boolean) => {
+      this.wavefrontEnabled = active;
     });
     this.form = { checkboxes: [] };
     this.itemsSelected = this.context.itemsSelected || [];
@@ -145,6 +161,15 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
         title: 'Grafana Dashboard',
         isDefault: true,
         hidden: !this.grafanaEnabled
+      },
+      {
+        id: 'wavefront-task-execution' + index,
+        action: 'wavefront',
+        icon: 'wavefront',
+        custom: true,
+        title: 'Wavefront Dashboard',
+        isDefault: true,
+        hidden: !this.wavefrontEnabled
       },
       {
         divider: true,
@@ -223,6 +248,9 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
       case 'grafana':
         this.grafanaTaskExecutionDashboard(item);
         break;
+      case 'wavefront':
+        this.wavefrontTaskExecutionDashboard(item);
+        break;
       case 'stop':
         this.stop([item]);
         break;
@@ -239,6 +267,7 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * Close subscription
    */
   ngOnDestroy() {
+    this.wavefrontEnabledSubscription.unsubscribe();
     this.grafanaEnabledSubscription.unsubscribe();
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
@@ -378,6 +407,13 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
     this.grafanaService.getDashboardTaskExecution(taskExecution).subscribe((url: string) => {
       window.open(url);
     });
+  }
+
+  /**
+   * Navigate to the grafana task Dashboard
+   * @param taskExecution
+   */
+  wavefrontTaskExecutionDashboard(taskExecution: TaskExecution) {
   }
 
   /**

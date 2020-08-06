@@ -13,6 +13,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { NotificationService } from '../../shared/services/notification.service';
 import { SharedAboutService } from '../../shared/services/shared-about.service';
 import { GrafanaService } from '../../shared/grafana/grafana.service';
+import { WavefrontService } from '../../shared/wavefront/wavefront.service';
 
 /**
  * Component that shows the details of a Stream Definition
@@ -49,6 +50,7 @@ export class StreamComponent implements OnInit {
               private notificationService: NotificationService,
               private sharedAboutService: SharedAboutService,
               private grafanaService: GrafanaService,
+              private wavefrontService: WavefrontService,
               private routingStateService: RoutingStateService) {
   }
 
@@ -78,12 +80,24 @@ export class StreamComponent implements OnInit {
             }))
         ),
         mergeMap(
+          (val) => this.wavefrontService.isAllowed()
+            .pipe(map((active: boolean) => {
+              return {
+                id: val.id,
+                featureInfo: val.featureInfo,
+                grafanaEnabled: val.grafanaEnabled,
+                wavefrontEnabled: active,
+              };
+            }))
+        ),
+        mergeMap(
           (val) => this.streamsService.getDefinition(val.id)
             .pipe(map((streamDefinition: StreamDefinition) => {
               return {
                 id: val.id,
                 featureInfo: val.featureInfo,
                 grafanaEnabled: val.grafanaEnabled,
+                wavefrontEnabled: val.wavefrontEnabled,
                 streamDefinition: streamDefinition
               };
             }))
@@ -143,6 +157,13 @@ export class StreamComponent implements OnInit {
     this.grafanaService.getDashboardStream(streamDefinition).subscribe((url: string) => {
       window.open(url);
     });
+  }
+
+  /**
+   * Navigate to the wavefront Dashboard
+   * @param streamDefinition
+   */
+  wavefrontDashboard(streamDefinition: StreamDefinition) {
   }
 
   /**

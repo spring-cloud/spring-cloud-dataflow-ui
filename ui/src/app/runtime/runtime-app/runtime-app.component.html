@@ -9,6 +9,13 @@
           Grafana Dashboard
         </button>
       </span>
+      <span *ngIf="wavefrontEnabled" style="margin-left: 1rem;">
+        <button type="button" (click)="wavefrontDashboard(runtimeApp)" class="btn btn-default btn-fa"
+                title="Wavefront Dashboard">
+          <span class="icon-custom icon-custom-wavefront"></span>
+          Wavefront Dashboard
+        </button>
+      </span>
     </h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
       <span aria-hidden="true">&times;</span>
@@ -29,7 +36,13 @@
               Grafana Dashboard
             </button>
           </span>
-
+          <span *ngIf="wavefrontEnabled" style="margin-left: 1rem; float: right;margin-top:-4px;">
+            <button type="button" (click)="wavefrontInstanceDashboard(item)" class="btn btn-default btn-fa"
+                    title="Wavefront Dashboard">
+              <span class="icon-custom icon-custom-wavefront"></span>
+              Wavefront Dashboard
+            </button>
+          </span>
         </div>
         <div class="panel-content">
           <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalue">

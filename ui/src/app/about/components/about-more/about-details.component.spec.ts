@@ -70,8 +70,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules', 'Grafana'], 0);
-    validateSpansExists(['streamsEnabled', 'tasksEnabled', 'schedulesEnabled', 'grafanaEnabled']);
+    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules', 'Grafana', 'Wavefront'], 0);
+    validateSpansExists(['streamsEnabled', 'tasksEnabled', 'schedulesEnabled', 'grafanaEnabled', 'wavefrontEnabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authenticated', 'Username', 'Roles'], 0);
@@ -116,8 +116,8 @@ describe('AboutDetailsComponent', () => {
     expect(component).toBeTruthy();
 
     // Verify Enabled Features
-    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules', 'Grafana'], 0);
-    validateSpansExists(['streamsDisabled', 'tasksDisabled', 'schedulerDisabled', 'grafanaDisabled']);
+    validateColumnValues('enabledFeaturesTable', ['Streams', 'Tasks', 'Schedules', 'Grafana', 'Wavefront'], 0);
+    validateSpansExists(['streamsDisabled', 'tasksDisabled', 'schedulerDisabled', 'grafanaDisabled', 'wavefrontDisabled']);
 
     // Verify Security Information
     validateColumnValues('securityInformationTable', ['Authentication', 'Authenticated', 'Username', 'Roles'], 0);
