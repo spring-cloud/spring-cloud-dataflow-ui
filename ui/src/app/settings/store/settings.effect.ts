@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, exhaustMap, catchError, tap, take, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { SettingsService } from '../service/settings.service';
+import { SettingsService } from '../../shared/service/settings.service';
 import * as SettingsActions from './settings.action';
 import { ThemeService } from '../../layout/theme/theme.service';
 import { themeActiveKey } from './settings.reducer';

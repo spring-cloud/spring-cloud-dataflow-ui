@@ -1,128 +1,132 @@
 import { Directive, HostBinding, HostListener, Input, OnInit } from '@angular/core';
 import { Stream } from '../model/stream.model';
-import { GrafanaService } from './grafana.service';
 import { Task } from '../model/task.model';
 import { RuntimeApp, RuntimeAppInstance } from '../model/runtime.model';
 import get from 'lodash.get';
+import { WavefrontService } from './wavefront.service';
 
 @Directive({
-  selector: '[grafanaDashboardStreams]'
+  selector: '[wavefrontDashboardStreams]'
 })
-export class GrafanaStreamsDirective implements OnInit {
+export class WavefrontStreamsDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
 
-  constructor(private grafanaService: GrafanaService) {
+  constructor(private wavefrontService: WavefrontService) {
   }
 
   ngOnInit(): void {
-    this.grafanaService.isAllowed()
+    this.wavefrontService.isAllowed()
       .then(allow => {
         this.hidden = !allow;
       });
   }
 
   @HostListener('click') onClick() {
-    this.grafanaService.getDashboardStreams()
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+    // TODO
+    // this.grafanaService.getDashboardStreams()
+    //   .subscribe((url: string) => {
+    //     window.open(url);
+    //   });
   }
 }
 
 @Directive({
-  selector: '[grafanaDashboardStream]'
+  selector: '[wavefrontDashboardStream]'
 })
-export class GrafanaStreamDirective implements OnInit {
+export class WavefrontStreamDirective implements OnInit {
   @HostBinding('disabled') disabled: boolean;
   @HostBinding('hidden') hidden: boolean;
   @Input() stream: Stream;
 
-  constructor(private grafanaService: GrafanaService) {
+  constructor(private wavefrontService: WavefrontService) {
   }
 
   ngOnInit(): void {
     this.disabled = this.stream.status !== 'DEPLOYED';
-    this.grafanaService.isAllowed()
+    this.wavefrontService.isAllowed()
       .then(allow => {
         this.hidden = !allow;
       });
   }
 
   @HostListener('click') onClick() {
-    this.grafanaService.getDashboardStream(this.stream)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+    // TODO
+    // this.grafanaService.getDashboardStream(this.stream)
+    //   .subscribe((url: string) => {
+    //     window.open(url);
+    //   });
   }
 
 }
 
 @Directive({
-  selector: '[grafanaDashboardTasks]'
+  selector: '[wavefrontDashboardTasks]'
 })
-export class GrafanaTasksDirective implements OnInit {
+export class WavefrontTasksDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
 
-  constructor(private grafanaService: GrafanaService) {
+  constructor(private wavefrontService: WavefrontService) {
   }
 
   ngOnInit(): void {
-    this.grafanaService.isAllowed()
+    this.wavefrontService.isAllowed()
       .then(allow => {
         this.hidden = !allow;
       });
   }
 
   @HostListener('click') onClick() {
-    this.grafanaService.getDashboardTasks()
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+    // TODO
+    // this.grafanaService.getDashboardTasks()
+    //   .subscribe((url: string) => {
+    //     window.open(url);
+    //   });
   }
 }
 
 
 @Directive({
-  selector: '[grafanaDashboardTask]'
+  selector: '[wavefrontDashboardTask]'
 })
-export class GrafanaTaskDirective implements OnInit {
+export class WavefrontTaskDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
   @Input() task: Task;
 
-  constructor(private grafanaService: GrafanaService) {
+  constructor(private wavefrontService: WavefrontService) {
   }
 
   ngOnInit(): void {
-    this.grafanaService.isAllowed()
+    this.wavefrontService.isAllowed()
       .then(allow => {
         this.hidden = !allow;
       });
   }
 
   @HostListener('click') onClick() {
-    this.grafanaService.getDashboardTask(this.task)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+    // TODO
+    // this.grafanaService.getDashboardTask(this.task)
+    //   .subscribe((url: string) => {
+    //     window.open(url);
+    //   });
   }
 }
 
 
 @Directive({
-  selector: '[grafanaDashboardRuntimeApp]'
+  selector: '[wavefrontDashboardRuntimeApp]'
 })
-export class GrafanaRuntimeAppDirective implements OnInit {
+export class WavefrontRuntimeAppDirective implements OnInit {
   @HostBinding('disabled') disabled: boolean;
   @HostBinding('hidden') hidden: boolean;
   @Input() runtimeApp: RuntimeApp;
   streamName: string;
   appName: string;
 
-  constructor(private grafanaService: GrafanaService) {
+  constructor(private wavefrontService: WavefrontService) {
   }
 
   ngOnInit(): void {
-    this.grafanaService.isAllowed()
+    this.wavefrontService.isAllowed()
       .then(allow => {
         this.hidden = !allow;
       });
@@ -139,18 +143,19 @@ export class GrafanaRuntimeAppDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    this.grafanaService.getDashboardApplication(this.streamName, this.appName)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+    // TODO
+    // this.grafanaService.getDashboardApplication(this.streamName, this.appName)
+    //   .subscribe((url: string) => {
+    //     window.open(url);
+    //   });
   }
 }
 
 
 @Directive({
-  selector: '[grafanaDashboardRuntimeInstance]'
+  selector: '[wavefrontDashboardRuntimeInstance]'
 })
-export class GrafanaRuntimeInstanceDirective implements OnInit {
+export class WavefrontRuntimeInstanceDirective implements OnInit {
   @HostBinding('disabled') disabled: boolean;
   @HostBinding('hidden') hidden: boolean;
   @Input() instance: RuntimeAppInstance;
@@ -158,11 +163,11 @@ export class GrafanaRuntimeInstanceDirective implements OnInit {
   streamName = '';
   guid = '';
 
-  constructor(private grafanaService: GrafanaService) {
+  constructor(private wavefrontService: WavefrontService) {
   }
 
   ngOnInit(): void {
-    this.grafanaService.isAllowed()
+    this.wavefrontService.isAllowed()
       .then(allow => {
         this.hidden = !allow;
       });
@@ -177,9 +182,10 @@ export class GrafanaRuntimeInstanceDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    this.grafanaService.getDashboardApplicationInstance(this.streamName, this.appName, this.guid)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+    // TODO
+    // this.grafanaService.getDashboardApplicationInstance(this.streamName, this.appName, this.guid)
+    //   .subscribe((url: string) => {
+    //     window.open(url);
+    //   });
   }
 }

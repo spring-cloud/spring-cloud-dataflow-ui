@@ -26,6 +26,12 @@ import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StreamDslComponent } from './component/stream-dsl/stream-dsl.component';
 import { DevGuard } from './support/dev.guard';
+import {
+  WavefrontRuntimeAppDirective, WavefrontRuntimeInstanceDirective,
+  WavefrontStreamDirective,
+  WavefrontStreamsDirective, WavefrontTaskDirective,
+  WavefrontTasksDirective
+} from './wavefront/wavefront.directive';
 
 @NgModule({
   entryComponents: [
@@ -50,6 +56,12 @@ import { DevGuard } from './support/dev.guard';
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
+    WavefrontStreamsDirective,
+    WavefrontStreamDirective,
+    WavefrontTasksDirective,
+    WavefrontTaskDirective,
+    WavefrontRuntimeAppDirective,
+    WavefrontRuntimeInstanceDirective,
     TippyDirective,
     StreamDslComponent
   ],
@@ -90,6 +102,12 @@ import { DevGuard } from './support/dev.guard';
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
+    WavefrontStreamsDirective,
+    WavefrontStreamDirective,
+    WavefrontTasksDirective,
+    WavefrontTaskDirective,
+    WavefrontRuntimeAppDirective,
+    WavefrontRuntimeInstanceDirective,
     TippyDirective,
     StreamDslComponent
   ],

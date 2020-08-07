@@ -6,6 +6,9 @@
     <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeApp [runtimeApp]="runtimeApp">
       Grafana dashboard
     </button>
+    <button class="btn btn-sm btn-secondary" wavefrontDashboardRuntimeApp [runtimeApp]="runtimeApp">
+      Wavefront dashboard
+    </button>
   </h3>
   <div class="modal-body">
 
@@ -17,6 +20,9 @@
           <span class="{{item.stateColor()}}">{{item.state}}</span>
           <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeInstance [instance]="item">
             Grafana dashboard
+          </button>
+          <button class="btn btn-sm btn-secondary" wavefrontDashboardRuntimeInstance [instance]="item">
+            Wavefront dashboard
           </button>
         </h4>
 

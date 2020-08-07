@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { themeActiveKey } from '../store/settings.reducer';
-import { SettingsService } from '../service/settings.service';
+import { SettingsService } from '../../shared/service/settings.service';
 
 @Component({
   selector: 'app-settings',

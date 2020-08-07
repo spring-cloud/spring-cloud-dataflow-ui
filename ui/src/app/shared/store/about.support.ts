@@ -1,5 +1,6 @@
 import { AboutState, DependencyState, RuntimeEnvironmentState } from './about.reducer';
 import set from 'lodash.set';
+import get from 'lodash.get';
 
 const parseDependency = (input): DependencyState => {
   return {
@@ -47,10 +48,11 @@ export const parse = (input): AboutState => {
       shell: parseDependency(input.versionInfo.shell),
     },
     features: {
-      streams: input.featureInfo.streamsEnabled,
-      tasks: input.featureInfo.tasksEnabled,
-      schedules: input.featureInfo.schedulesEnabled,
-      grafana: input.featureInfo.grafanaEnabled
+      streams: get(input, 'featureInfo.streamsEnabled', false),
+      tasks: get(input, 'featureInfo.tasksEnabled', false),
+      schedules: get(input, 'featureInfo.schedulesEnabled', false),
+      wavefront: get(input, 'featureInfo.wavefrontEnabled', false),
+      grafana: input.featureInfo.grafanaEnabled && !get(input, 'featureInfo.wavefrontEnabled', false)
     },
     runtimeEnvironment: {
       appDeployer: parseRuntimeEnvironment(input.runtimeEnvironment.appDeployer),

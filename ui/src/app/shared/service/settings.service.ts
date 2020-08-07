@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, of, from } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { themeActiveKey, themeActiveDefault, getThemeActiveSetting } from '../store/settings.reducer';
-import { loaded, update } from '../store/settings.action';
-import { Setting } from '../../shared/model/setting';
+import { themeActiveKey, themeActiveDefault, getThemeActiveSetting } from '../../settings/store/settings.reducer';
+import { loaded, update } from '../../settings/store/settings.action';
+import { Setting } from '../model/setting';
 import { State } from '../../reducers/reducer';
 
 @Injectable({

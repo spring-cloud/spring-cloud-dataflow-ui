@@ -30,6 +30,9 @@
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>
       Grafana Dashboard
     </button>
+    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardStreams>
+      Wavefront Dashboard
+    </button>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
       <clr-icon shape="refresh"></clr-icon>
       Refresh
@@ -100,6 +103,7 @@
         Destroy
       </button>
       <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
+      <button class="action-item" wavefrontDashboardStream [stream]="stream">Wavefront Dashboard</button>
     </clr-dg-action-overflow>
     <ng-template [(clrIfExpanded)]="expanded[stream.name]"
                  (clrIfExpandedChange)="toggleExpand()"

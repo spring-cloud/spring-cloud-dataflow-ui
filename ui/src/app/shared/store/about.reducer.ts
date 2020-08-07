@@ -38,7 +38,8 @@ export interface AboutState {
     streams: boolean,
     tasks: boolean,
     schedules: boolean,
-    grafana: boolean
+    grafana: boolean,
+    wavefront: boolean,
   };
   runtimeEnvironment: {
     appDeployer: RuntimeEnvironmentState,
@@ -96,7 +97,8 @@ export const initialState: AboutState = {
     streams: false,
     tasks: false,
     schedules: false,
-    grafana: false
+    grafana: false,
+    wavefront: false
   },
   runtimeEnvironment: {
     appDeployer: null,

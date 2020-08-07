@@ -8,10 +8,9 @@ import { App, ApplicationType } from '../../../shared/model/app.model';
 import { Platform } from '../../../shared/model/platform.model';
 import { ConfigurationMetadataProperty, DetailedApp } from '../../../shared/model/detailed-app.model';
 import { Utils } from '../../../flo/shared/support/utils';
-import { Parser } from '../../../flo/shared/service/parser';
 import get from 'lodash.get';
 import set from 'lodash.set';
-import {ParserService} from '../../../flo/shared/service/parser.service';
+import { ParserService } from '../../../flo/shared/service/parser.service';
 
 /**
  * Provides {@link StreamDeployConfig} related services.

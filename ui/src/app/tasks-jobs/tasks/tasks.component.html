@@ -26,6 +26,9 @@
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>
       Grafana Dashboard
     </button>
+    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardTasks>
+      Wavefront Dashboard
+    </button>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
       <clr-icon shape="refresh"></clr-icon>
       Refresh
@@ -80,6 +83,9 @@
       </button>
       <button class="action-item" grafanaDashboardTask [task]="task">
         Grafana Dashboard
+      </button>
+      <button class="action-item" wavefrontDashboardTask [task]="task">
+        Wavefront Dashboard
       </button>
     </clr-dg-action-overflow>
   </clr-dg-row>

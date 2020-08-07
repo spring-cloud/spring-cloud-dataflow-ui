@@ -23,7 +23,7 @@ import { Security } from './shared/model/security.model';
 import { of } from 'rxjs';
 import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { SettingsService } from './settings/service/settings.service';
+import { SettingsService } from './shared/service/settings.service';
 
 @NgModule({
   declarations: [
