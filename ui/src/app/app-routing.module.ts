@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'apps'
+    redirectTo: 'dashboard'
   },
   {
     path: 'dev',

@@ -24,6 +24,7 @@ import { of } from 'rxjs';
 import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { SettingsService } from './shared/service/settings.service';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { SettingsService } from './shared/service/settings.service';
     HttpClientModule,
     FormsModule,
     LayoutModule,
+    DashboardModule,
     StreamsModule,
     TasksJobsModule,
     ManageModule,

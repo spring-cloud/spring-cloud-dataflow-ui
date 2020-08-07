@@ -656,3 +656,11 @@ a:link, a:visited {
 .label-record-operation {
 
 }
+
+.dashboard {
+  hr {
+    margin: 2rem 0;
+    border: 0 none;
+    border-top: 1px solid var(--clr-table-border-color, #cccccc);
+  }
+}
