@@ -37,6 +37,30 @@
               "node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js",
               "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
               "node_modules/@clr/icons/clr-icons.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "file-saver",
+              "spring-flo",
+              "dagre",
+              "lodash",
+              "jointjs",
+              "codemirror-minified/mode/meta",
+              "codemirror-minified/mode/ruby/ruby",
+              "codemirror-minified/mode/python/python",
+              "codemirror-minified/mode/javascript/javascript",
+              "codemirror-minified/mode/groovy/groovy",
+              "codemirror-minified/addon/lint/lint",
+              "codemirror-minified/addon/lint/javascript-lint",
+              "codemirror-minified/addon/edit/closebrackets",
+              "codemirror-minified/addon/edit/matchbrackets",
+              "codemirror-minified/addon/scroll/simplescrollbars",
+              "codemirror-minified/addon/scroll/annotatescrollbar",
+              "codemirror-minified/addon/display/placeholder",
+              "codemirror-minified/addon/hint/show-hint",
+              "ts-disposables",
+              "jquery",
+              "rxjs/index",
+              "backbone"
             ]
           },
           "configurations": {
