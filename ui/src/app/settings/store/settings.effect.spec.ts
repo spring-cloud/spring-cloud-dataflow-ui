@@ -8,7 +8,7 @@ import * as SettingsActions from './settings.action';
 import { SettingsEffect } from './settings.effect';
 import * as fromSettings from './settings.reducer';
 import { ThemeService } from '../../layout/theme/theme.service';
-import { SettingsService } from '../../shared/service/settings.service';
+import { SettingsService } from '../settings.service';
 
 describe('settings/store/settings.effect.ts', () => {
 
