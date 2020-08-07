@@ -8,8 +8,12 @@
     </div>
     <app-search></app-search>
     <div class="header-actions">
-      <app-user *ngIf="securityEnabled|async"></app-user>
+      <a (click)="openSettings()" style="cursor:pointer" class="nav-link nav-icon" aria-label="settings">
+        <clr-icon shape="cog"></clr-icon>
+      </a>
       <span class="divider"></span>
+      <app-user *ngIf="securityEnabled|async"></app-user>
+      <span class="divider" *ngIf="securityEnabled|async"></span>
       <app-about-signpost></app-about-signpost>
     </div>
   </clr-header>

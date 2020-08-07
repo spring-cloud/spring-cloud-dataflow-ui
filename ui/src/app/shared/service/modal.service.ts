@@ -12,9 +12,7 @@ import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
 
 export class ModalDialog {
-
   private _open = false;
-
   private _opened = new EventEmitter<boolean>();
 
   set isOpen(open: boolean) {
@@ -33,11 +31,6 @@ export class ModalDialog {
   }
 }
 
-/**
- * A service for bringing up modal dialogs
- *
- * @author Alex Boyko
- */
 @Injectable({
   providedIn: 'root'
 })
@@ -48,19 +41,16 @@ export class ModalService {
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     private applicationRef: ApplicationRef
-  ) {}
+  ) {
+  }
 
   public show<T extends ModalDialog>(componentType: Type<T>): T {
     const nodeComponentFactory = this.componentFactoryResolver.resolveComponentFactory(componentType);
-
     const componentRef: ComponentRef<T> = nodeComponentFactory.create(this.injector);
-
     componentRef.changeDetectorRef.markForCheck();
     componentRef.changeDetectorRef.detectChanges();
-
     this.applicationRef.attachView(componentRef.hostView);
     this.document.body.appendChild(componentRef.location.nativeElement);
-
     const subscription = componentRef.instance.opened.subscribe((open) => {
       if (!open) {
         this.document.body.removeChild(componentRef.location.nativeElement);
@@ -69,9 +59,7 @@ export class ModalService {
         subscription.unsubscribe();
       }
     });
-
     componentRef.instance.isOpen = true;
-
     return componentRef.instance;
   }
 

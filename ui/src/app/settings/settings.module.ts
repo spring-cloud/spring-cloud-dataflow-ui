@@ -5,7 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ClarityModule } from '@clr/angular';
 import { SharedModule } from '../shared/shared.module';
 import { SettingsRoutingModule } from './settings-routing.module';
-import { SettingsComponent } from './component/settings.component';
+import { SettingsComponent } from './settings/settings.component';
 import * as fromSettings from './store/settings.reducer';
 import { SettingsEffect } from './store/settings.effect';
 

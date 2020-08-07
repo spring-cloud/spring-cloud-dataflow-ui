@@ -10,15 +10,13 @@ import { environment } from '../../../environments/environment';
 export class NavComponent implements OnInit {
 
   shouldProtect = this.securityService.shouldProtect();
-  securityEnabled = this.securityService.securityEnabled();
 
   get isDevEnv() {
     return !environment.production;
   }
 
-  constructor(
-    private securityService: SecurityService
-  ) { }
+  constructor(private securityService: SecurityService) {
+  }
 
   ngOnInit(): void {
   }

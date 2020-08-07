@@ -1,0 +1,23 @@
+<form clrForm>
+  <clr-modal [(clrModalOpen)]="isOpen" clrModalSize="xs">
+    <h3 class="modal-title">Settings</h3>
+    <div class="modal-body">
+      <clr-select-container>
+        <label>Theme</label>
+        <select clrSelect
+                name="theme"
+                [value]="themeActiveSetting$ | async"
+                (change)="themeActiveSettingOnChange($event.target.value)">
+          <option value="default">default</option>
+          <option value="dark">dark</option>
+        </select>
+        <clr-control-helper>
+          You can choose between dark and default theme
+        </clr-control-helper>
+      </clr-select-container>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
+    </div>
+  </clr-modal>
+</form>
