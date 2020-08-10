@@ -8,12 +8,19 @@ describe('AboutInfo', () => {
           "featureInfo": {
             "streamsEnabled": true,
             "grafanaEnabled": false,
+            "wavefrontEnabled": false,
             "tasksEnabled": true
           },
           "grafanaInfo": {
             "url": null,
             "token": null,
             "refreshInterval": 20
+          },
+          "monitoringDashboardInfo": {
+            "url": "http://localhost:3000",
+            "refreshInterval": 15,
+            "dashboardType": "wavefront",
+            "source": "foo"
           },
           "versionInfo": {
             "implementation": {
@@ -85,6 +92,7 @@ describe('AboutInfo', () => {
       expect(aboutInfo.securityInfo).toBeDefined();
       expect(aboutInfo.versionInfo).toBeDefined();
       expect(aboutInfo.grafanaInfo).toBeDefined();
+      expect(aboutInfo.monitoringDashboardInfo).toBeDefined();
     });
   });
 });
