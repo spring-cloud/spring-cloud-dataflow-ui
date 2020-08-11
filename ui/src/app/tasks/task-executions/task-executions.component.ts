@@ -414,6 +414,9 @@ export class TaskExecutionsComponent implements OnInit, OnDestroy {
    * @param taskExecution
    */
   wavefrontTaskExecutionDashboard(taskExecution: TaskExecution) {
+    this.wavefrontService.getDashboardTaskExecution(taskExecution).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 
   /**

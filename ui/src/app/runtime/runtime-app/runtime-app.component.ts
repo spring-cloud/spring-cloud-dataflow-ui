@@ -124,12 +124,47 @@ export class RuntimeAppComponent {
     }
   }
 
+  /**
+   * Open the wavefront dashboard application
+   */
   wavefrontDashboard(runtimeApp: RuntimeApp): void {
-
+    let appName = '';
+    let streamName = '';
+    if (runtimeApp.appInstances && runtimeApp.appInstances.length > 0) {
+      const firstInstance: RuntimeAppInstance = runtimeApp.appInstances[0];
+      if (firstInstance.attributes) {
+        appName = firstInstance.attributes['skipper.application.name'];
+        streamName = firstInstance.attributes['skipper.release.name'];
+      }
+    }
+    if (streamName && appName) {
+      this.wavefrontService.getDashboardApplication(streamName, appName).subscribe((url: string) => {
+        window.open(url);
+      });
+    } else {
+      this.notificationService.error('Sorry, we can\' open this wavefront dashboard');
+    }
   }
 
+  /**
+   * Open the wavefront dashboard application
+   */
   wavefrontInstanceDashboard(instance: RuntimeAppInstance): void {
-
+    let appName = '';
+    let streamName = '';
+    let guid = '';
+    if (instance.attributes) {
+      appName = instance.attributes['skipper.application.name'];
+      streamName = instance.attributes['skipper.release.name'];
+      guid = instance.attributes['guid'];
+    }
+    if (streamName && appName && guid) {
+      this.wavefrontService.getDashboardApplicationInstance(streamName, appName, guid).subscribe((url: string) => {
+        window.open(url);
+      });
+    } else {
+      this.notificationService.error('Sorry, we can\' open this wavefront dashboard');
+    }
   }
 
 }

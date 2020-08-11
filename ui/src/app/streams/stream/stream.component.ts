@@ -164,6 +164,9 @@ export class StreamComponent implements OnInit {
    * @param streamDefinition
    */
   wavefrontDashboard(streamDefinition: StreamDefinition) {
+    this.wavefrontService.getDashboardStream(streamDefinition).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 
   /**

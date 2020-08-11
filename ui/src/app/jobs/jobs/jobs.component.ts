@@ -317,5 +317,8 @@ export class JobsComponent implements OnInit, OnDestroy {
    * @param jobExecution
    */
   wavefrontJobDashboard(jobExecution: JobExecution) {
+    this.wavefrontService.getDashboardJobExecution(jobExecution).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }

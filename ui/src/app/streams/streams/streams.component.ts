@@ -752,6 +752,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * Navigate to the wavefront Dashboard
    */
   wavefrontDashboard() {
+    this.wavefrontService.getDashboardStreams().subscribe((url: string) => {
+      window.open(url);
+    });
   }
 
   /**
@@ -769,5 +772,8 @@ export class StreamsComponent implements OnInit, OnDestroy {
    * @param streamDefinition
    */
   wavefrontStreamDashboard(streamDefinition: StreamDefinition) {
+    this.wavefrontService.getDashboardStream(streamDefinition).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }

@@ -19,6 +19,9 @@ export class MonitoringDashboardInfo implements Serializable<MonitoringDashboard
       this.token = input['token'] ? input['token'] : '';
       this.source = input['source'] ? input['source'] : '';
       this.refreshInterval = ((typeof input['refreshInterval'] === 'number') ? input['refreshInterval'] : 10);
+      if (this.url[this.url.length - 1] === '/') {
+        this.url = this.url.substr(0, this.url.length - 1);
+      }
     }
     return this;
   }

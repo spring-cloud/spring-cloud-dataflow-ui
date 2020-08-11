@@ -588,5 +588,8 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
    * @param taskDefinition
    */
   wavefrontTaskDashboard(taskDefinition: TaskDefinition) {
+    this.wavefrontService.getDashboardTask(taskDefinition).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }

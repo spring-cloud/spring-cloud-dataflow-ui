@@ -101,6 +101,9 @@ export class TasksTabulationComponent implements OnInit, OnDestroy {
    * Navigate to the wavefront Dashboard
    */
   wavefrontDashboard() {
+    this.wavefrontService.getDashboardTasks().subscribe((url: string) => {
+      window.open(url);
+    });
   }
 
   /**
