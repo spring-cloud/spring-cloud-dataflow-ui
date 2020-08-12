@@ -4,13 +4,13 @@ import { MockSharedAppService } from '../../../tests/service/app.service.mock';
 import { MetamodelService } from '../metamodel.service';
 import { RenderService } from '../render.service';
 import { LoggerService } from '../../../shared/service/logger.service';
-import { MockToolsService } from '../../../tests/service/task-tools.service.mock';
+import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 
 describe('ViewComponent', () => {
   let component: ViewComponent;
   let fixture: ComponentFixture<ViewComponent>;
 
-  const metamodelService = new MetamodelService(new MockSharedAppService(), new LoggerService(), new MockToolsService());
+  const metamodelService = new MetamodelService(new MockSharedAppService(), new LoggerService(), new ToolsServiceMock());
   const renderService = new RenderService(metamodelService);
 
 

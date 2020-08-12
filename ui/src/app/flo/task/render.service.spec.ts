@@ -12,7 +12,7 @@ import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TAS
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
 import { LoggerService } from '../../shared/service/logger.service';
 import { MockSharedAppService } from '../../tests/service/app.service.mock';
-import { MockToolsService } from '../../tests/service/task-tools.service.mock';
+import { ToolsServiceMock } from '../../tests/service/task-tools.service.mock';
 import { TaskFloModule } from '../task-flo.module';
 
 const $: any = _$;
@@ -21,7 +21,7 @@ const $: any = _$;
 describe('Task RenderService', () => {
 
   const loggerService = new LoggerService();
-  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new MockToolsService());
+  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
 
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;

@@ -14,6 +14,8 @@ import { OperationFilterComponent } from './operation.filter';
 import { ActionFilterComponent } from './action.filter';
 import { By } from '@angular/platform-browser';
 import { DatetimePipe } from '../../shared/pipe/datetime.pipe';
+import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { RoleDirective } from '../../security/directive/role.directive';
 
 describe('manage/records/records.component.ts', () => {
 
@@ -27,7 +29,8 @@ describe('manage/records/records.component.ts', () => {
         DateFilterComponent,
         OperationFilterComponent,
         ActionFilterComponent,
-        DatetimePipe
+        DatetimePipe,
+        RoleDirective
       ],
       imports: [
         FormsModule,

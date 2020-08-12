@@ -10,6 +10,8 @@ import { RuntimeServiceMock } from '../../../../tests/api/runtime.service.mock.s
 import { GrafanaServiceMock } from '../../../../tests/service/grafana.service.mock';
 import { ContextService } from '../../../../shared/service/context.service';
 import { FreeTextComponent } from './free-text.component';
+import { ConfirmComponent } from '../../../../shared/component/confirm/confirm.component';
+import { RoleDirective } from '../../../../security/directive/role.directive';
 
 describe('streams/deploy/free-text/free-text.component.ts', () => {
   let component: FreeTextComponent;
@@ -19,6 +21,7 @@ describe('streams/deploy/free-text/free-text.component.ts', () => {
     TestBed.configureTestingModule({
       declarations: [
         FreeTextComponent,
+        RoleDirective
       ],
       imports: [
         FormsModule,

@@ -7,7 +7,6 @@ import { TaskService } from '../../../shared/api/task.service';
 import { ScheduleService } from '../../../shared/api/schedule.service';
 import { HttpError } from '../../../shared/model/error.model';
 import { NotificationService } from '../../../shared/service/notification.service';
-import { App } from '../../../shared/model/app.model';
 import { DestroyComponent } from '../destroy/destroy.component';
 
 @Component({

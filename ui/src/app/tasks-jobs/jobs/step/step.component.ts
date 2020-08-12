@@ -67,8 +67,6 @@ export class StepComponent implements OnInit {
         this.execution = details.execution;
         this.stepResource = details.step;
         this.stepProgress = details.stepProgress;
-
-        console.log(!this.stepResource.stepExecution.exitMessage);
         this.getTaskExecution();
         this.loading = false;
       }, (error) => {

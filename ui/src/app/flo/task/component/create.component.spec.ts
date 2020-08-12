@@ -5,7 +5,7 @@ import { TaskFloCreateComponent } from './create.component';
 import { MetamodelService } from '../metamodel.service';
 import { LoggerService } from '../../../shared/service/logger.service';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
-import { MockToolsService } from '../../../tests/service/task-tools.service.mock';
+import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 import { TaskFloModule } from '../../task-flo.module';
 
 /**
@@ -17,7 +17,7 @@ describe('TaskFloCreateComponent', () => {
   let component: TaskFloCreateComponent;
   let fixture: ComponentFixture<TaskFloCreateComponent>;
   const loggerService = new LoggerService();
-  const metamodelService = new MetamodelService(new MockSharedAppService(), loggerService, new MockToolsService());
+  const metamodelService = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
 
   const commonTestParams = { id: '1' };
 

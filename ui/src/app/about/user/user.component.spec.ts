@@ -11,7 +11,9 @@ describe('UserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserComponent ],
+      declarations: [
+        UserComponent
+      ],
       imports: [
         FormsModule,
         ClarityModule,
@@ -19,13 +21,9 @@ describe('UserComponent', () => {
       ],
       providers: [
         SecurityServiceMock.provider,
-        // AboutServiceMock.provider,
-        // AppServiceMock.provider,
-        // NotificationServiceMock.provider,
-        // ContextService
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

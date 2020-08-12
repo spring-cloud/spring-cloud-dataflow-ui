@@ -18,6 +18,8 @@ import { GroupServiceMock } from '../../../tests/service/group.service.mock';
 import { StreamDeployServiceMock } from '../../../tests/service/stream-deploy.service.mock';
 import { of, throwError } from 'rxjs';
 import { HttpError } from '../../../shared/model/error.model';
+import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
+import { RoleDirective } from '../../../security/directive/role.directive';
 
 describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
 
@@ -29,7 +31,8 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
       declarations: [
         MultiDeployComponent,
         StreamDslComponent,
-        KeyValueComponent
+        KeyValueComponent,
+        RoleDirective
       ],
       imports: [
         FormsModule,

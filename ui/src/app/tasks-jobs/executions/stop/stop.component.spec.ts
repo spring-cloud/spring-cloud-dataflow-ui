@@ -13,7 +13,7 @@ import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { TaskExecution } from '../../../shared/model/task-execution.model';
 import { StopComponent } from './stop.component';
 
-describe('tasks/executions/stop/stop.component.ts', () => {
+describe('tasks-jobs/executions/stop/stop.component.ts', () => {
 
   let component: StopComponent;
   let fixture: ComponentFixture<StopComponent>;

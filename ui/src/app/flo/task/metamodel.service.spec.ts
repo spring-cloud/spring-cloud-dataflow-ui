@@ -1,7 +1,7 @@
 import { MetamodelService } from './metamodel.service';
 import { async } from '@angular/core/testing';
 import { MockSharedAppService } from '../../tests/service/app.service.mock';
-import { MockToolsService } from '../../tests/service/task-tools.service.mock';
+import { ToolsServiceMock } from '../../tests/service/task-tools.service.mock';
 import { LoggerService } from '../../shared/service/logger.service';
 
 /**
@@ -12,7 +12,7 @@ import { LoggerService } from '../../shared/service/logger.service';
 describe('Task MetamodelService', () => {
 
   const loggerService = new LoggerService();
-  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new MockToolsService());
+  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
 
   it('two groups available', () => {
     expect(METAMODEL_SERVICE.groups()).toEqual(['control nodes', 'task']);

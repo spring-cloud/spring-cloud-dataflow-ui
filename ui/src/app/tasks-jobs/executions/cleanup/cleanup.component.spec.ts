@@ -13,7 +13,7 @@ import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { CleanupComponent } from './cleanup.component';
 import { TaskExecution } from '../../../shared/model/task-execution.model';
 
-describe('tasks/executions/cleanup/cleanup.component.ts', () => {
+describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
 
   let component: CleanupComponent;
   let fixture: ComponentFixture<CleanupComponent>;

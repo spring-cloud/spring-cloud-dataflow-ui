@@ -5,7 +5,7 @@ import { RenderService } from './render.service';
 import { EditorService } from './editor.service';
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
 import { MockSharedAppService } from '../../tests/service/app.service.mock';
-import { MockToolsService } from '../../tests/service/task-tools.service.mock';
+import { ToolsServiceMock } from '../../tests/service/task-tools.service.mock';
 import { LoggerService } from '../../shared/service/logger.service';
 import { TaskFloModule } from '../task-flo.module';
 
@@ -21,7 +21,7 @@ const joint: any = _joint;
 describe('Task RenderService', () => {
 
   const loggerService = new LoggerService();
-  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new MockToolsService());
+  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
 
   let METAMODEL: Map<string, Map<string, Flo.ElementMetadata>>;
   let component: EditorComponent;

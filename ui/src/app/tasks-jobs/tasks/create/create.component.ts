@@ -42,9 +42,6 @@ export class CreateComponent implements OnInit {
   ngOnInit() {
     this.errors = new Array<string>();
     this.warnings = new Array<string>();
-
-    // this.dsl = 'timestamp';
-    // this.isOpen = true;
   }
 
   submit() {
@@ -102,9 +99,6 @@ export class CreateComponent implements OnInit {
 
   back() {
     this.router.navigateByUrl('tasks-jobs/tasks');
-  }
-
-  cancel() {
   }
 
 }

@@ -7,7 +7,6 @@
   Create task
 </button>
 
-
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!isCreating" [clrModalSize]="isCreating ? 'md' : 'lg'">
   <h3 class="modal-title">Create task</h3>
   <div *ngIf="isCreating" class="modal-body">
@@ -84,7 +83,7 @@
       </clr-control-container>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="isCreating">Cancel</button>
+        <button type="button" class="btn btn-default" (click)="back()" [disabled]="isCreating">Cancel</button>
         <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
           Create the task
         </button>

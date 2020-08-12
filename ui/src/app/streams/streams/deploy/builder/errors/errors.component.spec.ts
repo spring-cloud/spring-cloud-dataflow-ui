@@ -10,6 +10,8 @@ import { NotificationServiceMock } from '../../../../../tests/service/notificati
 import { RuntimeServiceMock } from '../../../../../tests/api/runtime.service.mock.spec';
 import { GrafanaServiceMock } from '../../../../../tests/service/grafana.service.mock';
 import { ContextService } from '../../../../../shared/service/context.service';
+import { ConfirmComponent } from '../../../../../shared/component/confirm/confirm.component';
+import { RoleDirective } from '../../../../../security/directive/role.directive';
 
 describe('streams/deploy/builder/errors/errors.component.ts', () => {
   let component: ErrorsComponent;
@@ -19,6 +21,7 @@ describe('streams/deploy/builder/errors/errors.component.ts', () => {
     TestBed.configureTestingModule({
       declarations: [
         ErrorsComponent,
+        RoleDirective
       ],
       imports: [
         FormsModule,

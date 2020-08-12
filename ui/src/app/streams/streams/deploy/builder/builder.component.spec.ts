@@ -12,6 +12,8 @@ import { ContextService } from '../../../../shared/service/context.service';
 import { BuilderComponent } from './builder.component';
 import { StreamServiceMock } from '../../../../tests/api/stream.service.mock';
 import { StreamDeployServiceMock } from '../../../../tests/service/stream-deploy.service.mock';
+import { ConfirmComponent } from '../../../../shared/component/confirm/confirm.component';
+import { RoleDirective } from '../../../../security/directive/role.directive';
 
 describe('streams/deploy/builder/builder.component.ts', () => {
   let component: BuilderComponent;
@@ -21,6 +23,7 @@ describe('streams/deploy/builder/builder.component.ts', () => {
     TestBed.configureTestingModule({
       declarations: [
         BuilderComponent,
+        RoleDirective
       ],
       imports: [
         FormsModule,

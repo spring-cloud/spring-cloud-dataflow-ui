@@ -13,6 +13,8 @@ import { RollbackComponent } from './rollback.component';
 import { GET_STREAM_HISTORY } from '../../../tests/data/stream';
 import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
+import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
+import { RoleDirective } from '../../../security/directive/role.directive';
 
 describe('streams/streams/rollback/rollback.component.ts', () => {
 
@@ -22,7 +24,8 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        RollbackComponent
+        RollbackComponent,
+        RoleDirective
       ],
       imports: [
         FormsModule,
