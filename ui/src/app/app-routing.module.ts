@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'streams'
+    redirectTo: 'streams/list'
   },
   {
     path: 'dev',
@@ -14,7 +14,6 @@ const routes: Routes = [
     canLoad: [DevGuard]
   }
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
