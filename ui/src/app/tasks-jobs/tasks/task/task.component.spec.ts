@@ -13,6 +13,7 @@ import { TaskComponent } from './task.component';
 import { DestroyComponent } from '../destroy/destroy.component';
 import { LogComponent } from '../../executions/execution/log/log.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import { ScheduleServiceMock } from '../../../tests/api/schedule.service.mock';
 
 describe('tasks-jobs/tasks/task/task.component.ts', () => {
 
@@ -41,6 +42,7 @@ describe('tasks-jobs/tasks/task/task.component.ts', () => {
         TaskServiceMock.provider,
         ToolsServiceMock.provider,
         ContextServiceMock.provider,
+        ScheduleServiceMock.provider,
       ]
     })
       .compileComponents();

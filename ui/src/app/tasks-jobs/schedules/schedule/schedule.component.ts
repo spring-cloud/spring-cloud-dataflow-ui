@@ -62,10 +62,6 @@ export class ScheduleComponent implements OnInit {
     this.destroyModal.open([this.schedule]);
   }
 
-  create() {
-    this.router.navigateByUrl(`tasks-jobs/schedules/${this.schedule.taskName}/create`);
-  }
-
   detailsTask() {
     this.router.navigateByUrl(`tasks-jobs/tasks/${this.schedule.taskName}`);
   }

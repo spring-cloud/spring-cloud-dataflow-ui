@@ -90,8 +90,8 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
       }
     }
     return {
-      current: state.page.current,
-      size: state.page.size,
+      current: state?.page?.current,
+      size: state?.page?.size,
       by: state?.sort?.by || '',
       reverse: state?.sort?.reverse,
       ...filters

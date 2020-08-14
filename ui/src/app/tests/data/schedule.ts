@@ -4,6 +4,7 @@ export const GET_SCHEDULES = {
       {
         scheduleName: 'foo1',
         taskDefinitionName: 'bar1',
+        platform: 'foo',
         scheduleProperties: { 'spring.cloud.scheduler.cron.expression': '0 0 0 * 8 1' },
         _links: {
           self: {
@@ -14,6 +15,7 @@ export const GET_SCHEDULES = {
       {
         scheduleName: 'foo2',
         taskDefinitionName: 'bar2',
+        platform: 'bar',
         scheduleProperties: { 'spring.cloud.scheduler.cron.expression': '0 0 0 * 8 1' },
         _links: {
           self: {
@@ -40,6 +42,7 @@ export const GET_SCHEDULE = {
   scheduleName: 'foo1',
   taskDefinitionName: 'bar1',
   scheduleProperties: { 'spring.cloud.scheduler.cron.expression': '0 0 0 * 8 1' },
+  platform: 'foo',
   _links: {
     self: {
       href: 'http://localhost:4200/tasks/schedules/foo1'

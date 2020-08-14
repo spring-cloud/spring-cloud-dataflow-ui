@@ -13,12 +13,14 @@
       <tr>
         <th class="left">Name</th>
         <th class="left">Task name</th>
+        <th class="left">Platform</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let schedule of schedules">
         <td class="left"><strong>{{schedule.name}}</strong></td>
         <td class="left">{{schedule.taskName}}</td>
+        <td class="left">{{schedule.platform}}</td>
       </tr>
       </tbody>
     </table>

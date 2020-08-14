@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Task, TaskPage } from '../model/task.model';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { HttpUtils } from '../support/http.utils';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, delay, map } from 'rxjs/operators';
 import { TaskExecution, TaskExecutionPage } from '../model/task-execution.model';
 import { Platform, PlatformTaskList } from '../model/platform.model';
 import { ErrorUtils } from '../support/error.utils';
 import { DataflowEncoder } from '../support/encoder.utils';
+import { GET_PLATFORMS } from '../../tests/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -98,7 +99,10 @@ export class TaskService {
   executionClean(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .delete<any>(`/tasks/executions/${taskExecution.executionId}?action=REMOVE_DATA`, { headers, observe: 'response' })
+      .delete<any>(`/tasks/executions/${taskExecution.executionId}?action=REMOVE_DATA`, {
+        headers,
+        observe: 'response'
+      })
       .pipe(
         catchError(ErrorUtils.catchError)
       );
@@ -152,6 +156,13 @@ export class TaskService {
   }
 
   getPlatforms(): Observable<Platform[]> {
+    // return of([
+    //   Platform.parse({ name: 'foo', type: 'foo' }),
+    //   Platform.parse({ name: 'bar', type: 'bar' }),
+    // ])
+    //   .pipe(
+    //     delay(1000),
+    //   );
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = HttpUtils.getPaginationParams(0, 1000);
     return this.httpClient

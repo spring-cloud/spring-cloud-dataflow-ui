@@ -3,13 +3,13 @@
   <form clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4" (submit)="submit()">
     <div *ngIf="config.tasks.length == 1" formArrayName="names">
       <div class="clr-form-control clr-row">
-        <div class="clr-col-md-1 clr-control-label">Task Name</div>
-        <div class="clr-col-10">
+        <div class="clr-col-md-2 clr-control-label">Task Name</div>
+        <div class="clr-col-9">
           {{config.tasks[0].name}}
         </div>
       </div>
       <clr-input-container>
-        <label class="clr-col-md-1">Schedule</label>
+        <label class="clr-col-md-2">Schedule name</label>
         <input clrInput type="text" [formControl]="form.get('names').controls[0]" name="example"
                [dataflowFocus]="true"/>
         <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
@@ -29,13 +29,13 @@
       </div>
       <div *ngFor="let task of config.tasks; index as i">
         <div class="clr-form-control clr-row">
-          <div class="clr-col-md-1 clr-control-label">Task Name</div>
-          <div class="clr-col-10">
+          <div class="clr-col-md-2 clr-control-label">Task Name</div>
+          <div class="clr-col-9">
             {{task.name}}
           </div>
         </div>
         <clr-input-container>
-          <label class="clr-col-md-1">Schedule</label>
+          <label class="clr-col-md-2">Schedule</label>
           <input clrInput type="text" [formControl]="form.get('names').controls[i]" name="example"
                  [dataflowFocus]="i === 0"/>
           <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
@@ -44,13 +44,26 @@
         </clr-input-container>
       </div>
     </div>
+    <clr-select-container>
+      <label class="clr-col-md-2">
+        Platform
+      </label>
+      <select clrSelect [formControl]="form.get('platform')">
+        <option value="">Select</option>
+        <option *ngFor="let platform of config.platforms" [value]="platform.name">
+          {{platform.name}}
+          ({{platform.type}})
+        </option>
+      </select>
+      <clr-control-error *clrIfError="'required'">The platform is required.</clr-control-error>
+    </clr-select-container>
     <clr-input-container>
-      <label class="clr-col-md-1">Cron Expr.</label>
+      <label class="clr-col-md-2">Cron Expression</label>
       <input clrInput type="text" [formControl]="form.get('cron')" name="example"/>
       <clr-control-error *clrIfError="'required'">The cron expression is required.</clr-control-error>
     </clr-input-container>
     <clr-control-container class="key-value-wrapper">
-      <label class="clr-col-md-1">Arguments</label>
+      <label class="clr-col-md-2">Arguments</label>
       <app-key-value clrControl formControlName="args"></app-key-value>
       <clr-control-helper>
         Arguments can be prefixed by <code>--</code> (optional). Example:<br/>
@@ -62,7 +75,7 @@
       </clr-control-error>
     </clr-control-container>
     <clr-control-container class="key-value-wrapper">
-      <label class="clr-col-md-1">Properties</label>
+      <label class="clr-col-md-2">Properties</label>
       <app-key-value clrControl formControlName="props"></app-key-value>
       <clr-control-helper>
         Parameters should start with an <code>app.</code> or <code>deployer.</code>. Example:<br/>
@@ -74,12 +87,18 @@ deployer.myparam2=value2</code></pre>
       </clr-control-error>
     </clr-control-container>
     <clr-control-container>
-      <label class="clr-col-md-1"></label>
+      <label class="clr-col-md-2"></label>
       <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
       <button class="btn btn-primary" type="submit">Create schedule(s)</button>
     </clr-control-container>
   </form>
 </div>
+
+<div *ngIf="loading" style="padding:1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading...
+</div>
+
 <clr-modal [(clrModalOpen)]="creating" *ngIf="config" [clrModalClosable]="false">
   <h3 class="modal-title">Create schedule(s)</h3>
   <div class="modal-body">
