@@ -10,6 +10,7 @@ import { TaskDefinition } from '../../tasks/model/task-definition';
 import { TaskExecution } from '../../tasks/model/task-execution';
 import { JobExecution } from '../../jobs/model/job-execution.model';
 
+​
 @Injectable()
 export class WavefrontService {
 
@@ -28,7 +29,7 @@ export class WavefrontService {
       .pipe(
         map((aboutInfo: AboutInfo): MonitoringDashboardInfo => aboutInfo.monitoringDashboardInfo),
         map((monitoringDashboardInfo: MonitoringDashboardInfo): string => {
-          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-streams#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'ts(%22spring.integration.send.count%22)',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:'*'),q:'ts(%22spring.integration.send.count%22,%20source=%22$%7Bsource%7D%22)',s:Label,tbr:'')))`;
+          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-streams#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:'*'),q:'',s:Label,tbr:'')))`;
         })
       );
   }
@@ -39,7 +40,7 @@ export class WavefrontService {
       .pipe(
         map((aboutInfo: AboutInfo): MonitoringDashboardInfo => aboutInfo.monitoringDashboardInfo),
         map((monitoringDashboardInfo: MonitoringDashboardInfo): string => {
-          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-applications#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(application_guid:(d:Label,f:TAG_KEY,k:application.guid,l:guid,m:(Label:'*'),q:'hideAfter(1m, ts("spring.integration.send.count", source="\${source}" and stream.name="\${stream_name}" and application.name="\${application_name}"))',tbr:''),application_name:(d:Label,f:TAG_KEY,k:application.name,l:application,m:(Label:'*'),q:'lag(10s, ts("spring.integration.send.count", source="\${source}" and stream.name="\${stream_name}"))',tbr:''),channel_name:(d:Label,f:TAG_KEY,k:name,l:channel,m:(Label:'*'),q:'hideAfter(1m, ts("spring.integration.send.count", source="\${source}" and (name="input" or name="output") and stream.name="\${stream_name}" and application.name="\${application_name}"))',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'ts("spring.integration.send.count")',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:${stream.name}),q:'ts("spring.integration.send.count", source="\${source}")',tbr:'')))`;
+          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-applications#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(application_guid:(d:Label,f:TAG_KEY,k:application.guid,l:guid,m:(Label:'*'),q:'',tbr:''),application_name:(d:Label,f:TAG_KEY,k:application.name,l:application,m:(Label:'*'),q:'',tbr:''),channel_name:(d:Label,f:TAG_KEY,k:name,l:channel,m:(Label:'*'),q:'',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:${stream.name}),q:'',tbr:'')))`;
         })
       );
   }
@@ -50,7 +51,7 @@ export class WavefrontService {
       .pipe(
         map((aboutInfo: AboutInfo): MonitoringDashboardInfo => aboutInfo.monitoringDashboardInfo),
         map((monitoringDashboardInfo: MonitoringDashboardInfo): string => {
-          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-applications#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(application_guid:(d:Label,f:TAG_KEY,k:application.guid,l:guid,m:(Label:'*'),q:'hideAfter(1m, ts("spring.integration.send.count", source="\${source}" and stream.name="\${stream_name}" and application.name="\${application_name}"))',tbr:''),application_name:(d:Label,f:TAG_KEY,k:application.name,l:application,m:(Label:${appName}),q:'lag(10s, ts("spring.integration.send.count", source="\${source}" and stream.name="\${stream_name}"))',tbr:''),channel_name:(d:Label,f:TAG_KEY,k:name,l:channel,m:(Label:'*'),q:'hideAfter(1m, ts("spring.integration.send.count", source="\${source}" and (name="input" or name="output") and stream.name="\${stream_name}" and application.name="\${application_name}"))',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'ts("spring.integration.send.count")',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:${streamName}),q:'ts("spring.integration.send.count", source="\${source}")',tbr:'')))`;
+          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-applications#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(application_guid:(d:Label,f:TAG_KEY,k:application.guid,l:guid,m:(Label:'*'),q:'',tbr:''),application_name:(d:Label,f:TAG_KEY,k:application.name,l:application,m:(Label:${appName}),q:'',tbr:''),channel_name:(d:Label,f:TAG_KEY,k:name,l:channel,m:(Label:'*'),q:'',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:${streamName}),q:'',tbr:'')))`;
         })
       );
   }
@@ -61,7 +62,7 @@ export class WavefrontService {
       .pipe(
         map((aboutInfo: AboutInfo): MonitoringDashboardInfo => aboutInfo.monitoringDashboardInfo),
         map((monitoringDashboardInfo: MonitoringDashboardInfo): string => {
-          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-applications#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(application_guid:(d:Label,f:TAG_KEY,k:application.guid,l:guid,m:(Label:'${guid}'),q:'hideAfter(1m, ts("spring.integration.send.count", source="\${source}" and stream.name="\${stream_name}" and application.name="\${application_name}"))',tbr:''),application_name:(d:Label,f:TAG_KEY,k:application.name,l:application,m:(Label:${appName}),q:'lag(10s, ts("spring.integration.send.count", source="\${source}" and stream.name="\${stream_name}"))',tbr:''),channel_name:(d:Label,f:TAG_KEY,k:name,l:channel,m:(Label:'*'),q:'hideAfter(1m, ts("spring.integration.send.count", source="\${source}" and (name="input" or name="output") and stream.name="\${stream_name}" and application.name="\${application_name}"))',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'ts("spring.integration.send.count")',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:${streamName}),q:'ts("spring.integration.send.count", source="\${source}")',tbr:'')))`;
+          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-applications#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(application_guid:(d:Label,f:TAG_KEY,k:application.guid,l:guid,m:(Label:'${guid}'),q:'',tbr:''),application_name:(d:Label,f:TAG_KEY,k:application.name,l:application,m:(Label:${appName}),q:'',tbr:''),channel_name:(d:Label,f:TAG_KEY,k:name,l:channel,m:(Label:'*'),q:'',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'',s:Label,tbr:''),stream_name:(d:Label,f:TAG_KEY,k:stream.name,l:stream,m:(Label:${streamName}),q:'',tbr:'')))`;
         })
       );
   }
@@ -72,7 +73,7 @@ export class WavefrontService {
       .pipe(
         map((aboutInfo: AboutInfo): MonitoringDashboardInfo => aboutInfo.monitoringDashboardInfo),
         map((monitoringDashboardInfo: MonitoringDashboardInfo): string => {
-          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-tasks#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(execution_id:(d:Label,f:TAG_KEY,k:task.execution.id,l:execution,m:(Label:'*'),q:'lag(10s, ts("spring.cloud.task.count", source="\${source}" and task.name="\${task_name}"))',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'ts("spring.cloud.task.count")',s:Label,tbr:''),task_name:(d:Label,f:TAG_KEY,k:task.name,l:task,m:(Label:'*'),q:'ts("spring.cloud.task.count", source="\${source}")',tbr:'')))`;
+          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-tasks#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(execution_id:(d:Label,f:TAG_KEY,k:task.execution.id,l:execution,m:(Label:'*'),q:'',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'',s:Label,tbr:''),task_name:(d:Label,f:TAG_KEY,k:task.name,l:task,m:(Label:'*'),q:'',tbr:'')))`;
         })
       );
   }
@@ -83,7 +84,7 @@ export class WavefrontService {
       .pipe(
         map((aboutInfo: AboutInfo): MonitoringDashboardInfo => aboutInfo.monitoringDashboardInfo),
         map((monitoringDashboardInfo: MonitoringDashboardInfo): string => {
-          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-tasks#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(execution_id:(d:Label,f:TAG_KEY,k:task.execution.id,l:execution,m:(Label:'*'),q:'lag(10s, ts("spring.cloud.task.count", source="\${source}" and task.name="\${task_name}"))',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'ts("spring.cloud.task.count")',s:Label,tbr:''),task_name:(d:Label,f:TAG_KEY,k:task.name,l:task,m:(Label:${task.name}),q:'ts("spring.cloud.task.count", source="\${source}")',tbr:'')))`;
+          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-tasks#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(execution_id:(d:Label,f:TAG_KEY,k:task.execution.id,l:execution,m:(Label:'*'),q:'',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'',s:Label,tbr:''),task_name:(d:Label,f:TAG_KEY,k:task.name,l:task,m:(Label:${task.name}),q:'',tbr:'')))`;
         })
       );
   }
@@ -94,7 +95,7 @@ export class WavefrontService {
       .pipe(
         map((aboutInfo: AboutInfo): MonitoringDashboardInfo => aboutInfo.monitoringDashboardInfo),
         map((monitoringDashboardInfo: MonitoringDashboardInfo): string => {
-          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-tasks#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(execution_id:(d:Label,f:TAG_KEY,k:task.execution.id,l:execution,m:(Label:${taskExecution.executionId}),q:'lag(10s, ts("spring.cloud.task.count", source="\${source}" and task.name="\${task_name}"))',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'ts("spring.cloud.task.count")',s:Label,tbr:''),task_name:(d:Label,f:TAG_KEY,k:task.name,l:task,m:(Label:${taskExecution.taskName}),q:'ts("spring.cloud.task.count", source="\${source}")',tbr:'')))`;
+          return `${monitoringDashboardInfo.url}/dashboards/integration-scdf-tasks#_v01(g:(d:7200,ls:!t,s:0,w:'2h'),p:(execution_id:(d:Label,f:TAG_KEY,k:task.execution.id,l:execution,m:(Label:'${taskExecution.executionId}'),q:'',tbr:''),source:(d:Label,f:SOURCE,k:'',l:source,m:(Label:${monitoringDashboardInfo.source}),q:'',s:Label,tbr:''),task_name:(d:Label,f:TAG_KEY,k:task.name,l:task,m:(Label:${taskExecution.taskName}),q:'',tbr:'')))`;
         })
       );
   }
