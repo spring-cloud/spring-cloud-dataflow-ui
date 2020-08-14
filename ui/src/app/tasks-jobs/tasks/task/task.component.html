@@ -238,6 +238,42 @@
       </app-view-card>
     </div>
 
+    <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" *ngIf="scheduleEnabled">
+      <app-view-card titleModal="Schedule(s)" keyContext="task" name="{{task.name}}" id="schedules">
+        <ng-template>
+          <div *ngIf="!loadingSchedules">
+            <table class="table table-noborder table-compact" style="margin:0;" *ngIf="schedules?.total > 0">
+              <thead>
+              <tr>
+                <th class="left" nowrap="">Name</th>
+                <th class="left" nowrap="">Platform</th>
+                <th class="left" nowrap="">Cron Expression</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let schedule of schedules?.items">
+                <td class="left">
+                  <a routerLink="/tasks-jobs/schedules/{{schedule.name}}">{{schedule.name}}</a>
+                </td>
+                <td class="left">{{schedule.platform}}</td>
+                <td class="left">{{schedule.cronExpression}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <div *ngIf="!schedules?.total">
+              No schedule yet.
+            </div>
+          </div>
+          <div *ngIf="loadingSchedules">
+            <clr-spinner clrInline clrSmall></clr-spinner>
+            Loading schedule(s)...
+          </div>
+        </ng-template>
+        <div class="card-footer" *ngIf="executions?.total > 0 && executions.items.length < executions?.total">
+          <button class="btn btn-sm btn-secondary">View all executions</button>
+        </div>
+      </app-view-card>
+    </div>
   </div>
 
 </div>

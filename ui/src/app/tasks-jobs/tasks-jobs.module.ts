@@ -24,6 +24,7 @@ import { LogComponent } from './executions/execution/log/log.component';
 import { SchedulesComponent } from './schedules/schedules.component';
 import { ScheduleComponent } from './schedules/schedule/schedule.component';
 import { SecurityModule } from '../security/security.module';
+import { PlatformFilterComponent } from './schedules/platform.filter';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { SecurityModule } from '../security/security.module';
     SchedulesComponent,
     DestroyScheduleComponent,
     ScheduleComponent,
-    CreateScheduleComponent
+    CreateScheduleComponent,
+    PlatformFilterComponent
   ],
   imports: [
     CommonModule,

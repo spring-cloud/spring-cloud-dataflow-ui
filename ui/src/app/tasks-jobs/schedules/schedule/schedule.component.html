@@ -7,9 +7,6 @@
   <button type="button" class="btn btn-sm btn-secondary" (click)="destroy()">
     Delete schedule
   </button>
-  <button type="button" class="btn btn-sm btn-secondary" (click)="create()">
-    Add new schedule
-  </button>
 </div>
 
 <div *ngIf="!isLoading">
@@ -27,6 +24,10 @@
               <div class="value">
                 <a [routerLink]="'/tasks-jobs/tasks/' + schedule.taskName">{{schedule.taskName}}</a>
               </div>
+            </div>
+            <div class="row">
+              <div class="key">Platform</div>
+              <div class="value">{{schedule.platform || 'N/A'}}</div>
             </div>
             <div class="row">
               <div class="key">Cron Expr.</div>
@@ -61,8 +62,9 @@
   </div>
 </div>
 
-<div *ngIf="isLoading">
-  loading
+<div *ngIf="isLoading" style="padding: 1rem 0;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading schedule...
 </div>
 
 <app-schedule-destroy #destroyModal (onDestroyed)="back()"></app-schedule-destroy>

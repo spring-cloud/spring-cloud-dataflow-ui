@@ -12,6 +12,7 @@ import { SchedulesCreateValidator } from './create.validator';
 import { KeyValueValidator } from '../../../shared/component/key-value/key-value.validator';
 import { TaskPropValidator } from '../../tasks/task-prop.validator';
 import { Task } from '../../../shared/model/task.model';
+import { Platform } from '../../../shared/model/platform.model';
 
 @Component({
   selector: 'app-schedules-create',
@@ -48,14 +49,32 @@ export class CreateComponent implements OnInit {
         }
       ),
       mergeMap(
-        (tasks) => this.scheduleService.getSchedules('')
+        (tasks) => this.taskService.getPlatforms()
           .pipe(
-            map((schedules: SchedulePage) => {
+            map((platforms: Platform[]) => {
               return {
                 tasks,
-                schedules: schedules.items.map((item) => item.name.toLowerCase())
+                platforms
               };
-            })),
+            })
+          )
+      ),
+      mergeMap(
+        ({ tasks, platforms }) => forkJoin([...platforms.map((platform) =>
+          this.scheduleService.getSchedules('', platform.name)
+        )]).pipe(
+          map((schedules: SchedulePage[]) => {
+            const names = [];
+            schedules.forEach((page: SchedulePage) => {
+              names.push(...page.items.map((item) => item.name.toLowerCase()));
+            });
+            return {
+              tasks,
+              platforms,
+              schedules: names
+            };
+          })
+        )
       )
     ).subscribe((config) => {
       this.buildForm(config);
@@ -67,7 +86,7 @@ export class CreateComponent implements OnInit {
     });
   }
 
-  buildForm({ tasks, schedules }) {
+  buildForm({ tasks, schedules, platforms }) {
     const validators = {
       args: {
         key: [Validators.required],
@@ -89,7 +108,8 @@ export class CreateComponent implements OnInit {
       'cron': new FormControl('', [Validators.required, SchedulesCreateValidator.cron]),
       'names': names,
       'args': new FormControl('', KeyValueValidator.validateKeyValue(validators.args)),
-      'props': new FormControl('', KeyValueValidator.validateKeyValue(validators.props))
+      'props': new FormControl('', KeyValueValidator.validateKeyValue(validators.props)),
+      'platform': new FormControl(platforms.length > 1 ? '' : platforms[0].name, Validators.required)
     });
   }
 
@@ -104,12 +124,14 @@ export class CreateComponent implements OnInit {
       const taskArguments = getClean(this.form.get('args').value);
       const taskProperties = getClean(this.form.get('props').value);
       const cronExpression = this.form.get('cron').value;
+      const platform = this.form.get('platform').value;
       const scheduleParams = tasks
         .map((task: Task, index: number) => ({
             args: taskArguments.join(' '),
             props: taskProperties.join(','),
             cronExpression: cronExpression,
             task: task.name,
+            platform: platform,
             schedulerName: (this.form.get('names') as FormArray).controls
               .map((control: FormControl) => control.value)[index]
           })

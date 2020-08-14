@@ -8,7 +8,7 @@ export class ScheduleServiceMock {
 
   static mock: ScheduleServiceMock = null;
 
-  getSchedules(search?: string): Observable<SchedulePage> {
+  getSchedules(search?: string, platform?: string): Observable<SchedulePage> {
     return of(GET_SCHEDULES)
       .pipe(
         delay(1),
@@ -24,21 +24,30 @@ export class ScheduleServiceMock {
       );
   }
 
+  getSchedulesByTask(task, platform): Observable<SchedulePage> {
+    return of(GET_SCHEDULES)
+      .pipe(
+        delay(1),
+        map(SchedulePage.parse),
+      );
+  }
+
   createSchedules(schedules: Array<any>): Observable<any> {
     return of(schedules);
   }
 
-  createSchedule(schedulerName: string, task: string, cronExpression: string, args: string, props: string): Observable<any> {
+  createSchedule(schedulerName: string, task: string, platform: string, cronExpression: string, args: string,
+                 props: string): Observable<any> {
     return of({});
   }
 
 
-  destroySchedule(scheduleName: string): Observable<any> {
+  destroySchedule(scheduleName: string, platform: string): Observable<any> {
     return of({});
   }
 
-  destroySchedules(scheduleNames: Array<string>): Observable<any> {
-    return of(scheduleNames);
+  destroySchedules(schedules: Array<any>): Observable<any> {
+    return of(schedules);
   }
 
   static get provider() {

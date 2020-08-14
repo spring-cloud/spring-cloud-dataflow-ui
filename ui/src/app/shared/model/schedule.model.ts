@@ -4,8 +4,10 @@ export class Schedule {
   name: string;
   taskName: string;
   cronExpression: string;
+  platform: string;
 
   static parse(input) {
+    console.log(input)
     let cron = '';
     if (!!input.scheduleProperties) {
       cron = input.scheduleProperties['spring.cloud.scheduler.cron.expression'];
@@ -14,6 +16,7 @@ export class Schedule {
     schedule.name = input.scheduleName;
     schedule.taskName = input.taskDefinitionName;
     schedule.cronExpression = cron;
+    schedule.platform = input?.platform;
     return schedule;
   }
 }

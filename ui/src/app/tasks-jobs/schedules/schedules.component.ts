@@ -24,13 +24,20 @@ export class SchedulesComponent extends DatagridComponent {
     super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/schedules');
   }
 
+  isScheduleReady(state): boolean {
+    const params = this.getParams(state, { platform: '' });
+    return super.isReady() && params.platform
+  }
+
   refresh(state: ClrDatagridStateInterface) {
-    if (this.isReady()) {
+    if (this.isScheduleReady(state)) {
       super.refresh(state);
-      this.scheduleService.getSchedules('')
+      const params = this.getParams(state, { platform: '' });
+      this.scheduleService.getSchedules('', params.platform)
         .subscribe((page: SchedulePage) => {
           this.page = page;
           this.selected = [];
+          this.updateGroupContext(params);
           this.loading = false;
         });
     }
