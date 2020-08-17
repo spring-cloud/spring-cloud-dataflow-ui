@@ -3,7 +3,7 @@
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
     <button type="button" class="btn btn-sm btn-secondary" (click)="relaunch()"
-            [appRole]="['ROLE_DEPLOY']">
+            [disabled]="!task" [appRole]="['ROLE_DEPLOY']">
       Relaunch task
     </button>
     <button type="button" class="btn btn-sm btn-secondary" (click)="stop()"
@@ -145,7 +145,7 @@
       <app-view-card titleModal="Task" keyContext="execution" name="{{execution?.executionId}}" id="task">
         <ng-template>
           <div *ngIf="!loadingTask">
-            <div class="block card-block-keyvalue">
+            <div class="block card-block-keyvalue" *ngIf="task">
               <div *ngIf="task.description" class="row">
                 <div class="key">Description</div>
                 <div class="value">{{task.description}}</div>
@@ -173,6 +173,9 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div *ngIf="!task">
+              No task found.
             </div>
           </div>
           <div *ngIf="loadingTask">

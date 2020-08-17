@@ -109,6 +109,9 @@
                 </div>
               </div>
             </div>
+            <div *ngIf="!task">
+              No task found.
+            </div>
           </div>
           <div *ngIf="loadingTask">
             <clr-spinner clrInline clrSmall></clr-spinner>

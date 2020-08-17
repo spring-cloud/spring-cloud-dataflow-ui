@@ -67,7 +67,7 @@ export class ExecutionComponent implements OnInit {
         this.getApplications();
         this.loadingTask = false;
       }, (error) => {
-        this.notificationService.error('An error occurred', error);
+        this.loadingTask = false;
       });
   }
 
