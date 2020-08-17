@@ -145,7 +145,7 @@
               <div class="row">
                 <div class="key">External Execution Id</div>
                 <div class="value">
-                  <a [routerLink]="'/jobs/executions/' + jobExecutionId"
+                  <a [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
                      *ngFor="let jobExecutionId of taskExecution.jobExecutionIds">
                     {{jobExecutionId}}
                   </a>
