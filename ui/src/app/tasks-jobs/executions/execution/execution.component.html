@@ -56,8 +56,8 @@
               <div class="row">
                 <div class="key">Batch Job</div>
                 <div class="value">
-                  <clr-icon *ngIf="execution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
-                  <clr-icon *ngIf="execution.jobExecutionIds?.length == 0" shape="success-standard"></clr-icon>
+                  <clr-icon *ngIf="execution.jobExecutionIds?.length > 0" shape="success-standard"></clr-icon>
+                  <clr-icon *ngIf="execution.jobExecutionIds?.length === 0" shape="times-circle"></clr-icon>
                 </div>
               </div>
               <div class="row">
