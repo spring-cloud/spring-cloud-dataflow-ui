@@ -5,7 +5,8 @@ import { ImportExportService } from '../../../shared/service/import-export.servi
 @Component({
   selector: 'app-manage-task-import',
   template: `
-    <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="view !== 'loading'" [clrModalSize]="view === 'result' ? 'lg' : 'md'">
+    <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="view !== 'loading'"
+               [clrModalSize]="view === 'result' ? 'lg' : 'md'">
       <h3 class="modal-title">Import task(s)</h3>
       <div class="modal-body clr-form clr-form-horizontal" *ngIf="view === 'file'">
         <div>
@@ -27,7 +28,8 @@ import { ImportExportService } from '../../../shared/service/import-export.servi
         <clr-checkbox-container class="clr-form-control clr-row">
           <label class="clr-col-2">Options</label>
           <clr-checkbox-wrapper>
-            <input type="checkbox" clrCheckbox name="options" value="option1" [(ngModel)]="excludeChildren" class="clr-col-10"/>
+            <input type="checkbox" clrCheckbox name="options" value="option1" [(ngModel)]="excludeChildren"
+                   class="clr-col-10"/>
             <label>Exclude children</label>
           </clr-checkbox-wrapper>
         </clr-checkbox-container>
@@ -87,8 +89,11 @@ import { ImportExportService } from '../../../shared/service/import-export.servi
         Importing task(s) ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline" [disabled]="view === 'importing'" (click)="isOpen = false">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="run()" [disabled]="view === 'importing'">
+        <button type="button" class="btn btn-outline" [disabled]="view === 'importing'" (click)="isOpen = false">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="run()" [disabled]="view === 'importing'"
+                *ngIf="view === 'file'">
           <span>Import task(s)</span>
         </button>
       </div>
