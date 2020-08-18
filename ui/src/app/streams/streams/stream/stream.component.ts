@@ -204,6 +204,7 @@ export class StreamComponent implements OnInit {
   }
 
   rollback(history: StreamHistory) {
+    console.log(history)
     this.rollbackModal.open(history);
   }
 

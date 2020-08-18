@@ -1,7 +1,7 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="history" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">Confirm stream rollback</h3>
   <div class="modal-body" *ngIf="!isRunning">
-    This action will rollback the <strong>{{history.stream}}</strong> to the version {{history.version}}.
+    This action will rollback the stream <strong>{{history.stream}}</strong> to the version {{history.version}}.
     Are you sure?
   </div>
   <div class="modal-body" *ngIf="isRunning">

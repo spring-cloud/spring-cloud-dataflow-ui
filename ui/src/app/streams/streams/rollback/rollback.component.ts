@@ -19,6 +19,7 @@ export class RollbackComponent {
   }
 
   open(history: StreamHistory) {
+    console.log(this.history)
     this.history = history;
     this.isOpen = true;
   }

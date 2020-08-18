@@ -75,7 +75,7 @@ export class StreamHistory {
 
   static parse(input) {
     const history = new StreamHistory();
-    history.stream = input.stream;
+    history.stream = input.name;
     history.version = input.version;
     history.platformName = input.platformName;
     if (input.info) {
