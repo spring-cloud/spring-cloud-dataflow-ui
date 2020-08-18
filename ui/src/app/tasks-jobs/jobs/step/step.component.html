@@ -16,7 +16,7 @@
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Informations" keyContext="step" name="{{stepResource.stepExecution.id}}" id="info">
+      <app-view-card titleModal="Information" keyContext="step" name="{{stepResource.stepExecution.id}}" id="info">
         <ng-template>
           <div class="progress" *ngIf="stepProgress.percentageComplete < 1">
             <progress [value]="stepProgress.percentageComplete * 100" max="100"></progress>
