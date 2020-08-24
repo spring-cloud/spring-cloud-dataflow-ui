@@ -95,6 +95,12 @@
               [appRole]="['ROLE_DESTROY']">
         Clean up task execution
       </button>
+      <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">
+        Grafana Dashboard
+      </button>
+      <button class="action-item" wavefrontDashboardTaskExecution [taskExecution]="execution">
+        Wavefront Dashboard
+      </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
   <clr-dg-placeholder>We couldn't find any task executions!</clr-dg-placeholder>

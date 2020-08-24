@@ -4,6 +4,8 @@ import { GrafanaService } from './grafana.service';
 import { Task } from '../model/task.model';
 import { RuntimeApp, RuntimeAppInstance } from '../model/runtime.model';
 import get from 'lodash.get';
+import { TaskExecution } from '../model/task-execution.model';
+import { JobExecution } from '../model/job.model';
 
 @Directive({
   selector: '[grafanaDashboardStreams]'
@@ -178,6 +180,58 @@ export class GrafanaRuntimeInstanceDirective implements OnInit {
 
   @HostListener('click') onClick() {
     this.grafanaService.getDashboardApplicationInstance(this.streamName, this.appName, this.guid)
+      .subscribe((url: string) => {
+        window.open(url);
+      });
+  }
+}
+
+@Directive({
+  selector: '[grafanaDashboardTaskExecution]'
+})
+export class GrafanaTaskExecutionDirective implements OnInit {
+  @HostBinding('disabled') disabled: boolean;
+  @HostBinding('hidden') hidden: boolean;
+  @Input() taskExecution: TaskExecution;
+
+  constructor(private grafanaService: GrafanaService) {
+  }
+
+  ngOnInit(): void {
+    this.grafanaService.isAllowed()
+      .then(allow => {
+        this.hidden = !allow;
+      });
+  }
+
+  @HostListener('click') onClick() {
+    this.grafanaService.getDashboardTaskExecution(this.taskExecution)
+      .subscribe((url: string) => {
+        window.open(url);
+      });
+  }
+}
+
+@Directive({
+  selector: '[grafanaDashboardJobExecution]'
+})
+export class GrafanaJobExecutionDirective implements OnInit {
+  @HostBinding('disabled') disabled: boolean;
+  @HostBinding('hidden') hidden: boolean;
+  @Input() jobExecution: JobExecution;
+
+  constructor(private grafanaService: GrafanaService) {
+  }
+
+  ngOnInit(): void {
+    this.grafanaService.isAllowed()
+      .then(allow => {
+        this.hidden = !allow;
+      });
+  }
+
+  @HostListener('click') onClick() {
+    this.grafanaService.getDashboardJobExecution(this.jobExecution)
       .subscribe((url: string) => {
         window.open(url);
       });

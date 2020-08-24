@@ -63,6 +63,12 @@ export const parse = (input): AboutState => {
       token: input.grafanaInfo?.token || '',
       refreshInterval: +input.grafanaInfo?.refreshInterval || 10
     },
+    wavefront: {
+      url: input.monitoringDashboardInfo?.url || '',
+      token: input.monitoringDashboardInfo?.token || '',
+      source: input.monitoringDashboardInfo?.source || '',
+      refreshInterval: +input.monitoringDashboardInfo?.refreshInterval || 10
+    },
     security: {
       isAuthentication: input.securityInfo.authenticationEnabled,
       isAuthenticated: input.securityInfo.authenticated,

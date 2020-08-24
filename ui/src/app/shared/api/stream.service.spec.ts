@@ -173,7 +173,7 @@ describe('shared/api/stream.service.ts', () => {
 
   it('rollbackStream', () => {
     mockHttp.post.and.returnValue(of({}));
-    streamService.rollbackStream(StreamHistory.parse({ stream: 'foo', version: '2' }));
+    streamService.rollbackStream(StreamHistory.parse({ name: 'foo', version: '2' }));
     const httpUri = mockHttp.post.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/streams/deployments/rollback/foo/2');
   });

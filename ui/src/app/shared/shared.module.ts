@@ -15,10 +15,11 @@ import { AutoResizeDirective } from './directive/auto-resize.directive';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from './component/card/card.component';
 import {
+  GrafanaJobExecutionDirective,
   GrafanaRuntimeAppDirective, GrafanaRuntimeInstanceDirective,
   GrafanaStreamDirective,
   GrafanaStreamsDirective,
-  GrafanaTaskDirective,
+  GrafanaTaskDirective, GrafanaTaskExecutionDirective,
   GrafanaTasksDirective
 } from './grafana/grafana.directive';
 import { TippyDirective } from './directive/tippy.directive';
@@ -29,7 +30,7 @@ import { DevGuard } from './support/dev.guard';
 import {
   WavefrontRuntimeAppDirective, WavefrontRuntimeInstanceDirective,
   WavefrontStreamDirective,
-  WavefrontStreamsDirective, WavefrontTaskDirective,
+  WavefrontStreamsDirective, WavefrontTaskDirective, WavefrontTaskExecutionDirective,
   WavefrontTasksDirective
 } from './wavefront/wavefront.directive';
 
@@ -56,12 +57,15 @@ import {
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
+    GrafanaTaskExecutionDirective,
+    GrafanaJobExecutionDirective,
     WavefrontStreamsDirective,
     WavefrontStreamDirective,
     WavefrontTasksDirective,
     WavefrontTaskDirective,
     WavefrontRuntimeAppDirective,
     WavefrontRuntimeInstanceDirective,
+    WavefrontTaskExecutionDirective,
     TippyDirective,
     StreamDslComponent
   ],
@@ -102,12 +106,15 @@ import {
     GrafanaTaskDirective,
     GrafanaRuntimeAppDirective,
     GrafanaRuntimeInstanceDirective,
+    GrafanaTaskExecutionDirective,
+    GrafanaJobExecutionDirective,
     WavefrontStreamsDirective,
     WavefrontStreamDirective,
     WavefrontTasksDirective,
     WavefrontTaskDirective,
     WavefrontRuntimeAppDirective,
     WavefrontRuntimeInstanceDirective,
+    WavefrontTaskExecutionDirective,
     TippyDirective,
     StreamDslComponent
   ],

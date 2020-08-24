@@ -15,6 +15,12 @@
             [appRole]="['ROLE_DESTROY']">
       Clean up task execution
     </button>
+    <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">
+      Grafana Dashboard
+    </button>
+    <button class="action-item" wavefrontDashboardTaskExecution [taskExecution]="execution">
+      Wavefront Dashboard
+    </button>
   </div>
 
   <div class="clr-row">

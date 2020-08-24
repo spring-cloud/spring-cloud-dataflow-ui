@@ -50,6 +50,12 @@ export interface AboutState {
     token: string,
     refreshInterval: number
   };
+  wavefront: {
+    url: string,
+    token: string,
+    source: string,
+    refreshInterval: number
+  },
   security: {
     isAuthentication: boolean,
     isAuthenticated: boolean,
@@ -107,6 +113,12 @@ export const initialState: AboutState = {
   grafana: {
     url: '',
     token: '',
+    refreshInterval: 10
+  },
+  wavefront: {
+    url: '',
+    token: '',
+    source: '',
     refreshInterval: 10
   },
   security: {

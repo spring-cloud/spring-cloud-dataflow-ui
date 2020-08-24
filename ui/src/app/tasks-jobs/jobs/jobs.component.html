@@ -76,6 +76,9 @@
               [disabled]="execution.status === 'FAILED' || execution.status === 'ERROR' || execution.status === 'COMPLETED'">
         Stop
       </button>
+      <button class="action-item" grafanaDashboardJobExecution [jobExecution]="execution">
+        Grafana Dashboard
+      </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
   <clr-dg-placeholder>We couldn't find any job executions!</clr-dg-placeholder>

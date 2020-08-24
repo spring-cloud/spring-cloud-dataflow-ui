@@ -4,6 +4,7 @@ import { Task } from '../model/task.model';
 import { RuntimeApp, RuntimeAppInstance } from '../model/runtime.model';
 import get from 'lodash.get';
 import { WavefrontService } from './wavefront.service';
+import { TaskExecution } from '../model/task-execution.model';
 
 @Directive({
   selector: '[wavefrontDashboardStreams]'
@@ -22,11 +23,10 @@ export class WavefrontStreamsDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    // TODO
-    // this.grafanaService.getDashboardStreams()
-    //   .subscribe((url: string) => {
-    //     window.open(url);
-    //   });
+    this.wavefrontService.getDashboardStreams()
+      .subscribe((url: string) => {
+        window.open(url);
+      });
   }
 }
 
@@ -50,11 +50,10 @@ export class WavefrontStreamDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    // TODO
-    // this.grafanaService.getDashboardStream(this.stream)
-    //   .subscribe((url: string) => {
-    //     window.open(url);
-    //   });
+    this.wavefrontService.getDashboardStream(this.stream)
+      .subscribe((url: string) => {
+        window.open(url);
+      });
   }
 
 }
@@ -76,11 +75,10 @@ export class WavefrontTasksDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    // TODO
-    // this.grafanaService.getDashboardTasks()
-    //   .subscribe((url: string) => {
-    //     window.open(url);
-    //   });
+    this.wavefrontService.getDashboardTasks()
+      .subscribe((url: string) => {
+        window.open(url);
+      });
   }
 }
 
@@ -103,11 +101,10 @@ export class WavefrontTaskDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    // TODO
-    // this.grafanaService.getDashboardTask(this.task)
-    //   .subscribe((url: string) => {
-    //     window.open(url);
-    //   });
+    this.wavefrontService.getDashboardTask(this.task)
+      .subscribe((url: string) => {
+        window.open(url);
+      });
   }
 }
 
@@ -143,14 +140,12 @@ export class WavefrontRuntimeAppDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    // TODO
-    // this.grafanaService.getDashboardApplication(this.streamName, this.appName)
-    //   .subscribe((url: string) => {
-    //     window.open(url);
-    //   });
+    this.wavefrontService.getDashboardApplication(this.streamName, this.appName)
+      .subscribe((url: string) => {
+        window.open(url);
+      });
   }
 }
-
 
 @Directive({
   selector: '[wavefrontDashboardRuntimeInstance]'
@@ -182,10 +177,35 @@ export class WavefrontRuntimeInstanceDirective implements OnInit {
   }
 
   @HostListener('click') onClick() {
-    // TODO
-    // this.grafanaService.getDashboardApplicationInstance(this.streamName, this.appName, this.guid)
-    //   .subscribe((url: string) => {
-    //     window.open(url);
-    //   });
+    this.wavefrontService.getDashboardApplicationInstance(this.streamName, this.appName, this.guid)
+      .subscribe((url: string) => {
+        window.open(url);
+      });
+  }
+}
+
+@Directive({
+  selector: '[wavefrontDashboardTaskExecution]'
+})
+export class WavefrontTaskExecutionDirective implements OnInit {
+  @HostBinding('disabled') disabled: boolean;
+  @HostBinding('hidden') hidden: boolean;
+  @Input() taskExecution: TaskExecution;
+
+  constructor(private wavefrontService: WavefrontService) {
+  }
+
+  ngOnInit(): void {
+    this.wavefrontService.isAllowed()
+      .then(allow => {
+        this.hidden = !allow;
+      });
+  }
+
+  @HostListener('click') onClick() {
+    this.wavefrontService.getDashboardTaskExecution(this.taskExecution)
+      .subscribe((url: string) => {
+        window.open(url);
+      });
   }
 }
