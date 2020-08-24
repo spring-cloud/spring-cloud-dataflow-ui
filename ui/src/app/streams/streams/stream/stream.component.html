@@ -42,7 +42,8 @@
             </div>
             <div class="row">
               <div class="key">Definition</div>
-              <div class="value"><span class="dsl-text"><app-stream-dsl [dsl]="stream.dslText"></app-stream-dsl></span></div>
+              <div class="value"><span class="dsl-text"><app-stream-dsl [dsl]="stream.dslText"></app-stream-dsl></span>
+              </div>
             </div>
             <div class="row">
               <div class="key">Status</div>
@@ -135,7 +136,7 @@
                   <td class="left">{{app.instances?.length || 'n/a'}} instance(s)</td>
                   <td class="left" style="width: 20px">
                     <button type="button" (click)="showLog(app.deploymentId, getAppType(app.name))"
-                            class="btn btn-sm btn-secondary" [disabled]="!hasLog(app.deploymentId)">
+                            class="btn btn-sm btn-secondary">
                       View Log
                     </button>
                   </td>
@@ -209,7 +210,12 @@
     <span class="label label-app {{log.type}}">{{log.type}}</span>
   </h3>
   <div class="modal-body" *ngIf="!loadingLogs">
-    <pre style="overflow: scroll;max-height: 500px;font-size: 13px;"><code>{{log.log}}</code></pre>
+    <div *ngIf="hasLog(log.name)">
+      <pre style="overflow: scroll;max-height: 500px;font-size: 13px;"><code>{{log.log}}</code></pre>
+    </div>
+    <div *ngIf="!hasLog(log.name)">
+      No log.
+    </div>
   </div>
   <div class="modal-body" *ngIf="loadingLogs">
     <clr-spinner clrInline clrSmall></clr-spinner>

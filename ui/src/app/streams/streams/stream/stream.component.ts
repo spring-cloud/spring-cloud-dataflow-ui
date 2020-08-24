@@ -66,7 +66,6 @@ export class StreamComponent implements OnInit {
         if (this.canShowDeploymentInfo()) {
           this.getDeploymentInfo();
           this.getRuntimeStreamStatuses();
-          this.getLogs();
         }
         this.getHistory();
         this.loading = false;
@@ -116,6 +115,9 @@ export class StreamComponent implements OnInit {
     this.streamService.getLogs(this.stream.name)
       .subscribe((data: any) => {
         this.logs = get(data, 'logs', {});
+        if (get(this.log, 'name')) {
+          this.log.log = get(this.logs, this.log.name);
+        }
         this.loadingLogs = false;
       }, (error) => {
         // Error: TODO
@@ -188,23 +190,23 @@ export class StreamComponent implements OnInit {
   }
 
   hasLog(name: string) {
-    if (get(this.logs, name)) {
+    if (get(this.logs, name) && get(this.log, 'log')) {
       return true;
     }
     return false;
   }
 
   showLog(name: string, type) {
+    this.getLogs();
     this.log = {
       name,
       type,
-      log: get(this.logs, name)
+      log: null
     };
     this.isLogOpen = true;
   }
 
   rollback(history: StreamHistory) {
-    console.log(history)
     this.rollbackModal.open(history);
   }
 
