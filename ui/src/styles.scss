@@ -664,3 +664,7 @@ a:link, a:visited {
     border-top: 1px solid var(--clr-table-border-color, #cccccc);
   }
 }
+
+.column-switch .clr-checkbox-wrapper button.datagrid-column-title {
+  display: none;
+}

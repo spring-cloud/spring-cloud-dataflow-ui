@@ -17,10 +17,10 @@ export class ContextService {
       type: '',
       by: 'name',
       reverse: false,
-      sizeName: this.size - 950,
+      // sizeName: this.size - 950,
       sizeType: 140,
       sizeVersion: 200,
-      sizeUri: this.size - 820,
+      // sizeUri: 200,
       cols: [true, true, true, true, false]
     },
     streams: {

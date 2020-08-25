@@ -103,8 +103,8 @@ export class LaunchComponent implements OnInit {
     if (this.submitting) {
       return;
     }
-    this.submitting = true;
     if (this.form.valid) {
+      this.submitting = true;
       const params = this.prepareParams(this.task.name, this.form.get('args').value.toString().split('\n'),
         this.form.get('props').value.toString().split('\n'), this.form.get('platform').value);
       this.taskService.launch(params.name, params.args, params.props)
@@ -119,6 +119,8 @@ export class LaunchComponent implements OnInit {
             this.notificationService.error('An error occurred', error);
           }
         );
+    } else {
+      this.notificationService.error('An error occurred', 'Some field(s) are missing or invalid.');
     }
   }
 
