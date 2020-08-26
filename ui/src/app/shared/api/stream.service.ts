@@ -176,6 +176,15 @@ export class StreamService {
       );
   }
 
+  getApplications(name: string): Observable<any[]> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    return this.httpClient
+      .get<any[]>(`/streams/definitions/${name}/applications`, { headers })
+      .pipe(
+        catchError(ErrorUtils.catchError)
+      );
+  }
+
   rollbackStream(streamHistory: StreamHistory): Observable<HttpResponse<any>> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient

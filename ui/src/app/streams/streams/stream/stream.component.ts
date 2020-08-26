@@ -10,7 +10,6 @@ import { UndeployComponent } from '../undeploy/undeploy.component';
 import get from 'lodash.get';
 import { StreamStatus } from '../../../shared/model/metrics.model';
 import { RollbackComponent } from '../rollback/rollback.component';
-import { ParserService } from '../../../flo/shared/service/parser.service';
 
 @Component({
   selector: 'app-stream',
@@ -25,6 +24,7 @@ export class StreamComponent implements OnInit {
   loadingDeploymentInfo = true;
   loadingHistory = true;
   loadingStreamsRelated = true;
+  loadingApps = true;
   stream: Stream;
   applications: Array<any>;
   streamsRelated: Stream[];
@@ -41,8 +41,7 @@ export class StreamComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private notificationService: NotificationService,
-              private streamService: StreamService,
-              private parserService: ParserService) {
+              private streamService: StreamService) {
   }
 
   ngOnInit(): void {
@@ -61,7 +60,7 @@ export class StreamComponent implements OnInit {
       )
       .subscribe((stream: Stream) => {
         this.stream = stream;
-        this.applications = this.parseApplications(this.stream.dslText);
+        this.getApplications();
         this.getStreamsRelated();
         if (this.canShowDeploymentInfo()) {
           this.getDeploymentInfo();
@@ -77,15 +76,15 @@ export class StreamComponent implements OnInit {
       });
   }
 
-  parseApplications(dsl: string) {
-    const parser = this.parserService.parseDsl(dsl, 'stream');
-    return parser.lines[0].nodes
-      .map((node) => {
-        return {
-          origin: get(node, 'name'),
-          name: get(node, 'label') || get(node, 'name'),
-          type: get(node, 'type', '').toString()
-        };
+  getApplications() {
+    this.loadingApps = true;
+    this.streamService.getApplications(this.stream.name)
+      .subscribe((apps: any[]) => {
+        this.applications = apps;
+        this.loadingApps = false;
+      }, (error) => {
+        // Error: TODO
+        this.loadingApps = false;
       });
   }
 
@@ -164,13 +163,13 @@ export class StreamComponent implements OnInit {
   }
 
   getAppType(key: string) {
-    const appRef = this.applications.find(app => app.name === key);
-    return get(appRef, 'type', '');
+    const app = this.applications.find(app => app.label === key);
+    return app?.type;
   }
 
   getOrigin(key: string) {
-    const appRef = this.applications.find(app => app.name === key);
-    return get(appRef, 'origin', '');
+    const app = this.applications.find(app => app.label === key);
+    return app?.name;
   }
 
   destroy() {

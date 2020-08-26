@@ -52,9 +52,15 @@
             <div class="row">
               <div class="key">Applications</div>
               <div class="value">
-                <div *ngFor="let app of applications">
-                  <strong>{{app.name}}</strong>&nbsp;
-                  <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                <div *ngIf="!loadingApps">
+                  <div *ngFor="let app of applications">
+                    <strong>{{app.label}}</strong>&nbsp;
+                    <span class="label label-app {{app.type}}">{{app.name}}</span>
+                  </div>
+                </div>
+                <div *ngIf="loadingApps">
+                  <clr-spinner clrInline clrSmall></clr-spinner>
+                  Loading applications...
                 </div>
               </div>
             </div>
@@ -123,7 +129,7 @@
       <app-view-card titleModal="Runtime" keyContext="stream" name="{{stream.name}}" id="runtime">
         <ng-template>
           <div class="block card-block-keyvalue">
-            <div *ngIf="!loadingRuntime">
+            <div *ngIf="!loadingRuntime && !loadingApps">
               <table class="table table-noborder table-compact" style="margin: 0;">
                 <tbody>
                 <tr *ngFor="let app of runtime?.applications">
@@ -144,7 +150,7 @@
                 </tbody>
               </table>
             </div>
-            <div *ngIf="loadingRuntime">
+            <div *ngIf="loadingRuntime || loadingApps">
               <clr-spinner clrInline clrSmall></clr-spinner>
               Loading runtime...
             </div>

@@ -46,6 +46,36 @@ export const GET_STREAM_HISTORY = [{
   'platformName': 'default'
 }];
 
+export const GET_STREAM_APPLICATIONS = [
+  {
+    'name': 'time',
+    'type': 'source',
+    'label': 'time',
+    'uri': 'docker:springcloudstream/time-source-kafka:2.1.2.RELEASE',
+    'version': '2.1.2.RELEASE',
+    'versions': ['2.1.2.RELEASE'],
+    'defaultVersion': true,
+  },
+  {
+    'name': 'transform',
+    'type': 'processor',
+    'label': 'transform',
+    'uri': 'docker:springcloudstream/time-source-kafka:2.1.2.RELEASE',
+    'version': '2.1.2.RELEASE',
+    'versions': ['2.1.2.RELEASE'],
+    'defaultVersion': true,
+  },
+  {
+    'name': 'log',
+    'type': 'sink',
+    'label': 'log',
+    'uri': 'docker:springcloudstream/time-source-kafka:2.1.2.RELEASE',
+    'version': '2.1.2.RELEASE',
+    'versions': ['2.1.2.RELEASE'],
+    'defaultVersion': true,
+  }
+];
+
 export const GET_STREAMS = {
   '_embedded': {
     'streamDefinitionResourceList': [{

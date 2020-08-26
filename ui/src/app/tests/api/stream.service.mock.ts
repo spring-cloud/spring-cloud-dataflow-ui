@@ -8,7 +8,7 @@ import {
   GET_DEPLOYMENT_INFO,
   GET_LOGS,
   GET_PLATFORMS,
-  GET_STREAM, GET_STREAM_HISTORY,
+  GET_STREAM, GET_STREAM_APPLICATIONS, GET_STREAM_HISTORY,
   GET_STREAMS,
   GET_STREAMS_RELATED
 } from '../data/stream';
@@ -103,6 +103,13 @@ export class StreamServiceMock {
         map((items) => {
           return items.map(StreamHistory.parse);
         })
+      );
+  }
+
+  getApplications(name: string): Observable<any[]> {
+    return of(GET_STREAM_APPLICATIONS)
+      .pipe(
+        delay(1)
       );
   }
 
