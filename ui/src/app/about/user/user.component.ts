@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SecurityService } from 'src/app/security/service/security.service';
+import { SecurityService } from '../../security/service/security.service';
 
 @Component({
   selector: 'app-user',
