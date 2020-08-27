@@ -1,6 +1,8 @@
-<h1>
-  Stream <strong>{{stream?.name}}</strong>&nbsp;
-  <span *ngIf="stream?.status" class="{{stream.labelStatusClass()}}">{{stream.status}}</span>
+<h1 class="page-title">
+  <span class="text-truncate">
+    Stream <strong>{{stream?.name}}</strong>&nbsp;
+    <span *ngIf="stream?.status" class="{{stream.labelStatusClass()}}">{{stream.status}}</span>
+  </span>
 </h1>
 
 <div *ngIf="!loading">

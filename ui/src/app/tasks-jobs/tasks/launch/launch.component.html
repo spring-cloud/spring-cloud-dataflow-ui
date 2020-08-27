@@ -1,4 +1,8 @@
-<h1>Launch task <strong *ngIf="task">{{task.name}}</strong></h1>
+<h1 class="page-title">
+  <span class="text-truncate">
+    Launch task <strong *ngIf="task">{{task.name}}</strong>
+  </span>
+</h1>
 
 <div *ngIf="!loading">
   <form clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4" (submit)="launch()">

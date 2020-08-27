@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   detailedApp: DetailedApp;
   @ViewChild('unregisterModal', { static: true }) unregisterModal: UnregisterComponent;
   @ViewChild('versionModal', { static: true }) versionModal: VersionComponent;
+  showAllProperties = true;
+  tooManyProperties = false;
 
   constructor(private route: ActivatedRoute,
               private appsService: AppService,
@@ -66,9 +68,8 @@ export class AppComponent implements OnInit {
     this.selectedApp = app;
     this.appsService.getApp(app.name, app.type, app.version)
       .subscribe((detailedApp: DetailedApp) => {
-          // this.tooManyProperties = (detailed.options.length > 50);
-          // this.showProperties = !this.tooManyProperties;
-          // this.detailedAppRegistration = detailed;
+          this.tooManyProperties = (detailedApp.options.length > 50);
+          this.showAllProperties = !this.tooManyProperties;
           this.detailedApp = detailedApp;
           this.loadingProperties = false;
         },

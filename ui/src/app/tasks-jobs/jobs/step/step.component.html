@@ -108,12 +108,17 @@
       <app-view-card titleModal="Step Execution Context" keyContext="step" name="{{stepResource.stepExecution.id}}"
                      id="stepExecutionCount">
         <ng-template>
-          <div *ngFor="let item of stepResource.stepExecution.executionContext.values | keyvalue"
-               class="block card-block-keyvalue lg-key">
-            <div class="row">
-              <div class="key"><strong>{{item.key}}</strong></div>
-              <div class="value">{{item.value}}</div>
+          <div *ngIf="(stepResource.stepExecution.executionContext.values | keyvalue)?.length > 0">
+            <div *ngFor="let item of stepResource.stepExecution.executionContext.values | keyvalue"
+                 class="block card-block-keyvalue lg-key">
+              <div class="row">
+                <div class="key"><strong>{{item.key}}</strong></div>
+                <div class="value">{{item.value}}</div>
+              </div>
             </div>
+          </div>
+          <div *ngIf="!(stepResource.stepExecution.executionContext.values | keyvalue)?.length > 0">
+            No step execution context
           </div>
         </ng-template>
       </app-view-card>
@@ -225,6 +230,10 @@
         <ng-template>
           <div *ngIf="!loadingTask">
             <div class="block card-block-keyvalue" *ngIf="task">
+              <div class="row">
+                <div class="key">Name</div>
+                <div class="value">{{task.name}}</div>
+              </div>
               <div *ngIf="task.description" class="row">
                 <div class="key">Description</div>
                 <div class="value">{{task.description}}</div>

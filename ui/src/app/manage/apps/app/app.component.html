@@ -1,7 +1,9 @@
-<h1>
-  Application <strong>{{app.name}}</strong>&nbsp;
-  <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
-  <span *ngIf="defaultApp" class="label">{{defaultApp.version}}</span>
+<h1 class="page-title">
+  <span class="text-truncate">
+    Application <strong>{{app.name}}</strong>&nbsp;
+    <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
+    <span *ngIf="defaultApp" class="label">{{defaultApp.version}}</span>
+  </span>
 </h1>
 
 <div *ngIf="!loading">
@@ -39,6 +41,18 @@
         <ng-template>
           <div *ngIf="!loadingProperties">
             <div class="block card-block-keyvalue">
+              <div class="row">
+                <div class="key">Type</div>
+                <div class="value">
+                  <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Version</div>
+                <div class="value">
+                  <span *ngIf="defaultApp" class="label">{{defaultApp.version}}</span>
+                </div>
+              </div>
               <div *ngIf="detailedApp.uri" class="row">
                 <div class="key">Uri</div>
                 <div class="value">{{detailedApp.uri}}</div>
@@ -69,17 +83,48 @@
           <ng-template>
             <div *ngIf="!loadingProperties">
               <div class="block card-block-keyvalue lg-key" *ngIf="detailedApp.options?.length > 0">
-                <div class="row" *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
-                  <div class="key">
-                    {{property.name}}
-                    <div *ngIf="property.isDeprecated">
-                      <span class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
+
+                <div *ngIf="tooManyProperties && !showAllProperties" class="alert alert-info" role="alert"
+                     style="margin-top:8px">
+                  <div class="alert-items">
+                    <div class="alert-item static">
+                      <div class="alert-icon-wrapper">
+                        <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
+                      </div>
+                      <div class="alert-text">
+                        There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br>Do you
+                        want to
+                        <strong>display all the properties</strong> ?
+                      </div>
+                    </div>
+                    <div class="alert-item static">
+                      <div class="alert-item static">
+                        <div class="alert-icon-wrapper">
+                        </div>
+                      </div>
+                      <div class="alert-text">
+                        <button class="btn btn-primary btn-sm"
+                                (click)="showAllProperties = true">Show all the properties
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div class="value">
-                    <div>{{property.description ? property.description : '(No Description Available)'}}</div>
-                    <div class="type-block"><code>{{property.type}}</code>&nbsp;<span
-                      *ngIf="property.defaultValue">(Default value: <code>{{property.defaultValue}}</code>)</span></div>
+                </div>
+
+                <div *ngIf="showAllProperties">
+                  <div class="row" *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
+                    <div class="key">
+                      {{property.name}}
+                      <div *ngIf="property.isDeprecated">
+                        <span class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
+                      </div>
+                    </div>
+                    <div class="value">
+                      <div>{{property.description ? property.description : '(No Description Available)'}}</div>
+                      <div class="type-block"><code>{{property.type}}</code>&nbsp;<span
+                        *ngIf="property.defaultValue">(Default value: <code>{{property.defaultValue}}</code>)</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

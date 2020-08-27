@@ -17,9 +17,12 @@
       </thead>
       <tbody>
       <tr *ngFor="let task of tasks">
-        <td class="left"><strong>{{task.name}}</strong></td>
         <td class="left">
-          <span class="dsl-text">{{task.dslText}}</span>
+          <strong class="text-truncate" style="max-width: 230px"><strong>{{task.name}}</strong></strong></td>
+        <td class="left">
+          <span class="dsl-text dsl-truncate" style="max-width: 200px">
+            {{task.dslText}}
+          </span>
         </td>
       </tr>
       </tbody>

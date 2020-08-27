@@ -152,6 +152,10 @@
         <ng-template>
           <div *ngIf="!loadingTask">
             <div class="block card-block-keyvalue" *ngIf="task">
+              <div class="row">
+                <div class="key">Name</div>
+                <div class="value">{{task.name}}</div>
+              </div>
               <div *ngIf="task.description" class="row">
                 <div class="key">Description</div>
                 <div class="value">{{task.description}}</div>

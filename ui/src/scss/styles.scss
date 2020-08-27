@@ -197,6 +197,16 @@ a:link, a:visited {
   display: inline-block;
 }
 
+h1.page-title {
+  height: 44px;
+  margin-top: 4px;
+  .text-truncate {
+    height: 40px;
+    line-height: 40px;
+    margin: 0;
+  }
+}
+
 .datagrid-scrolling-cells {
   height: 42px;
 }

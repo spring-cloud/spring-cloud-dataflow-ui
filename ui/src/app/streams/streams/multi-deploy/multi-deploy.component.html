@@ -4,9 +4,11 @@
   <form clrForm clrLayout="horizontal" (submit)="runDeploy()" spellcheck="false">
     <div class="card" *ngFor="let streamConfig of streamConfigs;let i = index" [formGroup]="form[i]">
       <div class="card-header">
-        <span *ngIf="streamConfig.stream.status === 'UNDEPLOYED'">Deploy</span>
-        <span *ngIf="streamConfig.stream.status !== 'UNDEPLOYED'">Update</span>
-        <strong>&nbsp;{{streamConfig.stream.name}}</strong>
+        <span class="text-truncate">
+          <span *ngIf="streamConfig.stream.status === 'UNDEPLOYED'">Deploy</span>
+          <span *ngIf="streamConfig.stream.status !== 'UNDEPLOYED'">Update</span>
+          <strong>&nbsp;{{streamConfig.stream.name}}</strong>
+        </span>
       </div>
       <div class="card-block">
         <div class="card-text">
@@ -16,6 +18,12 @@
               <span class="dsl-text">
                 <app-stream-dsl [dsl]="streamConfig.stream.dslText" [expandable]="false"></app-stream-dsl>
               </span>
+            </div>
+          </div>
+          <div class="clr-form-control clr-row">
+            <div class="clr-col-md-1 clr-control-label">Description</div>
+            <div class="clr-col-10">
+              {{streamConfig.stream.description}}
             </div>
           </div>
           <div class="clr-form-control clr-row">

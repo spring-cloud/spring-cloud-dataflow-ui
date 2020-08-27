@@ -1,8 +1,10 @@
 <div *ngIf="!loading">
-  <h1>
-    <span *ngIf="isDeployed(stream)">Update</span>
-    <span *ngIf="!isDeployed(stream)">Deploy</span>
-    stream <strong>{{stream?.name}}</strong>
+  <h1 class="page-title">
+    <span class="text-truncate">
+      <span *ngIf="isDeployed(stream)">Update</span>
+      <span *ngIf="!isDeployed(stream)">Deploy</span>
+      stream <strong>{{stream?.name}}</strong>
+    </span>
   </h1>
   <p style="margin-top: .6rem;margin-bottom: .6rem">
     Please specify any optional deployment properties. You can either use the builder.<br/>
