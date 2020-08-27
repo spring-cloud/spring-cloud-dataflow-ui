@@ -77,7 +77,9 @@
     <clr-dg-cell>
       <a routerLink="/tasks-jobs/task-executions/{{execution.executionId}}">{{execution.executionId}}</a>
     </clr-dg-cell>
-    <clr-dg-cell>{{execution.taskName}}</clr-dg-cell>
+    <clr-dg-cell>
+      <a routerLink="/tasks-jobs/tasks/{{execution.taskName}}">{{execution.taskName}}</a>
+    </clr-dg-cell>
     <clr-dg-cell>{{execution.startTime | duration: execution.endTime}}</clr-dg-cell>
     <clr-dg-cell>{{execution.startTime | datetime}}</clr-dg-cell>
     <clr-dg-cell>{{execution.endTime | datetime}}</clr-dg-cell>

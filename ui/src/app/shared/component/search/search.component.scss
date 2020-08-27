@@ -75,7 +75,7 @@
   }
 
   .result {
-    background: var(--clr-global-selection-color, white);
+    background: var(--clr-custom-search-bg, white);
     position: fixed;
     padding: .4rem 0;
     top: 60px;
@@ -103,7 +103,7 @@
 
       &.active {
         a {
-          background: var(--clr-global-app-background, hsl(198, 0%, 91%));
+          background: var(--clr-custom-search-bg-selection, hsl(198, 0%, 91%));
         }
       }
     }

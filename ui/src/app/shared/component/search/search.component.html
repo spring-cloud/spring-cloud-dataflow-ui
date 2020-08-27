@@ -24,8 +24,10 @@
         <ul>
           <li *ngFor="let app of results.apps.items;let i = index" [class.active]="selected === i">
             <a (mouseover)="selected = i" (click)="navigate('/manage/apps/' + app.type + '/' + app.name)">
-              {{app.name}} <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
-              <span class="label}}">{{app.version}}</span>
+              <span class="text-truncate">
+                {{app.name}} <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
+                <span class="label}}">{{app.version}}</span>
+              </span>
             </a>
           </li>
         </ul>
@@ -36,7 +38,9 @@
           <li *ngFor="let stream of results.streams.items;let i = index"
               [class.active]="selected === ( i +results.apps.items.length)">
             <a (mouseover)="selected = (i + results.apps.items.length)" (click)="navigate('/streams/list/' + stream.name)">
-              {{stream.name}} <span class="{{stream.labelStatusClass()}}">{{stream.status}}</span>
+              <span class="text-truncate">
+                {{stream.name}} <span class="{{stream.labelStatusClass()}}">{{stream.status}}</span>
+              </span>
             </a>
           </li>
         </ul>
@@ -48,7 +52,9 @@
               [class.active]="selected === (i + results.apps.items.length + results.streams.items.length)">
             <a (mouseover)="selected = (i + results.apps.items.length + results.streams.items.length)"
                (click)="navigate('/tasks-jobs/tasks/' + task.name)">
-              {{task.name}} <span class="{{task.labelStatusClass()}}">{{task.status}}</span>
+              <span class="text-truncate">
+                {{task.name}} <span class="{{task.labelStatusClass()}}">{{task.status}}</span>
+              </span>
             </a>
           </li>
         </ul>

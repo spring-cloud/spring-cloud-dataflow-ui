@@ -557,6 +557,8 @@ export const darkTheme: Theme = {
     '--clr-custom-record-action-label-running-bg-1': '#17518a',
     '--clr-custom-record-action-label-running-bg-2': '#1d5c98',
     '--clr-custom-search-bg-opacity': '.4',
+    '--clr-custom-search-bg': 'hsl(203, 32%, 29%)',
+    '--clr-custom-search-bg-selection': 'hsl(201, 30%, 15%)',
 
   },
   other: 'clr-icon.is-green,clr-icon.is-success{fill:var(--clr-icon-color-success)}' +
