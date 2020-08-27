@@ -131,7 +131,7 @@ export class StreamFloCreateComponent implements OnInit, OnDestroy {
     if (this.editorService.STREAM_PALETTE_WIDTH === 1) {
       let width = 256;
       if (document.documentElement.clientWidth > 1600) {
-        width = 380;
+        width = 400;
       }
       this.editorService.STREAM_PALETTE_WIDTH = width;
     }

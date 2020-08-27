@@ -308,6 +308,19 @@ svg * {
   border-color: $btn-default-border;
 }
 
+#palette-paper-container {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  &::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(black, 0.3);
+  }
+}
+
 #palette-container {
   background-color: $spring-light-grey;
 }
