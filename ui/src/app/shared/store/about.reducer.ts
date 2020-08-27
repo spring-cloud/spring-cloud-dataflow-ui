@@ -55,7 +55,7 @@ export interface AboutState {
     token: string,
     source: string,
     refreshInterval: number
-  },
+  };
   security: {
     isAuthentication: boolean,
     isAuthenticated: boolean,

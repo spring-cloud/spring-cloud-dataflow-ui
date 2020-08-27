@@ -163,12 +163,12 @@ export class StreamComponent implements OnInit {
   }
 
   getAppType(key: string) {
-    const app = this.applications.find(app => app.label === key);
+    const app = this.applications.find(it => it.label === key);
     return app?.type;
   }
 
   getOrigin(key: string) {
-    const app = this.applications.find(app => app.label === key);
+    const app = this.applications.find(it => it.label === key);
     return app?.name;
   }
 

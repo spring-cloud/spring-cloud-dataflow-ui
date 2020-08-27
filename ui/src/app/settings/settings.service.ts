@@ -21,7 +21,7 @@ export class SettingsService {
     const activeValue: string = this.localStorageService.get('themeActiveValue') || themeActiveDefault;
     const settings: Setting[] = [{ name: activeKey, value: activeValue }];
     return of(settings).pipe(
-      tap((settings) => this.store.dispatch(loaded({ settings })))
+      tap((sett) => this.store.dispatch(loaded({ settings: sett })))
     );
   }
 
