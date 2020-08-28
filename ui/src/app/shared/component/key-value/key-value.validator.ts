@@ -57,6 +57,13 @@ export class KeyValueValidator {
       .split('\n')
       .map((line: string, index: number) => {
         const lineClean = line.replace(' ', '');
+        if (!lineClean) {
+          return {
+            label: (index + 1),
+            valid: true,
+            message: ''
+          };
+        }
         let obj = KeyValueValidator.splitValue(lineClean);
         if (!obj) {
           obj = {
