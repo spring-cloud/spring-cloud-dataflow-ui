@@ -85,11 +85,28 @@ describe('KeyValueValidator', () => {
 
     });
 
-    it('valid', () => {
-      const control = new FormControl('foo=bar\nfoo=');
+  });
+
+  describe('valid', () => {
+
+    it('2 lines', () => {
+      const control = new FormControl('foo=bar\nfoo2=bar2');
       const result = KeyValueValidator.validateKeyValue({ key: [], value: [] })(control);
       expect(result).toBeNull();
     });
+
+    it('2 lines and one empty', () => {
+      const control = new FormControl('foo=bar\n\nfoo2=bar2');
+      const result = KeyValueValidator.validateKeyValue({ key: [], value: [] })(control);
+      expect(result).toBeNull();
+    });
+
+    it('2 lines and 2 empties (start and end)', () => {
+      const control = new FormControl('\nfoo=bar\nfoo2=bar2\n');
+      const result = KeyValueValidator.validateKeyValue({ key: [], value: [] })(control);
+      expect(result).toBeNull();
+    });
+
 
   });
 
