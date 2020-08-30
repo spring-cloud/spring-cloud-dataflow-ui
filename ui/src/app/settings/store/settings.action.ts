@@ -1,22 +1,22 @@
 import { createAction, props } from '@ngrx/store';
-import { Setting } from '../../shared/model/setting';
+import { SettingModel } from '../../shared/model/setting.model';
 
 export const loaded = createAction(
   '[Settings] loaded',
-  props<{ settings: Setting[] }>()
+  props<{ settings: SettingModel[] }>()
 );
 
 export const update = createAction(
   '[Setting] update',
-  props<{ setting: Setting }>()
+  props<{ setting: SettingModel }>()
 );
 
 export const updateError = createAction(
   '[Setting] update error',
-  props<{ setting: Setting }>()
+  props<{ setting: SettingModel }>()
 );
 
 export const updateOk = createAction(
   '[Setting] update ok',
-  props<{ setting: Setting }>()
+  props<{ setting: SettingModel }>()
 );

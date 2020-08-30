@@ -1,14 +1,14 @@
 import { createReducer, on } from '@ngrx/store';
 import * as SettingsActions from './settings.action';
 import * as fromRoot from '../../reducers/reducer';
-import { Setting } from '../../shared/model/setting';
+import { SettingModel } from '../../shared/model/setting.model';
 
 export const settingsFeatureKey = 'settings';
 export const themeActiveKey = 'theme-active';
 export const themeActiveDefault = 'dark';
 
 export interface SettingsState {
-  settings: Setting[];
+  settings: SettingModel[];
 }
 
 export interface State extends fromRoot.State {
@@ -29,7 +29,7 @@ export const initialState: SettingsState = {
   ]
 };
 
-function mergeSettings(left: Setting[], right: Setting[]): Setting[] {
+function mergeSettings(left: SettingModel[], right: SettingModel[]): SettingModel[] {
   const to = [];
   const toMap = new Map<string, string>();
   left.forEach(v => {
@@ -44,7 +44,7 @@ function mergeSettings(left: Setting[], right: Setting[]): Setting[] {
   return to;
 }
 
-function updateSettings(settings: Setting[], setting: Setting): Setting[] {
+function updateSettings(settings: SettingModel[], setting: SettingModel): SettingModel[] {
   const to = [];
   settings.forEach(v => {
     if (v.name === setting.name) {

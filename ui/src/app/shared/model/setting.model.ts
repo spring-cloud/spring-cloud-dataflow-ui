@@ -1,4 +1,4 @@
-export interface Setting {
+export interface SettingModel {
   name: string;
   value: string;
 }
