@@ -7,10 +7,10 @@ import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
 import { StatusComponent } from './status.component';
 import { By } from '@angular/platform-browser';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('streams/streams/stream/stream.component.ts', () => {
 
@@ -34,7 +34,7 @@ describe('streams/streams/stream/stream.component.ts', () => {
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
         GrafanaServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

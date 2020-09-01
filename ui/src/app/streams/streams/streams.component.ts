@@ -6,11 +6,11 @@ import { StreamService } from '../../shared/api/stream.service';
 import { Stream, StreamPage } from '../../shared/model/stream.model';
 import { DestroyComponent } from './destroy/destroy.component';
 import { UndeployComponent } from './undeploy/undeploy.component';
-import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
-import { ContextService } from '../../shared/service/context.service';
 import { StreamStatus } from '../../shared/model/metrics.model';
 import { GroupService } from '../../shared/service/group.service';
 import { StatusComponent } from './status/status.component';
+import { SettingsService } from '../../settings/settings.service';
+import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 
 @Component({
   selector: 'app-streams-list',
@@ -27,15 +27,14 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
   timeSubscription: Subscription;
 
   constructor(private streamService: StreamService,
-              protected contextService: ContextService,
+              protected settingsService: SettingsService,
               private groupService: GroupService,
               private router: Router) {
-    super(contextService, 'streams');
+    super(settingsService, 'streams/list');
   }
 
   ngOnInit(): void {
-    this.expanded = this.contextService.get('streams.expanded') || {};
-    super.ngOnInit();
+    this.expanded = { ...this.context['expanded'] || {} };
   }
 
   ngOnDestroy(): void {
@@ -49,27 +48,24 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
   }
 
   refresh(state: ClrDatagridStateInterface) {
-    const expanded = { ...this.contextService.get('streams.expanded') };
     if (this.isReady()) {
       super.refresh(state);
+      const expanded = { ...this.context.expanded };
       const params = this.getParams(state, { name: '' });
       this.streamService.getStreams(params.current - 1, params.size, params.name || '', `${params.by || ''}`,
         `${params.reverse ? 'DESC' : 'ASC'}`)
         .subscribe((page: StreamPage) => {
-          this.attachColumns();
           const mergeExpanded = {};
           page.items.forEach((item) => {
             if (expanded[item.name]) {
               mergeExpanded[item.name] = true;
             }
           });
-          this.expanded = mergeExpanded;
+          this.expanded = { ...mergeExpanded };
           this.page = page;
-
-          this.updateGroupContext(params);
+          this.updateGroupContext({ ...params, expanded: this.expanded });
           this.selected = [];
           this.loading = false;
-
           if (!this.timeSubscription) {
             this.updateMetrics();
             this.timeSubscription = timer(0, 10 * 1000).subscribe(() => this.updateMetrics());
@@ -126,8 +122,11 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
     }
   }
 
-  toggleExpand() {
-    this.updateContext('expanded', this.expanded);
+  toggleExpand(stream: string, active: boolean) {
+    const exp = { ...this.expanded };
+    exp[stream] = active;
+    this.expanded = exp;
+    this.updateContext('expanded', exp);
   }
 
   metricsForStream(name: string): StreamStatus {

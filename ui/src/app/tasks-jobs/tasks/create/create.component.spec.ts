@@ -8,10 +8,10 @@ import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { GroupServiceMock } from '../../../tests/service/group.service.mock';
 import { CreateComponent } from './create.component';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('tasks-jobs/tasks/create/create.component.ts', () => {
 
@@ -38,7 +38,7 @@ describe('tasks-jobs/tasks/create/create.component.ts', () => {
         TaskServiceMock.provider,
         GroupServiceMock.provider,
         ToolsServiceMock.provider,
-        ContextService,
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

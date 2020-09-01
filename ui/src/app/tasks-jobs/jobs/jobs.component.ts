@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { NotificationService } from '../../shared/service/notification.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
-import { ContextService } from '../../shared/service/context.service';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-jobs',
@@ -21,9 +21,9 @@ export class JobsComponent extends DatagridComponent {
 
   constructor(private jobService: JobService,
               private router: Router,
-              protected contextService: ContextService,
+              protected settingsService: SettingsService,
               private notificationService: NotificationService) {
-    super(contextService, 'jobs');
+    super(settingsService, 'tasks-jobs/jobs');
   }
 
   refresh(state: ClrDatagridStateInterface) {
@@ -32,7 +32,6 @@ export class JobsComponent extends DatagridComponent {
       const params = this.getParams(state, { name: '', type: '' });
       this.jobService.getExecutions(params.current - 1, params.size)
         .subscribe((page: JobExecutionPage) => {
-          this.attachColumns();
           this.page = page;
           this.updateGroupContext(params);
           this.loading = false;

@@ -24,7 +24,7 @@
                  [clrDgSortOrder]="(context.by === 'TASK_EXECUTION_ID') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeId', $event)"
                  [style.width.px]="context.sizeId || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+    <ng-container>
       Execution ID
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -33,7 +33,7 @@
                  [clrDgSortOrder]="(context.by === 'TASK_NAME') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeName', $event)"
                  [style.width.px]="context.sizeName || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+    <ng-container>
       Task name
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -41,7 +41,7 @@
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDuration', $event)"
     [style.width.px]="context.sizeDuration || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+    <ng-container>
       Duration
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -50,7 +50,7 @@
                  [clrDgSortOrder]="(context.by === 'START_TIME') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeStart', $event)"
                  [style.width.px]="context.sizeStart || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+    <ng-container>
       Start Date
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -59,7 +59,7 @@
                  [clrDgSortOrder]="(context.by === 'END_TIME') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeEnd', $event)"
                  [style.width.px]="context.sizeEnd || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+    <ng-container>
       End Date
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -68,7 +68,7 @@
                  [clrDgSortOrder]="(context.by === 'EXIT_CODE') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeExit', $event)"
                  [style.width.px]="context.sizeExit || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+    <ng-container>
       Exit Code
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>

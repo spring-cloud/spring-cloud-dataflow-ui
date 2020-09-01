@@ -1,7 +1,16 @@
-import { AfterContentInit, Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { ContextService } from '../../service/context.service';
+import {
+  AfterContentInit,
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef
+} from '@angular/core';
 import get from 'lodash.get';
-import set from 'lodash.set';
+import { SettingsService } from '../../../settings/settings.service';
+import { map, mergeMap } from 'rxjs/operators';
+import { SettingModel } from '../../model/setting.model';
 
 @Component({
   selector: 'app-view-card',
@@ -17,29 +26,40 @@ export class CardComponent implements AfterContentInit {
   @Input() titleModal = '';
   @Input() active = true;
   @Output() onChange = new EventEmitter();
-  context: any;
 
-  constructor(private contextService: ContextService) {
+  settings: SettingModel[];
+
+  constructor(private settingsService: SettingsService) {
   }
 
   ngAfterContentInit(): void {
-    this.context = this.contextService.get(this.keyContext);
-    if (this.name && this.id) {
-      const isActiveGlobal = (get(this.context, this.id, true));
-      const isActive = (get(this.context, `child.${this.name}.${this.id}`, null));
-      if (isActive !== null) {
-        this.active = isActive;
-      } else if (isActiveGlobal !== null) {
-        this.active = isActiveGlobal;
-      }
-    }
+    this.settingsService.getContext(this.keyContext)
+      .pipe(
+        mergeMap(global => this.settingsService.getContext(`${this.keyContext}/${this.name}`)
+          .pipe(
+            map(settings => {
+              return { global, settings };
+            })
+          ))
+      )
+      .subscribe(({ global, settings }) => {
+        this.settings = settings;
+        const isActiveGlobal = get(global.find(sett => sett.name === this.id), 'value', true);
+        const isActive = get(settings.find(sett => sett.name === this.id), 'value', null);
+        if (isActive !== null) {
+          this.active = isActive;
+        } else if (isActiveGlobal !== null) {
+          this.active = isActiveGlobal;
+        }
+      });
   }
 
   toggle() {
     if (this.name && this.id) {
-      this.contextService.update(`${this.keyContext}.child.${this.name}.${this.id}`, !this.active);
+      const settings = this.settings.filter(sett => sett.name !== this.name);
+      settings.push({ name: this.id, value: !this.active });
+      this.settingsService.updateContext(`${this.keyContext}/${this.name}`, settings);
     }
-    this.active = !this.active;
     this.onChange.emit(this.active);
     return false;
   }

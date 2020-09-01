@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { Router } from '@angular/router';
-import { ContextService } from '../../shared/service/context.service';
 import { ScheduleService } from '../../shared/api/schedule.service';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Schedule, SchedulePage } from '../../shared/model/schedule.model';
 import { DestroyComponent } from './destroy/destroy.component';
+import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-schedules',
@@ -17,17 +17,15 @@ export class SchedulesComponent extends DatagridComponent {
 
   constructor(private scheduleService: ScheduleService,
               private router: Router,
-              protected contextService: ContextService) {
-    super(contextService, 'schedules');
+              protected settingsService: SettingsService) {
+    super(settingsService, 'tasks-jobs/schedules');
   }
 
   refresh(state: ClrDatagridStateInterface) {
     if (this.isReady()) {
       super.refresh(state);
-      // const params = this.getParams(state, { name: '', type: '' });
       this.scheduleService.getSchedules('')
         .subscribe((page: SchedulePage) => {
-          this.attachColumns();
           this.page = page;
           this.selected = [];
           this.loading = false;

@@ -13,8 +13,8 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { JobServiceMock } from '../../../tests/api/job.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { StepComponent } from './step.component';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('tasks-jobs/jobs/step/step.component.ts', () => {
 
@@ -43,7 +43,7 @@ describe('tasks-jobs/jobs/step/step.component.ts', () => {
         JobServiceMock.provider,
         TaskServiceMock.provider,
         ToolsServiceMock.provider,
-        ContextService,
+        SettingsServiceMock.provider,
       ]
     })
       .compileComponents();

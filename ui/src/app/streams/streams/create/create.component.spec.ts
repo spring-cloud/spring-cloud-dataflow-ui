@@ -8,7 +8,6 @@ import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { CreateComponent } from './create.component';
 import { ParserService } from '../../../flo/shared/service/parser.service';
 import { StreamFloCreateComponent } from '../../../flo/stream/component/create.component';
@@ -24,6 +23,7 @@ import { DocService } from '../../../flo/shared/service/doc.service';
 import { DestroyComponent } from '../destroy/destroy.component';
 import { UpperCasePipe } from '@angular/common';
 import { SanitizeDsl } from '../../../flo/stream/dsl-sanitize.service';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 xdescribe('streams/streams/create/create.component.ts', () => {
   let component: CreateComponent;
@@ -54,7 +54,7 @@ xdescribe('streams/streams/create/create.component.ts', () => {
         GrafanaServiceMock.provider,
         { provide: MetamodelService, useValue: metamodelService },
         ContentAssistServiceMock.provider,
-        ContextService,
+        SettingsServiceMock.provider,
         ParserService,
         EditorService,
         RenderService,

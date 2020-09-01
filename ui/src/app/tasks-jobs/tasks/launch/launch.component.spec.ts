@@ -10,8 +10,8 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { GroupServiceMock } from '../../../tests/service/group.service.mock';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { LaunchComponent } from './launch.component';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
 
@@ -38,7 +38,7 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
         TaskServiceMock.provider,
         GroupServiceMock.provider,
         ToolsServiceMock.provider,
-        ContextService,
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

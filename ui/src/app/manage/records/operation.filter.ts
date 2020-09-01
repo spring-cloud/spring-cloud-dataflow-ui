@@ -33,13 +33,13 @@ export class OperationFilterComponent implements OnInit {
     this.recordService.getOperationTypes()
       .subscribe((operationTypes) => {
         this.operationTypes = operationTypes;
+        if (this.value === 'all' || this.value === '' || !this.value) {
+          this.value = null;
+        } else {
+          this.val = this.value;
+          this.pchanges.next(true);
+        }
       });
-    if (this.value === 'all' || this.value === '' || !this.value) {
-      this.value = null;
-    } else {
-      this.val = this.value;
-      this.pchanges.next(true);
-    }
   }
 
   public get changes(): Observable<any> {
@@ -60,7 +60,7 @@ export class OperationFilterComponent implements OnInit {
   }
 
   isActive(): boolean {
-    return this.value !== null;
+    return this.value !== null && this.value !== 'all' && this.value !== '';
   }
 
 }

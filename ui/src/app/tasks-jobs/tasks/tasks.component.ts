@@ -5,9 +5,9 @@ import { TaskPage } from '../../shared/model/task.model';
 import { TaskService } from '../../shared/api/task.service';
 import { DestroyComponent } from './destroy/destroy.component';
 import { Router } from '@angular/router';
-import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
-import { ContextService } from '../../shared/service/context.service';
 import { GroupService } from '../../shared/service/group.service';
+import { SettingsService } from '../../settings/settings.service';
+import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 
 @Component({
   selector: 'app-tasks',
@@ -21,8 +21,8 @@ export class TasksComponent extends DatagridComponent {
   constructor(private taskService: TaskService,
               private router: Router,
               private groupService: GroupService,
-              protected contextService: ContextService) {
-    super(contextService, 'tasks');
+              protected settingsService: SettingsService) {
+    super(settingsService, 'tasks-jobs/tasks');
   }
 
   refresh(state: ClrDatagridStateInterface) {
@@ -32,7 +32,6 @@ export class TasksComponent extends DatagridComponent {
       this.taskService.getTasks(params.current - 1, params.size, params?.taskName || '',
         `${params.by || ''}`, `${params.reverse ? 'DESC' : 'ASC'}`)
         .subscribe((page: TaskPage) => {
-          this.attachColumns();
           this.page = page;
           this.updateGroupContext(params);
           this.selected = [];

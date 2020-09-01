@@ -20,7 +20,11 @@ export const getSettings = (state: State) => {
 };
 
 export const getThemeActiveSetting = (state: State) => {
-  return state.settings.settings.find(s => s.name === themeActiveKey)?.value;
+  return getContextSettings(state.settings.settings, themeActiveKey) as string;
+};
+
+export const getContextSettings = (settings: SettingModel[], name: string) => {
+  return settings.find(s => s.name === name)?.value;
 };
 
 export const initialState: SettingsState = {
@@ -31,7 +35,7 @@ export const initialState: SettingsState = {
 
 function mergeSettings(left: SettingModel[], right: SettingModel[]): SettingModel[] {
   const to = [];
-  const toMap = new Map<string, string>();
+  const toMap = new Map<string, string | SettingModel[]>();
   left.forEach(v => {
     toMap.set(v.name, v.value);
   });
@@ -46,13 +50,18 @@ function mergeSettings(left: SettingModel[], right: SettingModel[]): SettingMode
 
 function updateSettings(settings: SettingModel[], setting: SettingModel): SettingModel[] {
   const to = [];
+  let isOverride = false;
   settings.forEach(v => {
     if (v.name === setting.name) {
-      to.push({ name: v.name, value: setting.value});
+      to.push({ name: v.name, value: setting.value });
+      isOverride = true;
     } else {
-      to.push({ name: v.name, value: v.value});
+      to.push({ name: v.name, value: v.value });
     }
   });
+  if (!isOverride) {
+    to.push(setting);
+  }
   return to;
 }
 

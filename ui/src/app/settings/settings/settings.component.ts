@@ -5,8 +5,7 @@ import { ModalDialog } from '../../shared/service/modal.service';
 
 @Component({
   selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.css']
+  templateUrl: './settings.component.html'
 })
 export class SettingsComponent extends ModalDialog implements OnInit {
 
@@ -22,6 +21,6 @@ export class SettingsComponent extends ModalDialog implements OnInit {
   }
 
   themeActiveSettingOnChange(theme: string) {
-    this.settingsService.dispatch({ name: themeActiveKey, value: theme });
+    this.settingsService.dispatch({ name: 'theme-active', value: theme });
   }
 }

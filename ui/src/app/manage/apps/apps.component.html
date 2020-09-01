@@ -30,7 +30,7 @@
                  (clrDgColumnResize)="updateContext('sizeName', $event)"
                  [style.width.px]="context.sizeName || 'auto'"
                  [clrFilterValue]="context.name">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+    <ng-container>
       Name
     </ng-container>
   </clr-dg-column>
@@ -38,7 +38,7 @@
                  (clrDgColumnResize)="updateContext('sizeType', $event)"
                  [clrDgSortOrder]="(context.by === 'type') ? context.reverse ? -1 : 1 : 0"
                  [style.width.px]="context.sizeType || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+    <ng-container>
       Type
     </ng-container>
     <clr-dg-filter [clrDgFilter]="typeFilter">
@@ -49,7 +49,7 @@
                  [clrDgSortOrder]="(context.by === 'version') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeVersion', $event)"
                  [style.width.px]="context.sizeVersion || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+    <ng-container>
       Version
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
@@ -58,14 +58,14 @@
                  (clrDgColumnResize)="updateContext('sizeUri', $event)"
                  [clrDgSortOrder]="(context.by === 'uri') ? context.reverse ? -1 : 1 : 0"
                  [style.width.px]="context.sizeUri || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[3])}">
+    <ng-container>
       URI
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeMetadataUri', $event)"
                  [style.width.px]="context.sizeMetadataUri || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[4])}">
+    <ng-container>
       Metadata URI
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
@@ -91,12 +91,8 @@
   </clr-dg-row>
   <clr-dg-placeholder>We couldn't find any applications!</clr-dg-placeholder>
   <clr-dg-footer>
-    <clr-dg-column-toggle>
-      <clr-dg-column-toggle-title>Show Columns</clr-dg-column-toggle-title>
-      <clr-dg-column-toggle-button>Select All Button</clr-dg-column-toggle-button>
-    </clr-dg-column-toggle>
     <clr-dg-pagination #pagination [clrDgTotalItems]="page?.total"
-                       [clrDgPageSize]="context.size" [clrDgPage]="context.current">
+                       [clrDgPageSize]="+context.size" [clrDgPage]="+context.current">
       <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Applications per page</clr-dg-page-size>
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
       of {{page?.total}} applications

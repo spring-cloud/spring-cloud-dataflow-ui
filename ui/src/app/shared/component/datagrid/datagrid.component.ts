@@ -1,13 +1,15 @@
-import { Directive, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ContextService } from '../../service/context.service';
-import { ClrDatagridHideableColumn, ClrDatagridStateInterface } from '@clr/angular';
+import { Directive, OnDestroy } from '@angular/core';
+import { ClrDatagridStateInterface } from '@clr/angular';
 import { Page } from '../../model/page.model';
+import { SettingsService } from '../../../settings/settings.service';
+import { SettingModel } from '../../model/setting.model';
+import set from 'lodash.set';
 
 @Directive()
-export abstract class DatagridComponent implements OnInit, OnDestroy {
+export abstract class DatagridComponent implements OnDestroy {
 
+  contextName: string;
   protected page: Page<any>;
-  protected contextName = 'default';
   loading = true;
   isInit = false;
   isDestroy = false;
@@ -15,34 +17,41 @@ export abstract class DatagridComponent implements OnInit, OnDestroy {
   selected = [];
   grouped = false;
   state: ClrDatagridStateInterface;
-  first = true;
-  @ViewChildren(ClrDatagridHideableColumn)
-  columns: QueryList<ClrDatagridHideableColumn>;
+  // @ViewChildren(ClrDatagridHideableColumn)
+  // columns: QueryList<ClrDatagridHideableColumn>;
 
-  constructor(protected contextService: ContextService,
+  constructor(protected settingsService: SettingsService,
               contextName: string) {
     this.contextName = contextName;
-  }
-
-  ngOnInit(): void {
-    this.context = {
-      ...this.contextService.get(this.contextName),
-      cols: [...this.contextService.get(`${this.contextName}.cols`)]
-    };
-    this.isInit = true;
+    this.settingsService.getContext(contextName)
+      .subscribe((settings: SettingModel[]) => {
+        const ctx = {};
+        settings.forEach((setting: SettingModel) => {
+          set(ctx, setting.name, setting.value);
+        });
+        this.context = ctx;
+        this.isInit = true;
+      });
   }
 
   updateContext(key, value) {
-    this.contextService.update(`${this.contextName}.${key}`, value);
+    set(this.context, key, value);
+    const settings = [];
+    Object.keys(this.context).map((kt) => {
+      settings.push({ name: kt, value: this.context[kt] });
+    });
+    this.settingsService.updateContext(this.contextName, settings);
   }
 
-  updateGroupContext(arr: object) {
+  updateGroupContext(obj: object): void {
     if (this.isDestroy || !this.isInit) {
       return;
     }
-    Object.keys(arr).forEach(key => {
-      this.contextService.update(`${this.contextName}.${key}`, arr[key]);
+    const settings = [];
+    Object.keys(obj).forEach(key => {
+      settings.push({ name: key, value: obj[key] as string });
     });
+    this.settingsService.updateContext(this.contextName, settings);
   }
 
   getParams(state: ClrDatagridStateInterface, filters) {
@@ -59,20 +68,6 @@ export abstract class DatagridComponent implements OnInit, OnDestroy {
       reverse: state?.sort?.reverse,
       ...filters
     };
-  }
-
-  attachColumns() {
-    if (this.first) {
-      this.first = false;
-      (this.columns || []).forEach((col: ClrDatagridHideableColumn, index) => {
-        col.hiddenChange
-          .subscribe((data) => {
-            const state = [...this.context.cols];
-            state[index] = !data;
-            this.updateContext('cols', state);
-          });
-      });
-    }
   }
 
   isReady() {

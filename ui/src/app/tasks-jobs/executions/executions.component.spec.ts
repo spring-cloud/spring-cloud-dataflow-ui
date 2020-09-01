@@ -7,11 +7,11 @@ import { ExecutionsComponent } from './executions.component';
 import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
 import { TaskServiceMock } from '../../tests/api/task.service.mock';
-import { ContextService } from '../../shared/service/context.service';
 import { SecurityServiceMock } from '../../tests/api/security.service.mock';
 import { StopComponent } from './stop/stop.component';
 import { CleanupComponent } from './cleanup/cleanup.component';
 import { RoleDirective } from '../../security/directive/role.directive';
+import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 
 describe('tasks-jobs/executions/executions.component.ts', () => {
 
@@ -37,7 +37,7 @@ describe('tasks-jobs/executions/executions.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
-        ContextService,
+        SettingsServiceMock.provider,
       ]
     })
       .compileComponents();

@@ -9,10 +9,10 @@ import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { TaskComponent } from './task.component';
 import { DestroyComponent } from '../destroy/destroy.component';
 import { LogComponent } from '../../executions/execution/log/log.component';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('tasks-jobs/tasks/task/task.component.ts', () => {
 
@@ -40,7 +40,7 @@ describe('tasks-jobs/tasks/task/task.component.ts', () => {
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
         ToolsServiceMock.provider,
-        ContextService,
+        SettingsServiceMock.provider,
       ]
     })
       .compileComponents();

@@ -9,7 +9,6 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
 import { GroupServiceMock } from '../../../tests/service/group.service.mock';
-import { ContextService } from '../../service/context.service';
 import { SearchComponent } from './search.component';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { AppServiceMock } from '../../../tests/api/app.service.mock';
@@ -45,7 +44,6 @@ describe('shared/component/search/search.component.ts', () => {
         AppServiceMock.provider,
         GrafanaServiceMock.provider,
         GroupServiceMock.provider,
-        ContextService,
       ]
     })
       .compileComponents();

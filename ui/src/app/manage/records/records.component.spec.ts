@@ -7,15 +7,14 @@ import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { AppServiceMock } from '../../tests/api/app.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
 import { RecordServiceMock } from '../../tests/api/record.service.mock';
-import { ContextService } from '../../shared/service/context.service';
 import { RecordsComponent } from './records.component';
 import { DateFilterComponent } from './date.filter';
 import { OperationFilterComponent } from './operation.filter';
 import { ActionFilterComponent } from './action.filter';
 import { By } from '@angular/platform-browser';
 import { DatetimePipe } from '../../shared/pipe/datetime.pipe';
-import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { RoleDirective } from '../../security/directive/role.directive';
+import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 
 describe('manage/records/records.component.ts', () => {
 
@@ -43,7 +42,7 @@ describe('manage/records/records.component.ts', () => {
         AppServiceMock.provider,
         NotificationServiceMock.provider,
         RecordServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

@@ -34,13 +34,13 @@ export class ActionFilterComponent implements OnInit {
     this.recordService.getActionTypes()
       .subscribe((actionTypes) => {
         this.actionTypes = actionTypes;
+        if (this.value === 'all' || this.value === '' || !this.value) {
+          this.value = null;
+        } else {
+          this.val = this.value;
+          this.pchanges.next(true);
+        }
       });
-    if (this.value === 'all' || this.value === '' || !this.value) {
-      this.value = null;
-    } else {
-      this.val = this.value;
-      this.pchanges.next(true);
-    }
   }
 
   public get changes(): Observable<any> {
@@ -61,7 +61,7 @@ export class ActionFilterComponent implements OnInit {
   }
 
   isActive(): boolean {
-    return this.value !== null;
+    return this.value !== null && this.value !== 'all' && this.value !== '';
   }
 
 }

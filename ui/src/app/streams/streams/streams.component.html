@@ -43,13 +43,13 @@
                  (clrDgColumnResize)="updateContext('sizeName', $event)"
                  [style.width.px]="context.sizeName || 'auto'"
                  [clrFilterValue]="context.name">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+    <ng-container>
       Name
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeDescription', $event)"
                  [style.width.px]="context.sizeDescription || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+    <ng-container>
       Description
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -58,16 +58,15 @@
                  [clrDgSortOrder]="(context.by === 'dslText') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeDslText', $event)"
                  [style.width.px]="context.sizeDslText || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+    <ng-container>
       Definition
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStatus', $event)"
                  [style.width.px]="context.sizeStatus || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[3])}">
+    <ng-container>
       Status
-      &nbsp;
       <button class="datagrid-column-title" style="width: 20px;flex:0" (click)="statusModal.open()">
         <clr-icon shape="info-standard"></clr-icon>
       </button>
@@ -105,8 +104,8 @@
       <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
       <button class="action-item" wavefrontDashboardStream [stream]="stream">Wavefront Dashboard</button>
     </clr-dg-action-overflow>
-    <ng-template [(clrIfExpanded)]="expanded[stream.name]"
-                 (clrIfExpandedChange)="toggleExpand()"
+    <ng-template [clrIfExpanded]="expanded[stream.name]"
+                 (clrIfExpandedChange)="toggleExpand(stream.name, $event)"
                  ngProjectAs="clr-dg-row-detail">
       <clr-dg-row-detail>
         <div class="clr-detail-flo">

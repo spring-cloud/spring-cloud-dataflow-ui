@@ -8,13 +8,12 @@ import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { RollbackComponent } from './rollback.component';
 import { GET_STREAM_HISTORY } from '../../../tests/data/stream';
 import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
-import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
 import { RoleDirective } from '../../../security/directive/role.directive';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('streams/streams/rollback/rollback.component.ts', () => {
 
@@ -38,7 +37,7 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

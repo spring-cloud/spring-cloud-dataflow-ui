@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppServiceMock } from '../../tests/api/app.service.mock';
 import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { SecurityServiceMock } from '../../tests/api/security.service.mock';
-import { ContextService } from '../../shared/service/context.service';
 import { TypeFilterComponent } from './type.filter';
 import { UnregisterComponent } from './unregister/unregister.component';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
@@ -15,6 +14,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { VersionComponent } from './version/version.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 
 describe('manage/apps/apps.component.ts', () => {
 
@@ -41,7 +41,7 @@ describe('manage/apps/apps.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider,
       ]
     })
       .compileComponents();

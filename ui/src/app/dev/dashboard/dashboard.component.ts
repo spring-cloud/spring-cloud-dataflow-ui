@@ -11,6 +11,8 @@ import { SecurityState } from '../../security/store/security.reducer';
 import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { SettingsService } from '../../settings/settings.service';
+import { SettingModel } from '../../shared/model/setting.model';
 
 @Component({
   selector: 'app-dev-dasboard',
@@ -31,6 +33,7 @@ export class DashboardComponent implements OnDestroy {
               private taskService: TaskService,
               private aboutService: AboutService,
               private securityService: SecurityService,
+              private settingsService: SettingsService,
               private notificationService: NotificationService) {
   }
 
@@ -87,6 +90,11 @@ export class DashboardComponent implements OnDestroy {
       this.securityService.getSecurity()
         .subscribe((security: SecurityState) => {
           this.store = security;
+        });
+    } else if (this.storesName === 'settings') {
+      this.settingsService.getAllSettings()
+        .subscribe((settings: SettingModel[]) => {
+          this.store = settings;
         });
     }
   }

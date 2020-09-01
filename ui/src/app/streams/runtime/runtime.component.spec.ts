@@ -7,12 +7,12 @@ import { RuntimeComponent } from './runtime.component';
 import { SecurityServiceMock } from '../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { ContextService } from '../../shared/service/context.service';
 import { RuntimeServiceMock } from '../../tests/api/runtime.service.mock.spec';
 import { DetailsComponent } from './details/details.component';
 import { By } from '@angular/platform-browser';
 import { GrafanaRuntimeAppDirective, GrafanaRuntimeInstanceDirective } from '../../shared/grafana/grafana.directive';
 import { GrafanaServiceMock } from '../../tests/service/grafana.service.mock';
+import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 
 describe('streams/runtime/runtime.component.ts', () => {
 
@@ -39,7 +39,7 @@ describe('streams/runtime/runtime.component.ts', () => {
         NotificationServiceMock.provider,
         RuntimeServiceMock.provider,
         GrafanaServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

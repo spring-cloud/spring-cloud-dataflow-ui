@@ -27,7 +27,7 @@ export class SettingsEffect {
     this.actions$.pipe(
       ofType(SettingsActions.loaded),
       take(1),
-      map(action => action.settings.find(s => s.name === themeActiveKey)?.value),
+      map(action => action.settings.find(s => s.name === themeActiveKey)?.value as string),
       tap(theme => {
         this.themeService.switchTheme(theme);
       })
@@ -40,7 +40,7 @@ export class SettingsEffect {
       ofType(SettingsActions.updateOk),
       tap(action => {
         if (action.setting.name === themeActiveKey) {
-          this.themeService.switchTheme(action.setting.value);
+          this.themeService.switchTheme(action.setting.value as string);
         }
       })
     ),

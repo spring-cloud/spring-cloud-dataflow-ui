@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RecordService } from '../../shared/api/record.service';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { RecordPage } from '../../shared/model/record.model';
+import { SettingsService } from '../../settings/settings.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
-import { ContextService } from '../../shared/service/context.service';
 
 @Component({
   selector: 'app-records-list',
@@ -13,8 +13,8 @@ export class RecordsComponent extends DatagridComponent {
   page: RecordPage;
 
   constructor(private recordService: RecordService,
-              protected contextService: ContextService) {
-    super(contextService, 'records');
+              protected settingsService: SettingsService) {
+    super(settingsService, 'manage/records');
   }
 
   refresh(state: ClrDatagridStateInterface) {
@@ -24,7 +24,6 @@ export class RecordsComponent extends DatagridComponent {
       this.recordService.getRecords(params.current - 1, params.size, params.search || '', params.actionType || '',
         params.operationType, params.dates[0], params.dates[1], `${params?.by || ''}`, `${params?.reverse ? 'DESC' : 'ASC'}`)
         .subscribe((page: RecordPage) => {
-          this.attachColumns();
           this.page = page;
           this.updateGroupContext(params);
           this.loading = false;

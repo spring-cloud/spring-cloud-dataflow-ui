@@ -39,13 +39,13 @@
                  (clrDgColumnResize)="updateContext('sizeName', $event)"
                  [style.width.px]="context.sizeName || 'auto'"
                  [clrFilterValue]="context.taskName">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+    <ng-container>
       Name
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeDescription', $event)"
                  [style.width.px]="context.sizeDescription || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+    <ng-container>
       Description
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -54,14 +54,14 @@
                  [clrDgSortOrder]="(context.by === 'dslText') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeDsl', $event)"
                  [style.width.px]="context.sizeDsl || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+    <ng-container>
       Definition
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStatus', $event)"
                  [style.width.px]="context.sizeStatus || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[3])}">
+    <ng-container>
       Status
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>

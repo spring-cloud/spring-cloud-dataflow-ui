@@ -8,10 +8,9 @@ import { AboutServiceMock } from '../../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../../tests/service/notification.service.mock';
 import { RuntimeServiceMock } from '../../../../tests/api/runtime.service.mock.spec';
 import { GrafanaServiceMock } from '../../../../tests/service/grafana.service.mock';
-import { ContextService } from '../../../../shared/service/context.service';
 import { FreeTextComponent } from './free-text.component';
-import { ConfirmComponent } from '../../../../shared/component/confirm/confirm.component';
 import { RoleDirective } from '../../../../security/directive/role.directive';
+import { SettingsServiceMock } from '../../../../tests/service/settings.service.mock';
 
 describe('streams/deploy/free-text/free-text.component.ts', () => {
   let component: FreeTextComponent;
@@ -36,7 +35,7 @@ describe('streams/deploy/free-text/free-text.component.ts', () => {
         NotificationServiceMock.provider,
         RuntimeServiceMock.provider,
         GrafanaServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

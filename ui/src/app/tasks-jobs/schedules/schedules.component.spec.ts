@@ -7,10 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecurityServiceMock } from '../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { ContextService } from '../../shared/service/context.service';
 import { SchedulesComponent } from './schedules.component';
 import { DestroyComponent } from './destroy/destroy.component';
 import { ScheduleServiceMock } from '../../tests/api/schedule.service.mock';
+import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 
 describe('tasks-jobs/schedules/schedules.component.ts', () => {
 
@@ -35,7 +35,7 @@ describe('tasks-jobs/schedules/schedules.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         ScheduleServiceMock.provider,
-        ContextService,
+        SettingsServiceMock.provider,
       ]
     })
       .compileComponents();

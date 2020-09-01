@@ -4,9 +4,9 @@ import { ClrDatagridStateInterface } from '@clr/angular';
 import { App, AppPage } from '../../shared/model/app.model';
 import { UnregisterComponent } from './unregister/unregister.component';
 import { Router } from '@angular/router';
-import { ContextService } from '../../shared/service/context.service';
-import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { VersionComponent } from './version/version.component';
+import { SettingsService } from '../../settings/settings.service';
+import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 
 @Component({
   selector: 'app-apps-list',
@@ -19,8 +19,8 @@ export class AppsComponent extends DatagridComponent {
 
   constructor(private appService: AppService,
               private router: Router,
-              protected contextService: ContextService) {
-    super(contextService, 'apps');
+              protected settingsService: SettingsService) {
+    super(settingsService, 'manage/apps');
   }
 
   refresh(state: ClrDatagridStateInterface) {
@@ -30,7 +30,6 @@ export class AppsComponent extends DatagridComponent {
       this.appService.getApps(params.current - 1, params.size, params.name, params.type,
         `${params.by || 'name'}`, `${params.reverse ? 'DESC' : 'ASC'}`, true)
         .subscribe((page: AppPage) => {
-          this.attachColumns();
           this.page = page;
           this.updateGroupContext(params);
           this.selected = [];

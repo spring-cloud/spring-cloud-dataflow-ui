@@ -7,7 +7,6 @@ import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { AppServiceMock } from '../../../tests/api/app.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { AppComponent } from './app.component';
 import { of, throwError } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +17,7 @@ import { CardComponent } from '../../../shared/component/card/card.component';
 import { OrderByPipe } from '../../../shared/pipe/order-by.pipe';
 import { By } from '@angular/platform-browser';
 import { HttpError } from '../../../shared/model/error.model';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('manage/apps/apps.component.ts', () => {
   let component: AppComponent;
@@ -43,13 +43,13 @@ describe('manage/apps/apps.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
+        SettingsServiceMock.provider,
         {
           provide: ActivatedRoute,
           useValue: {
             params: of({ appName: 'aggregator', appType: 'processor' }),
           },
         },
-        ContextService
       ]
     })
       .compileComponents();

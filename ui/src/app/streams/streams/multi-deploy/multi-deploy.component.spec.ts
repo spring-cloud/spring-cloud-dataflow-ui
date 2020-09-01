@@ -10,7 +10,6 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
 import { ParserService } from '../../../flo/shared/service/parser.service';
-import { ContextService } from '../../../shared/service/context.service';
 import { MultiDeployComponent } from './multi-deploy.component';
 import { KeyValueComponent } from '../../../shared/component/key-value/key-value.component';
 import { AppServiceMock } from '../../../tests/api/app.service.mock';
@@ -20,6 +19,7 @@ import { of, throwError } from 'rxjs';
 import { HttpError } from '../../../shared/model/error.model';
 import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
 import { RoleDirective } from '../../../security/directive/role.directive';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
 
@@ -51,7 +51,7 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
         GroupServiceMock.provider,
         StreamDeployServiceMock.provider,
         ParserService,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

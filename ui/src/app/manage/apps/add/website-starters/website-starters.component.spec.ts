@@ -9,9 +9,9 @@ import { SecurityServiceMock } from '../../../../tests/api/security.service.mock
 import { AboutServiceMock } from '../../../../tests/api/about.service.mock';
 import { AppServiceMock } from '../../../../tests/api/app.service.mock';
 import { NotificationServiceMock } from '../../../../tests/service/notification.service.mock';
-import { ContextService } from '../../../../shared/service/context.service';
 import { WebsiteStartersComponent } from './website-starters.component';
 import { throwError } from 'rxjs';
+import { SettingsServiceMock } from '../../../../tests/service/settings.service.mock';
 
 describe('manage/apps/website-starters/website-starters.component.ts', () => {
   let component: WebsiteStartersComponent;
@@ -36,7 +36,7 @@ describe('manage/apps/website-starters/website-starters.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

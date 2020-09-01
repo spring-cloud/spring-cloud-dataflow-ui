@@ -6,10 +6,11 @@ import { SecurityServiceMock } from '../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { AppServiceMock } from '../../tests/api/app.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { ContextService } from '../../shared/service/context.service';
 import { RecordServiceMock } from '../../tests/api/record.service.mock';
 import { By } from '@angular/platform-browser';
 import { OperationFilterComponent } from './operation.filter';
+import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { delay } from 'rxjs/operators';
 
 describe('manage/records/operation.filter.ts', () => {
 
@@ -32,7 +33,7 @@ describe('manage/records/operation.filter.ts', () => {
         AppServiceMock.provider,
         NotificationServiceMock.provider,
         RecordServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();
@@ -54,6 +55,8 @@ describe('manage/records/operation.filter.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(component).toBeTruthy();
+    await fixture.whenStable();
+    fixture.detectChanges();
     expect(component.val).toBe('STREAM');
     const radio = fixture.debugElement.queryAll(By.css('input[type=radio]'));
     radio[0].nativeElement.click();

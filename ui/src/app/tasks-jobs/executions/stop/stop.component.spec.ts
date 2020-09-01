@@ -6,12 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
-import { ContextService } from '../../../shared/service/context.service';
 import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { TaskExecution } from '../../../shared/model/task-execution.model';
 import { StopComponent } from './stop.component';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
 
 describe('tasks-jobs/executions/stop/stop.component.ts', () => {
 
@@ -34,7 +34,7 @@ describe('tasks-jobs/executions/stop/stop.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
-        ContextService
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

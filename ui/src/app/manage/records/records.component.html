@@ -1,5 +1,4 @@
 <h1>Records</h1>
-{{context.actionType}}
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
   <clr-dg-action-bar>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
@@ -11,7 +10,7 @@
                  [clrDgSortOrder]="(context.by === 'id') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeId', $event)"
                  [style.width.px]="context.sizeId || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+    <ng-container>
       ID
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -21,7 +20,7 @@
                  (clrDgColumnResize)="updateContext('sizeCreatedOn', $event)"
                  [clrFilterValue]="context.dates || []"
                  [style.width.px]="context.sizeCreatedOn || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+    <ng-container>
       Created On
     </ng-container>
     <clr-dg-filter [clrDgFilter]="datesFilter">
@@ -33,7 +32,7 @@
                  (clrDgColumnResize)="updateContext('sizeAuditAction', $event)"
                  [clrFilterValue]="context.actionType || []"
                  [style.width.px]="context.sizeAuditAction || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+    <ng-container>
       Actions
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
@@ -46,7 +45,7 @@
                  (clrDgColumnResize)="updateContext('sizeAuditOperation', $event)"
                  [clrFilterValue]="context.operationType || []"
                  [style.width.px]="context.sizeAuditOperation || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[3])}">
+    <ng-container>
       Operations
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
@@ -59,7 +58,7 @@
                  [clrDgSortOrder]="(context.by === 'correlationId') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeCorrelationId', $event)"
                  [style.width.px]="context.sizeCorrelationId || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[4])}">
+    <ng-container>
       Operation ID
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
@@ -68,7 +67,7 @@
                  [clrDgSortOrder]="(context.by === 'createdBy') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeCreatedBy', $event)"
                  [style.width.px]="context.sizeCreatedBy || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[5])}">
+    <ng-container>
       Create by
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
@@ -77,7 +76,7 @@
                  [clrDgSortOrder]="(context.by === 'platformName') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizePlatformName', $event)"
                  [style.width.px]="context.sizePlatformName || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[6])}">
+    <ng-container>
       Platform name
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>

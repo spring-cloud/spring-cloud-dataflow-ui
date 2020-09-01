@@ -7,7 +7,6 @@ import { SecurityServiceMock } from '../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { AppServiceMock } from '../../tests/api/app.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { ContextService } from '../../shared/service/context.service';
 import { FeatureDisabledComponent } from './feature-disabled.component';
 
 describe('security/component/feature-disabled.component.ts', () => {
@@ -30,7 +29,6 @@ describe('security/component/feature-disabled.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        ContextService
       ]
     })
       .compileComponents();

@@ -22,20 +22,20 @@
   </clr-dg-action-bar>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeName', $event)"
                  [style.width.px]="context.sizeName || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[0])}">
+    <ng-container>
       Name
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeTaskName', $event)"
                  [style.width.px]="context.sizeTaskName || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+    <ng-container>
       Task name
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeCronExpression', $event)"
                  [style.width.px]="context.sizeCronExpression || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[2])}">
+    <ng-container>
       Cron Expression
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
