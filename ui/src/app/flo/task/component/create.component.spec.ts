@@ -7,6 +7,7 @@ import { LoggerService } from '../../../shared/service/logger.service';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 import { TaskFloModule } from '../../task-flo.module';
+import { StoreModule } from '@ngrx/store';
 
 /**
  * Test {@link TaskDefinitionCreateComponent}.
@@ -25,6 +26,7 @@ describe('TaskFloCreateComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        StoreModule.forRoot({}),
         TaskFloModule,
         BrowserAnimationsModule,
         RouterTestingModule.withRoutes([]),

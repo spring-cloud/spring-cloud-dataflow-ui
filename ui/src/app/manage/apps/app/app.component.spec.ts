@@ -17,7 +17,7 @@ import { CardComponent } from '../../../shared/component/card/card.component';
 import { OrderByPipe } from '../../../shared/pipe/order-by.pipe';
 import { By } from '@angular/platform-browser';
 import { HttpError } from '../../../shared/model/error.model';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('manage/apps/apps.component.ts', () => {
   let component: AppComponent;
@@ -43,7 +43,7 @@ describe('manage/apps/apps.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
         {
           provide: ActivatedRoute,
           useValue: {

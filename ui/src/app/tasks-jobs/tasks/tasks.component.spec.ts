@@ -11,7 +11,7 @@ import { TasksComponent } from './tasks.component';
 import { DestroyComponent } from './destroy/destroy.component';
 import { TaskServiceMock } from '../../tests/api/task.service.mock';
 import { GroupServiceMock } from '../../tests/service/group.service.mock';
-import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('tasks-jobs/tasks/tasks.component.ts', () => {
 
@@ -37,7 +37,7 @@ describe('tasks-jobs/tasks/tasks.component.ts', () => {
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
         GroupServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
       ]
     })
       .compileComponents();

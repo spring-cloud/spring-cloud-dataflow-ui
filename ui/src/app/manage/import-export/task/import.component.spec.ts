@@ -11,7 +11,7 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { ImportExportServiceMock } from '../../../tests/service/import-export.service.mock';
 import { throwError } from 'rxjs';
 import { TaskImportComponent } from './import.component';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('manage/import-export/task/import.component.ts', () => {
 
@@ -36,7 +36,7 @@ describe('manage/import-export/task/import.component.ts', () => {
         TaskServiceMock.provider,
         NotificationServiceMock.provider,
         ImportExportServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

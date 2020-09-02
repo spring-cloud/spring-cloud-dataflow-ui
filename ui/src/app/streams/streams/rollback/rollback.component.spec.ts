@@ -13,7 +13,7 @@ import { GET_STREAM_HISTORY } from '../../../tests/data/stream';
 import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { RoleDirective } from '../../../security/directive/role.directive';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('streams/streams/rollback/rollback.component.ts', () => {
 
@@ -37,7 +37,7 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

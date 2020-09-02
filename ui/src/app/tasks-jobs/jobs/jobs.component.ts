@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { NotificationService } from '../../shared/service/notification.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
-import { SettingsService } from '../../settings/settings.service';
+import { ContextService } from '../../shared/service/context.service';
 
 @Component({
   selector: 'app-jobs',
@@ -21,9 +21,9 @@ export class JobsComponent extends DatagridComponent {
 
   constructor(private jobService: JobService,
               private router: Router,
-              protected settingsService: SettingsService,
+              protected contextService: ContextService,
               private notificationService: NotificationService) {
-    super(settingsService, 'tasks-jobs/jobs');
+    super(contextService, 'tasks-jobs/jobs');
   }
 
   refresh(state: ClrDatagridStateInterface) {

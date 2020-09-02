@@ -12,9 +12,8 @@ import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { Stream } from '../../../shared/model/stream.model';
 import { UpperCasePipe } from '@angular/common';
-import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
 import { RoleDirective } from '../../../security/directive/role.directive';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('streams/streams/destroy/destroy.component.ts', () => {
 
@@ -40,7 +39,7 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

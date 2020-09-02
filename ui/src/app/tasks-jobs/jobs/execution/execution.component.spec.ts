@@ -14,7 +14,7 @@ import { JobServiceMock } from '../../../tests/api/job.service.mock';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { LogComponent } from '../../executions/execution/log/log.component';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('tasks-jobs/jobs/execution/execution.component.ts', () => {
 
@@ -43,7 +43,7 @@ describe('tasks-jobs/jobs/execution/execution.component.ts', () => {
         JobServiceMock.provider,
         TaskServiceMock.provider,
         ToolsServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
       ]
     })
       .compileComponents();

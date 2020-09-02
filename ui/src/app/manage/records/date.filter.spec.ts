@@ -9,7 +9,7 @@ import { NotificationServiceMock } from '../../tests/service/notification.servic
 import { RecordServiceMock } from '../../tests/api/record.service.mock';
 import { DateFilterComponent } from './date.filter';
 import { DateTime } from 'luxon';
-import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('manage/records/action.filter.ts', () => {
 
@@ -32,7 +32,7 @@ describe('manage/records/action.filter.ts', () => {
         AppServiceMock.provider,
         NotificationServiceMock.provider,
         RecordServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

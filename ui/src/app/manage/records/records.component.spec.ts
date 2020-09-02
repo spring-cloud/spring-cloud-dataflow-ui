@@ -14,7 +14,7 @@ import { ActionFilterComponent } from './action.filter';
 import { By } from '@angular/platform-browser';
 import { DatetimePipe } from '../../shared/pipe/datetime.pipe';
 import { RoleDirective } from '../../security/directive/role.directive';
-import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('manage/records/records.component.ts', () => {
 
@@ -42,7 +42,7 @@ describe('manage/records/records.component.ts', () => {
         AppServiceMock.provider,
         NotificationServiceMock.provider,
         RecordServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

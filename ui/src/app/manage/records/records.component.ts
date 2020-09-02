@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RecordService } from '../../shared/api/record.service';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { RecordPage } from '../../shared/model/record.model';
-import { SettingsService } from '../../settings/settings.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
+import { ContextService } from '../../shared/service/context.service';
 
 @Component({
   selector: 'app-records-list',
@@ -13,8 +13,8 @@ export class RecordsComponent extends DatagridComponent {
   page: RecordPage;
 
   constructor(private recordService: RecordService,
-              protected settingsService: SettingsService) {
-    super(settingsService, 'manage/records');
+              protected contextService: ContextService) {
+    super(contextService, 'manage/records');
   }
 
   refresh(state: ClrDatagridStateInterface) {

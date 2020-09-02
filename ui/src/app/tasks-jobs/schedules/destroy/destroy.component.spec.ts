@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { Schedule } from '../../../shared/model/schedule.model';
 import { ScheduleServiceMock } from '../../../tests/api/schedule.service.mock';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('tasks/schedules/destroy/destroy.component.ts', () => {
 
@@ -35,7 +35,7 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         ScheduleServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

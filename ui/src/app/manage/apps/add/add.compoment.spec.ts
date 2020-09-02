@@ -12,7 +12,7 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { UnregisterComponent } from '../unregister/unregister.component';
 import { VersionComponent } from '../version/version.component';
 import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('manage/apps/add.component.ts', () => {
 
@@ -39,7 +39,7 @@ describe('manage/apps/add.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

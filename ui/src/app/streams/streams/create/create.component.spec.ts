@@ -20,10 +20,9 @@ import { PropertiesGroupsDialogComponent } from '../../../flo/shared/properties-
 import { FloModule } from 'spring-flo';
 import { PropertiesDialogComponent } from '../../../flo/shared/properties/properties-dialog.component';
 import { DocService } from '../../../flo/shared/service/doc.service';
-import { DestroyComponent } from '../destroy/destroy.component';
 import { UpperCasePipe } from '@angular/common';
 import { SanitizeDsl } from '../../../flo/stream/dsl-sanitize.service';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 xdescribe('streams/streams/create/create.component.ts', () => {
   let component: CreateComponent;
@@ -54,7 +53,7 @@ xdescribe('streams/streams/create/create.component.ts', () => {
         GrafanaServiceMock.provider,
         { provide: MetamodelService, useValue: metamodelService },
         ContentAssistServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
         ParserService,
         EditorService,
         RenderService,

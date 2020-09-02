@@ -6,7 +6,7 @@ import { TaskExecution, TaskExecutionPage } from '../../shared/model/task-execut
 import { StopComponent } from './stop/stop.component';
 import { CleanupComponent } from './cleanup/cleanup.component';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
-import { SettingsService } from '../../settings/settings.service';
+import { ContextService } from '../../shared/service/context.service';
 
 @Component({
   selector: 'app-executions',
@@ -20,9 +20,9 @@ export class ExecutionsComponent extends DatagridComponent {
   @ViewChild('cleanModal', { static: true }) cleanModal: CleanupComponent;
 
   constructor(private taskService: TaskService,
-              protected settingsService: SettingsService,
+              protected contextService: ContextService,
               private router: Router) {
-    super(settingsService, 'tasks-jobs/executions');
+    super(contextService, 'tasks-jobs/executions');
   }
 
   refresh(state: ClrDatagridStateInterface) {

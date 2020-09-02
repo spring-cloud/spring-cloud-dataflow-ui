@@ -12,7 +12,7 @@ import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock
 import { TaskComponent } from './task.component';
 import { DestroyComponent } from '../destroy/destroy.component';
 import { LogComponent } from '../../executions/execution/log/log.component';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('tasks-jobs/tasks/task/task.component.ts', () => {
 
@@ -40,7 +40,7 @@ describe('tasks-jobs/tasks/task/task.component.ts', () => {
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
         ToolsServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
       ]
     })
       .compileComponents();

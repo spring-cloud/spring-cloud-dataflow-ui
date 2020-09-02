@@ -13,6 +13,8 @@ import { TaskCreateComponent } from './task-create/task-create.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { SettingsService } from '../../settings/settings.service';
 import { SettingModel } from '../../shared/model/setting.model';
+import { ContextService } from '../../shared/service/context.service';
+import { ContextModel } from '../../shared/model/context.model';
 
 @Component({
   selector: 'app-dev-dasboard',
@@ -34,6 +36,7 @@ export class DashboardComponent implements OnDestroy {
               private aboutService: AboutService,
               private securityService: SecurityService,
               private settingsService: SettingsService,
+              private contextService: ContextService,
               private notificationService: NotificationService) {
   }
 
@@ -92,9 +95,14 @@ export class DashboardComponent implements OnDestroy {
           this.store = security;
         });
     } else if (this.storesName === 'settings') {
-      this.settingsService.getAllSettings()
+      this.settingsService.getSettings()
         .subscribe((settings: SettingModel[]) => {
           this.store = settings;
+        });
+    } else if (this.storesName === 'context') {
+      this.contextService.getContexts()
+        .subscribe((contexts: ContextModel[]) => {
+          this.store = contexts;
         });
     }
   }

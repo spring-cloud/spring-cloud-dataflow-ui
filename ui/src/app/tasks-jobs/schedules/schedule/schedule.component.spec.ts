@@ -11,7 +11,7 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { ScheduleServiceMock } from '../../../tests/api/schedule.service.mock';
 import { ScheduleComponent } from './schedule.component';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('tasks-jobs/schedules/schedule/schedule.component.ts', () => {
 
@@ -37,7 +37,7 @@ describe('tasks-jobs/schedules/schedule/schedule.component.ts', () => {
         NotificationServiceMock.provider,
         ScheduleServiceMock.provider,
         TaskServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
       ]
     })
       .compileComponents();

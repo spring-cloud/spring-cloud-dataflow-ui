@@ -10,7 +10,7 @@ import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
 import { StatusComponent } from './status.component';
 import { By } from '@angular/platform-browser';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('streams/streams/stream/stream.component.ts', () => {
 
@@ -34,7 +34,7 @@ describe('streams/streams/stream/stream.component.ts', () => {
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
         GrafanaServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

@@ -11,7 +11,7 @@ import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { GroupServiceMock } from '../../../tests/service/group.service.mock';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 import { LaunchComponent } from './launch.component';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
 
@@ -38,7 +38,7 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
         TaskServiceMock.provider,
         GroupServiceMock.provider,
         ToolsServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

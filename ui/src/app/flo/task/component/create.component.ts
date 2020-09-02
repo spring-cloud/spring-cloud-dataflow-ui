@@ -90,9 +90,7 @@ export class TaskFloCreateComponent implements OnInit, OnDestroy {
               public editorService: EditorService,
               private renderer: Renderer2,
               private notificationService: NotificationService,
-              private toolsService: ToolsService,
-              private loggerService: LoggerService,
-              private router: Router) {
+              private toolsService: ToolsService) {
 
     this.validationMarkers = new Map();
     this.parseErrors = [];

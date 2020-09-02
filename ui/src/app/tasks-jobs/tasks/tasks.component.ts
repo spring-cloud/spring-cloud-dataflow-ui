@@ -6,8 +6,8 @@ import { TaskService } from '../../shared/api/task.service';
 import { DestroyComponent } from './destroy/destroy.component';
 import { Router } from '@angular/router';
 import { GroupService } from '../../shared/service/group.service';
-import { SettingsService } from '../../settings/settings.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
+import { ContextService } from '../../shared/service/context.service';
 
 @Component({
   selector: 'app-tasks',
@@ -21,8 +21,8 @@ export class TasksComponent extends DatagridComponent {
   constructor(private taskService: TaskService,
               private router: Router,
               private groupService: GroupService,
-              protected settingsService: SettingsService) {
-    super(settingsService, 'tasks-jobs/tasks');
+              protected contextService: ContextService) {
+    super(contextService, 'tasks-jobs/tasks');
   }
 
   refresh(state: ClrDatagridStateInterface) {

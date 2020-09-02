@@ -8,9 +8,10 @@ import {
   TemplateRef
 } from '@angular/core';
 import get from 'lodash.get';
-import { SettingsService } from '../../../settings/settings.service';
 import { map, mergeMap } from 'rxjs/operators';
 import { SettingModel } from '../../model/setting.model';
+import { ContextService } from '../../service/context.service';
+import { ContextModel } from '../../model/context.model';
 
 @Component({
   selector: 'app-view-card',
@@ -27,25 +28,25 @@ export class CardComponent implements AfterContentInit {
   @Input() active = true;
   @Output() onChange = new EventEmitter();
 
-  settings: SettingModel[];
+  context: ContextModel[];
 
-  constructor(private settingsService: SettingsService) {
+  constructor(private contextService: ContextService) {
   }
 
   ngAfterContentInit(): void {
-    this.settingsService.getContext(this.keyContext)
+    this.contextService.getContext(this.keyContext)
       .pipe(
-        mergeMap(global => this.settingsService.getContext(`${this.keyContext}/${this.name}`)
+        mergeMap(global => this.contextService.getContext(`${this.keyContext}/${this.name}`)
           .pipe(
-            map(settings => {
-              return { global, settings };
+            map(context => {
+              return { global, context };
             })
           ))
       )
-      .subscribe(({ global, settings }) => {
-        this.settings = settings;
+      .subscribe(({ global, context }) => {
+        this.context = context;
         const isActiveGlobal = get(global.find(sett => sett.name === this.id), 'value', true);
-        const isActive = get(settings.find(sett => sett.name === this.id), 'value', null);
+        const isActive = get(context.find(sett => sett.name === this.id), 'value', null);
         if (isActive !== null) {
           this.active = isActive;
         } else if (isActiveGlobal !== null) {
@@ -56,9 +57,9 @@ export class CardComponent implements AfterContentInit {
 
   toggle() {
     if (this.name && this.id) {
-      const settings = this.settings.filter(sett => sett.name !== this.name);
-      settings.push({ name: this.id, value: !this.active });
-      this.settingsService.updateContext(`${this.keyContext}/${this.name}`, settings);
+      const context = this.context.filter(ct => ct.name !== this.id);
+      context.push({ name: this.id, value: !this.active });
+      this.contextService.updateContext(`${this.keyContext}/${this.name}`, context);
     }
     this.onChange.emit(this.active);
     return false;

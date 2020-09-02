@@ -10,7 +10,7 @@ import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { ImportExportServiceMock } from '../../../tests/service/import-export.service.mock';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('manage/import-export/stream/export.component.ts', () => {
 
@@ -35,7 +35,7 @@ describe('manage/import-export/stream/export.component.ts', () => {
         TaskServiceMock.provider,
         NotificationServiceMock.provider,
         ImportExportServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

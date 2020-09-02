@@ -11,7 +11,7 @@ import { NotificationServiceMock } from '../../../../tests/service/notification.
 import { UriComponent } from './uri.component';
 import { throwError } from 'rxjs';
 import { FocusDirective } from '../../../../shared/directive/focus.directive';
-import { SettingsServiceMock } from '../../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../../tests/service/context.service.mock';
 
 describe('manage/apps/uri/uri.component.ts', () => {
   let component: UriComponent;
@@ -36,7 +36,7 @@ describe('manage/apps/uri/uri.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

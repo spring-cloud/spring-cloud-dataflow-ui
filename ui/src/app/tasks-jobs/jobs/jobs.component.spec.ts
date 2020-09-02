@@ -11,7 +11,7 @@ import { JobsComponent } from './jobs.component';
 import { JobServiceMock } from '../../tests/api/job.service.mock';
 import { StopComponent } from '../executions/stop/stop.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
-import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('tasks-jobs/jobs/jobs.component.ts', () => {
 
@@ -37,7 +37,7 @@ describe('tasks-jobs/jobs/jobs.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         JobServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
       ]
     })
       .compileComponents();

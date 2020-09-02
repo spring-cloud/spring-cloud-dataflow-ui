@@ -33,6 +33,8 @@ import {
   WavefrontStreamsDirective, WavefrontTaskDirective, WavefrontTaskExecutionDirective,
   WavefrontTasksDirective
 } from './wavefront/wavefront.directive';
+import { StoreModule } from '@ngrx/store';
+import * as fromContext from './store/context.reducer';
 
 @NgModule({
   entryComponents: [
@@ -75,6 +77,7 @@ import {
     ClarityModule,
     ReactiveFormsModule,
     FormsModule,
+    StoreModule.forFeature(fromContext.contextFeatureKey, fromContext.reducer),
     ToastrModule.forRoot({
       timeOut: 4000,
       tapToDismiss: false,

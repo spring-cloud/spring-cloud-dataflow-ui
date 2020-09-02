@@ -20,7 +20,7 @@ import { CardComponent } from '../../../shared/component/card/card.component';
 import { DatetimePipe } from '../../../shared/pipe/datetime.pipe';
 import { StreamDslComponent } from '../../../shared/component/stream-dsl/stream-dsl.component';
 import { ParserService } from '../../../flo/shared/service/parser.service';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('streams/streams/stream/stream.component.ts', () => {
 
@@ -51,7 +51,7 @@ describe('streams/streams/stream/stream.component.ts', () => {
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
         GrafanaServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
         ParserService,
       ]
     })

@@ -12,7 +12,7 @@ import { BuilderComponent } from './builder.component';
 import { StreamServiceMock } from '../../../../tests/api/stream.service.mock';
 import { StreamDeployServiceMock } from '../../../../tests/service/stream-deploy.service.mock';
 import { RoleDirective } from '../../../../security/directive/role.directive';
-import { SettingsServiceMock } from '../../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../../tests/service/context.service.mock';
 
 describe('streams/deploy/builder/builder.component.ts', () => {
   let component: BuilderComponent;
@@ -39,7 +39,7 @@ describe('streams/deploy/builder/builder.component.ts', () => {
         GrafanaServiceMock.provider,
         StreamServiceMock.provider,
         StreamDeployServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

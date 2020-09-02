@@ -11,7 +11,7 @@ import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { Stream } from '../../../shared/model/stream.model';
 import { UndeployComponent } from './undeploy.component';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('manage/apps/undeploy/undeploy.component.ts', () => {
 
@@ -35,7 +35,7 @@ describe('manage/apps/undeploy/undeploy.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         StreamServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

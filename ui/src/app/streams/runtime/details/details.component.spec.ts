@@ -13,7 +13,7 @@ import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock'
 import { RuntimeStreamPage } from '../../../shared/model/runtime.model';
 import { GET_RUNTIME } from '../../../tests/data/runtime';
 import { By } from '@angular/platform-browser';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('streams/runtime/details/details.component.ts', () => {
 
@@ -40,7 +40,7 @@ describe('streams/runtime/details/details.component.ts', () => {
         NotificationServiceMock.provider,
         RuntimeServiceMock.provider,
         GrafanaServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

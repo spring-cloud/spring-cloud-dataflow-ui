@@ -15,15 +15,11 @@ export interface State extends fromRoot.State {
   [settingsFeatureKey]: SettingsState;
 }
 
-export const getSettings = (state: State) => {
-  return state.settings.settings;
+export const getThemeActiveSetting = (state: State): string => {
+  return getSetting(state.settings.settings, themeActiveKey);
 };
 
-export const getThemeActiveSetting = (state: State) => {
-  return getContextSettings(state.settings.settings, themeActiveKey) as string;
-};
-
-export const getContextSettings = (settings: SettingModel[], name: string) => {
+export const getSetting = (settings: SettingModel[], name: string) => {
   return settings.find(s => s.name === name)?.value;
 };
 
@@ -59,9 +55,6 @@ function updateSettings(settings: SettingModel[], setting: SettingModel): Settin
       to.push({ name: v.name, value: v.value });
     }
   });
-  if (!isOverride) {
-    to.push(setting);
-  }
   return to;
 }
 

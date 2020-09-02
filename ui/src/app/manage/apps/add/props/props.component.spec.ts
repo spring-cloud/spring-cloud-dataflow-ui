@@ -11,7 +11,7 @@ import { AppServiceMock } from '../../../../tests/api/app.service.mock';
 import { NotificationServiceMock } from '../../../../tests/service/notification.service.mock';
 import { KeyValueComponent } from '../../../../shared/component/key-value/key-value.component';
 import { throwError } from 'rxjs';
-import { SettingsServiceMock } from '../../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../../tests/service/context.service.mock';
 
 describe('manage/apps/props/props.component.ts', () => {
   let component: PropsComponent;
@@ -36,7 +36,7 @@ describe('manage/apps/props/props.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

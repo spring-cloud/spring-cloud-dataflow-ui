@@ -13,7 +13,7 @@ import { ConfirmComponent } from '../../../shared/component/confirm/confirm.comp
 import { By } from '@angular/platform-browser';
 import { throwError } from 'rxjs';
 import { HttpError } from '../../../shared/model/error.model';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('manage/apps/version/version.component.ts', () => {
 
@@ -37,7 +37,7 @@ describe('manage/apps/version/version.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

@@ -11,7 +11,7 @@ import { throwError } from 'rxjs';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { CleanupComponent } from './cleanup.component';
 import { TaskExecution } from '../../../shared/model/task-execution.model';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
 
@@ -35,7 +35,7 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

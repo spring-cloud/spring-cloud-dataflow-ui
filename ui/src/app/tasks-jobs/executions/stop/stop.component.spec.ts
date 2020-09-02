@@ -11,7 +11,7 @@ import { throwError } from 'rxjs';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { TaskExecution } from '../../../shared/model/task-execution.model';
 import { StopComponent } from './stop.component';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('tasks-jobs/executions/stop/stop.component.ts', () => {
 
@@ -34,7 +34,7 @@ describe('tasks-jobs/executions/stop/stop.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

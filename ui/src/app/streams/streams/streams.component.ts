@@ -9,8 +9,8 @@ import { UndeployComponent } from './undeploy/undeploy.component';
 import { StreamStatus } from '../../shared/model/metrics.model';
 import { GroupService } from '../../shared/service/group.service';
 import { StatusComponent } from './status/status.component';
-import { SettingsService } from '../../settings/settings.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
+import { ContextService } from '../../shared/service/context.service';
 
 @Component({
   selector: 'app-streams-list',
@@ -27,10 +27,10 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
   timeSubscription: Subscription;
 
   constructor(private streamService: StreamService,
-              protected settingsService: SettingsService,
+              protected contextService: ContextService,
               private groupService: GroupService,
               private router: Router) {
-    super(settingsService, 'streams/list');
+    super(contextService, 'streams/list');
   }
 
   ngOnInit(): void {

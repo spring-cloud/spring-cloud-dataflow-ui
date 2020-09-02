@@ -14,6 +14,7 @@ import { LoggerService } from '../../shared/service/logger.service';
 import { MockSharedAppService } from '../../tests/service/app.service.mock';
 import { ToolsServiceMock } from '../../tests/service/task-tools.service.mock';
 import { TaskFloModule } from '../task-flo.module';
+import { StoreModule } from '@ngrx/store';
 
 const $: any = _$;
 
@@ -35,6 +36,7 @@ describe('Task RenderService', () => {
     METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
     TestBed.configureTestingModule({
       imports: [
+        StoreModule.forRoot({}),
         TaskFloModule
       ],
       providers: [

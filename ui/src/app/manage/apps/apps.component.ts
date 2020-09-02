@@ -5,8 +5,8 @@ import { App, AppPage } from '../../shared/model/app.model';
 import { UnregisterComponent } from './unregister/unregister.component';
 import { Router } from '@angular/router';
 import { VersionComponent } from './version/version.component';
-import { SettingsService } from '../../settings/settings.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
+import { ContextService } from '../../shared/service/context.service';
 
 @Component({
   selector: 'app-apps-list',
@@ -19,8 +19,8 @@ export class AppsComponent extends DatagridComponent {
 
   constructor(private appService: AppService,
               private router: Router,
-              protected settingsService: SettingsService) {
-    super(settingsService, 'manage/apps');
+              protected contextService: ContextService) {
+    super(contextService, 'manage/apps');
   }
 
   refresh(state: ClrDatagridStateInterface) {

@@ -17,9 +17,8 @@ import { TaskImportComponent } from './task/import.component';
 import { CardComponent } from '../../shared/component/card/card.component';
 import { ImportExportServiceMock } from '../../tests/service/import-export.service.mock';
 import { By } from '@angular/platform-browser';
-import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { RoleDirective } from '../../security/directive/role.directive';
-import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('manage/import-export/import-export.component.ts', () => {
 
@@ -51,7 +50,7 @@ describe('manage/import-export/import-export.component.ts', () => {
         TaskServiceMock.provider,
         NotificationServiceMock.provider,
         ImportExportServiceMock.provider,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

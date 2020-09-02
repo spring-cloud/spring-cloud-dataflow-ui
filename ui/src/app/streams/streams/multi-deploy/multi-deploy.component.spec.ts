@@ -17,9 +17,8 @@ import { GroupServiceMock } from '../../../tests/service/group.service.mock';
 import { StreamDeployServiceMock } from '../../../tests/service/stream-deploy.service.mock';
 import { of, throwError } from 'rxjs';
 import { HttpError } from '../../../shared/model/error.model';
-import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
 import { RoleDirective } from '../../../security/directive/role.directive';
-import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
 
@@ -51,7 +50,7 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
         GroupServiceMock.provider,
         StreamDeployServiceMock.provider,
         ParserService,
-        SettingsServiceMock.provider
+        ContextServiceMock.provider
       ]
     })
       .compileComponents();

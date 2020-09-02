@@ -14,7 +14,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { VersionComponent } from './version/version.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
-import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('manage/apps/apps.component.ts', () => {
 
@@ -41,7 +41,7 @@ describe('manage/apps/apps.component.ts', () => {
         AboutServiceMock.provider,
         AppServiceMock.provider,
         NotificationServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
       ]
     })
       .compileComponents();

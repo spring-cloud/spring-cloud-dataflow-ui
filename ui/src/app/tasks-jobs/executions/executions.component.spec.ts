@@ -11,7 +11,7 @@ import { SecurityServiceMock } from '../../tests/api/security.service.mock';
 import { StopComponent } from './stop/stop.component';
 import { CleanupComponent } from './cleanup/cleanup.component';
 import { RoleDirective } from '../../security/directive/role.directive';
-import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('tasks-jobs/executions/executions.component.ts', () => {
 
@@ -37,7 +37,7 @@ describe('tasks-jobs/executions/executions.component.ts', () => {
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
         TaskServiceMock.provider,
-        SettingsServiceMock.provider,
+        ContextServiceMock.provider,
       ]
     })
       .compileComponents();
