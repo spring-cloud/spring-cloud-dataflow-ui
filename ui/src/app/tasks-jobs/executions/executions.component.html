@@ -107,7 +107,10 @@
   </clr-dg-row>
   <clr-dg-placeholder>We couldn't find any task executions!</clr-dg-placeholder>
   <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgTotalItems]="page?.total" [clrDgPageSize]="20">
+    <clr-dg-pagination #pagination
+                       [clrDgTotalItems]="page?.total"
+                       [clrDgPageSize]="context.size"
+                       [clrDgPage]="context.current">
       <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Task executions per page</clr-dg-page-size>
       {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
       of {{page?.total}} task executions

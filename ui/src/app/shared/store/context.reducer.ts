@@ -22,7 +22,7 @@ export const initialState = [
     name: 'manage/apps',
     value: [
       { name: 'current', value: 1 },
-      { name: 'size', value: 20 },
+      { name: 'size', value: '' },
       { name: 'name', value: '' },
       { name: 'type', value: '' },
       { name: 'by', value: 'name' },
@@ -37,7 +37,7 @@ export const initialState = [
     name: 'manage/records',
     value: [
       { name: 'current', value: 1 },
-      { name: 'size', value: 20 },
+      { name: 'size', value: '' },
       { name: 'name', value: '' },
       { name: 'by', value: 'id' },
       { name: 'reverse', value: true },
@@ -57,7 +57,7 @@ export const initialState = [
     name: 'streams/list',
     value: [
       { name: 'current', value: 1 },
-      { name: 'size', value: 20 },
+      { name: 'size', value: '' },
       { name: 'name', value: '' },
       { name: 'by', value: 'name' },
       { name: 'reverse', value: false },
@@ -72,7 +72,7 @@ export const initialState = [
     name: 'tasks-jobs/tasks',
     value: [
       { name: 'current', value: 1 },
-      { name: 'size', value: 20 },
+      { name: 'size', value: '' },
       { name: 'name', value: '' },
       { name: 'by', value: 'taskName' },
       { name: 'reverse', value: false },
@@ -85,7 +85,7 @@ export const initialState = [
     name: 'tasks-jobs/executions',
     value: [
       { name: 'current', value: 1 },
-      { name: 'size', value: 20 },
+      { name: 'size', value: '' },
       { name: 'name', value: '' },
       { name: 'by', value: 'TASK_EXECUTION_ID' },
       { name: 'reverse', value: false },
@@ -100,7 +100,7 @@ export const initialState = [
     name: 'tasks-jobs/jobs',
     value: [
       { name: 'current', value: 1 },
-      { name: 'size', value: 20 },
+      { name: 'size', value: '' },
       { name: 'name', value: '' },
       { name: 'by', value: 'TASK_EXECUTION_ID' },
       { name: 'reverse', value: true },

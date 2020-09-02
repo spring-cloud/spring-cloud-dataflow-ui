@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TaskService } from '../../shared/api/task.service';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { StopComponent } from './stop/stop.component';
 import { CleanupComponent } from './cleanup/cleanup.component';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-executions',
@@ -21,8 +22,10 @@ export class ExecutionsComponent extends DatagridComponent {
 
   constructor(private taskService: TaskService,
               protected contextService: ContextService,
+              protected settingsService: SettingsService,
+              protected changeDetectorRef: ChangeDetectorRef,
               private router: Router) {
-    super(contextService, 'tasks-jobs/executions');
+    super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/executions');
   }
 
   refresh(state: ClrDatagridStateInterface) {

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ScheduleService } from '../../shared/api/schedule.service';
 import { ClrDatagridStateInterface } from '@clr/angular';
@@ -6,6 +6,7 @@ import { Schedule, SchedulePage } from '../../shared/model/schedule.model';
 import { DestroyComponent } from './destroy/destroy.component';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-schedules',
@@ -17,8 +18,10 @@ export class SchedulesComponent extends DatagridComponent {
 
   constructor(private scheduleService: ScheduleService,
               private router: Router,
+              protected settingsService: SettingsService,
+              protected changeDetectorRef: ChangeDetectorRef,
               protected contextService: ContextService) {
-    super(contextService, 'tasks-jobs/schedules');
+    super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/schedules');
   }
 
   refresh(state: ClrDatagridStateInterface) {

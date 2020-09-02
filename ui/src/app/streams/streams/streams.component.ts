@@ -1,5 +1,5 @@
 import { Subscription, timer } from 'rxjs';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Router } from '@angular/router';
 import { StreamService } from '../../shared/api/stream.service';
@@ -11,6 +11,7 @@ import { GroupService } from '../../shared/service/group.service';
 import { StatusComponent } from './status/status.component';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-streams-list',
@@ -28,9 +29,11 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
 
   constructor(private streamService: StreamService,
               protected contextService: ContextService,
+              protected settingsService: SettingsService,
+              protected changeDetectorRef: ChangeDetectorRef,
               private groupService: GroupService,
               private router: Router) {
-    super(contextService, 'streams/list');
+    super(contextService, settingsService, changeDetectorRef, 'streams/list');
   }
 
   ngOnInit(): void {

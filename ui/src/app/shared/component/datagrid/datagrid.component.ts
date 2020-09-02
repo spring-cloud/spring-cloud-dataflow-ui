@@ -1,13 +1,17 @@
-import { Directive, OnDestroy } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Directive, OnDestroy } from '@angular/core';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { Page } from '../../model/page.model';
 import set from 'lodash.set';
 import { ContextService } from '../../service/context.service';
 import { ContextModel } from '../../model/context.model';
+import { SettingsService } from '../../../settings/settings.service';
+import { delay, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
 
 @Directive()
-export abstract class DatagridComponent implements OnDestroy {
+export abstract class DatagridComponent implements OnDestroy, AfterContentChecked {
 
+  private subscriptionDatagrid: Subscription;
   contextName: string;
   protected page: Page<any>;
   loading = true;
@@ -17,21 +21,40 @@ export abstract class DatagridComponent implements OnDestroy {
   selected = [];
   grouped = false;
   state: ClrDatagridStateInterface;
-  // @ViewChildren(ClrDatagridHideableColumn)
-  // columns: QueryList<ClrDatagridHideableColumn>;
+
+  resultsPerPage;
 
   constructor(protected contextService: ContextService,
+              protected settingsService: SettingsService,
+              protected cdRef: ChangeDetectorRef,
               contextName: string) {
     this.contextName = contextName;
-    this.contextService.getContext(contextName)
-      .subscribe((context: ContextModel[]) => {
+
+    this.subscriptionDatagrid = this.contextService.getContext(contextName)
+      .pipe(
+        mergeMap(context => this.settingsService.getSettings()
+          .pipe(
+            map(settings => ({ context, settings }))
+          )
+        )
+      )
+      .subscribe(({ context, settings }) => {
+        this.resultsPerPage = +settings.find(st => st.name === 'results-per-page').value;
         const ctx = {};
         context.forEach((ct: ContextModel) => {
-          set(ctx, ct.name, ct.value);
+          if (ct.name === 'size' && !ct.value) {
+            set(ctx, ct.name, this.resultsPerPage);
+          } else {
+            set(ctx, ct.name, ct.value);
+          }
         });
         this.context = ctx;
         this.isInit = true;
       });
+  }
+
+  ngAfterContentChecked() {
+    this.cdRef.detectChanges();
   }
 
   updateContext(key, value) {
@@ -49,7 +72,12 @@ export abstract class DatagridComponent implements OnDestroy {
     }
     const context = [];
     Object.keys(obj).forEach(key => {
-      context.push({ name: key, value: obj[key] as string });
+      const val = obj[key] as string;
+      if (key === 'size' && val === this.resultsPerPage) {
+        context.push({ name: key, value: '' });
+      } else {
+        context.push({ name: key, value: val });
+      }
     });
     this.contextService.updateContext(this.contextName, context);
   }
@@ -87,5 +115,6 @@ export abstract class DatagridComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.isDestroy = true;
+    this.subscriptionDatagrid.unsubscribe();
   }
 }

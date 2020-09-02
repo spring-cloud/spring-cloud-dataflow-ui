@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { JobService } from '../../shared/api/job.service';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { JobExecution, JobExecutionPage } from '../../shared/model/job.model';
@@ -7,6 +7,7 @@ import { ConfirmComponent } from '../../shared/component/confirm/confirm.compone
 import { NotificationService } from '../../shared/service/notification.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
+import { SettingsService } from '../../settings/settings.service';
 
 @Component({
   selector: 'app-jobs',
@@ -22,8 +23,10 @@ export class JobsComponent extends DatagridComponent {
   constructor(private jobService: JobService,
               private router: Router,
               protected contextService: ContextService,
+              protected settingsService: SettingsService,
+              protected changeDetectorRef: ChangeDetectorRef,
               private notificationService: NotificationService) {
-    super(contextService, 'tasks-jobs/jobs');
+    super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/jobs');
   }
 
   refresh(state: ClrDatagridStateInterface) {

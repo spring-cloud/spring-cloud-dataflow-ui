@@ -15,6 +15,7 @@ import { GrafanaStreamDirective, GrafanaStreamsDirective } from '../../shared/gr
 import { GrafanaServiceMock } from '../../tests/service/grafana.service.mock';
 import { GroupServiceMock } from '../../tests/service/group.service.mock';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
+import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 
 describe('streams/streams/streams.component.ts', () => {
 
@@ -44,6 +45,7 @@ describe('streams/streams/streams.component.ts', () => {
         GrafanaServiceMock.provider,
         GroupServiceMock.provider,
         ContextServiceMock.provider,
+        SettingsServiceMock.provider
       ]
     })
       .compileComponents();

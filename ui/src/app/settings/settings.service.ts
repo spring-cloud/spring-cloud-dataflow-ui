@@ -19,6 +19,7 @@ export class SettingsService {
     const activeValue: string = this.localStorageService.get('themeActiveValue') || themeActiveDefault;
     const settings: SettingModel[] = [
       { name: 'theme-active', value: activeValue },
+      { name: 'results-per-page', value: '20' },
     ];
     return of(settings).pipe(
       tap((sett) => this.store.dispatch(loaded({ settings: sett })))
@@ -40,9 +41,8 @@ export class SettingsService {
     return this.store.pipe(select(getThemeActiveSetting));
   }
 
-  getSettings(): Observable<any> {
+  getSettings(): Observable<SettingModel[]> {
     return this.store.pipe(select(state => state[settingsFeatureKey].settings));
   }
-
 
 }
