@@ -57,7 +57,7 @@ export class ThemeService {
     styles.push('}');
     styles.push(theme.other);
     style.innerHTML = styles.join('');
-    runCssVarsPolyfill();
+    runCssVarsPolyfill(() => {});
     this.active = name;
     this.localStorageService.set('theme', name);
     return name;

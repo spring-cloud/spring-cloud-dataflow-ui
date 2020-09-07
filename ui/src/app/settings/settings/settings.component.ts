@@ -24,7 +24,7 @@ export class SettingsComponent extends ModalDialog implements OnInit {
       .subscribe(settings => {
         this.themeActive = settings.find(st => st.name === 'theme-active');
         this.resultsPerPage = settings.find(st => st.name === 'results-per-page');
-      })
+      });
   }
 
   themeActiveSettingOnChange(theme: string) {

@@ -92,10 +92,12 @@
 
     ul li {
       list-style: none;
-
       a {
         display: block;
-        padding: .3rem 1rem;
+        padding: .5rem 1rem;
+        margin: 0;
+        height: 40px;
+        line-height: 20px;
         color: var(--clr-h6-color, #333);
         text-decoration: none;
         cursor: pointer;
