@@ -5,7 +5,6 @@ import { SettingModel } from '../../shared/model/setting.model';
 
 export const settingsFeatureKey = 'settings';
 export const themeActiveKey = 'theme-active';
-export const themeActiveDefault = 'dark';
 
 export interface SettingsState {
   settings: SettingModel[];
@@ -25,7 +24,7 @@ export const getSetting = (settings: SettingModel[], name: string) => {
 
 export const initialState: SettingsState = {
   settings: [
-    { name: themeActiveKey, value: themeActiveDefault }
+    { name: themeActiveKey, value: 'default' }
   ]
 };
 

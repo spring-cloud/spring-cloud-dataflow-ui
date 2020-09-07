@@ -15,7 +15,7 @@ describe('SettingsComponent', () => {
   const initialState = {
     [fromSettings.settingsFeatureKey]: {
       settings: [
-        { name: fromSettings.themeActiveKey, value: fromSettings.themeActiveDefault }
+        { name: fromSettings.themeActiveKey, value: 'default' }
       ]
     }
   };
