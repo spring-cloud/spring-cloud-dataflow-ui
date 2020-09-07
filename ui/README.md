@@ -1,20 +1,11 @@
 ﻿
 <p align="center">
-  <a href="https://cloud.spring.io/spring-cloud-dataflow/">
+  <a href="https://dataflow.spring.io/">
     <img alt="Spring Data Flow Dashboard" title="Spring Data Flow Dashboard" src="https://i.imgur.com/ZfEGBE4.png" width="450">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
-    <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=ready&title=Ready"
-         alt="Stories in Ready">
-  </a>
-  <a href="https://waffle.io/spring-cloud/spring-cloud-dataflow-ui">
-    <img src="https://badge.waffle.io/spring-cloud/spring-cloud-dataflow-ui.svg?label=In%20Progress&title=In%20Progress"
-         alt="Stories in Progress">
-  </a>
-  <br />
   <a href="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui">
     <img src="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui.png?branch=master"
          alt="Build Status">
@@ -31,10 +22,7 @@
     <img src="https://saucelabs.com/buildstatus/ghillert"
          alt="Sauce Test Status">
   </a>
-  <a href="https://www.browserstack.com/automate/public-build/T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c">
-    <img src="https://www.browserstack.com/automate/badge.svg?badge_key=T3pKbzdQK2RpVnkxZ2ZwN2tjeGFUSzdOQUJ2cG1GSDBYSlRvT00zZWV1bz0tLVpuMXk0eTJmN01ienhnbkNPbXJTanc9PQ==--b187f26b476b4d3f262b837e13f4be593c41e44c"
-         alt="BrowserStack Status">
-  </a>
+  <a href="https://automate.browserstack.com/public-build/VmtkRGtNTnZWRnFTL0RYQlN0OVVMUHJaaFhMNzhvR3VNNWw2ZXNrcEI4ST0tLXg4VDd1YzhBYktJQUtZbVJKdU9SM1E9PQ==--1b233ea47f41a74431204ba2c57901b7854efc67"><img src='https://automate.browserstack.com/badge.svg?badge_key=VmtkRGtNTnZWRnFTL0RYQlN0OVVMUHJaaFhMNzhvR3VNNWw2ZXNrcEI4ST0tLXg4VDd1YzhBYktJQUtZbVJKdU9SM1E9PQ==--1b233ea47f41a74431204ba2c57901b7854efc67'/></a>  
 </p>
 
 <p align="center">
@@ -99,7 +87,7 @@ For UI development purposes, we recommend using [npm][] directly. Please ensure 
 
 Before building be sure that the `ng-serve` development server has been shutdown.<br >
 
-**If you want to contribute and help developing the project, please, have a look at the [Developer Guideline](https://github.com/spring-cloud/spring-cloud-dataflow-ui/blob/master/README_DEV.md).**
+**If you want to contribute and help developing the project, please, have a look at the [Developer Guideline](README_DEV.md/#development).**
 
 ---
 
@@ -108,11 +96,12 @@ Before building be sure that the `ng-serve` development server has been shutdown
 Thanks to [Saucelabs](https://saucelabs.com/) and [Browserstack](https://www.browserstack.com/) for supporting us.
 This project uses code from several open source packages:
 [Angular](https://angular.io),
-[Ngx Bootstrap](https://valor-software.com/),
+[Clarity Design](https://clarity.design/),
 [RxJS](https://github.com/ReactiveX/rxjs),
 [Spring Flo](https://github.com/spring-projects/spring-flo),
 [Ngx Toastr](https://github.com/scttcper/ngx-toastr),
-[Font Awesome](https://fontawesome.com/v4.7.0/icons/) (...).
+[NGRX](https://ngrx.io/),
+[luxon](https://moment.github.io/luxon//) (...)
 
 This project is powered by:
 

@@ -96,11 +96,12 @@ Before building be sure that the `ng-serve` development server has been shutdown
 Thanks to [Saucelabs](https://saucelabs.com/) and [Browserstack](https://www.browserstack.com/) for supporting us.
 This project uses code from several open source packages:
 [Angular](https://angular.io),
-[Ngx Bootstrap](https://valor-software.com/),
+[Clarity Design](https://clarity.design/),
 [RxJS](https://github.com/ReactiveX/rxjs),
 [Spring Flo](https://github.com/spring-projects/spring-flo),
 [Ngx Toastr](https://github.com/scttcper/ngx-toastr),
-[Font Awesome](https://fontawesome.com/v4.7.0/icons/) (...).
+[NGRX](https://ngrx.io/),
+[luxon](https://moment.github.io/luxon//) (...)
 
 This project is powered by:
 
