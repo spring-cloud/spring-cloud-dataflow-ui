@@ -34,7 +34,7 @@
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizePlatform', $event)"
                  [style.width.px]="context.sizePlatform || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: !(context?.cols[1])}">
+    <ng-container>
       Platform
     </ng-container>
     <clr-dg-filter [clrDgFilter]="platformFilter">
