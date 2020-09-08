@@ -60,15 +60,21 @@ export class CreateComponent implements OnInit {
           )
       ),
       mergeMap(
-        ({ tasks, platforms }) => this.scheduleService.getSchedules('')
-          .pipe(
-            map((schedules: SchedulePage) => {
-              return {
-                tasks,
-                platforms,
-                schedules: schedules.items.map((item) => item.name.toLowerCase())
-              };
-            })),
+        ({ tasks, platforms }) => forkJoin([...platforms.map((platform) =>
+          this.scheduleService.getSchedules('', platform.name)
+        )]).pipe(
+          map((schedules: SchedulePage[]) => {
+            const names = [];
+            schedules.forEach((page: SchedulePage) => {
+              names.push(...page.items.map((item) => item.name.toLowerCase()));
+            });
+            return {
+              tasks,
+              platforms,
+              schedules: names
+            };
+          })
+        )
       )
     ).subscribe((config) => {
       this.buildForm(config);
