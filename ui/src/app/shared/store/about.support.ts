@@ -51,23 +51,16 @@ export const parse = (input): AboutState => {
       streams: get(input, 'featureInfo.streamsEnabled', false),
       tasks: get(input, 'featureInfo.tasksEnabled', false),
       schedules: get(input, 'featureInfo.schedulesEnabled', false),
-      wavefront: get(input, 'featureInfo.wavefrontEnabled', false),
-      grafana: input.featureInfo.grafanaEnabled && !get(input, 'featureInfo.wavefrontEnabled', false)
+      monitoringDashboardType: get(input, 'featureInfo.monitoringDashboardType', 'NONE'),
     },
     runtimeEnvironment: {
       appDeployer: parseRuntimeEnvironment(input.runtimeEnvironment.appDeployer),
       taskLaunchers: input.runtimeEnvironment.taskLaunchers.map(parseRuntimeEnvironment)
     },
-    grafana: {
+    monitoringDashboardInfo: {
       url: input.grafanaInfo?.url || '',
-      token: input.grafanaInfo?.token || '',
+      source: input.grafanaInfo?.source || '',
       refreshInterval: +input.grafanaInfo?.refreshInterval || 10
-    },
-    wavefront: {
-      url: input.monitoringDashboardInfo?.url || '',
-      token: input.monitoringDashboardInfo?.token || '',
-      source: input.monitoringDashboardInfo?.source || '',
-      refreshInterval: +input.monitoringDashboardInfo?.refreshInterval || 10
     },
     security: {
       isAuthentication: input.securityInfo.authenticationEnabled,

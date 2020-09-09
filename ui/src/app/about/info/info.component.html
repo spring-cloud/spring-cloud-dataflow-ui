@@ -26,13 +26,13 @@
         </li>
         <li>
           <strong>Grafana: </strong>
-          <clr-icon shape="check" *ngIf="about.features.grafana"></clr-icon>
-          <clr-icon shape="times" *ngIf="!about.features.grafana"></clr-icon>
+          <clr-icon shape="check" *ngIf="about.features.monitoringDashboardType === 'GRAFANA'"></clr-icon>
+          <clr-icon shape="times" *ngIf="about.features.monitoringDashboardType !== 'GRAFANA'"></clr-icon>
         </li>
         <li>
           <strong>Wavefront: </strong>
-          <clr-icon shape="check" *ngIf="about.features.wavefront"></clr-icon>
-          <clr-icon shape="times" *ngIf="!about.features.wavefront"></clr-icon>
+          <clr-icon shape="check" *ngIf="about.features.monitoringDashboardType === 'WAVEFRONT'"></clr-icon>
+          <clr-icon shape="times" *ngIf="about.features.monitoringDashboardType !== 'WAVEFRONT'"></clr-icon>
         </li>
       </ul>
       <h3>Security</h3>

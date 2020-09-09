@@ -38,23 +38,17 @@ export interface AboutState {
     streams: boolean,
     tasks: boolean,
     schedules: boolean,
-    grafana: boolean,
-    wavefront: boolean,
+    monitoringDashboardType: string
   };
   runtimeEnvironment: {
     appDeployer: RuntimeEnvironmentState,
     taskLaunchers: Array<RuntimeEnvironmentState>
   };
-  grafana: {
-    url: string,
-    token: string,
-    refreshInterval: number
-  };
-  wavefront: {
-    url: string,
-    token: string,
-    source: string,
-    refreshInterval: number
+  'monitoringDashboardInfo': {
+    url?: string,
+    refreshInterval?: number,
+    dashboardType?: string,
+    source?: string
   };
   security: {
     isAuthentication: boolean,
@@ -84,8 +78,8 @@ export const getAbout = (state: State) => {
   return state[aboutFeatureKey];
 };
 
-export const getGrafana = (state: State) => {
-  return state[aboutFeatureKey].grafana;
+export const getMonitoring = (state: State) => {
+  return state[aboutFeatureKey].monitoringDashboardInfo;
 };
 
 export const getSecurity = (state: State) => {
@@ -103,21 +97,14 @@ export const initialState: AboutState = {
     streams: false,
     tasks: false,
     schedules: false,
-    grafana: false,
-    wavefront: false
+    monitoringDashboardType: 'NONE'
   },
   runtimeEnvironment: {
     appDeployer: null,
     taskLaunchers: []
   },
-  grafana: {
+  monitoringDashboardInfo: {
     url: '',
-    token: '',
-    refreshInterval: 10
-  },
-  wavefront: {
-    url: '',
-    token: '',
     source: '',
     refreshInterval: 10
   },
@@ -131,11 +118,11 @@ export const initialState: AboutState = {
 
 export const reducer = createReducer(
   initialState,
-  on(AboutActions.loaded, (state, { versions, features, runtimeEnvironment, grafana, security }) => ({
+  on(AboutActions.loaded, (state, { versions, features, runtimeEnvironment, monitoringDashboardInfo, security }) => ({
     versions,
     features,
     runtimeEnvironment,
-    grafana,
+    monitoringDashboardInfo,
     security,
   }))
 );
