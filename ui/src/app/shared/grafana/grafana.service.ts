@@ -7,7 +7,6 @@ import { Task } from '../model/task.model';
 import { TaskExecution } from '../model/task-execution.model';
 import { JobExecution } from '../model/job.model';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,14 +15,17 @@ export class GrafanaService {
   constructor(private aboutService: AboutService) {
   }
 
-  isAllowed(): Promise<boolean> {
+  isAllowed(): Observable<boolean> {
     return this.aboutService
-      .isFeatureEnabled('grafana');
+      .getMonitoringType()
+      .pipe(
+        map(type => type === 'GRAFANA')
+      );
   }
 
   getDashboardStreams(): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return `${info.url}/d/scdf-streams/streams?refresh=${info.refreshInterval}s`;
@@ -33,7 +35,7 @@ export class GrafanaService {
 
   getDashboardStream(stream: Stream): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
@@ -44,7 +46,7 @@ export class GrafanaService {
 
   getDashboardApplication(streamName: string, appName: string): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
@@ -55,7 +57,7 @@ export class GrafanaService {
 
   getDashboardApplicationInstance(streamName: string, appName: string, guid: string): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
@@ -67,7 +69,7 @@ export class GrafanaService {
 
   getDashboardTasks(): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval + 's';
@@ -77,7 +79,7 @@ export class GrafanaService {
 
   getDashboardTask(task: Task): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
@@ -88,7 +90,7 @@ export class GrafanaService {
 
   getDashboardTaskExecution(execution: TaskExecution): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
@@ -100,7 +102,7 @@ export class GrafanaService {
 
   getDashboardJobExecution(jobExecution: JobExecution): Observable<string> {
     return this.aboutService
-      .getGrafana()
+      .getMonitoring()
       .pipe(
         map((info: any): string => {
           return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
