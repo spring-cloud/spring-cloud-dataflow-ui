@@ -94,6 +94,8 @@ export class MetamodelService implements Flo.Metamodel {
             }
           });
 
+          this.addExtras(metamodel);
+
           resolve(metamodel);
         },
         error => {
@@ -105,22 +107,8 @@ export class MetamodelService implements Flo.Metamodel {
     return this.request;
   }
 
-  private addLinksGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
-    const metadata = this.createMetadata('link', 'links', 'Link between channels',
-      new Map<string, Flo.PropertyMetadata>().set('inputChannel', {
-        id: 'inputChannel',
-        name: 'Input Channel',
-        defaultValue: '',
-        description: 'Input Channel'
-      }).set('outputChannel', {
-        id: 'outputChannel',
-        name: 'Output Channel',
-        defaultValue: '',
-        description: 'Output Channel'
-      }), {
-        unselectable: true
-      });
-    metamodel.set(metadata.group, new Map<string, Flo.ElementMetadata>().set(metadata.name, metadata));
+  protected addExtras(metamodel: Map<string, Map<string, Flo.ElementMetadata>>) {
+
   }
 
   protected createEntry(reg: App, metadata?: Flo.ExtraMetadata): AppMetadata {

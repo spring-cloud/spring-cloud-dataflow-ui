@@ -41,6 +41,7 @@ import { PropertiesEditor } from './properties-editor.service';
 
 import * as _joint from 'jointjs';
 import * as _ from 'lodash';
+import {StreamPropertiesDialogComponent} from './properties/stream-properties-dialog.component';
 
 const joint: any = _joint;
 
@@ -452,9 +453,7 @@ export class RenderService implements Flo.Renderer {
   handleLinkEvent(flo: Flo.EditorContext, event: string, link: dia.Link) {
     switch (event) {
       case 'options':
-        // TODO: When link has properties figure out where to grab the modal dialog component or create it at runtime
-        // and manage attachement/detachment on open/close
-        // this.propertiesEditor.showForLink(ModalComponent, link);
+        this.propertiesEditor.showForLink(link);
         break;
       case 'change:source':
         this.handleLinkSourceChanged(link, flo);
