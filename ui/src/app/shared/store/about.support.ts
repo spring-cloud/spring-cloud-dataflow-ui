@@ -58,9 +58,9 @@ export const parse = (input): AboutState => {
       taskLaunchers: input.runtimeEnvironment.taskLaunchers.map(parseRuntimeEnvironment)
     },
     monitoringDashboardInfo: {
-      url: input.grafanaInfo?.url || '',
-      source: input.grafanaInfo?.source || '',
-      refreshInterval: +input.grafanaInfo?.refreshInterval || 10
+      url: input.monitoringDashboardInfo?.url || '',
+      source: input.monitoringDashboardInfo?.source || '',
+      refreshInterval: +input.monitoringDashboardInfo?.refreshInterval || 10
     },
     security: {
       isAuthentication: input.securityInfo.authenticationEnabled,

@@ -15,13 +15,12 @@ export class WavefrontService {
   constructor(private aboutService: AboutService) {
   }
 
-  isAllowed(): Promise<boolean> {
+  isAllowed(): Observable<boolean> {
     return this.aboutService
       .getMonitoringType()
       .pipe(
         map(type => type === 'WAVEFRONT')
       )
-      .toPromise();
   }
 
   getDashboardStreams(): Observable<string> {

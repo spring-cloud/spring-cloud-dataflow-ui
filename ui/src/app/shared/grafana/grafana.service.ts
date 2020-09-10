@@ -15,13 +15,12 @@ export class GrafanaService {
   constructor(private aboutService: AboutService) {
   }
 
-  isAllowed(): Promise<boolean> {
+  isAllowed(): Observable<boolean> {
     return this.aboutService
       .getMonitoringType()
       .pipe(
         map(type => type === 'GRAFANA')
-      )
-      .toPromise();
+      );
   }
 
   getDashboardStreams(): Observable<string> {

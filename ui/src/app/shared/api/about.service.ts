@@ -7,6 +7,7 @@ import { select, Store } from '@ngrx/store';
 import { aboutFeatureKey, AboutState, getAbout, getFeatures, getMonitoring, State } from '../store/about.reducer';
 import { loaded } from '../store/about.action';
 import { parse } from '../store/about.support';
+import { LOAD } from '../../tests/data/about';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,9 @@ export class AboutService {
   }
 
   getMonitoringType(): Observable<string> {
-    return this.store.pipe(select(state => state[aboutFeatureKey].features.monitoringDashboardType));
+    return this.store.pipe(select(state => {
+      return state[aboutFeatureKey].features.monitoringDashboardType
+    }));
   }
 
   getMonitoring(): Observable<any> {

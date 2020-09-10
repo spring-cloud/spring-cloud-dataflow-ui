@@ -17,7 +17,7 @@ export class WavefrontStreamsDirective implements OnInit {
 
   ngOnInit(): void {
     this.wavefrontService.isAllowed()
-      .then(allow => {
+      .subscribe(allow => {
         this.hidden = !allow;
       });
   }
@@ -44,7 +44,7 @@ export class WavefrontStreamDirective implements OnInit {
   ngOnInit(): void {
     this.disabled = this.stream.status !== 'DEPLOYED';
     this.wavefrontService.isAllowed()
-      .then(allow => {
+      .subscribe(allow => {
         this.hidden = !allow;
       });
   }
@@ -69,7 +69,7 @@ export class WavefrontTasksDirective implements OnInit {
 
   ngOnInit(): void {
     this.wavefrontService.isAllowed()
-      .then(allow => {
+      .subscribe(allow => {
         this.hidden = !allow;
       });
   }
@@ -95,7 +95,7 @@ export class WavefrontTaskDirective implements OnInit {
 
   ngOnInit(): void {
     this.wavefrontService.isAllowed()
-      .then(allow => {
+      .subscribe(allow => {
         this.hidden = !allow;
       });
   }
@@ -124,7 +124,7 @@ export class WavefrontRuntimeAppDirective implements OnInit {
 
   ngOnInit(): void {
     this.wavefrontService.isAllowed()
-      .then(allow => {
+      .subscribe(allow => {
         this.hidden = !allow;
       });
     if (this.runtimeApp.appInstances && this.runtimeApp.appInstances.length > 0) {
@@ -163,7 +163,7 @@ export class WavefrontRuntimeInstanceDirective implements OnInit {
 
   ngOnInit(): void {
     this.wavefrontService.isAllowed()
-      .then(allow => {
+      .subscribe(allow => {
         this.hidden = !allow;
       });
     if (this.instance.attributes) {
@@ -197,7 +197,7 @@ export class WavefrontTaskExecutionDirective implements OnInit {
 
   ngOnInit(): void {
     this.wavefrontService.isAllowed()
-      .then(allow => {
+      .subscribe(allow => {
         this.hidden = !allow;
       });
   }
