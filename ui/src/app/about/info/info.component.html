@@ -25,14 +25,10 @@
           <clr-icon shape="times" *ngIf="!about.features.schedules"></clr-icon>
         </li>
         <li>
-          <strong>Grafana: </strong>
-          <clr-icon shape="check" *ngIf="about.features.monitoringDashboardType === 'GRAFANA'"></clr-icon>
-          <clr-icon shape="times" *ngIf="about.features.monitoringDashboardType !== 'GRAFANA'"></clr-icon>
-        </li>
-        <li>
-          <strong>Wavefront: </strong>
-          <clr-icon shape="check" *ngIf="about.features.monitoringDashboardType === 'WAVEFRONT'"></clr-icon>
-          <clr-icon shape="times" *ngIf="about.features.monitoringDashboardType !== 'WAVEFRONT'"></clr-icon>
+          <strong>Dashboard: </strong>
+          <span *ngIf="about.features.monitoringDashboardType === 'GRAFANA'">Grafana</span>
+          <span *ngIf="about.features.monitoringDashboardType === 'WAVEFRONT'">Wavefront</span>
+          <clr-icon shape="times" *ngIf="about.features.monitoringDashboardType === 'NONE'"></clr-icon>
         </li>
       </ul>
       <h3>Security</h3>
