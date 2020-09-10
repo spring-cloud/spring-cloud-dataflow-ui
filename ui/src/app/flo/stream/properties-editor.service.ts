@@ -44,7 +44,7 @@ export class PropertiesEditor {
     return new StreamGraphPropertiesSource(element, streamHead);
   }
 
-  showForLink(propertiesDialog: PropertiesDialogComponent, link: dia.Link) {
+  showForLink(link: dia.Link) {
     const app = new App();
     app.name = `${link.prop('metadata/name')}`;
     app.type = (`${link.prop('metadata/group').toUpperCase()}` as any) as ApplicationType;
