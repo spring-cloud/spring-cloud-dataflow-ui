@@ -97,7 +97,13 @@ $dark-2: #243641;
 //    border-bottom: 0 none;
 //    margin-bottom: 0;
 //  }
-//}
+//}\
+
+:root {
+  .modal-title-wrapper {
+    width: 100%;
+  }
+}
 
 .modal-search {
   display: block;

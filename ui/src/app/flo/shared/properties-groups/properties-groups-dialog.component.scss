@@ -1,5 +1,5 @@
 $error-3: #B31B22;
-$input-border: #DFE5E8;
+$input-border: var(--clr-table-border-color, #cccccc);
 $navy-10: #EAEDEF;
 
 .properties-group-container .property-row {
@@ -50,7 +50,7 @@ label.df-property-control {
 .properties {
 
   .line-toggle {
-    background: #F5F6F7;
+    background-color: var(--clr-vertical-nav-bg-color, #e8e8e8);
     height: 42px;
     line-height: 42px;
     margin-top: 4px;
@@ -64,7 +64,7 @@ label.df-property-control {
       margin-right: 30px;
       padding-left: .6rem;
       font-weight: bold;
-      color: #000;
+      color: var(--clr-global-font-color, #000);
 
       clr-icon {
         transform: rotate(90deg);
@@ -87,7 +87,7 @@ label.df-property-control {
 
 .modal-search {
   display: block;
-  background-color: #f2f2f2;
+  background-color: var(--clr-vertical-nav-bg-color, #e8e8e8);
   border-bottom: 1px solid $input-border;
   padding: 8px;
 
