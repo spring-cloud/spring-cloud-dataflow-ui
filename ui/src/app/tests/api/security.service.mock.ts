@@ -10,6 +10,10 @@ export class SecurityServiceMock {
   constructor() {
   }
 
+  async canAccess(roles: string[]): Promise<boolean> {
+    return true;
+  }
+
   load(): Observable<Security> {
     return of(LOAD as Security);
   }

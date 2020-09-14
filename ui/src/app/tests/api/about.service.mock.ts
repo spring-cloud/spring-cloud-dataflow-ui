@@ -21,6 +21,10 @@ export class AboutServiceMock {
     return of(parse(LOAD));
   }
 
+  async isFeatureEnabled(feature: string): Promise<boolean> {
+    return true;
+  }
+
   static get provider() {
     if (!AboutServiceMock.mock) {
       AboutServiceMock.mock = new AboutServiceMock();
