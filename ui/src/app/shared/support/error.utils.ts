@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { AppError, HttpError } from '../model/error.model';
+import get from 'lodash.get';
 
 export class ErrorUtils {
 
@@ -13,9 +14,11 @@ export class ErrorUtils {
       let body;
       errorObject.status = error.status;
       try {
-        body = error.error || '';
+        body = get(error, 'error', '');
+        if (get(body, '_embedded.errors')) {
+          body = get(body, '_embedded.errors');
+        }
       } catch (e) {
-        // LoggerService.log('Unparsable json', error);
         errorObject.message = `${error} (Status code: ${error.status})`;
       }
       if (body) {
@@ -23,10 +26,9 @@ export class ErrorUtils {
         for (const bodyElement of body) {
           if (!isFirst) {
             errorObject.message += '\n';
-          } else {
-            isFirst = false;
           }
           errorObject.message += bodyElement.message;
+          isFirst = false;
         }
       }
       return throwError(new HttpError(errorObject.message, errorObject.status));
