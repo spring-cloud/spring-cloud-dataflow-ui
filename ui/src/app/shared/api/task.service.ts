@@ -145,7 +145,9 @@ export class TaskService {
     if (taskExecution.arguments) {
       taskExecution.arguments.forEach(arg => {
         const split = arg.split('=');
-        platform = (split[0] === '--spring.cloud.data.flow.platformname') ? `?platformName=${split[1]}` : '';
+        if (split[0] === '--spring.cloud.data.flow.platformname') {
+          platform = `?platformName=${split[1]}`;
+        }
       });
     }
     return this.httpClient
