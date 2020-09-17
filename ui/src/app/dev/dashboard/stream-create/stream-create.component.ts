@@ -33,7 +33,7 @@ export class StreamCreateComponent {
 
   model = {
     names: {
-      value: 'foo_::VAR',
+      value: 'foo::VAR',
       min: 10,
       max: 20
     },
@@ -59,7 +59,7 @@ export class StreamCreateComponent {
     this.wizard.reset();
     this.model = {
       names: {
-        value: 'foo_::VAR',
+        value: 'foo::VAR',
         min: 10,
         max: 20
       },
