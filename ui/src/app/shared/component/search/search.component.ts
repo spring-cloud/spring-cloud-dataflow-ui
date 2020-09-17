@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map } from 'rxjs/operators';
 import { AppPage } from '../../model/app.model';
@@ -148,6 +148,15 @@ export class SearchComponent implements OnInit {
   onInputFocus() {
     this.isFocus = true;
     this.isFocusPersist = false;
+  }
+
+
+  @HostListener('document:keyup', ['$event'])
+  setFocus(event: KeyboardEvent) {
+    console.log(event);
+    if (event.code.toUpperCase() === 'SPACE' && event.ctrlKey) {
+      this.inputQuickSearch.nativeElement.focus();
+    }
   }
 
   clear() {

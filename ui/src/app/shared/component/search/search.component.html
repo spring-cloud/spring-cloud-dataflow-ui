@@ -3,7 +3,7 @@
     <clr-spinner *ngIf="isSearching()" clrSmall></clr-spinner>
     <clr-icon *ngIf="!isSearching()" class="icon-search" shape="search"></clr-icon>
     <input [formControl]="search" autocomplete="off" (focus)="onInputFocus()" (blur)="onInputBlur()" (keydown)="onKeyDown($event)"
-           id="quick_search" type="text" placeholder="Search for keywords..." #inputQuickSearch>
+           id="quick_search" type="text" placeholder="Search for keywords (CTRL+SPACE)..." #inputQuickSearch>
     <button type="button" (click)="clear()" (mousedown)="onInputFocus()" class="btn-clear" *ngIf="isSearch()">
       <clr-icon class="icon-clear is-solid" shape="times-circle"></clr-icon>
     </button>
