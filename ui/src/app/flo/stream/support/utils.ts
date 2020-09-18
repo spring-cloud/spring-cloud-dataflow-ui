@@ -76,7 +76,7 @@ export class Utils {
       return element.attr('stream-name');
     }
 
-    const name = 'STREAM_';
+    const name = 'STREAM-';
     let index = 1;
     while (streamNames.indexOf(name + index) >= 0) {
       index++;

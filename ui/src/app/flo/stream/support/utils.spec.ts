@@ -161,7 +161,7 @@ describe('utils', () => {
       renderer: RENDER_SERVICE,
       graph: graph
     });
-    expect(Utils.generateStreamName(graph, transform)).toEqual('STREAM_1');
+    expect(Utils.generateStreamName(graph, transform)).toEqual('STREAM-1');
   });
 
   it('generate stream name when the same stream name is not active', () => {
@@ -175,8 +175,8 @@ describe('utils', () => {
       renderer: RENDER_SERVICE,
       graph: graph,
     });
-    transform.attr('stream-name', 'STREAM_1');
-    expect(Utils.generateStreamName(graph, http)).toEqual('STREAM_1');
+    transform.attr('stream-name', 'STREAM-1');
+    expect(Utils.generateStreamName(graph, http)).toEqual('STREAM-1');
   });
 
   it('generate stream name when the same stream name is active', () => {
@@ -185,14 +185,14 @@ describe('utils', () => {
       renderer: RENDER_SERVICE,
       graph: graph,
     });
-    http.attr('stream-name', 'STREAM_1');
+    http.attr('stream-name', 'STREAM-1');
     const filewatch = Shapes.Factory.createNode({
       metadata: metamodel.get('source').get('filewatch'),
       renderer: RENDER_SERVICE,
       graph: graph,
     });
-    filewatch.attr('stream-name', 'STREAM_1');
-    expect(Utils.generateStreamName(graph, http)).toEqual('STREAM_2');
+    filewatch.attr('stream-name', 'STREAM-1');
+    expect(Utils.generateStreamName(graph, http)).toEqual('STREAM-2');
   });
 
   it('stream already have unique name', () => {
@@ -207,7 +207,7 @@ describe('utils', () => {
       renderer: RENDER_SERVICE,
       graph: graph,
     });
-    filewatch.attr('stream-name', 'STREAM_1');
+    filewatch.attr('stream-name', 'STREAM-1');
     expect(Utils.generateStreamName(graph, http)).toEqual('unique-name');
   });
 

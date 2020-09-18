@@ -185,9 +185,9 @@ class GraphToTextConverter {
                 }
                 const streamId = this.findStreamWithNode(streams, tapStreams, nameTarget) + 1;
                 if (GraphToTextConverter.DEBUG) {
-                  LoggerService.log('  setting stream name on ' + this.getName(nameTarget) + ' to STREAM_' + streamId);
+                  LoggerService.log('  setting stream name on ' + this.getName(nameTarget) + ' to STREAM-' + streamId);
                 }
-                nameTarget.attr('stream-name', 'STREAM_' + streamId);
+                nameTarget.attr('stream-name', 'STREAM-' + streamId);
             }
         }
     }

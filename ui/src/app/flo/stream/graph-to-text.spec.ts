@@ -61,7 +61,7 @@ describe('graph-to-text', () => {
     createTap(timeSource, logSink);
     // 'timeSource' is missing a real connected (not via tap) sink
     dsl = convertGraphToText(graph);
-    expect(dsl).toEqual('STREAM_1=time\n:STREAM_1.time > log');
+    expect(dsl).toEqual('STREAM-1=time\n:STREAM-1.time > log');
   });
 
   it('incorrect graph - no tap links from channels', () => {
@@ -252,7 +252,7 @@ describe('graph-to-text', () => {
     createLink(timeSource, createSink('logA'));
     createTap(timeSource, createSink('logB'));
     dsl = convertGraphToText(graph);
-    expect(dsl).toEqual('STREAM_1=time | logA\n:STREAM_1.time > logB');
+    expect(dsl).toEqual('STREAM-1=time | logA\n:STREAM-1.time > logB');
   });
 
   it('tap node (tapping something not on the graph)', () => {
@@ -276,7 +276,7 @@ describe('graph-to-text', () => {
     createTap(timeSource2, createSink('logC'));
     createLink(timeSource2, createSink('logD'));
     dsl = convertGraphToText(graph);
-    expect(dsl).toEqual('STREAM_1=timeA | logA\n:STREAM_1.timeA > logB\n:STREAM_4.timeB > logC\nSTREAM_4=timeB | logD');
+    expect(dsl).toEqual('STREAM-1=timeA | logA\n:STREAM-1.timeA > logB\n:STREAM-4.timeB > logC\nSTREAM-4=timeB | logD');
   });
 
   it('finding names further away', () => {
@@ -288,7 +288,7 @@ describe('graph-to-text', () => {
     createLink(transformProcessor, logSink1);
     createTap(transformProcessor, logSink2);
     dsl = convertGraphToText(graph);
-    expect(dsl).toEqual('STREAM_1=timeA | transform | logA\n:STREAM_1.transform > logB');
+    expect(dsl).toEqual('STREAM-1=timeA | transform | logA\n:STREAM-1.transform > logB');
   });
 
   it('bridge name', () => {
@@ -363,7 +363,7 @@ describe('graph-to-text', () => {
     createLink(c, d);
     createTap(c, e);
     dsl = convertGraphToText(graph);
-    expect(dsl).toEqual('A > :B\nSTREAM_2=:B > C | D\n:STREAM_2.C > E');
+    expect(dsl).toEqual('A > :B\nSTREAM-2=:B > C | D\n:STREAM-2.C > E');
   });
 
   it('ensuring name set on correct element', () => {
@@ -375,7 +375,7 @@ describe('graph-to-text', () => {
     createLink(transformProcessor, logSink1);
     createTap(transformProcessor, logSink2);
     dsl = convertGraphToText(graph);
-    expect(dsl).toEqual('STREAM_1=timeA | transform | logA\n:STREAM_1.transform > logB');
+    expect(dsl).toEqual('STREAM-1=timeA | transform | logA\n:STREAM-1.transform > logB');
   });
 
   it('labels and taps', () => {
