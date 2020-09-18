@@ -719,8 +719,8 @@ class InternalParser {
             str += ' ';
           }
           str += '^';
-          LoggerService.error(str);
-          LoggerService.error(err.msg);
+          LoggerService.log(str);
+          LoggerService.log(err.msg);
         }
       }
     }
