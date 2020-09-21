@@ -1,6 +1,5 @@
-import { browser, by, element } from 'protractor';
-import { ElementHelper } from './utils/element.helper';
-import { ManageAppsPage } from './page/manage/apps.po';
+import { browser, element } from 'protractor';
+import { AppsPage } from './page/apps/apps.po';
 import { ManageRecordsPage } from './page/manage/records.po';
 import { ManageImportExportPage } from './page/manage/import-export.po';
 import { StreamsListPage } from './page/streams/list.po';
@@ -11,7 +10,7 @@ import { TasksJobsJobExecutionsPage } from './page/tasks-jobs/job-executions.po'
 
 describe('should display the pages', () => {
 
-  let manageAppPage: ManageAppsPage;
+  let appsPage: AppsPage;
   let manageRecordsPage: ManageRecordsPage;
   let manageImportExportPage: ManageImportExportPage;
   let streamsListPage: StreamsListPage;
@@ -24,7 +23,7 @@ describe('should display the pages', () => {
     browser.waitForAngularEnabled(false);
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 100000;
 
-    manageAppPage = new ManageAppsPage();
+    appsPage = new AppsPage();
     manageRecordsPage = new ManageRecordsPage();
     manageImportExportPage = new ManageImportExportPage();
     streamsListPage = new StreamsListPage();
@@ -34,19 +33,24 @@ describe('should display the pages', () => {
     tasksJobsJobExecutionsPage = new TasksJobsJobExecutionsPage();
   });
 
-  describe('Manage section', () => {
+  describe('Apps', () => {
 
-    it('should display the app page', async (done) => {
-      await manageAppPage.navigateTo();
-      const title = await manageAppPage.getTitle();
+    it('should display the apps page', async (done) => {
+      await appsPage.navigateTo();
+      const title = await appsPage.getTitle();
       expect(element(title).getText()).toEqual('Applications');
       done();
     });
 
+  });
+
+  describe('Manage section', () => {
+
+
     it('should display the record page', async (done) => {
       await manageRecordsPage.navigateTo();
       const title = await manageRecordsPage.getTitle();
-      expect(element(title).getText()).toEqual('Records');
+      expect(element(title).getText()).toEqual('Audit Records');
       done();
     });
 

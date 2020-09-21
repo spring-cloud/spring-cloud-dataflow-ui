@@ -4,7 +4,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
-    path: 'dashboard',
+    path: 'dev',
+    redirectTo: 'dev/dashboard',
+  },
+  {
+    path: 'dev/dashboard',
     component: DashboardComponent,
   },
 ];

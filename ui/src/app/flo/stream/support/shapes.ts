@@ -3,7 +3,7 @@ import * as _joint from 'jointjs';
 const joint: any = _joint;
 
 // Load changes into joint object
-import {loadSharedShapes} from '../../shared/support/shared-shapes';
+import { loadSharedShapes } from '../../shared/support/shared-shapes';
 
 export const IMAGE_W = 180;
 export const IMAGE_H = 64;

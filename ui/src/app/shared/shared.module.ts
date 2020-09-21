@@ -120,9 +120,6 @@ import * as fromContext from './store/context.reducer';
     WavefrontTaskExecutionDirective,
     TippyDirective,
     StreamDslComponent
-  ],
-  providers: [
-    DevGuard
   ]
 })
 export class SharedModule {

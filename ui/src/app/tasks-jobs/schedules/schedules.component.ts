@@ -26,7 +26,7 @@ export class SchedulesComponent extends DatagridComponent {
 
   isScheduleReady(state): boolean {
     const params = this.getParams(state, { platform: '' });
-    return super.isReady() && params.platform
+    return super.isReady() && params.platform;
   }
 
   refresh(state: ClrDatagridStateInterface) {

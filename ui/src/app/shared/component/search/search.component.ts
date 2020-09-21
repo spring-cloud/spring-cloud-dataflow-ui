@@ -209,7 +209,7 @@ export class SearchComponent implements OnInit {
         let item;
         if (this.selected < (this.results.apps.items.length)) {
           item = this.results.apps.items[this.selected];
-          this.navigate(`/manage/apps/${item.type}/${item.name}`);
+          this.navigate(`/apps/${item.type}/${item.name}`);
         } else if (this.selected < ((this.results.apps.items.length) + (this.results.streams.items.length))) {
           item = this.results.streams.items[this.selected - this.results.apps.items.length];
           this.navigate(`/streams/list/${item.name}`);

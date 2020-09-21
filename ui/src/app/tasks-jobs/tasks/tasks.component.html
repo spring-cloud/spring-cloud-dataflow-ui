@@ -1,4 +1,17 @@
-<h1>Tasks</h1>
+<h1 class="page-title-actions">
+  Tasks
+  <span class="actions">
+    <button type="button" class="btn btn-sm btn-primary" (click)="createTask()" [appRole]="['ROLE_CREATE']">
+      Create task
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>
+      Grafana Dashboard
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardTasks>
+      Wavefront Dashboard
+    </button>
+  </span>
+</h1>
 
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
               *ngIf="isInit" #datagrid>
@@ -19,15 +32,6 @@
     <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
             [appRole]="['ROLE_DESTROY', 'ROLE_SCHEDULE']">
       Group Actions
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="createTask()" [appRole]="['ROLE_CREATE']">
-      Create task
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>
-      Grafana Dashboard
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardTasks>
-      Wavefront Dashboard
     </button>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
       Refresh
@@ -92,7 +96,7 @@
       </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
-  <clr-dg-placeholder>We couldn't find any tasks!</clr-dg-placeholder>
+  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination #pagination [clrDgTotalItems]="page?.total"
                        [clrDgPageSize]="context.size" [clrDgPage]="context.current">

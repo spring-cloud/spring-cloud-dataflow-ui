@@ -207,6 +207,16 @@ h1.page-title {
   }
 }
 
+h1.page-title-actions {
+  span.actions {
+    margin-left: .5rem;
+    .btn {
+      padding: 0.1rem 0.8rem;
+      height: 28px;
+    }
+  }
+}
+
 .datagrid-scrolling-cells {
   height: 42px;
 }

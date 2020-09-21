@@ -1,4 +1,4 @@
-<h1>Records</h1>
+<h1>Audit Records</h1>
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
   <clr-dg-action-bar>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
@@ -89,7 +89,7 @@
     <clr-dg-cell><span class="text-truncate">{{record.createdBy || 'N/A'}}</span></clr-dg-cell>
     <clr-dg-cell><span class="text-truncate">{{record.platformName || 'N/A'}}</span></clr-dg-cell>
   </clr-dg-row>
-  <clr-dg-placeholder>We couldn't find any records!</clr-dg-placeholder>
+  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
   <clr-dg-detail *clrIfDetail="let detail">
     <clr-dg-detail-header>
       Record {{detail.auditRecordId}}

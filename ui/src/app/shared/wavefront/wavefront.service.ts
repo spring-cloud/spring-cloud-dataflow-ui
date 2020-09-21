@@ -20,7 +20,7 @@ export class WavefrontService {
       .getMonitoringType()
       .pipe(
         map(type => type === 'WAVEFRONT')
-      )
+      );
   }
 
   getDashboardStreams(): Observable<string> {

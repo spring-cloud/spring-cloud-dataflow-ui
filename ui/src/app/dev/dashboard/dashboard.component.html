@@ -93,23 +93,6 @@
   </div>
 </div>
 
-<app-view-card titleModal="Stores" name="dev" keyContext="dev" id="store">
-  <ng-template>
-    <clr-select-container style="margin:0;">
-      <select clrSelect name="options" [(ngModel)]="storesName" (ngModelChange)="getStore()">
-        <option value="">Select a store</option>
-        <option value="about">About</option>
-        <option value="security">Security</option>
-        <option value="settings">Settings</option>
-        <option value="context">Context</option>
-      </select>
-    </clr-select-container>
-    <div *ngIf="store">
-      <pre><code>{{store | json}}</code></pre>
-    </div>
-  </ng-template>
-</app-view-card>
-
 <app-dev-stream-create #streamCreateModal></app-dev-stream-create>
 <app-dev-task-create #taskCreateModal></app-dev-task-create>
 <app-confirm #importAppsModal (onConfirmed)="runOperation('IMPORT_APPS')" title="Confirm Import Apps Starters" yes="Import Apps Starters">

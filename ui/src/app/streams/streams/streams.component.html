@@ -1,4 +1,17 @@
-<h1>Streams</h1>
+<h1 class="page-title-actions">
+  Streams
+  <span class="actions">
+    <button type="button" class="btn btn-sm btn-primary" (click)="create()" [appRole]="['ROLE_CREATE']">
+      Create stream(s)
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>
+      Grafana Dashboard
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardStreams>
+      Wavefront Dashboard
+    </button>
+  </span>
+</h1>
 
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
               *ngIf="isInit">
@@ -23,15 +36,6 @@
     <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
             [appRole]="['ROLE_DEPLOY', 'ROLE_CREATE', 'ROLE_DESTROY']">
       Group Actions
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="create()" [appRole]="['ROLE_CREATE']">
-      Create stream(s)
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>
-      Grafana Dashboard
-    </button>
-    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardStreams>
-      Wavefront Dashboard
     </button>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
       Refresh
@@ -114,7 +118,7 @@
       </clr-dg-row-detail>
     </ng-template>
   </clr-dg-row>
-  <clr-dg-placeholder>We couldn't find any streams!</clr-dg-placeholder>
+  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination #pagination
                        [clrDgTotalItems]="page?.total"

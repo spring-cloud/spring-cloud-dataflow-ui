@@ -23,7 +23,7 @@
         <h4>Application(s)</h4>
         <ul>
           <li *ngFor="let app of results.apps.items;let i = index" [class.active]="selected === i">
-            <a (mouseover)="selected = i" (click)="navigate('/manage/apps/' + app.type + '/' + app.name)">
+            <a (mouseover)="selected = i" (click)="navigate('/apps/' + app.type + '/' + app.name)">
               <span class="text-truncate">
                 {{app.name}} <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
                 <span class="label}}">{{app.version}}</span>

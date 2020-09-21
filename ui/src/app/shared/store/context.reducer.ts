@@ -19,7 +19,7 @@ export const getContext = (contexts: ContextModel[], name: string) => {
 
 export const initialState = [
   {
-    name: 'manage/apps',
+    name: 'apps',
     value: [
       { name: 'current', value: 1 },
       { name: 'size', value: '' },

@@ -1,6 +1,6 @@
 <clr-modal [(clrModalOpen)]="isOpen" class="modal-about">
   <h3 class="modal-title">About Spring Cloud Data Flow</h3>
-  <div class="modal-body">
+  <div class="modal-body" #container>
     <div *ngIf="!loading && about">
       <h3 style="padding-top: 0;">Data Flow Server Implementation</h3>
       <ul>
@@ -222,5 +222,10 @@
         </li>
       </ul>
     </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="copyToClipboard()" type="button" class="btn btn-primary">
+      Copy Details to Clipboard
+    </button>
   </div>
 </clr-modal>

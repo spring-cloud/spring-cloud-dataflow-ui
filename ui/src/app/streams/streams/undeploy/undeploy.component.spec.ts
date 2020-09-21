@@ -13,7 +13,7 @@ import { Stream } from '../../../shared/model/stream.model';
 import { UndeployComponent } from './undeploy.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
-describe('manage/apps/undeploy/undeploy.component.ts', () => {
+describe('apps/undeploy/undeploy.component.ts', () => {
 
   let component: UndeployComponent;
   let fixture: ComponentFixture<UndeployComponent>;

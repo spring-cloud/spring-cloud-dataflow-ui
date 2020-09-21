@@ -194,7 +194,7 @@ describe('shared/component/search/search.component.ts', () => {
       component.onKeyDown({ preventDefault, keyCode: 37 });
       component.onKeyDown({ preventDefault, keyCode: 13 });
       fixture.detectChanges();
-      expect(navigate.calls.mostRecent().args[0].toString()).toBe('/manage/apps/processor/aggregator');
+      expect(navigate.calls.mostRecent().args[0].toString()).toBe('/apps/processor/aggregator');
       done();
     });
 

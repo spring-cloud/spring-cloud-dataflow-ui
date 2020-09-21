@@ -7,7 +7,6 @@ export class Schedule {
   platform: string;
 
   static parse(input) {
-    console.log(input)
     let cron = '';
     if (!!input.scheduleProperties) {
       cron = input.scheduleProperties['spring.cloud.scheduler.cron.expression'];

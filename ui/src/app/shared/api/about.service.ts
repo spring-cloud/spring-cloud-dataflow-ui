@@ -43,7 +43,7 @@ export class AboutService {
 
   getMonitoringType(): Observable<string> {
     return this.store.pipe(select(state => {
-      return state[aboutFeatureKey].features.monitoringDashboardType
+      return state[aboutFeatureKey].features.monitoringDashboardType;
     }));
   }
 

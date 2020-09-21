@@ -2,19 +2,10 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { AppService } from '../../shared/api/app.service';
 import { StreamService } from '../../shared/api/stream.service';
 import { forkJoin, Observable, Subscription } from 'rxjs';
-import { TaskService } from '../../shared/api/task.service';
 import { NotificationService } from '../../shared/service/notification.service';
-import { AboutService } from '../../shared/api/about.service';
-import { AboutState } from '../../shared/store/about.reducer';
-import { SecurityService } from '../../security/service/security.service';
-import { SecurityState } from '../../security/store/security.reducer';
 import { StreamCreateComponent } from './stream-create/stream-create.component';
 import { TaskCreateComponent } from './task-create/task-create.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
-import { SettingsService } from '../../settings/settings.service';
-import { SettingModel } from '../../shared/model/setting.model';
-import { ContextService } from '../../shared/service/context.service';
-import { ContextModel } from '../../shared/model/context.model';
 
 @Component({
   selector: 'app-dev-dasboard',
@@ -27,16 +18,9 @@ export class DashboardComponent implements OnDestroy {
   @ViewChild('importAppsModal', { static: true }) importAppsModal: ConfirmComponent;
   operationSubscription: Subscription;
   processing = false;
-  storesName = '';
-  store = null;
 
   constructor(private appService: AppService,
               private streamService: StreamService,
-              private taskService: TaskService,
-              private aboutService: AboutService,
-              private securityService: SecurityService,
-              private settingsService: SettingsService,
-              private contextService: ContextService,
               private notificationService: NotificationService) {
   }
 
@@ -79,32 +63,6 @@ export class DashboardComponent implements OnDestroy {
 
   importApps() {
     this.importAppsModal.open();
-  }
-
-  getStore() {
-    this.store = null;
-    if (this.storesName === 'about') {
-      this.aboutService.getAbout()
-        .subscribe((about: AboutState) => {
-          this.store = about;
-        });
-
-    } else if (this.storesName === 'security') {
-      this.securityService.getSecurity()
-        .subscribe((security: SecurityState) => {
-          this.store = security;
-        });
-    } else if (this.storesName === 'settings') {
-      this.settingsService.getSettings()
-        .subscribe((settings: SettingModel[]) => {
-          this.store = settings;
-        });
-    } else if (this.storesName === 'context') {
-      this.contextService.getContexts()
-        .subscribe((contexts: ContextModel[]) => {
-          this.store = contexts;
-        });
-    }
   }
 
 }

@@ -90,13 +90,12 @@
     </div>
 
     <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
-      <app-view-card name="{{stream.name}}" keyContext="stream" id="visualize" titleModal="Visualize">
+      <app-view-card name="{{stream.name}}" keyContext="stream" id="visualize" titleModal="Show Data Pipeline">
         <ng-template>
           <app-stream-flo-view [id]="stream.name" class="stream-details"></app-stream-flo-view>
         </ng-template>
       </app-view-card>
     </div>
-
 
     <div class="clr-col-xl-6 clr-col-lg-12 clr-col-md-12 clr-col-12" *ngIf="canShowDeploymentInfo()">
       <app-view-card titleModal="Deployment Info" keyContext="stream" name="{{stream.name}}" id="deploymentInfo">

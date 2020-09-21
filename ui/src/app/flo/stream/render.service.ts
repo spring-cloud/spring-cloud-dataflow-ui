@@ -41,7 +41,7 @@ import { PropertiesEditor } from './properties-editor.service';
 
 import * as _joint from 'jointjs';
 import * as _ from 'lodash';
-import {StreamPropertiesDialogComponent} from './properties/stream-properties-dialog.component';
+import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
 
 const joint: any = _joint;
 

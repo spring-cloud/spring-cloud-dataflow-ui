@@ -11,10 +11,6 @@ export class NavComponent implements OnInit {
 
   shouldProtect = this.securityService.shouldProtect();
 
-  get isDevEnv() {
-    return !environment.production;
-  }
-
   constructor(private securityService: SecurityService) {
   }
 

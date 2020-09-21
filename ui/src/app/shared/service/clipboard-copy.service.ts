@@ -21,14 +21,15 @@ export class ClipboardCopyService {
     this.textareaEl.value = value;
   }
 
-  executeCopy(copyContent: string) {
+  executeCopy(copyContent: string, container?: HTMLElement) {
     if (isPlatformBrowser(this.platformId)) {
+      const _container = container ? container : document.body;
       this.createTextareaEl();
       this.setTextareaValue(copyContent);
-      document.body.appendChild(this.textareaEl);
+      _container.appendChild(this.textareaEl);
       this.textareaEl.select();
       document.execCommand('copy');
-      document.body.removeChild(this.textareaEl);
+      _container.removeChild(this.textareaEl);
       delete this.textareaEl;
     }
   }

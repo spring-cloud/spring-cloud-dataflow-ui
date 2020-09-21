@@ -7,11 +7,6 @@ const routes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'streams/list'
-  },
-  {
-    path: 'dev',
-    loadChildren: () => import('./dev/dev.module').then(m => m.DevModule),
-    canLoad: [DevGuard]
   }
 ];
 @NgModule({

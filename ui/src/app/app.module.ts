@@ -24,6 +24,7 @@ import { of } from 'rxjs';
 import { ROOT_REDUCERS, metaReducers } from './reducers/reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { SettingsService } from './settings/settings.service';
+import { AppsModule } from './apps/apps.module';
 
 @NgModule({
   declarations: [
@@ -40,11 +41,13 @@ import { SettingsService } from './settings/settings.service';
     FormsModule,
     LayoutModule,
     // DashboardModule,
+    // DevModule,
     StreamsModule,
     TasksJobsModule,
     ManageModule,
     SecurityModule,
     SettingsModule,
+    AppsModule,
     StoreModule.forRoot(ROOT_REDUCERS, {
       metaReducers,
       runtimeChecks: {
