@@ -78,9 +78,9 @@ export class RenderService implements Flo.Renderer {
       this.nodeHelper.createPorts(element, metadata);
     } else {
       element.size(120, 30);
-      element.attr('.type-icon/width', TYPE_ICON_SIZE_PALETTE.width);
-      element.attr('.type-icon/height', TYPE_ICON_SIZE_PALETTE.height);
-      element.attr('.type-icon/refY2', -TYPE_ICON_SIZE_PALETTE.height / 2);
+      // element.attr('.type-icon/width', TYPE_ICON_SIZE_PALETTE.width);
+      // element.attr('.type-icon/height', TYPE_ICON_SIZE_PALETTE.height);
+      // element.attr('.type-icon/refY2', -TYPE_ICON_SIZE_PALETTE.height / 2);
       element.attr('.box/rx', NODE_ROUNDED_CORNER_PALETTE);
       element.attr('.box/ry', NODE_ROUNDED_CORNER_PALETTE);
     }
