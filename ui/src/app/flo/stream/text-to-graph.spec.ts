@@ -126,9 +126,9 @@ describe('text-to-graph', () => {
   });
 
   it('jsongraph: incomplete stream with tap', () => {
-    graph = getGraph('STREAM_1=time\n:STREAM_1.time > log');
+    graph = getGraph('STREAM-1=time\n:STREAM-1.time > log');
     expect(graph.streamdefs[0].def).toEqual('time');
-    expect(graph.streamdefs[1].def).toEqual(':STREAM_1.time > log');
+    expect(graph.streamdefs[1].def).toEqual(':STREAM-1.time > log');
     expect(graph.nodes[0].name).toEqual('time');
     expect(graph.nodes[0]['stream-id']).toEqual(1);
     expect(graph.nodes[1].name).toEqual('log');
@@ -279,9 +279,9 @@ describe('text-to-graph', () => {
   });
 
   it('incorrect tap link - gh514', () => {
-    graph = getGraph('STREAM_1=ftp | filter > :foo\n' +
-      'STREAM_2=:STREAM_1.ftp > splitter > :foo\n' +
-      'STREAM_3=:foo > log');
+    graph = getGraph('STREAM-1=ftp | filter > :foo\n' +
+      'STREAM-2=:STREAM-1.ftp > splitter > :foo\n' +
+      'STREAM-3=:foo > log');
     expect(graph.format).toEqual('scdf');
     expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(5);

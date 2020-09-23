@@ -46,36 +46,51 @@
               <span class="dsl-text dsl-truncate">{{def.def}}</span>
             </div>
           </div>
-          <clr-control-container>
-            <label [for]="def.index.toString()">
-              Name
-            </label>
-            <input
-              [id]="def.index.toString()"
-              [name]="def.index.toString()"
-              [formControlName]="def.index.toString()"
-              [dataflowFocus]="i == 0"
-              clrControl
-              type="text"
-              placeholder="Stream Name"
-              [ngModel]="def.name"
-              (ngModelChange)="changeStreamName(def.index, $event)"
-              maxlength="255"
-              style="width: 360px"
-            />
-            <clr-control-error *clrIfError="'required'">Stream name is required!</clr-control-error>
-            <clr-control-error *clrIfError="'uniqueResource'">Stream name is already taken!</clr-control-error>
-            <clr-control-error *clrIfError="'pattern'">Invalid stream name!</clr-control-error>
-            <clr-control-error *clrIfError="'maxlength'">Stream name must be less than 255 characters long!
-            </clr-control-error>
-          </clr-control-container>
+
+          <div class="form-group clr-form-control clr-row">
+            <label class="clr-control-label clr-col-12 clr-col-md-2">Name</label>
+            <div class="clr-control-container clr-error clr-col-md-10 clr-col-12"
+                 [class]="{'clr-error': getControl(def.index.toString()).errors}">
+              <div class="clr-input-wrapper">
+                <input
+                  type="text"
+                  placeholder="Stream Name"
+                  maxlength="255"
+                  [name]="def.index.toString()"
+                  [formControlName]="def.index.toString()"
+                  [dataflowFocus]="i == 0"
+                  [ngModel]="def.name"
+                  (ngModelChange)="changeStreamName(def.index, $event)"
+                  style="width: 360px;"
+                  name="{{def.index.toString()}}"
+                  class="clr-input"
+                  aria-describedby="0-error">
+              </div>
+              <div class="clr-subtext"
+                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required">
+                Stream name is required!
+              </div>
+              <div class="clr-subtext"
+                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource">
+                Stream name is already taken!
+              </div>
+              <div class="clr-subtext"
+                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern">
+                Invalid stream name!
+              </div>
+              <div class="clr-subtext"
+                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.maxlength">
+                Stream name must be less than 255 characters long!
+              </div>
+            </div>
+          </div>
+
           <clr-control-container class="form-group">
             <label [for]="def.index.toString()+'_desc'">Description</label>
             <input
               [id]="def.index.toString()+'_desc'"
               [name]="def.index.toString()+'_desc'"
               [formControlName]="def.index.toString()+'_desc'"
-              [disabled]="isStreamCreationInProgress()"
               clrControl
               [ngModel]="def.description"
               (ngModelChange)="changeStreamDescription(def.index, $event)"

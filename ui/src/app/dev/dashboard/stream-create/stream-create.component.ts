@@ -33,7 +33,7 @@ export class StreamCreateComponent {
 
   model = {
     names: {
-      value: 'foo_::VAR',
+      value: 'foo::VAR',
       min: 10,
       max: 20
     },
@@ -59,7 +59,7 @@ export class StreamCreateComponent {
     this.wizard.reset();
     this.model = {
       names: {
-        value: 'foo_::VAR',
+        value: 'foo::VAR',
         min: 10,
         max: 20
       },
@@ -166,9 +166,9 @@ minutes=:time.time > transform --expression=payload.substring(2,4) | log
 seconds=:time.time > transform --expression=payload.substring(4) | log`;
         break;
       case '3':
-        this.model.dsl.value = `STREAM_1=time | scriptable-transform --script="return ""#{payload.tr('^A-Za-z0-9', '')}""" --language=ruby | log
-:STREAM_1.time > scriptable-transform --script="function double(p) { return p + '--' + p; }\\ndouble(payload);" --language=javascript | log
-:STREAM_1.time > scriptable-transform --script="return payload + '::' + payload" --language=groovy | log`;
+        this.model.dsl.value = `STREAM-1=time | scriptable-transform --script="return ""#{payload.tr('^A-Za-z0-9', '')}""" --language=ruby | log
+:STREAM-1.time > scriptable-transform --script="function double(p) { return p + '--' + p; }\\ndouble(payload);" --language=javascript | log
+:STREAM-1.time > scriptable-transform --script="return payload + '::' + payload" --language=groovy | log`;
         break;
     }
     setTimeout(() => {

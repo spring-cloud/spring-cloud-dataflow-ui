@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Utils } from '../../../flo/stream/support/utils';
 import { StreamFloCreateComponent } from '../../../flo/stream/component/create.component';
 import { NotificationService } from '../../../shared/service/notification.service';
@@ -44,8 +44,9 @@ export class CreateComponent implements OnInit {
               private parserService: ParserService,
               private streamService: StreamService,
               private notificationService: NotificationService,
+              private fb: FormBuilder,
               private sanitizeDsl: SanitizeDsl) {
-    this.form = new FormGroup({}, this.uniqueStreamNames());
+    this.form = this.fb.group({}, this.uniqueStreamNames());
   }
 
   getStreams(): Array<any> {
@@ -112,7 +113,6 @@ export class CreateComponent implements OnInit {
         newLineNumber++;
       }
     });
-
     this.dependencies = new Map();
     if (text) {
       const graphAndErrors = this.sanitizeDsl.convert(text, this.parserService.parseDsl(text));
@@ -125,7 +125,7 @@ export class CreateComponent implements OnInit {
             streamDef.index.toString(),
             new FormControl('', [
               Validators.required,
-              Validators.pattern(/^[\w\-]+$/),
+              Validators.pattern(/^[a-zA-Z0-9\-]+$/),
               Validators.maxLength(255)
             ], [
               Properties.Validators.uniqueResource((value) => this.isUniqueStreamName(value), 500)
@@ -261,6 +261,10 @@ export class CreateComponent implements OnInit {
           }
         });
     }
+  }
+
+  getControl(id: string): AbstractControl {
+    return this.form.controls[id];
   }
 
   waitForStreamDef(streamDefNameToWaitFor: string, attemptCount: number): Promise<void> {
