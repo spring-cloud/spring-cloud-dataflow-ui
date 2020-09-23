@@ -100,12 +100,20 @@ export class RenderService implements Flo.Renderer {
     const metadata: Flo.ElementMetadata = cell.prop('metadata');
     const type = metadata ? metadata.name : undefined;
 
+
     if (cell instanceof joint.dia.Element) {
       const element = cell as dia.Element;
+      const view = paper.findViewByModel(element);
       if (changedPropertyPath === 'stream-name') {
         element.attr('.stream-label/display', Utils.canBeHeadOfStream(paper.model, element as dia.Element) ? 'block' : 'none');
         if (element.attr('stream-name')) {
           element.attr('.stream-label/text', element.attr('stream-name'));
+          if (view instanceof dia.ElementView) {
+            view.update(element);
+            if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
+              ViewUtils.fitLabelWithFixedWidth(paper, element, '.stream-label', element.size().width);
+            }
+          }
         } else {
           element.attr('.stream-label/text', '');
           element.removeAttr('.stream-label/text');
@@ -137,7 +145,6 @@ export class RenderService implements Flo.Renderer {
         const nodeName = element.attr('node-name');
         // fitLabel() calls update as necessary, so set label text silently
         element.attr('.name-label/text', nodeName ? nodeName : element.prop('metadata/name'));
-        const view = paper.findViewByModel(element);
         if (view instanceof dia.ElementView) {
           view.update(element);
           if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {

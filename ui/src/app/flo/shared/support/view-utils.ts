@@ -205,4 +205,66 @@ export class ViewUtils {
     }
   }
 
+  static fitLabelWithFixedWidth(paper: dia.Paper, node: dia.Element, labelPath: string, widthConstraint: number): void {
+    if (isNaN(widthConstraint)) {
+      throw new Error('Width constraint is invalid');
+    }
+    const label: string = node.attr(`${labelPath}/text`);
+    const view = paper.findViewByModel(node);
+    if (view && label) {
+      const labelElement = view.findBySelector(labelPath)[0];
+      if (!labelElement) {
+        return;
+      }
+
+      const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
+
+      let width = labelInitialBox.width;
+
+      if (width > widthConstraint) {
+        const styles = getComputedStyle(labelElement);
+        const stylesObj: {} = {};
+        for (let i = 0; i < styles.length; i++) {
+          const property = styles.item(i);
+          if (!property.startsWith('-')) {
+            stylesObj[property] = styles.getPropertyValue(property);
+          }
+        }
+
+        const svgDocument = joint.V('svg').node;
+        const textSpan = joint.V('tspan').node;
+        const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
+        const textNode = document.createTextNode(label);
+
+        // Prevent flickering
+        textElement.style.opacity = 0;
+        // Prevent FF from throwing an uncaught exception when `getBBox()`
+        // called on element that is not in the render tree (is not measurable).
+        // <tspan>.getComputedTextLength() returns always 0 in this case.
+        // Note that the `textElement` resp. `textSpan` can become hidden
+        // when it's appended to the DOM and a `display: none` CSS stylesheet
+        // rule gets applied.
+        textElement.style.display = 'block';
+        textSpan.style.display = 'block';
+
+        textSpan.appendChild(textNode);
+        svgDocument.appendChild(textElement);
+
+        document.body.appendChild(svgDocument);
+
+        try {
+          width = textSpan.getComputedTextLength();
+          for (let i = 1; i < width && width > widthConstraint; i++) {
+            textNode.data = label.substr(0, label.length - i) + '\u2026';
+            width = textSpan.getComputedTextLength();
+          }
+
+          // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
+          node.attr(`${labelPath}/text`, textNode.data);
+        } finally {
+          document.body.removeChild(svgDocument);
+        }
+      }
+    }
+  }
 }
