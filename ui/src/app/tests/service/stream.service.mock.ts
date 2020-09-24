@@ -4,6 +4,10 @@ import { Platform } from '../../shared/model/platform.model';
 import { Stream, StreamHistory, StreamPage } from '../../shared/model/stream.model';
 import { StreamService } from '../../shared/api/stream.service';
 import { StreamStatus } from '../../shared/model/metrics.model';
+import { HttpUtils } from '../../shared/support/http.utils';
+import { catchError, map } from 'rxjs/operators';
+import { ErrorUtils } from '../../shared/support/error.utils';
+import { GET_DEPLOYMENT_INFO } from '../data/stream';
 
 /**
  * Mock for StreamsService.
@@ -62,10 +66,11 @@ export class MockStreamsService extends StreamService {
 
   getPlatforms(): Observable<Platform[]> {
     return of([
-      Platform.parse({name: 'default', type: 'local', description: '',
-        options: [{id: 'spring.cloud.deployer.local.opt1', name: 'opt1'}]
+      Platform.parse({
+        name: 'default', type: 'local', description: '',
+        options: [{ id: 'spring.cloud.deployer.local.opt1', name: 'opt1' }]
       }),
-      Platform.parse({name: 'foo', type: 'bar', description: 'foobar'})
+      Platform.parse({ name: 'foo', type: 'bar', description: 'foobar' })
     ]);
   }
 
@@ -88,6 +93,13 @@ export class MockStreamsService extends StreamService {
         info: { firstDeployed: new Date(), status: { statusCode: 'DELETED' }, description: 'Delete complete' }
       })
     ]);
+  }
+
+  getDeploymentInfo(name: string, reuseDeploymentProperties: boolean = false): Observable<Stream> {
+    return of(GET_DEPLOYMENT_INFO)
+      .pipe(
+        map(Stream.parse)
+      );
   }
 
   rollbackStream(streamHistory: StreamHistory): Observable<HttpResponse<any>> {

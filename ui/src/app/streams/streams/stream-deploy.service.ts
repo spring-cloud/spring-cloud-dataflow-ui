@@ -26,7 +26,7 @@ export class StreamDeployService {
    */
   public static platform = {
     is: (key: string): boolean => {
-      return /^(spring.cloud.dataflow.skipper.platformName)$/.test(key);
+      return /^(spring\.cloud\.dataflow\.skipper\.platformName)$/.test(key);
     }
   };
 
@@ -36,7 +36,7 @@ export class StreamDeployService {
   public static deployer = {
     keyEdit: 'spring.cloud.deployer.',
     is: (key: string): boolean => {
-      return /^(deployer.)/.test(key);
+      return /^(deployer\.)/.test(key);
     },
     extract: (key: string): string => {
       const result = key.split('.');
@@ -54,7 +54,7 @@ export class StreamDeployService {
   public static version = {
     keyEdit: 'version',
     is: (key: string): boolean => {
-      return /^(version.)/.test(key);
+      return /^(version\.)/.test(key);
     }
   };
 
@@ -63,7 +63,7 @@ export class StreamDeployService {
    */
   public static app = {
     is: (key: string): boolean => {
-      return /^(app.)/.test(key);
+      return /^(app\.)/.test(key);
     },
     extract: (key: string): string => {
       const result = key.split('.');

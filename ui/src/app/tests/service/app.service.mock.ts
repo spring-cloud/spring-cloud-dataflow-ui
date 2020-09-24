@@ -123,7 +123,153 @@ const METAMODEL_DATA: Array<RawMetadata> = [
     name: 'd', type: 'task', description: 'Task d', options: []
   }, {
     name: 'super-very-very-very-looooooooong-task-name', type: 'task', description: 'Task d', options: []
-  }];
+  },
+  {
+    'name': 'time',
+    'type': 'source',
+    'description': 'Desc',
+    'options': [
+      {
+        'id': 'trigger.time-unit',
+        'name': 'time-unit',
+        'type': 'java.util.concurrent.TimeUnit',
+        'description': 'The TimeUnit to apply to delay values.',
+        'shortDescription': 'The TimeUnit to apply to delay values.',
+        'defaultValue': null,
+        'hints': {
+          'keyHints': [],
+          'keyProviders': [],
+          'valueHints': [
+            {
+              'value': 'NANOSECONDS',
+              'description': null,
+              'shortDescription': null
+            },
+            {
+              'value': 'MICROSECONDS',
+              'description': null,
+              'shortDescription': null
+            },
+            {
+              'value': 'MILLISECONDS',
+              'description': null,
+              'shortDescription': null
+            },
+            {
+              'value': 'SECONDS',
+              'description': null,
+              'shortDescription': null
+            },
+            {
+              'value': 'MINUTES',
+              'description': null,
+              'shortDescription': null
+            },
+            {
+              'value': 'HOURS',
+              'description': null,
+              'shortDescription': null
+            },
+            {
+              'value': 'DAYS',
+              'description': null,
+              'shortDescription': null
+            }
+          ],
+          'valueProviders': [
+            {
+              'name': 'java.util.concurrent.TimeUnit',
+              'parameters': {}
+            }
+          ]
+        },
+        'deprecation': null,
+        'deprecated': false
+      },
+      {
+        'id': 'trigger.fixed-delay',
+        'name': 'fixed-delay',
+        'type': 'java.lang.Integer',
+        'description': 'Fixed delay for periodic triggers.',
+        'shortDescription': 'Fixed delay for periodic triggers.',
+        'defaultValue': 1,
+        'hints': {
+          'keyHints': [],
+          'keyProviders': [],
+          'valueHints': [],
+          'valueProviders': []
+        },
+        'deprecation': null,
+        'deprecated': false
+      },
+      {
+        'id': 'trigger.cron',
+        'name': 'cron',
+        'type': 'java.lang.String',
+        'description': 'Cron expression value for the Cron Trigger.',
+        'shortDescription': 'Cron expression value for the Cron Trigger.',
+        'defaultValue': null,
+        'hints': {
+          'keyHints': [],
+          'keyProviders': [],
+          'valueHints': [],
+          'valueProviders': []
+        },
+        'deprecation': null,
+        'deprecated': false
+      },
+      {
+        'id': 'trigger.initial-delay',
+        'name': 'initial-delay',
+        'type': 'java.lang.Integer',
+        'description': 'Initial delay for periodic triggers.',
+        'shortDescription': 'Initial delay for periodic triggers.',
+        'defaultValue': 0,
+        'hints': {
+          'keyHints': [],
+          'keyProviders': [],
+          'valueHints': [],
+          'valueProviders': []
+        },
+        'deprecation': null,
+        'deprecated': false
+      },
+      {
+        'id': 'trigger.max-messages',
+        'name': 'max-messages',
+        'type': 'java.lang.Long',
+        'description': 'Maximum messages per poll, -1 means infinity.',
+        'shortDescription': 'Maximum messages per poll, -1 means infinity.',
+        'defaultValue': 1,
+        'hints': {
+          'keyHints': [],
+          'keyProviders': [],
+          'valueHints': [],
+          'valueProviders': []
+        },
+        'deprecation': null,
+        'deprecated': false
+      },
+      {
+        'id': 'trigger.date-format',
+        'name': 'date-format',
+        'type': 'java.lang.String',
+        'description': 'Format for the date value.',
+        'shortDescription': 'Format for the date value.',
+        'defaultValue': null,
+        'hints': {
+          'keyHints': [],
+          'keyProviders': [],
+          'valueHints': [],
+          'valueProviders': []
+        },
+        'deprecation': null,
+        'deprecated': false
+      }
+    ],
+  }
+
+];
 
 interface RawMetadata {
   name: string;
