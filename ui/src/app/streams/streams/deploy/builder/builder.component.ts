@@ -3,7 +3,7 @@ import {
   Output, ViewChild
 } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { StreamDeployService } from '../stream-deploy.service';
+import { StreamDeployService } from '../../stream-deploy.service';
 import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { StreamDeployValidator } from '../stream-deploy.validator';

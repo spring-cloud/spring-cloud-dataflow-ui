@@ -99,6 +99,16 @@ describe('shared/api/stream.service.ts', () => {
     expect(headerArgs.get('Accept')).toEqual('application/json');
   });
 
+  it('getDeploymentInfo using reuse-deployment-properties flag)', () => {
+    mockHttp.get.and.returnValue(of(jsonData));
+    streamService.getDeploymentInfo('foo', true);
+    const httpUri = mockHttp.get.calls.mostRecent().args[0];
+    const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
+    expect(httpUri).toEqual('/streams/deployments/foo?reuse-deployment-properties=true');
+    expect(headerArgs.get('Content-Type')).toEqual('application/json');
+    expect(headerArgs.get('Accept')).toEqual('application/json');
+  });
+
   it('getPlatforms', () => {
     mockHttp.get.and.returnValue(of({}));
     streamService.getPlatforms();

@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { StreamService } from '../../../shared/api/stream.service';
-import { AppService } from '../../../shared/api/app.service';
-import { Stream, StreamDeployConfig } from '../../../shared/model/stream.model';
+import { StreamService } from '../../shared/api/stream.service';
+import { AppService } from '../../shared/api/app.service';
+import { Stream, StreamDeployConfig } from '../../shared/model/stream.model';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { App, ApplicationType } from '../../../shared/model/app.model';
-import { Platform } from '../../../shared/model/platform.model';
-import { ConfigurationMetadataProperty, DetailedApp } from '../../../shared/model/detailed-app.model';
-import { Utils } from '../../../flo/shared/support/utils';
+import { App, ApplicationType } from '../../shared/model/app.model';
+import { Platform } from '../../shared/model/platform.model';
+import { ConfigurationMetadataProperty, DetailedApp } from '../../shared/model/detailed-app.model';
+import { Utils } from '../../flo/shared/support/utils';
 import get from 'lodash.get';
 import set from 'lodash.set';
-import { ParserService } from '../../../flo/shared/service/parser.service';
+import { ParserService } from '../../flo/shared/service/parser.service';
 
 /**
  * Provides {@link StreamDeployConfig} related services.
@@ -263,7 +263,7 @@ export class StreamDeployService {
   }
 
   deploymentProperties(name: string): Observable<any> {
-    return this.streamService.getDeploymentInfo(name)
+    return this.streamService.getDeploymentInfo(name, true)
       .pipe(
         map((deploymentInfo: Stream) => {
           const properties = [];
@@ -301,11 +301,12 @@ export class StreamDeployService {
                 keyShort = key.substring(`${appType}.`.length, key.length);
               }
               properties.push(`app.${app}.${keyShort}=${value}`);
+              ignoreProperties.push(`app.${app}.${keyShort}=${value}`);
             });
           });
           return {
             properties,
-            ignoreProperties: [...properties, ...ignoreProperties],
+            ignoreProperties,
             stream: deploymentInfo
           };
         })

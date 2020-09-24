@@ -1,4 +1,4 @@
-import { StreamDeployService } from '../../streams/streams/deploy/stream-deploy.service';
+import { StreamDeployService } from '../../streams/streams/stream-deploy.service';
 import { Observable, of } from 'rxjs';
 import { Stream, StreamDeployConfig } from '../../shared/model/stream.model';
 import { GET_STREAM } from '../data/stream';
