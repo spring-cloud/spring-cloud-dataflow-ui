@@ -200,6 +200,7 @@ a:link, a:visited {
 h1.page-title {
   height: 44px;
   margin-top: 4px;
+
   .text-truncate {
     height: 40px;
     line-height: 40px;
@@ -210,6 +211,7 @@ h1.page-title {
 h1.page-title-actions {
   span.actions {
     margin-left: .5rem;
+
     .btn {
       padding: 0.1rem 0.8rem;
       height: 28px;
@@ -489,6 +491,10 @@ h1.page-title-actions {
   }
 }
 
+.header-hamburger-trigger {
+  margin: 0 8px;
+}
+
 .header-actions {
   .divider {
     display: inline-block;
@@ -498,6 +504,25 @@ h1.page-title-actions {
     height: 2rem;
     width: var(--clr-global-borderwidth, 0.05rem);
     margin-top: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main-container .header .header-hamburger-trigger+.branding {
+    width: 120px;
+  }
+  .main-container.open-hamburger-menu .header .branding {
+    background: #333333;
+    width: 100%;
+    color: white;
+    .title {
+      color: white;
+    }
+  }
+  .main-container .header {
+    app-search {
+      display: none;
+    }
   }
 }
 
