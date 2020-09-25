@@ -12,13 +12,21 @@ import { GroupServiceMock } from '../../../tests/service/group.service.mock';
 import { CreateComponent } from './create.component';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import { TaskService } from '../../../shared/api/task.service';
+import { of } from 'rxjs';
 
 describe('tasks-jobs/tasks/create/create.component.ts', () => {
 
   let component: CreateComponent;
   let fixture: ComponentFixture<CreateComponent>;
+  let taskService;
 
   beforeEach(async(() => {
+    taskService = new TaskServiceMock();
+    taskService.getTask = () => {
+      return of(null);
+    };
+
     TestBed.configureTestingModule({
       declarations: [
         CreateComponent,
@@ -38,7 +46,8 @@ describe('tasks-jobs/tasks/create/create.component.ts', () => {
         TaskServiceMock.provider,
         GroupServiceMock.provider,
         ToolsServiceMock.provider,
-        ContextServiceMock.provider
+        ContextServiceMock.provider,
+        { provide: TaskService, useValue: taskService }
       ]
     })
       .compileComponents();
@@ -47,12 +56,24 @@ describe('tasks-jobs/tasks/create/create.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateComponent);
     component = fixture.componentInstance;
+    component.flo.dsl = 'timestamp';
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should be created', () => {
+  it('should create a task', async () => {
     fixture.detectChanges();
-    expect(component).toBeTruthy();
+    await fixture.whenStable();
+    component.createTask();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    component.form.get('taskName').setValue('foo');
+    component.form.get('taskDescription').setValue('bar');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    component.submit();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Task creation');
   });
 
 });

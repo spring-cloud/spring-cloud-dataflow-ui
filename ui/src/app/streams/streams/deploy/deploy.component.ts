@@ -161,7 +161,7 @@ export class DeployComponent implements OnInit, OnDestroy {
     // this.blockerService.lock();
     obs
       // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
-      .subscribe(data => {
+      .subscribe(() => {
           if (isDeployed) {
             this.notificationService.success('Deploy success', `Successfully updated stream definition "${this.stream.name}"`);
           } else {

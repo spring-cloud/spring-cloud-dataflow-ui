@@ -25,6 +25,14 @@ export class AboutServiceMock {
     return true;
   }
 
+  getMonitoringType() {
+    return of('none');
+  }
+
+  getMonitoring() {
+    return of({})
+  }
+
   static get provider() {
     if (!AboutServiceMock.mock) {
       AboutServiceMock.mock = new AboutServiceMock();

@@ -26,7 +26,6 @@ import { TippyDirective } from './directive/tippy.directive';
 import { CapitalizePipe } from './pipe/capitalize.pipe';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { StreamDslComponent } from './component/stream-dsl/stream-dsl.component';
-import { DevGuard } from './support/dev.guard';
 import {
   WavefrontRuntimeAppDirective, WavefrontRuntimeInstanceDirective,
   WavefrontStreamDirective,
@@ -69,7 +68,7 @@ import * as fromContext from './store/context.reducer';
     WavefrontRuntimeInstanceDirective,
     WavefrontTaskExecutionDirective,
     TippyDirective,
-    StreamDslComponent
+    StreamDslComponent,
   ],
   imports: [
     CommonModule,

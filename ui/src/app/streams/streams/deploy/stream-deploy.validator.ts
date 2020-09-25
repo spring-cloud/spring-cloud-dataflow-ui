@@ -62,24 +62,6 @@ export class StreamDeployValidator {
   }
 
   /**
-   * Key validator
-   *
-   * @param {FormControl} formControl
-   * @returns {any}
-   */
-  static keyProperty(formControl: FormControl): any {
-    if (!formControl.value) {
-      return null;
-    }
-    if (!StreamDeployValidator.propertyPlatformRegex.test(formControl.value)) {
-      if (!StreamDeployValidator.propertyKeyRegex.test(formControl.value)) {
-        return { invalid: true };
-      }
-    }
-    return null;
-  }
-
-  /**
    * Validate the properties conditions
    *
    * @param {FormControl} formControl
@@ -100,10 +82,9 @@ export class StreamDeployValidator {
           if (tmp.length !== 3) {
             throw new Error();
           }
-          if (!StreamDeployValidator.propertyPlatformRegex.test(tmp[0])) {
-            if (!StreamDeployValidator.propertyKeyRegex.test(tmp[0])) {
-              throw new Error();
-            }
+          if (!StreamDeployValidator.propertyPlatformRegex.test(tmp[0])
+            && !StreamDeployValidator.propertyKeyRegex.test(tmp[0])) {
+            throw new Error();
           }
         });
     } catch (e) {
@@ -127,10 +108,9 @@ export class StreamDeployValidator {
     if (tmp.length !== 3) {
       return 'Not valid';
     }
-    if (!StreamDeployValidator.propertyPlatformRegex.test(tmp[0])) {
-      if (!StreamDeployValidator.propertyKeyRegex.test(tmp[0])) {
-        return 'Not valid';
-      }
+    if (!StreamDeployValidator.propertyPlatformRegex.test(tmp[0])
+      && !StreamDeployValidator.propertyKeyRegex.test(tmp[0])) {
+      return 'Not valid';
     }
     return true;
   }
@@ -154,31 +134,6 @@ export class StreamDeployValidator {
     }
     group.get('property').setErrors({ invalid: true });
     return { invalid: true };
-  }
-
-  /**
-   * Verifies that the properties text box is properly formatted.
-   * @param formControl used to obtain the value of the properties text box.
-   * @returns {any} null if successful or reason of the failure.
-   */
-  static validateDeploymentProperties(formControl: FormControl) {
-    const properties = formControl.value.split('\n');
-
-    if (properties) {
-      for (const prop of properties) {
-        if (prop && prop.length > 0 && !prop.startsWith('#')) {
-          const keyValue = prop.split(/=(.*)/);
-          if (keyValue.length < 3) {
-            return {
-              validateDeploymentProperties: {
-                reason: `Invalid deployment property "${prop}" must contain a single "=".`
-              }
-            };
-          }
-        }
-      }
-    }
-    return undefined;
   }
 
 }

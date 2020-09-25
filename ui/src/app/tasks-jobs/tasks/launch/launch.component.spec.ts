@@ -12,6 +12,9 @@ import { GroupServiceMock } from '../../../tests/service/group.service.mock';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 import { LaunchComponent } from './launch.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { KeyValueComponent } from 'src/app/shared/component/key-value/key-value.component';
 
 describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
 
@@ -22,7 +25,8 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
     TestBed.configureTestingModule({
       declarations: [
         LaunchComponent,
-        RoleDirective
+        RoleDirective,
+        KeyValueComponent
       ],
       imports: [
         FormsModule,
@@ -38,7 +42,13 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
         TaskServiceMock.provider,
         GroupServiceMock.provider,
         ToolsServiceMock.provider,
-        ContextServiceMock.provider
+        ContextServiceMock.provider,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({ name: 'task1' }),
+          },
+        },
       ]
     })
       .compileComponents();
@@ -53,6 +63,19 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
   it('should be created', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should launch the task',  async (done) => {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    component.form.get('args').setValue('app.foo=bar');
+    component.form.get('props').setValue('app.bar=foo');
+    fixture.detectChanges();
+    component.launch();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Launch task');
+    done()
   });
 
 });

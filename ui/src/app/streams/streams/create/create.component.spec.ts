@@ -1,5 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { async, ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,37 +9,37 @@ import { NotificationServiceMock } from '../../../tests/service/notification.ser
 import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
 import { CreateComponent } from './create.component';
-import { ParserService } from '../../../flo/shared/service/parser.service';
-import { StreamFloCreateComponent } from '../../../flo/stream/component/create.component';
 import { AppServiceMock } from '../../../tests/api/app.service.mock';
 import { MetamodelService } from '../../../flo/stream/metamodel.service';
-import { EditorService } from '../../../flo/stream/editor.service';
-import { RenderService } from '../../../flo/stream/render.service';
 import { ContentAssistServiceMock } from '../../../tests/api/content-assist.service.spec';
-import { PropertiesGroupsDialogComponent } from '../../../flo/shared/properties-groups/properties-groups-dialog.component';
 import { FloModule } from 'spring-flo';
-import { PropertiesDialogComponent } from '../../../flo/shared/properties/properties-dialog.component';
-import { DocService } from '../../../flo/shared/service/doc.service';
 import { UpperCasePipe } from '@angular/common';
-import { SanitizeDsl } from '../../../flo/stream/dsl-sanitize.service';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import { ParserService } from '../../../flo/shared/service/parser.service';
+import { SanitizeDsl } from '../../../flo/stream/dsl-sanitize.service';
+import { StreamService } from '../../../shared/api/stream.service';
+import { of } from 'rxjs';
+import { browser } from 'protractor';
 
-xdescribe('streams/streams/create/create.component.ts', () => {
+describe('streams/streams/create/create.component.ts', () => {
   let component: CreateComponent;
   let fixture: ComponentFixture<CreateComponent>;
+  let streamService;
   const metamodelService = new MetamodelService(AppServiceMock.provider.useValue);
+  streamService = new StreamServiceMock();
+  streamService.getStream = () => {
+    return of(null);
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         CreateComponent,
-        StreamFloCreateComponent,
-        PropertiesGroupsDialogComponent,
-          PropertiesDialogComponent,
-          UpperCasePipe
+        UpperCasePipe
       ],
       imports: [
         FormsModule,
+        ReactiveFormsModule,
         ClarityModule,
         RouterTestingModule.withRoutes([]),
         BrowserAnimationsModule,
@@ -49,16 +49,13 @@ xdescribe('streams/streams/create/create.component.ts', () => {
         SecurityServiceMock.provider,
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
-        StreamServiceMock.provider,
+        { provide: StreamService, useValue: streamService },
         GrafanaServiceMock.provider,
         { provide: MetamodelService, useValue: metamodelService },
         ContentAssistServiceMock.provider,
         ContextServiceMock.provider,
         ParserService,
-        EditorService,
-        RenderService,
-        SanitizeDsl,
-        DocService,
+        SanitizeDsl
       ]
     })
       .compileComponents();
@@ -67,11 +64,26 @@ xdescribe('streams/streams/create/create.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateComponent);
     component = fixture.componentInstance;
+    component.flo.dsl = 'file|log';
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should be created', () => {
+  it('should create a stream', async (done) => {
+    await fixture.whenStable();
     fixture.detectChanges();
-    expect(component).toBeTruthy();
+    component.canSubmit = () => true;
+    component.createStream();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    component.form.get('0').setValue('foo');
+    component.form.get('0_desc').setValue('bar');
+    await fixture.whenStable();
+    fixture.detectChanges();
+    component.submit();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(component.operationRunning).toBe('Creation completed');
+    done();
   });
+
 });
