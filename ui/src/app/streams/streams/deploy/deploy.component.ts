@@ -9,7 +9,7 @@ import { of, Subject } from 'rxjs';
 import { LoggerService } from '../../../shared/service/logger.service';
 import { ClipboardCopyService } from '../../../shared/service/clipboard-copy.service';
 import { DateTime } from 'luxon';
-import { StreamDeployService } from './stream-deploy.service';
+import { StreamDeployService } from '../stream-deploy.service';
 import { saveAs } from 'file-saver';
 
 @Component({

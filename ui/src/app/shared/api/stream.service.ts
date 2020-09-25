@@ -98,10 +98,11 @@ export class StreamService {
     return forkJoin(streams.map(stream => this.undeployStream(stream)));
   }
 
-  getDeploymentInfo(name: string): Observable<Stream> {
+  getDeploymentInfo(name: string, reuseDeploymentProperties: boolean = false): Observable<Stream> {
     const headers = HttpUtils.getDefaultHttpHeaders();
+    const reuse = reuseDeploymentProperties ? '?reuse-deployment-properties=true' : '';
     return this.httpClient
-      .get<any>(`/streams/deployments/${name}`, { headers })
+      .get<any>(`/streams/deployments/${name}${reuse}`, { headers })
       .pipe(
         map(Stream.parse),
         catchError(ErrorUtils.catchError)

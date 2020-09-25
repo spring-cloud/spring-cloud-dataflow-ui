@@ -6,7 +6,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { map, mergeMap } from 'rxjs/operators';
 import { forkJoin, Observable, throwError } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
-import { StreamDeployService } from '../deploy/stream-deploy.service';
+import { StreamDeployService } from '../stream-deploy.service';
 import { NotificationService } from '../../../shared/service/notification.service';
 import { ParserService } from '../../../flo/shared/service/parser.service';
 
