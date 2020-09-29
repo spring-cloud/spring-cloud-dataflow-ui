@@ -14,7 +14,7 @@ import { LaunchComponent } from './launch.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { KeyValueComponent } from 'src/app/shared/component/key-value/key-value.component';
+import { KeyValueComponent } from '../../../shared/component/key-value/key-value.component';
 
 describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
 
