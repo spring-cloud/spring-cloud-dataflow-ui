@@ -117,7 +117,7 @@ export class ViewUtils {
           }
 
           if (offset) {
-            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), { silent: true });
+            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), {silent: true});
           }
           // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
           node.attr(`${labelPath}/text`, textNode.data);
@@ -156,7 +156,7 @@ export class ViewUtils {
 
       const threshold = boundingBox.width - paddingRight - locationX;
 
-      let width = labelInitialBox.width;
+      const width = labelInitialBox.width;
 
       if (width > threshold) {
         const styles = getComputedStyle(labelElement);
@@ -168,7 +168,10 @@ export class ViewUtils {
           }
         }
 
-        const truncatedText = joint.util.breakText(label, { width: threshold, height: labelInitialBox.height }, stylesObj, { ellipsis: true, hyphen: true });
+        const truncatedText = joint.util.breakText(label, {
+          width: threshold,
+          height: labelInitialBox.height
+        }, stylesObj, {ellipsis: true, hyphen: true});
         node.attr(`${labelPath}/text`, truncatedText);
       }
     }
@@ -188,7 +191,7 @@ export class ViewUtils {
 
       const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
 
-      let width = labelInitialBox.width;
+      const width = labelInitialBox.width;
 
       if (width > widthConstraint) {
         const styles = getComputedStyle(labelElement);
@@ -200,7 +203,10 @@ export class ViewUtils {
           }
         }
 
-        const truncatedText = joint.util.breakText(label, { width: widthConstraint, height: labelInitialBox.height }, stylesObj, { ellipsis: true, hyphen: true });
+        const truncatedText = joint.util.breakText(label, {
+          width: widthConstraint,
+          height: labelInitialBox.height
+        }, stylesObj, {ellipsis: true, hyphen: true});
         node.attr(`${labelPath}/text`, truncatedText);
       }
     }

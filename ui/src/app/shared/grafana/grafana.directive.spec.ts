@@ -136,7 +136,8 @@ describe('shared/grafana/grafana.directive.ts', () => {
     btn.triggerEventHandler('click', null);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-applications/applications?refresh=15s&var-stream_name=bar&var-application_name=All');
+    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-applications/applications?refresh=15s' +
+      '&var-stream_name=bar&var-application_name=All');
   });
 
   it('Should open the tasks dashboard', async () => {
@@ -157,7 +158,8 @@ describe('shared/grafana/grafana.directive.ts', () => {
     btn.triggerEventHandler('click', null);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-tasks/tasks?refresh=15s&var-task_name=bar&var-task_name=All');
+    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-tasks/tasks?refresh=15s&var-task_name=bar' +
+      '&var-task_name=All');
   });
 
   it('Should open the stream app dashboard', async () => {
@@ -168,7 +170,8 @@ describe('shared/grafana/grafana.directive.ts', () => {
     btn.triggerEventHandler('click', null);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-applications/applications?refresh=15s&var-stream_name=bar1&var-application_name=bar2&var-name=All');
+    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-applications/applications?refresh=15s' +
+      '&var-stream_name=bar1&var-application_name=bar2&var-name=All');
   });
 
   it('Should open the stream app instance dashboard', async () => {
@@ -179,7 +182,8 @@ describe('shared/grafana/grafana.directive.ts', () => {
     btn.triggerEventHandler('click', null);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-applications/applications?refresh=15s&var-stream_name=bar1&var-application_name=bar2&var-name=All&var-application_guid=bar3');
+    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-applications/applications?refresh=15s' +
+      '&var-stream_name=bar1&var-application_name=bar2&var-name=All&var-application_guid=bar3');
   });
 
   it('Should open the task execution dashboard', async () => {
@@ -190,7 +194,8 @@ describe('shared/grafana/grafana.directive.ts', () => {
     btn.triggerEventHandler('click', null);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-tasks/tasks?refresh=15s&var-task_name=bar1&var-task_name=All&var-task_execution_id=bar2');
+    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-tasks/tasks?refresh=15s&var-task_name=bar1' +
+      '&var-task_name=All&var-task_execution_id=bar2');
   });
 
   it('Should open the job execution dashboard', async () => {
@@ -201,7 +206,8 @@ describe('shared/grafana/grafana.directive.ts', () => {
     btn.triggerEventHandler('click', null);
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-tasks/tasks?refresh=15s&var-job_name=bar1&var-job_execution_id=bar2&var-job_instance_id=bar3&var-step_execution_count=bar4&var-task_execution_id=bar5');
+    expect(spy).toHaveBeenCalledWith('http://foo/d/scdf-tasks/tasks?refresh=15s&var-job_name=bar1' +
+      '&var-job_execution_id=bar2&var-job_instance_id=bar3&var-step_execution_count=bar4&var-task_execution_id=bar5');
   });
 
 });

@@ -30,7 +30,7 @@ export class AboutServiceMock {
   }
 
   getMonitoring() {
-    return of({})
+    return of({});
   }
 
   static get provider() {

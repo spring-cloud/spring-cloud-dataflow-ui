@@ -121,12 +121,12 @@ export class RenderService implements Flo.Renderer {
       } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
         // fitLabel() calls update as necessary, so set label text silently
         element.attr('.name-label/text', element.attr('props/name') ? element.attr('props/name') : element.prop('metadata/name'));
-        const view = paper.findViewByModel(element);
-        if (view) {
+        const view2 = paper.findViewByModel(element);
+        if (view2) {
           if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
             // ViewHelper.fitLabel(paper, element, '.name-label', 5);
             ViewUtils.fitLabelWithFixedLocation(paper, element, '.name-label', 5);
-            joint.V(view.el).toggleClass('default-name', !element.attr('props/name'));
+            joint.V(view2.el).toggleClass('default-name', !element.attr('props/name'));
           }
         }
       } else if (changedPropertyPath === 'props/language') {
@@ -228,7 +228,7 @@ export class RenderService implements Flo.Renderer {
 
       // If reconnecting source anchor to a shape with existing primary link switch the link to tap link
       if (newSource) {
-        const outgoingLinks = graph.getConnectedLinks(newSource, { outbound: true });
+        const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
         const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink')
           && _.isEqual(ol.source(), link.source()));
 
@@ -241,7 +241,7 @@ export class RenderService implements Flo.Renderer {
         /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
         // No outgoing links -> hide stream name label
         // Set silently, last attr call would refresh the view
-        oldSource.attr('.stream-label/display', 'none', { silent: true });
+        oldSource.attr('.stream-label/display', 'none', {silent: true});
 
         //     // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
         //     oldSource.attr('.input-port/display', 'block');
@@ -250,7 +250,7 @@ export class RenderService implements Flo.Renderer {
       if (newSource && newSource.prop('metadata/name') === 'destination') {
         // Has outgoing link, there shouldn't be any incoming links yet -> show stream name label
         // Set silently, last attr call would refresh the view
-        newSource.attr('.stream-label/display', 'block', { silent: true });
+        newSource.attr('.stream-label/display', 'block', {silent: true});
 
         //     newSource.attr('.input-port/display', 'none');
       }
@@ -280,7 +280,7 @@ export class RenderService implements Flo.Renderer {
 
           // No more incoming links, there shouldn't be any outgoing links yet -> indeterminate, hide stream label
           // Set silently, last attr call would refresh the view
-          oldTarget.attr('.stream-label/display', 'none', { silent: true });
+          oldTarget.attr('.stream-label/display', 'none', {silent: true});
 
           //     // Can't remove attr and update the view because port marking is being wiped out, so set 'block' display
           //     oldTarget.attr('.output-port/display', 'block');
@@ -291,7 +291,7 @@ export class RenderService implements Flo.Renderer {
         if (newTarget.prop('metadata/name') === 'destination') {
           // Incoming link -> hide stream name label
           // Set silently, last attr call would refresh the view
-          newTarget.attr('.stream-label/display', 'none', { silent: true });
+          newTarget.attr('.stream-label/display', 'none', {silent: true});
 
           // // new target is destination? Hide output port then.
           // newTarget.attr('.output-port/display', 'none');
@@ -317,10 +317,10 @@ export class RenderService implements Flo.Renderer {
     const target = graph.getCell(link.get('target').id);
     let view: dia.CellView;
     if (source && source.prop('metadata/name') === 'destination'
-      && graph.getConnectedLinks(source, { outbound: true }).length === 0) {
+      && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
       // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
       // Set silently, last attr call would refresh the view
-      source.attr('.stream-label/display', 'none', { silent: true });
+      source.attr('.stream-label/display', 'none', {silent: true});
 
       // TODO: Why is the port hiddon/removed when link is deleted??? Probably leftovers of some old functionality...
       // source.removeAttr('.input-port');
@@ -330,10 +330,10 @@ export class RenderService implements Flo.Renderer {
       }
     }
     if (target && target.prop('metadata/name') === 'destination'
-      && graph.getConnectedLinks(target, { inbound: true }).length === 0) {
+      && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
       // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
       // Set silently, last attr call would refresh the view
-      target.attr('.stream-label/display', 'none', { silent: true });
+      target.attr('.stream-label/display', 'none', {silent: true});
       // TODO: Why is the port hiddon/removed when link is deleted??? Probably leftovers of some old functionality...
       // target.removeAttr('.output-port');
       view = flo.getPaper().findViewByModel(target);
@@ -384,7 +384,7 @@ export class RenderService implements Flo.Renderer {
 
       // New link to connect original source to new target
       flo.createLink(previousSource,
-        { id: newDestinationNode.id, port: 'input', magnet: '.input-port' },
+        {id: newDestinationNode.id, port: 'input', magnet: '.input-port'},
         null,
         new Map<string, any>().set('isTapLink', existingIsTap ? true : false));
 
@@ -430,7 +430,7 @@ export class RenderService implements Flo.Renderer {
     if (!target && source && !this.isChannel(source)) {
       // this is a new link being drawn in the UI (it is not connected to anything yet).
       // Need to decide whether to make it a tap link
-      const outgoingLinks = graph.getConnectedLinks(source, { outbound: true });
+      const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
       const primaryLinkExists = outgoingLinks.find(ol => ol !== link && _.isEqual(link.source(),
         ol.source()) && !ol.attr('props/isTapLink')) ? true : false;
       link.attr('props/isTapLink', primaryLinkExists);
@@ -448,7 +448,7 @@ export class RenderService implements Flo.Renderer {
     if (target && target.prop('metadata/name') === 'destination') {
       // Incoming link has been added -> hide stream label
       // Set silently because update will be called for the next property setting
-      target.attr('.stream-label/display', 'none', { silent: true });
+      target.attr('.stream-label/display', 'none', {silent: true});
       // XXX target.attr('.output-port/display', 'none');
     }
     // If tap link has been added update the stream-label for the target

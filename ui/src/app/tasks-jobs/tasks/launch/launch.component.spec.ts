@@ -46,7 +46,7 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({ name: 'task1' }),
+            params: of({name: 'task1'}),
           },
         },
       ]
@@ -65,7 +65,7 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should launch the task',  async (done) => {
+  it('should launch the task', async (done: DoneFn) => {
     fixture.detectChanges();
     await fixture.whenStable();
     component.form.get('args').setValue('app.foo=bar');
@@ -75,7 +75,7 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Launch task');
-    done()
+    done();
   });
 
 });

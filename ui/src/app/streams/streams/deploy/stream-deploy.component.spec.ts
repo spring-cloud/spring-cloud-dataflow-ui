@@ -27,7 +27,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
     <div>
     </div>`
 })
-class BuilderComponentMock {
+class BuilderMockComponent {
   @Input() id: string;
   @Output() update = new EventEmitter();
   @Output() exportProperties = new EventEmitter();
@@ -46,7 +46,7 @@ class BuilderComponentMock {
     <div>
     </div>`
 })
-class FreeTextComponentMock {
+class FreeTextMockComponent {
   @Input() id: string;
   @Output() update = new EventEmitter();
   @Output() exportProperties = new EventEmitter();
@@ -68,8 +68,8 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     TestBed.configureTestingModule({
       declarations: [
         DeployComponent,
-        BuilderComponentMock,
-        FreeTextComponentMock
+        BuilderMockComponent,
+        FreeTextMockComponent
       ],
       imports: [
         FormsModule,

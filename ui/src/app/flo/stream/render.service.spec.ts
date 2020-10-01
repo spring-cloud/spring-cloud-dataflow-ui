@@ -29,7 +29,7 @@ import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
 import { MockSharedAppService } from '../../tests/service/app.service.mock';
 import { StreamFloModule } from '../stream-flo.module';
 import { StoreModule } from '@ngrx/store';
-import {NodeHelper} from './node-helper.service';
+import { NodeHelper } from './node-helper.service';
 
 const $: any = _$;
 
