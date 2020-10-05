@@ -278,9 +278,9 @@
             <tbody>
             <tr *ngFor="let step of execution.stepExecutions">
               <td class="left"><a
-                routerLink="/tasks-jobs/job-executions/{{execution.jobInstanceId}}/{{step.id}}">{{step.id}}</a></td>
+                routerLink="/tasks-jobs/job-executions/{{execution.jobExecutionId}}/{{step.id}}">{{step.id}}</a></td>
               <td class="left"><a
-                routerLink="/tasks-jobs/job-executions/{{execution.jobInstanceId}}/{{step.id}}">{{step.name}}</a></td>
+                routerLink="/tasks-jobs/job-executions/{{execution.jobExecutionId}}/{{step.id}}">{{step.name}}</a></td>
               <td class="left">{{step.readCount}}</td>
               <td class="left">{{step.writeCount}}</td>
               <td class="left">{{step.commitCount}}</td>
