@@ -50,13 +50,7 @@
               <div class="row">
                 <div class="key">External Execution Id</div>
                 <div class="value">
-                  <a [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
-                     *ngFor="let jobExecutionId of execution.jobExecutionIds">
-                    {{jobExecutionId}}
-                  </a>
-                  <div *ngIf="execution.jobExecutionIds?.length === 0">
-                    N/A
-                  </div>
+                  {{execution.externalExecutionId || 'N/A'}}
                 </div>
               </div>
               <div class="row">
@@ -69,7 +63,13 @@
               <div class="row">
                 <div class="key">Job Execution Ids</div>
                 <div class="value">
-                  {{execution.externalExecutionId || 'N/A'}}
+                  <a [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
+                     *ngFor="let jobExecutionId of execution.jobExecutionIds">
+                    {{jobExecutionId}}
+                  </a>
+                  <div *ngIf="execution.jobExecutionIds?.length === 0">
+                    N/A
+                  </div>
                 </div>
               </div>
               <div class="row">
@@ -142,7 +142,7 @@
             </div>
           </div>
         </ng-template>
-        <div class="card-footer" *ngIf="execution && execution.jobExecutionIds?.length > 0">
+        <div class="card-footer" *ngIf="hasLog()">
           <button class="btn btn-sm btn-secondary" (click)="log()">View log</button>
         </div>
       </app-view-card>

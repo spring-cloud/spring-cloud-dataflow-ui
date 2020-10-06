@@ -94,13 +94,7 @@
               <div class="row">
                 <div class="key">External Execution Id</div>
                 <div class="value">
-                  <a [routerLink]="'/jobs/executions/' + jobExecutionId"
-                     *ngFor="let jobExecutionId of task.lastTaskExecution.jobExecutionIds">
-                    {{jobExecutionId}}
-                  </a>
-                  <div *ngIf="task.lastTaskExecution.jobExecutionIds?.length == 0">
-                    N/A
-                  </div>
+                  {{task.lastTaskExecution.externalExecutionId || 'N/A'}}
                 </div>
               </div>
               <div class="row">
@@ -115,7 +109,13 @@
               <div class="row">
                 <div class="key">Job Execution Ids</div>
                 <div class="value">
-                  {{task.lastTaskExecution.externalExecutionId || 'N/A'}}
+                  <a [routerLink]="'/jobs/executions/' + jobExecutionId"
+                     *ngFor="let jobExecutionId of task.lastTaskExecution.jobExecutionIds">
+                    {{jobExecutionId}}
+                  </a>
+                  <div *ngIf="task.lastTaskExecution.jobExecutionIds?.length == 0">
+                    N/A
+                  </div>
                 </div>
               </div>
               <div class="row">
@@ -192,7 +192,9 @@
           <button class="btn btn-sm btn-secondary" (click)="navigateExecution(task.lastTaskExecution.executionId)">
             View task execution
           </button>
-          <button class="btn btn-sm btn-secondary" (click)="openLog(task.lastTaskExecution)">View log</button>
+          <button class="btn btn-sm btn-secondary"
+                  *ngIf="hasLog(task.lastTaskExecution)"
+                  (click)="openLog(task.lastTaskExecution)">View log</button>
         </div>
       </app-view-card>
     </div>

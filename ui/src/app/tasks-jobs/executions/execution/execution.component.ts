@@ -108,6 +108,11 @@ export class ExecutionComponent implements OnInit {
     this.router.navigateByUrl(`/tasks-jobs/tasks/${this.task.name}/launch`);
   }
 
+  hasLog() {
+    return (this.execution.taskExecutionStatus === 'COMPLETE' || this.execution.taskExecutionStatus === 'ERROR')
+      && this.execution.externalExecutionId;
+  }
+
   log() {
     this.logModal.open(`Log task execution ${this.execution.executionId}`, this.execution);
   }
