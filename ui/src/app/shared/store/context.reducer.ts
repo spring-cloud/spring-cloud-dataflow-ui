@@ -110,6 +110,7 @@ export const initialState = [
       { name: 'sizeStart', value: '' },
       { name: 'sizeStepCount', value: '' },
       { name: 'sizeStatus', value: '' },
+      { name: 'dates', value: null },
     ]
   },
   {

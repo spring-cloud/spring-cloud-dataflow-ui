@@ -2,14 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../tests/api/about.service.mock';
-import { AppServiceMock } from '../../tests/api/app.service.mock';
-import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { RecordServiceMock } from '../../tests/api/record.service.mock';
+import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
+import { AboutServiceMock } from '../../../tests/api/about.service.mock';
+import { AppServiceMock } from '../../../tests/api/app.service.mock';
+import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
+import { RecordServiceMock } from '../../../tests/api/record.service.mock';
 import { DateFilterComponent } from './date.filter';
 import { DateTime } from 'luxon';
-import { ContextServiceMock } from '../../tests/service/context.service.mock';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
 describe('manage/records/action.filter.ts', () => {
 

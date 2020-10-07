@@ -13,6 +13,7 @@ import { StopComponent } from '../executions/stop/stop.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { DateFilterComponent } from "../../shared/filter/date/date.filter";
 
 describe('tasks-jobs/jobs/jobs.component.ts', () => {
 
@@ -25,7 +26,8 @@ describe('tasks-jobs/jobs/jobs.component.ts', () => {
         JobsComponent,
         StopComponent,
         ConfirmComponent,
-        RoleDirective
+        RoleDirective,
+        DateFilterComponent,
       ],
       imports: [
         FormsModule,

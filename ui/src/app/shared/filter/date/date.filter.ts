@@ -32,7 +32,7 @@ export class DateFilterComponent implements OnInit {
 
   private pchanges = new Subject<any>();
 
-  property = 'dates';
+  @Input() property = 'dates';
 
   @Input() value = null;
 
@@ -102,7 +102,7 @@ export class DateFilterComponent implements OnInit {
   }
 
   isActive(): boolean {
-    return this.value !== null && (this.value[0] !== null || this.value[1] !== null);
+    return (this.value !== null && (this.value[0] !== null || this.value[1] !== null)) || this.invalid;
   }
 
 }

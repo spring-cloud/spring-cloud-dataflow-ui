@@ -8,7 +8,7 @@ import { AppServiceMock } from '../../tests/api/app.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
 import { RecordServiceMock } from '../../tests/api/record.service.mock';
 import { RecordsComponent } from './records.component';
-import { DateFilterComponent } from './date.filter';
+import { DateFilterComponent } from '../../shared/filter/date/date.filter';
 import { OperationFilterComponent } from './operation.filter';
 import { ActionFilterComponent } from './action.filter';
 import { By } from '@angular/platform-browser';

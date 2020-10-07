@@ -34,6 +34,7 @@ import {
 } from './wavefront/wavefront.directive';
 import { StoreModule } from '@ngrx/store';
 import * as fromContext from './store/context.reducer';
+import { DateFilterComponent } from "./filter/date/date.filter";
 
 @NgModule({
   entryComponents: [
@@ -69,6 +70,7 @@ import * as fromContext from './store/context.reducer';
     WavefrontTaskExecutionDirective,
     TippyDirective,
     StreamDslComponent,
+    DateFilterComponent
   ],
   imports: [
     CommonModule,
@@ -118,7 +120,8 @@ import * as fromContext from './store/context.reducer';
     WavefrontRuntimeInstanceDirective,
     WavefrontTaskExecutionDirective,
     TippyDirective,
-    StreamDslComponent
+    StreamDslComponent,
+    DateFilterComponent
   ]
 })
 export class SharedModule {
