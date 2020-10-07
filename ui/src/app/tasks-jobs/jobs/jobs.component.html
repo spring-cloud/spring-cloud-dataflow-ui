@@ -37,7 +37,10 @@
     <ng-container *clrDgHideableColumn="{hidden: false}">
       Job Start Time
     </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+    <clr-dg-filter [clrDgFilter]="dateFilter">
+      <app-clr-datagrid-date-filter property="dates" [value]="context.dates" #dateFilter>
+      </app-clr-datagrid-date-filter>
+    </clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStepCount', $event)"
                  [style.width.px]="context.sizeStepCount || 'auto'">

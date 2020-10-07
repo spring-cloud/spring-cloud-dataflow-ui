@@ -5,6 +5,7 @@ import { HttpUtils } from '../support/http.utils';
 import { catchError, map } from 'rxjs/operators';
 import { ExecutionStepProgress, ExecutionStepResource, JobExecution, JobExecutionPage } from '../model/job.model';
 import { ErrorUtils } from '../support/error.utils';
+import { DateTime } from "luxon";
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,14 @@ export class JobService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getExecutions(page: number, size: number): Observable<JobExecutionPage> {
-    const params = HttpUtils.getPaginationParams(page, size);
+  getExecutions(page: number, size: number, fromDate?: DateTime, toDate?: DateTime): Observable<JobExecutionPage> {
+    let params = HttpUtils.getPaginationParams(page, size);
+    if (fromDate) {
+      params = params.append('fromDate', fromDate.toISODate() + 'T00:00:00,000');
+    }
+    if (toDate) {
+      params = params.append('toDate', toDate.toISODate() + 'T23:59:59,999');
+    }
     return this.httpClient
       .get<any>('/jobs/thinexecutions', { params })
       .pipe(

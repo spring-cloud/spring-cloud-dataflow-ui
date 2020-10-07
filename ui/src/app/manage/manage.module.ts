@@ -6,7 +6,6 @@ import { RecordsComponent } from './records/records.component';
 import { ImportExportComponent } from './import-export/import-export.component';
 import { ClarityModule } from '@clr/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DateFilterComponent } from './records/date.filter';
 import { SharedModule } from '../shared/shared.module';
 import { StreamImportComponent } from './import-export/stream/import.component';
 import { StreamExportComponent } from './import-export/stream/export.component';
@@ -21,7 +20,6 @@ import { ActionFilterComponent } from './records/action.filter';
   declarations: [
     RecordsComponent,
     ImportExportComponent,
-    DateFilterComponent,
     StreamImportComponent,
     StreamExportComponent,
     TaskExportComponent,
