@@ -53,7 +53,7 @@ export class CreateComponent implements OnInit {
       // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe(
         () => {
-          this.notificationService.success('Task creation', 'Composed task created for ' + this.taskName.value);
+          this.notificationService.success('Task creation', 'Task Definition created for ' + this.taskName.value);
           this.back();
         },
         (error) => {
