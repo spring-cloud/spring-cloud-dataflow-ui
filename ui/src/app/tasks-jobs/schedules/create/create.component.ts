@@ -147,6 +147,7 @@ export class CreateComponent implements OnInit {
           },
           error => {
             this.notificationService.error('An error occurred', error);
+            this.creating = false;
           }
         );
     }
