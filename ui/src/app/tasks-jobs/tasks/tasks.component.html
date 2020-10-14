@@ -69,7 +69,7 @@
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-row *clrDgItems="let task of page?.items" [clrDgItem]="task" [clrDgSelectable]="!task.composedTaskElement">
+  <clr-dg-row *ngFor="let task of page?.items" [clrDgItem]="task" [clrDgSelectable]="!task.composedTaskElement">
     <clr-dg-cell>
       <a routerLink="/tasks-jobs/tasks/{{task.name}}">
         <span class="text-truncate">{{task.name}}</span>
