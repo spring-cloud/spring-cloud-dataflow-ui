@@ -8,14 +8,13 @@ import { TaskExecution, TaskExecutionPage } from '../model/task-execution.model'
 import { Platform, PlatformTaskList } from '../model/platform.model';
 import { ErrorUtils } from '../support/error.utils';
 import { DataflowEncoder } from '../support/encoder.utils';
-import { GET_PLATFORMS } from '../../tests/data/task';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(protected httpClient: HttpClient) {
   }
 
   getTasks(page: number, size: number, search?: string, sort?: string, order?: string): Observable<TaskPage> {

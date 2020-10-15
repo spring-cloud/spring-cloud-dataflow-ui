@@ -14,7 +14,7 @@ import { StreamStatus, StreamStatuses } from '../model/metrics.model';
 })
 export class StreamService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(protected httpClient: HttpClient) {
   }
 
   getStreams(page: number, size: number, search?: string, sort?: string, order?: string): Observable<StreamPage> {
