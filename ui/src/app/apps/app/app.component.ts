@@ -66,6 +66,10 @@ export class AppComponent implements OnInit {
   getProperties(app: App) {
     this.loadingProperties = true;
     this.selectedApp = app;
+    if (this.detailedApp) {
+      this.detailedApp.version = app.version;
+      this.detailedApp.defaultVersion = app.defaultVersion;
+    }
     this.appsService.getApp(app.name, app.type, app.version)
       .subscribe((detailedApp: DetailedApp) => {
           this.tooManyProperties = (detailedApp.options.length > 50);
