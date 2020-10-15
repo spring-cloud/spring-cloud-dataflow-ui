@@ -168,10 +168,7 @@ export class ViewUtils {
           }
         }
 
-        const truncatedText = joint.util.breakText(label, {
-          width: threshold,
-          height: labelInitialBox.height
-        }, stylesObj, {ellipsis: true, hyphen: true});
+        const truncatedText = ViewUtils.trucateTextWithEllipsis(label, threshold, stylesObj);
         node.attr(`${labelPath}/text`, truncatedText);
       }
     }
@@ -203,12 +200,48 @@ export class ViewUtils {
           }
         }
 
-        const truncatedText = joint.util.breakText(label, {
-          width: widthConstraint,
-          height: labelInitialBox.height
-        }, stylesObj, {ellipsis: true, hyphen: true});
+        const truncatedText = ViewUtils.trucateTextWithEllipsis(label, widthConstraint, stylesObj);
         node.attr(`${labelPath}/text`, truncatedText);
       }
+    }
+  }
+
+  /* Use calculation below rather than joint.util.breakText. The breakText needs the height which only seems
+   * to work correctly if label height * 1.1 is provided. Won't work with the exact height.
+   * Furthermore, no need for multiple lines hence the algo below is faster
+   */
+  static trucateTextWithEllipsis(label: string, widthConstraint: number, stylesObj: any): string {
+    const svgDocument = joint.V('svg').node;
+    const textSpan = joint.V('tspan').node;
+    const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
+    const textNode = document.createTextNode(label);
+
+    // Prevent flickering
+    textElement.style.opacity = 0;
+    // Prevent FF from throwing an uncaught exception when `getBBox()`
+    // called on element that is not in the render tree (is not measurable).
+    // <tspan>.getComputedTextLength() returns always 0 in this case.
+    // Note that the `textElement` resp. `textSpan` can become hidden
+    // when it's appended to the DOM and a `display: none` CSS stylesheet
+    // rule gets applied.
+    textElement.style.display = 'block';
+    textSpan.style.display = 'block';
+
+    textSpan.appendChild(textNode);
+    svgDocument.appendChild(textElement);
+
+    document.body.appendChild(svgDocument);
+
+    try {
+      let width = textSpan.getComputedTextLength();
+      for (let i = 1; i < label.length && width > widthConstraint; i++) {
+        textNode.data = label.substr(0, label.length - i) + '\u2026';
+        width = textSpan.getComputedTextLength();
+      }
+
+      return textNode.data;
+    } finally {
+      document.body.removeChild(svgDocument);
     }
   }
 }
