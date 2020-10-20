@@ -203,10 +203,6 @@ svg * {
   cursor: pointer;
 }
 
-[magnet=true]:not(.element) {
-  cursor: pointer;
-}
-
 //.joint-element.highlighted circle {
 //  stroke: #34302d;
 //  stroke-width: 3;
@@ -1004,7 +1000,6 @@ table.zoom-canvas-control {
 }
 
 .flow-view {
-  [magnet=true]:not(.element),
   .joint-element {
     cursor: default;
   }
