@@ -46,27 +46,40 @@
           <span class="dsl-text dsl-truncate">{{dsl}}</span>
         </div>
       </div>
-      <clr-control-container>
-        <label for="name">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          [formControl]="taskName"
-          [dataflowFocus]="true"
-          clrControl
-          type="text"
-          placeholder="Task Name"
-          maxlength="255"
-          style="width: 360px"
-        />
-        <clr-control-error *clrIfError="'required'">Task name is required!</clr-control-error>
-        <clr-control-error *clrIfError="'uniqueResource'">Task name is already taken!</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'">Invalid task name!</clr-control-error>
-        <clr-control-error *clrIfError="'maxlength'">Task name must be less than 255 characters long!
-        </clr-control-error>
-      </clr-control-container>
+
+      <div class="form-group clr-form-control clr-row">
+        <label class="clr-control-label clr-col-12 clr-col-md-2">Name</label>
+        <div class="clr-control-container clr-error clr-col-md-10 clr-col-12"
+             [class]="{'clr-error': taskName.errors}">
+          <div class="clr-input-wrapper">
+            <input
+              type="text"
+              placeholder="Stream Name"
+              maxlength="255"
+              name="name"
+              [formControl]="taskName"
+              [dataflowFocus]="true"
+              style="width: 360px;"
+              class="clr-input">
+          </div>
+          <div class="clr-subtext" *ngIf="!taskName?.errors">
+            The task definition name should be less than 63 characters for Kubernetes or Cloud Foundry platforms.
+          </div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName.errors?.required">
+            Task name is required!
+          </div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.uniqueResource">
+            Task name is already taken!
+          </div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.pattern">
+            Task task name!
+          </div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.maxlength">
+            Task name must be less than 256 characters long!
+          </div>
+        </div>
+      </div>
+
       <clr-control-container class="form-group">
         <label for="desc">Description</label>
         <input
