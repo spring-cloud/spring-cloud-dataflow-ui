@@ -253,7 +253,7 @@
         </ng-template>
         <div class="card-footer" *ngIf="execution">
           <button class="btn btn-sm btn-secondary" (click)="navigateTaskExecution()">View task execution</button>
-          <button class="btn btn-sm btn-secondary" (click)="viewLog()">View log</button>
+          <button class="btn btn-sm btn-secondary" (click)="viewLog()" *ngIf="hasLog()">View log</button>
         </div>
       </app-view-card>
     </div>

@@ -131,6 +131,11 @@ export class ExecutionComponent implements OnInit {
       });
   }
 
+  hasLog() {
+    return (this.taskExecution.taskExecutionStatus === 'COMPLETE' || this.taskExecution.taskExecutionStatus === 'ERROR')
+      && this.taskExecution.externalExecutionId;
+  }
+
   viewLog() {
     this.logModal.open(`Log task execution ${this.taskExecution.executionId}`, this.taskExecution);
   }
