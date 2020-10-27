@@ -40,14 +40,14 @@
   <clr-dg-column [clrDgField]="'taskName'"
                  [clrDgSortOrder]="(context.by === 'taskName') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeName', $event)"
-                 [style.width.px]="context.sizeName || 'auto'"
+                 [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName : 15 | async"
                  [clrFilterValue]="context.taskName">
     <ng-container>
       Name
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeDescription', $event)"
-                 [style.width.px]="context.sizeDescription || 'auto'">
+                 [style.width.px]="context.sizeDescription | datagridcolumn: datagrid : contextName : 15 | async">
     <ng-container>
       Description
     </ng-container>
@@ -56,14 +56,14 @@
   <clr-dg-column [clrDgField]="'dslText'"
                  [clrDgSortOrder]="(context.by === 'dslText') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeDsl', $event)"
-                 [style.width.px]="context.sizeDsl || 'auto'">
+                 [style.width.px]="context.sizeDsl | datagridcolumn: datagrid : contextName : 15 | async">
     <ng-container>
       Definition
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStatus', $event)"
-                 [style.width.px]="context.sizeStatus || 'auto'">
+                 [style.width.px]="context.sizeStatus | datagridcolumn: datagrid : contextName : 15 | async">
     <ng-container>
       Status
     </ng-container>
@@ -71,12 +71,12 @@
   </clr-dg-column>
   <clr-dg-row *ngFor="let task of page?.items" [clrDgItem]="task" [clrDgSelectable]="!task.composedTaskElement">
     <clr-dg-cell>
-      <a routerLink="/tasks-jobs/tasks/{{task.name}}">
-        <span class="text-truncate">{{task.name}}</span>
+      <a class="text-truncate" routerLink="/tasks-jobs/tasks/{{task.name}}">
+        {{task.name}}
       </a>
     </clr-dg-cell>
     <clr-dg-cell><span class="text-truncate">{{task.description}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="dsl-text">{{task.dslText}}</span></clr-dg-cell>
+    <clr-dg-cell><span class="dsl-text dsl-truncate">{{task.dslText}}</span></clr-dg-cell>
     <clr-dg-cell><span class="{{task.labelStatusClass()}}">{{task.status}}</span></clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(task)">Details</button>

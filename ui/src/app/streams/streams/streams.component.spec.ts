@@ -16,6 +16,8 @@ import { GrafanaServiceMock } from '../../tests/service/grafana.service.mock';
 import { GroupServiceMock } from '../../tests/service/group.service.mock';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('streams/streams/streams.component.ts', () => {
 
@@ -29,7 +31,8 @@ describe('streams/streams/streams.component.ts', () => {
         DestroyComponent,
         UndeployComponent,
         GrafanaStreamsDirective,
-        GrafanaStreamDirective
+        GrafanaStreamDirective,
+        DatagridColumnPipe
       ],
       imports: [
         FormsModule,

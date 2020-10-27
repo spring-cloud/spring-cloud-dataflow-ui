@@ -14,7 +14,7 @@
 </h1>
 
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
-              *ngIf="isInit">
+              *ngIf="isInit" #datagrid>
   <clr-dg-action-bar *ngIf="grouped">
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
       Cancel
@@ -44,14 +44,14 @@
   <clr-dg-column [clrDgField]="'name'"
                  [clrDgSortOrder]="(context.by === 'name') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeName', $event)"
-                 [style.width.px]="context.sizeName || 'auto'"
+                 [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName : 30 | async"
                  [clrFilterValue]="context.name">
     <ng-container>
       Name
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeDescription', $event)"
-                 [style.width.px]="context.sizeDescription || 'auto'">
+                 [style.width.px]="context.sizeDescription | datagridcolumn: datagrid : contextName : 30 | async">
     <ng-container>
       Description
     </ng-container>
@@ -60,14 +60,14 @@
   <clr-dg-column [clrDgField]="'dslText'"
                  [clrDgSortOrder]="(context.by === 'dslText') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeDslText', $event)"
-                 [style.width.px]="context.sizeDslText || 'auto'">
+                 [style.width.px]="context.sizeDslText | datagridcolumn: datagrid : contextName : 30 | async">
     <ng-container>
       Definition
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStatus', $event)"
-                 [style.width.px]="context.sizeStatus || 'auto'">
+                 [style.width.px]="context.sizeStatus | datagridcolumn: datagrid : contextName : 20| async">
     <ng-container>
       Status&nbsp;
       <button class="datagrid-column-title" style="width: 20px;flex:0;" (click)="statusModal.open()">

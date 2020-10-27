@@ -14,6 +14,7 @@ import { ConfirmComponent } from '../../shared/component/confirm/confirm.compone
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 import { DateFilterComponent } from "../../shared/filter/date/date.filter";
+import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('tasks-jobs/jobs/jobs.component.ts', () => {
 
@@ -28,6 +29,7 @@ describe('tasks-jobs/jobs/jobs.component.ts', () => {
         ConfirmComponent,
         RoleDirective,
         DateFilterComponent,
+        DatagridColumnPipe
       ],
       imports: [
         FormsModule,

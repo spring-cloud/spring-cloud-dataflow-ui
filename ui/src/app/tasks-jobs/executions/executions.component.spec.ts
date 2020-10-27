@@ -13,6 +13,8 @@ import { CleanupComponent } from './cleanup/cleanup.component';
 import { RoleDirective } from '../../security/directive/role.directive';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('tasks-jobs/executions/executions.component.ts', () => {
 
@@ -25,7 +27,8 @@ describe('tasks-jobs/executions/executions.component.ts', () => {
         ExecutionsComponent,
         StopComponent,
         CleanupComponent,
-        RoleDirective
+        RoleDirective,
+        DatagridColumnPipe
       ],
       imports: [
         FormsModule,

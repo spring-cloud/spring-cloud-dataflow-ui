@@ -8,7 +8,7 @@
   </span>
 </h1>
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
-              *ngIf="isInit">
+              *ngIf="isInit" #datagrid>
   <clr-dg-action-bar *ngIf="grouped">
     <button *ngIf="grouped" type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
       Cancel
@@ -31,7 +31,7 @@
   <clr-dg-column [clrDgField]="'name'"
                  [clrDgSortOrder]="(context.by === 'name') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeName', $event)"
-                 [style.width.px]="context.sizeName || 'auto'"
+                 [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async"
                  [clrFilterValue]="context.name">
     <ng-container>
       Name
@@ -40,7 +40,7 @@
   <clr-dg-column [clrDgField]="'type'"
                  (clrDgColumnResize)="updateContext('sizeType', $event)"
                  [clrDgSortOrder]="(context.by === 'type') ? context.reverse ? -1 : 1 : 0"
-                 [style.width.px]="context.sizeType || 'auto'">
+                 [style.width.px]="context.sizeType | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       Type
     </ng-container>
@@ -51,7 +51,7 @@
   <clr-dg-column [clrDgField]="'version'"
                  [clrDgSortOrder]="(context.by === 'version') ? context.reverse ? -1 : 1 : 0"
                  (clrDgColumnResize)="updateContext('sizeVersion', $event)"
-                 [style.width.px]="context.sizeVersion || 'auto'">
+                 [style.width.px]="context.sizeVersion | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       Version
       <clr-dg-filter style="display:none;"></clr-dg-filter>
@@ -60,14 +60,14 @@
   <clr-dg-column [clrDgField]="'uri'"
                  (clrDgColumnResize)="updateContext('sizeUri', $event)"
                  [clrDgSortOrder]="(context.by === 'uri') ? context.reverse ? -1 : 1 : 0"
-                 [style.width.px]="context.sizeUri || 'auto'">
+                 [style.width.px]="context.sizeUri | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       URI
       <clr-dg-filter style="display:none;"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeMetadataUri', $event)"
-                 [style.width.px]="context.sizeMetadataUri || 'auto'">
+                 [style.width.px]="context.sizeMetadataUri | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       Metadata URI
       <clr-dg-filter style="display:none;"></clr-dg-filter>

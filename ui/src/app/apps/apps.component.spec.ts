@@ -16,6 +16,7 @@ import { VersionComponent } from './version/version.component';
 import { ConfirmComponent } from '../shared/component/confirm/confirm.component';
 import { ContextServiceMock } from '../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../tests/service/settings.service.mock';
+import { DatagridColumnPipe } from '../shared/pipe/datagrid-column.pipe';
 
 describe('apps/apps.component.ts', () => {
 
@@ -29,7 +30,8 @@ describe('apps/apps.component.ts', () => {
         TypeFilterComponent,
         UnregisterComponent,
         VersionComponent,
-        ConfirmComponent
+        ConfirmComponent,
+        DatagridColumnPipe
       ],
       imports: [
         FormsModule,
