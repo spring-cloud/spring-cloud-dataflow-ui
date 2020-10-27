@@ -71,8 +71,9 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
       return;
     }
     const context = [];
-    Object.keys(obj).forEach(key => {
-      const val = obj[key] as string;
+    const merged = { ...this.context, ...obj };
+    Object.keys(merged).forEach(key => {
+      const val = merged[key] as string;
       if (key === 'size' && val === this.resultsPerPage) {
         context.push({ name: key, value: '' });
       } else {

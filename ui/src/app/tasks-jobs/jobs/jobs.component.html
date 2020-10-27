@@ -1,40 +1,40 @@
 <h1>Jobs</h1>
-<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" *ngIf="isInit">
+<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" *ngIf="isInit" #datagrid>
   <clr-dg-action-bar>
     <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
       Refresh
     </button>
   </clr-dg-action-bar>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeId', $event)"
-                 [style.width.px]="context.sizeId || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+                 [style.width.px]="context.sizeId | datagridcolumn: datagrid : contextName | async">
+    <ng-container>
       Execution Id
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeName', $event)"
-                 [style.width.px]="context.sizeName || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+                 [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async">
+    <ng-container>
       Name
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeTaskId', $event)"
-                 [style.width.px]="context.sizeTaskId || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+                 [style.width.px]="context.sizeTaskId | datagridcolumn: datagrid : contextName | async">
+    <ng-container>
       Task Id
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeInstanceId', $event)"
-                 [style.width.px]="context.sizeInstanceId || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+                 [style.width.px]="context.sizeInstanceId | datagridcolumn: datagrid : contextName | async">
+    <ng-container>
       Instance Id
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStart', $event)"
-                 [style.width.px]="context.sizeStart || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+                 [style.width.px]="context.sizeStart | datagridcolumn: datagrid : contextName | async">
+    <ng-container>
       Job Start Time
     </ng-container>
     <clr-dg-filter [clrDgFilter]="dateFilter">
@@ -43,15 +43,15 @@
     </clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStepCount', $event)"
-                 [style.width.px]="context.sizeStepCount || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+                 [style.width.px]="context.sizeStepCount | datagridcolumn: datagrid : contextName | async">
+    <ng-container>
       Step Execution Count
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeStatus', $event)"
-                 [style.width.px]="context.sizeStatus || 'auto'">
-    <ng-container *clrDgHideableColumn="{hidden: false}">
+                 [style.width.px]="context.sizeStatus | datagridcolumn: datagrid : contextName | async">
+    <ng-container>
       Status
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>

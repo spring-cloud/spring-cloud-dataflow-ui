@@ -35,6 +35,7 @@ import {
 import { StoreModule } from '@ngrx/store';
 import * as fromContext from './store/context.reducer';
 import { DateFilterComponent } from "./filter/date/date.filter";
+import { DatagridColumnPipe } from './pipe/datagrid-column.pipe';
 
 @NgModule({
   entryComponents: [
@@ -70,7 +71,8 @@ import { DateFilterComponent } from "./filter/date/date.filter";
     WavefrontTaskExecutionDirective,
     TippyDirective,
     StreamDslComponent,
-    DateFilterComponent
+    DateFilterComponent,
+    DatagridColumnPipe
   ],
   imports: [
     CommonModule,
@@ -121,7 +123,8 @@ import { DateFilterComponent } from "./filter/date/date.filter";
     WavefrontTaskExecutionDirective,
     TippyDirective,
     StreamDslComponent,
-    DateFilterComponent
+    DateFilterComponent,
+    DatagridColumnPipe
   ]
 })
 export class SharedModule {

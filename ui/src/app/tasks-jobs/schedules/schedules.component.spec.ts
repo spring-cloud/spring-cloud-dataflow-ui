@@ -14,6 +14,8 @@ import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 import { PlatformFilterComponent } from './platform.filter';
 import { TaskServiceMock } from '../../tests/api/task.service.mock';
+import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('tasks-jobs/schedules/schedules.component.ts', () => {
 
@@ -26,7 +28,8 @@ describe('tasks-jobs/schedules/schedules.component.ts', () => {
         SchedulesComponent,
         DestroyComponent,
         PlatformFilterComponent,
-        RoleDirective
+        RoleDirective,
+        DatagridColumnPipe
       ],
       imports: [
         FormsModule,

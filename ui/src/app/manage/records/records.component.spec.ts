@@ -16,6 +16,8 @@ import { DatetimePipe } from '../../shared/pipe/datetime.pipe';
 import { RoleDirective } from '../../security/directive/role.directive';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('manage/records/records.component.ts', () => {
 
@@ -30,7 +32,8 @@ describe('manage/records/records.component.ts', () => {
         OperationFilterComponent,
         ActionFilterComponent,
         DatetimePipe,
-        RoleDirective
+        RoleDirective,
+        DatagridColumnPipe
       ],
       imports: [
         FormsModule,

@@ -28,7 +28,7 @@ export const initialState = [
       { name: 'by', value: 'name' },
       { name: 'reverse', value: false },
       { name: 'sizeName', value: '' },
-      { name: 'sizeType', value: '' },
+      { name: 'sizeType', value: '160' },
       { name: 'sizeVersion', value: '' },
       { name: 'sizeUri', value: '' }
     ]
@@ -45,10 +45,11 @@ export const initialState = [
       { name: 'actionType', value: '' },
       { name: 'operationType', value: '' },
       { name: 'dates', value: null },
+      { name: 'sizeId', value: '100' },
       { name: 'sizeCorrelationId', value: '' },
-      { name: 'sizeCreatedOn', value: '' },
-      { name: 'sizeAuditAction', value: '' },
-      { name: 'sizeAuditOperation', value: '' },
+      { name: 'sizeCreatedOn', value: '250' },
+      { name: 'sizeAuditAction', value: '140' },
+      { name: 'sizeAuditOperation', value: '180' },
       { name: 'sizeCreatedBy', value: '' },
       { name: 'sizePlatformName', value: '' },
     ]
@@ -64,7 +65,7 @@ export const initialState = [
       { name: 'sizeName', value: '' },
       { name: 'sizeDescription', value: '' },
       { name: 'sizeDslText', value: '' },
-      { name: 'sizeStatus', value: '' },
+      { name: 'sizeStatus', value: '140' },
       { name: 'expanded', value: null },
     ]
   },
@@ -78,7 +79,8 @@ export const initialState = [
       { name: 'reverse', value: false },
       { name: 'sizeName', value: '' },
       { name: 'sizeDescription', value: '' },
-      { name: 'sizeStatus', value: '' },
+      { name: 'sizeDsl', value: '' },
+      { name: 'sizeStatus', value: '140' },
     ]
   },
   {

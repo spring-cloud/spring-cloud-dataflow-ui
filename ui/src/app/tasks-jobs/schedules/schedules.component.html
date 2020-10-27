@@ -1,7 +1,7 @@
 <h1>Schedules</h1>
 
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
-              *ngIf="isInit">
+              *ngIf="isInit" #datagrid>
   <clr-dg-action-bar *ngIf="grouped">
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
       Cancel
@@ -20,20 +20,20 @@
     </button>
   </clr-dg-action-bar>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeName', $event)"
-                 [style.width.px]="context.sizeName || 'auto'">
+                 [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       Name
     </ng-container>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeTaskName', $event)"
-                 [style.width.px]="context.sizeTaskName || 'auto'">
+                 [style.width.px]="context.sizeTaskName | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       Task name
     </ng-container>
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizePlatform', $event)"
-                 [style.width.px]="context.sizePlatform || 'auto'">
+                 [style.width.px]="context.sizePlatform | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       Platform
     </ng-container>
@@ -42,7 +42,7 @@
     </clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column (clrDgColumnResize)="updateContext('sizeCronExpression', $event)"
-                 [style.width.px]="context.sizeCronExpression || 'auto'">
+                 [style.width.px]="context.sizeCronExpression | datagridcolumn: datagrid : contextName | async">
     <ng-container>
       Cron Expression
     </ng-container>

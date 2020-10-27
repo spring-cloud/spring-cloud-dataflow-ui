@@ -13,6 +13,8 @@ import { TaskServiceMock } from '../../tests/api/task.service.mock';
 import { GroupServiceMock } from '../../tests/service/group.service.mock';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
+import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('tasks-jobs/tasks/tasks.component.ts', () => {
 
@@ -24,7 +26,8 @@ describe('tasks-jobs/tasks/tasks.component.ts', () => {
       declarations: [
         TasksComponent,
         DestroyComponent,
-        RoleDirective
+        RoleDirective,
+        DatagridColumnPipe
       ],
       imports: [
         FormsModule,
