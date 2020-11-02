@@ -2,7 +2,7 @@ import {
   Component, OnDestroy, OnInit, Renderer2,
   ViewChild, ViewEncapsulation, HostListener
 } from '@angular/core';
-import { EditorComponent, Flo } from 'spring-flo';
+import { DslEditorComponent, EditorComponent, Flo } from 'spring-flo';
 import { Subject } from 'rxjs';
 import { Parser } from '../../shared/service/parser';
 import { MetamodelService } from '../metamodel.service';
@@ -34,7 +34,7 @@ import { PropertiesDialogComponent } from '../../shared/properties/properties-di
                   [(dsl)]="dsl" [paperPadding]="55"
                   (contentValidated)="contentValidated=$event"
                   (onProperties)="handleLinkEvent($event)"
-                  (validationMarkers)="validationMarkers = $event"
+                  (validationMarkers)="markersFromGraphChanged($event)"
                   searchFilterPlaceHolder="Search for applications...">
 
         <div header class="flow-definition-container">
@@ -96,6 +96,7 @@ export class StreamFloCreateComponent implements OnInit, OnDestroy {
 
   @ViewChild(EditorComponent, { static: true }) flo;
   @ViewChild(PropertiesDialogComponent, { static: true }) propertiesDialog;
+  @ViewChild(DslEditorComponent, {static: true}) dslEditor;
 
   constructor(public metamodelService: MetamodelService,
               public editorService: EditorService,
@@ -286,6 +287,11 @@ export class StreamFloCreateComponent implements OnInit, OnDestroy {
       }));
     }
     updateLintingCallback(editor, annotations);
+  }
+
+  markersFromGraphChanged(validationMarkers: Map<string, Flo.Marker[]>) {
+    this.validationMarkers = validationMarkers;
+    this.dslEditor.triggerLinting();
   }
 
   interestingPrefixStart(prefix: string, completions: Array<any>) {
