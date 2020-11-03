@@ -32,7 +32,7 @@ export class TasksComponent extends DatagridComponent {
     if (this.isReady()) {
       super.refresh(state);
       const params = this.getParams(state, { name: '', type: '' });
-      this.taskService.getTasks(params.current - 1, params.size, params?.taskName || '',
+      this.unsubscribe$ = this.taskService.getTasks(params.current - 1, params.size, params?.taskName || '',
         `${params.by || ''}`, `${params.reverse ? 'DESC' : 'ASC'}`)
         .subscribe((page: TaskPage) => {
           this.page = page;

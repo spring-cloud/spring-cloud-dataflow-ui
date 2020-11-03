@@ -5,15 +5,17 @@ import set from 'lodash.set';
 import { ContextService } from '../../service/context.service';
 import { ContextModel } from '../../model/context.model';
 import { SettingsService } from '../../../settings/settings.service';
-import { delay, map, mergeMap, takeUntil } from 'rxjs/operators';
-import { Subject, Subscription } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Directive()
 export abstract class DatagridComponent implements OnDestroy, AfterContentChecked {
 
+
   private subscriptionDatagrid: Subscription;
-  contextName: string;
   protected page: Page<any>;
+  unsubscribe$: Subscription;
+  contextName: string;
   loading = true;
   isInit = false;
   isDestroy = false;
@@ -29,7 +31,6 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
               protected cdRef: ChangeDetectorRef,
               contextName: string) {
     this.contextName = contextName;
-
     this.subscriptionDatagrid = this.contextService.getContext(contextName)
       .pipe(
         mergeMap(context => this.settingsService.getSettings()
@@ -112,10 +113,16 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
     this.state = state;
     this.loading = true;
     this.grouped = false;
+    if (this.unsubscribe$) {
+      this.unsubscribe$.unsubscribe();
+    }
   }
 
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.subscriptionDatagrid.unsubscribe();
+    if (this.unsubscribe$) {
+      this.unsubscribe$.unsubscribe();
+    }
   }
 }

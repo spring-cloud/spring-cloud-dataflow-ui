@@ -55,7 +55,7 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
       super.refresh(state);
       const expanded = { ...this.context.expanded };
       const params = this.getParams(state, { name: '' });
-      this.streamService.getStreams(params.current - 1, params.size, params.name || '', `${params.by || ''}`,
+      this.unsubscribe$ = this.streamService.getStreams(params.current - 1, params.size, params.name || '', `${params.by || ''}`,
         `${params.reverse ? 'DESC' : 'ASC'}`)
         .subscribe((page: StreamPage) => {
           const mergeExpanded = {};

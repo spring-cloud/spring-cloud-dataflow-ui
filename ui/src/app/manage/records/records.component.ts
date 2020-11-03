@@ -24,7 +24,7 @@ export class RecordsComponent extends DatagridComponent {
     if (this.isReady()) {
       super.refresh(state);
       const params = this.getParams(state, { actionType: '', operationType: '', dates: [null, null] });
-      this.recordService.getRecords(params.current - 1, params.size, params.search || '', params.actionType || '',
+      this.unsubscribe$ = this.recordService.getRecords(params.current - 1, params.size, params.search || '', params.actionType || '',
         params.operationType, params.dates[0], params.dates[1], `${params?.by || ''}`, `${params?.reverse ? 'DESC' : 'ASC'}`)
         .subscribe((page: RecordPage) => {
           this.page = page;

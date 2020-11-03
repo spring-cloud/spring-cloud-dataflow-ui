@@ -33,7 +33,7 @@ export class SchedulesComponent extends DatagridComponent {
     if (this.isScheduleReady(state)) {
       super.refresh(state);
       const params = this.getParams(state, { platform: '' });
-      this.scheduleService.getSchedules('', params.platform)
+      this.unsubscribe$ = this.scheduleService.getSchedules('', params.platform)
         .subscribe((page: SchedulePage) => {
           this.page = page;
           this.selected = [];
