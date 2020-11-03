@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { StreamHistory } from '../../../shared/model/stream.model';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -20,7 +20,7 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
   let component: RollbackComponent;
   let fixture: ComponentFixture<RollbackComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         RollbackComponent,

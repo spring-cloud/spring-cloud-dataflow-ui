@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { UnregisterComponent } from './unregister.component';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -19,7 +19,7 @@ describe('apps/unregister/unregister.component.ts', () => {
   let fixture: ComponentFixture<UnregisterComponent>;
   let apps: App[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         UnregisterComponent

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { StreamDslComponent } from '../../../shared/component/stream-dsl/stream-dsl.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -25,7 +25,7 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
   let component: MultiDeployComponent;
   let fixture: ComponentFixture<MultiDeployComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         MultiDeployComponent,

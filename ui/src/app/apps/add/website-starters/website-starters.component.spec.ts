@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FocusDirective } from '../../../shared/directive/focus.directive';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ describe('apps/website-starters/website-starters.component.ts', () => {
   let component: WebsiteStartersComponent;
   let fixture: ComponentFixture<WebsiteStartersComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         WebsiteStartersComponent,

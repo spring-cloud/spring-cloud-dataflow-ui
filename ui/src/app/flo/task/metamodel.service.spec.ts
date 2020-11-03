@@ -1,5 +1,5 @@
 import { MetamodelService } from './metamodel.service';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { MockSharedAppService } from '../../tests/service/app.service.mock';
 import { ToolsServiceMock } from '../../tests/service/task-tools.service.mock';
 import { LoggerService } from '../../shared/service/logger.service';
@@ -18,7 +18,7 @@ describe('Task MetamodelService', () => {
     expect(METAMODEL_SERVICE.groups()).toEqual(['control nodes', 'task']);
   });
 
-  it('Verify task metamodel', async(() => {
+  it('Verify task metamodel', waitForAsync(() => {
     METAMODEL_SERVICE.load().then(metamodel => {
       expect(Array.from(metamodel.keys())).toEqual(['links', 'control nodes', 'task']);
       const links = metamodel.get('links');
@@ -30,7 +30,7 @@ describe('Task MetamodelService', () => {
     });
   }));
 
-  it('load() vs. refresh()', async(() => {
+  it('load() vs. refresh()', waitForAsync(() => {
     METAMODEL_SERVICE.load().then(metamodel => {
       METAMODEL_SERVICE.load().then(metamodel2 => {
         expect(metamodel2).toBe(metamodel);
@@ -41,7 +41,7 @@ describe('Task MetamodelService', () => {
     });
   }));
 
-  it('clear cache', async(() => {
+  it('clear cache', waitForAsync(() => {
     METAMODEL_SERVICE.load().then(metamodel => {
       METAMODEL_SERVICE.clearCachedData();
       METAMODEL_SERVICE.load().then(metamodel2 => {

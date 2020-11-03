@@ -1,5 +1,5 @@
 import { Constants, EditorComponent, Flo } from 'spring-flo';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
 import { EditorService } from './editor.service';
@@ -31,7 +31,7 @@ describe('Task RenderService', () => {
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
     TestBed.configureTestingModule({
       imports: [

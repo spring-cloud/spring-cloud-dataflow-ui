@@ -8,6 +8,7 @@ import { SettingsService } from '../../../settings/settings.service';
 import { delay, map, mergeMap, takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 
+/* tslint:disable:directive-class-suffix */
 @Directive()
 export abstract class DatagridComponent implements OnDestroy, AfterContentChecked {
 

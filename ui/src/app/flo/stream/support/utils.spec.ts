@@ -2,7 +2,7 @@ import { Flo, Shapes } from 'spring-flo';
 import { dia } from 'jointjs';
 import { RenderService } from '../render.service';
 import { MetamodelService } from '../metamodel.service';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { Utils } from './utils';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
 import { NodeHelper } from '../node-helper.service';
@@ -20,7 +20,7 @@ describe('utils', () => {
   let graph: dia.Graph;
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     graph = new joint.dia.Graph();
     METAMODEL_SERVICE.load().then(data => metamodel = data);
   }));

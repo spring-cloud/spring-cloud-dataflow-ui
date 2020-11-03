@@ -34,7 +34,7 @@ import {
 } from './wavefront/wavefront.directive';
 import { StoreModule } from '@ngrx/store';
 import * as fromContext from './store/context.reducer';
-import { DateFilterComponent } from "./filter/date/date.filter";
+import { DateFilterComponent } from './filter/date/date.filter';
 import { DatagridColumnPipe } from './pipe/datagrid-column.pipe';
 
 @NgModule({

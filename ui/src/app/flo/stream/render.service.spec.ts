@@ -22,7 +22,7 @@
  */
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { EditorComponent, Flo } from 'spring-flo';
 import * as _$ from 'jquery';
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
@@ -46,7 +46,7 @@ describe('Stream RenderService', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let flo: Flo.EditorContext;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
     TestBed.configureTestingModule({
       imports: [

@@ -5,7 +5,7 @@ import { HttpUtils } from '../support/http.utils';
 import { catchError, map } from 'rxjs/operators';
 import { ExecutionStepProgress, ExecutionStepResource, JobExecution, JobExecutionPage } from '../model/job.model';
 import { ErrorUtils } from '../support/error.utils';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'

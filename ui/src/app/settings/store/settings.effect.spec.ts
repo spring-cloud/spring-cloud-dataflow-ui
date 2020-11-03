@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { cold } from 'jasmine-marbles';
 import { Router } from '@angular/router';
@@ -18,7 +18,7 @@ describe('settings/store/settings.effect.ts', () => {
   const themeServiceSpy = jasmine.createSpyObj('ThemeService', ['switchTheme']);
   const settingsServiceSpy = jasmine.createSpyObj('SettingsService', ['update']);
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [
         SettingsEffect,

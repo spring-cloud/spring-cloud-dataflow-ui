@@ -3,7 +3,7 @@ import { dia } from 'jointjs';
 import { NodeComponent } from './node-component';
 import { Flo, Constants } from 'spring-flo';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
-import { async } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 import { MetamodelService } from '../../stream/metamodel.service';
 import { RenderService } from '../../stream/render.service';
 import { NodeHelper } from '../../stream/node-helper.service';
@@ -38,7 +38,7 @@ describe('NodeComponent Tests.', () => {
   let component: NodeComponent;
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     METAMODEL_SERVICE.load().then(data => metamodel = data);
     graph = new joint.dia.Graph();
     component = new NodeComponent(<any>DOC_SERVICE);

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ViewComponent } from './view.component';
 import { MockSharedAppService } from '../../../tests/service/app.service.mock';
 import { MetamodelService } from '../metamodel.service';
@@ -14,7 +14,7 @@ describe('ViewComponent', () => {
   const renderService = new RenderService(metamodelService);
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ViewComponent ],
       providers: [

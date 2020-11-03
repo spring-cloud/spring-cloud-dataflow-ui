@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -13,7 +13,7 @@ import { StopComponent } from '../executions/stop/stop.component';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
-import { DateFilterComponent } from "../../shared/filter/date/date.filter";
+import { DateFilterComponent } from '../../shared/filter/date/date.filter';
 import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('tasks-jobs/jobs/jobs.component.ts', () => {
@@ -21,7 +21,7 @@ describe('tasks-jobs/jobs/jobs.component.ts', () => {
   let component: JobsComponent;
   let fixture: ComponentFixture<JobsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         JobsComponent,

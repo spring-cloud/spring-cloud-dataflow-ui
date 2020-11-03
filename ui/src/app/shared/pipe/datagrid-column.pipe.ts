@@ -18,9 +18,9 @@ export class DatagridColumnPipe implements PipeTransform {
     }
     const context = await this.contextService.getContext(contextName)
       .pipe(take(1)).toPromise();
-    let cols = [];
+    const cols = [];
     context.forEach((ct: ContextModel) => {
-      if (ct.name !== 'size' && ct.name.startsWith('size') && +ct.value>0) {
+      if (ct.name !== 'size' && ct.name.startsWith('size') && +ct.value > 0) {
         cols.push(+ct.value);
       }
     });

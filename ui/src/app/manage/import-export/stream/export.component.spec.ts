@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { StreamExportComponent } from './export.component';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -17,7 +17,7 @@ describe('manage/import-export/stream/export.component.ts', () => {
   let component: StreamExportComponent;
   let fixture: ComponentFixture<StreamExportComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         StreamExportComponent
