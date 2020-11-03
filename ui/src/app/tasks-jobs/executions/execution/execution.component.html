@@ -15,10 +15,10 @@
             [appRole]="['ROLE_DESTROY']">
       Clean up task execution
     </button>
-    <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">
+    <button type="button" class="btn btn-sm btn-secondary"  grafanaDashboardTaskExecution [taskExecution]="execution">
       Grafana Dashboard
     </button>
-    <button class="action-item" wavefrontDashboardTaskExecution [taskExecution]="execution">
+    <button type="button" class="btn btn-sm btn-secondary"  wavefrontDashboardTaskExecution [taskExecution]="execution">
       Wavefront Dashboard
     </button>
   </div>
@@ -102,13 +102,15 @@
                   {{execution.exitMessage || 'N/A'}}
                 </div>
               </div>
-              <div class="row">
+              <div class="row"
+                   *ngIf="this.execution.externalExecutionId || execution.resourceUrl">
                 <div class="key">Resource URL</div>
                 <div class="value">
                   {{execution.resourceUrl || 'N/A'}}
                 </div>
               </div>
-              <div class="row">
+              <div class="row"
+                   *ngIf="this.execution.externalExecutionId || execution.getAppPropertiesToArray().length > 0">
                 <div class="key">Application Properties</div>
                 <div class="value">
                   <div *ngIf="execution.getAppPropertiesToArray().length > 0">
@@ -122,7 +124,8 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
+              <div class="row"
+                   *ngIf="this.execution.externalExecutionId || execution.getDeploymentPropertiesToArray().length > 0">
                 <div class="key">Platform Properties</div>
                 <div class="value">
                   <div *ngIf="execution.getDeploymentPropertiesToArray().length > 0">
