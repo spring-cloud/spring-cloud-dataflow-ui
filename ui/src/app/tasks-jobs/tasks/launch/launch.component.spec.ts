@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RoleDirective } from '../../../security/directive/role.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -21,7 +21,7 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
   let component: LaunchComponent;
   let fixture: ComponentFixture<LaunchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         LaunchComponent,

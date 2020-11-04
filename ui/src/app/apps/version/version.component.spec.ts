@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { App, ApplicationType } from '../../shared/model/app.model';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -20,7 +20,7 @@ describe('apps/version/version.component.ts', () => {
   let component: VersionComponent;
   let fixture: ComponentFixture<VersionComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         VersionComponent,

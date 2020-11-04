@@ -1,4 +1,4 @@
-import { async, inject, ComponentFixture, TestBed } from '@angular/core/testing';
+import { inject, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ApplicationRef } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
@@ -27,7 +27,7 @@ describe('StreamGraphViewComponent', () => {
   let propertiesEditor: PropertiesEditor;
   let nodeHelper: NodeHelper;
 
-  beforeEach(async(() =>
+  beforeEach(waitForAsync(() =>
     TestBed.configureTestingModule({
       imports: [
         FloModule,

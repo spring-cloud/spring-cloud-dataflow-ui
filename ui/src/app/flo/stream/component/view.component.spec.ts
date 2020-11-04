@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockStreamsService } from '../../../tests/service/stream.service.mock';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FloModule } from 'spring-flo';
@@ -27,7 +27,7 @@ describe('StreamGraphComponent', () => {
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService, new NodeHelper());
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
 
     TestBed.configureTestingModule({
       declarations: [

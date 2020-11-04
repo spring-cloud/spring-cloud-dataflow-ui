@@ -1,4 +1,4 @@
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -420,7 +420,7 @@ describe('editor.service : Auto-Link', () => {
 
   let flo: Flo.EditorContext;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     metamodelService.load().then(data => metamodel = data);
     TestBed.configureTestingModule({
       imports: [

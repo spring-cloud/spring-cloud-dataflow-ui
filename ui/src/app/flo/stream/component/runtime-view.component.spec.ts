@@ -1,5 +1,5 @@
 import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -30,7 +30,7 @@ describe('RuntimeStreamFloViewComponent', () => {
   let propertiesEditor: PropertiesEditor;
   let nodeHelper: NodeHelper;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         StreamsModule,

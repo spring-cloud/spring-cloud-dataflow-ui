@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { ClipboardCopyService } from '../../service/clipboard-copy.service';
@@ -10,7 +10,7 @@ describe('StreamDslComponent', () => {
   let component: StreamDslComponent;
   let fixture: ComponentFixture<StreamDslComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         StreamDslComponent

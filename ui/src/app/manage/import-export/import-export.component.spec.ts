@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { TypeFilterComponent } from '../../apps/type.filter';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -25,7 +25,7 @@ describe('manage/import-export/import-export.component.ts', () => {
   let component: ImportExportComponent;
   let fixture: ComponentFixture<ImportExportComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         ImportExportComponent,

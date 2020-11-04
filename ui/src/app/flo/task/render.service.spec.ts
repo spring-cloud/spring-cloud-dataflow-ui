@@ -5,7 +5,7 @@
  */
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { EditorComponent, Flo } from 'spring-flo';
 import * as _$ from 'jquery';
 import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
@@ -32,7 +32,7 @@ describe('Task RenderService', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let flo: Flo.EditorContext;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
     TestBed.configureTestingModule({
       imports: [

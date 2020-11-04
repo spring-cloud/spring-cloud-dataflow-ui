@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { StopComponent } from '../../executions/stop/stop.component';
 import { ConfirmComponent } from '../../../shared/component/confirm/confirm.component';
 import { LogComponent } from '../../executions/execution/log/log.component';
@@ -21,7 +21,7 @@ describe('tasks-jobs/jobs/step/step.component.ts', () => {
   let component: StepComponent;
   let fixture: ComponentFixture<StepComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         StepComponent,
