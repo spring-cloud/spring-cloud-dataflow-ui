@@ -8,8 +8,6 @@ import { VersionComponent } from './version/version.component';
 import { DatagridComponent } from '../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../shared/service/context.service';
 import { SettingsService } from '../settings/settings.service';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-apps-list',
@@ -32,7 +30,7 @@ export class AppsComponent extends DatagridComponent {
     if (this.isReady()) {
       super.refresh(state);
       const params = this.getParams(state, { name: '', type: '' });
-      this.appService.getApps(params.current - 1, params.size, params.name, params.type,
+      this.unsubscribe$ = this.appService.getApps(params.current - 1, params.size, params.name, params.type,
         `${params.by || 'name'}`, `${params.reverse ? 'DESC' : 'ASC'}`, true)
         .subscribe((page: AppPage) => {
           this.page = page;

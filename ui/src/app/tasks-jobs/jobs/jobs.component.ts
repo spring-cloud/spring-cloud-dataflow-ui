@@ -33,7 +33,7 @@ export class JobsComponent extends DatagridComponent {
     if (this.isReady()) {
       super.refresh(state);
       const params = this.getParams(state, { name: '', type: '', dates: [null, null] });
-      this.jobService.getExecutions(params.current - 1, params.size, params.dates[0], params.dates[1])
+      this.unsubscribe$ = this.jobService.getExecutions(params.current - 1, params.size, params.dates[0], params.dates[1])
         .subscribe((page: JobExecutionPage) => {
           this.page = page;
           this.updateGroupContext(params);
