@@ -19,6 +19,7 @@ export class CleanupComponent {
 
   open(executions: TaskExecution[]) {
     this.executions = executions;
+    this.isRunning = false;
     this.isOpen = true;
   }
 
