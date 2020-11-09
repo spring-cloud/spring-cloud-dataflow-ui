@@ -9,6 +9,7 @@ import { NotificationService } from '../../../shared/service/notification.servic
 })
 export class StopComponent {
 
+  isRunning = false;
   isOpen = false;
   execution: TaskExecution;
   @Output() onStopped = new EventEmitter();
@@ -19,21 +20,25 @@ export class StopComponent {
 
   open(execution: TaskExecution) {
     this.execution = execution;
+    this.isRunning = false;
     this.isOpen = true;
   }
 
   stop() {
+    this.isRunning = true;
     this.taskService.executionStop(this.execution)
       .subscribe(() => {
         this.notificationService.success('Stop task execution(s)', `Request submitted to stop task execution "${this.execution.executionId}".`);
         this.onStopped.emit(true);
         this.isOpen = false;
         this.execution = null;
+        this.isRunning = false;
       }, error => {
         this.notificationService.error('An error occurred', 'An error occurred while stopping task executions. ' +
           'Please check the server logs for more details.');
         this.isOpen = false;
         this.execution = null;
+        this.isRunning = false;
       });
   }
 

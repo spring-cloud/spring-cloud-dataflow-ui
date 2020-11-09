@@ -1,12 +1,16 @@
-<clr-modal [(clrModalOpen)]="isOpen" *ngIf="execution">
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="execution" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">Confirm Stop Task Execution</h3>
-  <div class="modal-body">
+  <div class="modal-body" *ngIf="!isRunning">
     <p>This action will stop the task execution <strong>{{execution.executionId}}</strong> (task
       <strong>{{execution.taskName}}</strong>). Are you sure?</p>
   </div>
+  <div class="modal-body" *ngIf="isRunning">
+    <clr-spinner clrInline clrSmall></clr-spinner>
+    Stopping task execution...
+  </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false">Cancel</button>
-    <button id="btn-stop" type="button" class="btn btn-primary" (click)="stop()">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button id="btn-stop" type="button" class="btn btn-primary" (click)="stop()" [disabled]="isRunning">
       Stop Task Execution(s)
     </button>
   </div>
