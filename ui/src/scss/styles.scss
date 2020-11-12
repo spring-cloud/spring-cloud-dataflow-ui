@@ -49,6 +49,14 @@ h1 {
   }
 }
 
+@-moz-document url-prefix() {
+  .key-value-wrapper {
+    textarea {
+      white-space: pre !important;
+    }
+  }
+}
+
 .key-value-wrapper {
   clr-icon {
     vertical-align: top;
