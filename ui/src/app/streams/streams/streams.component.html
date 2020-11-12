@@ -96,7 +96,7 @@
         Update
       </button>
       <button class="action-item" (click)="undeploy([stream])"
-              *ngIf="stream.status !== 'UNDEPLOYED' || stream.status !== 'INCOMPLETE'"
+              *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
               [appRole]="['ROLE_CREATE']">
         Undeploy
       </button>
