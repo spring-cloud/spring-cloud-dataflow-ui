@@ -33,15 +33,21 @@ target/
 *.ipr
 *.iws
 npm-debug.log
-.vscode
 *.launch
 *.sublime-workspace
 .DS_Store
 Thumbs.db
 
-# IDE - VSCode
+# IDE - VSCode main
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# IDE - VSCode ui
+ui/.vscode/*
+!ui/.vscode/settings.json
+!ui/.vscode/tasks.json
+!ui/.vscode/launch.json
+!ui/.vscode/extensions.json
