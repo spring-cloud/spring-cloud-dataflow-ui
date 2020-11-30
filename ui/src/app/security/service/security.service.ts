@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { catchError, flatMap, take } from 'rxjs/operators';
+import { catchError , mergeMap, take } from 'rxjs/operators';
 import { HttpUtils } from '../../shared/support/http.utils';
 import { ErrorUtils } from '../../shared/support/error.utils';
 import { Security } from '../../shared/model/security.model';
@@ -77,7 +77,7 @@ export class SecurityService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.http.get('/logout', { headers: headers, responseType: 'text' })
       .pipe(
-        flatMap(() => {
+        mergeMap(() => {
           this.store.dispatch(logout());
           return this.load();
         }),
