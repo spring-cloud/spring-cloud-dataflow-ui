@@ -189,16 +189,20 @@ export class StreamDeployService {
             value: null,
             defaultValue: null,
             suffix: 'MB'
-          },
-          {
+          }
+        ];
+
+        if (!(result.streamDefinition?.status !== 'UNDEPLOYED')) {
+          config.deployers.push({
             id: 'count',
             name: 'count',
             form: 'autocomplete',
             type: 'java.lang.Integer',
             value: null,
             defaultValue: null
-          },
-        ];
+          });
+        }
+
         return config;
       }));
   }
