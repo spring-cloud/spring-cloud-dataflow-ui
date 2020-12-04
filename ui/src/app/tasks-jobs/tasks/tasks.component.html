@@ -27,6 +27,10 @@
             (click)="destroyTasks(selected)" [appRole]="['ROLE_DESTROY']">
       Destroy task(s)
     </button>
+    <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-secondary"
+            (click)="cloneTasks(selected)" [appRole]="['ROLE_CREATE']">
+      Clone task(s)
+    </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
     <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
@@ -88,6 +92,9 @@
       <button class="action-item" (click)="destroyTasks([task])" [appRole]="['ROLE_DESTROY']"
               [disabled]="task.composedTaskElement">Destroy
       </button>
+      <button class="action-item" (click)="cloneTasks([task])" [appRole]="['ROLE_CREATE']"
+              [disabled]="task.composedTaskElement">Clone
+      </button>
       <button class="action-item" grafanaDashboardTask [task]="task">
         Grafana Dashboard
       </button>
@@ -108,3 +115,4 @@
 </clr-datagrid>
 
 <app-task-destroy #destroyModal (onDestroyed)="refresh(state)"></app-task-destroy>
+<app-task-clone #cloneModal (onCloned)="refresh(state)"></app-task-clone>
