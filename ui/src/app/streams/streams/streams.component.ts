@@ -12,6 +12,7 @@ import { StatusComponent } from './status/status.component';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
 import { SettingsService } from '../../settings/settings.service';
+import { CloneComponent } from './clone/clone.component';
 
 @Component({
   selector: 'app-streams-list',
@@ -23,6 +24,7 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
   @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
   @ViewChild('undeployModal', { static: true }) undeployModal: UndeployComponent;
   @ViewChild('statusModal', { static: true }) statusModal: StatusComponent;
+  @ViewChild('cloneModal', { static: true }) cloneModal: CloneComponent;
   metricsSubscription: Subscription;
   streamStatuses: StreamStatus[] = [];
   timeSubscription: Subscription;
@@ -96,6 +98,10 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
 
   destroy(streams: Stream[]) {
     this.destroyModal.open(streams);
+  }
+
+  clone(streams: Stream[]) {
+    this.cloneModal.open(streams);
   }
 
   create() {
