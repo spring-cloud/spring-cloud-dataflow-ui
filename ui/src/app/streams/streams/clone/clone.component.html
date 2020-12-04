@@ -1,0 +1,69 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning">
+    <h3 *ngIf="streams?.length == 1" class="modal-title">Clone Stream</h3>
+    <h3 *ngIf="streams?.length > 1" class="modal-title">Clone Streams</h3>
+    <div class="modal-body" *ngIf="!isRunning && !loading">
+        <form clrForm clrLayout="horizontal" (submit)="submit()" [formGroup]="form" clrLabelSize="4" style="padding:0;margin: 0">
+            <div style="margin-bottom:0;">This action will create the following <strong>stream(s)</strong>:</div>
+            <div class="alert alert-danger" *ngIf="form?.hasError('uniqueStreamNames')">
+              <div class="alert-items">
+                <div class="alert-item static">
+                  <div class="alert-icon-wrapper">
+                    <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+                  </div>
+                  <div class="alert-text">
+                    Duplicate stream name, please check input names.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let stream of streams; let i = index" class="card" style="padding: 10px 0;">
+              <div class="card-block">
+                <div class="clr-form-control clr-row" style="margin-top:0;height: 42px">
+                    <label class="clr-control-label clr-col-12 clr-col-md-2">Definition:</label>
+                    <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
+                        <span class="dsl-text dsl-truncate">{{stream.dslText}}</span>
+                    </div>
+                </div>
+                <clr-input-container style="margin-top: 0">
+                    <label class="clr-col-12 clr-col-md-2">Name</label>
+                    <input clrInput
+                           name="name"
+                           id="name"
+                           formControlName="{{stream.name}}"
+                           [dataflowFocus]="true"
+                           class="clr-col-12 clr-col-md-10"
+                           style="width: 100%" />
+                    <clr-control-error *clrIfError="'required'">
+                      Stream name is required.
+                    </clr-control-error>
+                    <clr-control-error *clrIfError="'pattern'">
+                      Invalid stream name (no space or special charaters).
+                    </clr-control-error>
+                    <clr-control-error *clrIfError="'maxLength'">
+                      Stream name must be less than 255 characters long.
+                    </clr-control-error>
+                    <clr-control-error *clrIfError="'uniqueStreamName'">
+                      Stream name is already taken.
+                    </clr-control-error>
+                </clr-input-container>
+                </div>
+            </div>
+          </form>
+    </div>
+    <div class="modal-body" *ngIf="isRunning">
+      <clr-spinner clrInline clrSmall></clr-spinner>
+      Loading...
+    </div>
+    <div class="modal-body" *ngIf="isRunning">
+      <clr-spinner clrInline clrSmall></clr-spinner>
+      Cloning stream(s)...
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="isRunning">
+        <span *ngIf="streams.length == 1">Clone the stream</span>
+        <span *ngIf="streams.length > 1">Clone the streams</span>
+      </button>
+    </div>
+  </clr-modal>
+  

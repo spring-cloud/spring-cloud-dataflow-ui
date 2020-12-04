@@ -21,6 +21,7 @@ import { SharedFloModule } from '../flo/shared-flo.module';
 import { SecurityModule } from '../security/security.module';
 import { StatusComponent } from './streams/status/status.component';
 import { RollbackComponent } from './streams/rollback/rollback.component';
+import { CloneComponent } from './streams/clone/clone.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { RollbackComponent } from './streams/rollback/rollback.component';
     ErrorsComponent,
     MultiDeployComponent,
     StatusComponent,
-    RollbackComponent
+    RollbackComponent,
+    CloneComponent
   ],
   imports: [
     CommonModule,

@@ -31,6 +31,10 @@
             (click)="destroy(selected)" [appRole]="['ROLE_DESTROY']">
       Destroy stream(s)
     </button>
+    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
+            (click)="clone(selected)" [appRole]="['ROLE_CREATE']">
+      Clone stream(s)
+    </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
     <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
@@ -104,6 +108,10 @@
               [appRole]="['ROLE_DESTROY']">
         Destroy
       </button>
+      <button class="action-item" (click)="clone([stream])"
+              [appRole]="['ROLE_CREATE']">
+        Clone
+      </button>
       <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
       <button class="action-item" wavefrontDashboardStream [stream]="stream">Wavefront Dashboard</button>
     </clr-dg-action-overflow>
@@ -133,4 +141,5 @@
 
 <app-stream-destroy #destroyModal (onDestroyed)="refresh(state)"></app-stream-destroy>
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh(state)"></app-stream-undeploy>
+<app-stream-clone #cloneModal (onCloned)="refresh(state)"></app-stream-clone>
 <app-stream-status #statusModal></app-stream-status>
