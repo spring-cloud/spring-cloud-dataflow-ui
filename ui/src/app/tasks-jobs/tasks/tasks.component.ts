@@ -9,6 +9,7 @@ import { GroupService } from '../../shared/service/group.service';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
 import { SettingsService } from '../../settings/settings.service';
+import { CloneComponent } from './clone/clone.component';
 
 @Component({
   selector: 'app-tasks',
@@ -17,6 +18,7 @@ import { SettingsService } from '../../settings/settings.service';
 export class TasksComponent extends DatagridComponent {
   page: TaskPage;
   @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
+  @ViewChild('cloneModal', { static: true }) cloneModal: CloneComponent;
   @ViewChild('datagrid') datagrid: ClrDatagrid;
 
   constructor(private taskService: TaskService,
@@ -77,5 +79,9 @@ export class TasksComponent extends DatagridComponent {
 
   destroyTasks(tasks: Task[]) {
     this.destroyModal.open(tasks);
+  }
+
+  cloneTasks(tasks: Task[]) {
+    this.cloneModal.open(tasks);
   }
 }

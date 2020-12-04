@@ -25,6 +25,7 @@ import { SchedulesComponent } from './schedules/schedules.component';
 import { ScheduleComponent } from './schedules/schedule/schedule.component';
 import { SecurityModule } from '../security/security.module';
 import { PlatformFilterComponent } from './schedules/platform.filter';
+import { CloneComponent } from './tasks/clone/clone.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { PlatformFilterComponent } from './schedules/platform.filter';
     DestroyScheduleComponent,
     ScheduleComponent,
     CreateScheduleComponent,
-    PlatformFilterComponent
+    PlatformFilterComponent,
+    CloneComponent
   ],
   imports: [
     CommonModule,
