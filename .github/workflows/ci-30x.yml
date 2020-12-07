@@ -1,4 +1,4 @@
-name: Java CI - master
+name: Java CI - 3.0.x
 
 on:
   push:
