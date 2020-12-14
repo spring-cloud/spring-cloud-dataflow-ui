@@ -150,14 +150,6 @@ export class SearchComponent implements OnInit {
     this.isFocusPersist = false;
   }
 
-
-  @HostListener('document:keyup', ['$event'])
-  setFocus(event: KeyboardEvent) {
-    if (event.code.toUpperCase() === 'SPACE' && event.ctrlKey) {
-      this.inputQuickSearch.nativeElement.focus();
-    }
-  }
-
   clear() {
     if (this.timer) {
       this.timer.unsubscribe();
