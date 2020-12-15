@@ -9,18 +9,18 @@ import { StreamCreateComponent } from './dashboard/stream-create/stream-create.c
 import { TaskCreateComponent } from './dashboard/task-create/task-create.component';
 
 @NgModule({
-  declarations: [
-    DashboardComponent,
-    StreamCreateComponent,
-    TaskCreateComponent
-  ],
-  imports: [
-    CommonModule,
-    ClarityModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    DevRoutingModule
-  ]
+    declarations: [
+        DashboardComponent,
+        StreamCreateComponent,
+        TaskCreateComponent
+    ],
+    imports: [
+        CommonModule,
+        ClarityModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        DevRoutingModule
+    ]
 })
 export class DevModule { }

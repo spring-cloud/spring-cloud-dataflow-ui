@@ -4,16 +4,16 @@ import { SecurityGuard } from '../security/support/security.guard';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
-  {
-    path: 'settings',
-    component: SettingsComponent,
-    canActivate: [SecurityGuard]
-  }
+    {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [SecurityGuard]
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class SettingsRoutingModule {
 }

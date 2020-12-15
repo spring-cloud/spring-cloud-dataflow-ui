@@ -12,7 +12,7 @@ export class ParserService {
     }
 
     simplifyDsl(dsl: string) {
-      return Parser.simplify(dsl);
+        return Parser.simplify(dsl);
     }
 
 }

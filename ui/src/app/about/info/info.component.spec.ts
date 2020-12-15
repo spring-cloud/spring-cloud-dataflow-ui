@@ -10,38 +10,38 @@ import { NotificationServiceMock } from '../../tests/service/notification.servic
 import { InfoComponent } from './info.component';
 
 describe('about/info/info.component.ts', () => {
-  let component: InfoComponent;
-  let fixture: ComponentFixture<InfoComponent>;
+    let component: InfoComponent;
+    let fixture: ComponentFixture<InfoComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        InfoComponent,
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                InfoComponent,
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                AppServiceMock.provider,
+                NotificationServiceMock.provider,
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(InfoComponent);
-    component = fixture.componentInstance;
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(InfoComponent);
+        component = fixture.componentInstance;
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 
 });

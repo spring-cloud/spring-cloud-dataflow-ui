@@ -4,18 +4,18 @@ import { ModalService } from './shared/service/modal.service';
 import { SettingsComponent } from './settings/settings/settings.component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html'
+    selector: 'app-root',
+    templateUrl: './app.component.html'
 })
 export class AppComponent {
 
-  shouldProtect = this.securityService.shouldProtect();
-  securityEnabled = this.securityService.securityEnabled();
+    shouldProtect = this.securityService.shouldProtect();
+    securityEnabled = this.securityService.securityEnabled();
 
-  constructor(private securityService: SecurityService,
-              private modalService: ModalService) { }
+    constructor(private securityService: SecurityService,
+        private modalService: ModalService) { }
 
-  openSettings() {
-    this.modalService.show(SettingsComponent);
-  }
+    openSettings() {
+        this.modalService.show(SettingsComponent);
+    }
 }

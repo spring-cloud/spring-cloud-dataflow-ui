@@ -10,8 +10,8 @@ import { Parser } from '../shared/service/parser';
 @Injectable()
 export class SanitizeDsl {
 
-  convert(dsl: string, parsedStreams: Parser.ParseResult) {
-    return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
-  }
+    convert(dsl: string, parsedStreams: Parser.ParseResult) {
+        return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
+    }
 
 }

@@ -3,17 +3,17 @@
  */
 export class TaskConversion {
 
-  public graph: Graph;
-  public dsl: string;
-  public errors: Array<any> = new Array();
+    public graph: Graph;
+    public dsl: string;
+    public errors: Array<any> = new Array();
 
-  constructor(dsl: string, errors?: Array<Map<string, any>>, graph?: Graph) {
-    this.dsl = dsl;
-    if (errors) {
-      this.errors = errors;
+    constructor(dsl: string, errors?: Array<Map<string, any>>, graph?: Graph) {
+        this.dsl = dsl;
+        if (errors) {
+            this.errors = errors;
+        }
+        this.graph = graph;
     }
-    this.graph = graph;
-  }
 }
 
 /**
@@ -21,17 +21,17 @@ export class TaskConversion {
  */
 export class Graph {
 
-  public nodes: Array<Node>;
-  public links: Array<Link>;
+    public nodes: Array<Node>;
+    public links: Array<Link>;
 
-  constructor(nodes: Array<Node>, links: Array<Link>) {
-    this.nodes = nodes;
-    this.links = links;
-  }
+    constructor(nodes: Array<Node>, links: Array<Link>) {
+        this.nodes = nodes;
+        this.links = links;
+    }
 
-  toJson(): string {
-    return JSON.stringify(this);
-  }
+    toJson(): string {
+        return JSON.stringify(this);
+    }
 }
 
 /**
@@ -39,17 +39,17 @@ export class Graph {
  */
 export class Node {
 
-  public id: string;
-  public name: string;
-  public properties: {};
-  public metadata: {};
+    public id: string;
+    public name: string;
+    public properties: {};
+    public metadata: {};
 
-  constructor(id: string, name: string, properties?: {}, metadata?: {}) {
-    this.id = id;
-    this.name = name;
-    this.properties = properties;
-    this.metadata = metadata;
-  }
+    constructor(id: string, name: string, properties?: {}, metadata?: {}) {
+        this.id = id;
+        this.name = name;
+        this.properties = properties;
+        this.metadata = metadata;
+    }
 }
 
 /**
@@ -57,13 +57,13 @@ export class Node {
  */
 export class Link {
 
-  public from: string;
-  public to: string;
-  public properties: {};
+    public from: string;
+    public to: string;
+    public properties: {};
 
-  constructor(from: string, to: string, properties?: {}) {
-    this.from = from;
-    this.to = to;
-    this.properties = properties;
-  }
+    constructor(from: string, to: string, properties?: {}) {
+        this.from = from;
+        this.to = to;
+        this.properties = properties;
+    }
 }

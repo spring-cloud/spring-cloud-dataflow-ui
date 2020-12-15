@@ -6,12 +6,12 @@ import { Properties } from 'spring-flo';
  * @author Alex Boyko
  */
 export interface AppUiProperty extends Properties.Property {
-  attr: string;
-  isSemantic: boolean;
-  code?: CodeProperty;
+    attr: string;
+    isSemantic: boolean;
+    code?: CodeProperty;
 }
 
 export interface CodeProperty {
-  langPropertyName: string;
-  language: string;
+    langPropertyName: string;
+    language: string;
 }

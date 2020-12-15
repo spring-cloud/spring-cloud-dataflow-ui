@@ -22,80 +22,80 @@ import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('manage/import-export/import-export.component.ts', () => {
 
-  let component: ImportExportComponent;
-  let fixture: ComponentFixture<ImportExportComponent>;
+    let component: ImportExportComponent;
+    let fixture: ComponentFixture<ImportExportComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ImportExportComponent,
-        TypeFilterComponent,
-        StreamExportComponent,
-        StreamImportComponent,
-        TaskExportComponent,
-        TaskImportComponent,
-        CardComponent,
-        RoleDirective
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        StreamServiceMock.provider,
-        TaskServiceMock.provider,
-        NotificationServiceMock.provider,
-        ImportExportServiceMock.provider,
-        ContextServiceMock.provider
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                ImportExportComponent,
+                TypeFilterComponent,
+                StreamExportComponent,
+                StreamImportComponent,
+                TaskExportComponent,
+                TaskImportComponent,
+                CardComponent,
+                RoleDirective
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                StreamServiceMock.provider,
+                TaskServiceMock.provider,
+                NotificationServiceMock.provider,
+                ImportExportServiceMock.provider,
+                ContextServiceMock.provider
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ImportExportComponent);
-    component = fixture.componentInstance;
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ImportExportComponent);
+        component = fixture.componentInstance;
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 
-  it('should open the stream export modal', () => {
-    component.run('export-stream');
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    const title = fixture.debugElement.query(By.css('app-manage-stream-export .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Export stream(s)');
-  });
+    it('should open the stream export modal', () => {
+        component.run('export-stream');
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+        const title = fixture.debugElement.query(By.css('app-manage-stream-export .modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Export stream(s)');
+    });
 
-  it('should open the stream export modal', () => {
-    component.run('import-stream');
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    const title = fixture.debugElement.query(By.css('app-manage-stream-import .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Import stream(s)');
-  });
+    it('should open the stream export modal', () => {
+        component.run('import-stream');
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+        const title = fixture.debugElement.query(By.css('app-manage-stream-import .modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Import stream(s)');
+    });
 
-  it('should open the task export modal', () => {
-    component.run('export-task');
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    const title = fixture.debugElement.query(By.css('app-manage-task-export .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Export task(s)');
-  });
+    it('should open the task export modal', () => {
+        component.run('export-task');
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+        const title = fixture.debugElement.query(By.css('app-manage-task-export .modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Export task(s)');
+    });
 
-  it('should open the task export modal', () => {
-    component.run('import-task');
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    const title = fixture.debugElement.query(By.css('app-manage-task-import .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Import task(s)');
-  });
+    it('should open the task export modal', () => {
+        component.run('import-task');
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+        const title = fixture.debugElement.query(By.css('app-manage-task-import .modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Import task(s)');
+    });
 
 });

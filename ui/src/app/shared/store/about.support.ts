@@ -2,29 +2,26 @@ import { AboutState, DependencyState, RuntimeEnvironmentState } from './about.re
 import set from 'lodash.set';
 import get from 'lodash.get';
 
-const parseDependency = (input): DependencyState => {
-  return {
+const parseDependency = (input): DependencyState => ({
     name: input.name,
     version: input.version,
     url: input.url,
     checksumSha1: input.checksumSha1,
     checksumSha256: input.checksumSha256
-  };
-};
+});
 
 const parsePlatformSpecificInfo = (input) => {
-  if (input) {
-    const map = {};
-    Object.keys(input).forEach(key => {
-      set(map, key, input[key]);
-    });
-    return map;
-  }
-  return null;
+    if (input) {
+        const map = {};
+        Object.keys(input).forEach(key => {
+            set(map, key, input[key]);
+        });
+        return map;
+    }
+    return null;
 };
 
-const parseRuntimeEnvironment = (input): RuntimeEnvironmentState => {
-  return {
+const parseRuntimeEnvironment = (input): RuntimeEnvironmentState => ({
     deployerImplementationVersion: input.deployerImplementationVersion,
     deployerName: input.deployerName,
     deployerSpiVersion: input.deployerSpiVersion,
@@ -36,37 +33,34 @@ const parseRuntimeEnvironment = (input): RuntimeEnvironmentState => {
     platformType: input.platformType,
     springBootVersion: input.springBootVersion,
     springVersion: input.springVersion
-  };
-};
+});
 
-export const parse = (input): AboutState => {
-  return {
+export const parse = (input): AboutState => ({
     versions: {
-      implementation: parseDependency(input.versionInfo.implementation),
-      core: parseDependency(input.versionInfo.core),
-      dashboard: parseDependency(input.versionInfo.dashboard),
-      shell: parseDependency(input.versionInfo.shell),
+        implementation: parseDependency(input.versionInfo.implementation),
+        core: parseDependency(input.versionInfo.core),
+        dashboard: parseDependency(input.versionInfo.dashboard),
+        shell: parseDependency(input.versionInfo.shell),
     },
     features: {
-      streams: get(input, 'featureInfo.streamsEnabled', false),
-      tasks: get(input, 'featureInfo.tasksEnabled', false),
-      schedules: get(input, 'featureInfo.schedulesEnabled', false),
-      monitoringDashboardType: get(input, 'featureInfo.monitoringDashboardType', 'NONE'),
+        streams: get(input, 'featureInfo.streamsEnabled', false),
+        tasks: get(input, 'featureInfo.tasksEnabled', false),
+        schedules: get(input, 'featureInfo.schedulesEnabled', false),
+        monitoringDashboardType: get(input, 'featureInfo.monitoringDashboardType', 'NONE'),
     },
     runtimeEnvironment: {
-      appDeployer: parseRuntimeEnvironment(input.runtimeEnvironment.appDeployer),
-      taskLaunchers: input.runtimeEnvironment.taskLaunchers.map(parseRuntimeEnvironment)
+        appDeployer: parseRuntimeEnvironment(input.runtimeEnvironment.appDeployer),
+        taskLaunchers: input.runtimeEnvironment.taskLaunchers.map(parseRuntimeEnvironment)
     },
     monitoringDashboardInfo: {
-      url: input.monitoringDashboardInfo?.url || '',
-      source: input.monitoringDashboardInfo?.source || '',
-      refreshInterval: +input.monitoringDashboardInfo?.refreshInterval || 10
+        url: input.monitoringDashboardInfo?.url || '',
+        source: input.monitoringDashboardInfo?.source || '',
+        refreshInterval: +input.monitoringDashboardInfo?.refreshInterval || 10
     },
     security: {
-      isAuthentication: input.securityInfo.authenticationEnabled,
-      isAuthenticated: input.securityInfo.authenticated,
-      username: input.securityInfo.username,
-      roles: input.securityInfo.roles as string[]
+        isAuthentication: input.securityInfo.authenticationEnabled,
+        isAuthenticated: input.securityInfo.authenticated,
+        username: input.securityInfo.username,
+        roles: input.securityInfo.roles as string[]
     }
-  };
-};
+});

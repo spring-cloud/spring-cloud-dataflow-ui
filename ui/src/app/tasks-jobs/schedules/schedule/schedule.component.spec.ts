@@ -15,43 +15,43 @@ import { ContextServiceMock } from '../../../tests/service/context.service.mock'
 
 describe('tasks-jobs/schedules/schedule/schedule.component.ts', () => {
 
-  let component: ScheduleComponent;
-  let fixture: ComponentFixture<ScheduleComponent>;
+    let component: ScheduleComponent;
+    let fixture: ComponentFixture<ScheduleComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ScheduleComponent,
-        DestroyComponent,
-        RoleDirective
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        ScheduleServiceMock.provider,
-        TaskServiceMock.provider,
-        ContextServiceMock.provider,
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                ScheduleComponent,
+                DestroyComponent,
+                RoleDirective
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                ScheduleServiceMock.provider,
+                TaskServiceMock.provider,
+                ContextServiceMock.provider,
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ScheduleComponent);
-    component = fixture.componentInstance;
-    NotificationServiceMock.mock.clearAll();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ScheduleComponent);
+        component = fixture.componentInstance;
+        NotificationServiceMock.mock.clearAll();
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 
 });

@@ -15,94 +15,92 @@ import { ContextServiceMock } from '../../../tests/service/context.service.mock'
 
 describe('tasks/tasks/destroy/destroy.component.ts', () => {
 
-  let component: DestroyComponent;
-  let fixture: ComponentFixture<DestroyComponent>;
-  let tasks: Task[];
+    let component: DestroyComponent;
+    let fixture: ComponentFixture<DestroyComponent>;
+    let tasks: Task[];
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DestroyComponent
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        TaskServiceMock.provider,
-        ContextServiceMock.provider
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                DestroyComponent
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                TaskServiceMock.provider,
+                ContextServiceMock.provider
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DestroyComponent);
-    component = fixture.componentInstance;
-    NotificationServiceMock.mock.clearAll();
-    tasks = [
-      Task.parse({ name: 'foo', dslText: 'file|log' }),
-      Task.parse({ name: 'bar', dslText: 'file|log' }),
-    ];
-  });
-
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
-  it('should destroy a task', async (done) => {
-    component.open([tasks[0]]);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Destroy Task');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message)
-      .toBe('1 task definition(s) destroyed.');
-    done();
-  });
-
-  it('should destroy tasks', async (done) => {
-    component.open(tasks);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Destroy Tasks');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message)
-      .toBe('2 task definition(s) destroyed.');
-    done();
-  });
-
-  it('should display an error', async (done) => {
-    spyOn(TaskServiceMock.mock, 'destroyTasks').and.callFake(() => {
-      return throwError(new Error('Fake error'));
+    beforeEach(() => {
+        fixture = TestBed.createComponent(DestroyComponent);
+        component = fixture.componentInstance;
+        NotificationServiceMock.mock.clearAll();
+        tasks = [
+            Task.parse({ name: 'foo', dslText: 'file|log' }),
+            Task.parse({ name: 'bar', dslText: 'file|log' }),
+        ];
     });
-    component.open([tasks[0]]);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Destroy Task');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
-  });
+
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
+
+    it('should destroy a task', async (done) => {
+        component.open([tasks[0]]);
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Confirm Destroy Task');
+        fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
+        expect(NotificationServiceMock.mock.successNotifications[0].message)
+            .toBe('1 task definition(s) destroyed.');
+        done();
+    });
+
+    it('should destroy tasks', async (done) => {
+        component.open(tasks);
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Confirm Destroy Tasks');
+        fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
+        expect(NotificationServiceMock.mock.successNotifications[0].message)
+            .toBe('2 task definition(s) destroyed.');
+        done();
+    });
+
+    it('should display an error', async (done) => {
+        spyOn(TaskServiceMock.mock, 'destroyTasks').and.callFake(() => throwError(new Error('Fake error')));
+        component.open([tasks[0]]);
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Confirm Destroy Task');
+        fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+        done();
+    });
 
 });

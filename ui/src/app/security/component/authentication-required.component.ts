@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  template: `
+    template: `
     <h1>Authentication required</h1>
     <p>Please sign in.</p>
   `

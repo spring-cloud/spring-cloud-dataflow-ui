@@ -9,24 +9,24 @@ import { InstanceStatus } from '../../../shared/model/metrics.model';
  * @author Andy Clement
  */
 @Component({
-  selector: 'app-flo-instance-dot',
-  templateUrl: 'instance-dot.component.html',
-  styleUrls: [ 'instance-dot.component.scss' ],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-flo-instance-dot',
+    templateUrl: 'instance-dot.component.html',
+    styleUrls: [ 'instance-dot.component.scss' ],
+    encapsulation: ViewEncapsulation.None
 })
 export class InstanceDotComponent extends ElementComponent {
 
-  get instance(): InstanceStatus {
-    return this.view ? this.view.model.attr('instance') : undefined;
-  }
+    get instance(): InstanceStatus {
+        return this.view ? this.view.model.attr('instance') : undefined;
+    }
 
-  get guid(): string {
-    return this.instance ? this.instance.guid : '';
-  }
+    get guid(): string {
+        return this.instance ? this.instance.guid : '';
+    }
 
-  get state(): string {
-    return this.instance ? this.instance.state : '';
-  }
+    get state(): string {
+        return this.instance ? this.instance.state : '';
+    }
 
 }
 

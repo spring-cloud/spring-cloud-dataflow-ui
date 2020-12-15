@@ -6,10 +6,10 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class DevGuard implements CanLoad {
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  canLoad(route: Route, segments: UrlSegment[]): Observable<boolean>|Promise<boolean>|boolean {
-    return !environment.production;
-  }
+    canLoad(route: Route, segments: UrlSegment[]): Observable<boolean>|Promise<boolean>|boolean {
+        return !environment.production;
+    }
 }

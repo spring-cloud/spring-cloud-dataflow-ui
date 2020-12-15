@@ -21,68 +21,68 @@ import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('streams/streams/streams.component.ts', () => {
 
-  let component: StreamsComponent;
-  let fixture: ComponentFixture<StreamsComponent>;
+    let component: StreamsComponent;
+    let fixture: ComponentFixture<StreamsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        StreamsComponent,
-        DestroyComponent,
-        UndeployComponent,
-        GrafanaStreamsDirective,
-        GrafanaStreamDirective,
-        DatagridColumnPipe
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        StreamServiceMock.provider,
-        GrafanaServiceMock.provider,
-        GroupServiceMock.provider,
-        ContextServiceMock.provider,
-        SettingsServiceMock.provider
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                StreamsComponent,
+                DestroyComponent,
+                UndeployComponent,
+                GrafanaStreamsDirective,
+                GrafanaStreamDirective,
+                DatagridColumnPipe
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                StreamServiceMock.provider,
+                GrafanaServiceMock.provider,
+                GroupServiceMock.provider,
+                ContextServiceMock.provider,
+                SettingsServiceMock.provider
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(StreamsComponent);
-    component = fixture.componentInstance;
-    NotificationServiceMock.mock.clearAll();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(StreamsComponent);
+        component = fixture.componentInstance;
+        NotificationServiceMock.mock.clearAll();
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 
-  it('should display the datagrid, pagination, action bar', async (done) => {
-    component.timeSubscription = <any> {}; // hack to disable setting the timer, otherwise it times out
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const datagrid = fixture.debugElement.query(By.css('clr-datagrid')).nativeElement;
-    const pagination = fixture.debugElement.query(By.css('clr-dg-pagination')).nativeElement;
-    const actionBar = fixture.debugElement.query(By.css('clr-dg-action-bar')).nativeElement;
-    const rows = fixture.debugElement.queryAll(By.css('clr-dg-row'));
-    const cols = fixture.debugElement.queryAll(By.css('clr-dg-column'));
-    const title = fixture.debugElement.query(By.css('h1')).nativeElement;
-    expect(datagrid).toBeTruthy();
-    expect(pagination).toBeTruthy();
-    expect(actionBar).toBeTruthy();
-    expect(title.textContent).toContain('Streams');
-    expect(rows.length === 4).toBeTruthy();
-    expect(cols.length === 4).toBeTruthy();
-    done();
-  });
+    it('should display the datagrid, pagination, action bar', async (done) => {
+        component.timeSubscription = <any> {}; // hack to disable setting the timer, otherwise it times out
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const datagrid = fixture.debugElement.query(By.css('clr-datagrid')).nativeElement;
+        const pagination = fixture.debugElement.query(By.css('clr-dg-pagination')).nativeElement;
+        const actionBar = fixture.debugElement.query(By.css('clr-dg-action-bar')).nativeElement;
+        const rows = fixture.debugElement.queryAll(By.css('clr-dg-row'));
+        const cols = fixture.debugElement.queryAll(By.css('clr-dg-column'));
+        const title = fixture.debugElement.query(By.css('h1')).nativeElement;
+        expect(datagrid).toBeTruthy();
+        expect(pagination).toBeTruthy();
+        expect(actionBar).toBeTruthy();
+        expect(title.textContent).toContain('Streams');
+        expect(rows.length === 4).toBeTruthy();
+        expect(cols.length === 4).toBeTruthy();
+        done();
+    });
 
 });

@@ -10,67 +10,67 @@ import { ContextService } from '../../shared/service/context.service';
 import { SettingsService } from '../../settings/settings.service';
 
 @Component({
-  selector: 'app-jobs',
-  templateUrl: './jobs.component.html',
+    selector: 'app-jobs',
+    templateUrl: './jobs.component.html',
 })
 export class JobsComponent extends DatagridComponent {
 
-  page: JobExecutionPage;
-  selection: JobExecution;
-  @ViewChild('restartModal', { static: true }) restartModal: ConfirmComponent;
-  @ViewChild('stopModal', { static: true }) stopModal: ConfirmComponent;
+    page: JobExecutionPage;
+    selection: JobExecution;
+    @ViewChild('restartModal', { static: true }) restartModal: ConfirmComponent;
+    @ViewChild('stopModal', { static: true }) stopModal: ConfirmComponent;
 
-  constructor(private jobService: JobService,
-              private router: Router,
-              protected contextService: ContextService,
-              protected settingsService: SettingsService,
-              protected changeDetectorRef: ChangeDetectorRef,
-              private notificationService: NotificationService) {
-    super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/jobs');
-  }
-
-  refresh(state: ClrDatagridStateInterface) {
-    if (this.isReady()) {
-      super.refresh(state);
-      const params = this.getParams(state, { name: '', type: '', dates: [null, null] });
-      this.unsubscribe$ = this.jobService.getExecutions(params.current - 1, params.size, params.dates[0], params.dates[1])
-        .subscribe((page: JobExecutionPage) => {
-          this.page = page;
-          this.updateGroupContext(params);
-          this.loading = false;
-        });
+    constructor(private jobService: JobService,
+        private router: Router,
+        protected contextService: ContextService,
+        protected settingsService: SettingsService,
+        protected changeDetectorRef: ChangeDetectorRef,
+        private notificationService: NotificationService) {
+        super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/jobs');
     }
-  }
 
-  details(execution: JobExecution) {
-    this.router.navigateByUrl(`tasks-jobs/job-executions/${execution.jobExecutionId}`);
-  }
+    refresh(state: ClrDatagridStateInterface) {
+        if (this.isReady()) {
+            super.refresh(state);
+            const params = this.getParams(state, { name: '', type: '', dates: [null, null] });
+            this.unsubscribe$ = this.jobService.getExecutions(params.current - 1, params.size, params.dates[0], params.dates[1])
+                .subscribe((page: JobExecutionPage) => {
+                    this.page = page;
+                    this.updateGroupContext(params);
+                    this.loading = false;
+                });
+        }
+    }
 
-  restart(execution: JobExecution) {
-    this.selection = execution;
-    this.restartModal.open();
-  }
+    details(execution: JobExecution) {
+        this.router.navigateByUrl(`tasks-jobs/job-executions/${execution.jobExecutionId}`);
+    }
 
-  restartJob() {
-    this.jobService.restart(this.selection)
-      .subscribe(() => {
-        this.notificationService.success('Restart job', `Successfully restarted job "${this.selection.name}"`);
-      }, error => {
-        this.notificationService.error('An error occurred', error);
-      });
-  }
+    restart(execution: JobExecution) {
+        this.selection = execution;
+        this.restartModal.open();
+    }
 
-  stop(execution: JobExecution) {
-    this.selection = execution;
-    this.stopModal.open();
-  }
+    restartJob() {
+        this.jobService.restart(this.selection)
+            .subscribe(() => {
+                this.notificationService.success('Restart job', `Successfully restarted job "${this.selection.name}"`);
+            }, error => {
+                this.notificationService.error('An error occurred', error);
+            });
+    }
 
-  stopJob() {
-    this.jobService.stop(this.selection)
-      .subscribe(() => {
-        this.notificationService.success('Stop job', `Successfully stopped job "${this.selection.name}"`);
-      }, error => {
-        this.notificationService.error('An error occurred', error);
-      });
-  }
+    stop(execution: JobExecution) {
+        this.selection = execution;
+        this.stopModal.open();
+    }
+
+    stopJob() {
+        this.jobService.stop(this.selection)
+            .subscribe(() => {
+                this.notificationService.success('Stop job', `Successfully stopped job "${this.selection.name}"`);
+            }, error => {
+                this.notificationService.error('An error occurred', error);
+            });
+    }
 }

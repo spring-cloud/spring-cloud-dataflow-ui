@@ -7,19 +7,19 @@ import * as SecurityActions from './security.action';
 @Injectable()
 export class SecurityEffect {
 
-  securityReset$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(SecurityActions.unauthorised),
-      map(SecurityActions.logout),
-      tap(() => {
-        this.router.navigate(['/']);
-      })
-      ),
+    securityReset$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(SecurityActions.unauthorised),
+            map(SecurityActions.logout),
+            tap(() => {
+                this.router.navigate(['/']);
+            })
+        ),
     { dispatch: true }
-  );
+    );
 
-  constructor(
-    private actions$: Actions,
-    private router: Router
-  ) {}
+    constructor(
+        private actions$: Actions,
+        private router: Router
+    ) {}
 }

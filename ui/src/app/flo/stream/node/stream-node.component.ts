@@ -11,29 +11,29 @@ import { PropertiesEditor } from '../properties-editor.service';
  * @author Andy Clement
  */
 @Component({
-  selector: 'app-flo-node',
-  templateUrl: './stream-node.component.html',
-  styleUrls: ['./stream-node.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-flo-node',
+    templateUrl: './stream-node.component.html',
+    styleUrls: ['./stream-node.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class StreamNodeComponent extends NodeComponent {
 
-  @ViewChild('markerTooltip')
-  markerTooltipElement: ElementRef;
+    @ViewChild('markerTooltip')
+    markerTooltipElement: ElementRef;
 
-  @ViewChild('canvasNodeTooltip')
-  canvasTooltipElement: ElementRef;
+    @ViewChild('canvasNodeTooltip')
+    canvasTooltipElement: ElementRef;
 
-  @ViewChild('paletteNodeTooltip')
-  paletteTooltipElement: ElementRef;
+    @ViewChild('paletteNodeTooltip')
+    paletteTooltipElement: ElementRef;
 
-  constructor(docService: DocService, private propertiesEditor: PropertiesEditor) {
-    super(docService);
-  }
+    constructor(docService: DocService, private propertiesEditor: PropertiesEditor) {
+        super(docService);
+    }
 
-  showOptions() {
-    this.propertiesEditor.showForNode(<dia.Element> this.view.model, this.paper.model);
-  }
+    showOptions() {
+        this.propertiesEditor.showForNode(<dia.Element> this.view.model, this.paper.model);
+    }
 
 }
 

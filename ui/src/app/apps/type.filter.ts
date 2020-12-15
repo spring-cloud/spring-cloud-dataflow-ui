@@ -3,8 +3,8 @@ import { Observable, Subject } from 'rxjs';
 import { App, ApplicationType } from '../shared/model/app.model';
 
 @Component({
-  selector: 'app-clr-datagrid-type-filter',
-  template: `
+    selector: 'app-clr-datagrid-type-filter',
+    template: `
     <div>
       <clr-radio-wrapper>
         <input type="radio" clrRadio (change)="change()" [(ngModel)]="val" value="all" name="options"/>
@@ -34,40 +34,40 @@ import { App, ApplicationType } from '../shared/model/app.model';
 })
 export class TypeFilterComponent implements OnInit {
 
-  property = 'type';
-  @Input() value = null;
-  val = 'all';
+    property = 'type';
+    @Input() value = null;
+    val = 'all';
 
-  private pchanges = new Subject<any>();
+    private pchanges = new Subject<any>();
 
-  ngOnInit(): void {
-    if (this.value === 'all' || this.value === '' || !this.value) {
-      this.value = null;
-    } else {
-      this.val = this.value;
-      this.value = (this.value as any) as ApplicationType;
-      this.pchanges.next(true);
+    ngOnInit(): void {
+        if (this.value === 'all' || this.value === '' || !this.value) {
+            this.value = null;
+        } else {
+            this.val = this.value;
+            this.value = (this.value as any) as ApplicationType;
+            this.pchanges.next(true);
+        }
     }
-  }
 
-  public get changes(): Observable<any> {
-    return this.pchanges.asObservable();
-  }
-
-  change() {
-    if (this.val === 'all' || this.val === '') {
-      this.value = null;
-    } else {
-      this.value = (this.val as any) as ApplicationType;
+    public get changes(): Observable<any> {
+        return this.pchanges.asObservable();
     }
-    this.pchanges.next(true);
-  }
 
-  accepts(application: App) {
-    return true;
-  }
+    change() {
+        if (this.val === 'all' || this.val === '') {
+            this.value = null;
+        } else {
+            this.value = (this.val as any) as ApplicationType;
+        }
+        this.pchanges.next(true);
+    }
 
-  isActive(): boolean {
-    return this.value !== null && this.value !== 'all' && this.value !== '';
-  }
+    accepts(application: App) {
+        return true;
+    }
+
+    isActive(): boolean {
+        return this.value !== null && this.value !== 'all' && this.value !== '';
+    }
 }

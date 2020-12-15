@@ -10,45 +10,43 @@ import { parse } from '../store/about.support';
 import { LOAD } from '../../tests/data/about';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AboutService {
 
-  constructor(private httpClient: HttpClient,
-              private store: Store<State>) {
-  }
+    constructor(private httpClient: HttpClient,
+        private store: Store<State>) {
+    }
 
-  load(): Observable<AboutState> {
-    return this.httpClient
-      .get<any>('/about')
-      .pipe(
-        map(parse),
-        map((about: AboutState) => {
-          this.store.dispatch(loaded(about));
-          return about;
-        }),
-        catchError(ErrorUtils.catchError)
-      );
-  }
+    load(): Observable<AboutState> {
+        return this.httpClient
+            .get<any>('/about')
+            .pipe(
+                map(parse),
+                map((about: AboutState) => {
+                    this.store.dispatch(loaded(about));
+                    return about;
+                }),
+                catchError(ErrorUtils.catchError)
+            );
+    }
 
-  getAbout(): Observable<AboutState> {
-    return this.store
-      .pipe(select(getAbout));
-  }
+    getAbout(): Observable<AboutState> {
+        return this.store
+            .pipe(select(getAbout));
+    }
 
-  async isFeatureEnabled(feature: string): Promise<boolean> {
-    const features = await this.store.pipe(select(getFeatures)).pipe(take(1)).toPromise();
-    return features[feature] === true;
-  }
+    async isFeatureEnabled(feature: string): Promise<boolean> {
+        const features = await this.store.pipe(select(getFeatures)).pipe(take(1)).toPromise();
+        return features[feature] === true;
+    }
 
-  getMonitoringType(): Observable<string> {
-    return this.store.pipe(select(state => {
-      return state[aboutFeatureKey].features.monitoringDashboardType;
-    }));
-  }
+    getMonitoringType(): Observable<string> {
+        return this.store.pipe(select(state => state[aboutFeatureKey].features.monitoringDashboardType));
+    }
 
-  getMonitoring(): Observable<any> {
-    return this.store.pipe(select(getMonitoring));
-  }
+    getMonitoring(): Observable<any> {
+        return this.store.pipe(select(getMonitoring));
+    }
 
 }

@@ -9,46 +9,46 @@ import { SecurityGuard } from '../security/support/security.guard';
 import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.component';
 
 const routes: Routes = [
-  {
-    path: 'streams',
-    canActivate: [SecurityGuard],
-    data: {
-      authenticate: true,
-      roles: ['ROLE_VIEW'],
-      feature: 'streams'
+    {
+        path: 'streams',
+        canActivate: [SecurityGuard],
+        data: {
+            authenticate: true,
+            roles: ['ROLE_VIEW'],
+            feature: 'streams'
+        },
+        children: [
+            {
+                path: 'list',
+                component: StreamsComponent,
+            },
+            {
+                path: 'list/create',
+                component: CreateComponent,
+            },
+            {
+                path: 'list/:name',
+                component: StreamComponent,
+            },
+            {
+                path: 'list/:name/deploy',
+                component: DeployComponent,
+            },
+            {
+                path: 'list/:group/multi-deploy',
+                component: MultiDeployComponent,
+            },
+            {
+                path: 'runtime',
+                component: RuntimeComponent,
+            }
+        ]
     },
-    children: [
-      {
-        path: 'list',
-        component: StreamsComponent,
-      },
-      {
-        path: 'list/create',
-        component: CreateComponent,
-      },
-      {
-        path: 'list/:name',
-        component: StreamComponent,
-      },
-      {
-        path: 'list/:name/deploy',
-        component: DeployComponent,
-      },
-      {
-        path: 'list/:group/multi-deploy',
-        component: MultiDeployComponent,
-      },
-      {
-        path: 'runtime',
-        component: RuntimeComponent,
-      }
-    ]
-  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class StreamsRoutingModule {
 }

@@ -18,45 +18,45 @@ import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
 
 describe('tasks-jobs/executions/executions.component.ts', () => {
 
-  let component: ExecutionsComponent;
-  let fixture: ComponentFixture<ExecutionsComponent>;
+    let component: ExecutionsComponent;
+    let fixture: ComponentFixture<ExecutionsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ExecutionsComponent,
-        StopComponent,
-        CleanupComponent,
-        RoleDirective,
-        DatagridColumnPipe
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        TaskServiceMock.provider,
-        ContextServiceMock.provider,
-        SettingsServiceMock.provider
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                ExecutionsComponent,
+                StopComponent,
+                CleanupComponent,
+                RoleDirective,
+                DatagridColumnPipe
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                TaskServiceMock.provider,
+                ContextServiceMock.provider,
+                SettingsServiceMock.provider
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ExecutionsComponent);
-    component = fixture.componentInstance;
-    NotificationServiceMock.mock.clearAll();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ExecutionsComponent);
+        component = fixture.componentInstance;
+        NotificationServiceMock.mock.clearAll();
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 
 });

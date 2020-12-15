@@ -12,9 +12,9 @@ import { debounceTime } from 'rxjs/operators';
  */
 export class GroupPropertiesGroupModel extends PropertiesGroupModel {
 
-  constructor(propertiesSource: PropertiesSource, public title: string = '') {
-    super(propertiesSource);
-  }
+    constructor(propertiesSource: PropertiesSource, public title: string = '') {
+        super(propertiesSource);
+    }
 }
 
 /**
@@ -23,21 +23,21 @@ export class GroupPropertiesGroupModel extends PropertiesGroupModel {
  */
 export class GroupPropertiesSource implements PropertiesSource {
 
-  private options: Array<any>;
+    private options: Array<any>;
 
-  constructor(options: Array<any>, public title: string = '') {
-    this.options = options;
-  }
+    constructor(options: Array<any>, public title: string = '') {
+        this.options = options;
+    }
 
-  getProperties(): Promise<Properties.Property[]> {
-    return of(this.options).toPromise();
-  }
+    getProperties(): Promise<Properties.Property[]> {
+        return of(this.options).toPromise();
+    }
 
-  applyChanges(properties: Properties.Property[]): void {
+    applyChanges(properties: Properties.Property[]): void {
     // nothing to do as we don't rely calling applyChanges() for model
     // classes because we have multiple groups so controls and its
     // properties are accesses manually.
-  }
+    }
 }
 
 /**
@@ -46,14 +46,14 @@ export class GroupPropertiesSource implements PropertiesSource {
  */
 export class GroupPropertiesSources {
 
-  public confirm = new EventEmitter();
+    public confirm = new EventEmitter();
 
-  constructor(public propertiesSources: Array<GroupPropertiesSource>) {
-  }
+    constructor(public propertiesSources: Array<GroupPropertiesSource>) {
+    }
 
-  applyChanges(properties: Properties.Property[]): void {
-    this.confirm.emit(properties);
-  }
+    applyChanges(properties: Properties.Property[]): void {
+        this.confirm.emit(properties);
+    }
 }
 
 /**
@@ -62,110 +62,110 @@ export class GroupPropertiesSources {
  * @author Janne Valkealahti
  */
 @Component({
-  selector: 'app-properties-groups-dialog-content',
-  templateUrl: 'properties-groups-dialog.component.html',
-  styleUrls: ['properties-groups-dialog.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-properties-groups-dialog-content',
+    templateUrl: 'properties-groups-dialog.component.html',
+    styleUrls: ['properties-groups-dialog.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class PropertiesGroupsDialogComponent implements OnInit {
 
 
-  isOpen = false;
+    isOpen = false;
 
-  /**
+    /**
    * Dialog titleModal.
    */
-  title: string;
+    title: string;
 
-  /**
+    /**
    * Groups are eventually added here and accessed from a template.
    */
-  propertiesGroupModels: Array<GroupPropertiesGroupModel> = [];
+    propertiesGroupModels: Array<GroupPropertiesGroupModel> = [];
 
-  /**
+    /**
    * Template will eventually add controls to this group.
    */
-  propertiesFormGroup: FormGroup;
+    propertiesFormGroup: FormGroup;
 
-  private groupPropertiesSources: GroupPropertiesSources;
+    private groupPropertiesSources: GroupPropertiesSources;
 
-  private _searchFilterText = '';
+    private _searchFilterText = '';
 
-  private _searchFilterTextSubject;
+    private _searchFilterTextSubject;
 
-  propertiesFilter = new SearchTextFilter();
+    propertiesFilter = new SearchTextFilter();
 
 
-  /**
+    /**
    * Collapse states for groups are kept here.
    * i.e. {my.group1: true, my.group2: false}
    */
-  state: any = {};
+    state: any = {};
 
-  constructor() {
-    this.propertiesFormGroup = new FormGroup({});
-    this._searchFilterTextSubject = new Subject<string>();
-  }
+    constructor() {
+        this.propertiesFormGroup = new FormGroup({});
+        this._searchFilterTextSubject = new Subject<string>();
+    }
 
-  handleOk() {
-    const properties: Properties.Property[] = [];
-    this.propertiesGroupModels.forEach(p => {
-      p.getControlsModels().forEach(cm => {
-        properties.push(cm.property);
-      });
-    });
-    this.groupPropertiesSources.applyChanges(properties);
-    this.handleCancel();
-  }
+    handleOk() {
+        const properties: Properties.Property[] = [];
+        this.propertiesGroupModels.forEach(p => {
+            p.getControlsModels().forEach(cm => {
+                properties.push(cm.property);
+            });
+        });
+        this.groupPropertiesSources.applyChanges(properties);
+        this.handleCancel();
+    }
 
-  handleCancel() {
-    this.propertiesGroupModels = [];
-    this.isOpen = false;
-  }
+    handleCancel() {
+        this.propertiesGroupModels = [];
+        this.isOpen = false;
+    }
 
-  collapse(id: string) {
+    collapse(id: string) {
     // Collapse already open group, otherwise keep selected
     // group open and close others.
-    Object.entries(this.state).forEach(e => {
-      if (e[0] === id && e[1]) {
-        this.state[e[0]] = false;
-      } else {
-        this.state[e[0]] = (e[0] === id);
-      }
-    });
-  }
+        Object.entries(this.state).forEach(e => {
+            if (e[0] === id && e[1]) {
+                this.state[e[0]] = false;
+            } else {
+                this.state[e[0]] = (e[0] === id);
+            }
+        });
+    }
 
-  get okDisabled() {
-    return !(this.propertiesGroupModels.length > 0)
+    get okDisabled() {
+        return !(this.propertiesGroupModels.length > 0)
       || !this.propertiesFormGroup
       || this.propertiesFormGroup.invalid
       || !this.propertiesFormGroup.dirty;
-  }
+    }
 
-  ngOnInit() {
-    this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text);
-  }
+    ngOnInit() {
+        this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text);
+    }
 
-  setData(groupPropertiesSources: GroupPropertiesSources) {
-    let first = true;
-    groupPropertiesSources.propertiesSources.forEach(ps => {
-      this.state[ps.title] = first;
-      first = false;
-      const model: GroupPropertiesGroupModel = new GroupPropertiesGroupModel(ps, ps.title);
-      model.load();
-      model.loadedSubject.subscribe();
-      this.propertiesGroupModels.push(model);
-    });
-    this.groupPropertiesSources = groupPropertiesSources;
-  }
+    setData(groupPropertiesSources: GroupPropertiesSources) {
+        let first = true;
+        groupPropertiesSources.propertiesSources.forEach(ps => {
+            this.state[ps.title] = first;
+            first = false;
+            const model: GroupPropertiesGroupModel = new GroupPropertiesGroupModel(ps, ps.title);
+            model.load();
+            model.loadedSubject.subscribe();
+            this.propertiesGroupModels.push(model);
+        });
+        this.groupPropertiesSources = groupPropertiesSources;
+    }
 
-  get searchFilterText() {
-    return this._searchFilterText;
-  }
+    get searchFilterText() {
+        return this._searchFilterText;
+    }
 
-  set searchFilterText(text: string) {
-    this._searchFilterText = text;
-    this._searchFilterTextSubject.next(text);
-  }
+    set searchFilterText(text: string) {
+        this._searchFilterText = text;
+        this._searchFilterTextSubject.next(text);
+    }
 
 }

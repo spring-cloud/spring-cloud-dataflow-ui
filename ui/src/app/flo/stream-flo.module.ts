@@ -25,42 +25,42 @@ import { PropertiesEditor } from './stream/properties-editor.service';
 import { SanitizeDsl } from './stream/dsl-sanitize.service';
 
 @NgModule({
-  declarations: [
-    GraphViewComponent,
-    MessageRateComponent,
-    InstanceDotComponent,
-    StreamNodeComponent,
-    StreamPropertiesDialogComponent,
-    StreamFloViewComponent,
-    RuntimeStreamFloViewComponent,
-    StreamFloCreateComponent,
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ClarityModule,
-    FloModule,
-    SharedFloModule,
-    SharedModule
-  ],
-  providers: [
-    DocService,
-    EditorService,
-    MetamodelService,
-    RenderService,
-    ParserService,
-    ContentAssistService,
-    NodeHelper,
-    PropertiesEditor,
-    SanitizeDsl,
-  ],
-  exports: [
-    StreamFloViewComponent,
-    RuntimeStreamFloViewComponent,
-    StreamFloCreateComponent
-  ]
+    declarations: [
+        GraphViewComponent,
+        MessageRateComponent,
+        InstanceDotComponent,
+        StreamNodeComponent,
+        StreamPropertiesDialogComponent,
+        StreamFloViewComponent,
+        RuntimeStreamFloViewComponent,
+        StreamFloCreateComponent,
+    ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        FloModule,
+        SharedFloModule,
+        SharedModule
+    ],
+    providers: [
+        DocService,
+        EditorService,
+        MetamodelService,
+        RenderService,
+        ParserService,
+        ContentAssistService,
+        NodeHelper,
+        PropertiesEditor,
+        SanitizeDsl,
+    ],
+    exports: [
+        StreamFloViewComponent,
+        RuntimeStreamFloViewComponent,
+        StreamFloCreateComponent
+    ]
 })
 
 export class StreamFloModule {

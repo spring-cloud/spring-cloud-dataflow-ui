@@ -7,36 +7,36 @@ import { AboutState } from '../../shared/store/about.reducer';
 import { parse } from '../../shared/store/about.support';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AboutServiceMock {
 
-  static mock: AboutServiceMock = null;
+    static mock: AboutServiceMock = null;
 
-  getAbout(): Observable<AboutState> {
-    return of(parse(LOAD));
-  }
-
-  load(): Observable<AboutState> {
-    return of(parse(LOAD));
-  }
-
-  async isFeatureEnabled(feature: string): Promise<boolean> {
-    return true;
-  }
-
-  getMonitoringType() {
-    return of('none');
-  }
-
-  getMonitoring() {
-    return of({});
-  }
-
-  static get provider() {
-    if (!AboutServiceMock.mock) {
-      AboutServiceMock.mock = new AboutServiceMock();
+    getAbout(): Observable<AboutState> {
+        return of(parse(LOAD));
     }
-    return { provide: AboutService, useValue: AboutServiceMock.mock };
-  }
+
+    load(): Observable<AboutState> {
+        return of(parse(LOAD));
+    }
+
+    async isFeatureEnabled(feature: string): Promise<boolean> {
+        return true;
+    }
+
+    getMonitoringType() {
+        return of('none');
+    }
+
+    getMonitoring() {
+        return of({});
+    }
+
+    static get provider() {
+        if (!AboutServiceMock.mock) {
+            AboutServiceMock.mock = new AboutServiceMock();
+        }
+        return { provide: AboutService, useValue: AboutServiceMock.mock };
+    }
 }

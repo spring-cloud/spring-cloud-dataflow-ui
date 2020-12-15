@@ -20,41 +20,41 @@ import { NodeHelper } from '../node-helper.service';
  * @author Damien Vitrac
  */
 describe('StreamGraphComponent', () => {
-  let component: StreamFloViewComponent;
-  let fixture: ComponentFixture<StreamFloViewComponent>;
-  const streamsService = new MockStreamsService();
-  const notificationService = new NotificationServiceMock();
-  const metamodelService = new MetamodelService(new MockSharedAppService());
-  const renderService = new RenderService(metamodelService, new NodeHelper());
+    let component: StreamFloViewComponent;
+    let fixture: ComponentFixture<StreamFloViewComponent>;
+    const streamsService = new MockStreamsService();
+    const notificationService = new NotificationServiceMock();
+    const metamodelService = new MetamodelService(new MockSharedAppService());
+    const renderService = new RenderService(metamodelService, new NodeHelper());
 
-  beforeEach(waitForAsync(() => {
+    beforeEach(waitForAsync(() => {
 
-    TestBed.configureTestingModule({
-      declarations: [
-        StreamFloViewComponent,
-        GraphViewComponent,
-      ],
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        FloModule
-      ],
-      providers: [
-        { provide: StreamService, useValue: streamsService },
-        { provide: NotificationService, useValue: notificationService },
-        { provide: MetamodelService, useValue: metamodelService },
-        { provide: RenderService, useValue: renderService }
-      ]
-    })
-      .compileComponents();
-  }));
+        TestBed.configureTestingModule({
+            declarations: [
+                StreamFloViewComponent,
+                GraphViewComponent,
+            ],
+            imports: [
+                RouterTestingModule.withRoutes([]),
+                FloModule
+            ],
+            providers: [
+                { provide: StreamService, useValue: streamsService },
+                { provide: NotificationService, useValue: notificationService },
+                { provide: MetamodelService, useValue: metamodelService },
+                { provide: RenderService, useValue: renderService }
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(StreamFloViewComponent);
-    component = fixture.componentInstance;
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(StreamFloViewComponent);
+        component = fixture.componentInstance;
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 });

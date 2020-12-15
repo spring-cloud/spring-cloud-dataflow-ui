@@ -17,26 +17,26 @@ import { ActionFilterComponent } from './records/action.filter';
 
 
 @NgModule({
-  declarations: [
-    RecordsComponent,
-    ImportExportComponent,
-    StreamImportComponent,
-    StreamExportComponent,
-    TaskExportComponent,
-    TaskImportComponent,
-    OperationFilterComponent,
-    ActionFilterComponent
-  ],
-  imports: [
-    CommonModule,
-    ManageRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    ClarityModule,
-    SecurityModule
-  ],
-  providers: []
+    declarations: [
+        RecordsComponent,
+        ImportExportComponent,
+        StreamImportComponent,
+        StreamExportComponent,
+        TaskExportComponent,
+        TaskImportComponent,
+        OperationFilterComponent,
+        ActionFilterComponent
+    ],
+    imports: [
+        CommonModule,
+        ManageRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        ClarityModule,
+        SecurityModule
+    ],
+    providers: []
 })
 export class ManageModule {
 }

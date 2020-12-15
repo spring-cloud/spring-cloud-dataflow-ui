@@ -9,20 +9,20 @@ import * as fromAbout from '../shared/store/about.reducer';
 
 
 @NgModule({
-  declarations: [
-    InfoComponent,
-    SignpostComponent,
-    UserComponent
-  ],
-  imports: [
-    CommonModule,
-    ClarityModule,
-    StoreModule.forFeature(fromAbout.aboutFeatureKey, fromAbout.reducer)
-  ],
-  exports: [
-    SignpostComponent,
-    UserComponent
-  ]
+    declarations: [
+        InfoComponent,
+        SignpostComponent,
+        UserComponent
+    ],
+    imports: [
+        CommonModule,
+        ClarityModule,
+        StoreModule.forFeature(fromAbout.aboutFeatureKey, fromAbout.reducer)
+    ],
+    exports: [
+        SignpostComponent,
+        UserComponent
+    ]
 })
 export class AboutModule {
 }

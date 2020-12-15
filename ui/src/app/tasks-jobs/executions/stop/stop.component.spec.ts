@@ -15,73 +15,71 @@ import { ContextServiceMock } from '../../../tests/service/context.service.mock'
 
 describe('tasks-jobs/executions/stop/stop.component.ts', () => {
 
-  let component: StopComponent;
-  let fixture: ComponentFixture<StopComponent>;
+    let component: StopComponent;
+    let fixture: ComponentFixture<StopComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        StopComponent
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        TaskServiceMock.provider,
-        ContextServiceMock.provider
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                StopComponent
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                TaskServiceMock.provider,
+                ContextServiceMock.provider
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(StopComponent);
-    component = fixture.componentInstance;
-    NotificationServiceMock.mock.clearAll();
-  });
-
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
-
-  it('should destroy a task', async (done) => {
-    component.open(TaskExecution.parse({ executionId: 'foo' }));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Stop Task Execution');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Stop task execution(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message)
-      .toBe('Request submitted to stop task execution "foo".');
-    done();
-  });
-
-  it('should display an error', async (done) => {
-    spyOn(TaskServiceMock.mock, 'executionStop').and.callFake(() => {
-      return throwError(new Error('Fake error'));
+    beforeEach(() => {
+        fixture = TestBed.createComponent(StopComponent);
+        component = fixture.componentInstance;
+        NotificationServiceMock.mock.clearAll();
     });
-    component.open(TaskExecution.parse({ executionId: 'foo' }));
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Stop Task Execution');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
-  });
+
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
+
+    it('should destroy a task', async (done) => {
+        component.open(TaskExecution.parse({ executionId: 'foo' }));
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Confirm Stop Task Execution');
+        fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Stop task execution(s)');
+        expect(NotificationServiceMock.mock.successNotifications[0].message)
+            .toBe('Request submitted to stop task execution "foo".');
+        done();
+    });
+
+    it('should display an error', async (done) => {
+        spyOn(TaskServiceMock.mock, 'executionStop').and.callFake(() => throwError(new Error('Fake error')));
+        component.open(TaskExecution.parse({ executionId: 'foo' }));
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Confirm Stop Task Execution');
+        fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+        done();
+    });
 
 });

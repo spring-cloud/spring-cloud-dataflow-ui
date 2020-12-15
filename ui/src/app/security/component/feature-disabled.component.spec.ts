@@ -10,37 +10,37 @@ import { NotificationServiceMock } from '../../tests/service/notification.servic
 import { FeatureDisabledComponent } from './feature-disabled.component';
 
 describe('security/component/feature-disabled.component.ts', () => {
-  let component: FeatureDisabledComponent;
-  let fixture: ComponentFixture<FeatureDisabledComponent>;
+    let component: FeatureDisabledComponent;
+    let fixture: ComponentFixture<FeatureDisabledComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        FeatureDisabledComponent,
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                FeatureDisabledComponent,
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                AppServiceMock.provider,
+                NotificationServiceMock.provider,
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FeatureDisabledComponent);
-    component = fixture.componentInstance;
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(FeatureDisabledComponent);
+        component = fixture.componentInstance;
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 });

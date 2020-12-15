@@ -2,12 +2,12 @@ import { dia } from 'jointjs';
 
 export class ShapeComponent {
 
-  public data: any;
+    public data: any;
 
 }
 
 export class ElementComponent {
 
-  public view: dia.ElementView;
+    public view: dia.ElementView;
 
 }

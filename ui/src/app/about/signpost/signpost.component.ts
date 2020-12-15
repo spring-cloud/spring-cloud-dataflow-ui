@@ -5,29 +5,29 @@ import { AboutState } from '../../shared/store/about.reducer';
 import { AboutService } from '../../shared/api/about.service';
 
 @Component({
-  selector: 'app-about-signpost',
-  templateUrl: './signpost.component.html'
+    selector: 'app-about-signpost',
+    templateUrl: './signpost.component.html'
 })
 export class SignpostComponent implements OnInit {
-  loading = true;
-  about: AboutState;
-  @ViewChild('infoModal', { static: true }) infoModal: InfoComponent;
-  @ViewChild('signpost') signpost: ClrSignpostContent;
+    loading = true;
+    about: AboutState;
+    @ViewChild('infoModal', { static: true }) infoModal: InfoComponent;
+    @ViewChild('signpost') signpost: ClrSignpostContent;
 
-  constructor(private aboutService: AboutService) {
-  }
+    constructor(private aboutService: AboutService) {
+    }
 
-  ngOnInit(): void {
-    this.aboutService.getAbout()
-      .subscribe(((about: AboutState) => {
-        this.about = about;
-        this.loading = false;
-      }));
-  }
+    ngOnInit(): void {
+        this.aboutService.getAbout()
+            .subscribe(((about: AboutState) => {
+                this.about = about;
+                this.loading = false;
+            }));
+    }
 
-  more() {
-    this.infoModal.isOpen = true;
-    this.signpost.close();
-  }
+    more() {
+        this.infoModal.isOpen = true;
+        this.signpost.close();
+    }
 
 }

@@ -10,46 +10,46 @@ import { themeActiveKey } from './settings.reducer';
 @Injectable()
 export class SettingsEffect {
 
-  updateSetting$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(SettingsActions.update),
-      exhaustMap((setting) => this.settingsService.update(setting.setting)
-        .pipe(
-          map(() => SettingsActions.updateOk({setting: setting.setting})),
-          catchError(() => of(SettingsActions.updateError({setting: setting.setting})))
-        )
-      )
-    ),
+    updateSetting$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(SettingsActions.update),
+            exhaustMap((setting) => this.settingsService.update(setting.setting)
+                .pipe(
+                    map(() => SettingsActions.updateOk({setting: setting.setting})),
+                    catchError(() => of(SettingsActions.updateError({setting: setting.setting})))
+                )
+            )
+        ),
     { dispatch: true }
-  );
+    );
 
-  initialSettings$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(SettingsActions.loaded),
-      take(1),
-      map(action => action.settings.find(s => s.name === themeActiveKey)?.value as string),
-      tap(theme => {
-        this.themeService.switchTheme(theme);
-      })
-    ),
+    initialSettings$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(SettingsActions.loaded),
+            take(1),
+            map(action => action.settings.find(s => s.name === themeActiveKey)?.value as string),
+            tap(theme => {
+                this.themeService.switchTheme(theme);
+            })
+        ),
     { dispatch: false }
-  );
+    );
 
-  updateTheme$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(SettingsActions.updateOk),
-      tap(action => {
-        if (action.setting.name === themeActiveKey) {
-          this.themeService.switchTheme(action.setting.value as string);
-        }
-      })
-    ),
+    updateTheme$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(SettingsActions.updateOk),
+            tap(action => {
+                if (action.setting.name === themeActiveKey) {
+                    this.themeService.switchTheme(action.setting.value as string);
+                }
+            })
+        ),
     { dispatch: false }
-  );
+    );
 
-  constructor(
-    private actions$: Actions,
-    private settingsService: SettingsService,
-    private themeService: ThemeService
-  ) {}
+    constructor(
+        private actions$: Actions,
+        private settingsService: SettingsService,
+        private themeService: ThemeService
+    ) {}
 }

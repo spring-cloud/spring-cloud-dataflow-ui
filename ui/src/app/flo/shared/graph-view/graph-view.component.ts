@@ -2,41 +2,41 @@ import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angu
 import { Flo } from 'spring-flo';
 
 @Component({
-  selector: 'app-graph-view',
-  templateUrl: './graph-view.component.html',
-  styleUrls: [ '../flo.scss' ],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-graph-view',
+    templateUrl: './graph-view.component.html',
+    styleUrls: [ '../flo.scss' ],
+    encapsulation: ViewEncapsulation.None
 })
 export class GraphViewComponent {
 
-  @Input()
-  dsl: string;
+    @Input()
+    dsl: string;
 
-  @Input()
-  paperPadding = 5;
+    @Input()
+    paperPadding = 5;
 
-  @Input()
-  metamodel: Flo.Metamodel;
+    @Input()
+    metamodel: Flo.Metamodel;
 
-  @Input()
-  renderer: Flo.Renderer;
+    @Input()
+    renderer: Flo.Renderer;
 
-  @Output()
-  floApi = new EventEmitter<Flo.EditorContext>();
+    @Output()
+    floApi = new EventEmitter<Flo.EditorContext>();
 
-  private editorContext: Flo.EditorContext;
+    private editorContext: Flo.EditorContext;
 
-  constructor() {}
+    constructor() {}
 
-  setEditorContext(editorContext: Flo.EditorContext) {
-    this.editorContext = editorContext;
-    this.editorContext.noPalette = true;
-    this.editorContext.readOnlyCanvas = true;
-    this.floApi.emit(this.editorContext);
-  }
+    setEditorContext(editorContext: Flo.EditorContext) {
+        this.editorContext = editorContext;
+        this.editorContext.noPalette = true;
+        this.editorContext.readOnlyCanvas = true;
+        this.floApi.emit(this.editorContext);
+    }
 
-  get flo(): Flo.EditorContext {
-    return this.editorContext;
-  }
+    get flo(): Flo.EditorContext {
+        return this.editorContext;
+    }
 
 }

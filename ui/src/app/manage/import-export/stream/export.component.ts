@@ -5,8 +5,8 @@ import { ImportExportService } from '../../../shared/service/import-export.servi
 import { NotificationService } from '../../../shared/service/notification.service';
 
 @Component({
-  selector: 'app-manage-stream-export',
-  template: `
+    selector: 'app-manage-stream-export',
+    template: `
     <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning" clrModalSize="lg">
       <h3 class="modal-title">Export stream(s)</h3>
       <div class="modal-body" *ngIf="!isRunning">
@@ -39,36 +39,36 @@ import { NotificationService } from '../../../shared/service/notification.servic
   `
 })
 export class StreamExportComponent {
-  isOpen = false;
-  isRunning = false;
-  streams: StreamPage;
-  selected = [];
+    isOpen = false;
+    isRunning = false;
+    streams: StreamPage;
+    selected = [];
 
-  constructor(private streamService: StreamService,
-              private notificationService: NotificationService,
-              private importExportService: ImportExportService) {
-  }
-
-  open() {
-    this.isRunning = false;
-    this.isOpen = true;
-    this.streamService.getStreams(0, 100000, '', 'name', 'ASC')
-      .subscribe((page: StreamPage) => {
-        this.streams = page;
-        this.selected = [...page.items];
-      });
-  }
-
-  run() {
-    if (this.selected.length === 0) {
-      this.notificationService.error('No stream selected', 'Please, select stream(s) to export.');
-    } else {
-      this.isRunning = true;
-      this.importExportService.streamsExport(this.selected)
-        .subscribe(() => {
-          this.notificationService.success('Stream(s) export', 'Stream(s) has been exported.');
-          this.isOpen = false;
-        });
+    constructor(private streamService: StreamService,
+        private notificationService: NotificationService,
+        private importExportService: ImportExportService) {
     }
-  }
+
+    open() {
+        this.isRunning = false;
+        this.isOpen = true;
+        this.streamService.getStreams(0, 100000, '', 'name', 'ASC')
+            .subscribe((page: StreamPage) => {
+                this.streams = page;
+                this.selected = [...page.items];
+            });
+    }
+
+    run() {
+        if (this.selected.length === 0) {
+            this.notificationService.error('No stream selected', 'Please, select stream(s) to export.');
+        } else {
+            this.isRunning = true;
+            this.importExportService.streamsExport(this.selected)
+                .subscribe(() => {
+                    this.notificationService.success('Stream(s) export', 'Stream(s) has been exported.');
+                    this.isOpen = false;
+                });
+        }
+    }
 }

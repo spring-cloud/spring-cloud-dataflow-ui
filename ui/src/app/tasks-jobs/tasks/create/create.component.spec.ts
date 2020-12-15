@@ -17,64 +17,62 @@ import { of } from 'rxjs';
 
 describe('tasks-jobs/tasks/create/create.component.ts', () => {
 
-  let component: CreateComponent;
-  let fixture: ComponentFixture<CreateComponent>;
-  let taskService;
+    let component: CreateComponent;
+    let fixture: ComponentFixture<CreateComponent>;
+    let taskService;
 
-  beforeEach(waitForAsync(() => {
-    taskService = new TaskServiceMock();
-    taskService.getTask = () => {
-      return of(null);
-    };
+    beforeEach(waitForAsync(() => {
+        taskService = new TaskServiceMock();
+        taskService.getTask = () => of(null);
 
-    TestBed.configureTestingModule({
-      declarations: [
-        CreateComponent,
-        RoleDirective
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        TaskServiceMock.provider,
-        GroupServiceMock.provider,
-        ToolsServiceMock.provider,
-        ContextServiceMock.provider,
-        { provide: TaskService, useValue: taskService }
-      ]
-    })
-      .compileComponents();
-  }));
+        TestBed.configureTestingModule({
+            declarations: [
+                CreateComponent,
+                RoleDirective
+            ],
+            imports: [
+                FormsModule,
+                ReactiveFormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                TaskServiceMock.provider,
+                GroupServiceMock.provider,
+                ToolsServiceMock.provider,
+                ContextServiceMock.provider,
+                { provide: TaskService, useValue: taskService }
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreateComponent);
-    component = fixture.componentInstance;
-    component.flo.dsl = 'timestamp';
-    NotificationServiceMock.mock.clearAll();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(CreateComponent);
+        component = fixture.componentInstance;
+        component.flo.dsl = 'timestamp';
+        NotificationServiceMock.mock.clearAll();
+    });
 
-  it('should create a task', async () => {
-    fixture.detectChanges();
-    await fixture.whenStable();
-    component.createTask();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    component.form.get('taskName').setValue('foo');
-    component.form.get('taskDescription').setValue('bar');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    component.submit();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Task creation');
-  });
+    it('should create a task', async () => {
+        fixture.detectChanges();
+        await fixture.whenStable();
+        component.createTask();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        component.form.get('taskName').setValue('foo');
+        component.form.get('taskDescription').setValue('bar');
+        fixture.detectChanges();
+        await fixture.whenStable();
+        component.submit();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Task creation');
+    });
 
 });
 

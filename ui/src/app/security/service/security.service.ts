@@ -10,78 +10,78 @@ import { State, getUsername, getRoles, getEnabled, getShouldProtect, getSecurity
 import { loaded, logout, unauthorised } from '../store/security.action';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SecurityService {
 
-  constructor(
-    private http: HttpClient,
-    private store: Store<State>
-  ) {}
+    constructor(
+        private http: HttpClient,
+        private store: Store<State>
+    ) {}
 
-  async canAccess(roles: string[]): Promise<boolean> {
-    const securityEnabled = await this.store.pipe(select(getEnabled)).pipe(take(1)).toPromise();
-    if (!securityEnabled) {
-      return true;
-    } else {
-      const grantedRoles = await this.store.pipe(select(getRoles)).pipe(take(1)).toPromise();
-      return this.arrayContains(grantedRoles, roles);
+    async canAccess(roles: string[]): Promise<boolean> {
+        const securityEnabled = await this.store.pipe(select(getEnabled)).pipe(take(1)).toPromise();
+        if (!securityEnabled) {
+            return true;
+        } else {
+            const grantedRoles = await this.store.pipe(select(getRoles)).pipe(take(1)).toPromise();
+            return this.arrayContains(grantedRoles, roles);
+        }
     }
-  }
 
-  private arrayContains(left: string[], right: string[]): boolean {
-    if (right.length === 0) {
-      return true;
+    private arrayContains(left: string[], right: string[]): boolean {
+        if (right.length === 0) {
+            return true;
+        }
+        const [arr1, arr2] = left.length < right.length ? [left, right] : [right, left];
+        return arr1.some(i => arr2.includes(i));
     }
-    const [arr1, arr2] = left.length < right.length ? [left, right] : [right, left];
-    return arr1.some(i => arr2.includes(i));
-  }
 
-  loaded(enabled: boolean, authenticated: boolean, username: string, roles: string[]) {
-    this.store.dispatch(loaded({enabled, authenticated, username, roles}));
-  }
+    loaded(enabled: boolean, authenticated: boolean, username: string, roles: string[]) {
+        this.store.dispatch(loaded({enabled, authenticated, username, roles}));
+    }
 
-  unauthorised() {
-    this.store.dispatch(unauthorised());
-  }
+    unauthorised() {
+        this.store.dispatch(unauthorised());
+    }
 
-  securityEnabled(): Observable<boolean> {
-    return this.store.pipe(select(getEnabled));
-  }
+    securityEnabled(): Observable<boolean> {
+        return this.store.pipe(select(getEnabled));
+    }
 
-  loggedinUser(): Observable<string> {
-    return this.store.pipe(select(getUsername));
-  }
+    loggedinUser(): Observable<string> {
+        return this.store.pipe(select(getUsername));
+    }
 
-  roles(): Observable<string[]> {
-    return this.store.pipe(select(getRoles));
-  }
+    roles(): Observable<string[]> {
+        return this.store.pipe(select(getRoles));
+    }
 
-  shouldProtect(): Observable<boolean> {
-    return this.store.pipe(select(getShouldProtect));
-  }
+    shouldProtect(): Observable<boolean> {
+        return this.store.pipe(select(getShouldProtect));
+    }
 
-  load(): Observable<Security> {
-    const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.http.get<Security>('/security/info', { headers })
-      .pipe(
-        catchError(ErrorUtils.catchError)
-      );
-  }
+    load(): Observable<Security> {
+        const headers = HttpUtils.getDefaultHttpHeaders();
+        return this.http.get<Security>('/security/info', { headers })
+            .pipe(
+                catchError(ErrorUtils.catchError)
+            );
+    }
 
-  getSecurity() {
-    return this.store.pipe(select(getSecurity));
-  }
+    getSecurity() {
+        return this.store.pipe(select(getSecurity));
+    }
 
-  logout(): Observable<Security> {
-    const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.http.get('/logout', { headers: headers, responseType: 'text' })
-      .pipe(
-        mergeMap(() => {
-          this.store.dispatch(logout());
-          return this.load();
-        }),
-        catchError(ErrorUtils.catchError)
-      );
-  }
+    logout(): Observable<Security> {
+        const headers = HttpUtils.getDefaultHttpHeaders();
+        return this.http.get('/logout', { headers: headers, responseType: 'text' })
+            .pipe(
+                mergeMap(() => {
+                    this.store.dispatch(logout());
+                    return this.load();
+                }),
+                catchError(ErrorUtils.catchError)
+            );
+    }
 }

@@ -22,72 +22,196 @@ const joint: any = _joint;
 
 export class ViewUtils {
 
-  static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string, paddingLeft: number, paddingRight?: number): void {
-    if (isNaN(paddingRight)) {
-      paddingRight = paddingLeft;
+    static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string, paddingLeft: number, paddingRight?: number): void {
+        if (isNaN(paddingRight)) {
+            paddingRight = paddingLeft;
+        }
+        const label: string = node.attr(`${labelPath}/text`);
+        const view = paper.findViewByModel(node);
+        if (view && label) {
+            const labelElement = view.findBySelector(labelPath)[0];
+            if (!labelElement) {
+                return;
+            }
+            let offset = 0;
+            if (node.attr('.type-icon')) {
+                const label2View = view.findBySelector('.type-icon')[0];
+                if (label2View) {
+                    const box = joint.V(label2View).bbox(false, paper.viewport);
+                    let padding = 0;
+                    if (node.attr('.type-icon/ref')) {
+                        const refView = view.findBySelector(node.attr('.type-icon/ref'))[0];
+                        if (refView) {
+                            padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+                        }
+                    } else {
+                        padding = box.x - view.getBBox().x;
+                    }
+                    offset = padding + box.width;
+                }
+            } else if (node.attr('.label2/text')) {
+                const label2View = view.findBySelector('.label2')[0];
+                if (label2View) {
+                    const box = joint.V(label2View).bbox(false, paper.viewport);
+                    let padding = 0;
+                    if (node.attr('.label2/ref')) {
+                        const refView = view.findBySelector(node.attr('.label2/ref'))[0];
+                        if (refView) {
+                            padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+                        }
+                    } else {
+                        padding = box.x - view.getBBox().x;
+                    }
+                    offset = padding + box.width;
+                }
+            }
+
+            let boundingBox = view.getBBox();
+            if (node.attr(`${labelPath}/ref`)) {
+                const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
+                if (refElement) {
+                    boundingBox = joint.V(refElement).bbox(false, paper.viewport);
+                }
+            }
+
+            const threshold = boundingBox.width - paddingLeft - paddingRight - offset;
+
+            let width = joint.V(labelElement).bbox(false, paper.viewport).width;
+
+            if (width > threshold) {
+                const styles = getComputedStyle(labelElement);
+                const stylesObj: {} = {};
+                for (let i = 0; i < styles.length; i++) {
+                    const property = styles.item(i);
+                    if (!property.startsWith('-')) {
+                        stylesObj[property] = styles.getPropertyValue(property);
+                    }
+                }
+
+                const svgDocument = joint.V('svg').node;
+                const textSpan = joint.V('tspan').node;
+                const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
+                const textNode = document.createTextNode(label);
+
+                // Prevent flickering
+                textElement.style.opacity = 0;
+                // Prevent FF from throwing an uncaught exception when `getBBox()`
+                // called on element that is not in the render tree (is not measurable).
+                // <tspan>.getComputedTextLength() returns always 0 in this case.
+                // Note that the `textElement` resp. `textSpan` can become hidden
+                // when it's appended to the DOM and a `display: none` CSS stylesheet
+                // rule gets applied.
+                textElement.style.display = 'block';
+                textSpan.style.display = 'block';
+
+                textSpan.appendChild(textNode);
+                svgDocument.appendChild(textElement);
+
+                document.body.appendChild(svgDocument);
+
+                try {
+                    width = textSpan.getComputedTextLength();
+                    for (let i = 1; i < label.length && width > threshold; i++) {
+                        textNode.data = label.substr(0, label.length - i) + '\u2026';
+                        width = textSpan.getComputedTextLength();
+                    }
+
+                    if (offset) {
+                        node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5),
+                            {silent: true});
+                    }
+                    // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
+                    node.attr(`${labelPath}/text`, textNode.data);
+                } finally {
+                    document.body.removeChild(svgDocument);
+                }
+            } else {
+                node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5));
+            }
+        }
     }
-    const label: string = node.attr(`${labelPath}/text`);
-    const view = paper.findViewByModel(node);
-    if (view && label) {
-      const labelElement = view.findBySelector(labelPath)[0];
-      if (!labelElement) {
-        return;
-      }
-      let offset = 0;
-      if (node.attr('.type-icon')) {
-        const label2View = view.findBySelector('.type-icon')[0];
-        if (label2View) {
-          const box = joint.V(label2View).bbox(false, paper.viewport);
-          let padding = 0;
-          if (node.attr('.type-icon/ref')) {
-            const refView = view.findBySelector(node.attr('.type-icon/ref'))[0];
-            if (refView) {
-              padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+
+    static fitLabelWithFixedLocation(paper: dia.Paper, node: dia.Element, labelPath: string, paddingRight?: number): void {
+        if (isNaN(paddingRight)) {
+            paddingRight = 0;
+        }
+        const label: string = node.attr(`${labelPath}/text`);
+        const view = paper.findViewByModel(node);
+        if (view && label) {
+            const labelElement = view.findBySelector(labelPath)[0];
+            if (!labelElement) {
+                return;
             }
-          } else {
-            padding = box.x - view.getBBox().x;
-          }
-          offset = padding + box.width;
-        }
-      } else if (node.attr('.label2/text')) {
-        const label2View = view.findBySelector('.label2')[0];
-        if (label2View) {
-          const box = joint.V(label2View).bbox(false, paper.viewport);
-          let padding = 0;
-          if (node.attr('.label2/ref')) {
-            const refView = view.findBySelector(node.attr('.label2/ref'))[0];
-            if (refView) {
-              padding = box.x - joint.V(refView).bbox(false, paper.viewport).x;
+
+            let boundingBox = view.getBBox();
+            if (node.attr(`${labelPath}/ref`)) {
+                const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
+                if (refElement) {
+                    boundingBox = joint.V(refElement).bbox(false, paper.viewport);
+                }
             }
-          } else {
-            padding = box.x - view.getBBox().x;
-          }
-          offset = padding + box.width;
+
+            const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
+
+            const locationX = labelInitialBox.x - boundingBox.x;
+
+            const threshold = boundingBox.width - paddingRight - locationX;
+
+            const width = labelInitialBox.width;
+
+            if (width > threshold) {
+                const styles = getComputedStyle(labelElement);
+                const stylesObj: {} = {};
+                for (let i = 0; i < styles.length; i++) {
+                    const property = styles.item(i);
+                    if (!property.startsWith('-')) {
+                        stylesObj[property] = styles.getPropertyValue(property);
+                    }
+                }
+
+                const truncatedText = ViewUtils.trucateTextWithEllipsis(label, threshold, stylesObj);
+                node.attr(`${labelPath}/text`, truncatedText);
+            }
         }
-      }
+    }
 
-      let boundingBox = view.getBBox();
-      if (node.attr(`${labelPath}/ref`)) {
-        const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
-        if (refElement) {
-          boundingBox = joint.V(refElement).bbox(false, paper.viewport);
+    static fitLabelWithFixedWidth(paper: dia.Paper, node: dia.Element, labelPath: string, widthConstraint: number): void {
+        if (isNaN(widthConstraint)) {
+            throw new Error('Width constraint is invalid');
         }
-      }
+        const label: string = node.attr(`${labelPath}/text`);
+        const view = paper.findViewByModel(node);
+        if (view && label) {
+            const labelElement = view.findBySelector(labelPath)[0];
+            if (!labelElement) {
+                return;
+            }
 
-      const threshold = boundingBox.width - paddingLeft - paddingRight - offset;
+            const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
 
-      let width = joint.V(labelElement).bbox(false, paper.viewport).width;
+            const width = labelInitialBox.width;
 
-      if (width > threshold) {
-        const styles = getComputedStyle(labelElement);
-        const stylesObj: {} = {};
-        for (let i = 0; i < styles.length; i++) {
-          const property = styles.item(i);
-          if (!property.startsWith('-')) {
-            stylesObj[property] = styles.getPropertyValue(property);
-          }
+            if (width > widthConstraint) {
+                const styles = getComputedStyle(labelElement);
+                const stylesObj: {} = {};
+                for (let i = 0; i < styles.length; i++) {
+                    const property = styles.item(i);
+                    if (!property.startsWith('-')) {
+                        stylesObj[property] = styles.getPropertyValue(property);
+                    }
+                }
+
+                const truncatedText = ViewUtils.trucateTextWithEllipsis(label, widthConstraint, stylesObj);
+                node.attr(`${labelPath}/text`, truncatedText);
+            }
         }
+    }
 
+    /* Use calculation below rather than joint.util.breakText. The breakText needs the height which only seems
+   * to work correctly if label height * 1.1 is provided. Won't work with the exact height.
+   * Furthermore, no need for multiple lines hence the algo below is faster
+   */
+    static trucateTextWithEllipsis(label: string, widthConstraint: number, stylesObj: any): string {
         const svgDocument = joint.V('svg').node;
         const textSpan = joint.V('tspan').node;
         const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
@@ -110,138 +234,15 @@ export class ViewUtils {
         document.body.appendChild(svgDocument);
 
         try {
-          width = textSpan.getComputedTextLength();
-          for (let i = 1; i < label.length && width > threshold; i++) {
-            textNode.data = label.substr(0, label.length - i) + '\u2026';
-            width = textSpan.getComputedTextLength();
-          }
+            let width = textSpan.getComputedTextLength();
+            for (let i = 1; i < label.length && width > widthConstraint; i++) {
+                textNode.data = label.substr(0, label.length - i) + '\u2026';
+                width = textSpan.getComputedTextLength();
+            }
 
-          if (offset) {
-            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), {silent: true});
-          }
-          // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
-          node.attr(`${labelPath}/text`, textNode.data);
+            return textNode.data;
         } finally {
-          document.body.removeChild(svgDocument);
+            document.body.removeChild(svgDocument);
         }
-      } else {
-        node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5));
-      }
     }
-  }
-
-  static fitLabelWithFixedLocation(paper: dia.Paper, node: dia.Element, labelPath: string, paddingRight?: number): void {
-    if (isNaN(paddingRight)) {
-      paddingRight = 0;
-    }
-    const label: string = node.attr(`${labelPath}/text`);
-    const view = paper.findViewByModel(node);
-    if (view && label) {
-      const labelElement = view.findBySelector(labelPath)[0];
-      if (!labelElement) {
-        return;
-      }
-
-      let boundingBox = view.getBBox();
-      if (node.attr(`${labelPath}/ref`)) {
-        const refElement = view.findBySelector(node.attr(`${labelPath}/ref`))[0];
-        if (refElement) {
-          boundingBox = joint.V(refElement).bbox(false, paper.viewport);
-        }
-      }
-
-      const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
-
-      const locationX = labelInitialBox.x - boundingBox.x;
-
-      const threshold = boundingBox.width - paddingRight - locationX;
-
-      const width = labelInitialBox.width;
-
-      if (width > threshold) {
-        const styles = getComputedStyle(labelElement);
-        const stylesObj: {} = {};
-        for (let i = 0; i < styles.length; i++) {
-          const property = styles.item(i);
-          if (!property.startsWith('-')) {
-            stylesObj[property] = styles.getPropertyValue(property);
-          }
-        }
-
-        const truncatedText = ViewUtils.trucateTextWithEllipsis(label, threshold, stylesObj);
-        node.attr(`${labelPath}/text`, truncatedText);
-      }
-    }
-  }
-
-  static fitLabelWithFixedWidth(paper: dia.Paper, node: dia.Element, labelPath: string, widthConstraint: number): void {
-    if (isNaN(widthConstraint)) {
-      throw new Error('Width constraint is invalid');
-    }
-    const label: string = node.attr(`${labelPath}/text`);
-    const view = paper.findViewByModel(node);
-    if (view && label) {
-      const labelElement = view.findBySelector(labelPath)[0];
-      if (!labelElement) {
-        return;
-      }
-
-      const labelInitialBox = joint.V(labelElement).bbox(false, paper.viewport);
-
-      const width = labelInitialBox.width;
-
-      if (width > widthConstraint) {
-        const styles = getComputedStyle(labelElement);
-        const stylesObj: {} = {};
-        for (let i = 0; i < styles.length; i++) {
-          const property = styles.item(i);
-          if (!property.startsWith('-')) {
-            stylesObj[property] = styles.getPropertyValue(property);
-          }
-        }
-
-        const truncatedText = ViewUtils.trucateTextWithEllipsis(label, widthConstraint, stylesObj);
-        node.attr(`${labelPath}/text`, truncatedText);
-      }
-    }
-  }
-
-  /* Use calculation below rather than joint.util.breakText. The breakText needs the height which only seems
-   * to work correctly if label height * 1.1 is provided. Won't work with the exact height.
-   * Furthermore, no need for multiple lines hence the algo below is faster
-   */
-  static trucateTextWithEllipsis(label: string, widthConstraint: number, stylesObj: any): string {
-    const svgDocument = joint.V('svg').node;
-    const textSpan = joint.V('tspan').node;
-    const textElement = joint.V('text').attr(stylesObj).append(textSpan).node;
-    const textNode = document.createTextNode(label);
-
-    // Prevent flickering
-    textElement.style.opacity = 0;
-    // Prevent FF from throwing an uncaught exception when `getBBox()`
-    // called on element that is not in the render tree (is not measurable).
-    // <tspan>.getComputedTextLength() returns always 0 in this case.
-    // Note that the `textElement` resp. `textSpan` can become hidden
-    // when it's appended to the DOM and a `display: none` CSS stylesheet
-    // rule gets applied.
-    textElement.style.display = 'block';
-    textSpan.style.display = 'block';
-
-    textSpan.appendChild(textNode);
-    svgDocument.appendChild(textElement);
-
-    document.body.appendChild(svgDocument);
-
-    try {
-      let width = textSpan.getComputedTextLength();
-      for (let i = 1; i < label.length && width > widthConstraint; i++) {
-        textNode.data = label.substr(0, label.length - i) + '\u2026';
-        width = textSpan.getComputedTextLength();
-      }
-
-      return textNode.data;
-    } finally {
-      document.body.removeChild(svgDocument);
-    }
-  }
 }

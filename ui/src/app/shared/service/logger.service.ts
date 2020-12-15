@@ -6,36 +6,36 @@ import { Injectable, isDevMode } from '@angular/core';
  * @author Damien Vitrac
  */
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LoggerService {
 
-  constructor() {
-  }
-
-  static log(value: any, ...rest: any[]) {
-    if (isDevMode()) {
-      console.log(value, ...rest);
+    constructor() {
     }
-  }
 
-  static error(value: any, ...rest: any[]) {
-    console.error(value, ...rest);
-  }
+    static log(value: any, ...rest: any[]) {
+        if (isDevMode()) {
+            console.log(value, ...rest);
+        }
+    }
 
-  static warn(value: any, ...rest: any[]) {
-    console.warn(value, ...rest);
-  }
+    static error(value: any, ...rest: any[]) {
+        console.error(value, ...rest);
+    }
 
-  log(value: any, ...rest: any[]) {
-    LoggerService.log(value, ...rest);
-  }
+    static warn(value: any, ...rest: any[]) {
+        console.warn(value, ...rest);
+    }
 
-  error(value: any, ...rest: any[]) {
-    LoggerService.error(value, ...rest);
-  }
+    log(value: any, ...rest: any[]) {
+        LoggerService.log(value, ...rest);
+    }
 
-  warn(value: any, ...rest: any[]) {
-    LoggerService.warn(value, ...rest);
-  }
+    error(value: any, ...rest: any[]) {
+        LoggerService.error(value, ...rest);
+    }
+
+    warn(value: any, ...rest: any[]) {
+        LoggerService.warn(value, ...rest);
+    }
 }

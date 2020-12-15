@@ -27,68 +27,65 @@ import { SettingsService } from './settings/settings.service';
 import { AppsModule } from './apps/apps.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ClarityModule,
-    BrowserAnimationsModule,
-    SharedModule,
-    AboutModule,
-    HttpClientModule,
-    FormsModule,
-    LayoutModule,
-    // DashboardModule,
-    // DevModule,
-    StreamsModule,
-    TasksJobsModule,
-    ManageModule,
-    SecurityModule,
-    SettingsModule,
-    AppsModule,
-    StoreModule.forRoot(ROOT_REDUCERS, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateSerializability: true,
-        strictActionSerializability: true,
-        strictActionWithinNgZone: true,
-        strictActionTypeUniqueness: true,
-      },
-    }),
-    StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([])
-  ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (securityService: SecurityService, aboutService: AboutService, settingsService: SettingsService) => {
-        return () => {
-          return securityService.load()
-            .pipe(
-              mergeMap((security: Security) => {
-                securityService.loaded(security.authenticationEnabled, security.authenticated, security.username, security.roles);
-                if (security.authenticated || !security.authenticationEnabled) {
-                  return aboutService.load()
-                    .pipe(
-                      map(about => security)
-                    );
-                }
-                return of(security);
-              })
-            )
-            .pipe(
-              switchMap(() => settingsService.load())
-            )
-            .toPromise();
-        };
-      },
-      deps: [SecurityService, AboutService, SettingsService],
-      multi: true
-    }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ClarityModule,
+        BrowserAnimationsModule,
+        SharedModule,
+        AboutModule,
+        HttpClientModule,
+        FormsModule,
+        LayoutModule,
+        // DashboardModule,
+        // DevModule,
+        StreamsModule,
+        TasksJobsModule,
+        ManageModule,
+        SecurityModule,
+        SettingsModule,
+        AppsModule,
+        StoreModule.forRoot(ROOT_REDUCERS, {
+            metaReducers,
+            runtimeChecks: {
+                strictStateSerializability: true,
+                strictActionSerializability: true,
+                strictActionWithinNgZone: true,
+                strictActionTypeUniqueness: true,
+            },
+        }),
+        StoreRouterConnectingModule.forRoot(),
+        EffectsModule.forRoot([])
+    ],
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: (securityService: SecurityService, aboutService: AboutService,
+                settingsService: SettingsService) => () => securityService.load()
+                .pipe(
+                    mergeMap((security: Security) => {
+                        securityService.loaded(security.authenticationEnabled, security.authenticated, security.username, security.roles);
+                        if (security.authenticated || !security.authenticationEnabled) {
+                            return aboutService.load()
+                                .pipe(
+                                    map(about => security)
+                                );
+                        }
+                        return of(security);
+                    })
+                )
+                .pipe(
+                    switchMap(() => settingsService.load())
+                )
+                .toPromise(),
+            deps: [SecurityService, AboutService, SettingsService],
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

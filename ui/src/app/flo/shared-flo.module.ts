@@ -10,28 +10,28 @@ import { PropertiesDialogComponent } from './shared/properties/properties-dialog
 import { PropertiesGroupsDialogComponent } from './shared/properties-groups/properties-groups-dialog.component';
 
 @NgModule({
-  declarations: [
-    ClrDynamicFormPropertyComponent,
-    ClrPropertiesGroupComponent,
-    PropertiesDialogComponent,
-    PropertiesGroupsDialogComponent,
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ClarityModule,
-    FloModule,
-  ],
-  providers: [
-  ],
-  exports: [
-    ClrDynamicFormPropertyComponent,
-    ClrPropertiesGroupComponent,
-    PropertiesDialogComponent,
-    PropertiesGroupsDialogComponent,
-  ]
+    declarations: [
+        ClrDynamicFormPropertyComponent,
+        ClrPropertiesGroupComponent,
+        PropertiesDialogComponent,
+        PropertiesGroupsDialogComponent,
+    ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        FloModule,
+    ],
+    providers: [
+    ],
+    exports: [
+        ClrDynamicFormPropertyComponent,
+        ClrPropertiesGroupComponent,
+        PropertiesDialogComponent,
+        PropertiesGroupsDialogComponent,
+    ]
 })
 
 export class SharedFloModule {

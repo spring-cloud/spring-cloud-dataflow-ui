@@ -10,57 +10,57 @@ import { ContextService } from '../../shared/service/context.service';
 import { SettingsService } from '../../settings/settings.service';
 
 @Component({
-  selector: 'app-executions',
-  templateUrl: './executions.component.html',
+    selector: 'app-executions',
+    templateUrl: './executions.component.html',
 })
 export class ExecutionsComponent extends DatagridComponent {
 
-  page: TaskExecutionPage;
-  state: ClrDatagridStateInterface;
-  @ViewChild('stopModal', { static: true }) stopModal: StopComponent;
-  @ViewChild('cleanModal', { static: true }) cleanModal: CleanupComponent;
+    page: TaskExecutionPage;
+    state: ClrDatagridStateInterface;
+    @ViewChild('stopModal', { static: true }) stopModal: StopComponent;
+    @ViewChild('cleanModal', { static: true }) cleanModal: CleanupComponent;
 
-  constructor(private taskService: TaskService,
-              protected contextService: ContextService,
-              protected settingsService: SettingsService,
-              protected changeDetectorRef: ChangeDetectorRef,
-              private router: Router) {
-    super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/executions');
-  }
-
-  refresh(state: ClrDatagridStateInterface) {
-    if (this.isReady()) {
-      super.refresh(state);
-      const params = this.getParams(state, { name: '', type: '' });
-      this.unsubscribe$ = this.taskService.getExecutions(params.current - 1, params.size, params?.taskName || '',
-        `${params?.by || ''}`, `${params?.reverse ? 'DESC' : 'ASC'}`)
-        .subscribe((page: TaskExecutionPage) => {
-          this.page = page;
-          this.updateGroupContext(params);
-          this.selected = [];
-          this.loading = false;
-        });
+    constructor(private taskService: TaskService,
+        protected contextService: ContextService,
+        protected settingsService: SettingsService,
+        protected changeDetectorRef: ChangeDetectorRef,
+        private router: Router) {
+        super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/executions');
     }
-  }
 
-  details(execution: TaskExecution) {
-    this.router.navigateByUrl(`tasks-jobs/task-executions/${execution.executionId}`);
-  }
+    refresh(state: ClrDatagridStateInterface) {
+        if (this.isReady()) {
+            super.refresh(state);
+            const params = this.getParams(state, { name: '', type: '' });
+            this.unsubscribe$ = this.taskService.getExecutions(params.current - 1, params.size, params?.taskName || '',
+                `${params?.by || ''}`, `${params?.reverse ? 'DESC' : 'ASC'}`)
+                .subscribe((page: TaskExecutionPage) => {
+                    this.page = page;
+                    this.updateGroupContext(params);
+                    this.selected = [];
+                    this.loading = false;
+                });
+        }
+    }
 
-  taskDetails(execution: TaskExecution) {
-    this.router.navigateByUrl(`tasks-jobs/tasks/${execution.taskName}`);
-  }
+    details(execution: TaskExecution) {
+        this.router.navigateByUrl(`tasks-jobs/task-executions/${execution.executionId}`);
+    }
 
-  relaunch(execution: TaskExecution) {
-    this.router.navigateByUrl(`tasks-jobs/tasks/${execution.taskName}/launch`);
-  }
+    taskDetails(execution: TaskExecution) {
+        this.router.navigateByUrl(`tasks-jobs/tasks/${execution.taskName}`);
+    }
 
-  stop(execution: TaskExecution) {
-    this.stopModal.open(execution);
-  }
+    relaunch(execution: TaskExecution) {
+        this.router.navigateByUrl(`tasks-jobs/tasks/${execution.taskName}/launch`);
+    }
 
-  cleanup(executions: TaskExecution[]) {
-    this.cleanModal.open(executions);
-  }
+    stop(execution: TaskExecution) {
+        this.stopModal.open(execution);
+    }
+
+    cleanup(executions: TaskExecution[]) {
+        this.cleanModal.open(executions);
+    }
 
 }

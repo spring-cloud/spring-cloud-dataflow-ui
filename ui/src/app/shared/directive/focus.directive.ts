@@ -7,47 +7,46 @@ import { Directive, ElementRef, Input, OnChanges, OnDestroy, Optional } from '@a
  * @author Damien Vitrac
  */
 @Directive({
-  selector: '[dataflowFocus]',
+    selector: '[dataflowFocus]',
 })
 export class FocusDirective implements OnChanges {
 
-  /**
+    /**
    * App Focus
    * @type {boolean}
    */
-  @Input() dataflowFocus = false;
+    @Input() dataflowFocus = false;
 
-  /**
+    /**
    * Delay Focus
    * @type {number}
    */
-  @Input() focusDelay = 0;
+    @Input() focusDelay = 0;
 
-  /**
+    /**
    * Constructor
    * @param {ElementRef} elementRef
    */
-  constructor(private elementRef: ElementRef) {
-  }
+    constructor(private elementRef: ElementRef) {
+    }
 
-  /**
+    /**
    * On Change Event
    */
-  ngOnChanges() {
-    this.checkFocus();
-  }
+    ngOnChanges() {
+        this.checkFocus();
+    }
 
-  /**
+    /**
    * Check Focus
    */
-  private checkFocus() {
-    if (this.dataflowFocus && document.activeElement !== this.elementRef.nativeElement) {
-      let checkFocusTimeoutHandle: number;
-      const focus = () => {
-        this.elementRef.nativeElement.focus();
-      };
-      checkFocusTimeoutHandle = setTimeout(focus, this.focusDelay) as any;
+    private checkFocus() {
+        if (this.dataflowFocus && document.activeElement !== this.elementRef.nativeElement) {
+            const focus = () => {
+                this.elementRef.nativeElement.focus();
+            };
+            setTimeout(focus, this.focusDelay) as any;
+        }
     }
-  }
 
 }

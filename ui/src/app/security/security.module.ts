@@ -16,33 +16,33 @@ import { SecurityEffect } from './store/security.effect';
 import { SecurityInterceptor } from './support/security.interceptor';
 
 @NgModule({
-  declarations: [
-    RoleDirective,
-    RolesMissingComponent,
-    FeatureDisabledComponent,
-    AuthenticationRequiredComponent
-  ],
-  imports: [
-    CommonModule,
-    ClarityModule,
-    SharedModule,
-    SecurityRoutingModule,
-    StoreModule.forFeature(fromSecurity.securityFeatureKey, fromSecurity.reducer),
-    EffectsModule.forFeature([
-      SecurityEffect
-    ])
-  ],
-  providers: [
-    SecurityGuard,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: SecurityInterceptor,
-      multi: true
-    }
-  ],
-  exports: [
-    RoleDirective
-  ]
+    declarations: [
+        RoleDirective,
+        RolesMissingComponent,
+        FeatureDisabledComponent,
+        AuthenticationRequiredComponent
+    ],
+    imports: [
+        CommonModule,
+        ClarityModule,
+        SharedModule,
+        SecurityRoutingModule,
+        StoreModule.forFeature(fromSecurity.securityFeatureKey, fromSecurity.reducer),
+        EffectsModule.forFeature([
+            SecurityEffect
+        ])
+    ],
+    providers: [
+        SecurityGuard,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: SecurityInterceptor,
+            multi: true
+        }
+    ],
+    exports: [
+        RoleDirective
+    ]
 })
 export class SecurityModule {
 }

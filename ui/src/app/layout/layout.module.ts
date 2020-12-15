@@ -9,21 +9,21 @@ import { LogoComponent } from './logo/logo.component';
 import { SecurityModule } from '../security/security.module';
 
 @NgModule({
-  declarations: [
-    LogoComponent,
-    NavComponent
-  ],
-  imports: [
-    RouterModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    ClarityModule,
-    SecurityModule
-  ],
-  exports: [
-    LogoComponent,
-    NavComponent,
-  ]
+    declarations: [
+        LogoComponent,
+        NavComponent
+    ],
+    imports: [
+        RouterModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        ClarityModule,
+        SecurityModule
+    ],
+    exports: [
+        LogoComponent,
+        NavComponent,
+    ]
 })
 export class LayoutModule { }

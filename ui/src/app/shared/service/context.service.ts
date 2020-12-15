@@ -6,29 +6,29 @@ import { ContextModel } from '../model/context.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ContextService {
 
-  constructor(private store: Store<State>) {
-  }
+    constructor(private store: Store<State>) {
+    }
 
-  dispatch(context: ContextModel): void {
-    this.store.dispatch(updated(context));
-  }
+    dispatch(context: ContextModel): void {
+        this.store.dispatch(updated(context));
+    }
 
-  getContext(name: string): Observable<ContextModel[]> {
-    return this.store.pipe(
-      select((state) => getContext(state[contextFeatureKey], name) as ContextModel[] || [])
-    );
-  }
+    getContext(name: string): Observable<ContextModel[]> {
+        return this.store.pipe(
+            select((state) => getContext(state[contextFeatureKey], name) as ContextModel[] || [])
+        );
+    }
 
-  getContexts(): Observable<ContextModel[]> {
-    return this.store.pipe(select(getContexts));
-  }
+    getContexts(): Observable<ContextModel[]> {
+        return this.store.pipe(select(getContexts));
+    }
 
-  updateContext(name: string, contexts: ContextModel[]) {
-    this.store.dispatch(updated({ name, value: contexts }));
-  }
+    updateContext(name: string, contexts: ContextModel[]) {
+        this.store.dispatch(updated({ name, value: contexts }));
+    }
 
 }

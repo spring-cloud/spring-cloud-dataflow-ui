@@ -9,19 +9,19 @@ import { DashboardRoutingModule } from './dashboard-router.module';
 
 
 @NgModule({
-  declarations: [
-    DashboardComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    ClarityModule,
-    SecurityModule,
-    DashboardRoutingModule
-  ],
-  providers: []
+    declarations: [
+        DashboardComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        ClarityModule,
+        SecurityModule,
+        DashboardRoutingModule
+    ],
+    providers: []
 })
 export class DashboardModule {
 }

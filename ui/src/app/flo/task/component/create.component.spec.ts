@@ -15,36 +15,36 @@ import { StoreModule } from '@ngrx/store';
  * @author Janne Valkealahti
  */
 describe('TaskFloCreateComponent', () => {
-  let component: TaskFloCreateComponent;
-  let fixture: ComponentFixture<TaskFloCreateComponent>;
-  const loggerService = new LoggerService();
-  const metamodelService = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
+    let component: TaskFloCreateComponent;
+    let fixture: ComponentFixture<TaskFloCreateComponent>;
+    const loggerService = new LoggerService();
+    const metamodelService = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
 
-  const commonTestParams = { id: '1' };
+    const commonTestParams = { id: '1' };
 
-  beforeEach(async () => {
+    beforeEach(async () => {
 
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({}),
-        TaskFloModule,
-        BrowserAnimationsModule,
-        RouterTestingModule.withRoutes([]),
-      ],
-      providers: [
-        { provide: MetamodelService, useValue: metamodelService }
-      ]
-    })
-      .compileComponents();
-  });
+        TestBed.configureTestingModule({
+            imports: [
+                StoreModule.forRoot({}),
+                TaskFloModule,
+                BrowserAnimationsModule,
+                RouterTestingModule.withRoutes([]),
+            ],
+            providers: [
+                { provide: MetamodelService, useValue: metamodelService }
+            ]
+        })
+            .compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TaskFloCreateComponent);
-    component = fixture.componentInstance;
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(TaskFloCreateComponent);
+        component = fixture.componentInstance;
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 });

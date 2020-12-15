@@ -6,109 +6,109 @@ import { DocService } from '../service/doc.service';
 
 export class NodeComponent extends ElementComponent {
 
-  _description: string;
+    _description: string;
 
-  constructor(private docService: DocService) {
-    super();
-  }
-
-  getPropertyValue(property: string): any {
-    if (this.view) {
-      const value = this.view.model.attr(`props/${property}`);
-      if (this.isCode(property)) {
-        return Utils.decodeTextFromDSL(value);
-      }
-      return value;
+    constructor(private docService: DocService) {
+        super();
     }
-    return '';
-  }
 
-  isCanvas(): boolean {
-    return this.paper.model.get('type') === Constants.CANVAS_CONTEXT;
-  }
-
-  isPalette(): boolean {
-    return this.paper.model.get('type') === Constants.PALETTE_CONTEXT;
-  }
-
-  get paper(): dia.Paper {
-    return this.view ? (this.view as any).paper : undefined;
-  }
-
-  get metadata(): Flo.ElementMetadata {
-    return this.view ? this.view.model.prop('metadata') : undefined;
-  }
-
-  get metaName(): string {
-    return this.metadata ? this.metadata.name : 'Unknown';
-  }
-
-  get metaGroup(): string {
-    return this.metadata ? this.metadata.group : 'Unknown';
-  }
-
-  get allProperties(): any {
-    return this.view ? this.view.model.attr('props') : {};
-  }
-
-  get isPropertiesShown(): boolean {
-    return this.view ? !this.view.model.prop('metadata/metadata/hide-tooltip-options') : false;
-  }
-
-  get description(): string {
-    if (this._description === undefined) {
-      if (this.metadata && this.metadata.description) {
-        this.metadata.description().then(d => this._description = d);
-      }
+    getPropertyValue(property: string): any {
+        if (this.view) {
+            const value = this.view.model.attr(`props/${property}`);
+            if (this.isCode(property)) {
+                return Utils.decodeTextFromDSL(value);
+            }
+            return value;
+        }
+        return '';
     }
-    return this._description;
-  }
 
-  get isDisabled(): boolean {
-    return !this.metadata || this.metadata.unresolved || this.docService.isMouseDown();
-  }
-
-  get canShowCanvasNodeTooltip(): boolean {
-    return this.isAnyPropertySet() || this.isLabelTruncated('./name-label') || this.isLabelTruncated('.type-label/text');
-  }
-
-  get canShowPaletteNodeTooltip() {
-    return this.isLabelTruncated('.palette-entry-name-label/text') /*|| this.description*/;
-  }
-
-  private isLabelTruncated(labelProperty: string) {
-    const displayedLabel = this.view.model.attr(labelProperty);
-    if (typeof displayedLabel === 'string') {
-      return (displayedLabel as string).endsWith('\u2026');
+    isCanvas(): boolean {
+        return this.paper.model.get('type') === Constants.CANVAS_CONTEXT;
     }
-  }
 
-  private isAnyPropertySet() {
-    const properties = this.allProperties;
-    return properties && Object.keys(properties).length > 0;
-  }
+    isPalette(): boolean {
+        return this.paper.model.get('type') === Constants.PALETTE_CONTEXT;
+    }
 
-  isCode(property: string): boolean {
-    return Utils.isCodeTypeProperty(this.metadata, property);
-  }
+    get paper(): dia.Paper {
+        return this.view ? (this.view as any).paper : undefined;
+    }
 
-  keys(o: any): Array<string> {
-    return Object.keys(o);
-  }
+    get metadata(): Flo.ElementMetadata {
+        return this.view ? this.view.model.prop('metadata') : undefined;
+    }
 
-  get markers(): Flo.Marker[] {
-    return this.view.model.get('markers') || [];
-  }
+    get metaName(): string {
+        return this.metadata ? this.metadata.name : 'Unknown';
+    }
 
-  getErrorMessages(): string[] {
-    return this.markers.map(m => m.message);
-  }
+    get metaGroup(): string {
+        return this.metadata ? this.metadata.group : 'Unknown';
+    }
 
-  delete() {
-    this.paper.model.trigger('startDeletion', this.view.model);
-  }
+    get allProperties(): any {
+        return this.view ? this.view.model.attr('props') : {};
+    }
 
-  docBody() {
-    return this.docService.body();
-  }
+    get isPropertiesShown(): boolean {
+        return this.view ? !this.view.model.prop('metadata/metadata/hide-tooltip-options') : false;
+    }
+
+    get description(): string {
+        if (this._description === undefined) {
+            if (this.metadata && this.metadata.description) {
+                this.metadata.description().then(d => this._description = d);
+            }
+        }
+        return this._description;
+    }
+
+    get isDisabled(): boolean {
+        return !this.metadata || this.metadata.unresolved || this.docService.isMouseDown();
+    }
+
+    get canShowCanvasNodeTooltip(): boolean {
+        return this.isAnyPropertySet() || this.isLabelTruncated('./name-label') || this.isLabelTruncated('.type-label/text');
+    }
+
+    get canShowPaletteNodeTooltip() {
+        return this.isLabelTruncated('.palette-entry-name-label/text') /* || this.description*/;
+    }
+
+    private isLabelTruncated(labelProperty: string) {
+        const displayedLabel = this.view.model.attr(labelProperty);
+        if (typeof displayedLabel === 'string') {
+            return (displayedLabel as string).endsWith('\u2026');
+        }
+    }
+
+    private isAnyPropertySet() {
+        const properties = this.allProperties;
+        return properties && Object.keys(properties).length > 0;
+    }
+
+    isCode(property: string): boolean {
+        return Utils.isCodeTypeProperty(this.metadata, property);
+    }
+
+    keys(o: any): Array<string> {
+        return Object.keys(o);
+    }
+
+    get markers(): Flo.Marker[] {
+        return this.view.model.get('markers') || [];
+    }
+
+    getErrorMessages(): string[] {
+        return this.markers.map(m => m.message);
+    }
+
+    delete() {
+        this.paper.model.trigger('startDeletion', this.view.model);
+    }
+
+    docBody() {
+        return this.docService.body();
+    }
 }

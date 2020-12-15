@@ -4,18 +4,18 @@ import { DOCUMENT } from '@angular/common';
 @Injectable()
 export class DocService {
 
-  private mouseDown = false;
+    private mouseDown = false;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {
-    document.body.addEventListener('mouseup', () => this.mouseDown = false);
-    document.body.addEventListener('mousedown', () => this.mouseDown = true);
-  }
+    constructor(@Inject(DOCUMENT) private document: Document) {
+        document.body.addEventListener('mouseup', () => this.mouseDown = false);
+        document.body.addEventListener('mousedown', () => this.mouseDown = true);
+    }
 
-  body() {
-    return this.document.body;
-  }
+    body() {
+        return this.document.body;
+    }
 
-  isMouseDown() {
-    return this.mouseDown;
-  }
+    isMouseDown() {
+        return this.mouseDown;
+    }
 }

@@ -3,25 +3,25 @@ import { Router } from '@angular/router';
 import { SecurityService } from '../../security/service/security.service';
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html'
+    selector: 'app-user',
+    templateUrl: './user.component.html'
 })
 export class UserComponent implements OnInit {
 
-  loggedinUser$ = this.securityService.loggedinUser();
+    loggedinUser$ = this.securityService.loggedinUser();
 
-  constructor(
-    private securityService: SecurityService,
-    private router: Router
-  ) {
-  }
+    constructor(
+        private securityService: SecurityService,
+        private router: Router
+    ) {
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
-  logout(): void {
-    this.securityService.logout().subscribe(security => {
-      this.router.navigate(['/']);
-    });
-  }
+    logout(): void {
+        this.securityService.logout().subscribe(security => {
+            this.router.navigate(['/']);
+        });
+    }
 }

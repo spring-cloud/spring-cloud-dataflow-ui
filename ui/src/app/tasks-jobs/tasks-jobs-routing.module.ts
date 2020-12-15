@@ -15,85 +15,85 @@ import { ScheduleComponent } from './schedules/schedule/schedule.component';
 import { CreateComponent as CreateScheduleComponent } from './schedules/create/create.component';
 
 const routes: Routes = [
-  {
-    path: 'tasks-jobs',
-    canActivate: [SecurityGuard],
-    data: {
-      authenticate: true,
-      roles: ['ROLE_VIEW'],
-      feature: 'tasks'
+    {
+        path: 'tasks-jobs',
+        canActivate: [SecurityGuard],
+        data: {
+            authenticate: true,
+            roles: ['ROLE_VIEW'],
+            feature: 'tasks'
+        },
+        children: [
+            {
+                path: 'tasks',
+                component: TasksComponent
+            },
+            {
+                path: 'tasks/create',
+                component: CreateComponent
+            },
+            {
+                path: 'tasks/:name',
+                component: TaskComponent
+            },
+            {
+                path: 'tasks/:name/launch',
+                component: LaunchComponent
+            },
+            {
+                path: 'task-executions',
+                component: ExecutionsComponent
+            },
+            {
+                path: 'task-executions/:executionId',
+                component: ExecutionComponent
+            },
+            {
+                path: 'job-executions',
+                component: JobsComponent
+            },
+            {
+                path: 'job-executions/:executionId',
+                component: JobExecutionComponent
+            },
+            {
+                path: 'job-executions/:executionId/:stepId',
+                component: StepComponent
+            },
+            {
+                path: 'schedules',
+                component: SchedulesComponent,
+                data: {
+                    authenticate: true,
+                    roles: ['ROLE_VIEW'],
+                    feature: 'schedules'
+                },
+            },
+            {
+                path: 'schedules/:id/create',
+                component: CreateScheduleComponent,
+                data: {
+                    authenticate: true,
+                    roles: ['ROLE_VIEW'],
+                    feature: 'schedules'
+                },
+            },
+            {
+                path: 'schedules/:id',
+                component: ScheduleComponent,
+                data: {
+                    authenticate: true,
+                    roles: ['ROLE_VIEW'],
+                    feature: 'schedules'
+                },
+            },
+        ]
     },
-    children: [
-      {
-        path: 'tasks',
-        component: TasksComponent
-      },
-      {
-        path: 'tasks/create',
-        component: CreateComponent
-      },
-      {
-        path: 'tasks/:name',
-        component: TaskComponent
-      },
-      {
-        path: 'tasks/:name/launch',
-        component: LaunchComponent
-      },
-      {
-        path: 'task-executions',
-        component: ExecutionsComponent
-      },
-      {
-        path: 'task-executions/:executionId',
-        component: ExecutionComponent
-      },
-      {
-        path: 'job-executions',
-        component: JobsComponent
-      },
-      {
-        path: 'job-executions/:executionId',
-        component: JobExecutionComponent
-      },
-      {
-        path: 'job-executions/:executionId/:stepId',
-        component: StepComponent
-      },
-      {
-        path: 'schedules',
-        component: SchedulesComponent,
-        data: {
-          authenticate: true,
-          roles: ['ROLE_VIEW'],
-          feature: 'schedules'
-        },
-      },
-      {
-        path: 'schedules/:id/create',
-        component: CreateScheduleComponent,
-        data: {
-          authenticate: true,
-          roles: ['ROLE_VIEW'],
-          feature: 'schedules'
-        },
-      },
-      {
-        path: 'schedules/:id',
-        component: ScheduleComponent,
-        data: {
-          authenticate: true,
-          roles: ['ROLE_VIEW'],
-          feature: 'schedules'
-        },
-      },
-    ]
-  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class TasksJobsRoutingModule {
 }

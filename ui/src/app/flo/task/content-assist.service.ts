@@ -7,18 +7,16 @@ import { HttpUtils } from '../../shared/support/http.utils';
 @Injectable()
 export class ContentAssistService {
 
-  constructor(private httpClient: HttpClient) {
-  }
+    constructor(private httpClient: HttpClient) {
+    }
 
-  getProposals(prefix: string): Observable<Array<string>> {
-    const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams()
-      .append('start', prefix)
-      .append('defaultLevel', '1');
-    return this.httpClient.get<any>('/completions/task', { headers, params })
-      .pipe(map(jsonResponse => {
-        return jsonResponse.proposals;
-      }));
-  }
+    getProposals(prefix: string): Observable<Array<string>> {
+        const headers = HttpUtils.getDefaultHttpHeaders();
+        const params = new HttpParams()
+            .append('start', prefix)
+            .append('defaultLevel', '1');
+        return this.httpClient.get<any>('/completions/task', { headers, params })
+            .pipe(map(jsonResponse => jsonResponse.proposals));
+    }
 
 }

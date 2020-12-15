@@ -17,52 +17,52 @@ import { ContextServiceMock } from '../../../tests/service/context.service.mock'
 
 describe('streams/runtime/details/details.component.ts', () => {
 
-  let component: DetailsComponent;
-  let fixture: ComponentFixture<DetailsComponent>;
+    let component: DetailsComponent;
+    let fixture: ComponentFixture<DetailsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DetailsComponent,
-        DetailsComponent,
-        GrafanaRuntimeAppDirective,
-        GrafanaRuntimeInstanceDirective
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        RuntimeServiceMock.provider,
-        GrafanaServiceMock.provider,
-        ContextServiceMock.provider
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                DetailsComponent,
+                DetailsComponent,
+                GrafanaRuntimeAppDirective,
+                GrafanaRuntimeInstanceDirective
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                RuntimeServiceMock.provider,
+                GrafanaServiceMock.provider,
+                ContextServiceMock.provider
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DetailsComponent);
-    component = fixture.componentInstance;
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(DetailsComponent);
+        component = fixture.componentInstance;
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 
-  it('should show the runtime application(s)', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    component.open(RuntimeStreamPage.parse(GET_RUNTIME).items[0].apps[0]);
-    fixture.detectChanges();
-    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Instances for app');
-  });
+    it('should show the runtime application(s)', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+        component.open(RuntimeStreamPage.parse(GET_RUNTIME).items[0].apps[0]);
+        fixture.detectChanges();
+        const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Instances for app');
+    });
 
 });

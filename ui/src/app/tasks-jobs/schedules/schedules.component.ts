@@ -9,54 +9,54 @@ import { ContextService } from '../../shared/service/context.service';
 import { SettingsService } from '../../settings/settings.service';
 
 @Component({
-  selector: 'app-schedules',
-  templateUrl: './schedules.component.html',
+    selector: 'app-schedules',
+    templateUrl: './schedules.component.html',
 })
 export class SchedulesComponent extends DatagridComponent {
-  page: SchedulePage;
-  @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
+    page: SchedulePage;
+    @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
 
-  constructor(private scheduleService: ScheduleService,
-              private router: Router,
-              protected settingsService: SettingsService,
-              protected changeDetectorRef: ChangeDetectorRef,
-              protected contextService: ContextService) {
-    super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/schedules');
-  }
-
-  isScheduleReady(state): boolean {
-    const params = this.getParams(state, { platform: '' });
-    return super.isReady() && params.platform;
-  }
-
-  refresh(state: ClrDatagridStateInterface) {
-    if (this.isScheduleReady(state)) {
-      super.refresh(state);
-      const params = this.getParams(state, { platform: '' });
-      this.unsubscribe$ = this.scheduleService.getSchedules('', params.platform)
-        .subscribe((page: SchedulePage) => {
-          this.page = page;
-          this.selected = [];
-          this.updateGroupContext(params);
-          this.loading = false;
-        });
+    constructor(private scheduleService: ScheduleService,
+        private router: Router,
+        protected settingsService: SettingsService,
+        protected changeDetectorRef: ChangeDetectorRef,
+        protected contextService: ContextService) {
+        super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/schedules');
     }
-  }
 
-  details(schedule: Schedule) {
-    this.router.navigateByUrl(`tasks-jobs/schedules/${schedule.name}`);
-  }
+    isScheduleReady(state): boolean {
+        const params = this.getParams(state, { platform: '' });
+        return super.isReady() && params.platform;
+    }
 
-  taskDetails(schedule: Schedule) {
-    this.router.navigateByUrl(`tasks-jobs/tasks/${schedule.taskName}`);
-  }
+    refresh(state: ClrDatagridStateInterface) {
+        if (this.isScheduleReady(state)) {
+            super.refresh(state);
+            const params = this.getParams(state, { platform: '' });
+            this.unsubscribe$ = this.scheduleService.getSchedules('', params.platform)
+                .subscribe((page: SchedulePage) => {
+                    this.page = page;
+                    this.selected = [];
+                    this.updateGroupContext(params);
+                    this.loading = false;
+                });
+        }
+    }
 
-  destroySchedules(schedules: Schedule[]) {
-    this.destroyModal.open(schedules);
-  }
+    details(schedule: Schedule) {
+        this.router.navigateByUrl(`tasks-jobs/schedules/${schedule.name}`);
+    }
 
-  createSchedule(schedule: Schedule) {
-    this.router.navigateByUrl(`tasks-jobs/schedules/${schedule.taskName}/create`);
-  }
+    taskDetails(schedule: Schedule) {
+        this.router.navigateByUrl(`tasks-jobs/tasks/${schedule.taskName}`);
+    }
+
+    destroySchedules(schedules: Schedule[]) {
+        this.destroyModal.open(schedules);
+    }
+
+    createSchedule(schedule: Schedule) {
+        this.router.navigateByUrl(`tasks-jobs/schedules/${schedule.taskName}/create`);
+    }
 
 }

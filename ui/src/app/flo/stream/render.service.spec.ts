@@ -36,72 +36,72 @@ const $: any = _$;
 
 describe('Stream RenderService', () => {
 
-  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
+    const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
 
-  let applicationRef: ApplicationRef;
-  let resolver: ComponentFactoryResolver;
+    let applicationRef: ApplicationRef;
+    let resolver: ComponentFactoryResolver;
 
-  let METAMODEL: Map<string, Map<string, Flo.ElementMetadata>>;
-  let component: EditorComponent;
-  let fixture: ComponentFixture<EditorComponent>;
-  let flo: Flo.EditorContext;
+    let METAMODEL: Map<string, Map<string, Flo.ElementMetadata>>;
+    let component: EditorComponent;
+    let fixture: ComponentFixture<EditorComponent>;
+    let flo: Flo.EditorContext;
 
-  beforeEach(waitForAsync(() => {
-    METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({}),
-        StreamFloModule
-      ],
-      providers: [
-        {provide: MetamodelService, useValue: METAMODEL_SERVICE},
-      ]
+    beforeEach(waitForAsync(() => {
+        METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
+        TestBed.configureTestingModule({
+            imports: [
+                StoreModule.forRoot({}),
+                StreamFloModule
+            ],
+            providers: [
+                {provide: MetamodelService, useValue: METAMODEL_SERVICE},
+            ]
+        });
+    }));
+
+    beforeEach(
+        inject(
+            [
+                ApplicationRef,
+                ComponentFactoryResolver
+            ],
+            (
+                _applicationRef: ApplicationRef,
+                _resolver: ComponentFactoryResolver
+            ) => {
+                applicationRef = _applicationRef;
+                resolver = _resolver;
+            }
+        )
+    );
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(EditorComponent);
+        component = fixture.componentInstance;
+        component.metamodel = METAMODEL_SERVICE;
+        component.renderer = new RenderService(METAMODEL_SERVICE, new NodeHelper(), null, resolver,
+            fixture.debugElement.injector, applicationRef);
+        const subscription = component.floApi.subscribe((f) => {
+            subscription.unsubscribe();
+            flo = f;
+        });
+        const floViewElemnt = $('#flow-view');
+        floViewElemnt.css({
+            'height': '800px'
+        });
+        fixture.detectChanges();
     });
-  }));
 
-  beforeEach(
-    inject(
-      [
-        ApplicationRef,
-        ComponentFactoryResolver
-      ],
-      (
-        _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver
-      ) => {
-        applicationRef = _applicationRef;
-        resolver = _resolver;
-      }
-    )
-  );
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(EditorComponent);
-    component = fixture.componentInstance;
-    component.metamodel = METAMODEL_SERVICE;
-    component.renderer = new RenderService(METAMODEL_SERVICE, new NodeHelper(), null, resolver,
-      fixture.debugElement.injector, applicationRef);
-    const subscription = component.floApi.subscribe((f) => {
-      subscription.unsubscribe();
-      flo = f;
+    it('Verify initialization', () => {
+        expect(Array.from(METAMODEL.keys())).toEqual(['other', 'app', 'source', 'processor', 'sink']);
     });
-    const floViewElemnt = $('#flow-view');
-    floViewElemnt.css({
-      'height': '800px'
+
+    it('Verify stream name label truncation', () => {
+        const node = flo.createNode(METAMODEL.get('source').get('http'));
+        expect(node.attr('.name-label/text')).toEqual('http');
+        node.attr('stream-name', 'SUPER-LOOOOOOOOOONG-STREAM-NAAAAMEEEEE');
+        expect(node.attr('.stream-label/text').endsWith('\u2026')).toBeTruthy();
+        expect(node.attr('.stream-label/text').length < 'SUPER-LOOOOOOOOOONG-STREAM-NAAAAMEEEEE'.length).toBeTruthy();
     });
-    fixture.detectChanges();
-  });
-
-  it('Verify initialization', () => {
-    expect(Array.from(METAMODEL.keys())).toEqual(['other', 'app', 'source', 'processor', 'sink']);
-  });
-
-  it('Verify stream name label truncation', () => {
-    const node = flo.createNode(METAMODEL.get('source').get('http'));
-    expect(node.attr('.name-label/text')).toEqual('http');
-    node.attr('stream-name', 'SUPER-LOOOOOOOOOONG-STREAM-NAAAAMEEEEE');
-    expect(node.attr('.stream-label/text').endsWith('\u2026')).toBeTruthy();
-    expect(node.attr('.stream-label/text').length < 'SUPER-LOOOOOOOOOONG-STREAM-NAAAAMEEEEE'.length).toBeTruthy();
-  });
 
 });

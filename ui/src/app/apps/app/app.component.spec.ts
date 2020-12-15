@@ -20,135 +20,127 @@ import { HttpError } from '../../shared/model/error.model';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
 
 describe('apps/apps.component.ts', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent,
-        UnregisterComponent,
-        VersionComponent,
-        ConfirmComponent,
-        CardComponent,
-        OrderByPipe
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-        ContextServiceMock.provider,
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            params: of({ appName: 'aggregator', appType: 'processor' }),
-          },
-        },
-      ]
-    })
-      .compileComponents();
-  }));
+    let component: AppComponent;
+    let fixture: ComponentFixture<AppComponent>;
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                AppComponent,
+                UnregisterComponent,
+                VersionComponent,
+                ConfirmComponent,
+                CardComponent,
+                OrderByPipe
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                AppServiceMock.provider,
+                NotificationServiceMock.provider,
+                ContextServiceMock.provider,
+                {
+                    provide: ActivatedRoute,
+                    useValue: {
+                        params: of({ appName: 'aggregator', appType: 'processor' }),
+                    },
+                },
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    NotificationServiceMock.mock.clearAll();
-    fixture = TestBed.createComponent(AppComponent);
-    component = fixture.componentInstance;
-  });
-
-  it('should be created', async (done) => {
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-    done();
-  });
-
-  it('should redirect if error versions', async (done) => {
-    spyOn(AppServiceMock.mock, 'getAppVersions').and.callFake(() => {
-      return throwError(new Error('Fake error'));
+    beforeEach(() => {
+        NotificationServiceMock.mock.clearAll();
+        fixture = TestBed.createComponent(AppComponent);
+        component = fixture.componentInstance;
     });
-    const navigate = spyOn((<any>component).router, 'navigateByUrl');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(navigate).toHaveBeenCalledWith('/apps');
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
-  });
 
-  it('should redirect if no application', async (done) => {
-    spyOn(AppServiceMock.mock, 'getAppVersions').and.callFake(() => {
-      return of([]);
+    it('should be created', async (done) => {
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+        done();
     });
-    const navigate = spyOn((<any>component).router, 'navigateByUrl');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(navigate).toHaveBeenCalledWith('/apps');
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('No application found.');
-    done();
-  });
 
-  it('should display the unregister confirmation', async (done) => {
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    fixture.debugElement.query(By.css('#btnUnregister')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const modal = fixture.debugElement.query(By.css('app-unregister'));
-    expect(modal).toBeTruthy();
-    const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Unregister Application');
-    done();
-  });
-
-  it('should display the version modal', async (done) => {
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    fixture.debugElement.query(By.css('#btnVersion')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const modal = fixture.debugElement.query(By.css('app-version'));
-    expect(modal).toBeTruthy();
-    const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Manage versions');
-    done();
-  });
-
-  it('should handle error on application properties call', async (done) => {
-    spyOn(AppServiceMock.mock, 'getApp').and.callFake(() => {
-      return throwError(new Error('Fake error'));
+    it('should redirect if error versions', async (done) => {
+        spyOn(AppServiceMock.mock, 'getAppVersions').and.callFake(() => throwError(new Error('Fake error')));
+        const navigate = spyOn((<any>component).router, 'navigateByUrl');
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(navigate).toHaveBeenCalledWith('/apps');
+        expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+        done();
     });
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
-  });
 
-  it('should handle error on application properties call (404 redirection)', async (done) => {
-    spyOn(AppServiceMock.mock, 'getApp').and.callFake(() => {
-      return throwError(new HttpError('Fake error', 404));
+    it('should redirect if no application', async (done) => {
+        spyOn(AppServiceMock.mock, 'getAppVersions').and.callFake(() => of([]));
+        const navigate = spyOn((<any>component).router, 'navigateByUrl');
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(navigate).toHaveBeenCalledWith('/apps');
+        expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+        expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('No application found.');
+        done();
     });
-    const navigate = spyOn((<any>component).router, 'navigateByUrl');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(navigate).toHaveBeenCalledWith('/apps');
-    done();
-  });
+
+    it('should display the unregister confirmation', async (done) => {
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        fixture.debugElement.query(By.css('#btnUnregister')).nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const modal = fixture.debugElement.query(By.css('app-unregister'));
+        expect(modal).toBeTruthy();
+        const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Confirm Unregister Application');
+        done();
+    });
+
+    it('should display the version modal', async (done) => {
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        fixture.debugElement.query(By.css('#btnVersion')).nativeElement.click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const modal = fixture.debugElement.query(By.css('app-version'));
+        expect(modal).toBeTruthy();
+        const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
+        expect(title.textContent).toContain('Manage versions');
+        done();
+    });
+
+    it('should handle error on application properties call', async (done) => {
+        spyOn(AppServiceMock.mock, 'getApp').and.callFake(() => throwError(new Error('Fake error')));
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+        done();
+    });
+
+    it('should handle error on application properties call (404 redirection)', async (done) => {
+        spyOn(AppServiceMock.mock, 'getApp').and.callFake(() => throwError(new HttpError('Fake error', 404)));
+        const navigate = spyOn((<any>component).router, 'navigateByUrl');
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+        expect(navigate).toHaveBeenCalledWith('/apps');
+        done();
+    });
 
 });
 

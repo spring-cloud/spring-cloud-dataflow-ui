@@ -15,83 +15,83 @@ import PropertiesSource = Properties.PropertiesSource;
  * @author Andy Clement
  */
 @Component({
-  selector: 'app-properties-dialog-content',
-  templateUrl: 'properties-dialog.component.html',
-  styleUrls: ['properties-dialog.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-properties-dialog-content',
+    templateUrl: 'properties-dialog.component.html',
+    styleUrls: ['properties-dialog.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class PropertiesDialogComponent extends ModalDialog implements OnInit {
 
-  app: App;
+    app: App;
 
-  propertiesGroupModel: PropertiesGroupModel;
+    propertiesGroupModel: PropertiesGroupModel;
 
-  propertiesFormGroup: FormGroup;
+    propertiesFormGroup: FormGroup;
 
-  showProperties = false;
+    showProperties = false;
 
-  private _searchFilterText = '';
+    private _searchFilterText = '';
 
-  private _searchFilterTextSubject;
+    private _searchFilterTextSubject;
 
-  propertiesFilter = new SearchTextFilter();
+    propertiesFilter = new SearchTextFilter();
 
-  constructor() {
-    super();
-    this.propertiesFormGroup = new FormGroup({});
-    this._searchFilterTextSubject = new Subject<string>();
-  }
+    constructor() {
+        super();
+        this.propertiesFormGroup = new FormGroup({});
+        this._searchFilterTextSubject = new Subject<string>();
+    }
 
-  handleOk() {
-    this.propertiesGroupModel.applyChanges();
-    this.isOpen = false;
-    this.app = null;
-    this.propertiesGroupModel = null;
-  }
+    handleOk() {
+        this.propertiesGroupModel.applyChanges();
+        this.isOpen = false;
+        this.app = null;
+        this.propertiesGroupModel = null;
+    }
 
-  handleCancel() {
-    this.isOpen = false;
-  }
+    handleCancel() {
+        this.isOpen = false;
+    }
 
-  get okDisabled() {
-    return !this.propertiesGroupModel
+    get okDisabled() {
+        return !this.propertiesGroupModel
       || !this.propertiesFormGroup
       || this.propertiesFormGroup.invalid
       || !this.propertiesFormGroup.dirty;
-  }
-
-  ngOnInit() {
-    this._searchFilterTextSubject
-      .pipe(debounceTime(500))
-      .subscribe(text => this.propertiesFilter.textFilter = text);
-  }
-
-  setData(propertiesSource: PropertiesSource) {
-    this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
-    this.propertiesGroupModel.load();
-    this.propertiesGroupModel.loadedSubject.subscribe();
-  }
-
-  get searchFilterText() {
-    return this._searchFilterText;
-  }
-
-  set searchFilterText(text: string) {
-    this._searchFilterText = text;
-    this._searchFilterTextSubject.next(text);
-  }
-
-  get typeString() {
-    if (this.app) {
-      if (this.app.type) {
-        if (typeof this.app.type === 'string') {
-          return <string> this.app.type;
-        } else if (ApplicationType[this.app.type]) {
-          return ApplicationType[this.app.type].toString();
-        }
-      }
     }
-    return 'UNKNOWN';
-  }
+
+    ngOnInit() {
+        this._searchFilterTextSubject
+            .pipe(debounceTime(500))
+            .subscribe(text => this.propertiesFilter.textFilter = text);
+    }
+
+    setData(propertiesSource: PropertiesSource) {
+        this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
+        this.propertiesGroupModel.load();
+        this.propertiesGroupModel.loadedSubject.subscribe();
+    }
+
+    get searchFilterText() {
+        return this._searchFilterText;
+    }
+
+    set searchFilterText(text: string) {
+        this._searchFilterText = text;
+        this._searchFilterTextSubject.next(text);
+    }
+
+    get typeString() {
+        if (this.app) {
+            if (this.app.type) {
+                if (typeof this.app.type === 'string') {
+                    return <string> this.app.type;
+                } else if (ApplicationType[this.app.type]) {
+                    return ApplicationType[this.app.type].toString();
+                }
+            }
+        }
+        return 'UNKNOWN';
+    }
 
 }

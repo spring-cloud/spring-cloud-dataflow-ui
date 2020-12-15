@@ -7,32 +7,32 @@ import { LoggerService } from '../../../shared/service/logger.service';
 import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
 
 describe('ViewComponent', () => {
-  let component: ViewComponent;
-  let fixture: ComponentFixture<ViewComponent>;
+    let component: ViewComponent;
+    let fixture: ComponentFixture<ViewComponent>;
 
-  const metamodelService = new MetamodelService(new MockSharedAppService(), new LoggerService(), new ToolsServiceMock());
-  const renderService = new RenderService(metamodelService);
+    const metamodelService = new MetamodelService(new MockSharedAppService(), new LoggerService(), new ToolsServiceMock());
+    const renderService = new RenderService(metamodelService);
 
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ViewComponent ],
-      providers: [
-        { provide: MetamodelService, useValue: metamodelService },
-        { provide: RenderService, useValue: renderService }
-      ]
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [ ViewComponent ],
+            providers: [
+                { provide: MetamodelService, useValue: metamodelService },
+                { provide: RenderService, useValue: renderService }
+            ]
 
-    })
-      .compileComponents();
-  }));
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ViewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ViewComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

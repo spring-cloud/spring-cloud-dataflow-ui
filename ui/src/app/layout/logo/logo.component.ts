@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-logo',
-  template: `
+    selector: 'app-logo',
+    template: `
     <svg class="logo" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
       <title>Spring Cloud Dataflow UI</title>
       <rect x="999" y="-9" width="378" height="378"/>

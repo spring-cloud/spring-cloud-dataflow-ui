@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-stream-status',
-  template: `
+    selector: 'app-stream-status',
+    template: `
     <clr-modal [(clrModalOpen)]="isOpen">
       <h3 class="modal-title">Stream status</h3>
       <div class="modal-body">
@@ -36,17 +36,17 @@ import { Component } from '@angular/core';
   `
 })
 export class StatusComponent {
-  isOpen = false;
+    isOpen = false;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  open() {
-    this.isOpen = true;
-  }
+    open() {
+        this.isOpen = true;
+    }
 
-  close() {
-    this.isOpen = false;
-  }
+    close() {
+        this.isOpen = false;
+    }
 
 }

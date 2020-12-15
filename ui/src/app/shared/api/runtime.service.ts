@@ -7,20 +7,20 @@ import { RuntimeStreamPage } from '../model/runtime.model';
 import { ErrorUtils } from '../support/error.utils';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class RuntimeService {
 
-  constructor(private httpClient: HttpClient) { }
+    constructor(private httpClient: HttpClient) { }
 
-  getRuntime(page: number, size: number): Observable<RuntimeStreamPage> {
-    const params = HttpUtils.getPaginationParams(page, size);
-    const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient
-      .get<any>('/runtime/streams', { params, headers })
-      .pipe(
-        map(RuntimeStreamPage.parse),
-        catchError(ErrorUtils.catchError)
-      );
-  }
+    getRuntime(page: number, size: number): Observable<RuntimeStreamPage> {
+        const params = HttpUtils.getPaginationParams(page, size);
+        const headers = HttpUtils.getDefaultHttpHeaders();
+        return this.httpClient
+            .get<any>('/runtime/streams', { params, headers })
+            .pipe(
+                map(RuntimeStreamPage.parse),
+                catchError(ErrorUtils.catchError)
+            );
+    }
 }

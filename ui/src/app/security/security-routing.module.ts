@@ -6,22 +6,22 @@ import { AuthenticationRequiredComponent } from './component/authentication-requ
 
 
 const routes: Routes = [
-  {
-    path: 'feature-disabled',
-    component: FeatureDisabledComponent
-  },
-  {
-    path: 'roles-missing',
-    component: RolesMissingComponent
-  },
-  {
-    path: 'authentication-required',
-    component: AuthenticationRequiredComponent
-  }
+    {
+        path: 'feature-disabled',
+        component: FeatureDisabledComponent
+    },
+    {
+        path: 'roles-missing',
+        component: RolesMissingComponent
+    },
+    {
+        path: 'authentication-required',
+        component: AuthenticationRequiredComponent
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class SecurityRoutingModule { }

@@ -18,46 +18,46 @@ import { ContextServiceMock } from '../../../tests/service/context.service.mock'
 
 describe('tasks-jobs/jobs/execution/execution.component.ts', () => {
 
-  let component: ExecutionComponent;
-  let fixture: ComponentFixture<ExecutionComponent>;
+    let component: ExecutionComponent;
+    let fixture: ComponentFixture<ExecutionComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ExecutionComponent,
-        StopComponent,
-        ConfirmComponent,
-        LogComponent,
-        RoleDirective
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        JobServiceMock.provider,
-        TaskServiceMock.provider,
-        ToolsServiceMock.provider,
-        ContextServiceMock.provider,
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                ExecutionComponent,
+                StopComponent,
+                ConfirmComponent,
+                LogComponent,
+                RoleDirective
+            ],
+            imports: [
+                FormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                JobServiceMock.provider,
+                TaskServiceMock.provider,
+                ToolsServiceMock.provider,
+                ContextServiceMock.provider,
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ExecutionComponent);
-    component = fixture.componentInstance;
-    NotificationServiceMock.mock.clearAll();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ExecutionComponent);
+        component = fixture.componentInstance;
+        NotificationServiceMock.mock.clearAll();
+    });
 
-  it('should be created', () => {
-    fixture.detectChanges();
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        fixture.detectChanges();
+        expect(component).toBeTruthy();
+    });
 
 });

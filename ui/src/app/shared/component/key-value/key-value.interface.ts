@@ -1,7 +1,7 @@
 export interface KeyValueValidators {
 
-  key: Array<Function>;
+    key: Array<Function>;
 
-  value: Array<Function>;
+    value: Array<Function>;
 
 }

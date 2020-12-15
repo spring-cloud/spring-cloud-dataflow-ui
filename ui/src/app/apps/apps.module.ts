@@ -19,28 +19,28 @@ import { WebsiteStartersComponent } from './add/website-starters/website-starter
 
 
 @NgModule({
-  declarations: [
-    AddComponent,
-    AppComponent,
-    AppsComponent,
-    UnregisterComponent,
-    VersionComponent,
-    TypeFilterComponent,
-    PropsComponent,
-    RegisterComponent,
-    UriComponent,
-    WebsiteStartersComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    ClarityModule,
-    SecurityModule,
-    AppsRoutingModule
-  ],
-  providers: []
+    declarations: [
+        AddComponent,
+        AppComponent,
+        AppsComponent,
+        UnregisterComponent,
+        VersionComponent,
+        TypeFilterComponent,
+        PropsComponent,
+        RegisterComponent,
+        UriComponent,
+        WebsiteStartersComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        ClarityModule,
+        SecurityModule,
+        AppsRoutingModule
+    ],
+    providers: []
 })
 export class AppsModule {
 }

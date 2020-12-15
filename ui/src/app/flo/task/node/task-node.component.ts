@@ -13,34 +13,34 @@ import { TaskPropertiesDialogComponent } from '../properties/task-properties-dia
  * @author Andy Clement
  */
 @Component({
-  selector: 'task-flo-node',
-  templateUrl: 'task-node.component.html',
-  styleUrls: ['./task-node.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'task-flo-node',
+    templateUrl: 'task-node.component.html',
+    styleUrls: ['./task-node.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class TaskNodeComponent extends NodeComponent {
 
-  @ViewChild('markerTooltip')
-  markerTooltipElement: ElementRef;
+    @ViewChild('markerTooltip')
+    markerTooltipElement: ElementRef;
 
-  @ViewChild('nodeTooltip')
-  nodeTooltipElement: ElementRef;
+    @ViewChild('nodeTooltip')
+    nodeTooltipElement: ElementRef;
 
-  constructor(docService: DocService,
-              private modalService?: ModalService) {
-    super(docService);
-  }
+    constructor(docService: DocService,
+        private modalService?: ModalService) {
+        super(docService);
+    }
 
-  showOptions() {
-    const element = this.view.model;
-    const modal = this.modalService.show(TaskPropertiesDialogComponent);
-    const app = new App();
-    app.name = element.prop('metadata/name');
-    app.type = ApplicationType.task;
-    modal.app = app;
-    modal.title = `Properties for ${element.prop('metadata/name').toUpperCase()}`;
-    modal.setData(new TaskGraphPropertiesSource(element));
-  }
+    showOptions() {
+        const element = this.view.model;
+        const modal = this.modalService.show(TaskPropertiesDialogComponent);
+        const app = new App();
+        app.name = element.prop('metadata/name');
+        app.type = ApplicationType.task;
+        modal.app = app;
+        modal.title = `Properties for ${element.prop('metadata/name').toUpperCase()}`;
+        modal.setData(new TaskGraphPropertiesSource(element));
+    }
 
 }
 

@@ -3,8 +3,8 @@ import { NotificationService } from '../../../shared/service/notification.servic
 import { ImportExportService } from '../../../shared/service/import-export.service';
 
 @Component({
-  selector: 'app-manage-stream-import',
-  template: `
+    selector: 'app-manage-stream-import',
+    template: `
     <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="view !== 'loading'"
                [clrModalSize]="view === 'result' ? 'lg' : 'md'">
       <h3 class="modal-title">Import stream(s)</h3>
@@ -101,53 +101,53 @@ import { ImportExportService } from '../../../shared/service/import-export.servi
   `
 })
 export class StreamImportComponent {
-  isOpen = false;
-  optimize = false;
-  file: any;
-  view = 'file';
-  result = {
-    success: [],
-    error: [],
-    duration: 0
-  };
+    isOpen = false;
+    optimize = false;
+    file: any;
+    view = 'file';
+    result = {
+        success: [],
+        error: [],
+        duration: 0
+    };
 
-  constructor(private notificationService: NotificationService,
-              private importExportService: ImportExportService) {
-  }
-
-  open() {
-    this.isOpen = true;
-  }
-
-  fileChanged(event) {
-    try {
-      this.file = event.target.files[0];
-    } catch (e) {
-      this.file = null;
+    constructor(private notificationService: NotificationService,
+        private importExportService: ImportExportService) {
     }
-  }
 
-  run() {
-    if (!this.file) {
-      this.notificationService.error('Invalid file', 'Please, select a file.');
-      return;
+    open() {
+        this.isOpen = true;
     }
-    const date = new Date().getTime();
-    this.view = 'importing';
 
-    this.importExportService.streamsImport(this.file, this.optimize)
-      .subscribe((result) => {
-          this.result = {
-            success: result.filter(item => item.created),
-            error: result.filter(item => !item.created),
-            duration: Math.round((new Date().getTime() - date) / 1000)
-          };
-          this.view = 'result';
-        },
-        () => {
-          this.view = 'file';
-          this.notificationService.error('Invalid file', 'The file is not valid.');
-        });
-  }
+    fileChanged(event) {
+        try {
+            this.file = event.target.files[0];
+        } catch (e) {
+            this.file = null;
+        }
+    }
+
+    run() {
+        if (!this.file) {
+            this.notificationService.error('Invalid file', 'Please, select a file.');
+            return;
+        }
+        const date = new Date().getTime();
+        this.view = 'importing';
+
+        this.importExportService.streamsImport(this.file, this.optimize)
+            .subscribe((result) => {
+                this.result = {
+                    success: result.filter(item => item.created),
+                    error: result.filter(item => !item.created),
+                    duration: Math.round((new Date().getTime() - date) / 1000)
+                };
+                this.view = 'result';
+            },
+            () => {
+                this.view = 'file';
+                this.notificationService.error('Invalid file', 'The file is not valid.');
+            });
+    }
 
 }

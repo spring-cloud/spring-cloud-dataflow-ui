@@ -19,161 +19,161 @@ const STREAM_DESCRIPTION = 'Sed ut perspiciatis unde omnis iste natus error sit 
   + 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 @Component({
-  selector: 'app-dev-stream-create',
-  templateUrl: './stream-create.component.html',
-  styleUrls: ['./../dashboard.component.scss']
+    selector: 'app-dev-stream-create',
+    templateUrl: './stream-create.component.html',
+    styleUrls: ['./../dashboard.component.scss']
 })
 export class StreamCreateComponent {
-  isOpen = false;
-  processing = false;
-  @ViewChild('wizard') wizard: ClrWizard;
-  step = 0;
+    isOpen = false;
+    processing = false;
+    @ViewChild('wizard') wizard: ClrWizard;
+    step = 0;
 
-  predefineDsl = '';
+    predefineDsl = '';
 
-  model = {
-    names: {
-      value: 'foo::VAR',
-      min: 10,
-      max: 20
-    },
-    descriptions: {
-      min: 10,
-      max: 50
-    },
-    dsl: {
-      value: 'file | log'
-    },
-    options: {
-      count: 20,
-      delay: 0,
-      deploy: false
-    }
-  };
-
-  constructor(private streamService: StreamService,
-              private notificationService: NotificationService) {
-  }
-
-  open() {
-    this.wizard.reset();
-    this.model = {
-      names: {
-        value: 'foo::VAR',
-        min: 10,
-        max: 20
-      },
-      descriptions: {
-        min: 10,
-        max: 50
-      },
-      dsl: {
-        value: 'file | log'
-      },
-      options: {
-        count: 20,
-        delay: 0,
-        deploy: false
-      }
+    model = {
+        names: {
+            value: 'foo::VAR',
+            min: 10,
+            max: 20
+        },
+        descriptions: {
+            min: 10,
+            max: 50
+        },
+        dsl: {
+            value: 'file | log'
+        },
+        options: {
+            count: 20,
+            delay: 0,
+            deploy: false
+        }
     };
-    this.processing = false;
-    this.isOpen = true;
-  }
 
-  close() {
-    this.isOpen = false;
-  }
-
-  generateStreamName(pattern: string, min: number, max: number) {
-    let random = min;
-    if (min < max) {
-      random = Math.floor(Math.random() * (max - min + 1) + min);
+    constructor(private streamService: StreamService,
+        private notificationService: NotificationService) {
     }
-    const dummy = Array(random).fill(0).map(x => Math.random().toString(36).charAt(2)).join('');
-    return pattern.replace('::VAR', dummy);
-  }
 
-  generateStreamDescription(min: number, max: number) {
-    let random = min;
-    if (min < max) {
-      random = Math.floor(Math.random() * (max - min + 1) + min);
-    }
-    if (random < STREAM_DESCRIPTION.length) {
-      return STREAM_DESCRIPTION.substr(0, random);
-    }
-    return STREAM_DESCRIPTION;
-  }
-
-  submit() {
-    this.step = 0;
-    this.processing = true;
-    const observables = Array.from({ length: this.model.options.count }).map(() => {
-      const name = this.generateStreamName(this.model.names.value, this.model.names.min, this.model.names.max);
-      const description = this.generateStreamDescription(this.model.descriptions.min, this.model.descriptions.max);
-      return this.streamService
-        .createStream(name, this.model.dsl.value, description)
-        .pipe(
-          mergeMap(() => {
-            if (this.model.options.deploy) {
-              return this.streamService.deployStream(name)
-                .pipe(delay(2000));
+    open() {
+        this.wizard.reset();
+        this.model = {
+            names: {
+                value: 'foo::VAR',
+                min: 10,
+                max: 20
+            },
+            descriptions: {
+                min: 10,
+                max: 50
+            },
+            dsl: {
+                value: 'file | log'
+            },
+            options: {
+                count: 20,
+                delay: 0,
+                deploy: false
             }
-            return of(name);
-          }),
-          map((result) => {
-            this.step += 1;
-            return result;
-          })
-        );
-    });
-    this.execute([...observables]);
-  }
-
-  execute(operations: Array<Observable<any>>) {
-    if (!operations || operations.length === 0) {
-      this.notificationService.success('Creation success', 'The streams have been created.');
-      this.isOpen = false;
-      return;
+        };
+        this.processing = false;
+        this.isOpen = true;
     }
-    const operation = operations.shift();
-    operation
-      .pipe(
-        delay(Math.max(this.model.options.delay * 1000, 50))
-      )
-      .subscribe(() => {
-        this.execute(operations);
-      }, () => {
-        // ERROR
-        this.execute(operations);
-      });
-  }
 
-  get progress() {
-    if (this.step > 0) {
-      return Math.round(this.step / this.model.options.count * 100);
+    close() {
+        this.isOpen = false;
     }
-    return 0;
-  }
 
-  loadDsl() {
-    switch (this.predefineDsl) {
-      case '1':
-        this.model.dsl.value = 'log | file';
-        break;
-      case '2':
-        this.model.dsl.value = `time=time: time | log
+    generateStreamName(pattern: string, min: number, max: number) {
+        let random = min;
+        if (min < max) {
+            random = Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        const dummy = Array(random).fill(0).map(x => Math.random().toString(36).charAt(2)).join('');
+        return pattern.replace('::VAR', dummy);
+    }
+
+    generateStreamDescription(min: number, max: number) {
+        let random = min;
+        if (min < max) {
+            random = Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        if (random < STREAM_DESCRIPTION.length) {
+            return STREAM_DESCRIPTION.substr(0, random);
+        }
+        return STREAM_DESCRIPTION;
+    }
+
+    submit() {
+        this.step = 0;
+        this.processing = true;
+        const observables = Array.from({ length: this.model.options.count }).map(() => {
+            const name = this.generateStreamName(this.model.names.value, this.model.names.min, this.model.names.max);
+            const description = this.generateStreamDescription(this.model.descriptions.min, this.model.descriptions.max);
+            return this.streamService
+                .createStream(name, this.model.dsl.value, description)
+                .pipe(
+                    mergeMap(() => {
+                        if (this.model.options.deploy) {
+                            return this.streamService.deployStream(name)
+                                .pipe(delay(2000));
+                        }
+                        return of(name);
+                    }),
+                    map((result) => {
+                        this.step += 1;
+                        return result;
+                    })
+                );
+        });
+        this.execute([...observables]);
+    }
+
+    execute(operations: Array<Observable<any>>) {
+        if (!operations || operations.length === 0) {
+            this.notificationService.success('Creation success', 'The streams have been created.');
+            this.isOpen = false;
+            return;
+        }
+        const operation = operations.shift();
+        operation
+            .pipe(
+                delay(Math.max(this.model.options.delay * 1000, 50))
+            )
+            .subscribe(() => {
+                this.execute(operations);
+            }, () => {
+                // ERROR
+                this.execute(operations);
+            });
+    }
+
+    get progress() {
+        if (this.step > 0) {
+            return Math.round(this.step / this.model.options.count * 100);
+        }
+        return 0;
+    }
+
+    loadDsl() {
+        switch (this.predefineDsl) {
+            case '1':
+                this.model.dsl.value = 'log | file';
+                break;
+            case '2':
+                this.model.dsl.value = `time=time: time | log
 minutes=:time.time > transform --expression=payload.substring(2,4) | log
 seconds=:time.time > transform --expression=payload.substring(4) | log`;
-        break;
-      case '3':
-        this.model.dsl.value = `STREAM-1=time | scriptable-transform --script="return ""#{payload.tr('^A-Za-z0-9', '')}""" --language=ruby | log
+                break;
+            case '3':
+                this.model.dsl.value = `STREAM-1=time | scriptable-transform --script="return ""#{payload.tr('^A-Za-z0-9', '')}""" --language=ruby | log
 :STREAM-1.time > scriptable-transform --script="function double(p) { return p + '--' + p; }\\ndouble(payload);" --language=javascript | log
 :STREAM-1.time > scriptable-transform --script="return payload + '::' + payload" --language=groovy | log`;
-        break;
+                break;
+        }
+        setTimeout(() => {
+            this.predefineDsl = '';
+        });
     }
-    setTimeout(() => {
-      this.predefineDsl = '';
-    });
-  }
 
 }

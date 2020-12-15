@@ -5,8 +5,8 @@ import { TaskPage } from '../../../shared/model/task.model';
 import { TaskService } from '../../../shared/api/task.service';
 
 @Component({
-  selector: 'app-manage-task-export',
-  template: `
+    selector: 'app-manage-task-export',
+    template: `
     <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning" clrModalSize="lg">
       <h3 class="modal-title">Export task(s)</h3>
       <div class="modal-body" *ngIf="!isRunning">
@@ -39,36 +39,36 @@ import { TaskService } from '../../../shared/api/task.service';
   `
 })
 export class TaskExportComponent {
-  isOpen = false;
-  isRunning = false;
-  tasks: TaskPage;
-  selected = [];
+    isOpen = false;
+    isRunning = false;
+    tasks: TaskPage;
+    selected = [];
 
-  constructor(private taskService: TaskService,
-              private notificationService: NotificationService,
-              private importExportService: ImportExportService) {
-  }
-
-  open() {
-    this.isRunning = false;
-    this.isOpen = true;
-    this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC')
-      .subscribe((page: TaskPage) => {
-        this.tasks = page;
-        this.selected = [...page.items];
-      });
-  }
-
-  run() {
-    if (this.selected.length === 0) {
-      this.notificationService.error('No task selected', 'Please, select task(s) to export.');
-    } else {
-      this.isRunning = true;
-      this.importExportService.tasksExport(this.selected)
-        .subscribe(() => {
-          this.notificationService.success('Task(s) export', 'Task(s) has been exported.');
-          this.isOpen = false;
-        });
+    constructor(private taskService: TaskService,
+        private notificationService: NotificationService,
+        private importExportService: ImportExportService) {
     }
-  }
+
+    open() {
+        this.isRunning = false;
+        this.isOpen = true;
+        this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC')
+            .subscribe((page: TaskPage) => {
+                this.tasks = page;
+                this.selected = [...page.items];
+            });
+    }
+
+    run() {
+        if (this.selected.length === 0) {
+            this.notificationService.error('No task selected', 'Please, select task(s) to export.');
+        } else {
+            this.isRunning = true;
+            this.importExportService.tasksExport(this.selected)
+                .subscribe(() => {
+                    this.notificationService.success('Task(s) export', 'Task(s) has been exported.');
+                    this.isOpen = false;
+                });
+        }
+    }
 }

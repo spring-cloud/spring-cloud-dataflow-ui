@@ -28,86 +28,86 @@ import { GET_DEPLOYMENT_INFO } from '../data/stream';
  */
 export class MockStreamsService extends StreamService {
 
-  // public streamsContext = {
-  //   q: '',
-  //   page: 0,
-  //   size: 30,
-  //   sort: 'name',
-  //   order: OrderParams.ASC,
-  //   itemsSelected: [],
-  //   itemsExpanded: []
-  // };
+    // public streamsContext = {
+    //   q: '',
+    //   page: 0,
+    //   size: 30,
+    //   sort: 'name',
+    //   order: OrderParams.ASC,
+    //   itemsSelected: [],
+    //   itemsExpanded: []
+    // };
 
-  public streamDefinitions;
+    public streamDefinitions;
 
-  constructor() {
-    super(null);
-  }
+    constructor() {
+        super(null);
+    }
 
-  getStreams(page: number, size: number, search?: string, sort?: string, order?: string): Observable<StreamPage> {
-    return of(StreamPage.parse(this.streamDefinitions));
-  }
+    getStreams(page: number, size: number, search?: string, sort?: string, order?: string): Observable<StreamPage> {
+        return of(StreamPage.parse(this.streamDefinitions));
+    }
 
-  getStream(name: string): Observable<Stream> {
-    return of(Stream.parse(this.streamDefinitions._embedded.streamDefinitionResourceList[0]));
-  }
+    getStream(name: string): Observable<Stream> {
+        return of(Stream.parse(this.streamDefinitions._embedded.streamDefinitionResourceList[0]));
+    }
 
-  undeployStreams(streams: Stream[]): Observable<HttpResponse<any>[]> {
-    return of(Array.from({ length: streams.length }));
-  }
+    undeployStreams(streams: Stream[]): Observable<HttpResponse<any>[]> {
+        return of(Array.from({ length: streams.length }));
+    }
 
-  destroyStreams(streams: Stream[]): Observable<any[]> {
-    return of(Array.from({ length: streams.length }));
-  }
+    destroyStreams(streams: Stream[]): Observable<any[]> {
+        return of(Array.from({ length: streams.length }));
+    }
 
-  getStreamsRelated(streamName: string, nested?: boolean): Observable<Stream[]> {
-    return of([]);
-  }
+    getStreamsRelated(streamName: string, nested?: boolean): Observable<Stream[]> {
+        return of([]);
+    }
 
-  getPlatforms(): Observable<Platform[]> {
-    return of([
-      Platform.parse({
-        name: 'default', type: 'local', description: '',
-        options: [{ id: 'spring.cloud.deployer.local.opt1', name: 'opt1' }]
-      }),
-      Platform.parse({ name: 'foo', type: 'bar', description: 'foobar' })
-    ]);
-  }
+    getPlatforms(): Observable<Platform[]> {
+        return of([
+            Platform.parse({
+                name: 'default', type: 'local', description: '',
+                options: [{ id: 'spring.cloud.deployer.local.opt1', name: 'opt1' }]
+            }),
+            Platform.parse({ name: 'foo', type: 'bar', description: 'foobar' })
+        ]);
+    }
 
-  getRuntimeStreamStatuses(names?: string[]): Observable<StreamStatus[]> {
-    return of([]);
-  }
+    getRuntimeStreamStatuses(names?: string[]): Observable<StreamStatus[]> {
+        return of([]);
+    }
 
-  getHistory(streamDefinition: string): Observable<StreamHistory[]> {
-    return of([
-      StreamHistory.parse({
-        name: streamDefinition,
-        version: 2,
-        platformName: 'default',
-        info: { firstDeployed: new Date(), status: { statusCode: 'DEPLOYED' }, description: 'Upgrade complete' }
-      }),
-      StreamHistory.parse({
-        name: streamDefinition,
-        version: 1,
-        platformName: 'default',
-        info: { firstDeployed: new Date(), status: { statusCode: 'DELETED' }, description: 'Delete complete' }
-      })
-    ]);
-  }
+    getHistory(streamDefinition: string): Observable<StreamHistory[]> {
+        return of([
+            StreamHistory.parse({
+                name: streamDefinition,
+                version: 2,
+                platformName: 'default',
+                info: { firstDeployed: new Date(), status: { statusCode: 'DEPLOYED' }, description: 'Upgrade complete' }
+            }),
+            StreamHistory.parse({
+                name: streamDefinition,
+                version: 1,
+                platformName: 'default',
+                info: { firstDeployed: new Date(), status: { statusCode: 'DELETED' }, description: 'Delete complete' }
+            })
+        ]);
+    }
 
-  getDeploymentInfo(name: string, reuseDeploymentProperties: boolean = false): Observable<Stream> {
-    return of(GET_DEPLOYMENT_INFO)
-      .pipe(
-        map(Stream.parse)
-      );
-  }
+    getDeploymentInfo(name: string, reuseDeploymentProperties: boolean = false): Observable<Stream> {
+        return of(GET_DEPLOYMENT_INFO)
+            .pipe(
+                map(Stream.parse)
+            );
+    }
 
-  rollbackStream(streamHistory: StreamHistory): Observable<HttpResponse<any>> {
-    return of();
-  }
+    rollbackStream(streamHistory: StreamHistory): Observable<HttpResponse<any>> {
+        return of();
+    }
 
-  getLogs(name: string): Observable<any> {
-    return of([]);
-  }
+    getLogs(name: string): Observable<any> {
+        return of([]);
+    }
 
 }

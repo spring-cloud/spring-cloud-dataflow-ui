@@ -1,4 +1,4 @@
 export interface ContextModel {
-  name: string;
-  value: any;
+    name: string;
+    value: any;
 }

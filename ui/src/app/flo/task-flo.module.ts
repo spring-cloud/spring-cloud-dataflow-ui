@@ -19,35 +19,35 @@ import { SharedFloModule } from './shared-flo.module';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    TaskNodeComponent,
-    TaskPropertiesDialogComponent,
-    ViewComponent,
-    TaskFloCreateComponent,
-  ],
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ClarityModule,
-    FloModule,
-    SharedFloModule,
-    SharedModule
-  ],
-  providers: [
-    DocService,
-    EditorService,
-    MetamodelService,
-    RenderService,
-    ParserService,
-    ContentAssistService,
-    ToolsService
-  ],
-  exports: [
-    ViewComponent,
-    TaskFloCreateComponent
-  ]
+    declarations: [
+        TaskNodeComponent,
+        TaskPropertiesDialogComponent,
+        ViewComponent,
+        TaskFloCreateComponent,
+    ],
+    imports: [
+        CommonModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        FloModule,
+        SharedFloModule,
+        SharedModule
+    ],
+    providers: [
+        DocService,
+        EditorService,
+        MetamodelService,
+        RenderService,
+        ParserService,
+        ContentAssistService,
+        ToolsService
+    ],
+    exports: [
+        ViewComponent,
+        TaskFloCreateComponent
+    ]
 })
 
 export class TaskFloModule {

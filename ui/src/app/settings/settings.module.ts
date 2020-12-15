@@ -10,19 +10,19 @@ import * as fromSettings from './store/settings.reducer';
 import { SettingsEffect } from './store/settings.effect';
 
 @NgModule({
-  declarations: [
-    SettingsComponent
-  ],
-  imports: [
-    CommonModule,
-    ClarityModule,
-    SharedModule,
-    SettingsRoutingModule,
-    StoreModule.forFeature(fromSettings.settingsFeatureKey, fromSettings.reducer),
-    EffectsModule.forFeature([
-      SettingsEffect
-    ])
-  ]
+    declarations: [
+        SettingsComponent
+    ],
+    imports: [
+        CommonModule,
+        ClarityModule,
+        SharedModule,
+        SettingsRoutingModule,
+        StoreModule.forFeature(fromSettings.settingsFeatureKey, fromSettings.reducer),
+        EffectsModule.forFeature([
+            SettingsEffect
+        ])
+    ]
 })
 export class SettingsModule {
 }

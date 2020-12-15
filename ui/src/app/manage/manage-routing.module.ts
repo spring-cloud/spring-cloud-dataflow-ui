@@ -5,33 +5,33 @@ import { RecordsComponent } from './records/records.component';
 import { SecurityGuard } from '../security/support/security.guard';
 
 const routes: Routes = [
-  {
-    path: 'manage',
-    canActivate: [SecurityGuard],
-    data: {
-      authenticate: true,
-      roles: ['ROLE_VIEW']
-    },
-    children: [
-      {
-        path: 'import-export',
-        component: ImportExportComponent,
+    {
+        path: 'manage',
+        canActivate: [SecurityGuard],
         data: {
-          authenticate: true,
-          roles: ['ROLE_CREATE'],
+            authenticate: true,
+            roles: ['ROLE_VIEW']
         },
-      },
-      {
-        path: 'records',
-        component: RecordsComponent,
-      },
-    ]
-  },
+        children: [
+            {
+                path: 'import-export',
+                component: ImportExportComponent,
+                data: {
+                    authenticate: true,
+                    roles: ['ROLE_CREATE'],
+                },
+            },
+            {
+                path: 'records',
+                component: RecordsComponent,
+            },
+        ]
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class ManageRoutingModule {
 }

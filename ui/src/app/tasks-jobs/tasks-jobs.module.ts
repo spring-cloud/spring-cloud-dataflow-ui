@@ -29,37 +29,37 @@ import { CloneComponent } from './tasks/clone/clone.component';
 
 
 @NgModule({
-  declarations: [
-    TasksComponent,
-    JobsComponent,
-    ExecutionsComponent,
-    DestroyComponent,
-    TaskComponent,
-    LaunchComponent,
-    ExecutionComponent,
-    StopComponent,
-    CleanupComponent,
-    JobExecutionComponent,
-    StepComponent,
-    CreateComponent,
-    LogComponent,
-    SchedulesComponent,
-    DestroyScheduleComponent,
-    ScheduleComponent,
-    CreateScheduleComponent,
-    PlatformFilterComponent,
-    CloneComponent
-  ],
-  imports: [
-    CommonModule,
-    ClarityModule,
-    ReactiveFormsModule,
-    SharedModule,
-    TasksJobsRoutingModule,
-    FormsModule,
-    TaskFloModule,
-    SecurityModule
-  ]
+    declarations: [
+        TasksComponent,
+        JobsComponent,
+        ExecutionsComponent,
+        DestroyComponent,
+        TaskComponent,
+        LaunchComponent,
+        ExecutionComponent,
+        StopComponent,
+        CleanupComponent,
+        JobExecutionComponent,
+        StepComponent,
+        CreateComponent,
+        LogComponent,
+        SchedulesComponent,
+        DestroyScheduleComponent,
+        ScheduleComponent,
+        CreateScheduleComponent,
+        PlatformFilterComponent,
+        CloneComponent
+    ],
+    imports: [
+        CommonModule,
+        ClarityModule,
+        ReactiveFormsModule,
+        SharedModule,
+        TasksJobsRoutingModule,
+        FormsModule,
+        TaskFloModule,
+        SecurityModule
+    ]
 })
 export class TasksJobsModule {
 }

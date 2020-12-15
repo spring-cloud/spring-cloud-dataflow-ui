@@ -10,64 +10,64 @@ import { NotificationService } from '../../../shared/service/notification.servic
 import { DestroyComponent } from '../destroy/destroy.component';
 
 @Component({
-  selector: 'app-schedule',
-  templateUrl: './schedule.component.html'
+    selector: 'app-schedule',
+    templateUrl: './schedule.component.html'
 })
 export class ScheduleComponent implements OnInit {
 
-  isLoading = true;
-  schedule: Schedule;
-  task: Task;
-  @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
+    isLoading = true;
+    schedule: Schedule;
+    task: Task;
+    @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private scheduleService: ScheduleService,
-              private notificationService: NotificationService,
-              private taskService: TaskService) {
-  }
+    constructor(private route: ActivatedRoute,
+        private router: Router,
+        private scheduleService: ScheduleService,
+        private notificationService: NotificationService,
+        private taskService: TaskService) {
+    }
 
-  ngOnInit() {
-    this.refresh();
-  }
+    ngOnInit() {
+        this.refresh();
+    }
 
-  refresh() {
-    this.route.params.pipe(
-      mergeMap(
-        (params: Params) => {
-          this.schedule = new Schedule();
-          this.schedule.name = params.id;
-          return this.scheduleService.getSchedule(params.id);
-        },
-      ),
-      map((schedule: Schedule) => {
-        this.schedule = schedule;
-        return schedule;
-      }),
-      mergeMap(
-        (schedule: Schedule) => this.taskService.getTask(schedule.taskName)
-      )
-    ).subscribe((task: Task) => {
-      this.task = task;
-      this.isLoading = false;
-    }, (error) => {
-      this.notificationService.error('An error occurred', error);
-      if (HttpError.is404(error)) {
-        this.back();
-      }
-    });
-  }
+    refresh() {
+        this.route.params.pipe(
+            mergeMap(
+                (params: Params) => {
+                    this.schedule = new Schedule();
+                    this.schedule.name = params.id;
+                    return this.scheduleService.getSchedule(params.id);
+                },
+            ),
+            map((schedule: Schedule) => {
+                this.schedule = schedule;
+                return schedule;
+            }),
+            mergeMap(
+                (schedule: Schedule) => this.taskService.getTask(schedule.taskName)
+            )
+        ).subscribe((task: Task) => {
+            this.task = task;
+            this.isLoading = false;
+        }, (error) => {
+            this.notificationService.error('An error occurred', error);
+            if (HttpError.is404(error)) {
+                this.back();
+            }
+        });
+    }
 
-  destroy() {
-    this.destroyModal.open([this.schedule]);
-  }
+    destroy() {
+        this.destroyModal.open([this.schedule]);
+    }
 
-  detailsTask() {
-    this.router.navigateByUrl(`tasks-jobs/tasks/${this.schedule.taskName}`);
-  }
+    detailsTask() {
+        this.router.navigateByUrl(`tasks-jobs/tasks/${this.schedule.taskName}`);
+    }
 
-  back() {
-    this.router.navigateByUrl(`tasks-jobs/schedules`);
-  }
+    back() {
+        this.router.navigateByUrl('tasks-jobs/schedules');
+    }
 
 }

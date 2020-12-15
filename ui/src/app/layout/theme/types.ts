@@ -1,5 +1,5 @@
 export interface Theme {
-  name: string;
-  properties: any;
-  other: string;
+    name: string;
+    properties: any;
+    other: string;
 }

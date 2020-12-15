@@ -182,7 +182,7 @@ class Tokenizer {
         let data = null;
         if (quoteClosedCount < 2 && this.sameQuotes(start, this.pos - 1)) {
             this.tokens.push({kind: TokenKind.LITERAL_STRING,
-                    data: this.subarray(start, this.pos), start, end: this.pos});
+                data: this.subarray(start, this.pos), start, end: this.pos});
         } else {
             data = this.subarray(start, this.pos);
             this.tokens.push({kind: TokenKind.IDENTIFIER, data, start, end: this.pos});
@@ -271,73 +271,73 @@ class Tokenizer {
                 this.lexIdentifier();
             } else {
                 switch (ch) {
-                case '-':
-                    if (!this.isTwoCharToken(TokenKind.DOUBLE_MINUS)) {
-                        throw {msg: 'TokenizationError: expected two hyphens: \'--\'', start: this.pos, end: this.pos + 1};
-                    }
-                    this.pushPairToken(TokenKind.DOUBLE_MINUS);
-                    this.haveSeenOptionQualifier = true;
-                    break;
-                case '=':
-                    this.justProcessedEquals = true;
-                    this.pushCharToken(TokenKind.EQUALS);
-                    break;
-                case '&':
-                    this.pushCharToken(TokenKind.AND);
-                    break;
-                case '|':
-                    if (this.isTwoCharToken(TokenKind.DOUBLE_PIPE)) {
-                        this.pushPairToken(TokenKind.DOUBLE_PIPE);
-                    } else {
-                        this.pushCharToken(TokenKind.PIPE);
-                    }
-                    break;
-                case ' ':
-                case '\t':
-                case '\r':
-                    this.pos++;
-                    break;
-                case '\n':
-                    this.pushCharToken(TokenKind.NEWLINE);
-                    break;
-                case '.':
-                    this.pushCharToken(TokenKind.DOT);
-                    break;
-                case '>':
-                    this.pushCharToken(TokenKind.GT);
-                    break;
-                case ',':
-                    this.pushCharToken(TokenKind.COMMA);
-                    break;
-                case ':':
-                    this.pushCharToken(TokenKind.COLON);
-                    break;
-                case '/':
-                    this.pushCharToken(TokenKind.SLASH);
-                    break;
-                case '*':
-                    this.pushCharToken(TokenKind.STAR);
-                    break;
-                case '#':
-                    this.pushCharToken(TokenKind.HASH);
-                    break;
-                case ';':
-                    this.pushCharToken(TokenKind.SEMICOLON);
-                    break;
-                case '\'':
-                    this.lexQuotedStringLiteral();
-                    break;
-                case '"':
-                    this.lexDoubleQuotedStringLiteral();
-                    break;
-                case '\0':
+                    case '-':
+                        if (!this.isTwoCharToken(TokenKind.DOUBLE_MINUS)) {
+                            throw {msg: 'TokenizationError: expected two hyphens: \'--\'', start: this.pos, end: this.pos + 1};
+                        }
+                        this.pushPairToken(TokenKind.DOUBLE_MINUS);
+                        this.haveSeenOptionQualifier = true;
+                        break;
+                    case '=':
+                        this.justProcessedEquals = true;
+                        this.pushCharToken(TokenKind.EQUALS);
+                        break;
+                    case '&':
+                        this.pushCharToken(TokenKind.AND);
+                        break;
+                    case '|':
+                        if (this.isTwoCharToken(TokenKind.DOUBLE_PIPE)) {
+                            this.pushPairToken(TokenKind.DOUBLE_PIPE);
+                        } else {
+                            this.pushCharToken(TokenKind.PIPE);
+                        }
+                        break;
+                    case ' ':
+                    case '\t':
+                    case '\r':
+                        this.pos++;
+                        break;
+                    case '\n':
+                        this.pushCharToken(TokenKind.NEWLINE);
+                        break;
+                    case '.':
+                        this.pushCharToken(TokenKind.DOT);
+                        break;
+                    case '>':
+                        this.pushCharToken(TokenKind.GT);
+                        break;
+                    case ',':
+                        this.pushCharToken(TokenKind.COMMA);
+                        break;
+                    case ':':
+                        this.pushCharToken(TokenKind.COLON);
+                        break;
+                    case '/':
+                        this.pushCharToken(TokenKind.SLASH);
+                        break;
+                    case '*':
+                        this.pushCharToken(TokenKind.STAR);
+                        break;
+                    case '#':
+                        this.pushCharToken(TokenKind.HASH);
+                        break;
+                    case ';':
+                        this.pushCharToken(TokenKind.SEMICOLON);
+                        break;
+                    case '\'':
+                        this.lexQuotedStringLiteral();
+                        break;
+                    case '"':
+                        this.lexDoubleQuotedStringLiteral();
+                        break;
+                    case '\0':
                     // hit sentinel at end of char data
-                    this.pos++; // will take us to the end
-                    break;
-                case '\\':
-                    throw {msg: 'TokenizationError: Unexpected escape char', start: this.pos, end: this.pos + 1};
-                default:
-                    throw {msg: 'TokenizationError: Unexpected character', start: this.pos, end: this.pos + 1};
+                        this.pos++; // will take us to the end
+                        break;
+                    case '\\':
+                        throw {msg: 'TokenizationError: Unexpected escape char', start: this.pos, end: this.pos + 1};
+                    default:
+                        throw {msg: 'TokenizationError: Unexpected character', start: this.pos, end: this.pos + 1};
                 }
             }
         }

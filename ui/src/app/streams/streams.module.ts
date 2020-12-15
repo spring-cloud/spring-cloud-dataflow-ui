@@ -24,34 +24,34 @@ import { RollbackComponent } from './streams/rollback/rollback.component';
 import { CloneComponent } from './streams/clone/clone.component';
 
 @NgModule({
-  declarations: [
-    RuntimeComponent,
-    DetailsComponent,
-    StreamsComponent,
-    StreamComponent,
-    DeployComponent,
-    UndeployComponent,
-    DestroyComponent,
-    CreateComponent,
-    FreeTextComponent,
-    BuilderComponent,
-    ErrorsComponent,
-    MultiDeployComponent,
-    StatusComponent,
-    RollbackComponent,
-    CloneComponent
-  ],
-  imports: [
-    CommonModule,
-    ClarityModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    StreamsRoutingModule,
-    SharedFloModule,
-    StreamFloModule,
-    SecurityModule
-  ],
+    declarations: [
+        RuntimeComponent,
+        DetailsComponent,
+        StreamsComponent,
+        StreamComponent,
+        DeployComponent,
+        UndeployComponent,
+        DestroyComponent,
+        CreateComponent,
+        FreeTextComponent,
+        BuilderComponent,
+        ErrorsComponent,
+        MultiDeployComponent,
+        StatusComponent,
+        RollbackComponent,
+        CloneComponent
+    ],
+    imports: [
+        CommonModule,
+        ClarityModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        StreamsRoutingModule,
+        SharedFloModule,
+        StreamFloModule,
+        SecurityModule
+    ],
 })
 export class StreamsModule {
 }

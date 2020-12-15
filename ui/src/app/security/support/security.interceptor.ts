@@ -7,29 +7,29 @@ import { SecurityService } from '../service/security.service';
 @Injectable()
 export class SecurityInterceptor implements HttpInterceptor {
 
-  constructor(
-    private securityService: SecurityService
-  ) {
-  }
+    constructor(
+        private securityService: SecurityService
+    ) {
+    }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = request.clone({
-      setHeaders: {
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    });
-    return next.handle(request).pipe(
-      tap(
-        () => {},
-        (err: any) => {
-          if (err instanceof HttpErrorResponse) {
-            if (err.status !== 401) {
-              return;
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        request = request.clone({
+            setHeaders: {
+                'X-Requested-With': 'XMLHttpRequest'
             }
-            this.securityService.unauthorised();
-          }
-        }
-      )
-    );
-  }
+        });
+        return next.handle(request).pipe(
+            tap(
+                () => {},
+                (err: any) => {
+                    if (err instanceof HttpErrorResponse) {
+                        if (err.status !== 401) {
+                            return;
+                        }
+                        this.securityService.unauthorised();
+                    }
+                }
+            )
+        );
+    }
 }

@@ -22,68 +22,65 @@ import { of } from 'rxjs';
 import { browser } from 'protractor';
 
 describe('streams/streams/create/create.component.ts', () => {
-  let component: CreateComponent;
-  let fixture: ComponentFixture<CreateComponent>;
-  let streamService;
-  const metamodelService = new MetamodelService(AppServiceMock.provider.useValue);
-  streamService = new StreamServiceMock();
-  streamService.getStream = () => {
-    return of(null);
-  };
+    let component: CreateComponent;
+    let fixture: ComponentFixture<CreateComponent>;
+    const metamodelService = new MetamodelService(AppServiceMock.provider.useValue);
+    const streamService = new StreamServiceMock();
+    streamService.getStream = () => of(null);
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        CreateComponent,
-        UpperCasePipe
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-        FloModule
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        { provide: StreamService, useValue: streamService },
-        GrafanaServiceMock.provider,
-        { provide: MetamodelService, useValue: metamodelService },
-        ContentAssistServiceMock.provider,
-        ContextServiceMock.provider,
-        ParserService,
-        SanitizeDsl
-      ]
-    })
-      .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [
+                CreateComponent,
+                UpperCasePipe
+            ],
+            imports: [
+                FormsModule,
+                ReactiveFormsModule,
+                ClarityModule,
+                RouterTestingModule.withRoutes([]),
+                BrowserAnimationsModule,
+                FloModule
+            ],
+            providers: [
+                SecurityServiceMock.provider,
+                AboutServiceMock.provider,
+                NotificationServiceMock.provider,
+                { provide: StreamService, useValue: streamService },
+                GrafanaServiceMock.provider,
+                { provide: MetamodelService, useValue: metamodelService },
+                ContentAssistServiceMock.provider,
+                ContextServiceMock.provider,
+                ParserService,
+                SanitizeDsl
+            ]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CreateComponent);
-    component = fixture.componentInstance;
-    component.flo.dsl = 'file|log';
-    NotificationServiceMock.mock.clearAll();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(CreateComponent);
+        component = fixture.componentInstance;
+        component.flo.dsl = 'file|log';
+        NotificationServiceMock.mock.clearAll();
+    });
 
-  it('should create a stream', async (done) => {
-    await fixture.whenStable();
-    fixture.detectChanges();
-    component.canSubmit = () => true;
-    component.createStream();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    component.form.get('0').setValue('foo');
-    component.form.get('0_desc').setValue('bar');
-    await fixture.whenStable();
-    fixture.detectChanges();
-    component.submit();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(component.operationRunning).toBe('Creation completed');
-    done();
-  });
+    it('should create a stream', async (done) => {
+        await fixture.whenStable();
+        fixture.detectChanges();
+        component.canSubmit = () => true;
+        component.createStream();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        component.form.get('0').setValue('foo');
+        component.form.get('0_desc').setValue('bar');
+        await fixture.whenStable();
+        fixture.detectChanges();
+        component.submit();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        expect(component.operationRunning).toBe('Creation completed');
+        done();
+    });
 
 });

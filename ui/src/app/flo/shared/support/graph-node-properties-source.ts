@@ -9,42 +9,42 @@ import { AppUiProperty } from './app-ui-property';
  */
 export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesSource {
 
-  getProperties(): Promise<Array<AppUiProperty>> {
-    return super.getProperties().then(semanticProperties => {
-      const notationalProperties = this.createNotationalProperties();
-      return semanticProperties ? notationalProperties.concat(semanticProperties as AppUiProperty[]) : notationalProperties;
-    });
-  }
-
-  protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
-    const nameAttr = `props/${metadata.name}`;
-    const idAttr = `props/${metadata.id}`;
-    const valueFromName = this.cell.attr(nameAttr);
-    const valueFromId = this.cell.attr(idAttr);
-    if ((valueFromName === undefined || valueFromName === null) && !(valueFromId === undefined || valueFromId === null)) {
-      return idAttr;
-    } else {
-      return nameAttr;
+    getProperties(): Promise<Array<AppUiProperty>> {
+        return super.getProperties().then(semanticProperties => {
+            const notationalProperties = this.createNotationalProperties();
+            return semanticProperties ? notationalProperties.concat(semanticProperties as AppUiProperty[]) : notationalProperties;
+        });
     }
-  }
 
-  protected createProperty(metadata: Flo.PropertyMetadata): AppUiProperty {
-    return {
-      id: metadata.id,
-      name: metadata.name,
-      type: metadata.type,
-      defaultValue: metadata.defaultValue,
-      attr: this.determineAttributeName(metadata),
-      value: this.cell.attr(this.determineAttributeName(metadata)),
-      description: metadata.description,
-      valueOptions: metadata.options,
-      isSemantic: true,
-      code: metadata.code
-    };
-  }
+    protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
+        const nameAttr = `props/${metadata.name}`;
+        const idAttr = `props/${metadata.id}`;
+        const valueFromName = this.cell.attr(nameAttr);
+        const valueFromId = this.cell.attr(idAttr);
+        if ((valueFromName === undefined || valueFromName === null) && !(valueFromId === undefined || valueFromId === null)) {
+            return idAttr;
+        } else {
+            return nameAttr;
+        }
+    }
 
-  protected createNotationalProperties(): Array<AppUiProperty> {
-    return [];
-  }
+    protected createProperty(metadata: Flo.PropertyMetadata): AppUiProperty {
+        return {
+            id: metadata.id,
+            name: metadata.name,
+            type: metadata.type,
+            defaultValue: metadata.defaultValue,
+            attr: this.determineAttributeName(metadata),
+            value: this.cell.attr(this.determineAttributeName(metadata)),
+            description: metadata.description,
+            valueOptions: metadata.options,
+            isSemantic: true,
+            code: metadata.code
+        };
+    }
+
+    protected createNotationalProperties(): Array<AppUiProperty> {
+        return [];
+    }
 
 }

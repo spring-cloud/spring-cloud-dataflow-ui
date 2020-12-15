@@ -4,8 +4,8 @@ import { TaskService } from '../../../../shared/api/task.service';
 import { TaskExecution } from '../../../../shared/model/task-execution.model';
 
 @Component({
-  selector: 'app-task-execution-log',
-  template: `
+    selector: 'app-task-execution-log',
+    template: `
     <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" clrModalSize="xl">
       <h3 class="modal-title">{{title}}</h3>
       <div class="modal-body" style="padding:0;">
@@ -23,25 +23,25 @@ import { TaskExecution } from '../../../../shared/model/task-execution.model';
     </clr-modal>`
 })
 export class LogComponent {
-  loading = true;
-  isOpen = false;
-  title = '';
-  logs;
+    loading = true;
+    isOpen = false;
+    title = '';
+    logs;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private taskService: TaskService) {
-  }
+    constructor(private route: ActivatedRoute,
+        private router: Router,
+        private taskService: TaskService) {
+    }
 
-  open(title: string, execution: TaskExecution) {
-    this.loading = true;
-    this.isOpen = true;
-    this.title = title;
-    this.logs = null;
-    this.taskService.getExecutionLogs(execution)
-      .subscribe((logs) => {
-        this.logs = logs;
-        this.loading = false;
-      });
-  }
+    open(title: string, execution: TaskExecution) {
+        this.loading = true;
+        this.isOpen = true;
+        this.title = title;
+        this.logs = null;
+        this.taskService.getExecutionLogs(execution)
+            .subscribe((logs) => {
+                this.logs = logs;
+                this.loading = false;
+            });
+    }
 }

@@ -11,28 +11,28 @@ import { ApplicationType } from '../../../shared/model/app.model';
  */
 export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
 
-  protected createNotationalProperties(): Array<AppUiProperty> {
-    const notationalProperties = [];
-    if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
-      notationalProperties.push({
-        id: 'label',
-        name: 'label',
-        defaultValue: this.cell.prop('metadata/name'),
-        attr: 'node-label',
-        value: this.cell.attr('node-label'),
-        description: 'Label of the task',
-        isSemantic: false
-      });
+    protected createNotationalProperties(): Array<AppUiProperty> {
+        const notationalProperties = [];
+        if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
+            notationalProperties.push({
+                id: 'label',
+                name: 'label',
+                defaultValue: this.cell.prop('metadata/name'),
+                attr: 'node-label',
+                value: this.cell.attr('node-label'),
+                description: 'Label of the task',
+                isSemantic: false
+            });
+        }
+        return notationalProperties;
     }
-    return notationalProperties;
-  }
 
-  protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
-    if (this.cell instanceof dia.Link) {
-      // For links properties are always id based
-      return `props/${metadata.id}`;
+    protected determineAttributeName(metadata: Flo.PropertyMetadata): string {
+        if (this.cell instanceof dia.Link) {
+            // For links properties are always id based
+            return `props/${metadata.id}`;
+        }
+        return super.determineAttributeName(metadata);
     }
-    return super.determineAttributeName(metadata);
-  }
 
 }
