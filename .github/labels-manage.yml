@@ -1,3 +1,6 @@
+- name: area/composed-tasks
+  color: F9D0C4
+  description: Belongs to ctr
 - name: area/core
   color: F9D0C4
   description: Belongs to machine core
@@ -7,6 +10,12 @@
 - name: area/documentation
   color: F9D0C4
   description: Belongs to documentation
+- name: area/fan-in-fan-out
+  color: F9D0C4
+  description: Belongs Fan
+- name: area/flow-scdf-integration
+  color: F9D0C4
+  description: Belongs to Flo
 - name: area/security
   color: F9D0C4
   description: Belongs to security
