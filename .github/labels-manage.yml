@@ -13,7 +13,7 @@
 - name: area/fan-in-fan-out
   color: F9D0C4
   description: Belongs Fan
-- name: area/flow-scdf-integration
+- name: area/flo-scdf-integration
   color: F9D0C4
   description: Belongs to Flo
 - name: area/security
