@@ -46,7 +46,8 @@ import { SharedModule } from '../shared/shared.module';
   ],
   exports: [
     ViewComponent,
-    TaskFloCreateComponent
+    TaskFloCreateComponent,
+    TaskPropertiesDialogComponent
   ]
 })
 

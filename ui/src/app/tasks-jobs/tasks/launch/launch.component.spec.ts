@@ -1,6 +1,8 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RoleDirective } from '../../../security/directive/role.directive';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -8,15 +10,61 @@ import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
+import { GrafanaServiceMock } from '../../../tests/service/grafana.service.mock';
 import { GroupServiceMock } from '../../../tests/service/group.service.mock';
-import { ToolsServiceMock } from '../../../tests/service/task-tools.service.mock';
-import { LaunchComponent } from './launch.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
-import { KeyValueComponent } from '../../../shared/component/key-value/key-value.component';
+import { SettingsServiceMock } from '../../../tests/service/settings.service.mock';
+import { LaunchComponent } from './launch.component';
+import { TaskLaunchService } from './task-launch.service';
+import { LoggerService } from '../../../shared/service/logger.service';
+import { AppServiceMock } from '../../../tests/api/app.service.mock';
+import { ParserService } from '../../../flo/shared/service/parser.service';
+import { Task } from '../../../shared/model/task.model';
 
-describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
+
+@Component({
+  selector: 'app-launch-builder',
+  template: `
+    <div>
+    </div>`
+})
+class BuilderMockComponent {
+  @Input() task: Task;
+  @Input() properties: Array<string> = [];
+  @Input() arguments: Array<string> = [];
+  @Output() updateProperties = new EventEmitter();
+  @Output() updateArguments = new EventEmitter();
+  @Output() exportProperties = new EventEmitter();
+  @Output() launch = new EventEmitter<{props: string[], args: string[]}>();
+  @Output() copyProperties = new EventEmitter();
+
+  constructor() {
+  }
+}
+
+@Component({
+  selector: 'app-task-launch-free-text',
+  template: `
+    <div>
+    </div>`
+})
+class FreeTextMockComponent {
+  @Input() task: Task;
+  @Input() properties: Array<string> = [];
+  @Input() arguments: Array<string> = [];
+  @Output() updateProperties = new EventEmitter();
+  @Output() updateArguments = new EventEmitter();
+  @Output() exportProperties = new EventEmitter();
+  @Output() copyProperties = new EventEmitter();
+  @Output() exportArguments = new EventEmitter();
+  @Output() copyArguments = new EventEmitter();
+  @Output() launch = new EventEmitter<{props: string[], args: string[]}>();
+
+  constructor() {
+  }
+}
+
+describe('streams/streams/deploy/deploy.component.ts', () => {
 
   let component: LaunchComponent;
   let fixture: ComponentFixture<LaunchComponent>;
@@ -25,34 +73,39 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
     TestBed.configureTestingModule({
       declarations: [
         LaunchComponent,
-        RoleDirective,
-        KeyValueComponent
+        BuilderMockComponent,
+        FreeTextMockComponent
       ],
       imports: [
         FormsModule,
-        ReactiveFormsModule,
         ClarityModule,
         RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
+        BrowserAnimationsModule
       ],
       providers: [
         SecurityServiceMock.provider,
         AboutServiceMock.provider,
         NotificationServiceMock.provider,
+        AppServiceMock.provider,
         TaskServiceMock.provider,
+        GrafanaServiceMock.provider,
         GroupServiceMock.provider,
-        ToolsServiceMock.provider,
         ContextServiceMock.provider,
+        SettingsServiceMock.provider,
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({name: 'task1'}),
+            params: of({ name: 'foo' }),
           },
         },
+        TaskLaunchService,
+        LoggerService,
+        ParserService
       ]
     })
       .compileComponents();
   }));
+
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchComponent);
@@ -60,21 +113,28 @@ describe('tasks-jobs/tasks/launch/launch.component.ts', () => {
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should be created', () => {
+  it('should be created', async (done) => {
     fixture.detectChanges();
+    await fixture.whenStable();
     expect(component).toBeTruthy();
+    done();
   });
 
-  it('should launch the task', async (done: DoneFn) => {
+  it('should run a launch (success)', async (done) => {
+    const spy = spyOn(TaskServiceMock.mock, 'launch').and.callThrough();
+    const navigate = spyOn((<any>component).router, 'navigate');
     fixture.detectChanges();
     await fixture.whenStable();
-    component.form.get('args').setValue('app.foo=bar');
-    component.form.get('props').setValue('app.bar=foo');
-    fixture.detectChanges();
-    component.launch();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Launch task');
+    expect(component).toBeTruthy();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    component.runLaunch([], []);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(spy).toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith(['/tasks-jobs/tasks']);
     done();
   });
 

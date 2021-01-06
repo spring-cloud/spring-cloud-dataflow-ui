@@ -1,0 +1,451 @@
+<div *ngIf="builder$ | async as builder; else loading">
+  <form class="form-horizontal" novalidate (ngSubmit)="launchTask()">
+    <div>
+      <div class="tab-pane">
+        <div class="builder" [formGroup]="builder.formGroup">
+
+          <!-- col 1 line info -->
+          <div class="col-fixed col-key">
+
+            <!-- 0 Empty header -->
+            <div class="line-head">
+            </div>
+
+            <!-- 1 Platform header -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.platform = !state.platform">
+                <clr-icon shape="angle" [class.active]="state.platform"></clr-icon>
+                Platform
+              </a>
+            </div>
+
+            <!-- 2 Platform selector -->
+            <div class="line-body" *ngIf="state.platform">
+              <div class="status" *ngIf="builder.formGroup.get('platform').invalid">
+              </div>
+              <div class="form-control form-control-label">
+                Platform
+              </div>
+            </div>
+
+            <!-- 3 Generic Deployer Properties header -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.deployer = !state.deployer">
+                <clr-icon shape="angle" [class.active]="state.deployer"></clr-icon>
+                Generic Deployer Properties
+              </a>
+            </div>
+
+            <!-- 4 Generic Deployer Properties options -->
+            <div *ngIf="state.deployer">
+              <div class="line-body" *ngFor="let deployer of builder.taskLaunchConfig.deployers;let i = index">
+
+                <div class="status" *ngIf="builder.deployers.controls[i].invalid">
+                </div>
+
+                <div class="form-control form-control-label">
+                  {{deployer.name}}
+                </div>
+              </div>
+            </div>
+
+            <!-- 5 Deployment Platform -->
+            <div class="line-toggle">
+              <div class="help">
+              </div>
+
+
+              <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
+                <clr-icon shape="angle" [class.active]="state.specificPlatform"></clr-icon>
+                Deployment Platform
+              </a>
+            </div>
+
+            <!-- 6 Deployment Platform options -->
+            <div *ngIf="state.specificPlatform">
+              <div *ngIf="builder.builderDeploymentProperties.global.length > 0"
+                   class="line-body">
+                <div class="form-control form-control-label">
+                  Properties
+                </div>
+              </div>
+            </div>
+            <div *ngIf="state.specificPlatform"
+                 formArrayName="specificPlatform">
+              <div class="line-body" *ngFor="let f of builder.specificPlatformControls.controls;let i = index"
+                   [formGroupName]="i"
+                   [class.has-error]="builder.specificPlatformControls.controls[i].get('property').invalid">
+                <div class="status" *ngIf="builder.specificPlatformControls.controls[i].invalid">
+                </div>
+
+                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input"
+                       formControlName="property" type="text"/>
+              </div>
+            </div>
+
+            <!-- 7 Applications Properties -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.app = !state.app">
+                <clr-icon shape="angle" [class.active]="state.app"></clr-icon>
+                Applications Properties
+              </a>
+            </div>
+
+            <!-- 8 Applications Properties options -->
+            <div *ngIf="state.app">
+              <div class="line-body">
+
+                <div class="status" *ngIf="builder.formGroup.get('appsVersion').invalid">
+                </div>
+
+                <div class="form-control form-control-label">
+                  Version
+                </div>
+              </div>
+              <div class="line-body">
+                <div class="form-control form-control-label">
+                  Properties
+                </div>
+              </div>
+              <div formArrayName="global">
+                <div class="line-body" *ngFor="let f of builder.globalControls.controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="builder.globalControls.controls[i].get('property').invalid">
+
+                  <div class="status" *ngIf="builder.globalControls.controls[i].invalid">
+                  </div>
+
+                  <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                         formControlName="property" type="text"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- 9 Ctr Properties -->
+            <div class="line-toggle" *ngIf="task.composed && builder.ctrProperties.length > 0">
+              <a class="toggle" (click)="state.ctr = !state.ctr">
+                <clr-icon shape="angle" [class.active]="state.ctr"></clr-icon>
+                Ctr Properties
+              </a>
+            </div>
+
+            <!-- 10 Ctr Properties options -->
+            <div class="line-body" *ngIf="state.ctr && task.composed && builder.ctrProperties.length > 0">
+              <div class="form-control form-control-label">
+                Properties
+              </div>
+            </div>
+
+            <!-- 11 Ctr Arguments -->
+            <div class="line-toggle">
+              <a class="toggle" (click)="state.arguments = !state.arguments">
+                <clr-icon shape="angle" [class.active]="state.arguments"></clr-icon>
+                Arguments
+              </a>
+            </div>
+
+            <!-- 12 Arguments options -->
+            <div *ngIf="state.arguments">
+              <div class="line-body">
+              </div>
+            </div>
+          </div>
+
+          <!-- col 2 global -->
+          <div class="col-fixed global" *ngIf="task.composed">
+
+            <!-- 0 Global header -->
+            <div class="line-head">
+              Global
+            </div>
+
+            <!-- 1 Platform header -->
+            <div class="line-toggle"></div>
+
+            <!-- 2 Platform selector -->
+            <div class="line-body" *ngIf="state.platform"
+              [class.has-error]="isErrorPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)">
+              <clr-select-container style="margin-top:0;">
+                <select tabindex="1" formControlName="platform" clrSelect>
+                  <option value="">Select a value</option>
+                  <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
+                    {{platform.name}}
+                    ({{platform.type}})
+                  </option>
+                  <option
+                    *ngIf="isInvalidPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)"
+                    [value]="builder.formGroup.get('platform').value">
+                    {{builder.formGroup.get('platform').value}} (invalid)
+                  </option>
+                </select>
+              </clr-select-container>
+            </div>
+
+            <!-- 3 Generic Deployer Properties header -->
+            <div class="line-toggle"></div>
+
+            <!-- 4 Generic Deployer Properties options -->
+            <div formArrayName="deployers" *ngIf="state.deployer">
+              <div [formGroupName]="i" class="line-body"
+                   *ngFor="let deployer of builder.taskLaunchConfig.deployers; let i = index"
+                   [class.has-error]="builder.deployers.controls[i].get('global').invalid">
+
+                <input tabindex="{{2 + i}}" placeholder="Enter a number" formControlName="global" class="clr-input"
+                       [class.form-control-number]="deployer.suffix" type="text"/>
+                <span class="placeholder-unit">{{deployer.suffix}}</span>
+              </div>
+            </div>
+
+            <!-- 5 Deployment Platform -->
+            <div class="line-toggle"></div>
+
+            <div class="line-body"
+                 *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0">
+              <div class="form-control form-control-label">
+                <strong>{{getDeploymentProperties(builder.builderDeploymentProperties).length}}</strong>
+                <span> /</span> {{builder.builderDeploymentProperties.global.length}} properties
+                <button tabindex="{{101}}" type="button" (click)="openDeploymentProperties(builder)"
+                        class="btn btn-sm btn-secondary">
+                  Edit
+                </button>
+              </div>
+            </div>
+
+            <!-- 6 Deployment Platform options -->
+            <div *ngIf="state.specificPlatform"
+                 formArrayName="specificPlatform">
+              <div class="line-body" *ngFor="let f of builder.specificPlatformControls.controls;let i = index"
+                   [formGroupName]="i"
+                   [class.has-error]="builder.specificPlatformControls.controls[i].get('global').invalid">
+                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input" formControlName="global"
+                       type="text"/>
+              </div>
+            </div>
+
+            <!-- 7 Applications Properties -->
+            <div class="line-toggle"></div>
+
+            <!-- 8 Applications Properties options -->
+            <div *ngIf="state.app">
+              <div class="line-body"></div>
+              <div class="line-body"></div>
+              <div formArrayName="global">
+                <div class="line-body" *ngFor="let f of builder.globalControls.controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="builder.globalControls.controls[i].get('global').invalid">
+                  <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                         formControlName="global" type="text"/>
+                </div>
+              </div>
+            </div>
+
+            <!-- 9 Ctr Properties -->
+            <div class="line-toggle" *ngIf="task.composed && builder.ctrProperties.length > 0"></div>
+
+            <!-- 10 Ctr Properties options -->
+            <div class="line-body"
+                 *ngIf="state.ctr && task.composed && builder.ctrProperties.length > 0">
+              <div class="form-control form-control-label">
+                <strong>{{getCtrProperties(builder.ctrProperties).length}}</strong>
+                <span> /</span> {{builder.ctrProperties.length}} properties
+                <button tabindex="{{101}}" type="button" (click)="openCtrProperties(builder)"
+                        class="btn btn-sm btn-secondary">
+                  Edit
+                </button>
+              </div>
+            </div>
+
+            <!-- 11 Ctr Arguments -->
+            <div class="line-toggle"></div>
+
+            <!-- 12 Arguments options -->
+            <div *ngIf="state.arguments" formArrayName="argumentsControls">
+              <div class="line-body" *ngFor="let f of builder.argumentsControls.controls;let i = index"
+                   [formGroupName]="i"
+                   [class.has-error]="builder.argumentsControls.controls[i].get('global').invalid">
+                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input" formControlName="global"
+                       type="text"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- col 3+-->
+          <div class="scroll">
+
+            <div class="col" *ngFor="let app of builder.taskLaunchConfig.apps">
+
+              <!-- 0 Apps header -->
+              <div class="line-head">
+                <strong>{{app.name}}</strong>
+                <br/>
+                <span class="label label-app {{app.type}}">{{app.origin}}</span>
+              </div>
+
+              <!-- 1 Platform header -->
+              <div class="line-toggle"></div>
+
+              <!-- 2 Platform selector-->
+              <div class="line-body" *ngIf="state.platform && task.composed"></div>
+              <div class="line-body" *ngIf="state.platform && !task.composed"
+              [class.has-error]="isErrorPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)">
+              <clr-select-container style="margin-top:0;">
+                <select tabindex="1" formControlName="platform" clrSelect>
+                  <option value="">Select a value</option>
+                  <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
+                    {{platform.name}}
+                    ({{platform.type}})
+                  </option>
+                  <option
+                    *ngIf="isInvalidPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)"
+                    [value]="builder.formGroup.get('platform').value">
+                    {{builder.formGroup.get('platform').value}} (invalid)
+                  </option>
+                </select>
+              </clr-select-container>
+            </div>
+
+              <!-- 3 Generic Deployer Properties header -->
+              <div class="line-toggle"></div>
+
+              <!-- 4 Generic Deployer Properties options -->
+              <div formArrayName="deployers" *ngIf="state.deployer">
+                <div [formGroupName]="i" class="line-body"
+                     *ngFor="let deployer of builder.taskLaunchConfig.deployers; let i = index"
+                     [class.has-error]="builder.deployers.controls[i].get(app.name).invalid">
+                  <input tabindex="{{2 + i}}" placeholder="Enter a number" [formControlName]="app.name"
+                         class="clr-input"
+                         [class.form-control-number]="deployer.suffix" type="text"/>
+                  <span class="placeholder-unit">{{deployer.suffix}}</span>
+                </div>
+              </div>
+
+              <!-- 5 Deployment Platform -->
+              <div class="line-toggle"></div>
+
+              <!-- 6 Deployment Platform options -->
+              <!-- track visibility from global as those are same as per apps -->
+              <div class="line-body"
+                   *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0">
+                <div class="form-control form-control-label">
+                  <strong>{{getDeploymentProperties(builder.builderDeploymentProperties, app.name).length}}</strong>
+                  <span> /</span> {{builder.builderDeploymentProperties.apps[app.name].length}} properties
+                  <button tabindex="{{101}}" type="button" (click)="openDeploymentProperties(builder, app.name)"
+                          class="btn btn-sm btn-secondary">
+                    Edit
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="state.specificPlatform"
+                   formArrayName="specificPlatform">
+                <div class="line-body"
+                     *ngFor="let f of builder.specificPlatformControls.controls;let i = index"
+                     [formGroupName]="i"
+                     [class.has-error]="builder.specificPlatformControls.controls[i].get(app.name).invalid">
+                  <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input"
+                         [formControlName]="app.name" type="text"/>
+                </div>
+              </div>
+
+              <!-- 7 Applications Properties -->
+              <div class="line-toggle"></div>
+
+              <!-- 8 Applications Properties options -->
+              <div *ngIf="state.app">
+                <div class="line-body" [class.has-error]="app.optionsState.isInvalid">
+                  <div formGroupName="appsVersion">
+                    <div class="cell">
+                      <clr-select-container style="margin-top:0;">
+                        <select tabindex="{{100}}" [formControlName]="app.name" clrSelect>
+                          <option value="">Default version ({{app.version}})</option>
+                          <option *ngFor="let version of app.versions" [value]="version.version">
+                            {{version.version}}
+                          </option>
+                          <option *ngIf="app.optionsState.isInvalid"
+                                  [value]="builder.formGroup.get('appsVersion').get(app.name).value">
+                            {{builder.formGroup.get('appsVersion').get(app.name).value}} (invalid)
+                          </option>
+                        </select>
+                      </clr-select-container>
+                    </div>
+                  </div>
+                </div>
+                <div class="line-body" [class.has-error]="app.optionsState.isInvalid">
+                  <div
+                    *ngIf="app.options && !app.optionsState.isLoading && !app.optionsState.isOnError && !app.optionsState.isInvalid"
+                    class="form-control form-control-label">
+                    <div *ngIf="app.options.length > 0">
+                      <strong>{{getAppProperties(builder.builderAppsProperties, app.name).length}}</strong>
+                      <span> /</span> {{app.options.length}} properties
+                      <button tabindex="{{101}}" type="button" (click)="openApp(builder, app)"
+                              class="btn btn-sm btn-secondary">
+                        Edit
+                      </button>
+                    </div>
+                    <div *ngIf="app.options.length == 0">
+                      <strong>No properties</strong>
+                    </div>
+                  </div>
+                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">
+                    Loading ...
+                  </div>
+                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">
+                    Error loading
+                  </div>
+                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label">
+                    Invalid version
+                  </div>
+                </div>
+                <div formArrayName="global">
+                  <div class="line-body" *ngFor="let f of builder.globalControls.controls;let i = index"
+                       [formGroupName]="i"
+                       [class.has-error]="builder.globalControls.controls[i].get(app.name).invalid">
+                    <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                           [formControlName]="app.name" type="text"/>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 9 Ctr Properties -->
+              <div class="line-toggle" *ngIf="task.composed && builder.ctrProperties.length > 0"></div>
+
+              <!-- 10 Ctr Properties options -->
+              <div class="line-body" *ngIf="state.ctr && task.composed && builder.ctrProperties.length > 0"></div>
+
+              <!-- 11 Ctr Arguments -->
+              <div class="line-toggle"></div>
+
+              <!-- 12 Arguments options -->
+              <div *ngIf="state.arguments">
+                <div formArrayName="argumentsControls">
+                  <div class="line-body" *ngFor="let f of builder.argumentsControls.controls;let i = index"
+                       [formGroupName]="i"
+                       [class.has-error]="builder.argumentsControls.controls[i].get(app.name).invalid">
+                    <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                           [formControlName]="app.name" type="text"/>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div>
+          <a tabindex="200" id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">Cancel</a>
+          <button tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary">
+            <span>Launch task</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-properties-dialog-content #appPropertiesModal></app-properties-dialog-content>
+<app-properties-groups-dialog-content #groupsPropertiesModal></app-properties-groups-dialog-content>
+<app-task-properties-dialog-content #ctrPropertiesModal></app-task-properties-dialog-content>
+
+<ng-template #loading>
+  <!--  <app-loader></app-loader>-->
+</ng-template>

@@ -1,0 +1,79 @@
+<form [formGroup]="formGroup" (submit)="launchTask()">
+
+  <p>Enter the list of properties into the text area field below.</p>
+  <div class="form-textarea">
+    <div class="numbers">
+      <ng-template ngFor let-item [ngForOf]="plines">
+        <div class="number">
+          <span [class.invalid]="!item.valid">{{item.label}}</span>
+        </div>
+      </ng-template>
+    </div>
+    <textarea dataflowAutoResize [dataflowFocus]="true" formControlName="pinput"></textarea>
+  </div>
+  <div class="bar">
+    <div class="btn-group">
+      <clr-tooltip>
+        <button clrTooltipTrigger type="button" class="btn btn-sm btn-file btn btn-secondary"
+                (click)="propertiesFile.click()" style="border-right: 0;">
+          <input formControlName="pfile" id="propertiesFile" name="propertiesFile" type="file" #propertiesFile
+                 (change)="propertiesFileChange($event)"/>
+          Import a local file
+        </button>
+        <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
+          <span>Please provide a text file containing properties. This will be used to populate the text area above.</span>
+        </clr-tooltip-content>
+      </clr-tooltip>
+
+      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">
+        Export
+      </button>
+      <button id="btn-copy" type="button" class="btn btn-sm btn btn-secondary"
+              (click)="copyPropsToClipboard()">
+        Copy to Clipboard
+      </button>
+    </div>
+  </div>
+
+  <p>Enter the list of arguments into the text area field below.</p>
+  <div class="form-textarea">
+    <div class="numbers">
+      <ng-template ngFor let-item [ngForOf]="alines">
+        <div class="number">
+          <span [class.invalid]="!item.valid">{{item.label}}</span>
+        </div>
+      </ng-template>
+    </div>
+    <textarea dataflowAutoResize [dataflowFocus]="true" formControlName="ainput"></textarea>
+  </div>
+  <div class="bar">
+    <div class="btn-group">
+      <clr-tooltip>
+        <button clrTooltipTrigger type="button" class="btn btn-sm btn-file btn btn-secondary"
+                (click)="argumentsFile.click()" style="border-right: 0;">
+          <input formControlName="afile" id="argumentsFile" name="argumentsFile" type="file" #argumentsFile
+                 (change)="argumentsFileChange($event)"/>
+          Import a local file
+        </button>
+        <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
+          <span>Please provide a text file containing arguments. This will be used to populate the text area above.</span>
+        </clr-tooltip-content>
+      </clr-tooltip>
+
+      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">
+        Export
+      </button>
+      <button id="btn-copy" type="button" class="btn btn-sm btn btn-secondary"
+              (click)="copyArgsToClipboard()">
+        Copy to Clipboard
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <a id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">Cancel</a>
+    <button id="btn-deploy" type="submit" class="btn btn-primary">
+      <span>Launch the task</span>
+    </button>
+  </div>
+</form>
