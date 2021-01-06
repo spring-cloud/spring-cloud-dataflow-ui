@@ -264,3 +264,40 @@ export const GET_EXECUTION = {
   '_links': { 'self': { 'href': 'http://localhost:4200/tasks/executions/1' } }
 };
 
+export const SIMPLE_TASK_DEFAULT = {
+  'composed': false,
+  'composedTaskElement': false,
+  'description': 'simpledescription',
+  'dslText': 'timestamp',
+  'lastTaskExecution': null,
+ ' name': 'simpletask',
+  'status': 'UNKNOWN'
+};
+
+
+export const COMPOSED_TASK_DEFAULT = {
+  'composed': true,
+  'composedTaskElement': false,
+  'description': 'composeddescription',
+  'dslText': 't1:timestamp && t2:timestamp',
+  'lastTaskExecution': null,
+ ' name': 'composedtask',
+  'status': 'UNKNOWN'
+};
+
+export const CTR_OPTIONS = [{
+  'id': 'oauth2-client-credentials-scopes',
+  'name': 'oauth2-client-credentials-scopes',
+  'type': 'java.util.Set<java.lang.String>',
+  'description': 'OAuth2 Authorization scopes (Used for the client credentials grant).',
+  'shortDescription': 'OAuth2 Authorization scopes (Used for the client credentials grant).',
+  'defaultValue': null,
+  'hints': {
+    'keyHints': [],
+    'keyProviders': [],
+    'valueHints': [],
+    'valueProviders': []
+  },
+  'deprecation': null,
+  'deprecated': false
+}];

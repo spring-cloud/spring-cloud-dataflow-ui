@@ -42,6 +42,38 @@ export class ConfigurationMetadataProperty {
   }
 }
 
+/**
+ * Extension to ConfigurationMetadataProperty adding value field which
+ * makes in easier to use metadata as domain and data object as i.e.
+ * dialogs and structures need to track what user set.
+ */
+export class ValuedConfigurationMetadataProperty extends ConfigurationMetadataProperty {
+
+  value: string;
+
+  static parse(input) {
+    return ConfigurationMetadataProperty.parse(input) as ValuedConfigurationMetadataProperty;
+  }
+}
+
+export class ConfigurationMetadataPropertyList {
+  static parse(input): Array<ConfigurationMetadataProperty> {
+    if (input) {
+      return input.map(ConfigurationMetadataProperty.parse);
+    }
+    return [];
+  }
+}
+
+export class ValuedConfigurationMetadataPropertyList {
+  static parse(input): Array<ValuedConfigurationMetadataProperty> {
+    if (input) {
+      return input.map(ValuedConfigurationMetadataProperty.parse);
+    }
+    return [];
+  }
+}
+
 export class DetailedApp extends App {
   options: ConfigurationMetadataProperty[];
 

@@ -1,73 +1,52 @@
-<h1 class="page-title">
-  <span class="text-truncate">
-    Launch task <strong *ngIf="task">{{task.name}}</strong>
-  </span>
-</h1>
-
 <div *ngIf="!loading">
-  <form clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4" (submit)="launch()">
+  <h1 class="page-title">
+    <span class="text-truncate">
+      Launch task <strong *ngIf="task">{{task.name}}</strong>
+    </span>
+  </h1>
+  <p style="margin-top: .6rem;margin-bottom: .6rem">
+    Please specify any optional deployment properties. You can either use the builder.
+    <br/>
+    Alternatively, you can point to an external properties file containing the deployment properties. For more
+    information please see the Technical Documentation.
+  </p>
 
-    <clr-select-container *ngIf="platforms.length > 1">
-      <label class="clr-col-md-1">
-        Platform
-      </label>
-      <select clrSelect tabindex="1" formControlName="platform"
-              [dataflowFocus]="true">
-        <option *ngFor="let platform of platforms" [value]="platform.name">
-          {{platform.name}}
-          ({{platform.type}})
-        </option>
-      </select>
-      <clr-control-error>
-        Select a platform.
-      </clr-control-error>
-    </clr-select-container>
 
-    <clr-control-container class="key-value-wrapper">
-      <label class="clr-col-md-1">Arguments</label>
-      <app-key-value clrControl formControlName="args"
-                     [kvFocus]="platforms.length < 2"></app-key-value>
-      <clr-control-helper>
-        Arguments can be prefixed by <code>--</code> (optional). Example:<br/>
-        <pre><code>--myarg1=value1
---myarg2=value2</code></pre>
-      </clr-control-helper>
-      <clr-control-error>
-        One or more arguments are invalid.<br/>Example: <code>myarg=myvalue</code>.
-      </clr-control-error>
-    </clr-control-container>
-    <clr-control-container class="key-value-wrapper">
-      <label class="clr-col-md-1">Properties</label>
-      <app-key-value clrControl formControlName="props"></app-key-value>
-      <clr-control-helper>
-        Parameters should start with an <code>app.</code> or <code>deployer.</code>. Example:<br/>
-        <pre><code>app.myparam=value1
-deployer.myparam2=value2</code></pre>
-      </clr-control-helper>
-      <clr-control-error>
-        One or more parameters are invalid.<br/>Example: <code>app.myarg=myvalue</code>.
-      </clr-control-error>
-    </clr-control-container>
-    <clr-control-container>
-      <label class="clr-col-md-1"></label>
-      <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-      <button class="btn btn-primary" type="submit">Launch the task</button>
-    </clr-control-container>
-  </form>
+  <clr-tabs *ngIf="!loading && task">
+    <clr-tab>
+      <button clrTabLink id="link1">Builder</button>
+      <clr-tab-content id="content1" *clrIfActive="true">
+        <app-task-launch-builder [task]="task"
+                                  [properties]="properties"
+                                  [arguments]="arguments"
+                                  (exportProperties)="runPropertiesExport($event)"
+                                  (copyProperties)="runPropertiesCopy($event)"
+                                  (updateProperties)="updateProperties($event)"
+                                  (updateArguments)="updateArguments($event)"
+                                  (launch)="runLaunch($event.props, $event.args)">
+        </app-task-launch-builder>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Freetext</button>
+      <clr-tab-content *clrIfActive>
+        <app-task-launch-free-text [task]="task"
+                                    [properties]="properties"
+                                    [arguments]="arguments"
+                                    (exportProperties)="runPropertiesExport($event)"
+                                    (exportArguments)="runArgumentsExport($event)"
+                                    (copyProperties)="runPropertiesCopy($event)"
+                                    (copyArguments)="runArgumentsCopy($event)"
+                                    (updateProperties)="updateProperties($event)"
+                                    (updateArguments)="updateArguments($event)"
+                                    (launch)="runLaunch($event.props, $event.args)">
+        </app-task-launch-free-text>
+      </clr-tab-content>
+    </clr-tab>
+  </clr-tabs>
 </div>
 
-<div *ngIf="loading" style="padding:1rem 0;">
+<div *ngIf="loading">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading launch task...
+  Loading data ...
 </div>
-
-<clr-modal [(clrModalOpen)]="submitting" *ngIf="task" [clrModalClosable]="false">
-  <h3 class="modal-title">Launch task</h3>
-  <div class="modal-body">
-    <clr-spinner clrInline clrSmall></clr-spinner>
-    Launching task...
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
-  </div>
-</clr-modal>

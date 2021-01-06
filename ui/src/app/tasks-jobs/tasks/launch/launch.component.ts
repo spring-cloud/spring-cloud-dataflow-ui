@@ -1,34 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { Task } from '../../../shared/model/task.model';
-import { TaskService } from '../../../shared/api/task.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { KeyValueValidator } from '../../../shared/component/key-value/key-value.validator';
-import { TaskPropValidator } from '../task-prop.validator';
-import { Platform } from '../../../shared/model/platform.model';
+import { DateTime } from 'luxon';
+import { saveAs } from 'file-saver';
+import { Task } from '../../../shared/model/task.model';
 import { NotificationService } from '../../../shared/service/notification.service';
 import { HttpError } from '../../../shared/model/error.model';
+import { LoggerService } from '../../../shared/service/logger.service';
+import { ClipboardCopyService } from '../../../shared/service/clipboard-copy.service';
+import { TaskService } from '../../../shared/api/task.service';
+import { TaskLaunchService } from './task-launch.service';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
+  providers: [
+    TaskLaunchService
+  ],
   styles: []
 })
-export class LaunchComponent implements OnInit {
-  loading = true;
-  submitting = false;
-  task: Task;
-  form: FormGroup;
-  platforms: Platform[];
+export class LaunchComponent implements OnInit, OnDestroy {
 
-  constructor(private taskService: TaskService,
-              private router: Router,
-              private notificationService: NotificationService,
-              private route: ActivatedRoute) {
+  task: Task;
+  loading = true;
+  isLaunching = false;
+  state: any = { view: 'builder' };
+  ngUnsubscribe$: Subject<any> = new Subject();
+  properties: Array<string> = [];
+  arguments: Array<string> = [];
+  ignoreProperties: Array<string> = [];
+
+  constructor(
+    private route: ActivatedRoute,
+    private notificationService: NotificationService,
+    private loggerService: LoggerService,
+    private taskService: TaskService,
+    private router: Router,
+    private clipboardCopyService: ClipboardCopyService) {
   }
 
-  ngOnInit(): void {
+  /**
+   * Initialize compoment
+   * Subscribe to route params and load a config for a task
+   */
+  ngOnInit() {
     this.route.params
       .pipe(
         mergeMap(
@@ -66,65 +82,118 @@ export class LaunchComponent implements OnInit {
       )
       .subscribe(({ task, parameters, platforms }) => {
         this.task = task;
-        this.platforms = platforms;
-        this.form = new FormGroup({
-          args: new FormControl('', KeyValueValidator.validateKeyValue({
-            key: [Validators.required],
-            value: []
-          })),
-          props: new FormControl(parameters, KeyValueValidator.validateKeyValue({
-            key: [Validators.required, TaskPropValidator.key],
-            value: []
-          })),
-          platform: new FormControl('', platforms.length > 0 ? Validators.required : null)
-        });
-        this.form.get('platform').setValue(platforms[0].name);
         this.loading = false;
       }, (error) => {
         this.notificationService.error('An error occurred', error);
         if (HttpError.is404(error)) {
-          this.back();
+          this.router.navigate(['/tasks-jobs/tasks']);
         }
       });
   }
 
-  prepareParams(name: string, args: Array<string>, props: Array<string>, platform: string): any {
-    if (platform && platform !== 'default') {
-      props.push(`spring.cloud.dataflow.task.platformName=${platform}`);
+  /**
+   * On Destroy operations
+   */
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
+  /**
+   * Update the properties
+   */
+  updateProperties(value: Array<string>) {
+    this.properties = value.sort();
+  }
+
+  updateArguments(value: Array<string>) {
+    this.arguments = value.sort();
+  }
+
+  /**
+   * Run export file
+   * Update the properties
+   * @param value Array of properties
+   */
+  runPropertiesExport(value: Array<string>) {
+    this.updateProperties(value);
+    if (this.properties.length === 0) {
+      this.notificationService.error('An error occured', 'There are no properties to export.');
+    } else {
+      const propertiesText = this.properties.join('\n');
+      const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
+      const filename = `${this.task.name}_${date}.txt`;
+      const blob = new Blob([propertiesText], { type: 'text/plain' });
+      saveAs(blob, filename);
     }
+  }
+
+  runArgumentsExport(value: Array<string>) {
+    this.updateArguments(value);
+    if (this.arguments.length === 0) {
+      this.notificationService.error('An error occured', 'There are no arguments to export.');
+    } else {
+      const argumentsText = this.arguments.join('\n');
+      const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
+      const filename = `${this.task.name}_${date}.txt`;
+      const blob = new Blob([argumentsText], { type: 'text/plain' });
+      saveAs(blob, filename);
+    }
+  }
+
+  /**
+   * Run copy to clipboard
+   * Update the properties
+   * @param value Array of properties
+   */
+  runPropertiesCopy(value: Array<string>) {
+    this.updateProperties(value);
+    if (this.properties.length === 0) {
+      this.notificationService.error('An error occured', 'There are no properties to copy.');
+    } else {
+      const propertiesText = this.properties.join('\n');
+      this.clipboardCopyService.executeCopy(propertiesText);
+      this.notificationService.success('Copy to clipboard', 'The properties have been copied to your clipboard.');
+    }
+  }
+
+  runArgumentsCopy(value: Array<string>) {
+    this.updateArguments(value);
+    if (this.arguments.length === 0) {
+      this.notificationService.error('An error occured', 'There are no arguments to copy.');
+    } else {
+      const argumentsText = this.arguments.join('\n');
+      this.clipboardCopyService.executeCopy(argumentsText);
+      this.notificationService.success('Copy to clipboard', 'The arguments have been copied to your clipboard.');
+    }
+  }
+
+  /**
+   * Run launch
+   * Update the properties
+   * @param value Array of properties
+   */
+  runLaunch(props: Array<string>, args: Array<string>) {
+    this.isLaunching = true;
+    this.updateProperties(props);
+    this.updateArguments(args);
+    const prepared = this.prepareParams(this.task.name, this.arguments, this.properties);
+    this.taskService.launch(prepared.name, prepared.args, prepared.props)
+      .subscribe(() => {
+          this.notificationService.success('Launch success', `Successfully launched task definition "${this.task.name}"`);
+          this.router.navigate(['/tasks-jobs/tasks']);
+        },
+        error => {
+          const err = error.message ? error.message : error.toString();
+          this.notificationService.error('An error occurred', err ? err : 'An error occurred during the task launch.');
+        });
+  }
+
+  prepareParams(name: string, args: Array<string>, props: Array<string>): any {
     return {
       name,
       args: args.filter((a) => a !== '').join(' '),
       props: props.filter((a) => a !== '').join(', ')
     };
-  }
-
-  launch() {
-    if (this.submitting) {
-      return;
-    }
-    if (this.form.valid) {
-      this.submitting = true;
-      const params = this.prepareParams(this.task.name, this.form.get('args').value.toString().split('\n'),
-        this.form.get('props').value.toString().split('\n'), this.form.get('platform').value);
-      this.taskService.launch(params.name, params.args, params.props)
-        .subscribe(
-          data => {
-            this.notificationService.success('Launch task', 'Successfully launched task "' + this.task.name + '"');
-            this.submitting = false;
-            this.back();
-          },
-          error => {
-            this.submitting = false;
-            this.notificationService.error('An error occurred', error);
-          }
-        );
-    } else {
-      this.notificationService.error('An error occurred', 'Some field(s) are missing or invalid.');
-    }
-  }
-
-  back() {
-    this.router.navigate(['/tasks-jobs/tasks']);
   }
 }

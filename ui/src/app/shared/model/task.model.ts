@@ -1,3 +1,5 @@
+import { App } from './app.model';
+import { ConfigurationMetadataProperty, ValuedConfigurationMetadataProperty } from './detailed-app.model';
 import { Page } from './page.model';
 import { TaskExecution } from './task-execution.model';
 
@@ -46,5 +48,58 @@ export class TaskPage extends Page<Task> {
       page.items = input._embedded.taskDefinitionResourceList.map(Task.parse);
     }
     return page;
+  }
+}
+
+export class TaskLaunchConfig {
+
+  /** Task name */
+  id: string;
+
+  /** Expected platform type */
+  platform: {
+    id: string;
+    name: string;
+    form: string;
+    type: string;
+    defaultValue: string|null;
+    values: {
+      key: string;
+      name: string;
+      type: string;
+      options: ConfigurationMetadataProperty[];
+    }[];
+  };
+
+  /** Expected deployer type */
+  deployers: {
+    id: string;
+    name: string;
+    form: string;
+    type: string;
+    value: string|null;
+    defaultValue: string|null;
+    suffix: string;
+  }[];
+
+  /** Expected apps type */
+  apps: {
+    origin: string;
+    name: string;
+    type: string;
+    version: string;
+    versions: App[];
+    options: ConfigurationMetadataProperty[];
+    optionsState: {
+      isLoading: boolean;
+      isOnError: boolean;
+      isInvalid: boolean;
+    };
+  }[];
+
+  /** Ctr options metadata */
+  ctr: ValuedConfigurationMetadataProperty[];
+
+  constructor() {
   }
 }
