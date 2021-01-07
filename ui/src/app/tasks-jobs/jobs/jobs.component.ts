@@ -38,6 +38,9 @@ export class JobsComponent extends DatagridComponent {
           this.page = page;
           this.updateGroupContext(params);
           this.loading = false;
+        }, error => {
+          this.loading = false;
+          this.notificationService.error('An error occurred', error);
         });
     }
   }
