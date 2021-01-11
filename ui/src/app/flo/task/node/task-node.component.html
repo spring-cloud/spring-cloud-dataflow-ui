@@ -21,7 +21,7 @@
   <svg:g *ngSwitchCase="'END'" class="composed-task">
     <svg:ellipse class="select-outline"/>
     <svg:g class="shape" tippy [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
-           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
+           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300, maxWidth: 'none'}"
            [attr.disabled]="isDisabled ? '' : null">
       <svg:ellipse class="end-outer"/>
       <svg:ellipse class="end-inner"/>
