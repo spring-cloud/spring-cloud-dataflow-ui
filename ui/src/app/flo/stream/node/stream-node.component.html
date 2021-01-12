@@ -18,7 +18,7 @@
   <svg:g class="stream-module">
     <svg:rect class="select-outline"/>
     <svg:g class="shape" tippy [content]="canvasTooltipElement ? canvasTooltipElement.nativeElement : ''"
-           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
+           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300, maxWidth: 'none'}"
            [attr.disabled]="isDisabled || !canShowCanvasNodeTooltip ? '' : null">
       <svg:rect class="box"/>
 <!--      <svg:image class="type-icon"/>-->
