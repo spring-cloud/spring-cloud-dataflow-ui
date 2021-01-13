@@ -1,10 +1,10 @@
 <div *ngIf="builder$ | async as builder; else loading">
-  <form class="form-horizontal" novalidate (ngSubmit)="deployStream()">
+  <form class="form-horizontal" (submit)="deployStream()" [formGroup]="builder.formGroup" clrForm>
     <div>
       <div class="tab-pane">
         <app-stream-deploy-builder-errors [errors]="builder.errors" (removeError)="removeError($event)">
         </app-stream-deploy-builder-errors>
-        <div class="builder" [formGroup]="builder.formGroup">
+        <div class="builder">
 
           <div class="col-fixed col-key">
 
@@ -23,13 +23,12 @@
             <!-- 2 -->
             <div class="line-body" *ngIf="state.platform">
               <div class="status" *ngIf="builder.formGroup.get('platform').invalid">
-                <!--                TODO-->
-                <!--                <div tooltipPlacement="right"-->
-                <!--                     [tooltip]="tooltipTemplate"-->
-                <!--                     class="fa fa-warning"></div>-->
-                <!--                <ng-template #tooltipTemplate>-->
-                <!--                  <div [innerHtml]="'The define platform is not valid (unknown)'"></div>-->
-                <!--                </ng-template>-->
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                  <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <span>The define platform is not valid (unknown).</span>
+                  </clr-tooltip-content>
+                </clr-tooltip>
               </div>
               <div class="form-control form-control-label">
                 Platform
@@ -49,14 +48,12 @@
               <div class="line-body" *ngFor="let deployer of builder.streamDeployConfig.deployers;let i = index">
 
                 <div class="status" *ngIf="builder.formGroup.get('deployers').controls[i].invalid">
-                  <!--                TODO-->
-                  <!--                  <div tooltipPlacement="right"-->
-                  <!--                       [tooltip]="tooltipTemplate"-->
-                  <!--                       class="fa fa-warning"></div>-->
-                  <!--                  <ng-template #tooltipTemplate>-->
-                  <!--                    <div-->
-                  <!--                      [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('deployers').controls[i])"></div>-->
-                  <!--                  </ng-template>-->
+                  <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                      <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                        <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('deployers').controls[i])"></div>
+                      </clr-tooltip-content>
+                  </clr-tooltip>
                 </div>
 
                 <div class="form-control form-control-label">
@@ -68,27 +65,26 @@
             <!-- 5 -->
             <div class="line-toggle">
               <div class="help">
-                <!--                TODO-->
-                <!--                <span class="fa fa-question-circle" tooltipPlacement="right" [tooltip]="tooltipTemplate"></span>-->
-                <!--                <ng-template #tooltipTemplate>-->
-                <!--                  <div>-->
-                <!--                    <div><strong>Example:</strong></div>-->
-                <!--                    <div>Key: <strong>cloudfoundry.services</strong></div>-->
-                <!--                    <div>Value (application <strong>jdbc</strong>): <strong>mysqlcups</strong></div>-->
-                <!--                    <div>Generated property: <strong>deployer.jdbc.cloudfoundry.services=mysqlcups</strong></div>-->
-                <!--                  </div>-->
-                <!--                </ng-template>-->
+                
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                  <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
+                    <div>
+                      <div><strong>Example:</strong></div>
+                      <div>Key: <strong>cloudfoundry.services</strong></div>
+                      <div>Value (application <strong>jdbc</strong>): <strong>mysqlcups</strong></div>
+                      <div>Generated property: <strong>deployer.jdbc.cloudfoundry.services=mysqlcups</strong></div>
+                    </div>
+                  </clr-tooltip-content>
+              </clr-tooltip>
+              
+
               </div>
 
 
               <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
                 <clr-icon shape="angle" [class.active]="state.specificPlatform"></clr-icon>
-                Deployment Platform
-                <!--
-                <span *ngIf="builder.formGroup.get('platform').value">
-                  ({{builder.formGroup.get('platform').value}})
-                </span>
-                -->
+                Deployment Platform>
               </a>
             </div>
 
@@ -107,15 +103,12 @@
                    [formGroupName]="i"
                    [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get('property').invalid">
                 <div class="status" *ngIf="builder.formGroup.get('specificPlatform').controls[i].invalid">
-
-                  <!--                TODO-->
-                  <!--                  <div tooltipPlacement="right"-->
-                  <!--                       [tooltip]="tooltipTemplate"-->
-                  <!--                       class="fa fa-warning"></div>-->
-                  <!--                  <ng-template #tooltipTemplate>-->
-                  <!--                    <div-->
-                  <!--                      [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('specificPlatform').controls[i])"></div>-->
-                  <!--                  </ng-template>-->
+                  <clr-tooltip>
+                    <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                    <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('specificPlatform').controls[i])"></div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
                 </div>
 
                 <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input"
@@ -136,15 +129,12 @@
               <div class="line-body">
 
                 <div class="status" *ngIf="builder.formGroup.get('appsVersion').invalid">
-
-                  <!--                TODO-->
-                  <!--                  <div tooltipPlacement="right"-->
-                  <!--                       [tooltip]="tooltipTemplate"-->
-                  <!--                       class="fa fa-warning"></div>-->
-                  <!--                  <ng-template #tooltipTemplate>-->
-                  <!--                    <div-->
-                  <!--                      [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('appsVersion'))"></div>-->
-                  <!--                  </ng-template>-->
+                  <clr-tooltip>
+                    <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                    <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('appsVersion'))"></div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
                 </div>
 
                 <div class="form-control form-control-label">
@@ -162,15 +152,12 @@
                      [class.has-error]="builder.formGroup.get('global').controls[i].get('property').invalid">
 
                   <div class="status" *ngIf="builder.formGroup.get('global').controls[i].invalid">
-
-                    <!--                TODO-->
-                    <!--                    <div tooltipPlacement="right"-->
-                    <!--                         [tooltip]="tooltipTemplate"-->
-                    <!--                         class="fa fa-warning"></div>-->
-                    <!--                    <ng-template #tooltipTemplate>-->
-                    <!--                      <div-->
-                    <!--                        [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('global').controls[i])"></div>-->
-                    <!--                    </ng-template>-->
+                    <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                      <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                        <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('global').controls[i])"></div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
                   </div>
 
                   <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
@@ -194,20 +181,21 @@
             <!-- 2 -->
             <div class="line-body" *ngIf="state.platform"
                  [class.has-error]="isErrorPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)">
-              <clr-select-container style="margin-top:0;">
-                <select tabindex="1" formControlName="platform" clrSelect>
-                  <option value="">Select a value</option>
-                  <option *ngFor="let platform of builder.streamDeployConfig.platform.values" [value]="platform.key">
-                    {{platform.name}}
-                    ({{platform.type}})
-                  </option>
-                  <option
-                    *ngIf="isInvalidPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)"
-                    [value]="builder.formGroup.get('platform').value">
-                    {{builder.formGroup.get('platform').value}} (invalid)
-                  </option>
-                </select>
-              </clr-select-container>
+              <div class="clr-select-wrapper">
+                 <select tabindex="1" formControlName="platform" class="clr-select">
+                    <option value="">Select a value</option>
+                    <option *ngFor="let platform of builder.streamDeployConfig.platform.values" [value]="platform.key">
+                      {{platform.name}}
+                      ({{platform.type}})
+                    </option>
+                    <option
+                      *ngIf="isInvalidPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)"
+                      [value]="builder.formGroup.get('platform').value">
+                      {{builder.formGroup.get('platform').value}} (invalid)
+                    </option>
+                  </select>
+
+              </div>
             </div>
 
             <!-- 3 -->
@@ -340,8 +328,8 @@
                 <div class="line-body" [class.has-error]="app.optionsState.isInvalid">
                   <div formGroupName="appsVersion">
                     <div class="cell">
-                      <clr-select-container style="margin-top:0;">
-                        <select tabindex="{{100}}" [formControlName]="app.name" clrSelect>
+                      <div class="clr-select-wrapper">
+                        <select tabindex="{{100}}" [formControlName]="app.name" class="clr-select">
                           <option value="">Default version ({{app.version}})</option>
                           <option *ngFor="let version of app.versions" [value]="version.version">
                             {{version.version}}
@@ -351,7 +339,7 @@
                             {{builder.formGroup.get('appsVersion').get(app.name).value}} (invalid)
                           </option>
                         </select>
-                      </clr-select-container>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -418,5 +406,8 @@
 <app-properties-groups-dialog-content #groupsPropertiesModal></app-properties-groups-dialog-content>
 
 <ng-template #loading>
-  <!--  <app-loader></app-loader>-->
+ <div style="padding: 1rem;">
+  <clr-spinner clrInline clrSmall></clr-spinner>
+  Loading...
+ </div>
 </ng-template>
