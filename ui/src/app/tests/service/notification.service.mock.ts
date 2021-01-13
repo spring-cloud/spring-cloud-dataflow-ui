@@ -32,8 +32,8 @@ export class NotificationServiceMock {
   }
 
   clearAll() {
-    this.successNotifications.length = 0;
-    this.errorNotification.length = 0;
+    this.successNotifications = [];
+    this.errorNotification = [];
   }
 
   static get provider() {

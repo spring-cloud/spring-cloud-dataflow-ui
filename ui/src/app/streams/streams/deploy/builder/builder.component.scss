@@ -103,7 +103,7 @@ $height: 32px;
     .status {
       position: absolute;
       left: 7px;
-      top: 10px;
+      top: 4px;
       color: #CC1F27;
     }
 
@@ -155,8 +155,9 @@ $height: 32px;
     color: #1B78B3;
     position: absolute;
     right: 8px;
-    top: 1px;
+    top: -1px;
     cursor: pointer;
+    z-index: 1000;
   }
 
   .toggle {
@@ -191,10 +192,18 @@ $height: 32px;
       text-decoration: none;
     }
   }
-
   .clr-input, .clr-select {
     width: 100%;
     box-sizing: border-box;
     display: block;
+  }
+  .clr-select {
+    width: 240px;
+  }
+  .has-error {
+    .clr-select, .clr-input {
+      display: inline-block;
+      border-bottom-color: var(--clr-forms-invalid-color, #c21d00);
+    }
   }
 }
