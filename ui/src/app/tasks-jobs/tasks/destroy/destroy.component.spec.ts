@@ -63,7 +63,7 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(title.textContent).toContain('Confirm Destroy Task');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+    fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
@@ -79,7 +79,7 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(title.textContent).toContain('Confirm Destroy Tasks');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+    fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
@@ -98,7 +98,7 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(title.textContent).toContain('Confirm Destroy Task');
-    fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
+    fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');

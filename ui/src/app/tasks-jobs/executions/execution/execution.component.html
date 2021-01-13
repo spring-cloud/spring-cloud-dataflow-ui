@@ -11,7 +11,7 @@
             [appRole]="['ROLE_DEPLOY']">
       Stop execution
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="cleanup()" *ngIf="!execution.parentExecutionId"
+    <button type="button" class="btn btn-sm btn-outline-danger" (click)="cleanup()" *ngIf="!execution.parentExecutionId"
             [appRole]="['ROLE_DESTROY']">
       Clean up task execution
     </button>

@@ -10,11 +10,11 @@
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
               *ngIf="isInit" #datagrid>
   <clr-dg-action-bar *ngIf="grouped">
-    <button *ngIf="grouped" type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
+    <button *ngIf="grouped" type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
       Cancel
     </button>
     <button id="btnUnregisterApplications" type="button" [disabled]="selected?.length === 0"
-            class="btn btn-sm btn-secondary" (click)="unregistersApp(selected)"
+            class="btn btn-sm btn-outline-danger" (click)="unregistersApp(selected)"
             [appRole]="['ROLE_DESTROY']">
       Unregister application(s)
     </button>
