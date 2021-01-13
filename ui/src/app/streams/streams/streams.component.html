@@ -16,7 +16,7 @@
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
               *ngIf="isInit" #datagrid>
   <clr-dg-action-bar *ngIf="grouped">
-    <button type="button" class="btn btn-sm btn-outline-danger" (click)="setMode(false)">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
       Cancel
     </button>
     <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
@@ -27,7 +27,7 @@
             (click)="undeploy(selected)" [appRole]="['ROLE_CREATE']">
       Undeploy stream(s)
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" [disabled]="selected?.length == 0"
+    <button type="button" class="btn btn-sm btn-outline-danger" [disabled]="selected?.length == 0"
             (click)="destroy(selected)" [appRole]="['ROLE_DESTROY']">
       Destroy stream(s)
     </button>
