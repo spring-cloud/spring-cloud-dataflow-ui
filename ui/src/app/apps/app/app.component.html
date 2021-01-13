@@ -8,7 +8,7 @@
 
 <div *ngIf="!loading">
   <div class="datagrid-action-bar" [appRole]="['ROLE_DESTROY']">
-    <button id="btnUnregister" type="button" class="btn btn-sm btn-secondary" (click)="unregister()">
+    <button id="btnUnregister" type="button" class="btn btn-sm btn-outline-danger" (click)="unregister()">
       Unregister Application
     </button>
     <button id="btnVersion" type="button" class="btn btn-sm btn-secondary" (click)="manageVersions()"

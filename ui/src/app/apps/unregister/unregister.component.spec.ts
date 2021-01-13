@@ -75,7 +75,7 @@ describe('apps/unregister/unregister.component.ts', () => {
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(title.textContent).toContain('Confirm Unregister Application');
-    const btnUnregister: HTMLButtonElement = fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement;
+    const btnUnregister: HTMLButtonElement = fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement;
     btnUnregister.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -92,7 +92,7 @@ describe('apps/unregister/unregister.component.ts', () => {
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(title.textContent).toContain('Confirm Unregister Applications');
-    const btnUnregister: HTMLButtonElement = fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement;
+    const btnUnregister: HTMLButtonElement = fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement;
     btnUnregister.click();
     fixture.detectChanges();
     await fixture.whenStable();
@@ -112,7 +112,7 @@ describe('apps/unregister/unregister.component.ts', () => {
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(title.textContent).toContain('Confirm Unregister Application');
-    const btnUnregister: HTMLButtonElement = fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement;
+    const btnUnregister: HTMLButtonElement = fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement;
     btnUnregister.click();
     fixture.detectChanges();
     await fixture.whenStable();

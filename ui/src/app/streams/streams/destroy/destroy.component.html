@@ -34,7 +34,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="unregister()" [disabled]="isRunning">
+    <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
       <span *ngIf="streams.length == 1">Destroy the stream</span>
       <span *ngIf="streams.length > 1">Destroy the streams</span>
     </button>

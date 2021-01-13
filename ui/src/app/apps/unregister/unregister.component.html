@@ -34,7 +34,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="unregister()" [disabled]="isRunning">
+    <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
       <span *ngIf="apps.length == 1">Unregister the application</span>
       <span *ngIf="apps.length > 1">Unregister the applications</span>
     </button>

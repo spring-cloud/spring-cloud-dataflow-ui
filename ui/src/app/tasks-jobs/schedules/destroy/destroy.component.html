@@ -31,7 +31,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="destroy()" [disabled]="isRunning">
+    <button type="button" class="btn btn-danger" (click)="destroy()" [disabled]="isRunning">
       <span *ngIf="schedules.length == 1">Delete the schedule</span>
       <span *ngIf="schedules.length > 1">Delete the schedules</span>
     </button>
