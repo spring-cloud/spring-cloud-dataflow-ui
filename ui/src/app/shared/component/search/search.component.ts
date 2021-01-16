@@ -64,11 +64,9 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.aboutService.getAbout()
-      .subscribe((about: AboutState) => {
-        this.enabled.streams = about.features.streams;
-        this.enabled.tasks = about.features.tasks;
-      });
+    this.aboutService.isFeatureEnabled('streams').then(enabled => this.enabled.streams = enabled);
+    this.aboutService.isFeatureEnabled('tasks').then(enabled => this.enabled.tasks = enabled);
+    
     this.search.valueChanges
       .pipe(
         map(val => {

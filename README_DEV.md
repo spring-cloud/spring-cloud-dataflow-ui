@@ -54,7 +54,7 @@ The following commands are available:
 $ npm start
 
 # Run the unit tests
-$ ng test --single-run
+$ ng test --watch=false
 
 # Run lint
 $ ng lint
