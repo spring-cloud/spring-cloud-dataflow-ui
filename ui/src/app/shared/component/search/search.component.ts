@@ -1,7 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map } from 'rxjs/operators';
-import { AboutState } from '../../store/about.reducer';
 import { AboutService } from '../../api/about.service';
 import { AppPage } from '../../model/app.model';
 import { AppService } from '../../api/app.service';
@@ -66,7 +65,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.aboutService.isFeatureEnabled('streams').then(enabled => this.enabled.streams = enabled);
     this.aboutService.isFeatureEnabled('tasks').then(enabled => this.enabled.tasks = enabled);
-    
+
     this.search.valueChanges
       .pipe(
         map(val => {
@@ -112,17 +111,21 @@ export class SearchComponent implements OnInit {
               this.notificationService.error('An error occurred', error);
               this.searching.streams = false;
             });
+        } else {
+          this.results.streams = new StreamPage();
         }
         if (this.enabled.tasks) {
-        this.subscriptions.tasks = this.taskService
-          .getTasks(0, 5, `${value}`, 'taskName', 'ASC')
-          .subscribe((page: TaskPage) => {
-            this.results.tasks = page;
-            this.searching.tasks = false;
-          }, error => {
-            this.notificationService.error('An error occurred', error);
-            this.searching.tasks = false;
-          });
+          this.subscriptions.tasks = this.taskService
+            .getTasks(0, 5, `${value}`, 'taskName', 'ASC')
+            .subscribe((page: TaskPage) => {
+              this.results.tasks = page;
+              this.searching.tasks = false;
+            }, error => {
+              this.notificationService.error('An error occurred', error);
+              this.searching.tasks = false;
+            });
+        } else {
+          this.results.tasks = new TaskPage();
         }
       } else {
         this.searching.apps = false;
