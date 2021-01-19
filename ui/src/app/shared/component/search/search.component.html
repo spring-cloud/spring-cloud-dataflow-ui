@@ -49,8 +49,8 @@
         <h4>Task(s)</h4>
         <ul>
           <li *ngFor="let task of results.tasks.items;let i = index"
-              [class.active]="selected === (i + results.apps.items.length + results.streams.items.length)">
-            <a (mouseover)="selected = (i + results.apps.items.length + results.streams.items.length)"
+              [class.active]="selected === (i + results.apps.items.length + (results.streams ? results.streams.items.length : 0))">
+            <a (mouseover)="selected = (i + results.apps.items.length + (results.streams ? results.streams.items.length : 0))"
                (click)="navigate('/tasks-jobs/tasks/' + task.name)">
               <span class="text-truncate">
                 {{task.name}} <span class="{{task.labelStatusClass()}}">{{task.status}}</span>

@@ -60,10 +60,12 @@ describe('shared/component/search/search.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a search', async (done) => {
+  it('should run a complete search', async (done) => {
     const spy1 = spyOn(TaskServiceMock.mock, 'getTasks').and.callFake(() => of(new TaskPage()));
     const spy2 = spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => of(new StreamPage()));
     const spy3 = spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => of(new AppPage()));
+    const spy4 = spyOn(AboutServiceMock.mock, 'isFeatureEnabled').and.returnValue(Promise.resolve(true));
+    
     fixture.detectChanges();
     component.search.setValue('foo');
     setTimeout(() => {
@@ -71,6 +73,49 @@ describe('shared/component/search/search.component.ts', () => {
       expect(spy1).toHaveBeenCalledTimes(1);
       expect(spy2).toHaveBeenCalledTimes(1);
       expect(spy3).toHaveBeenCalledTimes(1);
+      expect(spy4).toHaveBeenCalledTimes(2);
+      expect(component.isNoResult()).toBeTruthy();
+      done();
+    }, 320);
+  });
+
+  it('should run a search without streams', async (done) => {
+    const spy1 = spyOn(TaskServiceMock.mock, 'getTasks').and.callFake(() => of(new TaskPage()));
+    const spy2 = spyOn(StreamServiceMock.mock, 'getStreams');
+    const spy3 = spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => of(new AppPage()));
+    const spy4 = spyOn(AboutServiceMock.mock, 'isFeatureEnabled').and.callFake(
+      feature => Promise.resolve(feature !== 'streams')
+    );
+
+    fixture.detectChanges();
+    component.search.setValue('foo');
+    setTimeout(() => {
+      fixture.detectChanges();
+      expect(spy1).toHaveBeenCalledTimes(1);
+      expect(spy2).not.toHaveBeenCalled();
+      expect(spy3).toHaveBeenCalledTimes(1);
+      expect(spy4).toHaveBeenCalledTimes(2);
+      expect(component.isNoResult()).toBeTruthy();
+      done();
+    }, 320);
+  });
+
+  it('should run a search without tasks', async (done) => {
+    const spy1 = spyOn(TaskServiceMock.mock, 'getTasks');
+    const spy2 = spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => of(new StreamPage()));
+    const spy3 = spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => of(new AppPage()));
+    const spy4 = spyOn(AboutServiceMock.mock, 'isFeatureEnabled').and.callFake(
+      feature => Promise.resolve(feature !== 'tasks')
+    );
+
+    fixture.detectChanges();
+    component.search.setValue('foo');
+    setTimeout(() => {
+      fixture.detectChanges();
+      expect(spy1).not.toHaveBeenCalled();
+      expect(spy2).toHaveBeenCalledTimes(1);
+      expect(spy3).toHaveBeenCalledTimes(1);
+      expect(spy4).toHaveBeenCalledTimes(2);
       expect(component.isNoResult()).toBeTruthy();
       done();
     }, 320);

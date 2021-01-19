@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map } from 'rxjs/operators';
+import { AboutService } from '../../api/about.service';
 import { AppPage } from '../../model/app.model';
 import { AppService } from '../../api/app.service';
 import { StreamService } from '../../api/stream.service';
@@ -26,6 +27,11 @@ export class SearchComponent implements OnInit {
 
   @ViewChild('inputQuickSearch', { static: true }) inputQuickSearch: ElementRef;
 
+  enabled = {
+    streams: false,
+    tasks: false
+  }
+  
   searching = {
     apps: false,
     streams: false,
@@ -48,7 +54,8 @@ export class SearchComponent implements OnInit {
     tasks: null
   };
 
-  constructor(private appService: AppService,
+  constructor(private aboutService: AboutService,
+              private appService: AppService,
               private streamService: StreamService,
               private taskService: TaskService,
               private notificationService: NotificationService,
@@ -56,16 +63,14 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.aboutService.getAbout()
-    //   .subscribe((about: About) => {
-    //     //this.searching.streams = about.features.streams;
-    //     //this.searching.tasks = about.features.tasks;
-    //   });
+    this.aboutService.isFeatureEnabled('streams').then(enabled => this.enabled.streams = enabled);
+    this.aboutService.isFeatureEnabled('tasks').then(enabled => this.enabled.tasks = enabled);
+
     this.search.valueChanges
       .pipe(
         map(val => {
-          this.searching.streams = true;
-          this.searching.tasks = true;
+          this.searching.streams = this.enabled.streams;
+          this.searching.tasks = this.enabled.tasks;
           this.searching.apps = true;
           return val;
         }),
@@ -96,24 +101,32 @@ export class SearchComponent implements OnInit {
             this.notificationService.error('An error occurred', error);
             this.searching.apps = false;
           });
-        this.subscriptions.streams = this.streamService
-          .getStreams(0, 5, `${value}`, 'name', 'ASC')
-          .subscribe((page: StreamPage) => {
-            this.results.streams = page;
-            this.searching.streams = false;
-          }, error => {
-            this.notificationService.error('An error occurred', error);
-            this.searching.streams = false;
-          });
-        this.subscriptions.tasks = this.taskService
-          .getTasks(0, 5, `${value}`, 'taskName', 'ASC')
-          .subscribe((page: TaskPage) => {
-            this.results.tasks = page;
-            this.searching.tasks = false;
-          }, error => {
-            this.notificationService.error('An error occurred', error);
-            this.searching.tasks = false;
-          });
+        if (this.enabled.streams) {
+          this.subscriptions.streams = this.streamService
+            .getStreams(0, 5, `${value}`, 'name', 'ASC')
+            .subscribe((page: StreamPage) => {
+              this.results.streams = page;
+              this.searching.streams = false;
+            }, error => {
+              this.notificationService.error('An error occurred', error);
+              this.searching.streams = false;
+            });
+        } else {
+          this.results.streams = new StreamPage();
+        }
+        if (this.enabled.tasks) {
+          this.subscriptions.tasks = this.taskService
+            .getTasks(0, 5, `${value}`, 'taskName', 'ASC')
+            .subscribe((page: TaskPage) => {
+              this.results.tasks = page;
+              this.searching.tasks = false;
+            }, error => {
+              this.notificationService.error('An error occurred', error);
+              this.searching.tasks = false;
+            });
+        } else {
+          this.results.tasks = new TaskPage();
+        }
       } else {
         this.searching.apps = false;
         this.searching.streams = false;
