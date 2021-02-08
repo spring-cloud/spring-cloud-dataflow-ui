@@ -78,7 +78,7 @@
                 <div class="status" *ngIf="builder.specificPlatformControls.controls[i].invalid">
                 </div>
 
-                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input"
+                <input tabindex="{{210 + i * 10}}" placeholder="Enter a value" class="clr-input"
                        formControlName="property" type="text"/>
               </div>
             </div>
@@ -115,7 +115,7 @@
                   <div class="status" *ngIf="builder.globalControls.controls[i].invalid">
                   </div>
 
-                  <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                  <input tabindex="{{302 + i}}" placeholder="Enter a value" class="clr-input"
                          formControlName="property" type="text"/>
                 </div>
               </div>
@@ -204,7 +204,7 @@
               <div class="form-control form-control-label">
                 <strong>{{getDeploymentProperties(builder.builderDeploymentProperties).length}}</strong>
                 <span> /</span> {{builder.builderDeploymentProperties.global.length}} properties
-                <button tabindex="{{101}}" type="button" (click)="openDeploymentProperties(builder)"
+                <button tabindex="{{201}}" type="button" (click)="openDeploymentProperties(builder)"
                         class="btn btn-sm btn-secondary">
                   Edit
                 </button>
@@ -217,7 +217,7 @@
               <div class="line-body" *ngFor="let f of builder.specificPlatformControls.controls;let i = index"
                    [formGroupName]="i"
                    [class.has-error]="builder.specificPlatformControls.controls[i].get('global').invalid">
-                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input" formControlName="global"
+                <input tabindex="{{211 + i * 10}}" placeholder="Enter a value" class="clr-input" formControlName="global"
                        type="text"/>
               </div>
             </div>
@@ -233,7 +233,7 @@
                 <div class="line-body" *ngFor="let f of builder.globalControls.controls;let i = index"
                      [formGroupName]="i"
                      [class.has-error]="builder.globalControls.controls[i].get('global').invalid">
-                  <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                  <input tabindex="{{302 + i}}" placeholder="Enter a value" class="clr-input"
                          formControlName="global" type="text"/>
                 </div>
               </div>
@@ -248,7 +248,7 @@
               <div class="form-control form-control-label">
                 <strong>{{getCtrProperties(builder.ctrProperties).length}}</strong>
                 <span> /</span> {{builder.ctrProperties.length}} properties
-                <button tabindex="{{101}}" type="button" (click)="openCtrProperties(builder)"
+                <button tabindex="{{401}}" type="button" (click)="openCtrProperties(builder)"
                         class="btn btn-sm btn-secondary">
                   Edit
                 </button>
@@ -263,7 +263,7 @@
               <div class="line-body" *ngFor="let f of builder.argumentsControls.controls;let i = index"
                    [formGroupName]="i"
                    [class.has-error]="builder.argumentsControls.controls[i].get('global').invalid">
-                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input" formControlName="global"
+                <input tabindex="{{500 + i * 10}}" placeholder="Enter a value" class="clr-input" formControlName="global"
                        type="text"/>
               </div>
             </div>
@@ -272,7 +272,7 @@
           <!-- col 3+-->
           <div class="scroll">
 
-            <div class="col" *ngFor="let app of builder.taskLaunchConfig.apps">
+            <div class="col" *ngFor="let app of builder.taskLaunchConfig.apps; let colindex = index">
 
               <!-- 0 Apps header -->
               <div class="line-head">
@@ -287,22 +287,22 @@
               <!-- 2 Platform selector-->
               <div class="line-body" *ngIf="state.platform && task.composed"></div>
               <div class="line-body" *ngIf="state.platform && !task.composed"
-              [class.has-error]="isErrorPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)">
-              <clr-select-container style="margin-top:0;">
-                <select tabindex="1" formControlName="platform" clrSelect>
-                  <option value="">Select a value</option>
-                  <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
-                    {{platform.name}}
-                    ({{platform.type}})
-                  </option>
-                  <option
-                    *ngIf="isInvalidPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)"
-                    [value]="builder.formGroup.get('platform').value">
-                    {{builder.formGroup.get('platform').value}} (invalid)
-                  </option>
-                </select>
-              </clr-select-container>
-            </div>
+                [class.has-error]="isErrorPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)">
+                <clr-select-container style="margin-top:0;">
+                  <select tabindex="1" formControlName="platform" clrSelect>
+                    <option value="">Select a value</option>
+                    <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
+                      {{platform.name}}
+                      ({{platform.type}})
+                    </option>
+                    <option
+                      *ngIf="isInvalidPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)"
+                      [value]="builder.formGroup.get('platform').value">
+                      {{builder.formGroup.get('platform').value}} (invalid)
+                    </option>
+                  </select>
+                </clr-select-container>
+              </div>
 
               <!-- 3 Generic Deployer Properties header -->
               <div class="line-toggle"></div>
@@ -329,7 +329,7 @@
                 <div class="form-control form-control-label">
                   <strong>{{getDeploymentProperties(builder.builderDeploymentProperties, app.name).length}}</strong>
                   <span> /</span> {{builder.builderDeploymentProperties.apps[app.name].length}} properties
-                  <button tabindex="{{101}}" type="button" (click)="openDeploymentProperties(builder, app.name)"
+                  <button tabindex="{{201}}" type="button" (click)="openDeploymentProperties(builder, app.name)"
                           class="btn btn-sm btn-secondary">
                     Edit
                   </button>
@@ -342,7 +342,7 @@
                      *ngFor="let f of builder.specificPlatformControls.controls;let i = index"
                      [formGroupName]="i"
                      [class.has-error]="builder.specificPlatformControls.controls[i].get(app.name).invalid">
-                  <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input"
+                  <input tabindex="{{212 + i * 10 + colindex}}" placeholder="Enter a value" class="clr-input"
                          [formControlName]="app.name" type="text"/>
                 </div>
               </div>
@@ -356,7 +356,7 @@
                   <div formGroupName="appsVersion">
                     <div class="cell">
                       <clr-select-container style="margin-top:0;">
-                        <select tabindex="{{100}}" [formControlName]="app.name" clrSelect>
+                        <select tabindex="{{300}}" [formControlName]="app.name" clrSelect>
                           <option value="">Default version ({{app.version}})</option>
                           <option *ngFor="let version of app.versions" [value]="version.version">
                             {{version.version}}
@@ -377,7 +377,7 @@
                     <div *ngIf="app.options.length > 0">
                       <strong>{{getAppProperties(builder.builderAppsProperties, app.name).length}}</strong>
                       <span> /</span> {{app.options.length}} properties
-                      <button tabindex="{{101}}" type="button" (click)="openApp(builder, app)"
+                      <button tabindex="{{301}}" type="button" (click)="openApp(builder, app)"
                               class="btn btn-sm btn-secondary">
                         Edit
                       </button>
@@ -400,7 +400,7 @@
                   <div class="line-body" *ngFor="let f of builder.globalControls.controls;let i = index"
                        [formGroupName]="i"
                        [class.has-error]="builder.globalControls.controls[i].get(app.name).invalid">
-                    <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                    <input tabindex="{{302 + i}}" placeholder="Enter a value" class="clr-input"
                            [formControlName]="app.name" type="text"/>
                   </div>
                 </div>
@@ -421,7 +421,7 @@
                   <div class="line-body" *ngFor="let f of builder.argumentsControls.controls;let i = index"
                        [formGroupName]="i"
                        [class.has-error]="builder.argumentsControls.controls[i].get(app.name).invalid">
-                    <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
+                    <input tabindex="{{501 + i * 10 + colindex}}" placeholder="Enter a value" class="clr-input"
                            [formControlName]="app.name" type="text"/>
                   </div>
                 </div>
@@ -432,8 +432,8 @@
           </div>
         </div>
         <div>
-          <a tabindex="200" id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">Cancel</a>
-          <button tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary">
+          <a tabindex="600" id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">Cancel</a>
+          <button tabindex="600" id="btn-deploy-builder" type="submit" class="btn btn-primary">
             <span>Launch task</span>
           </button>
         </div>
