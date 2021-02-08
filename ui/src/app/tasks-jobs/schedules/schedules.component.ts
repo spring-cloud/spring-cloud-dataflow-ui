@@ -7,6 +7,7 @@ import { DestroyComponent } from './destroy/destroy.component';
 import { DatagridComponent } from '../../shared/component/datagrid/datagrid.component';
 import { ContextService } from '../../shared/service/context.service';
 import { SettingsService } from '../../settings/settings.service';
+import {NotificationService} from "../../shared/service/notification.service";
 
 @Component({
   selector: 'app-schedules',
@@ -20,7 +21,8 @@ export class SchedulesComponent extends DatagridComponent {
               private router: Router,
               protected settingsService: SettingsService,
               protected changeDetectorRef: ChangeDetectorRef,
-              protected contextService: ContextService) {
+              protected contextService: ContextService,
+              private notificationService: NotificationService) {
     super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/schedules');
   }
 
@@ -39,6 +41,8 @@ export class SchedulesComponent extends DatagridComponent {
           this.selected = [];
           this.updateGroupContext(params);
           this.loading = false;
+        }, (error) => {
+          this.notificationService.error('An error occurred', error);
         });
     }
   }
