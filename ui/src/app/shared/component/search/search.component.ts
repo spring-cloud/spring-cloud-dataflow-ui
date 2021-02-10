@@ -30,8 +30,8 @@ export class SearchComponent implements OnInit {
   enabled = {
     streams: false,
     tasks: false
-  }
-  
+  };
+
   searching = {
     apps: false,
     streams: false,

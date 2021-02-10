@@ -65,7 +65,7 @@ describe('shared/component/search/search.component.ts', () => {
     const spy2 = spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => of(new StreamPage()));
     const spy3 = spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => of(new AppPage()));
     const spy4 = spyOn(AboutServiceMock.mock, 'isFeatureEnabled').and.returnValue(Promise.resolve(true));
-    
+
     fixture.detectChanges();
     component.search.setValue('foo');
     setTimeout(() => {
