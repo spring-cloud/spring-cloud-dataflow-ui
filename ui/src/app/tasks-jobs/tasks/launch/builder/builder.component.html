@@ -244,14 +244,21 @@
 
             <!-- 10 Ctr Properties options -->
             <div class="line-body"
-                 *ngIf="state.ctr && task.composed && builder.ctrProperties.length > 0">
-              <div class="form-control form-control-label">
+                 *ngIf="state.ctr && task.composed">
+              <div class="form-control form-control-label"
+                   *ngIf="!builder.ctrPropertiesState.isLoading && !builder.ctrPropertiesState.isOnError">
                 <strong>{{getCtrProperties(builder.ctrProperties).length}}</strong>
                 <span> /</span> {{builder.ctrProperties.length}} properties
                 <button tabindex="{{401}}" type="button" (click)="openCtrProperties(builder)"
                         class="btn btn-sm btn-secondary">
                   Edit
                 </button>
+              </div>
+              <div *ngIf="builder.ctrPropertiesState.isLoading" class="form-control form-control-label">
+                Loading ...
+              </div>
+              <div *ngIf="builder.ctrPropertiesState.isOnError" class="form-control form-control-label">
+                Error Loading
               </div>
             </div>
 

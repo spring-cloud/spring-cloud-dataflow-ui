@@ -3,8 +3,8 @@ import {
   Output, ViewChild
 } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Observable, of, Subscription } from 'rxjs';
 import { Properties } from 'spring-flo';
 import PropertiesSource = Properties.PropertiesSource;
 import { TaskLaunchService } from '../task-launch.service';
@@ -78,6 +78,10 @@ export interface Builder {
   };
 
   ctrProperties: ValuedConfigurationMetadataProperty[];
+  ctrPropertiesState: {
+    isLoading: boolean;
+    isOnError: boolean;
+  };
 
   // args for global and task apps
   arguments: {
@@ -124,6 +128,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   private refBuilder: Builder;
 
+  private crtOptionsSub: Subscription;
+
   /**
    * States for UI to i.e. keep collap section state.
    */
@@ -150,7 +156,29 @@ export class BuilderComponent implements OnInit, OnDestroy {
       .pipe(map(taskLaunchConfig => this.build(taskLaunchConfig)))
       .pipe(map(builder => this.populate(builder)))
       .pipe(map(builder => this.populateApp(builder)))
-      .pipe(map(builder => this.populateAppArgs(builder)));
+      .pipe(map(builder => this.populateAppArgs(builder)))
+      .pipe(tap((builder) => {
+        if (this.task.composed) {
+          // if ctr, fire up load for its options separately
+          // so that we get page loaded faster and user gets
+          // loading text in a ctr form part
+          this.crtOptionsSub = this.taskLaunchService.ctrOptions()
+          .subscribe(
+            options => {
+              options.forEach(o => {
+                builder.ctrProperties.push(Object.assign({ isSemantic: true }, o));
+              });
+            },
+            () => {
+              this.refBuilder.ctrPropertiesState.isOnError = true;
+            },
+            () => {
+              builder.ctrPropertiesState.isLoading = false;
+              this.changeDetector.markForCheck();
+            }
+          );
+        }
+      }));
   }
 
   /**
@@ -160,6 +188,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
     if (this.refBuilder) {
       this.updateProperties.emit(this.getProperties());
       this.updateArguments.emit(this.getArguments());
+    }
+    if (this.crtOptionsSub) {
+      this.crtOptionsSub.unsubscribe();
     }
   }
 
@@ -561,9 +592,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
     }
 
     // ctr
-    taskLaunchConfig.ctr.forEach(o => {
-      ctrProperties.push(Object.assign({ isSemantic: true }, o));
-    });
+    const ctrPropertiesState = {
+      isLoading: taskLaunchConfig.ctr.optionsState.isLoading,
+      isOnError: taskLaunchConfig.ctr.optionsState.isOnError
+    };
 
     platformControl.valueChanges.subscribe((value) => {
       if (!defaultPlatform) {
@@ -704,6 +736,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       argumentsControls,
 
       ctrProperties,
+      ctrPropertiesState,
 
       arguments: {
         global: [],

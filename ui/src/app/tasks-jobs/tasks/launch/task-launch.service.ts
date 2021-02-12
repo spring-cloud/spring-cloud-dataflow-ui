@@ -5,7 +5,9 @@ import { Task, TaskLaunchConfig } from '../../../shared/model/task.model';
 import { TaskService } from '../../../shared/api/task.service';
 import { App, ApplicationType } from '../../../shared/model/app.model';
 import { AppService } from '../../../shared/api/app.service';
-import { ConfigurationMetadataProperty, DetailedApp } from '../../../shared/model/detailed-app.model';
+import {
+  ConfigurationMetadataProperty, DetailedApp, ValuedConfigurationMetadataProperty
+} from '../../../shared/model/detailed-app.model';
 import { Utils } from '../../../flo/shared/support/utils';
 import { ToolsService } from '../../../flo/task/tools.service';
 import get from 'lodash.get';
@@ -97,9 +99,9 @@ export class TaskLaunchService {
       .pipe(mergeMap((task: Task) => {
         const taskConversion = this.toolsService.parseTaskTextToGraph(task.dslText);
         const platforms = this.taskService.getPlatforms();
-        return zip(of(task), taskConversion, platforms);
+        return zip(taskConversion, platforms);
       }))
-      .pipe(mergeMap(([task, taskConversion, platforms]) => {
+      .pipe(mergeMap(([taskConversion, platforms]) => {
         const appNames = taskConversion.graph.nodes
           .filter(node => node.name !== 'START' && node.name !== 'END')
           .map(node => {
@@ -126,13 +128,10 @@ export class TaskLaunchService {
                   return mapAccumulator;
                 }, new Map<string, { version: string, versions: App[]}>());
               }))
-          ))
-          ;
-        const ctrOptions = this.taskService.getCtrOptions();
-
-        return zip(of(task), of(taskConversion), of(platforms), appVersions, ctrOptions);
+          ));
+        return zip(of(taskConversion), of(platforms), appVersions);
       }))
-      .pipe(map(([task, taskConversion, platforms, appVersions, ctrOptions]) => {
+      .pipe(map(([taskConversion, platforms, appVersions]) => {
         const c = new TaskLaunchConfig();
         c.id = id;
 
@@ -201,9 +200,23 @@ export class TaskLaunchService {
             };
           })
         };
-        c.ctr = ctrOptions;
+
+        // just set empty options and loading state,
+        // will get loaded later
+        c.ctr = {
+          // options: ctrOptions,
+          options: [],
+          optionsState: {
+            isLoading: true,
+            isOnError: false
+          }
+        };
         return c;
       }));
+  }
+
+  ctrOptions(): Observable<ValuedConfigurationMetadataProperty[]> {
+    return this.taskService.getCtrOptions();
   }
 
   appDetails(type: ApplicationType, name: string, version: string): Observable<Array<any>> {

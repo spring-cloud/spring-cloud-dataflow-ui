@@ -98,7 +98,13 @@ export class TaskLaunchConfig {
   }[];
 
   /** Ctr options metadata */
-  ctr: ValuedConfigurationMetadataProperty[];
+  ctr: {
+    options: ValuedConfigurationMetadataProperty[];
+    optionsState: {
+      isLoading: boolean;
+      isOnError: boolean;
+    };
+  };
 
   constructor() {
   }

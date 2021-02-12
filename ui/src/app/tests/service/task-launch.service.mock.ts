@@ -1,5 +1,7 @@
 import { Observable, of } from 'rxjs';
-import { ValuedConfigurationMetadataPropertyList } from '../../shared/model/detailed-app.model';
+import {
+  ValuedConfigurationMetadataProperty, ValuedConfigurationMetadataPropertyList
+} from '../../shared/model/detailed-app.model';
 import { TaskLaunchConfig } from '../../shared/model/task.model';
 import { TaskLaunchService } from '../../tasks-jobs/tasks/launch/task-launch.service';
 import { ApplicationType } from '../../shared/model/app.model';
@@ -54,7 +56,13 @@ export class TaskLaunchServiceMock {
         }
       }
     ];
-    config.ctr = ValuedConfigurationMetadataPropertyList.parse(CTR_OPTIONS);
+    config.ctr = {
+      options: ValuedConfigurationMetadataPropertyList.parse(CTR_OPTIONS),
+      optionsState: {
+        isLoading: false,
+        isOnError: false
+      }
+    };
     config.deployers = [
       {
         id: 'memory',
@@ -68,6 +76,10 @@ export class TaskLaunchServiceMock {
     ];
 
     return of(config);
+  }
+
+  ctrOptions(): Observable<ValuedConfigurationMetadataProperty[]> {
+    return of([]);
   }
 
   appDetails(type: ApplicationType, name: string, version: string): Observable<Array<any>> {
