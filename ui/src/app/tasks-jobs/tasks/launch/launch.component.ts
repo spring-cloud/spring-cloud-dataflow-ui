@@ -179,9 +179,9 @@ export class LaunchComponent implements OnInit, OnDestroy {
     this.updateArguments(args);
     const prepared = this.prepareParams(this.task.name, this.arguments, this.properties);
     this.taskService.launch(prepared.name, prepared.args, prepared.props)
-      .subscribe(() => {
+      .subscribe((executionId) => {
           this.notificationService.success('Launch success', `Successfully launched task definition "${this.task.name}"`);
-          this.router.navigate(['/tasks-jobs/tasks']);
+          this.router.navigate([`tasks-jobs/task-executions/${executionId}`]);
         },
         error => {
           const err = error.message ? error.message : error.toString();

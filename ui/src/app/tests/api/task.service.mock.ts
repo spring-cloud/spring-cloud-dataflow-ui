@@ -38,8 +38,8 @@ export class TaskServiceMock {
     return of(tasks);
   }
 
-  launch(taskName: string, args: string, props: string): Observable<any> {
-    return of({});
+  launch(taskName: string, args: string, props: string): Observable<number> {
+    return of(0);
   }
 
   executionStop(taskExecution: TaskExecution): Observable<any> {

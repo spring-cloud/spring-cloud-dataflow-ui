@@ -71,7 +71,7 @@ export class TaskService {
     return forkJoin(tasks.map(task => this.destroyTask(task)));
   }
 
-  launch(taskName: string, args: string, props: string): Observable<any> {
+  launch(taskName: string, args: string, props: string): Observable<number> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     let params = new HttpParams().append('name', taskName);
     if (args) {
@@ -81,8 +81,16 @@ export class TaskService {
       params = params.append('properties', props);
     }
     return this.httpClient
-      .post('/tasks/executions', {}, { headers, params })
+      .post<string>('/tasks/executions', {}, { headers, params })
       .pipe(
+        map(body => {
+          const parsed = parseInt(body, 10);
+          if (isNaN(parsed)) {
+            // sanity check if we get something unexpected
+            throw new Error(`Can't parse ${body} as executionId`);
+          }
+          return parsed;
+        }),
         catchError(ErrorUtils.catchError)
       );
   }
