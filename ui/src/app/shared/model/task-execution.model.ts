@@ -17,7 +17,7 @@ export class TaskExecution {
   parentExecutionId: number;
   resourceUrl: string;
   appProperties: object;
-  deploymentProperties: object;
+  deploymentProperties: {[key: string]: string};
 
   static parse(input) {
     const execution = new TaskExecution();
@@ -55,13 +55,13 @@ export class TaskExecution {
     return [];
   }
 
-  getDeploymentPropertiesToArray(): Array<any> {
+  getDeploymentPropertiesToArray(): Array<[key: string, value: string]> {
     if (this.deploymentProperties && Object.keys(this.deploymentProperties).length > 0) {
       return Object.keys(this.deploymentProperties).map((key) => {
-        return {
+        return [
           key,
-          value: this.deploymentProperties[key]
-        };
+          this.deploymentProperties[key]
+        ];
       });
     }
     return [];

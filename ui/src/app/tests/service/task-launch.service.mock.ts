@@ -74,12 +74,26 @@ export class TaskLaunchServiceMock {
         suffix: 'MB'
       }
     ];
+    config.deploymentProperties = [];
 
     return of(config);
   }
 
   ctrOptions(): Observable<ValuedConfigurationMetadataProperty[]> {
-    return of([]);
+    return of([
+      {
+        id: 'split-thread-max-pool-size',
+        name: 'split-thread-max-pool-size',
+        type: 'java.lang.Integer',
+        description: 'Split\'s maximum pool size. Default is {@code Integer.MAX_VALUE}.',
+        shortDescription: 'Split\'s maximum pool size.',
+        defaultValue: null,
+        deprecation: null,
+        sourceType: '',
+        isDeprecated: false,
+        value: ''
+      }
+    ]);
   }
 
   appDetails(type: ApplicationType, name: string, version: string): Observable<Array<any>> {

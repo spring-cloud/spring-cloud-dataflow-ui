@@ -99,9 +99,9 @@ export class TaskLaunchService {
       .pipe(mergeMap((task: Task) => {
         const taskConversion = this.toolsService.parseTaskTextToGraph(task.dslText);
         const platforms = this.taskService.getPlatforms();
-        return zip(taskConversion, platforms);
+        return zip(of(task), taskConversion, platforms);
       }))
-      .pipe(mergeMap(([taskConversion, platforms]) => {
+      .pipe(mergeMap(([task, taskConversion, platforms]) => {
         const appNames = taskConversion.graph.nodes
           .filter(node => node.name !== 'START' && node.name !== 'END')
           .map(node => {
@@ -129,10 +129,20 @@ export class TaskLaunchService {
                 }, new Map<string, { version: string, versions: App[]}>());
               }))
           ));
-        return zip(of(taskConversion), of(platforms), appVersions);
+        return zip(of(task), of(taskConversion), of(platforms), appVersions);
       }))
-      .pipe(map(([taskConversion, platforms, appVersions]) => {
+      .pipe(map(([task, taskConversion, platforms, appVersions]) => {
         const c = new TaskLaunchConfig();
+
+        if (task.lastTaskExecution) {
+          c.deploymentProperties = task.lastTaskExecution
+          .getDeploymentPropertiesToArray()
+          .filter((tuple) => tuple[1] !== '******')
+          .map((tuple) => `${tuple[0]}=${tuple[1]}`);
+        } else {
+          c.deploymentProperties = [];
+        }
+
         c.id = id;
 
         c.apps = taskConversion.graph.nodes
@@ -204,7 +214,6 @@ export class TaskLaunchService {
         // just set empty options and loading state,
         // will get loaded later
         c.ctr = {
-          // options: ctrOptions,
           options: [],
           optionsState: {
             isLoading: true,

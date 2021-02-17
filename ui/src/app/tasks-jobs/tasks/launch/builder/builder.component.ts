@@ -168,6 +168,21 @@ export class BuilderComponent implements OnInit, OnDestroy {
               options.forEach(o => {
                 builder.ctrProperties.push(Object.assign({ isSemantic: true }, o));
               });
+
+              // need to set values here instead of init time
+              this.properties.forEach((line: string) => {
+                const arr = line.split(/=(.*)/);
+                const key = arr[0] as string;
+                const value = arr[1] as string;
+                if (TaskLaunchService.ctr.is(key)) {
+                  const ctrKey = TaskLaunchService.ctr.extract(key);
+                  builder.ctrProperties.forEach(p => {
+                    if (p.id === ctrKey) {
+                      p.value = value;
+                    }
+                  });
+                }
+              });
             },
             () => {
               this.refBuilder.ctrPropertiesState.isOnError = true;
@@ -530,13 +545,6 @@ export class BuilderComponent implements OnInit, OnDestroy {
             builder.formGroup.get('appsVersion').get(appKey).setValue(value);
           }
         }
-      } else if (TaskLaunchService.ctr.is(key)) {
-        const ctrKey = TaskLaunchService.ctr.extract(key);
-        builder.ctrProperties.forEach(p => {
-          if (p.id === ctrKey) {
-            p.value = value;
-          }
-        });
       } else if (!TaskLaunchService.app.is(key)) {
         // Invalid Key
         builder.errors.global.push(line);
@@ -550,6 +558,13 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   private build(taskLaunchConfig: TaskLaunchConfig): Builder {
     const formGroup: FormGroup = new FormGroup({});
+
+    // we dehydrate only when coming into builder, not
+    // when switching between build and free-text.
+    // dehydrated values are then expected to come back from free-text
+    if (this.properties.length === 0 && taskLaunchConfig.deploymentProperties.length > 0) {
+      this.properties = taskLaunchConfig.deploymentProperties;
+    }
 
     const getValue = (defaultValue) => !defaultValue ? '' : defaultValue;
     const builderAppsProperties = {};
