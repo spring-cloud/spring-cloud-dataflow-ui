@@ -106,6 +106,8 @@ export class TaskLaunchConfig {
     };
   };
 
+  deploymentProperties: string[];
+
   constructor() {
   }
 }

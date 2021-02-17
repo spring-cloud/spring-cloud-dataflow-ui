@@ -73,4 +73,19 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
     fixture.detectChanges();
     expect(component['getArguments']()).toEqual(jasmine.arrayContaining(['app.t1.0=--arg', 'app.t2.0=--arg']));
   });
+
+  it('should parse and dehydrate properties correctly', async () => {
+    component.task = TASK_2;
+    component.properties = [
+      'app.composed-task-runner.split-thread-max-pool-size=10',
+      'deployer.t1.cpu=1',
+      'app.t1.timestamp.format=yyyy'
+    ];
+    fixture.detectChanges();
+    expect(component['getProperties']()).toEqual(jasmine.arrayContaining([
+      'app.composed-task-runner.split-thread-max-pool-size=10',
+      'deployer.t1.cpu=1',
+      'app.t1.timestamp.format=yyyy'
+    ]));
+  });
 });
