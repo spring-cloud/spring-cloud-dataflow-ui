@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, of, zip } from 'rxjs';
-import { map, mergeMap, distinct } from 'rxjs/operators';
+import { map, mergeMap, distinct, reduce } from 'rxjs/operators';
 import { Task, TaskLaunchConfig } from '../../../shared/model/task.model';
 import { TaskService } from '../../../shared/api/task.service';
 import { App, ApplicationType } from '../../../shared/model/app.model';
@@ -128,7 +128,12 @@ export class TaskLaunchService {
                   return mapAccumulator;
                 }, new Map<string, { version: string, versions: App[]}>());
               }))
-          ));
+          ))
+          // we should have distinct maps for all apps so
+          // its safe to just blindly combine maps and get one final
+          .pipe(reduce((acc, val) => {
+            return new Map([...acc, ...val]);
+          }));
         return zip(of(task), of(taskConversion), of(platforms), appVersions);
       }))
       .pipe(map(([task, taskConversion, platforms, appVersions]) => {
