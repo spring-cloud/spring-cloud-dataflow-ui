@@ -117,7 +117,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="!(stepResource.stepExecution.executionContext.values | keyvalue)?.length > 0">
+          <div *ngIf="(stepResource.stepExecution.executionContext.values | keyvalue)?.length == 0">
             No step execution context
           </div>
         </ng-template>
@@ -378,8 +378,8 @@
                 <div class="value">
                   <div *ngIf="taskExecution.getDeploymentPropertiesToArray().length > 0">
                     <div *ngFor="let arg of taskExecution.getDeploymentPropertiesToArray()">
-                      {{arg.key}}:
-                      <strong>{{arg.value}}</strong>
+                      {{arg[0]}}:
+                      <strong>{{arg[1]}}</strong>
                     </div>
                   </div>
                   <div *ngIf="taskExecution.getDeploymentPropertiesToArray().length === 0">

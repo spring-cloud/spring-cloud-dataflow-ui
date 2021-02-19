@@ -130,8 +130,8 @@
                 <div class="value">
                   <div *ngIf="execution.getDeploymentPropertiesToArray().length > 0">
                     <div *ngFor="let arg of execution.getDeploymentPropertiesToArray()">
-                      {{arg.key}}:
-                      <strong>{{arg.value}}</strong>
+                      {{arg[0]}}:
+                      <strong>{{arg[1]}}</strong>
                     </div>
                   </div>
                   <div *ngIf="execution.getDeploymentPropertiesToArray().length === 0">
