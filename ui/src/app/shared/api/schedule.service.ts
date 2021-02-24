@@ -37,6 +37,12 @@ export class ScheduleService {
       .get<any>(`${url}?platform=${platform}`)
       .pipe(
         map(SchedulePage.parse),
+        map((page: SchedulePage) => {
+          page.items.forEach(schedule => {
+            schedule.platform = platform;
+          });
+          return page;
+        }),
         catchError(ErrorUtils.catchError)
       );
   }
