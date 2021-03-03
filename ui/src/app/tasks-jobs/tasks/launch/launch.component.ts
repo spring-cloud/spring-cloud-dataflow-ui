@@ -184,6 +184,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
           this.router.navigate([`tasks-jobs/task-executions/${executionId}`]);
         },
         error => {
+          this.isLaunching = false;
           const err = error.message ? error.message : error.toString();
           this.notificationService.error('An error occurred', err ? err : 'An error occurred during the task launch.');
         });

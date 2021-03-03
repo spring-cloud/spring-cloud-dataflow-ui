@@ -44,6 +44,17 @@
       </clr-tab-content>
     </clr-tab>
   </clr-tabs>
+
+  <clr-modal [(clrModalOpen)]="isLaunching" *ngIf="task" [clrModalClosable]="false">
+    <h3 class="modal-title">Launch task</h3>
+    <div class="modal-body" *ngIf="isLaunching">
+      <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
+      <span>Launching task ...</span>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
+    </div>
+  </clr-modal>
 </div>
 
 <div *ngIf="loading">
