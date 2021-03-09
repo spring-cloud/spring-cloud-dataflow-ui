@@ -92,7 +92,7 @@
         Deploy
       </button>
       <button class="action-item" (click)="deploy([stream])" *ngIf="stream.status !== 'UNDEPLOYED'"
-              [appRole]="['ROLE_UPDATE']">
+              [appRole]="['ROLE_MODIFY']">
         Update
       </button>
       <button class="action-item" (click)="undeploy([stream])"
