@@ -12,7 +12,7 @@
       Deploy stream
     </button>
     <button id="btn-update" *ngIf="stream.status !== 'UNDEPLOYED'" type="button" class="btn btn-sm btn-secondary"
-            (click)="deploy()" [appRole]="['ROLE_UPDATE']">
+            (click)="deploy()" [appRole]="['ROLE_MODIFY']">
       Update stream
     </button>
     <button id="btn-undeploy" *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
