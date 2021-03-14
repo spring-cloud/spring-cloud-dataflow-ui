@@ -65,9 +65,11 @@ h1 {
 
 .clr-log {
   padding: 1rem 0;
+  max-height: inherit;
 
   pre {
     overflow: scroll;
+    max-height: inherit;
     background: var(--clr-header-6-bg-color, #00364d);
     padding: 1rem;
     color: var(--clr-header-title-color, #fafafa);
