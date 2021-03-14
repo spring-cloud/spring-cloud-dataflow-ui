@@ -68,7 +68,7 @@ h1 {
   max-height: inherit;
 
   pre {
-    overflow: scroll;
+    overflow: auto;
     max-height: inherit;
     background: var(--clr-header-6-bg-color, #00364d);
     padding: 1rem;
