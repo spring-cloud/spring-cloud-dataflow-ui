@@ -675,7 +675,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     });
 
     // Useful methods for FormArray
-    const add = (array: FormArray) => {
+    const addProperty = (array: FormArray) => {
       const group = new FormGroup({
         property: new FormControl('', [TaskLaunchValidator.key]),
         global: new FormControl('')
@@ -687,7 +687,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       array.push(group);
     };
 
-    const addNoPropery = (array: FormArray) => {
+    const addArgument = (array: FormArray) => {
       const group = new FormGroup({
         global: new FormControl('')
       });
@@ -699,7 +699,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     };
 
     const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
-    const clean = (val: Array<any>, array: FormArray) => {
+    const clean = (val: Array<any>, array: FormArray, addField: (array: FormArray) => void) => {
       const toRemove = val.map((a, index) =>
         ((index < (val.length - 1) && isEmpty(a)) ? index : null)).filter((a) => a != null);
 
@@ -707,29 +707,29 @@ export class BuilderComponent implements OnInit, OnDestroy {
         array.removeAt(a);
       });
       if (!isEmpty(val[val.length - 1])) {
-        return add(array);
+        return addField(array);
       }
     };
 
     // Dynamic App properties
     const globalControls: FormArray = new FormArray([]);
-    add(globalControls);
+    addProperty(globalControls);
     globalControls.valueChanges.subscribe((val: Array<any>) => {
-      clean(val, globalControls);
+      clean(val, globalControls, addProperty);
     });
 
     // Dynamic Platform properties
     const specificPlatformControls: FormArray = new FormArray([]);
-    add(specificPlatformControls);
+    addProperty(specificPlatformControls);
     specificPlatformControls.valueChanges.subscribe((val: Array<any>) => {
-      clean(val, specificPlatformControls);
+      clean(val, specificPlatformControls, addProperty);
     });
 
     // Dynamic Arguments
     const argumentsControls: FormArray = new FormArray([]);
-    addNoPropery(argumentsControls);
+    addArgument(argumentsControls);
     argumentsControls.valueChanges.subscribe((val: Array<any>) => {
-      clean(val, argumentsControls);
+      clean(val, argumentsControls, addArgument);
     });
 
     formGroup.addControl('deployers', deployers);
