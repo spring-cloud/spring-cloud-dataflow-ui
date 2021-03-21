@@ -40,7 +40,13 @@ export class TaskExecution {
   }
 
   getArgumentsToArray(): Array<any> {
-    return (this.arguments || []).map((arg) => arg.split('='));
+    return (this.arguments || []).map((arg) => {
+      const index = arg.indexOf('=');
+      if (index === -1) {
+        return [arg];
+      }
+      return [arg.substring(0, index), arg.substring(index + 1)];
+    });
   }
 
   getAppPropertiesToArray(): Array<any> {
