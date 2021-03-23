@@ -59,6 +59,10 @@ export class EditorService implements Flo.Editor {
     if (magnetT && magnetT.getAttribute('type') === 'output') {
       return false;
     }
+    // Prevent directed circles
+    if (flo.getGraph().isSuccessor(cellViewT.model, cellViewS.model)) {
+      return false;
+    }
 
     /*
      * See if that can prevented...
