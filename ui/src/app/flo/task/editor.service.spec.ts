@@ -18,7 +18,7 @@ const $: any = _$;
 const joint: any = _joint;
 
 
-describe('Task RenderService', () => {
+describe('Task EditorService', () => {
 
   const loggerService = new LoggerService();
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
@@ -112,6 +112,14 @@ describe('Task RenderService', () => {
     });
   }
 
+  function validateLink(from: dia.Element, to: dia.Element): boolean {
+    const fromView = flo.getPaper().findViewByModel(from);
+    const toView = flo.getPaper().findViewByModel(to);
+    const magnetS = Flo.findMagnetByClass(fromView, '.output-port');
+    const magnetT = Flo.findMagnetByClass(toView, '.input-port');
+
+    return component.editor.validateLink(flo, fromView, magnetS, toView, magnetT, true, null);
+  }
 
   it('default content', () => {
     component.editor.setDefaultContent(flo, METAMODEL);
@@ -273,5 +281,18 @@ describe('Task RenderService', () => {
     expect(link.get('target').id).toBe(taskA.id);
     expect(link.get('target').selector).toBe('.input-port');
   });
+
+  it('circles cannot be created', () => {
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
+
+    expect(validateLink(taskA, taskB)).toBeTrue();
+    createLink(taskA, taskB);
+
+    expect(flo.getGraph().getElements().length).toBe(2);
+    expect(flo.getGraph().getLinks().length).toBe(1);
+
+    expect(validateLink(taskB, taskA)).toBeFalse();
+  })
 
 });
