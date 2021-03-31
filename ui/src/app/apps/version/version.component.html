@@ -17,7 +17,9 @@
         </td>
         <td class="left"><span class="label">{{app.version}}</span></td>
         <td class="left">
-          {{app.uri}}
+          <span style="word-break: break-all">
+            {{app.uri}}
+          </span>
         </td>
         <td nowrap="">
           <button type="button" class="btn btn-sm btn-secondary" (click)="unregisterConfirm(app)">Unregister</button>
