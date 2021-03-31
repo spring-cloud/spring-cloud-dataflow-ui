@@ -116,6 +116,14 @@ export class StreamImportComponent {
   }
 
   open() {
+    this.result = {
+      success: [],
+      error: [],
+      duration: 0
+    };
+    this.view = 'file';
+    this.file = null;
+    this.optimize = false;
     this.isOpen = true;
   }
 

@@ -116,6 +116,14 @@ export class TaskImportComponent {
   }
 
   open() {
+    this.result = {
+      success: [],
+      error: [],
+      duration: 0
+    };
+    this.view = 'file';
+    this.file = null;
+    this.excludeChildren = false;
     this.isOpen = true;
   }
 
