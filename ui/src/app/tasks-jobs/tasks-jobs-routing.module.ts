@@ -87,6 +87,15 @@ const routes: Routes = [
           feature: 'schedules'
         },
       },
+      {
+        path: 'schedules/:id/:platform',
+        component: ScheduleComponent,
+        data: {
+          authenticate: true,
+          roles: ['ROLE_VIEW'],
+          feature: 'schedules'
+        },
+      },
     ]
   },
 ];

@@ -49,7 +49,7 @@
     <clr-dg-filter style="display:none;"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let schedule of page?.items" [clrDgItem]="schedule">
-    <clr-dg-cell><a routerLink="/tasks-jobs/schedules/{{schedule.name}}">{{schedule.name}}</a></clr-dg-cell>
+    <clr-dg-cell><a routerLink="/tasks-jobs/schedules/{{schedule.name}}/{{schedule.platform}}">{{schedule.name}}</a></clr-dg-cell>
     <clr-dg-cell><a [routerLink]="'/tasks-jobs/tasks/' + schedule.taskName">{{schedule.taskName}}</a></clr-dg-cell>
     <clr-dg-cell>{{schedule.platform || 'N/A'}}</clr-dg-cell>
     <clr-dg-cell>{{schedule.cronExpression || 'N/A'}}</clr-dg-cell>
