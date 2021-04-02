@@ -252,7 +252,7 @@
               <tbody>
               <tr *ngFor="let schedule of schedules?.items">
                 <td class="left">
-                  <a routerLink="/tasks-jobs/schedules/{{schedule.name}}">{{schedule.name}}</a>
+                  <a routerLink="/tasks-jobs/schedules/{{schedule.name}}/{{schedule.platform}}">{{schedule.name}}</a>
                 </td>
                 <td class="left">{{schedule.platform}}</td>
                 <td class="left">{{schedule.cronExpression}}</td>

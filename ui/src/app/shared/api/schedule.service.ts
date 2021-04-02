@@ -47,15 +47,16 @@ export class ScheduleService {
       );
   }
 
-  getSchedule(scheduleName: string): Observable<Schedule> {
+  getSchedule(scheduleName: string, platformName?: string): Observable<Schedule> {
     // return of(GET_SCHEDULE)
     //   .pipe(
     //     map(Schedule.parse),
     //     delay(2000),
     //     catchError(ErrorUtils.catchError)
     //   );
+    let paramPlatform = platformName ? `?platform=${platformName}` : '';
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.httpClient.get<any>(`/tasks/schedules/${scheduleName}`, { headers })
+    return this.httpClient.get<any>(`/tasks/schedules/${scheduleName}${paramPlatform}`, { headers })
       .pipe(
         map(Schedule.parse),
         catchError(ErrorUtils.catchError)

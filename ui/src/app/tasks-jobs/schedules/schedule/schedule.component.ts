@@ -37,7 +37,8 @@ export class ScheduleComponent implements OnInit {
         (params: Params) => {
           this.schedule = new Schedule();
           this.schedule.name = params.id;
-          return this.scheduleService.getSchedule(params.id);
+          this.schedule.platform = params.platform;
+          return this.scheduleService.getSchedule(params.id, params.platform);
         },
       ),
       map((schedule: Schedule) => {
