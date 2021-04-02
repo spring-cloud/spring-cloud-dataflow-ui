@@ -37,6 +37,7 @@ npm-debug.log
 *.sublime-workspace
 .DS_Store
 Thumbs.db
+.jfrog/
 
 # IDE - VSCode main
 .vscode/*
