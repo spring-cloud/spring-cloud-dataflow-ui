@@ -38,9 +38,9 @@
 
   textarea {
     margin: 0;
-    overflow: hidden;
-    overflow-x: scroll;
-    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: auto;
+    white-space: pre;
     border: 0 none;
     border-radius: 0;
     height: 20px;
