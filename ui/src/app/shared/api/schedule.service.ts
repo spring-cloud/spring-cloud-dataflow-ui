@@ -54,7 +54,7 @@ export class ScheduleService {
     //     delay(2000),
     //     catchError(ErrorUtils.catchError)
     //   );
-    let paramPlatform = platformName ? `?platform=${platformName}` : '';
+    const paramPlatform = platformName ? `?platform=${platformName}` : '';
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient.get<any>(`/tasks/schedules/${scheduleName}${paramPlatform}`, { headers })
       .pipe(
