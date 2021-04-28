@@ -52,7 +52,8 @@ jobs:
           -DprocessAllModules=true \
           -DgenerateBackupPoms=false \
           -Dartifactory.publish.artifacts=false \
-          -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}-'${BUILD_ZOO_HANDLER_milestone_version}
+          -DnewVersion='${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}-'${BUILD_ZOO_HANDLER_milestone_version} \
+          -B
         jfrog rt build-clean
         jfrog rt mvn clean install \
           -gs .github/settings.xml \
