@@ -4,6 +4,7 @@ h4 {
 }
 
 input {
+  background: var(--clr-forms-textarea-background-color, #FFF);
   display: inline-block;
   width: 100%;
   border: 1px solid var(--clr-forms-border-color, #b3b3b3);
