@@ -55,6 +55,17 @@ export class TaskServiceMock {
     return of(taskExecutions);
   }
 
+  getTaskExecutionsCount(): Observable<any> {
+    return of({
+      coompleted: 10,
+      all: 12
+    });
+  }
+
+  taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
+    return of({});
+  }
+
   getExecutions(page: number, size: number, taskName?: string, sort?: string, order?: string): Observable<TaskExecutionPage> {
     return of(GET_EXECUTIONS)
       .pipe(

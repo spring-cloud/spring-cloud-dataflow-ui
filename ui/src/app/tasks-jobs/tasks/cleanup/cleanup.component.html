@@ -1,0 +1,36 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="task" [clrModalClosable]="!isRunning">
+    <h3 class="modal-title">Confirm Clean Up Execution(s)</h3>
+    <div class="modal-body" *ngIf="!isRunning && !loading && count.completed === count.all">
+      <p>
+        This action will remove <strong>{{count.all}} execution(s)</strong>.
+        Are you sure?
+      </p>
+    </div>
+    <div class="modal-body" *ngIf="!isRunning && !loading && count.completed !== count.all">
+      <p style="padding-bottom: 8px;">
+        Please, selected the status of the execution to remove:
+      </p>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio [(ngModel)]="status" value="all" name="options"/>
+        <label>All the {{count.all}} execution(s)</label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio [(ngModel)]="status" value="completed" name="options"/>
+        <label>{{count.completed}} execution(s) completed</label>
+      </clr-radio-wrapper>
+    </div>
+    <div class="modal-body" *ngIf="isRunning">
+      <clr-spinner clrInline clrSmall></clr-spinner>
+      Removing data...
+    </div>
+    <div class="modal-body" *ngIf="loading">
+      <clr-spinner clrInline clrSmall></clr-spinner>
+      Loading...
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+      <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
+        <span>Clean up Execution(s)</span>
+      </button>
+    </div>
+  </clr-modal>

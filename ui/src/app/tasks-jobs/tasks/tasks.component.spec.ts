@@ -15,6 +15,7 @@ import { ContextServiceMock } from '../../tests/service/context.service.mock';
 import { SettingsServiceMock } from '../../tests/service/settings.service.mock';
 import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
 import { DatagridColumnPipe } from '../../shared/pipe/datagrid-column.pipe';
+import { CleanupComponent } from './cleanup/cleanup.component';
 
 describe('tasks-jobs/tasks/tasks.component.ts', () => {
 
@@ -26,6 +27,7 @@ describe('tasks-jobs/tasks/tasks.component.ts', () => {
       declarations: [
         TasksComponent,
         DestroyComponent,
+        CleanupComponent,
         RoleDirective,
         DatagridColumnPipe
       ],
