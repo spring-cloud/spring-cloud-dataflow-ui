@@ -21,6 +21,9 @@
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="destroy()" [appRole]="['ROLE_DESTROY']">
       Destroy task
     </button>
+    <button type="button" class="btn btn-sm btn-outline-danger" (click)="cleanup()" [appRole]="['ROLE_DESTROY']">
+      Cleanup
+    </button>
   </div>
 
   <div class="clr-row">
@@ -281,4 +284,5 @@
 
 <app-task-destroy #destroyModal (onDestroyed)="back()"></app-task-destroy>
 <app-task-execution-log #logModal></app-task-execution-log>
+<app-task-cleanup #cleanupModal></app-task-cleanup>
 

@@ -95,6 +95,9 @@
       <button class="action-item" (click)="cloneTasks([task])" [appRole]="['ROLE_CREATE']"
               [disabled]="task.composedTaskElement">Clone
       </button>
+      <button class="action-item" (click)="cleanup(task)" [appRole]="['ROLE_DESTROY']"
+              [disabled]="task.composedTaskElement">Cleanup
+      </button>
       <button class="action-item" grafanaDashboardTask [task]="task">
         Grafana Dashboard
       </button>
@@ -116,3 +119,4 @@
 
 <app-task-destroy #destroyModal (onDestroyed)="refresh(state)"></app-task-destroy>
 <app-task-clone #cloneModal (onCloned)="refresh(state)"></app-task-clone>
+<app-task-cleanup #cleanupModal (onCleaned)="refresh(state)"></app-task-cleanup>

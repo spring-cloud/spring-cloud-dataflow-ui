@@ -18,6 +18,7 @@ import { ExecutionComponent } from './executions/execution/execution.component';
 import { ExecutionComponent as JobExecutionComponent } from './jobs/execution/execution.component';
 import { StopComponent } from './executions/stop/stop.component';
 import { CleanupComponent } from './executions/cleanup/cleanup.component';
+import { CleanupComponent as CleanupTaskComponent } from './tasks/cleanup/cleanup.component';
 import { StepComponent } from './jobs/step/step.component';
 import { CreateComponent } from './tasks/create/create.component';
 import { CreateComponent as CreateScheduleComponent } from './schedules/create/create.component';
@@ -52,6 +53,7 @@ import { SharedFloModule } from '../flo/shared-flo.module';
     ScheduleComponent,
     CreateScheduleComponent,
     PlatformFilterComponent,
+    CleanupTaskComponent,
     CloneComponent
   ],
   imports: [

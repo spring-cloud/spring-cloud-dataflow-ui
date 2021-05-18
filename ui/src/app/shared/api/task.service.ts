@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { Task, TaskPage } from '../model/task.model';
 import { HttpUtils } from '../support/http.utils';
 import { TaskExecution, TaskExecutionPage } from '../model/task-execution.model';
@@ -118,6 +118,47 @@ export class TaskService {
 
   executionsClean(taskExecutions: TaskExecution[]): Observable<any> {
     return forkJoin(taskExecutions.map(execution => this.executionClean(execution)));
+  }
+
+  taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    const paramCompleted = completed ? '&completed=true' : '';
+    const paramTask = task ? `&name=${task.name}` : '';
+    return this.httpClient
+      .delete<any>(`/tasks/executions?action=CLEANUP,REMOVE_DATA${paramCompleted}${paramTask}`, {
+        headers,
+        observe: 'response'
+      })
+      .pipe(
+        catchError(ErrorUtils.catchError)
+      );
+  }
+
+  getTaskExecutionsCount(task?: Task): Observable<{ completed: number, all: number}> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    let url = '/tasks/info/executions';
+    let url2 = `${url}?completed=true'`;
+    if (task) {
+      url = `/tasks/info/executions?name=${task.name}`;
+      url2 = `${url}&completed=true`;
+    }
+    return this.httpClient
+      .get<any>(url, { headers })
+      .pipe(
+        mergeMap((data) => {
+          return this.httpClient
+          .get<any>(url2, { headers })
+          .pipe(
+            map((data2) => {
+              return {
+                completed: +data2.totalExecutions,
+                all: +data.totalExecutions
+              } 
+            })
+          )
+        }),
+        catchError(ErrorUtils.catchError)
+      );
   }
 
   getExecutions(page: number, size: number, taskName?: string, sort?: string, order?: string): Observable<TaskExecutionPage> {

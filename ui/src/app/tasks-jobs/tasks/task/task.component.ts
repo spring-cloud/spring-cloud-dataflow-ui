@@ -15,6 +15,7 @@ import { AboutService } from '../../../shared/api/about.service';
 import { AboutState } from '../../../shared/store/about.reducer';
 import { ScheduleService } from '../../../shared/api/schedule.service';
 import { SchedulePage } from '../../../shared/model/schedule.model';
+import { CleanupComponent } from '../cleanup/cleanup.component';
 
 @Component({
   selector: 'app-task',
@@ -33,6 +34,7 @@ export class TaskComponent implements OnInit {
 
   @ViewChild('destroyModal', { static: true }) destroyModal: DestroyComponent;
   @ViewChild('logModal', { static: true }) logModal: LogComponent;
+  @ViewChild('cleanupModal', { static: true }) cleanupModal: CleanupComponent;
 
   constructor(private taskService: TaskService,
               private router: Router,
@@ -166,6 +168,10 @@ export class TaskComponent implements OnInit {
 
   schedule() {
     this.router.navigateByUrl(`tasks-jobs/schedules/${this.task.name}/create`);
+  }
+
+  cleanup() {
+    this.cleanupModal.open(this.task);
   }
 
   back() {
