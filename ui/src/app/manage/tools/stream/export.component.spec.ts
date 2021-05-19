@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { StreamExportComponent } from './export.component';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,18 +10,17 @@ import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { ImportExportServiceMock } from '../../../tests/service/import-export.service.mock';
-import { TaskExportComponent } from './export.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
-describe('manage/import-export/task/export.component.ts', () => {
+describe('manage/tools/stream/export.component.ts', () => {
 
-  let component: TaskExportComponent;
-  let fixture: ComponentFixture<TaskExportComponent>;
+  let component: StreamExportComponent;
+  let fixture: ComponentFixture<StreamExportComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TaskExportComponent
+        StreamExportComponent
       ],
       imports: [
         FormsModule,
@@ -42,7 +42,7 @@ describe('manage/import-export/task/export.component.ts', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskExportComponent);
+    fixture = TestBed.createComponent(StreamExportComponent);
     component = fixture.componentInstance;
     NotificationServiceMock.mock.clearAll();
   });
@@ -59,8 +59,8 @@ describe('manage/import-export/task/export.component.ts', () => {
       fixture.detectChanges();
       component.run();
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Task(s) export');
-      expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Task(s) has been exported.');
+      expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Stream(s) export');
+      expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Stream(s) has been exported.');
       expect(component.isOpen).toBeFalsy();
       done();
     }, 200);
@@ -74,8 +74,8 @@ describe('manage/import-export/task/export.component.ts', () => {
       component.selected = [];
       component.run();
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('No task selected');
-      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, select task(s) to export.');
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('No stream selected');
+      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, select stream(s) to export.');
       done();
     }, 200);
   });

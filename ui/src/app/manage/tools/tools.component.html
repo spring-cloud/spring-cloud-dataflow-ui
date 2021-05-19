@@ -1,4 +1,4 @@
-<h1>Import / Export</h1>
+<h1>Tools</h1>
 
 <div class="clr-row">
   <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" appRole appFeature="streams">
@@ -14,6 +14,20 @@
         </div>
       </ng-template>
     </app-view-card>
+
+    <app-view-card titleModal="Clean up Executions" keyContext="import-export" name="import-export" id="cleanup">
+      <ng-template>
+        <div>
+          <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
+          <a href="/#" (click)="run('cleanup-all')">Clean up all task/job executions</a>
+        </div>
+        <div>
+          <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
+          <a href="/#" (click)="run('cleanup-completed')">Clean up all completed task/job executions</a>
+        </div>
+      </ng-template>
+    </app-view-card>
+
   </div>
   <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" appRole appFeature="tasks">
     <app-view-card titleModal="Tasks" keyContext="import-export" name="import-export" id="tasks">
@@ -36,3 +50,5 @@
 
 <app-manage-task-export #taskExportModal></app-manage-task-export>
 <app-manage-task-import #taskImportModal></app-manage-task-import>
+
+<app-tools-cleanup #cleanupModal></app-tools-cleanup>

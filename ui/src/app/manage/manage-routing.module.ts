@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ImportExportComponent } from './import-export/import-export.component';
+import { ToolsComponent } from './tools/tools.component';
 import { RecordsComponent } from './records/records.component';
 import { SecurityGuard } from '../security/support/security.guard';
 
@@ -14,8 +14,8 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'import-export',
-        component: ImportExportComponent,
+        path: 'tools',
+        component: ToolsComponent,
         data: {
           authenticate: true,
           roles: ['ROLE_CREATE'],

@@ -9,19 +9,19 @@ import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { ImportExportServiceMock } from '../../../tests/service/import-export.service.mock';
-import { StreamImportComponent } from './import.component';
 import { throwError } from 'rxjs';
+import { TaskImportComponent } from './import.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
-describe('manage/import-export/stream/import.component.ts', () => {
+describe('manage/tools/task/import.component.ts', () => {
 
-  let component: StreamImportComponent;
-  let fixture: ComponentFixture<StreamImportComponent>;
+  let component: TaskImportComponent;
+  let fixture: ComponentFixture<TaskImportComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        StreamImportComponent
+        TaskImportComponent
       ],
       imports: [
         FormsModule,
@@ -43,7 +43,7 @@ describe('manage/import-export/stream/import.component.ts', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StreamImportComponent);
+    fixture = TestBed.createComponent(TaskImportComponent);
     component = fixture.componentInstance;
     NotificationServiceMock.mock.clearAll();
   });
@@ -53,7 +53,7 @@ describe('manage/import-export/stream/import.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a stream import', async (done) => {
+  it('should run a task import', async (done) => {
     fixture.detectChanges();
     component.open();
     component.fileChanged({ target: { files: ['foo'] } });
@@ -64,7 +64,7 @@ describe('manage/import-export/stream/import.component.ts', () => {
   });
 
   it('should handle empty file and error', async (done) => {
-    spyOn(ImportExportServiceMock.mock, 'streamsImport').and.callFake(() => {
+    spyOn(ImportExportServiceMock.mock, 'tasksImport').and.callFake(() => {
       return throwError(new Error('Fake error'));
     });
     fixture.detectChanges();

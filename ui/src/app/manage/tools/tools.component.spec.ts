@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SecurityServiceMock } from '../../tests/api/security.service.mock';
 import { AboutServiceMock } from '../../tests/api/about.service.mock';
 import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { ImportExportComponent } from './import-export.component';
+import { ToolsComponent } from './tools.component';
 import { StreamServiceMock } from '../../tests/api/stream.service.mock';
 import { TaskServiceMock } from '../../tests/api/task.service.mock';
 import { StreamExportComponent } from './stream/export.component';
@@ -19,21 +19,23 @@ import { ImportExportServiceMock } from '../../tests/service/import-export.servi
 import { By } from '@angular/platform-browser';
 import { RoleDirective } from '../../security/directive/role.directive';
 import { ContextServiceMock } from '../../tests/service/context.service.mock';
+import { CleanupComponent } from './cleanup/cleanup.component';
 
-describe('manage/import-export/import-export.component.ts', () => {
+describe('manage/tools/import-export.component.ts', () => {
 
-  let component: ImportExportComponent;
-  let fixture: ComponentFixture<ImportExportComponent>;
+  let component: ToolsComponent;
+  let fixture: ComponentFixture<ToolsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ImportExportComponent,
+        ToolsComponent,
         TypeFilterComponent,
         StreamExportComponent,
         StreamImportComponent,
         TaskExportComponent,
         TaskImportComponent,
+        CleanupComponent,
         CardComponent,
         RoleDirective
       ],
@@ -57,7 +59,7 @@ describe('manage/import-export/import-export.component.ts', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ImportExportComponent);
+    fixture = TestBed.createComponent(ToolsComponent);
     component = fixture.componentInstance;
   });
 

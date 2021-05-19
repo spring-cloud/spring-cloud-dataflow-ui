@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { StreamExportComponent } from './export.component';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -10,17 +9,19 @@ import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { ImportExportServiceMock } from '../../../tests/service/import-export.service.mock';
+import { StreamImportComponent } from './import.component';
+import { throwError } from 'rxjs';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
-describe('manage/import-export/stream/export.component.ts', () => {
+describe('manage/tools/stream/import.component.ts', () => {
 
-  let component: StreamExportComponent;
-  let fixture: ComponentFixture<StreamExportComponent>;
+  let component: StreamImportComponent;
+  let fixture: ComponentFixture<StreamImportComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        StreamExportComponent
+        StreamImportComponent
       ],
       imports: [
         FormsModule,
@@ -42,7 +43,7 @@ describe('manage/import-export/stream/export.component.ts', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StreamExportComponent);
+    fixture = TestBed.createComponent(StreamImportComponent);
     component = fixture.componentInstance;
     NotificationServiceMock.mock.clearAll();
   });
@@ -52,32 +53,37 @@ describe('manage/import-export/stream/export.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a stream export', async (done) => {
+  it('should run a stream import', async (done) => {
     fixture.detectChanges();
     component.open();
-    setTimeout(() => {
-      fixture.detectChanges();
-      component.run();
-      fixture.detectChanges();
-      expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Stream(s) export');
-      expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Stream(s) has been exported.');
-      expect(component.isOpen).toBeFalsy();
-      done();
-    }, 200);
+    component.fileChanged({ target: { files: ['foo'] } });
+    component.run();
+    fixture.detectChanges();
+    expect(component.view).toBe('result');
+    done();
   });
 
-  it('should manage error if no stream selected', async (done) => {
+  it('should handle empty file and error', async (done) => {
+    spyOn(ImportExportServiceMock.mock, 'streamsImport').and.callFake(() => {
+      return throwError(new Error('Fake error'));
+    });
     fixture.detectChanges();
     component.open();
-    setTimeout(() => {
-      fixture.detectChanges();
-      component.selected = [];
-      component.run();
-      fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('No stream selected');
-      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, select stream(s) to export.');
-      done();
-    }, 200);
+    component.fileChanged('foo');
+    component.run();
+    fixture.detectChanges();
+    expect(component.view).toBe('file');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid file');
+    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, select a file.');
+    component.fileChanged({ target: { files: ['foo'] } });
+    fixture.detectChanges();
+    component.run();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[1].title).toBe('Invalid file');
+    expect(NotificationServiceMock.mock.errorNotification[1].message).toBe('The file is not valid.');
+    done();
   });
 
 });

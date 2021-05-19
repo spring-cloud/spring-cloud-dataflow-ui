@@ -9,19 +9,18 @@ import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
 import { ImportExportServiceMock } from '../../../tests/service/import-export.service.mock';
-import { throwError } from 'rxjs';
-import { TaskImportComponent } from './import.component';
+import { TaskExportComponent } from './export.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
-describe('manage/import-export/task/import.component.ts', () => {
+describe('manage/tools/task/export.component.ts', () => {
 
-  let component: TaskImportComponent;
-  let fixture: ComponentFixture<TaskImportComponent>;
+  let component: TaskExportComponent;
+  let fixture: ComponentFixture<TaskExportComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        TaskImportComponent
+        TaskExportComponent
       ],
       imports: [
         FormsModule,
@@ -43,7 +42,7 @@ describe('manage/import-export/task/import.component.ts', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskImportComponent);
+    fixture = TestBed.createComponent(TaskExportComponent);
     component = fixture.componentInstance;
     NotificationServiceMock.mock.clearAll();
   });
@@ -53,37 +52,32 @@ describe('manage/import-export/task/import.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a task import', async (done) => {
+  it('should run a stream export', async (done) => {
     fixture.detectChanges();
     component.open();
-    component.fileChanged({ target: { files: ['foo'] } });
-    component.run();
-    fixture.detectChanges();
-    expect(component.view).toBe('result');
-    done();
+    setTimeout(() => {
+      fixture.detectChanges();
+      component.run();
+      fixture.detectChanges();
+      expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Task(s) export');
+      expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Task(s) has been exported.');
+      expect(component.isOpen).toBeFalsy();
+      done();
+    }, 200);
   });
 
-  it('should handle empty file and error', async (done) => {
-    spyOn(ImportExportServiceMock.mock, 'tasksImport').and.callFake(() => {
-      return throwError(new Error('Fake error'));
-    });
+  it('should manage error if no stream selected', async (done) => {
     fixture.detectChanges();
     component.open();
-    component.fileChanged('foo');
-    component.run();
-    fixture.detectChanges();
-    expect(component.view).toBe('file');
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid file');
-    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, select a file.');
-    component.fileChanged({ target: { files: ['foo'] } });
-    fixture.detectChanges();
-    component.run();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[1].title).toBe('Invalid file');
-    expect(NotificationServiceMock.mock.errorNotification[1].message).toBe('The file is not valid.');
-    done();
+    setTimeout(() => {
+      fixture.detectChanges();
+      component.selected = [];
+      component.run();
+      fixture.detectChanges();
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('No task selected');
+      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, select task(s) to export.');
+      done();
+    }, 200);
   });
 
 });
