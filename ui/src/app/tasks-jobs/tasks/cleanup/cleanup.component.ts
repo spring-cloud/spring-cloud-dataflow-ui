@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { TaskExecution } from '../../../shared/model/task-execution.model';
 import { TaskService } from '../../../shared/api/task.service';
 import { NotificationService } from '../../../shared/service/notification.service';
 import { Task } from '../../../shared/model/task.model';
-import { AppError } from 'src/app/shared/model/error.model';
+import { AppError } from '../../../shared/model/error.model';
 
 @Component({
   selector: 'app-task-cleanup',
