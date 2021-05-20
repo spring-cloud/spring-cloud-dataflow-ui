@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { NotificationService } from "src/app/shared/service/notification.service";
+import { NotificationService } from "../../shared/service/notification.service";
 import { CleanupComponent } from "./cleanup/cleanup.component";
 import { StreamExportComponent } from "./stream/export.component";
 import { StreamImportComponent } from "./stream/import.component";
