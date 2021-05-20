@@ -1,18 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { FormsModule } from "@angular/forms";
-import { ClarityModule } from "@clr/angular";
-import { RouterTestingModule } from "@angular/router/testing";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { SecurityServiceMock } from "../../../tests/api/security.service.mock";
-import { AboutServiceMock } from "../../../tests/api/about.service.mock";
-import { NotificationServiceMock } from "../../../tests/service/notification.service.mock";
-import { By } from "@angular/platform-browser";
-import { TaskServiceMock } from "../../../tests/api/task.service.mock";
-import { CleanupComponent } from "./cleanup.component";
-import { ContextServiceMock } from "../../../tests/service/context.service.mock";
-import { Task } from "src/app/shared/model/task.model";
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { ClarityModule } from '@clr/angular';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
+import { AboutServiceMock } from '../../../tests/api/about.service.mock';
+import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
+import { By } from '@angular/platform-browser';
+import { TaskServiceMock } from '../../../tests/api/task.service.mock';
+import { CleanupComponent } from './cleanup.component';
+import { ContextServiceMock } from '../../../tests/service/context.service.mock';
 
-describe("manage/tools/cleanup/cleanup.component.ts", () => {
+describe('manage/tools/cleanup/cleanup.component.ts', () => {
   let component: CleanupComponent;
   let fixture: ComponentFixture<CleanupComponent>;
 
@@ -43,30 +42,30 @@ describe("manage/tools/cleanup/cleanup.component.ts", () => {
     NotificationServiceMock.mock.clearAll();
   });
 
-  it("should be created", () => {
+  it('should be created', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  it("should clean up the task executions", async (done) => {
-    component.open("all");
+  it('should clean up the task executions', async (done) => {
+    component.open('all');
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(
-      By.css(".modal-title-wrapper")
+      By.css('.modal-title-wrapper')
     ).nativeElement;
-    expect(title.textContent).toContain("Confirm Clean Up Execution(s)");
+    expect(title.textContent).toContain('Confirm Clean Up Execution(s)');
     fixture.debugElement
-      .query(By.css(".modal-footer .btn-danger"))
+      .query(By.css('.modal-footer .btn-danger'))
       .nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe(
-      "Clean up execution(s)"
+      'Clean up execution(s)'
     );
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe(
-      "12 execution(s) cleaned up."
+      '12 execution(s) cleaned up.'
     );
     done();
   });

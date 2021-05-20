@@ -1,5 +1,10 @@
 import { Constants, EditorComponent, Flo } from 'spring-flo';
-import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  inject,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
 import { MetamodelService } from './metamodel.service';
 import { RenderService } from './render.service';
 import { EditorService } from './editor.service';
@@ -17,11 +22,13 @@ import { StoreModule } from '@ngrx/store';
 const $: any = _$;
 const joint: any = _joint;
 
-
 describe('Task EditorService', () => {
-
   const loggerService = new LoggerService();
-  const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
+  const METAMODEL_SERVICE = new MetamodelService(
+    new MockSharedAppService(),
+    loggerService,
+    new ToolsServiceMock()
+  );
 
   let METAMODEL: Map<string, Map<string, Flo.ElementMetadata>>;
   let component: EditorComponent;
@@ -31,39 +38,34 @@ describe('Task EditorService', () => {
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
 
-  beforeEach(waitForAsync(() => {
-    METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
-    TestBed.configureTestingModule({
-      imports: [
-        TaskFloModule,
-        StoreModule.forRoot({})
-      ]
-    })
-      .compileComponents();
-  }));
-
   beforeEach(
-    inject(
-      [
-        ApplicationRef,
-        ComponentFactoryResolver
-      ],
-      (
-        _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver
-      ) => {
-        applicationRef = _applicationRef;
-        resolver = _resolver;
-      }
-    )
+    waitForAsync(() => {
+      METAMODEL_SERVICE.load().then((metamodel) => (METAMODEL = metamodel));
+      TestBed.configureTestingModule({
+        imports: [TaskFloModule, StoreModule.forRoot({})],
+      }).compileComponents();
+    })
   );
 
+  beforeEach(inject(
+    [ApplicationRef, ComponentFactoryResolver],
+    (_applicationRef: ApplicationRef, _resolver: ComponentFactoryResolver) => {
+      applicationRef = _applicationRef;
+      resolver = _resolver;
+    }
+  ));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = METAMODEL_SERVICE;
-    component.renderer = new RenderService(METAMODEL_SERVICE, null, resolver, fixture.debugElement.injector, applicationRef);
+    component.renderer = new RenderService(
+      METAMODEL_SERVICE,
+      null,
+      resolver,
+      fixture.debugElement.injector,
+      applicationRef
+    );
     component.editor = new EditorService();
     const subscription = component.floApi.subscribe((f) => {
       subscription.unsubscribe();
@@ -72,44 +74,57 @@ describe('Task EditorService', () => {
     // FF needs flo editor to have size otherwise `TypeError: a.getScreenCTM(...) is null`
     const floViewElemnt = $('#flow-view');
     floViewElemnt.css({
-      'height': '800px'
+      height: '800px',
     });
     fixture.detectChanges();
   });
 
-  function dropNodeFromPaletteOnCanvas(metadata: Flo.ElementMetadata, location?: dia.Point): dia.Element {
+  function dropNodeFromPaletteOnCanvas(
+    metadata: Flo.ElementMetadata,
+    location?: dia.Point
+  ): dia.Element {
     const node = flo.createNode(metadata, null, location);
     component.setDragDescriptor({
       sourceComponent: Constants.PALETTE_CONTEXT,
       source: {
-        view: flo.getPaper().findViewByModel(node)
-      }
+        view: flo.getPaper().findViewByModel(node),
+      },
     });
     component.handleNodeDropping();
     return node;
   }
 
-  function dropNodeFromPaletteOnCanvasLink(metadata: Flo.ElementMetadata, target: dia.Link): dia.Element {
+  function dropNodeFromPaletteOnCanvasLink(
+    metadata: Flo.ElementMetadata,
+    target: dia.Link
+  ): dia.Element {
     const node = flo.createNode(metadata, null);
     component.setDragDescriptor({
       sourceComponent: Constants.PALETTE_CONTEXT,
       source: {
-        view: flo.getPaper().findViewByModel(node)
+        view: flo.getPaper().findViewByModel(node),
       },
       target: {
         view: flo.getPaper().findViewByModel(target),
-      }
+      },
     });
     component.handleNodeDropping();
     return node;
   }
 
   function createLink(from: dia.Element, to: dia.Element): dia.Link {
-    return flo.createLink({
-      'id': from.id, 'port': 'output', 'selector': '.output-port'
-    }, {
-      'id': to.id, 'port': 'input', 'selector': '.input-port'
-    });
+    return flo.createLink(
+      {
+        id: from.id,
+        port: 'output',
+        selector: '.output-port',
+      },
+      {
+        id: to.id,
+        port: 'input',
+        selector: '.input-port',
+      }
+    );
   }
 
   function validateLink(from: dia.Element, to: dia.Element): boolean {
@@ -118,7 +133,15 @@ describe('Task EditorService', () => {
     const magnetS = Flo.findMagnetByClass(fromView, '.output-port');
     const magnetT = Flo.findMagnetByClass(toView, '.input-port');
 
-    return component.editor.validateLink(flo, fromView, magnetS, toView, magnetT, true, null);
+    return component.editor.validateLink(
+      flo,
+      fromView,
+      magnetS,
+      toView,
+      magnetT,
+      true,
+      null
+    );
   }
 
   it('default content', () => {
@@ -131,7 +154,10 @@ describe('Task EditorService', () => {
   });
 
   it('simple dnd', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 200 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 200,
+    });
     expect(taskA.prop('metadata/name')).toBe('a');
     expect(taskA.get('position').x).toBe(100);
     expect(taskA.get('position').y).toBe(200);
@@ -139,10 +165,19 @@ describe('Task EditorService', () => {
   });
 
   it('drop node from the palette on link', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
     const link = createLink(taskA, taskB);
-    const taskC = dropNodeFromPaletteOnCanvasLink(METAMODEL.get('task').get('c'), link);
+    const taskC = dropNodeFromPaletteOnCanvasLink(
+      METAMODEL.get('task').get('c'),
+      link
+    );
     const links = flo.getGraph().getLinks();
     expect(flo.getGraph().getElements().length).toBe(3);
     expect(links.length).toBe(2);
@@ -157,58 +192,110 @@ describe('Task EditorService', () => {
   });
 
   it('drag descriptor - drop on output port', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
     const rectA = taskA.getBBox();
-    const dropPt = joint.g.point(rectA.x + rectA.width / 2, rectA.y + rectA.height);
-    const dragDescriptor = component.editor.calculateDragDescriptor(flo, flo.getPaper().findViewByModel(taskB),
-      flo.getPaper().findViewByModel(taskA), dropPt, Constants.CANVAS_CONTEXT);
+    const dropPt = joint.g.point(
+      rectA.x + rectA.width / 2,
+      rectA.y + rectA.height
+    );
+    const dragDescriptor = component.editor.calculateDragDescriptor(
+      flo,
+      flo.getPaper().findViewByModel(taskB),
+      flo.getPaper().findViewByModel(taskA),
+      dropPt,
+      Constants.CANVAS_CONTEXT
+    );
     expect(dragDescriptor.sourceComponent).toBe(Constants.CANVAS_CONTEXT);
-    expect(dragDescriptor.source.view).toBe(flo.getPaper().findViewByModel(taskB));
+    expect(dragDescriptor.source.view).toBe(
+      flo.getPaper().findViewByModel(taskB)
+    );
     expect(dragDescriptor.source.cssClassSelector).toBe('.input-port');
-    expect(dragDescriptor.target.view).toBe(flo.getPaper().findViewByModel(taskA));
+    expect(dragDescriptor.target.view).toBe(
+      flo.getPaper().findViewByModel(taskA)
+    );
     expect(dragDescriptor.target.cssClassSelector).toBe('.output-port');
   });
 
   it('drag descriptor - drop on input port', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
     const rectA = taskA.getBBox();
     const dropPt = joint.g.point(rectA.x + rectA.width / 2, rectA.y);
-    const dragDescriptor = component.editor.calculateDragDescriptor(flo,
+    const dragDescriptor = component.editor.calculateDragDescriptor(
+      flo,
       flo.getPaper().findViewByModel(taskB),
       flo.getPaper().findViewByModel(taskA),
       dropPt,
-      Constants.CANVAS_CONTEXT);
+      Constants.CANVAS_CONTEXT
+    );
     expect(dragDescriptor.sourceComponent).toBe(Constants.CANVAS_CONTEXT);
-    expect(dragDescriptor.source.view).toBe(flo.getPaper().findViewByModel(taskB));
+    expect(dragDescriptor.source.view).toBe(
+      flo.getPaper().findViewByModel(taskB)
+    );
     expect(dragDescriptor.source.cssClassSelector).toBe('.output-port');
-    expect(dragDescriptor.target.view).toBe(flo.getPaper().findViewByModel(taskA));
+    expect(dragDescriptor.target.view).toBe(
+      flo.getPaper().findViewByModel(taskA)
+    );
     expect(dragDescriptor.target.cssClassSelector).toBe('.input-port');
   });
 
   it('drag descriptor - drop connected node on port', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
-    const taskC = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 300, y: 20 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
+    const taskC = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 300,
+      y: 20,
+    });
     const link = createLink(taskB, taskC);
     const rectA = taskA.getBBox();
     const dropPt = joint.g.point(rectA.x + rectA.width / 2, rectA.y);
-    const dragDescriptor = component.editor.calculateDragDescriptor(flo,
+    const dragDescriptor = component.editor.calculateDragDescriptor(
+      flo,
       flo.getPaper().findViewByModel(taskB),
       flo.getPaper().findViewByModel(taskA),
       dropPt,
-      Constants.CANVAS_CONTEXT);
+      Constants.CANVAS_CONTEXT
+    );
     expect(dragDescriptor.sourceComponent).toBe(Constants.CANVAS_CONTEXT);
-    expect(dragDescriptor.source.view).toBe(flo.getPaper().findViewByModel(taskB));
+    expect(dragDescriptor.source.view).toBe(
+      flo.getPaper().findViewByModel(taskB)
+    );
     expect(dragDescriptor.source.cssClassSelector).toBeUndefined();
     expect(dragDescriptor.target).toBeUndefined();
   });
 
   it('pre-delete', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
-    const taskC = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 300, y: 20 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
+    const taskC = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 300,
+      y: 20,
+    });
     createLink(taskB, taskC);
     createLink(taskC, taskA);
 
@@ -227,18 +314,24 @@ describe('Task EditorService', () => {
   });
 
   it('drop node on node input port', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
     const dragDescriptor = {
       sourceComponent: Constants.CANVAS_CONTEXT,
       source: {
         view: flo.getPaper().findViewByModel(taskA),
-        cssClassSelector: '.output-port'
+        cssClassSelector: '.output-port',
       },
       target: {
         view: flo.getPaper().findViewByModel(taskB),
-        cssClassSelector: '.input-port'
-      }
+        cssClassSelector: '.input-port',
+      },
     };
     expect(flo.getGraph().getElements().length).toBe(2);
     expect(flo.getGraph().getLinks().length).toBe(0);
@@ -255,18 +348,24 @@ describe('Task EditorService', () => {
   });
 
   it('drop node on node output port', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
     const dragDescriptor = {
       sourceComponent: Constants.CANVAS_CONTEXT,
       source: {
         view: flo.getPaper().findViewByModel(taskA),
-        cssClassSelector: '.input-port'
+        cssClassSelector: '.input-port',
       },
       target: {
         view: flo.getPaper().findViewByModel(taskB),
-        cssClassSelector: '.output-port'
-      }
+        cssClassSelector: '.output-port',
+      },
     };
     expect(flo.getGraph().getElements().length).toBe(2);
     expect(flo.getGraph().getLinks().length).toBe(0);
@@ -283,8 +382,14 @@ describe('Task EditorService', () => {
   });
 
   it('circles cannot be created', () => {
-    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), { x: 100, y: 20 });
-    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), { x: 100, y: 200 });
+    const taskA = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('a'), {
+      x: 100,
+      y: 20,
+    });
+    const taskB = dropNodeFromPaletteOnCanvas(METAMODEL.get('task').get('b'), {
+      x: 100,
+      y: 200,
+    });
 
     expect(validateLink(taskA, taskB)).toBeTrue();
     createLink(taskA, taskB);
@@ -293,6 +398,5 @@ describe('Task EditorService', () => {
     expect(flo.getGraph().getLinks().length).toBe(1);
 
     expect(validateLink(taskB, taskA)).toBeFalse();
-  })
-
+  });
 });

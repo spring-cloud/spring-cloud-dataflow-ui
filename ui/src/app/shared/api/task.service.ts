@@ -153,9 +153,9 @@ export class TaskService {
               return {
                 completed: +data2.totalExecutions,
                 all: +data.totalExecutions
-              } 
+              };
             })
-          )
+          );
         }),
         catchError(ErrorUtils.catchError)
       );

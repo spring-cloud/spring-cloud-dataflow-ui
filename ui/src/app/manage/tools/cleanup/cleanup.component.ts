@@ -1,19 +1,17 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { TaskExecution } from "../../../shared/model/task-execution.model";
-import { TaskService } from "../../../shared/api/task.service";
-import { NotificationService } from "../../../shared/service/notification.service";
-import { Task } from "../../../shared/model/task.model";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { TaskService } from '../../../shared/api/task.service';
+import { NotificationService } from '../../../shared/service/notification.service';
 
 @Component({
-  selector: "app-tools-cleanup",
-  templateUrl: "./cleanup.component.html",
+  selector: 'app-tools-cleanup',
+  templateUrl: './cleanup.component.html',
 })
 export class CleanupComponent {
   isOpen = false;
   isRunning = false;
   loading = true;
   count: { completed: number; all: number };
-  status = "all";
+  status = 'all';
   @Output() onCleaned = new EventEmitter();
 
   constructor(
@@ -29,8 +27,8 @@ export class CleanupComponent {
       this.loading = false;
       if (this.count.all === 0) {
         this.notificationService.warning(
-          "No execution",
-          "There is no execution."
+          'No execution',
+          'There is no execution.'
         );
         this.isOpen = false;
       }
@@ -42,13 +40,13 @@ export class CleanupComponent {
   clean() {
     this.isRunning = true;
     this.taskService
-      .taskExecutionsClean(null, this.status === "completed")
+      .taskExecutionsClean(null, this.status === 'completed')
       .subscribe(
         () => {
           this.notificationService.success(
-            "Clean up execution(s)",
+            'Clean up execution(s)',
             `${
-              this.status === "completed"
+              this.status === 'completed'
                 ? this.count.completed
                 : this.count.all
             } execution(s) cleaned up.`
@@ -57,7 +55,7 @@ export class CleanupComponent {
           this.isOpen = false;
         },
         (error) => {
-          this.notificationService.error("An error occurred", error);
+          this.notificationService.error('An error occurred', error);
           this.isOpen = false;
         }
       );

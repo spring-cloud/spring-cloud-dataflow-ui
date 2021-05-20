@@ -1,13 +1,13 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { TaskExecution } from "../../../shared/model/task-execution.model";
-import { TaskService } from "../../../shared/api/task.service";
-import { NotificationService } from "../../../shared/service/notification.service";
-import { Task } from "../../../shared/model/task.model";
-import { AppError } from "src/app/shared/model/error.model";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { TaskExecution } from '../../../shared/model/task-execution.model';
+import { TaskService } from '../../../shared/api/task.service';
+import { NotificationService } from '../../../shared/service/notification.service';
+import { Task } from '../../../shared/model/task.model';
+import { AppError } from 'src/app/shared/model/error.model';
 
 @Component({
-  selector: "app-task-cleanup",
-  templateUrl: "./cleanup.component.html",
+  selector: 'app-task-cleanup',
+  templateUrl: './cleanup.component.html',
 })
 export class CleanupComponent {
   isOpen = false;
@@ -15,7 +15,7 @@ export class CleanupComponent {
   loading = true;
   count: { completed: number; all: number };
   task: Task;
-  status = "all";
+  status = 'all';
   @Output() onCleaned = new EventEmitter();
 
   constructor(
@@ -24,7 +24,7 @@ export class CleanupComponent {
   ) {}
 
   open(task: Task) {
-    this.status = "all";
+    this.status = 'all';
     this.loading = true;
     this.task = task;
     this.taskService.getTaskExecutionsCount(this.task).subscribe(
@@ -33,15 +33,15 @@ export class CleanupComponent {
         this.loading = false;
         if (this.count.all === 0) {
           this.notificationService.warning(
-            "No execution",
-            "There is no execution for this task."
+            'No execution',
+            'There is no execution for this task.'
           );
           this.isOpen = false;
           this.task = null;
         }
       },
       (error: AppError) => {
-        this.notificationService.error("An error occurred", error.getMessage());
+        this.notificationService.error('An error occurred', error.getMessage());
         this.isOpen = false;
       }
     );
@@ -52,13 +52,13 @@ export class CleanupComponent {
   clean() {
     this.isRunning = true;
     this.taskService
-      .taskExecutionsClean(this.task, this.status === "completed")
+      .taskExecutionsClean(this.task, this.status === 'completed')
       .subscribe(
         () => {
           this.notificationService.success(
-            "Clean up execution(s)",
+            'Clean up execution(s)',
             `${
-              this.status === "completed"
+              this.status === 'completed'
                 ? this.count.completed
                 : this.count.all
             } execution(s) cleaned up.`
@@ -68,7 +68,7 @@ export class CleanupComponent {
           this.task = null;
         },
         (error) => {
-          this.notificationService.error("An error occurred", error);
+          this.notificationService.error('An error occurred', error);
           this.isOpen = false;
           this.task = null;
         }
