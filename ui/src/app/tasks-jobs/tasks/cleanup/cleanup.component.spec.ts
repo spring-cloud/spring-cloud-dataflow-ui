@@ -10,7 +10,7 @@ import { By } from '@angular/platform-browser';
 import { TaskServiceMock } from '../../../tests/api/task.service.mock';
 import { CleanupComponent } from './cleanup.component';
 import { ContextServiceMock } from '../../../tests/service/context.service.mock';
-import { Task } from 'src/app/shared/model/task.model';
+import { Task } from '../../../shared/model/task.model';
 
 describe('tasks-jobs/tasks/cleanup/cleanup.component.ts', () => {
   let component: CleanupComponent;
