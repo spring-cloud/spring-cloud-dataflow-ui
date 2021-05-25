@@ -1,8 +1,16 @@
-import { Component, ViewEncapsulation, OnInit, EventEmitter } from '@angular/core';
+import {
+  Component,
+  ViewEncapsulation,
+  OnInit,
+  EventEmitter,
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
 import { Properties } from 'spring-flo';
-import { PropertiesGroupModel, SearchTextFilter } from '../support/properties-group-model';
+import {
+  PropertiesGroupModel,
+  SearchTextFilter,
+} from '../support/properties-group-model';
 import PropertiesSource = Properties.PropertiesSource;
 import { Subject } from 'rxjs/index';
 import { debounceTime } from 'rxjs/operators';
@@ -11,7 +19,6 @@ import { debounceTime } from 'rxjs/operators';
  * Class to add group titleModal to a model.
  */
 export class GroupPropertiesGroupModel extends PropertiesGroupModel {
-
   constructor(propertiesSource: PropertiesSource, public title: string = '') {
     super(propertiesSource);
   }
@@ -22,7 +29,6 @@ export class GroupPropertiesGroupModel extends PropertiesGroupModel {
  * to support multiple sources.
  */
 export class GroupPropertiesSource implements PropertiesSource {
-
   private options: Array<any>;
 
   constructor(options: Array<any>, public title: string = '') {
@@ -45,11 +51,9 @@ export class GroupPropertiesSource implements PropertiesSource {
  * emitter to notify user of a new property changes.
  */
 export class GroupPropertiesSources {
-
   public confirm = new EventEmitter();
 
-  constructor(public propertiesSources: Array<GroupPropertiesSource>) {
-  }
+  constructor(public propertiesSources: Array<GroupPropertiesSource>) {}
 
   applyChanges(properties: Properties.Property[]): void {
     this.confirm.emit(properties);
@@ -65,11 +69,9 @@ export class GroupPropertiesSources {
   selector: 'app-properties-groups-dialog-content',
   templateUrl: 'properties-groups-dialog.component.html',
   styleUrls: ['properties-groups-dialog.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class PropertiesGroupsDialogComponent implements OnInit {
-
-
   isOpen = false;
 
   /**
@@ -95,7 +97,6 @@ export class PropertiesGroupsDialogComponent implements OnInit {
 
   propertiesFilter = new SearchTextFilter();
 
-
   /**
    * Collapse states for groups are kept here.
    * i.e. {my.group1: true, my.group2: false}
@@ -109,8 +110,8 @@ export class PropertiesGroupsDialogComponent implements OnInit {
 
   handleOk() {
     const properties: Properties.Property[] = [];
-    this.propertiesGroupModels.forEach(p => {
-      p.getControlsModels().forEach(cm => {
+    this.propertiesGroupModels.forEach((p) => {
+      p.getControlsModels().forEach((cm) => {
         properties.push(cm.property);
       });
     });
@@ -126,32 +127,39 @@ export class PropertiesGroupsDialogComponent implements OnInit {
   collapse(id: string) {
     // Collapse already open group, otherwise keep selected
     // group open and close others.
-    Object.entries(this.state).forEach(e => {
+    Object.entries(this.state).forEach((e) => {
       if (e[0] === id && e[1]) {
         this.state[e[0]] = false;
       } else {
-        this.state[e[0]] = (e[0] === id);
+        this.state[e[0]] = e[0] === id;
       }
     });
   }
 
   get okDisabled() {
-    return !(this.propertiesGroupModels.length > 0)
-      || !this.propertiesFormGroup
-      || this.propertiesFormGroup.invalid
-      || !this.propertiesFormGroup.dirty;
+    return (
+      !(this.propertiesGroupModels.length > 0) ||
+      !this.propertiesFormGroup ||
+      this.propertiesFormGroup.invalid ||
+      !this.propertiesFormGroup.dirty
+    );
   }
 
   ngOnInit() {
-    this._searchFilterTextSubject.pipe(debounceTime(500)).subscribe(text => this.propertiesFilter.textFilter = text);
+    this._searchFilterTextSubject.subscribe((text: string) => {
+      this.propertiesFilter.textFilter = text;
+    });
   }
 
   setData(groupPropertiesSources: GroupPropertiesSources) {
     let first = true;
-    groupPropertiesSources.propertiesSources.forEach(ps => {
+    groupPropertiesSources.propertiesSources.forEach((ps) => {
       this.state[ps.title] = first;
       first = false;
-      const model: GroupPropertiesGroupModel = new GroupPropertiesGroupModel(ps, ps.title);
+      const model: GroupPropertiesGroupModel = new GroupPropertiesGroupModel(
+        ps,
+        ps.title
+      );
       model.load();
       model.loadedSubject.subscribe();
       this.propertiesGroupModels.push(model);
@@ -167,5 +175,4 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     this._searchFilterText = text;
     this._searchFilterTextSubject.next(text);
   }
-
 }
