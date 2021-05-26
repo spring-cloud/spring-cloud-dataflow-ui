@@ -1,4 +1,24 @@
 <div *ngIf="builder$ | async as builder; else loading">
+
+  <clr-alert *ngIf="task.composed && hasMigrations()" [clrAlertType]="info" [clrAlertClosable]="false">
+    <clr-alert-item>
+      <span class="alert-text">
+        There are properties which can be migrated.
+      </span>
+      <div class="alert-actions">
+        <clr-dropdown>
+          <button class="dropdown-toggle" clrDropdownTrigger>
+            Actions
+            <cds-icon shape="caret" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu clrPosition="bottom-right">
+            <a (click)="migrate()" class="dropdown-item" clrDropdownItem>Migrate</a>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+      </div>
+    </clr-alert-item>
+  </clr-alert>
+
   <form class="form-horizontal" novalidate (ngSubmit)="launchTask()">
     <div>
       <div class="tab-pane">
@@ -244,7 +264,7 @@
 
             <!-- 10 Ctr Properties options -->
             <div class="line-body"
-                 *ngIf="state.ctr && task.composed">
+                 *ngIf="state.ctr && task.composed && builder.ctrProperties.length > 0">
               <div class="form-control form-control-label"
                    *ngIf="!builder.ctrPropertiesState.isLoading && !builder.ctrPropertiesState.isOnError">
                 <strong>{{getCtrProperties(builder.ctrProperties).length}}</strong>
