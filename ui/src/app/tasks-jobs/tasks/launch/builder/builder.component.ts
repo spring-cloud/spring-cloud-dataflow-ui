@@ -95,6 +95,11 @@ export interface Builder {
   };
 }
 
+export interface Migrations {
+  migratedNomatch: string[];
+  migratedMatch: RegExpExecArray[];
+}
+
 @Component({
   selector: 'app-task-launch-builder',
   templateUrl: 'builder.component.html',
@@ -142,6 +147,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
     arguments: true
   };
 
+  private migrations: Migrations;
+
   constructor(
     private taskLaunchService: TaskLaunchService,
     private changeDetector: ChangeDetectorRef,
@@ -183,6 +190,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
                   });
                 }
               });
+              this.migrations = this.calculateMigrations();
             },
             () => {
               this.refBuilder.ctrPropertiesState.isOnError = true;
@@ -1021,5 +1029,54 @@ export class BuilderComponent implements OnInit, OnDestroy {
     } else {
       this.launch.emit({props: this.getProperties(), args: this.getArguments()});
     }
+  }
+
+  hasMigrations(): boolean {
+    return this.migrations && this.migrations.migratedMatch && this.migrations.migratedMatch.length > 0;
+  }
+
+  migrage() {
+    if (this.migrations) {
+      const ctp = this.refBuilder.ctrProperties.find(prop => prop.id === 'composed-task-properties' && prop.value);
+      if (ctp) {
+        this.migrations.migratedMatch.forEach(m => {
+          if (m[1]) {
+            const prop: ValuedConfigurationMetadataProperty[] = this.refBuilder.builderAppsProperties[m[1]];
+            if (prop) {
+              prop.forEach(v => {
+                if (v.id === m[3]) {
+                  v.value = m[4];
+                }
+              });
+            }
+          }
+        });
+        ctp.value = this.migrations.migratedNomatch.join(',');
+      }
+    }
+    this.migrations = this.calculateMigrations();
+  }
+
+  private calculateMigrations(): Migrations {
+    const migratedNomatch: string[] = [];
+    const migratedMatch: RegExpExecArray[] = [];
+    if (this.task.composed) {
+      const ctp = this.refBuilder.ctrProperties.find(prop => prop.id === 'composed-task-properties' && prop.value);
+      if (ctp) {
+        ctp.value.split(',').forEach(p => {
+          const r = new RegExp(`app\\.${this.task.name}-(\\w*)\\.app\\.(\\w*)\\.(.*)=(.*)`);
+          const match = r.exec(p);
+          if (match) {
+            migratedMatch.push(match);
+          } else {
+            migratedNomatch.push(p);
+          }
+        });
+      }
+    }
+    return {
+      migratedMatch,
+      migratedNomatch
+    };
   }
 }

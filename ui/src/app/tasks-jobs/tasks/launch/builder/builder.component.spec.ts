@@ -88,4 +88,27 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
       'app.t1.timestamp.format=yyyy'
     ]));
   });
+
+  it('should have migrations', async () => {
+    component.task = TASK_2;
+    component.properties = [
+      'app.composed-task-runner.composed-task-properties=app.composedtask-t2.app.timestamp.timestamp.format=YYYY',
+      'app.t1.timestamp.format=YYYY'
+    ];
+    fixture.detectChanges();
+    expect(component['calculateMigrations']().migratedMatch.length).toBe(1);
+    expect(component['calculateMigrations']().migratedNomatch.length).toBe(0);
+    expect(component['hasMigrations']()).toBeTruthy();
+  });
+
+  it('should not have migrations', async () => {
+    component.task = TASK_2;
+    component.properties = [
+      'app.t1.timestamp.format=YYYY'
+    ];
+    fixture.detectChanges();
+    expect(component['calculateMigrations']().migratedMatch.length).toBe(0);
+    expect(component['calculateMigrations']().migratedNomatch.length).toBe(0);
+    expect(component['hasMigrations']()).toBeFalsy();
+  });
 });

@@ -270,7 +270,7 @@ export const SIMPLE_TASK_DEFAULT = {
   'description': 'simpledescription',
   'dslText': 'timestamp',
   'lastTaskExecution': null,
- ' name': 'simpletask',
+  'name': 'simpletask',
   'status': 'UNKNOWN'
 };
 
@@ -281,7 +281,7 @@ export const COMPOSED_TASK_DEFAULT = {
   'description': 'composeddescription',
   'dslText': 't1:timestamp && t2:timestamp',
   'lastTaskExecution': null,
- ' name': 'composedtask',
+  'name': 'composedtask',
   'status': 'UNKNOWN'
 };
 

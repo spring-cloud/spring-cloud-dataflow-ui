@@ -92,6 +92,18 @@ export class TaskLaunchServiceMock {
         sourceType: '',
         isDeprecated: false,
         value: ''
+      },
+      {
+        id: 'composed-task-properties',
+        name: 'composed-task-properties',
+        type: 'java.lang.Integer',
+        description: 'The properties to be used for each of the tasks as well as their deployments.',
+        shortDescription: 'The properties to be used for each of the tasks as well as their deployments.',
+        defaultValue: null,
+        deprecation: null,
+        sourceType: '',
+        isDeprecated: false,
+        value: ''
       }
     ]);
   }
