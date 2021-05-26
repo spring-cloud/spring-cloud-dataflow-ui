@@ -25,7 +25,7 @@
           <clr-icon shape="times" *ngIf="!about.features.schedules"></clr-icon>
         </li>
         <li>
-          <strong>Dashboard: </strong>
+          <strong>Monitoring Dashboard: </strong>
           <span *ngIf="about.features.monitoringDashboardType === 'GRAFANA'">Grafana</span>
           <span *ngIf="about.features.monitoringDashboardType === 'WAVEFRONT'">Wavefront</span>
           <clr-icon shape="times" *ngIf="about.features.monitoringDashboardType === 'NONE'"></clr-icon>
