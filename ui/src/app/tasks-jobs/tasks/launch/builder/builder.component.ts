@@ -1035,7 +1035,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     return this.migrations && this.migrations.migratedMatch && this.migrations.migratedMatch.length > 0;
   }
 
-  migrage() {
+  migrate() {
     if (this.migrations) {
       const ctp = this.refBuilder.ctrProperties.find(prop => prop.id === 'composed-task-properties' && prop.value);
       if (ctp) {
