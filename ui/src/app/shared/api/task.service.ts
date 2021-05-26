@@ -137,7 +137,7 @@ export class TaskService {
   getTaskExecutionsCount(task?: Task): Observable<{ completed: number, all: number}> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     let url = '/tasks/info/executions';
-    let url2 = `${url}?completed=true'`;
+    let url2 = `${url}?completed=true`;
     if (task) {
       url = `/tasks/info/executions?name=${task.name}`;
       url2 = `${url}&completed=true`;

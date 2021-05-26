@@ -1,5 +1,5 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning">
-    <h3 class="modal-title">Confirm Clean Up Execution(s)</h3>
+    <h3 class="modal-title">Confirm Clean Up Task Execution(s)</h3>
     <div class="modal-body" *ngIf="!isRunning && !loading">
       <p>
         This action will remove <strong>{{status === 'all' ? count.all : count.completed}} execution(s)</strong>.
