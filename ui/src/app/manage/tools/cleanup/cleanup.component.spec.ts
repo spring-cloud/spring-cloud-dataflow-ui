@@ -55,7 +55,7 @@ describe('manage/tools/cleanup/cleanup.component.ts', () => {
     const title = fixture.debugElement.query(
       By.css('.modal-title-wrapper')
     ).nativeElement;
-    expect(title.textContent).toContain('Confirm Clean Up Execution(s)');
+    expect(title.textContent).toContain('Confirm Clean Up Task Execution(s)');
     fixture.debugElement
       .query(By.css('.modal-footer .btn-danger'))
       .nativeElement.click();
