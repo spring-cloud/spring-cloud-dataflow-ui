@@ -1,8 +1,8 @@
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { dia } from 'jointjs';
-import { NodeComponent } from '../../shared/support/node-component';
-import { DocService } from '../../shared/service/doc.service';
-import { PropertiesEditor } from '../properties-editor.service';
+import {Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {dia} from 'jointjs';
+import {NodeComponent} from '../../shared/support/node-component';
+import {DocService} from '../../shared/service/doc.service';
+import {PropertiesEditor} from '../properties-editor.service';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -17,7 +17,6 @@ import { PropertiesEditor } from '../properties-editor.service';
   encapsulation: ViewEncapsulation.None
 })
 export class StreamNodeComponent extends NodeComponent {
-
   @ViewChild('markerTooltip')
   markerTooltipElement: ElementRef;
 
@@ -31,9 +30,7 @@ export class StreamNodeComponent extends NodeComponent {
     super(docService);
   }
 
-  showOptions() {
-    this.propertiesEditor.showForNode(<dia.Element> this.view.model, this.paper.model);
+  showOptions(): void {
+    this.propertiesEditor.showForNode(<dia.Element>this.view.model, this.paper.model);
   }
-
 }
-

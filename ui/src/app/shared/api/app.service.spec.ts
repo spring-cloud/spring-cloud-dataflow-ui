@@ -1,11 +1,9 @@
-import { of } from 'rxjs';
-import { AppService } from './app.service';
-import { App, ApplicationType } from '../model/app.model';
-import { GET_APP_VERSIONS } from '../../tests/data/app';
-
+import {of} from 'rxjs';
+import {AppService} from './app.service';
+import {App, ApplicationType} from '../model/app.model';
+import {GET_APP_VERSIONS} from '../../tests/data/app';
 
 describe('shared/api/app.service.ts', () => {
-
   let mockHttp;
   let appService;
   let jsonData = {};
@@ -14,7 +12,7 @@ describe('shared/api/app.service.ts', () => {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post'),
-      put: jasmine.createSpy('put'),
+      put: jasmine.createSpy('put')
     };
     jsonData = {};
     appService = new AppService(mockHttp);
@@ -22,10 +20,7 @@ describe('shared/api/app.service.ts', () => {
 
   it('unregisterApps', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    appService.unregisterApps([
-      App.parse({ name: 'foo', type: 'source' }),
-      App.parse({ name: 'bar', type: 'processor' })
-    ]);
+    appService.unregisterApps([App.parse({name: 'foo', type: 'source'}), App.parse({name: 'bar', type: 'processor'})]);
     let httpUri = mockHttp.delete.calls.argsFor(0)[0];
     expect(httpUri).toEqual('/apps/source/foo');
     httpUri = mockHttp.delete.calls.argsFor(1)[0];
@@ -34,7 +29,7 @@ describe('shared/api/app.service.ts', () => {
 
   it('getApp', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    appService.getApp('foo', ('processor' as any) as ApplicationType);
+    appService.getApp('foo', 'processor' as any as ApplicationType);
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
     expect(httpUri).toEqual('/apps/processor/foo');
@@ -44,7 +39,7 @@ describe('shared/api/app.service.ts', () => {
 
   it('getApp with version', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    appService.getApp('foo', ('processor' as any) as ApplicationType, '1.0.0');
+    appService.getApp('foo', 'processor' as any as ApplicationType, '1.0.0');
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
     expect(httpUri).toEqual('/apps/processor/foo/1.0.0');
@@ -67,7 +62,7 @@ describe('shared/api/app.service.ts', () => {
 
   it('unregisterApp', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    appService.unregisterApp(App.parse({ name: 'foo', type: 'source' }));
+    appService.unregisterApp(App.parse({name: 'foo', type: 'source'}));
     const httpUri = mockHttp.delete.calls.mostRecent().args[0];
     const headerArgs = mockHttp.delete.calls.mostRecent().args[1].headers;
     expect(httpUri).toEqual('/apps/source/foo');
@@ -77,14 +72,13 @@ describe('shared/api/app.service.ts', () => {
 
   it('unregisterApp with version', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    appService.unregisterApp(App.parse({ name: 'foo', type: 'source', version: '1.0.0' }));
+    appService.unregisterApp(App.parse({name: 'foo', type: 'source', version: '1.0.0'}));
     const httpUri = mockHttp.delete.calls.mostRecent().args[0];
     const headerArgs = mockHttp.delete.calls.mostRecent().args[1].headers;
     expect(httpUri).toEqual('/apps/source/foo/1.0.0');
     expect(headerArgs.get('Content-Type')).toEqual('application/json');
     expect(headerArgs.get('Accept')).toEqual('application/json');
   });
-
 
   it('importProps', () => {
     mockHttp.post.and.returnValue(of(true));
@@ -161,14 +155,14 @@ describe('shared/api/app.service.ts', () => {
 
   it('defaultVersion', () => {
     mockHttp.put.and.returnValue(of(jsonData));
-    appService.defaultVersion(App.parse({ name: 'foo', type: 'source', version: '1.0.0' }));
+    appService.defaultVersion(App.parse({name: 'foo', type: 'source', version: '1.0.0'}));
     const httpUri1 = mockHttp.put.calls.mostRecent().args[0];
     expect(httpUri1).toEqual('/apps/source/foo/1.0.0');
   });
 
   it('getApps', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    appService.getApps(0, 20, 'bar', ('processor' as any) as ApplicationType, 'name', 'DESC');
+    appService.getApps(0, 20, 'bar', 'processor' as any as ApplicationType, 'name', 'DESC');
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const httpParams = mockHttp.get.calls.mostRecent().args[1].params;
     expect(httpParams.get('sort')).toEqual('name,DESC');
@@ -179,9 +173,9 @@ describe('shared/api/app.service.ts', () => {
     expect(httpUri).toEqual('/apps');
   });
 
-  it('getAppVersions', async (done) => {
+  it('getAppVersions', async done => {
     mockHttp.get.and.returnValue(of(GET_APP_VERSIONS));
-    await appService.getAppVersions('aggregator', ('processor' as any) as ApplicationType).subscribe();
+    await appService.getAppVersions('aggregator', 'processor' as any as ApplicationType).subscribe();
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const httpParams = mockHttp.get.calls.mostRecent().args[1].params;
     expect(httpParams.get('search')).toEqual('aggregator');
@@ -191,5 +185,4 @@ describe('shared/api/app.service.ts', () => {
     expect(httpUri).toEqual('/apps');
     done();
   });
-
 });

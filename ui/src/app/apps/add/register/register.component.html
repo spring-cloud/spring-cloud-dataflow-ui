@@ -1,47 +1,47 @@
 <p>
-  Register one or more applications by entering a <strong>Name</strong>,
-  <strong>Type</strong> and <strong>App URI</strong> of the application Jar. You can also provide an optional <strong>metadata
-  artifact URI</strong>. <br> The App <strong>URI</strong> &amp; the <strong>Metadata Artifact
-  URI</strong> are typically provided using the Maven coordinates of the Jar but can be a local file or a docker image
-  URI.
-
+  Register one or more applications by entering a <strong>Name</strong>, <strong>Type</strong> and
+  <strong>App URI</strong> of the application Jar. You can also provide an optional
+  <strong>metadata artifact URI</strong>. <br />
+  The App <strong>URI</strong> &amp; the <strong>Metadata Artifact URI</strong> are typically provided using the Maven
+  coordinates of the Jar but can be a local file or a docker image URI.
 </p>
 
 <form clrForm clrLayout="horizontal" (submit)="register()">
-
   <div class="clr-row">
     <div [formGroup]="forms[i]" *ngFor="let form of forms; let i = index" class="clr-col-6 app-group">
       <div class="register-item">
-        <div class="clr-form-control clr-row"
-             [class.clr-error]="submitted && form.get('name').invalid && !isFormEmpty(form)">
-          <label class="clr-col-2 clr-control-label" for="name{{i}}">Name</label>
+        <div
+          class="clr-form-control clr-row"
+          [class.clr-error]="submitted && form.get('name').invalid && !isFormEmpty(form)"
+        >
+          <label class="clr-col-2 clr-control-label" for="name{{ i }}">Name</label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-input-wrapper">
               <input
-                id="name{{i}}"
-                name="name{{i}}"
+                id="name{{ i }}"
+                name="name{{ i }}"
                 formControlName="name"
                 [dataflowFocus]="true"
                 class="clr-input"
-                style="width: 100%"/>
+                style="width: 100%"
+              />
             </div>
             <div class="clr-subtext" *ngIf="submitted && form.get('name').invalid && !isFormEmpty(form)">
               Please provide a valid name for the app.
             </div>
           </div>
         </div>
-        <div class="clr-form-control clr-row"
-             [class.clr-error]="submitted && form.get('type').invalid && !isFormEmpty(form)">
-          <label class="clr-col-2 clr-control-label" for="type{{i}}">Type</label>
+        <div
+          class="clr-form-control clr-row"
+          [class.clr-error]="submitted && form.get('type').invalid && !isFormEmpty(form)"
+        >
+          <label class="clr-col-2 clr-control-label" for="type{{ i }}">Type</label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-select-wrapper">
-              <select name="type{{i}}"
-                      id="type{{i}}"
-                      formControlName="type"
-                      class="clr-select">
+              <select name="type{{ i }}" id="type{{ i }}" formControlName="type" class="clr-select">
                 <option value="">Please select a type...</option>
-                <option *ngFor="let typeKey of applicationTypes.getKeys()" value="{{typeKey}}">
-                  {{applicationTypes[typeKey]}}
+                <option *ngFor="let typeKey of applicationTypes.getKeys()" value="{{ typeKey }}">
+                  {{ applicationTypes[typeKey] }}
                 </option>
               </select>
             </div>
@@ -50,36 +50,42 @@
             </div>
           </div>
         </div>
-        <div class="clr-form-control clr-row"
-             [class.clr-error]="submitted && form.get('uri').invalid && !isFormEmpty(form)">
-          <label class="clr-col-2 clr-control-label" for="uri{{i}}">Uri</label>
+        <div
+          class="clr-form-control clr-row"
+          [class.clr-error]="submitted && form.get('uri').invalid && !isFormEmpty(form)"
+        >
+          <label class="clr-col-2 clr-control-label" for="uri{{ i }}">Uri</label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-input-wrapper">
               <input
-                id="uri{{i}}"
-                name="uri{{i}}"
+                id="uri{{ i }}"
+                name="uri{{ i }}"
                 formControlName="uri"
                 class="clr-input"
                 placeholder="maven://io.spring.cloud:scdf-sample-app:jar:1.0.0"
-                style="width: 100%"/>
+                style="width: 100%"
+              />
             </div>
             <div class="clr-subtext" *ngIf="submitted && form.get('uri').invalid && !isFormEmpty(form)">
               Please provide a valid URI pointing to the respective properties file.
             </div>
           </div>
         </div>
-        <div class="clr-form-control clr-row"
-             [class.clr-error]="submitted && form.get('metaDataUri').invalid && !isFormEmpty(form)">
-          <label class="clr-col-2 clr-control-label" for="metaDataUri{{i}}">Metadata URI</label>
+        <div
+          class="clr-form-control clr-row"
+          [class.clr-error]="submitted && form.get('metaDataUri').invalid && !isFormEmpty(form)"
+        >
+          <label class="clr-col-2 clr-control-label" for="metaDataUri{{ i }}">Metadata URI</label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-input-wrapper">
               <input
-                id="metaDataUri{{i}}"
-                name="metaDataUri{{i}}"
+                id="metaDataUri{{ i }}"
+                name="metaDataUri{{ i }}"
                 formControlName="metaDataUri"
                 class="clr-input"
                 placeholder="maven://io.spring.cloud:scdf-sample-app:jar:metadata:1.0.0 [OPTIONAL]"
-                style="width: 100%"/>
+                style="width: 100%"
+              />
             </div>
             <div class="clr-subtext" *ngIf="submitted && form.get('metaDataUri').invalid && !isFormEmpty(form)">
               Please provide a valid URI pointing to the respective properties file.
@@ -88,17 +94,22 @@
         </div>
         <clr-checkbox-container>
           <clr-checkbox-wrapper>
-            <input formControlName="force" type="checkbox" clrCheckbox value="false" name="force"/>
-            <label>Force, the applications will be imported and installed even if it already exists but only if not
-              being
-              used
-              already.</label>
+            <input formControlName="force" type="checkbox" clrCheckbox value="false" name="force" />
+            <label
+              >Force, the applications will be imported and installed even if it already exists but only if not being
+              used already.</label
+            >
           </clr-checkbox-wrapper>
         </clr-checkbox-container>
         <div class="form-group">
-          <div style="margin-left: 8px;">
-            <button type="button" (click)="removeForm(i)" [disabled]="forms.length <= 1"
-                    class="btn btn-sm btn-secondary" title="Remove">
+          <div style="margin-left: 8px">
+            <button
+              type="button"
+              (click)="removeForm(i)"
+              [disabled]="forms.length <= 1"
+              class="btn btn-sm btn-secondary"
+              title="Remove"
+            >
               Remove
             </button>
           </div>
@@ -107,8 +118,13 @@
     </div>
     <div class="clr-col-6">
       <div class="register-item-empty">
-        <button type="button" name="add-form" (click)="newForm()" class="btn btn-sm btn-secondary"
-                itle="Add application">
+        <button
+          type="button"
+          name="add-form"
+          (click)="newForm()"
+          class="btn btn-sm btn-secondary"
+          itle="Add application"
+        >
           New application
         </button>
       </div>
@@ -116,19 +132,14 @@
   </div>
   <div class="clr-accordion-footer">
     <button name="cancel" type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
-    <button name="register" type="submit" class="btn btn-primary">
-      Import application(s)
-    </button>
+    <button name="register" type="submit" class="btn btn-primary">Import application(s)</button>
   </div>
 </form>
 
 <clr-modal [(clrModalOpen)]="isImporting" *ngIf="isImporting" clrModalClosable="false" clrModalSize="md">
   <h3 class="modal-title">Register application(s)</h3>
   <div class="modal-body">
-    <div>
-      <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
-      Registering application(s)...
-    </div>
+    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; Registering application(s)...</div>
     <div class="modal-footer">
       <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
     </div>

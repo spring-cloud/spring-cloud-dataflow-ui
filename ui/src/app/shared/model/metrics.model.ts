@@ -6,7 +6,7 @@ export class InstanceStatus {
   index: number;
   state: string;
 
-  static parse(input): InstanceStatus {
+  static parse(input: any): InstanceStatus {
     const instanceStatus = new InstanceStatus();
     instanceStatus.guid = input.guid;
     instanceStatus.index = input.index;
@@ -21,13 +21,18 @@ export class AppStatus {
   state: string;
   instances: InstanceStatus[];
 
-  static parse(input) {
+  static parse(input: any): AppStatus {
     const appStatus = new AppStatus();
     appStatus.deploymentId = input.deploymentId;
     appStatus.state = input.state;
     appStatus.name = input.name;
-    if (input && input.instances && input.instances._embedded && input.instances._embedded.appInstanceStatusResourceList &&
-      Array.isArray(input.instances._embedded.appInstanceStatusResourceList)) {
+    if (
+      input &&
+      input.instances &&
+      input.instances._embedded &&
+      input.instances._embedded.appInstanceStatusResourceList &&
+      Array.isArray(input.instances._embedded.appInstanceStatusResourceList)
+    ) {
       appStatus.instances = input.instances._embedded.appInstanceStatusResourceList.map(InstanceStatus.parse);
     } else {
       appStatus.instances = [];
@@ -40,11 +45,15 @@ export class StreamStatus {
   name: string;
   applications: AppStatus[];
 
-  static parse(input): StreamStatus {
+  static parse(input: any): StreamStatus {
     const streamStatus = new StreamStatus();
     streamStatus.name = input.name;
-    if (input.applications && input.applications._embedded && input.applications._embedded.appStatusResourceList &&
-      Array.isArray(input.applications._embedded.appStatusResourceList)) {
+    if (
+      input.applications &&
+      input.applications._embedded &&
+      input.applications._embedded.appStatusResourceList &&
+      Array.isArray(input.applications._embedded.appStatusResourceList)
+    ) {
       streamStatus.applications = input.applications._embedded.appStatusResourceList.map(AppStatus.parse);
     } else {
       streamStatus.applications = [];
@@ -54,9 +63,13 @@ export class StreamStatus {
 }
 
 export class StreamStatuses {
-  static parse(input): Array<StreamStatus> {
-    if (input && input._embedded && input._embedded.streamStatusResourceList
-      && Array.isArray(input._embedded.streamStatusResourceList)) {
+  static parse(input: any): Array<StreamStatus> {
+    if (
+      input &&
+      input._embedded &&
+      input._embedded.streamStatusResourceList &&
+      Array.isArray(input._embedded.streamStatusResourceList)
+    ) {
       return input._embedded.streamStatusResourceList.map(StreamStatus.parse);
     }
     return [];

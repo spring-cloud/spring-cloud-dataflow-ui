@@ -5,6 +5,7 @@ export class Page<T> {
   size = 20;
   items: T[] = [];
 
+  // eslint-disable-next-line
   public static fromJSON<T>(input): Page<T> {
     const page = new Page<T>();
     if (input && input.page) {

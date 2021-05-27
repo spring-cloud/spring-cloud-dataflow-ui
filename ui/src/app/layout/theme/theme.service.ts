@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { runCssVarsPolyfill } from '@clr/core';
-import { Theme } from './types';
-import { defaultTheme } from './default-theme';
-import { darkTheme } from './dark-theme';
-import { LocalStorageService } from 'angular-2-local-storage';
+import {Injectable} from '@angular/core';
+import {runCssVarsPolyfill} from '@clr/core';
+import {Theme} from './types';
+import {defaultTheme} from './default-theme';
+import {darkTheme} from './dark-theme';
+import {LocalStorageService} from 'angular-2-local-storage';
 
 const themePrefix = 'scdf-theme_';
 
@@ -11,21 +11,19 @@ const themePrefix = 'scdf-theme_';
   providedIn: 'root'
 })
 export class ThemeService {
-
   private themes: Theme[] = [defaultTheme, darkTheme];
   active = 'default';
 
-  constructor(private localStorageService: LocalStorageService) {
-  }
+  constructor(private localStorageService: LocalStorageService) {}
 
-  getTheme() {
+  getTheme(): string {
     if (this.localStorageService.get('theme')) {
       return this.localStorageService.get('theme');
     }
     return this.active;
   }
 
-  removeThemes() {
+  removeThemes(): void {
     const dark = themePrefix + 'dark';
     if (document.getElementById(dark) !== null) {
       document.getElementById(dark).remove();
@@ -36,7 +34,7 @@ export class ThemeService {
     }
   }
 
-  switchTheme(name: string) {
+  switchTheme(name: string): string {
     const style = document.createElement('style');
     const theme = this.themes.find(t => t.name === name);
     if (!theme) {
@@ -61,5 +59,4 @@ export class ThemeService {
     this.active = name;
     return name;
   }
-
 }

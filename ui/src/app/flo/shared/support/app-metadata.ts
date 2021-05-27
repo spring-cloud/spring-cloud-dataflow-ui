@@ -1,7 +1,7 @@
-import { Flo } from 'spring-flo';
-import { Observable } from 'rxjs';
-import { Utils } from './utils';
-import { ConfigurationMetadataProperty, DetailedApp } from '../../../shared/model/detailed-app.model';
+import {Flo} from 'spring-flo';
+import {Observable} from 'rxjs';
+import {Utils} from './utils';
+import {ConfigurationMetadataProperty, DetailedApp} from '../../../shared/model/detailed-app.model';
 
 /**
  * Class containing metadata for a stream application.
@@ -10,7 +10,6 @@ import { ConfigurationMetadataProperty, DetailedApp } from '../../../shared/mode
  * @author Andy Clement
  */
 export class AppPropertyMetadata implements Flo.PropertyMetadata {
-
   public options: string[];
 
   public code: CodeOptions;
@@ -29,7 +28,7 @@ export class AppPropertyMetadata implements Flo.PropertyMetadata {
     return this.metadata.description || this.metadata.shortDescription;
   }
 
-  get defaultValue() {
+  get defaultValue(): any {
     return this.metadata.defaultValue;
   }
 
@@ -40,11 +39,9 @@ export class AppPropertyMetadata implements Flo.PropertyMetadata {
   get sourceType(): string {
     return this.metadata.sourceType;
   }
-
 }
 
 export class AppMetadata implements Flo.ElementMetadata {
-
   private _dataPromise: Promise<DetailedApp>;
 
   private _propertiesPromise: Promise<Map<string, AppPropertyMetadata>>;
@@ -59,57 +56,62 @@ export class AppMetadata implements Flo.ElementMetadata {
 
   get dataPromise(): Promise<DetailedApp> {
     if (!this._dataPromise) {
-      this._dataPromise = new Promise(resolve => this._dataObs.subscribe(data => resolve(data), () => resolve(null)));
+      this._dataPromise = new Promise(resolve =>
+        this._dataObs.subscribe(
+          data => resolve(data),
+          () => resolve(null)
+        )
+      );
     }
     return this._dataPromise;
   }
 
   get propertiesPromise(): Promise<Map<string, AppPropertyMetadata>> {
     if (!this._propertiesPromise) {
-      this._propertiesPromise = new Promise(resolve => this.dataPromise.then((data: DetailedApp) => {
-        const properties = new Map<string, AppPropertyMetadata>();
-        if (data && data.options) {
-          data.options.map((o: ConfigurationMetadataProperty) => {
-            const propertyMetadata: AppPropertyMetadata = new AppPropertyMetadata(o);
-            if (o.sourceType === Utils.SCRIPTABLE_TRANSFORM_SOURCE_TYPE) {
-              switch (o.name.toLowerCase()) {
-                case 'language':
-                  propertyMetadata.options = [
-                    'groovy', 'javascript', 'ruby', 'python'
-                  ];
-                  break;
-                case 'script':
+      this._propertiesPromise = new Promise(resolve =>
+        this.dataPromise.then((data: DetailedApp) => {
+          const properties = new Map<string, AppPropertyMetadata>();
+          if (data && data.options) {
+            data.options.map((o: ConfigurationMetadataProperty) => {
+              const propertyMetadata: AppPropertyMetadata = new AppPropertyMetadata(o);
+              if (o.sourceType === Utils.SCRIPTABLE_TRANSFORM_SOURCE_TYPE) {
+                switch (o.name.toLowerCase()) {
+                  case 'language':
+                    propertyMetadata.options = ['groovy', 'javascript', 'ruby', 'python'];
+                    break;
+                  case 'script':
+                    propertyMetadata.code = {
+                      langPropertyName: 'scriptable-transformer.language'
+                    };
+                    break;
+                }
+              } else if (o.sourceType === Utils.RX_JAVA_PROCESSOR_SOURCE_TYPE) {
+                if (o.name.toLowerCase() === 'code') {
                   propertyMetadata.code = {
-                    langPropertyName: 'scriptable-transformer.language'
+                    language: 'java'
                   };
-                  break;
+                }
               }
-            } else if (o.sourceType === Utils.RX_JAVA_PROCESSOR_SOURCE_TYPE) {
-              if (o.name.toLowerCase() === 'code') {
-                propertyMetadata.code = {
-                  language: 'java'
-                };
+              if (o.type) {
+                switch (o.type) {
+                  case 'java.util.concurrent.TimeUnit':
+                    propertyMetadata.options = [
+                      'NANOSECONDS',
+                      'MICROSECONDS',
+                      'MILLISECONDS',
+                      'SECONDS',
+                      'MINUTES',
+                      'HOURS',
+                      'DAYS'
+                    ];
+                }
               }
-            }
-            if (o.type) {
-              switch (o.type) {
-                case 'java.util.concurrent.TimeUnit':
-                  propertyMetadata.options = [
-                    'NANOSECONDS',
-                    'MICROSECONDS',
-                    'MILLISECONDS',
-                    'SECONDS',
-                    'MINUTES',
-                    'HOURS',
-                    'DAYS'
-                  ];
-              }
-            }
-            properties.set(o.id, propertyMetadata);
-          });
-        }
-        resolve(properties);
-      }));
+              properties.set(o.id, propertyMetadata);
+            });
+          }
+          resolve(properties);
+        })
+      );
     }
     return this._propertiesPromise;
   }
@@ -141,7 +143,6 @@ export class AppMetadata implements Flo.ElementMetadata {
   get version(): string {
     return this._version;
   }
-
 }
 
 export interface CodeOptions {

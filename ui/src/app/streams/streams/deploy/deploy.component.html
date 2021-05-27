@@ -3,41 +3,43 @@
     <span class="text-truncate">
       <span *ngIf="isDeployed(stream)">Update</span>
       <span *ngIf="!isDeployed(stream)">Deploy</span>
-      stream <strong>{{stream?.name}}</strong>
+      stream <strong>{{ stream?.name }}</strong>
     </span>
   </h1>
-  <p style="margin-top: .6rem;margin-bottom: .6rem">
-    Please specify any optional deployment properties. You can either use the builder.<br/>
+  <p style="margin-top: 0.6rem; margin-bottom: 0.6rem">
+    Please specify any optional deployment properties. You can either use the builder.<br />
     Alternatively, you can point to an external properties file containing the deployment properties. For more
-    information
-    please see the Technical Documentation.
+    information please see the Technical Documentation.
   </p>
-
 
   <clr-tabs *ngIf="!loading && stream">
     <clr-tab>
       <button clrTabLink id="link1">Builder</button>
       <clr-tab-content id="content1" *clrIfActive="true">
-        <app-stream-deploy-builder [properties]="properties"
-                                   [id]="stream.name"
-                                   [isDeployed]="isDeployed(stream)"
-                                   (exportProperties)="runExport($event)"
-                                   (update)="update($event)"
-                                   (deploy)="runDeploy($event)"
-                                   (copyProperties)="runCopy($event)">
+        <app-stream-deploy-builder
+          [properties]="properties"
+          [id]="stream.name"
+          [isDeployed]="isDeployed(stream)"
+          (exportProperties)="runExport($event)"
+          (update)="update($event)"
+          (deploy)="runDeploy($event)"
+          (copyProperties)="runCopy($event)"
+        >
         </app-stream-deploy-builder>
       </clr-tab-content>
     </clr-tab>
     <clr-tab>
       <button clrTabLink>Freetext</button>
       <clr-tab-content *clrIfActive>
-        <app-stream-deploy-free-text [properties]="properties"
-                                     [id]="stream.name"
-                                     [isDeployed]="isDeployed(stream)"
-                                     (exportProperties)="runExport($event)"
-                                     (update)="update($event)"
-                                     (deploy)="runDeploy($event)"
-                                     (copyProperties)="runCopy($event)">
+        <app-stream-deploy-free-text
+          [properties]="properties"
+          [id]="stream.name"
+          [isDeployed]="isDeployed(stream)"
+          (exportProperties)="runExport($event)"
+          (update)="update($event)"
+          (deploy)="runDeploy($event)"
+          (copyProperties)="runCopy($event)"
+        >
         </app-stream-deploy-free-text>
       </clr-tab-content>
     </clr-tab>

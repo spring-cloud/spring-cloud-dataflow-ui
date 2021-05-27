@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { AppService } from '../../shared/api/app.service';
-import { App } from '../../shared/model/app.model';
-import { DetailedApp } from '../../shared/model/detailed-app.model';
-import { UnregisterComponent } from '../unregister/unregister.component';
-import { NotificationService } from '../../shared/service/notification.service';
-import { VersionComponent } from '../version/version.component';
-import { HttpError } from '../../shared/model/error.model';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {AppService} from '../../shared/api/app.service';
+import {App} from '../../shared/model/app.model';
+import {DetailedApp} from '../../shared/model/detailed-app.model';
+import {UnregisterComponent} from '../unregister/unregister.component';
+import {NotificationService} from '../../shared/service/notification.service';
+import {VersionComponent} from '../version/version.component';
+import {HttpError} from '../../shared/model/error.model';
 
 @Component({
   selector: 'app-app',
-  templateUrl: './app.component.html',
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   loading = true;
@@ -20,9 +20,9 @@ export class AppComponent implements OnInit {
   defaultApp: App;
   selectedApp: App;
   detailedApp: DetailedApp;
-  @ViewChild('unregisterModal', { static: true })
+  @ViewChild('unregisterModal', {static: true})
   unregisterModal: UnregisterComponent;
-  @ViewChild('versionModal', { static: true }) versionModal: VersionComponent;
+  @ViewChild('versionModal', {static: true}) versionModal: VersionComponent;
   showAllProperties = true;
   tooManyProperties = false;
 
@@ -35,40 +35,35 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.app = App.parse({ name: params.appName, type: params.appType });
+      this.app = App.parse({name: params.appName, type: params.appType});
       this.getVersions();
     });
   }
 
-  getVersions() {
+  getVersions(): void {
     this.loading = true;
     this.appsService.getAppVersions(this.app.name, this.app.type).subscribe(
       (apps: App[]) => {
         if (apps.length === 0) {
-          this.notificationService.error(
-            'An error occurred',
-            'No application found.'
-          );
+          this.notificationService.error('An error occurred', 'No application found.');
           this.back();
         }
         this.versions = apps;
-        this.defaultApp = this.versions.find((a) => a.defaultVersion);
+        this.defaultApp = this.versions.find(a => a.defaultVersion);
         if (this.defaultApp) {
           this.app = this.defaultApp;
         }
-        this.changeVersion(
-          this.defaultApp ? this.defaultApp : this.versions[0]
-        );
+        this.changeVersion(this.defaultApp ? this.defaultApp : this.versions[0]);
         this.loading = false;
       },
-      (error) => {
+      error => {
         this.notificationService.error('An error occurred', error);
         this.back();
       }
     );
   }
 
-  getProperties(app: App) {
+  getProperties(app: App): void {
     this.loadingProperties = true;
     this.selectedApp = app;
     if (this.detailedApp) {
@@ -82,7 +77,7 @@ export class AppComponent implements OnInit {
         this.detailedApp = detailedApp;
         this.loadingProperties = false;
       },
-      (error) => {
+      error => {
         this.notificationService.error('An error occurred', error);
         if (HttpError.is404(error)) {
           this.back();
@@ -92,29 +87,29 @@ export class AppComponent implements OnInit {
           version: app.version,
           versions: app.versions,
           type: app.type,
-          defaultVersion: app.defaultVersion,
+          defaultVersion: app.defaultVersion
         });
         this.loadingProperties = false;
       }
     );
   }
 
-  changeVersion(app: App) {
+  changeVersion(app: App): void {
     if (this.selectedApp?.version === app?.version) {
       return;
     }
     this.getProperties(app);
   }
 
-  back() {
+  back(): void {
     this.router.navigateByUrl('/apps');
   }
 
-  unregister() {
+  unregister(): void {
     this.unregisterModal.open([this.app]);
   }
 
-  manageVersions() {
+  manageVersions(): void {
     this.versionModal.open(this.detailedApp.name, this.detailedApp.type);
   }
 

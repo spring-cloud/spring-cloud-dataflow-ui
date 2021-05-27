@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { dia } from 'jointjs';
-import { Flo } from 'spring-flo';
-import { Utils as SharedUtils } from '../shared/support/utils';
-import { ApplicationType } from '../../shared/model/app.model';
+import {Injectable} from '@angular/core';
+import {dia} from 'jointjs';
+import {Flo} from 'spring-flo';
+import {Utils as SharedUtils} from '../shared/support/utils';
+import {ApplicationType} from '../../shared/model/app.model';
 
 import * as _joint from 'jointjs';
 const joint: any = _joint;
@@ -28,18 +28,15 @@ export const PORT_RADIUS = 7;
 const HANDLE_SHAPE_SPACING = 10;
 const BETWEEN_HANDLE_SPACING = 5;
 
-
 // Default icons (unicode chars) for each group member, unless they override
 const GROUP_ICONS = new Map<string, string>()
   .set('app', 'assets/img/app.svg') // U+2338 (Quad equal symbol)
-  .set('source', 'assets/img/source.svg')// 21D2
+  .set('source', 'assets/img/source.svg') // 21D2
   .set('processor', 'assets/img/processor.svg') // 3bb  //flux capacitor? 1D21B
   .set('sink', 'assets/img/sink.svg') // 21D2
   .set('task', 'assets/img/unknown.svg') // 2609   ⚙=2699 gear (rubbish)
   .set('other', 'assets/img/tap.svg') // 2982
-  .set('unresolved', 'assets/img/unknown.svg') // 2982
-;
-
+  .set('unresolved', 'assets/img/unknown.svg'); // 2982
 /**
  * Node Helper for Flo based Stream Definition graph editor.
  * Static utility method for creating joint model objects.
@@ -48,160 +45,179 @@ const GROUP_ICONS = new Map<string, string>()
  */
 @Injectable()
 export class NodeHelper {
-
   createNode(metadata: Flo.ElementMetadata): dia.Element {
     let node: dia.Element = null;
     switch (metadata.group) {
-
       case ApplicationType[ApplicationType.app]:
         node = new joint.shapes.flo.DataFlowApp(
-          joint.util.deepSupplement({
-            attrs: {
-              '.box': {
-                'fill': '#eef4ee',
-              },
-              '.shape': {
-                class: 'shape app-module'
-              },
-              // '.type-label': {
-              //   text: metadata.group.toUpperCase()
-              // },
-              '.type-icon': {
-                'xlink:href': GROUP_ICONS.get(metadata.group),
+          joint.util.deepSupplement(
+            {
+              attrs: {
+                '.box': {
+                  fill: '#eef4ee'
+                },
+                '.shape': {
+                  class: 'shape app-module'
+                },
+                // '.type-label': {
+                //   text: metadata.group.toUpperCase()
+                // },
+                '.type-icon': {
+                  'xlink:href': GROUP_ICONS.get(metadata.group)
+                }
               }
-            }
-          }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+            },
+            joint.shapes.flo.DataFlowApp.prototype.defaults
+          )
         );
         break;
       case ApplicationType[ApplicationType.source]:
         node = new joint.shapes.flo.DataFlowApp(
-          joint.util.deepSupplement({
-            attrs: {
-              '.box': {
-                'fill': '#eef4ee'
-              },
-              '.shape': {
-                class: 'shape source-module'
-              },
-              // '.type-label': {
-              //   text: metadata.group.toUpperCase()
-              // },
-              '.type-icon': {
-                'xlink:href': GROUP_ICONS.get(metadata.group),
+          joint.util.deepSupplement(
+            {
+              attrs: {
+                '.box': {
+                  fill: '#eef4ee'
+                },
+                '.shape': {
+                  class: 'shape source-module'
+                },
+                // '.type-label': {
+                //   text: metadata.group.toUpperCase()
+                // },
+                '.type-icon': {
+                  'xlink:href': GROUP_ICONS.get(metadata.group)
+                }
               }
-            }
-          }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+            },
+            joint.shapes.flo.DataFlowApp.prototype.defaults
+          )
         );
         break;
       case ApplicationType[ApplicationType.processor]:
         node = new joint.shapes.flo.DataFlowApp(
-          joint.util.deepSupplement({
-            attrs: {
-              '.box': {
-                'fill': '#eef4ee'
-              },
-              '.shape': {
-                class: 'shape processor-module'
-              },
-              // '.type-label': {
-              //   text: metadata.group.toUpperCase()
-              // },
-              '.type-icon': {
-                'xlink:href': GROUP_ICONS.get(metadata.group),
-              },
-              '.stream-label': {
-                display: 'none'
+          joint.util.deepSupplement(
+            {
+              attrs: {
+                '.box': {
+                  fill: '#eef4ee'
+                },
+                '.shape': {
+                  class: 'shape processor-module'
+                },
+                // '.type-label': {
+                //   text: metadata.group.toUpperCase()
+                // },
+                '.type-icon': {
+                  'xlink:href': GROUP_ICONS.get(metadata.group)
+                },
+                '.stream-label': {
+                  display: 'none'
+                }
               }
-            }
-          }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+            },
+            joint.shapes.flo.DataFlowApp.prototype.defaults
+          )
         );
         break;
       case ApplicationType[ApplicationType.sink]:
         node = new joint.shapes.flo.DataFlowApp(
-          joint.util.deepSupplement({
-            attrs: {
-              '.box': {
-                'fill': '#eef4ee'
-              },
-              '.shape': {
-                class: 'shape sink-module'
-              },
-              // '.type-label': {
-              //   text: metadata.group.toUpperCase()
-              // },
-              '.type-icon': {
-                'xlink:href': GROUP_ICONS.get(metadata.group),
-              },
-              '.stream-label': {
-                display: 'none'
+          joint.util.deepSupplement(
+            {
+              attrs: {
+                '.box': {
+                  fill: '#eef4ee'
+                },
+                '.shape': {
+                  class: 'shape sink-module'
+                },
+                // '.type-label': {
+                //   text: metadata.group.toUpperCase()
+                // },
+                '.type-icon': {
+                  'xlink:href': GROUP_ICONS.get(metadata.group)
+                },
+                '.stream-label': {
+                  display: 'none'
+                }
               }
-            }
-          }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+            },
+            joint.shapes.flo.DataFlowApp.prototype.defaults
+          )
         );
         break;
       case ApplicationType[ApplicationType.task]:
         node = new joint.shapes.flo.DataFlowApp(
-          joint.util.deepSupplement({
-            attrs: {
-              '.box': {
-                'fill': '#eef4ee'
-              },
-              '.shape': {
-                class: 'shape task-module'
-              },
-              // '.type-label': {
-              //   text: metadata.group.toUpperCase()
-              // },
-              '.type-icon': {
-                'xlink:href': GROUP_ICONS.get(metadata.group),
-              },
-              '.stream-label': {
-                display: 'none'
+          joint.util.deepSupplement(
+            {
+              attrs: {
+                '.box': {
+                  fill: '#eef4ee'
+                },
+                '.shape': {
+                  class: 'shape task-module'
+                },
+                // '.type-label': {
+                //   text: metadata.group.toUpperCase()
+                // },
+                '.type-icon': {
+                  'xlink:href': GROUP_ICONS.get(metadata.group)
+                },
+                '.stream-label': {
+                  display: 'none'
+                }
               }
-            }
-          }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+            },
+            joint.shapes.flo.DataFlowApp.prototype.defaults
+          )
         );
         break;
       default:
         if (metadata.name === 'tap') {
           node = new joint.shapes.flo.DataFlowApp(
-            joint.util.deepSupplement({
-              attrs: {
-                '.box': {
-                  'fill': '#eeeeff',
-                  'stroke': '#0000ff'
-                },
-                '.shape': {
-                  class: 'shape other-module'
-                },
-                // '.type-label': {
-                //   text: metadata.group.toUpperCase()
-                // },
-                '.type-icon': {
-                  'xlink:href': GROUP_ICONS.get(metadata.group),
+            joint.util.deepSupplement(
+              {
+                attrs: {
+                  '.box': {
+                    fill: '#eeeeff',
+                    stroke: '#0000ff'
+                  },
+                  '.shape': {
+                    class: 'shape other-module'
+                  },
+                  // '.type-label': {
+                  //   text: metadata.group.toUpperCase()
+                  // },
+                  '.type-icon': {
+                    'xlink:href': GROUP_ICONS.get(metadata.group)
+                  }
                 }
-              }
-            }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+              },
+              joint.shapes.flo.DataFlowApp.prototype.defaults
+            )
           );
         } else if (metadata.name === 'destination') {
           node = new joint.shapes.flo.DataFlowApp(
-            joint.util.deepSupplement({
-              attrs: {
-                '.box': {
-                  'fill': '#eeeeff',
-                  'stroke': '#0000ff'
-                },
-                '.shape': {
-                  class: 'shape other-module'
-                },
-                // '.type-label': {
-                //   text: metadata.group.toUpperCase()
-                // },
-                '.type-icon': {
-                  'xlink:href': GROUP_ICONS.get(metadata.group),
+            joint.util.deepSupplement(
+              {
+                attrs: {
+                  '.box': {
+                    fill: '#eeeeff',
+                    stroke: '#0000ff'
+                  },
+                  '.shape': {
+                    class: 'shape other-module'
+                  },
+                  // '.type-label': {
+                  //   text: metadata.group.toUpperCase()
+                  // },
+                  '.type-icon': {
+                    'xlink:href': GROUP_ICONS.get(metadata.group)
+                  }
                 }
-              }
-            }, joint.shapes.flo.DataFlowApp.prototype.defaults)
+              },
+              joint.shapes.flo.DataFlowApp.prototype.defaults
+            )
           );
         } else {
           node = new joint.shapes.flo.DataFlowApp();
@@ -215,7 +231,7 @@ export class NodeHelper {
     return node;
   }
 
-  createHandles(node: dia.Element, metadata: Flo.ElementMetadata) {
+  createHandles(node: dia.Element, metadata: Flo.ElementMetadata): void {
     if (!metadata || SharedUtils.isUnresolvedMetadata(metadata)) {
       node.attr('.delete-handle', {
         text: 'Delete',
@@ -249,12 +265,12 @@ export class NodeHelper {
         refX: '50%',
         refX2: BETWEEN_HANDLE_SPACING,
         refY: -HANDLE_SHAPE_SPACING,
-        yAlignment: 'bottom',
+        yAlignment: 'bottom'
       });
     }
   }
 
-  createPorts(node: dia.Element, metadata: Flo.ElementMetadata) {
+  createPorts(node: dia.Element, metadata: Flo.ElementMetadata): void {
     switch (metadata.group) {
       case ApplicationType[ApplicationType.source]:
         this.createCommonOutputPort(node);
@@ -280,7 +296,7 @@ export class NodeHelper {
     }
   }
 
-  protected createCommonOutputPort(node: dia.Element) {
+  protected createCommonOutputPort(node: dia.Element): void {
     node.attr('.output-port', {
       port: 'output',
       magnet: true,
@@ -302,7 +318,7 @@ export class NodeHelper {
     });
   }
 
-  protected createCommonInputPort(node: dia.Element) {
+  protected createCommonInputPort(node: dia.Element): void {
     node.attr('.input-port', {
       port: 'input',
       magnet: true,
@@ -323,5 +339,4 @@ export class NodeHelper {
       class: 'port-inner-circle-input flo-port-inner-circle'
     });
   }
-
 }

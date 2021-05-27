@@ -1,31 +1,27 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
-import { DateTime } from 'luxon';
-import { saveAs } from 'file-saver';
-import { Task } from '../../../shared/model/task.model';
-import { NotificationService } from '../../../shared/service/notification.service';
-import { HttpError } from '../../../shared/model/error.model';
-import { LoggerService } from '../../../shared/service/logger.service';
-import { ClipboardCopyService } from '../../../shared/service/clipboard-copy.service';
-import { TaskService } from '../../../shared/api/task.service';
-import { TaskLaunchService } from './task-launch.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subject} from 'rxjs';
+import {map, mergeMap} from 'rxjs/operators';
+import {DateTime} from 'luxon';
+import {saveAs} from 'file-saver';
+import {Task} from '../../../shared/model/task.model';
+import {NotificationService} from '../../../shared/service/notification.service';
+import {HttpError} from '../../../shared/model/error.model';
+import {ClipboardCopyService} from '../../../shared/service/clipboard-copy.service';
+import {TaskService} from '../../../shared/api/task.service';
+import {TaskLaunchService} from './task-launch.service';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
-  providers: [
-    TaskLaunchService
-  ],
+  providers: [TaskLaunchService],
   styles: []
 })
 export class LaunchComponent implements OnInit, OnDestroy {
-
   task: Task;
   loading = true;
   isLaunching = false;
-  state: any = { view: 'builder' };
+  state: any = {view: 'builder'};
   ngUnsubscribe$: Subject<any> = new Subject();
   properties: Array<string> = [];
   arguments: Array<string> = [];
@@ -34,33 +30,31 @@ export class LaunchComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private notificationService: NotificationService,
-    private loggerService: LoggerService,
     private taskService: TaskService,
     private router: Router,
-    private clipboardCopyService: ClipboardCopyService) {
-  }
+    private clipboardCopyService: ClipboardCopyService
+  ) {}
 
   /**
    * Initialize compoment
    * Subscribe to route params and load a config for a task
    */
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params
       .pipe(
-        mergeMap(
-          params => {
-            this.task = new Task();
-            this.task.name = params.name;
-            return this.taskService.getTask(params.name, true);
-          }
-        ),
+        mergeMap(params => {
+          this.task = new Task();
+          this.task.name = params.name;
+          return this.taskService.getTask(params.name, true);
+        }),
         map((task: Task) => {
           let parameters = '';
           if (task.lastTaskExecution && task.lastTaskExecution.deploymentProperties) {
             parameters = Object.keys(task.lastTaskExecution.deploymentProperties)
-              .map(key => (task.lastTaskExecution.deploymentProperties[key] === '******')
-                ? ''
-                : `${key}=${task.lastTaskExecution.deploymentProperties[key]}`
+              .map(key =>
+                task.lastTaskExecution.deploymentProperties[key] === '******'
+                  ? ''
+                  : `${key}=${task.lastTaskExecution.deploymentProperties[key]}`
               )
               .filter(param => !!param)
               .join('\n');
@@ -70,8 +64,8 @@ export class LaunchComponent implements OnInit, OnDestroy {
             parameters
           };
         }),
-        mergeMap(
-          ({ task, parameters }) => this.taskService.getPlatforms().pipe(
+        mergeMap(({task, parameters}) =>
+          this.taskService.getPlatforms().pipe(
             map(platforms => ({
               platforms,
               task,
@@ -80,21 +74,24 @@ export class LaunchComponent implements OnInit, OnDestroy {
           )
         )
       )
-      .subscribe(({ task, parameters, platforms }) => {
-        this.task = task;
-        this.loading = false;
-      }, (error) => {
-        this.notificationService.error('An error occurred', error);
-        if (HttpError.is404(error)) {
-          this.router.navigate(['/tasks-jobs/tasks']);
+      .subscribe(
+        ({task, parameters, platforms}) => {
+          this.task = task;
+          this.loading = false;
+        },
+        error => {
+          this.notificationService.error('An error occurred', error);
+          if (HttpError.is404(error)) {
+            this.router.navigate(['/tasks-jobs/tasks']);
+          }
         }
-      });
+      );
   }
 
   /**
    * On Destroy operations
    */
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
@@ -102,11 +99,11 @@ export class LaunchComponent implements OnInit, OnDestroy {
   /**
    * Update the properties
    */
-  updateProperties(value: Array<string>) {
+  updateProperties(value: Array<string>): void {
     this.properties = value.sort();
   }
 
-  updateArguments(value: Array<string>) {
+  updateArguments(value: Array<string>): void {
     this.arguments = value.sort();
   }
 
@@ -115,7 +112,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
    * Update the properties
    * @param value Array of properties
    */
-  runPropertiesExport(value: Array<string>) {
+  runPropertiesExport(value: Array<string>): void {
     this.updateProperties(value);
     if (this.properties.length === 0) {
       this.notificationService.error('An error occured', 'There are no properties to export.');
@@ -123,12 +120,12 @@ export class LaunchComponent implements OnInit, OnDestroy {
       const propertiesText = this.properties.join('\n');
       const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
       const filename = `${this.task.name}_${date}.txt`;
-      const blob = new Blob([propertiesText], { type: 'text/plain' });
+      const blob = new Blob([propertiesText], {type: 'text/plain'});
       saveAs(blob, filename);
     }
   }
 
-  runArgumentsExport(value: Array<string>) {
+  runArgumentsExport(value: Array<string>): void {
     this.updateArguments(value);
     if (this.arguments.length === 0) {
       this.notificationService.error('An error occured', 'There are no arguments to export.');
@@ -136,7 +133,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
       const argumentsText = this.arguments.join('\n');
       const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
       const filename = `${this.task.name}_${date}.txt`;
-      const blob = new Blob([argumentsText], { type: 'text/plain' });
+      const blob = new Blob([argumentsText], {type: 'text/plain'});
       saveAs(blob, filename);
     }
   }
@@ -146,7 +143,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
    * Update the properties
    * @param value Array of properties
    */
-  runPropertiesCopy(value: Array<string>) {
+  runPropertiesCopy(value: Array<string>): void {
     this.updateProperties(value);
     if (this.properties.length === 0) {
       this.notificationService.error('An error occured', 'There are no properties to copy.');
@@ -157,7 +154,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
     }
   }
 
-  runArgumentsCopy(value: Array<string>) {
+  runArgumentsCopy(value: Array<string>): void {
     this.updateArguments(value);
     if (this.arguments.length === 0) {
       this.notificationService.error('An error occured', 'There are no arguments to copy.');
@@ -173,28 +170,29 @@ export class LaunchComponent implements OnInit, OnDestroy {
    * Update the properties
    * @param value Array of properties
    */
-  runLaunch(props: Array<string>, args: Array<string>) {
+  runLaunch(props: Array<string>, args: Array<string>): void {
     this.isLaunching = true;
     this.updateProperties(props);
     this.updateArguments(args);
     const prepared = this.prepareParams(this.task.name, this.arguments, this.properties);
-    this.taskService.launch(prepared.name, prepared.args, prepared.props)
-      .subscribe((executionId) => {
-          this.notificationService.success('Launch success', `Successfully launched task definition "${this.task.name}"`);
-          this.router.navigate([`tasks-jobs/task-executions/${executionId}`]);
-        },
-        error => {
-          this.isLaunching = false;
-          const err = error.message ? error.message : error.toString();
-          this.notificationService.error('An error occurred', err ? err : 'An error occurred during the task launch.');
-        });
+    this.taskService.launch(prepared.name, prepared.args, prepared.props).subscribe(
+      executionId => {
+        this.notificationService.success('Launch success', `Successfully launched task definition "${this.task.name}"`);
+        this.router.navigate([`tasks-jobs/task-executions/${executionId}`]);
+      },
+      error => {
+        this.isLaunching = false;
+        const err = error.message ? error.message : error.toString();
+        this.notificationService.error('An error occurred', err ? err : 'An error occurred during the task launch.');
+      }
+    );
   }
 
-  prepareParams(name: string, args: Array<string>, props: Array<string>): any {
+  prepareParams(name: string, args: Array<string>, props: Array<string>): {name: string; args: string; props: string} {
     return {
       name,
-      args: args.filter((a) => a !== '').join(' '),
-      props: props.filter((a) => a !== '').join(', ')
+      args: args.filter(a => a !== '').join(' '),
+      props: props.filter(a => a !== '').join(', ')
     };
   }
 }

@@ -1,12 +1,12 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { Properties } from 'spring-flo';
-import { Validators } from '@angular/forms';
-import { StreamAppPropertiesSource } from './stream-properties-source';
-import { PropertiesGroupModel } from '../../shared/support/properties-group-model';
-import { StreamService } from '../../../shared/api/stream.service';
-import { Observable } from 'rxjs';
-import { AppUiProperty } from '../../shared/support/app-ui-property';
-import { PropertiesDialogComponent } from '../../shared/properties/properties-dialog.component';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {Properties} from 'spring-flo';
+import {Validators} from '@angular/forms';
+import {StreamAppPropertiesSource} from './stream-properties-source';
+import {PropertiesGroupModel} from '../../shared/support/properties-group-model';
+import {StreamService} from '../../../shared/api/stream.service';
+import {Observable} from 'rxjs';
+import {AppUiProperty} from '../../shared/support/app-ui-property';
+import {PropertiesDialogComponent} from '../../shared/properties/properties-dialog.component';
 
 // CM extension necessary for snippet support syntax highlighting
 // Lint support
@@ -17,7 +17,6 @@ import 'codemirror-minified/mode/javascript/javascript';
 import 'codemirror-minified/mode/ruby/ruby';
 import 'codemirror-minified/mode/python/python';
 
-
 /**
  * Utility class for working with Properties.
  *
@@ -25,10 +24,7 @@ import 'codemirror-minified/mode/python/python';
  * @author Andy Clement
  */
 export class StreamPropertiesGroupModel extends PropertiesGroupModel {
-
-  constructor(propertiesSource: StreamAppPropertiesSource,
-              private streamService: StreamService
-  ) {
+  constructor(propertiesSource: StreamAppPropertiesSource, private streamService: StreamService) {
     super(propertiesSource);
   }
 
@@ -42,21 +38,21 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
       if (property.id === 'label') {
         validation = {
           validator: Validators.pattern(/^[\w_]+[\w_-]*$/),
-          errorData: [
-            { id: 'pattern', message: 'Invalid app label!' }
-          ]
+          errorData: [{id: 'pattern', message: 'Invalid app label!'}]
         };
       } else if (property.id === 'stream-name') {
         validation = {
           validator: [
             Validators.pattern(/^[\w_]+[\w_-]*$/),
-            Properties.Validators.noneOf((this.propertiesSource as StreamAppPropertiesSource).getStreamHead().presentStreamNames)
+            Properties.Validators.noneOf(
+              (this.propertiesSource as StreamAppPropertiesSource).getStreamHead().presentStreamNames
+            )
           ],
-          asyncValidator: Properties.Validators.uniqueResource((value) => this.isUniqueStreamName(value), 500),
+          asyncValidator: Properties.Validators.uniqueResource(value => this.isUniqueStreamName(value), 500),
           errorData: [
-            { id: 'pattern', message: 'Invalid stream name!' },
-            { id: 'uniqueResource', message: 'Stream name already exists!' },
-            { id: 'noneOf', message: 'Stream name already exists on the canvas' }
+            {id: 'pattern', message: 'Invalid stream name!'},
+            {id: 'uniqueResource', message: 'Stream name already exists!'},
+            {id: 'noneOf', message: 'Stream name already exists on the canvas'}
           ]
         };
       }
@@ -67,24 +63,26 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
   isUniqueStreamName(name: string): Observable<boolean> {
     return new Observable<boolean>(obs => {
       if (name) {
-        this.streamService.getStream(name).subscribe(def => {
-          if (def) {
-            obs.next(false);
-          } else {
+        this.streamService.getStream(name).subscribe(
+          def => {
+            if (def) {
+              obs.next(false);
+            } else {
+              obs.next(true);
+            }
+            obs.complete();
+          },
+          () => {
             obs.next(true);
+            obs.complete();
           }
-          obs.complete();
-        }, () => {
-          obs.next(true);
-          obs.complete();
-        });
+        );
       } else {
         obs.next(true);
         obs.complete();
       }
     });
   }
-
 }
 
 /**
@@ -100,18 +98,14 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
   encapsulation: ViewEncapsulation.None
 })
 export class StreamPropertiesDialogComponent extends PropertiesDialogComponent {
-
   public title: string;
 
   constructor(private streamsService: StreamService) {
     super();
   }
 
-  setData(propertiesSource: StreamAppPropertiesSource) {
-    this.propertiesGroupModel = new StreamPropertiesGroupModel(
-      propertiesSource,
-      this.streamsService);
+  setData(propertiesSource: StreamAppPropertiesSource): void {
+    this.propertiesGroupModel = new StreamPropertiesGroupModel(propertiesSource, this.streamsService);
     this.propertiesGroupModel.load();
   }
-
 }

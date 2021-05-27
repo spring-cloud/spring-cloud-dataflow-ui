@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { Properties } from 'spring-flo';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {FormGroup, FormControl} from '@angular/forms';
+import {Properties} from 'spring-flo';
 import PropertyFilter = Properties.PropertyFilter;
 
 @Component({
@@ -9,7 +9,6 @@ import PropertyFilter = Properties.PropertyFilter;
   encapsulation: ViewEncapsulation.None
 })
 export class ClrPropertiesGroupComponent implements OnInit {
-
   @Input()
   propertiesGroupModel: Properties.PropertiesGroupModel;
 
@@ -19,7 +18,7 @@ export class ClrPropertiesGroupComponent implements OnInit {
   @Input()
   filter: PropertyFilter;
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (this.propertiesGroupModel.isLoading) {
       const subscription = this.propertiesGroupModel.loadedSubject.subscribe(loaded => {
         if (loaded) {
@@ -32,7 +31,7 @@ export class ClrPropertiesGroupComponent implements OnInit {
     }
   }
 
-  createGroupControls() {
+  createGroupControls(): void {
     this.propertiesGroupModel.getControlsModels().forEach(c => {
       if (c.validation) {
         this.form.addControl(c.id, new FormControl(c.value || '', c.validation.validator, c.validation.asyncValidator));
@@ -42,8 +41,7 @@ export class ClrPropertiesGroupComponent implements OnInit {
     });
   }
 
-  get controlModelsToDisplay() {
+  get controlModelsToDisplay(): any {
     return this.propertiesGroupModel.getControlsModels().filter(c => !this.filter || this.filter.accept(c.property));
   }
-
 }

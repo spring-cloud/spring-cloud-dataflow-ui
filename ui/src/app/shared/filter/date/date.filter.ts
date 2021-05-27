@@ -1,35 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { DateTime } from 'luxon';
+import {Component, Input, OnInit} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {DateTime} from 'luxon';
 
 @Component({
   selector: 'app-clr-datagrid-date-filter',
-  template: `
-    <div>
-      <div class="alert alert-danger" role="alert" *ngIf="invalid">
-        <div class="alert-items">
-          <div class="alert-item static">
-            <div class="alert-icon-wrapper">
-              <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
-            </div>
-            <span class="alert-text">
-                Invalid dates.
-            </span>
+  template: ` <div>
+    <div class="alert alert-danger" role="alert" *ngIf="invalid">
+      <div class="alert-items">
+        <div class="alert-item static">
+          <div class="alert-icon-wrapper">
+            <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
           </div>
+          <span class="alert-text"> Invalid dates. </span>
         </div>
       </div>
-      <clr-input-container>
-        <label>Min date:</label>
-        <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="min">
-      </clr-input-container>
-      <clr-input-container>
-        <label>Max date:</label>
-        <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="max">
-      </clr-input-container>
-    </div>`,
+    </div>
+    <clr-input-container>
+      <label>Min date:</label>
+      <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="min" />
+    </clr-input-container>
+    <clr-input-container>
+      <label>Max date:</label>
+      <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="max" />
+    </clr-input-container>
+  </div>`
 })
 export class DateFilterComponent implements OnInit {
-
   private pchanges = new Subject<any>();
 
   @Input() property = 'dates';
@@ -62,7 +58,7 @@ export class DateFilterComponent implements OnInit {
     return this.pchanges.asObservable();
   }
 
-  change() {
+  change(): void {
     this.invalid = false;
     this.value = null;
     if (this.min || this.max) {
@@ -97,12 +93,11 @@ export class DateFilterComponent implements OnInit {
     this.pchanges.next(true);
   }
 
-  accepts() {
+  accepts(): boolean {
     return true;
   }
 
   isActive(): boolean {
     return (this.value !== null && (this.value[0] !== null || this.value[1] !== null)) || this.invalid;
   }
-
 }

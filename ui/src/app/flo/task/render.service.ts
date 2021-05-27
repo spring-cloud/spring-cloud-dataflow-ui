@@ -1,33 +1,44 @@
-import { ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector, Type } from '@angular/core';
-import { Constants, Flo } from 'spring-flo';
-import { dia } from 'jointjs';
-import { defaultsDeep } from 'lodash';
-import { MetamodelService } from './metamodel.service';
+import {ApplicationRef, ComponentFactoryResolver, ComponentRef, Injectable, Injector, Type} from '@angular/core';
+import {Constants, Flo} from 'spring-flo';
+import {dia} from 'jointjs';
+import {defaultsDeep} from 'lodash';
+import {MetamodelService} from './metamodel.service';
 import {
-  TaskAppShape, BatchSyncShape, BatchLink, BatchStartShape, BatchEndShape,
-  CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, NODE_ROUNDED_CORNER, NODE_ROUNDED_CORNER_PALETTE
+  TaskAppShape,
+  BatchSyncShape,
+  BatchLink,
+  BatchStartShape,
+  BatchEndShape,
+  CONTROL_GROUP_TYPE,
+  START_NODE_TYPE,
+  END_NODE_TYPE,
+  SYNC_NODE_TYPE,
+  NODE_ROUNDED_CORNER,
+  NODE_ROUNDED_CORNER_PALETTE
 } from './support/shapes';
-import { layout } from './support/layout';
-import { TaskNodeComponent } from './node/task-node.component';
+import {layout} from './support/layout';
+import {TaskNodeComponent} from './node/task-node.component';
 import * as _joint from 'jointjs';
-import { TaskPropertiesDialogComponent } from './properties/task-properties-dialog-component';
-import { TaskGraphPropertiesSource } from './properties/task-properties-source';
-import { ElementComponent } from '../shared/support/shape-component';
-import { ViewUtils } from '../shared/support/view-utils';
-import { LoggerService } from '../../shared/service/logger.service';
-import { createPaletteGroupHeader } from '../shared/support/shared-shapes';
-import { App, ApplicationType } from '../../shared/model/app.model';
-import { ModalService } from '../../shared/service/modal.service';
+import {TaskPropertiesDialogComponent} from './properties/task-properties-dialog-component';
+import {TaskGraphPropertiesSource} from './properties/task-properties-source';
+import {ElementComponent} from '../shared/support/shape-component';
+import {ViewUtils} from '../shared/support/view-utils';
+import {LoggerService} from '../../shared/service/logger.service';
+import {createPaletteGroupHeader} from '../shared/support/shared-shapes';
+import {App, ApplicationType} from '../../shared/model/app.model';
+import {ModalService} from '../../shared/service/modal.service';
 
 const joint: any = _joint;
 
-const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>()
-  .set(joint.shapes.flo.NODE_TYPE, TaskNodeComponent);
+const ELEMENT_TYPE_COMPONENT_TYPE = new Map<string, Type<ElementComponent>>().set(
+  joint.shapes.flo.NODE_TYPE,
+  TaskNodeComponent
+);
 
-const COMPOSED_TASK_PALETTE_SIZE = { width: 120, height: 30 };
-const COMPOSED_TASK_CANVAS_SIZE = { width: 180, height: 42 };
-const SYNC_PALETTE_SIZE = { width: 80, height: 30 };
-const SYNC_CANVAS_SIZE = { width: 100, height: 40 };
+const COMPOSED_TASK_PALETTE_SIZE = {width: 120, height: 30};
+const COMPOSED_TASK_CANVAS_SIZE = {width: 180, height: 42};
+const SYNC_PALETTE_SIZE = {width: 80, height: 30};
+const SYNC_CANVAS_SIZE = {width: 100, height: 40};
 
 /**
  * Flo service class for its Renderer used for composed tasks.
@@ -37,16 +48,15 @@ const SYNC_CANVAS_SIZE = { width: 100, height: 40 };
  */
 @Injectable()
 export class RenderService implements Flo.Renderer {
+  constructor(
+    private metamodelService: MetamodelService,
+    private modalService?: ModalService,
+    private componentFactoryResolver?: ComponentFactoryResolver,
+    private injector?: Injector,
+    private applicationRef?: ApplicationRef
+  ) {}
 
-  constructor(private metamodelService: MetamodelService,
-              private modalService?: ModalService,
-              private componentFactoryResolver?: ComponentFactoryResolver,
-              private injector?: Injector,
-              private applicationRef?: ApplicationRef) {
-  }
-
-
-  markersChanged(cell: dia.Cell, paper: dia.Paper) {
+  markersChanged(cell: dia.Cell, paper: dia.Paper): void {
     const markers: Array<Flo.Marker> = cell.get('markers');
     const view = paper.findViewByModel(cell);
     if (view) {
@@ -66,61 +76,73 @@ export class RenderService implements Flo.Renderer {
     switch (metadata.name) {
       case START_NODE_TYPE:
         return new BatchStartShape(
-          defaultsDeep({
-            attrs: {
-              '.name-label': {
-                text: metadata.name
+          defaultsDeep(
+            {
+              attrs: {
+                '.name-label': {
+                  text: metadata.name
+                }
               }
-            }
-          }, BatchStartShape.prototype.defaults)
+            },
+            BatchStartShape.prototype.defaults
+          )
         );
       case END_NODE_TYPE:
         return new BatchEndShape(
-          defaultsDeep({
-            attrs: {
-              '.name-label': {
-                text: metadata.name
+          defaultsDeep(
+            {
+              attrs: {
+                '.name-label': {
+                  text: metadata.name
+                }
               }
-            }
-          }, BatchEndShape.prototype.defaults)
+            },
+            BatchEndShape.prototype.defaults
+          )
         );
       case SYNC_NODE_TYPE:
         return new BatchSyncShape(
-          defaultsDeep({
-            size: isPalette ? SYNC_PALETTE_SIZE : SYNC_CANVAS_SIZE,
-            attrs: {
-              '.name-label': {
-                text: metadata.name
-              },
-              '.palette-entry-name-label': {
-                text: metadata.name
-              },
-              '.type-label': {
-                text: metadata.name.toUpperCase()
+          defaultsDeep(
+            {
+              size: isPalette ? SYNC_PALETTE_SIZE : SYNC_CANVAS_SIZE,
+              attrs: {
+                '.name-label': {
+                  text: metadata.name
+                },
+                '.palette-entry-name-label': {
+                  text: metadata.name
+                },
+                '.type-label': {
+                  text: metadata.name.toUpperCase()
+                }
               }
-            }
-          }, BatchSyncShape.prototype.defaults)
+            },
+            BatchSyncShape.prototype.defaults
+          )
         );
       default:
         return new TaskAppShape(
-          defaultsDeep({
-            size: isPalette ? COMPOSED_TASK_PALETTE_SIZE : COMPOSED_TASK_CANVAS_SIZE,
-            attrs: {
-              '.box': {
-                rx: isPalette ? NODE_ROUNDED_CORNER_PALETTE : NODE_ROUNDED_CORNER,
-                ry: isPalette ? NODE_ROUNDED_CORNER_PALETTE : NODE_ROUNDED_CORNER,
-              },
-              '.name-label': {
-                text: metadata.name
-              },
-              '.palette-entry-name-label': {
-                text: metadata.name
-              },
-              '.type-label': {
-                text: metadata.name.toUpperCase()
+          defaultsDeep(
+            {
+              size: isPalette ? COMPOSED_TASK_PALETTE_SIZE : COMPOSED_TASK_CANVAS_SIZE,
+              attrs: {
+                '.box': {
+                  rx: isPalette ? NODE_ROUNDED_CORNER_PALETTE : NODE_ROUNDED_CORNER,
+                  ry: isPalette ? NODE_ROUNDED_CORNER_PALETTE : NODE_ROUNDED_CORNER
+                },
+                '.name-label': {
+                  text: metadata.name
+                },
+                '.palette-entry-name-label': {
+                  text: metadata.name
+                },
+                '.type-label': {
+                  text: metadata.name.toUpperCase()
+                }
               }
-            }
-          }, TaskAppShape.prototype.defaults)
+            },
+            TaskAppShape.prototype.defaults
+          )
         );
     }
   }
@@ -129,9 +151,9 @@ export class RenderService implements Flo.Renderer {
    * Creates a link used to link nodes. For now we
    * only have one node link type.
    */
-  createLink() {
+  createLink(): any {
     const link = new BatchLink();
-    this.metamodelService.load().then((metamodel) => {
+    this.metamodelService.load().then(metamodel => {
       link.prop('metadata', metamodel.get('links').get('transition'));
     });
     return link;
@@ -157,7 +179,7 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  initializeNewNode(node: dia.Element, viewerDescriptor: Flo.ViewerDescriptor) {
+  initializeNewNode(node: dia.Element, viewerDescriptor: Flo.ViewerDescriptor): void {
     const metadata: Flo.ElementMetadata = node.prop('metadata');
     if (metadata) {
       if (metadata.group === CONTROL_GROUP_TYPE) {
@@ -167,10 +189,13 @@ export class RenderService implements Flo.Renderer {
         if (viewerDescriptor.paper) {
           const isPalette = viewerDescriptor.paper.model.get('type') === Constants.PALETTE_CONTEXT;
           if (isPalette) {
-            ViewUtils.fitLabelWithFixedLocation(viewerDescriptor.paper, node, '.palette-entry-name-label',
-              node.attr('.palette-entry-name-label/refX'));
+            ViewUtils.fitLabelWithFixedLocation(
+              viewerDescriptor.paper,
+              node,
+              '.palette-entry-name-label',
+              node.attr('.palette-entry-name-label/refX')
+            );
             // ViewUtils.fitLabel(viewerDescriptor.paper, node, '.palette-entry-name-label', 10, 10);
-
           } else {
             ViewUtils.fitLabel(viewerDescriptor.paper, node, '.name-label', 10, 10);
 
@@ -182,7 +207,7 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  refreshVisuals(element: dia.Cell, changedPropertyPath: string, paper: dia.Paper) {
+  refreshVisuals(element: dia.Cell, changedPropertyPath: string, paper: dia.Paper): void {
     if (element instanceof joint.dia.Element && element.prop('metadata')) {
       if (changedPropertyPath === 'node-label') {
         const nodeLabel = element.attr('node-label');
@@ -197,7 +222,6 @@ export class RenderService implements Flo.Renderer {
     }
 
     if (element instanceof joint.dia.Link && element.prop('metadata')) {
-
       if (changedPropertyPath === 'props/ExitStatus') {
         // If the exitstatus has been changed from blank to something then this
         // may leave no default link from the node at the source of the link since 'element' was
@@ -207,10 +231,11 @@ export class RenderService implements Flo.Renderer {
         const link = element as joint.dia.Link;
         const newExitStatus = link.attr('props/ExitStatus') || '';
         const currentLabels = link.labels();
-        const currentText = Array.isArray(currentLabels) && currentLabels.length > 0 ? currentLabels[0].attrs.text.text : '';
+        const currentText =
+          Array.isArray(currentLabels) && currentLabels.length > 0 ? currentLabels[0].attrs.text.text : '';
         if (newExitStatus.length !== 0 && currentText.length === 0) {
           let hasDefaultLink = false;
-          const relatedLinks = paper.model.getConnectedLinks(element.get('source'), { outbound: true });
+          const relatedLinks = paper.model.getConnectedLinks(element.get('source'), {outbound: true});
           for (let i = 0; i < relatedLinks.length; i++) {
             const relatedLink = relatedLinks[i];
             if (relatedLink === element) {
@@ -227,7 +252,7 @@ export class RenderService implements Flo.Renderer {
             // Create a new default (no specified exit status) link
             const newDefaultLink = this.createLink();
             const sourceNodeId = element.get('source').id;
-            const outgoingLinks = paper.model.getConnectedLinks(element.get('target'), { outbound: true });
+            const outgoingLinks = paper.model.getConnectedLinks(element.get('target'), {outbound: true});
             const defaultLink = outgoingLinks.find(l => {
               const exitStatus = l.attr('props/ExitStatus');
               return !exitStatus || exitStatus.length === 0;
@@ -249,7 +274,6 @@ export class RenderService implements Flo.Renderer {
             }
           }
         }
-
 
         setTimeout(() => {
           link.labels([
@@ -274,10 +298,14 @@ export class RenderService implements Flo.Renderer {
         });
         const view = paper.findViewByModel(element);
         if (element.attr('props/ExitStatus')) {
-          view.$('.connection, .marker-source, .marker-target').toArray()
+          view
+            .$('.connection, .marker-source, .marker-target')
+            .toArray()
             .forEach(c => joint.V(c).addClass('composed-task-graph-transition'));
         } else {
-          view.$('.connection, .marker-source, .marker-target').toArray()
+          view
+            .$('.connection, .marker-source, .marker-target')
+            .toArray()
             .forEach(c => joint.V(c).removeClass('composed-task-graph-transition'));
         }
       }
@@ -288,7 +316,8 @@ export class RenderService implements Flo.Renderer {
    * After a link is constructed it is initialized, this is a chance to fill in the label for it
    * (which is used as the titleModal in the properties view for it).
    */
-  initializeNewLink(link: dia.Link, context: Flo.ViewerDescriptor) { // context contains paper and graph
+  initializeNewLink(link: dia.Link, context: Flo.ViewerDescriptor): void {
+    // context contains paper and graph
     const paper = context.paper;
     const sourceId = link.get('source');
     const targetId = link.get('target');
@@ -300,9 +329,8 @@ export class RenderService implements Flo.Renderer {
     this.refreshVisuals(link, 'props/ExitStatus', paper);
   }
 
-  isSemanticProperty(propertyPath: string, element: dia.Cell) {
-    return /.label*\/text/.test(propertyPath) ||
-      propertyPath === 'node-label';
+  isSemanticProperty(propertyPath: string, element: dia.Cell): boolean {
+    return /.label*\/text/.test(propertyPath) || propertyPath === 'node-label';
   }
 
   /**
@@ -311,7 +339,7 @@ export class RenderService implements Flo.Renderer {
    * @param paper the flo paper
    * @returns {Promise<any>} a promise when layout has happened
    */
-  layout(paper) {
+  layout(paper): Promise<any> {
     return Promise.resolve(layout(paper));
   }
 
@@ -335,8 +363,9 @@ export class RenderService implements Flo.Renderer {
           if (this._angularComponentRef) {
             this._angularComponentRef.destroy();
           }
-          const nodeComponentFactory = self.componentFactoryResolver
-            .resolveComponentFactory(ELEMENT_TYPE_COMPONENT_TYPE.get(this.model.get('type')));
+          const nodeComponentFactory = self.componentFactoryResolver.resolveComponentFactory(
+            ELEMENT_TYPE_COMPONENT_TYPE.get(this.model.get('type'))
+          );
 
           const componentRef: ComponentRef<ElementComponent> = nodeComponentFactory.create(self.injector);
           self.applicationRef.attachView(componentRef.hostView);
@@ -362,13 +391,11 @@ export class RenderService implements Flo.Renderer {
           this._angularComponentRef.destroy();
         }
         joint.dia.ElementView.prototype.onRemove.apply(this, arguments);
-      },
-
+      }
     });
-
   }
 
-  getPaletteRenderer() {
+  getPaletteRenderer(): any {
     return {
       createGroupHeader: createPaletteGroupHeader
     };

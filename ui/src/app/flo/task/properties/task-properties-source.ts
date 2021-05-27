@@ -1,8 +1,8 @@
-import { Flo } from 'spring-flo';
-import { dia } from 'jointjs';
-import { GraphNodePropertiesSource } from '../../shared/support/graph-node-properties-source';
-import { AppUiProperty } from '../../shared/support/app-ui-property';
-import { ApplicationType } from '../../../shared/model/app.model';
+import {Flo} from 'spring-flo';
+import {dia} from 'jointjs';
+import {GraphNodePropertiesSource} from '../../shared/support/graph-node-properties-source';
+import {AppUiProperty} from '../../shared/support/app-ui-property';
+import {ApplicationType} from '../../../shared/model/app.model';
 
 /**
  * Properties source for Composed Tasks graph node
@@ -10,7 +10,6 @@ import { ApplicationType } from '../../../shared/model/app.model';
  * @author Alex Boyko
  */
 export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
-
   protected createNotationalProperties(): Array<AppUiProperty> {
     const notationalProperties = [];
     if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
@@ -34,5 +33,4 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
     }
     return super.determineAttributeName(metadata);
   }
-
 }

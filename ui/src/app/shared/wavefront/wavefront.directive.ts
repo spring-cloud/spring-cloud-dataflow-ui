@@ -1,10 +1,10 @@
-import { Directive, HostBinding, HostListener, Input, OnInit } from '@angular/core';
-import { Stream } from '../model/stream.model';
-import { Task } from '../model/task.model';
-import { RuntimeApp, RuntimeAppInstance } from '../model/runtime.model';
+import {Directive, HostBinding, HostListener, Input, OnInit} from '@angular/core';
+import {Stream} from '../model/stream.model';
+import {Task} from '../model/task.model';
+import {RuntimeApp, RuntimeAppInstance} from '../model/runtime.model';
 import get from 'lodash.get';
-import { WavefrontService } from './wavefront.service';
-import { TaskExecution } from '../model/task-execution.model';
+import {WavefrontService} from './wavefront.service';
+import {TaskExecution} from '../model/task-execution.model';
 
 @Directive({
   selector: '[wavefrontDashboardStreams]'
@@ -12,21 +12,18 @@ import { TaskExecution } from '../model/task-execution.model';
 export class WavefrontStreamsDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
 
-  constructor(private wavefrontService: WavefrontService) {
-  }
+  constructor(private wavefrontService: WavefrontService) {}
 
   ngOnInit(): void {
-    this.wavefrontService.isAllowed()
-      .subscribe(allow => {
-        this.hidden = !allow;
-      });
+    this.wavefrontService.isAllowed().subscribe(allow => {
+      this.hidden = !allow;
+    });
   }
 
-  @HostListener('click') onClick() {
-    this.wavefrontService.getDashboardStreams()
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+  @HostListener('click') onClick(): void {
+    this.wavefrontService.getDashboardStreams().subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }
 
@@ -38,24 +35,20 @@ export class WavefrontStreamDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
   @Input() stream: Stream;
 
-  constructor(private wavefrontService: WavefrontService) {
-  }
+  constructor(private wavefrontService: WavefrontService) {}
 
   ngOnInit(): void {
     this.disabled = this.stream.status !== 'DEPLOYED';
-    this.wavefrontService.isAllowed()
-      .subscribe(allow => {
-        this.hidden = !allow;
-      });
+    this.wavefrontService.isAllowed().subscribe(allow => {
+      this.hidden = !allow;
+    });
   }
 
-  @HostListener('click') onClick() {
-    this.wavefrontService.getDashboardStream(this.stream)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+  @HostListener('click') onClick(): void {
+    this.wavefrontService.getDashboardStream(this.stream).subscribe((url: string) => {
+      window.open(url);
+    });
   }
-
 }
 
 @Directive({
@@ -64,24 +57,20 @@ export class WavefrontStreamDirective implements OnInit {
 export class WavefrontTasksDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
 
-  constructor(private wavefrontService: WavefrontService) {
-  }
+  constructor(private wavefrontService: WavefrontService) {}
 
   ngOnInit(): void {
-    this.wavefrontService.isAllowed()
-      .subscribe(allow => {
-        this.hidden = !allow;
-      });
+    this.wavefrontService.isAllowed().subscribe(allow => {
+      this.hidden = !allow;
+    });
   }
 
-  @HostListener('click') onClick() {
-    this.wavefrontService.getDashboardTasks()
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+  @HostListener('click') onClick(): void {
+    this.wavefrontService.getDashboardTasks().subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }
-
 
 @Directive({
   selector: '[wavefrontDashboardTask]'
@@ -90,24 +79,20 @@ export class WavefrontTaskDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
   @Input() task: Task;
 
-  constructor(private wavefrontService: WavefrontService) {
-  }
+  constructor(private wavefrontService: WavefrontService) {}
 
   ngOnInit(): void {
-    this.wavefrontService.isAllowed()
-      .subscribe(allow => {
-        this.hidden = !allow;
-      });
+    this.wavefrontService.isAllowed().subscribe(allow => {
+      this.hidden = !allow;
+    });
   }
 
-  @HostListener('click') onClick() {
-    this.wavefrontService.getDashboardTask(this.task)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+  @HostListener('click') onClick(): void {
+    this.wavefrontService.getDashboardTask(this.task).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }
-
 
 @Directive({
   selector: '[wavefrontDashboardRuntimeApp]'
@@ -119,14 +104,12 @@ export class WavefrontRuntimeAppDirective implements OnInit {
   streamName: string;
   appName: string;
 
-  constructor(private wavefrontService: WavefrontService) {
-  }
+  constructor(private wavefrontService: WavefrontService) {}
 
   ngOnInit(): void {
-    this.wavefrontService.isAllowed()
-      .subscribe(allow => {
-        this.hidden = !allow;
-      });
+    this.wavefrontService.isAllowed().subscribe(allow => {
+      this.hidden = !allow;
+    });
     if (this.runtimeApp.appInstances && this.runtimeApp.appInstances.length > 0) {
       const firstInstance: RuntimeAppInstance = this.runtimeApp.appInstances[0];
       if (firstInstance.attributes) {
@@ -139,11 +122,10 @@ export class WavefrontRuntimeAppDirective implements OnInit {
     }
   }
 
-  @HostListener('click') onClick() {
-    this.wavefrontService.getDashboardApplication(this.streamName, this.appName)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+  @HostListener('click') onClick(): void {
+    this.wavefrontService.getDashboardApplication(this.streamName, this.appName).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }
 
@@ -158,14 +140,12 @@ export class WavefrontRuntimeInstanceDirective implements OnInit {
   streamName = '';
   guid = '';
 
-  constructor(private wavefrontService: WavefrontService) {
-  }
+  constructor(private wavefrontService: WavefrontService) {}
 
   ngOnInit(): void {
-    this.wavefrontService.isAllowed()
-      .subscribe(allow => {
-        this.hidden = !allow;
-      });
+    this.wavefrontService.isAllowed().subscribe(allow => {
+      this.hidden = !allow;
+    });
     if (this.instance.attributes) {
       this.appName = get(this.instance.attributes, 'skipper.application.name');
       this.streamName = get(this.instance.attributes, 'skipper.release.name');
@@ -176,8 +156,9 @@ export class WavefrontRuntimeInstanceDirective implements OnInit {
     }
   }
 
-  @HostListener('click') onClick() {
-    this.wavefrontService.getDashboardApplicationInstance(this.streamName, this.appName, this.guid)
+  @HostListener('click') onClick(): void {
+    this.wavefrontService
+      .getDashboardApplicationInstance(this.streamName, this.appName, this.guid)
       .subscribe((url: string) => {
         window.open(url);
       });
@@ -192,20 +173,17 @@ export class WavefrontTaskExecutionDirective implements OnInit {
   @HostBinding('hidden') hidden: boolean;
   @Input() taskExecution: TaskExecution;
 
-  constructor(private wavefrontService: WavefrontService) {
-  }
+  constructor(private wavefrontService: WavefrontService) {}
 
   ngOnInit(): void {
-    this.wavefrontService.isAllowed()
-      .subscribe(allow => {
-        this.hidden = !allow;
-      });
+    this.wavefrontService.isAllowed().subscribe(allow => {
+      this.hidden = !allow;
+    });
   }
 
-  @HostListener('click') onClick() {
-    this.wavefrontService.getDashboardTaskExecution(this.taskExecution)
-      .subscribe((url: string) => {
-        window.open(url);
-      });
+  @HostListener('click') onClick(): void {
+    this.wavefrontService.getDashboardTaskExecution(this.taskExecution).subscribe((url: string) => {
+      window.open(url);
+    });
   }
 }

@@ -1,6 +1,6 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE } from '../support/shapes';
-import { ShapeComponent } from '../../shared/support/shape-component';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {TYPE_INCOMING_MESSAGE_RATE, TYPE_OUTGOING_MESSAGE_RATE} from '../support/shapes';
+import {ShapeComponent} from '../../shared/support/shape-component';
 
 const MAGNITUDE_NUMBERS = [1000000000, 1000000, 1000];
 const MAGNITUDE_LITERALS = ['B', 'M', 'K'];
@@ -18,7 +18,6 @@ const MAGNITUDE_LITERALS = ['B', 'M', 'K'];
   encapsulation: ViewEncapsulation.None
 })
 export class MessageRateComponent extends ShapeComponent {
-
   get rate(): number {
     return this.data ? +this.data.rate : 0;
   }
@@ -66,4 +65,3 @@ export class MessageRateComponent extends ShapeComponent {
     return division.toFixed(fixed) + postFix;
   }
 }
-

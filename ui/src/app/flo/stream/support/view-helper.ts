@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-import {
-  ComponentFactoryResolver,
-  Injector,
-  ApplicationRef,
-  Type,
-  ComponentRef
-} from '@angular/core';
+import {ComponentFactoryResolver, Injector, ApplicationRef, Type, ComponentRef} from '@angular/core';
 import * as _joint from 'jointjs';
-import { ElementComponent, ShapeComponent } from '../../shared/support/shape-component';
+import {ElementComponent, ShapeComponent} from '../../shared/support/shape-component';
 
 const joint: any = _joint;
 
@@ -33,20 +27,20 @@ const joint: any = _joint;
  * @author Alex Boyko
  */
 export class ViewHelper {
-
-  static createLinkView(injector: Injector,
-                        applicationRef: ApplicationRef,
-                        componentFactoryResolver: ComponentFactoryResolver,
-                        labelComponentRegistry: Map<string, Type<ShapeComponent>>) {
-
+  static createLinkView(
+    injector: Injector,
+    applicationRef: ApplicationRef,
+    componentFactoryResolver: ComponentFactoryResolver,
+    labelComponentRegistry: Map<string, Type<ShapeComponent>>
+  ): any {
     const V = joint.V;
 
     return joint.shapes.flo.LinkView.extend({
       renderLabels() {
         const cache = this._V;
         let vLabels = cache.labels;
-        const labelCache = this._labelCache = {};
-        const labelSelectors = this._labelSelectors = {};
+        const labelCache = (this._labelCache = {});
+        const labelSelectors = (this._labelSelectors = {});
 
         if (vLabels) {
           vLabels.empty();
@@ -71,7 +65,6 @@ export class ViewHelper {
         }
 
         for (let i = 0; i < labelsCount; i++) {
-
           const label = labels[i];
 
           let node;
@@ -83,8 +76,9 @@ export class ViewHelper {
               this._angularComponentRef[i].destroy();
             }
 
-            const nodeComponentFactory = componentFactoryResolver
-              .resolveComponentFactory(labelComponentRegistry.get(label.type));
+            const nodeComponentFactory = componentFactoryResolver.resolveComponentFactory(
+              labelComponentRegistry.get(label.type)
+            );
 
             const componentRef: ComponentRef<ShapeComponent> = nodeComponentFactory.create(injector);
 
@@ -107,10 +101,11 @@ export class ViewHelper {
             if (labelMarkup) {
               node = labelMarkup.node;
               selectors = labelMarkup.selectors;
-
             } else {
               const builtinDefaultLabel = model._builtins.defaultLabel;
-              const builtinDefaultLabelMarkup = this._normalizeLabelMarkup(this._getLabelMarkup(builtinDefaultLabel.markup));
+              const builtinDefaultLabelMarkup = this._normalizeLabelMarkup(
+                this._getLabelMarkup(builtinDefaultLabel.markup)
+              );
 
               const defaultLabel = model._getDefaultLabel();
               const defaultLabelMarkup = this._normalizeLabelMarkup(this._getLabelMarkup(defaultLabel.markup));
@@ -121,7 +116,6 @@ export class ViewHelper {
               selectors = defaultMarkup.selectors;
             }
           }
-
 
           const vLabel = V(node);
           vLabel.attr('label-idx', i); // assign label-idx
@@ -135,15 +129,16 @@ export class ViewHelper {
         this.updateLabels();
 
         return this;
-
       }
     });
   }
 
-  static createNodeView(injector: Injector,
-                        applicationRef: ApplicationRef,
-                        componentFactoryResolver: ComponentFactoryResolver,
-                        componentRegistry: Map<string, Type<ElementComponent>>) {
+  static createNodeView(
+    injector: Injector,
+    applicationRef: ApplicationRef,
+    componentFactoryResolver: ComponentFactoryResolver,
+    componentRegistry: Map<string, Type<ElementComponent>>
+  ): any {
     return joint.shapes.flo.ElementView.extend({
       options: joint.util.deepSupplement({}, joint.dia.ElementView.prototype.options),
 
@@ -151,13 +146,13 @@ export class ViewHelper {
         // Not called often. It's fine to destroy old component and create the new one, because old DOM
         // may have been altered by JointJS updates
         if (componentFactoryResolver && componentRegistry.has(this.model.get('type'))) {
-
           if (this._angularComponentRef) {
             this._angularComponentRef.destroy();
           }
 
-          const nodeComponentFactory = componentFactoryResolver
-            .resolveComponentFactory(componentRegistry.get(this.model.get('type')));
+          const nodeComponentFactory = componentFactoryResolver.resolveComponentFactory(
+            componentRegistry.get(this.model.get('type'))
+          );
 
           const componentRef: ComponentRef<ElementComponent> = nodeComponentFactory.create(injector);
           componentRef.instance.view = this;
@@ -174,7 +169,7 @@ export class ViewHelper {
           this._angularComponentRef.changeDetectorRef.markForCheck();
           this._angularComponentRef.changeDetectorRef.detectChanges();
         } else {
-          joint.dia.ElementView.prototype.renderMarkup.apply(this, arguments);
+          joint.dia.ElementView.prototype.renderMarkup.apply(this, ...arguments);
         }
       },
 
@@ -182,10 +177,8 @@ export class ViewHelper {
         if (this._angularComponentRef) {
           this._angularComponentRef.destroy();
         }
-        joint.dia.ElementView.prototype.onRemove.apply(this, arguments);
-      },
-
+        joint.dia.ElementView.prototype.onRemove.apply(this, ...arguments);
+      }
     });
   }
-
 }

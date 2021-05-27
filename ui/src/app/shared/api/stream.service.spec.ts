@@ -1,9 +1,8 @@
-import { StreamService } from './stream.service';
-import { of } from 'rxjs';
-import { Stream, StreamHistory } from '../model/stream.model';
+import {StreamService} from './stream.service';
+import {of} from 'rxjs';
+import {Stream, StreamHistory} from '../model/stream.model';
 
 describe('shared/api/stream.service.ts', () => {
-
   let mockHttp;
   let streamService;
   let jsonData = {};
@@ -12,7 +11,7 @@ describe('shared/api/stream.service.ts', () => {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post'),
-      put: jasmine.createSpy('put'),
+      put: jasmine.createSpy('put')
     };
     jsonData = {};
     streamService = new StreamService(mockHttp);
@@ -42,17 +41,14 @@ describe('shared/api/stream.service.ts', () => {
 
   it('destroyStream', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    streamService.destroyStream(Stream.parse({ name: 'foo' }));
+    streamService.destroyStream(Stream.parse({name: 'foo'}));
     const httpUri = mockHttp.delete.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/streams/definitions/foo');
   });
 
   it('destroyStreams', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    streamService.destroyStreams([
-      Stream.parse({ name: 'foo' }),
-      Stream.parse({ name: 'bar' })
-    ]);
+    streamService.destroyStreams([Stream.parse({name: 'foo'}), Stream.parse({name: 'bar'})]);
     let httpUri = mockHttp.delete.calls.argsFor(0)[0];
     expect(httpUri).toEqual('/streams/definitions/foo');
     httpUri = mockHttp.delete.calls.argsFor(1)[0];
@@ -61,17 +57,14 @@ describe('shared/api/stream.service.ts', () => {
 
   it('undeployStream', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    streamService.undeployStream(Stream.parse({ name: 'foo' }));
+    streamService.undeployStream(Stream.parse({name: 'foo'}));
     const httpUri = mockHttp.delete.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/streams/deployments/foo');
   });
 
   it('undeployStream', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    streamService.undeployStreams([
-      Stream.parse({ name: 'foo' }),
-      Stream.parse({ name: 'bar' })
-    ]);
+    streamService.undeployStreams([Stream.parse({name: 'foo'}), Stream.parse({name: 'bar'})]);
     let httpUri = mockHttp.delete.calls.argsFor(0)[0];
     expect(httpUri).toEqual('/streams/deployments/foo');
     httpUri = mockHttp.delete.calls.argsFor(1)[0];
@@ -183,9 +176,8 @@ describe('shared/api/stream.service.ts', () => {
 
   it('rollbackStream', () => {
     mockHttp.post.and.returnValue(of({}));
-    streamService.rollbackStream(StreamHistory.parse({ name: 'foo', version: '2' }));
+    streamService.rollbackStream(StreamHistory.parse({name: 'foo', version: '2'}));
     const httpUri = mockHttp.post.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/streams/deployments/rollback/foo/2');
   });
-
 });

@@ -1,23 +1,23 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning">
-    <h3 class="modal-title">Confirm Clean Up Task Execution(s)</h3>
-    <div class="modal-body" *ngIf="!isRunning && !loading">
-      <p>
-        This action will remove <strong>{{status === 'all' ? count.all : count.completed}} execution(s)</strong>.
-        Are you sure?
-      </p>
-    </div>
-    <div class="modal-body" *ngIf="isRunning">
-      <clr-spinner clrInline clrSmall></clr-spinner>
-      Removing data...
-    </div>
-    <div class="modal-body" *ngIf="loading">
-      <clr-spinner clrInline clrSmall></clr-spinner>
-      Loading...
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-      <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
-        <span>Clean up Execution(s)</span>
-      </button>
-    </div>
-  </clr-modal>
+  <h3 class="modal-title">Confirm Clean Up Task Execution(s)</h3>
+  <div class="modal-body" *ngIf="!isRunning && !loading">
+    <p>
+      This action will remove <strong>{{ status === 'all' ? count.all : count.completed }} execution(s)</strong>. Are
+      you sure?
+    </p>
+  </div>
+  <div class="modal-body" *ngIf="isRunning">
+    <clr-spinner clrInline clrSmall></clr-spinner>
+    Removing data...
+  </div>
+  <div class="modal-body" *ngIf="loading">
+    <clr-spinner clrInline clrSmall></clr-spinner>
+    Loading...
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
+      <span>Clean up Execution(s)</span>
+    </button>
+  </div>
+</clr-modal>

@@ -1,46 +1,44 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FocusDirective } from '../../../shared/directive/focus.directive';
-import { BrowserModule, By } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../../tests/api/about.service.mock';
-import { AppServiceMock } from '../../../tests/api/app.service.mock';
-import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
-import { RegisterComponent } from './register.component';
-import { throwError } from 'rxjs';
-import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FocusDirective} from '../../../shared/directive/focus.directive';
+import {BrowserModule, By} from '@angular/platform-browser';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../../tests/api/about.service.mock';
+import {AppServiceMock} from '../../../tests/api/app.service.mock';
+import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
+import {RegisterComponent} from './register.component';
+import {throwError} from 'rxjs';
+import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 
 describe('apps/register/register.component.ts', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        RegisterComponent,
-        FocusDirective
-      ],
-      imports: [
-        BrowserModule,
-        ReactiveFormsModule,
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RegisterComponent, FocusDirective],
+        imports: [
+          BrowserModule,
+          ReactiveFormsModule,
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          AppServiceMock.provider,
+          NotificationServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RegisterComponent);
@@ -71,9 +69,9 @@ describe('apps/register/register.component.ts', () => {
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     fixture.detectChanges();
     const tests = [
-      { name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false },
-      { name: '', type: '', uri: '', metaDataUri: '', force: false },
-      { name: '', type: '', uri: '', metaDataUri: '', force: false },
+      {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false},
+      {name: '', type: '', uri: '', metaDataUri: '', force: false},
+      {name: '', type: '', uri: '', metaDataUri: '', force: false}
     ];
     component.newForm();
     component.newForm();
@@ -99,15 +97,17 @@ describe('apps/register/register.component.ts', () => {
     fixture.debugElement.query(By.css('button[name=register]')).nativeElement.click();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid application');
-    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, register at least one application.');
+    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe(
+      'Please, register at least one application.'
+    );
   });
 
   it('should display errors form', () => {
     fixture.detectChanges();
     const tests = [
-      { name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false },
-      { name: 'foobar2', type: 'sink', uri: 'https://foo.bar', metaDataUri: '', force: false },
-      { name: 'foobar3', type: 'processor', uri: '', metaDataUri: '', force: false },
+      {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false},
+      {name: 'foobar2', type: 'sink', uri: 'https://foo.bar', metaDataUri: '', force: false},
+      {name: 'foobar3', type: 'processor', uri: '', metaDataUri: '', force: false}
     ];
     component.newForm();
     component.newForm();
@@ -126,11 +126,9 @@ describe('apps/register/register.component.ts', () => {
   });
 
   it('should handle error on run', () => {
-    spyOn(AppServiceMock.mock, 'registerProps').and.callFake(() => {
-      return throwError(new Error('Fake error'));
-    });
+    spyOn(AppServiceMock.mock, 'registerProps').and.callFake(() => throwError(new Error('Fake error')));
     fixture.detectChanges();
-    const test = { name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false };
+    const test = {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false};
     component.forms[0].get('name').setValue(test.name);
     component.forms[0].get('type').setValue(test.type);
     component.forms[0].get('uri').setValue(test.uri);
@@ -141,5 +139,4 @@ describe('apps/register/register.component.ts', () => {
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
   });
-
 });

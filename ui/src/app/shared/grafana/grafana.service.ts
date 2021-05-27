@@ -1,46 +1,41 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AboutService } from '../api/about.service';
-import { Stream } from '../model/stream.model';
-import { Task } from '../model/task.model';
-import { TaskExecution } from '../model/task-execution.model';
-import { JobExecution } from '../model/job.model';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {AboutService} from '../api/about.service';
+import {Stream} from '../model/stream.model';
+import {Task} from '../model/task.model';
+import {TaskExecution} from '../model/task-execution.model';
+import {JobExecution} from '../model/job.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GrafanaService {
-
-  constructor(private aboutService: AboutService) {
-  }
+  constructor(private aboutService: AboutService) {}
 
   isAllowed(): Observable<boolean> {
-    return this.aboutService
-      .getMonitoringType()
-      .pipe(
-        map(type => type === 'GRAFANA')
-      );
+    return this.aboutService.getMonitoringType().pipe(map(type => type === 'GRAFANA'));
   }
 
   getDashboardStreams(): Observable<string> {
     return this.aboutService
       .getMonitoring()
-      .pipe(
-        map((info: any): string => {
-          return `${info.url}/d/scdf-streams/streams?refresh=${info.refreshInterval}s`;
-        })
-      );
+      .pipe(map((info: any): string => `${info.url}/d/scdf-streams/streams?refresh=${info.refreshInterval}s`));
   }
 
   getDashboardStream(stream: Stream): Observable<string> {
     return this.aboutService
       .getMonitoring()
       .pipe(
-        map((info: any): string => {
-          return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
-            's&var-stream_name=' + stream.name + '&var-application_name=All';
-        })
+        map(
+          (info: any): string =>
+            info.url +
+            '/d/scdf-applications/applications?refresh=' +
+            info.refreshInterval +
+            's&var-stream_name=' +
+            stream.name +
+            '&var-application_name=All'
+        )
       );
   }
 
@@ -48,10 +43,17 @@ export class GrafanaService {
     return this.aboutService
       .getMonitoring()
       .pipe(
-        map((info: any): string => {
-          return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
-            's&var-stream_name=' + streamName + '&var-application_name=' + appName + '&var-name=All';
-        })
+        map(
+          (info: any): string =>
+            info.url +
+            '/d/scdf-applications/applications?refresh=' +
+            info.refreshInterval +
+            's&var-stream_name=' +
+            streamName +
+            '&var-application_name=' +
+            appName +
+            '&var-name=All'
+        )
       );
   }
 
@@ -59,32 +61,40 @@ export class GrafanaService {
     return this.aboutService
       .getMonitoring()
       .pipe(
-        map((info: any): string => {
-          return info.url + '/d/scdf-applications/applications?refresh=' + info.refreshInterval +
-            's&var-stream_name=' + streamName + '&var-application_name=' + appName +
-            '&var-name=All&var-application_guid=' + guid;
-        })
+        map(
+          (info: any): string =>
+            info.url +
+            '/d/scdf-applications/applications?refresh=' +
+            info.refreshInterval +
+            's&var-stream_name=' +
+            streamName +
+            '&var-application_name=' +
+            appName +
+            '&var-name=All&var-application_guid=' +
+            guid
+        )
       );
   }
 
   getDashboardTasks(): Observable<string> {
     return this.aboutService
       .getMonitoring()
-      .pipe(
-        map((info: any): string => {
-          return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval + 's';
-        })
-      );
+      .pipe(map((info: any): string => info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval + 's'));
   }
 
   getDashboardTask(task: Task): Observable<string> {
     return this.aboutService
       .getMonitoring()
       .pipe(
-        map((info: any): string => {
-          return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
-            's&var-task_name=' + task.name + '&var-task_name=All';
-        })
+        map(
+          (info: any): string =>
+            info.url +
+            '/d/scdf-tasks/tasks?refresh=' +
+            info.refreshInterval +
+            's&var-task_name=' +
+            task.name +
+            '&var-task_name=All'
+        )
       );
   }
 
@@ -92,11 +102,17 @@ export class GrafanaService {
     return this.aboutService
       .getMonitoring()
       .pipe(
-        map((info: any): string => {
-          return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
-            's&var-task_name=' + execution.taskName + '&var-task_name=All' + '&var-task_execution_id='
-            + execution.executionId;
-        })
+        map(
+          (info: any): string =>
+            info.url +
+            '/d/scdf-tasks/tasks?refresh=' +
+            info.refreshInterval +
+            's&var-task_name=' +
+            execution.taskName +
+            '&var-task_name=All' +
+            '&var-task_execution_id=' +
+            execution.executionId
+        )
       );
   }
 
@@ -104,15 +120,22 @@ export class GrafanaService {
     return this.aboutService
       .getMonitoring()
       .pipe(
-        map((info: any): string => {
-          return info.url + '/d/scdf-tasks/tasks?refresh=' + info.refreshInterval +
-            's&var-job_name=' + jobExecution.name
-            + '&var-job_execution_id=' + jobExecution.jobExecutionId
-            + '&var-job_instance_id=' + jobExecution.jobInstanceId
-            + '&var-step_execution_count=' + jobExecution.stepExecutionCount
-            + '&var-task_execution_id=' + jobExecution.taskExecutionId;
-        })
+        map(
+          (info: any): string =>
+            info.url +
+            '/d/scdf-tasks/tasks?refresh=' +
+            info.refreshInterval +
+            's&var-job_name=' +
+            jobExecution.name +
+            '&var-job_execution_id=' +
+            jobExecution.jobExecutionId +
+            '&var-job_instance_id=' +
+            jobExecution.jobInstanceId +
+            '&var-step_execution_count=' +
+            jobExecution.stepExecutionCount +
+            '&var-task_execution_id=' +
+            jobExecution.taskExecutionId
+        )
       );
   }
-
 }

@@ -1,47 +1,39 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { App, ApplicationType } from '../../shared/model/app.model';
-import { FormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../tests/api/about.service.mock';
-import { AppServiceMock } from '../../tests/api/app.service.mock';
-import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { VersionComponent } from './version.component';
-import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
-import { By } from '@angular/platform-browser';
-import { throwError } from 'rxjs';
-import { HttpError } from '../../shared/model/error.model';
-import { ContextServiceMock } from '../../tests/service/context.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {App, ApplicationType} from '../../shared/model/app.model';
+import {FormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../tests/api/about.service.mock';
+import {AppServiceMock} from '../../tests/api/app.service.mock';
+import {NotificationServiceMock} from '../../tests/service/notification.service.mock';
+import {VersionComponent} from './version.component';
+import {ConfirmComponent} from '../../shared/component/confirm/confirm.component';
+import {By} from '@angular/platform-browser';
+import {throwError} from 'rxjs';
+import {HttpError} from '../../shared/model/error.model';
+import {ContextServiceMock} from '../../tests/service/context.service.mock';
 
 describe('apps/version/version.component.ts', () => {
-
   let component: VersionComponent;
   let fixture: ComponentFixture<VersionComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        VersionComponent,
-        ConfirmComponent
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [VersionComponent, ConfirmComponent],
+        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          AppServiceMock.provider,
+          NotificationServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VersionComponent);
@@ -54,8 +46,8 @@ describe('apps/version/version.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should open the modal', async (done) => {
-    component.open('aggregator', (ApplicationType.processor as any) as ApplicationType);
+  it('should open the modal', async done => {
+    component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -66,11 +58,9 @@ describe('apps/version/version.component.ts', () => {
     done();
   });
 
-  it('should handle error', async (done) => {
-    spyOn(AppServiceMock.mock, 'getAppVersions').and.callFake(() => {
-      return throwError(new HttpError('Fake error', 404));
-    });
-    component.open('aggregator', (ApplicationType.processor as any) as ApplicationType);
+  it('should handle error', async done => {
+    spyOn(AppServiceMock.mock, 'getAppVersions').and.callFake(() => throwError(new HttpError('Fake error', 404)));
+    component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -79,8 +69,8 @@ describe('apps/version/version.component.ts', () => {
     done();
   });
 
-  it('should display the unregister version confirmation', async (done) => {
-    component.open('aggregator', (ApplicationType.processor as any) as ApplicationType);
+  it('should display the unregister version confirmation', async done => {
+    component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -103,11 +93,9 @@ describe('apps/version/version.component.ts', () => {
     done();
   });
 
-  it('should handle error on unregister version', async (done) => {
-    component.open('aggregator', (ApplicationType.processor as any) as ApplicationType);
-    spyOn(AppServiceMock.mock, 'unregisterApp').and.callFake(() => {
-      return throwError(new HttpError('Fake error', 404));
-    });
+  it('should handle error on unregister version', async done => {
+    component.open('aggregator', ApplicationType.processor as any as ApplicationType);
+    spyOn(AppServiceMock.mock, 'unregisterApp').and.callFake(() => throwError(new HttpError('Fake error', 404)));
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -130,8 +118,8 @@ describe('apps/version/version.component.ts', () => {
     done();
   });
 
-  it('should display the make default version confirmation', async (done) => {
-    component.open('aggregator', (ApplicationType.processor as any) as ApplicationType);
+  it('should display the make default version confirmation', async done => {
+    component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -153,11 +141,9 @@ describe('apps/version/version.component.ts', () => {
     done();
   });
 
-  it('should handle error on make default version', async (done) => {
-    component.open('aggregator', (ApplicationType.processor as any) as ApplicationType);
-    spyOn(AppServiceMock.mock, 'defaultVersion').and.callFake(() => {
-      return throwError(new HttpError('Fake error', 404));
-    });
+  it('should handle error on make default version', async done => {
+    component.open('aggregator', ApplicationType.processor as any as ApplicationType);
+    spyOn(AppServiceMock.mock, 'defaultVersion').and.callFake(() => throwError(new HttpError('Fake error', 404)));
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -179,5 +165,4 @@ describe('apps/version/version.component.ts', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     done();
   });
-
 });

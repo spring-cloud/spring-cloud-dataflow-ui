@@ -1,15 +1,10 @@
-import { FormControl } from '@angular/forms';
-import { AppsAddValidator } from './add.validtor';
+import {FormControl} from '@angular/forms';
+import {AppsAddValidator} from './add.validtor';
 
 describe('apps/add/add.validator.ts', () => {
-
   describe('uri', () => {
     it('invalid', () => {
-      [
-        ' ',
-        'bb',
-        'b b'
-      ].forEach((mock) => {
+      [' ', 'bb', 'b b'].forEach(mock => {
         const uri: FormControl = new FormControl(mock);
         expect(AppsAddValidator.uri(uri).invalid).toBeTruthy();
       });
@@ -20,7 +15,7 @@ describe('apps/add/add.validator.ts', () => {
         'https://foo.bar:bar.foo-foo:bar-bar',
         'https://foo.bar/foo.bar&a=a',
         'https://foo.bar/foo.bar&b=b?a=a'
-      ].forEach((mock) => {
+      ].forEach(mock => {
         const uri: FormControl = new FormControl(mock);
         expect(AppsAddValidator.uri(uri)).toBeNull();
       });
@@ -29,10 +24,7 @@ describe('apps/add/add.validator.ts', () => {
 
   describe('properties', () => {
     it('invalid', () => {
-      [
-        'foo',
-        'foo='
-      ].forEach((mock) => {
+      ['foo', 'foo='].forEach(mock => {
         const uri: FormControl = new FormControl(mock);
         expect(AppsAddValidator.properties(uri).invalid).toBeTruthy();
       });
@@ -52,18 +44,16 @@ describe('apps/add/add.validator.ts', () => {
         'app.user-by-region-app=docker:sabby/user-consumer:0.0.1-SNAPSHOT',
         'app.websocket-app=docker:springcloudstream/websocket-sink-kafka-10:1.3.1.RELEASE',
         'source.foo=maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT'
-      ].forEach((mock) => {
+      ].forEach(mock => {
         const uri: FormControl = new FormControl(mock);
         expect(AppsAddValidator.properties(uri)).toBeNull();
       });
     });
   });
 
-
   describe('appName', () => {
-
     it('invalid', () => {
-      [' ', 'f'].forEach((mock) => {
+      [' ', 'f'].forEach(mock => {
         const appName: FormControl = new FormControl(mock);
         const result = AppsAddValidator.appName(appName);
         expect(result.invalid).toBeTruthy();
@@ -71,23 +61,47 @@ describe('apps/add/add.validator.ts', () => {
     });
 
     it('valid', () => {
-      [null, 'fo', 'foo', 'f12', 'foo12', 'foooooooooooooooooooooooooo', 'fo ', 'foo>', 'foo.', 'foo/', 'foo?', 'foo-',
-        'foo{', 'foo}', 'foo^', 'foo$', 'foo#', 'foo@', 'foo*', 'foo(', 'foo)', 'foo[', 'foo]', 'foo<', 'foo>',
-        'foo,', 'foo!', 'foo|', 'foo bar'].forEach((mock) => {
+      [
+        null,
+        'fo',
+        'foo',
+        'f12',
+        'foo12',
+        'foooooooooooooooooooooooooo',
+        'fo ',
+        'foo>',
+        'foo.',
+        'foo/',
+        'foo?',
+        'foo-',
+        'foo{',
+        'foo}',
+        'foo^',
+        'foo$',
+        'foo#',
+        'foo@',
+        'foo*',
+        'foo(',
+        'foo)',
+        'foo[',
+        'foo]',
+        'foo<',
+        'foo>',
+        'foo,',
+        'foo!',
+        'foo|',
+        'foo bar'
+      ].forEach(mock => {
         const appName: FormControl = new FormControl(mock);
         const result = AppsAddValidator.appName(appName);
         expect(result).toBeNull();
       });
     });
-
   });
 
   describe('appUri', () => {
     it('invalid', () => {
-      [
-        ' ',
-        'f'
-      ].forEach((mock) => {
+      [' ', 'f'].forEach(mock => {
         const uri: FormControl = new FormControl(mock);
         const result = AppsAddValidator.appUri(uri);
         expect(result.invalid).toBeTruthy();
@@ -110,13 +124,11 @@ describe('apps/add/add.validator.ts', () => {
         'https://bit.ly/Clark-BUILD-SNAPSHOT-task-applications-maven',
         'docker:springcloudstream/counter-sink-rabbit:1.3.1.RELEASE',
         'docker:spring_cloud_stream/counter-sink_rabbit:1.3.1.RELEASE'
-      ].forEach((mock) => {
+      ].forEach(mock => {
         const uri: FormControl = new FormControl(mock);
         const result = AppsAddValidator.appUri(uri);
         expect(result).toBeNull();
       });
     });
-
   });
-
 });

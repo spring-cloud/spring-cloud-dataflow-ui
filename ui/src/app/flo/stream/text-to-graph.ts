@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Flo } from 'spring-flo';
-import { arrangeAll } from './support/layout';
-import { Parser } from '../shared/service/parser';
-import { LoggerService } from '../../shared/service/logger.service';
-import { ApplicationType } from '../../shared/model/app.model';
+import {Flo} from 'spring-flo';
+import {arrangeAll} from './support/layout';
+import {Parser} from '../shared/service/parser';
+import {LoggerService} from '../../shared/service/logger.service';
+import {ApplicationType} from '../../shared/model/app.model';
 
 /**
  * Build a graph representation from text dsl.
@@ -26,23 +26,24 @@ import { ApplicationType } from '../../shared/model/app.model';
  * @author Alex Boyko
  */
 export class TextToGraphConverter {
-
   static DEBUG = false;
 
-  constructor(private dsl: string, private floEditorContext: Flo.EditorContext,
-              private metamodel: Map<string, Map<string, Flo.ElementMetadata>>) {
-  }
+  constructor(
+    private dsl: string,
+    private floEditorContext: Flo.EditorContext,
+    private metamodel: Map<string, Map<string, Flo.ElementMetadata>>
+  ) {}
 
   static parseToJsonGraph(dsl: string): JsonGraph.Graph {
     if (!dsl || dsl.trim().length === 0) {
-      return { errors: null, format: 'scdf', streamdefs: [], nodes: [], links: [] };
+      return {errors: null, format: 'scdf', streamdefs: [], nodes: [], links: []};
     } else {
       const parsedStreams: Parser.ParseResult = Parser.parse(dsl, 'stream');
       return this.convertParseResponseToJsonGraph(dsl, parsedStreams).graph;
     }
   }
 
-  static findExistingDestinationNode(nodes: JsonGraph.Node[], name): JsonGraph.Node {
+  static findExistingDestinationNode(nodes: JsonGraph.Node[], name: string): JsonGraph.Node {
     for (let n = 0; n < nodes.length; n++) {
       const node = nodes[n];
       if (node.name === 'destination') {
@@ -55,7 +56,6 @@ export class TextToGraphConverter {
   }
 
   static convertParseResponseToJsonGraph(dsl: string, parsedStreams: Parser.ParseResult): JsonGraph.GraphHolder {
-
     // Compute line breaks
     const linebreaks = [0];
     let pos = 0;
@@ -121,7 +121,8 @@ export class TextToGraphConverter {
           // check for sourceChannelName
           if (parsedNode.sourceChannelName) {
             channelText = parsedNode.sourceChannelName;
-            if (channelText.startsWith('tap:')) { // TAP SOURCE
+            if (channelText.startsWith('tap:')) {
+              // TAP SOURCE
               const tappedDestination = channelText.substring(4);
               const alreadyAllocated = streamAppsToIds[tappedDestination];
               if (typeof alreadyAllocated !== 'undefined') {
@@ -139,7 +140,8 @@ export class TextToGraphConverter {
                 nodes.push(graphNode);
                 linkFrom = graphNode.id;
               }
-            } else { // DESTINATION SOURCE
+            } else {
+              // DESTINATION SOURCE
               graphNode = TextToGraphConverter.findExistingDestinationNode(nodes, parsedNode.sourceChannelName);
               if (!graphNode) {
                 graphNode = {
@@ -161,10 +163,10 @@ export class TextToGraphConverter {
 
           // Definitions like ":foo > :bar" results in a bridge node with channels set - do not create
           // a node for the bridge.
-          if (!(parsedNode.sourceChannelName &&
-            parsedNode.sinkChannelName &&
-            parsedNode.name === 'bridge') &&
-            parsedNode.name) {
+          if (
+            !(parsedNode.sourceChannelName && parsedNode.sinkChannelName && parsedNode.name === 'bridge') &&
+            parsedNode.name
+          ) {
             if (n > 0) {
               if (parsedNode.type !== 'app') {
                 streamdef = streamdef + ' | ';
@@ -181,7 +183,7 @@ export class TextToGraphConverter {
             };
             if (parsedNode.type !== 'app') {
               if (linkFrom !== -1) {
-                newlink = { from: linkFrom, to: graphNode.id };
+                newlink = {from: linkFrom, to: graphNode.id};
                 if (linkCount === 0 && linkType) {
                   newlink.linkType = linkType;
                 }
@@ -209,8 +211,9 @@ export class TextToGraphConverter {
               graphNode.properties = parsedNode.options;
               graphNode.propertiesranges = parsedNode.optionsranges;
               // Add a space before each property to separate from the app node and between each property
-              Array.from(graphNode.properties.keys())
-                .forEach(key => streamdef += ` --${key}=${graphNode.properties.get(key)}`);
+              Array.from(graphNode.properties.keys()).forEach(
+                key => (streamdef += ` --${key}=${graphNode.properties.get(key)}`)
+              );
             }
             if (parsedNode.range) {
               graphNode.range = parsedNode.range;
@@ -231,7 +234,7 @@ export class TextToGraphConverter {
               nodes.push(graphNode);
             }
             if (linkFrom !== -1) {
-              newlink = { from: linkFrom, to: graphNode.id };
+              newlink = {from: linkFrom, to: graphNode.id};
               if (linkCount === 0 && linkType) {
                 newlink.linkType = linkType;
               }
@@ -253,17 +256,16 @@ export class TextToGraphConverter {
             }
             streamdef = streamdef + ':' + channelText;
           }
-
         }
 
         if (streamName.startsWith('UNKNOWN_')) {
           streamName = '';
         }
-        streamdefs.push({ name: streamName, def: streamdef.trim() });
+        streamdefs.push({name: streamName, def: streamdef.trim()});
         // Create links
-//    				for (var l=streamStartNodeId;l<(nodeId-1);l++) {
-//    					links.push({'from':l,'to':(l+1)});
-//    				}
+        //    				for (var l=streamStartNodeId;l<(nodeId-1);l++) {
+        //    					links.push({'from':l,'to':(l+1)});
+        //    				}
       }
 
       if (line.errors) {
@@ -277,67 +279,69 @@ export class TextToGraphConverter {
       }
       lineNumber++;
     }
-    const jsonGraph = { errors, graph: null };
+    const jsonGraph = {errors, graph: null};
     if (nodes.length !== 0) {
-      jsonGraph.graph = { format: 'scdf', streamdefs, nodes, links };
+      jsonGraph.graph = {format: 'scdf', streamdefs, nodes, links};
     }
     return jsonGraph;
   }
 
   private matchGroup(name: string, incoming: number, outgoing: number): string {
-    const matches = Array.from(this.metamodel.keys()).filter(grp => this.metamodel.get(grp).has(name)).map(
-      grp => this.metamodel.get(grp).get(name)).map(match => {
-      let score = 0;
-      switch (match.group) {
-        case ApplicationType[ApplicationType.app]:
-          if (incoming > 1) {
-            score -= 10;
-          }
-          if (outgoing > 1) {
-            score -= 10;
-          }
-          if (incoming === 0 && outgoing === 0) {
-            score += 5;
-          }
-          break;
-        case ApplicationType[ApplicationType.source]:
-          if (incoming > 0) {
-            score -= 10;
-          } else if (outgoing === 1) {
-            score += 5;
-          } else {
-            score += 3;
-          }
-          break;
-        case ApplicationType[ApplicationType.processor]:
-          if (incoming === 1) {
-            score += 3;
-          } else if (incoming > 1) {
-            score += 1;
-          }
-          if (outgoing === 1) {
-            score += 3;
-          } else if (outgoing > 1) {
-            score += 1;
-          }
-          break;
-        case ApplicationType[ApplicationType.sink]:
-          if (outgoing > 0) {
-            score -= 10;
-          } else if (incoming === 1) {
-            score += 5;
-          } else {
-            score += 3;
-          }
-          break;
-        default:
-          score = Number.MIN_VALUE;
-      }
-      return {
-        match,
-        score
-      };
-    });
+    const matches = Array.from(this.metamodel.keys())
+      .filter(grp => this.metamodel.get(grp).has(name))
+      .map(grp => this.metamodel.get(grp).get(name))
+      .map(match => {
+        let score = 0;
+        switch (match.group) {
+          case ApplicationType[ApplicationType.app]:
+            if (incoming > 1) {
+              score -= 10;
+            }
+            if (outgoing > 1) {
+              score -= 10;
+            }
+            if (incoming === 0 && outgoing === 0) {
+              score += 5;
+            }
+            break;
+          case ApplicationType[ApplicationType.source]:
+            if (incoming > 0) {
+              score -= 10;
+            } else if (outgoing === 1) {
+              score += 5;
+            } else {
+              score += 3;
+            }
+            break;
+          case ApplicationType[ApplicationType.processor]:
+            if (incoming === 1) {
+              score += 3;
+            } else if (incoming > 1) {
+              score += 1;
+            }
+            if (outgoing === 1) {
+              score += 3;
+            } else if (outgoing > 1) {
+              score += 1;
+            }
+            break;
+          case ApplicationType[ApplicationType.sink]:
+            if (outgoing > 0) {
+              score -= 10;
+            } else if (incoming === 1) {
+              score += 5;
+            } else {
+              score += 3;
+            }
+            break;
+          default:
+            score = Number.MIN_VALUE;
+        }
+        return {
+          match,
+          score
+        };
+      });
     if (matches && matches.length > 0) {
       const match1 = matches.reduce((bestMatch, currentMatch) => {
         if (bestMatch) {
@@ -436,19 +440,19 @@ export class TextToGraphConverter {
     for (let l = 0; l < inputlinksCount; l++) {
       link = inputlinks[l];
       const props: Map<string, any> = new Map();
-      props.set('isTapLink', (link.linkType && link.linkType === 'tap') ? true : false);
+      props.set('isTapLink', link.linkType && link.linkType === 'tap' ? true : false);
       this.floEditorContext.createLink(
-        { id: nodesIndex[link.from], magnet: '.output-port', port: 'output' },
-        { id: nodesIndex[link.to], magnet: '.input-port', port: 'input' },
+        {id: nodesIndex[link.from], magnet: '.output-port', port: 'output'},
+        {id: nodesIndex[link.to], magnet: '.input-port', port: 'input'},
         null,
-        props);
-
+        props
+      );
     }
 
     arrangeAll(this.floEditorContext);
   }
 
-  public convert() {
+  public convert(): void {
     const jsonGraph = TextToGraphConverter.parseToJsonGraph(this.dsl);
     if (jsonGraph && jsonGraph.nodes) {
       this.floEditorContext.getGraph().clear();
@@ -458,7 +462,6 @@ export class TextToGraphConverter {
 }
 
 export namespace JsonGraph {
-
   export interface GraphHolder {
     errors;
     graph: Graph;
@@ -500,7 +503,11 @@ export namespace JsonGraph {
   }
 }
 
-export function convertTextToGraph(dsl: string, flo: Flo.EditorContext, metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
+export function convertTextToGraph(
+  dsl: string,
+  flo: Flo.EditorContext,
+  metamodel: Map<string, Map<string, Flo.ElementMetadata>>
+): void {
   new TextToGraphConverter(dsl, flo, metamodel).convert();
 }
 

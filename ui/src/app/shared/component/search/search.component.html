@@ -2,8 +2,17 @@
   <label for="quick_search">
     <clr-spinner *ngIf="isSearching()" clrSmall></clr-spinner>
     <clr-icon *ngIf="!isSearching()" class="icon-search" shape="search"></clr-icon>
-    <input [formControl]="search" autocomplete="off" (focus)="onInputFocus()" (blur)="onInputBlur()" (keydown)="onKeyDown($event)"
-           id="quick_search" type="text" placeholder="Search for keywords ..." #inputQuickSearch>
+    <input
+      [formControl]="search"
+      autocomplete="off"
+      (focus)="onInputFocus()"
+      (blur)="onInputBlur()"
+      (keydown)="onKeyDown($event)"
+      id="quick_search"
+      type="text"
+      placeholder="Search for keywords ..."
+      #inputQuickSearch
+    />
     <button type="button" (click)="clear()" (mousedown)="onInputFocus()" class="btn-clear" *ngIf="isSearch()">
       <clr-icon class="icon-clear is-solid" shape="times-circle"></clr-icon>
     </button>
@@ -11,22 +20,21 @@
   <div></div>
   <div class="result" *ngIf="isFocus && isSearch()">
     <div *ngIf="isSearching()">
-      <div class="searching">
-        Searching for results...
-      </div>
+      <div class="searching">Searching for results...</div>
     </div>
     <div *ngIf="!isSearching()">
       <div class="no-result" *ngIf="isNoResult()">
-        There are no search results for "<strong>{{search.value}}</strong>"
+        There are no search results for "<strong>{{ search.value }}</strong
+        >"
       </div>
       <div *ngIf="results.apps && results.apps.total > 0">
         <h4>Application(s)</h4>
         <ul>
-          <li *ngFor="let app of results.apps.items;let i = index" [class.active]="selected === i">
+          <li *ngFor="let app of results.apps.items; let i = index" [class.active]="selected === i">
             <a (mouseover)="selected = i" (click)="navigate('/apps/' + app.type + '/' + app.name)">
               <span class="text-truncate">
-                {{app.name}} <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
-                <span class="label}}">{{app.version}}</span>
+                {{ app.name }} <span class="{{ app.labelTypeClass() }}">{{ app.type }}</span>
+                <span class="label}}">{{ app.version }}</span>
               </span>
             </a>
           </li>
@@ -35,11 +43,16 @@
       <div *ngIf="results.streams && results.streams.total > 0">
         <h4>Streams(s)</h4>
         <ul>
-          <li *ngFor="let stream of results.streams.items;let i = index"
-              [class.active]="selected === ( i +results.apps.items.length)">
-            <a (mouseover)="selected = (i + results.apps.items.length)" (click)="navigate('/streams/list/' + stream.name)">
+          <li
+            *ngFor="let stream of results.streams.items; let i = index"
+            [class.active]="selected === i + results.apps.items.length"
+          >
+            <a
+              (mouseover)="selected = i + results.apps.items.length"
+              (click)="navigate('/streams/list/' + stream.name)"
+            >
               <span class="text-truncate">
-                {{stream.name}} <span class="{{stream.labelStatusClass()}}">{{stream.status}}</span>
+                {{ stream.name }} <span class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span>
               </span>
             </a>
           </li>
@@ -48,12 +61,20 @@
       <div *ngIf="results.tasks && results.tasks.total > 0">
         <h4>Task(s)</h4>
         <ul>
-          <li *ngFor="let task of results.tasks.items;let i = index"
-              [class.active]="selected === (i + results.apps.items.length + (results.streams ? results.streams.items.length : 0))">
-            <a (mouseover)="selected = (i + results.apps.items.length + (results.streams ? results.streams.items.length : 0))"
-               (click)="navigate('/tasks-jobs/tasks/' + task.name)">
+          <li
+            *ngFor="let task of results.tasks.items; let i = index"
+            [class.active]="
+              selected === i + results.apps.items.length + (results.streams ? results.streams.items.length : 0)
+            "
+          >
+            <a
+              (mouseover)="
+                selected = i + results.apps.items.length + (results.streams ? results.streams.items.length : 0)
+              "
+              (click)="navigate('/tasks-jobs/tasks/' + task.name)"
+            >
               <span class="text-truncate">
-                {{task.name}} <span class="{{task.labelStatusClass()}}">{{task.status}}</span>
+                {{ task.name }} <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
               </span>
             </a>
           </li>

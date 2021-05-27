@@ -1,4 +1,4 @@
-import { PipeTransform, Pipe } from '@angular/core';
+import {PipeTransform, Pipe} from '@angular/core';
 
 /**
  * Pipe that transforms an input string to camel-case.

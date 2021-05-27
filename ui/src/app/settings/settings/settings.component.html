@@ -4,32 +4,32 @@
     <div class="modal-body">
       <clr-select-container *ngIf="themeActive">
         <label>Theme</label>
-        <select clrSelect
-                name="theme"
-                [value]="themeActive.value"
-                (change)="themeActiveSettingOnChange($event.target.value)">
+        <select
+          clrSelect
+          name="theme"
+          [value]="themeActive.value"
+          (change)="themeActiveSettingOnChange($event.target.value)"
+        >
           <option value="default">default</option>
           <option value="dark">dark</option>
         </select>
-        <clr-control-helper>
-          You can choose between dark and default theme
-        </clr-control-helper>
+        <clr-control-helper> You can choose between dark and default theme </clr-control-helper>
       </clr-select-container>
 
       <clr-select-container *ngIf="resultsPerPage">
         <label>Results</label>
-        <select clrSelect
-                name="theme"
-                [value]="resultsPerPage.value"
-                (change)="resultPerPageSettingOnChange($event.target.value)">
+        <select
+          clrSelect
+          name="theme"
+          [value]="resultsPerPage.value"
+          (change)="resultPerPageSettingOnChange($event.target.value)"
+        >
           <option value="10">10</option>
           <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <clr-control-helper>
-          You can choose the number of results per page.
-        </clr-control-helper>
+        <clr-control-helper> You can choose the number of results per page. </clr-control-helper>
       </clr-select-container>
     </div>
     <div class="modal-footer">

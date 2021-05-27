@@ -1,11 +1,10 @@
-import { ElementComponent } from './shape-component';
-import { Constants, Flo } from 'spring-flo';
-import { Utils } from './utils';
-import { dia } from 'jointjs';
-import { DocService } from '../service/doc.service';
+import {ElementComponent} from './shape-component';
+import {Constants, Flo} from 'spring-flo';
+import {Utils} from './utils';
+import {dia} from 'jointjs';
+import {DocService} from '../service/doc.service';
 
 export class NodeComponent extends ElementComponent {
-
   _description: string;
 
   constructor(private docService: DocService) {
@@ -58,7 +57,7 @@ export class NodeComponent extends ElementComponent {
   get description(): string {
     if (this._description === undefined) {
       if (this.metadata && this.metadata.description) {
-        this.metadata.description().then(d => this._description = d);
+        this.metadata.description().then(d => (this._description = d));
       }
     }
     return this._description;
@@ -69,11 +68,13 @@ export class NodeComponent extends ElementComponent {
   }
 
   get canShowCanvasNodeTooltip(): boolean {
-    return this.isAnyPropertySet() || this.isLabelTruncated('./name-label') || this.isLabelTruncated('.type-label/text');
+    return (
+      this.isAnyPropertySet() || this.isLabelTruncated('./name-label') || this.isLabelTruncated('.type-label/text')
+    );
   }
 
-  get canShowPaletteNodeTooltip() {
-    return this.isLabelTruncated('.palette-entry-name-label/text') /*|| this.description*/;
+  get canShowPaletteNodeTooltip(): boolean {
+    return this.isLabelTruncated('.palette-entry-name-label/text') /* || this.description*/;
   }
 
   private isLabelTruncated(labelProperty: string) {
@@ -104,11 +105,11 @@ export class NodeComponent extends ElementComponent {
     return this.markers.map(m => m.message);
   }
 
-  delete() {
+  delete(): void {
     this.paper.model.trigger('startDeletion', this.view.model);
   }
 
-  docBody() {
+  docBody(): HTMLElement {
     return this.docService.body();
   }
 }

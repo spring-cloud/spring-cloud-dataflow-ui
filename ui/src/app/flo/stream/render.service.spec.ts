@@ -14,28 +14,25 @@
  * limitations under the License.
  */
 
-
 /**
  * Test Stream render service.
  *
  * @author Alex Boyko
  */
-import { MetamodelService } from './metamodel.service';
-import { RenderService } from './render.service';
-import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { EditorComponent, Flo } from 'spring-flo';
+import {MetamodelService} from './metamodel.service';
+import {RenderService} from './render.service';
+import {ComponentFixture, inject, TestBed, waitForAsync} from '@angular/core/testing';
+import {EditorComponent, Flo} from 'spring-flo';
 import * as _$ from 'jquery';
-import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
-import { MockSharedAppService } from '../../tests/service/app.service.mock';
-import { StreamFloModule } from '../stream-flo.module';
-import { StoreModule } from '@ngrx/store';
-import { NodeHelper } from './node-helper.service';
+import {ApplicationRef, ComponentFactoryResolver} from '@angular/core';
+import {MockSharedAppService} from '../../tests/service/app.service.mock';
+import {StreamFloModule} from '../stream-flo.module';
+import {StoreModule} from '@ngrx/store';
+import {NodeHelper} from './node-helper.service';
 
 const $: any = _$;
 
-
 describe('Stream RenderService', () => {
-
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
 
   let applicationRef: ApplicationRef;
@@ -46,48 +43,43 @@ describe('Stream RenderService', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let flo: Flo.EditorContext;
 
-  beforeEach(waitForAsync(() => {
-    METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({}),
-        StreamFloModule
-      ],
-      providers: [
-        {provide: MetamodelService, useValue: METAMODEL_SERVICE},
-      ]
-    });
-  }));
-
   beforeEach(
-    inject(
-      [
-        ApplicationRef,
-        ComponentFactoryResolver
-      ],
-      (
-        _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver
-      ) => {
-        applicationRef = _applicationRef;
-        resolver = _resolver;
-      }
-    )
+    waitForAsync(() => {
+      METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
+      TestBed.configureTestingModule({
+        imports: [StoreModule.forRoot({}), StreamFloModule],
+        providers: [{provide: MetamodelService, useValue: METAMODEL_SERVICE}]
+      });
+    })
   );
+
+  beforeEach(inject(
+    [ApplicationRef, ComponentFactoryResolver],
+    (_applicationRef: ApplicationRef, _resolver: ComponentFactoryResolver) => {
+      applicationRef = _applicationRef;
+      resolver = _resolver;
+    }
+  ));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = METAMODEL_SERVICE;
-    component.renderer = new RenderService(METAMODEL_SERVICE, new NodeHelper(), null, resolver,
-      fixture.debugElement.injector, applicationRef);
-    const subscription = component.floApi.subscribe((f) => {
+    component.renderer = new RenderService(
+      METAMODEL_SERVICE,
+      new NodeHelper(),
+      null,
+      resolver,
+      fixture.debugElement.injector,
+      applicationRef
+    );
+    const subscription = component.floApi.subscribe(f => {
       subscription.unsubscribe();
       flo = f;
     });
     const floViewElemnt = $('#flow-view');
     floViewElemnt.css({
-      'height': '800px'
+      height: '800px'
     });
     fixture.detectChanges();
   });
@@ -103,5 +95,4 @@ describe('Stream RenderService', () => {
     expect(node.attr('.stream-label/text').endsWith('\u2026')).toBeTruthy();
     expect(node.attr('.stream-label/text').length < 'SUPER-LOOOOOOOOOONG-STREAM-NAAAAMEEEEE'.length).toBeTruthy();
   });
-
 });

@@ -1,13 +1,12 @@
-import { AfterViewInit, Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import {AfterViewInit, Directive, ElementRef, Input, Renderer2} from '@angular/core';
 import get from 'lodash.get';
-import { AboutService } from '../../shared/api/about.service';
-import { SecurityService } from '../service/security.service';
+import {AboutService} from '../../shared/api/about.service';
+import {SecurityService} from '../service/security.service';
 
 @Directive({
   selector: '[appRole]'
 })
 export class RoleDirective implements AfterViewInit {
-
   @Input()
   public grantedRole: string[];
 
@@ -23,8 +22,8 @@ export class RoleDirective implements AfterViewInit {
     private aboutService: AboutService,
     private securityService: SecurityService,
     private elem: ElementRef,
-    private renderer: Renderer2) {
-  }
+    private renderer: Renderer2
+  ) {}
 
   private async checkRoles() {
     if (this.appFeature) {
@@ -52,7 +51,7 @@ export class RoleDirective implements AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.existingDisplayPropertyValue = this.elem.nativeElement.style.display;
     this.checkRoles();
   }

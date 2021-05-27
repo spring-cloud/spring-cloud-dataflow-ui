@@ -5,12 +5,9 @@
         <app-stream-deploy-builder-errors [errors]="builder.errors" (removeError)="removeError($event)">
         </app-stream-deploy-builder-errors>
         <div class="builder">
-
           <div class="col-fixed col-key">
-
             <!-- 0 -->
-            <div class="line-head">
-            </div>
+            <div class="line-head"></div>
 
             <!-- 1 -->
             <div class="line-toggle">
@@ -26,13 +23,11 @@
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
                   <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                      <span>The define platform is not valid (unknown).</span>
+                    <span>The define platform is not valid (unknown).</span>
                   </clr-tooltip-content>
                 </clr-tooltip>
               </div>
-              <div class="form-control form-control-label">
-                Platform
-              </div>
+              <div class="form-control form-control-label">Platform</div>
             </div>
 
             <!-- 3 -->
@@ -45,19 +40,22 @@
 
             <!-- 4 -->
             <div *ngIf="state.deployer">
-              <div class="line-body" *ngFor="let deployer of builder.streamDeployConfig.deployers;let i = index">
-
+              <div class="line-body" *ngFor="let deployer of builder.streamDeployConfig.deployers; let i = index">
                 <div class="status" *ngIf="builder.formGroup.get('deployers').controls[i].invalid">
                   <clr-tooltip>
-                      <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
-                      <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                        <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('deployers').controls[i])"></div>
-                      </clr-tooltip-content>
+                    <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                    <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <div
+                        [innerHtml]="
+                          tooltip(builder.streamDeployConfig, builder.formGroup.get('deployers').controls[i])
+                        "
+                      ></div>
+                    </clr-tooltip-content>
                   </clr-tooltip>
                 </div>
 
                 <div class="form-control form-control-label">
-                  {{deployer.name}}
+                  {{ deployer.name }}
                 </div>
               </div>
             </div>
@@ -65,7 +63,6 @@
             <!-- 5 -->
             <div class="line-toggle">
               <div class="help">
-                
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
                   <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
@@ -76,11 +73,8 @@
                       <div>Generated property: <strong>deployer.jdbc.cloudfoundry.services=mysqlcups</strong></div>
                     </div>
                   </clr-tooltip-content>
-              </clr-tooltip>
-              
-
+                </clr-tooltip>
               </div>
-
 
               <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
                 <clr-icon shape="angle" [class.active]="state.specificPlatform"></clr-icon>
@@ -90,29 +84,37 @@
 
             <!-- 6 -->
             <div *ngIf="state.specificPlatform">
-              <div *ngIf="builder.builderDeploymentProperties.global.length > 0"
-                   class="line-body">
-                <div class="form-control form-control-label">
-                  Properties
-                </div>
+              <div *ngIf="builder.builderDeploymentProperties.global.length > 0" class="line-body">
+                <div class="form-control form-control-label">Properties</div>
               </div>
             </div>
-            <div *ngIf="state.specificPlatform"
-                 formArrayName="specificPlatform">
-              <div class="line-body" *ngFor="let f of builder.formGroup.get('specificPlatform').controls;let i = index"
-                   [formGroupName]="i"
-                   [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get('property').invalid">
+            <div *ngIf="state.specificPlatform" formArrayName="specificPlatform">
+              <div
+                class="line-body"
+                *ngFor="let f of builder.formGroup.get('specificPlatform').controls; let i = index"
+                [formGroupName]="i"
+                [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get('property').invalid"
+              >
                 <div class="status" *ngIf="builder.formGroup.get('specificPlatform').controls[i].invalid">
                   <clr-tooltip>
                     <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
                     <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                      <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('specificPlatform').controls[i])"></div>
+                      <div
+                        [innerHtml]="
+                          tooltip(builder.streamDeployConfig, builder.formGroup.get('specificPlatform').controls[i])
+                        "
+                      ></div>
                     </clr-tooltip-content>
                   </clr-tooltip>
                 </div>
 
-                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input"
-                       formControlName="property" type="text"/>
+                <input
+                  tabindex="{{ 50 + i }}"
+                  placeholder="Enter a value"
+                  class="clr-input"
+                  formControlName="property"
+                  type="text"
+                />
               </div>
             </div>
 
@@ -127,74 +129,86 @@
             <!-- 8 -->
             <div *ngIf="state.app">
               <div class="line-body">
-
                 <div class="status" *ngIf="builder.formGroup.get('appsVersion').invalid">
                   <clr-tooltip>
                     <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
                     <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                      <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('appsVersion'))"></div>
+                      <div
+                        [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('appsVersion'))"
+                      ></div>
                     </clr-tooltip-content>
                   </clr-tooltip>
                 </div>
 
-                <div class="form-control form-control-label">
-                  Version
-                </div>
+                <div class="form-control form-control-label">Version</div>
               </div>
               <div class="line-body">
-                <div class="form-control form-control-label">
-                  Properties
-                </div>
+                <div class="form-control form-control-label">Properties</div>
               </div>
               <div formArrayName="global">
-                <div class="line-body" *ngFor="let f of builder.formGroup.get('global').controls;let i = index"
-                     [formGroupName]="i"
-                     [class.has-error]="builder.formGroup.get('global').controls[i].get('property').invalid">
-
+                <div
+                  class="line-body"
+                  *ngFor="let f of builder.formGroup.get('global').controls; let i = index"
+                  [formGroupName]="i"
+                  [class.has-error]="builder.formGroup.get('global').controls[i].get('property').invalid"
+                >
                   <div class="status" *ngIf="builder.formGroup.get('global').controls[i].invalid">
                     <clr-tooltip>
                       <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
                       <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                        <div [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('global').controls[i])"></div>
+                        <div
+                          [innerHtml]="tooltip(builder.streamDeployConfig, builder.formGroup.get('global').controls[i])"
+                        ></div>
                       </clr-tooltip-content>
                     </clr-tooltip>
                   </div>
 
-                  <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
-                         formControlName="property" type="text"/>
+                  <input
+                    tabindex="{{ 102 + i }}"
+                    placeholder="Enter a value"
+                    class="clr-input"
+                    formControlName="property"
+                    type="text"
+                  />
                 </div>
               </div>
             </div>
-
           </div>
 
           <div class="col-fixed global">
-
             <!-- 0 -->
-            <div class="line-head">
-              Global
-            </div>
+            <div class="line-head">Global</div>
 
             <!-- 1 -->
             <div class="line-toggle"></div>
 
             <!-- 2 -->
-            <div class="line-body" *ngIf="state.platform"
-                 [class.has-error]="isErrorPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)">
+            <div
+              class="line-body"
+              *ngIf="state.platform"
+              [class.has-error]="
+                isErrorPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)
+              "
+            >
               <div class="clr-select-wrapper">
-                 <select tabindex="1" formControlName="platform" class="clr-select">
-                    <option value="">Select a value</option>
-                    <option *ngFor="let platform of builder.streamDeployConfig.platform.values" [value]="platform.key">
-                      {{platform.name}}
-                      ({{platform.type}})
-                    </option>
-                    <option
-                      *ngIf="isInvalidPlatform(builder.streamDeployConfig.platform.values, builder.formGroup.get('platform').value)"
-                      [value]="builder.formGroup.get('platform').value">
-                      {{builder.formGroup.get('platform').value}} (invalid)
-                    </option>
-                  </select>
-
+                <select tabindex="1" formControlName="platform" class="clr-select">
+                  <option value="">Select a value</option>
+                  <option *ngFor="let platform of builder.streamDeployConfig.platform.values" [value]="platform.key">
+                    {{ platform.name }}
+                    ({{ platform.type }})
+                  </option>
+                  <option
+                    *ngIf="
+                      isInvalidPlatform(
+                        builder.streamDeployConfig.platform.values,
+                        builder.formGroup.get('platform').value
+                      )
+                    "
+                    [value]="builder.formGroup.get('platform').value"
+                  >
+                    {{ builder.formGroup.get('platform').value }} (invalid)
+                  </option>
+                </select>
               </div>
             </div>
 
@@ -203,39 +217,60 @@
 
             <!-- 4 -->
             <div formArrayName="deployers" *ngIf="state.deployer">
-              <div [formGroupName]="i" class="line-body"
-                   *ngFor="let deployer of builder.streamDeployConfig.deployers; let i = index"
-                   [class.has-error]="builder.formGroup.get('deployers').controls[i].get('global').invalid">
-
-                <input tabindex="{{2 + i}}" placeholder="Enter a number" formControlName="global" class="clr-input"
-                       [class.form-control-number]="deployer.suffix" type="text"/>
-                <span class="placeholder-unit">{{deployer.suffix}}</span>
+              <div
+                [formGroupName]="i"
+                class="line-body"
+                *ngFor="let deployer of builder.streamDeployConfig.deployers; let i = index"
+                [class.has-error]="builder.formGroup.get('deployers').controls[i].get('global').invalid"
+              >
+                <input
+                  tabindex="{{ 2 + i }}"
+                  placeholder="Enter a number"
+                  formControlName="global"
+                  class="clr-input"
+                  [class.form-control-number]="deployer.suffix"
+                  type="text"
+                />
+                <span class="placeholder-unit">{{ deployer.suffix }}</span>
               </div>
             </div>
 
             <!-- 5 -->
             <div class="line-toggle"></div>
 
-            <div class="line-body"
-                 *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0">
+            <div
+              class="line-body"
+              *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0"
+            >
               <div class="form-control form-control-label">
-                <strong>{{getDeploymentProperties(builder.builderDeploymentProperties).length}}</strong>
-                <span> /</span> {{builder.builderDeploymentProperties.global.length}} properties
-                <button tabindex="{{101}}" type="button" (click)="openDeploymentProperties(builder)"
-                        class="btn btn-sm btn-secondary">
+                <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties).length }}</strong>
+                <span> /</span> {{ builder.builderDeploymentProperties.global.length }} properties
+                <button
+                  tabindex="{{ 101 }}"
+                  type="button"
+                  (click)="openDeploymentProperties(builder)"
+                  class="btn btn-sm btn-secondary"
+                >
                   Edit
                 </button>
               </div>
             </div>
 
             <!-- 6 -->
-            <div *ngIf="state.specificPlatform"
-                 formArrayName="specificPlatform">
-              <div class="line-body" *ngFor="let f of builder.formGroup.get('specificPlatform').controls;let i = index"
-                   [formGroupName]="i"
-                   [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get('global').invalid">
-                <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input" formControlName="global"
-                       type="text"/>
+            <div *ngIf="state.specificPlatform" formArrayName="specificPlatform">
+              <div
+                class="line-body"
+                *ngFor="let f of builder.formGroup.get('specificPlatform').controls; let i = index"
+                [formGroupName]="i"
+                [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get('global').invalid"
+              >
+                <input
+                  tabindex="{{ 50 + i }}"
+                  placeholder="Enter a value"
+                  class="clr-input"
+                  formControlName="global"
+                  type="text"
+                />
               </div>
             </div>
 
@@ -247,26 +282,31 @@
               <div class="line-body"></div>
               <div class="line-body"></div>
               <div formArrayName="global">
-                <div class="line-body" *ngFor="let f of builder.formGroup.get('global').controls;let i = index"
-                     [formGroupName]="i"
-                     [class.has-error]="builder.formGroup.get('global').controls[i].get('global').invalid">
-                  <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
-                         formControlName="global" type="text"/>
+                <div
+                  class="line-body"
+                  *ngFor="let f of builder.formGroup.get('global').controls; let i = index"
+                  [formGroupName]="i"
+                  [class.has-error]="builder.formGroup.get('global').controls[i].get('global').invalid"
+                >
+                  <input
+                    tabindex="{{ 102 + i }}"
+                    placeholder="Enter a value"
+                    class="clr-input"
+                    formControlName="global"
+                    type="text"
+                  />
                 </div>
               </div>
             </div>
-
           </div>
 
           <div class="scroll">
-
             <div class="col" *ngFor="let app of builder.streamDeployConfig.apps">
-
               <!-- 0 -->
               <div class="line-head">
-                <strong>{{app.name}}</strong>
-                <br/>
-                <span class="label label-app {{app.type}}">{{app.origin}}</span>
+                <strong>{{ app.name }}</strong>
+                <br />
+                <span class="label label-app {{ app.type }}">{{ app.origin }}</span>
                 <!--                TODO-->
                 <!--                <app-type [application]="app"></app-type>-->
               </div>
@@ -282,13 +322,21 @@
 
               <!-- 4 -->
               <div formArrayName="deployers" *ngIf="state.deployer">
-                <div [formGroupName]="i" class="line-body"
-                     *ngFor="let deployer of builder.streamDeployConfig.deployers; let i = index"
-                     [class.has-error]="builder.formGroup.get('deployers').controls[i].get(app.name).invalid">
-                  <input tabindex="{{2 + i}}" placeholder="Enter a number" [formControlName]="app.name"
-                         class="clr-input"
-                         [class.form-control-number]="deployer.suffix" type="text"/>
-                  <span class="placeholder-unit">{{deployer.suffix}}</span>
+                <div
+                  [formGroupName]="i"
+                  class="line-body"
+                  *ngFor="let deployer of builder.streamDeployConfig.deployers; let i = index"
+                  [class.has-error]="builder.formGroup.get('deployers').controls[i].get(app.name).invalid"
+                >
+                  <input
+                    tabindex="{{ 2 + i }}"
+                    placeholder="Enter a number"
+                    [formControlName]="app.name"
+                    class="clr-input"
+                    [class.form-control-number]="deployer.suffix"
+                    type="text"
+                  />
+                  <span class="placeholder-unit">{{ deployer.suffix }}</span>
                 </div>
               </div>
 
@@ -297,26 +345,38 @@
 
               <!-- 6 -->
               <!-- track visibility from global as those are same as per apps -->
-              <div class="line-body"
-                   *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0">
+              <div
+                class="line-body"
+                *ngIf="state.specificPlatform && builder.builderDeploymentProperties.global.length > 0"
+              >
                 <div class="form-control form-control-label">
-                  <strong>{{getDeploymentProperties(builder.builderDeploymentProperties, app.name).length}}</strong>
-                  <span> /</span> {{builder.builderDeploymentProperties.apps[app.name].length}} properties
-                  <button tabindex="{{101}}" type="button" (click)="openDeploymentProperties(builder, app.name)"
-                          class="btn btn-sm btn-secondary">
+                  <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties, app.name).length }}</strong>
+                  <span> /</span> {{ builder.builderDeploymentProperties.apps[app.name].length }} properties
+                  <button
+                    tabindex="{{ 101 }}"
+                    type="button"
+                    (click)="openDeploymentProperties(builder, app.name)"
+                    class="btn btn-sm btn-secondary"
+                  >
                     Edit
                   </button>
                 </div>
               </div>
 
-              <div *ngIf="state.specificPlatform"
-                   formArrayName="specificPlatform">
-                <div class="line-body"
-                     *ngFor="let f of builder.formGroup.get('specificPlatform').controls;let i = index"
-                     [formGroupName]="i"
-                     [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get(app.name).invalid">
-                  <input tabindex="{{50 + i}}" placeholder="Enter a value" class="clr-input"
-                         [formControlName]="app.name" type="text"/>
+              <div *ngIf="state.specificPlatform" formArrayName="specificPlatform">
+                <div
+                  class="line-body"
+                  *ngFor="let f of builder.formGroup.get('specificPlatform').controls; let i = index"
+                  [formGroupName]="i"
+                  [class.has-error]="builder.formGroup.get('specificPlatform').controls[i].get(app.name).invalid"
+                >
+                  <input
+                    tabindex="{{ 50 + i }}"
+                    placeholder="Enter a value"
+                    class="clr-input"
+                    [formControlName]="app.name"
+                    type="text"
+                  />
                 </div>
               </div>
 
@@ -329,14 +389,16 @@
                   <div formGroupName="appsVersion">
                     <div class="cell">
                       <div class="clr-select-wrapper">
-                        <select tabindex="{{100}}" [formControlName]="app.name" class="clr-select">
-                          <option value="">Default version ({{app.version}})</option>
+                        <select tabindex="{{ 100 }}" [formControlName]="app.name" class="clr-select">
+                          <option value="">Default version ({{ app.version }})</option>
                           <option *ngFor="let version of app.versions" [value]="version.version">
-                            {{version.version}}
+                            {{ version.version }}
                           </option>
-                          <option *ngIf="app.optionsState.isInvalid"
-                                  [value]="builder.formGroup.get('appsVersion').get(app.name).value">
-                            {{builder.formGroup.get('appsVersion').get(app.name).value}} (invalid)
+                          <option
+                            *ngIf="app.optionsState.isInvalid"
+                            [value]="builder.formGroup.get('appsVersion').get(app.name).value"
+                          >
+                            {{ builder.formGroup.get('appsVersion').get(app.name).value }} (invalid)
                           </option>
                         </select>
                       </div>
@@ -345,13 +407,23 @@
                 </div>
                 <div class="line-body" [class.has-error]="app.optionsState.isInvalid">
                   <div
-                    *ngIf="app.options && !app.optionsState.isLoading && !app.optionsState.isOnError && !app.optionsState.isInvalid"
-                    class="form-control form-control-label">
+                    *ngIf="
+                      app.options &&
+                      !app.optionsState.isLoading &&
+                      !app.optionsState.isOnError &&
+                      !app.optionsState.isInvalid
+                    "
+                    class="form-control form-control-label"
+                  >
                     <div *ngIf="app.options.length > 0">
-                      <strong>{{getAppProperties(builder.builderAppsProperties, app.name).length}}</strong>
-                      <span> /</span> {{app.options.length}} properties
-                      <button tabindex="{{101}}" type="button" (click)="openApp(builder, app)"
-                              class="btn btn-sm btn-secondary">
+                      <strong>{{ getAppProperties(builder.builderAppsProperties, app.name).length }}</strong>
+                      <span> /</span> {{ app.options.length }} properties
+                      <button
+                        tabindex="{{ 101 }}"
+                        type="button"
+                        (click)="openApp(builder, app)"
+                        class="btn btn-sm btn-secondary"
+                      >
                         Edit
                       </button>
                     </div>
@@ -359,26 +431,27 @@
                       <strong>No properties</strong>
                     </div>
                   </div>
-                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">
-                    Loading ...
-                  </div>
-                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">
-                    Error loading
-                  </div>
-                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label">
-                    Invalid version
-                  </div>
+                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">Loading ...</div>
+                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">Error loading</div>
+                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label">Invalid version</div>
                 </div>
                 <div formArrayName="global">
-                  <div class="line-body" *ngFor="let f of builder.formGroup.get('global').controls;let i = index"
-                       [formGroupName]="i"
-                       [class.has-error]="builder.formGroup.get('global').controls[i].get(app.name).invalid">
-                    <input tabindex="{{102 + i}}" placeholder="Enter a value" class="clr-input"
-                           [formControlName]="app.name" type="text"/>
+                  <div
+                    class="line-body"
+                    *ngFor="let f of builder.formGroup.get('global').controls; let i = index"
+                    [formGroupName]="i"
+                    [class.has-error]="builder.formGroup.get('global').controls[i].get(app.name).invalid"
+                  >
+                    <input
+                      tabindex="{{ 102 + i }}"
+                      placeholder="Enter a value"
+                      class="clr-input"
+                      [formControlName]="app.name"
+                      type="text"
+                    />
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -386,7 +459,13 @@
           <button tabindex="200" id="btn-export" type="button" class="btn btn-sm btn-secondary" (click)="exportProps()">
             Export
           </button>
-          <button tabindex="200" id="btn-copy" type="button" class="btn btn-sm btn-secondary" (click)="copyToClipboard()">
+          <button
+            tabindex="200"
+            id="btn-copy"
+            type="button"
+            class="btn btn-sm btn-secondary"
+            (click)="copyToClipboard()"
+          >
             Copy to Clipboard
           </button>
         </div>
@@ -406,8 +485,8 @@
 <app-properties-groups-dialog-content #groupsPropertiesModal></app-properties-groups-dialog-content>
 
 <ng-template #loading>
- <div style="padding: 1rem;">
-  <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading...
- </div>
+  <div style="padding: 1rem">
+    <clr-spinner clrInline clrSmall></clr-spinner>
+    Loading...
+  </div>
 </ng-template>

@@ -3,32 +3,38 @@
   <div class="modal-body" *ngIf="versions?.length > 1 && !isRunning && !loading">
     <table class="table table-striped">
       <thead>
-      <tr>
-        <th class="left">&nbsp;</th>
-        <th class="left">Name</th>
-        <th class="left">Type</th>
-        <th class="left">&nbsp;</th>
-      </tr>
+        <tr>
+          <th class="left">&nbsp;</th>
+          <th class="left">Name</th>
+          <th class="left">Type</th>
+          <th class="left">&nbsp;</th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let app of versions">
-        <td class="left">
-          <clr-icon *ngIf="app.defaultVersion" shape="star" class="is-solid"></clr-icon>
-        </td>
-        <td class="left"><span class="label">{{app.version}}</span></td>
-        <td class="left">
-          <span style="word-break: break-all">
-            {{app.uri}}
-          </span>
-        </td>
-        <td nowrap="">
-          <button type="button" class="btn btn-sm btn-secondary" (click)="unregisterConfirm(app)">Unregister</button>
-          <button type="button" [disabled]="app.defaultVersion" (click)="makeDefaultConfirm(app)"
-                  class="btn btn-sm btn-secondary">
-            Set default
-          </button>
-        </td>
-      </tr>
+        <tr *ngFor="let app of versions">
+          <td class="left">
+            <clr-icon *ngIf="app.defaultVersion" shape="star" class="is-solid"></clr-icon>
+          </td>
+          <td class="left">
+            <span class="label">{{ app.version }}</span>
+          </td>
+          <td class="left">
+            <span style="word-break: break-all">
+              {{ app.uri }}
+            </span>
+          </td>
+          <td nowrap="">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="unregisterConfirm(app)">Unregister</button>
+            <button
+              type="button"
+              [disabled]="app.defaultVersion"
+              (click)="makeDefaultConfirm(app)"
+              class="btn btn-sm btn-secondary"
+            >
+              Set default
+            </button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -46,17 +52,19 @@
 </clr-modal>
 
 <app-confirm #unregisterModal (onConfirmed)="unregister()" title="Confirm unregister version" yes="Unregister">
-  This action will unregister the <strong>version {{selected?.version}}</strong> of the application
-  <strong>{{selected?.name}}</strong>&nbsp;<span class="{{selected?.labelTypeClass()}}">{{selected?.type}}</span>.
-  <br/>
+  This action will unregister the <strong>version {{ selected?.version }}</strong> of the application
+  <strong>{{ selected?.name }}</strong
+  >&nbsp;<span class="{{ selected?.labelTypeClass() }}">{{ selected?.type }}</span
+  >.
+  <br />
   Are you sure?
 </app-confirm>
 
-
 <app-confirm #makeDefaultModal (onConfirmed)="makeDefault()" title="Confirm make default version" yes="Make default">
-  This action will make the version <strong>{{selected?.version}}</strong> as the default version for the application
-  <strong>{{selected?.name}}</strong>&nbsp;
-  <span class="{{selected?.labelTypeClass()}}">{{selected?.type}}</span>.
-  <br/>
+  This action will make the version <strong>{{ selected?.version }}</strong> as the default version for the application
+  <strong>{{ selected?.name }}</strong
+  >&nbsp; <span class="{{ selected?.labelTypeClass() }}">{{ selected?.type }}</span
+  >.
+  <br />
   Are you sure?
 </app-confirm>

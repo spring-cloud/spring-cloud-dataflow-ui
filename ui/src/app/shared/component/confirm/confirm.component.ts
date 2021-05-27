@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { App } from '../../model/app.model';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {App} from '../../model/app.model';
 
 @Component({
   selector: 'app-confirm',
@@ -7,19 +7,17 @@ import { App } from '../../model/app.model';
   styles: []
 })
 export class ConfirmComponent {
-
   isOpen = false;
   @Output() onConfirmed = new EventEmitter();
   @Input() title = 'Confirm action';
   @Input() yes = 'Yes';
 
-  open() {
+  open(): void {
     this.isOpen = true;
   }
 
-  confirm() {
+  confirm(): void {
     this.onConfirmed.emit(true);
     this.isOpen = false;
   }
-
 }

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { TextToGraphConverter } from './text-to-graph';
-import { Parser } from '../shared/service/parser';
+import {Injectable} from '@angular/core';
+import {TextToGraphConverter} from './text-to-graph';
+import {Parser} from '../shared/service/parser';
 
 /**
  * Helper to break down stream DSL text into stream definitions
@@ -9,9 +9,7 @@ import { Parser } from '../shared/service/parser';
  */
 @Injectable()
 export class SanitizeDsl {
-
-  convert(dsl: string, parsedStreams: Parser.ParseResult) {
+  convert(dsl: string, parsedStreams: Parser.ParseResult): any {
     return TextToGraphConverter.convertParseResponseToJsonGraph(dsl, parsedStreams);
   }
-
 }

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ApplicationType } from '../../../shared/model/app.model';
-import { AppService } from '../../../shared/api/app.service';
-import { NotificationService } from '../../../shared/service/notification.service';
-import { Router } from '@angular/router';
-import { AppsAddValidator } from '../add.validtor';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ApplicationType} from '../../../shared/model/app.model';
+import {AppService} from '../../../shared/api/app.service';
+import {NotificationService} from '../../../shared/service/notification.service';
+import {Router} from '@angular/router';
+import {AppsAddValidator} from '../add.validtor';
 
 @Component({
   selector: 'app-add-register',
-  templateUrl: './register.component.html',
+  templateUrl: './register.component.html'
 })
 export class RegisterComponent implements OnInit {
   forms: FormGroup[] = [];
@@ -16,17 +16,18 @@ export class RegisterComponent implements OnInit {
   submitted = false;
   isImporting = false;
 
-  constructor(private appService: AppService,
-              private notificationService: NotificationService,
-              private fb: FormBuilder,
-              private router: Router) {
-  }
+  constructor(
+    private appService: AppService,
+    private notificationService: NotificationService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.newForm();
   }
 
-  register() {
+  register(): void {
     this.submitted = true;
     if (!this.isValid()) {
       if (this.noValue()) {
@@ -36,18 +37,21 @@ export class RegisterComponent implements OnInit {
       }
     } else {
       this.isImporting = true;
-      const applications = this.forms.map((form: FormGroup) => {
-        if (!form.invalid && !this.isFormEmpty(form)) {
-          return {
-            name: form.get('name').value,
-            type: form.get('type').value as ApplicationType,
-            uri: form.get('uri').value,
-            metaDataUri: form.get('metaDataUri').value,
-            force: form.get('force').value
-          };
-        }
-      }).filter((a) => a != null);
-      this.appService.registerProps(applications)
+      const applications = this.forms
+        .map((form: FormGroup) => {
+          if (!form.invalid && !this.isFormEmpty(form)) {
+            return {
+              name: form.get('name').value,
+              type: form.get('type').value as ApplicationType,
+              uri: form.get('uri').value,
+              metaDataUri: form.get('metaDataUri').value,
+              force: form.get('force').value
+            };
+          }
+        })
+        .filter(a => a != null);
+      this.appService
+        .registerProps(applications)
         // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           data => {
@@ -73,7 +77,7 @@ export class RegisterComponent implements OnInit {
       }
       count++;
     }
-    return (count > 0);
+    return count > 0;
   }
 
   noValue(): boolean {
@@ -85,12 +89,16 @@ export class RegisterComponent implements OnInit {
     return true;
   }
 
-  isFormEmpty(form: FormGroup) {
-    return (form.get('uri').hasError('required') && form.get('name').hasError('required')
-      && form.get('metaDataUri').value === '' && form.get('type').hasError('required'));
+  isFormEmpty(form: FormGroup): boolean {
+    return (
+      form.get('uri').hasError('required') &&
+      form.get('name').hasError('required') &&
+      form.get('metaDataUri').value === '' &&
+      form.get('type').hasError('required')
+    );
   }
 
-  newForm(index?: number) {
+  newForm(index?: number): void {
     index = index || this.forms.length;
     const form = this.fb.group({
       name: new FormControl('', [AppsAddValidator.appName, Validators.required]),
@@ -103,12 +111,11 @@ export class RegisterComponent implements OnInit {
     this.forms.splice(index + 1, 0, form);
   }
 
-  removeForm(index: number) {
+  removeForm(index: number): void {
     this.forms.splice(index, 1);
   }
 
-  cancel() {
+  cancel(): void {
     this.router.navigateByUrl('apps');
   }
-
 }

@@ -1,3 +1,6 @@
+import {Flo} from 'spring-flo';
+import {dia} from 'jointjs';
+
 /*
  * Copyright 2015-2016 the original author or authors.
  *
@@ -13,30 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { Flo } from 'spring-flo';
-import { dia } from 'jointjs';
-
 /**
  * Utilities for Flo based graph editors.
  *
  * @author Alex Boyko
  */
 export class Utils {
+  static RX_JAVA_PROCESSOR_SOURCE_TYPE =
+    'org.springframework.cloud.stream.app.transform.ProgrammableRxJavaProcessorProperties'; // eslint-disable-line
 
-  static RX_JAVA_PROCESSOR_SOURCE_TYPE = 'org.springframework.cloud.stream.app.transform.ProgrammableRxJavaProcessorProperties';
   static SCRIPTABLE_TRANSFORM_SOURCE_TYPE =
-    'org.springframework.cloud.stream.app.scriptable.transform.processor.ScriptableTransformProcessorProperties';
+    'org.springframework.cloud.stream.app.scriptable.transform.processor.ScriptableTransformProcessorProperties'; // eslint-disable-line
 
   static RX_JAVA_PROCESSOR_NAME = 'rx-java-processor';
   static SCRIPTABLE_TRANSFORM_NAME = 'scriptable-transform';
 
   static encodeTextToDSL(text: string): string {
-    return '\"' + text.replace(/(?:\r\n|\r|\n)/g, '\\n').replace(/"/g, '""') + '\"';
+    return '"' + text.replace(/(?:\r\n|\r|\n)/g, '\\n').replace(/"/g, '""') + '"';
   }
 
   static decodeTextFromDSL(dsl: string): string {
-    if (dsl.charAt(0) === '\"' && dsl.charAt(dsl.length - 1) === '\"') {
+    if (dsl.charAt(0) === '"' && dsl.charAt(dsl.length - 1) === '"') {
       dsl = dsl.substr(1, dsl.length - 2);
     }
     return dsl.replace(/\\n/g, '\n').replace(/\"\"/g, '"');
@@ -44,18 +44,19 @@ export class Utils {
 
   static isCodeTypeProperty(metadata: Flo.ElementMetadata, property: string): boolean {
     const propertyLowerCase = property.toLowerCase();
-    return (metadata.name === Utils.RX_JAVA_PROCESSOR_NAME
-        && (propertyLowerCase === 'code' || propertyLowerCase === 'rxjava-processor.code'))
-      || (metadata.name === Utils.SCRIPTABLE_TRANSFORM_NAME
-        && (propertyLowerCase === 'script' || propertyLowerCase === 'scriptable-transformer.script'));
+    return (
+      (metadata.name === Utils.RX_JAVA_PROCESSOR_NAME &&
+        (propertyLowerCase === 'code' || propertyLowerCase === 'rxjava-processor.code')) ||
+      (metadata.name === Utils.SCRIPTABLE_TRANSFORM_NAME &&
+        (propertyLowerCase === 'script' || propertyLowerCase === 'scriptable-transformer.script'))
+    );
   }
 
   static isUnresolved(element: dia.Cell): boolean {
     return Utils.isUnresolvedMetadata(element.prop('metadata'));
   }
 
-  static isUnresolvedMetadata(metadata: Flo.ElementMetadata) {
+  static isUnresolvedMetadata(metadata: Flo.ElementMetadata): boolean {
     return !metadata || (metadata.metadata && metadata.metadata.unresolved);
   }
-
 }

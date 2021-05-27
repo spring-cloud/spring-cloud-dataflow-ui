@@ -1,4 +1,4 @@
-import { Page } from './page.model';
+import {Page} from './page.model';
 
 export class Stream {
   public name: string;
@@ -8,7 +8,7 @@ export class Stream {
   public status: string;
   public deploymentProperties: any;
 
-  public static parse(input): Stream {
+  public static parse(input: any): Stream {
     const stream = new Stream();
     stream.name = input?.name;
     if (input?.streamName && !input?.name) {
@@ -24,7 +24,7 @@ export class Stream {
     return stream;
   }
 
-  labelStatusClass() {
+  labelStatusClass(): string {
     switch (this.status) {
       case 'UNDEPLOYED':
         return 'label label-stream undeployed';
@@ -43,7 +43,7 @@ export class Stream {
 }
 
 export class StreamPage extends Page<Stream> {
-  public static parse(input): Page<Stream> {
+  public static parse(input: any): Page<Stream> {
     const page = Page.fromJSON<Stream>(input);
     if (input && input._embedded && input._embedded.streamDefinitionResourceList) {
       page.items = input._embedded.streamDefinitionResourceList.map(Stream.parse);
@@ -58,13 +58,10 @@ export class StreamDeployConfig {
   deployers: any;
   apps: any;
 
-  constructor() {
-  }
+  constructor() {}
 }
 
-
 export class StreamHistory {
-
   public stream: string;
   public version: number;
   public firstDeployed: Date;
@@ -72,8 +69,7 @@ export class StreamHistory {
   public description: string;
   public platformName: string;
 
-
-  static parse(input) {
+  static parse(input: any): StreamHistory {
     const history = new StreamHistory();
     history.stream = input.name;
     history.version = input.version;
@@ -87,5 +83,4 @@ export class StreamHistory {
     }
     return history;
   }
-
 }

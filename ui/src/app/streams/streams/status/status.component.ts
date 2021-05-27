@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-stream-status',
@@ -42,15 +42,13 @@ import { Component } from '@angular/core';
 export class StatusComponent {
   isOpen = false;
 
-  constructor() {
-  }
+  constructor() {}
 
-  open() {
+  open(): void {
     this.isOpen = true;
   }
 
-  close() {
+  close(): void {
     this.isOpen = false;
   }
-
 }

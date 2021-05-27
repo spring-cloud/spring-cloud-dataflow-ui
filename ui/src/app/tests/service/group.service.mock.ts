@@ -1,14 +1,11 @@
-import { GroupService } from '../../shared/service/group.service';
+import {GroupService} from '../../shared/service/group.service';
 
 export class GroupServiceMock {
-
   static mock: GroupServiceMock = null;
 
-  constructor() {
-  }
+  constructor() {}
 
-
-  create(args): string {
+  create(args: any): string {
     const key = 'foo';
     return key;
   }
@@ -17,14 +14,14 @@ export class GroupServiceMock {
     return true;
   }
 
-  group(name) {
+  group(name: string): any {
     return ['foo', 'bar'];
   }
 
-  static get provider() {
+  static get provider(): any {
     if (!GroupServiceMock.mock) {
       GroupServiceMock.mock = new GroupServiceMock();
     }
-    return { provide: GroupService, useValue: GroupServiceMock.mock };
+    return {provide: GroupService, useValue: GroupServiceMock.mock};
   }
 }

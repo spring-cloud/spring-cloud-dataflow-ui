@@ -1,42 +1,36 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../tests/api/about.service.mock';
-import { AppServiceMock } from '../../tests/api/app.service.mock';
-import { NotificationServiceMock } from '../../tests/service/notification.service.mock';
-import { ActionFilterComponent } from './action.filter';
-import { RecordServiceMock } from '../../tests/api/record.service.mock';
-import { By } from '@angular/platform-browser';
-import { ContextServiceMock } from '../../tests/service/context.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../tests/api/about.service.mock';
+import {AppServiceMock} from '../../tests/api/app.service.mock';
+import {NotificationServiceMock} from '../../tests/service/notification.service.mock';
+import {ActionFilterComponent} from './action.filter';
+import {RecordServiceMock} from '../../tests/api/record.service.mock';
+import {By} from '@angular/platform-browser';
+import {ContextServiceMock} from '../../tests/service/context.service.mock';
 
 describe('manage/records/action.filter.ts', () => {
-
   let component: ActionFilterComponent;
   let fixture: ComponentFixture<ActionFilterComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        ActionFilterComponent,
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-        RecordServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ActionFilterComponent],
+        imports: [FormsModule, ClarityModule, BrowserAnimationsModule],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          AppServiceMock.provider,
+          NotificationServiceMock.provider,
+          RecordServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActionFilterComponent);
@@ -48,7 +42,7 @@ describe('manage/records/action.filter.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set the value', async (done) => {
+  it('should set the value', async done => {
     component.value = 'DELETE';
     fixture.detectChanges();
     await fixture.whenStable();
@@ -68,5 +62,4 @@ describe('manage/records/action.filter.ts', () => {
     expect(component.accepts(null)).toBeTruthy();
     done();
   });
-
 });

@@ -1,9 +1,9 @@
-import { Flo, Properties } from 'spring-flo';
-import { dia } from 'jointjs';
+import {Flo, Properties} from 'spring-flo';
+import {dia} from 'jointjs';
 import PropertiesSource = Properties.PropertiesSource;
-import { GraphNodePropertiesSource } from '../../shared/support/graph-node-properties-source';
-import { AppUiProperty } from '../../shared/support/app-ui-property';
-import { ApplicationType } from '../../../shared/model/app.model';
+import {GraphNodePropertiesSource} from '../../shared/support/graph-node-properties-source';
+import {AppUiProperty} from '../../shared/support/app-ui-property';
+import {ApplicationType} from '../../../shared/model/app.model';
 
 export interface StreamHead {
   presentStreamNames: string[];
@@ -13,14 +13,12 @@ export interface StreamAppPropertiesSource extends PropertiesSource {
   getStreamHead(): StreamHead;
 }
 
-
 /**
  * Properties source for a stream graph node
  *
  * @author Alex Boyko
  */
 export class StreamGraphPropertiesSource extends GraphNodePropertiesSource implements StreamAppPropertiesSource {
-
   constructor(cell: dia.Cell, private streamHead: StreamHead) {
     super(cell);
   }
@@ -63,8 +61,7 @@ export class StreamGraphPropertiesSource extends GraphNodePropertiesSource imple
     return super.determineAttributeName(metadata);
   }
 
-  getStreamHead() {
+  getStreamHead(): StreamHead {
     return this.streamHead;
   }
-
 }

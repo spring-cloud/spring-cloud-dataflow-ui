@@ -1,11 +1,10 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { AppService } from '../../shared/api/app.service';
-import { StreamService } from '../../shared/api/stream.service';
-import { forkJoin, Observable, Subscription } from 'rxjs';
-import { NotificationService } from '../../shared/service/notification.service';
-import { StreamCreateComponent } from './stream-create/stream-create.component';
-import { TaskCreateComponent } from './task-create/task-create.component';
-import { ConfirmComponent } from '../../shared/component/confirm/confirm.component';
+import {Component, OnDestroy, ViewChild} from '@angular/core';
+import {AppService} from '../../shared/api/app.service';
+import {forkJoin, Observable, Subscription} from 'rxjs';
+import {NotificationService} from '../../shared/service/notification.service';
+import {StreamCreateComponent} from './stream-create/stream-create.component';
+import {TaskCreateComponent} from './task-create/task-create.component';
+import {ConfirmComponent} from '../../shared/component/confirm/confirm.component';
 
 @Component({
   selector: 'app-dev-dasboard',
@@ -13,16 +12,13 @@ import { ConfirmComponent } from '../../shared/component/confirm/confirm.compone
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnDestroy {
-  @ViewChild('streamCreateModal', { static: true }) streamCreateModal: StreamCreateComponent;
-  @ViewChild('taskCreateModal', { static: true }) taskCreateModal: TaskCreateComponent;
-  @ViewChild('importAppsModal', { static: true }) importAppsModal: ConfirmComponent;
+  @ViewChild('streamCreateModal', {static: true}) streamCreateModal: StreamCreateComponent;
+  @ViewChild('taskCreateModal', {static: true}) taskCreateModal: TaskCreateComponent;
+  @ViewChild('importAppsModal', {static: true}) importAppsModal: ConfirmComponent;
   operationSubscription: Subscription;
   processing = false;
 
-  constructor(private appService: AppService,
-              private streamService: StreamService,
-              private notificationService: NotificationService) {
-  }
+  constructor(private appService: AppService, private notificationService: NotificationService) {}
 
   ngOnDestroy(): void {
     if (this.operationSubscription) {
@@ -30,7 +26,7 @@ export class DashboardComponent implements OnDestroy {
     }
   }
 
-  runOperation(operation: string) {
+  runOperation(operation: string): void {
     if (this.operationSubscription) {
       this.operationSubscription.unsubscribe();
     }
@@ -41,11 +37,11 @@ export class DashboardComponent implements OnDestroy {
     });
   }
 
-  createStreams() {
+  createStreams(): void {
     this.streamCreateModal.open();
   }
 
-  createTasks() {
+  createTasks(): void {
     this.taskCreateModal.open();
   }
 
@@ -61,8 +57,7 @@ export class DashboardComponent implements OnDestroy {
     return null;
   }
 
-  importApps() {
+  importApps(): void {
     this.importAppsModal.open();
   }
-
 }

@@ -3,9 +3,7 @@
 <app-stream-flo-create #flo></app-stream-flo-create>
 
 <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-<button class="btn btn-primary" type="button" (click)="createStream()">
-  Create stream(s)
-</button>
+<button class="btn btn-primary" type="button" (click)="createStream()">Create stream(s)</button>
 
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!progressData" clrModalSize="lg">
   <h3 class="modal-title" *ngIf="!progressData">Create Stream(s)</h3>
@@ -15,42 +13,42 @@
       <div class="progress-static labeled">
         <clr-progress-bar [clrValue]="progressData.percent" clrMax="100" clrSuccess clrLabeled></clr-progress-bar>
       </div>
-      {{operationRunning}}
+      {{ operationRunning }}
     </div>
   </div>
 
   <div class="modal-body" *ngIf="!progressData">
     <form clrForm clrLayout="horizontal" (submit)="submit()" [formGroup]="form" clrLabelSize="4">
       <div *ngIf="errors && errors.length > 0" class="alert alert-error">
-        <div *ngFor="let error of errors">• {{error}}</div>
+        <div *ngFor="let error of errors">• {{ error }}</div>
       </div>
-      <div style="margin-bottom: .8rem;">This action will create the following <strong>stream(s)</strong>:</div>
+      <div style="margin-bottom: 0.8rem">This action will create the following <strong>stream(s)</strong>:</div>
       <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
         <div class="alert-items">
           <div class="alert-item static">
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <div class="alert-text">
-              Duplicate stream name, please check input names.
-            </div>
+            <div class="alert-text">Duplicate stream name, please check input names.</div>
           </div>
         </div>
       </div>
-      <div *ngFor="let def of getStreams(); let i = index" class="card" style="padding: 10px 0;">
+      <div *ngFor="let def of getStreams(); let i = index" class="card" style="padding: 10px 0">
         <div class="card-block">
-          <div class="clr-form-control clr-row" style="margin-top:0;max-height: 16px">
+          <div class="clr-form-control clr-row" style="margin-top: 0; max-height: 16px">
             <label class="clr-control-label clr-col-12 clr-col-md-2">Definition</label>
             <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
               <!--                <app-stream-dsl>{{def.def | truncate: 90}}</app-stream-dsl>-->
-              <span class="dsl-text dsl-truncate">{{def.def}}</span>
+              <span class="dsl-text dsl-truncate">{{ def.def }}</span>
             </div>
           </div>
 
           <div class="form-group clr-form-control clr-row">
             <label class="clr-control-label clr-col-12 clr-col-md-2">Name</label>
-            <div class="clr-control-container clr-error clr-col-md-10 clr-col-12"
-                 [class]="{'clr-error': getControl(def.index.toString()).errors}">
+            <div
+              class="clr-control-container clr-error clr-col-md-10 clr-col-12"
+              [class]="{'clr-error': getControl(def.index.toString()).errors}"
+            >
               <div class="clr-input-wrapper">
                 <input
                   type="text"
@@ -61,44 +59,56 @@
                   [dataflowFocus]="i == 0"
                   [ngModel]="def.name"
                   (ngModelChange)="changeStreamName(def.index, $event)"
-                  style="width: 360px;"
-                  name="{{def.index.toString()}}"
+                  style="width: 360px"
+                  name="{{ def.index.toString() }}"
                   class="clr-input"
-                  aria-describedby="0-error">
+                  aria-describedby="0-error"
+                />
               </div>
-              <div class="clr-subtext"
-                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required">
+              <div
+                class="clr-subtext"
+                *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
+              >
                 Stream name is required!
               </div>
-              <div class="clr-subtext"
-                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource">
+              <div
+                class="clr-subtext"
+                *ngIf="
+                  getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource
+                "
+              >
                 Stream name is already taken!
               </div>
-              <div class="clr-subtext"
-                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern">
+              <div
+                class="clr-subtext"
+                *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern"
+              >
                 Invalid stream name!
               </div>
-              <div class="clr-subtext"
-                   *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.maxlength">
+              <div
+                class="clr-subtext"
+                *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.maxlength"
+              >
                 Stream name must be less than 255 characters long!
               </div>
             </div>
           </div>
 
           <clr-control-container class="form-group">
-            <label [for]="def.index.toString()+'_desc'">Description</label>
+            <label [for]="def.index.toString() + '_desc'">Description</label>
             <input
-              [id]="def.index.toString()+'_desc'"
-              [name]="def.index.toString()+'_desc'"
-              [formControlName]="def.index.toString()+'_desc'"
+              [id]="def.index.toString() + '_desc'"
+              [name]="def.index.toString() + '_desc'"
+              [formControlName]="def.index.toString() + '_desc'"
               clrControl
               [ngModel]="def.description"
               (ngModelChange)="changeStreamDescription(def.index, $event)"
               placeholder="Stream Description"
               maxlength="255"
               style="width: 560px"
-            >
-            <clr-control-error *clrIfError="'maxlength'">Stream description must be less than 255 characters long!
+            />
+            <clr-control-error *clrIfError="'maxlength'"
+              >Stream description must be less than 255 characters long!
             </clr-control-error>
           </clr-control-container>
         </div>

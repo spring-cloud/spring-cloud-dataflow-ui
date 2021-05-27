@@ -1,7 +1,7 @@
-import { TaskService } from './task.service';
-import { of } from 'rxjs';
-import { Task } from '../model/task.model';
-import { TaskExecution } from '../model/task-execution.model';
+import {TaskService} from './task.service';
+import {of} from 'rxjs';
+import {Task} from '../model/task.model';
+import {TaskExecution} from '../model/task-execution.model';
 
 describe('shared/api/task.service.ts', () => {
   let mockHttp;
@@ -12,7 +12,7 @@ describe('shared/api/task.service.ts', () => {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post'),
-      put: jasmine.createSpy('put'),
+      put: jasmine.createSpy('put')
     };
     jsonData = {};
     taskService = new TaskService(mockHttp);
@@ -53,17 +53,14 @@ describe('shared/api/task.service.ts', () => {
 
   it('destroyTask', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    taskService.destroyTask(Task.parse({ name: 'foo' }));
+    taskService.destroyTask(Task.parse({name: 'foo'}));
     const httpUri = mockHttp.delete.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/tasks/definitions/foo');
   });
 
   it('destroyTasks', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    taskService.destroyTasks([
-      Task.parse({ name: 'foo' }),
-      Task.parse({ name: 'bar' })
-    ]);
+    taskService.destroyTasks([Task.parse({name: 'foo'}), Task.parse({name: 'bar'})]);
     let httpUri = mockHttp.delete.calls.argsFor(0)[0];
     expect(httpUri).toEqual('/tasks/definitions/foo');
     httpUri = mockHttp.delete.calls.argsFor(1)[0];
@@ -86,24 +83,21 @@ describe('shared/api/task.service.ts', () => {
 
   it('executionStop', () => {
     mockHttp.post.and.returnValue(of(jsonData));
-    taskService.executionStop(TaskExecution.parse({ executionId: 'foo' }));
+    taskService.executionStop(TaskExecution.parse({executionId: 'foo'}));
     const httpUri = mockHttp.post.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/tasks/executions/foo');
   });
 
   it('executionClean', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    taskService.executionClean(TaskExecution.parse({ executionId: 'foo' }));
+    taskService.executionClean(TaskExecution.parse({executionId: 'foo'}));
     const httpUri = mockHttp.delete.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/tasks/executions/foo?action=REMOVE_DATA');
   });
 
   it('executionsClean', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    taskService.executionsClean([
-      TaskExecution.parse({ executionId: 'foo' }),
-      TaskExecution.parse({ executionId: 'bar' })
-    ]);
+    taskService.executionsClean([TaskExecution.parse({executionId: 'foo'}), TaskExecution.parse({executionId: 'bar'})]);
     let httpUri = mockHttp.delete.calls.argsFor(0)[0];
     expect(httpUri).toEqual('/tasks/executions/foo?action=REMOVE_DATA');
     httpUri = mockHttp.delete.calls.argsFor(1)[0];
@@ -134,10 +128,12 @@ describe('shared/api/task.service.ts', () => {
 
   it('getExecutionLogs', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    taskService.getExecutionLogs(TaskExecution.parse({
-      externalExecutionId: 'foo',
-      arguments: ['--spring.cloud.data.flow.platformname=bar']
-    }));
+    taskService.getExecutionLogs(
+      TaskExecution.parse({
+        externalExecutionId: 'foo',
+        arguments: ['--spring.cloud.data.flow.platformname=bar']
+      })
+    );
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
     expect(httpUri).toEqual('/tasks/logs/foo?platformName=bar');

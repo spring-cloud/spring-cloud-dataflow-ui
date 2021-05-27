@@ -1,18 +1,16 @@
-import { AfterContentChecked, ChangeDetectorRef, Directive, OnDestroy } from '@angular/core';
-import { ClrDatagridStateInterface } from '@clr/angular';
-import { Page } from '../../model/page.model';
+import {AfterContentChecked, ChangeDetectorRef, Directive, OnDestroy} from '@angular/core';
+import {ClrDatagridStateInterface} from '@clr/angular';
+import {Page} from '../../model/page.model';
 import set from 'lodash.set';
-import { ContextService } from '../../service/context.service';
-import { ContextModel } from '../../model/context.model';
-import { SettingsService } from '../../../settings/settings.service';
-import { map, mergeMap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import {ContextService} from '../../service/context.service';
+import {ContextModel} from '../../model/context.model';
+import {SettingsService} from '../../../settings/settings.service';
+import {map, mergeMap} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 
-/* tslint:disable:directive-class-suffix */
+/* eslint-disable @angular-eslint/directive-class-suffix */
 @Directive()
 export abstract class DatagridComponent implements OnDestroy, AfterContentChecked {
-
-
   private subscriptionDatagrid: Subscription;
   protected page: Page<any>;
   unsubscribe$: Subscription;
@@ -27,20 +25,17 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
 
   resultsPerPage;
 
-  constructor(protected contextService: ContextService,
-              protected settingsService: SettingsService,
-              protected cdRef: ChangeDetectorRef,
-              contextName: string) {
+  constructor(
+    protected contextService: ContextService,
+    protected settingsService: SettingsService,
+    protected cdRef: ChangeDetectorRef,
+    contextName: string
+  ) {
     this.contextName = contextName;
-    this.subscriptionDatagrid = this.contextService.getContext(contextName)
-      .pipe(
-        mergeMap(context => this.settingsService.getSettings()
-          .pipe(
-            map(settings => ({ context, settings }))
-          )
-        )
-      )
-      .subscribe(({ context, settings }) => {
+    this.subscriptionDatagrid = this.contextService
+      .getContext(contextName)
+      .pipe(mergeMap(context => this.settingsService.getSettings().pipe(map(settings => ({context, settings})))))
+      .subscribe(({context, settings}) => {
         this.resultsPerPage = +settings.find(st => st.name === 'results-per-page').value;
         const ctx = {};
         context.forEach((ct: ContextModel) => {
@@ -55,40 +50,40 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
       });
   }
 
-  ngAfterContentChecked() {
+  ngAfterContentChecked(): void {
     this.cdRef.detectChanges();
   }
 
-  updateContext(key, value) {
+  updateContext(key: string, value: any): void {
     set(this.context, key, value);
     const context = [];
-    Object.keys(this.context).map((kt) => {
-      context.push({ name: kt, value: this.context[kt] });
+    Object.keys(this.context).map(kt => {
+      context.push({name: kt, value: this.context[kt]});
     });
     this.contextService.updateContext(this.contextName, context);
   }
 
-  updateGroupContext(obj: object): void {
+  updateGroupContext(obj: any): void {
     if (this.isDestroy || !this.isInit) {
       return;
     }
     const context = [];
-    const merged = { ...this.context, ...obj };
+    const merged = {...this.context, ...obj};
     Object.keys(merged).forEach(key => {
       const val = merged[key] as string;
       if (key === 'size' && val === this.resultsPerPage) {
-        context.push({ name: key, value: '' });
+        context.push({name: key, value: ''});
       } else {
-        context.push({ name: key, value: val });
+        context.push({name: key, value: val});
       }
     });
     this.contextService.updateContext(this.contextName, context);
   }
 
-  getParams(state: ClrDatagridStateInterface, filters) {
+  getParams(state: ClrDatagridStateInterface, filters: any): any {
     if (state.filters) {
       for (const filter of state.filters) {
-        const { property, value } = filter;
+        const {property, value} = filter;
         filters[property] = value;
       }
     }
@@ -101,16 +96,16 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
     };
   }
 
-  isReady() {
+  isReady(): boolean {
     return this.isInit && !this.isDestroy;
   }
 
-  setMode(grouped: boolean) {
+  setMode(grouped: boolean): void {
     this.grouped = grouped;
     this.selected = [];
   }
 
-  refresh(state: ClrDatagridStateInterface) {
+  refresh(state: ClrDatagridStateInterface): void {
     this.state = state;
     this.loading = true;
     this.grouped = false;

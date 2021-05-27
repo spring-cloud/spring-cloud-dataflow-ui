@@ -1,29 +1,29 @@
-import { Flo, Shapes } from 'spring-flo';
-import { dia } from 'jointjs';
-import { RenderService } from '../render.service';
-import { MetamodelService } from '../metamodel.service';
-import { waitForAsync } from '@angular/core/testing';
-import { Utils } from './utils';
-import { MockSharedAppService } from '../../../tests/service/app.service.mock';
-import { NodeHelper } from '../node-helper.service';
+import {Flo, Shapes} from 'spring-flo';
+import {dia} from 'jointjs';
+import {RenderService} from '../render.service';
+import {MetamodelService} from '../metamodel.service';
+import {waitForAsync} from '@angular/core/testing';
+import {Utils} from './utils';
+import {MockSharedAppService} from '../../../tests/service/app.service.mock';
+import {NodeHelper} from '../node-helper.service';
 
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;
 
-
 describe('utils', () => {
-
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
   const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE, new NodeHelper());
 
   let graph: dia.Graph;
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
-  beforeEach(waitForAsync(() => {
-    graph = new joint.dia.Graph();
-    METAMODEL_SERVICE.load().then(data => metamodel = data);
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      graph = new joint.dia.Graph();
+      METAMODEL_SERVICE.load().then(data => (metamodel = data));
+    })
+  );
 
   it('app can be head of stream', () => {
     const node = Shapes.Factory.createNode({
@@ -168,12 +168,12 @@ describe('utils', () => {
     const http = Shapes.Factory.createNode({
       metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
-      graph: graph,
+      graph: graph
     });
     const transform = Shapes.Factory.createNode({
       metadata: metamodel.get('processor').get('transform'),
       renderer: RENDER_SERVICE,
-      graph: graph,
+      graph: graph
     });
     transform.attr('stream-name', 'STREAM-1');
     expect(Utils.generateStreamName(graph, http)).toEqual('STREAM-1');
@@ -183,13 +183,13 @@ describe('utils', () => {
     const http = Shapes.Factory.createNode({
       metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
-      graph: graph,
+      graph: graph
     });
     http.attr('stream-name', 'STREAM-1');
     const filewatch = Shapes.Factory.createNode({
       metadata: metamodel.get('source').get('filewatch'),
       renderer: RENDER_SERVICE,
-      graph: graph,
+      graph: graph
     });
     filewatch.attr('stream-name', 'STREAM-1');
     expect(Utils.generateStreamName(graph, http)).toEqual('STREAM-2');
@@ -199,13 +199,13 @@ describe('utils', () => {
     const http = Shapes.Factory.createNode({
       metadata: metamodel.get('source').get('http'),
       renderer: RENDER_SERVICE,
-      graph: graph,
+      graph: graph
     });
     http.attr('stream-name', 'unique-name');
     const filewatch = Shapes.Factory.createNode({
       metadata: metamodel.get('source').get('filewatch'),
       renderer: RENDER_SERVICE,
-      graph: graph,
+      graph: graph
     });
     filewatch.attr('stream-name', 'STREAM-1');
     expect(Utils.generateStreamName(graph, http)).toEqual('unique-name');

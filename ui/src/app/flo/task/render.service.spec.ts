@@ -3,24 +3,22 @@
  *
  * @author Alex Boyko
  */
-import { MetamodelService } from './metamodel.service';
-import { RenderService } from './render.service';
-import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { EditorComponent, Flo } from 'spring-flo';
+import {MetamodelService} from './metamodel.service';
+import {RenderService} from './render.service';
+import {ComponentFixture, inject, TestBed, waitForAsync} from '@angular/core/testing';
+import {EditorComponent, Flo} from 'spring-flo';
 import * as _$ from 'jquery';
-import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
-import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
-import { LoggerService } from '../../shared/service/logger.service';
-import { MockSharedAppService } from '../../tests/service/app.service.mock';
-import { ToolsServiceMock } from '../../tests/service/task-tools.service.mock';
-import { TaskFloModule } from '../task-flo.module';
-import { StoreModule } from '@ngrx/store';
+import {CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE} from './support/shapes';
+import {ApplicationRef, ComponentFactoryResolver} from '@angular/core';
+import {LoggerService} from '../../shared/service/logger.service';
+import {MockSharedAppService} from '../../tests/service/app.service.mock';
+import {ToolsServiceMock} from '../../tests/service/task-tools.service.mock';
+import {TaskFloModule} from '../task-flo.module';
+import {StoreModule} from '@ngrx/store';
 
 const $: any = _$;
 
-
 describe('Task RenderService', () => {
-
   const loggerService = new LoggerService();
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService(), loggerService, new ToolsServiceMock());
 
@@ -32,48 +30,42 @@ describe('Task RenderService', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let flo: Flo.EditorContext;
 
-  beforeEach(waitForAsync(() => {
-    METAMODEL_SERVICE.load().then(metamodel => METAMODEL = metamodel);
-    TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({}),
-        TaskFloModule
-      ],
-      providers: [
-        { provide: MetamodelService, useValue: METAMODEL_SERVICE },
-      ]
-    });
-  }));
-
   beforeEach(
-    inject(
-      [
-        ApplicationRef,
-        ComponentFactoryResolver
-      ],
-      (
-        _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver
-      ) => {
-        applicationRef = _applicationRef;
-        resolver = _resolver;
-      }
-    )
+    waitForAsync(() => {
+      METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
+      TestBed.configureTestingModule({
+        imports: [StoreModule.forRoot({}), TaskFloModule],
+        providers: [{provide: MetamodelService, useValue: METAMODEL_SERVICE}]
+      });
+    })
   );
+
+  beforeEach(inject(
+    [ApplicationRef, ComponentFactoryResolver],
+    (_applicationRef: ApplicationRef, _resolver: ComponentFactoryResolver) => {
+      applicationRef = _applicationRef;
+      resolver = _resolver;
+    }
+  ));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditorComponent);
     component = fixture.componentInstance;
     component.metamodel = METAMODEL_SERVICE;
-    component.renderer = new RenderService(METAMODEL_SERVICE, null, resolver,
-      fixture.debugElement.injector, applicationRef);
-    const subscription = component.floApi.subscribe((f) => {
+    component.renderer = new RenderService(
+      METAMODEL_SERVICE,
+      null,
+      resolver,
+      fixture.debugElement.injector,
+      applicationRef
+    );
+    const subscription = component.floApi.subscribe(f => {
       subscription.unsubscribe();
       flo = f;
     });
     const floViewElemnt = $('#flow-view');
     floViewElemnt.css({
-      'height': '800px'
+      height: '800px'
     });
     fixture.detectChanges();
   });
@@ -136,5 +128,4 @@ describe('Task RenderService', () => {
     expect(node.attr('.name-label/text').endsWith('\u2026')).toBeTruthy();
     expect(node.attr('.name-label/text').length < 'super-very-very-very-looooooooong-task-name'.length).toBeTruthy();
   });
-
 });

@@ -17,31 +17,31 @@
 import {
   NODE_ROUNDED_CORNER_PALETTE,
   TYPE_ICON_PADDING_PALETTE,
-  TYPE_ICON_SIZE_PALETTE, TYPE_INCOMING_MESSAGE_RATE,
-  TYPE_INSTANCE_DOT, TYPE_OUTGOING_MESSAGE_RATE
+  TYPE_ICON_SIZE_PALETTE,
+  TYPE_INCOMING_MESSAGE_RATE,
+  TYPE_INSTANCE_DOT,
+  TYPE_OUTGOING_MESSAGE_RATE
 } from './support/shapes';
-import {
-  Injectable, ComponentFactoryResolver, Injector, ApplicationRef, Type
-} from '@angular/core';
-import { MetamodelService } from './metamodel.service';
-import { Constants, Flo } from 'spring-flo';
-import { dia } from 'jointjs';
-import { Utils } from './support/utils';
-import { ViewHelper } from './support/view-helper';
-import { NodeHelper } from './node-helper.service';
-import { layout } from './support/layout';
-import { ViewUtils } from '../shared/support/view-utils';
-import { LoggerService } from '../../shared/service/logger.service';
-import { createPaletteGroupHeader } from '../shared/support/shared-shapes';
-import { MessageRateComponent } from './message-rate/message-rate.component';
-import { InstanceDotComponent } from './instance-dot/instance-dot.component';
-import { StreamNodeComponent } from './node/stream-node.component';
-import { ElementComponent, ShapeComponent } from '../shared/support/shape-component';
-import { PropertiesEditor } from './properties-editor.service';
+import {Injectable, ComponentFactoryResolver, Injector, ApplicationRef, Type} from '@angular/core';
+import {MetamodelService} from './metamodel.service';
+import {Constants, Flo} from 'spring-flo';
+import {dia} from 'jointjs';
+import {Utils} from './support/utils';
+import {ViewHelper} from './support/view-helper';
+import {NodeHelper} from './node-helper.service';
+import {layout} from './support/layout';
+import {ViewUtils} from '../shared/support/view-utils';
+import {LoggerService} from '../../shared/service/logger.service';
+import {createPaletteGroupHeader} from '../shared/support/shared-shapes';
+import {MessageRateComponent} from './message-rate/message-rate.component';
+import {InstanceDotComponent} from './instance-dot/instance-dot.component';
+import {StreamNodeComponent} from './node/stream-node.component';
+import {ElementComponent, ShapeComponent} from '../shared/support/shape-component';
+import {PropertiesEditor} from './properties-editor.service';
 
 import * as _joint from 'jointjs';
 import * as _ from 'lodash';
-import { StreamPropertiesDialogComponent } from './properties/stream-properties-dialog.component';
+import {StreamPropertiesDialogComponent} from './properties/stream-properties-dialog.component';
 
 const joint: any = _joint;
 
@@ -53,7 +53,6 @@ export const LINK_LABEL_COMPONENT_TYPES = new Map<string, Type<ShapeComponent>>(
   .set(TYPE_INCOMING_MESSAGE_RATE, MessageRateComponent)
   .set(TYPE_OUTGOING_MESSAGE_RATE, MessageRateComponent);
 
-
 /**
  * Render Service for Flo based Stream Definition graph editor
  *
@@ -62,14 +61,14 @@ export const LINK_LABEL_COMPONENT_TYPES = new Map<string, Type<ShapeComponent>>(
  */
 @Injectable()
 export class RenderService implements Flo.Renderer {
-
-  constructor(protected metamodelService: MetamodelService,
-              protected nodeHelper: NodeHelper,
-              protected propertiesEditor?: PropertiesEditor,
-              protected componentFactoryResolver?: ComponentFactoryResolver,
-              protected injector?: Injector,
-              protected applicationRef?: ApplicationRef) {
-  }
+  constructor(
+    protected metamodelService: MetamodelService,
+    protected nodeHelper: NodeHelper,
+    protected propertiesEditor?: PropertiesEditor,
+    protected componentFactoryResolver?: ComponentFactoryResolver,
+    protected injector?: Injector,
+    protected applicationRef?: ApplicationRef
+  ) {}
 
   createNode(viewerDescriptor: Flo.ViewerDescriptor, metadata: Flo.ElementMetadata): dia.Element {
     const element = this.nodeHelper.createNode(metadata);
@@ -87,7 +86,7 @@ export class RenderService implements Flo.Renderer {
     return element;
   }
 
-  initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor) {
+  initializeNewLink(link: dia.Link, viewerDescriptor: Flo.ViewerDescriptor): void {
     // link.set('connector/name', 'smoothHorizontal');
     link.prop('metadata/metadata/unselectable', true);
   }
@@ -100,12 +99,14 @@ export class RenderService implements Flo.Renderer {
     const metadata: Flo.ElementMetadata = cell.prop('metadata');
     const type = metadata ? metadata.name : undefined;
 
-
     if (cell instanceof joint.dia.Element) {
       const element = cell as dia.Element;
       const view = paper.findViewByModel(element);
       if (changedPropertyPath === 'stream-name') {
-        element.attr('.stream-label/display', Utils.canBeHeadOfStream(paper.model, element as dia.Element) ? 'block' : 'none');
+        element.attr(
+          '.stream-label/display',
+          Utils.canBeHeadOfStream(paper.model, element as dia.Element) ? 'block' : 'none'
+        );
         if (element.attr('stream-name')) {
           element.attr('.stream-label/text', element.attr('stream-name'));
           if (view instanceof dia.ElementView) {
@@ -120,7 +121,10 @@ export class RenderService implements Flo.Renderer {
         }
       } else if ((type === 'destination' || type === 'tap') && changedPropertyPath === 'props/name') {
         // fitLabel() calls update as necessary, so set label text silently
-        element.attr('.name-label/text', element.attr('props/name') ? element.attr('props/name') : element.prop('metadata/name'));
+        element.attr(
+          '.name-label/text',
+          element.attr('props/name') ? element.attr('props/name') : element.prop('metadata/name')
+        );
         const view2 = paper.findViewByModel(element);
         if (view2) {
           if (paper.model.get('type') !== Constants.PALETTE_CONTEXT) {
@@ -159,7 +163,7 @@ export class RenderService implements Flo.Renderer {
     if (cell instanceof joint.dia.Link) {
       const link = cell as dia.Link;
       switch (changedPropertyPath) {
-        case 'props/isTapLink':
+        case 'props/isTapLink': {
           const isTapLink = link.attr('props/isTapLink');
           const linkView = paper ? paper.findViewByModel(link) : undefined;
           if (linkView) {
@@ -175,6 +179,7 @@ export class RenderService implements Flo.Renderer {
             }
           }
           break;
+        }
       }
       LoggerService.log('link being refreshed');
     }
@@ -207,15 +212,15 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  createLink(source: Flo.LinkEnd, target: Flo.LinkEnd) {
+  createLink(source: Flo.LinkEnd, target: Flo.LinkEnd): any {
     return new joint.shapes.flo.LinkDataflow();
   }
 
-  layout(paper) {
+  layout(paper): any {
     return Promise.resolve(layout(paper));
   }
 
-  handleLinkSourceChanged(link: dia.Link, flo: Flo.EditorContext) {
+  handleLinkSourceChanged(link: dia.Link, flo: Flo.EditorContext): void {
     const graph = flo.getGraph();
     const newSourceId = link.get('source').id;
     const oldSourceId = link.previous('source').id;
@@ -229,16 +234,20 @@ export class RenderService implements Flo.Renderer {
       // If reconnecting source anchor to a shape with existing primary link switch the link to tap link
       if (newSource) {
         const outgoingLinks = graph.getConnectedLinks(newSource, {outbound: true});
-        const primaryLink = outgoingLinks.find(ol => ol !== link && !ol.attr('props/isTapLink')
-          && _.isEqual(ol.source(), link.source()));
+        const primaryLink = outgoingLinks.find(
+          ol => ol !== link && !ol.attr('props/isTapLink') && _.isEqual(ol.source(), link.source())
+        );
 
         link.attr('props/isTapLink', primaryLink ? true : false);
         this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
       }
 
       // Show input port for 'destination' if outgoing links are gone
-      if (oldSource && oldSource.prop('metadata/name') === 'destination'
-        /*&& graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/) {
+      if (
+        oldSource &&
+        oldSource.prop('metadata/name') === 'destination'
+        /* && graph.getConnectedLinks(oldSource, {outbound: true}).length === 0*/
+      ) {
         // No outgoing links -> hide stream name label
         // Set silently, last attr call would refresh the view
         oldSource.attr('.stream-label/display', 'none', {silent: true});
@@ -267,7 +276,7 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  handleLinkTargetChanged(link: dia.Link, flo: Flo.EditorContext) {
+  handleLinkTargetChanged(link: dia.Link, flo: Flo.EditorContext): void {
     const graph = flo.getGraph();
     const newTargetId = link.get('target').id;
     const oldTargetId = link.previous('target').id;
@@ -307,17 +316,19 @@ export class RenderService implements Flo.Renderer {
           newTarget.attr('.stream-label/display', 'block');
         }
       }
-
     }
   }
 
-  handleLinkRemoved(link: dia.Link, flo: Flo.EditorContext) {
+  handleLinkRemoved(link: dia.Link, flo: Flo.EditorContext): void {
     const graph = flo.getGraph();
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
     let view: dia.CellView;
-    if (source && source.prop('metadata/name') === 'destination'
-      && graph.getConnectedLinks(source, {outbound: true}).length === 0) {
+    if (
+      source &&
+      source.prop('metadata/name') === 'destination' &&
+      graph.getConnectedLinks(source, {outbound: true}).length === 0
+    ) {
       // No more outgoing links, can't be any incoming links yet -> indeterminate, hide stream name label
       // Set silently, last attr call would refresh the view
       source.attr('.stream-label/display', 'none', {silent: true});
@@ -329,8 +340,11 @@ export class RenderService implements Flo.Renderer {
         (view as any).update();
       }
     }
-    if (target && target.prop('metadata/name') === 'destination'
-      && graph.getConnectedLinks(target, {inbound: true}).length === 0) {
+    if (
+      target &&
+      target.prop('metadata/name') === 'destination' &&
+      graph.getConnectedLinks(target, {inbound: true}).length === 0
+    ) {
       // No more incoming links, there shouldn't be any outgoing links yet -> leave stream label hidden
       // Set silently, last attr call would refresh the view
       target.attr('.stream-label/display', 'none', {silent: true});
@@ -354,13 +368,12 @@ export class RenderService implements Flo.Renderer {
   }
 
   // Should pass use Flo.EditorContext and pass metadata, props etc.
-  handleLinkInsertChannel(link: dia.Link, flo: Flo.EditorContext) {
+  handleLinkInsertChannel(link: dia.Link, flo: Flo.EditorContext): void {
     const graph = flo.getGraph();
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
     // Create a node
     this.metamodelService.load().then(mm => {
-
       let sourceName = source.prop('metadata/name');
       if (sourceName === 'destination') {
         sourceName = source.attr('props/name');
@@ -370,8 +383,10 @@ export class RenderService implements Flo.Renderer {
         targetName = target.attr('props/name');
       }
 
-      const newDestinationNode = flo.createNode(Flo.getMetadata(mm, 'destination', 'other'),
-        new Map<string, any>().set('name', sourceName + '-' + targetName));
+      const newDestinationNode = flo.createNode(
+        Flo.getMetadata(mm, 'destination', 'other'),
+        new Map<string, any>().set('name', sourceName + '-' + targetName)
+      );
 
       // Adjust existing link to hit this channel
       const previousSource = link.get('source');
@@ -383,10 +398,12 @@ export class RenderService implements Flo.Renderer {
       });
 
       // New link to connect original source to new target
-      flo.createLink(previousSource,
+      flo.createLink(
+        previousSource,
         {id: newDestinationNode.id, port: 'input', magnet: '.input-port'},
         null,
-        new Map<string, any>().set('isTapLink', existingIsTap ? true : false));
+        new Map<string, any>().set('isTapLink', existingIsTap ? true : false)
+      );
 
       flo.performLayout();
     });
@@ -396,7 +413,7 @@ export class RenderService implements Flo.Renderer {
     return e && (e.prop('metadata/name') === 'tap' || e.prop('metadata/name') === 'destination');
   }
 
-  handleLinkSwitch(link: dia.Link, flo: Flo.EditorContext) {
+  handleLinkSwitch(link: dia.Link, flo: Flo.EditorContext): void {
     const graph = flo.getGraph();
     const source = link.getSourceElement();
     // var target = graph.getCell(link.get('target').id);
@@ -422,7 +439,7 @@ export class RenderService implements Flo.Renderer {
     this.refreshVisuals(link, 'props/isTapLink', flo.getPaper());
   }
 
-  handleLinkAdded(link: dia.Link, flo: Flo.EditorContext) {
+  handleLinkAdded(link: dia.Link, flo: Flo.EditorContext): void {
     const graph = flo.getGraph();
     const source = graph.getCell(link.get('source').id);
     const target = graph.getCell(link.get('target').id);
@@ -431,8 +448,11 @@ export class RenderService implements Flo.Renderer {
       // this is a new link being drawn in the UI (it is not connected to anything yet).
       // Need to decide whether to make it a tap link
       const outgoingLinks = graph.getConnectedLinks(source, {outbound: true});
-      const primaryLinkExists = outgoingLinks.find(ol => ol !== link && _.isEqual(link.source(),
-        ol.source()) && !ol.attr('props/isTapLink')) ? true : false;
+      const primaryLinkExists = outgoingLinks.find(
+        ol => ol !== link && _.isEqual(link.source(), ol.source()) && !ol.attr('props/isTapLink')
+      )
+        ? true
+        : false;
       link.attr('props/isTapLink', primaryLinkExists);
     }
     if (link.attr('props/isTapLink') === true) {
@@ -457,7 +477,7 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  handleLinkEvent(flo: Flo.EditorContext, event: string, link: dia.Link) {
+  handleLinkEvent(flo: Flo.EditorContext, event: string, link: dia.Link): void {
     switch (event) {
       case 'options':
         this.propertiesEditor.showForLink(link);
@@ -473,8 +493,14 @@ export class RenderService implements Flo.Renderer {
         break;
       case 'add':
         this.handleLinkAdded(link, flo);
-        flo.getPaper().findViewByModel(link).on('switch', () => this.handleLinkEvent(flo, 'switch', link));
-        flo.getPaper().findViewByModel(link).on('insert-channel', () => this.handleLinkEvent(flo, 'insert-channel', link));
+        flo
+          .getPaper()
+          .findViewByModel(link)
+          .on('switch', () => this.handleLinkEvent(flo, 'switch', link));
+        flo
+          .getPaper()
+          .findViewByModel(link)
+          .on('insert-channel', () => this.handleLinkEvent(flo, 'insert-channel', link));
         break;
       case 'switch':
         this.handleLinkSwitch(link, flo);
@@ -485,7 +511,7 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  getLinkAnchorPoint(linkView: dia.LinkView, view: dia.ElementView, magnet: SVGElement, reference: dia.Point) {
+  getLinkAnchorPoint(linkView: dia.LinkView, view: dia.ElementView, magnet: SVGElement, reference: dia.Point): any {
     if (magnet) {
       const paper: dia.Paper = (linkView as any).paper;
       const type = magnet.getAttribute('port');
@@ -500,14 +526,24 @@ export class RenderService implements Flo.Renderer {
   }
 
   getNodeView(): dia.ElementView {
-    return ViewHelper.createNodeView(this.injector, this.applicationRef, this.componentFactoryResolver, ELEMENT_TYPE_COMPONENT_TYPES);
+    return ViewHelper.createNodeView(
+      this.injector,
+      this.applicationRef,
+      this.componentFactoryResolver,
+      ELEMENT_TYPE_COMPONENT_TYPES
+    );
   }
 
   getLinkView(): dia.LinkView {
-    return ViewHelper.createLinkView(this.injector, this.applicationRef, this.componentFactoryResolver, LINK_LABEL_COMPONENT_TYPES);
+    return ViewHelper.createLinkView(
+      this.injector,
+      this.applicationRef,
+      this.componentFactoryResolver,
+      LINK_LABEL_COMPONENT_TYPES
+    );
   }
 
-  markersChanged(cell: dia.Cell, paper: dia.Paper) {
+  markersChanged(cell: dia.Cell, paper: dia.Paper): void {
     const markers: Array<Flo.Marker> = cell.get('markers');
     const view = paper.findViewByModel(cell);
     if (view) {
@@ -515,10 +551,9 @@ export class RenderService implements Flo.Renderer {
     }
   }
 
-  getPaletteRenderer() {
+  getPaletteRenderer(): any {
     return {
       createGroupHeader: createPaletteGroupHeader
     };
   }
-
 }

@@ -1,11 +1,11 @@
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { PropertiesGroupModel, SearchTextFilter } from '../support/properties-group-model';
-import { debounceTime } from 'rxjs/operators';
-import { App, ApplicationType } from '../../../shared/model/app.model';
-import { ModalDialog } from '../../../shared/service/modal.service';
-import { Properties } from 'spring-flo';
+import {Component, ViewEncapsulation, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
+import {debounceTime} from 'rxjs/operators';
+import {App, ApplicationType} from '../../../shared/model/app.model';
+import {ModalDialog} from '../../../shared/service/modal.service';
+import {Properties} from 'spring-flo';
 import PropertiesSource = Properties.PropertiesSource;
 
 /**
@@ -21,7 +21,6 @@ import PropertiesSource = Properties.PropertiesSource;
   encapsulation: ViewEncapsulation.None
 })
 export class PropertiesDialogComponent extends ModalDialog implements OnInit {
-
   app: App;
 
   propertiesGroupModel: PropertiesGroupModel;
@@ -42,36 +41,37 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
     this._searchFilterTextSubject = new Subject<string>();
   }
 
-  handleOk() {
+  handleOk(): void {
     this.propertiesGroupModel.applyChanges();
     this.isOpen = false;
     this.app = null;
     this.propertiesGroupModel = null;
   }
 
-  handleCancel() {
+  handleCancel(): void {
     this.isOpen = false;
   }
 
-  get okDisabled() {
-    return !this.propertiesGroupModel
-      || !this.propertiesFormGroup
-      || this.propertiesFormGroup.invalid
-      || !this.propertiesFormGroup.dirty;
+  get okDisabled(): boolean {
+    return (
+      !this.propertiesGroupModel ||
+      !this.propertiesFormGroup ||
+      this.propertiesFormGroup.invalid ||
+      !this.propertiesFormGroup.dirty
+    );
   }
 
-  ngOnInit() {
-    this._searchFilterTextSubject
-      .subscribe(text => this.propertiesFilter.textFilter = text);
+  ngOnInit(): void {
+    this._searchFilterTextSubject.subscribe(text => (this.propertiesFilter.textFilter = text));
   }
 
-  setData(propertiesSource: PropertiesSource) {
+  setData(propertiesSource: PropertiesSource): void {
     this.propertiesGroupModel = new PropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
     this.propertiesGroupModel.loadedSubject.subscribe();
   }
 
-  get searchFilterText() {
+  get searchFilterText(): string {
     return this._searchFilterText;
   }
 
@@ -80,11 +80,11 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
     this._searchFilterTextSubject.next(text);
   }
 
-  get typeString() {
+  get typeString(): string {
     if (this.app) {
       if (this.app.type) {
         if (typeof this.app.type === 'string') {
-          return <string> this.app.type;
+          return <string>this.app.type;
         } else if (ApplicationType[this.app.type]) {
           return ApplicationType[this.app.type].toString();
         }
@@ -92,5 +92,4 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
     }
     return 'UNKNOWN';
   }
-
 }

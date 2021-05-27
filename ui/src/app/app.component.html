@@ -1,31 +1,4 @@
-<clr-main-container *ngIf="!(shouldProtect|async)">
-  <clr-header class="header header-7">
-    <div class="branding">
-      <a routerLink="/" class="logo-and-title">
-        <app-logo></app-logo>
-        <span class="title">Data Flow</span>
-      </a>
-    </div>
-    <app-search></app-search>
-    <div class="header-actions">
-      <a (click)="openSettings()" style="cursor:pointer" class="nav-link nav-icon" aria-label="settings">
-        <clr-icon shape="cog"></clr-icon>
-      </a>
-      <span class="divider"></span>
-      <app-user *ngIf="securityEnabled|async"></app-user>
-      <span class="divider" *ngIf="securityEnabled|async"></span>
-      <app-about-signpost></app-about-signpost>
-    </div>
-  </clr-header>
-  <div class="content-container">
-    <app-nav></app-nav>
-    <div class="content-area">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</clr-main-container>
-
-<div class="login-wrapper" *ngIf="(shouldProtect|async)">
+<div class="login-wrapper" *ngIf="shouldProtect | async; else main">
   <form class="login">
     <section class="title">
       <h3 class="welcome">Welcome to</h3>
@@ -33,9 +6,36 @@
       <h5 class="hint">You have to log in to access the application.</h5>
     </section>
     <div style="padding-bottom: 50px">
-      <a href="/login" class="btn btn-primary">
-        Log In
-      </a>
+      <a href="/login" class="btn btn-primary"> Log In </a>
     </div>
   </form>
 </div>
+
+<ng-template #main>
+  <clr-main-container>
+    <clr-header class="header header-7">
+      <div class="branding">
+        <a routerLink="/" class="logo-and-title">
+          <app-logo></app-logo>
+          <span class="title">Data Flow</span>
+        </a>
+      </div>
+      <app-search></app-search>
+      <div class="header-actions">
+        <a (click)="openSettings()" style="cursor: pointer" class="nav-link nav-icon" aria-label="settings">
+          <clr-icon shape="cog"></clr-icon>
+        </a>
+        <span class="divider"></span>
+        <app-user *ngIf="securityEnabled | async"></app-user>
+        <span class="divider" *ngIf="securityEnabled | async"></span>
+        <app-about-signpost></app-about-signpost>
+      </div>
+    </clr-header>
+    <div class="content-container">
+      <app-nav></app-nav>
+      <div class="content-area">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </clr-main-container>
+</ng-template>

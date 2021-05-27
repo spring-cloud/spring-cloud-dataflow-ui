@@ -1,11 +1,13 @@
 <form [formGroup]="formGroup" (submit)="deployStream()">
-  <p>Enter the list of properties into the text area field below. Alternatively, you can also select a file in your
-    local file system, which is used to populate the text area field.</p>
+  <p>
+    Enter the list of properties into the text area field below. Alternatively, you can also select a file in your local
+    file system, which is used to populate the text area field.
+  </p>
   <div class="form-textarea">
     <div class="numbers">
       <ng-template ngFor let-item [ngForOf]="lines">
         <div class="number">
-          <span [class.invalid]="!item.valid">{{item.label}}</span>
+          <span [class.invalid]="!item.valid">{{ item.label }}</span>
         </div>
       </ng-template>
     </div>
@@ -14,24 +16,34 @@
   <div class="bar">
     <div class="btn-group">
       <clr-tooltip>
-        <button clrTooltipTrigger type="button" class="btn btn-sm btn-file btn btn-secondary"
-                (click)="propertiesFile.click()" style="border-right: 0;">
+        <button
+          clrTooltipTrigger
+          type="button"
+          class="btn btn-sm btn-file btn btn-secondary"
+          (click)="propertiesFile.click()"
+          style="border-right: 0"
+        >
           <!--      tippy-->
           <!--      [tippyOptions]="{ content: 'Please provide a text file containing properties. This will be used to populate the text area above.', placement: 'right' }"-->
-          <input formControlName="file" id="propertiesFile" name="propertiesFile" type="file" #propertiesFile
-                 (change)="fileChange($event)"/>
+          <input
+            formControlName="file"
+            id="propertiesFile"
+            name="propertiesFile"
+            type="file"
+            #propertiesFile
+            (change)="fileChange($event)"
+          />
           Import a local file
         </button>
         <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
-          <span>Please provide a text file containing properties. This will be used to populate the text area above.</span>
+          <span
+            >Please provide a text file containing properties. This will be used to populate the text area above.</span
+          >
         </clr-tooltip-content>
       </clr-tooltip>
 
-      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">
-        Export
-      </button>
-      <button id="btn-copy" type="button" class="btn btn-sm btn btn-secondary"
-              (click)="copyToClipboard()">
+      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">Export</button>
+      <button id="btn-copy" type="button" class="btn btn-sm btn btn-secondary" (click)="copyToClipboard()">
         Copy to Clipboard
       </button>
     </div>

@@ -1,7 +1,6 @@
-import { Parser } from './parser';
+import {Parser} from './parser';
 
 describe('parser:', () => {
-
   let parseResult: Parser.ParseResult;
   let line: Parser.Line;
   let nodes: Parser.StreamApp[];
@@ -167,7 +166,7 @@ describe('parser:', () => {
   it('bridge error', () => {
     parseResult = Parser.parse(':a > :b | bar', 'stream');
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Expected app name but found \':\'');
+    expect(error.message).toEqual("Expected app name but found ':'");
     expectRange(error.range, 5, 0, 6, 0);
   });
 
@@ -217,31 +216,30 @@ describe('parser:', () => {
   it('list of apps - error checking', () => {
     parseResult = Parser.parse(':aaa > fff||bbb', 'stream');
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Don\'t use || with channels');
+    expect(error.message).toEqual("Don't use || with channels");
     expectRange(error.range, 10, 0, 11, 0);
     parseResult = Parser.parse('aaa||bbb > :zzz', 'stream');
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Don\'t use || with channels');
+    expect(error.message).toEqual("Don't use || with channels");
     expectRange(error.range, 3, 0, 4, 0);
     parseResult = Parser.parse('aaa | bbb || ccc', 'stream');
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Don\'t mix | and || in the same stream definition');
+    expect(error.message).toEqual("Don't mix | and || in the same stream definition");
     expectRange(error.range, 4, 0, 5, 0);
     parseResult = Parser.parse('aaa|| bbb| ccc', 'stream');
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Don\'t mix | and || in the same stream definition');
+    expect(error.message).toEqual("Don't mix | and || in the same stream definition");
     expectRange(error.range, 3, 0, 4, 0);
 
-    parseResult = Parser.parse('aaa | filter --expression=\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'', 'stream');
-    expect(parseResult.lines[0].nodes[1].options.get('expression')).
-    toEqual('\'#jsonPath(payload,\'\'$.lang\'\')==\'\'en\'\'\'');
+    parseResult = Parser.parse("aaa | filter --expression='#jsonPath(payload,''$.lang'')==''en'''", 'stream');
+    expect(parseResult.lines[0].nodes[1].options.get('expression')).toEqual("'#jsonPath(payload,''$.lang'')==''en'''");
 
     parseResult = Parser.parse('aaa --bbb=ccc||', 'stream');
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Out of data');
     expectRange(error.range, 15, 0, 16, 0);
 
-    parseResult = Parser.parse('aaa --bbb=\'ccc\'||', 'stream');
+    parseResult = Parser.parse("aaa --bbb='ccc'||", 'stream');
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual('Out of data');
     expectRange(error.range, 17, 0, 18, 0);
@@ -309,7 +307,7 @@ describe('parser:', () => {
     line = parseResult.lines[0];
     expect(line.errors.length).toEqual(1);
     error = line.errors[0];
-    expect(error.message).toEqual('Illegal name \'|\'');
+    expect(error.message).toEqual("Illegal name '|'");
     expectRange(error.range, 0, 0, 1, 0);
   });
 
@@ -317,7 +315,7 @@ describe('parser:', () => {
     parseResult = Parser.parse('|', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Expected app name but found \'|\'');
+    expect(error.message).toEqual("Expected app name but found '|'");
     expectRange(error.range, 0, 0, 1, 0);
   });
 
@@ -350,7 +348,7 @@ describe('parser:', () => {
     parseResult = Parser.parse('time > |foo', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
-    expect(error.message).toEqual('Destination must start with a \':\'');
+    expect(error.message).toEqual("Destination must start with a ':'");
     expectRange(error.range, 7, 0, 8, 0);
   });
 
@@ -367,7 +365,8 @@ describe('parser:', () => {
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
     expect(error.message).toEqual(
-      'Label \'aaa\' should be unique but app \'ccc\' (at app position 1) and app \'bbb\' (at app position 0) both use it');
+      "Label 'aaa' should be unique but app 'ccc' (at app position 1) and app 'bbb' (at app position 0) both use it"
+    );
     expectRange(error.range, 11, 0, 19, 0);
   });
 
@@ -375,8 +374,9 @@ describe('parser:', () => {
     parseResult = Parser.parse('bbb | bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
-    expect(error.message)
-      .toEqual('App \'bbb\' should be unique within the definition, use a label to differentiate multiple occurrences');
+    expect(error.message).toEqual(
+      "App 'bbb' should be unique within the definition, use a label to differentiate multiple occurrences"
+    );
     expectRange(error.range, 6, 0, 9, 0);
   });
 
@@ -384,8 +384,9 @@ describe('parser:', () => {
     parseResult = Parser.parse('bbb|| bbb', 'stream');
     expect(parseResult.lines.length).toEqual(1);
     error = parseResult.lines[0].errors[0];
-    expect(error.message)
-      .toEqual('App \'bbb\' should be unique within the definition, use a label to differentiate multiple occurrences');
+    expect(error.message).toEqual(
+      "App 'bbb' should be unique within the definition, use a label to differentiate multiple occurrences"
+    );
     expectRange(error.range, 6, 0, 9, 0);
   });
 
@@ -637,7 +638,6 @@ describe('parser:', () => {
   });
 
   it('simplify stream dsl 7', () => {
-    expect(Parser.simplify('aaa --bbb="ccc \"koko\" tttt  "  ')).toEqual('aaa');
+    expect(Parser.simplify('aaa --bbb="ccc "koko" tttt  "  ')).toEqual('aaa');
   });
-
 });

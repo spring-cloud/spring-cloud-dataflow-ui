@@ -1,7 +1,7 @@
-import { Properties } from 'spring-flo';
-import { Validators } from '@angular/forms';
-import { Utils } from './utils';
-import { AppUiProperty } from './app-ui-property';
+import {Properties} from 'spring-flo';
+import {Validators} from '@angular/forms';
+import {Utils} from './utils';
+import {AppUiProperty} from './app-ui-property';
 
 /**
  * Utility class for working with Properties.
@@ -10,26 +10,24 @@ import { AppUiProperty } from './app-ui-property';
  * @author Andy Clement
  */
 export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
-
   protected createControlModel(property: AppUiProperty): Properties.ControlModel<any> {
     let inputType = Properties.InputType.TEXT;
     let validation: Properties.Validation;
     if (property.isSemantic) {
-
       // valueHints mean we have a set of possible values, see if we can use those
       if (property.hints && property.hints.valueHints) {
-
         // array and we have hints, assume we can now use selector
         if (Array.isArray(property.hints.valueHints) && property.hints.valueHints.length > 0) {
-          return new Properties.SelectControlModel(property,
-            Properties.InputType.SELECT, (property.hints.valueHints as Array<any>)
+          return new Properties.SelectControlModel(
+            property,
+            Properties.InputType.SELECT,
+            (property.hints.valueHints as Array<any>)
               .filter(o => o.value.length > 0)
-              .map(o => {
-                return {
-                  name: o.value,
-                  value: o.value === property.defaultValue ? undefined : o.value
-                };
-              }));
+              .map(o => ({
+                name: o.value,
+                value: o.value === property.defaultValue ? undefined : o.value
+              }))
+          );
         }
       }
 
@@ -48,29 +46,39 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
         default:
           if (property.code) {
             if (property.code.langPropertyName) {
-              return new Properties.CodeControlModelWithDynamicLanguageProperty(property,
-                property.code.langPropertyName, this, Utils.encodeTextToDSL, Utils.decodeTextFromDSL);
+              return new Properties.CodeControlModelWithDynamicLanguageProperty(
+                property,
+                property.code.langPropertyName,
+                this,
+                Utils.encodeTextToDSL,
+                Utils.decodeTextFromDSL
+              );
             } else {
-              return new Properties.GenericCodeControlModel(property, property.code.language,
-                Utils.encodeTextToDSL, Utils.decodeTextFromDSL);
+              return new Properties.GenericCodeControlModel(
+                property,
+                property.code.language,
+                Utils.encodeTextToDSL,
+                Utils.decodeTextFromDSL
+              );
             }
           } else if (Array.isArray(property.valueOptions)) {
-            return new Properties.SelectControlModel(property,
-              Properties.InputType.SELECT, (property.valueOptions as Array<string>).filter(o => o.length > 0).map(o => {
-                return {
+            return new Properties.SelectControlModel(
+              property,
+              Properties.InputType.SELECT,
+              (property.valueOptions as Array<string>)
+                .filter(o => o.length > 0)
+                .map(o => ({
                   name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
                   value: o === property.defaultValue ? undefined : o
-                };
-              }));
+                }))
+            );
           } else if (property.name === 'password') {
             inputType = Properties.InputType.PASSWORD;
           } else if (property.name === 'e-mail' || property.name === 'email') {
             inputType = Properties.InputType.EMAIL;
             validation = {
               validator: Validators.email,
-              errorData: [
-                {id: 'email', message: 'Invalid E-Mail value!'}
-              ]
+              errorData: [{id: 'email', message: 'Invalid E-Mail value!'}]
             };
           } else if (property.type && property.type.lastIndexOf('[]') === property.type.length - 2) {
             return new Properties.GenericListControlModel(property);
@@ -81,13 +89,12 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
     // fall back to generic
     return new Properties.GenericControlModel(property, inputType, validation);
   }
-
 }
 
 export class SearchTextFilter implements Properties.PropertyFilter {
   textFilter = '';
 
-  accept(property: Properties.Property) {
+  accept(property: Properties.Property): boolean {
     if (!this.textFilter) {
       return true;
     }
@@ -96,4 +103,3 @@ export class SearchTextFilter implements Properties.PropertyFilter {
     return str.indexOf(q) > -1;
   }
 }
-

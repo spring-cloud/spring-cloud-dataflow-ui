@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { ImportExportService } from '../../../shared/service/import-export.service';
-import { NotificationService } from '../../../shared/service/notification.service';
-import { TaskPage } from '../../../shared/model/task.model';
-import { TaskService } from '../../../shared/api/task.service';
+import {Component} from '@angular/core';
+import {ImportExportService} from '../../../shared/service/import-export.service';
+import {NotificationService} from '../../../shared/service/notification.service';
+import {TaskPage} from '../../../shared/model/task.model';
+import {TaskService} from '../../../shared/api/task.service';
 
 @Component({
   selector: 'app-manage-task-export',
@@ -11,16 +11,16 @@ import { TaskService } from '../../../shared/api/task.service';
       <h3 class="modal-title">Export task(s)</h3>
       <div class="modal-body" *ngIf="!isRunning">
         <div>
-          You can create an export of your <strong>selected tasks</strong>.<br/>
+          You can create an export of your <strong>selected tasks</strong>.<br />
           This operation will generate and download a <strong>JSON file</strong>.
         </div>
         <clr-datagrid [(clrDgSelected)]="selected" *ngIf="tasks">
           <clr-dg-column>Name</clr-dg-column>
           <clr-dg-column>Definition</clr-dg-column>
           <clr-dg-row *clrDgItems="let task of tasks.items" [clrDgItem]="task">
-            <clr-dg-cell>{{task.name}}</clr-dg-cell>
+            <clr-dg-cell>{{ task.name }}</clr-dg-cell>
             <clr-dg-cell>
-              <span class="dsl-text dsl-truncate">{{task.dslText}}</span>
+              <span class="dsl-text dsl-truncate">{{ task.dslText }}</span>
             </clr-dg-cell>
           </clr-dg-row>
         </clr-datagrid>
@@ -44,31 +44,30 @@ export class TaskExportComponent {
   tasks: TaskPage;
   selected = [];
 
-  constructor(private taskService: TaskService,
-              private notificationService: NotificationService,
-              private importExportService: ImportExportService) {
-  }
+  constructor(
+    private taskService: TaskService,
+    private notificationService: NotificationService,
+    private importExportService: ImportExportService
+  ) {}
 
-  open() {
+  open(): void {
     this.isRunning = false;
     this.isOpen = true;
-    this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC')
-      .subscribe((page: TaskPage) => {
-        this.tasks = page;
-        this.selected = [...page.items];
-      });
+    this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC').subscribe((page: TaskPage) => {
+      this.tasks = page;
+      this.selected = [...page.items];
+    });
   }
 
-  run() {
+  run(): void {
     if (this.selected.length === 0) {
       this.notificationService.error('No task selected', 'Please, select task(s) to export.');
     } else {
       this.isRunning = true;
-      this.importExportService.tasksExport(this.selected)
-        .subscribe(() => {
-          this.notificationService.success('Task(s) export', 'Task(s) has been exported.');
-          this.isOpen = false;
-        });
+      this.importExportService.tasksExport(this.selected).subscribe(() => {
+        this.notificationService.success('Task(s) export', 'Task(s) has been exported.');
+        this.isOpen = false;
+      });
     }
   }
 }

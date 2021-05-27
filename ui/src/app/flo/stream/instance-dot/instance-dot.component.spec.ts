@@ -1,6 +1,6 @@
-import { InstanceDotComponent } from './instance-dot.component';
+import {InstanceDotComponent} from './instance-dot.component';
 import '../support/shapes';
-import { InstanceStatus, TYPE } from '../../../shared/model/metrics.model';
+import {InstanceStatus, TYPE} from '../../../shared/model/metrics.model';
 
 import * as _joint from 'jointjs';
 
@@ -28,12 +28,14 @@ describe('InstanceDotComponent', () => {
   it('source input', () => {
     const properties = {};
     properties[TYPE] = 'source';
-    component.view = createView(InstanceStatus.parse({
-      guid: 'my-guid',
-      index: 0,
-      properties: properties,
-      state: 'deployed'
-    }));
+    component.view = createView(
+      InstanceStatus.parse({
+        guid: 'my-guid',
+        index: 0,
+        properties: properties,
+        state: 'deployed'
+      })
+    );
 
     expect(component.instance).toBeDefined();
     expect(component.guid).toEqual('my-guid');
@@ -43,12 +45,14 @@ describe('InstanceDotComponent', () => {
   it('sink input', () => {
     const properties = {};
     properties[TYPE] = 'sink';
-    component.view = createView(InstanceStatus.parse({
-      guid: 'my-guid',
-      index: 0,
-      properties: properties,
-      state: 'deployed'
-    }));
+    component.view = createView(
+      InstanceStatus.parse({
+        guid: 'my-guid',
+        index: 0,
+        properties: properties,
+        state: 'deployed'
+      })
+    );
 
     expect(component.instance).toBeDefined();
     expect(component.guid).toEqual('my-guid');
@@ -58,12 +62,14 @@ describe('InstanceDotComponent', () => {
   it('processor input', () => {
     const properties = {};
     properties[TYPE] = 'processor';
-    component.view = createView(InstanceStatus.parse({
-      guid: 'my-guid',
-      index: 0,
-      properties: properties,
-      state: 'deployed'
-    }));
+    component.view = createView(
+      InstanceStatus.parse({
+        guid: 'my-guid',
+        index: 0,
+        properties: properties,
+        state: 'deployed'
+      })
+    );
 
     expect(component.instance).toBeDefined();
     expect(component.guid).toEqual('my-guid');
@@ -78,7 +84,5 @@ describe('InstanceDotComponent', () => {
         }
       })
     };
-
   }
-
 });

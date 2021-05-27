@@ -1,15 +1,13 @@
 <h1>Dev. Dashboard</h1>
 
 <div *ngIf="processing">
-  <div class="alert alert-warning" role="alert" style="margin: 1rem 0 .4rem;">
+  <div class="alert alert-warning" role="alert" style="margin: 1rem 0 0.4rem">
     <div class="alert-items">
       <div class="alert-item static">
         <div class="alert-icon-wrapper">
           <clr-spinner clrInline clrSmall></clr-spinner>
         </div>
-        <div class="alert-text">
-          Processing the operation...
-        </div>
+        <div class="alert-text">Processing the operation...</div>
       </div>
     </div>
   </div>
@@ -23,12 +21,10 @@
           <button [disabled]="processing" (click)="importApps()" class="btn btn-sm btn-primary">
             Import Apps Starters
           </button>
-          <button [disabled]="processing" (click)="createStreams()" class=" btn btn-sm btn-primary">
+          <button [disabled]="processing" (click)="createStreams()" class="btn btn-sm btn-primary">
             Create Streams
           </button>
-          <button [disabled]="processing" (click)="createTasks()" class=" btn btn-sm btn-primary">
-            Create tasks
-          </button>
+          <button [disabled]="processing" (click)="createTasks()" class="btn btn-sm btn-primary">Create tasks</button>
         </div>
       </ng-template>
     </app-view-card>
@@ -36,7 +32,7 @@
   <div class="clr-col-lg-8 clr-col-md-12 clr-col-12">
     <app-view-card titleModal="Labels" name="dev" keyContext="dev" id="labeld">
       <ng-template>
-        <div style="padding:.4rem 0">
+        <div style="padding: 0.4rem 0">
           Application types:
           <span class="label label-app processor">processor</span>
           <span class="label label-app source">source</span>
@@ -44,7 +40,7 @@
           <span class="label label-app task">task</span>
           <span class="label label-app app">app</span>
         </div>
-        <div style="padding:.4rem 0">
+        <div style="padding: 0.4rem 0">
           Versions:
           <span class="label">1.2.2.RELEASE</span>
           <span class="label">
@@ -52,7 +48,7 @@
             <span class="badge badge-light-blue">2</span>
           </span>
         </div>
-        <div style="padding:.4rem 0">
+        <div style="padding: 0.4rem 0">
           Stream statuses:
           <span class="label label-stream deploying">DEPLOYING</span>
           <span class="label label-stream deployed">DEPLOYED</span>
@@ -60,19 +56,19 @@
           <span class="label label-stream failed">FAILED</span>
           <span class="label label-stream undeployed">UNDEPLOYED</span>
         </div>
-        <div style="padding:.4rem 0">
+        <div style="padding: 0.4rem 0">
           Task statuses:
           <span class="label label-task unknown">UNKNOWN</span>
           <span class="label label-task complete">COMPLETE</span>
           <span class="label label-task error">ERROR</span>
           <span class="label label-task running">RUNNING</span>
         </div>
-        <div style="padding:.4rem 0">
+        <div style="padding: 0.4rem 0">
           Job execution statuses:
           <span class="label label-job completed">COMPLETED</span>
           <span class="label label-job error">ERROR</span>
         </div>
-        <div style="padding:.4rem 0">
+        <div style="padding: 0.4rem 0">
           Record actions statuses:
           <span class="label label-record-action deploy">DEPLOY</span>
           <span class="label label-record-action create">CREATE</span>
@@ -81,7 +77,7 @@
           <span class="label label-record-action undeploy">UNDEPLOY</span>
           <span class="label label-record-action update">UPDATE</span>
         </div>
-        <div style="padding:.4rem 0">
+        <div style="padding: 0.4rem 0">
           Record operations statuses:
           <span class="label label-record-operation app_registration">APP_REGISTRATION</span>
           <span class="label label-record-operation schedule">SCHEDULE</span>
@@ -95,6 +91,11 @@
 
 <app-dev-stream-create #streamCreateModal></app-dev-stream-create>
 <app-dev-task-create #taskCreateModal></app-dev-task-create>
-<app-confirm #importAppsModal (onConfirmed)="runOperation('IMPORT_APPS')" title="Confirm Import Apps Starters" yes="Import Apps Starters">
+<app-confirm
+  #importAppsModal
+  (onConfirmed)="runOperation('IMPORT_APPS')"
+  title="Confirm Import Apps Starters"
+  yes="Import Apps Starters"
+>
   Are you sure?
 </app-confirm>

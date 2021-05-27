@@ -1,7 +1,6 @@
-import { NotificationService } from '../../shared/service/notification.service';
+import {NotificationService} from '../../shared/service/notification.service';
 
 export class NotificationServiceMock {
-
   static mock: NotificationServiceMock = null;
 
   successNotifications: any = [];
@@ -12,35 +11,33 @@ export class NotificationServiceMock {
 
   infoNotification: any = [];
 
-  constructor() {
+  constructor() {}
+
+  success(title: string, message?: string): any {
+    this.successNotifications.push({title, message});
   }
 
-  success(title, message?: string): any {
-    this.successNotifications.push({ title, message });
+  error(title: string, message?: string): any {
+    this.errorNotification.push({title, message});
   }
 
-  error(title, message?: string): any {
-    this.errorNotification.push({ title, message });
+  info(title: string, message?: string): any {
+    this.infoNotification.push({title, message});
   }
 
-  info(title, message?: string): any {
-    this.infoNotification.push({ title, message });
+  warning(title: string, message?: string): any {
+    this.warningNotification.push({title, message});
   }
 
-  warning(title, message?: string): any {
-    this.warningNotification.push({ title, message });
-  }
-
-  clearAll() {
+  clearAll(): void {
     this.successNotifications = [];
     this.errorNotification = [];
   }
 
-  static get provider() {
+  static get provider(): any {
     if (!NotificationServiceMock.mock) {
       NotificationServiceMock.mock = new NotificationServiceMock();
     }
-    return { provide: NotificationService, useValue: NotificationServiceMock.mock };
+    return {provide: NotificationService, useValue: NotificationServiceMock.mock};
   }
-
 }

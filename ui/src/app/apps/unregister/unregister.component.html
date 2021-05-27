@@ -3,28 +3,35 @@
   <h3 *ngIf="apps?.length > 1" class="modal-title">Confirm Unregister Applications</h3>
   <div class="modal-body" *ngIf="apps.length == 1 && !isRunning">
     This action will unregister and delete application
-    <u><strong>{{apps[0].name}}</strong></u>
-    of type <span class="{{apps[0].labelTypeClass()}}">{{apps[0].type}}</span>.
-    Are you sure?
+    <u
+      ><strong>{{ apps[0].name }}</strong></u
+    >
+    of type <span class="{{ apps[0].labelTypeClass() }}">{{ apps[0].type }}</span
+    >. Are you sure?
   </div>
   <div class="modal-body" *ngIf="apps?.length > 1 && !isRunning">
-    This action will unregister and delete the <u><strong>{{apps.length}}
-    application{{apps?.length > 1 ? 's' : ''}}</strong></u> listed below.<br/>Are you sure?
-    <br/>
+    This action will unregister and delete the
+    <u
+      ><strong>{{ apps.length }} application{{ apps?.length > 1 ? 's' : '' }}</strong></u
+    >
+    listed below.<br />Are you sure?
+    <br />
     <table class="table table-striped">
       <thead>
-      <tr>
-        <th class="left">Name</th>
-        <th class="left">Type</th>
-      </tr>
+        <tr>
+          <th class="left">Name</th>
+          <th class="left">Type</th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let app of apps">
-        <td class="left"><strong>{{app.name}}</strong></td>
-        <td class="left">
-          <span class="{{app.labelTypeClass()}}">{{app.type}}</span>
-        </td>
-      </tr>
+        <tr *ngFor="let app of apps">
+          <td class="left">
+            <strong>{{ app.name }}</strong>
+          </td>
+          <td class="left">
+            <span class="{{ app.labelTypeClass() }}">{{ app.type }}</span>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

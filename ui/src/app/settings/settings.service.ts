@@ -1,19 +1,17 @@
-import { Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
-import { from, Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { getThemeActiveSetting, settingsFeatureKey, State } from './store/settings.reducer';
-import { loaded, update } from './store/settings.action';
-import { SettingModel } from '../shared/model/setting.model';
-import { LocalStorageService } from 'angular-2-local-storage';
+import {Injectable} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {from, Observable, of} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {getThemeActiveSetting, settingsFeatureKey, State} from './store/settings.reducer';
+import {loaded, update} from './store/settings.action';
+import {SettingModel} from '../shared/model/setting.model';
+import {LocalStorageService} from 'angular-2-local-storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
-  constructor(private store: Store<State>,
-              private localStorageService: LocalStorageService) {
-  }
+  constructor(private store: Store<State>, private localStorageService: LocalStorageService) {}
 
   load(): Observable<SettingModel[]> {
     const isDarkConfig = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -22,12 +20,10 @@ export class SettingsService {
       activeValue = this.localStorageService.get('themeActiveValue');
     }
     const settings: SettingModel[] = [
-      { name: 'theme-active', value: activeValue },
-      { name: 'results-per-page', value: '20' },
+      {name: 'theme-active', value: activeValue},
+      {name: 'results-per-page', value: '20'}
     ];
-    return of(settings).pipe(
-      tap((sett) => this.store.dispatch(loaded({ settings: sett })))
-    );
+    return of(settings).pipe(tap(sett => this.store.dispatch(loaded({settings: sett}))));
   }
 
   update(setting: SettingModel): Observable<void> {
@@ -38,7 +34,7 @@ export class SettingsService {
   }
 
   dispatch(setting: SettingModel): void {
-    this.store.dispatch(update({ setting }));
+    this.store.dispatch(update({setting}));
   }
 
   themeActiveSetting(): Observable<string> {
@@ -48,5 +44,4 @@ export class SettingsService {
   getSettings(): Observable<SettingModel[]> {
     return this.store.pipe(select(state => state[settingsFeatureKey].settings));
   }
-
 }

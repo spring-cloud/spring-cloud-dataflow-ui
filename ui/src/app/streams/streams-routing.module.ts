@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { RuntimeComponent } from './runtime/runtime.component';
-import { StreamsComponent } from './streams/streams.component';
-import { StreamComponent } from './streams/stream/stream.component';
-import { CreateComponent } from './streams/create/create.component';
-import { DeployComponent } from './streams/deploy/deploy.component';
-import { SecurityGuard } from '../security/support/security.guard';
-import { MultiDeployComponent } from './streams/multi-deploy/multi-deploy.component';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {RuntimeComponent} from './runtime/runtime.component';
+import {StreamsComponent} from './streams/streams.component';
+import {StreamComponent} from './streams/stream/stream.component';
+import {CreateComponent} from './streams/create/create.component';
+import {DeployComponent} from './streams/deploy/deploy.component';
+import {SecurityGuard} from '../security/support/security.guard';
+import {MultiDeployComponent} from './streams/multi-deploy/multi-deploy.component';
 
 const routes: Routes = [
   {
@@ -20,35 +20,34 @@ const routes: Routes = [
     children: [
       {
         path: 'list',
-        component: StreamsComponent,
+        component: StreamsComponent
       },
       {
         path: 'list/create',
-        component: CreateComponent,
+        component: CreateComponent
       },
       {
         path: 'list/:name',
-        component: StreamComponent,
+        component: StreamComponent
       },
       {
         path: 'list/:name/deploy',
-        component: DeployComponent,
+        component: DeployComponent
       },
       {
         path: 'list/:group/multi-deploy',
-        component: MultiDeployComponent,
+        component: MultiDeployComponent
       },
       {
         path: 'runtime',
-        component: RuntimeComponent,
+        component: RuntimeComponent
       }
     ]
-  },
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StreamsRoutingModule {
-}
+export class StreamsRoutingModule {}

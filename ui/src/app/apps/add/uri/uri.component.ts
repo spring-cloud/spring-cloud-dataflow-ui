@@ -1,35 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { AppService } from '../../../shared/api/app.service';
-import { NotificationService } from '../../../shared/service/notification.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AppsAddValidator } from '../add.validtor';
+import {Component} from '@angular/core';
+import {AppService} from '../../../shared/api/app.service';
+import {NotificationService} from '../../../shared/service/notification.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {AppsAddValidator} from '../add.validtor';
 
 @Component({
   selector: 'app-add-uri',
-  templateUrl: './uri.component.html',
+  templateUrl: './uri.component.html'
 })
 export class UriComponent {
-
   form: FormGroup;
   isImporting = false;
 
-  constructor(private appService: AppService,
-              private notificationService: NotificationService,
-              private fb: FormBuilder,
-              private router: Router) {
-
-    this.form = fb.group({
+  constructor(
+    private appService: AppService,
+    private notificationService: NotificationService,
+    private router: Router
+  ) {
+    this.form = new FormGroup({
       uri: new FormControl('', [Validators.required, AppsAddValidator.uri]),
       force: new FormControl(false)
     });
   }
 
-  fillUrl(url: string) {
+  fillUrl(url: string): void {
     this.form.get('uri').setValue(url);
   }
 
-  submit() {
+  submit(): void {
     if (!this.form.valid) {
       this.notificationService.error('Invalid field', 'Some field(s) are missing or invalid.');
     } else {
@@ -37,17 +36,20 @@ export class UriComponent {
       this.appService
         .importUri(this.form.get('uri').value.toString(), this.form.get('force').value)
         // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
-        .subscribe(data => {
-          this.notificationService.success('Import application(s)', 'Application(s) Imported.');
-          this.back();
-        }, (error) => {
-          this.isImporting = false;
-          this.notificationService.error('An error occurred', error);
-        });
+        .subscribe(
+          data => {
+            this.notificationService.success('Import application(s)', 'Application(s) Imported.');
+            this.back();
+          },
+          error => {
+            this.isImporting = false;
+            this.notificationService.error('An error occurred', error);
+          }
+        );
     }
   }
 
-  back() {
+  back(): void {
     this.router.navigateByUrl('apps');
   }
 }

@@ -1,26 +1,29 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="executions" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">Confirm Clean Up Task Execution(s)</h3>
   <div class="modal-body" *ngIf="executions.length === 1 && !isRunning">
-    <p>This action will remove the data of the task execution <strong>{{executions[0].executionId}}</strong> (task
-      <strong>{{executions[0].taskName}}</strong>). Are you sure?</p>
+    <p>
+      This action will remove the data of the task execution <strong>{{ executions[0].executionId }}</strong> (task
+      <strong>{{ executions[0].taskName }}</strong
+      >). Are you sure?
+    </p>
   </div>
   <div class="modal-body" *ngIf="executions.length > 1 && !isRunning">
     <p>
-      This action will remove the data of the <strong>{{executions.length}} task executions</strong> listed below.
-      Are you sure?
+      This action will remove the data of the <strong>{{ executions.length }} task executions</strong> listed below. Are
+      you sure?
     </p>
     <table class="table table-striped">
       <thead>
-      <tr>
-        <th class="left">Execution ID</th>
-        <th class="left">Task</th>
-      </tr>
+        <tr>
+          <th class="left">Execution ID</th>
+          <th class="left">Task</th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let execution of executions">
-        <td class="left">{{execution.executionId}}</td>
-        <td class="left">{{execution.taskName}}</td>
-      </tr>
+        <tr *ngFor="let execution of executions">
+          <td class="left">{{ execution.executionId }}</td>
+          <td class="left">{{ execution.taskName }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -29,8 +32,8 @@
     Removing data...
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false"  [disabled]="isRunning">Cancel</button>
-    <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()"  [disabled]="isRunning">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
       <span *ngIf="executions.length == 1">Clean up Task Execution</span>
       <span *ngIf="executions.length > 1">Clean up Task Executions</span>
     </button>

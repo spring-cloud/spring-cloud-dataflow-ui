@@ -1,10 +1,9 @@
-import { JobService } from './job.service';
-import { of } from 'rxjs';
-import { JobExecution } from '../model/job.model';
-import { DateTime } from 'luxon';
+import {JobService} from './job.service';
+import {of} from 'rxjs';
+import {JobExecution} from '../model/job.model';
+import {DateTime} from 'luxon';
 
 describe('shared/api/job.service.ts', () => {
-
   let mockHttp;
   let jobService;
   let jsonData = {};
@@ -13,7 +12,7 @@ describe('shared/api/job.service.ts', () => {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post'),
-      put: jasmine.createSpy('put'),
+      put: jasmine.createSpy('put')
     };
     jsonData = {};
     jobService = new JobService(mockHttp);
@@ -42,14 +41,14 @@ describe('shared/api/job.service.ts', () => {
 
   it('restart', () => {
     mockHttp.put.and.returnValue(of(jsonData));
-    jobService.restart(JobExecution.parse({ jobExecution: { id: 'foo' } }));
+    jobService.restart(JobExecution.parse({jobExecution: {id: 'foo'}}));
     const httpUri = mockHttp.put.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/jobs/executions/foo?restart=true');
   });
 
   it('stop', () => {
     mockHttp.put.and.returnValue(of(jsonData));
-    jobService.stop(JobExecution.parse({ jobExecution: { id: 'foo' } }));
+    jobService.stop(JobExecution.parse({jobExecution: {id: 'foo'}}));
     const httpUri = mockHttp.put.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/jobs/executions/foo?stop=true');
   });
@@ -67,5 +66,4 @@ describe('shared/api/job.service.ts', () => {
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/jobs/executions/foo/steps/bar/progress');
   });
-
 });

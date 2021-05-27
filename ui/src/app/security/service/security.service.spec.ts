@@ -1,31 +1,29 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { take } from 'rxjs/operators';
-import { cold } from 'jasmine-marbles';
-import { SecurityService } from './security.service';
+import {TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {provideMockStore, MockStore} from '@ngrx/store/testing';
+import {take} from 'rxjs/operators';
+import {cold} from 'jasmine-marbles';
+import {SecurityService} from './security.service';
 import * as fromSecurity from '../store/security.reducer';
-import { StoreModule } from '@ngrx/store';
+import {StoreModule} from '@ngrx/store';
 
 describe('security/service/security.service.ts mock', () => {
   let service: SecurityService;
   let store: MockStore;
   let httpTestingController: HttpTestingController;
-  const initialState = { [fromSecurity.securityFeatureKey]: {
-    enabled: true,
-    authenticated: false,
-    username: undefined,
-    roles: []
-  }};
+  const initialState = {
+    [fromSecurity.securityFeatureKey]: {
+      enabled: true,
+      authenticated: false,
+      username: undefined,
+      roles: []
+    }
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule
-      ],
-      providers: [
-        provideMockStore({ initialState })
-      ]
+      imports: [HttpClientTestingModule],
+      providers: [provideMockStore({initialState})]
     });
     service = TestBed.inject(SecurityService);
     store = TestBed.inject(MockStore);
@@ -46,12 +44,14 @@ describe('security/service/security.service.ts mock', () => {
   });
 
   it('should have proper state after loaded', () => {
-    const newState = { [fromSecurity.securityFeatureKey]: {
-      enabled: false,
-      authenticated: true,
-      username: 'fakeuser',
-      roles: ['role1']
-    }};
+    const newState = {
+      [fromSecurity.securityFeatureKey]: {
+        enabled: false,
+        authenticated: true,
+        username: 'fakeuser',
+        roles: ['role1']
+      }
+    };
     store.setState(newState);
 
     let expected = cold('(a|)', {a: false});
@@ -78,7 +78,7 @@ describe('security/service/security.service.ts integration', () => {
         HttpClientTestingModule,
         StoreModule.forRoot({}),
         StoreModule.forFeature(fromSecurity.securityFeatureKey, fromSecurity.reducer)
-      ],
+      ]
     });
     service = TestBed.inject(SecurityService);
     httpTestingController = TestBed.inject(HttpTestingController);

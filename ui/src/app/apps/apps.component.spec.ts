@@ -1,55 +1,50 @@
-import { AppsComponent } from './apps.component';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppServiceMock } from '../tests/api/app.service.mock';
-import { AboutServiceMock } from '../tests/api/about.service.mock';
-import { SecurityServiceMock } from '../tests/api/security.service.mock';
-import { TypeFilterComponent } from './type.filter';
-import { UnregisterComponent } from './unregister/unregister.component';
-import { NotificationServiceMock } from '../tests/service/notification.service.mock';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-import { VersionComponent } from './version/version.component';
-import { ConfirmComponent } from '../shared/component/confirm/confirm.component';
-import { ContextServiceMock } from '../tests/service/context.service.mock';
-import { SettingsServiceMock } from '../tests/service/settings.service.mock';
-import { DatagridColumnPipe } from '../shared/pipe/datagrid-column.pipe';
+import {AppsComponent} from './apps.component';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppServiceMock} from '../tests/api/app.service.mock';
+import {AboutServiceMock} from '../tests/api/about.service.mock';
+import {SecurityServiceMock} from '../tests/api/security.service.mock';
+import {TypeFilterComponent} from './type.filter';
+import {UnregisterComponent} from './unregister/unregister.component';
+import {NotificationServiceMock} from '../tests/service/notification.service.mock';
+import {By} from '@angular/platform-browser';
+import {DebugElement} from '@angular/core';
+import {VersionComponent} from './version/version.component';
+import {ConfirmComponent} from '../shared/component/confirm/confirm.component';
+import {ContextServiceMock} from '../tests/service/context.service.mock';
+import {SettingsServiceMock} from '../tests/service/settings.service.mock';
+import {DatagridColumnPipe} from '../shared/pipe/datagrid-column.pipe';
 
 describe('apps/apps.component.ts', () => {
-
   let component: AppsComponent;
   let fixture: ComponentFixture<AppsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppsComponent,
-        TypeFilterComponent,
-        UnregisterComponent,
-        VersionComponent,
-        ConfirmComponent,
-        DatagridColumnPipe
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-        ContextServiceMock.provider,
-        SettingsServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          AppsComponent,
+          TypeFilterComponent,
+          UnregisterComponent,
+          VersionComponent,
+          ConfirmComponent,
+          DatagridColumnPipe
+        ],
+        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          AppServiceMock.provider,
+          NotificationServiceMock.provider,
+          ContextServiceMock.provider,
+          SettingsServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsComponent);
@@ -61,7 +56,7 @@ describe('apps/apps.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the datagrid, pagination, action bar', async (done) => {
+  it('should display the datagrid, pagination, action bar', async done => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -80,7 +75,7 @@ describe('apps/apps.component.ts', () => {
     done();
   });
 
-  it('should display the actions', async (done) => {
+  it('should display the actions', async done => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -95,7 +90,7 @@ describe('apps/apps.component.ts', () => {
     done();
   });
 
-  it('should display the group mode', async (done) => {
+  it('should display the group mode', async done => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -103,8 +98,9 @@ describe('apps/apps.component.ts', () => {
     btnGroupActions.click();
     fixture.detectChanges();
     btnGroupActions = fixture.debugElement.query(By.css('#btnGroupActions'));
-    const btnUnregisterApplications: HTMLButtonElement = fixture.debugElement
-      .query(By.css('#btnUnregisterApplications')).nativeElement;
+    const btnUnregisterApplications: HTMLButtonElement = fixture.debugElement.query(
+      By.css('#btnUnregisterApplications')
+    ).nativeElement;
     const btnRefresh = fixture.debugElement.query(By.css('#btnRefresh'));
     const checkboxes = fixture.debugElement.queryAll(By.css('.datagrid input[type=checkbox]'));
     expect(checkboxes.length === 21).toBeTruthy();
@@ -141,7 +137,7 @@ describe('apps/apps.component.ts', () => {
   //   done();
   // });
 
-  it('should navigate to the application details page (menu)', async (done) => {
+  it('should navigate to the application details page (menu)', async done => {
     fixture.detectChanges();
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     await fixture.whenStable();
@@ -154,7 +150,7 @@ describe('apps/apps.component.ts', () => {
     done();
   });
 
-  it('should navigate to the application details page (datagrid)', async (done) => {
+  it('should navigate to the application details page (datagrid)', async done => {
     fixture.detectChanges();
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     await fixture.whenStable();
@@ -167,7 +163,7 @@ describe('apps/apps.component.ts', () => {
     done();
   });
 
-  it('should navigate to the add page', async (done) => {
+  it('should navigate to the add page', async done => {
     fixture.detectChanges();
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     await fixture.whenStable();
@@ -179,65 +175,64 @@ describe('apps/apps.component.ts', () => {
     done();
   });
 
-  it('should sort the datagrid', async (done) => {
+  it('should sort the datagrid', async done => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    const refresh = spyOn((<any>component), 'refresh');
+    const refresh = spyOn(<any>component, 'refresh');
     const cols = fixture.debugElement.queryAll(By.css('clr-dg-column'));
     // Name
     cols[0].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'name', reverse: true }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'name', reverse: true}
     });
     cols[0].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'name', reverse: false }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'name', reverse: false}
     });
     // Type
     cols[1].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'type', reverse: false }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'type', reverse: false}
     });
     cols[1].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'type', reverse: true }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'type', reverse: true}
     });
     // Version
     cols[2].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'version', reverse: false }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'version', reverse: false}
     });
     cols[2].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'version', reverse: true }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'version', reverse: true}
     });
     // URI
     cols[3].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'uri', reverse: false }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'uri', reverse: false}
     });
     cols[3].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
-      page: { from: 0, to: 19, size: 20, current: 1 },
-      sort: { by: 'uri', reverse: true }
+      page: {from: 0, to: 19, size: 20, current: 1},
+      sort: {by: 'uri', reverse: true}
     });
     done();
   });
-
 });

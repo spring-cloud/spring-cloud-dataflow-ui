@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { dia } from 'jointjs';
-import { ApplicationType } from '../../../shared/model/app.model';
+import {dia} from 'jointjs';
+import {ApplicationType} from '../../../shared/model/app.model';
 
 /**
  * Utilities for Flo based Stream Definition graph editor.
@@ -23,7 +23,6 @@ import { ApplicationType } from '../../../shared/model/app.model';
  * @author Alex Boyko
  */
 export class Utils {
-
   static canBeHeadOfStream(graph: dia.Graph, element: dia.Element): boolean {
     if (element.prop('metadata')) {
       if (!Utils.hasVisibleInputPorts(element)) {
@@ -34,14 +33,15 @@ export class Utils {
             return true;
           }
           // Otherwise check the rest of APP nodes don't have `stream-name` set
-          return !graph.getElements()
+          return !graph
+            .getElements()
             .filter(e => e.prop('metadata/group') === ApplicationType[ApplicationType.app] && e !== element)
             .find(e => e.attr('stream-name'));
         } else {
           return true;
         }
       } else {
-        const incoming = graph.getConnectedLinks(element, { inbound: true });
+        const incoming = graph.getConnectedLinks(element, {inbound: true});
         const tapLink = incoming.find(l => l.attr('props/isTapLink'));
         if (tapLink) {
           return true;
@@ -51,7 +51,7 @@ export class Utils {
     return false;
   }
 
-  static hasVisibleInputPorts(element: dia.Element) {
+  static hasVisibleInputPorts(element: dia.Element): boolean {
     const attrs = element.attributes.attrs;
     const keys = Object.keys(element.attributes.attrs);
     for (let i = 0; i < keys.length; i++) {
@@ -66,8 +66,9 @@ export class Utils {
     return false;
   }
 
-  static generateStreamName(graph: dia.Graph, element: dia.Element) {
-    const streamNames: Array<string> = graph.getElements()
+  static generateStreamName(graph: dia.Graph, element: dia.Element): string {
+    const streamNames: Array<string> = graph
+      .getElements()
       .filter(e => element !== e && e.attr('stream-name') && this.canBeHeadOfStream(graph, e))
       .map(e => e.attr('stream-name'));
 
@@ -99,5 +100,4 @@ export class Utils {
     }
     return duplicates;
   }
-
 }

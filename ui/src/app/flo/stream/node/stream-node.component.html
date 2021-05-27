@@ -1,52 +1,70 @@
 <svg:g>
-  <ng-container *ngIf="isPalette(); then paletteShape else canvasShape"></ng-container>
+  <ng-container *ngIf="isPalette(); then paletteShape; else canvasShape"></ng-container>
 </svg:g>
 
 <ng-template #paletteShape>
   <svg:g class="stream-module">
-    <svg:g class="shape" tippy [content]="paletteTooltipElement ? paletteTooltipElement.nativeElement : ''"
-           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
-           [attr.disabled]="isDisabled || !canShowPaletteNodeTooltip ? '' : null">
-      <svg:rect class="box"/>
-<!--      <svg:image class="type-icon"/>-->
-      <svg:text class="palette-entry-name-label"/>
+    <svg:g
+      class="shape"
+      tippy
+      [content]="paletteTooltipElement ? paletteTooltipElement.nativeElement : ''"
+      [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
+      [attr.disabled]="isDisabled || !canShowPaletteNodeTooltip ? '' : null"
+    >
+      <svg:rect class="box" />
+      <!--      <svg:image class="type-icon"/>-->
+      <svg:text class="palette-entry-name-label" />
     </svg:g>
   </svg:g>
 </ng-template>
 
 <ng-template #canvasShape>
   <svg:g class="stream-module">
-    <svg:rect class="select-outline"/>
-    <svg:g class="shape" tippy [content]="canvasTooltipElement ? canvasTooltipElement.nativeElement : ''"
-           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300, maxWidth: 'none'}"
-           [attr.disabled]="isDisabled || !canShowCanvasNodeTooltip ? '' : null">
-      <svg:rect class="box"/>
-<!--      <svg:image class="type-icon"/>-->
+    <svg:rect class="select-outline" />
+    <svg:g
+      class="shape"
+      tippy
+      [content]="canvasTooltipElement ? canvasTooltipElement.nativeElement : ''"
+      [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300, maxWidth: 'none'}"
+      [attr.disabled]="isDisabled || !canShowCanvasNodeTooltip ? '' : null"
+    >
+      <svg:rect class="box" />
+      <!--      <svg:image class="type-icon"/>-->
       <svg:g>
-        <svg:rect class="type-label-bg"/>
-        <svg:text class="name-label"/>
-        <svg:text class="type-label"/>
+        <svg:rect class="type-label-bg" />
+        <svg:text class="name-label" />
+        <svg:text class="type-label" />
       </svg:g>
     </svg:g>
-    <svg:image class="error-marker" xlink:href="assets/img/error.svg"
-               tippy [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
-               [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
-               [attr.disabled]="isDisabled ? '' : null"/>
-    <svg:text class="stream-label"/>
+    <svg:image
+      class="error-marker"
+      xlink:href="assets/img/error.svg"
+      tippy
+      [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
+      [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
+      [attr.disabled]="isDisabled ? '' : null"
+    />
+    <svg:text class="stream-label" />
     <svg:g class="input-port-group">
-      <svg:g class="input-port"
-             tippy [tippyOptions]="{content: 'Input Port', appendTo: docBody(), delay: 300}"
-             [attr.disabled]="!isCanvas() || isDisabled ? '' : null">
-        <svg:circle class="port-outer-circle-input"/>
-        <svg:circle class="port-inner-circle-input"/>
+      <svg:g
+        class="input-port"
+        tippy
+        [tippyOptions]="{content: 'Input Port', appendTo: docBody(), delay: 300}"
+        [attr.disabled]="!isCanvas() || isDisabled ? '' : null"
+      >
+        <svg:circle class="port-outer-circle-input" />
+        <svg:circle class="port-inner-circle-input" />
       </svg:g>
     </svg:g>
     <svg:g class="output-port-group">
-      <svg:g class="output-port"
-             tippy [tippyOptions]="{content: 'Output Port', appendTo: docBody(), delay: 300}"
-             [attr.disabled]="!isCanvas() || isDisabled ? '' : null">
-        <svg:circle class="port-outer-circle-output"/>
-        <svg:circle class="port-inner-circle-output"/>
+      <svg:g
+        class="output-port"
+        tippy
+        [tippyOptions]="{content: 'Output Port', appendTo: docBody(), delay: 300}"
+        [attr.disabled]="!isCanvas() || isDisabled ? '' : null"
+      >
+        <svg:circle class="port-outer-circle-output" />
+        <svg:circle class="port-inner-circle-output" />
       </svg:g>
     </svg:g>
     <svg:g class="flo-handles">
@@ -59,32 +77,36 @@
 
 <div #paletteNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
-    <span>{{metaName | uppercase}}</span>&nbsp;<span>{{'(' + (metaGroup | capitalize) + ')'}}</span>
+    <span>{{ metaName | uppercase }}</span
+    >&nbsp;<span>{{ '(' + (metaGroup | capitalize) + ')' }}</span>
   </div>
   <div *ngIf="description">
-    <span>{{description}}</span>
+    <span>{{ description }}</span>
   </div>
 </div>
 
 <div #canvasNodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
-    <span>{{metaName | uppercase}}</span>&nbsp;<span>{{'(' + (metaGroup | capitalize) + ')'}}</span>
+    <span>{{ metaName | uppercase }}</span
+    >&nbsp;<span>{{ '(' + (metaGroup | capitalize) + ')' }}</span>
   </div>
   <div *ngIf="description">
-    <span>{{description}}</span>
+    <span>{{ description }}</span>
   </div>
   <table class="table-condensed" *ngIf="allProperties && isPropertiesShown">
     <tbody>
-    <tr *ngFor="let property of keys(allProperties).sort()">
-      <td class="tooltip-property-key"><strong>{{property}}</strong></td>
-      <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">{{
-        getPropertyValue(property)}}
-      </td>
-    </tr>
+      <tr *ngFor="let property of keys(allProperties).sort()">
+        <td class="tooltip-property-key">
+          <strong>{{ property }}</strong>
+        </td>
+        <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">
+          {{ getPropertyValue(property) }}
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
 
 <ul #markerTooltip class="marker-tooltip">
-  <li *ngFor="let msg of getErrorMessages()">{{msg}}</li>
+  <li *ngFor="let msg of getErrorMessages()">{{ msg }}</li>
 </ul>

@@ -1,14 +1,14 @@
-import { dia } from 'jointjs';
-import { IMAGE_H, START_NODE_TYPE, END_NODE_TYPE, CONTROL_GROUP_TYPE } from './shapes';
+import {dia} from 'jointjs';
+import {IMAGE_H, START_NODE_TYPE, END_NODE_TYPE, CONTROL_GROUP_TYPE} from './shapes';
 import * as dagre from 'dagre';
-import { Flo } from 'spring-flo';
-import { shiftGraphHorizontallyOnPaper } from '../../shared/support/shared-shapes';
+import {Flo} from 'spring-flo';
+import {shiftGraphHorizontallyOnPaper} from '../../shared/support/shared-shapes';
 
 const NODE_SEPARATION = 60.0;
 const RANK_SEPARATION = 60.0;
 const EDGE_SEPARATION = 30.0;
 
-export function layout(paper: dia.Paper) {
+export function layout(paper: dia.Paper): void {
   let start;
   let end;
   let empty = true;
@@ -17,9 +17,7 @@ export function layout(paper: dia.Paper) {
   const g = new dagre.graphlib.Graph();
   g.setGraph({});
 
-  g.setDefaultEdgeLabel(() => {
-    return {};
-  });
+  g.setDefaultEdgeLabel(() => ({}));
 
   graph.getElements().forEach(node => {
     // ignore embedded cells
@@ -37,11 +35,13 @@ export function layout(paper: dia.Paper) {
     }
   });
 
-  graph.getLinks().filter(l => l.get('source').id && l.get('target').id).forEach(link => {
-    g.setEdge(link.get('source').id, link.get('target').id);
-    link.set('vertices', []);
-  });
-
+  graph
+    .getLinks()
+    .filter(l => l.get('source').id && l.get('target').id)
+    .forEach(link => {
+      g.setEdge(link.get('source').id, link.get('target').id);
+      link.set('vertices', []);
+    });
 
   const gridSize = paper.options.gridSize;
   g.graph().rankdir = 'TB';
@@ -80,10 +80,9 @@ export function layout(paper: dia.Paper) {
       const graphNode = g.node(v);
       const bbox = node.getBBox();
       const offset = rankOffset && rankOffset[graphNode.y] ? rankOffset[graphNode.y] : 0;
-      node.translate((graphNode.x + offset - graphNode.width / 2) - bbox.x, (graphNode.y - graphNode.height / 2) - bbox.y);
+      node.translate(graphNode.x + offset - graphNode.width / 2 - bbox.x, graphNode.y - graphNode.height / 2 - bbox.y);
     }
   });
-
 }
 
 export function arrangeAll(editorContext: Flo.EditorContext): Promise<void> {
@@ -107,7 +106,7 @@ export function verticalLinksOverlapping(g: dagre.graphlib.Graph, tolerance: num
     const target = g.node(e.w);
     const offsetSource = ranksOffset && ranksOffset[source.y] ? ranksOffset[source.y] : 0;
     const offsetTarget = ranksOffset && ranksOffset[target.y] ? ranksOffset[target.y] : 0;
-    if (Math.abs((source.x + offsetSource) - (target.x + offsetTarget)) < 2 * tolerance) {
+    if (Math.abs(source.x + offsetSource - (target.x + offsetTarget)) < 2 * tolerance) {
       return true;
     } else {
       return false;
@@ -131,8 +130,16 @@ export function verticalLinksOverlapping(g: dagre.graphlib.Graph, tolerance: num
       const otherTarget = g.node(otherLink.w);
       const offsetSourceC = ranksOffset && ranksOffset[otherSource.y] ? ranksOffset[otherSource.y] : 0;
       const offsetTargetC = ranksOffset && ranksOffset[otherTarget.y] ? ranksOffset[otherTarget.y] : 0;
-      if ((minX < otherSource.x + offsetSourceC && otherSource.x + offsetSourceC < maxX && minY < otherSource.y && otherSource.y < maxY)
-        || (minX < otherTarget.x + offsetTargetC && otherTarget.x + offsetTargetC < maxX && minY < otherTarget.y && otherTarget.y < maxY)) {
+      if (
+        (minX < otherSource.x + offsetSourceC &&
+          otherSource.x + offsetSourceC < maxX &&
+          minY < otherSource.y &&
+          otherSource.y < maxY) ||
+        (minX < otherTarget.x + offsetTargetC &&
+          otherTarget.x + offsetTargetC < maxX &&
+          minY < otherTarget.y &&
+          otherTarget.y < maxY)
+      ) {
         numberOfOverlaps++;
       }
     }
@@ -178,4 +185,3 @@ export function centerAlignRanks(g: dagre.graphlib.Graph): any {
 
   return rankOffset;
 }
-

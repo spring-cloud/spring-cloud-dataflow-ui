@@ -2,10 +2,9 @@
  * Generic response type returned from both tools conversions.
  */
 export class TaskConversion {
-
   public graph: Graph;
   public dsl: string;
-  public errors: Array<any> = new Array();
+  public errors: Array<any> = [];
 
   constructor(dsl: string, errors?: Array<Map<string, any>>, graph?: Graph) {
     this.dsl = dsl;
@@ -20,7 +19,6 @@ export class TaskConversion {
  * Represents a graph in a TaskConversion response.
  */
 export class Graph {
-
   public nodes: Array<Node>;
   public links: Array<Link>;
 
@@ -38,13 +36,12 @@ export class Graph {
  * Represents node in a Graph.
  */
 export class Node {
-
   public id: string;
   public name: string;
-  public properties: {};
-  public metadata: {};
+  public properties: any;
+  public metadata: any;
 
-  constructor(id: string, name: string, properties?: {}, metadata?: {}) {
+  constructor(id: string, name: string, properties?: any, metadata?: any) {
     this.id = id;
     this.name = name;
     this.properties = properties;
@@ -56,12 +53,11 @@ export class Node {
  * Represents link in a Graph.
  */
 export class Link {
-
   public from: string;
   public to: string;
-  public properties: {};
+  public properties: any;
 
-  constructor(from: string, to: string, properties?: {}) {
+  constructor(from: string, to: string, properties?: any) {
     this.from = from;
     this.to = to;
     this.properties = properties;

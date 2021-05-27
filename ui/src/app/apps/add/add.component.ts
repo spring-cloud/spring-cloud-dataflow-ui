@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-add',
@@ -6,8 +6,5 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
   styleUrls: ['./add.component.scss']
 })
 export class AddComponent {
-
-  constructor() {
-  }
-
+  constructor() {}
 }
