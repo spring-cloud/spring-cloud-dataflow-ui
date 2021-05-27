@@ -136,6 +136,13 @@ export class BuilderComponent implements OnInit, OnDestroy {
   private crtOptionsSub: Subscription;
 
   /**
+   * The ones we originally get with page load and which
+   * we use to fill enough info in structures to know
+   * when property needs to send back as empty value.
+   */
+  private originalProperties: Array<string> = [];
+
+  /**
    * States for UI to i.e. keep collap section state.
    */
   state: any = {
@@ -176,6 +183,20 @@ export class BuilderComponent implements OnInit, OnDestroy {
                 builder.ctrProperties.push(Object.assign({ isSemantic: true }, o));
               });
 
+              // set 'original' values so we know when user cleared an option
+              this.originalProperties.forEach((line: string) => {
+                const arr = line.split(/=(.*)/);
+                const key = arr[0] as string;
+                const value = arr[1] as string;
+                if (TaskLaunchService.ctr.is(key)) {
+                  const ctrKey = TaskLaunchService.ctr.extract(key);
+                  builder.ctrProperties.forEach(p => {
+                    if (p.id === ctrKey) {
+                      p.originalValue = value;
+                    }
+                  });
+                }
+              });
               // need to set values here instead of init time
               this.properties.forEach((line: string) => {
                 const arr = line.split(/=(.*)/);
@@ -292,6 +313,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
     this.refBuilder.ctrProperties.forEach(x => {
       if (x.value !== null && x.value !== undefined && x.value !== '' && x.value !== x.defaultValue) {
         result.push(`app.composed-task-runner.${x.id}=${x.value}`);
+      } else if (x.originalValue !== undefined) {
+        // user cleared property, need to give 'empty' value so that
+        // server will clear it from manifest
+        result.push(`app.composed-task-runner.${x.id}=`);
       }
     });
 
@@ -573,6 +598,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
     if (this.properties.length === 0 && taskLaunchConfig.deploymentProperties.length > 0) {
       this.properties = taskLaunchConfig.deploymentProperties;
     }
+    // stash original given properties
+    this.originalProperties = taskLaunchConfig.deploymentProperties;
 
     const getValue = (defaultValue) => !defaultValue ? '' : defaultValue;
     const builderAppsProperties = {};

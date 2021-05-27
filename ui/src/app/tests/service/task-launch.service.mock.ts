@@ -74,7 +74,9 @@ export class TaskLaunchServiceMock {
         suffix: 'MB'
       }
     ];
-    config.deploymentProperties = [];
+    config.deploymentProperties = [
+      'app.composed-task-runner.split-thread-max-pool-size=10'
+    ];
 
     return of(config);
   }
@@ -94,12 +96,36 @@ export class TaskLaunchServiceMock {
         value: ''
       },
       {
+        id: 'split-thread-core-pool-size',
+        name: 'split-thread-core-pool-size',
+        type: 'java.lang.Integer',
+        description: 'Split\'s core pool size. Default is 4\;',
+        shortDescription: 'Split\'s core pool size.',
+        defaultValue: 4,
+        deprecation: null,
+        sourceType: '',
+        isDeprecated: false,
+        value: ''
+      },
+      {
         id: 'composed-task-properties',
         name: 'composed-task-properties',
         type: 'java.lang.Integer',
         description: 'The properties to be used for each of the tasks as well as their deployments.',
         shortDescription: 'The properties to be used for each of the tasks as well as their deployments.',
         defaultValue: null,
+        deprecation: null,
+        sourceType: '',
+        isDeprecated: false,
+        value: ''
+      },
+      {
+        id: 'increment-instance-enabled',
+        name: 'increment-instance-enabled',
+        type: 'java.lang.Boolean',
+        description: 'Allows a single ComposedTaskRunner instance to be re-executed without changing the parameters. Default is false which means a ComposedTaskRunner instance can only be executed once with a given set of parameters, if true it can be re-executed.',
+        shortDescription: 'Allows a single ComposedTaskRunner instance to be re-executed without changing the parameters.',
+        defaultValue: true,
         deprecation: null,
         sourceType: '',
         isDeprecated: false,

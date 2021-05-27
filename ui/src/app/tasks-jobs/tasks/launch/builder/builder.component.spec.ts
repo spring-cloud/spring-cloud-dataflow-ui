@@ -89,6 +89,21 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
     ]));
   });
 
+  it('should set property value empty when it is cleared', async () => {
+    component.task = TASK_2;
+    component.properties = [
+      'app.composed-task-runner.split-thread-max-pool-size=',
+      'deployer.t1.cpu=1',
+      'app.t1.timestamp.format=yyyy'
+    ];
+    fixture.detectChanges();
+    expect(component['getProperties']()).toEqual(jasmine.arrayContaining([
+      'app.composed-task-runner.split-thread-max-pool-size=',
+      'deployer.t1.cpu=1',
+      'app.t1.timestamp.format=yyyy'
+    ]));
+  });
+
   it('should have migrations', async () => {
     component.task = TASK_2;
     component.properties = [
