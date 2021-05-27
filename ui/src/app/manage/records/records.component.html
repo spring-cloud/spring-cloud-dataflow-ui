@@ -1,146 +1,170 @@
 <h1>Audit Records</h1>
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" #datagrid>
   <clr-dg-action-bar>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
-      Refresh
-    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
   </clr-dg-action-bar>
-  <clr-dg-column class="cell-id" [clrDgField]="'id'"
-                 [clrDgSortOrder]="(context.by === 'id') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeId', $event)"
-                 [style.width.px]="context.sizeId | datagridcolumn: datagrid : contextName : 0 | async">
-    <ng-container>
-      ID
-    </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  <clr-dg-column
+    class="cell-id"
+    [clrDgField]="'id'"
+    [clrDgSortOrder]="context.by === 'id' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeId', $event)"
+    [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName:0 | async"
+  >
+    <ng-container> ID </ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'createdOn'"
-                 [clrDgSortOrder]="(context.by === 'createdOn') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeCreatedOn', $event)"
-                 [clrFilterValue]="context.dates || []"
-                 [style.width.px]="context.sizeCreatedOn | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      Created On
-    </ng-container>
+  <clr-dg-column
+    [clrDgField]="'createdOn'"
+    [clrDgSortOrder]="context.by === 'createdOn' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeCreatedOn', $event)"
+    [clrFilterValue]="context.dates || []"
+    [style.width.px]="context.sizeCreatedOn | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> Created On </ng-container>
     <clr-dg-filter [clrDgFilter]="datesFilter">
       <app-clr-datagrid-date-filter [value]="context.dates" #datesFilter></app-clr-datagrid-date-filter>
     </clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'auditAction'"
-                 [clrDgSortOrder]="(context.by === 'auditAction') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeAuditAction', $event)"
-                 [clrFilterValue]="context.actionType || []"
-                 [style.width.px]="context.sizeAuditAction | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    [clrDgField]="'auditAction'"
+    [clrDgSortOrder]="context.by === 'auditAction' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeAuditAction', $event)"
+    [clrFilterValue]="context.actionType || []"
+    [style.width.px]="context.sizeAuditAction | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       Actions
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
     <clr-dg-filter [clrDgFilter]="actionFilter">
       <app-clr-datagrid-action-filter [value]="context.actionType" #actionFilter></app-clr-datagrid-action-filter>
     </clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'auditOperation'"
-                 [clrDgSortOrder]="(context.by === 'auditOperation') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeAuditOperation', $event)"
-                 [clrFilterValue]="context.operationType || []"
-                 [style.width.px]="context.sizeAuditOperation | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    [clrDgField]="'auditOperation'"
+    [clrDgSortOrder]="context.by === 'auditOperation' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeAuditOperation', $event)"
+    [clrFilterValue]="context.operationType || []"
+    [style.width.px]="context.sizeAuditOperation | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       Operations
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
     <clr-dg-filter [clrDgFilter]="operationFilter">
       <app-clr-datagrid-operation-filter [value]="context.operationType" #operationFilter>
       </app-clr-datagrid-operation-filter>
     </clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'correlationId'"
-                 [clrDgSortOrder]="(context.by === 'correlationId') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeCorrelationId', $event)"
-                 [style.width.px]="context.sizeCorrelationId | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    [clrDgField]="'correlationId'"
+    [clrDgSortOrder]="context.by === 'correlationId' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeCorrelationId', $event)"
+    [style.width.px]="context.sizeCorrelationId | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       Operation ID
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'createdBy'"
-                 [clrDgSortOrder]="(context.by === 'createdBy') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeCreatedBy', $event)"
-                 [style.width.px]="context.sizeCreatedBy | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    [clrDgField]="'createdBy'"
+    [clrDgSortOrder]="context.by === 'createdBy' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeCreatedBy', $event)"
+    [style.width.px]="context.sizeCreatedBy | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       Create by
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'platformName'"
-                 [clrDgSortOrder]="(context.by === 'platformName') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizePlatformName', $event)"
-                 [style.width.px]="context.sizePlatformName | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    [clrDgField]="'platformName'"
+    [clrDgSortOrder]="context.by === 'platformName' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizePlatformName', $event)"
+    [style.width.px]="context.sizePlatformName | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       Platform name
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
   <clr-dg-row *ngFor="let record of page?.items" [clrDgItem]="record">
-    <clr-dg-cell class="cell-id">{{record.auditRecordId}}</clr-dg-cell>
-    <clr-dg-cell>{{record.createdOn | datetime}}</clr-dg-cell>
-    <clr-dg-cell><span class="{{record.labelActionClass()}}">{{record.auditAction}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="label">{{record.auditOperation}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="text-truncate">{{record.correlationId}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="text-truncate">{{record.createdBy || 'N/A'}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="text-truncate">{{record.platformName || 'N/A'}}</span></clr-dg-cell>
+    <clr-dg-cell class="cell-id">{{ record.auditRecordId }}</clr-dg-cell>
+    <clr-dg-cell>{{ record.createdOn | datetime }}</clr-dg-cell>
+    <clr-dg-cell
+      ><span class="{{ record.labelActionClass() }}">{{ record.auditAction }}</span></clr-dg-cell
+    >
+    <clr-dg-cell
+      ><span class="label">{{ record.auditOperation }}</span></clr-dg-cell
+    >
+    <clr-dg-cell
+      ><span class="text-truncate">{{ record.correlationId }}</span></clr-dg-cell
+    >
+    <clr-dg-cell
+      ><span class="text-truncate">{{ record.createdBy || 'N/A' }}</span></clr-dg-cell
+    >
+    <clr-dg-cell
+      ><span class="text-truncate">{{ record.platformName || 'N/A' }}</span></clr-dg-cell
+    >
   </clr-dg-row>
   <clr-dg-placeholder>No results found.</clr-dg-placeholder>
   <clr-dg-detail *clrIfDetail="let detail">
-    <clr-dg-detail-header>
-      Record {{detail.auditRecordId}}
-    </clr-dg-detail-header>
+    <clr-dg-detail-header> Record {{ detail.auditRecordId }} </clr-dg-detail-header>
     <clr-dg-detail-body>
       <table class="table">
         <thead>
-        <th class="left" width="150px">Property</th>
-        <th class="left">Value</th>
+          <th class="left" width="150px">Property</th>
+          <th class="left">Value</th>
         </thead>
         <tbody>
-        <tr>
-          <td class="left"><strong>Created On</strong></td>
-          <td class="left">{{detail.createdOn | datetime}}</td>
-        </tr>
-        <tr>
-          <td class="left"><strong>Actions</strong></td>
-          <td class="left"><span class="{{detail.labelActionClass()}}">{{detail.auditAction}}</span></td>
-        </tr>
-        <tr>
-          <td class="left"><strong>Operations</strong></td>
-          <td class="left"><span class="label">{{detail.auditOperation}}</span></td>
-        </tr>
-        <tr>
-          <td class="left"><strong>Operation ID</strong></td>
-          <td class="left">{{detail.correlationId}}</td>
-        </tr>
-        <tr>
-          <td class="left"><strong>Create by</strong></td>
-          <td class="left">{{detail.createdBy || 'N/A'}}</td>
-        </tr>
-        <tr>
-          <td class="left"><strong>Platform name</strong></td>
-          <td class="left">{{detail.platformName || 'N/A'}}</td>
-        </tr>
-        <tr>
-          <td class="left"><strong>Data</strong></td>
-          <td class="left"><code style="word-break: break-all">{{detail.auditData || 'N/A'}}</code></td>
-        </tr>
+          <tr>
+            <td class="left"><strong>Created On</strong></td>
+            <td class="left">{{ detail.createdOn | datetime }}</td>
+          </tr>
+          <tr>
+            <td class="left"><strong>Actions</strong></td>
+            <td class="left">
+              <span class="{{ detail.labelActionClass() }}">{{ detail.auditAction }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="left"><strong>Operations</strong></td>
+            <td class="left">
+              <span class="label">{{ detail.auditOperation }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="left"><strong>Operation ID</strong></td>
+            <td class="left">{{ detail.correlationId }}</td>
+          </tr>
+          <tr>
+            <td class="left"><strong>Create by</strong></td>
+            <td class="left">{{ detail.createdBy || 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="left"><strong>Platform name</strong></td>
+            <td class="left">{{ detail.platformName || 'N/A' }}</td>
+          </tr>
+          <tr>
+            <td class="left"><strong>Data</strong></td>
+            <td class="left">
+              <code style="word-break: break-all">{{ detail.auditData || 'N/A' }}</code>
+            </td>
+          </tr>
         </tbody>
       </table>
     </clr-dg-detail-body>
   </clr-dg-detail>
   <clr-dg-footer>
-    <clr-dg-pagination #pagination
-                       [clrDgTotalItems]="page?.total"
-                       [clrDgPageSize]="context.size"
-                       [clrDgPage]="context.current">
-      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Records per page</clr-dg-page-size>
-      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-      of {{page?.total}} records
+    <clr-dg-pagination
+      #pagination
+      [clrDgTotalItems]="page?.total"
+      [clrDgPageSize]="context.size"
+      [clrDgPage]="context.current"
+    >
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Records per page</clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} records
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

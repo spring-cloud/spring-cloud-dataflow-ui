@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AppsComponent } from './apps.component';
-import { AppComponent } from './app/app.component';
-import { AddComponent } from './add/add.component';
-import { SecurityGuard } from '../security/support/security.guard';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {AppsComponent} from './apps.component';
+import {AppComponent} from './app/app.component';
+import {AddComponent} from './add/add.component';
+import {SecurityGuard} from '../security/support/security.guard';
 
 const routes: Routes = [
   {
@@ -13,7 +13,7 @@ const routes: Routes = [
     data: {
       authenticate: true,
       roles: ['ROLE_VIEW']
-    },
+    }
   },
   {
     path: 'apps/:appType/:appName',
@@ -22,7 +22,7 @@ const routes: Routes = [
     data: {
       authenticate: true,
       roles: ['ROLE_VIEW']
-    },
+    }
   },
   {
     path: 'apps/add',
@@ -30,7 +30,7 @@ const routes: Routes = [
     data: {
       authenticate: true,
       roles: ['ROLE_CREATE']
-    },
+    }
   }
 ];
 
@@ -38,5 +38,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AppsRoutingModule {
-}
+export class AppsRoutingModule {}

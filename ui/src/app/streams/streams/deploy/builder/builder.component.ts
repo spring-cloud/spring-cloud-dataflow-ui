@@ -1,24 +1,32 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit,
-  Output, ViewChild
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
 } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { StreamDeployService } from '../../stream-deploy.service';
-import { map } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-import { StreamDeployValidator } from '../stream-deploy.validator';
-import { Properties } from 'spring-flo';
-import { NotificationService } from '../../../../shared/service/notification.service';
-import { StreamDeployConfig } from '../../../../shared/model/stream.model';
+import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms';
+import {StreamDeployService} from '../../stream-deploy.service';
+import {map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {StreamDeployValidator} from '../stream-deploy.validator';
+import {Properties} from 'spring-flo';
+import {NotificationService} from '../../../../shared/service/notification.service';
+import {StreamDeployConfig} from '../../../../shared/model/stream.model';
 import {
-  GroupPropertiesSource, GroupPropertiesSources, PropertiesGroupsDialogComponent
+  GroupPropertiesSource,
+  GroupPropertiesSources,
+  PropertiesGroupsDialogComponent
 } from '../../../../flo/shared/properties-groups/properties-groups-dialog.component';
-import { App } from '../../../../shared/model/app.model';
-import { PropertiesDialogComponent } from '../../../../flo/shared/properties/properties-dialog.component';
-import { StreamAppPropertiesSource, StreamHead } from '../../../../flo/stream/properties/stream-properties-source';
+import {App} from '../../../../shared/model/app.model';
+import {PropertiesDialogComponent} from '../../../../flo/shared/properties/properties-dialog.component';
+import {StreamAppPropertiesSource, StreamHead} from '../../../../flo/stream/properties/stream-properties-source';
 
 export class AppPropertiesSource implements StreamAppPropertiesSource {
-
   private options: Array<any>;
   public confirm = new EventEmitter();
 
@@ -27,7 +35,7 @@ export class AppPropertiesSource implements StreamAppPropertiesSource {
   }
 
   getStreamHead(): StreamHead {
-    return { presentStreamNames: [] };
+    return {presentStreamNames: []};
   }
 
   getProperties(): Promise<Properties.Property[]> {
@@ -37,7 +45,6 @@ export class AppPropertiesSource implements StreamAppPropertiesSource {
   applyChanges(properties: Properties.Property[]): void {
     this.confirm.emit(properties);
   }
-
 }
 
 @Component({
@@ -47,9 +54,8 @@ export class AppPropertiesSource implements StreamAppPropertiesSource {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuilderComponent implements OnInit, OnDestroy {
-
-  @ViewChild('appPropertiesModal', { static: true }) appPropertiesModal: PropertiesDialogComponent;
-  @ViewChild('groupsPropertiesModal', { static: true }) groupsPropertiesModal: PropertiesGroupsDialogComponent;
+  @ViewChild('appPropertiesModal', {static: true}) appPropertiesModal: PropertiesDialogComponent;
+  @ViewChild('groupsPropertiesModal', {static: true}) groupsPropertiesModal: PropertiesGroupsDialogComponent;
 
   /**
    * Stream ID
@@ -107,26 +113,27 @@ export class BuilderComponent implements OnInit, OnDestroy {
     specificPlatform: true
   };
 
-  constructor(private streamDeployService: StreamDeployService,
-              private changeDetector: ChangeDetectorRef,
-              private notificationService: NotificationService) {
-  }
+  constructor(
+    private streamDeployService: StreamDeployService,
+    private changeDetector: ChangeDetectorRef,
+    private notificationService: NotificationService
+  ) {}
 
   /**
    * On Init
    */
-  ngOnInit() {
+  ngOnInit(): void {
     this.builder$ = this.streamDeployService
       .config(this.id)
-      .pipe(map((streamDeployConfig) => this.build(streamDeployConfig)))
-      .pipe(map((builder) => this.populate(builder)))
-      .pipe(map((builder) => this.populateApp(builder)));
+      .pipe(map(streamDeployConfig => this.build(streamDeployConfig)))
+      .pipe(map(builder => this.populate(builder)))
+      .pipe(map(builder => this.populateApp(builder)));
   }
 
   /**
    * On Destroy
    */
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.refBuilder) {
       this.update.emit(this.getProperties());
     }
@@ -138,7 +145,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   private getProperties(): Array<string> {
     const result: Array<string> = [];
-    const isEmpty = (control: AbstractControl) => !control || (control.value === '' || control.value === null);
+    const isEmpty = (control: AbstractControl) => !control || control.value === '' || control.value === null;
     const deployers: FormArray = this.refBuilder.formGroup.get('deployers') as FormArray;
     const appsVersion: FormGroup = this.refBuilder.formGroup.get('appsVersion') as FormGroup;
     const global: FormArray = this.refBuilder.formGroup.get('global') as FormArray;
@@ -154,7 +161,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       if (!isEmpty(deployers.controls[index].get('global'))) {
         result.push(`deployer.*.${deployer.id}=${deployers.controls[index].get('global').value}`);
       }
-      this.refBuilder.streamDeployConfig.apps.forEach((app) => {
+      this.refBuilder.streamDeployConfig.apps.forEach(app => {
         if (!isEmpty(deployers.controls[index].get(app.name))) {
           result.push(`deployer.${app.name}.${deployer.id}=${deployers.controls[index].get(app.name).value}`);
         }
@@ -163,14 +170,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
     // Dynamic Form
     [specificPlatform, global].forEach((arr, index) => {
-      const keyStart = (!index) ? 'deployer' : 'app';
+      const keyStart = !index ? 'deployer' : 'app';
       arr.controls.forEach((line: FormGroup) => {
         if (!isEmpty(line.get('property'))) {
           const key = line.get('property').value;
           if (!isEmpty(line.get('global'))) {
             result.push(`${keyStart}.*.${key}=${line.get('global').value}`);
           }
-          this.refBuilder.streamDeployConfig.apps.forEach((app) => {
+          this.refBuilder.streamDeployConfig.apps.forEach(app => {
             if (!isEmpty(line.get(app.name))) {
               result.push(`${keyStart}.${app.name}.${key}=${line.get(app.name).value}`);
             }
@@ -180,52 +187,54 @@ export class BuilderComponent implements OnInit, OnDestroy {
     });
 
     // Apps Version (appsVersion)
-    this.refBuilder.streamDeployConfig.apps.forEach((app) => {
+    this.refBuilder.streamDeployConfig.apps.forEach(app => {
       if (!isEmpty(appsVersion.get(app.name))) {
         result.push(`version.${app.name}=${appsVersion.get(app.name).value}`);
       }
       // App deployment props set via modal
-      this.getDeploymentProperties(this.refBuilder.builderDeploymentProperties, app.name).forEach((keyValue) => {
+      this.getDeploymentProperties(this.refBuilder.builderDeploymentProperties, app.name).forEach(keyValue => {
         result.push(`deployer.${app.name}.${keyValue.key.replace(/spring.cloud.deployer./, '')}=${keyValue.value}`);
       });
     });
 
     // Apps Properties
     Object.keys(this.refBuilder.builderAppsProperties).forEach((key: string) => {
-      this.getAppProperties(this.refBuilder.builderAppsProperties, key).forEach((keyValue) => {
+      this.getAppProperties(this.refBuilder.builderAppsProperties, key).forEach(keyValue => {
         result.push(`app.${key}.${keyValue.key}=${keyValue.value}`);
       });
     });
 
     // Global deployment props set via modal
-    this.getDeploymentProperties(this.refBuilder.builderDeploymentProperties).forEach((keyValue) => {
+    this.getDeploymentProperties(this.refBuilder.builderDeploymentProperties).forEach(keyValue => {
       result.push(`deployer.*.${keyValue.key.replace(/spring.cloud.deployer./, '')}=${keyValue.value}`);
     });
 
     // Errors
-    this.refBuilder.errors.global.forEach((error) => {
+    this.refBuilder.errors.global.forEach(error => {
       result.push(error);
     });
-    this.refBuilder.errors.app.forEach((error) => {
+    this.refBuilder.errors.app.forEach(error => {
       result.push(error);
     });
 
     return result;
   }
 
-  private updateFormArray(builder, array: FormArray, appKey: string, key: string, value) {
+  private updateFormArray(builder, array: FormArray, appKey: string, key: string, value): void {
     let group: FormGroup;
-    const lines = array.controls
-      .filter((formGroup: FormGroup) => key === formGroup.get('property').value);
+    const lines = array.controls.filter((formGroup: FormGroup) => key === formGroup.get('property').value);
 
     if (lines.length > 0) {
       group = lines[0] as FormGroup;
     } else {
-      group = new FormGroup({
-        property: new FormControl('', [StreamDeployValidator.key]),
-        global: new FormControl('')
-      }, { validators: StreamDeployValidator.keyRequired });
-      builder.streamDeployConfig.apps.forEach((app) => {
+      group = new FormGroup(
+        {
+          property: new FormControl('', [StreamDeployValidator.key]),
+          global: new FormControl('')
+        },
+        {validators: StreamDeployValidator.keyRequired}
+      );
+      builder.streamDeployConfig.apps.forEach(app => {
         group.addControl(app.name, new FormControl(''));
       });
       array.push(group);
@@ -237,7 +246,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   /**
    * Populate values app
    */
-  private populateApp(builder?: any) {
+  private populateApp(builder?: any): any {
     builder = builder || this.refBuilder;
     if (!builder) {
       return false;
@@ -246,19 +255,22 @@ export class BuilderComponent implements OnInit, OnDestroy {
     builder.errors.app = [];
     const appNames: Array<string> = builder.streamDeployConfig.apps.map((app, index) => {
       const appInfo = builder.streamDeployConfig.apps[index];
-      builder.builderAppsProperties[app.name] = (appInfo && appInfo.options)
-        ? builder.builderAppsProperties[app.name] = appInfo.options
-          .map((property) => Object.assign({}, property))
-        : [];
+      builder.builderAppsProperties[app.name] =
+        appInfo && appInfo.options
+          ? (builder.builderAppsProperties[app.name] = appInfo.options.map(property => Object.assign({}, property)))
+          : [];
       return app.name;
     });
     const add = (array: FormArray) => {
-      const group = new FormGroup({
-        property: new FormControl('', [StreamDeployValidator.key]),
-        global: new FormControl('')
-      }, { validators: StreamDeployValidator.keyRequired });
+      const group = new FormGroup(
+        {
+          property: new FormControl('', [StreamDeployValidator.key]),
+          global: new FormControl('')
+        },
+        {validators: StreamDeployValidator.keyRequired}
+      );
 
-      builder.streamDeployConfig.apps.forEach((app) => {
+      builder.streamDeployConfig.apps.forEach(app => {
         group.addControl(app.name, new FormControl(''));
       });
       array.push(group);
@@ -278,9 +290,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
           if (appNames.indexOf(appKey) > -1) {
             const appProperties = builder.streamDeployConfig.apps[appNames.indexOf(appKey)];
             if (appProperties.options && !appProperties.optionsState.isInvalid) {
-              const option = builder.builderAppsProperties[appKey].find(opt => {
-                return opt.name === keyReduce || opt.id === keyReduce;
-              });
+              const option = builder.builderAppsProperties[appKey].find(
+                opt => opt.name === keyReduce || opt.id === keyReduce
+              );
               if (option) {
                 option.value = value;
                 free = false;
@@ -300,7 +312,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   /**
    * Populate values
    */
-  private populate(builder) {
+  private populate(builder: any): void {
     this.refBuilder = builder;
 
     const appNames: Array<string> = builder.streamDeployConfig.apps.map(app => app.name);
@@ -322,9 +334,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
         });
         if (platform) {
           platform.options.forEach(o => {
-            builder.builderDeploymentProperties.global.push(Object.assign({ isSemantic: true }, o));
+            builder.builderDeploymentProperties.global.push(Object.assign({isSemantic: true}, o));
             builder.streamDeployConfig.apps.forEach((app: any) => {
-              builder.builderDeploymentProperties.apps[app.name].push(Object.assign({ isSemantic: true }, o));
+              builder.builderDeploymentProperties.apps[app.name].push(Object.assign({isSemantic: true}, o));
             });
           });
         }
@@ -350,9 +362,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
           builder.errors.global.push(line);
         } else {
           if (deployerKeys.indexOf(keyReduce) > -1) {
-            builder.formGroup.get('deployers')
-              .controls[deployerKeys.indexOf(keyReduce)]
-              .get(appKey === '*' ? 'global' : appKey).setValue(value);
+            builder.formGroup
+              .get('deployers')
+              .controls[deployerKeys.indexOf(keyReduce)].get(appKey === '*' ? 'global' : appKey)
+              .setValue(value);
           } else {
             const keymatch = 'spring.cloud.deployer.' + keyReduce;
             // go through deployment properties for global and apps and
@@ -376,8 +389,13 @@ export class BuilderComponent implements OnInit, OnDestroy {
             }
 
             if (!match) {
-              this.updateFormArray(builder, builder.formGroup.get('specificPlatform') as FormArray, appKey,
-                keyReduce, value);
+              this.updateFormArray(
+                builder,
+                builder.formGroup.get('specificPlatform') as FormArray,
+                appKey,
+                keyReduce,
+                value
+              );
             }
           }
         }
@@ -404,29 +422,31 @@ export class BuilderComponent implements OnInit, OnDestroy {
   /**
    * Build the Group Form
    */
-  private build(streamDeployConfig: StreamDeployConfig) {
+  private build(streamDeployConfig: StreamDeployConfig): any {
     const formGroup: FormGroup = new FormGroup({});
 
-    const getValue = (defaultValue) => !defaultValue ? '' : defaultValue;
+    const getValue = defaultValue => (!defaultValue ? '' : defaultValue);
     const builderAppsProperties = {};
-    const builderDeploymentProperties = { global: [], apps: {} };
+    const builderDeploymentProperties = {global: [], apps: {}};
 
     // Platform
-    const platformControl = new FormControl(getValue(streamDeployConfig.platform.defaultValue),
+    const platformControl = new FormControl(
+      getValue(streamDeployConfig.platform.defaultValue),
       (formControl: FormControl) => {
         if (this.isErrorPlatform(streamDeployConfig.platform.values, formControl.value)) {
-          return { invalid: true };
+          return {invalid: true};
         }
         if (streamDeployConfig.platform.values.length > 1 && !formControl.value) {
-          return { invalid: true };
+          return {invalid: true};
         }
         return null;
-      });
+      }
+    );
 
-    const defaultPlatform = streamDeployConfig.platform.values.length === 1 ?
-      streamDeployConfig.platform.values[0] : null;
+    const defaultPlatform =
+      streamDeployConfig.platform.values.length === 1 ? streamDeployConfig.platform.values[0] : null;
 
-    const populateDeployerProperties = (value) => {
+    const populateDeployerProperties = value => {
       builderDeploymentProperties.global = [];
       streamDeployConfig.apps.forEach((app: any) => {
         builderDeploymentProperties.apps[app.name] = [];
@@ -434,9 +454,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
       const platform = streamDeployConfig.platform.values.find(p => p.name === value);
       if (platform) {
         platform.options.forEach(o => {
-          builderDeploymentProperties.global.push(Object.assign({ isSemantic: true }, o));
+          builderDeploymentProperties.global.push(Object.assign({isSemantic: true}, o));
           streamDeployConfig.apps.forEach((app: any) => {
-            builderDeploymentProperties.apps[app.name].push(Object.assign({ isSemantic: true }, o));
+            builderDeploymentProperties.apps[app.name].push(Object.assign({isSemantic: true}, o));
           });
         });
       }
@@ -446,7 +466,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       populateDeployerProperties(defaultPlatform.name);
     }
 
-    platformControl.valueChanges.subscribe((value) => {
+    platformControl.valueChanges.subscribe(value => {
       if (!defaultPlatform) {
         populateDeployerProperties(value);
       }
@@ -473,14 +493,13 @@ export class BuilderComponent implements OnInit, OnDestroy {
     const appsVersion = new FormGroup({});
     streamDeployConfig.apps.forEach((app: any) => {
       builderAppsProperties[app.name] = [];
-      const control = new FormControl(null,
-        (formControl: FormControl) => {
-          if (this.isErrorVersion(app, formControl.value)) {
-            return { invalid: true };
-          }
-          return null;
-        });
-      control.valueChanges.subscribe((value) => {
+      const control = new FormControl(null, (formControl: FormControl) => {
+        if (this.isErrorVersion(app, formControl.value)) {
+          return {invalid: true};
+        }
+        return null;
+      });
+      control.valueChanges.subscribe(value => {
         builderAppsProperties[app.name] = [];
         if (this.isErrorVersion(app, value)) {
           app.optionsState.isInvalid = true;
@@ -490,16 +509,20 @@ export class BuilderComponent implements OnInit, OnDestroy {
           app.optionsState.isInvalid = false;
           app.optionsState.isOnError = false;
           app.optionsState.isLoading = true;
-          this.streamDeployService.appDetails(app.type, app.origin, value).subscribe((options) => {
-            app.options = options;
-          }, (error) => {
-            app.options = [];
-            app.optionsState.isOnError = true;
-          }, () => {
-            app.optionsState.isLoading = false;
-            this.changeDetector.markForCheck();
-            this.populateApp();
-          });
+          this.streamDeployService.appDetails(app.type, app.origin, value).subscribe(
+            options => {
+              app.options = options;
+            },
+            error => {
+              app.options = [];
+              app.optionsState.isOnError = true;
+            },
+            () => {
+              app.optionsState.isLoading = false;
+              this.changeDetector.markForCheck();
+              this.populateApp();
+            }
+          );
         }
       });
       control.setValue(getValue(app.defaultValue));
@@ -508,22 +531,26 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
     // Useful methods for FormArray
     const add = (array: FormArray) => {
-      const group = new FormGroup({
-        property: new FormControl('', [StreamDeployValidator.key]),
-        global: new FormControl('')
-      }, { validators: StreamDeployValidator.keyRequired });
+      const group = new FormGroup(
+        {
+          property: new FormControl('', [StreamDeployValidator.key]),
+          global: new FormControl('')
+        },
+        {validators: StreamDeployValidator.keyRequired}
+      );
 
-      streamDeployConfig.apps.forEach((app) => {
+      streamDeployConfig.apps.forEach(app => {
         group.addControl(app.name, new FormControl(''));
       });
       array.push(group);
     };
-    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every((a) => a[1] === '');
+    const isEmpty = (dictionary): boolean => Object.entries(dictionary).every(a => a[1] === '');
     const clean = (val: Array<any>, array: FormArray) => {
-      const toRemove = val.map((a, index) =>
-        ((index < (val.length - 1) && isEmpty(a)) ? index : null)).filter((a) => a != null);
+      const toRemove = val
+        .map((a, index) => (index < val.length - 1 && isEmpty(a) ? index : null))
+        .filter(a => a != null);
 
-      toRemove.reverse().forEach((a) => {
+      toRemove.reverse().forEach(a => {
         array.removeAt(a);
       });
       if (!isEmpty(val[val.length - 1])) {
@@ -578,7 +605,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @param builder
    * @returns {boolean}
    */
-  isSubmittable(builder): boolean {
+  isSubmittable(builder: any): boolean {
     if (!builder) {
       return false;
     }
@@ -593,8 +620,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @returns {boolean}
    */
   isErrorPlatform(platforms: Array<any>, platform: string): boolean {
-    return (platform !== '' && !platforms.find(p => p.key === platform))
-      || (platform === '' && platforms.length > 1);
+    return (platform !== '' && !platforms.find(p => p.key === platform)) || (platform === '' && platforms.length > 1);
   }
 
   /**
@@ -605,7 +631,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @returns {boolean}
    */
   isInvalidPlatform(platforms: Array<any>, platform: string): boolean {
-    return (platform !== '' && !platforms.find(p => p.key === platform));
+    return platform !== '' && !platforms.find(p => p.key === platform);
   }
 
   /**
@@ -615,24 +641,23 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @param control
    * @returns {string}
    */
-  tooltip(streamDeployConfig, control: AbstractControl): string {
+  tooltip(streamDeployConfig: any, control: AbstractControl): string {
     const arr = [];
     if (control instanceof FormGroup) {
       if (control.get('property')) {
         if (control.get('property') && control.get('property').invalid) {
-          arr.push(`The field "property" is not valid.`);
+          arr.push('The field "property" is not valid.');
         }
       }
       if (control.get('global') && control.get('global').invalid) {
-        arr.push(`The field "global" is not valid.`);
+        arr.push('The field "global" is not valid.');
       }
-      streamDeployConfig.apps.forEach((app) => {
+      streamDeployConfig.apps.forEach(app => {
         if (control.get(app.name).invalid) {
           arr.push(`The field "${app.name}" is not valid.`);
         }
       });
     } else {
-
     }
     return arr.join('<br />');
   }
@@ -644,22 +669,31 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @param {string} appId
    * @returns {Array}
    */
-  getDeploymentProperties(builderDeploymentProperties: { global: any[], apps: any }, appId?: string): Array<{ key: string, value: any }> {
+  getDeploymentProperties(
+    builderDeploymentProperties: {global: any[]; apps: any},
+    appId?: string
+  ): Array<{key: string; value: any}> {
     const deploymentProperties = appId ? builderDeploymentProperties.apps[appId] : builderDeploymentProperties.global;
     if (!deploymentProperties) {
       return [];
     }
 
-    return deploymentProperties.map((property: Properties.Property) => {
-      if (property.value !== null && property.value !== undefined && property.value.toString() !== ''
-        && property.value !== property.defaultValue) {
-        return {
-          key: `${property.id}`,
-          value: property.value
-        };
-      }
-      return null;
-    }).filter((app) => app !== null);
+    return deploymentProperties
+      .map((property: Properties.Property) => {
+        if (
+          property.value !== null &&
+          property.value !== undefined &&
+          property.value.toString() !== '' &&
+          property.value !== property.defaultValue
+        ) {
+          return {
+            key: `${property.id}`,
+            value: property.value
+          };
+        }
+        return null;
+      })
+      .filter(app => app !== null);
   }
 
   /**
@@ -669,36 +703,40 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @param {string} appId
    * @param app
    */
-  openDeploymentProperties(builder, appId?: string) {
-    const options = appId ? builder.builderDeploymentProperties.apps[appId] : builder.builderDeploymentProperties.global;
+  openDeploymentProperties(builder: any, appId?: string): void {
+    const options = appId
+      ? builder.builderDeploymentProperties.apps[appId]
+      : builder.builderDeploymentProperties.global;
 
     // jee.foo.bar-xxx -> jee.foo
-    const deduceKey = (key) => {
-      return key.substring(0, key.lastIndexOf('.'));
-    };
+    const deduceKey = key => key.substring(0, key.lastIndexOf('.'));
 
     // grouping all properties by a deduced key
-    const groupBy = (items, key) => items.reduce(
-      (result, item) => {
+    const groupBy = (items, key) =>
+      items.reduce((result, item) => {
         const groupKey = deduceKey(item[key]);
-        return ({
+        return {
           ...result,
-          [groupKey]: [...(result[groupKey] || []), item],
-        });
-      }, {}
-    );
+          [groupKey]: [...(result[groupKey] || []), item]
+        };
+      }, {});
 
     // setup groups and sort alphabetically by group titles
     let groupedPropertiesSources: Array<GroupPropertiesSource> = [];
-    const groupedEntries: { [s: string]: Array<any>; } = groupBy(options, 'id');
+    const groupedEntries: {[s: string]: Array<any>} = groupBy(options, 'id');
     Object.entries(groupedEntries).forEach(v => {
-      const groupedPropertiesSource = new GroupPropertiesSource(Object.assign([], v[1]
-        .map((property) => Object.assign({}, property))), v[0]);
+      const groupedPropertiesSource = new GroupPropertiesSource(
+        Object.assign(
+          [],
+          v[1].map(property => Object.assign({}, property))
+        ),
+        v[0]
+      );
       groupedPropertiesSources.push(groupedPropertiesSource);
     });
-    groupedPropertiesSources = groupedPropertiesSources.sort(((a, b) => {
-      return a.title === b.title ? 0 : a.title < b.title ? -1 : 1;
-    }));
+    groupedPropertiesSources = groupedPropertiesSources.sort((a, b) =>
+      a.title === b.title ? 0 : a.title < b.title ? -1 : 1
+    );
     const groupPropertiesSources = new GroupPropertiesSources(groupedPropertiesSources);
 
     // get new props from modal
@@ -711,7 +749,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       this.changeDetector.markForCheck();
     });
     this.groupsPropertiesModal.setData(groupPropertiesSources);
-    this.groupsPropertiesModal.title = `Deployment properties for platform`;
+    this.groupsPropertiesModal.title = 'Deployment properties for platform';
     this.groupsPropertiesModal.isOpen = true;
   }
 
@@ -722,28 +760,34 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @param {string} appId
    * @returns {Array}
    */
-  getAppProperties(builderAppsProperties: {}, appId: string): Array<{ key: string, value: any }> {
+  getAppProperties(builderAppsProperties: any, appId: string): Array<{key: string; value: any}> {
     const appProperties = builderAppsProperties[appId];
     if (!appProperties) {
       return [];
     }
-    return appProperties.map((property: Properties.Property) => {
-      if (property.value !== null && property.value !== undefined && property.value.toString() !== ''
-        && property.value !== property.defaultValue) {
-        if (property.id.startsWith(`${appId}.`)) {
-          return {
-            key: `${property.name}`,
-            value: property.value
-          };
-        } else {
-          return {
-            key: `${property.id}`,
-            value: property.value
-          };
+    return appProperties
+      .map((property: Properties.Property) => {
+        if (
+          property.value !== null &&
+          property.value !== undefined &&
+          property.value.toString() !== '' &&
+          property.value !== property.defaultValue
+        ) {
+          if (property.id.startsWith(`${appId}.`)) {
+            return {
+              key: `${property.name}`,
+              value: property.value
+            };
+          } else {
+            return {
+              key: `${property.id}`,
+              value: property.value
+            };
+          }
         }
-      }
-      return null;
-    }).filter((app) => app !== null);
+        return null;
+      })
+      .filter(app => app !== null);
   }
 
   /**
@@ -752,11 +796,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @param builder
    * @param app
    */
-  openApp(builder, app: any) {
+  openApp(builder: any, app: any): void {
     const version = builder.formGroup.get('appsVersion').get(app.name).value || app.version;
     const options = builder.builderAppsProperties[app.name] ? builder.builderAppsProperties[app.name] : app.options;
-    const appPropertiesSource = new AppPropertiesSource(Object.assign([], options
-      .map((property) => Object.assign({}, property))));
+    const appPropertiesSource = new AppPropertiesSource(
+      Object.assign(
+        [],
+        options.map(property => Object.assign({}, property))
+      )
+    );
     appPropertiesSource.confirm.subscribe((properties: Array<any>) => {
       builder.builderAppsProperties[app.name] = properties;
       this.changeDetector.markForCheck();
@@ -772,7 +820,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   /**
    * Remove an error property
    */
-  removeError(value: { type: string, index: number }) {
+  removeError(value: {type: string; index: number}): void {
     const errors = this.refBuilder.errors[value.type];
     if (errors[value.index]) {
       errors.splice(value.index, 1);
@@ -783,7 +831,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   /**
    * Emit a request deploy
    */
-  deployStream() {
+  deployStream(): void {
     if (!this.isSubmittable(this.refBuilder)) {
       this.notificationService.error('An error occurred', 'Some field(s) are invalid.');
     } else {
@@ -794,15 +842,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
   /**
    * Emit a request export
    */
-  exportProps() {
+  exportProps(): void {
     this.exportProperties.emit(this.getProperties());
   }
 
   /**
    * Copye to clipboard
    */
-  copyToClipboard() {
+  copyToClipboard(): void {
     this.copyProperties.emit(this.getProperties());
   }
-
 }

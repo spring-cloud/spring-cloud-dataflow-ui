@@ -1,10 +1,9 @@
-import { Flo } from 'spring-flo';
-import { convertParseResponseToJsonGraph } from './text-to-graph';
-import { JsonGraph, TextToGraphConverter } from './text-to-graph';
-import { Parser } from '../shared/service/parser';
+import {Flo} from 'spring-flo';
+import {convertParseResponseToJsonGraph} from './text-to-graph';
+import {JsonGraph, TextToGraphConverter} from './text-to-graph';
+import {Parser} from '../shared/service/parser';
 
 describe('text-to-graph', () => {
-
   let parseResult: Parser.ParseResult;
   let graph: JsonGraph.Graph;
   let node: JsonGraph.Node;
@@ -14,9 +13,9 @@ describe('text-to-graph', () => {
 
   beforeAll(() => {
     const fakeTimeMetadata: Flo.ElementMetadata = {
-      'group': 'fake',
-      'name': 'time',
-      get(property: String): Promise<Flo.PropertyMetadata> {
+      group: 'fake',
+      name: 'time',
+      get(property: string): Promise<Flo.PropertyMetadata> {
         return Promise.resolve(null);
       },
       properties(): Promise<Map<string, Flo.PropertyMetadata>> {
@@ -28,7 +27,6 @@ describe('text-to-graph', () => {
     fakemetamodel = new Map();
     fakemetamodel['fake'] = fakeTime;
   });
-
 
   // First set of tests don't require a fake Flo - they convert DSL to a JSON graph (not a jointjs graph)
   it('jsongraph: nograph', () => {
@@ -279,9 +277,9 @@ describe('text-to-graph', () => {
   });
 
   it('incorrect tap link - gh514', () => {
-    graph = getGraph('STREAM-1=ftp | filter > :foo\n' +
-      'STREAM-2=:STREAM-1.ftp > splitter > :foo\n' +
-      'STREAM-3=:foo > log');
+    graph = getGraph(
+      'STREAM-1=ftp | filter > :foo\n' + 'STREAM-2=:STREAM-1.ftp > splitter > :foo\n' + 'STREAM-3=:foo > log'
+    );
     expect(graph.format).toEqual('scdf');
     expect(graph.errors).toBeUndefined();
     expect(graph.nodes.length).toEqual(5);
@@ -334,11 +332,11 @@ describe('text-to-graph', () => {
   });
 
   it('group selection', () => {
-    const metamodel: Map<string, Map<string, Flo.ElementMetadata>> = new Map<string, Map<string, Flo.ElementMetadata>>();
-    metamodel.set('processor', new Map<string, Flo.ElementMetadata>([['counter', createEntry('processor', 'counter')]]));
-    metamodel.set('source', new Map<string, Flo.ElementMetadata>([['counter', createEntry('source', 'counter')]]));
-    metamodel.set('sink', new Map<string, Flo.ElementMetadata>([['counter', createEntry('sink', 'counter')]]));
-    const converter: any = new TextToGraphConverter('', null, metamodel);
+    const m: Map<string, Map<string, Flo.ElementMetadata>> = new Map<string, Map<string, Flo.ElementMetadata>>();
+    m.set('processor', new Map<string, Flo.ElementMetadata>([['counter', createEntry('processor', 'counter')]]));
+    m.set('source', new Map<string, Flo.ElementMetadata>([['counter', createEntry('source', 'counter')]]));
+    m.set('sink', new Map<string, Flo.ElementMetadata>([['counter', createEntry('sink', 'counter')]]));
+    const converter: any = new TextToGraphConverter('', null, m);
     expect(converter.matchGroup('counter', 1, 1)).toEqual('processor');
     expect(converter.matchGroup('counter', 3, 2)).toEqual('processor');
     expect(converter.matchGroup('counter', 1, 0)).toEqual('sink');
@@ -363,7 +361,7 @@ describe('text-to-graph', () => {
     return {
       group: group,
       name: name,
-      get(property: String): Promise<Flo.PropertyMetadata> {
+      get(property: string): Promise<Flo.PropertyMetadata> {
         return Promise.resolve(null);
       },
       properties(): Promise<Map<string, Flo.PropertyMetadata>> {
@@ -371,5 +369,4 @@ describe('text-to-graph', () => {
       }
     };
   }
-
 });

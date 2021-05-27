@@ -1,7 +1,6 @@
-import { tokenize, Token, TokenKind } from './tokenizer';
+import {tokenize, Token, TokenKind} from './tokenizer';
 
 describe('tokenizer:', () => {
-
   let tokens: Token[];
 
   it('basic', () => {
@@ -35,20 +34,20 @@ describe('tokenizer:', () => {
   });
 
   it('single quoted literal', () => {
-    tokens = tokenize('\'abc def\'');
+    tokens = tokenize("'abc def'");
     expect(tokens.length).toEqual(1);
-    expectToken(tokens[0], TokenKind.LITERAL_STRING, 0, 9, '\'abc def\'');
+    expectToken(tokens[0], TokenKind.LITERAL_STRING, 0, 9, "'abc def'");
   });
 
   it('single quoted literal', () => {
-    tokens = tokenize('\'ab\'\'c def\'');
+    tokens = tokenize("'ab''c def'");
     expect(tokens.length).toEqual(1);
-    expectToken(tokens[0], TokenKind.LITERAL_STRING, 0, 11, '\'ab\'\'c def\'');
+    expectToken(tokens[0], TokenKind.LITERAL_STRING, 0, 11, "'ab''c def'");
   });
 
   it('error: non terminated single quoted literal', () => {
     try {
-      tokens = tokenize('\'abc def');
+      tokens = tokenize("'abc def");
       fail();
     } catch (error) {
       expect(error.msg).toEqual('TokenizationError: non terminating quoted string');
@@ -64,9 +63,9 @@ describe('tokenizer:', () => {
   });
 
   it('quote values', () => {
-    tokens = tokenize('--a=\'bc\'\'d ef\'');
+    tokens = tokenize("--a='bc''d ef'");
     expect(tokens.length).toEqual(4);
-    expectToken(tokens[3], TokenKind.LITERAL_STRING, 4, 14, '\'bc\'\'d ef\'');
+    expectToken(tokens[3], TokenKind.LITERAL_STRING, 4, 14, "'bc''d ef'");
   });
 
   it('double quoted literal', () => {
@@ -91,7 +90,7 @@ describe('tokenizer:', () => {
       tokens = tokenize(' -abc=def');
       fail();
     } catch (error) {
-      expect(error.msg).toEqual('TokenizationError: expected two hyphens: \'--\'');
+      expect(error.msg).toEqual("TokenizationError: expected two hyphens: '--'");
       expect(error.start).toEqual(1);
       expect(error.end).toEqual(2);
     }

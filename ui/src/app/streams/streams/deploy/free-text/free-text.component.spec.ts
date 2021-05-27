@@ -1,45 +1,43 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../../../tests/api/about.service.mock';
-import { NotificationServiceMock } from '../../../../tests/service/notification.service.mock';
-import { RuntimeServiceMock } from '../../../../tests/api/runtime.service.mock.spec';
-import { GrafanaServiceMock } from '../../../../tests/service/grafana.service.mock';
-import { FreeTextComponent } from './free-text.component';
-import { RoleDirective } from '../../../../security/directive/role.directive';
-import { ContextServiceMock } from '../../../../tests/service/context.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../../../tests/api/about.service.mock';
+import {NotificationServiceMock} from '../../../../tests/service/notification.service.mock';
+import {RuntimeServiceMock} from '../../../../tests/api/runtime.service.mock.spec';
+import {GrafanaServiceMock} from '../../../../tests/service/grafana.service.mock';
+import {FreeTextComponent} from './free-text.component';
+import {RoleDirective} from '../../../../security/directive/role.directive';
+import {ContextServiceMock} from '../../../../tests/service/context.service.mock';
 
 describe('streams/deploy/free-text/free-text.component.ts', () => {
   let component: FreeTextComponent;
   let fixture: ComponentFixture<FreeTextComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        FreeTextComponent,
-        RoleDirective
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        RuntimeServiceMock.provider,
-        GrafanaServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FreeTextComponent, RoleDirective],
+        imports: [
+          FormsModule,
+          ReactiveFormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          NotificationServiceMock.provider,
+          RuntimeServiceMock.provider,
+          GrafanaServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FreeTextComponent);
@@ -53,9 +51,9 @@ describe('streams/deploy/free-text/free-text.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load a file', async (done) => {
+  it('should load a file', async done => {
     fixture.detectChanges();
-    const event = { target: { files: [new Blob(['a=a'])] } };
+    const event = {target: {files: [new Blob(['a=a'])]}};
     component.fileChange(event);
     setTimeout(() => {
       fixture.detectChanges();
@@ -63,5 +61,4 @@ describe('streams/deploy/free-text/free-text.component.ts', () => {
       done();
     }, 500);
   });
-
 });

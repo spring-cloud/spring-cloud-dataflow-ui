@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { DateTime } from 'luxon';
+import {Pipe, PipeTransform} from '@angular/core';
+import {DateTime} from 'luxon';
 
 @Pipe({
   name: 'duration'

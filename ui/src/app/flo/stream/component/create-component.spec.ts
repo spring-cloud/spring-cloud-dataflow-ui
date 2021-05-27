@@ -1,19 +1,19 @@
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { MetamodelService } from '../metamodel.service';
-import { MockSharedAppService } from '../../../tests/service/app.service.mock';
-import { ParserService } from '../../shared/service/parser.service';
-import { LoggerService } from '../../../shared/service/logger.service';
-import { StreamsModule } from '../../../streams/streams.module';
-import { NotificationService } from '../../../shared/service/notification.service';
-import { StreamFloCreateComponent } from './create.component';
-import { SharedModule } from '../../../shared/shared.module';
-import { StreamService } from '../../../shared/api/stream.service';
-import { MockStreamsService } from '../../../tests/service/stream.service.mock';
-import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {MetamodelService} from '../metamodel.service';
+import {MockSharedAppService} from '../../../tests/service/app.service.mock';
+import {ParserService} from '../../shared/service/parser.service';
+import {LoggerService} from '../../../shared/service/logger.service';
+import {StreamsModule} from '../../../streams/streams.module';
+import {NotificationService} from '../../../shared/service/notification.service';
+import {StreamFloCreateComponent} from './create.component';
+import {SharedModule} from '../../../shared/shared.module';
+import {StreamService} from '../../../shared/api/stream.service';
+import {MockStreamsService} from '../../../tests/service/stream.service.mock';
+import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -44,14 +44,13 @@ describe('StreamCreateComponent', () => {
         EffectsModule.forRoot([])
       ],
       providers: [
-        { provide: StreamService, useValue: streamsService },
-        { provide: MetamodelService, useValue: metamodelService },
-        { provide: NotificationService, useValue: notificationService },
-        { provide: ParserService, useValue: parserService },
-        { provide: LoggerService, useValue: loggerService }
+        {provide: StreamService, useValue: streamsService},
+        {provide: MetamodelService, useValue: metamodelService},
+        {provide: NotificationService, useValue: notificationService},
+        {provide: ParserService, useValue: parserService},
+        {provide: LoggerService, useValue: loggerService}
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -70,7 +69,7 @@ describe('StreamCreateComponent', () => {
     expect(component.isCreateStreamsDisabled).toBeTruthy();
   });
 
-  it('enable stream creation for valid stream', (done) => {
+  it('enable stream creation for valid stream', done => {
     fixture.detectChanges();
     expect(component.isCreateStreamsDisabled).toBeTruthy();
     component.dsl = 'http | ftp';
@@ -87,7 +86,7 @@ describe('StreamCreateComponent', () => {
     }, 1000);
   });
 
-  it('disable stream creation for parse error', (done) => {
+  it('disable stream creation for parse error', done => {
     fixture.detectChanges();
     expect(component.isCreateStreamsDisabled).toBeTruthy();
     component.dsl = 'http -ghdfv | ftp';
@@ -104,7 +103,7 @@ describe('StreamCreateComponent', () => {
     }, 1000);
   });
 
-  it('disable stream creation for invalid stream (space)', (done) => {
+  it('disable stream creation for invalid stream (space)', done => {
     fixture.detectChanges();
     expect(component.isCreateStreamsDisabled).toBeTruthy();
     component.dsl = ' ';
@@ -121,7 +120,7 @@ describe('StreamCreateComponent', () => {
     }, 1000);
   });
 
-  it('disable stream creation for graph validation error marker', (done) => {
+  it('disable stream creation for graph validation error marker', done => {
     fixture.detectChanges();
     expect(component.isCreateStreamsDisabled).toBeTruthy();
     component.dsl = 'http';
@@ -138,5 +137,4 @@ describe('StreamCreateComponent', () => {
       done();
     }, 1000);
   });
-
 });

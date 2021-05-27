@@ -1,6 +1,6 @@
 import * as fromRoot from '../../reducers/reducer';
 import * as AboutActions from './about.action';
-import { createReducer, on } from '@ngrx/store';
+import {createReducer, on} from '@ngrx/store';
 
 export const aboutFeatureKey = 'about';
 
@@ -10,7 +10,6 @@ export interface DependencyState {
   url: string;
   checksumSha1: string;
   checksumSha256: string;
-
 }
 
 export interface RuntimeEnvironmentState {
@@ -21,7 +20,7 @@ export interface RuntimeEnvironmentState {
   platformApiVersion: string;
   platformClientVersion: string;
   platformHostVersion: string;
-  platformSpecificInfo: object;
+  platformSpecificInfo: any;
   platformType: string;
   springBootVersion: string;
   springVersion: string;
@@ -29,32 +28,32 @@ export interface RuntimeEnvironmentState {
 
 export interface AboutState {
   versions: {
-    implementation: DependencyState,
-    core: DependencyState,
-    dashboard: DependencyState,
-    shell: DependencyState
+    implementation: DependencyState;
+    core: DependencyState;
+    dashboard: DependencyState;
+    shell: DependencyState;
   };
   features: {
-    streams: boolean,
-    tasks: boolean,
-    schedules: boolean,
-    monitoringDashboardType: string
+    streams: boolean;
+    tasks: boolean;
+    schedules: boolean;
+    monitoringDashboardType: string;
   };
   runtimeEnvironment: {
-    appDeployer: RuntimeEnvironmentState,
-    taskLaunchers: Array<RuntimeEnvironmentState>
+    appDeployer: RuntimeEnvironmentState;
+    taskLaunchers: Array<RuntimeEnvironmentState>;
   };
-  'monitoringDashboardInfo': {
-    url?: string,
-    refreshInterval?: number,
-    dashboardType?: string,
-    source?: string
+  monitoringDashboardInfo: {
+    url?: string;
+    refreshInterval?: number;
+    dashboardType?: string;
+    source?: string;
   };
   security: {
-    isAuthentication: boolean,
-    isAuthenticated: boolean,
-    username: string,
-    roles: Array<string>
+    isAuthentication: boolean;
+    isAuthenticated: boolean;
+    username: string;
+    roles: Array<string>;
   };
 }
 
@@ -62,29 +61,17 @@ export interface State extends fromRoot.State {
   [aboutFeatureKey]: AboutState;
 }
 
-export const getVersions = (state: State) => {
-  return state[aboutFeatureKey].versions;
-};
+export const getVersions = (state: State): any => state[aboutFeatureKey].versions;
 
-export const getFeatures = (state: State) => {
-  return state[aboutFeatureKey].features;
-};
+export const getFeatures = (state: State): any => state[aboutFeatureKey].features;
 
-export const getRuntimeEnvironment = (state: State) => {
-  return state[aboutFeatureKey].runtimeEnvironment;
-};
+export const getRuntimeEnvironment = (state: State): any => state[aboutFeatureKey].runtimeEnvironment;
 
-export const getAbout = (state: State) => {
-  return state[aboutFeatureKey];
-};
+export const getAbout = (state: State): any => state[aboutFeatureKey];
 
-export const getMonitoring = (state: State) => {
-  return state[aboutFeatureKey].monitoringDashboardInfo;
-};
+export const getMonitoring = (state: State): any => state[aboutFeatureKey].monitoringDashboardInfo;
 
-export const getSecurity = (state: State) => {
-  return state[aboutFeatureKey].security;
-};
+export const getSecurity = (state: State): any => state[aboutFeatureKey].security;
 
 export const initialState: AboutState = {
   versions: {
@@ -118,11 +105,11 @@ export const initialState: AboutState = {
 
 export const reducer = createReducer(
   initialState,
-  on(AboutActions.loaded, (state, { versions, features, runtimeEnvironment, monitoringDashboardInfo, security }) => ({
+  on(AboutActions.loaded, (state, {versions, features, runtimeEnvironment, monitoringDashboardInfo, security}) => ({
     versions,
     features,
     runtimeEnvironment,
     monitoringDashboardInfo,
-    security,
+    security
   }))
 );

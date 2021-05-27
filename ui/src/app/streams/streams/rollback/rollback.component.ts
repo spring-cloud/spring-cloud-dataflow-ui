@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { StreamHistory } from '../../../shared/model/stream.model';
-import { StreamService } from '../../../shared/api/stream.service';
-import { NotificationService } from '../../../shared/service/notification.service';
+import {Component, EventEmitter, Output} from '@angular/core';
+import {StreamHistory} from '../../../shared/model/stream.model';
+import {StreamService} from '../../../shared/api/stream.service';
+import {NotificationService} from '../../../shared/service/notification.service';
 
 @Component({
   selector: 'app-stream-rollback',
@@ -14,30 +14,32 @@ export class RollbackComponent {
   isRunning = false;
   @Output() onRollback = new EventEmitter();
 
-  constructor(private streamService: StreamService,
-              private notificationService: NotificationService) {
-  }
+  constructor(private streamService: StreamService, private notificationService: NotificationService) {}
 
-  open(history: StreamHistory) {
+  open(history: StreamHistory): void {
     this.history = history;
     this.isOpen = true;
   }
 
-  close() {
+  close(): void {
     this.isOpen = false;
   }
 
-  rollback() {
+  rollback(): void {
     this.isRunning = true;
-    this.streamService.rollbackStream(this.history)
-      .subscribe(data => {
-          this.notificationService.success('Rollback success', `Successful stream rollback to version '${this.history.version}'`);
-          this.onRollback.emit(true);
-          this.close();
-        }, error => {
-          this.notificationService.error('An error occurred', error);
-          this.isRunning = false;
-        }
-      );
+    this.streamService.rollbackStream(this.history).subscribe(
+      data => {
+        this.notificationService.success(
+          'Rollback success',
+          `Successful stream rollback to version '${this.history.version}'`
+        );
+        this.onRollback.emit(true);
+        this.close();
+      },
+      error => {
+        this.notificationService.error('An error occurred', error);
+        this.isRunning = false;
+      }
+    );
   }
 }

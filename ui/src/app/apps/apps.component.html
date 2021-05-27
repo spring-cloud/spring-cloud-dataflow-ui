@@ -1,91 +1,119 @@
 <h1 class="page-title-actions">
   Applications
   <span class="actions">
-    <button id="btnAddApplications" type="button" class="btn btn-sm btn-primary" (click)="add()"
-            [appRole]="['ROLE_CREATE']">
+    <button
+      id="btnAddApplications"
+      type="button"
+      class="btn btn-sm btn-primary"
+      (click)="add()"
+      [appRole]="['ROLE_CREATE']"
+    >
       Add application(s)
     </button>
   </span>
 </h1>
-<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
-              *ngIf="isInit" #datagrid>
+<clr-datagrid
+  (clrDgRefresh)="refresh($event)"
+  [clrDgLoading]="loading"
+  [(clrDgSelected)]="!grouped ? null : selected"
+  *ngIf="isInit"
+  #datagrid
+>
   <clr-dg-action-bar *ngIf="grouped">
-    <button *ngIf="grouped" type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
-      Cancel
-    </button>
-    <button id="btnUnregisterApplications" type="button" [disabled]="selected?.length === 0"
-            class="btn btn-sm btn-outline-danger" (click)="unregistersApp(selected)"
-            [appRole]="['ROLE_DESTROY']">
+    <button *ngIf="grouped" type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">Cancel</button>
+    <button
+      id="btnUnregisterApplications"
+      type="button"
+      [disabled]="selected?.length === 0"
+      class="btn btn-sm btn-outline-danger"
+      (click)="unregistersApp(selected)"
+      [appRole]="['ROLE_DESTROY']"
+    >
       Unregister application(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button id="btnGroupActions" type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)"
-            [appRole]="['ROLE_DESTROY']">
+    <button
+      id="btnGroupActions"
+      type="button"
+      class="btn btn-sm btn-secondary"
+      (click)="setMode(true)"
+      [appRole]="['ROLE_DESTROY']"
+    >
       Group Actions
     </button>
-    <button id="btnRefresh" type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
-      Refresh
-    </button>
+    <button id="btnRefresh" type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
   </clr-dg-action-bar>
-  <clr-dg-column [clrDgField]="'name'"
-                 [clrDgSortOrder]="(context.by === 'name') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeName', $event)"
-                 [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async"
-                 [clrFilterValue]="context.name">
-    <ng-container>
-      Name
-    </ng-container>
+  <clr-dg-column
+    [clrDgField]="'name'"
+    [clrDgSortOrder]="context.by === 'name' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeName', $event)"
+    [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
+    [clrFilterValue]="context.name"
+  >
+    <ng-container> Name </ng-container>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'type'"
-                 (clrDgColumnResize)="updateContext('sizeType', $event)"
-                 [clrDgSortOrder]="(context.by === 'type') ? context.reverse ? -1 : 1 : 0"
-                 [style.width.px]="context.sizeType | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      Type
-    </ng-container>
+  <clr-dg-column
+    [clrDgField]="'type'"
+    (clrDgColumnResize)="updateContext('sizeType', $event)"
+    [clrDgSortOrder]="context.by === 'type' ? (context.reverse ? -1 : 1) : 0"
+    [style.width.px]="context.sizeType | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> Type </ng-container>
     <clr-dg-filter [clrDgFilter]="typeFilter">
       <app-clr-datagrid-type-filter [value]="context.type" #typeFilter></app-clr-datagrid-type-filter>
     </clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'version'"
-                 [clrDgSortOrder]="(context.by === 'version') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeVersion', $event)"
-                 [style.width.px]="context.sizeVersion | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    [clrDgField]="'version'"
+    [clrDgSortOrder]="context.by === 'version' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeVersion', $event)"
+    [style.width.px]="context.sizeVersion | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       Version
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'uri'"
-                 (clrDgColumnResize)="updateContext('sizeUri', $event)"
-                 [clrDgSortOrder]="(context.by === 'uri') ? context.reverse ? -1 : 1 : 0"
-                 [style.width.px]="context.sizeUri | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    [clrDgField]="'uri'"
+    (clrDgColumnResize)="updateContext('sizeUri', $event)"
+    [clrDgSortOrder]="context.by === 'uri' ? (context.reverse ? -1 : 1) : 0"
+    [style.width.px]="context.sizeUri | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       URI
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
-  <clr-dg-column (clrDgColumnResize)="updateContext('sizeMetadataUri', $event)"
-                 [style.width.px]="context.sizeMetadataUri | datagridcolumn: datagrid : contextName | async">
+  <clr-dg-column
+    (clrDgColumnResize)="updateContext('sizeMetadataUri', $event)"
+    [style.width.px]="context.sizeMetadataUri | datagridcolumn: datagrid:contextName | async"
+  >
     <ng-container>
       Metadata URI
-      <clr-dg-filter style="display:none;"></clr-dg-filter>
+      <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
   <clr-dg-row *ngFor="let app of page?.items" [clrDgItem]="app">
     <clr-dg-cell>
-      <a class="link text-truncate" (click)="details(app)">{{app.name}}</a>
+      <a class="link text-truncate" (click)="details(app)">{{ app.name }}</a>
     </clr-dg-cell>
-    <clr-dg-cell><span class="{{app.labelTypeClass()}}">{{app.type}}</span></clr-dg-cell>
+    <clr-dg-cell
+      ><span class="{{ app.labelTypeClass() }}">{{ app.type }}</span></clr-dg-cell
+    >
     <clr-dg-cell>
       <span class="label">
-        {{app.version}}
-        <span *ngIf="app.versions?.length > 1" class="badge badge-light-blue">{{app.versions?.length}}</span>
+        {{ app.version }}
+        <span *ngIf="app.versions?.length > 1" class="badge badge-light-blue">{{ app.versions?.length }}</span>
       </span>
     </clr-dg-cell>
-    <clr-dg-cell><span class="text-truncate">{{app.uri}}</span></clr-dg-cell>
-    <clr-dg-cell><span class="text-truncate">{{app.metaDataUri}}</span></clr-dg-cell>
+    <clr-dg-cell
+      ><span class="text-truncate">{{ app.uri }}</span></clr-dg-cell
+    >
+    <clr-dg-cell
+      ><span class="text-truncate">{{ app.metaDataUri }}</span></clr-dg-cell
+    >
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(app)">Details</button>
       <button class="action-item" *ngIf="app.versions?.length > 1" (click)="manageVersion(app)">Manage Version</button>
@@ -94,11 +122,14 @@
   </clr-dg-row>
   <clr-dg-placeholder>No results found.</clr-dg-placeholder>
   <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgTotalItems]="page?.total"
-                       [clrDgPageSize]="+context.size" [clrDgPage]="+context.current">
-      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Applications per page</clr-dg-page-size>
-      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-      of {{page?.total}} applications
+    <clr-dg-pagination
+      #pagination
+      [clrDgTotalItems]="page?.total"
+      [clrDgPageSize]="+context.size"
+      [clrDgPage]="+context.current"
+    >
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Applications per page</clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} applications
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

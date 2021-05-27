@@ -1,46 +1,44 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FocusDirective } from '../../../shared/directive/focus.directive';
-import { BrowserModule, By } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../../tests/api/about.service.mock';
-import { AppServiceMock } from '../../../tests/api/app.service.mock';
-import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
-import { WebsiteStartersComponent } from './website-starters.component';
-import { throwError } from 'rxjs';
-import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FocusDirective} from '../../../shared/directive/focus.directive';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../../tests/api/about.service.mock';
+import {AppServiceMock} from '../../../tests/api/app.service.mock';
+import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
+import {WebsiteStartersComponent} from './website-starters.component';
+import {throwError} from 'rxjs';
+import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 
 describe('apps/website-starters/website-starters.component.ts', () => {
   let component: WebsiteStartersComponent;
   let fixture: ComponentFixture<WebsiteStartersComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        WebsiteStartersComponent,
-        FocusDirective
-      ],
-      imports: [
-        BrowserModule,
-        ReactiveFormsModule,
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [WebsiteStartersComponent, FocusDirective],
+        imports: [
+          BrowserModule,
+          ReactiveFormsModule,
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          AppServiceMock.provider,
+          NotificationServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WebsiteStartersComponent);
@@ -53,7 +51,7 @@ describe('apps/website-starters/website-starters.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run an app import', async (done) => {
+  it('should run an app import', async done => {
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     fixture.detectChanges();
     const spy = spyOn(AppServiceMock.mock, 'importUri').and.callThrough();
@@ -80,9 +78,7 @@ describe('apps/website-starters/website-starters.component.ts', () => {
   });
 
   it('should handle error on run', () => {
-    spyOn(AppServiceMock.mock, 'importUri').and.callFake(() => {
-      return throwError(new Error('Fake error'));
-    });
+    spyOn(AppServiceMock.mock, 'importUri').and.callFake(() => throwError(new Error('Fake error')));
     fixture.detectChanges();
     component.value = 'stream.kafka.maven';
     component.force = true;
@@ -91,5 +87,4 @@ describe('apps/website-starters/website-starters.component.ts', () => {
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
   });
-
 });

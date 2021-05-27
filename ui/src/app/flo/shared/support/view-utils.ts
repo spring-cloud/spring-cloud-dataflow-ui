@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-import { dia } from 'jointjs';
+import {dia} from 'jointjs';
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;
 
-
 export class ViewUtils {
-
-  static fitLabel(paper: dia.Paper, node: dia.Element, labelPath: string, paddingLeft: number, paddingRight?: number): void {
+  static fitLabel(
+    paper: dia.Paper,
+    node: dia.Element,
+    labelPath: string,
+    paddingLeft: number,
+    paddingRight?: number
+  ): void {
     if (isNaN(paddingRight)) {
       paddingRight = paddingLeft;
     }
@@ -80,7 +84,7 @@ export class ViewUtils {
 
       if (width > threshold) {
         const styles = getComputedStyle(labelElement);
-        const stylesObj: {} = {};
+        const stylesObj: any = {};
         for (let i = 0; i < styles.length; i++) {
           const property = styles.item(i);
           if (!property.startsWith('-')) {
@@ -117,7 +121,9 @@ export class ViewUtils {
           }
 
           if (offset) {
-            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), {silent: true});
+            node.attr(`${labelPath}/refX`, Math.max((offset + paddingLeft + width / 2) / boundingBox.width, 0.5), {
+              silent: true
+            });
           }
           // TODO: What does this do? Replaces rendering with silent update it seems. Verify later.
           node.attr(`${labelPath}/text`, textNode.data);
@@ -130,7 +136,12 @@ export class ViewUtils {
     }
   }
 
-  static fitLabelWithFixedLocation(paper: dia.Paper, node: dia.Element, labelPath: string, paddingRight?: number): void {
+  static fitLabelWithFixedLocation(
+    paper: dia.Paper,
+    node: dia.Element,
+    labelPath: string,
+    paddingRight?: number
+  ): void {
     if (isNaN(paddingRight)) {
       paddingRight = 0;
     }
@@ -160,7 +171,7 @@ export class ViewUtils {
 
       if (width > threshold) {
         const styles = getComputedStyle(labelElement);
-        const stylesObj: {} = {};
+        const stylesObj: any = {};
         for (let i = 0; i < styles.length; i++) {
           const property = styles.item(i);
           if (!property.startsWith('-')) {
@@ -192,7 +203,7 @@ export class ViewUtils {
 
       if (width > widthConstraint) {
         const styles = getComputedStyle(labelElement);
-        const stylesObj: {} = {};
+        const stylesObj: any = {};
         for (let i = 0; i < styles.length; i++) {
           const property = styles.item(i);
           if (!property.startsWith('-')) {

@@ -1,9 +1,8 @@
-import { FormControl, ValidationErrors } from '@angular/forms';
-import { KeyValueValidators } from './key-value.interface';
+import {FormControl, ValidationErrors} from '@angular/forms';
+import {KeyValueValidators} from './key-value.interface';
 
 export class KeyValueValidator {
-
-  public static validateSyntax(value: string) {
+  public static validateSyntax(value: string): any {
     value = (value || '').trim();
     if (value === '') {
       return null;
@@ -30,7 +29,7 @@ export class KeyValueValidator {
     };
   }
 
-  static validateKeyValue(validators: KeyValueValidators) {
+  static validateKeyValue(validators: KeyValueValidators): any {
     return (c: FormControl) => {
       const errors: Array<any> = KeyValueValidator.getErrors(c.value, validators)
         .map((line, index) => {
@@ -38,7 +37,8 @@ export class KeyValueValidator {
             return `Line ${index + 1}: ${line.message}`;
           }
           return null;
-        }).filter((ob) => !!ob);
+        })
+        .filter(ob => !!ob);
       const err = {
         syntaxError: {
           given: c.value,
@@ -53,59 +53,52 @@ export class KeyValueValidator {
     if (value.trim().toString() === '') {
       return [];
     }
-    return (value.toString() || ' ')
-      .split('\n')
-      .map((line: string, index: number) => {
-        const lineClean = line.replace(' ', '');
-        if (!lineClean) {
-          return {
-            label: (index + 1),
-            valid: true,
-            message: ''
-          };
-        }
-        let obj = KeyValueValidator.splitValue(lineClean);
-        if (!obj) {
-          obj = {
-            key: '',
-            value: ''
-          };
-        }
-        const messages = [
-          KeyValueValidator.validateSyntax(lineClean),
-          ...validators.key
-            .map((validator: Function): string => {
-              const formControl = new FormControl(obj.key || null);
-              const errors: ValidationErrors = validator.apply(null, [formControl]);
-              if (errors) {
-                return Object.keys(errors).map((key: string): string => {
-                  return errors[key] as string;
-                }).join(', ');
-              }
-              return null;
-            }),
-          ...validators.value
-            .map((validator: Function): string => {
-              const formControl = new FormControl(obj.value || null);
-              const errors: ValidationErrors = validator.apply(null, [formControl]);
-              if (errors) {
-                return Object.keys(errors).map((key: string): string => {
-                  return errors[key] as string;
-                }).join(', ');
-              }
-              return null;
-            })
-        ];
-        const message = messages
-          .filter((mess) => mess !== null)
-          .join('\n');
-
+    return (value.toString() || ' ').split('\n').map((line: string, index: number) => {
+      const lineClean = line.replace(' ', '');
+      if (!lineClean) {
         return {
-          label: (index + 1),
-          valid: (message === ''),
-          message
+          label: index + 1,
+          valid: true,
+          message: ''
         };
-      });
-  }
+      }
+      let obj = KeyValueValidator.splitValue(lineClean);
+      if (!obj) {
+        obj = {
+          key: '',
+          value: ''
+        };
+      }
+      const messages = [
+        KeyValueValidator.validateSyntax(lineClean),
+        ...validators.key.map((validator: any): string => {
+          const formControl = new FormControl(obj.key || null);
+          const errors: ValidationErrors = validator.apply(null, [formControl]);
+          if (errors) {
+            return Object.keys(errors)
+              .map((key: string): string => errors[key] as string)
+              .join(', ');
+          }
+          return null;
+        }),
+        ...validators.value.map((validator: any): string => {
+          const formControl = new FormControl(obj.value || null);
+          const errors: ValidationErrors = validator.apply(null, [formControl]);
+          if (errors) {
+            return Object.keys(errors)
+              .map((key: string): string => errors[key] as string)
+              .join(', ');
+          }
+          return null;
+        })
+      ];
+      const message = messages.filter(mess => mess !== null).join('\n');
 
+      return {
+        label: index + 1,
+        valid: message === '',
+        message
+      };
+    });
+  }
 }

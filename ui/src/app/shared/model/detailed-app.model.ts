@@ -1,12 +1,11 @@
-import { App, ApplicationType } from './app.model';
+import {App, ApplicationType} from './app.model';
 
 export class Deprecation {
-
   level: string;
   reason: string;
   replacement: string;
 
-  static parse(input) {
+  static parse(input: any): Deprecation {
     const deprecation = new Deprecation();
     deprecation.level = input.level ? input.level : undefined;
     deprecation.reason = input.reason ? input.reason : undefined;
@@ -16,7 +15,6 @@ export class Deprecation {
 }
 
 export class ConfigurationMetadataProperty {
-
   id: string;
   name: string;
   type: string;
@@ -27,7 +25,7 @@ export class ConfigurationMetadataProperty {
   sourceType: string;
   isDeprecated: boolean;
 
-  static parse(input) {
+  static parse(input: any): ConfigurationMetadataProperty {
     const config = new ConfigurationMetadataProperty();
     config.id = input.id ? input.id : undefined;
     config.name = input.name ? input.name : undefined;
@@ -48,17 +46,16 @@ export class ConfigurationMetadataProperty {
  * dialogs and structures need to track what user set.
  */
 export class ValuedConfigurationMetadataProperty extends ConfigurationMetadataProperty {
-
   value: string;
   originalValue?: string;
 
-  static parse(input) {
+  static parse(input: any): ValuedConfigurationMetadataProperty {
     return ConfigurationMetadataProperty.parse(input) as ValuedConfigurationMetadataProperty;
   }
 }
 
 export class ConfigurationMetadataPropertyList {
-  static parse(input): Array<ConfigurationMetadataProperty> {
+  static parse(input: any): Array<ConfigurationMetadataProperty> {
     if (input) {
       return input.map(ConfigurationMetadataProperty.parse);
     }
@@ -67,7 +64,7 @@ export class ConfigurationMetadataPropertyList {
 }
 
 export class ValuedConfigurationMetadataPropertyList {
-  static parse(input): Array<ValuedConfigurationMetadataProperty> {
+  static parse(input: any): Array<ValuedConfigurationMetadataProperty> {
     if (input) {
       return input.map(ValuedConfigurationMetadataProperty.parse);
     }
@@ -78,7 +75,7 @@ export class ValuedConfigurationMetadataPropertyList {
 export class DetailedApp extends App {
   options: ConfigurationMetadataProperty[];
 
-  static parse(input): DetailedApp {
+  static parse(input: any): DetailedApp {
     const app: DetailedApp = new DetailedApp();
     app.name = input.name;
     app.type = input.type as ApplicationType;
@@ -94,5 +91,4 @@ export class DetailedApp extends App {
     }
     return app;
   }
-
 }

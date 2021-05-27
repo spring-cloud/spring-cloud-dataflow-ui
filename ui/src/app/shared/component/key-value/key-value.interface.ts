@@ -1,7 +1,5 @@
 export interface KeyValueValidators {
+  key: Array<(control) => any>;
 
-  key: Array<Function>;
-
-  value: Array<Function>;
-
+  value: Array<(control) => any>;
 }

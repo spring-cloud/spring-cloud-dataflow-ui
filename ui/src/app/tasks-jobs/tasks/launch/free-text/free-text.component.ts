@@ -1,9 +1,7 @@
-import {
-  ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output
-} from '@angular/core';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
-import { TaskLaunchValidator } from '../task-launch.validator';
-import { Task } from '../../../../shared/model/task.model';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {TaskLaunchValidator} from '../task-launch.validator';
+import {Task} from '../../../../shared/model/task.model';
 
 /**
  * Free Text Component
@@ -19,7 +17,6 @@ import { Task } from '../../../../shared/model/task.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FreeTextComponent implements OnInit, OnDestroy {
-
   @Input() task: Task;
   @Input() properties: Array<string> = [];
   @Input() arguments: Array<string> = [];
@@ -29,21 +26,25 @@ export class FreeTextComponent implements OnInit, OnDestroy {
   @Output() copyProperties = new EventEmitter();
   @Output() exportArguments = new EventEmitter();
   @Output() copyArguments = new EventEmitter();
-  @Output() launch = new EventEmitter<{props: string[], args: string[]}>();
+  @Output() launch = new EventEmitter<{props: string[]; args: string[]}>();
 
   formGroup: FormGroup;
 
-  alines: Array<any> = [{
-    label: 1,
-    valid: true,
-    message: ''
-  }];
+  alines: Array<any> = [
+    {
+      label: 1,
+      valid: true,
+      message: ''
+    }
+  ];
 
-  plines: Array<any> = [{
-    label: 1,
-    valid: true,
-    message: ''
-  }];
+  plines: Array<any> = [
+    {
+      label: 1,
+      valid: true,
+      message: ''
+    }
+  ];
 
   /**
    * State of the form
@@ -64,17 +65,15 @@ export class FreeTextComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    this.formGroup.get('pinput').valueChanges
-      .subscribe((value) => {
-        this.propertiesValueChanges(value);
-      });
+  ngOnInit(): void {
+    this.formGroup.get('pinput').valueChanges.subscribe(value => {
+      this.propertiesValueChanges(value);
+    });
 
     this.formGroup.get('pinput').setValue(this.properties.join('\n'));
-    this.formGroup.get('ainput').valueChanges
-      .subscribe((value) => {
-        this.argumentsValueChanges(value);
-      });
+    this.formGroup.get('ainput').valueChanges.subscribe(value => {
+      this.argumentsValueChanges(value);
+    });
 
     this.formGroup.get('ainput').setValue(this.arguments.join('\n'));
   }
@@ -82,66 +81,62 @@ export class FreeTextComponent implements OnInit, OnDestroy {
   /**
    * On destroy, emit the update event
    */
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.updateProperties.emit(this.getCleanProperties());
     this.updateArguments.emit(this.getCleanArguments());
   }
 
-  propertiesValueChanges(value: string) {
+  propertiesValueChanges(value: string): void {
     let countInvalidProperties = 0;
     let countValidProperties = 0;
 
-    this.plines = (value.toString() || ' ')
-      .split('\n')
-      .map((line: string, index: number) => {
-        const lineClean = line.replace(' ', '');
-        const message = TaskLaunchValidator.property(lineClean);
-        if (lineClean !== '') {
-          if (message === true) {
-            countValidProperties++;
-          } else {
-            countInvalidProperties++;
-          }
+    this.plines = (value.toString() || ' ').split('\n').map((line: string, index: number) => {
+      const lineClean = line.replace(' ', '');
+      const message = TaskLaunchValidator.property(lineClean);
+      if (lineClean !== '') {
+        if (message === true) {
+          countValidProperties++;
+        } else {
+          countInvalidProperties++;
         }
-        return {
-          label: (index + 1),
-          valid: (message === true),
-          message: (message !== true) ? message : ''
-        };
-      });
-    this.isPropertiesExportable = (countInvalidProperties + countValidProperties) > 0;
+      }
+      return {
+        label: index + 1,
+        valid: message === true,
+        message: message !== true ? message : ''
+      };
+    });
+    this.isPropertiesExportable = countInvalidProperties + countValidProperties > 0;
   }
 
-  argumentsValueChanges(value: string) {
+  argumentsValueChanges(value: string): void {
     let countInvalidArguments = 0;
     let countValidArguments = 0;
 
-    this.alines = (value.toString() || ' ')
-      .split('\n')
-      .map((line: string, index: number) => {
-        const lineClean = line.replace(' ', '');
-        const message = TaskLaunchValidator.property(lineClean);
-        if (lineClean !== '') {
-          if (message === true) {
-            countValidArguments++;
-          } else {
-            countInvalidArguments++;
-          }
+    this.alines = (value.toString() || ' ').split('\n').map((line: string, index: number) => {
+      const lineClean = line.replace(' ', '');
+      const message = TaskLaunchValidator.property(lineClean);
+      if (lineClean !== '') {
+        if (message === true) {
+          countValidArguments++;
+        } else {
+          countInvalidArguments++;
         }
-        return {
-          label: (index + 1),
-          valid: (message === true),
-          message: (message !== true) ? message : ''
-        };
-      });
-    this.isArgumentsExportable = (countInvalidArguments + countValidArguments) > 0;
+      }
+      return {
+        label: index + 1,
+        valid: message === true,
+        message: message !== true ? message : ''
+      };
+    });
+    this.isArgumentsExportable = countInvalidArguments + countValidArguments > 0;
   }
 
   /**
    * Parse and load a file to the properties control
    * Produce an exception when the user cancel the file dialog
    */
-  propertiesFileChange(event: Event) {
+  propertiesFileChange(event: Event): void {
     this.readFile(event, this.formGroup.get('pinput'), this.formGroup.get('pfile'));
   }
 
@@ -149,54 +144,49 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    * Parse and load a file to the arguments control
    * Produce an exception when the user cancel the file dialog
    */
-  argumentsFileChange(event: Event) {
+  argumentsFileChange(event: Event): void {
     this.readFile(event, this.formGroup.get('ainput'), this.formGroup.get('afile'));
   }
 
-  exportProps() {
+  exportProps(): void {
     this.exportProperties.emit(this.getCleanProperties());
   }
 
-  exportArgs() {
+  exportArgs(): void {
     this.exportArguments.emit(this.getCleanArguments());
   }
 
-  copyPropsToClipboard() {
+  copyPropsToClipboard(): void {
     this.copyProperties.emit(this.getCleanProperties());
   }
 
-  copyArgsToClipboard() {
+  copyArgsToClipboard(): void {
     this.copyArguments.emit(this.getCleanArguments());
   }
 
-  launchTask() {
+  launchTask(): void {
     this.launch.emit({props: this.getCleanProperties(), args: this.getCleanArguments()});
   }
 
   private getCleanProperties(): string[] {
-    return (this.formGroup.get('pinput').value as string)
-      .split('\n')
-      .filter((line) => (line.replace(' ', '') !== ''));
+    return (this.formGroup.get('pinput').value as string).split('\n').filter(line => line.replace(' ', '') !== '');
   }
 
   private getCleanArguments(): string[] {
-    return (this.formGroup.get('ainput').value as string)
-      .split('\n')
-      .filter((line) => (line.replace(' ', '') !== ''));
+    return (this.formGroup.get('ainput').value as string).split('\n').filter(line => line.replace(' ', '') !== '');
   }
 
-  private readFile(event: Event, inputControl: AbstractControl, fileControl: AbstractControl) {
+  private readFile(event: Event, inputControl: AbstractControl, fileControl: AbstractControl): void {
     if ((event.target as HTMLInputElement).files && (event.target as HTMLInputElement).files.length) {
       const file = (event.target as HTMLInputElement).files[0];
       try {
         const reader = new FileReader();
-        reader.onloadend = (e) => {
+        reader.onloadend = e => {
           inputControl.setValue(reader.result);
           fileControl.setValue('');
         };
         reader.readAsText(file);
-      } catch (e) {
-      }
+      } catch (e) {}
     }
   }
 }

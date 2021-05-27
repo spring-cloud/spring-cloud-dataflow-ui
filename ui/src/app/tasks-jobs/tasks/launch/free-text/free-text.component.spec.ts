@@ -1,33 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FreeTextComponent } from './free-text.component';
-import { RoleDirective } from '../../../../security/directive/role.directive';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FreeTextComponent} from './free-text.component';
+import {RoleDirective} from '../../../../security/directive/role.directive';
 
 describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
   let component: FreeTextComponent;
   let fixture: ComponentFixture<FreeTextComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        FreeTextComponent,
-        RoleDirective
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FreeTextComponent, RoleDirective],
+        imports: [
+          FormsModule,
+          ReactiveFormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
+        providers: []
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FreeTextComponent);
@@ -40,7 +37,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load a properties file', async (done) => {
+  it('should load a properties file', async done => {
     fixture.detectChanges();
     const file = new File(['a=a'], 'filename');
     const fileList: FileList = {
@@ -48,7 +45,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
       item: () => null,
       0: file
     };
-    const event = { target: { files: fileList } } as any;
+    const event = {target: {files: fileList}} as any;
     component.propertiesFileChange(event);
     setTimeout(() => {
       fixture.detectChanges();
@@ -57,7 +54,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
     }, 500);
   });
 
-  it('should load a arguments file', async (done) => {
+  it('should load a arguments file', async done => {
     fixture.detectChanges();
     const file = new File(['a=a'], 'filename');
     const fileList: FileList = {
@@ -65,7 +62,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
       item: () => null,
       0: file
     };
-    const event = { target: { files: fileList } } as any;
+    const event = {target: {files: fileList}} as any;
     component.argumentsFileChange(event);
     setTimeout(() => {
       fixture.detectChanges();

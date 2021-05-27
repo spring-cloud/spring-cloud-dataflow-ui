@@ -1,7 +1,7 @@
-import { ImportExportService } from '../../shared/service/import-export.service';
-import { Stream } from '../../shared/model/stream.model';
-import { Observable, of } from 'rxjs';
-import { Task } from '../../shared/model/task.model';
+import {ImportExportService} from '../../shared/service/import-export.service';
+import {Stream} from '../../shared/model/stream.model';
+import {Observable, of} from 'rxjs';
+import {Task} from '../../shared/model/task.model';
 
 export class ImportExportServiceMock {
   static mock: ImportExportServiceMock = null;
@@ -12,7 +12,6 @@ export class ImportExportServiceMock {
 
   tasksExport(tasks: Task[]): Observable<any> {
     return of({});
-
   }
 
   streamsImport(file: Blob, optimize: boolean): Observable<any> {
@@ -39,10 +38,10 @@ export class ImportExportServiceMock {
     ]);
   }
 
-  static get provider() {
+  static get provider(): any {
     if (!ImportExportServiceMock.mock) {
       ImportExportServiceMock.mock = new ImportExportServiceMock();
     }
-    return { provide: ImportExportService, useValue: ImportExportServiceMock.mock };
+    return {provide: ImportExportService, useValue: ImportExportServiceMock.mock};
   }
 }

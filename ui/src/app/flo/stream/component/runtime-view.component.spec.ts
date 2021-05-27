@@ -1,19 +1,19 @@
-import { ApplicationRef, ComponentFactoryResolver } from '@angular/core';
-import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { dia } from 'jointjs';
-import { RuntimeStreamFloViewComponent } from './runtime-view.component';
-import { MetamodelService } from '../metamodel.service';
-import { MockSharedAppService } from '../../../tests/service/app.service.mock';
-import { StreamsModule } from '../../../streams/streams.module';
-import { RenderService } from '../render.service';
-import { Stream } from '../../../shared/model/stream.model';
-import { TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL } from '../support/shapes';
-import { AppStatus, StreamStatus } from '../../../shared/model/metrics.model';
-import { NodeHelper } from '../node-helper.service';
-import { PropertiesEditor } from '../properties-editor.service';
+import {ApplicationRef, ComponentFactoryResolver} from '@angular/core';
+import {ComponentFixture, inject, TestBed, waitForAsync} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {dia} from 'jointjs';
+import {RuntimeStreamFloViewComponent} from './runtime-view.component';
+import {MetamodelService} from '../metamodel.service';
+import {MockSharedAppService} from '../../../tests/service/app.service.mock';
+import {StreamsModule} from '../../../streams/streams.module';
+import {RenderService} from '../render.service';
+import {Stream} from '../../../shared/model/stream.model';
+import {TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL} from '../support/shapes';
+import {AppStatus, StreamStatus} from '../../../shared/model/metrics.model';
+import {NodeHelper} from '../node-helper.service';
+import {PropertiesEditor} from '../properties-editor.service';
 
 /**
  * Test {@link StreamGraphDefinitionComponent}.
@@ -30,45 +30,41 @@ describe('RuntimeStreamFloViewComponent', () => {
   let propertiesEditor: PropertiesEditor;
   let nodeHelper: NodeHelper;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        StreamsModule,
-        RouterTestingModule,
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([])
-      ],
-    });
-  }));
-
   beforeEach(
-    inject(
-      [
-        ApplicationRef,
-        ComponentFactoryResolver,
-        NodeHelper,
-        PropertiesEditor,
-      ],
-      (
-        _applicationRef: ApplicationRef,
-        _resolver: ComponentFactoryResolver,
-        _nodeHelper: NodeHelper,
-        _propertiesEditor: PropertiesEditor,
-      ) => {
-        applicationRef = _applicationRef;
-        resolver = _resolver;
-        nodeHelper = _nodeHelper;
-        propertiesEditor = _propertiesEditor;
-      }
-    )
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [StreamsModule, RouterTestingModule, StoreModule.forRoot({}), EffectsModule.forRoot([])]
+      });
+    })
   );
+
+  beforeEach(inject(
+    [ApplicationRef, ComponentFactoryResolver, NodeHelper, PropertiesEditor],
+    (
+      _applicationRef: ApplicationRef,
+      _resolver: ComponentFactoryResolver,
+      _nodeHelper: NodeHelper,
+      _propertiesEditor: PropertiesEditor
+    ) => {
+      applicationRef = _applicationRef;
+      resolver = _resolver;
+      nodeHelper = _nodeHelper;
+      propertiesEditor = _propertiesEditor;
+    }
+  ));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuntimeStreamFloViewComponent);
     component = fixture.componentInstance;
     fixture.componentInstance.metamodel = metamodelService;
-    fixture.componentInstance.renderer = new RenderService(metamodelService, nodeHelper, propertiesEditor, resolver,
-      fixture.debugElement.injector, applicationRef);
+    fixture.componentInstance.renderer = new RenderService(
+      metamodelService,
+      nodeHelper,
+      propertiesEditor,
+      resolver,
+      fixture.debugElement.injector,
+      applicationRef
+    );
     fixture.detectChanges();
   });
 
@@ -84,7 +80,7 @@ describe('RuntimeStreamFloViewComponent', () => {
     expect(component.flo.getGraph().getCells().length).toEqual(0);
   });
 
-  it('check stream in the view', (done) => {
+  it('check stream in the view', done => {
     component.stream = Stream.parse({
       streamName: 'test-stream',
       dslText: 'http | filter | null',
@@ -102,7 +98,7 @@ describe('RuntimeStreamFloViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('verify dots in the view', (done) => {
+  it('verify dots in the view', done => {
     component.stream = Stream.parse({
       streamName: 'test-stream',
       dslText: 'http | filter | null',
@@ -120,20 +116,19 @@ describe('RuntimeStreamFloViewComponent', () => {
     filterMetrics.instances.pop();
     filterMetrics.instances.pop();
 
-    const streamMetrics = new StreamStatus;
+    const streamMetrics = new StreamStatus();
     streamMetrics.name = 'test-stream';
-    streamMetrics.applications = [
-      httpMetrics,
-      filterMetrics,
-      nullMetrics
-    ];
+    streamMetrics.applications = [httpMetrics, filterMetrics, nullMetrics];
     component.metrics = streamMetrics;
 
     const subscription = component.flo.textToGraphConversionObservable.subscribe(() => {
       subscription.unsubscribe();
 
       // verify http dots
-      const http = <dia.Element> component.flo.getGraph().getElements().find(e => e.prop('metadata/name') === 'http');
+      const http = <dia.Element>component.flo
+        .getGraph()
+        .getElements()
+        .find(e => e.prop('metadata/name') === 'http');
       expect(http).toBeDefined();
       const httpEmbeds = http.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_DOT);
       expect(http.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_LABEL)).toBeUndefined();
@@ -141,7 +136,10 @@ describe('RuntimeStreamFloViewComponent', () => {
       httpMetrics.instances.forEach((instance, i) => expect(httpEmbeds[i].attr('instance')).toEqual(instance));
 
       // verify filter label
-      const filter = <dia.Element> component.flo.getGraph().getElements().find(e => e.prop('metadata/name') === 'filter');
+      const filter = <dia.Element>component.flo
+        .getGraph()
+        .getElements()
+        .find(e => e.prop('metadata/name') === 'filter');
       expect(filter).toBeDefined();
       expect(filter.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_DOT)).toBeUndefined();
       const filterEmbeds = filter.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_LABEL);
@@ -149,7 +147,10 @@ describe('RuntimeStreamFloViewComponent', () => {
       expect(filterEmbeds[0].attr('.label/text')).toEqual('57/57');
 
       // verify null dots
-      const nullApp = <dia.Element> component.flo.getGraph().getElements().find(e => e.prop('metadata/name') === 'null');
+      const nullApp = <dia.Element>component.flo
+        .getGraph()
+        .getElements()
+        .find(e => e.prop('metadata/name') === 'null');
       expect(nullApp).toBeDefined();
       const nullEmbeds = nullApp.getEmbeddedCells().filter(c => c.get('type') === TYPE_INSTANCE_DOT);
       expect(nullApp.getEmbeddedCells().find(c => c.get('type') === TYPE_INSTANCE_LABEL)).toBeUndefined();
@@ -157,7 +158,6 @@ describe('RuntimeStreamFloViewComponent', () => {
       nullMetrics.instances.forEach((instance, i) => expect(nullEmbeds[i].attr('instance')).toEqual(instance));
 
       done();
-
     });
     // Subscribe to graph changes before running angular change/update cycle
     fixture.detectChanges();
@@ -183,5 +183,4 @@ describe('RuntimeStreamFloViewComponent', () => {
       }
     });
   }
-
 });

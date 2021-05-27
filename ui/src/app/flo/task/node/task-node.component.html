@@ -1,156 +1,205 @@
 <svg:g [ngSwitch]="metaName">
-
   <svg:g *ngSwitchCase="'START'" class="composed-task">
-    <svg:circle class="select-outline"/>
-    <svg:g class="shape" tippy [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
-           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
-           [attr.disabled]="isDisabled ? '' : null">
-      <svg:circle class="start-outer"/>
-      <svg:circle class="start-inner"/>
+    <svg:circle class="select-outline" />
+    <svg:g
+      class="shape"
+      tippy
+      [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
+      [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
+      [attr.disabled]="isDisabled ? '' : null"
+    >
+      <svg:circle class="start-outer" />
+      <svg:circle class="start-inner" />
     </svg:g>
-    <svg:text class="name-label"/>
-    <svg:image class="error-marker" xlink:href="assets/img/error.svg"
-               tippy [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
-               [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
-               [attr.disabled]="isDisabled ? '' : null"/>
+    <svg:text class="name-label" />
+    <svg:image
+      class="error-marker"
+      xlink:href="assets/img/error.svg"
+      tippy
+      [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
+      [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
+      [attr.disabled]="isDisabled ? '' : null"
+    />
     <svg:g class="flo-handles">
       <svg:text class="options-handle handle" (click)="showOptions()"></svg:text>
     </svg:g>
   </svg:g>
 
   <svg:g *ngSwitchCase="'END'" class="composed-task">
-    <svg:ellipse class="select-outline"/>
-    <svg:g class="shape" tippy [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
-           [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300, maxWidth: 'none'}"
-           [attr.disabled]="isDisabled ? '' : null">
-      <svg:ellipse class="end-outer"/>
-      <svg:ellipse class="end-inner"/>
+    <svg:ellipse class="select-outline" />
+    <svg:g
+      class="shape"
+      tippy
+      [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
+      [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300, maxWidth: 'none'}"
+      [attr.disabled]="isDisabled ? '' : null"
+    >
+      <svg:ellipse class="end-outer" />
+      <svg:ellipse class="end-inner" />
     </svg:g>
-    <svg:text class="name-label"/>
-    <svg:image class="error-marker" xlink:href="assets/img/error.svg"
-               tippy [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
-               [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
-               [attr.disabled]="isDisabled ? '' : null"/>
+    <svg:text class="name-label" />
+    <svg:image
+      class="error-marker"
+      xlink:href="assets/img/error.svg"
+      tippy
+      [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
+      [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
+      [attr.disabled]="isDisabled ? '' : null"
+    />
   </svg:g>
 
   <svg:g *ngSwitchCase="'SYNC'" class="composed-task">
-    <ng-container *ngIf="isPalette(); then paletteSyncShape else canvasSyncShape"></ng-container>
+    <ng-container *ngIf="isPalette(); then paletteSyncShape; else canvasSyncShape"></ng-container>
   </svg:g>
 
   <svg:g *ngSwitchDefault class="composed-task">
-    <ng-container *ngIf="isPalette(); then paletteComposedTaskShape else canvasComposedTaskShape"></ng-container>
+    <ng-container *ngIf="isPalette(); then paletteComposedTaskShape; else canvasComposedTaskShape"></ng-container>
   </svg:g>
-
 </svg:g>
 
 <ng-template #canvasComposedTaskShape>
-  <svg:rect class="select-outline"/>
-  <svg:g class="shape" tippy [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
-         [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
-         [attr.disabled]="isDisabled || !canShowCanvasNodeTooltip ? '' : null">
-    <svg:rect class="box"/>
-    <svg:text class="name-label"/>
-    <svg:image class="type-icon"/>
+  <svg:rect class="select-outline" />
+  <svg:g
+    class="shape"
+    tippy
+    [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
+    [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
+    [attr.disabled]="isDisabled || !canShowCanvasNodeTooltip ? '' : null"
+  >
+    <svg:rect class="box" />
+    <svg:text class="name-label" />
+    <svg:image class="type-icon" />
     <!--<svg:g>-->
-      <!--<svg:rect class="type-label-bg"/>-->
-      <!--<svg:text class="name-label"/>-->
-      <!--<svg:text class="type-label"/>-->
+    <!--<svg:rect class="type-label-bg"/>-->
+    <!--<svg:text class="name-label"/>-->
+    <!--<svg:text class="type-label"/>-->
     <!--</svg:g>-->
   </svg:g>
   <svg:g class="input-port-group">
-    <svg:g class="input-port"
-      tippy [tippyOptions]="{content: 'Input Port', appendTo: docBody(), delay: 300}"
-      [attr.disabled]="!isCanvas() || isDisabled ? '' : null">
-      <svg:circle class="port-outer-circle-input"/>
-      <svg:circle class="port-inner-circle-input"/>
+    <svg:g
+      class="input-port"
+      tippy
+      [tippyOptions]="{content: 'Input Port', appendTo: docBody(), delay: 300}"
+      [attr.disabled]="!isCanvas() || isDisabled ? '' : null"
+    >
+      <svg:circle class="port-outer-circle-input" />
+      <svg:circle class="port-inner-circle-input" />
     </svg:g>
   </svg:g>
   <svg:g class="output-port-group">
-    <svg:g class="output-port"
-      tippy [tippyOptions]="{content: 'Output Port', appendTo: docBody(), delay: 300}"
-      [attr.disabled]="!isCanvas() || isDisabled ? '' : null">
-      <svg:circle class="port-outer-circle-output"/>
-      <svg:circle class="port-inner-circle-output"/>
+    <svg:g
+      class="output-port"
+      tippy
+      [tippyOptions]="{content: 'Output Port', appendTo: docBody(), delay: 300}"
+      [attr.disabled]="!isCanvas() || isDisabled ? '' : null"
+    >
+      <svg:circle class="port-outer-circle-output" />
+      <svg:circle class="port-inner-circle-output" />
     </svg:g>
   </svg:g>
   <svg:g class="flo-handles">
     <svg:text class="options-handle handle" (click)="showOptions()"></svg:text>
     <svg:text class="delete-handle handle" (click)="delete()"></svg:text>
   </svg:g>
-  <svg:image class="error-marker" xlink:href="assets/img/error.svg"
-    tippy [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
+  <svg:image
+    class="error-marker"
+    xlink:href="assets/img/error.svg"
+    tippy
+    [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
     [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
-    [attr.disabled]="isDisabled ? '' : null"/>
+    [attr.disabled]="isDisabled ? '' : null"
+  />
 </ng-template>
 
 <ng-template #paletteComposedTaskShape>
-  <svg:g class="shape" tippy [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
-         [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
-         [attr.disabled]="isDisabled || !canShowPaletteNodeTooltip ? '' : null">
-    <svg:rect class="box"/>
-    <svg:text class="palette-entry-name-label"/>
+  <svg:g
+    class="shape"
+    tippy
+    [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
+    [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
+    [attr.disabled]="isDisabled || !canShowPaletteNodeTooltip ? '' : null"
+  >
+    <svg:rect class="box" />
+    <svg:text class="palette-entry-name-label" />
   </svg:g>
 </ng-template>
 
 <ng-template #canvasSyncShape>
-  <svg:rect class="select-outline"/>
+  <svg:rect class="select-outline" />
   <svg:g class="shape">
-    <svg:rect class="box"/>
-    <svg:text class="name-label"/>
+    <svg:rect class="box" />
+    <svg:text class="name-label" />
   </svg:g>
   <svg:g class="input-port-group">
-    <svg:g class="input-port"
-      tippy [tippyOptions]="{content: 'Input Port', appendTo: docBody(), delay: 300}"
-      [attr.disabled]="!isCanvas() || isDisabled ? '' : null">
-      <svg:circle class="port-outer-circle-input"/>
-      <svg:circle class="port-inner-circle-input"/>
+    <svg:g
+      class="input-port"
+      tippy
+      [tippyOptions]="{content: 'Input Port', appendTo: docBody(), delay: 300}"
+      [attr.disabled]="!isCanvas() || isDisabled ? '' : null"
+    >
+      <svg:circle class="port-outer-circle-input" />
+      <svg:circle class="port-inner-circle-input" />
     </svg:g>
   </svg:g>
   <svg:g class="output-port-group">
-    <svg:g class="output-port"
-      tippy [tippyOptions]="{content: 'Output Port', appendTo: docBody(), delay: 300}"
-      [attr.disabled]="!isCanvas() || isDisabled ? '' : null">
-      <svg:circle class="port-outer-circle-output"/>
-      <svg:circle class="port-inner-circle-output"/>
+    <svg:g
+      class="output-port"
+      tippy
+      [tippyOptions]="{content: 'Output Port', appendTo: docBody(), delay: 300}"
+      [attr.disabled]="!isCanvas() || isDisabled ? '' : null"
+    >
+      <svg:circle class="port-outer-circle-output" />
+      <svg:circle class="port-inner-circle-output" />
     </svg:g>
   </svg:g>
-  <svg:image class="error-marker" xlink:href="assets/img/error.svg"
-    tippy [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
+  <svg:image
+    class="error-marker"
+    xlink:href="assets/img/error.svg"
+    tippy
+    [content]="markerTooltipElement ? markerTooltipElement.nativeElement : ''"
     [tippyOptions]="{appendTo: docBody(), placement: 'top', theme: 'error'}"
-    [attr.disabled]="isDisabled ? '' : null"/>
+    [attr.disabled]="isDisabled ? '' : null"
+  />
   <svg:g class="flo-handles">
     <svg:text class="delete-handle handle" (click)="delete()"></svg:text>
   </svg:g>
 </ng-template>
 
 <ng-template #paletteSyncShape>
-  <svg:g class="shape" tippy [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
-         [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
-         [attr.disabled]="isDisabled || !canShowPaletteNodeTooltip ? '' : null">
-    <svg:rect class="box"/>
-    <svg:text class="palette-entry-name-label"/>
+  <svg:g
+    class="shape"
+    tippy
+    [content]="nodeTooltipElement ? nodeTooltipElement.nativeElement : ''"
+    [tippyOptions]="{appendTo: docBody(), placement: 'bottom', delay: 300}"
+    [attr.disabled]="isDisabled || !canShowPaletteNodeTooltip ? '' : null"
+  >
+    <svg:rect class="box" />
+    <svg:text class="palette-entry-name-label" />
   </svg:g>
 </ng-template>
 
 <div #nodeTooltip>
   <div ng-if="cell.attr('metadata/name')">
-    <span>{{metaName | uppercase}}</span>&nbsp;<span>{{'(' + (metaGroup | capitalize) + ')'}}</span>
+    <span>{{ metaName | uppercase }}</span
+    >&nbsp;<span>{{ '(' + (metaGroup | capitalize) + ')' }}</span>
   </div>
   <div *ngIf="description">
-    <span>{{description}}</span>
+    <span>{{ description }}</span>
   </div>
   <table class="table-condensed" *ngIf="allProperties && isPropertiesShown">
     <tbody>
-    <tr *ngFor="let property of keys(allProperties).sort()">
-      <td class="tooltip-property-key"><strong>{{property}}</strong></td>
-      <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">{{
-        getPropertyValue(property)}}
-      </td>
-    </tr>
+      <tr *ngFor="let property of keys(allProperties).sort()">
+        <td class="tooltip-property-key">
+          <strong>{{ property }}</strong>
+        </td>
+        <td class="tooltip-property-value" [ngClass]="{'tooltip-property-value-code': isCode(property)}">
+          {{ getPropertyValue(property) }}
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
 
 <ul #markerTooltip class="marker-tooltip">
-  <li *ngFor="let msg of getErrorMessages()">{{msg}}</li>
+  <li *ngFor="let msg of getErrorMessages()">{{ msg }}</li>
 </ul>

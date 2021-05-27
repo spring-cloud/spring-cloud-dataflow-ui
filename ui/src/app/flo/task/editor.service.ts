@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Flo } from 'spring-flo';
-import { CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
-import { dia, g } from 'jointjs';
+import {Injectable} from '@angular/core';
+import {Flo} from 'spring-flo';
+import {CONTROL_GROUP_TYPE, END_NODE_TYPE, START_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE} from './support/shapes';
+import {dia, g} from 'jointjs';
 import * as _joint from 'jointjs';
-import { arrangeAll } from './support/layout';
-import { Utils } from '../shared/support/utils';
+import {arrangeAll} from './support/layout';
+import {Utils} from '../shared/support/utils';
 
 const joint: any = _joint;
 
@@ -18,11 +18,9 @@ const DND_ENABLED = true; // Is smart DnD enabled?
  */
 @Injectable()
 export class EditorService implements Flo.Editor {
-
   TASK_PALETTE_WIDTH = 265;
 
-  constructor() {
-  }
+  constructor() {}
 
   allowLinkVertexEdit = true;
 
@@ -41,8 +39,15 @@ export class EditorService implements Flo.Editor {
     arrangeAll(editorContext);
   }
 
-  validateLink(flo: Flo.EditorContext, cellViewS: dia.ElementView, magnetS: SVGElement, cellViewT: dia.ElementView,
-               magnetT: SVGElement, isSource: boolean, linkView: dia.LinkView): boolean {
+  validateLink(
+    flo: Flo.EditorContext,
+    cellViewS: dia.ElementView,
+    magnetS: SVGElement,
+    cellViewT: dia.ElementView,
+    magnetT: SVGElement,
+    isSource: boolean,
+    linkView: dia.LinkView
+  ): boolean {
     // Connections only between magnets/ports
     if (!magnetS || !magnetT) {
       return false;
@@ -89,28 +94,34 @@ export class EditorService implements Flo.Editor {
   private validateConnectedLinks(graph: dia.Graph, element: dia.Element, markers: Array<Flo.Marker>) {
     if (element.prop('metadata') && !Utils.isUnresolved(element)) {
       const type = element.prop('metadata/name');
-      const incoming = graph.getConnectedLinks(element, { inbound: true });
-      const outgoing = graph.getConnectedLinks(element, { outbound: true });
+      const incoming = graph.getConnectedLinks(element, {inbound: true});
+      const outgoing = graph.getConnectedLinks(element, {outbound: true});
 
       // Verify that there is no more than link with the same 'ExitStatus' coming out
       // Verify there are no outgoing links to same type tasks (to duplicates)
       const exitStatusNumber = new Map<string, number>();
-      outgoing.filter(l => l.attr('props/ExitStatus')).forEach(l => {
-        const exitStatus = l.attr('props/ExitStatus');
-        const num = exitStatusNumber.get(l.attr('props/ExitStatus'));
-        if (typeof num === 'number') {
-          exitStatusNumber.set(exitStatus, num + 1);
-        } else {
-          exitStatusNumber.set(exitStatus, 1);
-        }
-      });
+      outgoing
+        .filter(l => l.attr('props/ExitStatus'))
+        .forEach(l => {
+          const exitStatus = l.attr('props/ExitStatus');
+          const num = exitStatusNumber.get(l.attr('props/ExitStatus'));
+          if (typeof num === 'number') {
+            exitStatusNumber.set(exitStatus, num + 1);
+          } else {
+            exitStatusNumber.set(exitStatus, 1);
+          }
+        });
       Array.from(exitStatusNumber.keys())
         .filter(status => exitStatusNumber.get(status) && exitStatusNumber.get(status) > 1)
-        .forEach(exitStatus => markers.push({
-          severity: Flo.Severity.Error,
-          message: `${exitStatusNumber.get(exitStatus)} links with Exit Status "${exitStatus}". Should only be one such link`,
-          range: element.attr('range')
-        }));
+        .forEach(exitStatus =>
+          markers.push({
+            severity: Flo.Severity.Error,
+            message: `${exitStatusNumber.get(
+              exitStatus
+            )} links with Exit Status "${exitStatus}". Should only be one such link`,
+            range: element.attr('range')
+          })
+        );
 
       let link;
       if (type === START_NODE_TYPE) {
@@ -193,7 +204,7 @@ export class EditorService implements Flo.Editor {
    * for the element.
    */
   private validateProperties(element: dia.Element, markers: Array<Flo.Marker>): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const specifiedProperties = element.attr('props');
       if (specifiedProperties) {
         const propertiesRanges = element.attr('propertiesranges');
@@ -209,8 +220,7 @@ export class EditorService implements Flo.Editor {
               const range = propertiesRanges ? propertiesRanges[propertyName] : null;
               markers.push({
                 severity: Flo.Severity.Error,
-                message: 'unrecognized option \'' + propertyName + '\' for app \'' +
-                  element.prop('metadata/name') + '\'',
+                message: "unrecognized option '" + propertyName + "' for app '" + element.prop('metadata/name') + "'",
                 range
               });
             }
@@ -240,7 +250,7 @@ export class EditorService implements Flo.Editor {
   }
 
   private validateNode(graph: dia.Graph, element: dia.Element): Promise<Array<Flo.Marker>> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const markers: Array<Flo.Marker> = [];
       this.validateMetadata(element, markers);
       this.validateConnectedLinks(graph, element, markers);
@@ -254,14 +264,19 @@ export class EditorService implements Flo.Editor {
     return new Promise(resolve => {
       const markers: Map<string | number, Array<Flo.Marker>> = new Map();
       const promises: Promise<void>[] = [];
-      graph.getElements().filter(e => !e.get('parent') && e.prop('metadata')).forEach(e => {
-        promises.push(new Promise<void>((nodeFinished) => {
-          this.validateNode(graph, e).then((result) => {
-            markers.set(e.id, result);
-            nodeFinished();
-          });
-        }));
-      });
+      graph
+        .getElements()
+        .filter(e => !e.get('parent') && e.prop('metadata'))
+        .forEach(e => {
+          promises.push(
+            new Promise<void>(nodeFinished => {
+              this.validateNode(graph, e).then(result => {
+                markers.set(e.id, result);
+                nodeFinished();
+              });
+            })
+          );
+        });
       Promise.all(promises).then(() => {
         resolve(markers);
       });
@@ -276,9 +291,13 @@ export class EditorService implements Flo.Editor {
     return element.prop('metadata/group') !== CONTROL_GROUP_TYPE || element.prop('metadata/name') !== END_NODE_TYPE;
   }
 
-  calculateDragDescriptor(flo: Flo.EditorContext, draggedView: dia.CellView, viewUnderMouse: dia.CellView,
-                          point: g.Point, sourceComponent: string): Flo.DnDDescriptor {
-
+  calculateDragDescriptor(
+    flo: Flo.EditorContext,
+    draggedView: dia.CellView,
+    viewUnderMouse: dia.CellView,
+    point: g.Point,
+    sourceComponent: string
+  ): Flo.DnDDescriptor {
     const targetUnderMouse = viewUnderMouse ? viewUnderMouse.model : undefined;
 
     if (!DND_ENABLED || flo.getGraph().getConnectedLinks(draggedView.model).length > 0) {
@@ -305,7 +324,8 @@ export class EditorService implements Flo.Editor {
     }
     const elements = graph.findModelsInArea(joint.g.rect(point.x - range, point.y - range, 2 * range, 2 * range));
     if (Array.isArray(elements)) {
-      elements.map(m => paper.findViewByModel(m))
+      elements
+        .map(m => paper.findViewByModel(m))
         .filter(v => v && v !== draggedView && v.model instanceof joint.dia.Element)
         .forEach(view => {
           const targetModel = view.model as dia.Element;
@@ -313,8 +333,10 @@ export class EditorService implements Flo.Editor {
           const targetHasOutgoingPort = this.hasOutgoingPort(targetModel);
           view.$('[magnet]').each((index, magnet) => {
             const port = magnet.getAttribute('port');
-            if ((port === 'input' && targetHasIncomingPort && hasOutgoingPort)
-              || (port === 'output' && targetHasOutgoingPort && hasIncomingPort)) {
+            if (
+              (port === 'input' && targetHasIncomingPort && hasOutgoingPort) ||
+              (port === 'output' && targetHasOutgoingPort && hasIncomingPort)
+            ) {
               const bbox = joint.V(magnet).bbox(false, paper.viewport);
               const distance = point.distance({
                 x: bbox.x + bbox.width / 2,
@@ -355,11 +377,15 @@ export class EditorService implements Flo.Editor {
         }
       };
     }
-
   }
 
-  private moveNodeOnNode(flo: Flo.EditorContext, node: dia.Element, pivotNode: dia.Element, side: string,
-                         shouldRepairDamage: boolean) {
+  private moveNodeOnNode(
+    flo: Flo.EditorContext,
+    node: dia.Element,
+    pivotNode: dia.Element,
+    side: string,
+    shouldRepairDamage: boolean
+  ) {
     side = side || 'left';
     // if (this.canSwap(flo, node, pivotNode, side)) {
     if (side === 'left') {
@@ -367,59 +393,77 @@ export class EditorService implements Flo.Editor {
       if (shouldRepairDamage) {
         this.repairDamage(flo, node);
       }
-      flo.getGraph().getConnectedLinks(pivotNode, { inbound: true }).forEach(link => {
-        sources.push(link.get('source').id);
-        link.remove();
-      });
+      flo
+        .getGraph()
+        .getConnectedLinks(pivotNode, {inbound: true})
+        .forEach(link => {
+          sources.push(link.get('source').id);
+          link.remove();
+        });
       sources.forEach(source => {
-        flo.createLink({
-          id: source,
+        flo.createLink(
+          {
+            id: source,
+            selector: '.output-port',
+            port: 'output'
+          },
+          {
+            id: node.id,
+            selector: '.input-port',
+            port: 'input'
+          }
+        );
+      });
+      flo.createLink(
+        {
+          id: node.id,
           selector: '.output-port',
           port: 'output'
-        }, {
-          id: node.id,
+        },
+        {
+          id: pivotNode.id,
           selector: '.input-port',
           port: 'input'
-        });
-      });
-      flo.createLink({
-        id: node.id,
-        selector: '.output-port',
-        port: 'output'
-      }, {
-        id: pivotNode.id,
-        selector: '.input-port',
-        port: 'input'
-      });
+        }
+      );
     } else if (side === 'right') {
       const targets: Array<string> = [];
       if (shouldRepairDamage) {
         this.repairDamage(flo, node);
       }
-      flo.getGraph().getConnectedLinks(pivotNode, { outbound: true }).forEach(link => {
-        targets.push(link.get('target').id);
-        link.remove();
-      });
+      flo
+        .getGraph()
+        .getConnectedLinks(pivotNode, {outbound: true})
+        .forEach(link => {
+          targets.push(link.get('target').id);
+          link.remove();
+        });
       targets.forEach(target => {
-        flo.createLink({
-          id: node.id,
+        flo.createLink(
+          {
+            id: node.id,
+            selector: '.output-port',
+            port: 'output'
+          },
+          {
+            id: target,
+            selector: '.input-port',
+            port: 'input'
+          }
+        );
+      });
+      flo.createLink(
+        {
+          id: pivotNode.id,
           selector: '.output-port',
           port: 'output'
-        }, {
-          id: target,
+        },
+        {
+          id: node.id,
           selector: '.input-port',
           port: 'input'
-        });
-      });
-      flo.createLink({
-        id: pivotNode.id,
-        selector: '.output-port',
-        port: 'output'
-      }, {
-        id: node.id,
-        selector: '.input-port',
-        port: 'input'
-      });
+        }
+      );
     }
     // }
   }
@@ -434,26 +478,32 @@ export class EditorService implements Flo.Editor {
     link.remove();
 
     if (source) {
-      flo.createLink({
-        id: source,
-        selector: '.output-port',
-        port: 'output'
-      }, {
-        id: node.id,
-        selector: '.input-port',
-        port: 'input'
-      });
+      flo.createLink(
+        {
+          id: source,
+          selector: '.output-port',
+          port: 'output'
+        },
+        {
+          id: node.id,
+          selector: '.input-port',
+          port: 'input'
+        }
+      );
     }
     if (target) {
-      flo.createLink({
-        id: node.id,
-        selector: '.output-port',
-        port: 'output'
-      }, {
-        id: target,
-        selector: '.input-port',
-        port: 'input'
-      });
+      flo.createLink(
+        {
+          id: node.id,
+          selector: '.output-port',
+          port: 'output'
+        },
+        {
+          id: target,
+          selector: '.input-port',
+          port: 'input'
+        }
+      );
     }
   }
 
@@ -482,44 +532,56 @@ export class EditorService implements Flo.Editor {
     const sources: Array<string> = [];
     const targets: Array<string> = [];
     const i = 0;
-    flo.getGraph().getConnectedLinks(node).forEach(link => {
-      const targetId = link.get('target').id;
-      const sourceId = link.get('source').id;
-      if (targetId === node.id) {
-        link.remove();
-        sources.push(sourceId);
-      } else if (sourceId === node.id) {
-        link.remove();
-        targets.push(targetId);
-      }
-    });
+    flo
+      .getGraph()
+      .getConnectedLinks(node)
+      .forEach(link => {
+        const targetId = link.get('target').id;
+        const sourceId = link.get('source').id;
+        if (targetId === node.id) {
+          link.remove();
+          sources.push(sourceId);
+        } else if (sourceId === node.id) {
+          link.remove();
+          targets.push(targetId);
+        }
+      });
     /*
      * best attempt to connect source and targets bypassing the node
      */
     if (sources.length === 1) {
       const source = sources[0];
       // TODO: replace selector CSS class with the result of view.getSelector(...)
-      targets.forEach(target => flo.createLink({
-        id: source,
-        selector: '.output-port',
-        port: 'output'
-      }, {
-        id: target,
-        selector: '.input-port',
-        port: 'input'
-      }));
+      targets.forEach(target =>
+        flo.createLink(
+          {
+            id: source,
+            selector: '.output-port',
+            port: 'output'
+          },
+          {
+            id: target,
+            selector: '.input-port',
+            port: 'input'
+          }
+        )
+      );
     } else if (targets.length === 1) {
       const target = targets[0];
-      sources.forEach(source => flo.createLink({
-        id: sources[i],
-        selector: '.output-port',
-        port: 'output'
-      }, {
-        id: target,
-        selector: '.input-port',
-        port: 'input'
-      }));
+      sources.forEach(source =>
+        flo.createLink(
+          {
+            id: sources[i],
+            selector: '.output-port',
+            port: 'output'
+          },
+          {
+            id: target,
+            selector: '.input-port',
+            port: 'input'
+          }
+        )
+      );
     }
   }
-
 }

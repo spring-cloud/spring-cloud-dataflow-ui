@@ -1,27 +1,30 @@
-import { dia } from 'jointjs';
+import {dia} from 'jointjs';
 import * as dagre from 'dagre';
-import { Flo } from 'spring-flo';
+import {Flo} from 'spring-flo';
 
 const NODE_SEPARATION = 60.0;
 const RANK_SEPARATION = 60.0;
 const EDGE_SEPARATION = 30.0;
 
-export function layout(paper: dia.Paper) {
+export function layout(paper: dia.Paper): void {
   const graph = paper.model;
 
   const g = new dagre.graphlib.Graph();
   g.setGraph({});
-  g.setDefaultEdgeLabel(() => {
-    return {};
-  });
+  g.setDefaultEdgeLabel(() => ({}));
 
-  graph.getElements().filter(e => !e.get('parent')).forEach(node => g.setNode(node.id, node.get('size')));
+  graph
+    .getElements()
+    .filter(e => !e.get('parent'))
+    .forEach(node => g.setNode(node.id, node.get('size')));
 
-  graph.getLinks().filter(link => link.get('source').id && link.get('target').id).forEach(link => {
-    g.setEdge(link.get('source').id, link.get('target').id,
-      { weight: (link.get('source').port === 'output' ? 200 : 1) });
-    link.set('vertices', []);
-  });
+  graph
+    .getLinks()
+    .filter(link => link.get('source').id && link.get('target').id)
+    .forEach(link => {
+      g.setEdge(link.get('source').id, link.get('target').id, {weight: link.get('source').port === 'output' ? 200 : 1});
+      link.set('vertices', []);
+    });
 
   const gridSize = paper.options.gridSize;
   g.graph().rankdir = 'LR';
@@ -34,12 +37,11 @@ export function layout(paper: dia.Paper) {
     const node = graph.getCell(v) as dia.Element;
     if (node) {
       const bbox = node.getBBox();
-      node.translate((g.node(v).x - g.node(v).width / 2) - bbox.x, (g.node(v).y - g.node(v).height / 2) - bbox.y);
+      node.translate(g.node(v).x - g.node(v).width / 2 - bbox.x, g.node(v).y - g.node(v).height / 2 - bbox.y);
     }
   });
 
   g.edges().forEach(o => g.edge(o));
-
 }
 
 export function arrangeAll(editorContext: Flo.EditorContext): Promise<void> {

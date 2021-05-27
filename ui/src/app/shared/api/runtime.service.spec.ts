@@ -1,5 +1,5 @@
-import { RuntimeService } from './runtime.service';
-import { of } from 'rxjs';
+import {RuntimeService} from './runtime.service';
+import {of} from 'rxjs';
 
 describe('shared/api/runtime.service.ts', () => {
   let mockHttp;
@@ -10,7 +10,7 @@ describe('shared/api/runtime.service.ts', () => {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post'),
-      put: jasmine.createSpy('put'),
+      put: jasmine.createSpy('put')
     };
     jsonData = {};
     runtimeService = new RuntimeService(mockHttp);

@@ -1,4 +1,4 @@
-import { Page } from './page.model';
+import {Page} from './page.model';
 
 export enum ApplicationType {
   app,
@@ -8,11 +8,15 @@ export enum ApplicationType {
   task
 }
 
+/* eslint-disable-next-line */
 export namespace ApplicationType {
   export function getKeys(): number[] {
-    return Object.keys(ApplicationType).filter(isNumber).map(value => Number(value));
+    return Object.keys(ApplicationType)
+      .filter(isNumber)
+      .map(value => Number(value));
   }
 
+  /* eslint-disable-next-line */
   function isNumber(element, index, array) {
     return !isNaN(element);
   }
@@ -27,7 +31,7 @@ export class App {
   defaultVersion: boolean;
   versions: Array<string>;
 
-  public static parse(input) {
+  public static parse(input: any): App {
     const app = new App();
     app.name = input.name;
     app.type = input.type as ApplicationType;
@@ -38,7 +42,7 @@ export class App {
     return app;
   }
 
-  labelTypeClass() {
+  labelTypeClass(): string {
     switch ((this.type || '').toString()) {
       case 'source':
         return 'label label-app source';
@@ -56,7 +60,7 @@ export class App {
 }
 
 export class AppPage extends Page<App> {
-  public static parse(input): Page<App> {
+  public static parse(input: any): Page<App> {
     const page = Page.fromJSON<App>(input);
     if (input && input._embedded && input._embedded.appRegistrationResourceList) {
       page.items = input._embedded.appRegistrationResourceList.map(App.parse);

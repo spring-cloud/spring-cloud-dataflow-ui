@@ -3,7 +3,7 @@ import * as _joint from 'jointjs';
 const joint: any = _joint;
 
 // Load changes into joint object
-import { loadSharedShapes } from '../../shared/support/shared-shapes';
+import {loadSharedShapes} from '../../shared/support/shared-shapes';
 
 export const IMAGE_W = 180;
 export const IMAGE_H = 64;
@@ -18,206 +18,209 @@ export const TYPE_OUTGOING_MESSAGE_RATE = 'dataflow-outgoing-rate';
 export const NODE_ROUNDED_CORNER = 8;
 export const NODE_ROUNDED_CORNER_PALETTE = 3;
 
-const ERROR_MARKER_SIZE = { width: 20, height: 20 };
-const TYPE_ICON_SIZE = { width: 24, height: 24 };
+const ERROR_MARKER_SIZE = {width: 20, height: 20};
+const TYPE_ICON_SIZE = {width: 24, height: 24};
 
 export const TYPE_ICON_PADDING_PALETTE = 7;
-export const TYPE_ICON_SIZE_PALETTE = { width: 0, height: 0 };
+export const TYPE_ICON_SIZE_PALETTE = {width: 0, height: 0};
 
-export function loadStreamShapes() {
+export function loadStreamShapes(): void {
   loadSharedShapes();
 
   joint.shapes.flo.DataFlowApp = joint.shapes.basic.Generic.extend({
-    defaults: joint.util.deepSupplement({
-
-      type: joint.shapes.flo.NODE_TYPE,
-      position: { x: 0, y: 0 },
-      size: { width: IMAGE_W, height: IMAGE_H },
-      attrs: {
-        '.': {
-          magnet: false,
-        },
-        '.box': {
-          refWidth: 1,
-          refHeight: 1,
-          rx: NODE_ROUNDED_CORNER,
-          ry: NODE_ROUNDED_CORNER,
-          stroke: '#6db33f',
-          fill: '#eeeeee',
-          'stroke-width': 2,
-        },
-        '.palette-name-label': {
-          refX: 0.5, // jointjs specific: relative position to ref'd element
-          refY: 0.5,
-          'y-alignment': 'middle',
-          'x-alignment': 'middle',
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: 'black',
-          'font-size': 14
-        },
-        '.palette-entry-name-label': {
-          refX: 10, // jointjs specific: relative position to ref'd element
-          refY: 0.5,
-          'y-alignment': 'middle',
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: 'black',
-          'font-size': 14
-        },
-        '.name-label': {
-          refX: 10 + 6, // jointjs specific: relative position to ref'd element
-          refY: 0.5,
-          refY2: -4,
-          'y-alignment': 'bottom',
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: 'black',
-          'font-size': 14
-        },
-        '.type-label': {
-          refX: 20 + 6,
-          refY: 0.5,
-          refY2: 2,
-          'y-alignment': 'top',
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: 'black',
-          'font-size': 14,
-          text: 'UNRESOLVED'
-        },
-        '.type-label-bg': {
-          ref: '.type-label',
-          refX: -10,
-          refY: -3,
-          refWidth: 20,
-          rx: 11,
-          ry: 11,
-          refHeight: 6
-        },
-        '.type-icon': {
-          ref: '.box',
-          width: TYPE_ICON_SIZE.width,
-          heigth: TYPE_ICON_SIZE.height,
-          refX: 10,
-          refY: 0.5,
-          refY2: -TYPE_ICON_SIZE.height / 2,
-          'xlink:href': 'assets/img/unknown.svg',
-        },
-        '.error-marker': {
-          width: ERROR_MARKER_SIZE.width,
-          height: ERROR_MARKER_SIZE.height,
-          ref: '.box',
-          refX: '100%',
-          refX2: -1 - ERROR_MARKER_SIZE.width,
-          refY: 1
-        },
-        '.stream-label': {
-          'x-alignment': 'middle',
-          'y-alignment': 'top',
-          refX: 0.5, // jointjs specific: relative position to ref'd element
-          refY: '100%', // jointjs specific: relative position to ref'd element
-          refY2: 10,
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-        },
-        '.select-outline': {
-          ref: '.box',
-          refWidth: 1,
-          refHeight: 1,
-          rx: NODE_ROUNDED_CORNER,
-          ry: NODE_ROUNDED_CORNER,
-        },
-        '.shape': {}
-      }
-    }, joint.shapes.basic.Generic.prototype.defaults)
+    defaults: joint.util.deepSupplement(
+      {
+        type: joint.shapes.flo.NODE_TYPE,
+        position: {x: 0, y: 0},
+        size: {width: IMAGE_W, height: IMAGE_H},
+        attrs: {
+          '.': {
+            magnet: false
+          },
+          '.box': {
+            refWidth: 1,
+            refHeight: 1,
+            rx: NODE_ROUNDED_CORNER,
+            ry: NODE_ROUNDED_CORNER,
+            stroke: '#6db33f',
+            fill: '#eeeeee',
+            'stroke-width': 2
+          },
+          '.palette-name-label': {
+            refX: 0.5, // jointjs specific: relative position to ref'd element
+            refY: 0.5,
+            'y-alignment': 'middle',
+            'x-alignment': 'middle',
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: 'black',
+            'font-size': 14
+          },
+          '.palette-entry-name-label': {
+            refX: 10, // jointjs specific: relative position to ref'd element
+            refY: 0.5,
+            'y-alignment': 'middle',
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: 'black',
+            'font-size': 14
+          },
+          '.name-label': {
+            refX: 10 + 6, // jointjs specific: relative position to ref'd element
+            refY: 0.5,
+            refY2: -4,
+            'y-alignment': 'bottom',
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: 'black',
+            'font-size': 14
+          },
+          '.type-label': {
+            refX: 20 + 6,
+            refY: 0.5,
+            refY2: 2,
+            'y-alignment': 'top',
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: 'black',
+            'font-size': 14,
+            text: 'UNRESOLVED'
+          },
+          '.type-label-bg': {
+            ref: '.type-label',
+            refX: -10,
+            refY: -3,
+            refWidth: 20,
+            rx: 11,
+            ry: 11,
+            refHeight: 6
+          },
+          '.type-icon': {
+            ref: '.box',
+            width: TYPE_ICON_SIZE.width,
+            heigth: TYPE_ICON_SIZE.height,
+            refX: 10,
+            refY: 0.5,
+            refY2: -TYPE_ICON_SIZE.height / 2,
+            'xlink:href': 'assets/img/unknown.svg'
+          },
+          '.error-marker': {
+            width: ERROR_MARKER_SIZE.width,
+            height: ERROR_MARKER_SIZE.height,
+            ref: '.box',
+            refX: '100%',
+            refX2: -1 - ERROR_MARKER_SIZE.width,
+            refY: 1
+          },
+          '.stream-label': {
+            'x-alignment': 'middle',
+            'y-alignment': 'top',
+            refX: 0.5, // jointjs specific: relative position to ref'd element
+            refY: '100%', // jointjs specific: relative position to ref'd element
+            refY2: 10,
+            ref: '.box' // jointjs specific: element for ref-x, ref-y
+          },
+          '.select-outline': {
+            ref: '.box',
+            refWidth: 1,
+            refHeight: 1,
+            rx: NODE_ROUNDED_CORNER,
+            ry: NODE_ROUNDED_CORNER
+          },
+          '.shape': {}
+        }
+      },
+      joint.shapes.basic.Generic.prototype.defaults
+    )
   });
 
   joint.shapes.flo.Destination = joint.shapes.basic.Generic.extend({
-    defaults: joint.util.deepSupplement({
-
-      type: joint.shapes.flo.NODE_TYPE,
-      position: { x: 0, y: 0 },
-      size: { width: IMAGE_W, height: IMAGE_H },
-      attrs: {
-        '.': {
-          magnet: false,
-        },
-        '.box': {
-          // d: 'm6,10 a12,12 0 0,0 0,20 l108,0 a12,12 0 0,0 0,-20 l0,0 z',
-          refWidth: 1,
-          refHeight: 0.5,
-          refY: 0.25,
-          rx: 2,
-          ry: 2,
-          // 'fill-opacity':0, // see through
-          stroke: '#6db33f',
-          fill: '#eeeeee',
-          'stroke-width': 2,
-        },
-        '.palette-entry-name-label': {
-          refX: 0.5, // jointjs specific: relative position to ref'd element
-          refY: 0.5,
-          'y-alignment': 'middle',
-          'x-alignment': 'middle',
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: 'black',
-          'font-size': 14
-        },
-        '.name-label': {
-          refX: 10 + TYPE_ICON_SIZE.width + 10, // jointjs specific: relative position to ref'd element
-          refY: 0.5,
-          refY2: -2,
-          'y-alignment': 'bottom',
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: 'black',
-          'font-size': 14
-        },
-        '.type-label': {
-          refX: 0.5, // jointjs specific: relative position to ref'd element
-          refY: 0.5,
-          refY2: 2,
-          'y-alignment': 'top',
-          'x-alignment': 'middle',
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: 'black',
-          'font-size': 14,
-          text: 'UNRESOLVED'
-        },
-        '.type-label-bg': {
-          ref: '.type-label',
-          refX: 0,
-          refY: 0,
-          refWidth: 10,
-          refHeight: 8
-        },
-        '.type-icon': {
-          ref: '.box',
-          width: TYPE_ICON_SIZE.width,
-          heigth: TYPE_ICON_SIZE.height,
-          refX: 10,
-          refY: 0.5,
-          refY2: -TYPE_ICON_SIZE.height / 2,
-        },
-        '.error-marker': {
-          width: ERROR_MARKER_SIZE.width,
-          height: ERROR_MARKER_SIZE.height,
-          ref: '.box',
-          refX: '100%',
-          refX2: -5 - ERROR_MARKER_SIZE.width,
-          refY: 5
-        },
-        '.stream-label': {
-          'x-alignment': 'middle',
-          'y-alignment': -0.999999,
-          'ref-x': 0.5, // jointjs specific: relative position to ref'd element
-          'ref-y': 0, // jointjs specific: relative position to ref'd element
-          ref: '.box', // jointjs specific: element for ref-x, ref-y
-          fill: '#AAAAAA',
-          'font-size': 15
-        },
-        '.shape': {}
-      }
-    }, joint.shapes.basic.Generic.prototype.defaults)
+    defaults: joint.util.deepSupplement(
+      {
+        type: joint.shapes.flo.NODE_TYPE,
+        position: {x: 0, y: 0},
+        size: {width: IMAGE_W, height: IMAGE_H},
+        attrs: {
+          '.': {
+            magnet: false
+          },
+          '.box': {
+            // d: 'm6,10 a12,12 0 0,0 0,20 l108,0 a12,12 0 0,0 0,-20 l0,0 z',
+            refWidth: 1,
+            refHeight: 0.5,
+            refY: 0.25,
+            rx: 2,
+            ry: 2,
+            // 'fill-opacity':0, // see through
+            stroke: '#6db33f',
+            fill: '#eeeeee',
+            'stroke-width': 2
+          },
+          '.palette-entry-name-label': {
+            refX: 0.5, // jointjs specific: relative position to ref'd element
+            refY: 0.5,
+            'y-alignment': 'middle',
+            'x-alignment': 'middle',
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: 'black',
+            'font-size': 14
+          },
+          '.name-label': {
+            refX: 10 + TYPE_ICON_SIZE.width + 10, // jointjs specific: relative position to ref'd element
+            refY: 0.5,
+            refY2: -2,
+            'y-alignment': 'bottom',
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: 'black',
+            'font-size': 14
+          },
+          '.type-label': {
+            refX: 0.5, // jointjs specific: relative position to ref'd element
+            refY: 0.5,
+            refY2: 2,
+            'y-alignment': 'top',
+            'x-alignment': 'middle',
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: 'black',
+            'font-size': 14,
+            text: 'UNRESOLVED'
+          },
+          '.type-label-bg': {
+            ref: '.type-label',
+            refX: 0,
+            refY: 0,
+            refWidth: 10,
+            refHeight: 8
+          },
+          '.type-icon': {
+            ref: '.box',
+            width: TYPE_ICON_SIZE.width,
+            heigth: TYPE_ICON_SIZE.height,
+            refX: 10,
+            refY: 0.5,
+            refY2: -TYPE_ICON_SIZE.height / 2
+          },
+          '.error-marker': {
+            width: ERROR_MARKER_SIZE.width,
+            height: ERROR_MARKER_SIZE.height,
+            ref: '.box',
+            refX: '100%',
+            refX2: -5 - ERROR_MARKER_SIZE.width,
+            refY: 5
+          },
+          '.stream-label': {
+            'x-alignment': 'middle',
+            'y-alignment': -0.999999,
+            'ref-x': 0.5, // jointjs specific: relative position to ref'd element
+            'ref-y': 0, // jointjs specific: relative position to ref'd element
+            ref: '.box', // jointjs specific: element for ref-x, ref-y
+            fill: '#AAAAAA',
+            'font-size': 15
+          },
+          '.shape': {}
+        }
+      },
+      joint.shapes.basic.Generic.prototype.defaults
+    )
   });
 
   joint.shapes.flo.LinkDataflow = joint.shapes.flo.Link.extend({
-
     toolMarkup: [
       '<g class="link-tool create-stream">',
       // '<rect class="link-tools-container" width="28" height="28"/>',
@@ -226,22 +229,22 @@ export function loadStreamShapes() {
       '<g class="tool-remove" event="remove">',
       '<circle r="11" transform="scale(.7)"/>',
       '<path transform="scale(.6) translate(-16, -16)" d="M24.778,21.419 19.276,15.917 24.777,10.415 21.949,7.585' +
-      ' 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
+        ' 16.447,13.087 10.945,7.585 8.117,10.415 13.618,15.917 8.116,21.419 10.946,24.248 16.447,18.746 21.948,24.248z"/>',
       '<titleModal>Remove link.</titleModal>',
       '</g>',
       '<g class="tool-insert-channel" event="insert-channel">',
       '<circle r="11" transform="scale(0.7) translate(-12,-18)" style="stroke:rgb(0,0,0);fill:#ffffff;"/>',
       '<path stroke-linecap="round" transform="scale(0.7) translate(-12,-18)" d="M0,-8 L0,0 M-4,-4 L0,0 M4,-4 L0,0"' +
-      ' style="stroke:rgb(0,0,0);stroke-width:2"/>',
+        ' style="stroke:rgb(0,0,0);stroke-width:2"/>',
       '<rect width="8" height="4" transform="translate(-12,-12)" style="stroke:rgb(0,0,0);fill:#ffffff;stroke-width:1"/>',
       '<titleModal>Insert destination</titleModal>',
       '</g>',
       '<g class="tool-switch" event="switch">',
       '<circle r="11" transform="scale(0.7) translate(12, -18)" style="stroke:rgb(0,0,0);fill:#ffffff;"/>',
       '<line stroke-linecap="round" transform="scale(0.7) translate(5, -22)" x1="4" y1="11" x2="15" y2="0"' +
-      ' style="stroke:rgb(0,0,0);stroke-width:2" stroke-dasharray="3, 4"/>',
+        ' style="stroke:rgb(0,0,0);stroke-width:2" stroke-dasharray="3, 4"/>',
       '<path stroke-linecap="round" transform="scale(0.7) translate(3,-26)" d="M0,8 L8,8 M4,12 L8,8 M4,4 L8,8"' +
-      ' style="stroke:rgb(0,0,0);stroke-width:2"/>',
+        ' style="stroke:rgb(0,0,0);stroke-width:2"/>',
       '<titleModal>Switch to/from tap</titleModal>',
       '</g>',
       // '<g class="tool-options" event="link:options" transform="translate(-17, -4)">',
@@ -267,78 +270,79 @@ export function loadStreamShapes() {
       '</g>'
     ].join(''),
 
-
-    defaults: joint.util.deepSupplement({
-      type: joint.shapes.flo.LINK_TYPE,
-      // connector: {
-      //   name: 'smoothHorizontal'
-      // },
-//      router: { name: 'metro' },
-      attrs: {
-        '.connection': { stroke: '#f1f1f1', 'stroke-width': 3, class: 'connection' },
-        '.connection-wrap': { display: 'none' },
-        '.marker-arrowheads': { display: 'none' },
-        '.tool-options': { display: 'block' },
-        targetMarker: {
-          type: 'path',
-          d: 'M 10 -5 0 0 10 5 z'
+    defaults: joint.util.deepSupplement(
+      {
+        type: joint.shapes.flo.LINK_TYPE,
+        // connector: {
+        //   name: 'smoothHorizontal'
+        // },
+        //      router: { name: 'metro' },
+        attrs: {
+          '.connection': {stroke: '#f1f1f1', 'stroke-width': 3, class: 'connection'},
+          '.connection-wrap': {display: 'none'},
+          '.marker-arrowheads': {display: 'none'},
+          '.tool-options': {display: 'block'},
+          targetMarker: {
+            type: 'path',
+            d: 'M 10 -5 0 0 10 5 z'
+          }
         }
       },
-    }, joint.shapes.flo.Link.prototype.defaults)
+      joint.shapes.flo.Link.prototype.defaults
+    )
   });
 
   joint.shapes.flo.InstanceLabel = joint.shapes.basic.Generic.extend({
-
     markup: '<text class="label"/>',
 
-    defaults: joint.util.deepSupplement({
-
-      type: TYPE_INSTANCE_LABEL,
-      attrs: {
-        '.': { magnet: false },
-        '.label': {
-          'text-anchor': 'middle',
-          fill: 'black',
-          'font-size': 8
+    defaults: joint.util.deepSupplement(
+      {
+        type: TYPE_INSTANCE_LABEL,
+        attrs: {
+          '.': {magnet: false},
+          '.label': {
+            'text-anchor': 'middle',
+            fill: 'black',
+            'font-size': 8
+          }
         }
-      }
-    }, joint.shapes.basic.Generic.prototype.defaults)
+      },
+      joint.shapes.basic.Generic.prototype.defaults
+    )
   });
 
   const InstanceDotSize = 12;
 
   joint.shapes.flo.InstanceDot = joint.shapes.basic.Generic.extend({
-
     markup: '<g class="root"><rect class="instance-dot"/></g>',
 
-    defaults: joint.util.deepSupplement({
-      type: TYPE_INSTANCE_DOT,
-      size: { width: InstanceDotSize, height: InstanceDotSize },
-      attrs: {
-        '.': { magnet: false },
-        '.root': {
-          refWidth: 1,
-          refHeight: 1,
-        },
-        '.instance-dot': {
-          strokeWidth: 3,
-          rx: 3,
-          ry: 3,
-          width: InstanceDotSize,
-          height: InstanceDotSize,
-          ref: '.root'
+    defaults: joint.util.deepSupplement(
+      {
+        type: TYPE_INSTANCE_DOT,
+        size: {width: InstanceDotSize, height: InstanceDotSize},
+        attrs: {
+          '.': {magnet: false},
+          '.root': {
+            refWidth: 1,
+            refHeight: 1
+          },
+          '.instance-dot': {
+            strokeWidth: 3,
+            rx: 3,
+            ry: 3,
+            width: InstanceDotSize,
+            height: InstanceDotSize,
+            ref: '.root'
+          }
         }
-      }
-    }, joint.shapes.basic.Generic.prototype.defaults)
+      },
+      joint.shapes.basic.Generic.prototype.defaults
+    )
   });
 
   joint.shapes.flo.DataFlowLabelHandle = joint.shapes.basic.Generic.extend({
-
     markup: '<g><text class="handle-label"/></g>'
-
   });
-
 }
 
 loadStreamShapes();
-

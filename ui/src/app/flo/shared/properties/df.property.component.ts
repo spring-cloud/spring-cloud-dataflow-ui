@@ -1,6 +1,6 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormGroup, AbstractControl, FormControl } from '@angular/forms';
-import { DynamicFormPropertyComponent, Properties } from 'spring-flo';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {FormGroup, AbstractControl, FormControl} from '@angular/forms';
+import {DynamicFormPropertyComponent, Properties} from 'spring-flo';
 import PropertyFilter = Properties.PropertyFilter;
 
 @Component({
@@ -8,8 +8,7 @@ import PropertyFilter = Properties.PropertyFilter;
   templateUrl: './df.property.component.html',
   encapsulation: ViewEncapsulation.None
 })
-export class ClrDynamicFormPropertyComponent   {
-
+export class ClrDynamicFormPropertyComponent {
   @Input()
   model: Properties.ControlModel<any>;
 
@@ -17,7 +16,7 @@ export class ClrDynamicFormPropertyComponent   {
 
   constructor() {}
 
-  get types() {
+  get types(): any {
     return Properties.InputType;
   }
 
@@ -25,9 +24,9 @@ export class ClrDynamicFormPropertyComponent   {
     return this.form.controls[this.model.id];
   }
 
-  get errorData() {
-    return (this.model.validation && this.model.validation.errorData ? this.model.validation.errorData : [])
-      .filter(e => this.control.errors && this.control.errors[e.id]);
+  get errorData(): any {
+    return (this.model.validation && this.model.validation.errorData ? this.model.validation.errorData : []).filter(
+      e => this.control.errors && this.control.errors[e.id]
+    );
   }
-
 }

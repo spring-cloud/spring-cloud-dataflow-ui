@@ -2,29 +2,30 @@
   <h3 *ngIf="streams?.length == 1" class="modal-title">Confirm Destroy Stream</h3>
   <h3 *ngIf="streams?.length > 1" class="modal-title">Confirm Destroy Streams</h3>
   <div class="modal-body" *ngIf="streams.length == 1 && !isRunning">
-    This action will destroy and delete the stream <strong>{{streams[0].name}}</strong>.
-    Are you sure?
+    This action will destroy and delete the stream <strong>{{ streams[0].name }}</strong
+    >. Are you sure?
   </div>
   <div class="modal-body" *ngIf="streams?.length > 1 && !isRunning">
-    This action will destroy the <strong>{{streams.length}} stream definitions</strong> listed below.
-    Are you sure?
-    <br/>
+    This action will destroy the <strong>{{ streams.length }} stream definitions</strong> listed below. Are you sure?
+    <br />
     <table class="table table-striped">
       <thead>
-      <tr>
-        <th class="left">Name</th>
-        <th class="left">Definition</th>
-      </tr>
+        <tr>
+          <th class="left">Name</th>
+          <th class="left">Definition</th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let stream of streams">
-        <td class="left"><strong class="text-truncate" style="max-width: 230px">{{stream.name}}</strong></td>
-        <td class="left">
-          <span class="dsl-text dsl-truncate" style="max-width: 200px">
-            <app-stream-dsl [dsl]="stream.dslText" [expandable]="false"></app-stream-dsl>
-          </span>
-        </td>
-      </tr>
+        <tr *ngFor="let stream of streams">
+          <td class="left">
+            <strong class="text-truncate" style="max-width: 230px">{{ stream.name }}</strong>
+          </td>
+          <td class="left">
+            <span class="dsl-text dsl-truncate" style="max-width: 200px">
+              <app-stream-dsl [dsl]="stream.dslText" [expandable]="false"></app-stream-dsl>
+            </span>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

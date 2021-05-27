@@ -4,7 +4,7 @@ export class Platform {
   public description: string;
   public options: Array<any>;
 
-  static parse(input): Platform {
+  static parse(input: any): Platform {
     const platform = new Platform();
     platform.name = input.name;
     platform.type = input.type;
@@ -15,7 +15,7 @@ export class Platform {
 }
 
 export class PlatformList {
-  static parse(input): Array<Platform> {
+  static parse(input: any): Array<Platform> {
     if (input && Array.isArray(input)) {
       return input.map(Platform.parse);
     }
@@ -24,7 +24,7 @@ export class PlatformList {
 }
 
 export class PlatformTaskList {
-  static parse(input): Array<Platform> {
+  static parse(input: any): Array<Platform> {
     if (input && input._embedded && input._embedded.launcherResourceList) {
       return input._embedded.launcherResourceList.map(Platform.parse);
     }

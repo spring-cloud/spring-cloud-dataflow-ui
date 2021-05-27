@@ -2,29 +2,38 @@
   <h3 *ngIf="tasks?.length == 1" class="modal-title">Confirm Destroy Task</h3>
   <h3 *ngIf="tasks?.length > 1" class="modal-title">Confirm Destroy Tasks</h3>
   <div class="modal-body" *ngIf="tasks.length == 1 && !isRunning">
-    This action will destroy and delete the task <u><strong>{{tasks[0].name}}</strong></u>. Are you sure?
+    This action will destroy and delete the task
+    <u
+      ><strong>{{ tasks[0].name }}</strong></u
+    >. Are you sure?
   </div>
   <div class="modal-body" *ngIf="tasks?.length > 1 && !isRunning">
-    This action will destroy the <u><strong>{{tasks.length}}
-    task{{tasks?.length > 1 ? 's' : ''}}</strong></u> listed below.<br/>Are you sure?
-    <br/>
+    This action will destroy the
+    <u
+      ><strong>{{ tasks.length }} task{{ tasks?.length > 1 ? 's' : '' }}</strong></u
+    >
+    listed below.<br />Are you sure?
+    <br />
     <table class="table table-striped">
       <thead>
-      <tr>
-        <th class="left">Name</th>
-        <th class="left">Type</th>
-      </tr>
+        <tr>
+          <th class="left">Name</th>
+          <th class="left">Type</th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let task of tasks">
-        <td class="left">
-          <strong class="text-truncate" style="max-width: 230px"><strong>{{task.name}}</strong></strong></td>
-        <td class="left">
-          <span class="dsl-text dsl-truncate" style="max-width: 200px">
-            {{task.dslText}}
-          </span>
-        </td>
-      </tr>
+        <tr *ngFor="let task of tasks">
+          <td class="left">
+            <strong class="text-truncate" style="max-width: 230px"
+              ><strong>{{ task.name }}</strong></strong
+            >
+          </td>
+          <td class="left">
+            <span class="dsl-text dsl-truncate" style="max-width: 200px">
+              {{ task.dslText }}
+            </span>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

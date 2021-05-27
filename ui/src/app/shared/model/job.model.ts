@@ -1,14 +1,13 @@
-import { DateTime } from 'luxon';
-import { Page } from './page.model';
+import {DateTime} from 'luxon';
+import {Page} from './page.model';
 import get from 'lodash.get';
 
 export class ExecutionContext {
-
   public dirty: boolean;
   public empty: boolean;
   public values: Map<string, string>;
 
-  static parse(input) {
+  static parse(input: any): ExecutionContext {
     const context = new ExecutionContext();
     context.dirty = input?.dirty;
     context.empty = input?.empty;
@@ -41,8 +40,7 @@ export class ExecutionStep {
   public exitCode: string;
   public exitMessage: string;
 
-
-  static parse(input): ExecutionStep {
+  static parse(input: any): ExecutionStep {
     const executionStep: ExecutionStep = new ExecutionStep();
     executionStep.id = input.id;
     executionStep.name = input.stepName;
@@ -69,7 +67,7 @@ export class ExecutionStep {
         }
         values.push(map);
       });
-      executionStep.executionContext = ExecutionContext.parse({ ...input, values });
+      executionStep.executionContext = ExecutionContext.parse({...input, values});
     }
     if (input.exitStatus) {
       executionStep.exitCode = input.exitStatus.exitCode;
@@ -78,7 +76,7 @@ export class ExecutionStep {
     return executionStep;
   }
 
-  labelStatusClass() {
+  labelStatusClass(): string {
     switch (this.status) {
       case 'COMPLETED':
         return 'label label-job completed';
@@ -96,7 +94,7 @@ export class ExecutionStepResource {
   public stepExecution: ExecutionStep;
   public stepType: string;
 
-  static parse(input) {
+  static parse(input: any): ExecutionStepResource {
     const stepExecutionResource = new ExecutionStepResource();
     stepExecutionResource.jobExecutionId = input.jobExecutionId;
     stepExecutionResource.jobExecutionId = input.jobExecutionId;
@@ -128,12 +126,22 @@ export class ExecutionStepHistory {
   public duration: CountDetails;
   public durationPerRead: CountDetails;
 
-  static parse(input): ExecutionStepHistory {
+  static parse(input: any): ExecutionStepHistory {
     const stepExecutionHistory: ExecutionStepHistory = new ExecutionStepHistory();
     stepExecutionHistory.stepName = input.stepName;
     stepExecutionHistory.count = input.count;
-    ['commitCount', 'rollbackCount', 'readCount', 'writeCount', 'filterCount', 'readSkipCount', 'writeSkipCount',
-      'processSkipCount', 'duration', 'durationPerRead'].forEach((item) => {
+    [
+      'commitCount',
+      'rollbackCount',
+      'readCount',
+      'writeCount',
+      'filterCount',
+      'readSkipCount',
+      'writeSkipCount',
+      'processSkipCount',
+      'duration',
+      'durationPerRead'
+    ].forEach(item => {
       stepExecutionHistory[item] = new CountDetails();
       stepExecutionHistory[item].count = input[item].count;
       stepExecutionHistory[item].min = input[item].min;
@@ -152,7 +160,7 @@ export class ExecutionStepProgress {
   public finished: boolean;
   public duration: number;
 
-  static parse(input): ExecutionStepProgress {
+  static parse(input: any): ExecutionStepProgress {
     const stepExecutionProgress: ExecutionStepProgress = new ExecutionStepProgress();
     stepExecutionProgress.percentageComplete = input.percentageComplete;
     stepExecutionProgress.finished = input.finished;
@@ -164,7 +172,6 @@ export class ExecutionStepProgress {
     return stepExecutionProgress;
   }
 }
-
 
 export class JobExecution {
   public name: string;
@@ -184,10 +191,9 @@ export class JobExecution {
   public stoppable: boolean;
   public defined: boolean;
 
-  constructor() {
-  }
+  constructor() {}
 
-  static parse(input): JobExecution {
+  static parse(input: any): JobExecution {
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.stepExecutions = [];
     jobExecution.name = input.name;
@@ -219,7 +225,7 @@ export class JobExecution {
     return jobExecution;
   }
 
-  static parseThin(input): JobExecution {
+  static parseThin(input: any): JobExecution {
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.stepExecutions = [];
     jobExecution.name = input.name;
@@ -239,7 +245,7 @@ export class JobExecution {
     return jobExecution;
   }
 
-  labelStatusClass() {
+  labelStatusClass(): string {
     switch (this.status) {
       case 'COMPLETED':
         return 'label label-execution completed';
@@ -251,7 +257,7 @@ export class JobExecution {
     }
   }
 
-  labelExitCodeClass() {
+  labelExitCodeClass(): string {
     switch (this.exitCode) {
       case 'COMPLETED':
         return 'label label-exit-code completed';
@@ -262,11 +268,10 @@ export class JobExecution {
         return 'label label-exit-code unknown';
     }
   }
-
 }
 
 export class JobExecutionPage extends Page<JobExecution> {
-  public static parse(input): Page<JobExecution> {
+  public static parse(input: any): Page<JobExecution> {
     const page = Page.fromJSON<JobExecution>(input);
     if (input && input._embedded) {
       if (input._embedded.jobExecutionResourceList) {

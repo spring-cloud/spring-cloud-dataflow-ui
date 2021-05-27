@@ -1,10 +1,10 @@
-import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TaskGraphPropertiesSource } from '../properties/task-properties-source';
-import { NodeComponent } from '../../shared/support/node-component';
-import { DocService } from '../../shared/service/doc.service';
-import { ModalService } from '../../../shared/service/modal.service';
-import { App, ApplicationType } from '../../../shared/model/app.model';
-import { TaskPropertiesDialogComponent } from '../properties/task-properties-dialog-component';
+import {Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import {TaskGraphPropertiesSource} from '../properties/task-properties-source';
+import {NodeComponent} from '../../shared/support/node-component';
+import {DocService} from '../../shared/service/doc.service';
+import {ModalService} from '../../../shared/service/modal.service';
+import {App, ApplicationType} from '../../../shared/model/app.model';
+import {TaskPropertiesDialogComponent} from '../properties/task-properties-dialog-component';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -19,19 +19,17 @@ import { TaskPropertiesDialogComponent } from '../properties/task-properties-dia
   encapsulation: ViewEncapsulation.None
 })
 export class TaskNodeComponent extends NodeComponent {
-
   @ViewChild('markerTooltip')
   markerTooltipElement: ElementRef;
 
   @ViewChild('nodeTooltip')
   nodeTooltipElement: ElementRef;
 
-  constructor(docService: DocService,
-              private modalService?: ModalService) {
+  constructor(docService: DocService, private modalService?: ModalService) {
     super(docService);
   }
 
-  showOptions() {
+  showOptions(): void {
     const element = this.view.model;
     const modal = this.modalService.show(TaskPropertiesDialogComponent);
     const app = new App();
@@ -41,6 +39,4 @@ export class TaskNodeComponent extends NodeComponent {
     modal.title = `Properties for ${element.prop('metadata/name').toUpperCase()}`;
     modal.setData(new TaskGraphPropertiesSource(element));
   }
-
 }
-

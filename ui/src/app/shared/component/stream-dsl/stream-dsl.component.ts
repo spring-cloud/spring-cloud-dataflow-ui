@@ -1,27 +1,26 @@
-import { Component, ViewEncapsulation, Input } from '@angular/core';
-import { ParserService } from '../../../flo/shared/service/parser.service';
+import {Component, ViewEncapsulation, Input} from '@angular/core';
+import {ParserService} from '../../../flo/shared/service/parser.service';
 
 @Component({
   selector: 'app-stream-dsl',
   template: `<span class="stream-dsl">
-      <span *ngIf="!expandable">
-        {{shortDslText}}
+    <span *ngIf="!expandable">
+      {{ shortDslText }}
+    </span>
+    <span *ngIf="expandable">
+      <span *ngIf="getState() === 'unexpandable'">
+        {{ dslText }}
       </span>
-      <span *ngIf="expandable">
-        <span *ngIf="getState() === 'unexpandable'">
-          {{dslText}}
-        </span>
-        <span *ngIf="getState() === 'expanded'">
-          {{dslText}}
-          <a class="less" href="" (click)="$event.preventDefault(); collapse()">&lt;&lt;</a>
-        </span>
-        <span *ngIf="getState() === 'collapsed'">
-          {{shortDslText}}
-          <a class="less" href="" (click)="$event.preventDefault(); expand()">&gt;&gt;</a>
-        </span>
+      <span *ngIf="getState() === 'expanded'">
+        {{ dslText }}
+        <a class="less" href="" (click)="$event.preventDefault(); collapse()">&lt;&lt;</a>
+      </span>
+      <span *ngIf="getState() === 'collapsed'">
+        {{ shortDslText }}
+        <a class="less" href="" (click)="$event.preventDefault(); expand()">&gt;&gt;</a>
       </span>
     </span>
-  `,
+  </span> `,
   encapsulation: ViewEncapsulation.None
 })
 export class StreamDslComponent {
@@ -44,27 +43,25 @@ export class StreamDslComponent {
     }
   }
 
-  get dsl() {
+  get dsl(): string {
     return this.dslText;
   }
 
-  constructor(private parserService: ParserService) {
-  }
+  constructor(private parserService: ParserService) {}
 
-  getState() {
+  getState(): string {
     return this.state;
   }
 
-  expand() {
+  expand(): void {
     if (this.state !== 'unexpandable') {
       this.state = 'expanded';
     }
   }
 
-  collapse() {
+  collapse(): void {
     if (this.state !== 'unexpandable') {
       this.state = 'collapsed';
     }
   }
-
 }

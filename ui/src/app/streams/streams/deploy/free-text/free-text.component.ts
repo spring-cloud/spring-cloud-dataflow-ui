@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { StreamDeployValidator } from '../stream-deploy.validator';
-import { NotificationService } from '../../../../shared/service/notification.service';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {StreamDeployValidator} from '../stream-deploy.validator';
+import {NotificationService} from '../../../../shared/service/notification.service';
 
 /**
  * Free Text Component
@@ -16,7 +16,6 @@ import { NotificationService } from '../../../../shared/service/notification.ser
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FreeTextComponent implements OnInit, OnDestroy {
-
   /**
    * Stream ID
    */
@@ -60,11 +59,13 @@ export class FreeTextComponent implements OnInit, OnDestroy {
   /**
    * Line of the textarea
    */
-  lines: Array<any> = [{
-    label: 1,
-    valid: true,
-    message: ''
-  }];
+  lines: Array<any> = [
+    {
+      label: 1,
+      valid: true,
+      message: ''
+    }
+  ];
 
   /**
    * State of the form
@@ -90,56 +91,55 @@ export class FreeTextComponent implements OnInit, OnDestroy {
   /**
    * On Init
    */
-  ngOnInit() {
-    this.formGroup.get('input').valueChanges
-      .subscribe((value) => {
-        this.valueChanges(value);
-      });
+  ngOnInit(): void {
+    this.formGroup.get('input').valueChanges.subscribe(value => {
+      this.valueChanges(value);
+    });
 
     this.formGroup.get('input').setValue(this.properties.join('\n'));
   }
 
-  private getCleanProperties() {
-    return this.formGroup.get('input').value.toString()
+  private getCleanProperties(): Array<string> {
+    return this.formGroup
+      .get('input')
+      .value.toString()
       .split('\n')
-      .filter((line) => (line.replace(' ', '') !== ''));
+      .filter(line => line.replace(' ', '') !== '');
   }
 
   /**
    * On destroy, emit the update event
    */
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.update.emit(this.getCleanProperties());
   }
 
   /**
    * Textarea value Change
    */
-  valueChanges(value: string) {
+  valueChanges(value: string): void {
     let countInvalidProperties = 0;
     let countValidProperties = 0;
 
-    this.lines = (value.toString() || ' ')
-      .split('\n')
-      .map((line: string, index: number) => {
-        const lineClean = line.replace(' ', '');
-        const message = StreamDeployValidator.property(lineClean);
-        if (lineClean !== '') {
-          if (message === true) {
-            countValidProperties++;
-          } else {
-            countInvalidProperties++;
-          }
+    this.lines = (value.toString() || ' ').split('\n').map((line: string, index: number) => {
+      const lineClean = line.replace(' ', '');
+      const message = StreamDeployValidator.property(lineClean);
+      if (lineClean !== '') {
+        if (message === true) {
+          countValidProperties++;
+        } else {
+          countInvalidProperties++;
         }
-        return {
-          label: (index + 1),
-          valid: (message === true),
-          message: (message !== true) ? message : ''
-        };
-      });
+      }
+      return {
+        label: index + 1,
+        valid: message === true,
+        message: message !== true ? message : ''
+      };
+    });
 
-    this.isSubmittable = (countInvalidProperties === 0);
-    this.isExportable = (countInvalidProperties + countValidProperties) > 0;
+    this.isSubmittable = countInvalidProperties === 0;
+    this.isExportable = countInvalidProperties + countValidProperties > 0;
   }
 
   /**
@@ -148,41 +148,39 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    *
    * @param {Blob} contents File
    */
-  fileChange(contents) {
+  fileChange(contents: any): void {
     try {
       const reader = new FileReader();
-      reader.onloadend = (e) => {
+      reader.onloadend = e => {
         this.formGroup.get('input').setValue(reader.result);
         this.formGroup.get('file').setValue('');
       };
       reader.readAsText(contents.target.files[0]);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   /**
    * Emit a request export
    */
-  exportProps() {
+  exportProps(): void {
     this.exportProperties.emit(this.getCleanProperties());
   }
 
   /**
    * Copye to clipboard
    */
-  copyToClipboard() {
+  copyToClipboard(): void {
     this.copyProperties.emit(this.getCleanProperties());
   }
 
   /**
    * Emit a request deploy
    */
-  deployStream() {
+  deployStream(): void {
     if (!this.isSubmittable) {
       this.notificationService.error('Invalid properties', 'Some line(s) are invalid.');
     } else {
       this.deploy.emit(this.getCleanProperties());
     }
   }
-
 }

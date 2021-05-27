@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, Optional } from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges, OnDestroy, Optional} from '@angular/core';
 
 /**
  * This directive is a helper for any situation where you need
@@ -7,10 +7,9 @@ import { Directive, ElementRef, Input, OnChanges, OnDestroy, Optional } from '@a
  * @author Damien Vitrac
  */
 @Directive({
-  selector: '[dataflowFocus]',
+  selector: '[dataflowFocus]'
 })
 export class FocusDirective implements OnChanges {
-
   /**
    * App Focus
    * @type {boolean}
@@ -27,13 +26,12 @@ export class FocusDirective implements OnChanges {
    * Constructor
    * @param {ElementRef} elementRef
    */
-  constructor(private elementRef: ElementRef) {
-  }
+  constructor(private elementRef: ElementRef) {}
 
   /**
    * On Change Event
    */
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.checkFocus();
   }
 
@@ -42,12 +40,10 @@ export class FocusDirective implements OnChanges {
    */
   private checkFocus() {
     if (this.dataflowFocus && document.activeElement !== this.elementRef.nativeElement) {
-      let checkFocusTimeoutHandle: number;
       const focus = () => {
         this.elementRef.nativeElement.focus();
       };
-      checkFocusTimeoutHandle = setTimeout(focus, this.focusDelay) as any;
+      setTimeout(focus, this.focusDelay);
     }
   }
-
 }

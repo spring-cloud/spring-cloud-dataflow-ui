@@ -1,5 +1,4 @@
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 
 /**
  * Validators for Stream Deploy
@@ -9,7 +8,6 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
  * @author Damien Vitrac
  */
 export class TaskLaunchValidator {
-
   /**
    * Key regex
    */
@@ -18,7 +16,8 @@ export class TaskLaunchValidator {
   /**
    * PropertyKey regex
    */
-  static propertyKeyRegex = /^(app|deployer|version)+((\.\*)|([.][a-zA-Z0-9-\-\_]{1,50}))+([.][a-zA-Z0-9-\-\_]{1,50})*$/;
+  static propertyKeyRegex =
+    /^(app|deployer|version)+((\.\*)|([.][a-zA-Z0-9-\-\_]{1,50}))+([.][a-zA-Z0-9-\-\_]{1,50})*$/; // eslint-disable-line
 
   /**
    * PropertyKey regex
@@ -36,11 +35,11 @@ export class TaskLaunchValidator {
       return null;
     }
     if (!/^[0-9]*$/.test(formControl.value)) {
-      return { invalid: true };
+      return {invalid: true};
     }
     const num = +formControl.value;
     if (num < 1) {
-      return { invalid: true };
+      return {invalid: true};
     }
     return null;
   }
@@ -56,7 +55,7 @@ export class TaskLaunchValidator {
       return null;
     }
     if (!TaskLaunchValidator.keyRegex.test(formControl.value)) {
-      return { invalid: true };
+      return {invalid: true};
     }
     return null;
   }
@@ -73,22 +72,25 @@ export class TaskLaunchValidator {
     }
     let tmp;
     try {
-      formControl.value.toString()
+      formControl.value
+        .toString()
         .split('\n')
-        .map((a) => a.trim())
-        .filter((a) => a.toString())
+        .map(a => a.trim())
+        .filter(a => a.toString())
         .map((a: string) => {
           tmp = a.split(/=(.*)/);
           if (tmp.length !== 3) {
             throw new Error();
           }
-          if (!TaskLaunchValidator.propertyPlatformRegex.test(tmp[0])
-            && !TaskLaunchValidator.propertyKeyRegex.test(tmp[0])) {
+          if (
+            !TaskLaunchValidator.propertyPlatformRegex.test(tmp[0]) &&
+            !TaskLaunchValidator.propertyKeyRegex.test(tmp[0])
+          ) {
             throw new Error();
           }
         });
     } catch (e) {
-      return { invalid: true };
+      return {invalid: true};
     }
     return null;
   }
@@ -99,7 +101,7 @@ export class TaskLaunchValidator {
    * @param {string} value
    * @returns {any}
    */
-  static property(value: string) {
+  static property(value: string): any {
     value = value.replace(' ', '');
     if (value === '') {
       return true;
@@ -108,8 +110,7 @@ export class TaskLaunchValidator {
     if (tmp.length !== 3) {
       return 'Not valid';
     }
-    if (!TaskLaunchValidator.propertyPlatformRegex.test(tmp[0])
-      && !TaskLaunchValidator.propertyKeyRegex.test(tmp[0])) {
+    if (!TaskLaunchValidator.propertyPlatformRegex.test(tmp[0]) && !TaskLaunchValidator.propertyKeyRegex.test(tmp[0])) {
       return 'Not valid';
     }
     return true;
@@ -118,7 +119,7 @@ export class TaskLaunchValidator {
   /**
    * Validate a key if any property value is set on a group
    */
-  static keyRequired(group: AbstractControl) {
+  static keyRequired(group: AbstractControl): any {
     const keys = Object.keys((group as FormGroup).controls).filter(k => k !== 'property');
     const control = new FormControl(null, Validators.required);
     const hasValueSet: boolean = keys.some(k => {
@@ -129,7 +130,7 @@ export class TaskLaunchValidator {
     if (!hasValueSet || (hasValueSet && control.valid)) {
       return null;
     }
-    group.get('property').setErrors({ invalid: true });
-    return { invalid: true };
+    group.get('property').setErrors({invalid: true});
+    return {invalid: true};
   }
 }

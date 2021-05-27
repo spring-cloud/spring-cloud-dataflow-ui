@@ -1,33 +1,35 @@
-import { Subscription, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Component, ViewEncapsulation, Input, OnDestroy } from '@angular/core';
-import { Flo } from 'spring-flo';
-import { dia } from 'jointjs';
-import { AppStatus, StreamStatus } from '../../../shared/model/metrics.model';
-import { Stream } from '../../../shared/model/stream.model';
-import { MetamodelService } from '../metamodel.service';
-import { RenderService } from '../render.service';
-import { ApplicationType } from '../../../shared/model/app.model';
-import { TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL } from '../support/shapes';
+import {Subscription, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {Component, ViewEncapsulation, Input, OnDestroy} from '@angular/core';
+import {Flo} from 'spring-flo';
+import {dia} from 'jointjs';
+import {AppStatus, StreamStatus} from '../../../shared/model/metrics.model';
+import {Stream} from '../../../shared/model/stream.model';
+import {MetamodelService} from '../metamodel.service';
+import {RenderService} from '../render.service';
+import {ApplicationType} from '../../../shared/model/app.model';
+import {TYPE_INSTANCE_DOT, TYPE_INSTANCE_LABEL} from '../support/shapes';
 
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;
 
-
 @Component({
   selector: 'app-runtime-stream-flo-view',
-  styleUrls: [
-    '../../shared/flo.scss',
-  ],
+  styleUrls: ['../../shared/flo.scss'],
   template: `
-    <app-graph-view [dsl]="dsl" [ngClass]="status ? status : 'undeployed'" (floApi)="setEditorContext($event)"
-                    [metamodel]="metamodel" [renderer]="renderer" [paperPadding]="40"></app-graph-view>
+    <app-graph-view
+      [dsl]="dsl"
+      [ngClass]="status ? status : 'undeployed'"
+      (floApi)="setEditorContext($event)"
+      [metamodel]="metamodel"
+      [renderer]="renderer"
+      [paperPadding]="40"
+    ></app-graph-view>
   `,
   encapsulation: ViewEncapsulation.None
 })
 export class RuntimeStreamFloViewComponent implements OnDestroy {
-
   private ngUnsubscribe$: Subject<any> = new Subject();
 
   flo: Flo.EditorContext;
@@ -43,10 +45,9 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
     this.update();
   }
 
-  constructor(public metamodel: MetamodelService, public renderer: RenderService) {
-  }
+  constructor(public metamodel: MetamodelService, public renderer: RenderService) {}
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this._subscriptionToGraphUpdates) {
       this._subscriptionToGraphUpdates.unsubscribe();
     }
@@ -54,6 +55,7 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
     this.ngUnsubscribe$.complete();
   }
 
+  /* eslint-disable-next-line */
   get metrics(): StreamStatus {
     return this._metrics;
   }
@@ -66,7 +68,7 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
     return this.stream && this.stream.status ? [this.stream.status.toString()] : ['unknown'];
   }
 
-  setEditorContext(editorContext: Flo.EditorContext) {
+  setEditorContext(editorContext: Flo.EditorContext): void {
     this.flo = editorContext;
     if (this._subscriptionToGraphUpdates) {
       this._subscriptionToGraphUpdates.unsubscribe();
@@ -80,26 +82,29 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
     return this.metrics?.applications?.find(app => app.name === label);
   }
 
-  private update() {
+  private update(): void {
     this.updateDots();
   }
 
-  private updateDots() {
+  private updateDots(): void {
     if (this.flo) {
-      this.flo.getGraph().getElements().forEach((element) => {
-        const group = element.prop('metadata/group');
-        if (typeof ApplicationType[group] === 'number') {
-          let label = element.attr('node-name');
-          if (!label) {
-            label = element.prop('metadata/name');
+      this.flo
+        .getGraph()
+        .getElements()
+        .forEach(element => {
+          const group = element.prop('metadata/group');
+          if (typeof ApplicationType[group] === 'number') {
+            let label = element.attr('node-name');
+            if (!label) {
+              label = element.prop('metadata/name');
+            }
+            this.updateInstanceDecorations(element, this.findModuleMetrics(label));
           }
-          this.updateInstanceDecorations(element, this.findModuleMetrics(label));
-        }
-      });
+        });
     }
   }
 
-  private updateInstanceDecorations(cell: dia.Element, moduleMetrics: AppStatus) {
+  private updateInstanceDecorations(cell: dia.Element, moduleMetrics: AppStatus): void {
     let label: dia.Cell;
     let dots: dia.Cell[] = [];
     // Find label or dots currently painted
@@ -135,7 +140,7 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
         if (!label) {
           // Create label if it's not on the graph yet
           label = new joint.shapes.flo.InstanceLabel({
-            position: { x: x, y: y }
+            position: {x: x, y: y}
           });
           this.flo.getGraph().addCell(label);
           cell.embed(label);
@@ -155,15 +160,15 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
           let dotY = y;
 
           for (let lane = 0; lane < lanesNeeded; lane++) {
-            const numberOfDots = (lane === lanesNeeded - 1) ? instanceCount - lane * maxDotsPerLine : maxDotsPerLine;
+            const numberOfDots = lane === lanesNeeded - 1 ? instanceCount - lane * maxDotsPerLine : maxDotsPerLine;
             const even = numberOfDots % 2 === 0;
             let dotX = x - (Math.floor(numberOfDots / 2) * (diameter + padding) + (even ? -padding / 2 : diameter / 2));
             for (let i = 0; i < numberOfDots; i++) {
-              const idx = lane * maxDotsPerLine + i/* + 1*/;
+              const idx = lane * maxDotsPerLine + i; /* + 1*/
               const data = idx < moduleMetrics.instances.length ? moduleMetrics.instances[idx] : undefined;
               const dot = new joint.shapes.flo.InstanceDot({
-                position: { x: dotX, y: dotY },
-                size: { width: diameter, height: diameter },
+                position: {x: dotX, y: dotY},
+                size: {width: diameter, height: diameter},
                 attrs: {
                   instance: data
                 }
@@ -194,5 +199,4 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
       dots.forEach(e => e.remove());
     }
   }
-
 }

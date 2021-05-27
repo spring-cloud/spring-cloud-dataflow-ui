@@ -1,20 +1,20 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../../../tests/api/about.service.mock';
-import { NotificationServiceMock } from '../../../../tests/service/notification.service.mock';
-import { RuntimeServiceMock } from '../../../../tests/api/runtime.service.mock.spec';
-import { GrafanaServiceMock } from '../../../../tests/service/grafana.service.mock';
-import { BuilderComponent } from './builder.component';
-import { TaskServiceMock } from '../../../../tests/api/task.service.mock';
-import { TaskLaunchServiceMock } from '../../../../tests/service/task-launch.service.mock';
-import { RoleDirective } from '../../../../security/directive/role.directive';
-import { ContextServiceMock } from '../../../../tests/service/context.service.mock';
-import { Task } from '../../../../shared/model/task.model';
-import { SIMPLE_TASK_DEFAULT, COMPOSED_TASK_DEFAULT } from '../../../../tests/data/task';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../../../tests/api/about.service.mock';
+import {NotificationServiceMock} from '../../../../tests/service/notification.service.mock';
+import {RuntimeServiceMock} from '../../../../tests/api/runtime.service.mock.spec';
+import {GrafanaServiceMock} from '../../../../tests/service/grafana.service.mock';
+import {BuilderComponent} from './builder.component';
+import {TaskServiceMock} from '../../../../tests/api/task.service.mock';
+import {TaskLaunchServiceMock} from '../../../../tests/service/task-launch.service.mock';
+import {RoleDirective} from '../../../../security/directive/role.directive';
+import {ContextServiceMock} from '../../../../tests/service/context.service.mock';
+import {Task} from '../../../../shared/model/task.model';
+import {SIMPLE_TASK_DEFAULT, COMPOSED_TASK_DEFAULT} from '../../../../tests/data/task';
 
 describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
   let component: BuilderComponent;
@@ -22,32 +22,30 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
   const TASK_1 = Task.parse(SIMPLE_TASK_DEFAULT);
   const TASK_2 = Task.parse(COMPOSED_TASK_DEFAULT);
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        BuilderComponent,
-        RoleDirective
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        NotificationServiceMock.provider,
-        RuntimeServiceMock.provider,
-        GrafanaServiceMock.provider,
-        TaskServiceMock.provider,
-        TaskLaunchServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [BuilderComponent, RoleDirective],
+        imports: [
+          FormsModule,
+          ReactiveFormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          NotificationServiceMock.provider,
+          RuntimeServiceMock.provider,
+          GrafanaServiceMock.provider,
+          TaskServiceMock.provider,
+          TaskLaunchServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BuilderComponent);
@@ -82,11 +80,13 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
       'app.t1.timestamp.format=yyyy'
     ];
     fixture.detectChanges();
-    expect(component['getProperties']()).toEqual(jasmine.arrayContaining([
-      'app.composed-task-runner.split-thread-max-pool-size=10',
-      'deployer.t1.cpu=1',
-      'app.t1.timestamp.format=yyyy'
-    ]));
+    expect(component['getProperties']()).toEqual(
+      jasmine.arrayContaining([
+        'app.composed-task-runner.split-thread-max-pool-size=10',
+        'deployer.t1.cpu=1',
+        'app.t1.timestamp.format=yyyy'
+      ])
+    );
   });
 
   it('should set property value empty when it is cleared', async () => {
@@ -97,11 +97,13 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
       'app.t1.timestamp.format=yyyy'
     ];
     fixture.detectChanges();
-    expect(component['getProperties']()).toEqual(jasmine.arrayContaining([
-      'app.composed-task-runner.split-thread-max-pool-size=',
-      'deployer.t1.cpu=1',
-      'app.t1.timestamp.format=yyyy'
-    ]));
+    expect(component['getProperties']()).toEqual(
+      jasmine.arrayContaining([
+        'app.composed-task-runner.split-thread-max-pool-size=',
+        'deployer.t1.cpu=1',
+        'app.t1.timestamp.format=yyyy'
+      ])
+    );
   });
 
   it('should have migrations', async () => {
@@ -118,9 +120,7 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
 
   it('should not have migrations', async () => {
     component.task = TASK_2;
-    component.properties = [
-      'app.t1.timestamp.format=YYYY'
-    ];
+    component.properties = ['app.t1.timestamp.format=YYYY'];
     fixture.detectChanges();
     expect(component['calculateMigrations']().migratedMatch.length).toBe(0);
     expect(component['calculateMigrations']().migratedNomatch.length).toBe(0);

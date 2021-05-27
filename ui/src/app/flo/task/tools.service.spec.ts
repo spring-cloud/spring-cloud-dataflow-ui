@@ -1,6 +1,6 @@
-import { ToolsService } from './tools.service';
-import { Graph, Link, Node } from './model/models';
-import { of } from 'rxjs';
+import {ToolsService} from './tools.service';
+import {Graph, Link, Node} from './model/models';
+import {of} from 'rxjs';
 
 /**
  * Tests tools service.
@@ -8,7 +8,6 @@ import { of } from 'rxjs';
  * @author Janne Valkealahti
  */
 describe('ToolsService', () => {
-
   const CONVERSION_RESPONSE_1 = {
     graph: null,
     dsl: 'timestamp',
@@ -67,39 +66,44 @@ describe('ToolsService', () => {
       const headerArgs1 = mockHttp.post.calls.mostRecent().args[2].headers;
 
       expect(httpUri1).toEqual('/tools/parseTaskTextToGraph');
-      expect(body).toEqual(`{"dsl":"fakedsl","name":"unknown"}`);
+      expect(body).toEqual('{"dsl":"fakedsl","name":"unknown"}');
       expect(headerArgs1.get('Content-Type')).toEqual('application/json');
       expect(headerArgs1.get('Accept')).toEqual('application/json');
-
     });
-    it('empty DSL case', (done) => {
-      toolsService.parseTaskTextToGraph('').toPromise().then(result => {
-        expect(result.errors).toEqual([]);
-        expect(result.dsl).toEqual('');
-        expect(result.graph).toBeDefined();
-        expect(result.graph.nodes).toEqual([]);
-        expect(result.graph.links).toEqual([]);
-        done();
-      });
+    it('empty DSL case', done => {
+      toolsService
+        .parseTaskTextToGraph('')
+        .toPromise()
+        .then(result => {
+          expect(result.errors).toEqual([]);
+          expect(result.dsl).toEqual('');
+          expect(result.graph).toBeDefined();
+          expect(result.graph.nodes).toEqual([]);
+          expect(result.graph.links).toEqual([]);
+          done();
+        });
     });
-    it('Multi-line DSL case', (done) => {
+    it('Multi-line DSL case', done => {
       const dsl = 'task ||\nanothertask';
-      toolsService.parseTaskTextToGraph(dsl).toPromise().then(result => {
-        expect(result.errors).toBeDefined();
-        expect(result.errors.length).toBe(1);
-        expect(result.errors[0].position).toBe(0);
-        expect(result.errors[0].length).toBe(dsl.length);
-        expect(result.dsl).toEqual(dsl);
-        expect(result.graph).toBeNull();
-        done();
-      });
+      toolsService
+        .parseTaskTextToGraph(dsl)
+        .toPromise()
+        .then(result => {
+          expect(result.errors).toBeDefined();
+          expect(result.errors.length).toBe(1);
+          expect(result.errors[0].position).toBe(0);
+          expect(result.errors[0].length).toBe(dsl.length);
+          expect(result.dsl).toEqual(dsl);
+          expect(result.graph).toBeNull();
+          done();
+        });
     });
   });
 
   describe('convertTaskGraphToText', () => {
     it('should call the tools service to parse graph to dsl', () => {
       mockHttp.post.and.returnValue(of(jsonData));
-      const graph = new Graph(new Array(), new Array());
+      const graph = new Graph([], []);
       toolsService.convertTaskGraphToText(graph);
 
       const httpUri1 = mockHttp.post.calls.mostRecent().args[0];
@@ -107,7 +111,7 @@ describe('ToolsService', () => {
       const headerArgs1 = mockHttp.post.calls.mostRecent().args[2].headers;
 
       expect(httpUri1).toEqual('/tools/convertTaskGraphToText');
-      expect(body).toEqual(`{"nodes":[],"links":[]}`);
+      expect(body).toEqual('{"nodes":[],"links":[]}');
       expect(headerArgs1.get('Content-Type')).toEqual('application/json');
       expect(headerArgs1.get('Accept')).toEqual('application/json');
     });
@@ -126,14 +130,12 @@ describe('ToolsService', () => {
 
   describe('model', () => {
     it('graph to json', () => {
-      const nodes: Array<Node> = new Array();
+      const nodes: Array<Node> = [];
       nodes.push(new Node('id1', 'name1'));
-      const links: Array<Link> = new Array();
+      const links: Array<Link> = [];
       links.push(new Link('from1', 'to1'));
       const graph = new Graph(nodes, links);
-      expect(graph.toJson())
-        .toBe('{"nodes":[{"id":"id1","name":"name1"}],"links":[{"from":"from1","to":"to1"}]}');
+      expect(graph.toJson()).toBe('{"nodes":[{"id":"id1","name":"name1"}],"links":[{"from":"from1","to":"to1"}]}');
     });
   });
-
 });

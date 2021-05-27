@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TokenKind } from './tokenizer';
-import { Token } from './tokenizer';
-import { tokenize } from './tokenizer';
-import { LoggerService } from '../../../shared/service/logger.service';
+import {TokenKind} from './tokenizer';
+import {Token} from './tokenizer';
+import {tokenize} from './tokenizer';
+import {LoggerService} from '../../../shared/service/logger.service';
 
 /**
  * Parse a textual stream definition.
@@ -25,7 +25,6 @@ import { LoggerService } from '../../../shared/service/logger.service';
  * @author Alex Boyko
  */
 class InternalParser {
-
   static DEBUG = false;
 
   private lines: Parser.Line[] = [];
@@ -41,7 +40,7 @@ class InternalParser {
     this.textlines = definitionsText.split('\n');
   }
 
-  private tokenListToStringList(tokens) {
+  private tokenListToStringList(tokens): string {
     if (tokens.length === 0) {
       return '';
     }
@@ -71,7 +70,7 @@ class InternalParser {
 
   private nextToken(): Token {
     if (this.tokenStreamPointer >= this.tokenStreamLength) {
-      throw { msg: 'Out of data', start: this.text.length };
+      throw {msg: 'Out of data', start: this.text.length};
     }
     return this.tokenStream[this.tokenStreamPointer++];
   }
@@ -83,8 +82,8 @@ class InternalParser {
     return this.tokenStream[this.tokenStreamPointer];
   }
 
-  private lookAhead(distance: number, desiredTokenKind: TokenKind) {
-    if ((this.tokenStreamPointer + distance) >= this.tokenStreamLength) {
+  private lookAhead(distance: number, desiredTokenKind: TokenKind): boolean {
+    if (this.tokenStreamPointer + distance >= this.tokenStreamLength) {
       return false;
     }
     const t = this.tokenStream[this.tokenStreamPointer + distance];
@@ -125,12 +124,18 @@ class InternalParser {
   private peekDestinationComponentToken(mustMatchAndConsumeIfDoes: boolean): Token {
     const t = this.peekAtToken();
     if (t === null) {
-      throw { msg: 'Out of data', start: this.text.length };
+      throw {msg: 'Out of data', start: this.text.length};
     }
-    if (!(this.isKind(t, TokenKind.IDENTIFIER) || this.isKind(t, TokenKind.STAR) ||
-      this.isKind(t, TokenKind.SLASH) || this.isKind(t, TokenKind.HASH))) {
+    if (
+      !(
+        this.isKind(t, TokenKind.IDENTIFIER) ||
+        this.isKind(t, TokenKind.STAR) ||
+        this.isKind(t, TokenKind.SLASH) ||
+        this.isKind(t, TokenKind.HASH)
+      )
+    ) {
       if (mustMatchAndConsumeIfDoes) {
-        throw { msg: 'Tokens of kind ' + t.kind + ' cannot be used in a destination', start: t.start };
+        throw {msg: 'Tokens of kind ' + t.kind + ' cannot be used in a destination', start: t.start};
       } else {
         return null;
       }
@@ -144,11 +149,11 @@ class InternalParser {
   private eatToken(expectedKind: TokenKind): Token {
     const t = this.nextToken();
     if (t === null) {
-      throw { msg: 'Out of data', start: this.text.length };
+      throw {msg: 'Out of data', start: this.text.length};
     }
     if (!this.isKind(t, expectedKind)) {
       // TODO better text for the ids
-      throw { msg: 'Token not of expected kind (Expected ' + expectedKind + ' found ' + t.kind + ')', start: t.start };
+      throw {msg: 'Token not of expected kind (Expected ' + expectedKind + ' found ' + t.kind + ')', start: t.start};
     }
     return t;
   }
@@ -160,19 +165,19 @@ class InternalParser {
     let currentToken;
     const firstToken = this.nextToken();
     if (firstToken.kind !== TokenKind.COLON) {
-      throw { msg: 'Destination must start with a \':\'', start: firstToken.start, end: firstToken.end };
+      throw {msg: "Destination must start with a ':'", start: firstToken.start, end: firstToken.end};
     }
     if (!this.isNextTokenAdjacent()) {
       t = this.peekAtToken();
       if (t) {
-        throw { msg: 'No whitespace allowed in destination', start: firstToken.end, end: t.start };
+        throw {msg: 'No whitespace allowed in destination', start: firstToken.end, end: t.start};
       } else {
-        throw { msg: 'Out of data - incomplete destination', start: firstToken.start };
+        throw {msg: 'Out of data - incomplete destination', start: firstToken.start};
       }
     }
     let isDotted = false;
     nameComponents.push(this.peekDestinationComponentToken(true));
-    while (this.isNextTokenAdjacent() && (this.peekDestinationComponentToken(false) !== null)) {
+    while (this.isNextTokenAdjacent() && this.peekDestinationComponentToken(false) !== null) {
       nameComponents.push(this.peekDestinationComponentToken(true));
     }
     while (this.isNextTokenAdjacent() && this.peekToken(TokenKind.DOT)) {
@@ -181,14 +186,14 @@ class InternalParser {
       if (!this.isNextTokenAdjacent()) {
         t = this.peekAtToken();
         if (t) {
-          throw { msg: 'No whitespace allowed in destination', start: currentToken.end, end: t.start };
+          throw {msg: 'No whitespace allowed in destination', start: currentToken.end, end: t.start};
         } else {
-          throw { msg: 'Out of data - incomplete destination', start: currentToken.start };
+          throw {msg: 'Out of data - incomplete destination', start: currentToken.start};
         }
       }
       nameComponents.push(currentToken);
       nameComponents.push(this.peekDestinationComponentToken(true));
-      while (this.isNextTokenAdjacent() && (this.peekDestinationComponentToken(false) !== null)) {
+      while (this.isNextTokenAdjacent() && this.peekDestinationComponentToken(false) !== null) {
         nameComponents.push(this.peekDestinationComponentToken(true));
       }
     }
@@ -240,7 +245,7 @@ class InternalParser {
 
     const channel = this.eatDestinationReference(true);
     const gt = this.eatToken(TokenKind.GT);
-    return { channel, end: gt.end };
+    return {channel, end: gt.end};
   }
 
   // '>' ':' identifier
@@ -249,7 +254,7 @@ class InternalParser {
     if (this.peekToken(TokenKind.GT)) {
       const gt = this.eatToken(TokenKind.GT);
       const channelNode = this.eatDestinationReference(false);
-      sinkChannelNode = { channel: channelNode, start: gt.start };
+      sinkChannelNode = {channel: channelNode, start: gt.start};
     }
     return sinkChannelNode;
   }
@@ -272,7 +277,7 @@ class InternalParser {
     if (this.isKind(t, TokenKind.IDENTIFIER) || this.isKind(t, TokenKind.LITERAL_STRING)) {
       return t.data;
     } else {
-      throw { msg: 'expected argument value', start: t.start };
+      throw {msg: 'expected argument value', start: t.start};
     }
   }
 
@@ -288,16 +293,16 @@ class InternalParser {
     const result: Token[] = [];
     const name = this.nextToken();
     if (!this.isKind(name, TokenKind.IDENTIFIER)) {
-      throw { msg: errorMessage, start: name.start };
+      throw {msg: errorMessage, start: name.start};
     }
     result.push(name);
     while (this.peekToken(TokenKind.DOT)) {
       if (!this.isNextTokenAdjacent()) {
-        throw { msg: 'No whitespace allowed in dotted name', start: name.start };
+        throw {msg: 'No whitespace allowed in dotted name', start: name.start};
       }
       result.push(this.nextToken()); // consume dot
       if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
-        throw { msg: 'No whitespace allowed in dotted name', start: name.start };
+        throw {msg: 'No whitespace allowed in dotted name', start: name.start};
       }
       result.push(this.eatToken(TokenKind.IDENTIFIER));
     }
@@ -312,26 +317,28 @@ class InternalParser {
       if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
         throw {
           msg: 'No whitespace allowed after -- but before option name',
-          start: dashDash.end, end: this.peekAtToken().start
+          start: dashDash.end,
+          end: this.peekAtToken().start
         };
       }
       const argNameComponents = this.eatDottedName();
       if (this.peekToken(TokenKind.EQUALS) && !this.isNextTokenAdjacent()) {
         throw {
-          msg: 'No whitespace allowed before equals', start: argNameComponents[argNameComponents.length - 1].end,
+          msg: 'No whitespace allowed before equals',
+          start: argNameComponents[argNameComponents.length - 1].end,
           end: this.peekAtToken().start
         };
       }
       const equalsToken = this.eatToken(TokenKind.EQUALS);
       if (this.peekToken(TokenKind.IDENTIFIER) && !this.isNextTokenAdjacent()) {
-        throw { msg: 'No whitespace allowed before option value', start: equalsToken.end, end: this.peekAtToken().start };
+        throw {msg: 'No whitespace allowed before option value', start: equalsToken.end, end: this.peekAtToken().start};
       }
       const t = this.peekAtToken();
       const argValue = this.eatArgValue();
       if (args === null) {
         args = [];
       }
-      args.push({ name: this.data(argNameComponents), value: argValue, start: dashDash.start, end: t.end });
+      args.push({name: this.data(argNameComponents), value: argValue, start: dashDash.start, end: t.end});
     }
     return args;
   }
@@ -341,11 +348,15 @@ class InternalParser {
     let label = null;
     let name = this.nextToken();
     if (!this.isKind(name, TokenKind.IDENTIFIER)) {
-      throw { msg: 'Expected app name but found \'' + this.toString(name) + '\'', start: name.start, end: name.end };
+      throw {msg: "Expected app name but found '" + this.toString(name) + "'", start: name.start, end: name.end};
     }
     if (this.peekToken(TokenKind.COLON)) {
       if (!this.isNextTokenAdjacent()) {
-        throw { msg: 'No whitespace allowed between label name and colon', start: name.end, end: this.peekAtToken().start };
+        throw {
+          msg: 'No whitespace allowed between label name and colon',
+          start: name.end,
+          end: this.peekAtToken().start
+        };
       }
       this.nextToken(); // swallow colon
       label = name;
@@ -354,7 +365,7 @@ class InternalParser {
     const appNameToken = name;
     const args: Parser.Option[] = this.maybeEatAppArgs();
     const startpos = label !== null ? label.start : appNameToken.start;
-    const appNode: Parser.AppNode = { name: appNameToken.data, start: startpos, end: appNameToken.end };
+    const appNode: Parser.AppNode = {name: appNameToken.data, start: startpos, end: appNameToken.end};
     if (label) {
       appNode.label = label.data;
     }
@@ -376,17 +387,17 @@ class InternalParser {
       const t = this.peekAtToken();
       if (this.isKind(t, TokenKind.PIPE)) {
         if (usedListDelimiter >= 0) {
-          throw { msg: 'Don\'t mix | and || in the same stream definition', start: usedListDelimiter };
+          throw {msg: "Don't mix | and || in the same stream definition", start: usedListDelimiter};
         }
         usedStreamDelimiter = t.start;
         this.nextToken();
         appNodes.push(this.eatApp());
       } else if (this.isKind(t, TokenKind.DOUBLE_PIPE)) {
         if (preceedingSourceChannelSpecified) {
-          throw { msg: 'Don\'t use || with channels', start: t.start };
+          throw {msg: "Don't use || with channels", start: t.start};
         }
         if (usedStreamDelimiter >= 0) {
-          throw { msg: 'Don\'t mix | and || in the same stream definition', start: usedStreamDelimiter };
+          throw {msg: "Don't mix | and || in the same stream definition", start: usedStreamDelimiter};
         }
         usedListDelimiter = t.start;
         this.nextToken();
@@ -398,10 +409,11 @@ class InternalParser {
     }
     const isFollowedBySinkChannel = this.peekToken(TokenKind.GT);
     if (isFollowedBySinkChannel && usedListDelimiter >= 0) {
-      throw { msg: 'Don\'t use || with channels', start: usedListDelimiter };
+      throw {msg: "Don't use || with channels", start: usedListDelimiter};
     }
     for (let appNumber = 0; appNumber < appNodes.length; appNumber++) {
-      appNodes[appNumber].nonStreamApp = !preceedingSourceChannelSpecified && !isFollowedBySinkChannel && (usedStreamDelimiter < 0);
+      appNodes[appNumber].nonStreamApp =
+        !preceedingSourceChannelSpecified && !isFollowedBySinkChannel && usedStreamDelimiter < 0;
     }
     return appNodes;
   }
@@ -421,7 +433,7 @@ class InternalParser {
         name = this.eatToken(TokenKind.IDENTIFIER);
         this.nextToken(); // skip '='
       } else {
-        throw { msg: 'Illegal name \'' + this.toString(this.peekAtToken()) + '\'', start: this.peekAtToken().start };
+        throw {msg: "Illegal name '" + this.toString(this.peekAtToken()) + "'", start: this.peekAtToken().start};
       }
     }
     return name;
@@ -445,22 +457,22 @@ class InternalParser {
       this.recordError(taskNode, {
         message: 'Expected format: name = taskapplication [options]',
         range: {
-          start: { ch: 0, line: lineNum },
-          end: { ch: 0, line: lineNum }
+          start: {ch: 0, line: lineNum},
+          end: {ch: 0, line: lineNum}
         }
       });
     } else {
       taskNode.name = taskName.data;
       taskNode.namerange = {
-        start: { ch: taskName.start, line: lineNum },
-        end: { ch: taskName.end, line: lineNum }
+        start: {ch: taskName.start, line: lineNum},
+        end: {ch: taskName.end, line: lineNum}
       };
       if (this.outOfData()) {
         this.recordError(taskNode, {
           message: 'Expected format: name = taskapplication [options]',
           range: {
-            start: { ch: 0, line: lineNum },
-            end: { ch: 0, line: lineNum }
+            start: {ch: 0, line: lineNum},
+            end: {ch: 0, line: lineNum}
           }
         });
         return taskNode;
@@ -469,7 +481,7 @@ class InternalParser {
     taskNode.app = this.eatApp();
     if (this.moreTokens()) {
       const t = this.peekAtToken();
-      throw { msg: 'Unexpected data after task definition: ' + this.toString(t), start: t.start };
+      throw {msg: 'Unexpected data after task definition: ' + this.toString(t), start: t.start};
     }
     return taskNode;
   }
@@ -487,7 +499,8 @@ class InternalParser {
     // the construct :foo > :bar is a source then a sink with no app. Special handling for
     // that is right here
     let bridge = false;
-    if (sourceChannelNode) { // so if we are just after a '>'
+    if (sourceChannelNode) {
+      // so if we are just after a '>'
       streamNode.sourceChannel = sourceChannelNode;
       if (this.looksLikeChannel() && this.noMorePipes()) {
         bridge = true;
@@ -499,8 +512,8 @@ class InternalParser {
       this.recordError(streamNode, {
         message: 'unexpectedly out of data',
         range: {
-          start: { ch: this.text.length, line: lineNum },
-          end: { ch: this.text.length + 1, line: lineNum }
+          start: {ch: this.text.length, line: lineNum},
+          end: {ch: this.text.length + 1, line: lineNum}
         }
       });
       return streamNode;
@@ -510,7 +523,7 @@ class InternalParser {
     if (bridge) {
       // Create a bridge app to hang the source/sink channels off
       this.tokenStreamPointer--; // Rewind so we can nicely eat the sink channel
-      appNodes = [{ name: 'bridge', start: this.peekAtToken().start, end: this.peekAtToken().end, nonStreamApp: false }];
+      appNodes = [{name: 'bridge', start: this.peekAtToken().start, end: this.peekAtToken().end, nonStreamApp: false}];
     } else {
       appNodes = this.eatAppList(sourceChannelNode != null);
     }
@@ -520,7 +533,7 @@ class InternalParser {
     // Further data is an error
     if (this.moreTokens()) {
       const t = this.peekAtToken();
-      throw { msg: 'Unexpected data after stream definition: ' + this.toString(t), start: t.start };
+      throw {msg: 'Unexpected data after stream definition: ' + this.toString(t), start: t.start};
     }
     if (sinkChannelNode) {
       streamNode.sinkChannel = sinkChannelNode;
@@ -537,7 +550,7 @@ class InternalParser {
         line.errors = null;
         this.text = this.textlines[lineNumber];
         if (this.text.trim().length === 0) {
-          this.lines.push({ nodes: [], errors: [] });
+          this.lines.push({nodes: [], errors: []});
           continue;
         }
         if (InternalParser.DEBUG) {
@@ -567,8 +580,8 @@ class InternalParser {
                 option = app.options[o1];
                 options.set(option.name, option.value);
                 optionsranges.set(option.name, {
-                  start: { ch: option.start, line: lineNumber },
-                  end: { ch: option.end, line: lineNumber }
+                  start: {ch: option.start, line: lineNumber},
+                  end: {ch: option.end, line: lineNumber}
                 });
               }
             }
@@ -577,7 +590,7 @@ class InternalParser {
               grouprange: taskdef.namerange,
               type: 'task',
               name: app.name,
-              range: { start: { ch: app.start, line: lineNumber }, end: { ch: app.end, line: lineNumber } },
+              range: {start: {ch: app.start, line: lineNumber}, end: {ch: app.end, line: lineNumber}},
               options,
               optionsranges
             };
@@ -601,7 +614,7 @@ class InternalParser {
               } else {
                 if (m === 0 && !streamdef.sourceChannel) {
                   expectedType = 'source';
-                } else if (m === (streamdef.apps.length - 1) && !streamdef.sinkChannel) {
+                } else if (m === streamdef.apps.length - 1 && !streamdef.sinkChannel) {
                   // if last expect it to be sink only
                   // without sink channel. i.e. source | processor > :dest
                   // we fall back to processor type
@@ -627,8 +640,8 @@ class InternalParser {
                   option = app.options[o2];
                   options.set(option.name, option.value);
                   optionsranges.set(option.name, {
-                    start: { ch: option.start, line: lineNumber },
-                    end: { ch: option.end, line: lineNumber }
+                    start: {ch: option.start, line: lineNumber},
+                    end: {ch: option.end, line: lineNumber}
                   });
                 }
               }
@@ -638,7 +651,7 @@ class InternalParser {
                 name: app.name,
                 options,
                 optionsranges,
-                range: { start: { ch: app.start, line: lineNumber }, end: { ch: app.end, line: lineNumber } }
+                range: {start: {ch: app.start, line: lineNumber}, end: {ch: app.end, line: lineNumber}}
               };
               if (app.label) {
                 streamObject.label = app.label;
@@ -652,12 +665,21 @@ class InternalParser {
               const previous = alreadySeen[nameToCheck];
               if (typeof previous === 'number') {
                 this.recordError(streamdef, {
-                  message: app.label ?
-                    'Label \'' + app.label + '\' should be unique but app \'' + app.name +
-                    '\' (at app position ' + m + ') and app \'' + streamdef.apps[previous].name +
-                    '\' (at app position ' + previous + ') both use it'
-                    : 'App \'' + app.name +
-                    '\' should be unique within the definition, use a label to differentiate multiple occurrences',
+                  message: app.label
+                    ? "Label '" +
+                      app.label +
+                      "' should be unique but app '" +
+                      app.name +
+                      "' (at app position " +
+                      m +
+                      ") and app '" +
+                      streamdef.apps[previous].name +
+                      "' (at app position " +
+                      previous +
+                      ') both use it'
+                    : "App '" +
+                      app.name +
+                      "' should be unique within the definition, use a label to differentiate multiple occurrences",
                   range: streamObject.range
                 });
               } else {
@@ -709,7 +731,7 @@ class InternalParser {
           } else {
             start = err.start;
             end = typeof err.end === 'number' ? err.end : start + 1;
-            errorToRecord.range = { start: { ch: start, line: lineNumber }, end: { ch: end, line: lineNumber } };
+            errorToRecord.range = {start: {ch: start, line: lineNumber}, end: {ch: end, line: lineNumber}};
           }
           line.errors.push(errorToRecord);
           this.lines.push(line);
@@ -724,13 +746,11 @@ class InternalParser {
         }
       }
     }
-    return { lines: this.lines };
+    return {lines: this.lines};
   }
 }
 
-
 export namespace Parser {
-
   export interface Pos {
     ch: number;
     line: number;
@@ -824,7 +844,10 @@ export namespace Parser {
   }
 
   export function simplify(dsl: string): string {
-    const result = dsl.replace(/\s+--\S+=([^\s"]*)|(".*")/g, ' ').replace(/\s+/g, ' ').trim();
+    const result = dsl
+      .replace(/\s+--\S+=([^\s"]*)|(".*")/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     return result;
   }
 }

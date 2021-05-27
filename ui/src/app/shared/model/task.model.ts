@@ -1,7 +1,7 @@
-import { App } from './app.model';
-import { ConfigurationMetadataProperty, ValuedConfigurationMetadataProperty } from './detailed-app.model';
-import { Page } from './page.model';
-import { TaskExecution } from './task-execution.model';
+import {App} from './app.model';
+import {ConfigurationMetadataProperty, ValuedConfigurationMetadataProperty} from './detailed-app.model';
+import {Page} from './page.model';
+import {TaskExecution} from './task-execution.model';
 
 export class Task {
   name: string;
@@ -12,7 +12,7 @@ export class Task {
   composedTaskElement: boolean;
   lastTaskExecution: TaskExecution;
 
-  static parse(input) {
+  static parse(input: any): Task {
     const task = new Task();
     task.name = input.name;
     task.dslText = input.dslText;
@@ -26,7 +26,7 @@ export class Task {
     return task;
   }
 
-  labelStatusClass() {
+  labelStatusClass(): string {
     switch (this.status) {
       case 'COMPLETE':
       case 'SUCCESS':
@@ -42,7 +42,7 @@ export class Task {
 }
 
 export class TaskPage extends Page<Task> {
-  public static parse(input): Page<Task> {
+  public static parse(input: any): Page<Task> {
     const page = Page.fromJSON<Task>(input);
     if (input && input._embedded && input._embedded.taskDefinitionResourceList) {
       page.items = input._embedded.taskDefinitionResourceList.map(Task.parse);
@@ -52,7 +52,6 @@ export class TaskPage extends Page<Task> {
 }
 
 export class TaskLaunchConfig {
-
   /** Task name */
   id: string;
 
@@ -62,7 +61,7 @@ export class TaskLaunchConfig {
     name: string;
     form: string;
     type: string;
-    defaultValue: string|null;
+    defaultValue: string | null;
     values: {
       key: string;
       name: string;
@@ -77,8 +76,8 @@ export class TaskLaunchConfig {
     name: string;
     form: string;
     type: string;
-    value: string|null;
-    defaultValue: string|null;
+    value: string | null;
+    defaultValue: string | null;
     suffix: string;
   }[];
 
@@ -108,6 +107,5 @@ export class TaskLaunchConfig {
 
   deploymentProperties: string[];
 
-  constructor() {
-  }
+  constructor() {}
 }

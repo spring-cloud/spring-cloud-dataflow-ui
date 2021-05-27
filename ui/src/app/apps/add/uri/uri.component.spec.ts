@@ -1,46 +1,44 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { BrowserModule, By } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../../tests/api/about.service.mock';
-import { AppServiceMock } from '../../../tests/api/app.service.mock';
-import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
-import { UriComponent } from './uri.component';
-import { throwError } from 'rxjs';
-import { FocusDirective } from '../../../shared/directive/focus.directive';
-import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {BrowserModule, By} from '@angular/platform-browser';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../../tests/api/about.service.mock';
+import {AppServiceMock} from '../../../tests/api/app.service.mock';
+import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
+import {UriComponent} from './uri.component';
+import {throwError} from 'rxjs';
+import {FocusDirective} from '../../../shared/directive/focus.directive';
+import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 
 describe('apps/uri/uri.component.ts', () => {
   let component: UriComponent;
   let fixture: ComponentFixture<UriComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        UriComponent,
-        FocusDirective
-      ],
-      imports: [
-        BrowserModule,
-        ReactiveFormsModule,
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        AppServiceMock.provider,
-        NotificationServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UriComponent, FocusDirective],
+        imports: [
+          BrowserModule,
+          ReactiveFormsModule,
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          AppServiceMock.provider,
+          NotificationServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UriComponent);
@@ -60,10 +58,10 @@ describe('apps/uri/uri.component.ts', () => {
       force: fixture.debugElement.query(By.css('#forceInput')).nativeElement
     };
     [
-      { uri: '', force: true },
-      { uri: 'bar', force: false },
-      { uri: 'foo@bar.com', force: true }
-    ].forEach((a) => {
+      {uri: '', force: true},
+      {uri: 'bar', force: false},
+      {uri: 'foo@bar.com', force: true}
+    ].forEach(a => {
       component.fillUrl(a.uri);
       component.form.get('force').setValue(a.force);
       fixture.detectChanges();
@@ -76,7 +74,7 @@ describe('apps/uri/uri.component.ts', () => {
     });
   });
 
-  it('should run an app import', async (done) => {
+  it('should run an app import', async done => {
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     fixture.detectChanges();
     const spy = spyOn(AppServiceMock.mock, 'importUri').and.callThrough();
@@ -94,9 +92,7 @@ describe('apps/uri/uri.component.ts', () => {
   });
 
   it('should handle error on run', () => {
-    spyOn(AppServiceMock.mock, 'importUri').and.callFake(() => {
-      return throwError(new Error('Fake error'));
-    });
+    spyOn(AppServiceMock.mock, 'importUri').and.callFake(() => throwError(new Error('Fake error')));
     fixture.detectChanges();
     component.fillUrl('https://foo.ly/foo-bar-foo');
     component.form.get('force').setValue(true);
@@ -105,5 +101,4 @@ describe('apps/uri/uri.component.ts', () => {
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
   });
-
 });

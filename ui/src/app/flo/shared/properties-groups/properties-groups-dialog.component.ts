@@ -1,19 +1,11 @@
-import {
-  Component,
-  ViewEncapsulation,
-  OnInit,
-  EventEmitter,
-} from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { of } from 'rxjs';
-import { Properties } from 'spring-flo';
-import {
-  PropertiesGroupModel,
-  SearchTextFilter,
-} from '../support/properties-group-model';
+import {Component, ViewEncapsulation, OnInit, EventEmitter} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {of} from 'rxjs';
+import {Properties} from 'spring-flo';
+import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
 import PropertiesSource = Properties.PropertiesSource;
-import { Subject } from 'rxjs/index';
-import { debounceTime } from 'rxjs/operators';
+import {Subject} from 'rxjs/index';
+import {debounceTime} from 'rxjs/operators';
 
 /**
  * Class to add group titleModal to a model.
@@ -69,7 +61,7 @@ export class GroupPropertiesSources {
   selector: 'app-properties-groups-dialog-content',
   templateUrl: 'properties-groups-dialog.component.html',
   styleUrls: ['properties-groups-dialog.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class PropertiesGroupsDialogComponent implements OnInit {
   isOpen = false;
@@ -108,10 +100,10 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     this._searchFilterTextSubject = new Subject<string>();
   }
 
-  handleOk() {
+  handleOk(): void {
     const properties: Properties.Property[] = [];
-    this.propertiesGroupModels.forEach((p) => {
-      p.getControlsModels().forEach((cm) => {
+    this.propertiesGroupModels.forEach(p => {
+      p.getControlsModels().forEach(cm => {
         properties.push(cm.property);
       });
     });
@@ -119,15 +111,15 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     this.handleCancel();
   }
 
-  handleCancel() {
+  handleCancel(): void {
     this.propertiesGroupModels = [];
     this.isOpen = false;
   }
 
-  collapse(id: string) {
+  collapse(id: string): void {
     // Collapse already open group, otherwise keep selected
     // group open and close others.
-    Object.entries(this.state).forEach((e) => {
+    Object.entries(this.state).forEach(e => {
       if (e[0] === id && e[1]) {
         this.state[e[0]] = false;
       } else {
@@ -136,7 +128,7 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     });
   }
 
-  get okDisabled() {
+  get okDisabled(): boolean {
     return (
       !(this.propertiesGroupModels.length > 0) ||
       !this.propertiesFormGroup ||
@@ -145,21 +137,18 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this._searchFilterTextSubject.subscribe((text: string) => {
       this.propertiesFilter.textFilter = text;
     });
   }
 
-  setData(groupPropertiesSources: GroupPropertiesSources) {
+  setData(groupPropertiesSources: GroupPropertiesSources): void {
     let first = true;
-    groupPropertiesSources.propertiesSources.forEach((ps) => {
+    groupPropertiesSources.propertiesSources.forEach(ps => {
       this.state[ps.title] = first;
       first = false;
-      const model: GroupPropertiesGroupModel = new GroupPropertiesGroupModel(
-        ps,
-        ps.title
-      );
+      const model: GroupPropertiesGroupModel = new GroupPropertiesGroupModel(ps, ps.title);
       model.load();
       model.loadedSubject.subscribe();
       this.propertiesGroupModels.push(model);
@@ -167,7 +156,7 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     this.groupPropertiesSources = groupPropertiesSources;
   }
 
-  get searchFilterText() {
+  get searchFilterText(): string {
     return this._searchFilterText;
   }
 

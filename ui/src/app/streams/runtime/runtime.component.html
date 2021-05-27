@@ -12,23 +12,23 @@
 <!--</div>-->
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh()">
-      Refresh
-    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh()">Refresh</button>
   </div>
   <div *ngFor="let runtimeStream of page.items">
-    <h3>Stream <strong>{{runtimeStream.name}}</strong></h3>
+    <h3>
+      Stream <strong>{{ runtimeStream.name }}</strong>
+    </h3>
     <div class="clr-row">
       <ng-template ngFor let-runtimeApp [ngForOf]="runtimeStream.apps">
         <div class="clr-col-12 clr-col-sm-3">
           <div class="card">
             <div class="card-block">
               <h4 class="card-title">
-                {{runtimeApp.deploymentId}}
-                <span class="{{runtimeApp.stateColor()}}"> {{runtimeApp.state}}</span>
+                {{ runtimeApp.deploymentId }}
+                <span class="{{ runtimeApp.stateColor() }}"> {{ runtimeApp.state }}</span>
               </h4>
               <p class="card-text">
-                {{runtimeApp.appInstances.length}}
+                {{ runtimeApp.appInstances.length }}
                 <span *ngIf="runtimeApp.appInstances.length > 1">instances</span>
                 <span *ngIf="!(runtimeApp.appInstances.length > 1)">instance</span>
               </p>
@@ -48,22 +48,19 @@
     </div>
   </div>
 
-  <div class="alert alert-info" role="alert" style="display: inline-block;margin-top: 16px" *ngIf="page.total === 0">
+  <div class="alert alert-info" role="alert" style="display: inline-block; margin-top: 16px" *ngIf="page.total === 0">
     <div class="alert-items">
       <div class="alert-item static">
         <div class="alert-icon-wrapper">
           <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
         </div>
-        <span class="alert-text">
-          There are currently <strong>no applications running</strong>.
-        </span>
+        <span class="alert-text"> There are currently <strong>no applications running</strong>. </span>
       </div>
     </div>
   </div>
-
 </div>
 
-<div *ngIf="loading" style="padding:1rem 0;">
+<div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
   Loading runtime...
 </div>

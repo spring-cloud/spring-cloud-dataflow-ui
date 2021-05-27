@@ -1,12 +1,12 @@
-import { Shapes } from 'spring-flo';
-import { dia } from 'jointjs';
-import { NodeComponent } from './node-component';
-import { Flo, Constants } from 'spring-flo';
-import { MockSharedAppService } from '../../../tests/service/app.service.mock';
-import { waitForAsync } from '@angular/core/testing';
-import { MetamodelService } from '../../stream/metamodel.service';
-import { RenderService } from '../../stream/render.service';
-import { NodeHelper } from '../../stream/node-helper.service';
+import {Shapes} from 'spring-flo';
+import {dia} from 'jointjs';
+import {NodeComponent} from './node-component';
+import {Flo, Constants} from 'spring-flo';
+import {MockSharedAppService} from '../../../tests/service/app.service.mock';
+import {waitForAsync} from '@angular/core/testing';
+import {MetamodelService} from '../../stream/metamodel.service';
+import {RenderService} from '../../stream/render.service';
+import {NodeHelper} from '../../stream/node-helper.service';
 
 import * as _joint from 'jointjs';
 
@@ -17,8 +17,8 @@ function createMockView(cell: dia.Element, context?: string): any {
     model: cell,
     paper: {
       model: {
-        get: () => context ? context : Constants.CANVAS_CONTEXT
-      },
+        get: () => (context ? context : Constants.CANVAS_CONTEXT)
+      }
     }
   };
 }
@@ -29,7 +29,6 @@ class MockDocService {
 }
 
 describe('NodeComponent Tests.', () => {
-
   const METAMODEL_SERVICE = new MetamodelService(new MockSharedAppService());
   const RENDER_SERVICE = new RenderService(METAMODEL_SERVICE, new NodeHelper());
   const DOC_SERVICE = new MockDocService();
@@ -38,11 +37,13 @@ describe('NodeComponent Tests.', () => {
   let component: NodeComponent;
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
-  beforeEach(waitForAsync(() => {
-    METAMODEL_SERVICE.load().then(data => metamodel = data);
-    graph = new joint.dia.Graph();
-    component = new NodeComponent(<any>DOC_SERVICE);
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      METAMODEL_SERVICE.load().then(data => (metamodel = data));
+      graph = new joint.dia.Graph();
+      component = new NodeComponent(<any>DOC_SERVICE);
+    })
+  );
 
   it('Component for regular app node', () => {
     const node = Shapes.Factory.createNode({
@@ -58,7 +59,7 @@ describe('NodeComponent Tests.', () => {
     expect(component.isDisabled).toBeFalsy();
   });
 
-  it('Component for regular app node with description', (done) => {
+  it('Component for regular app node with description', done => {
     const metadata = metamodel.get('source').get('http');
     const node = Shapes.Factory.createNode({
       metadata: metadata,
@@ -69,7 +70,7 @@ describe('NodeComponent Tests.', () => {
     expect(component.metadata).toEqual(metadata);
     expect(component.description).toBeUndefined();
     metadata.description().then(() => {
-      expect(component.description).toEqual(/*'Receive HTTP input'*/''); // No description for app yet
+      expect(component.description).toEqual(/* 'Receive HTTP input'*/ ''); // No description for app yet
       done();
     });
   });
@@ -158,5 +159,4 @@ describe('NodeComponent Tests.', () => {
     DOC_SERVICE.mouseDown = false;
     expect(component.isDisabled).toBeFalsy();
   });
-
 });

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { RuntimeApp } from '../../../shared/model/runtime.model';
+import {Component, OnInit} from '@angular/core';
+import {RuntimeApp} from '../../../shared/model/runtime.model';
 
 @Component({
   selector: 'app-runtime-details',
@@ -7,16 +7,13 @@ import { RuntimeApp } from '../../../shared/model/runtime.model';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent {
-
   runtimeApp: RuntimeApp;
   isOpen = false;
 
-  constructor() {
-  }
+  constructor() {}
 
-  open(runtimeApp: RuntimeApp) {
+  open(runtimeApp: RuntimeApp): void {
     this.runtimeApp = runtimeApp;
     this.isOpen = true;
   }
-
 }

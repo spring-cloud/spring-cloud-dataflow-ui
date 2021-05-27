@@ -1,71 +1,86 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { EditorComponent, Flo } from 'spring-flo';
-import { MetamodelService } from '../metamodel.service';
-import { RenderService } from '../render.service';
-import { Subject } from 'rxjs';
-import { EditorService } from '../editor.service';
-import { NotificationService } from '../../../shared/service/notification.service';
-import { ToolsService } from '../tools.service';
-import { LoggerService } from '../../../shared/service/logger.service';
-import { Router } from '@angular/router';
+import {Component, HostListener, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {EditorComponent, Flo} from 'spring-flo';
+import {MetamodelService} from '../metamodel.service';
+import {RenderService} from '../render.service';
+import {Subject} from 'rxjs';
+import {EditorService} from '../editor.service';
+import {NotificationService} from '../../../shared/service/notification.service';
+import {ToolsService} from '../tools.service';
 import get from 'lodash.get';
-import { arrangeAll } from '../support/layout';
+import {arrangeAll} from '../support/layout';
 import * as CodeMirror from 'codemirror';
-import { StreamGraphPropertiesSource } from '../../stream/properties/stream-properties-source';
-import { PropertiesDialogComponent } from '../../shared/properties/properties-dialog.component';
-import { TaskGraphPropertiesSource } from '../properties/task-properties-source';
+import {PropertiesDialogComponent} from '../../shared/properties/properties-dialog.component';
+import {TaskGraphPropertiesSource} from '../properties/task-properties-source';
 
 @Component({
   selector: 'app-task-create-view',
-  styleUrls: [
-    '../../shared/flo.scss'
-  ],
+  styleUrls: ['../../shared/flo.scss'],
   template: `
     <div id="flo-container" class="stream-editor">
-      <flo-editor (floApi)="setEditorContext($event)" [metamodel]="metamodelService" [renderer]="renderService"
-                  [editor]="editorService" [(paletteSize)]="editorService.TASK_PALETTE_WIDTH"
-                  [paletteEntryPadding]="{width: 2, height: 2}"
-                  [paperPadding]="55" [(dsl)]="dsl" (contentValidated)="contentValidated=$event"
-                  (validationMarkers)="validationMarkers = $event"
-                  (onProperties)="handleLinkEvent($event)"
-                  searchFilterPlaceHolder="Applications">
-
+      <flo-editor
+        (floApi)="setEditorContext($event)"
+        [metamodel]="metamodelService"
+        [renderer]="renderService"
+        [editor]="editorService"
+        [(paletteSize)]="editorService.TASK_PALETTE_WIDTH"
+        [paletteEntryPadding]="{width: 2, height: 2}"
+        [paperPadding]="55"
+        [(dsl)]="dsl"
+        (contentValidated)="contentValidated = $event"
+        (validationMarkers)="validationMarkers = $event"
+        (onProperties)="handleLinkEvent($event)"
+        searchFilterPlaceHolder="Applications"
+      >
         <div header class="flow-definition-container">
-          <dsl-editor [(dsl)]="dsl" line-numbers="true" line-wrapping="true"
-                      (focus)="editorContext.graphToTextSync=false" placeholder="Enter task definitions here..."
-                      (blur)="editorContext.graphToTextSync=true"
-                      [lintOptions]="lintOptions"></dsl-editor>
+          <dsl-editor
+            [(dsl)]="dsl"
+            line-numbers="true"
+            line-wrapping="true"
+            (focus)="editorContext.graphToTextSync = false"
+            placeholder="Enter task definitions here..."
+            (blur)="editorContext.graphToTextSync = true"
+            [lintOptions]="lintOptions"
+          ></dsl-editor>
         </div>
       </flo-editor>
-      <div canvas class="flow-actions" [ngStyle]="{left: (editorService.TASK_PALETTE_WIDTH + 20) + 'px'}">
-        <button class="btn btn-sm btn-transparent minus" type="button" (click)="changeZoom(-25)"
-                [disabled]="editorContext.zoomPercent <= 25">
+      <div canvas class="flow-actions" [ngStyle]="{left: editorService.TASK_PALETTE_WIDTH + 20 + 'px'}">
+        <button
+          class="btn btn-sm btn-transparent minus"
+          type="button"
+          (click)="changeZoom(-25)"
+          [disabled]="editorContext.zoomPercent <= 25"
+        >
           <clr-icon shape="minus-circle"></clr-icon>
         </button>
         <clr-dropdown>
           <button class="btn btn-sm btn-secondary" clrDropdownTrigger>
-            {{editorContext.zoomPercent}}%
+            {{ editorContext.zoomPercent }}%
             <clr-icon shape="caret down"></clr-icon>
           </button>
           <clr-dropdown-menu clrPosition="top-left" *clrIfOpen>
-            <div clrDropdownItem *ngFor="let val of zoomValues" [class.active]="editorContext.zoomPercent === val"
-                 (click)="editorContext.zoomPercent = val">
-              {{val}}%
+            <div
+              clrDropdownItem
+              *ngFor="let val of zoomValues"
+              [class.active]="editorContext.zoomPercent === val"
+              (click)="editorContext.zoomPercent = val"
+            >
+              {{ val }}%
             </div>
           </clr-dropdown-menu>
         </clr-dropdown>
-        <button class="btn btn-sm btn-transparent plus" type="button" (click)="changeZoom(25)"
-                [disabled]="editorContext.zoomPercent >= 150">
+        <button
+          class="btn btn-sm btn-transparent plus"
+          type="button"
+          (click)="changeZoom(25)"
+          [disabled]="editorContext.zoomPercent >= 150"
+        >
           <clr-icon shape="plus-circle"></clr-icon>
         </button>
         <div class="divider"></div>
         <button (click)="arrangeAll()" class="btn btn-sm btn-secondary" type="button">Fit to Content</button>
       </div>
       <div class="overlay-loader" *ngIf="!isReady">
-        <div style="padding: 10px 0;">
-          <clr-spinner clrSmall clrInline></clr-spinner>&nbsp;
-          Loading editor...
-        </div>
+        <div style="padding: 10px 0;"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; Loading editor...</div>
       </div>
       <app-properties-dialog-content #propertiesDialog></app-properties-dialog-content>
     </div>
@@ -82,55 +97,58 @@ export class TaskFloCreateComponent implements OnInit, OnDestroy {
   parseErrors: any[];
   zoomValues = [25, 50, 75, 100, 125, 150];
   initSubject: Subject<void>;
-  @ViewChild(EditorComponent, { static: true }) flo;
-  @ViewChild(PropertiesDialogComponent, { static: true }) propertiesDialog;
+  @ViewChild(EditorComponent, {static: true}) flo;
+  @ViewChild(PropertiesDialogComponent, {static: true}) propertiesDialog;
 
-  constructor(public metamodelService: MetamodelService,
-              public renderService: RenderService,
-              public editorService: EditorService,
-              private renderer: Renderer2,
-              private notificationService: NotificationService,
-              private toolsService: ToolsService) {
-
+  constructor(
+    public metamodelService: MetamodelService,
+    public renderService: RenderService,
+    public editorService: EditorService,
+    private renderer: Renderer2,
+    private notificationService: NotificationService,
+    private toolsService: ToolsService
+  ) {
     this.validationMarkers = new Map();
     this.parseErrors = [];
 
     this.lintOptions = {
       async: true,
       hasGutters: true,
-      getAnnotations: (content: string,
-                       updateLintingCallback: CodeMirror.UpdateLintingCallback,
-                       options: CodeMirror.LintStateOptions,
-                       editor: CodeMirror.Editor) => this.lint(content, updateLintingCallback, editor)
+      getAnnotations: (
+        content: string,
+        updateLintingCallback: CodeMirror.UpdateLintingCallback,
+        options: CodeMirror.LintStateOptions,
+        editor: CodeMirror.Editor
+      ) => this.lint(content, updateLintingCallback, editor)
     };
 
     this.initSubject = new Subject();
     this.initSubject.subscribe();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.resizeFloGraph();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     // Invalidate cached metamodel, thus it's reloaded next time page is opened
     this.metamodelService.clearCachedData();
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
+  onResize(): void {
     this.resizeFloGraph();
   }
 
-  handleLinkEvent(link) {
-    const name = (link.prop('metadata/name'));
-    const version = (link.prop('metadata/version'));
-    const type = (link.prop('metadata/group'));
+  handleLinkEvent(link: any): void {
+    const name = link.prop('metadata/name');
+    const version = link.prop('metadata/version');
+    const type = link.prop('metadata/group');
     const props = new TaskGraphPropertiesSource(link);
     this.propertiesDialog.open(name, type, version, props);
   }
 
-  resizeFloGraph(height?: number) {
+  resizeFloGraph(height?: number): void {
     const viewEditor = this.flo.element.nativeElement.children[1];
     if (height) {
       height = height - 360;
@@ -140,7 +158,7 @@ export class TaskFloCreateComponent implements OnInit, OnDestroy {
     this.renderer.setStyle(viewEditor, 'height', `${Math.max(height, 300)}px`);
   }
 
-  setEditorContext(editorContext: Flo.EditorContext) {
+  setEditorContext(editorContext: Flo.EditorContext): void {
     this.editorContext = editorContext;
     if (this.editorContext) {
       this.editorContext.gridSize = 10;
@@ -155,11 +173,11 @@ export class TaskFloCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  arrangeAll() {
+  arrangeAll(): void {
     arrangeAll(this.editorContext);
   }
 
-  changeZoom(change: number) {
+  changeZoom(change: number): void {
     if (this.zoomValues.indexOf(this.editorContext.zoomPercent) > -1) {
       this.editorContext.zoomPercent = this.editorContext.zoomPercent + change;
     } else {
@@ -176,36 +194,43 @@ export class TaskFloCreateComponent implements OnInit, OnDestroy {
     const annotations: CodeMirror.Annotation[] = [];
     Array.from(this.validationMarkers.values())
       .filter(markers => Array.isArray(markers))
-      .forEach(markers => markers
-        .filter(m => m.range && m.hasOwnProperty('severity'))
-        .forEach(m => annotations.push({
-          message: m.message,
-          from: m.range.start,
-          to: m.range.end,
-          severity: Flo.Severity[m.severity].toLowerCase()
-        }))
+      .forEach(markers =>
+        markers
+          .filter(m => m.range && m.hasOwnProperty('severity'))
+          .forEach(m =>
+            annotations.push({
+              message: m.message,
+              from: m.range.start,
+              to: m.range.end,
+              severity: Flo.Severity[m.severity].toLowerCase()
+            })
+          )
       );
     const doc = editor.getDoc();
     const dslText = this.dsl;
     this.parseErrors = [];
     if (dslText) {
-      this.toolsService.parseTaskTextToGraph(dslText).toPromise().then(taskConversion => {
-        if (taskConversion.errors) {
-          this.parseErrors = taskConversion.errors;
-          taskConversion.errors.forEach(e => annotations.push({
-            from: doc.posFromIndex(e.position),
-            to: get(e, 'length', 0) ? doc.posFromIndex(e.position + e.length)
-              : doc.posFromIndex(e.position + 1),
-            message: e.message,
-            severity: 'error'
-          }));
-        }
-        updateLintingCallback(editor, annotations);
-      }).catch(error => updateLintingCallback(editor, annotations));
+      this.toolsService
+        .parseTaskTextToGraph(dslText)
+        .toPromise()
+        .then(taskConversion => {
+          if (taskConversion.errors) {
+            this.parseErrors = taskConversion.errors;
+            taskConversion.errors.forEach(e =>
+              annotations.push({
+                from: doc.posFromIndex(e.position),
+                to: get(e, 'length', 0) ? doc.posFromIndex(e.position + e.length) : doc.posFromIndex(e.position + 1),
+                message: e.message,
+                severity: 'error'
+              })
+            );
+          }
+          updateLintingCallback(editor, annotations);
+        })
+        .catch(error => updateLintingCallback(editor, annotations));
     } else {
       // Don't parse empty DSL. It'll produce an error: "Ran out of input"
       updateLintingCallback(editor, annotations);
     }
   }
-
 }

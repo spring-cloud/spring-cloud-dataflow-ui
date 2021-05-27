@@ -1,5 +1,5 @@
-import { MessageRateComponent } from './message-rate.component';
-import { TYPE_OUTGOING_MESSAGE_RATE, TYPE_INCOMING_MESSAGE_RATE } from '../support/shapes';
+import {MessageRateComponent} from './message-rate.component';
+import {TYPE_OUTGOING_MESSAGE_RATE, TYPE_INCOMING_MESSAGE_RATE} from '../support/shapes';
 import * as _joint from 'jointjs';
 
 const joint: any = _joint;
@@ -47,12 +47,12 @@ describe('MessageRateComponent', () => {
 
   it('cssClass', () => {
     component.data = createData(2, 'my-css-class');
-    expect(component.cssClasses).toEqual([ 'my-css-class' ]);
+    expect(component.cssClasses).toEqual(['my-css-class']);
   });
 
   it('cssClass in message rate', () => {
     component.data = createData(2, TYPE_OUTGOING_MESSAGE_RATE);
-    expect(component.cssClasses).toEqual([ 'dataflow-outgoing-rate' ]);
+    expect(component.cssClasses).toEqual(['dataflow-outgoing-rate']);
   });
 
   it('K rate', () => {
@@ -88,7 +88,5 @@ describe('MessageRateComponent', () => {
       rate: rate,
       type: type
     };
-
   }
-
 });

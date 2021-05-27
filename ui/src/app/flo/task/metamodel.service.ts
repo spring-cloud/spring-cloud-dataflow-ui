@@ -1,18 +1,19 @@
-import { Flo } from 'spring-flo';
-import { Injectable } from '@angular/core';
-import { CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE } from './support/shapes';
-import { ToolsService } from './tools.service';
-import { Graph, Link, Node, TaskConversion } from './model/models';
-import { map } from 'rxjs/operators';
-
+import {Flo} from 'spring-flo';
+import {Injectable} from '@angular/core';
+import {CONTROL_GROUP_TYPE, START_NODE_TYPE, END_NODE_TYPE, SYNC_NODE_TYPE, TASK_GROUP_TYPE} from './support/shapes';
+import {ToolsService} from './tools.service';
+import {Graph, Link, Node, TaskConversion} from './model/models';
+import {map} from 'rxjs/operators';
 
 import * as _joint from 'jointjs';
-import { arrangeAll } from './support/layout';
-import { AppService } from '../../shared/api/app.service';
-import { LoggerService } from '../../shared/service/logger.service';
-import { ApplicationType } from '../../shared/model/app.model';
-import { AppMetadata } from '../shared/support/app-metadata';
+import {arrangeAll} from './support/layout';
+import {AppService} from '../../shared/api/app.service';
+import {LoggerService} from '../../shared/service/logger.service';
+import {ApplicationType, AppPage} from '../../shared/model/app.model';
+import {AppMetadata} from '../shared/support/app-metadata';
 import set from 'lodash.set';
+import {Observable} from 'rxjs';
+import {DetailedApp} from 'src/app/shared/model/detailed-app.model';
 
 const joint: any = _joint;
 
@@ -24,17 +25,17 @@ const joint: any = _joint;
  */
 @Injectable()
 export class MetamodelService implements Flo.Metamodel {
-
   private COMPOSED_TASK_LABEL = 'label';
 
   private listeners: Array<Flo.MetamodelListener> = [];
 
   private request: Promise<Map<string, Map<string, Flo.ElementMetadata>>>;
 
-  constructor(private appsService: AppService,
-              private loggerService: LoggerService,
-              private toolsService: ToolsService) {
-  }
+  constructor(
+    private appsService: AppService,
+    private loggerService: LoggerService,
+    private toolsService: ToolsService
+  ) {}
 
   /**
    * Converts text dsl into flo graph representation.
@@ -44,7 +45,9 @@ export class MetamodelService implements Flo.Metamodel {
    * @returns {Promise<any>} a promise when conversion has happened
    */
   textToGraph(flo: Flo.EditorContext, dsl: string = ''): Promise<any> {
-    return this.toolsService.parseTaskTextToGraph(dsl).toPromise()
+    return this.toolsService
+      .parseTaskTextToGraph(dsl)
+      .toPromise()
       .then(taskConversion => {
         this.load().then(metamodel => {
           this.buildGraphFromJson(flo, taskConversion, metamodel);
@@ -65,17 +68,17 @@ export class MetamodelService implements Flo.Metamodel {
       return Promise.resolve('');
     }
     const graphInCommonFormat = this.toGraph(graphInInternalFormat);
-    return this.toolsService.convertTaskGraphToText(graphInCommonFormat)
-      .pipe(map(taskConversion => {
-        return taskConversion.dsl;
-      })).toPromise();
+    return this.toolsService
+      .convertTaskGraphToText(graphInCommonFormat)
+      .pipe(map(taskConversion => taskConversion.dsl))
+      .toPromise();
   }
 
-  subscribe(listener: Flo.MetamodelListener) {
+  subscribe(listener: Flo.MetamodelListener): void {
     this.listeners.push(listener);
   }
 
-  unsubscribe?(listener: Flo.MetamodelListener) {
+  unsubscribe?(listener: Flo.MetamodelListener): void {
     const index = this.listeners.indexOf(listener);
     if (index >= 0) {
       this.listeners.splice(index);
@@ -109,9 +112,9 @@ export class MetamodelService implements Flo.Metamodel {
     const metamodel = new Map<string, Map<string, Flo.ElementMetadata>>();
     this.addLinksGroup(metamodel);
     this.addOtherGroup(metamodel);
-    return this.request = new Promise(resolve => {
-      this.appsService.getApps(0, 10000, null, (ApplicationType[ApplicationType.task] as any), 'name', 'DESC').subscribe(
-        data => {
+    return (this.request = new Promise(resolve => {
+      this.appsService.getApps(0, 10000, null, ApplicationType[ApplicationType.task] as any, 'name', 'DESC').subscribe(
+        (data: AppPage) => {
           data.items.forEach(item => {
             if (!metamodel.has(item.type.toString())) {
               metamodel.set(item.type.toString(), new Map<string, Flo.ElementMetadata>());
@@ -130,67 +133,97 @@ export class MetamodelService implements Flo.Metamodel {
           resolve(metamodel);
         }
       );
-    });
+    }));
   }
 
   private addOtherGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
     const elements = new Map<string, Flo.ElementMetadata>()
-      .set(START_NODE_TYPE, this.createMetadata(START_NODE_TYPE,
-        CONTROL_GROUP_TYPE,
-        'Start element for the composed task. Global options for the task are set on this element.',
-        new Map<string, Flo.PropertyMetadata>().set('timeout', {
-          id: 'timeout',
-          name: 'timeout',
-          defaultValue: null,
-          description: 'Execution timeout',
-          type: 'java.lang.Long'
-        }), {
-          noPaletteEntry: true,
-        })
+      .set(
+        START_NODE_TYPE,
+        this.createMetadata(
+          START_NODE_TYPE,
+          CONTROL_GROUP_TYPE,
+          'Start element for the composed task. Global options for the task are set on this element.',
+          new Map<string, Flo.PropertyMetadata>().set('timeout', {
+            id: 'timeout',
+            name: 'timeout',
+            defaultValue: null,
+            description: 'Execution timeout',
+            type: 'java.lang.Long'
+          }),
+          {
+            noPaletteEntry: true
+          }
+        )
       )
-      .set(END_NODE_TYPE, this.createMetadata(END_NODE_TYPE,
-        CONTROL_GROUP_TYPE,
-        'End element for a flow or the entire composed task.',
-        new Map<string, Flo.PropertyMetadata>(), {
-          noPaletteEntry: true,
-          noEditableProps: true
-        })
+      .set(
+        END_NODE_TYPE,
+        this.createMetadata(
+          END_NODE_TYPE,
+          CONTROL_GROUP_TYPE,
+          'End element for a flow or the entire composed task.',
+          new Map<string, Flo.PropertyMetadata>(),
+          {
+            noPaletteEntry: true,
+            noEditableProps: true
+          }
+        )
       )
-      .set(SYNC_NODE_TYPE, this.createMetadata(SYNC_NODE_TYPE,
-        CONTROL_GROUP_TYPE,
-        'After a split, a sync node pulls the threads of parallel tasks back together',
-        new Map<string, Flo.PropertyMetadata>(), {
-          noEditableProps: true
-        })
+      .set(
+        SYNC_NODE_TYPE,
+        this.createMetadata(
+          SYNC_NODE_TYPE,
+          CONTROL_GROUP_TYPE,
+          'After a split, a sync node pulls the threads of parallel tasks back together',
+          new Map<string, Flo.PropertyMetadata>(),
+          {
+            noEditableProps: true
+          }
+        )
       );
     metamodel.set(CONTROL_GROUP_TYPE, elements);
   }
 
   addLinksGroup(metamodel: Map<string, Map<string, Flo.ElementMetadata>>): void {
-    const metadata = this.createMetadata('transition', 'links', 'Transition between tasks',
+    const metadata = this.createMetadata(
+      'transition',
+      'links',
+      'Transition between tasks',
       new Map<string, Flo.PropertyMetadata>().set('ExitStatus', {
         id: 'ExitStatus',
         name: 'Exit Status',
         defaultValue: '',
         description: 'Exit status triggering transition to alternate task flow route'
-      }), {
+      }),
+      {
         unselectable: true
-      });
+      }
+    );
     metamodel.set(metadata.group, new Map<string, Flo.ElementMetadata>().set(metadata.name, metadata));
   }
 
-  private createEntry(type: ApplicationType, name: string, version: string, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
+  private createEntry(
+    type: ApplicationType,
+    name: string,
+    version: string,
+    metadata?: Flo.ExtraMetadata
+  ): Flo.ElementMetadata {
     return new AppMetadata(
       type.toString(),
       name,
       version,
-      this.appsService.getApp(name, type),
+      this.appsService.getApp(name, type) as Observable<DetailedApp>,
       metadata
     );
   }
 
-  private createMetadata(name: string, group: string, description: string,
-                         properties: Map<string, Flo.PropertyMetadata>, metadata?: Flo.ExtraMetadata): Flo.ElementMetadata {
+  private createMetadata(
+    name: string,
+    group: string,
+    description: string,
+    properties: Map<string, Flo.PropertyMetadata>,
+    metadata?: Flo.ExtraMetadata
+  ): Flo.ElementMetadata {
     return {
       name,
       group,
@@ -199,14 +232,13 @@ export class MetamodelService implements Flo.Metamodel {
       get: (property: string) => Promise.resolve(properties.get(property)),
       properties: () => Promise.resolve(properties)
     };
-
   }
 
   private toGraph(graphInInternalFormat): Graph {
     const elements = graphInInternalFormat.attributes.cells.models;
 
-    const nodes: Array<Node> = new Array();
-    const links: Array<Link> = new Array();
+    const nodes: Array<Node> = [];
+    const links: Array<Link> = [];
 
     for (const element of elements) {
       const metamodel = element.prop('metadata');
@@ -216,8 +248,11 @@ export class MetamodelService implements Flo.Metamodel {
           metadata[this.COMPOSED_TASK_LABEL] = element.attr('node-label');
         }
         nodes.push(new Node(element.get('id'), metamodel.name, element.attr('props'), metadata));
-      } else if ((element.get('type') === joint.shapes.flo.LINK_TYPE)
-        && element.get('source').id && element.get('target').id) {
+      } else if (
+        element.get('type') === joint.shapes.flo.LINK_TYPE &&
+        element.get('source').id &&
+        element.get('target').id
+      ) {
         const properties = {};
         if (metamodel && element.attr('props/ExitStatus')) {
           set(properties, 'transitionName', element.attr('props/ExitStatus'));
@@ -228,7 +263,11 @@ export class MetamodelService implements Flo.Metamodel {
     return new Graph(nodes, links);
   }
 
-  private buildGraphFromJson(flo: Flo.EditorContext, conversion: TaskConversion, metamodel: Map<string, Map<string, Flo.ElementMetadata>>) {
+  private buildGraphFromJson(
+    flo: Flo.EditorContext,
+    conversion: TaskConversion,
+    metamodel: Map<string, Map<string, Flo.ElementMetadata>>
+  ) {
     if (conversion.graph === undefined || conversion.graph === null) {
       // TODO handle this better when we have service for metadata
       if (!conversion.errors || conversion.errors.length === 0) {
@@ -265,7 +304,7 @@ export class MetamodelService implements Flo.Metamodel {
       let metadata = metamodel.get(group) ? metamodel.get(group).get(name) : undefined;
       if (!metadata) {
         // Unknown element
-        metadata = this.createMetadata(name, group, '', new Map<string, Flo.PropertyMetadata>(), { unresolved: true });
+        metadata = this.createMetadata(name, group, '', new Map<string, Flo.PropertyMetadata>(), {unresolved: true});
       }
 
       const properties = new Map<string, any>();
@@ -295,8 +334,8 @@ export class MetamodelService implements Flo.Metamodel {
         props.set('ExitStatus', link.properties.transitionName);
       }
       // TODO safe to delete from/to/nodesIndex now?
-      const otherfrom = { id: builtNodesMap[link.from], selector: this.determineOutputSelector(link.from, inputnodes) };
-      const otherto = { id: builtNodesMap[link.to], selector: this.determineInputSelector(link.to, inputnodes) };
+      const otherfrom = {id: builtNodesMap[link.from], selector: this.determineOutputSelector(link.from, inputnodes)};
+      const otherto = {id: builtNodesMap[link.to], selector: this.determineInputSelector(link.to, inputnodes)};
 
       const metadata2 = metamodel.get('links').get('transition');
       flo.createLink(otherfrom, otherto, metadata2, props);
@@ -305,7 +344,11 @@ export class MetamodelService implements Flo.Metamodel {
     flo.performLayout();
 
     // Graph is empty? Ensure there are at least start and end nodes created!
-    nodesIndex.length ? arrangeAll(flo) : flo.clearGraph();
+    if (nodesIndex.length) {
+      arrangeAll(flo);
+    } else {
+      flo.clearGraph();
+    }
   }
 
   private determineOutputSelector(id: number, inputNodes: Node[]): string {
@@ -328,8 +371,7 @@ export class MetamodelService implements Flo.Metamodel {
     return '.input-port';
   }
 
-  clearCachedData() {
+  clearCachedData(): void {
     this.request = undefined;
   }
-
 }

@@ -1,5 +1,5 @@
-import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class ClipboardCopyService {
     this.textareaEl.value = value;
   }
 
-  executeCopy(copyContent: string, container?: HTMLElement) {
+  executeCopy(copyContent: string, container?: HTMLElement): void {
     if (isPlatformBrowser(this.platformId)) {
       const _container = container ? container : document.body;
       this.createTextareaEl();

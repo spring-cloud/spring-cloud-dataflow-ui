@@ -1,22 +1,20 @@
+import {dia} from 'jointjs';
+import {Flo} from 'spring-flo';
+import {convertGraphToText} from './graph-to-text';
+import {JsonGraph} from './text-to-graph';
 
-import { dia } from 'jointjs';
-import { Flo } from 'spring-flo';
-import { convertGraphToText } from './graph-to-text';
-import { JsonGraph } from './text-to-graph';
-
-import { Shapes } from 'spring-flo';
+import {Shapes} from 'spring-flo';
 
 describe('graph-to-text', () => {
-
   let fakemetamodel: Map<string, Map<string, Flo.ElementMetadata>>;
   let graph: dia.Graph;
   let dsl: string;
 
   beforeAll(() => {
     const fakeTimeMetadata: Flo.ElementMetadata = {
-      'group': 'fake',
-      'name': 'time',
-      get(property: String): Promise<Flo.PropertyMetadata> {
+      group: 'fake',
+      name: 'time',
+      get(property: string): Promise<Flo.PropertyMetadata> {
         return Promise.resolve(null);
       },
       properties(): Promise<Map<string, Flo.PropertyMetadata>> {
@@ -124,7 +122,13 @@ describe('graph-to-text', () => {
 
   it('mix apps/streams on graph', () => {
     const timeSource = createSource('time');
-    setProperties(timeSource, new Map([['aaa', 'bbb'], ['ccc', 'ddd']]));
+    setProperties(
+      timeSource,
+      new Map([
+        ['aaa', 'bbb'],
+        ['ccc', 'ddd']
+      ])
+    );
     const logSink = createSink('log');
     setProperties(logSink, new Map([['eee', 'fff']]));
     createLink(timeSource, logSink);
@@ -151,7 +155,13 @@ describe('graph-to-text', () => {
 
   it('basic - multiple properties', () => {
     const timeSource = createSource('time');
-    setProperties(timeSource, new Map([['aaa', 'bbb'], ['ccc', 'ddd']]));
+    setProperties(
+      timeSource,
+      new Map([
+        ['aaa', 'bbb'],
+        ['ccc', 'ddd']
+      ])
+    );
     const logSink = createSink('log');
     setProperties(logSink, new Map([['eee', 'fff']]));
     createLink(timeSource, logSink);
@@ -161,13 +171,18 @@ describe('graph-to-text', () => {
 
   it('basic - multiple properties - ranges', () => {
     const timeSource = createSource('time');
-    setProperties(timeSource, new Map([['aaa', 'bbb'], ['ccc', 'ddd']]));
+    setProperties(
+      timeSource,
+      new Map([
+        ['aaa', 'bbb'],
+        ['ccc', 'ddd']
+      ])
+    );
     const logSink = createSink('log');
     setProperties(logSink, new Map([['eee', 'fff']]));
     createLink(timeSource, logSink);
     dsl = convertGraphToText(graph);
     expect(dsl).toEqual('time --aaa=bbb --ccc=ddd | log --eee=fff');
-
 
     const timeSourceRange: JsonGraph.Range = timeSource.attr('range');
     expect(timeSourceRange).toBeDefined();
@@ -398,8 +413,8 @@ describe('graph-to-text', () => {
   it('basic - link editing in process (invalid target id)', () => {
     const source = createSource('time');
     const linkParams: Shapes.LinkCreationParams = {
-      source: {'id': source.id, 'port': 'output', 'selector': '.output-port'},
-      target: {'id': 'not-exist', 'port': 'input', 'selector': '.input-port'}
+      source: {id: source.id, port: 'output', selector: '.output-port'},
+      target: {id: 'not-exist', port: 'input', selector: '.input-port'}
     };
     const link = Shapes.Factory.createLink(linkParams);
     graph.addCell(link);
@@ -410,8 +425,8 @@ describe('graph-to-text', () => {
   it('basic - link editing in process (no target id)', () => {
     const source = createSource('time');
     const linkParams = {
-      source: {'id': source.id, 'port': 'output', 'selector': '.output-port'},
-      target: {'id': null, 'port': 'input', 'selector': '.input-port'}
+      source: {id: source.id, port: 'output', selector: '.output-port'},
+      target: {id: null, port: 'input', selector: '.input-port'}
     };
     const link = Shapes.Factory.createLink(linkParams);
     graph.addCell(link);
@@ -540,7 +555,7 @@ describe('graph-to-text', () => {
   it('fanout - destination source to two sinks', () => {
     const d1 = createDestination('d1');
     const logSink = createSink('log');
-    const link  = createLink(d1, logSink);
+    const link = createLink(d1, logSink);
     const fileSink = createSink('file');
     const link2 = createLink(d1, fileSink);
     dsl = convertGraphToText(graph);
@@ -609,7 +624,8 @@ describe('graph-to-text', () => {
 
     dsl = convertGraphToText(graph);
     expect(dsl).toEqual(
-      'foo=time | cassandra\n:foo.time > jdbc\n:foo.time > websocket\n:foo.time > :time-log\n:time-log > throughput');
+      'foo=time | cassandra\n:foo.time > jdbc\n:foo.time > websocket\n:foo.time > :time-log\n:time-log > throughput'
+    );
   });
 
   // the time-log destination is finally additionally tapped to a log
@@ -626,7 +642,8 @@ describe('graph-to-text', () => {
     dsl = convertGraphToText(graph);
     expect(dsl).toEqual(
       'foo=time | cassandra\n:foo.time > jdbc\n:foo.time > websocket\n' +
-      ':foo.time > :time-log\n:time-log > throughput\n:time-log > log');
+        ':foo.time > :time-log\n:time-log > throughput\n:time-log > log'
+    );
   });
 
   function setStreamName(node: dia.Element, name: string) {
@@ -670,7 +687,7 @@ describe('graph-to-text', () => {
   }
 
   function setProperties(element: dia.Cell, properties: Map<string, string>) {
-    Array.from(properties.keys()).forEach((k) => {
+    Array.from(properties.keys()).forEach(k => {
       element.attr('props/' + k, properties.get(k));
     });
   }
@@ -680,7 +697,7 @@ describe('graph-to-text', () => {
     params.metadata = {
       name: appname,
       group: group,
-      get(property: String): Promise<Flo.PropertyMetadata> {
+      get(property: string): Promise<Flo.PropertyMetadata> {
         return Promise.resolve(null);
       },
       properties(): Promise<Map<string, Flo.PropertyMetadata>> {
@@ -698,13 +715,12 @@ describe('graph-to-text', () => {
 
   function createLink(from, to, isTapLink?: boolean): dia.Link {
     const linkParams: Shapes.LinkCreationParams = {
-      source: {'id': from.id, 'port': 'output', 'selector': '.output-port'},
-      target: {'id': to.id, 'port': 'input', 'selector': '.input-port'}
+      source: {id: from.id, port: 'output', selector: '.output-port'},
+      target: {id: to.id, port: 'input', selector: '.input-port'}
     };
     const link = Shapes.Factory.createLink(linkParams);
     link.attr('props/isTapLink', isTapLink ? true : false);
     graph.addCell(link);
     return link;
   }
-
 });

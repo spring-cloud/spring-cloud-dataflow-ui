@@ -1,13 +1,21 @@
 <h1>Task executions</h1>
 
-<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" [(clrDgSelected)]="!grouped ? null : selected"
-              *ngIf="isInit" #datagrid>
+<clr-datagrid
+  (clrDgRefresh)="refresh($event)"
+  [clrDgLoading]="loading"
+  [(clrDgSelected)]="!grouped ? null : selected"
+  *ngIf="isInit"
+  #datagrid
+>
   <clr-dg-action-bar *ngIf="grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
-      Cancel
-    </button>
-    <button type="button" [disabled]="selected?.length === 0" class="btn btn-sm btn-outline-danger"
-            (click)="cleanup(selected)" [appRole]="['ROLE_DESTROY']">
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">Cancel</button>
+    <button
+      type="button"
+      [disabled]="selected?.length === 0"
+      class="btn btn-sm btn-outline-danger"
+      (click)="cleanup(selected)"
+      [appRole]="['ROLE_DESTROY']"
+    >
       Clean Up task execution(s)
     </button>
   </clr-dg-action-bar>
@@ -15,90 +23,87 @@
     <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)" [appRole]="['ROLE_DESTROY']">
       Group Actions
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
-      Refresh
-    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
   </clr-dg-action-bar>
-  <clr-dg-column [clrDgField]="'TASK_EXECUTION_ID'"
-                 [clrDgSortOrder]="(context.by === 'TASK_EXECUTION_ID') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeId', $event)"
-                 [style.width.px]="context.sizeId | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      Execution ID
-    </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  <clr-dg-column
+    [clrDgField]="'TASK_EXECUTION_ID'"
+    [clrDgSortOrder]="context.by === 'TASK_EXECUTION_ID' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeId', $event)"
+    [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> Execution ID </ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'TASK_NAME'"
-                 [clrDgSortOrder]="(context.by === 'TASK_NAME') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeName', $event)"
-                 [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      Task name
-    </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  <clr-dg-column
+    [clrDgField]="'TASK_NAME'"
+    [clrDgSortOrder]="context.by === 'TASK_NAME' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeName', $event)"
+    [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> Task name </ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDuration', $event)"
-    [style.width.px]="context.sizeDuration | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      Duration
-    </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+    [style.width.px]="context.sizeDuration | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> Duration </ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'START_TIME'"
-                 [clrDgSortOrder]="(context.by === 'START_TIME') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeStart', $event)"
-                 [style.width.px]="context.sizeStart | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      Start Date
-    </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  <clr-dg-column
+    [clrDgField]="'START_TIME'"
+    [clrDgSortOrder]="context.by === 'START_TIME' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeStart', $event)"
+    [style.width.px]="context.sizeStart | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> Start Date </ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'END_TIME'"
-                 [clrDgSortOrder]="(context.by === 'END_TIME') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeEnd', $event)"
-                 [style.width.px]="context.sizeEnd | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      End Date
-    </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  <clr-dg-column
+    [clrDgField]="'END_TIME'"
+    [clrDgSortOrder]="context.by === 'END_TIME' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeEnd', $event)"
+    [style.width.px]="context.sizeEnd | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> End Date </ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'EXIT_CODE'"
-                 [clrDgSortOrder]="(context.by === 'EXIT_CODE') ? context.reverse ? -1 : 1 : 0"
-                 (clrDgColumnResize)="updateContext('sizeExit', $event)"
-                 [style.width.px]="context.sizeExit | datagridcolumn: datagrid : contextName | async">
-    <ng-container>
-      Exit Code
-    </ng-container>
-    <clr-dg-filter style="display:none;"></clr-dg-filter>
+  <clr-dg-column
+    [clrDgField]="'EXIT_CODE'"
+    [clrDgSortOrder]="context.by === 'EXIT_CODE' ? (context.reverse ? -1 : 1) : 0"
+    (clrDgColumnResize)="updateContext('sizeExit', $event)"
+    [style.width.px]="context.sizeExit | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container> Exit Code </ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
     <clr-dg-cell>
-      <a routerLink="/tasks-jobs/task-executions/{{execution.executionId}}">{{execution.executionId}}</a>
+      <a routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}">{{ execution.executionId }}</a>
     </clr-dg-cell>
     <clr-dg-cell>
-      <a routerLink="/tasks-jobs/tasks/{{execution.taskName}}">{{execution.taskName}}</a>
+      <a routerLink="/tasks-jobs/tasks/{{ execution.taskName }}">{{ execution.taskName }}</a>
     </clr-dg-cell>
-    <clr-dg-cell>{{execution.startTime | duration: execution.endTime}}</clr-dg-cell>
-    <clr-dg-cell>{{execution.startTime | datetime}}</clr-dg-cell>
-    <clr-dg-cell>{{execution.endTime | datetime}}</clr-dg-cell>
-    <clr-dg-cell>{{execution.exitCode}}</clr-dg-cell>
+    <clr-dg-cell>{{ execution.startTime | duration: execution.endTime }}</clr-dg-cell>
+    <clr-dg-cell>{{ execution.startTime | datetime }}</clr-dg-cell>
+    <clr-dg-cell>{{ execution.endTime | datetime }}</clr-dg-cell>
+    <clr-dg-cell>{{ execution.exitCode }}</clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(execution)">Details</button>
       <button class="action-item" (click)="taskDetails(execution)">Task details</button>
       <button class="action-item" (click)="relaunch(execution)" [appRole]="['ROLE_DEPLOY']">Relaunch task</button>
-      <button class="action-item" (click)="stop(execution)"
-              [appRole]="['ROLE_DEPLOY']"
-              [disabled]="!(execution.taskExecutionStatus !== 'COMPLETE' && execution.taskExecutionStatus !== 'ERROR')">
+      <button
+        class="action-item"
+        (click)="stop(execution)"
+        [appRole]="['ROLE_DEPLOY']"
+        [disabled]="!(execution.taskExecutionStatus !== 'COMPLETE' && execution.taskExecutionStatus !== 'ERROR')"
+      >
         Stop task
       </button>
-      <button class="action-item" (click)="cleanup([execution])"
-              [appRole]="['ROLE_DESTROY']">
+      <button class="action-item" (click)="cleanup([execution])" [appRole]="['ROLE_DESTROY']">
         Clean up task execution
       </button>
-      <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">
-        Grafana Dashboard
-      </button>
+      <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">Grafana Dashboard</button>
       <button class="action-item" wavefrontDashboardTaskExecution [taskExecution]="execution">
         Wavefront Dashboard
       </button>
@@ -106,13 +111,14 @@
   </clr-dg-row>
   <clr-dg-placeholder>No results found.</clr-dg-placeholder>
   <clr-dg-footer>
-    <clr-dg-pagination #pagination
-                       [clrDgTotalItems]="page?.total"
-                       [clrDgPageSize]="context.size"
-                       [clrDgPage]="context.current">
-      <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Task executions per page</clr-dg-page-size>
-      {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-      of {{page?.total}} task executions
+    <clr-dg-pagination
+      #pagination
+      [clrDgTotalItems]="page?.total"
+      [clrDgPageSize]="context.size"
+      [clrDgPage]="context.current"
+    >
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Task executions per page</clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} task executions
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

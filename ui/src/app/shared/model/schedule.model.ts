@@ -1,4 +1,4 @@
-import { Page } from './page.model';
+import {Page} from './page.model';
 
 export class Schedule {
   name: string;
@@ -6,9 +6,9 @@ export class Schedule {
   cronExpression: string;
   platform: string;
 
-  static parse(input) {
+  static parse(input: any): Schedule {
     let cron = '';
-    if (!!input.scheduleProperties) {
+    if (input.scheduleProperties) {
       cron = input.scheduleProperties['spring.cloud.scheduler.cron.expression'];
     }
     const schedule = new Schedule();
@@ -21,7 +21,7 @@ export class Schedule {
 }
 
 export class SchedulePage extends Page<Schedule> {
-  static parse(input): Page<Schedule> {
+  static parse(input: any): Page<Schedule> {
     const page = Page.fromJSON<Schedule>(input);
     if (input && input._embedded && input._embedded.scheduleInfoResourceList) {
       page.items = input._embedded.scheduleInfoResourceList.map(Schedule.parse);

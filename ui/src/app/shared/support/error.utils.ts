@@ -1,11 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { AppError, HttpError } from '../model/error.model';
+import {HttpErrorResponse} from '@angular/common/http';
+import {throwError} from 'rxjs';
+import {AppError, HttpError} from '../model/error.model';
 import get from 'lodash.get';
 
 export class ErrorUtils {
-
-  public static catchError(error: Response | any) {
+  public static catchError(error: Response | any): any {
     const errorObject = {
       status: 0,
       message: ''
@@ -37,5 +36,4 @@ export class ErrorUtils {
       return throwError(new AppError(errorObject.message));
     }
   }
-
 }

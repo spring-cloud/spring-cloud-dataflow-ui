@@ -1,13 +1,13 @@
-import { Observable, of } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
-import { Platform } from '../../shared/model/platform.model';
-import { Stream, StreamHistory, StreamPage } from '../../shared/model/stream.model';
-import { StreamService } from '../../shared/api/stream.service';
-import { StreamStatus } from '../../shared/model/metrics.model';
-import { HttpUtils } from '../../shared/support/http.utils';
-import { catchError, map } from 'rxjs/operators';
-import { ErrorUtils } from '../../shared/support/error.utils';
-import { GET_DEPLOYMENT_INFO } from '../data/stream';
+import {Observable, of} from 'rxjs';
+import {HttpResponse} from '@angular/common/http';
+import {Platform} from '../../shared/model/platform.model';
+import {Stream, StreamHistory, StreamPage} from '../../shared/model/stream.model';
+import {StreamService} from '../../shared/api/stream.service';
+import {StreamStatus} from '../../shared/model/metrics.model';
+import {HttpUtils} from '../../shared/support/http.utils';
+import {catchError, map} from 'rxjs/operators';
+import {ErrorUtils} from '../../shared/support/error.utils';
+import {GET_DEPLOYMENT_INFO} from '../data/stream';
 
 /**
  * Mock for StreamsService.
@@ -27,17 +27,6 @@ import { GET_DEPLOYMENT_INFO } from '../data/stream';
  * @author Damien Vitrac
  */
 export class MockStreamsService extends StreamService {
-
-  // public streamsContext = {
-  //   q: '',
-  //   page: 0,
-  //   size: 30,
-  //   sort: 'name',
-  //   order: OrderParams.ASC,
-  //   itemsSelected: [],
-  //   itemsExpanded: []
-  // };
-
   public streamDefinitions;
 
   constructor() {
@@ -53,11 +42,11 @@ export class MockStreamsService extends StreamService {
   }
 
   undeployStreams(streams: Stream[]): Observable<HttpResponse<any>[]> {
-    return of(Array.from({ length: streams.length }));
+    return of(Array.from({length: streams.length}));
   }
 
   destroyStreams(streams: Stream[]): Observable<any[]> {
-    return of(Array.from({ length: streams.length }));
+    return of(Array.from({length: streams.length}));
   }
 
   getStreamsRelated(streamName: string, nested?: boolean): Observable<Stream[]> {
@@ -67,10 +56,12 @@ export class MockStreamsService extends StreamService {
   getPlatforms(): Observable<Platform[]> {
     return of([
       Platform.parse({
-        name: 'default', type: 'local', description: '',
-        options: [{ id: 'spring.cloud.deployer.local.opt1', name: 'opt1' }]
+        name: 'default',
+        type: 'local',
+        description: '',
+        options: [{id: 'spring.cloud.deployer.local.opt1', name: 'opt1'}]
       }),
-      Platform.parse({ name: 'foo', type: 'bar', description: 'foobar' })
+      Platform.parse({name: 'foo', type: 'bar', description: 'foobar'})
     ]);
   }
 
@@ -84,22 +75,19 @@ export class MockStreamsService extends StreamService {
         name: streamDefinition,
         version: 2,
         platformName: 'default',
-        info: { firstDeployed: new Date(), status: { statusCode: 'DEPLOYED' }, description: 'Upgrade complete' }
+        info: {firstDeployed: new Date(), status: {statusCode: 'DEPLOYED'}, description: 'Upgrade complete'}
       }),
       StreamHistory.parse({
         name: streamDefinition,
         version: 1,
         platformName: 'default',
-        info: { firstDeployed: new Date(), status: { statusCode: 'DELETED' }, description: 'Delete complete' }
+        info: {firstDeployed: new Date(), status: {statusCode: 'DELETED'}, description: 'Delete complete'}
       })
     ]);
   }
 
   getDeploymentInfo(name: string, reuseDeploymentProperties: boolean = false): Observable<Stream> {
-    return of(GET_DEPLOYMENT_INFO)
-      .pipe(
-        map(Stream.parse)
-      );
+    return of(GET_DEPLOYMENT_INFO).pipe(map(Stream.parse));
   }
 
   rollbackStream(streamHistory: StreamHistory): Observable<HttpResponse<any>> {
@@ -109,5 +97,4 @@ export class MockStreamsService extends StreamService {
   getLogs(name: string): Observable<any> {
     return of([]);
   }
-
 }

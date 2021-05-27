@@ -1,13 +1,12 @@
-/* tslint:disable:no-access-missing-member */
+/* eslint-disable */
 
-import { Component, ViewEncapsulation } from '@angular/core';
-import { Properties } from 'spring-flo';
-import { Validators } from '@angular/forms';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {Properties} from 'spring-flo';
+import {Validators} from '@angular/forms';
 import PropertiesSource = Properties.PropertiesSource;
-import { AppUiProperty } from '../../shared/support/app-ui-property';
-import { PropertiesDialogComponent } from '../../shared/properties/properties-dialog.component';
-import { PropertiesGroupModel } from '../../shared/support/properties-group-model';
-
+import {AppUiProperty} from '../../shared/support/app-ui-property';
+import {PropertiesDialogComponent} from '../../shared/properties/properties-dialog.component';
+import {PropertiesGroupModel} from '../../shared/support/properties-group-model';
 
 /**
  * Utility class for working with Properties.
@@ -16,7 +15,6 @@ import { PropertiesGroupModel } from '../../shared/support/properties-group-mode
  * @author Andy Clement
  */
 class TaskPropertiesGroupModel extends PropertiesGroupModel {
-
   protected createControlModel(property: AppUiProperty): Properties.ControlModel<any> {
     const inputType = Properties.InputType.TEXT;
     let validation: Properties.Validation;
@@ -27,15 +25,12 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
       if (property.id === 'label') {
         validation = {
           validator: Validators.pattern(/^[\w_]+[\w_-]*$/),
-          errorData: [
-            { id: 'pattern', message: 'Invalid app label!' }
-          ]
+          errorData: [{id: 'pattern', message: 'Invalid app label!'}]
         };
       }
     }
     return new Properties.GenericControlModel(property, inputType, validation);
   }
-
 }
 
 /**
@@ -51,7 +46,6 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
   encapsulation: ViewEncapsulation.None
 })
 export class TaskPropertiesDialogComponent extends PropertiesDialogComponent {
-
   public title: string;
 
   constructor() {
@@ -62,5 +56,4 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent {
     this.propertiesGroupModel = new TaskPropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
   }
-
 }

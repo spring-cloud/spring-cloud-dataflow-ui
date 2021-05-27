@@ -1,5 +1,5 @@
-import { Flo, Properties } from 'spring-flo';
-import { AppUiProperty } from './app-ui-property';
+import {Flo, Properties} from 'spring-flo';
+import {AppUiProperty} from './app-ui-property';
 
 /**
  * Able to provide AppUiProperty array from the graph node to be consumed by properties dialog
@@ -8,11 +8,12 @@ import { AppUiProperty } from './app-ui-property';
  * @author Alex Boyko
  */
 export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesSource {
-
   getProperties(): Promise<Array<AppUiProperty>> {
     return super.getProperties().then(semanticProperties => {
       const notationalProperties = this.createNotationalProperties();
-      return semanticProperties ? notationalProperties.concat(semanticProperties as AppUiProperty[]) : notationalProperties;
+      return semanticProperties
+        ? notationalProperties.concat(semanticProperties as AppUiProperty[])
+        : notationalProperties;
     });
   }
 
@@ -21,7 +22,10 @@ export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesS
     const idAttr = `props/${metadata.id}`;
     const valueFromName = this.cell.attr(nameAttr);
     const valueFromId = this.cell.attr(idAttr);
-    if ((valueFromName === undefined || valueFromName === null) && !(valueFromId === undefined || valueFromId === null)) {
+    if (
+      (valueFromName === undefined || valueFromName === null) &&
+      !(valueFromId === undefined || valueFromId === null)
+    ) {
       return idAttr;
     } else {
       return nameAttr;
@@ -46,5 +50,4 @@ export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesS
   protected createNotationalProperties(): Array<AppUiProperty> {
     return [];
   }
-
 }

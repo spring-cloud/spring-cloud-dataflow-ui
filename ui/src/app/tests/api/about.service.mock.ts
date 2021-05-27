@@ -1,16 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
 
-import { AboutService } from '../../shared/api/about.service';
-import { LOAD } from '../data/about';
-import { AboutState } from '../../shared/store/about.reducer';
-import { parse } from '../../shared/store/about.support';
+import {AboutService} from '../../shared/api/about.service';
+import {LOAD} from '../data/about';
+import {AboutState} from '../../shared/store/about.reducer';
+import {parse} from '../../shared/store/about.support';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AboutServiceMock {
-
   static mock: AboutServiceMock = null;
 
   getAbout(): Observable<AboutState> {
@@ -25,18 +24,18 @@ export class AboutServiceMock {
     return true;
   }
 
-  getMonitoringType() {
+  getMonitoringType(): Observable<any> {
     return of('none');
   }
 
-  getMonitoring() {
+  getMonitoring(): Observable<any> {
     return of({});
   }
 
-  static get provider() {
+  static get provider(): any {
     if (!AboutServiceMock.mock) {
       AboutServiceMock.mock = new AboutServiceMock();
     }
-    return { provide: AboutService, useValue: AboutServiceMock.mock };
+    return {provide: AboutService, useValue: AboutServiceMock.mock};
   }
 }

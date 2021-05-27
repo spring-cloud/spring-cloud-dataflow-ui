@@ -1,13 +1,7 @@
-<div *ngIf="!(loggedinUser$|async)">
-  <a href="/login" class="nav-link nav-icon-text">
-    Log In
-  </a>
-</div>
-
-<div *ngIf="(loggedinUser$|async) as user" class="header-actions">
+<div *ngIf="loggedinUser$ | async as user; else logIn" class="header-actions">
   <clr-dropdown>
     <button class="nav-text nav-icon-text" clrDropdownTrigger aria-label="open user profile">
-      {{user}}
+      {{ user }}
       <clr-icon shape="caret down"></clr-icon>
     </button>
     <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
@@ -15,3 +9,9 @@
     </clr-dropdown-menu>
   </clr-dropdown>
 </div>
+
+<ng-template #logIn>
+  <div>
+    <a href="/login" class="nav-link nav-icon-text"> Log In </a>
+  </div>
+</ng-template>

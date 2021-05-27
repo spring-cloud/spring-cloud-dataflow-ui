@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { FeatureDisabledComponent } from './component/feature-disabled.component';
-import { RolesMissingComponent } from './component/roles-missing.component';
-import { AuthenticationRequiredComponent } from './component/authentication-required.component';
-
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {FeatureDisabledComponent} from './component/feature-disabled.component';
+import {RolesMissingComponent} from './component/roles-missing.component';
+import {AuthenticationRequiredComponent} from './component/authentication-required.component';
 
 const routes: Routes = [
   {
@@ -24,4 +23,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SecurityRoutingModule { }
+export class SecurityRoutingModule {}

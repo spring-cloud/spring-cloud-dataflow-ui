@@ -1,8 +1,8 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="history" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">Confirm stream rollback</h3>
   <div class="modal-body" *ngIf="!isRunning">
-    This action will rollback the stream <strong>{{history.stream}}</strong> to the version {{history.version}}.
-    Are you sure?
+    This action will rollback the stream <strong>{{ history.stream }}</strong> to the version {{ history.version }}. Are
+    you sure?
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
@@ -10,8 +10,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="rollback()" [disabled]="isRunning">
-      Rollback
-    </button>
+    <button type="button" class="btn btn-primary" (click)="rollback()" [disabled]="isRunning">Rollback</button>
   </div>
 </clr-modal>

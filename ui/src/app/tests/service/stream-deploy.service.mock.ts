@@ -1,9 +1,9 @@
-import { StreamDeployService } from '../../streams/streams/stream-deploy.service';
-import { Observable, of } from 'rxjs';
-import { Stream, StreamDeployConfig } from '../../shared/model/stream.model';
-import { GET_STREAM } from '../data/stream';
-import { APP_DETAILS, CONFIG } from '../data/stream-deploy';
-import { ApplicationType } from '../../shared/model/app.model';
+import {StreamDeployService} from '../../streams/streams/stream-deploy.service';
+import {Observable, of} from 'rxjs';
+import {Stream, StreamDeployConfig} from '../../shared/model/stream.model';
+import {GET_STREAM} from '../data/stream';
+import {APP_DETAILS, CONFIG} from '../data/stream-deploy';
+import {ApplicationType} from '../../shared/model/app.model';
 
 export class StreamDeployServiceMock {
   static mock: any = null;
@@ -28,14 +28,14 @@ export class StreamDeployServiceMock {
     return of(config);
   }
 
-  appDetails(type: ApplicationType, name: string, version: string) {
+  appDetails(type: ApplicationType, name: string, version: string): Observable<any> {
     return of(APP_DETAILS);
   }
 
-  static get provider() {
+  static get provider(): any {
     if (!StreamDeployServiceMock.mock) {
       StreamDeployServiceMock.mock = new StreamDeployServiceMock();
     }
-    return { provide: StreamDeployService, useValue: StreamDeployServiceMock.mock };
+    return {provide: StreamDeployService, useValue: StreamDeployServiceMock.mock};
   }
 }

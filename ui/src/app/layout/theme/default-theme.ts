@@ -1,8 +1,7 @@
-import { Theme } from './types';
+import {Theme} from './types';
 
 export const defaultTheme: Theme = {
   name: 'default',
-  properties: {
-  },
+  properties: {},
   other: ''
 };

@@ -5,21 +5,20 @@ export class AppError {
     this.message = message;
   }
 
-  static is(error): error is AppError {
+  static is(error: any): error is AppError {
     return true;
   }
 
-  getMessage() {
+  getMessage(): string {
     return this.message;
   }
 
-  toString() {
+  toString(): string {
     return this.message;
   }
 }
 
 export class HttpError extends AppError {
-
   httpStatusCode: number;
 
   constructor(message: string, httpStatusCode: number) {
@@ -27,26 +26,25 @@ export class HttpError extends AppError {
     this.httpStatusCode = httpStatusCode;
   }
 
-  static is(error): error is HttpError {
+  static is(error: any): error is HttpError {
     return true;
   }
 
-  static is404(error): boolean {
+  static is404(error: any): boolean {
     if (HttpError.is(error)) {
       return error.httpStatusCode === 404;
     }
     return false;
   }
 
-  static is400(error): boolean {
+  static is400(error: any): boolean {
     if (HttpError.is(error)) {
       return error.httpStatusCode === 400;
     }
     return false;
   }
 
-  getMessage() {
+  getMessage(): string {
     return super.getMessage();
   }
-
 }

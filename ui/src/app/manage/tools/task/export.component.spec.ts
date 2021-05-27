@@ -1,45 +1,38 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
-import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SecurityServiceMock } from '../../../tests/api/security.service.mock';
-import { AboutServiceMock } from '../../../tests/api/about.service.mock';
-import { StreamServiceMock } from '../../../tests/api/stream.service.mock';
-import { TaskServiceMock } from '../../../tests/api/task.service.mock';
-import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
-import { ImportExportServiceMock } from '../../../tests/service/import-export.service.mock';
-import { TaskExportComponent } from './export.component';
-import { ContextServiceMock } from '../../../tests/service/context.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormsModule} from '@angular/forms';
+import {ClarityModule} from '@clr/angular';
+import {RouterTestingModule} from '@angular/router/testing';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SecurityServiceMock} from '../../../tests/api/security.service.mock';
+import {AboutServiceMock} from '../../../tests/api/about.service.mock';
+import {StreamServiceMock} from '../../../tests/api/stream.service.mock';
+import {TaskServiceMock} from '../../../tests/api/task.service.mock';
+import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
+import {ImportExportServiceMock} from '../../../tests/service/import-export.service.mock';
+import {TaskExportComponent} from './export.component';
+import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 
 describe('manage/tools/task/export.component.ts', () => {
-
   let component: TaskExportComponent;
   let fixture: ComponentFixture<TaskExportComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        TaskExportComponent
-      ],
-      imports: [
-        FormsModule,
-        ClarityModule,
-        RouterTestingModule.withRoutes([]),
-        BrowserAnimationsModule,
-      ],
-      providers: [
-        SecurityServiceMock.provider,
-        AboutServiceMock.provider,
-        StreamServiceMock.provider,
-        TaskServiceMock.provider,
-        NotificationServiceMock.provider,
-        ImportExportServiceMock.provider,
-        ContextServiceMock.provider
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [TaskExportComponent],
+        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        providers: [
+          SecurityServiceMock.provider,
+          AboutServiceMock.provider,
+          StreamServiceMock.provider,
+          TaskServiceMock.provider,
+          NotificationServiceMock.provider,
+          ImportExportServiceMock.provider,
+          ContextServiceMock.provider
+        ]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskExportComponent);
@@ -52,7 +45,7 @@ describe('manage/tools/task/export.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a stream export', async (done) => {
+  it('should run a stream export', async done => {
     fixture.detectChanges();
     component.open();
     setTimeout(() => {
@@ -66,7 +59,7 @@ describe('manage/tools/task/export.component.ts', () => {
     }, 200);
   });
 
-  it('should manage error if no stream selected', async (done) => {
+  it('should manage error if no stream selected', async done => {
     fixture.detectChanges();
     component.open();
     setTimeout(() => {
@@ -79,5 +72,4 @@ describe('manage/tools/task/export.component.ts', () => {
       done();
     }, 200);
   });
-
 });

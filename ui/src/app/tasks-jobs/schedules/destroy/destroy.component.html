@@ -2,26 +2,34 @@
   <h3 *ngIf="schedules?.length == 1" class="modal-title">Confirm Delete Schedule</h3>
   <h3 *ngIf="schedules?.length > 1" class="modal-title">Confirm Delete Schedules</h3>
   <div class="modal-body" *ngIf="schedules.length == 1 && !isRunning">
-    This action will delete the schedule <u><strong>{{schedules[0].name}}</strong></u>. Are you sure?
+    This action will delete the schedule
+    <u
+      ><strong>{{ schedules[0].name }}</strong></u
+    >. Are you sure?
   </div>
   <div class="modal-body" *ngIf="schedules?.length > 1 && !isRunning">
-    This action will delete the <u><strong>{{schedules.length}}
-    schedule{{schedules?.length > 1 ? 's' : ''}}</strong></u> listed below.<br/>Are you sure?
-    <br/>
+    This action will delete the
+    <u
+      ><strong>{{ schedules.length }} schedule{{ schedules?.length > 1 ? 's' : '' }}</strong></u
+    >
+    listed below.<br />Are you sure?
+    <br />
     <table class="table table-striped">
       <thead>
-      <tr>
-        <th class="left">Name</th>
-        <th class="left">Task name</th>
-        <th class="left">Platform</th>
-      </tr>
+        <tr>
+          <th class="left">Name</th>
+          <th class="left">Task name</th>
+          <th class="left">Platform</th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let schedule of schedules">
-        <td class="left"><strong>{{schedule.name}}</strong></td>
-        <td class="left">{{schedule.taskName}}</td>
-        <td class="left">{{schedule.platform}}</td>
-      </tr>
+        <tr *ngFor="let schedule of schedules">
+          <td class="left">
+            <strong>{{ schedule.name }}</strong>
+          </td>
+          <td class="left">{{ schedule.taskName }}</td>
+          <td class="left">{{ schedule.platform }}</td>
+        </tr>
       </tbody>
     </table>
   </div>

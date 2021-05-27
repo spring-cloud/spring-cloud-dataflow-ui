@@ -1,6 +1,6 @@
-import { of } from 'rxjs';
-import { ScheduleService } from './schedule.service';
-import { TaskService } from './task.service';
+import {of} from 'rxjs';
+import {ScheduleService} from './schedule.service';
+import {TaskService} from './task.service';
 
 describe('shared/api/schedule.service.ts', () => {
   let mockHttp;
@@ -13,7 +13,7 @@ describe('shared/api/schedule.service.ts', () => {
       delete: jasmine.createSpy('delete'),
       get: jasmine.createSpy('get'),
       post: jasmine.createSpy('post'),
-      put: jasmine.createSpy('put'),
+      put: jasmine.createSpy('put')
     };
     jsonData = {};
     taskService = new TaskService(mockHttp);
@@ -50,11 +50,15 @@ describe('shared/api/schedule.service.ts', () => {
   it('createSchedules', () => {
     mockHttp.post.and.returnValue(of({}));
     scheduleService.createSchedules([
-      { schedulerName: 'foo', task: 'bar', platform: 'foobar1', cronExpression: 'cron', args: 'args', props: 'props' },
+      {schedulerName: 'foo', task: 'bar', platform: 'foobar1', cronExpression: 'cron', args: 'args', props: 'props'},
       {
-        schedulerName: 'foo1', task: 'bar1', platform: 'foobar2', cronExpression: 'cron1',
-        args: 'args1', props: 'props1'
-      },
+        schedulerName: 'foo1',
+        task: 'bar1',
+        platform: 'foobar2',
+        cronExpression: 'cron1',
+        args: 'args1',
+        props: 'props1'
+      }
     ]);
 
     let httpUri = mockHttp.post.calls.argsFor(0)[0];
@@ -85,11 +89,13 @@ describe('shared/api/schedule.service.ts', () => {
 
   it('destroySchedules', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
-    scheduleService.destroySchedules([{ name: 'foo', platform: 'bar' }, { name: 'foo1', platform: 'bar1' }]);
+    scheduleService.destroySchedules([
+      {name: 'foo', platform: 'bar'},
+      {name: 'foo1', platform: 'bar1'}
+    ]);
     let httpUri = mockHttp.delete.calls.argsFor(0)[0];
     expect(httpUri).toEqual('/tasks/schedules/foo?platform=bar');
     httpUri = mockHttp.delete.calls.argsFor(1)[0];
     expect(httpUri).toEqual('/tasks/schedules/foo1?platform=bar1');
   });
-
 });

@@ -1,29 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { KeyValueComponent } from './key-value.component';
-import { ClipboardCopyService } from '../../service/clipboard-copy.service';
-import { NotificationServiceMock } from '../../../tests/service/notification.service.mock';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {KeyValueComponent} from './key-value.component';
+import {ClipboardCopyService} from '../../service/clipboard-copy.service';
+import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
 
 describe('KeyValueComponent', () => {
   let component: KeyValueComponent;
   let fixture: ComponentFixture<KeyValueComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        KeyValueComponent
-      ],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule,
-      ],
-      providers: [
-        NotificationServiceMock.provider,
-        ClipboardCopyService
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [KeyValueComponent],
+        imports: [FormsModule, ReactiveFormsModule],
+        providers: [NotificationServiceMock.provider, ClipboardCopyService]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KeyValueComponent);
@@ -37,7 +30,6 @@ describe('KeyValueComponent', () => {
   });
 
   describe('Valid and invalid state (no custom validation)', () => {
-
     it('Should be valid', () => {
       component.text = 'foo=bar';
       fixture.detectChanges();
@@ -70,11 +62,9 @@ describe('KeyValueComponent', () => {
       fixture.detectChanges();
       expect(component.isInvalid).toBeTruthy();
     });
-
   });
 
   describe('Valid and invalid state with custom validation(s) on the key/value', () => {
-
     beforeEach(() => {
       component.validators.value = [];
       component.validators.key = [];
@@ -140,13 +130,11 @@ describe('KeyValueComponent', () => {
       fixture.detectChanges();
       expect(component.isInvalid).toBeTruthy();
     });
-
   });
 
   describe('Import a file and copy clipboard', () => {
-
-    it('should import a file', (done) => {
-      const event = { target: { files: [new Blob(['a=a'])] } };
+    it('should import a file', done => {
+      const event = {target: {files: [new Blob(['a=a'])]}};
       component.fileChange(event);
       setTimeout(() => {
         fixture.detectChanges();
@@ -161,9 +149,9 @@ describe('KeyValueComponent', () => {
       component.copyClipboard();
       fixture.detectChanges();
       expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Content copied');
-      expect(NotificationServiceMock.mock.successNotifications[0].message).toContain('The content have been copied to your clipboard.');
+      expect(NotificationServiceMock.mock.successNotifications[0].message).toContain(
+        'The content have been copied to your clipboard.'
+      );
     });
-
   });
-
 });

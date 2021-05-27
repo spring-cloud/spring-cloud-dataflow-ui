@@ -1,11 +1,12 @@
-import { Observable, of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {
-  ValuedConfigurationMetadataProperty, ValuedConfigurationMetadataPropertyList
+  ValuedConfigurationMetadataProperty,
+  ValuedConfigurationMetadataPropertyList
 } from '../../shared/model/detailed-app.model';
-import { TaskLaunchConfig } from '../../shared/model/task.model';
-import { TaskLaunchService } from '../../tasks-jobs/tasks/launch/task-launch.service';
-import { ApplicationType } from '../../shared/model/app.model';
-import { CTR_OPTIONS } from '../data/task';
+import {TaskLaunchConfig} from '../../shared/model/task.model';
+import {TaskLaunchService} from '../../tasks-jobs/tasks/launch/task-launch.service';
+import {ApplicationType} from '../../shared/model/app.model';
+import {CTR_OPTIONS} from '../data/task';
 
 export class TaskLaunchServiceMock {
   static mock: any = null;
@@ -74,9 +75,7 @@ export class TaskLaunchServiceMock {
         suffix: 'MB'
       }
     ];
-    config.deploymentProperties = [
-      'app.composed-task-runner.split-thread-max-pool-size=10'
-    ];
+    config.deploymentProperties = ['app.composed-task-runner.split-thread-max-pool-size=10'];
 
     return of(config);
   }
@@ -87,8 +86,8 @@ export class TaskLaunchServiceMock {
         id: 'split-thread-max-pool-size',
         name: 'split-thread-max-pool-size',
         type: 'java.lang.Integer',
-        description: 'Split\'s maximum pool size. Default is {@code Integer.MAX_VALUE}.',
-        shortDescription: 'Split\'s maximum pool size.',
+        description: "Split's maximum pool size. Default is {@code Integer.MAX_VALUE}.",
+        shortDescription: "Split's maximum pool size.",
         defaultValue: null,
         deprecation: null,
         sourceType: '',
@@ -99,8 +98,8 @@ export class TaskLaunchServiceMock {
         id: 'split-thread-core-pool-size',
         name: 'split-thread-core-pool-size',
         type: 'java.lang.Integer',
-        description: 'Split\'s core pool size. Default is 4\;',
-        shortDescription: 'Split\'s core pool size.',
+        description: "Split's core pool size. Default is 4;",
+        shortDescription: "Split's core pool size.",
         defaultValue: 4,
         deprecation: null,
         sourceType: '',
@@ -123,8 +122,10 @@ export class TaskLaunchServiceMock {
         id: 'increment-instance-enabled',
         name: 'increment-instance-enabled',
         type: 'java.lang.Boolean',
-        description: 'Allows a single ComposedTaskRunner instance to be re-executed without changing the parameters. Default is false which means a ComposedTaskRunner instance can only be executed once with a given set of parameters, if true it can be re-executed.',
-        shortDescription: 'Allows a single ComposedTaskRunner instance to be re-executed without changing the parameters.',
+        description:
+          'Allows a single ComposedTaskRunner instance to be re-executed without changing the parameters. Default is false which means a ComposedTaskRunner instance can only be executed once with a given set of parameters, if true it can be re-executed.',
+        shortDescription:
+          'Allows a single ComposedTaskRunner instance to be re-executed without changing the parameters.',
         defaultValue: true,
         deprecation: null,
         sourceType: '',
@@ -138,10 +139,10 @@ export class TaskLaunchServiceMock {
     return of([]);
   }
 
-  static get provider() {
+  static get provider(): any {
     if (!TaskLaunchServiceMock.mock) {
       TaskLaunchServiceMock.mock = new TaskLaunchServiceMock();
     }
-    return { provide: TaskLaunchService, useValue: TaskLaunchServiceMock.mock };
+    return {provide: TaskLaunchService, useValue: TaskLaunchServiceMock.mock};
   }
 }

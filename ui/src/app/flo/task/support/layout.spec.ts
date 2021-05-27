@@ -1,9 +1,8 @@
 import * as dagre from 'dagre';
-import { centerAlignRanks, verticalLinksOverlapping } from './layout';
+import {centerAlignRanks, verticalLinksOverlapping} from './layout';
 import * as _ from 'lodash';
 
 describe('tasks layout', () => {
-
   it('no overlapping links', () => {
     const g = new dagre.graphlib.Graph();
     g.setGraph({});
@@ -17,10 +16,10 @@ describe('tasks layout', () => {
     g.graph().ranksep = 2 * gridSize;
     g.graph().edgesep = gridSize;
 
-    g.setNode('START', { width: 40, height: 40 });
-    g.setNode('Import', { width: 120, height: 40 });
-    g.setNode('Uppercase', { width: 120, height: 40 });
-    g.setNode('END', { width: 40, height: 40 });
+    g.setNode('START', {width: 40, height: 40});
+    g.setNode('Import', {width: 120, height: 40});
+    g.setNode('Uppercase', {width: 120, height: 40});
+    g.setNode('END', {width: 40, height: 40});
 
     g.setEdge('START', 'Import');
     g.setEdge('Import', 'Uppercase');
@@ -30,7 +29,6 @@ describe('tasks layout', () => {
 
     expect(verticalLinksOverlapping(g, 2)).toEqual(0);
   });
-
 
   it('1 overlapping link', () => {
     const g = new dagre.graphlib.Graph();
@@ -45,12 +43,12 @@ describe('tasks layout', () => {
     g.graph().ranksep = 2 * gridSize;
     g.graph().edgesep = gridSize;
 
-    g.setNode('START', { width: 40, height: 40 });
-    g.setNode('Import', { width: 120, height: 40 });
-    g.setNode('Uppercase', { width: 120, height: 40 });
-    g.setNode('Backwards', { width: 120, height: 40 });
-    g.setNode('Lowercase', { width: 120, height: 40 });
-    g.setNode('END', { width: 40, height: 40 });
+    g.setNode('START', {width: 40, height: 40});
+    g.setNode('Import', {width: 120, height: 40});
+    g.setNode('Uppercase', {width: 120, height: 40});
+    g.setNode('Backwards', {width: 120, height: 40});
+    g.setNode('Lowercase', {width: 120, height: 40});
+    g.setNode('END', {width: 40, height: 40});
 
     g.setEdge('START', 'Import');
     g.setEdge('Import', 'Uppercase');
@@ -78,12 +76,12 @@ describe('tasks layout', () => {
     g.graph().ranksep = 2 * gridSize;
     g.graph().edgesep = gridSize;
 
-    g.setNode('START', { width: 40, height: 40 });
-    g.setNode('Import', { width: 120, height: 40 });
-    g.setNode('Uppercase', { width: 120, height: 40 });
-    g.setNode('Backwards', { width: 120, height: 40 });
-    g.setNode('Lowercase', { width: 120, height: 40 });
-    g.setNode('END', { width: 40, height: 40 });
+    g.setNode('START', {width: 40, height: 40});
+    g.setNode('Import', {width: 120, height: 40});
+    g.setNode('Uppercase', {width: 120, height: 40});
+    g.setNode('Backwards', {width: 120, height: 40});
+    g.setNode('Lowercase', {width: 120, height: 40});
+    g.setNode('END', {width: 40, height: 40});
 
     g.setEdge('START', 'Import');
     g.setEdge('Import', 'Uppercase');
@@ -107,5 +105,4 @@ describe('tasks layout', () => {
 
     expect(_.isEqual(ranksOffset, expectedRanksOffset)).toBeTruthy();
   });
-
 });

@@ -1,8 +1,7 @@
-import { DateTime } from 'luxon';
-import { Page } from './page.model';
+import {DateTime} from 'luxon';
+import {Page} from './page.model';
 
 export class TaskExecution {
-
   executionId: number;
   exitCode: number;
   taskName: string;
@@ -16,10 +15,10 @@ export class TaskExecution {
   taskExecutionStatus: string;
   parentExecutionId: number;
   resourceUrl: string;
-  appProperties: object;
+  appProperties: any;
   deploymentProperties: {[key: string]: string};
 
-  static parse(input) {
+  static parse(input: any): TaskExecution {
     const execution = new TaskExecution();
     execution.executionId = input?.executionId;
     execution.exitCode = input?.exitCode;
@@ -40,7 +39,7 @@ export class TaskExecution {
   }
 
   getArgumentsToArray(): Array<any> {
-    return (this.arguments || []).map((arg) => {
+    return (this.arguments || []).map(arg => {
       const index = arg.indexOf('=');
       if (index === -1) {
         return [arg];
@@ -51,31 +50,24 @@ export class TaskExecution {
 
   getAppPropertiesToArray(): Array<any> {
     if (this.appProperties && Object.keys(this.appProperties).length > 0) {
-      return Object.keys(this.appProperties).map((key) => {
-        return {
-          key,
-          value: this.appProperties[key]
-        };
-      });
+      return Object.keys(this.appProperties).map(key => ({
+        key,
+        value: this.appProperties[key]
+      }));
     }
     return [];
   }
 
   getDeploymentPropertiesToArray(): Array<[key: string, value: string]> {
     if (this.deploymentProperties && Object.keys(this.deploymentProperties).length > 0) {
-      return Object.keys(this.deploymentProperties).map((key) => {
-        return [
-          key,
-          this.deploymentProperties[key]
-        ];
-      });
+      return Object.keys(this.deploymentProperties).map(key => [key, this.deploymentProperties[key]]);
     }
     return [];
   }
 }
 
 export class TaskExecutionPage extends Page<TaskExecution> {
-  static parse(input): Page<TaskExecution> {
+  static parse(input: any): Page<TaskExecution> {
     const page = Page.fromJSON<TaskExecution>(input);
     if (input && input._embedded && input._embedded.taskExecutionResourceList) {
       page.items = input._embedded.taskExecutionResourceList.map(TaskExecution.parse);

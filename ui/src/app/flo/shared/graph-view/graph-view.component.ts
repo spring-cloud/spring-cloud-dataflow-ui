@@ -1,14 +1,13 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
-import { Flo } from 'spring-flo';
+import {Component, ViewEncapsulation, Input, Output, EventEmitter} from '@angular/core';
+import {Flo} from 'spring-flo';
 
 @Component({
   selector: 'app-graph-view',
   templateUrl: './graph-view.component.html',
-  styleUrls: [ '../flo.scss' ],
+  styleUrls: ['../flo.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class GraphViewComponent {
-
   @Input()
   dsl: string;
 
@@ -28,7 +27,7 @@ export class GraphViewComponent {
 
   constructor() {}
 
-  setEditorContext(editorContext: Flo.EditorContext) {
+  setEditorContext(editorContext: Flo.EditorContext): void {
     this.editorContext = editorContext;
     this.editorContext.noPalette = true;
     this.editorContext.readOnlyCanvas = true;
@@ -38,5 +37,4 @@ export class GraphViewComponent {
   get flo(): Flo.EditorContext {
     return this.editorContext;
   }
-
 }

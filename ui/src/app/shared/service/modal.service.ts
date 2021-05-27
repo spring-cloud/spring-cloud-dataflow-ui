@@ -8,8 +8,8 @@ import {
   Injector,
   Type
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { Subject } from 'rxjs';
+import {DOCUMENT} from '@angular/common';
+import {Subject} from 'rxjs';
 
 export class ModalDialog {
   private _open = false;
@@ -22,7 +22,7 @@ export class ModalDialog {
     }
   }
 
-  get isOpen() {
+  get isOpen(): boolean {
     return this._open;
   }
 
@@ -35,14 +35,12 @@ export class ModalDialog {
   providedIn: 'root'
 })
 export class ModalService {
-
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     private applicationRef: ApplicationRef
-  ) {
-  }
+  ) {}
 
   public show<T extends ModalDialog>(componentType: Type<T>): T {
     const nodeComponentFactory = this.componentFactoryResolver.resolveComponentFactory(componentType);
@@ -51,7 +49,7 @@ export class ModalService {
     componentRef.changeDetectorRef.detectChanges();
     this.applicationRef.attachView(componentRef.hostView);
     this.document.body.appendChild(componentRef.location.nativeElement);
-    const subscription = componentRef.instance.opened.subscribe((open) => {
+    const subscription = componentRef.instance.opened.subscribe(open => {
       if (!open) {
         this.document.body.removeChild(componentRef.location.nativeElement);
         this.applicationRef.detachView(componentRef.hostView);
@@ -62,5 +60,4 @@ export class ModalService {
     componentRef.instance.isOpen = true;
     return componentRef.instance;
   }
-
 }

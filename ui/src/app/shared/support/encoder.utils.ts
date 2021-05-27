@@ -1,10 +1,9 @@
-import { HttpParameterCodec } from '@angular/common/http';
+import {HttpParameterCodec} from '@angular/common/http';
 
 /**
  * Custom HTTP Parameter Encoder
  */
 export class DataflowEncoder implements HttpParameterCodec {
-
   encodeKey(key: string): string {
     return encodeURIComponent(key);
   }
@@ -20,5 +19,4 @@ export class DataflowEncoder implements HttpParameterCodec {
   decodeValue(value: string): string {
     return decodeURIComponent(value);
   }
-
 }

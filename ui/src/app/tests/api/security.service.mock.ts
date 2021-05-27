@@ -1,14 +1,12 @@
-import { SecurityService } from '../../security/service/security.service';
-import { Observable, of } from 'rxjs';
-import { Security } from '../../shared/model/security.model';
-import { LOAD } from '../data/security';
+import {SecurityService} from '../../security/service/security.service';
+import {Observable, of} from 'rxjs';
+import {Security} from '../../shared/model/security.model';
+import {LOAD} from '../data/security';
 
 export class SecurityServiceMock {
-
   static mock: SecurityServiceMock = null;
 
-  constructor() {
-  }
+  constructor() {}
 
   async canAccess(roles: string[]): Promise<boolean> {
     return true;
@@ -26,13 +24,12 @@ export class SecurityServiceMock {
     return of(undefined);
   }
 
-  clearLocalSecurity() {
-  }
+  clearLocalSecurity(): void {}
 
-  static get provider() {
+  static get provider(): any {
     if (!SecurityServiceMock.mock) {
       SecurityServiceMock.mock = new SecurityServiceMock();
     }
-    return { provide: SecurityService, useValue: SecurityServiceMock.mock };
+    return {provide: SecurityService, useValue: SecurityServiceMock.mock};
   }
 }
