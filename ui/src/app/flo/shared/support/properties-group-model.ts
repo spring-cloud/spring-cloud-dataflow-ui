@@ -88,7 +88,12 @@ export class SearchTextFilter implements Properties.PropertyFilter {
   textFilter = '';
 
   accept(property: Properties.Property) {
-    return !this.textFilter || property.name.startsWith(this.textFilter);
+    if (!this.textFilter) {
+      return true;
+    }
+    const str: string = property.name.toLowerCase();
+    const q: string = this.textFilter.toLowerCase();
+    return str.indexOf(q) > -1;
   }
 }
 

@@ -62,7 +62,6 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
 
   ngOnInit() {
     this._searchFilterTextSubject
-      .pipe(debounceTime(500))
       .subscribe(text => this.propertiesFilter.textFilter = text);
   }
 
