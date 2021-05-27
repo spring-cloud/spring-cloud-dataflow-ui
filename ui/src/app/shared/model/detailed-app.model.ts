@@ -22,7 +22,7 @@ export class ConfigurationMetadataProperty {
   type: string;
   description: string;
   shortDescription: string;
-  defaultValue: string;
+  defaultValue: string | boolean | number;
   deprecation: Deprecation;
   sourceType: string;
   isDeprecated: boolean;
@@ -50,6 +50,7 @@ export class ConfigurationMetadataProperty {
 export class ValuedConfigurationMetadataProperty extends ConfigurationMetadataProperty {
 
   value: string;
+  originalValue?: string;
 
   static parse(input) {
     return ConfigurationMetadataProperty.parse(input) as ValuedConfigurationMetadataProperty;
