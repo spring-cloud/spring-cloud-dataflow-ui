@@ -10,7 +10,7 @@
             [disabled]="execution.status === 'FAILED' || execution.status === 'ERROR' || execution.status === 'COMPLETED'">
       Stop the job
     </button>
-    <button class="action-item" grafanaDashboardJobExecution [jobExecution]="execution">
+    <button class="btn btn-sm btn-secondary" grafanaDashboardJobExecution [jobExecution]="execution">
       Grafana Dashboard
     </button>
   </div>
