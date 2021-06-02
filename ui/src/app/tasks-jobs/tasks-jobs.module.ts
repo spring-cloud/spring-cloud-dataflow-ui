@@ -30,6 +30,7 @@ import { SecurityModule } from '../security/security.module';
 import { PlatformFilterComponent } from './schedules/platform.filter';
 import { CloneComponent } from './tasks/clone/clone.component';
 import { SharedFloModule } from '../flo/shared-flo.module';
+import { ErrorsComponent } from './tasks/launch/builder/errors/errors.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { SharedFloModule } from '../flo/shared-flo.module';
     CreateScheduleComponent,
     PlatformFilterComponent,
     CleanupTaskComponent,
-    CloneComponent
+    CloneComponent,
+    ErrorsComponent
   ],
   imports: [
     CommonModule,

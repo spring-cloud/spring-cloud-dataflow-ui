@@ -22,6 +22,9 @@
   <form class="form-horizontal" novalidate (ngSubmit)="launchTask()">
     <div>
       <div class="tab-pane">
+
+        <app-task-deploy-builder-errors [errors]="builder.errors" (removeError)="removeError($event)">
+        </app-task-deploy-builder-errors>
         <div class="builder" [formGroup]="builder.formGroup">
 
           <!-- col 1 line info -->
@@ -42,6 +45,12 @@
             <!-- 2 Platform selector -->
             <div class="line-body" *ngIf="state.platform">
               <div class="status" *ngIf="builder.formGroup.get('platform').invalid">
+                <clr-tooltip>
+                  <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                  <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <span>The define platform is not valid (unknown).</span>
+                  </clr-tooltip-content>
+                </clr-tooltip>
               </div>
               <div class="form-control form-control-label">
                 Platform
@@ -61,6 +70,12 @@
               <div class="line-body" *ngFor="let deployer of builder.taskLaunchConfig.deployers;let i = index">
 
                 <div class="status" *ngIf="builder.deployers.controls[i].invalid">
+                  <clr-tooltip>
+                    <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                    <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <div [innerHtml]="tooltip(builder.taskLaunchConfig, builder.formGroup.get('deployers').controls[i])"></div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
                 </div>
 
                 <div class="form-control form-control-label">
@@ -96,6 +111,12 @@
                    [formGroupName]="i"
                    [class.has-error]="builder.specificPlatformControls.controls[i].get('property').invalid">
                 <div class="status" *ngIf="builder.specificPlatformControls.controls[i].invalid">
+                  <clr-tooltip>
+                    <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                    <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <div [innerHtml]="tooltip(builder.taskLaunchConfig, builder.specificPlatformControls.controls[i])"></div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
                 </div>
 
                 <input tabindex="{{210 + i * 10}}" placeholder="Enter a value" class="clr-input"
@@ -116,6 +137,12 @@
               <div class="line-body">
 
                 <div class="status" *ngIf="builder.formGroup.get('appsVersion').invalid">
+                  <clr-tooltip>
+                    <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                    <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                      <div [innerHtml]="tooltip(builder.taskLaunchConfig, builder.formGroup.get('appsVersion'))"></div>
+                    </clr-tooltip-content>
+                  </clr-tooltip>
                 </div>
 
                 <div class="form-control form-control-label">
@@ -133,6 +160,12 @@
                      [class.has-error]="builder.globalControls.controls[i].get('property').invalid">
 
                   <div class="status" *ngIf="builder.globalControls.controls[i].invalid">
+                    <clr-tooltip>
+                      <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
+                      <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
+                        <div [innerHtml]="tooltip(builder.taskLaunchConfig, builder.globalControls.controls[i])"></div>
+                      </clr-tooltip-content>
+                    </clr-tooltip>
                   </div>
 
                   <input tabindex="{{302 + i}}" placeholder="Enter a value" class="clr-input"
@@ -185,8 +218,8 @@
             <!-- 2 Platform selector -->
             <div class="line-body" *ngIf="state.platform"
               [class.has-error]="isErrorPlatform(builder.taskLaunchConfig.platform.values, builder.formGroup.get('platform').value)">
-              <clr-select-container style="margin-top:0;">
-                <select tabindex="1" formControlName="platform" clrSelect>
+              <div class="clr-select-wrapper">
+                <select tabindex="1" formControlName="platform" class="clr-select">
                   <option value="">Select a value</option>
                   <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
                     {{platform.name}}
@@ -198,7 +231,7 @@
                     {{builder.formGroup.get('platform').value}} (invalid)
                   </option>
                 </select>
-              </clr-select-container>
+              </div>
             </div>
 
             <!-- 3 Generic Deployer Properties header -->

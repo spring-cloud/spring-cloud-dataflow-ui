@@ -971,8 +971,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   openCtrProperties(builder: Builder) {
-    const options = builder.ctrProperties;
-
+    const options = Object.assign([], builder.ctrProperties
+      .map((property) => Object.assign({}, property)));
     const propertiesSource = new CtrPropertiesSource(options);
 
     propertiesSource.confirm.subscribe((properties: Array<any>) => {
