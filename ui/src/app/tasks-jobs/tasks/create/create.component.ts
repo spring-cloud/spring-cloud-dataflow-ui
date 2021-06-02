@@ -97,6 +97,10 @@ export class CreateComponent implements OnInit {
     this.isOpen = true;
   }
 
+  close() {
+    this.isOpen = false;
+  }
+
   back() {
     this.router.navigateByUrl('tasks-jobs/tasks');
   }

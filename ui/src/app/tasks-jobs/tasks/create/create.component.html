@@ -96,7 +96,7 @@
       </clr-control-container>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="back()" [disabled]="isCreating">Cancel</button>
+        <button type="button" class="btn btn-default" (click)="close()" [disabled]="isCreating">Cancel</button>
         <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
           Create the task
         </button>
