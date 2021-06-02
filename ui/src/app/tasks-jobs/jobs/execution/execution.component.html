@@ -153,7 +153,13 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">External Execution Id</div>
+                <div class="key">External Execution Ids</div>
+                <div class="value">
+                  {{taskExecution.externalExecutionId || 'N/A'}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">Job Execution Id</div>
                 <div class="value">
                   <a [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
                      *ngFor="let jobExecutionId of taskExecution.jobExecutionIds">
@@ -169,12 +175,6 @@
                 <div class="value">
                   <clr-icon *ngIf="taskExecution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
                   <clr-icon *ngIf="taskExecution.jobExecutionIds?.length == 0" shape="success-standard"></clr-icon>
-                </div>
-              </div>
-              <div class="row">
-                <div class="key">Job Execution Ids</div>
-                <div class="value">
-                  {{taskExecution.externalExecutionId || 'N/A'}}
                 </div>
               </div>
               <div class="row">
