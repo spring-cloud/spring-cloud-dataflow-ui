@@ -415,7 +415,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       const key = arr[0] as string;
       const value = arr[1] as string;
       const appKey = key.split('.')[1];
-      if (TaskLaunchService.app.is(key)) {
+      if (!TaskLaunchService.ctr.is(key) && TaskLaunchService.app.is(key)) {
         const keyReduce = TaskLaunchService.app.extract(key);
         if ((appKey !== '*' && appNames.indexOf(appKey) === -1) || keyReduce === '') {
           // Error: app not found
