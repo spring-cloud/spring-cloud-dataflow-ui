@@ -71,7 +71,7 @@
     <clr-dg-action-overflow>
       <button class="action-item" (click)="details(execution)">Details</button>
       <button class="action-item" (click)="restart(execution)"
-              [disabled]="execution.status !== 'FAILED' && execution.status !== 'ERROR'">
+              [disabled]="execution.status !== 'FAILED' && execution.status !== 'STOPPED' && execution.status !== 'ERROR'">
         Restart
       </button>
       <button class="action-item" (click)="stop(execution)"
