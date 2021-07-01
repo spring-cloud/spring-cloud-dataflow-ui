@@ -255,7 +255,7 @@ export class StreamFloCreateComponent implements OnInit, OnDestroy {
           });
         }, err => {
           this.loggerService.error(err);
-          resolve();
+          resolve(null);
         });
     });
 
