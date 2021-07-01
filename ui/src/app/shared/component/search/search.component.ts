@@ -93,7 +93,7 @@ export class SearchComponent implements OnInit {
       this.selected = 0;
       if (this.isSearch()) {
         this.subscriptions.apps = this.appService
-          .getApps(0, 5, `${value}`, null, 'name', 'ASC')
+          .getApps(0, 5, `${value}`, null, 'name', 'ASC', true)
           .subscribe((page: AppPage) => {
             this.results.apps = page;
             this.searching.apps = false;
