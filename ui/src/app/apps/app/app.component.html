@@ -82,7 +82,7 @@
         <app-view-card titleModal="Application properties" name="{{app.name}}.{{app.type}}" keyContext="app" id="props">
           <ng-template>
             <div *ngIf="!loadingProperties">
-              <div class="block card-block-keyvalue lg-key" *ngIf="detailedApp.options?.length > 0">
+              <div class="block card-block-keyvalue" *ngIf="detailedApp.options?.length > 0">
 
                 <div *ngIf="tooManyProperties && !showAllProperties" class="alert alert-info" role="alert"
                      style="margin-top:8px">
@@ -112,20 +112,26 @@
                 </div>
 
                 <div *ngIf="showAllProperties">
-                  <div class="row" *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
-                    <div class="key">
-                      {{property.name}}
-                      <div *ngIf="property.isDeprecated">
-                        <span class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
-                      </div>
-                    </div>
-                    <div class="value">
-                      <div>{{property.description ? property.description : '(No Description Available)'}}</div>
-                      <div class="type-block"><code>{{property.type}}</code>&nbsp;<span
-                        *ngIf="property.defaultValue">(Default value: <code>{{property.defaultValue}}</code>)</span>
-                      </div>
-                    </div>
-                  </div>
+                  <table>
+                    <tbody>
+                      <tr *ngFor="let property of detailedApp.options | orderby:'name':'ASC'">
+                        <td class="key">
+                          {{getReadableId(property.id)}}
+                          <div *ngIf="property.isDeprecated">
+                            <span class="label label-warning">Deprecation level: {{property.deprecation.level}}</span>
+                          </div>
+                        </td>
+                        <td class="value">
+                          <div class="value">
+                            <div>{{property.description ? property.description : '(No Description Available)'}}</div>
+                            <div class="type-block"><code>{{property.type}}</code>&nbsp;<span
+                              *ngIf="property.defaultValue">(Default value: <code>{{property.defaultValue}}</code>)</span>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
               <div *ngIf="!(detailedApp.options?.length > 0)">
