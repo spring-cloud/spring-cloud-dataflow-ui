@@ -252,6 +252,19 @@ h1.page-title-actions {
 }
 
 .card-block-keyvalue {
+  table {
+    tr {
+      padding: .2rem 0;
+    }
+    .key, .value {
+      vertical-align: top;
+      text-align: left;
+    }
+    .key {
+      font-weight: bold;
+      padding-right: 10px;
+    }
+  }
   .row {
     padding: .2rem 0;
     display: flex;
