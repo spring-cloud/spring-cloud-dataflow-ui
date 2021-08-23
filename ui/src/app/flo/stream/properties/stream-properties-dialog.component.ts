@@ -107,5 +107,8 @@ export class StreamPropertiesDialogComponent extends PropertiesDialogComponent {
   setData(propertiesSource: StreamAppPropertiesSource): void {
     this.propertiesGroupModel = new StreamPropertiesGroupModel(propertiesSource, this.streamsService);
     this.propertiesGroupModel.load();
+    this.propertiesGroupModel.loadedSubject.subscribe(() => {
+      this.setGroupedProperties();
+    });
   }
 }

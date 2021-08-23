@@ -55,5 +55,8 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent {
   setData(propertiesSource: PropertiesSource) {
     this.propertiesGroupModel = new TaskPropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
+    this.propertiesGroupModel.loadedSubject.subscribe(() => {
+      this.setGroupedProperties();
+    });
   }
 }
