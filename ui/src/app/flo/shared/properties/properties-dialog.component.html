@@ -21,40 +21,25 @@
     </label>
   </div>
 
-  <div class="modal-body">
-    <form name="app-properties" (submit)="handleOk()">
-      <input type="submit" style="display: none" />
-      <div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading">
-        <div clrForm>
-          <div
-            *ngIf="propertiesGroupModel.getControlsModels().length > 50 && !showProperties"
-            class="dataflow-alert dataflow-alert-info"
-            style="display: block"
-          >
-            <p style="padding-bottom: 5px">
-              There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br />Do you want to
-              <strong>display all the properties</strong> ?
-            </p>
-            <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
-          </div>
-
-          <div *ngIf="propertiesGroupModel.getControlsModels().length <= 50 || showProperties">
-            <clr-properties-group
-              *ngIf="propertiesGroupModel"
-              [propertiesGroupModel]="propertiesGroupModel"
-              [form]="propertiesFormGroup"
-              [filter]="propertiesFilter"
-            ></clr-properties-group>
-          </div>
+  <div class="modal-body app-properties" *ngIf="propertiesGroupModels.length > 0" style="max-height: 600px;padding-right: 30px;">
+    <form name="app-properties" clrForm clrLayout="horizontal" (submit)="handleOk()">
+      <div class="properties" *ngFor="let group of propertiesGroupModels">
+        <div class="line-toggle">
+          <a class="toggle" (click)="collapse(group.title)">
+            <clr-icon [class.open]="state[group.title]" shape="angle"></clr-icon>
+            {{ group.title }}
+          </a>
+        </div>
+        <div *ngIf="state[group.title]">
+          <clr-properties-group [propertiesGroupModel]="group" [form]="propertiesFormGroup" [filter]="propertiesFilter">
+          </clr-properties-group>
         </div>
       </div>
     </form>
   </div>
+
   <div class="modal-body app-properties" *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading">
-    <div style="padding-bottom: 20px; padding-left: 10px; padding-top: 10px">
-      <!--      <app-loader></app-loader>-->
-      Loading
-    </div>
+    <div style="padding: 10px 0"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; Loading...</div>
   </div>
 
   <div class="modal-footer">
