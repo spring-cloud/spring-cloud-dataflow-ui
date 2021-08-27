@@ -1,0 +1,161 @@
+<clr-modal
+  [(clrModalOpen)]="isOpen"
+  clrModalSize="lg"
+  class="modal-fixed modal-properties modal-properties-task"
+>
+  <div class="modal-title">
+    <h3 *ngIf="app" style="margin-top: 0.2rem">
+      Properties for <strong>{{ app.name }}</strong>
+      <span class="{{ app.labelTypeClass() }}">{{ typeString }}</span>
+      <span class="label" *ngIf="app.version"
+        ><span>{{ app.version }}</span></span
+      >
+    </h3>
+    <!-- <label class="modal-search">
+          <span class="search-wrapper">
+            <input type="search" class="clr-input" placeholder="Search properties ..." [(ngModel)]="searchFilterText"
+                   [ngModelOptions]="{standalone: true}"/>
+            <clr-icon shape="search"></clr-icon>
+          </span>
+      </label> -->
+  </div>
+
+  <div class="modal-body">
+    <div class="content-container">
+      <nav class="sidenav">
+        <section class="sidenav-content">
+          <section class="nav-group">
+            <ul class="nav-list">
+              <li>
+                <a
+                  class="nav-link"
+                  [class.active]="paneSelected === 'app'"
+                  (click)="changePane('app')"
+                  >App properties</a
+                >
+              </li>
+              <li>
+                <a
+                  class="nav-link"
+                  [class.active]="paneSelected === 'reader'"
+                  (click)="changePane('reader')"
+                  >Reader properties</a
+                >
+              </li>
+              <li>
+                <a
+                  class="nav-link"
+                  [class.active]="paneSelected === 'writter'"
+                  (click)="changePane('writter')"
+                  >Writter properties</a
+                >
+              </li>
+            </ul>
+          </section>
+        </section>
+      </nav>
+      <div class="content-area">
+        <label class="modal-search">
+          <span class="search-wrapper">
+            <input
+              type="search"
+              class="clr-input"
+              placeholder="Search properties ..."
+              [(ngModel)]="searchFilterText"
+              [ngModelOptions]="{ standalone: true }"
+            />
+            <clr-icon shape="search"></clr-icon>
+          </span>
+        </label>
+        <div [style.maxHeight]="heightModal" class="modal-wrapper">
+          <ng-container *ngIf="paneSelected === 'app'">
+            <form name="app-properties" (submit)="handleOk()">
+              <input type="submit" style="display: none" />
+              <div
+                *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading"
+              >
+                <div clrForm>
+                  <div
+                    *ngIf="
+                      propertiesGroupModel.getControlsModels().length > 50 &&
+                      !showProperties
+                    "
+                    class="dataflow-alert dataflow-alert-info"
+                    style="display: block"
+                  >
+                    <p style="padding-bottom: 5px">
+                      There are <strong>more than 50 properties</strong> to
+                      display, the UI can be slow.<br />Do you want to
+                      <strong>display all the properties</strong> ?
+                    </p>
+                    <button
+                      class="btn btn-primary"
+                      (click)="showProperties = true"
+                    >
+                      Show all the properties
+                    </button>
+                  </div>
+
+                  <div
+                    *ngIf="
+                      propertiesGroupModel.getControlsModels().length <= 50 ||
+                      showProperties
+                    "
+                  >
+                    <clr-properties-group
+                      *ngIf="propertiesGroupModel"
+                      [propertiesGroupModel]="propertiesGroupModel"
+                      [form]="propertiesFormGroup"
+                      [filter]="propertiesFilter"
+                    ></clr-properties-group>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="modal-body">
+      <form name="app-properties" (submit)="handleOk()">
+        <input type="submit" style="display: none" />
+        <div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading">
+          <div clrForm>
+            <div *ngIf="propertiesGroupModel.getControlsModels().length > 50 && !showProperties"
+                 class="dataflow-alert dataflow-alert-info" style="display: block">
+              <p style="padding-bottom: 5px;">
+                There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br>Do you want to
+                <strong>display all the properties</strong> ?
+              </p>
+              <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
+            </div>
+  
+            <div *ngIf="propertiesGroupModel.getControlsModels().length <= 50 || showProperties">
+  
+              <clr-properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
+                                    [form]="propertiesFormGroup" [filter]="propertiesFilter"></clr-properties-group>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div> -->
+
+  <div
+    class="modal-body app-properties"
+    *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading"
+  >
+    <div style="padding-bottom: 20px; padding-left: 10px; padding-top: 10px">
+      Loading
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="handleCancel()">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" (click)="handleOk()">
+      Update
+    </button>
+  </div>
+</clr-modal>

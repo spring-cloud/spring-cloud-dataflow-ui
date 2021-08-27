@@ -1,19 +1,19 @@
-$error-3: #B31B22;
-$input-border: #DFE5E8;
-$navy-10: #EAEDEF;
-$navy-8: #C5CED3;
+$error-3: #b31b22;
+$input-border: #dfe5e8;
+$navy-10: #eaedef;
+$navy-8: #c5ced3;
 $dark-2: #243641;
 
 .modal-properties {
   .property-row {
     width: 100%;
     display: inline-table;
-    padding-bottom: .6rem;
+    padding-bottom: 0.6rem;
     border-bottom: 1px solid var(--clr-forms-border-color);
   }
 
   .clr-form-control {
-    margin-bottom: .6rem;
+    margin-bottom: 0.6rem;
   }
 }
 
@@ -24,7 +24,7 @@ $dark-2: #243641;
 .invalid-property-value .df-property-control {
   outline-color: $error-3;
   border-color: $error-3;
-  color: $error-3
+  color: $error-3;
 }
 
 .validation-error-block {
@@ -144,4 +144,38 @@ $dark-2: #243641;
   //  display: block;
   //  position: relative;
   //}
+}
+
+.modal-properties-task {
+  .modal-body {
+    .content-container {
+      display: flex;
+      .sidenav {
+        position: sticky;
+        flex: 0 0 200px;
+        .nav-group .nav-list,
+        .nav-group label {
+          padding: 0;
+          margin: 0;
+        }
+        .nav-group {
+          margin-top: 0;
+        }
+        .nav-list .nav-link {
+          line-height: 1.4rem;
+        }
+      }
+      .content-area {
+        flex: 1;
+        padding: 0 1rem;
+        .modal-wrapper {
+          overflow: auto;
+        }
+        .modal-search {
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
 }

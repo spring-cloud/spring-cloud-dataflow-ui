@@ -1,6 +1,5 @@
 /* eslint-disable */
-
-import {Component, ViewEncapsulation} from '@angular/core';
+import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
 import {Properties} from 'spring-flo';
 import {Validators} from '@angular/forms';
 import PropertiesSource = Properties.PropertiesSource;
@@ -41,19 +40,36 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
  */
 @Component({
   selector: 'app-task-properties-dialog-content',
-  templateUrl: '../../shared/properties/properties-dialog.component.html',
+  templateUrl: './task-properties-dialog.component.html',
   styleUrls: ['../../shared/properties/properties-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TaskPropertiesDialogComponent extends PropertiesDialogComponent {
+export class TaskPropertiesDialogComponent extends PropertiesDialogComponent implements OnInit {
+  paneSelected = 'app';
   public title: string;
+  heightModal;
 
   constructor() {
     super();
   }
 
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.heightModal = `${document.documentElement.clientHeight - 350}px`;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.heightModal = `${document.documentElement.clientHeight - 350}px`;
+  }
+
   setData(propertiesSource: PropertiesSource) {
     this.propertiesGroupModel = new TaskPropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
+  }
+
+  changePane(pane: string): void {
+    this.searchFilterText = '';
+    this.paneSelected = pane;
   }
 }
