@@ -163,6 +163,14 @@ $dark-2: #243641;
         }
         .nav-list .nav-link {
           line-height: 1.4rem;
+          clr-icon {
+            width: 22px;
+            height: 22px;
+            float: right;
+            margin-top: 4px;
+            margin-right: 5px;
+            color: $error-3;
+          }
         }
       }
       .content-area {
