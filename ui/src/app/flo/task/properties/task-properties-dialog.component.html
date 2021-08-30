@@ -1,8 +1,4 @@
-<clr-modal
-  [(clrModalOpen)]="isOpen"
-  clrModalSize="lg"
-  class="modal-fixed modal-properties modal-properties-task"
->
+<clr-modal [(clrModalOpen)]="isOpen" clrModalSize="lg" class="modal-fixed modal-properties modal-properties-task">
   <div class="modal-title">
     <h3 *ngIf="app" style="margin-top: 0.2rem">
       Properties for <strong>{{ app.name }}</strong>
@@ -27,28 +23,20 @@
           <section class="nav-group">
             <ul class="nav-list">
               <li>
-                <a
-                  class="nav-link"
-                  [class.active]="paneSelected === 'app'"
-                  (click)="changePane('app')"
+                <a class="nav-link" [class.active]="paneSelected === 'app'" (click)="changePane('app')"
                   >App properties</a
                 >
               </li>
               <li>
-                <a
-                  class="nav-link"
-                  [class.active]="paneSelected === 'reader'"
-                  (click)="changePane('readers')"
-                  >Reader properties</a
-                >
+                <a class="nav-link" [class.active]="paneSelected === 'readers'" (click)="changePane('readers')"
+                  >Reader properties
+                  <clr-icon shape="exclamation-circle"></clr-icon>
+                </a>
               </li>
               <li>
-                <a
-                  class="nav-link"
-                  [class.active]="paneSelected === 'writers'"
-                  (click)="changePane('writers')"
-                  >Writter properties</a
-                >
+                <a class="nav-link" [class.active]="paneSelected === 'writers'" (click)="changePane('writers')"
+                  >Writter properties <clr-icon shape="exclamation-circle"></clr-icon
+                ></a>
               </li>
             </ul>
           </section>
@@ -62,55 +50,39 @@
               class="clr-input"
               placeholder="Search properties ..."
               [(ngModel)]="searchFilterText"
-              [ngModelOptions]="{ standalone: true }"
+              [ngModelOptions]="{standalone: true}"
             />
             <clr-icon shape="search"></clr-icon>
           </span>
         </label>
         <div [style.maxHeight]="heightModal" class="modal-wrapper">
-            <form name="app-properties" (submit)="handleOk()">
-              <input type="submit" style="display: none" />
-              <div
-                *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading"
-              >
-                <div clrForm>
-                  <div
-                    *ngIf="
-                      propertiesGroupModel.getControlsModels().length > 50 &&
-                      !showProperties
-                    "
-                    class="dataflow-alert dataflow-alert-info"
-                    style="display: block"
-                  >
-                    <p style="padding-bottom: 5px">
-                      There are <strong>more than 50 properties</strong> to
-                      display, the UI can be slow.<br />Do you want to
-                      <strong>display all the properties</strong> ?
-                    </p>
-                    <button
-                      class="btn btn-primary"
-                      (click)="showProperties = true"
-                    >
-                      Show all the properties
-                    </button>
-                  </div>
+          <form name="app-properties" (submit)="handleOk()">
+            <input type="submit" style="display: none" />
+            <div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading">
+              <div clrForm>
+                <div
+                  *ngIf="propertiesGroupModel.getControlsModels().length > 50 && !showProperties"
+                  class="dataflow-alert dataflow-alert-info"
+                  style="display: block"
+                >
+                  <p style="padding-bottom: 5px">
+                    There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br />Do you want
+                    to <strong>display all the properties</strong> ?
+                  </p>
+                  <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
+                </div>
 
-                  <div
-                    *ngIf="
-                      propertiesGroupModel.getControlsModels().length <= 50 ||
-                      showProperties
-                    "
-                  >
-                    <clr-properties-group
-                      *ngIf="propertiesGroupModel"
-                      [propertiesGroupModel]="propertiesGroupModel"
-                      [form]="propertiesFormGroup"
-                      [filter]="propertiesFilter"
-                    ></clr-properties-group>
-                  </div>
+                <div *ngIf="propertiesGroupModel.getControlsModels().length <= 50 || showProperties">
+                  <clr-properties-group
+                    *ngIf="propertiesGroupModel"
+                    [propertiesGroupModel]="propertiesGroupModel"
+                    [form]="propertiesFormGroup"
+                    [filter]="propertiesFilter"
+                  ></clr-properties-group>
                 </div>
               </div>
-            </form>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -139,21 +111,12 @@
       </form>
     </div> -->
 
-  <div
-    class="modal-body app-properties"
-    *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading"
-  >
-    <div style="padding-bottom: 20px; padding-left: 10px; padding-top: 10px">
-      Loading
-    </div>
+  <div class="modal-body app-properties" *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading">
+    <div style="padding-bottom: 20px; padding-left: 10px; padding-top: 10px">Loading</div>
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="handleCancel()">
-      Cancel
-    </button>
-    <button type="submit" class="btn btn-primary" (click)="handleOk()">
-      Update
-    </button>
+    <button type="button" class="btn btn-default" (click)="handleCancel()">Cancel</button>
+    <button type="submit" class="btn btn-primary" (click)="handleOk()">Update</button>
   </div>
 </clr-modal>
