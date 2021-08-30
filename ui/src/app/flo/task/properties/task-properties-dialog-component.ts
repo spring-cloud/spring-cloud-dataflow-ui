@@ -5,7 +5,8 @@ import {Validators} from '@angular/forms';
 import PropertiesSource = Properties.PropertiesSource;
 import {AppUiProperty} from '../../shared/support/app-ui-property';
 import {PropertiesDialogComponent} from '../../shared/properties/properties-dialog.component';
-import {PropertiesGroupModel} from '../../shared/support/properties-group-model';
+import {PropertiesGroupModel, SearchTextFilter} from '../../shared/support/properties-group-model';
+import {APP_PROPERTIES_KIND} from './task-properties-source';
 
 /**
  * Utility class for working with Properties.
@@ -32,6 +33,28 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
   }
 }
 
+export class FunctionTextFilter extends SearchTextFilter {
+
+  filterFunc: (property: Properties.Property) => boolean;
+
+  accept(property: Properties.Property): boolean {
+
+    let result = true;
+
+    if (this.filterFunc) {
+      result = this.filterFunc(property);
+    }
+
+    if (result && this.textFilter) {
+      const str: string = property.name.toLowerCase();
+      const q: string = this.textFilter.toLowerCase();
+      result = str.indexOf(q) > -1;
+    }
+
+    return result;
+  }
+}
+
 /**
  * Component for displaying application properties and capturing their values.
  *
@@ -45,12 +68,14 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
   encapsulation: ViewEncapsulation.None
 })
 export class TaskPropertiesDialogComponent extends PropertiesDialogComponent implements OnInit {
-  paneSelected = 'app';
+  paneSelected = APP_PROPERTIES_KIND;
   public title: string;
   heightModal;
 
   constructor() {
     super();
+    this.propertiesFilter = new FunctionTextFilter();
+    (this.propertiesFilter as FunctionTextFilter).filterFunc = this.propertyFilter(this.paneSelected);
   }
 
   ngOnInit(): void {
@@ -71,5 +96,10 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   changePane(pane: string): void {
     this.searchFilterText = '';
     this.paneSelected = pane;
+    (this.propertiesFilter as FunctionTextFilter).filterFunc = this.propertyFilter(pane);
+  }
+
+  propertyFilter(kind?: string): (property: Properties.Property) => boolean {
+      return property => kind === property.kind;
   }
 }

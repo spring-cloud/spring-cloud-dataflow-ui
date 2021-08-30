@@ -9,6 +9,7 @@ export interface AppUiProperty extends Properties.Property {
   attr: string;
   isSemantic: boolean;
   code?: CodeProperty;
+  kind?: string;
 }
 
 export interface CodeProperty {
