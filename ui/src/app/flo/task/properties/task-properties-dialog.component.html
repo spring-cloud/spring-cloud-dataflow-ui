@@ -38,15 +38,15 @@
                 <a
                   class="nav-link"
                   [class.active]="paneSelected === 'reader'"
-                  (click)="changePane('reader')"
+                  (click)="changePane('readers')"
                   >Reader properties</a
                 >
               </li>
               <li>
                 <a
                   class="nav-link"
-                  [class.active]="paneSelected === 'writter'"
-                  (click)="changePane('writter')"
+                  [class.active]="paneSelected === 'writers'"
+                  (click)="changePane('writers')"
                   >Writter properties</a
                 >
               </li>
@@ -68,7 +68,6 @@
           </span>
         </label>
         <div [style.maxHeight]="heightModal" class="modal-wrapper">
-          <ng-container *ngIf="paneSelected === 'app'">
             <form name="app-properties" (submit)="handleOk()">
               <input type="submit" style="display: none" />
               <div
@@ -112,7 +111,6 @@
                 </div>
               </div>
             </form>
-          </ng-container>
         </div>
       </div>
     </div>
@@ -130,9 +128,9 @@
               </p>
               <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
             </div>
-  
+
             <div *ngIf="propertiesGroupModel.getControlsModels().length <= 50 || showProperties">
-  
+
               <clr-properties-group *ngIf="propertiesGroupModel" [propertiesGroupModel]="propertiesGroupModel"
                                     [form]="propertiesFormGroup" [filter]="propertiesFilter"></clr-properties-group>
             </div>
