@@ -10,7 +10,6 @@ export const WRITER_PROPERTIES_KIND = 'writers';
 export const APP_PROPERTIES_KIND = 'app';
 
 export enum TaskIO {
-  NONE = 'None',
   FILE = 'File',
   KAFKA = 'Kafka',
   AMQP = 'AMQP',
@@ -41,7 +40,7 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
         }, {
           id: 'reader',
           name: 'Reader',
-          defaultValue: '',
+          defaultValue: undefined,
           attr: '',
           value: this.computeCurrentReader(),
           description: 'Task input reader type',
@@ -53,7 +52,7 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
         },         {
           id: 'writer',
           name: 'Writer',
-          defaultValue: '',
+          defaultValue: undefined,
           attr: '',
           value: this.computeCurrentWriter(),
           description: 'Task output writer type',
