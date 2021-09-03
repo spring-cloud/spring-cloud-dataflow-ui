@@ -34,11 +34,9 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
 }
 
 export class FunctionTextFilter extends SearchTextFilter {
-
   filterFunc: (property: Properties.Property) => boolean;
 
   accept(property: Properties.Property): boolean {
-
     let result = true;
 
     if (this.filterFunc) {
@@ -99,7 +97,24 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     (this.propertiesFilter as FunctionTextFilter).filterFunc = this.propertyFilter(pane);
   }
 
+  isPaneError(pane: string): boolean {
+    if (!this.propertiesGroupModel) {
+      return false;
+    }
+    const props = this.propertiesGroupModel.getControlsModels()?.filter(model => {
+      return model.property.kind === pane;
+    });
+    if (!props || props.length === 0) {
+      return false;
+    }
+    return (
+      props?.filter(prop => {
+        return this.propertiesFormGroup.controls[prop.property.id]?.errors !== null;
+      }).length > 0
+    );
+  }
+
   propertyFilter(kind?: string): (property: Properties.Property) => boolean {
-      return property => kind === property.kind;
+    return property => kind === property.kind;
   }
 }

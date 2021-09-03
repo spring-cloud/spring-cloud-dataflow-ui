@@ -30,12 +30,12 @@
               <li>
                 <a class="nav-link" [class.active]="paneSelected === 'readers'" (click)="changePane('readers')"
                   >Reader properties
-                  <clr-icon shape="exclamation-circle"></clr-icon>
+                  <clr-icon *ngIf="isPaneError('readers')" shape="exclamation-circle"></clr-icon>
                 </a>
               </li>
               <li>
                 <a class="nav-link" [class.active]="paneSelected === 'writers'" (click)="changePane('writers')"
-                  >Writter properties <clr-icon shape="exclamation-circle"></clr-icon
+                  >Writer properties <clr-icon *ngIf="isPaneError('writers')" shape="exclamation-circle"></clr-icon
                 ></a>
               </li>
             </ul>
