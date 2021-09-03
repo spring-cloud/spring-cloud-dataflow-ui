@@ -70,6 +70,11 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   public title: string;
   heightModal;
 
+  statusError = {
+    writers: false,
+    readers: false
+  };
+
   constructor() {
     super();
     this.propertiesFilter = new FunctionTextFilter();
@@ -79,6 +84,11 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   ngOnInit(): void {
     super.ngOnInit();
     this.heightModal = `${document.documentElement.clientHeight - 350}px`;
+
+    this.propertiesFormGroup.valueChanges.subscribe(() => {
+      this.statusError.writers = this.isPaneError('writers');
+      this.statusError.readers = this.isPaneError('readers');
+    });
   }
 
   @HostListener('window:resize', ['$event'])
