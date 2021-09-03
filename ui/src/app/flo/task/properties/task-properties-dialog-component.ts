@@ -1,12 +1,36 @@
 /* eslint-disable */
-import {Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, HostListener, OnInit, ViewEncapsulation, EventEmitter} from '@angular/core';
 import {Properties} from 'spring-flo';
-import {Validators} from '@angular/forms';
+import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 import PropertiesSource = Properties.PropertiesSource;
 import {AppUiProperty} from '../../shared/support/app-ui-property';
 import {PropertiesDialogComponent} from '../../shared/properties/properties-dialog.component';
 import {PropertiesGroupModel, SearchTextFilter} from '../../shared/support/properties-group-model';
-import {APP_PROPERTIES_KIND} from './task-properties-source';
+import SelectControlModel = Properties.SelectControlModel;
+import InputType = Properties.InputType;
+import Property = Properties.Property;
+import SelectOption = Properties.SelectOption;
+import Validation = Properties.Validation
+import {Observable} from 'rxjs';
+import {IO_COMMON_PROPERTIES_KIND, READER_PROPERTIES_KIND, WRITER_PROPERTIES_KIND} from './task-properties-source';
+
+class ObservableSelectControlModel extends SelectControlModel {
+
+  private _valueChanges = new EventEmitter<any>();
+
+  constructor(_property: Property, type: InputType, options: SelectOption[], validation?: Validation) {
+    super(_property, type, options, validation);
+  }
+
+  protected setValue(value: any) {
+    super.setValue(value);
+    this._valueChanges.next(value);
+  }
+
+  get valueChanges(): Observable<any> {
+    return this._valueChanges;
+  }
+}
 
 /**
  * Utility class for working with Properties.
@@ -27,7 +51,28 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
           validator: Validators.pattern(/^[\w_]+[\w_-]*$/),
           errorData: [{id: 'pattern', message: 'Invalid app label!'}]
         };
+      } else if (property.id === READER_PROPERTIES_KIND || property.id === WRITER_PROPERTIES_KIND) {
+        const optValues = property.hints.valueHints.map(o => o.value);
+        return new ObservableSelectControlModel(
+          property,
+          Properties.InputType.SELECT,
+          property.hints.valueHints,
+          {
+            validator: (control: AbstractControl): ValidationErrors | null => {
+              if (optValues.includes(control.value ? control.value : property.defaultValue)) {
+                return null;
+              } else {
+                return {
+                  error: 'No valid value set'
+                };
+              }
+            },
+            errorData: [{id: 'select', message: 'Value must be set!'}]
+          }
+
+        );
       }
+
     }
     return new Properties.GenericControlModel(property, inputType, validation);
   }
@@ -66,9 +111,12 @@ export class FunctionTextFilter extends SearchTextFilter {
   encapsulation: ViewEncapsulation.None
 })
 export class TaskPropertiesDialogComponent extends PropertiesDialogComponent implements OnInit {
-  paneSelected = APP_PROPERTIES_KIND;
+  paneSelected: string | undefined;
   public title: string;
   heightModal;
+
+  readerControlModel: ObservableSelectControlModel;
+  writerControlModel: ObservableSelectControlModel;
 
   statusError = {
     writers: false,
@@ -78,7 +126,6 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   constructor() {
     super();
     this.propertiesFilter = new FunctionTextFilter();
-    (this.propertiesFilter as FunctionTextFilter).filterFunc = this.propertyFilter(this.paneSelected);
   }
 
   ngOnInit(): void {
@@ -86,8 +133,8 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     this.heightModal = `${document.documentElement.clientHeight - 350}px`;
 
     this.propertiesFormGroup.valueChanges.subscribe(() => {
-      this.statusError.writers = this.isPaneError('writers');
-      this.statusError.readers = this.isPaneError('readers');
+      this.statusError.writers = this.isPaneError(WRITER_PROPERTIES_KIND);
+      this.statusError.readers = this.isPaneError(READER_PROPERTIES_KIND);
     });
   }
 
@@ -99,12 +146,27 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   setData(propertiesSource: PropertiesSource) {
     this.propertiesGroupModel = new TaskPropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
+    const subscription = this.propertiesGroupModel.loadedSubject.subscribe(() => {
+      subscription.unsubscribe();
+      for (let i = 0; i < this.propertiesGroupModel.getControlsModels().length && !(this.readerControlModel && this.writerControlModel); i++) {
+        const cm = this.propertiesGroupModel.getControlsModels()[i];
+        if (cm.property.id === READER_PROPERTIES_KIND) {
+          this.readerControlModel = cm as ObservableSelectControlModel;
+          this.readerControlModel.valueChanges.subscribe(() => this.updateFilter());
+        }
+        if (cm.property.id === WRITER_PROPERTIES_KIND) {
+          this.writerControlModel = cm as ObservableSelectControlModel;
+          this.writerControlModel.valueChanges.subscribe(() => this.updateFilter());
+        }
+        this.updateFilter();
+      }
+    });
   }
 
-  changePane(pane: string): void {
+  changePane(pane?: string): void {
     this.searchFilterText = '';
     this.paneSelected = pane;
-    (this.propertiesFilter as FunctionTextFilter).filterFunc = this.propertyFilter(pane);
+    this.updateFilter();
   }
 
   isPaneError(pane: string): boolean {
@@ -124,7 +186,37 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     );
   }
 
-  propertyFilter(kind?: string): (property: Properties.Property) => boolean {
-    return property => kind === property.kind;
+  private updateFilter(): void {
+    (this.propertiesFilter as FunctionTextFilter).filterFunc = this.computePropertyFilter();
+  }
+
+  private computePropertyFilter(): (property: Properties.Property) => boolean {
+    const kind = this.paneSelected;
+    if (kind) {
+      return property => {
+        if (property.group) {
+          if (property.group === kind || property.group === IO_COMMON_PROPERTIES_KIND) {
+            return true;
+          }
+          let ioControlModel: ObservableSelectControlModel | undefined;
+          switch (kind) {
+            case WRITER_PROPERTIES_KIND:
+              ioControlModel = this.writerControlModel;
+              break;
+            case READER_PROPERTIES_KIND:
+              ioControlModel = this.readerControlModel;
+              break;
+          }
+          if (ioControlModel) {
+            return property.group === kind + '.' + ioControlModel.value;
+          }
+        }
+        return false;
+      }
+    } else {
+      return property => {
+        return !property.group;
+      }
+    }
   }
 }

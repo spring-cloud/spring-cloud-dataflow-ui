@@ -7,14 +7,7 @@ import Promise = JQuery.Promise;
 
 export const READER_PROPERTIES_KIND = 'readers';
 export const WRITER_PROPERTIES_KIND = 'writers';
-export const APP_PROPERTIES_KIND = 'app';
-
-export enum TaskIO {
-  FILE = 'File',
-  KAFKA = 'Kafka',
-  AMQP = 'AMQP',
-  JDBC = 'JDBC'
-}
+export const IO_COMMON_PROPERTIES_KIND = 'common';
 
 /**
  * Properties source for Composed Tasks graph node
@@ -24,8 +17,6 @@ export enum TaskIO {
 export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
   protected createNotationalProperties(): AppUiProperty[] {
     const notationalProperties = [];
-    const ioTypes = Object.keys(TaskIO).filter(k => typeof k === 'string').map(k => ({value: TaskIO[k]}));
-    console.log(JSON.stringify(ioTypes));
     if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
       notationalProperties.push(
         {
@@ -36,42 +27,68 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
           value: this.cell.attr('node-label'),
           description: 'Label of the task',
           isSemantic: false,
-          kind: APP_PROPERTIES_KIND
         }, {
-          id: 'reader',
+          id: READER_PROPERTIES_KIND,
           name: 'Reader',
           defaultValue: undefined,
-          attr: '',
+          attr: 'reader',
           value: this.computeCurrentReader(),
           description: 'Task input reader type',
-          isSemantic: true,
-          kind: READER_PROPERTIES_KIND,
+          isSemantic: false,
+          group: READER_PROPERTIES_KIND,
           hints: {
-            valueHints: ioTypes
+            valueHints: [
+              {
+                name: 'File',
+                value: 'flatfileitemreader'
+              },
+              {
+                name: 'Kafka',
+                value: 'kafkaitemreader'
+              },
+              {
+                name: 'AMQP',
+                value: 'amqpitemreader'
+              },
+              {
+                name: 'JDBC',
+                value: 'jdbccursoritemreader'
+              },
+            ]
           }
         },         {
-          id: 'writer',
+          id: WRITER_PROPERTIES_KIND,
           name: 'Writer',
           defaultValue: undefined,
-          attr: '',
+          attr: 'writer',
           value: this.computeCurrentWriter(),
           description: 'Task output writer type',
-          isSemantic: true,
-          kind: WRITER_PROPERTIES_KIND,
+          isSemantic: false,
+          group: WRITER_PROPERTIES_KIND,
           hints: {
-            valueHints: ioTypes
+            valueHints: [
+              {
+                name: 'File',
+                value: 'flatfileitemwriter'
+              },
+              {
+                name: 'Kafka',
+                value: 'kafkaitemwriter'
+              },
+              {
+                name: 'AMQP',
+                value: 'amqpitemwriter'
+              },
+              {
+                name: 'JDBC',
+                value: 'jdbccursoritemwriter'
+              },
+            ]
           }
         }
       );
     }
     return notationalProperties;
-  }
-
-
-  protected createProperty(metadata: Flo.PropertyMetadata): AppUiProperty {
-    const prop = super.createProperty(metadata);
-    prop.kind = APP_PROPERTIES_KIND;
-    return prop;
   }
 
   private computeCurrentReader(): string {
