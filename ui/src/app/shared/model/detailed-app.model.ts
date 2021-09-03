@@ -55,7 +55,7 @@ export class ValuedConfigurationMetadataProperty extends ConfigurationMetadataPr
 }
 
 export class ConfigurationMetadataPropertyList {
-  static parse(input: any): Array<ConfigurationMetadataProperty> {
+  static parse(input: any): ConfigurationMetadataProperty[] {
     if (input) {
       return input.map(ConfigurationMetadataProperty.parse);
     }
@@ -64,7 +64,7 @@ export class ConfigurationMetadataPropertyList {
 }
 
 export class ValuedConfigurationMetadataPropertyList {
-  static parse(input: any): Array<ValuedConfigurationMetadataProperty> {
+  static parse(input: any): ValuedConfigurationMetadataProperty[] {
     if (input) {
       return input.map(ValuedConfigurationMetadataProperty.parse);
     }
@@ -74,6 +74,7 @@ export class ValuedConfigurationMetadataPropertyList {
 
 export class DetailedApp extends App {
   options: ConfigurationMetadataProperty[];
+  optionGroups: {[prop: string]: string[]};
 
   static parse(input: any): DetailedApp {
     const app: DetailedApp = new DetailedApp();
@@ -83,6 +84,7 @@ export class DetailedApp extends App {
     app.version = input.version;
     app.versions = input.versions;
     app.defaultVersion = input.defaultVersion;
+    app.optionGroups = input.optionGroups;
     if (input.options) {
       app.options = [];
       for (const option of input.options) {

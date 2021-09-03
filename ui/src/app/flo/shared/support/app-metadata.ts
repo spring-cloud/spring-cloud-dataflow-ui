@@ -14,7 +14,7 @@ export class AppPropertyMetadata implements Flo.PropertyMetadata {
 
   public code: CodeOptions;
 
-  constructor(private metadata: ConfigurationMetadataProperty) {}
+  constructor(private metadata: ConfigurationMetadataProperty, private _group: string) {}
 
   get id(): string {
     return this.metadata.id;
@@ -38,6 +38,10 @@ export class AppPropertyMetadata implements Flo.PropertyMetadata {
 
   get sourceType(): string {
     return this.metadata.sourceType;
+  }
+
+  get group(): string {
+    return this._group;
   }
 }
 
@@ -73,7 +77,8 @@ export class AppMetadata implements Flo.ElementMetadata {
           const properties = new Map<string, AppPropertyMetadata>();
           if (data && data.options) {
             data.options.map((o: ConfigurationMetadataProperty) => {
-              const propertyMetadata: AppPropertyMetadata = new AppPropertyMetadata(o);
+
+              const propertyMetadata: AppPropertyMetadata = new AppPropertyMetadata(o, this.getGroup(data.optionGroups, o.id));
               if (o.sourceType === Utils.SCRIPTABLE_TRANSFORM_SOURCE_TYPE) {
                 switch (o.name.toLowerCase()) {
                   case 'language':
@@ -143,6 +148,16 @@ export class AppMetadata implements Flo.ElementMetadata {
   get version(): string {
     return this._version;
   }
+
+  private getGroup(optionGroups: {[prop: string]: string[]}, propertyId: string): string {
+    return optionGroups && Object.keys(optionGroups).find(group => {
+      if (Array.isArray(optionGroups[group])) {
+        return optionGroups[group].indexOf(propertyId) >= 0
+      }
+      return false;
+    });
+  }
+
 }
 
 export interface CodeOptions {

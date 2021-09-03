@@ -23,7 +23,7 @@
           <section class="nav-group">
             <ul class="nav-list">
               <li>
-                <a class="nav-link" [class.active]="paneSelected === 'app'" (click)="changePane('app')"
+                <a class="nav-link" [class.active]="!paneSelected" (click)="changePane()"
                   >App properties</a
                 >
               </li>

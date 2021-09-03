@@ -18,7 +18,7 @@
     </label>
     <div class="clr-control-container clr-col-12 clr-col-md-8">
       <div class="clr-select-wrapper">
-        <select [id]="model.id" [formControl]="control">
+        <select [id]="model.id" [formControl]="control" [(ngModel)]="model.value">
           <option *ngFor="let o of model['options']" [ngValue]="o.value">{{ o.name }}</option>
         </select>
       </div>

@@ -43,7 +43,8 @@ export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesS
       description: metadata.description,
       valueOptions: metadata.options,
       isSemantic: true,
-      code: metadata.code
+      code: metadata.code,
+      group: metadata.group
     };
   }
 
