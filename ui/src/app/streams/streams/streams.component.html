@@ -21,7 +21,7 @@
     <button
       type="button"
       class="btn btn-sm btn-secondary"
-      [disabled]="selected?.length == 0"
+      [disabled]="selected?.length === 0"
       (click)="deploy(selected)"
       [appRole]="['ROLE_DEPLOY']"
     >
@@ -30,7 +30,7 @@
     <button
       type="button"
       class="btn btn-sm btn-secondary"
-      [disabled]="selected?.length == 0"
+      [disabled]="selected?.length === 0"
       (click)="undeploy(selected)"
       [appRole]="['ROLE_CREATE']"
     >
@@ -39,7 +39,7 @@
     <button
       type="button"
       class="btn btn-sm btn-outline-danger"
-      [disabled]="selected?.length == 0"
+      [disabled]="selected?.length === 0"
       (click)="destroy(selected)"
       [appRole]="['ROLE_DESTROY']"
     >
@@ -48,7 +48,7 @@
     <button
       type="button"
       class="btn btn-sm btn-secondary"
-      [disabled]="selected?.length == 0"
+      [disabled]="selected?.length === 0"
       (click)="clone(selected)"
       [appRole]="['ROLE_CREATE']"
     >

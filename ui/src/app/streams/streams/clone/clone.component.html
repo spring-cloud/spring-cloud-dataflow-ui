@@ -1,5 +1,5 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="streams?.length == 1" class="modal-title">Clone Stream</h3>
+  <h3 *ngIf="streams?.length === 1" class="modal-title">Clone Stream</h3>
   <h3 *ngIf="streams?.length > 1" class="modal-title">Clone Streams</h3>
   <div class="modal-body" *ngIf="!isRunning && !loading">
     <form
@@ -64,7 +64,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
     <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="isRunning">
-      <span *ngIf="streams.length == 1">Clone the stream</span>
+      <span *ngIf="streams.length === 1">Clone the stream</span>
       <span *ngIf="streams.length > 1">Clone the streams</span>
     </button>
   </div>

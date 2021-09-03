@@ -56,7 +56,7 @@
                   maxlength="255"
                   [name]="def.index.toString()"
                   [formControlName]="def.index.toString()"
-                  [dataflowFocus]="i == 0"
+                  [dataflowFocus]="i === 0"
                   [ngModel]="def.name"
                   (ngModelChange)="changeStreamName(def.index, $event)"
                   style="width: 360px"

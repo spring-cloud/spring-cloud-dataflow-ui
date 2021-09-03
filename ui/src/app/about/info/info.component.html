@@ -116,7 +116,7 @@
         <li
           *ngIf="
             !about.runtimeEnvironment.appDeployer.platformSpecificInfo ||
-            (about.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalue).length == 0
+            (about.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalue).length === 0
           "
         >
           <strong> No platform-specific app deployer information available. </strong>
