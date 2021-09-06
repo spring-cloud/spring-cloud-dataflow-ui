@@ -7,25 +7,58 @@
         ><span>{{ app.version }}</span></span
       >
     </h3>
-    <!-- <label class="modal-search">
-          <span class="search-wrapper">
-            <input type="search" class="clr-input" placeholder="Search properties ..." [(ngModel)]="searchFilterText"
-                   [ngModelOptions]="{standalone: true}"/>
-            <clr-icon shape="search"></clr-icon>
-          </span>
-      </label> -->
+    <label class="modal-search" *ngIf="propertiesGroupModel && !hasWriterReader && !propertiesGroupModel?.isLoading">
+      <span class="search-wrapper">
+        <input
+          type="search"
+          class="clr-input"
+          placeholder="Search properties ..."
+          [(ngModel)]="searchFilterText"
+          [ngModelOptions]="{standalone: true}"
+        />
+        <clr-icon shape="search"></clr-icon>
+      </span>
+    </label>
   </div>
 
-  <div class="modal-body">
+  <div class="modal-body" *ngIf="propertiesGroupModel && !hasWriterReader && !propertiesGroupModel?.isLoading">
+    <form name="app-properties" (submit)="handleOk()">
+      <input type="submit" style="display: none" />
+      <div *ngIf="propertiesGroupModel && !propertiesGroupModel.isLoading">
+        <div clrForm>
+          <div
+            *ngIf="propertiesGroupModel.getControlsModels().length > 50 && !showProperties"
+            class="dataflow-alert dataflow-alert-info"
+            style="display: block"
+          >
+            <p style="padding-bottom: 5px">
+              There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br />Do you want to
+              <strong>display all the properties</strong> ?
+            </p>
+            <button class="btn btn-primary" (click)="showProperties = true">Show all the properties</button>
+          </div>
+
+          <div *ngIf="propertiesGroupModel.getControlsModels().length <= 50 || showProperties">
+            <clr-properties-group
+              *ngIf="propertiesGroupModel"
+              [propertiesGroupModel]="propertiesGroupModel"
+              [form]="propertiesFormGroup"
+              [filter]="propertiesFilter"
+            ></clr-properties-group>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-body" *ngIf="propertiesGroupModel && hasWriterReader && !propertiesGroupModel?.isLoading">
     <div class="content-container">
       <nav class="sidenav">
         <section class="sidenav-content">
           <section class="nav-group">
             <ul class="nav-list">
               <li>
-                <a class="nav-link" [class.active]="!paneSelected" (click)="changePane()"
-                  >App properties</a
-                >
+                <a class="nav-link" [class.active]="!paneSelected" (click)="changePane()">App properties</a>
               </li>
               <li>
                 <a class="nav-link" [class.active]="paneSelected === 'readers'" (click)="changePane('readers')"
@@ -112,7 +145,7 @@
     </div> -->
 
   <div class="modal-body app-properties" *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading">
-    <div style="padding-bottom: 20px; padding-left: 10px; padding-top: 10px">Loading</div>
+    <div style="padding: 10px 0"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; Loading...</div>
   </div>
 
   <div class="modal-footer">
