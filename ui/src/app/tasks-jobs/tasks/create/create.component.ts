@@ -23,10 +23,11 @@ export class CreateComponent implements OnInit {
 
   @ViewChild('flo', { static: true }) flo: TaskFloCreateComponent;
 
-  taskName = new FormControl('',
-    [Validators.required, Validators.maxLength(255)], [
-      Properties.Validators.uniqueResource((value) => this.isUniqueTaskName(value), 500)
-    ]);
+  taskName = new FormControl(
+    '',
+    [Validators.required, Validators.pattern(/^[a-zA-Z0-9\-\_]+$/), Validators.maxLength(255)],
+    [Properties.Validators.uniqueResource(value => this.isUniqueTaskName(value), 500)]
+  );
   taskDescription = new FormControl('', Validators.maxLength(255));
 
   constructor(private fb: FormBuilder,
