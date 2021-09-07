@@ -13,7 +13,7 @@ import {ApplicationType, AppPage} from '../../shared/model/app.model';
 import {AppMetadata} from '../shared/support/app-metadata';
 import set from 'lodash.set';
 import {Observable} from 'rxjs';
-import {DetailedApp} from 'src/app/shared/model/detailed-app.model';
+import {DetailedApp} from '../../shared/model/detailed-app.model';
 
 const joint: any = _joint;
 
