@@ -50,7 +50,7 @@ export class AppMetadata implements Flo.ElementMetadata {
     private _group: string,
     private _name: string,
     private _version: string,
-    private _dataObs: Observable<DetailedApp>,
+    private _dataObs: Observable<DetailedApp | unknown>,
     private _metadata?: Flo.ExtraMetadata
   ) {}
 
@@ -58,7 +58,12 @@ export class AppMetadata implements Flo.ElementMetadata {
     if (!this._dataPromise) {
       this._dataPromise = new Promise(resolve =>
         this._dataObs.subscribe(
-          data => resolve(data),
+          data => {
+            if (data instanceof DetailedApp) {
+              resolve(data);
+            }
+            resolve(null);
+          },
           () => resolve(null)
         )
       );
