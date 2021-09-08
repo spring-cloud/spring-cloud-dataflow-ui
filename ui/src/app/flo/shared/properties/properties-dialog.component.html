@@ -27,7 +27,7 @@
         <div class="line-toggle">
           <a class="toggle" (click)="collapse(group.title)">
             <clr-icon [class.open]="state[group.title]" shape="angle"></clr-icon>
-            {{ group.title }}
+            {{ group.title || 'General' }}
           </a>
         </div>
         <div *ngIf="state[group.title]">
