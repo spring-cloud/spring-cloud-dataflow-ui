@@ -115,6 +115,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   public title: string;
   heightModal;
 
+  hasWriterReader = true;
   readerControlModel: ObservableSelectControlModel;
   writerControlModel: ObservableSelectControlModel;
 

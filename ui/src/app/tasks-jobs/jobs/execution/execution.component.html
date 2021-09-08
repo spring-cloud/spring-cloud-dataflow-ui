@@ -178,14 +178,14 @@
                   >
                     {{ jobExecutionId }}
                   </a>
-                  <div *ngIf="taskExecution.jobExecutionIds?.length == 0">N/A</div>
+                  <div *ngIf="taskExecution.jobExecutionIds?.length === 0">N/A</div>
                 </div>
               </div>
               <div class="row">
                 <div class="key">Batch Job</div>
                 <div class="value">
                   <clr-icon *ngIf="taskExecution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
-                  <clr-icon *ngIf="taskExecution.jobExecutionIds?.length == 0" shape="success-standard"></clr-icon>
+                  <clr-icon *ngIf="taskExecution.jobExecutionIds?.length === 0" shape="success-standard"></clr-icon>
                 </div>
               </div>
               <div class="row">

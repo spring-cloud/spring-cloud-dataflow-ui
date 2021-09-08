@@ -34,7 +34,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
     <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
-      <span *ngIf="executions.length == 1">Clean up Task Execution</span>
+      <span *ngIf="executions.length === 1">Clean up Task Execution</span>
       <span *ngIf="executions.length > 1">Clean up Task Executions</span>
     </button>
   </div>

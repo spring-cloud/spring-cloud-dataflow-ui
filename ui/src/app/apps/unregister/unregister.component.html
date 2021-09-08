@@ -1,7 +1,7 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="apps" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="apps?.length == 1" class="modal-title">Confirm Unregister Application</h3>
+  <h3 *ngIf="apps?.length === 1" class="modal-title">Confirm Unregister Application</h3>
   <h3 *ngIf="apps?.length > 1" class="modal-title">Confirm Unregister Applications</h3>
-  <div class="modal-body" *ngIf="apps.length == 1 && !isRunning">
+  <div class="modal-body" *ngIf="apps.length === 1 && !isRunning">
     This action will unregister and delete application
     <u
       ><strong>{{ apps[0].name }}</strong></u
@@ -42,7 +42,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">Cancel</button>
     <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
-      <span *ngIf="apps.length == 1">Unregister the application</span>
+      <span *ngIf="apps.length === 1">Unregister the application</span>
       <span *ngIf="apps.length > 1">Unregister the applications</span>
     </button>
   </div>

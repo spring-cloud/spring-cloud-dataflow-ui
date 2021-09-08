@@ -1,7 +1,7 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="streams?.length == 1" class="modal-title">Confirm Undeploy Stream</h3>
+  <h3 *ngIf="streams?.length === 1" class="modal-title">Confirm Undeploy Stream</h3>
   <h3 *ngIf="streams?.length > 1" class="modal-title">Confirm Undeploy Streams</h3>
-  <div class="modal-body" *ngIf="streams.length == 1 && !isRunning">
+  <div class="modal-body" *ngIf="streams.length === 1 && !isRunning">
     This action will undeploy the stream <strong>{{ streams[0].name }}</strong
     >. Are you sure?
   </div>
@@ -36,7 +36,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
     <button type="button" class="btn btn-primary" (click)="unregister()" [disabled]="isRunning">
-      <span *ngIf="streams.length == 1">Undeploy the stream</span>
+      <span *ngIf="streams.length === 1">Undeploy the stream</span>
       <span *ngIf="streams.length > 1">Undeploy the streams</span>
     </button>
   </div>

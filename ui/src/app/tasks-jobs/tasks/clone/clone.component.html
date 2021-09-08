@@ -1,5 +1,5 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="tasks" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="tasks?.length == 1" class="modal-title">Clone Task</h3>
+  <h3 *ngIf="tasks?.length === 1" class="modal-title">Clone Task</h3>
   <h3 *ngIf="tasks?.length > 1" class="modal-title">Clone Tasks</h3>
   <div class="modal-body" *ngIf="!isRunning && !loading">
     <form
@@ -64,7 +64,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
     <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="isRunning">
-      <span *ngIf="tasks.length == 1">Clone the task</span>
+      <span *ngIf="tasks.length === 1">Clone the task</span>
       <span *ngIf="tasks.length > 1">Clone the tasks</span>
     </button>
   </div>

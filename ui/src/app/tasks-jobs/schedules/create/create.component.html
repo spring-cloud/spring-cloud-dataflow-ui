@@ -1,7 +1,7 @@
 <h1>Create schedule(s)</h1>
 <div *ngIf="!loading" style="padding-bottom: 1rem">
   <form clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4" (submit)="submit()">
-    <div *ngIf="config.tasks.length == 1" formArrayName="names">
+    <div *ngIf="config.tasks.length === 1" formArrayName="names">
       <div class="clr-form-control clr-row">
         <div class="clr-col-md-2 clr-control-label">Task Name</div>
         <div class="clr-col-9">
