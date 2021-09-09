@@ -137,6 +137,12 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
     this.groupPropertiesSources = groupPropertiesSources;
   }
 
+  controlModelsToDisplay(propertiesGroupModel): Array<any> {
+    return propertiesGroupModel
+      .getControlsModels()
+      .filter(c => !this.propertiesFilter || this.propertiesFilter.accept(c.property));
+  }
+
   get searchFilterText(): string {
     return this._searchFilterText;
   }
@@ -144,6 +150,19 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   set searchFilterText(text: string) {
     this._searchFilterText = text;
     this._searchFilterTextSubject.next(text);
+    this.setDisplayGroup();
+  }
+
+  setDisplayGroup(): void {
+    if (this.propertiesGroupModels) {
+      for (let i = 0; i < this.propertiesGroupModels.length; i++) {
+        const group = this.propertiesGroupModels[i];
+        if (this.controlModelsToDisplay(group).length > 0) {
+          this.openGroup(group.title);
+          return;
+        }
+      }
+    }
   }
 
   get typeString(): string {
@@ -157,6 +176,12 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
       }
     }
     return 'UNKNOWN';
+  }
+
+  openGroup(id: string): void {
+    Object.entries(this.state).forEach(e => {
+      this.state[e[0]] = e[0] === id;
+    });
   }
 
   collapse(id: string): void {
