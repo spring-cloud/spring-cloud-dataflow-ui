@@ -29,7 +29,7 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
           isSemantic: false,
         }
       );
-      if (Object.keys(propGroups).length > 0) {
+      if (propGroups && Object.keys(propGroups).length > 0) {
         notationalProperties.push({
           id: READER_PROPERTIES_KIND,
           name: 'Reader',

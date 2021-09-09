@@ -53,10 +53,6 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   handleOk(): void {
-    // this.propertiesGroupModel.applyChanges();
-    // this.isOpen = false;
-    // this.app = null;
-    // this.propertiesGroupModel = null;
     const properties: Properties.Property[] = [];
     this.propertiesGroupModels.forEach(p => {
       p.getControlsModels().forEach(cm => {
@@ -68,8 +64,6 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
       const item = this.propertiesGroupModel.getControlsModels().find(it => it.id === prop.id);
       item.value = prop.value;
     });
-    // this.propertiesGroupModel.getControlsModels()
-    // this.groupPropertiesSources.applyChanges(properties);
     this.propertiesGroupModel.applyChanges();
     this.handleCancel();
   }
@@ -131,7 +125,6 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
     );
     const groupPropertiesSources = new GroupPropertiesSources(groupedPropertiesSources);
     groupPropertiesSources.confirm.subscribe((properties: Array<any>) => {});
-    //this.groupsPropertiesModal.setData(groupPropertiesSources);
     let first = true;
     groupPropertiesSources.propertiesSources.forEach(ps => {
       this.state[ps.title] = first;
@@ -167,8 +160,6 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   collapse(id: string): void {
-    // Collapse already open group, otherwise keep selected
-    // group open and close others.
     Object.entries(this.state).forEach(e => {
       if (e[0] === id && e[1]) {
         this.state[e[0]] = false;

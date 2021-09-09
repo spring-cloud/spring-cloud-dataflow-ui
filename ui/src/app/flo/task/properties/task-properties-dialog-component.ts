@@ -10,12 +10,11 @@ import SelectControlModel = Properties.SelectControlModel;
 import InputType = Properties.InputType;
 import Property = Properties.Property;
 import SelectOption = Properties.SelectOption;
-import Validation = Properties.Validation
+import Validation = Properties.Validation;
 import {Observable} from 'rxjs';
 import {IO_COMMON_PROPERTIES_KIND, READER_PROPERTIES_KIND, WRITER_PROPERTIES_KIND} from './task-properties-source';
 
 class ObservableSelectControlModel extends SelectControlModel {
-
   private _valueChanges = new EventEmitter<any>();
 
   constructor(_property: Property, type: InputType, options: SelectOption[], validation?: Validation) {
@@ -53,26 +52,19 @@ class TaskPropertiesGroupModel extends PropertiesGroupModel {
         };
       } else if (property.id === READER_PROPERTIES_KIND || property.id === WRITER_PROPERTIES_KIND) {
         const optValues = property.hints.valueHints.map(o => o.value);
-        return new ObservableSelectControlModel(
-          property,
-          Properties.InputType.SELECT,
-          property.hints.valueHints,
-          {
-            validator: (control: AbstractControl): ValidationErrors | null => {
-              if (optValues.includes(control.value ? control.value : property.defaultValue)) {
-                return null;
-              } else {
-                return {
-                  error: 'No valid value set'
-                };
-              }
-            },
-            errorData: [{id: 'select', message: 'Value must be set!'}]
-          }
-
-        );
+        return new ObservableSelectControlModel(property, Properties.InputType.SELECT, property.hints.valueHints, {
+          validator: (control: AbstractControl): ValidationErrors | null => {
+            if (optValues.includes(control.value ? control.value : property.defaultValue)) {
+              return null;
+            } else {
+              return {
+                error: 'No valid value set'
+              };
+            }
+          },
+          errorData: [{id: 'select', message: 'Value must be set!'}]
+        });
       }
-
     }
     return new Properties.GenericControlModel(property, inputType, validation);
   }
@@ -149,7 +141,12 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     this.propertiesGroupModel.load();
     const subscription = this.propertiesGroupModel.loadedSubject.subscribe(() => {
       subscription.unsubscribe();
-      for (let i = 0; i < this.propertiesGroupModel.getControlsModels().length && !(this.readerControlModel && this.writerControlModel); i++) {
+      for (
+        let i = 0;
+        i < this.propertiesGroupModel.getControlsModels().length &&
+        !(this.readerControlModel && this.writerControlModel);
+        i++
+      ) {
         const cm = this.propertiesGroupModel.getControlsModels()[i];
         if (cm.property.id === READER_PROPERTIES_KIND) {
           this.readerControlModel = cm as ObservableSelectControlModel;
@@ -159,9 +156,10 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
           this.writerControlModel = cm as ObservableSelectControlModel;
           this.writerControlModel.valueChanges.subscribe(() => this.updateFilter());
         }
-        this.updateFilter();
-        this.hasWriterReader = !!this.readerControlModel || !!this.writerControlModel;
       }
+      this.updateFilter();
+      this.hasWriterReader = !!this.readerControlModel || !!this.writerControlModel;
+      this.setGroupedProperties();
     });
   }
 
@@ -214,11 +212,11 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
           }
         }
         return false;
-      }
+      };
     } else {
       return property => {
         return !property.group;
-      }
+      };
     }
   }
 }
