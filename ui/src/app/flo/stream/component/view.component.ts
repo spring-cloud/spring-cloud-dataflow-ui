@@ -4,7 +4,7 @@ import {NotificationService} from '../../../shared/service/notification.service'
 import {MetamodelService} from '../metamodel.service';
 import {RenderService} from '../render.service';
 import {delay} from 'rxjs/operators';
-import {Stream} from 'src/app/shared/model/stream.model';
+import {Stream} from '../../../shared/model/stream.model';
 
 @Component({
   selector: 'app-stream-flo-view',

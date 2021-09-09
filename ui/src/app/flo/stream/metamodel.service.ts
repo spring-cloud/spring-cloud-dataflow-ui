@@ -24,7 +24,7 @@ import {LoggerService} from '../../shared/service/logger.service';
 import {App, ApplicationType, AppPage} from '../../shared/model/app.model';
 import {AppMetadata} from '../shared/support/app-metadata';
 import {Observable} from 'rxjs';
-import {DetailedApp} from 'src/app/shared/model/detailed-app.model';
+import {DetailedApp} from '../../shared/model/detailed-app.model';
 
 /**
  * Metamodel Service for Flo based Stream Definition graph editor
@@ -75,29 +75,30 @@ export class MetamodelService implements Flo.Metamodel {
     this.addOtherGroup(metamodel);
     this.request = new Promise(resolve => {
       this.appService.getApps(0, 10000, null, null, 'name', 'ASC').subscribe(
-        (data: AppPage) => {
-          data.items
-            .filter(
-              item =>
-                item.type.toString() === ApplicationType[ApplicationType.app] ||
-                item.type.toString() === ApplicationType[ApplicationType.source] ||
-                item.type.toString() === ApplicationType[ApplicationType.processor] ||
-                item.type.toString() === ApplicationType[ApplicationType.sink]
-            )
-            .forEach(item => {
-              if (!metamodel.has(item.type.toString())) {
-                metamodel.set(item.type.toString(), new Map<string, AppMetadata>());
-              }
-              const group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
-              if (group.has(item.name)) {
-                LoggerService.error(`Group '${item.type}' has duplicate element '${item.name}'`);
-              } else {
-                group.set(item.name, this.createEntry(item));
-              }
-            });
+        (data: any) => {
+          if (data) {
+            data.items
+              .filter(
+                item =>
+                  item.type.toString() === ApplicationType[ApplicationType.app] ||
+                  item.type.toString() === ApplicationType[ApplicationType.source] ||
+                  item.type.toString() === ApplicationType[ApplicationType.processor] ||
+                  item.type.toString() === ApplicationType[ApplicationType.sink]
+              )
+              .forEach(item => {
+                if (!metamodel.has(item.type.toString())) {
+                  metamodel.set(item.type.toString(), new Map<string, AppMetadata>());
+                }
+                const group: Map<string, Flo.ElementMetadata> = metamodel.get(item.type.toString());
+                if (group.has(item.name)) {
+                  LoggerService.error(`Group '${item.type}' has duplicate element '${item.name}'`);
+                } else {
+                  group.set(item.name, this.createEntry(item));
+                }
+              });
 
-          this.addExtras(metamodel);
-
+            this.addExtras(metamodel);
+          }
           resolve(metamodel);
         },
         error => {

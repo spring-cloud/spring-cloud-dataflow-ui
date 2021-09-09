@@ -126,7 +126,7 @@ export class CreateComponent implements OnInit {
             streamDef.index.toString(),
             new FormControl(
               '',
-              [Validators.required, Validators.pattern(/^[a-zA-Z0-9\-]+$/), Validators.maxLength(255)],
+              [Validators.required, Validators.pattern(/^[a-zA-Z0-9\-\_]+$/), Validators.maxLength(255)],
               [Properties.Validators.uniqueResource(value => this.isUniqueStreamName(value), 500)]
             )
           );
