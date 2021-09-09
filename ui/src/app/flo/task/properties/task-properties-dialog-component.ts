@@ -115,7 +115,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   public title: string;
   heightModal;
 
-  hasWriterReader = true;
+  hasWriterReader = false;
   readerControlModel: ObservableSelectControlModel;
   writerControlModel: ObservableSelectControlModel;
 
@@ -160,6 +160,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
           this.writerControlModel.valueChanges.subscribe(() => this.updateFilter());
         }
         this.updateFilter();
+        this.hasWriterReader = !!this.readerControlModel || !!this.writerControlModel;
       }
     });
   }

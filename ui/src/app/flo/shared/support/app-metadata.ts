@@ -141,6 +141,10 @@ export class AppMetadata implements Flo.ElementMetadata {
     return this.propertiesPromise;
   }
 
+  propertyGroups(): Promise<{[group: string]: string[]}> {
+    return this.dataPromise.then((data: DetailedApp) => data.optionGroups);
+  }
+
   get metadata(): Flo.ExtraMetadata {
     return this._metadata;
   }

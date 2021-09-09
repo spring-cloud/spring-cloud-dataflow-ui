@@ -23,7 +23,7 @@ export class StreamGraphPropertiesSource extends GraphNodePropertiesSource imple
     super(cell);
   }
 
-  protected createNotationalProperties(): AppUiProperty[] {
+  protected createNotationalProperties(propGroups: {[group: string]: string[]}): AppUiProperty[] {
     const notationalProperties = [];
     if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
       notationalProperties.push({

@@ -1,5 +1,6 @@
 import {Flo, Properties} from 'spring-flo';
 import {AppUiProperty} from './app-ui-property';
+import {AppMetadata} from './app-metadata';
 
 /**
  * Able to provide AppUiProperty array from the graph node to be consumed by properties dialog
@@ -9,8 +10,10 @@ import {AppUiProperty} from './app-ui-property';
  */
 export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesSource {
   getProperties(): Promise<Array<AppUiProperty>> {
-    return super.getProperties().then(semanticProperties => {
-      const notationalProperties = this.createNotationalProperties();
+    const metadata: Flo.ElementMetadata = this.cell.get('metadata');
+    const propertyGroupsRequest = metadata instanceof AppMetadata ? (metadata as AppMetadata).propertyGroups() : Promise.resolve({});
+    return Promise.all([super.getProperties(),propertyGroupsRequest]).then(([semanticProperties, propGroups]) => {
+      const notationalProperties = this.createNotationalProperties(propGroups);
       return semanticProperties
         ? notationalProperties.concat(semanticProperties as AppUiProperty[])
         : notationalProperties;
@@ -48,7 +51,7 @@ export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesS
     };
   }
 
-  protected createNotationalProperties(): Array<AppUiProperty> {
+  protected createNotationalProperties(propGroups: {[group: string]: string[]}): AppUiProperty[] {
     return [];
   }
 }

@@ -15,7 +15,7 @@ export const IO_COMMON_PROPERTIES_KIND = 'common';
  * @author Alex Boyko
  */
 export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
-  protected createNotationalProperties(): AppUiProperty[] {
+  protected createNotationalProperties(propGroups: {[group: string]: string[]}): AppUiProperty[] {
     const notationalProperties = [];
     if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
       notationalProperties.push(
@@ -27,7 +27,10 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
           value: this.cell.attr('node-label'),
           description: 'Label of the task',
           isSemantic: false,
-        }, {
+        }
+      );
+      if (Object.keys(propGroups).length > 0) {
+        notationalProperties.push({
           id: READER_PROPERTIES_KIND,
           name: 'Reader',
           defaultValue: undefined,
@@ -85,8 +88,8 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
               },
             ]
           }
-        }
-      );
+        });
+      }
     }
     return notationalProperties;
   }
@@ -100,7 +103,23 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
   }
 
   applyChanges(properties: Properties.Property[]) {
+    let readerProp = properties.find(p => p.id === READER_PROPERTIES_KIND);
+    let writerProp = properties.find(p => p.id === WRITER_PROPERTIES_KIND);
+
+    properties = this.filterIoProps(properties, readerProp);
+    properties = this.filterIoProps(properties, writerProp);
     super.applyChanges(properties);
+  }
+
+  private filterIoProps(properties: Properties.Property[], filterProperty: Properties.Property): Properties.Property[] {
+    if (filterProperty) {
+      const prefixPropertyFilter = filterProperty.id + '.';
+      const group = prefixPropertyFilter + (filterProperty.value || '');
+      properties = properties.filter(p => {
+        return !(p.group && (p.group === filterProperty.id || (p.group.startsWith(prefixPropertyFilter) && p.group !== group)));
+      });
+    }
+    return properties;
   }
 
   protected determineAttributeName(metadata: Flo.PropertyMetadata): string {

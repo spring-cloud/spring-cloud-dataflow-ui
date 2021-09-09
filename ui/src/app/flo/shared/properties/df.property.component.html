@@ -55,6 +55,7 @@
           [id]="model.id"
           [placeholder]="model.defaultValue || ''"
           [formControl]="control"
+          [(ngModel)]="model.value"
         />
         <input
           *ngSwitchCase="types.URL"
@@ -64,6 +65,7 @@
           [id]="model.id"
           [placeholder]="model.defaultValue || ''"
           [formControl]="control"
+          [(ngModel)]="model.value"
         />
         <input
           *ngSwitchCase="types.NUMBER"
@@ -73,6 +75,7 @@
           [id]="model.id"
           [placeholder]="model.defaultValue || ''"
           [formControl]="control"
+          [(ngModel)]="model.value"
         />
         <input
           *ngSwitchCase="types.PASSWORD"
@@ -82,6 +85,7 @@
           [id]="model.id"
           [placeholder]="model.defaultValue || ''"
           [formControl]="control"
+          [(ngModel)]="model.value"
         />
         <input
           *ngSwitchDefault
@@ -90,6 +94,7 @@
           style="width: 100%"
           [placeholder]="model.defaultValue || ''"
           [formControl]="control"
+          [(ngModel)]="model.value"
         />
       </div>
       <div class="clr-subtext">{{ model.description }}</div>
