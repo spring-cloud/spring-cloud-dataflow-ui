@@ -23,20 +23,20 @@
 
   <div class="modal-body" *ngIf="propertiesGroupModel && !hasWriterReader && !propertiesGroupModel?.isLoading">
     <form name="app-properties" clrForm clrLayout="horizontal" (submit)="handleOk()">
-      <ng-container *ngFor="let group of propertiesGroupModels">
+      <ng-container *ngFor="let group of controlGroups">
         <div class="properties" *ngIf="controlModelsToDisplay(group).length > 0">
           <div class="line-toggle">
-            <a class="toggle" (click)="collapse(group.title)">
-              <clr-icon [class.open]="state[group.title]" shape="angle"></clr-icon>
+            <a class="toggle" (click)="toggleExpand(group)">
+              <clr-icon [class.open]="group.expanded" shape="angle"></clr-icon>
               {{ group.title || 'General' }}
               <span class="label label-warning" style="margin-left: 10px; padding: 2px 9px; display: inline">{{
                 controlModelsToDisplay(group).length
               }}</span>
             </a>
           </div>
-          <div *ngIf="state[group.title]">
+          <div *ngIf="group.expanded">
             <clr-properties-group
-              [propertiesGroupModel]="group"
+              [propertiesGroupModel]="group.controlsModel"
               [form]="propertiesFormGroup"
               [filter]="propertiesFilter"
             >
@@ -109,23 +109,23 @@
                     [filter]="propertiesFilter"
                   ></clr-properties-group>
                 </div> -->
-              
 
 
-              <ng-container *ngFor="let group of propertiesGroupModels">
+
+              <ng-container *ngFor="let group of controlGroups">
                 <div class="properties" *ngIf="controlModelsToDisplay(group).length > 0">
                   <div class="line-toggle">
-                    <a class="toggle" (click)="collapse(group.title)">
-                      <clr-icon [class.open]="state[group.title]" shape="angle"></clr-icon>
+                    <a class="toggle" (click)="toggleExpand(group)">
+                      <clr-icon [class.open]="group.expanded" shape="angle"></clr-icon>
                       {{ group.title || 'General' }}
                       <span class="label label-warning" style="margin-left: 10px; padding: 2px 9px; display: inline">{{
                         controlModelsToDisplay(group).length
                       }}</span>
                     </a>
                   </div>
-                  <div *ngIf="state[group.title]">
+                  <div *ngIf="group.expanded">
                     <clr-properties-group
-                      [propertiesGroupModel]="group"
+                      [propertiesGroupModel]="group.controlsModel"
                       [form]="propertiesFormGroup"
                       [filter]="propertiesFilter"
                     >

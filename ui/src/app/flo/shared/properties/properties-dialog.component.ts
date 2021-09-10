@@ -2,16 +2,30 @@ import {Component, ViewEncapsulation, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
-import {debounceTime} from 'rxjs/operators';
 import {App, ApplicationType} from '../../../shared/model/app.model';
 import {ModalDialog} from '../../../shared/service/modal.service';
 import {Properties} from 'spring-flo';
 import PropertiesSource = Properties.PropertiesSource;
-import {
-  GroupPropertiesGroupModel,
-  GroupPropertiesSource,
-  GroupPropertiesSources
-} from '../properties-groups/properties-groups-dialog.component';
+
+interface ControlModelCollapsableSection {
+  title: string;
+  controlsModel: ProxyControlGroupModel;
+  expanded: boolean;
+}
+
+class ProxyControlGroupModel extends Properties.PropertiesGroupModel {
+
+  constructor(controlModels: Properties.ControlModel<any>[]) {
+    super(undefined);
+    this.loading = false;
+    this.controlModels = controlModels;
+  }
+
+  load() {
+    this._loadedSubject.next(true);
+    this._loadedSubject.complete();
+  }
+}
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -30,9 +44,7 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
 
   propertiesGroupModel: PropertiesGroupModel;
 
-  propertiesGroupModels: Array<GroupPropertiesGroupModel> = [];
-
-  private groupPropertiesSources: GroupPropertiesSources;
+  controlGroups: ControlModelCollapsableSection[] = [];
 
   propertiesFormGroup: FormGroup;
 
@@ -53,17 +65,6 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   handleOk(): void {
-    const properties: Properties.Property[] = [];
-    this.propertiesGroupModels.forEach(p => {
-      p.getControlsModels().forEach(cm => {
-        properties.push(cm.property);
-      });
-    });
-
-    properties.forEach(prop => {
-      const item = this.propertiesGroupModel.getControlsModels().find(it => it.id === prop.id);
-      item.value = prop.value;
-    });
     this.propertiesGroupModel.applyChanges();
     this.handleCancel();
   }
@@ -95,51 +96,32 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   setGroupedProperties(): void {
-    this.propertiesGroupModels = [];
+    this.controlGroups = [];
     const options = this.propertiesGroupModel.getControlsModels().map(item => {
       return item.property;
     });
     const deduceKey = key => key.substring(0, key.lastIndexOf('.'));
     const groupBy = (items, key) =>
       items.reduce((result, item) => {
-        const groupKey = deduceKey(item[key]);
+        const groupKey = deduceKey(item.property[key]);
         return {
           ...result,
           [groupKey]: [...(result[groupKey] || []), item]
         };
       }, {});
-    let groupedPropertiesSources: Array<GroupPropertiesSource> = [];
-    const groupedEntries: {[s: string]: Array<any>} = groupBy(options, 'id');
-    Object.entries(groupedEntries).forEach(v => {
-      const groupedPropertiesSource = new GroupPropertiesSource(
-        Object.assign(
-          [],
-          v[1].map(property => Object.assign({}, property))
-        ),
-        v[0]
-      );
-      groupedPropertiesSources.push(groupedPropertiesSource);
-    });
-    groupedPropertiesSources = groupedPropertiesSources.sort((a, b) =>
-      a.title === b.title ? 0 : a.title < b.title ? -1 : 1
-    );
-    const groupPropertiesSources = new GroupPropertiesSources(groupedPropertiesSources);
-    groupPropertiesSources.confirm.subscribe((properties: Array<any>) => {});
-    let first = true;
-    groupPropertiesSources.propertiesSources.forEach(ps => {
-      this.state[ps.title] = first;
-      first = false;
-      const model: GroupPropertiesGroupModel = new GroupPropertiesGroupModel(ps, ps.title);
-      model.load();
-      model.loadedSubject.subscribe();
-      this.propertiesGroupModels.push(model);
-    });
-    this.groupPropertiesSources = groupPropertiesSources;
+    const groupedEntries: {[s: string]: Array<any>} = groupBy(this.propertiesGroupModel.getControlsModels(), 'id');
+    this.controlGroups = Object.keys(groupedEntries).map(title => ({
+      title,
+      controlsModel: new ProxyControlGroupModel(groupedEntries[title]),
+      expanded: false
+    }));
+    if (this.controlGroups.length > 0) {
+      this.controlGroups[0].expanded = true;
+    }
   }
 
-  controlModelsToDisplay(propertiesGroupModel): Array<any> {
-    return propertiesGroupModel
-      .getControlsModels()
+  controlModelsToDisplay(propertiesGroupModel: ControlModelCollapsableSection): Properties.ControlModel<any>[] {
+    return propertiesGroupModel.controlsModel.getControlsModels()
       .filter(c => !this.propertiesFilter || this.propertiesFilter.accept(c.property));
   }
 
@@ -154,11 +136,11 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   setDisplayGroup(): void {
-    if (this.propertiesGroupModels) {
-      for (let i = 0; i < this.propertiesGroupModels.length; i++) {
-        const group = this.propertiesGroupModels[i];
+    if (this.controlGroups) {
+      for (let i = 0; i < this.controlGroups.length; i++) {
+        const group = this.controlGroups[i];
         if (this.controlModelsToDisplay(group).length > 0) {
-          this.openGroup(group.title);
+          group.expanded = true;
           return;
         }
       }
@@ -179,18 +161,10 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   openGroup(id: string): void {
-    Object.entries(this.state).forEach(e => {
-      this.state[e[0]] = e[0] === id;
-    });
+    this.controlGroups.filter(g => g.title === id).forEach(g => g.expanded = true);
   }
 
-  collapse(id: string): void {
-    Object.entries(this.state).forEach(e => {
-      if (e[0] === id && e[1]) {
-        this.state[e[0]] = false;
-      } else {
-        this.state[e[0]] = e[0] === id;
-      }
-    });
+  toggleExpand(g: ControlModelCollapsableSection): void {
+    g.expanded = !g.expanded;
   }
 }
