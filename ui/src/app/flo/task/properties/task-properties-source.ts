@@ -29,13 +29,25 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
           isSemantic: false,
         }
       );
-      if (propGroups && Object.keys(propGroups).length > 0) {
+      if (Object.keys(propGroups).length > 0) {
+
+        const readerGroups: {[group: string]: string[]} = {};
+        const writerGroups: {[group: string]: string[]} = {};
+
+        Object.keys(propGroups).forEach(g => {
+          if (g.startsWith(READER_PROPERTIES_KIND)) {
+            readerGroups[g] = propGroups[g];
+          } else if (g.startsWith(WRITER_PROPERTIES_KIND)) {
+            writerGroups[g] = propGroups[g];
+          }
+        });
+
         notationalProperties.push({
           id: READER_PROPERTIES_KIND,
           name: 'Reader',
           defaultValue: undefined,
           attr: 'reader',
-          value: this.computeCurrentReader(),
+          value: this.cell.attr('reader') || this.computeCurrentIOType(this.cell.attr('props'), readerGroups, READER_PROPERTIES_KIND + '.'),
           description: 'Task input reader type',
           isSemantic: false,
           group: READER_PROPERTIES_KIND,
@@ -64,7 +76,7 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
           name: 'Writer',
           defaultValue: undefined,
           attr: 'writer',
-          value: this.computeCurrentWriter(),
+          value: this.cell.attr('writer') || this.computeCurrentIOType(this.cell.attr('props'), writerGroups, WRITER_PROPERTIES_KIND + '.'),
           description: 'Task output writer type',
           isSemantic: false,
           group: WRITER_PROPERTIES_KIND,
@@ -94,21 +106,55 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
     return notationalProperties;
   }
 
-  private computeCurrentReader(): string {
-    return '';
-  }
-
-  private computeCurrentWriter(): string {
-    return '';
+  private computeCurrentIOType(props: any, groups: {[group: string]: string[]}, trimPrefix: string): string | undefined{
+    if (!props) {
+      return undefined;
+    }
+    const ioPropsMap: {[prop: string]: number} = {};
+    Object.keys(props).forEach(property => {
+      const group = Object.keys(groups).find(g => groups[g].indexOf(property) >= 0);
+      if (group) {
+        if (typeof ioPropsMap[group] === 'number') {
+          ioPropsMap[group]++;
+        } else {
+          ioPropsMap[group] = 1;
+        }
+      }
+    });
+    // const group = Object.keys(ioPropsMap).reduce((r, g) => {
+    //   if (r && ioPropsMap[r] < ioPropsMap[g]) {
+    //     return g;
+    //   } else {
+    //     return r;
+    //   }
+    // });
+    if (Object.keys(ioPropsMap).length == 1) {
+      const group = Object.keys(ioPropsMap)[0];
+      if (group && group.length > trimPrefix.length) {
+        return group.substr(trimPrefix.length);
+      }
+    }
+    return undefined;
   }
 
   applyChanges(properties: Properties.Property[]) {
-    let readerProp = properties.find(p => p.id === READER_PROPERTIES_KIND);
-    let writerProp = properties.find(p => p.id === WRITER_PROPERTIES_KIND);
+    const readerProp = properties.find(p => p.id === READER_PROPERTIES_KIND);
+    const writerProp = properties.find(p => p.id === WRITER_PROPERTIES_KIND);
 
-    properties = this.filterIoProps(properties, readerProp);
-    properties = this.filterIoProps(properties, writerProp);
+    this.resetNotApplicableIoProps(properties, readerProp);
+    this.resetNotApplicableIoProps(properties, writerProp);
+
     super.applyChanges(properties);
+  }
+
+  private resetNotApplicableIoProps(properties: Properties.Property[], filterProperty: Properties.Property): void {
+    if (filterProperty) {
+      const prefixPropertyFilter = filterProperty.id + '.';
+      const group = prefixPropertyFilter + (filterProperty.value || '');
+      properties.filter(p => {
+        return p.group && (p.group.startsWith(prefixPropertyFilter) && p.group !== group);
+      }).forEach(p => p.value = p.defaultValue);
+    }
   }
 
   private filterIoProps(properties: Properties.Property[], filterProperty: Properties.Property): Properties.Property[] {
@@ -127,6 +173,17 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
       // For links properties are always id based
       return `props/${metadata.id}`;
     }
-    return super.determineAttributeName(metadata);
+    const nameAttr = `props/${metadata.name}`;
+    const idAttr = `props/${metadata.id}`;
+    const valueFromName = this.cell.attr(nameAttr);
+    const valueFromId = this.cell.attr(idAttr);
+    if (
+      !(valueFromName === undefined || valueFromName === null) &&
+      (valueFromId === undefined || valueFromId === null)
+    ) {
+      return nameAttr;
+    } else {
+      return idAttr;
+    }
   }
 }
