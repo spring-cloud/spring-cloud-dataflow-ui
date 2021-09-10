@@ -178,6 +178,7 @@ $dark-2: #243641;
         padding: 0 1rem;
         .modal-wrapper {
           overflow: auto;
+          overflow-x: hidden;
         }
         .modal-search {
           margin-top: 0;
