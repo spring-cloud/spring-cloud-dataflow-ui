@@ -14,7 +14,6 @@ interface ControlModelCollapsableSection {
 }
 
 class ProxyControlGroupModel extends Properties.PropertiesGroupModel {
-
   constructor(controlModels: Properties.ControlModel<any>[]) {
     super(undefined);
     this.loading = false;
@@ -97,9 +96,6 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
 
   setGroupedProperties(): void {
     this.controlGroups = [];
-    const options = this.propertiesGroupModel.getControlsModels().map(item => {
-      return item.property;
-    });
     const deduceKey = key => key.substring(0, key.lastIndexOf('.'));
     const groupBy = (items, key) =>
       items.reduce((result, item) => {
@@ -121,7 +117,8 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   controlModelsToDisplay(propertiesGroupModel: ControlModelCollapsableSection): Properties.ControlModel<any>[] {
-    return propertiesGroupModel.controlsModel.getControlsModels()
+    return propertiesGroupModel.controlsModel
+      .getControlsModels()
       .filter(c => !this.propertiesFilter || this.propertiesFilter.accept(c.property));
   }
 
@@ -140,7 +137,7 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
       for (let i = 0; i < this.controlGroups.length; i++) {
         const group = this.controlGroups[i];
         if (this.controlModelsToDisplay(group).length > 0) {
-          group.expanded = true;
+          this.openGroup(group.title);
           return;
         }
       }
@@ -161,10 +158,16 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
   }
 
   openGroup(id: string): void {
-    this.controlGroups.filter(g => g.title === id).forEach(g => g.expanded = true);
+    this.controlGroups.forEach(g => (g.expanded = g.title === id));
   }
 
   toggleExpand(g: ControlModelCollapsableSection): void {
-    g.expanded = !g.expanded;
+    this.controlGroups.forEach(group => {
+      if (group.title === g.title && g.expanded) {
+        group.expanded = false;
+      } else {
+        group.expanded = group.title === g.title;
+      }
+    });
   }
 }
