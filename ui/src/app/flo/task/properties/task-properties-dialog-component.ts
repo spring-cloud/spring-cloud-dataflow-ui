@@ -174,7 +174,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
       return false;
     }
     const props = this.propertiesGroupModel.getControlsModels()?.filter(model => {
-      return model.property.kind === pane;
+      return model.property.group === pane;
     });
     if (!props || props.length === 0) {
       return false;
