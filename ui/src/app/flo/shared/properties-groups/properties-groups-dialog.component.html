@@ -15,19 +15,31 @@
     </label>
   </div>
   <div class="modal-body app-properties" *ngIf="propertiesGroupModels.length > 0" style="max-height: 600px">
+    
+    
     <form name="app-properties" clrForm clrLayout="horizontal" (submit)="handleOk()">
-      <div class="properties" *ngFor="let group of propertiesGroupModels">
-        <div class="line-toggle">
-          <a class="toggle" (click)="collapse(group.title)">
-            <clr-icon [class.open]="state[group.title]" shape="angle"></clr-icon>
-            {{ group.title }}
-          </a>
+      <ng-container *ngFor="let group of propertiesGroupModels">
+        <div class="properties" *ngIf="controlModelsToDisplay(group).length > 0">
+          <div class="line-toggle">
+            <a class="toggle" (click)="collapse(group.title)">
+              <clr-icon [class.open]="state[group.title]" shape="angle"></clr-icon>
+              {{ group.title || 'General' }}
+              <span class="label label-warning" style="margin-left: 10px; padding: 2px 9px; display: inline">{{
+                controlModelsToDisplay(group).length
+              }}</span>
+            </a>
+          </div>
+          <div *ngIf="state[group.title]">
+            <clr-properties-group
+              [propertiesGroupModel]="group"
+              [form]="propertiesFormGroup"
+              [filter]="propertiesFilter"
+            >
+            </clr-properties-group>
+          </div>
         </div>
-        <div *ngIf="state[group.title]">
-          <clr-properties-group [propertiesGroupModel]="group" [form]="propertiesFormGroup" [filter]="propertiesFilter">
-          </clr-properties-group>
-        </div>
-      </div>
+      </ng-container>
+
     </form>
   </div>
   <div class="modal-body app-properties" *ngIf="propertiesGroupModels.length === 0">
