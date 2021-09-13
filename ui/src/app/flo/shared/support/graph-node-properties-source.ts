@@ -11,8 +11,9 @@ import {AppMetadata} from './app-metadata';
 export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesSource {
   getProperties(): Promise<Array<AppUiProperty>> {
     const metadata: Flo.ElementMetadata = this.cell.get('metadata');
-    const propertyGroupsRequest = metadata instanceof AppMetadata ? (metadata as AppMetadata).propertyGroups() : Promise.resolve({});
-    return Promise.all([super.getProperties(),propertyGroupsRequest]).then(([semanticProperties, propGroups]) => {
+    const propertyGroupsRequest =
+      metadata instanceof AppMetadata ? (metadata as AppMetadata).propertyGroups() : Promise.resolve({});
+    return Promise.all([super.getProperties(), propertyGroupsRequest]).then(([semanticProperties, propGroups]) => {
       const notationalProperties = this.createNotationalProperties(propGroups);
       return semanticProperties
         ? notationalProperties.concat(semanticProperties as AppUiProperty[])

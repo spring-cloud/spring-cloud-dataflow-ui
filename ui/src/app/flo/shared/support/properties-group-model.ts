@@ -25,23 +25,18 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
               value: o.value === property.defaultValue ? undefined : o.value
             }));
           const optValues = options.map(o => o.value);
-          return new Properties.SelectControlModel(
-            property,
-            Properties.InputType.SELECT,
-            options,
-            {
-              validator: (control: AbstractControl): ValidationErrors | null => {
-                if (optValues.includes(control.value ? control.value : property.defaultValue)) {
-                  return null;
-                } else {
-                  return {
-                    error: 'No valid value set'
-                  };
-                }
-              },
-              errorData: [{id: 'select', message: 'Value must be set!'}]
-            }
-          );
+          return new Properties.SelectControlModel(property, Properties.InputType.SELECT, options, {
+            validator: (control: AbstractControl): ValidationErrors | null => {
+              if (optValues.includes(control.value ? control.value : property.defaultValue)) {
+                return null;
+              } else {
+                return {
+                  error: 'No valid value set'
+                };
+              }
+            },
+            errorData: [{id: 'select', message: 'Value must be set!'}]
+          });
         }
       }
 

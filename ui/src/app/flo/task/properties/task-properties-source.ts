@@ -18,19 +18,16 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
   protected createNotationalProperties(propGroups: {[group: string]: string[]}): AppUiProperty[] {
     const notationalProperties = [];
     if (typeof ApplicationType[this.cell.prop('metadata/group')] === 'number') {
-      notationalProperties.push(
-        {
-          id: 'label',
-          name: 'label',
-          defaultValue: this.cell.prop('metadata/name'),
-          attr: 'node-label',
-          value: this.cell.attr('node-label'),
-          description: 'Label of the task',
-          isSemantic: false,
-        }
-      );
+      notationalProperties.push({
+        id: 'label',
+        name: 'label',
+        defaultValue: this.cell.prop('metadata/name'),
+        attr: 'node-label',
+        value: this.cell.attr('node-label'),
+        description: 'Label of the task',
+        isSemantic: false
+      });
       if (Object.keys(propGroups).length > 0) {
-
         const readerGroups: {[group: string]: string[]} = {};
         const writerGroups: {[group: string]: string[]} = {};
 
@@ -42,71 +39,82 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
           }
         });
 
-        notationalProperties.push({
-          id: READER_PROPERTIES_KIND,
-          name: 'Reader',
-          defaultValue: undefined,
-          attr: 'reader',
-          value: this.cell.attr('reader') || this.computeCurrentIOType(this.cell.attr('props'), readerGroups, READER_PROPERTIES_KIND + '.'),
-          description: 'Task input reader type',
-          isSemantic: false,
-          group: READER_PROPERTIES_KIND,
-          hints: {
-            valueHints: [
-              {
-                name: 'File',
-                value: 'flatfileitemreader'
-              },
-              {
-                name: 'Kafka',
-                value: 'kafkaitemreader'
-              },
-              {
-                name: 'AMQP',
-                value: 'amqpitemreader'
-              },
-              {
-                name: 'JDBC',
-                value: 'jdbccursoritemreader'
-              },
-            ]
+        notationalProperties.push(
+          {
+            id: READER_PROPERTIES_KIND,
+            name: 'Reader',
+            defaultValue: undefined,
+            attr: 'reader',
+            value:
+              this.cell.attr('reader') ||
+              this.computeCurrentIOType(this.cell.attr('props'), readerGroups, READER_PROPERTIES_KIND + '.'),
+            description: 'Task input reader type',
+            isSemantic: false,
+            group: READER_PROPERTIES_KIND,
+            hints: {
+              valueHints: [
+                {
+                  name: 'File',
+                  value: 'flatfileitemreader'
+                },
+                {
+                  name: 'Kafka',
+                  value: 'kafkaitemreader'
+                },
+                {
+                  name: 'AMQP',
+                  value: 'amqpitemreader'
+                },
+                {
+                  name: 'JDBC',
+                  value: 'jdbccursoritemreader'
+                }
+              ]
+            }
+          },
+          {
+            id: WRITER_PROPERTIES_KIND,
+            name: 'Writer',
+            defaultValue: undefined,
+            attr: 'writer',
+            value:
+              this.cell.attr('writer') ||
+              this.computeCurrentIOType(this.cell.attr('props'), writerGroups, WRITER_PROPERTIES_KIND + '.'),
+            description: 'Task output writer type',
+            isSemantic: false,
+            group: WRITER_PROPERTIES_KIND,
+            hints: {
+              valueHints: [
+                {
+                  name: 'File',
+                  value: 'flatfileitemwriter'
+                },
+                {
+                  name: 'Kafka',
+                  value: 'kafkaitemwriter'
+                },
+                {
+                  name: 'AMQP',
+                  value: 'amqpitemwriter'
+                },
+                {
+                  name: 'JDBC',
+                  value: 'jdbccursoritemwriter'
+                }
+              ]
+            }
           }
-        },         {
-          id: WRITER_PROPERTIES_KIND,
-          name: 'Writer',
-          defaultValue: undefined,
-          attr: 'writer',
-          value: this.cell.attr('writer') || this.computeCurrentIOType(this.cell.attr('props'), writerGroups, WRITER_PROPERTIES_KIND + '.'),
-          description: 'Task output writer type',
-          isSemantic: false,
-          group: WRITER_PROPERTIES_KIND,
-          hints: {
-            valueHints: [
-              {
-                name: 'File',
-                value: 'flatfileitemwriter'
-              },
-              {
-                name: 'Kafka',
-                value: 'kafkaitemwriter'
-              },
-              {
-                name: 'AMQP',
-                value: 'amqpitemwriter'
-              },
-              {
-                name: 'JDBC',
-                value: 'jdbccursoritemwriter'
-              },
-            ]
-          }
-        });
+        );
       }
     }
     return notationalProperties;
   }
 
-  private computeCurrentIOType(props: any, groups: {[group: string]: string[]}, trimPrefix: string): string | undefined{
+  private computeCurrentIOType(
+    props: any,
+    groups: {[group: string]: string[]},
+    trimPrefix: string
+  ): string | undefined {
     if (!props) {
       return undefined;
     }
@@ -128,7 +136,7 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
     //     return r;
     //   }
     // });
-    if (Object.keys(ioPropsMap).length == 1) {
+    if (Object.keys(ioPropsMap).length === 1) {
       const group = Object.keys(ioPropsMap)[0];
       if (group && group.length > trimPrefix.length) {
         return group.substr(trimPrefix.length);
@@ -151,9 +159,9 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
     if (filterProperty) {
       const prefixPropertyFilter = filterProperty.id + '.';
       const group = prefixPropertyFilter + (filterProperty.value || '');
-      properties.filter(p => {
-        return p.group && (p.group.startsWith(prefixPropertyFilter) && p.group !== group);
-      }).forEach(p => p.value = p.defaultValue);
+      properties
+        .filter(p => p.group && p.group.startsWith(prefixPropertyFilter) && p.group !== group)
+        .forEach(p => (p.value = p.defaultValue));
     }
   }
 
@@ -161,9 +169,13 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
     if (filterProperty) {
       const prefixPropertyFilter = filterProperty.id + '.';
       const group = prefixPropertyFilter + (filterProperty.value || '');
-      properties = properties.filter(p => {
-        return !(p.group && (p.group === filterProperty.id || (p.group.startsWith(prefixPropertyFilter) && p.group !== group)));
-      });
+      properties = properties.filter(
+        p =>
+          !(
+            p.group &&
+            (p.group === filterProperty.id || (p.group.startsWith(prefixPropertyFilter) && p.group !== group))
+          )
+      );
     }
     return properties;
   }
