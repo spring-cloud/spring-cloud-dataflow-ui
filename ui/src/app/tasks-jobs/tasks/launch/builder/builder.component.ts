@@ -116,7 +116,7 @@ export interface Migrations {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuilderComponent implements OnInit, OnDestroy {
-  @ViewChild('appPropertiesModal', {static: true}) appPropertiesModal: PropertiesDialogComponent;
+  @ViewChild('appPropertiesModal', {static: true}) appPropertiesModal: TaskPropertiesDialogComponent;
   @ViewChild('groupsPropertiesModal', {static: true}) groupsPropertiesModal: PropertiesGroupsDialogComponent;
   @ViewChild('ctrPropertiesModal', {static: true}) ctrPropertiesModal: TaskPropertiesDialogComponent;
 
