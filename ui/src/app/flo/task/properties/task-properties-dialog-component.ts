@@ -195,7 +195,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     if (kind) {
       return property => {
         if (property.group) {
-          if (property.group === kind || property.group === IO_COMMON_PROPERTIES_KIND) {
+          if (property.group === kind) {
             return true;
           }
           let ioControlModel: ObservableSelectControlModel | undefined;
@@ -215,7 +215,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
       };
     } else {
       return property => {
-        return !property.group;
+        return !property.group || property.group === IO_COMMON_PROPERTIES_KIND;
       };
     }
   }
