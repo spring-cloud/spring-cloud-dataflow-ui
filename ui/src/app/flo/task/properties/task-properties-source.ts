@@ -99,7 +99,7 @@ export class TaskGraphPropertiesSource extends GraphNodePropertiesSource {
                 },
                 {
                   name: 'JDBC',
-                  value: 'jdbccursoritemwriter'
+                  value: 'jdbcbatchitemwriter'
                 }
               ]
             }
