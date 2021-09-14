@@ -124,10 +124,8 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   ngOnInit(): void {
     super.ngOnInit();
     this.heightModal = `${document.documentElement.clientHeight - 350}px`;
-
     this.propertiesFormGroup.valueChanges.subscribe(() => {
-      this.statusError.writers = this.isPaneError(WRITER_PROPERTIES_KIND);
-      this.statusError.readers = this.isPaneError(READER_PROPERTIES_KIND);
+      this.updatePaneStatus();
     });
   }
 
@@ -157,8 +155,8 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
           this.writerControlModel.valueChanges.subscribe(() => this.updateFilter());
         }
       }
-      this.updateFilter();
       this.hasWriterReader = !!this.readerControlModel || !!this.writerControlModel;
+      this.updateFilter();
       this.setGroupedProperties();
       this.setDisplayGroup();
     });
@@ -168,6 +166,11 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     this.searchFilterText = '';
     this.paneSelected = pane;
     this.updateFilter();
+  }
+
+  updatePaneStatus(): void {
+    this.statusError.writers = this.isPaneError(WRITER_PROPERTIES_KIND);
+    this.statusError.readers = this.isPaneError(READER_PROPERTIES_KIND);
   }
 
   isPaneError(pane: string): boolean {

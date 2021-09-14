@@ -29,7 +29,7 @@ import {StreamAppPropertiesSource, StreamHead} from '../../../../flo/stream/prop
 import {TaskPropertiesDialogComponent} from '../../../../flo/task/properties/task-properties-dialog-component';
 import {DetailedApp, ValuedConfigurationMetadataProperty} from '../../../../shared/model/detailed-app.model';
 import {READER_PROPERTIES_KIND, WRITER_PROPERTIES_KIND} from '../../../../flo/task/properties/task-properties-source';
-import { ModalService } from 'src/app/shared/service/modal.service';
+import {ModalService} from 'src/app/shared/service/modal.service';
 
 export class AppPropertiesSource implements StreamAppPropertiesSource {
   private options: Array<any>;
@@ -1075,26 +1075,18 @@ export class BuilderComponent implements OnInit, OnDestroy {
       .filter(app => app !== null);
   }
 
-  private addWriterReaderProperties(app: any): any {
+  private addWriterReaderProperties(app: any, options): any {
     const propGroups = app.optionGroups;
     if (Object.keys(propGroups).length > 0) {
-      // const readerGroups: {[group: string]: string[]} = {};
-      // const writerGroups: {[group: string]: string[]} = {};
-
-      // Object.keys(propGroups).forEach(g => {
-      //   if (g.startsWith(READER_PROPERTIES_KIND)) {
-      //     readerGroups[g] = propGroups[g];
-      //   } else if (g.startsWith(WRITER_PROPERTIES_KIND)) {
-      //     writerGroups[g] = propGroups[g];
-      //   }
-      // });
+      const readerValue = options.find(opt => opt.id === 'readers')?.value;
+      const writerValue = options.find(opt => opt.id === 'writers')?.value;
       return [
         {
           id: READER_PROPERTIES_KIND,
           name: 'Reader',
           defaultValue: undefined,
           attr: 'reader',
-          value: '',
+          value: readerValue ? readerValue : undefined,
           description: 'Task input reader type',
           isSemantic: false,
           group: READER_PROPERTIES_KIND,
@@ -1124,7 +1116,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
           name: 'Writer',
           defaultValue: undefined,
           attr: 'writer',
-          value: '',
+          value: writerValue ? writerValue : undefined,
           description: 'Task output writer type',
           isSemantic: false,
           group: WRITER_PROPERTIES_KIND,
@@ -1161,16 +1153,13 @@ export class BuilderComponent implements OnInit, OnDestroy {
   openApp(builder: Builder, app: any) {
     const version = builder.formGroup.get('appsVersion').get(app.name).value || app.version;
     const options = builder.builderAppsProperties[app.name] ? builder.builderAppsProperties[app.name] : app.options;
-
-    console.log(app)
     const appPropertiesSource = new AppPropertiesSource(
       Object.assign(
         [],
         options.map(property => Object.assign({}, property)),
-        this.addWriterReaderProperties(app)
+        this.addWriterReaderProperties(app, options)
       )
     );
-
     appPropertiesSource.confirm.subscribe((properties: Array<any>) => {
       builder.builderAppsProperties[app.name] = properties;
       this.changeDetector.markForCheck();
@@ -1182,6 +1171,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     modal.app.version = version;
     modal.app.optionGroups = app.optionGroups;
     modal.setData(appPropertiesSource);
+   // modal.updatePaneStatus();
   }
 
   /**
