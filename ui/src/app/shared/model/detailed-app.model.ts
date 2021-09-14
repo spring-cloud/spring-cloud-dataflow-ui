@@ -24,6 +24,7 @@ export class ConfigurationMetadataProperty {
   deprecation: Deprecation;
   sourceType: string;
   isDeprecated: boolean;
+  group: string;
 
   static parse(input: any): ConfigurationMetadataProperty {
     const config = new ConfigurationMetadataProperty();

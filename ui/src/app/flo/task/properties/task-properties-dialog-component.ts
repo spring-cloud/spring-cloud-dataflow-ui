@@ -136,7 +136,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     this.heightModal = `${document.documentElement.clientHeight - 350}px`;
   }
 
-  setData(propertiesSource: PropertiesSource) {
+  setData(propertiesSource: PropertiesSource): void {
     this.propertiesGroupModel = new TaskPropertiesGroupModel(propertiesSource);
     this.propertiesGroupModel.load();
     const subscription = this.propertiesGroupModel.loadedSubject.subscribe(() => {
@@ -160,6 +160,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
       this.updateFilter();
       this.hasWriterReader = !!this.readerControlModel || !!this.writerControlModel;
       this.setGroupedProperties();
+      this.setDisplayGroup();
     });
   }
 
@@ -188,6 +189,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
 
   private updateFilter(): void {
     (this.propertiesFilter as FunctionTextFilter).filterFunc = this.computePropertyFilter();
+    this.setDisplayGroup();
   }
 
   private computePropertyFilter(): (property: Properties.Property) => boolean {

@@ -15,6 +15,7 @@ import {ToolsService} from '../../../flo/task/tools.service';
 import get from 'lodash.get';
 import set from 'lodash.set';
 import {Platform} from '../../../shared/model/platform.model';
+import {READER_PROPERTIES_KIND, WRITER_PROPERTIES_KIND} from 'src/app/flo/task/properties/task-properties-source';
 
 @Injectable()
 export class TaskLaunchService {
@@ -218,10 +219,22 @@ export class TaskLaunchService {
     return this.taskService.getCtrOptions();
   }
 
-  appDetails(type: ApplicationType, name: string, version: string): Observable<Array<any>> {
+  private getGroup(optionGroups: {[prop: string]: string[]}, propertyId: string): string {
+    return (
+      optionGroups &&
+      Object.keys(optionGroups).find(group => {
+        if (Array.isArray(optionGroups[group])) {
+          return optionGroups[group].indexOf(propertyId) >= 0;
+        }
+        return false;
+      })
+    );
+  }
+
+  appDetails(type: ApplicationType, name: string, version: string): Observable<DetailedApp> {
     return this.appService.getApp(name, type, version).pipe(
-      map((app: DetailedApp) =>
-        app.options.map((option: ConfigurationMetadataProperty) => {
+      map((app: DetailedApp) => {
+        app.options = app.options.map((option: ConfigurationMetadataProperty) => {
           const opt = {
             id: option.id,
             name: option.name,
@@ -232,6 +245,7 @@ export class TaskLaunchService {
             isDeprecated: option.isDeprecated,
             type: option.type,
             defaultValue: option.defaultValue,
+            group: this.getGroup(app.optionGroups, option.id),
             isSemantic: true
           };
           if (opt.sourceType === Utils.SCRIPTABLE_TRANSFORM_SOURCE_TYPE) {
@@ -264,7 +278,9 @@ export class TaskLaunchService {
           }
           return opt;
         })
-      )
+
+        return app;
+      })
     );
   }
 }

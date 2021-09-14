@@ -39,7 +39,7 @@ class ProxyControlGroupModel extends Properties.PropertiesGroupModel {
   encapsulation: ViewEncapsulation.None
 })
 export class PropertiesDialogComponent extends ModalDialog implements OnInit {
-  app: App;
+  app: any;
 
   propertiesGroupModel: PropertiesGroupModel;
 

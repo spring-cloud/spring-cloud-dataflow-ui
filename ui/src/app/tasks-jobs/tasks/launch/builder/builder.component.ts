@@ -27,7 +27,9 @@ import {App} from '../../../../shared/model/app.model';
 import {PropertiesDialogComponent} from '../../../../flo/shared/properties/properties-dialog.component';
 import {StreamAppPropertiesSource, StreamHead} from '../../../../flo/stream/properties/stream-properties-source';
 import {TaskPropertiesDialogComponent} from '../../../../flo/task/properties/task-properties-dialog-component';
-import {ValuedConfigurationMetadataProperty} from '../../../../shared/model/detailed-app.model';
+import {DetailedApp, ValuedConfigurationMetadataProperty} from '../../../../shared/model/detailed-app.model';
+import {READER_PROPERTIES_KIND, WRITER_PROPERTIES_KIND} from '../../../../flo/task/properties/task-properties-source';
+import { ModalService } from 'src/app/shared/service/modal.service';
 
 export class AppPropertiesSource implements StreamAppPropertiesSource {
   private options: Array<any>;
@@ -116,7 +118,6 @@ export interface Migrations {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuilderComponent implements OnInit, OnDestroy {
-  @ViewChild('appPropertiesModal', {static: true}) appPropertiesModal: TaskPropertiesDialogComponent;
   @ViewChild('groupsPropertiesModal', {static: true}) groupsPropertiesModal: PropertiesGroupsDialogComponent;
   @ViewChild('ctrPropertiesModal', {static: true}) ctrPropertiesModal: TaskPropertiesDialogComponent;
 
@@ -167,7 +168,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
   constructor(
     private taskLaunchService: TaskLaunchService,
     private changeDetector: ChangeDetectorRef,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private modalService: ModalService
   ) {}
 
   /**
@@ -715,8 +717,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
           app.optionsState.isOnError = false;
           app.optionsState.isLoading = true;
           this.taskLaunchService.appDetails(app.type, app.origin, value).subscribe(
-            options => {
-              app.options = options;
+            detailedApp => {
+              app.options = detailedApp.options;
+              app.optionGroups = detailedApp.optionGroups;
             },
             error => {
               app.options = [];
@@ -1072,28 +1075,113 @@ export class BuilderComponent implements OnInit, OnDestroy {
       .filter(app => app !== null);
   }
 
+  private addWriterReaderProperties(app: any): any {
+    const propGroups = app.optionGroups;
+    if (Object.keys(propGroups).length > 0) {
+      // const readerGroups: {[group: string]: string[]} = {};
+      // const writerGroups: {[group: string]: string[]} = {};
+
+      // Object.keys(propGroups).forEach(g => {
+      //   if (g.startsWith(READER_PROPERTIES_KIND)) {
+      //     readerGroups[g] = propGroups[g];
+      //   } else if (g.startsWith(WRITER_PROPERTIES_KIND)) {
+      //     writerGroups[g] = propGroups[g];
+      //   }
+      // });
+      return [
+        {
+          id: READER_PROPERTIES_KIND,
+          name: 'Reader',
+          defaultValue: undefined,
+          attr: 'reader',
+          value: '',
+          description: 'Task input reader type',
+          isSemantic: false,
+          group: READER_PROPERTIES_KIND,
+          hints: {
+            valueHints: [
+              {
+                name: 'File',
+                value: 'flatfileitemreader'
+              },
+              {
+                name: 'Kafka',
+                value: 'kafkaitemreader'
+              },
+              {
+                name: 'AMQP',
+                value: 'amqpitemreader'
+              },
+              {
+                name: 'JDBC',
+                value: 'jdbccursoritemreader'
+              }
+            ]
+          }
+        },
+        {
+          id: WRITER_PROPERTIES_KIND,
+          name: 'Writer',
+          defaultValue: undefined,
+          attr: 'writer',
+          value: '',
+          description: 'Task output writer type',
+          isSemantic: false,
+          group: WRITER_PROPERTIES_KIND,
+          hints: {
+            valueHints: [
+              {
+                name: 'File',
+                value: 'flatfileitemwriter'
+              },
+              {
+                name: 'Kafka',
+                value: 'kafkaitemwriter'
+              },
+              {
+                name: 'AMQP',
+                value: 'amqpitemwriter'
+              },
+              {
+                name: 'JDBC',
+                value: 'jdbcbatchitemwriter'
+              }
+            ]
+          }
+        }
+      ];
+    }
+
+    return [];
+  }
+
   /**
    * Open Task application properties modal.
    */
   openApp(builder: Builder, app: any) {
     const version = builder.formGroup.get('appsVersion').get(app.name).value || app.version;
     const options = builder.builderAppsProperties[app.name] ? builder.builderAppsProperties[app.name] : app.options;
+
+    console.log(app)
     const appPropertiesSource = new AppPropertiesSource(
       Object.assign(
         [],
-        options.map(property => Object.assign({}, property))
+        options.map(property => Object.assign({}, property)),
+        this.addWriterReaderProperties(app)
       )
     );
+
     appPropertiesSource.confirm.subscribe((properties: Array<any>) => {
       builder.builderAppsProperties[app.name] = properties;
       this.changeDetector.markForCheck();
     });
-    this.appPropertiesModal.app = new App();
-    this.appPropertiesModal.app.name = app.name;
-    this.appPropertiesModal.app.type = app.type;
-    this.appPropertiesModal.app.version = version;
-    this.appPropertiesModal.setData(appPropertiesSource);
-    this.appPropertiesModal.isOpen = true;
+    const modal = this.modalService.show(TaskPropertiesDialogComponent);
+    modal.app = new DetailedApp();
+    modal.app.name = app.name;
+    modal.app.type = app.type;
+    modal.app.version = version;
+    modal.app.optionGroups = app.optionGroups;
+    modal.setData(appPropertiesSource);
   }
 
   /**
