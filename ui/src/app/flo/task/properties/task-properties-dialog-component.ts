@@ -177,26 +177,23 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
     if (!this.propertiesGroupModel) {
       return false;
     }
-    const props = this.propertiesGroupModel.getControlsModels()?.filter(model => {
-      return model.property.group === pane;
-    });
-    if (!props || props.length === 0) {
-      return false;
+    if (pane === READER_PROPERTIES_KIND && this.readerControlModel && !this.readerControlModel.value) {
+      return true;
     }
-    return (
-      props?.filter(prop => {
-        return this.propertiesFormGroup.controls[prop.property.id]?.errors !== null;
-      }).length > 0
-    );
+    if (pane === WRITER_PROPERTIES_KIND && this.writerControlModel && !this.writerControlModel.value) {
+      return true;
+    }
+
+    // const propertyFilter = this.computePropertyFilter(pane);
+    // return !!this.propertiesGroupModel.getControlsModels()?.find(cm => propertyFilter(cm.property) && this.propertiesFormGroup.controls[cm.property.id]?.errors);
   }
 
   private updateFilter(): void {
-    (this.propertiesFilter as FunctionTextFilter).filterFunc = this.computePropertyFilter();
+    (this.propertiesFilter as FunctionTextFilter).filterFunc = this.computePropertyFilter(this.paneSelected);
     this.setDisplayGroup();
   }
 
-  private computePropertyFilter(): (property: Properties.Property) => boolean {
-    const kind = this.paneSelected;
+  private computePropertyFilter(kind: string): (property: Properties.Property) => boolean {
     if (kind) {
       return property => {
         if (property.group) {
