@@ -277,7 +277,7 @@ export class TaskLaunchService {
             }
           }
           return opt;
-        })
+        });
 
         return app;
       })

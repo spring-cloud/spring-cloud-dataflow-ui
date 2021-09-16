@@ -1171,7 +1171,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     modal.app.version = version;
     modal.app.optionGroups = app.optionGroups;
     modal.setData(appPropertiesSource);
-   // modal.updatePaneStatus();
+    // modal.updatePaneStatus();
   }
 
   /**
