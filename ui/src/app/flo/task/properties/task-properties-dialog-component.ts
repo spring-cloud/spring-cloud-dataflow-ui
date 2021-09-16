@@ -191,6 +191,7 @@ export class TaskPropertiesDialogComponent extends PropertiesDialogComponent imp
   private updateFilter(): void {
     (this.propertiesFilter as FunctionTextFilter).filterFunc = this.computePropertyFilter(this.paneSelected);
     this.setDisplayGroup();
+    this.updatePaneStatus();
   }
 
   private computePropertyFilter(kind: string): (property: Properties.Property) => boolean {
