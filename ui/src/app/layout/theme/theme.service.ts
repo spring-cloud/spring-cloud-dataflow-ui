@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {runCssVarsPolyfill} from '@clr/core';
 import {Theme} from './types';
 import {defaultTheme} from './default-theme';
 import {darkTheme} from './dark-theme';
@@ -55,7 +54,6 @@ export class ThemeService {
     styles.push('}');
     styles.push(theme.other);
     style.innerHTML = styles.join('');
-    runCssVarsPolyfill(() => {});
     this.active = name;
     return name;
   }
