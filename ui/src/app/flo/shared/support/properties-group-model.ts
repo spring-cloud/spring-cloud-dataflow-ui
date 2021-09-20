@@ -1,5 +1,5 @@
 import {Properties} from 'spring-flo';
-import {Validators} from '@angular/forms';
+import {AbstractControl, ValidationErrors, Validators} from '@angular/forms';
 import {Utils} from './utils';
 import {AppUiProperty} from './app-ui-property';
 
@@ -18,16 +18,25 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
       if (property.hints && property.hints.valueHints) {
         // array and we have hints, assume we can now use selector
         if (Array.isArray(property.hints.valueHints) && property.hints.valueHints.length > 0) {
-          return new Properties.SelectControlModel(
-            property,
-            Properties.InputType.SELECT,
-            (property.hints.valueHints as Array<any>)
-              .filter(o => o.value.length > 0)
-              .map(o => ({
-                name: o.value,
-                value: o.value === property.defaultValue ? undefined : o.value
-              }))
-          );
+          const options = (property.hints.valueHints as Array<any>)
+            .filter(o => o.value.length > 0)
+            .map(o => ({
+              name: o.value,
+              value: o.value === property.defaultValue ? undefined : o.value
+            }));
+          const optValues = options.map(o => o.value);
+          return new Properties.SelectControlModel(property, Properties.InputType.SELECT, options, {
+            validator: (control: AbstractControl): ValidationErrors | null => {
+              if (optValues.includes(control.value ? control.value : property.defaultValue)) {
+                return null;
+              } else {
+                return {
+                  error: 'No valid value set'
+                };
+              }
+            },
+            errorData: [{id: 'select', message: 'Value must be set!'}]
+          });
         }
       }
 
@@ -70,7 +79,20 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
                 .map(o => ({
                   name: o.charAt(0).toUpperCase() + o.substr(1).toLowerCase(),
                   value: o === property.defaultValue ? undefined : o
-                }))
+                })),
+              {
+                validator: (control: AbstractControl): ValidationErrors | null => {
+                  if (property.valueOptions.includes(control.value ? control.value : property.defaultValue)) {
+                    return null;
+                  } else {
+                    return {
+                      error: 'No valid value set'
+                    };
+                  }
+                },
+                // validator: Validators.email,
+                errorData: [{id: 'select', message: 'Value must be set!'}]
+              }
             );
           } else if (property.name === 'password') {
             inputType = Properties.InputType.PASSWORD;

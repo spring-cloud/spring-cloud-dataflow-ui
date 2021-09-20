@@ -60,7 +60,7 @@ export class GroupPropertiesSources {
 @Component({
   selector: 'app-properties-groups-dialog-content',
   templateUrl: 'properties-groups-dialog.component.html',
-  styleUrls: ['properties-groups-dialog.component.scss'],
+  styleUrls: ['./properties-groups-dialog.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class PropertiesGroupsDialogComponent implements OnInit {
@@ -116,6 +116,10 @@ export class PropertiesGroupsDialogComponent implements OnInit {
     this.isOpen = false;
   }
 
+  openGroup(id: string): void {
+    Object.entries(this.state).forEach(e => (this.state[e[0]] = e[0] === id));
+  }
+
   collapse(id: string): void {
     // Collapse already open group, otherwise keep selected
     // group open and close others.
@@ -126,6 +130,24 @@ export class PropertiesGroupsDialogComponent implements OnInit {
         this.state[e[0]] = e[0] === id;
       }
     });
+  }
+
+  controlModelsToDisplay(propertiesGroupModel: GroupPropertiesGroupModel): Properties.ControlModel<any>[] {
+    return propertiesGroupModel
+      .getControlsModels()
+      .filter(c => !this.propertiesFilter || this.propertiesFilter.accept(c.property));
+  }
+
+  setDisplayGroup(): void {
+    if (this.propertiesGroupModels) {
+      for (let i = 0; i < this.propertiesGroupModels.length; i++) {
+        const group = this.propertiesGroupModels[i];
+        if (this.controlModelsToDisplay(group).length > 0) {
+          this.openGroup(group.title);
+          return;
+        }
+      }
+    }
   }
 
   get okDisabled(): boolean {
@@ -163,5 +185,6 @@ export class PropertiesGroupsDialogComponent implements OnInit {
   set searchFilterText(text: string) {
     this._searchFilterText = text;
     this._searchFilterTextSubject.next(text);
+    this.setDisplayGroup();
   }
 }
