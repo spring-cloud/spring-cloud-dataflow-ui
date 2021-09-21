@@ -74,6 +74,7 @@ export class ValuedConfigurationMetadataPropertyList {
 
 export class DetailedApp extends App {
   options: ConfigurationMetadataProperty[];
+  optionGroups?: {[prop: string]: string[]};
 
   static parse(input: any): DetailedApp {
     const app: DetailedApp = new DetailedApp();
@@ -85,6 +86,7 @@ export class DetailedApp extends App {
     app.defaultVersion = input.defaultVersion;
     if (input.options) {
       app.options = [];
+      app.optionGroups = input?.optionGroups;
       for (const option of input.options) {
         app.options.push(ConfigurationMetadataProperty.parse(option));
       }
