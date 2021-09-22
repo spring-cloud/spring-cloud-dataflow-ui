@@ -7,7 +7,6 @@ ui/app/styles/main.css
 ui/app/styles/main.css.map
 ui/.tmp
 ui/documentation/
-ui/package-lock.json
 ui/dist
 ui/tmp
 ui/out-tsc
