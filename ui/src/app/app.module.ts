@@ -25,6 +25,9 @@ import {ROOT_REDUCERS, metaReducers} from './reducers/reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {SettingsService} from './settings/settings.service';
 import {AppsModule} from './apps/apps.module';
+import {APP_BASE_HREF} from '@angular/common';
+import { LocationStrategy } from '@angular/common';
+import { LeadingBaseHrefLocationStrategy } from "./leading-base-href-location-strategy";
 
 @NgModule({
   declarations: [AppComponent],
@@ -59,6 +62,14 @@ import {AppsModule} from './apps/apps.module';
     EffectsModule.forRoot([])
   ],
   providers: [
+    {
+      provide: APP_BASE_HREF,
+      useValue: window.location.pathname
+    },
+    {
+      provide: LocationStrategy ,
+      useClass: LeadingBaseHrefLocationStrategy
+    },
     {
       provide: APP_INITIALIZER,
       useFactory:

@@ -4,7 +4,7 @@ import {DevGuard} from './shared/support/dev.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: window.location.pathname,
     pathMatch: 'full',
     redirectTo: 'apps'
   }
