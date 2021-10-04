@@ -67,7 +67,7 @@ import { LeadingBaseHrefLocationStrategy } from "./leading-base-href-location-st
       useValue: window.location.pathname
     },
     {
-      provide: LocationStrategy ,
+      provide: LocationStrategy,
       useClass: LeadingBaseHrefLocationStrategy
     },
     {
