@@ -14,7 +14,7 @@ export class AppPropertyMetadata implements Flo.PropertyMetadata {
 
   public code: CodeOptions;
 
-  constructor(private metadata: ConfigurationMetadataProperty, private _group?: string) {}
+  constructor(private metadata: ConfigurationMetadataProperty, private _groups?: string[]) {}
 
   get id(): string {
     return this.metadata.id;
@@ -40,8 +40,8 @@ export class AppPropertyMetadata implements Flo.PropertyMetadata {
     return this.metadata.sourceType;
   }
 
-  get group(): string {
-    return this._group;
+  get groups(): string[] {
+    return this._groups || [];
   }
 }
 
@@ -84,7 +84,7 @@ export class AppMetadata implements Flo.ElementMetadata {
             data.options.map((o: ConfigurationMetadataProperty) => {
               const propertyMetadata: AppPropertyMetadata = new AppPropertyMetadata(
                 o,
-                this.getGroup(data.optionGroups, o.id)
+                this.getGroups(data.optionGroups, o.id)
               );
               if (o.sourceType === Utils.SCRIPTABLE_TRANSFORM_SOURCE_TYPE) {
                 switch (o.name.toLowerCase()) {
@@ -160,16 +160,16 @@ export class AppMetadata implements Flo.ElementMetadata {
     return this._version;
   }
 
-  private getGroup(optionGroups: {[prop: string]: string[]}, propertyId: string): string {
-    return (
-      optionGroups &&
-      Object.keys(optionGroups).find(group => {
+  private getGroups(optionGroups: {[prop: string]: string[]}, propertyId: string): string[] {
+    if (optionGroups) {
+      return Object.keys(optionGroups).filter(group => {
         if (Array.isArray(optionGroups[group])) {
           return optionGroups[group].indexOf(propertyId) >= 0;
         }
         return false;
-      })
-    );
+      });
+    }
+    return [];
   }
 }
 
