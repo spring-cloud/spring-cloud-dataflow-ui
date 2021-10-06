@@ -8,8 +8,8 @@ import {Properties} from 'spring-flo';
 export interface AppUiProperty extends Properties.Property {
   attr: string;
   isSemantic: boolean;
+  groups: string[];
   code?: CodeProperty;
-  group?: string;
 }
 
 export interface CodeProperty {

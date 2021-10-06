@@ -48,7 +48,7 @@ export class GraphNodePropertiesSource extends Properties.DefaultCellPropertiesS
       valueOptions: metadata.options,
       isSemantic: true,
       code: metadata.code,
-      group: metadata.group
+      groups: metadata.groups
     };
   }
 
