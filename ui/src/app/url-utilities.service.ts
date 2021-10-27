@@ -17,7 +17,7 @@ export class UrlUtilities {
   }
 
   public static calculateAssetUrl() {
-    return this.calculateBaseUrl() + this.dashboard + "/" + this.assets;
+    return this.calculateBaseUrl() + this.dashboard + this.assets;
   }
 
   public static calculateBaseUrl() {
