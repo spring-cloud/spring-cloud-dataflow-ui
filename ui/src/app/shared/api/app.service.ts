@@ -6,6 +6,7 @@ import {App, ApplicationType, AppPage} from '../model/app.model';
 import {catchError, map} from 'rxjs/operators';
 import {DetailedApp} from '../model/detailed-app.model';
 import {ErrorUtils} from '../support/error.utils';
+import { UrlUtilities } from '../../url-utilities.service';
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +37,14 @@ export class AppService {
     if (defaultVersion) {
       params = params.append('defaultVersion', 'true');
     }
-    return this.httpClient.get('/apps', {headers, params}).pipe(map(AppPage.parse), catchError(ErrorUtils.catchError));
+    return this.httpClient.get(UrlUtilities.calculateBaseApiUrl() + 'apps', {headers, params}).pipe(map(AppPage.parse), catchError(ErrorUtils.catchError));
   }
 
   getApp(name: string, type: ApplicationType, appVersion?: string): Observable<DetailedApp | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    let url = `/apps/${type}/${name}`;
+    let url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}`;
     if (appVersion) {
-      url = `/apps/${type}/${name}/${appVersion}`;
+      url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}/${appVersion}`;
     }
     return this.httpClient.get(url, {headers}).pipe(map(DetailedApp.parse), catchError(ErrorUtils.catchError));
   }
@@ -58,7 +59,7 @@ export class AppService {
 
   unregisterApp(app: App): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    let url = `/apps/${app.type}/${app.name}`;
+    let url = UrlUtilities.calculateBaseApiUrl() + `apps/${app.type}/${app.name}`;
     if (app.version) {
       url = `${url}/${app.version}`;
     }
@@ -72,20 +73,20 @@ export class AppService {
   defaultVersion(app: App): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .put(`/apps/${app.type}/${app.name}/${app.version}`, {headers})
+      .put(UrlUtilities.calculateBaseApiUrl() + `apps/${app.type}/${app.name}/${app.version}`, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   importUri(uri: string, force: boolean = false): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams().append('uri', uri).append('force', force ? 'true' : 'false');
-    return this.httpClient.post('/apps', {}, {headers, params}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient.post(UrlUtilities.calculateBaseApiUrl() + 'apps', {}, {headers, params}).pipe(catchError(ErrorUtils.catchError));
   }
 
   importProps(properties: string, force: boolean): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams().append('apps', properties).append('force', force ? 'true' : 'false');
-    return this.httpClient.post('/apps', {}, {headers, params}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient.post(UrlUtilities.calculateBaseApiUrl() + 'apps', {}, {headers, params}).pipe(catchError(ErrorUtils.catchError));
   }
 
   registerProp(prop: any): Observable<any> {
@@ -95,7 +96,7 @@ export class AppService {
     }
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .post(`/apps/${ApplicationType[prop.type]}/${prop.name}`, {}, {params, headers})
+      .post(UrlUtilities.calculateBaseApiUrl() + `apps/${ApplicationType[prop.type]}/${prop.name}`, {}, {params, headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 

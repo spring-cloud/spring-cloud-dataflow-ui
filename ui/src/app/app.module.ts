@@ -28,6 +28,7 @@ import {AppsModule} from './apps/apps.module';
 import {APP_BASE_HREF} from '@angular/common';
 import { LocationStrategy } from '@angular/common';
 import { LeadingBaseHrefLocationStrategy } from "./leading-base-href-location-strategy";
+import { UrlUtilities } from './url-utilities.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -64,7 +65,7 @@ import { LeadingBaseHrefLocationStrategy } from "./leading-base-href-location-st
   providers: [
     {
       provide: APP_BASE_HREF,
-      useValue: window.location.pathname
+      useValue: UrlUtilities.calculateBaseApiUrl()
     },
     {
       provide: LocationStrategy,

@@ -6,6 +6,7 @@ import {catchError, map} from 'rxjs/operators';
 import {ExecutionStepProgress, ExecutionStepResource, JobExecution, JobExecutionPage} from '../model/job.model';
 import {ErrorUtils} from '../support/error.utils';
 import {DateTime} from 'luxon';
+import {UrlUtilities} from "../../url-utilities.service";
 
 @Injectable({
   providedIn: 'root'
@@ -27,41 +28,41 @@ export class JobService {
       params = params.append('toDate', toDate.toISODate() + 'T23:59:59,999');
     }
     return this.httpClient
-      .get<any>('/jobs/thinexecutions', {params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'jobs/thinexecutions', {params})
       .pipe(map(JobExecutionPage.parse), catchError(ErrorUtils.catchError));
   }
 
   getExecution(executionId: string): Observable<JobExecution | unknown> {
     return this.httpClient
-      .get<any>(`/jobs/executions/${executionId}`, {})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${executionId}`, {})
       .pipe(map(JobExecution.parse), catchError(ErrorUtils.catchError));
   }
 
   restart(execution: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .put(`/jobs/executions/${execution.jobExecutionId}?restart=true`, {headers})
+      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${execution.jobExecutionId}?restart=true`, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   stop(item: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .put(`/jobs/executions/${item.jobExecutionId}?stop=true`, {headers})
+      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}?stop=true`, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   getExecutionStep(jobExecutionId: string, stepId: string): Observable<ExecutionStepResource | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any>(`/jobs/executions/${jobExecutionId}/steps/${stepId}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${jobExecutionId}/steps/${stepId}`, {headers})
       .pipe(map(ExecutionStepResource.parse), catchError(ErrorUtils.catchError));
   }
 
   getExecutionStepProgress(jobExecutionId: string, stepId: string): Observable<ExecutionStepProgress | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any>(`/jobs/executions/${jobExecutionId}/steps/${stepId}/progress`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${jobExecutionId}/steps/${stepId}/progress`, {headers})
       .pipe(map(ExecutionStepProgress.parse), catchError(ErrorUtils.catchError));
   }
 }

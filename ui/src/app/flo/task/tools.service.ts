@@ -5,6 +5,7 @@ import {Graph, Link, Node, TaskConversion} from './model/models';
 import {catchError, map} from 'rxjs/operators';
 import {HttpUtils} from '../../shared/support/http.utils';
 import {ErrorUtils} from '../../shared/support/error.utils';
+import {UrlUtilities} from "../../url-utilities.service";
 
 /**
  * Provides tools service having conversion between
@@ -15,8 +16,8 @@ import {ErrorUtils} from '../../shared/support/error.utils';
  */
 @Injectable()
 export class ToolsService {
-  private parseTaskTextToGraphUrl = '/tools/parseTaskTextToGraph';
-  private convertTaskGraphToTextUrl = '/tools/convertTaskGraphToText';
+  private parseTaskTextToGraphUrl = UrlUtilities.calculateBaseApiUrl() + 'tools/parseTaskTextToGraph';
+  private convertTaskGraphToTextUrl = UrlUtilities.calculateBaseApiUrl() + 'tools/convertTaskGraphToText';
 
   constructor(private httpClient: HttpClient) {}
 

@@ -6,6 +6,7 @@ import {HttpUtils} from '../support/http.utils';
 import {DateTime} from 'luxon';
 import {catchError, map} from 'rxjs/operators';
 import {ErrorUtils} from '../support/error.utils';
+import {UrlUtilities} from "../../url-utilities.service";
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class RecordService {
       params = params.append('toDate', toDate.toISODate() + 'T23:59:59');
     }
     return this.httpClient
-      .get<any>('/audit-records', {params, headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'audit-records', {params, headers})
       .pipe(map(RecordPage.parse), catchError(ErrorUtils.catchError));
   }
 
@@ -58,7 +59,7 @@ export class RecordService {
       return of(this.operationTypes);
     }
     return this.httpClient
-      .get<any>('/audit-records/audit-operation-types', {headers: HttpUtils.getDefaultHttpHeaders()})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'audit-records/audit-operation-types', {headers: HttpUtils.getDefaultHttpHeaders()})
       .pipe(
         map(response => {
           this.operationTypes = response.map(RecordOperationType.parse);
@@ -73,7 +74,7 @@ export class RecordService {
       return of(this.actionTypes);
     }
     return this.httpClient
-      .get<any>('/audit-records/audit-action-types', {headers: HttpUtils.getDefaultHttpHeaders()})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'audit-records/audit-action-types', {headers: HttpUtils.getDefaultHttpHeaders()})
       .pipe(
         map(response => {
           this.actionTypes = response.map(RecordActionType.parse);

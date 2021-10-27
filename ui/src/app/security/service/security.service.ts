@@ -8,6 +8,7 @@ import {ErrorUtils} from '../../shared/support/error.utils';
 import {Security} from '../../shared/model/security.model';
 import {State, getUsername, getRoles, getEnabled, getShouldProtect, getSecurity} from '../store/security.reducer';
 import {loaded, logout, unauthorised} from '../store/security.action';
+import {UrlUtilities} from "../../url-utilities.service";
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class SecurityService {
 
   load(): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.http.get<Security>('/security/info', {headers}).pipe(catchError(ErrorUtils.catchError));
+    return this.http.get<Security>(UrlUtilities.calculateBaseApiUrl() + 'security/info', {headers}).pipe(catchError(ErrorUtils.catchError));
   }
 
   getSecurity(): Observable<any> {
@@ -68,7 +69,7 @@ export class SecurityService {
 
   logout(): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.http.get('/logout', {headers: headers, responseType: 'text'}).pipe(
+    return this.http.get(UrlUtilities.calculateBaseApiUrl() + 'logout', {headers: headers, responseType: 'text'}).pipe(
       mergeMap(() => {
         this.store.dispatch(logout());
         return this.load();

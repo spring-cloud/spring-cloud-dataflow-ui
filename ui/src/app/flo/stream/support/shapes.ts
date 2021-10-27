@@ -1,4 +1,5 @@
 import * as _joint from 'jointjs';
+import {UrlUtilities} from "../../../url-utilities.service";
 
 const joint: any = _joint;
 
@@ -98,7 +99,7 @@ export function loadStreamShapes(): void {
             refX: 10,
             refY: 0.5,
             refY2: -TYPE_ICON_SIZE.height / 2,
-            'xlink:href': 'assets/img/unknown.svg'
+            'xlink:href': UrlUtilities.calculateAssetUrl() + 'img/unknown.svg'
           },
           '.error-marker': {
             width: ERROR_MARKER_SIZE.width,

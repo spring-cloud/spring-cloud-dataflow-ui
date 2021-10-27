@@ -6,6 +6,7 @@ import {ErrorUtils} from '../support/error.utils';
 import {Schedule, SchedulePage} from '../model/schedule.model';
 import {TaskService} from './task.service';
 import {Platform} from '../model/platform.model';
+import {UrlUtilities} from "../../url-utilities.service";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class ScheduleService {
     //       return page;
     //     })
     //   );
-    let url = '/tasks/schedules';
+    let url = UrlUtilities.calculateBaseApiUrl() + 'tasks/schedules';
     if (search) {
       url = `${url}/instances/${search}`;
     }
@@ -52,7 +53,7 @@ export class ScheduleService {
     const paramPlatform = platformName ? `?platform=${platformName}` : '';
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient
-      .get<any>(`/tasks/schedules/${scheduleName}${paramPlatform}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/schedules/${scheduleName}${paramPlatform}`, {headers})
       .pipe(map(Schedule.parse), catchError(ErrorUtils.catchError));
   }
 
@@ -105,12 +106,12 @@ export class ScheduleService {
       .append('platform', platform)
       .append('properties', properties.filter(prop => !!prop).join(','));
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    return this.httpClient.post('/tasks/schedules', {}, {headers, params}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient.post(UrlUtilities.calculateBaseApiUrl() + 'tasks/schedules', {}, {headers, params}).pipe(catchError(ErrorUtils.catchError));
   }
 
   destroySchedule(name: string, platform?: string): Observable<any> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
-    let url = `/tasks/schedules/${name}`;
+    let url = UrlUtilities.calculateBaseApiUrl() + `tasks/schedules/${name}`;
     if (platform) {
       url = `${url}?platform=${platform}`;
     }
