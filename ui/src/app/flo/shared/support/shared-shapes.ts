@@ -160,16 +160,16 @@ export function createPaletteGroupHeader(title: string, isOpen: boolean): any {
     '.group-label-bg/class',
     `${group.attr('.group-label-bg/class') || 'group-label-bg'} ${title.replace(' ', '-')}`
   );
-  group.attr('.collapse-handle/xlink:href', isOpen ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down.svg' : UrlUtilities.calculateAssetUrl() + 'assets/img/chevron-left.svg');
+  group.attr('.collapse-handle/xlink:href', isOpen ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down.svg' : UrlUtilities.calculateAssetUrl() + 'img/chevron-left.svg');
   group.attr(
     '.collapse-handle2/xlink:href',
-    isOpen ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down-white.svg' : UrlUtilities.calculateAssetUrl() + 'assets/img/chevron-left-white.svg'
+    isOpen ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down-white.svg' : UrlUtilities.calculateAssetUrl() + 'img/chevron-left-white.svg'
   );
   group.on('change:isOpen', (cell, newValue) => {
-    group.attr('.collapse-handle/xlink:href', newValue ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down.svg' : UrlUtilities.calculateAssetUrl() + 'assets/img/chevron-left.svg');
+    group.attr('.collapse-handle/xlink:href', newValue ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down.svg' : UrlUtilities.calculateAssetUrl() + 'img/chevron-left.svg');
     group.attr(
       '.collapse-handle2/xlink:href',
-      newValue ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down-white.svg' : UrlUtilities.calculateAssetUrl() + 'assets/img/chevron-left-white.svg'
+      newValue ? UrlUtilities.calculateAssetUrl() + 'img/chevron-down-white.svg' : UrlUtilities.calculateAssetUrl() + 'img/chevron-left-white.svg'
     );
   });
   return group;
