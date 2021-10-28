@@ -38,7 +38,7 @@ jobs:
           --server-id-deploy=repo.spring.io \
           --repo-deploy-releases=libs-staging-local \
           --repo-deploy-snapshots=libs-staging-local
-        echo JFROG_CLI_BUILD_NAME=spring-cloud-dataflow-ui-main-release >> $GITHUB_ENV
+        echo JFROG_CLI_BUILD_NAME=spring-cloud-dataflow-ui-32x-release >> $GITHUB_ENV
         echo JFROG_CLI_BUILD_NUMBER=$GITHUB_RUN_NUMBER >> $GITHUB_ENV
 
     # zoo extract and ensure
@@ -65,7 +65,7 @@ jobs:
           -P-spring,stagingrelease \
           -DskipTests -U -B
         jfrog rt build-publish
-        echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_buildname=spring-cloud-dataflow-ui-main-release >> $GITHUB_ENV
+        echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_buildname=spring-cloud-dataflow-ui-32x-release >> $GITHUB_ENV
         echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_buildnumber=$GITHUB_RUN_NUMBER >> $GITHUB_ENV
 
     # zoo tag
