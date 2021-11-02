@@ -14,7 +14,8 @@
       ],
       "parserOptions": {
         "project": [
-          "tsconfig.json"
+          "src/tsconfig.app.json",
+          "src/tsconfig.spec.json"
         ],
         "createDefaultProgram": true
       },
@@ -57,10 +58,7 @@
             "accessibility": "explicit"
           }
         ],
-        "@typescript-eslint/indent": [
-          "error",
-          2
-        ],
+        "@typescript-eslint/indent": "off",
         "@typescript-eslint/member-delimiter-style": [
           "error",
           {

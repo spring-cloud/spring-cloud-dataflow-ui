@@ -1,45 +1,41 @@
-import { browser, element, ElementFinder, ProtractorBy, ElementArrayFinder } from 'protractor';
-import { protractor } from 'protractor/built/ptor';
-import { By } from 'selenium-webdriver';
+import {browser, element, ElementFinder, ProtractorBy, ElementArrayFinder} from 'protractor';
+import {protractor} from 'protractor/built/ptor';
+import {By} from 'selenium-webdriver';
 
 const EC = protractor.ExpectedConditions;
 
 const defaultTimeout = 30000;
 
 export class ElementHelper {
-
   public static async u(e: By): Promise<number> {
     return element.all(await ElementHelper.getElement(e)).count();
   }
 
   public static async getElement(byValue: By): Promise<By> {
     const conditionA = EC.visibilityOf(element(byValue));
-    return browser.wait(
-      EC.and(conditionA), defaultTimeout)
-      .then(() => byValue, () => {
+    return browser.wait(EC.and(conditionA), defaultTimeout).then(
+      () => byValue,
+      () => {
         fail(`No visible emelement for '${byValue}'.`);
         return byValue;
-      });
+      }
+    );
   }
 
   public static getClickableElementOrWait(by: By) {
     const conditionA = EC.visibilityOf(element(by));
-    return browser.wait(
-      EC.and(conditionA), defaultTimeout, 'getClickableElementOrWait failed.')
+    return browser
+      .wait(EC.and(conditionA), defaultTimeout, 'getClickableElementOrWait failed.')
       .then(() => element(by));
   }
 
   public static async waitForSpinners() {
     const conditionB = EC.invisibilityOf(element(By.css('.app-blocker')));
     const conditionC = EC.invisibilityOf(element(By.css('modal-body')));
-    await browser.wait(() => {
-      return EC.and(conditionB, conditionC);
-    }, defaultTimeout, 'waitForSpinners failed.');
+    await browser.wait(() => EC.and(conditionB, conditionC), defaultTimeout, 'waitForSpinners failed.');
   }
 
-
   public static async clickElement(by: By, clickFirst: boolean, parent: ElementFinder): Promise<boolean> {
-
     console.log('Clicking ' + by);
 
     let returnValue = false;
@@ -67,7 +63,7 @@ export class ElementHelper {
 
         if (clickFirst) {
           const t = parent.all(by);
-          if (await t.count() > 0) {
+          if ((await t.count()) > 0) {
             clickableElement = t.first();
           } else {
             returnValue = false;
@@ -78,15 +74,17 @@ export class ElementHelper {
 
         console.log(`Attempt ${attempt} for clickableElement:` + clickableElement);
 
-        await clickableElement.click().then(() => {
-          console.log(`Successfully Clicked: ${by} (Attempt: ${attempt})`);
-          clearTimeout(timeout);
-          returnValue = true;
-        }, () => {
-          console.log(`Failed click: ${by} (Attempt: ${attempt})`);
-          returnValue = false;
-        });
-
+        await clickableElement.click().then(
+          () => {
+            console.log(`Successfully Clicked: ${by} (Attempt: ${attempt})`);
+            clearTimeout(timeout);
+            returnValue = true;
+          },
+          () => {
+            console.log(`Failed click: ${by} (Attempt: ${attempt})`);
+            returnValue = false;
+          }
+        );
       }
     });
 
@@ -99,5 +97,4 @@ export class ElementHelper {
     await browser.wait(EC.elementToBeClickable(clickableElement), 15000);
     await clickableElement.click();
   }
-
 }
