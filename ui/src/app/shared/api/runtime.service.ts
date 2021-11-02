@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {RuntimeStreamPage} from '../model/runtime.model';
 import {ErrorUtils} from '../support/error.utils';
+import {UrlUtilities} from '../../url-utilities.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class RuntimeService {
     const params = HttpUtils.getPaginationParams(page, size);
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any>('/runtime/streams', {params, headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'runtime/streams', {params, headers})
       .pipe(map(RuntimeStreamPage.parse), catchError(ErrorUtils.catchError));
   }
 }

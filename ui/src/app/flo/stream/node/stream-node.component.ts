@@ -3,6 +3,7 @@ import {dia} from 'jointjs';
 import {NodeComponent} from '../../shared/support/node-component';
 import {DocService} from '../../shared/service/doc.service';
 import {PropertiesEditor} from '../properties-editor.service';
+import {UrlUtilities} from '../../../url-utilities.service';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -25,6 +26,8 @@ export class StreamNodeComponent extends NodeComponent {
 
   @ViewChild('paletteNodeTooltip')
   paletteTooltipElement: ElementRef;
+
+  assetUrl = UrlUtilities.calculateAssetUrl();
 
   constructor(docService: DocService, private propertiesEditor: PropertiesEditor) {
     super(docService);

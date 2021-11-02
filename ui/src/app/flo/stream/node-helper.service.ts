@@ -19,6 +19,7 @@ import {dia} from 'jointjs';
 import {Flo} from 'spring-flo';
 import {Utils as SharedUtils} from '../shared/support/utils';
 import {ApplicationType} from '../../shared/model/app.model';
+import {UrlUtilities} from '../../url-utilities.service';
 
 import * as _joint from 'jointjs';
 const joint: any = _joint;
@@ -30,13 +31,13 @@ const BETWEEN_HANDLE_SPACING = 5;
 
 // Default icons (unicode chars) for each group member, unless they override
 const GROUP_ICONS = new Map<string, string>()
-  .set('app', 'assets/img/app.svg') // U+2338 (Quad equal symbol)
-  .set('source', 'assets/img/source.svg') // 21D2
-  .set('processor', 'assets/img/processor.svg') // 3bb  //flux capacitor? 1D21B
-  .set('sink', 'assets/img/sink.svg') // 21D2
-  .set('task', 'assets/img/unknown.svg') // 2609   ⚙=2699 gear (rubbish)
-  .set('other', 'assets/img/tap.svg') // 2982
-  .set('unresolved', 'assets/img/unknown.svg'); // 2982
+  .set('app', UrlUtilities.calculateAssetUrl() + 'img/app.svg') // U+2338 (Quad equal symbol)
+  .set('source', UrlUtilities.calculateAssetUrl() + 'img/source.svg') // 21D2
+  .set('processor', UrlUtilities.calculateAssetUrl() + 'img/processor.svg') // 3bb  //flux capacitor? 1D21B
+  .set('sink', UrlUtilities.calculateAssetUrl() + 'img/sink.svg') // 21D2
+  .set('task', UrlUtilities.calculateAssetUrl() + 'img/unknown.svg') // 2609   ⚙=2699 gear (rubbish)
+  .set('other', UrlUtilities.calculateAssetUrl() + 'img/tap.svg') // 2982
+  .set('unresolved', UrlUtilities.calculateAssetUrl() + 'img/unknown.svg'); // 2982
 /**
  * Node Helper for Flo based Stream Definition graph editor.
  * Static utility method for creating joint model objects.

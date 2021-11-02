@@ -8,6 +8,7 @@ import {ErrorUtils} from '../support/error.utils';
 import {DataflowEncoder} from '../support/encoder.utils';
 import {Platform, PlatformList} from '../model/platform.model';
 import {StreamStatus, StreamStatuses} from '../model/metrics.model';
+import {UrlUtilities} from '../../url-utilities.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class StreamService {
       params = params.append('sort', `${sort},${order}`);
     }
     return this.httpClient
-      .get<any>('/streams/definitions', {params, headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'streams/definitions', {params, headers})
       .pipe(map(StreamPage.parse), catchError(ErrorUtils.catchError));
   }
 
@@ -41,22 +42,24 @@ export class StreamService {
     if (nested) {
       params = params.append('nested', nested.toString());
     }
-    return this.httpClient.get<any>(`/streams/definitions/${streamName}/related`, {params, headers}).pipe(
-      map(jsonResponse => StreamPage.parse(jsonResponse).items),
-      catchError(ErrorUtils.catchError)
-    );
+    return this.httpClient
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `streams/definitions/${streamName}/related`, {params, headers})
+      .pipe(
+        map(jsonResponse => StreamPage.parse(jsonResponse).items),
+        catchError(ErrorUtils.catchError)
+      );
   }
 
   getStream(name: string): Observable<Stream | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any>(`/streams/definitions/${name}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `streams/definitions/${name}`, {headers})
       .pipe(map(Stream.parse), catchError(ErrorUtils.catchError));
   }
 
   destroyStream(stream: Stream): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const url = `/streams/definitions/${stream.name}`;
+    const url = UrlUtilities.calculateBaseApiUrl() + `streams/definitions/${stream.name}`;
     return this.httpClient.delete(url, {headers}).pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -67,7 +70,7 @@ export class StreamService {
   undeployStream(stream: Stream): Observable<HttpResponse<any>> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .delete<any>('/streams/deployments/' + stream.name, {headers})
+      .delete<any>(UrlUtilities.calculateBaseApiUrl() + 'streams/deployments/' + stream.name, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -78,7 +81,11 @@ export class StreamService {
       .append('definition', dsl)
       .append('description', description);
     return this.httpClient
-      .post<any>('/streams/definitions', null, {headers, observe: 'response', params})
+      .post<any>(UrlUtilities.calculateBaseApiUrl() + 'streams/definitions', null, {
+        headers,
+        observe: 'response',
+        params
+      })
       .pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -90,7 +97,7 @@ export class StreamService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const reuse = reuseDeploymentProperties ? '?reuse-deployment-properties=true' : '';
     return this.httpClient
-      .get<any>(`/streams/deployments/${name}${reuse}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `streams/deployments/${name}${reuse}`, {headers})
       .pipe(map(Stream.parse), catchError(ErrorUtils.catchError));
   }
 
@@ -98,7 +105,7 @@ export class StreamService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
       .post(
-        `/streams/deployments/update/${name}`,
+        UrlUtilities.calculateBaseApiUrl() + `streams/deployments/update/${name}`,
         {
           releaseName: name,
           packageIdentifier: {packageName: name, packageVersion: null},
@@ -112,7 +119,10 @@ export class StreamService {
   deployStream(name: string, propertiesAsMap: any = {}): Observable<HttpResponse<any> | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .post<any>(`/streams/deployments/${name}`, propertiesAsMap, {headers, observe: 'response'})
+      .post<any>(UrlUtilities.calculateBaseApiUrl() + `streams/deployments/${name}`, propertiesAsMap, {
+        headers,
+        observe: 'response'
+      })
       .pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -120,13 +130,15 @@ export class StreamService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = HttpUtils.getPaginationParams(0, 1000);
     return this.httpClient
-      .get<any>('/streams/deployments/platform/list', {params, headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'streams/deployments/platform/list', {params, headers})
       .pipe(map(PlatformList.parse), catchError(ErrorUtils.catchError));
   }
 
   getLogs(name: string): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.get<any>(`/streams/logs/${name}`, {headers}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `streams/logs/${name}`, {headers})
+      .pipe(catchError(ErrorUtils.catchError));
   }
 
   getRuntimeStreamStatuses(names?: string[]): Observable<StreamStatus[] | unknown> {
@@ -136,29 +148,35 @@ export class StreamService {
       params = params.append('names', names.join(','));
     }
     return this.httpClient
-      .get<any>('/runtime/streams', {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'runtime/streams', {headers, params})
       .pipe(map(StreamStatuses.parse), catchError(ErrorUtils.catchError));
   }
 
   getStreamHistory(name: string): Observable<StreamHistory[]> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.get<any>(`/streams/deployments/history/${name}`, {headers}).pipe(
-      map(items => items.map(StreamHistory.parse)),
-      catchError(ErrorUtils.catchError)
-    );
+    return this.httpClient
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `streams/deployments/history/${name}`, {headers})
+      .pipe(
+        map(items => items.map(StreamHistory.parse)),
+        catchError(ErrorUtils.catchError)
+      );
   }
 
   getApplications(name: string): Observable<any[] | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any[]>(`/streams/definitions/${name}/applications`, {headers})
+      .get<any[]>(UrlUtilities.calculateBaseApiUrl() + `streams/definitions/${name}/applications`, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   rollbackStream(streamHistory: StreamHistory): Observable<HttpResponse<any>> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .post<any>(`/streams/deployments/rollback/${streamHistory.stream}/${streamHistory.version}`, {headers})
+      .post<any>(
+        UrlUtilities.calculateBaseApiUrl() +
+          `streams/deployments/rollback/${streamHistory.stream}/${streamHistory.version}`,
+        {headers}
+      )
       .pipe(catchError(ErrorUtils.catchError));
   }
 }

@@ -5,6 +5,7 @@ import {DocService} from '../../shared/service/doc.service';
 import {ModalService} from '../../../shared/service/modal.service';
 import {App, ApplicationType} from '../../../shared/model/app.model';
 import {TaskPropertiesDialogComponent} from '../properties/task-properties-dialog-component';
+import {UrlUtilities} from '../../../url-utilities.service';
 
 /**
  * Component for displaying application properties and capturing their values.
@@ -24,6 +25,8 @@ export class TaskNodeComponent extends NodeComponent {
 
   @ViewChild('nodeTooltip')
   nodeTooltipElement: ElementRef;
+
+  assetUrl = UrlUtilities.calculateAssetUrl();
 
   constructor(docService: DocService, private modalService?: ModalService) {
     super(docService);

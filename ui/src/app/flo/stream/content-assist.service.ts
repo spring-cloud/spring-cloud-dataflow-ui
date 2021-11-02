@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {HttpUtils} from '../../shared/support/http.utils';
+import {UrlUtilities} from '../../url-utilities.service';
 
 @Injectable()
 export class ContentAssistService {
@@ -12,7 +13,7 @@ export class ContentAssistService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams().append('start', prefix).append('defaultLevel', '1');
     return this.httpClient
-      .get<any>('/completions/stream', {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'completions/stream', {headers, params})
       .pipe(map(jsonResponse => jsonResponse.proposals));
   }
 }

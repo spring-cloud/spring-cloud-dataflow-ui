@@ -8,6 +8,7 @@ import {aboutFeatureKey, AboutState, getAbout, getFeatures, getMonitoring, State
 import {loaded} from '../store/about.action';
 import {parse} from '../store/about.support';
 import {LOAD} from '../../tests/data/about';
+import {UrlUtilities} from '../../url-utilities.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AboutService {
   constructor(private httpClient: HttpClient, private store: Store<State>) {}
 
   load(): Observable<AboutState | unknown> {
-    return this.httpClient.get<any>('/about').pipe(
+    return this.httpClient.get<any>(UrlUtilities.calculateBaseApiUrl() + 'about').pipe(
       map(parse),
       map((about: AboutState) => {
         this.store.dispatch(loaded(about));

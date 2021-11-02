@@ -12,6 +12,7 @@ import {
   ValuedConfigurationMetadataProperty,
   ValuedConfigurationMetadataPropertyList
 } from '../model/detailed-app.model';
+import {UrlUtilities} from '../../url-utilities.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +30,14 @@ export class TaskService {
       params = params.append('sort', `${sort},${order}`);
     }
     return this.httpClient
-      .get<any>('/tasks/definitions', {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'tasks/definitions', {headers, params})
       .pipe(map(TaskPage.parse), catchError(ErrorUtils.catchError));
   }
 
   getTask(name: string, manifest = false): Observable<Task | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any>(`/tasks/definitions/${name}?manifest=${manifest}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/definitions/${name}?manifest=${manifest}`, {headers})
       .pipe(map(Task.parse), catchError(ErrorUtils.catchError));
   }
 
@@ -46,13 +47,15 @@ export class TaskService {
       .append('name', name)
       .append('description', description);
     const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient.post('/tasks/definitions', {}, {headers, params}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient
+      .post(UrlUtilities.calculateBaseApiUrl() + 'tasks/definitions', {}, {headers, params})
+      .pipe(catchError(ErrorUtils.catchError));
   }
 
   destroyTask(task: Task): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .delete('/tasks/definitions/' + task.name, {headers, observe: 'response'})
+      .delete(UrlUtilities.calculateBaseApiUrl() + 'tasks/definitions/' + task.name, {headers, observe: 'response'})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -69,29 +72,31 @@ export class TaskService {
     if (props) {
       params = params.append('properties', props);
     }
-    return this.httpClient.post<string>('/tasks/executions', {}, {headers, params}).pipe(
-      map(body => {
-        const parsed = parseInt(body, 10);
-        if (isNaN(parsed)) {
-          // sanity check if we get something unexpected
-          throw new Error(`Can't parse ${body} as executionId`);
-        }
-        return parsed;
-      }),
-      catchError(ErrorUtils.catchError)
-    );
+    return this.httpClient
+      .post<string>(UrlUtilities.calculateBaseApiUrl() + 'tasks/executions', {}, {headers, params})
+      .pipe(
+        map(body => {
+          const parsed = parseInt(body, 10);
+          if (isNaN(parsed)) {
+            // sanity check if we get something unexpected
+            throw new Error(`Can't parse ${body} as executionId`);
+          }
+          return parsed;
+        }),
+        catchError(ErrorUtils.catchError)
+      );
   }
 
   executionStop(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .post<any>(`/tasks/executions/${taskExecution.executionId}`, {headers})
+      .post<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   executionClean(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const url = `/tasks/executions/${taskExecution.executionId}?action=REMOVE_DATA`;
+    const url = UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}?action=REMOVE_DATA`;
     return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -103,16 +108,17 @@ export class TaskService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const paramCompleted = completed ? '&completed=true' : '';
     const paramTask = task ? `&name=${task.name}` : '';
-    const url = `/tasks/executions?action=CLEANUP,REMOVE_DATA${paramCompleted}${paramTask}`;
+    const url =
+      UrlUtilities.calculateBaseApiUrl() + `tasks/executions?action=CLEANUP,REMOVE_DATA${paramCompleted}${paramTask}`;
     return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   getTaskExecutionsCount(task?: Task): Observable<{completed: number; all: number} | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    let url = '/tasks/info/executions';
+    let url = UrlUtilities.calculateBaseApiUrl() + 'tasks/info/executions';
     let url2 = `${url}?completed=true`;
     if (task) {
-      url = `/tasks/info/executions?name=${task.name}`;
+      url = UrlUtilities.calculateBaseApiUrl() + `tasks/info/executions?name=${task.name}`;
       url2 = `${url}&completed=true`;
     }
     return this.httpClient.get<any>(url, {headers}).pipe(
@@ -144,14 +150,14 @@ export class TaskService {
       params = params.append('sort', `${sort},${order}`);
     }
     return this.httpClient
-      .get<any>('/tasks/executions', {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'tasks/executions', {headers, params})
       .pipe(map(TaskExecutionPage.parse), catchError(ErrorUtils.catchError));
   }
 
   getExecution(executionId: string): Observable<TaskExecution | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     return this.httpClient
-      .get<any>(`/tasks/executions/${executionId}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${executionId}`, {headers})
       .pipe(map(TaskExecution.parse), catchError(ErrorUtils.catchError));
   }
 
@@ -167,7 +173,9 @@ export class TaskService {
       });
     }
     return this.httpClient
-      .get<any>(`/tasks/logs/${taskExecution.externalExecutionId}${platform}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}${platform}`, {
+        headers
+      })
       .pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -175,13 +183,13 @@ export class TaskService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = HttpUtils.getPaginationParams(0, 1000);
     return this.httpClient
-      .get<any>('/tasks/platforms', {params, headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'tasks/platforms', {params, headers})
       .pipe(map(PlatformTaskList.parse), catchError(ErrorUtils.catchError));
   }
 
   getCtrOptions(): Observable<ValuedConfigurationMetadataProperty[] | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const url = '/tasks/ctr/options';
+    const url = UrlUtilities.calculateBaseApiUrl() + 'tasks/ctr/options';
     return this.httpClient
       .get<any>(url, {headers})
       .pipe(map(ValuedConfigurationMetadataPropertyList.parse), catchError(ErrorUtils.catchError));
