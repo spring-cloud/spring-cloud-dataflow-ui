@@ -156,13 +156,6 @@
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							<directory>ui</directory>
-							<includes>
-								<include>package-lock.json</include>
-							</includes>
-							<followSymlinks>false</followSymlinks>
-						</fileset>
-						<fileset>
 							<directory>ui/dist</directory>
 							<followSymlinks>false</followSymlinks>
 						</fileset>
