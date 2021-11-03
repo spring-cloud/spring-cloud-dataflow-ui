@@ -22,7 +22,7 @@ export class ToolsComponent {
   taskImportModal: TaskImportComponent;
   @ViewChild('cleanupModal', {static: true})
   cleanupModal: CleanupComponent;
-  baseUrl = UrlUtilities.calculateBaseUrl();
+  baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
   constructor(private notificationService: NotificationService) {}
 

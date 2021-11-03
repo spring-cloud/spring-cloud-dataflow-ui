@@ -9,7 +9,7 @@ import {UrlUtilities} from "../../url-utilities.service";
 })
 export class UserComponent {
   loggedinUser$ = this.securityService.loggedinUser();
-  baseUrl = UrlUtilities.calculateBaseUrl();
+  baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
   constructor(private securityService: SecurityService, private router: Router) {}
 

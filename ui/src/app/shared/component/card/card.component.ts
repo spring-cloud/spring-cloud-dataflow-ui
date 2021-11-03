@@ -20,7 +20,7 @@ export class CardComponent implements AfterContentInit {
   @Output() onChange = new EventEmitter();
 
   context: ContextModel[];
-  baseUrl = UrlUtilities.calculateBaseUrl();
+  baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
   constructor(private contextService: ContextService) {}
 

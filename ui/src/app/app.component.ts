@@ -11,7 +11,7 @@ import {UrlUtilities} from "./url-utilities.service";
 export class AppComponent {
   shouldProtect = this.securityService.shouldProtect();
   securityEnabled = this.securityService.securityEnabled();
-  baseUrl = UrlUtilities.calculateBaseUrl();
+  baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
   constructor(private securityService: SecurityService, private modalService: ModalService) {}
 
