@@ -491,7 +491,7 @@
                     <div class="cell">
                       <clr-select-container style="margin-top: 0">
                         <select tabindex="{{ 300 }}" [formControlName]="app.name" clrSelect>
-                          <option value="">Default version ({{ app.version }})</option>
+                          <option value="">{{ getLabelAppVersion(builder.taskLaunchConfig, app) }}</option>
                           <option *ngFor="let version of app.versions" [value]="version.version">
                             {{ version.version }}
                           </option>

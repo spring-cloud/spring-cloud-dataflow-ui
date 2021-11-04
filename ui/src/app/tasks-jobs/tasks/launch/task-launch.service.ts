@@ -15,6 +15,7 @@ import {ToolsService} from '../../../flo/task/tools.service';
 import get from 'lodash.get';
 import set from 'lodash.set';
 import {Platform} from '../../../shared/model/platform.model';
+import {TaskExecutionPage} from 'src/app/shared/model/task-execution.model';
 
 @Injectable()
 export class TaskLaunchService {
@@ -77,141 +78,145 @@ export class TaskLaunchService {
   constructor(private taskService: TaskService, private appService: AppService, private toolsService: ToolsService) {}
 
   config(id: string): Observable<TaskLaunchConfig> {
-    return this.taskService
-      .getTask(id, true)
-      .pipe(
-        mergeMap((task: Task) => {
-          const taskConversion = this.toolsService.parseTaskTextToGraph(task.dslText);
-          const platforms = this.taskService.getPlatforms();
-          return zip(of(task), taskConversion, platforms);
-        })
-      )
-      .pipe(
-        mergeMap(([task, taskConversion, platforms]) => {
-          const appNames = taskConversion.graph.nodes
-            .filter(node => node.name !== 'START' && node.name !== 'END')
-            .map(node => get(node, 'name') as string);
-          const appVersions = from(appNames)
-            .pipe(distinct())
-            .pipe(
-              mergeMap(appName =>
-                this.appService.getAppVersions(appName + '', 'task' as any).pipe(
-                  map(apps =>
-                    apps.reduce((mapAccumulator, app) => {
-                      const a = mapAccumulator.get(app.name);
-                      if (a) {
-                        if (app.defaultVersion) {
-                          a.version = app.version;
-                        }
-                        a.versions = [...a.versions, ...[app]];
-                      } else {
-                        mapAccumulator.set(app.name, {
-                          version: app.defaultVersion ? app.version : null,
-                          versions: [app]
-                        });
+    return this.taskService.getTask(id, true).pipe(
+      mergeMap((task: Task) => {
+        const taskConversion = this.toolsService.parseTaskTextToGraph(task.dslText);
+        const platforms = this.taskService.getPlatforms();
+        return zip(of(task), taskConversion, platforms);
+      }),
+      mergeMap(([task, taskConversion, platforms]) => {
+        const appNames = taskConversion.graph.nodes
+          .filter(node => node.name !== 'START' && node.name !== 'END')
+          .map(node => get(node, 'name') as string);
+        const appVersions = from(appNames)
+          .pipe(distinct())
+          .pipe(
+            mergeMap(appName =>
+              this.appService.getAppVersions(appName + '', 'task' as any).pipe(
+                map(apps =>
+                  apps.reduce((mapAccumulator, app) => {
+                    const a = mapAccumulator.get(app.name);
+                    if (a) {
+                      if (app.defaultVersion) {
+                        a.version = app.version;
                       }
-                      return mapAccumulator;
-                    }, new Map<string, {version: string; versions: App[]}>())
-                  )
+                      a.versions = [...a.versions, ...[app]];
+                    } else {
+                      mapAccumulator.set(app.name, {
+                        version: app.defaultVersion ? app.version : null,
+                        versions: [app]
+                      });
+                    }
+                    return mapAccumulator;
+                  }, new Map<string, {version: string; versions: App[]}>())
                 )
               )
             )
-            // we should have distinct maps for all apps so
-            // its safe to just blindly combine maps and get one final
-            .pipe(reduce((acc, val) => new Map([...acc, ...val])));
-          return zip(of(task), of(taskConversion), of(platforms), appVersions);
-        })
-      )
-      .pipe(
-        map(([task, taskConversion, platforms, appVersions]) => {
-          const c = new TaskLaunchConfig();
-          if (task.lastTaskExecution) {
-            c.deploymentProperties = task.lastTaskExecution
-              .getDeploymentPropertiesToArray()
-              .filter(tuple => tuple[1] !== '******')
-              .map(tuple => `${tuple[0]}=${tuple[1]}`);
-          } else {
-            c.deploymentProperties = [];
+          )
+          // we should have distinct maps for all apps so
+          // its safe to just blindly combine maps and get one final
+          .pipe(reduce((acc, val) => new Map([...acc, ...val])));
+        const lastExecution = this.taskService.getExecutions(0, 1, task.name, '', '').pipe(
+          map((res: TaskExecutionPage) => {
+            if (res.items?.length > 0) {
+              return res.items[0];
+            }
+            return null;
+          })
+        );
+        return zip(of(task), of(taskConversion), of(platforms), appVersions, lastExecution);
+      }),
+      map(([task, taskConversion, platforms, appVersions, lastExecution]) => {
+        const c = new TaskLaunchConfig();
+        if (task.lastTaskExecution) {
+          c.deploymentProperties = task.lastTaskExecution
+            .getDeploymentPropertiesToArray()
+            .filter(tuple => tuple[1] !== '******')
+            .map(tuple => `${tuple[0]}=${tuple[1]}`);
+        } else {
+          c.deploymentProperties = [];
+        }
+
+        c.id = id;
+
+        c.apps = taskConversion.graph.nodes
+          .filter(node => node.name !== 'START' && node.name !== 'END')
+          .map(node => {
+            const n = get(node, 'name') as string;
+
+            return {
+              origin: get(node, 'name'),
+              name: get(node.metadata, 'label') || get(node, 'name'),
+              type: 'task',
+              version: appVersions.get(n).version,
+              versions: appVersions.get(n).versions,
+              options: null,
+              optionsState: {
+                isLoading: false,
+                isOnError: false,
+                isInvalid: false
+              }
+            };
+          });
+
+        c.deployers = [
+          {
+            id: 'memory',
+            name: 'memory',
+            form: 'autocomplete',
+            type: 'java.lang.Integer',
+            value: null,
+            defaultValue: null,
+            suffix: 'MB'
+          },
+          {
+            id: 'cpu',
+            name: 'cpu',
+            form: 'autocomplete',
+            type: 'java.lang.Integer',
+            value: null,
+            defaultValue: null,
+            suffix: 'Core(s)'
+          },
+          {
+            id: 'disk',
+            name: 'disk',
+            form: 'autocomplete',
+            type: 'java.lang.Integer',
+            value: null,
+            defaultValue: null,
+            suffix: 'MB'
           }
+        ];
 
-          c.id = id;
+        c.platform = {
+          id: 'platform',
+          name: 'platform',
+          form: 'select',
+          type: 'java.lang.String',
+          defaultValue: '',
+          values: (platforms as Array<Platform>).map((platform: Platform) => ({
+            key: platform.name,
+            name: platform.name,
+            type: platform.type,
+            options: platform.options
+          }))
+        };
 
-          c.apps = taskConversion.graph.nodes
-            .filter(node => node.name !== 'START' && node.name !== 'END')
-            .map(node => {
-              const n = get(node, 'name') as string;
+        // just set empty options and loading state,
+        // will get loaded later
+        c.ctr = {
+          options: [],
+          optionsState: {
+            isLoading: true,
+            isOnError: false
+          }
+        };
 
-              return {
-                origin: get(node, 'name'),
-                name: get(node.metadata, 'label') || get(node, 'name'),
-                type: 'task',
-                version: appVersions.get(n).version,
-                versions: appVersions.get(n).versions,
-                options: null,
-                optionsState: {
-                  isLoading: false,
-                  isOnError: false,
-                  isInvalid: false
-                }
-              };
-            });
-
-          c.deployers = [
-            {
-              id: 'memory',
-              name: 'memory',
-              form: 'autocomplete',
-              type: 'java.lang.Integer',
-              value: null,
-              defaultValue: null,
-              suffix: 'MB'
-            },
-            {
-              id: 'cpu',
-              name: 'cpu',
-              form: 'autocomplete',
-              type: 'java.lang.Integer',
-              value: null,
-              defaultValue: null,
-              suffix: 'Core(s)'
-            },
-            {
-              id: 'disk',
-              name: 'disk',
-              form: 'autocomplete',
-              type: 'java.lang.Integer',
-              value: null,
-              defaultValue: null,
-              suffix: 'MB'
-            }
-          ];
-
-          c.platform = {
-            id: 'platform',
-            name: 'platform',
-            form: 'select',
-            type: 'java.lang.String',
-            defaultValue: '',
-            values: (platforms as Array<Platform>).map((platform: Platform) => ({
-              key: platform.name,
-              name: platform.name,
-              type: platform.type,
-              options: platform.options
-            }))
-          };
-
-          // just set empty options and loading state,
-          // will get loaded later
-          c.ctr = {
-            options: [],
-            optionsState: {
-              isLoading: true,
-              isOnError: false
-            }
-          };
-          return c;
-        })
-      );
+        c.lastExecution = lastExecution;
+        return c;
+      })
+    );
   }
 
   ctrOptions(): Observable<ValuedConfigurationMetadataProperty[] | unknown> {

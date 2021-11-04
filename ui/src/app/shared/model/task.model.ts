@@ -105,6 +105,8 @@ export class TaskLaunchConfig {
     };
   };
 
+  lastExecution?: TaskExecution;
+
   deploymentProperties: string[];
 
   constructor() {}

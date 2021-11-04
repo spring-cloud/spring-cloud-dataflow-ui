@@ -28,6 +28,7 @@ import {PropertiesDialogComponent} from '../../../../flo/shared/properties/prope
 import {StreamAppPropertiesSource, StreamHead} from '../../../../flo/stream/properties/stream-properties-source';
 import {TaskPropertiesDialogComponent} from '../../../../flo/task/properties/task-properties-dialog-component';
 import {ValuedConfigurationMetadataProperty} from '../../../../shared/model/detailed-app.model';
+import {get} from 'lodash';
 
 export class AppPropertiesSource implements StreamAppPropertiesSource {
   private options: Array<any>;
@@ -732,6 +733,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
           );
         }
       });
+
       control.setValue(getValue(app.defaultValue));
       appsVersion.addControl(app.name, control);
     });
@@ -1116,6 +1118,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
     } else {
       this.launch.emit({props: this.getProperties(), args: this.getArguments()});
     }
+  }
+
+  getLabelAppVersion(taskLaunchConfig, app) {
+    const lastVersion = get(taskLaunchConfig?.lastExecution?.deploymentProperties, `version.${app.name}`);
+    if (lastVersion && app.version !== lastVersion) {
+      return `Last launch (${lastVersion})`;
+    }
+    return `Default version (${app.version})`;
   }
 
   hasMigrations(): boolean {
