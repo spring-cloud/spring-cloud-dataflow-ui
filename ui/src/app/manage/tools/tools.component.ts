@@ -5,6 +5,7 @@ import {StreamExportComponent} from './stream/export.component';
 import {StreamImportComponent} from './stream/import.component';
 import {TaskExportComponent} from './task/export.component';
 import {TaskImportComponent} from './task/import.component';
+import {UrlUtilities} from '../../url-utilities.service';
 
 @Component({
   selector: 'app-tools',
@@ -21,6 +22,7 @@ export class ToolsComponent {
   taskImportModal: TaskImportComponent;
   @ViewChild('cleanupModal', {static: true})
   cleanupModal: CleanupComponent;
+  baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
   constructor(private notificationService: NotificationService) {}
 

@@ -1,9 +1,9 @@
 import {AfterContentInit, Component, ContentChild, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
 import get from 'lodash.get';
 import {map, mergeMap} from 'rxjs/operators';
-import {SettingModel} from '../../model/setting.model';
 import {ContextService} from '../../service/context.service';
 import {ContextModel} from '../../model/context.model';
+import {UrlUtilities} from '../../../url-utilities.service';
 
 @Component({
   selector: 'app-view-card',
@@ -20,6 +20,7 @@ export class CardComponent implements AfterContentInit {
   @Output() onChange = new EventEmitter();
 
   context: ContextModel[];
+  baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
   constructor(private contextService: ContextService) {}
 
