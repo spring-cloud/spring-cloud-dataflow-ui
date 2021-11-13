@@ -15,7 +15,7 @@ import {ToolsService} from '../../../flo/task/tools.service';
 import get from 'lodash.get';
 import set from 'lodash.set';
 import {Platform} from '../../../shared/model/platform.model';
-import {TaskExecutionPage} from 'src/app/shared/model/task-execution.model';
+import {TaskExecutionPage} from '../../../shared/model/task-execution.model';
 
 @Injectable()
 export class TaskLaunchService {
