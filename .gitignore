@@ -11,6 +11,7 @@ ui/dist
 ui/tmp
 ui/out-tsc
 ui/.c9/
+ui/.angular/
 
 ui/.sass-cache
 ui/connect.lock
