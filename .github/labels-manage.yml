@@ -163,3 +163,9 @@
 - name: branch/3.0.x
   color: BFDADC
   description: Issue for a branch
+- name: branch/3.1.x
+  color: BFDADC
+  description: Issue for a branch
+- name: branch/3.2.x
+  color: BFDADC
+  description: Issue for a branch
