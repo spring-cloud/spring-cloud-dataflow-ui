@@ -87,8 +87,8 @@ describe('apps/register/register.component.ts', () => {
     fixture.detectChanges();
     expect(component.isValid()).toBeTruthy();
     expect(component.noValue()).toBeFalsy();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Register application(s).');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toContain('1 App(s) registered');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toContain($localize `Register application(s).`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toContain('1 '+ $localize `App(s) registered`);
     expect(navigate.calls.mostRecent().args[0].toString()).toBe('apps');
   });
 
@@ -96,9 +96,9 @@ describe('apps/register/register.component.ts', () => {
     fixture.detectChanges();
     fixture.debugElement.query(By.css('button[name=register]')).nativeElement.click();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid application');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `Invalid application`);
     expect(NotificationServiceMock.mock.errorNotification[0].message).toBe(
-      'Please, register at least one application.'
+      $localize `Please, register at least one application.`
     );
   });
 
@@ -121,8 +121,8 @@ describe('apps/register/register.component.ts', () => {
     fixture.detectChanges();
     fixture.debugElement.query(By.css('button[name=register]')).nativeElement.click();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid application(s)');
-    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Some field(s) are missing or invalid.');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `Invalid application(s)`);
+    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe($localize `Some field(s) are missing or invalid.`);
   });
 
   it('should handle error on run', () => {
@@ -137,6 +137,6 @@ describe('apps/register/register.component.ts', () => {
     fixture.detectChanges();
     fixture.debugElement.query(By.css('button[name=register]')).nativeElement.click();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
   });
 });

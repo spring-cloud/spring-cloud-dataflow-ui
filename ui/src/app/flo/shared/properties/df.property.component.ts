@@ -1,7 +1,6 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormGroup, AbstractControl, FormControl} from '@angular/forms';
-import {DynamicFormPropertyComponent, Properties} from 'spring-flo';
-import PropertyFilter = Properties.PropertyFilter;
+import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {FormGroup, AbstractControl} from '@angular/forms';
+import {Properties} from 'spring-flo';
 
 @Component({
   selector: 'clr-df-property',

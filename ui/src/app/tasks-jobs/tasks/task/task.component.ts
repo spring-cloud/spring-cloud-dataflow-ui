@@ -82,7 +82,7 @@ export class TaskComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           if (HttpError.is404(error)) {
             this.back();
           }
@@ -97,7 +97,7 @@ export class TaskComponent implements OnInit {
         this.loadingSchedules = false;
       },
       error => {
-        this.notificationService.error('An error occured', error);
+        this.notificationService.error($localize `An error occurred`, error);
         this.loadingSchedules = false;
       }
     );
@@ -144,7 +144,7 @@ export class TaskComponent implements OnInit {
       },
       error => {
         this.loadingExecution = false;
-        this.notificationService.error('An error occured', error);
+        this.notificationService.error($localize `An error occurred`, error);
       }
     );
   }
@@ -157,7 +157,7 @@ export class TaskComponent implements OnInit {
   }
 
   openLog(execution: TaskExecution): void {
-    this.logModal.open(`Log task execution ${execution.executionId}`, execution);
+    this.logModal.open($localize `Log task execution` + ` ${execution.executionId}`, execution);
   }
 
   navigateExecution(executionId: number): void {

@@ -1,23 +1,33 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning">
-  <h3 class="modal-title">Confirm Clean Up Task Execution(s)</h3>
+  <h3 class="modal-title"><ng-container i18n>Confirm Clean Up Task Execution(s)</ng-container></h3>
   <div class="modal-body" *ngIf="!isRunning && !loading">
     <p>
-      This action will remove <strong>{{ status === 'all' ? count.all : count.completed }} execution(s)</strong>. Are
-      you sure?
+      <ng-container i18n>This action will remove</ng-container> <strong>{{ status === 'all' ? count.all : count.completed }} <ng-container i18n>execution(s)</ng-container></strong>. <ng-container i18n>Are
+      you sure?</ng-container>
     </p>
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Removing data...
+    <ng-container i18n>Removing data...</ng-container>
   </div>
   <div class="modal-body" *ngIf="loading">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Loading...
+    <ng-container i18n>Loading...</ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
-      <span>Clean up Execution(s)</span>
+    <button type="button"
+            class="btn btn-outline"
+            (click)="isOpen = false"
+            [disabled]="isRunning"
+            i18n>
+      Cancel
+    </button>
+    <button id="btn-stop"
+            type="button"
+            class="btn btn-danger"
+            (click)="clean()"
+            [disabled]="isRunning">
+      <span><ng-container i18n>Clean up Execution(s)</ng-container></span>
     </button>
   </div>
 </clr-modal>

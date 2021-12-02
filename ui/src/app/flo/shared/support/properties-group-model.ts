@@ -31,11 +31,11 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
                 return null;
               } else {
                 return {
-                  error: 'No valid value set'
+                  error: $localize `No valid value set`
                 };
               }
             },
-            errorData: [{id: 'select', message: 'Value must be set!'}]
+            errorData: [{id: 'select', message: $localize `Value must be set!`}]
           });
         }
       }
@@ -86,12 +86,12 @@ export class PropertiesGroupModel extends Properties.PropertiesGroupModel {
                     return null;
                   } else {
                     return {
-                      error: 'No valid value set'
+                      error: $localize `No valid value set`
                     };
                   }
                 },
                 // validator: Validators.email,
-                errorData: [{id: 'select', message: 'Value must be set!'}]
+                errorData: [{id: 'select', message: $localize `Value must be set!`}]
               }
             );
           } else if (property.name === 'password') {

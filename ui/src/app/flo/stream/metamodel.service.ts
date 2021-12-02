@@ -129,12 +129,12 @@ export class MetamodelService implements Flo.Metamodel {
         this.createMetadata(
           'tap',
           OTHER_GROUP_TYPE,
-          'Tap into an existing app',
+          $localize `Tap into an existing app`,
           new Map<string, Flo.PropertyMetadata>().set('name', {
-            name: 'Source Destination Name',
+            name: $localize `Source Destination Name`,
             id: 'name',
             defaultValue: '',
-            description: 'the identifier of the producer endpoint in a stream in the form <stream-name>.<app/app-name>',
+            description: $localize `the identifier of the producer endpoint in a stream in the form <stream-name>.<app/app-name>`,
             pattern: '[\\w_]+[\\w_-]*\\.[\\w_]+[\\w_-]*'
           }),
           {
@@ -147,12 +147,12 @@ export class MetamodelService implements Flo.Metamodel {
         this.createMetadata(
           'destination',
           OTHER_GROUP_TYPE,
-          'A destination channel that can be used as a source or a sink',
+          $localize `A destination channel that can be used as a source or a sink`,
           new Map<string, Flo.PropertyMetadata>().set('name', {
             name: 'name',
             id: 'name',
             defaultValue: '',
-            description: 'the input/output destination name',
+            description: $localize `the input/output destination name`,
             pattern: '[\\w_]+[\\w_-]*'
           }),
           {

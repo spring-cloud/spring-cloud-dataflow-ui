@@ -27,11 +27,11 @@ export class DestroyComponent {
       data => {
         if (data.length === 1) {
           this.notificationService.success(
-            'Destroy stream',
-            'Successfully removed stream "' + this.streams[0].name + '".'
+            $localize `Destroy stream`,
+            $localize `Successfully removed stream "` + this.streams[0].name + '".'
           );
         } else {
-          this.notificationService.success('Destroy streams', `${data.length} stream(s) destroyed.`);
+          this.notificationService.success($localize `Destroy streams`, `${data.length}` + $localize ` stream(s) destroyed.`);
         }
         this.isRunning = false;
         this.onDestroyed.emit(data);
@@ -41,8 +41,8 @@ export class DestroyComponent {
       error => {
         this.isRunning = false;
         this.notificationService.error(
-          'An error occurred',
-          'An error occurred while bulk deleting Streams. ' + 'Please check the server logs for more details.'
+          $localize `An error occurred`,
+          $localize `An error occurred while bulk deleting Streams. Please check the server logs for more details.`
         );
         this.isOpen = false;
         this.streams = null;

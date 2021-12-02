@@ -143,7 +143,7 @@ export class MetamodelService implements Flo.Metamodel {
         this.createMetadata(
           START_NODE_TYPE,
           CONTROL_GROUP_TYPE,
-          'Start element for the composed task. Global options for the task are set on this element.',
+          $localize `Start element for the composed task. Global options for the task are set on this element.`,
           new Map<string, Flo.PropertyMetadata>().set('timeout', {
             id: 'timeout',
             name: 'timeout',
@@ -161,7 +161,7 @@ export class MetamodelService implements Flo.Metamodel {
         this.createMetadata(
           END_NODE_TYPE,
           CONTROL_GROUP_TYPE,
-          'End element for a flow or the entire composed task.',
+          $localize `End element for a flow or the entire composed task.`,
           new Map<string, Flo.PropertyMetadata>(),
           {
             noPaletteEntry: true,
@@ -174,7 +174,7 @@ export class MetamodelService implements Flo.Metamodel {
         this.createMetadata(
           SYNC_NODE_TYPE,
           CONTROL_GROUP_TYPE,
-          'After a split, a sync node pulls the threads of parallel tasks back together',
+          $localize `After a split, a sync node pulls the threads of parallel tasks back together`,
           new Map<string, Flo.PropertyMetadata>(),
           {
             noEditableProps: true
@@ -188,12 +188,12 @@ export class MetamodelService implements Flo.Metamodel {
     const metadata = this.createMetadata(
       'transition',
       'links',
-      'Transition between tasks',
+      $localize `Transition between tasks`,
       new Map<string, Flo.PropertyMetadata>().set('ExitStatus', {
         id: 'ExitStatus',
         name: 'Exit Status',
         defaultValue: '',
-        description: 'Exit status triggering transition to alternate task flow route'
+        description: $localize `Exit status triggering transition to alternate task flow route`
       }),
       {
         unselectable: true

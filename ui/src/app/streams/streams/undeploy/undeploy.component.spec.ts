@@ -87,7 +87,7 @@ describe('apps/undeploy/undeploy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

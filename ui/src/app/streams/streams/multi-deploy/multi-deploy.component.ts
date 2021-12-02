@@ -93,7 +93,7 @@ export class MultiDeployComponent implements OnInit {
 
   runDeploy(): void {
     if (!this.isValid()) {
-      this.notificationService.error('Invalid properties', 'Some field(s) are missing or invalid.');
+      this.notificationService.error($localize `Invalid properties`, $localize `Some field(s) are missing or invalid.`);
     } else {
       this.isRunning = true;
       const cleanValue = v =>
@@ -130,12 +130,12 @@ export class MultiDeployComponent implements OnInit {
       });
       forkJoin([...requests]).subscribe(
         () => {
-          this.notificationService.success('Deploy success', `Successfully deployed ${requests.length} stream(s).`);
+          this.notificationService.success($localize `Deploy success`, $localize `Successfully deployed`+ `${requests.length}`+ $localize ` stream(s).`);
           this.back();
         },
         error => {
           this.isRunning = false;
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
         }
       );
     }

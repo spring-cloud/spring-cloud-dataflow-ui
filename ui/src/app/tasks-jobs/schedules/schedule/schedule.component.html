@@ -3,8 +3,18 @@
 </h1>
 
 <div class="datagrid-action-bar">
-  <button type="button" class="btn btn-sm btn-secondary" (click)="detailsTask()">Task details</button>
-  <button type="button" class="btn btn-sm btn-outline-danger" (click)="destroy()">Delete schedule</button>
+  <button type="button"
+          class="btn btn-sm btn-secondary"
+          (click)="detailsTask()"
+          i18n>
+    Task details
+  </button>
+  <button type="button"
+          class="btn btn-sm btn-outline-danger"
+          (click)="destroy()"
+          i18n>
+    Delete schedule
+  </button>
 </div>
 
 <div *ngIf="!isLoading">
@@ -14,21 +24,21 @@
         <ng-template>
           <div class="block card-block-keyvalue">
             <div class="row">
-              <div class="key">Name</div>
+              <div class="key"><ng-container i18n>Name</ng-container></div>
               <div class="value">{{ schedule.name }}</div>
             </div>
             <div class="row">
-              <div class="key">Task name</div>
+              <div class="key"><ng-container i18n>Task name</ng-container></div>
               <div class="value">
                 <a [routerLink]="'/tasks-jobs/tasks/' + schedule.taskName">{{ schedule.taskName }}</a>
               </div>
             </div>
             <div class="row">
-              <div class="key">Platform</div>
+              <div class="key"><ng-container i18n>Platform</ng-container></div>
               <div class="value">{{ schedule.platform || 'N/A' }}</div>
             </div>
             <div class="row">
-              <div class="key">Cron Expr.</div>
+              <div class="key"><ng-container i18n>Cron Expr.</ng-container></div>
               <div class="value">{{ schedule.cronExpression || 'N/A' }}</div>
             </div>
           </div>
@@ -41,19 +51,19 @@
         <ng-template>
           <div class="block card-block-keyvalue">
             <div class="row">
-              <div class="key">Name</div>
+              <div class="key"><ng-container i18n>Name</ng-container></div>
               <div class="value">
                 <a [routerLink]="'/tasks-jobs/tasks/' + task.name">{{ task.name }}</a>
               </div>
             </div>
             <div class="row">
-              <div class="key">Definition</div>
+              <div class="key"><ng-container i18n>Definition</ng-container></div>
               <div class="value">
                 <span class="dsl-text">{{ task.dslText }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Status</div>
+              <div class="key"><ng-container i18n>Status</ng-container></div>
               <div class="value">
                 <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
               </div>
@@ -67,7 +77,7 @@
 
 <div *ngIf="isLoading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading schedule...
+  <ng-container i18n>Loading schedule...</ng-container>
 </div>
 
 <app-schedule-destroy #destroyModal (onDestroyed)="back()"></app-schedule-destroy>

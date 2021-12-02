@@ -52,7 +52,7 @@ export class ScheduleComponent implements OnInit {
           this.isLoading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           if (HttpError.is404(error)) {
             this.back();
           }

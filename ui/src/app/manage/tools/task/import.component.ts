@@ -10,14 +10,14 @@ import {ImportExportService} from '../../../shared/service/import-export.service
       [clrModalClosable]="view !== 'loading'"
       [clrModalSize]="view === 'result' ? 'lg' : 'md'"
     >
-      <h3 class="modal-title">Import task(s)</h3>
+      <h3 class="modal-title"><ng-container i18n>Import task(s)</ng-container></h3>
       <div class="modal-body clr-form clr-form-horizontal" *ngIf="view === 'file'">
         <div>
-          You can import your tasks from a <strong>JSON file</strong>.<br />
-          The file needs to be modified for sensitive properties before importing.
+          <ng-container i18n>You can import your tasks from a <strong>JSON file</strong>.<br />
+          The file needs to be modified for sensitive properties before importing.</ng-container>
         </div>
         <div class="clr-form-control clr-row">
-          <label class="clr-col-2 clr-control-label">JSON file</label>
+          <label class="clr-col-2 clr-control-label"><ng-container i18n>JSON file</ng-container></label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-file-input-wrapper">
               <label for="file">
@@ -29,7 +29,7 @@ import {ImportExportService} from '../../../shared/service/import-export.service
           </div>
         </div>
         <clr-checkbox-container class="clr-form-control clr-row">
-          <label class="clr-col-2">Options</label>
+          <label class="clr-col-2"><ng-container i18n>Options</ng-container></label>
           <clr-checkbox-wrapper>
             <input
               type="checkbox"
@@ -39,15 +39,15 @@ import {ImportExportService} from '../../../shared/service/import-export.service
               [(ngModel)]="excludeChildren"
               class="clr-col-10"
             />
-            <label>Exclude children</label>
+            <label><ng-container i18n>Exclude children</ng-container></label>
           </clr-checkbox-wrapper>
         </clr-checkbox-container>
       </div>
       <div class="modal-body" *ngIf="view === 'result'">
         <div>
-          File: <strong>{{ file?.name }}</strong
+          <ng-container i18n>File:</ng-container> <strong>{{ file?.name }}</strong
           ><br />
-          Duration: <strong>{{ result.duration }}s</strong>
+            <ng-container i18n>Duration:</ng-container> <strong>{{ result.duration }}s</strong>
         </div>
         <div *ngIf="result.error.length > 0">
           <h4>{{ result.error.length }} error(s)</h4>
@@ -66,15 +66,15 @@ import {ImportExportService} from '../../../shared/service/import-export.service
                   <span class="dsl-text dsl-truncate">{{ task.dslText }}</span>
                 </div>
                 <div class="error">
-                  Message: {{ task.message }}<br />
-                  Index: {{ i }}
+                  <ng-container i18n>Message:</ng-container> {{ task.message }}<br />
+                    <ng-container i18n>Index:</ng-container> {{ i }}
                 </div>
               </clr-dg-cell>
             </clr-dg-row>
           </clr-datagrid>
         </div>
         <div *ngIf="result.success.length > 0">
-          <h4>{{ result.success.length }} task(s) created</h4>
+          <h4>{{ result.success.length }} <ng-container i18n>task(s) created</ng-container></h4>
           <clr-datagrid class="clr-datagrid-no-fixed-height">
             <clr-dg-column [style.width.px]="10">&nbsp;</clr-dg-column>
             <clr-dg-column>Description</clr-dg-column>
@@ -96,10 +96,14 @@ import {ImportExportService} from '../../../shared/service/import-export.service
       </div>
       <div class="modal-body" *ngIf="view === 'importing'">
         <clr-spinner clrInline clrSmall></clr-spinner>
-        Importing task(s) ...
+        <ng-container i18n>Importing task(s) ...</ng-container>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline" [disabled]="view === 'importing'" (click)="isOpen = false">
+        <button type="button"
+                class="btn btn-outline"
+                [disabled]="view === 'importing'"
+                (click)="isOpen = false"
+                i81n>
           Cancel
         </button>
         <button
@@ -109,7 +113,7 @@ import {ImportExportService} from '../../../shared/service/import-export.service
           [disabled]="view === 'importing'"
           *ngIf="view === 'file'"
         >
-          <span>Import task(s)</span>
+          <span><ng-container i18n>Import task(s)</ng-container></span>
         </button>
       </div>
     </clr-modal>

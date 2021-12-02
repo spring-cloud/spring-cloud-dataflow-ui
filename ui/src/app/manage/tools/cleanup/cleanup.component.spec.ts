@@ -52,8 +52,8 @@ describe('manage/tools/cleanup/cleanup.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up execution(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('12 execution(s) cleaned up.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Clean up execution(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe($localize `12 execution(s) cleaned up.`);
     done();
   });
 });

@@ -72,7 +72,7 @@ describe('apps/apps.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(navigate).toHaveBeenCalledWith('/apps');
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 
@@ -83,8 +83,8 @@ describe('apps/apps.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(navigate).toHaveBeenCalledWith('/apps');
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('No application found.');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
+    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe($localize `No application found.`);
     done();
   });
 
@@ -99,7 +99,7 @@ describe('apps/apps.component.ts', () => {
     const modal = fixture.debugElement.query(By.css('app-unregister'));
     expect(modal).toBeTruthy();
     const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Unregister Application');
+    expect(title.textContent).toContain($localize `Confirm Unregister Application`);
     done();
   });
 
@@ -114,7 +114,7 @@ describe('apps/apps.component.ts', () => {
     const modal = fixture.debugElement.query(By.css('app-version'));
     expect(modal).toBeTruthy();
     const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Manage versions');
+    expect(title.textContent).toContain($localize `Manage versions`);
     done();
   });
 
@@ -123,7 +123,7 @@ describe('apps/apps.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 
@@ -133,7 +133,7 @@ describe('apps/apps.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     expect(navigate).toHaveBeenCalledWith('/apps');
     done();
   });

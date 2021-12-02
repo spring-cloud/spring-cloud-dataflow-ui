@@ -77,7 +77,7 @@ describe('streams/streams/create/create.component.ts', () => {
     component.submit();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(component.operationRunning).toBe('Creation completed');
+    expect(component.operationRunning).toBe($localize `Creation completed`);
     done();
   });
 });

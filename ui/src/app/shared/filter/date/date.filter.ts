@@ -11,16 +11,16 @@ import {DateTime} from 'luxon';
           <div class="alert-icon-wrapper">
             <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
           </div>
-          <span class="alert-text"> Invalid dates. </span>
+          <span class="alert-text"> <ng-container i18n>Invalid dates.</ng-container> </span>
         </div>
       </div>
     </div>
     <clr-input-container>
-      <label>Min date:</label>
+      <label><ng-container i18n>Min date:</ng-container></label>
       <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="min" />
     </clr-input-container>
     <clr-input-container>
-      <label>Max date:</label>
+      <label><ng-container i18n>Max date:</ng-container></label>
       <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="max" />
     </clr-input-container>
   </div>`

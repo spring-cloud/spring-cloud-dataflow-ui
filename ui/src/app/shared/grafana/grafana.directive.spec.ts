@@ -22,18 +22,18 @@ import {RuntimeApp, RuntimeAppInstance} from '../model/runtime.model';
 
 @Component({
   template: ` <div>
-    <button name="bt1" type="button" grafanaDashboardStreams>Dashboard</button>
-    <button name="bt2" type="button" [stream]="{name: 'bar'}" grafanaDashboardStream>Dashboard</button>
-    <button name="bt3" type="button" grafanaDashboardTasks>Dashboard</button>
-    <button name="bt4" type="button" [task]="{name: 'bar'}" grafanaDashboardTask>Dashboard</button>
-    <button name="bt5" type="button" [runtimeApp]="runtimeApp" grafanaDashboardRuntimeApp>Dashboard</button>
-    <button name="bt6" type="button" [instance]="runtimeAppInstance" grafanaDashboardRuntimeInstance>Dashboard</button>
+    <button name="bt1" type="button" grafanaDashboardStreams><ng-container i18n>Dashboard</ng-container></button>
+    <button name="bt2" type="button" [stream]="{name: 'bar'}" grafanaDashboardStream><ng-container i18n>Dashboard</ng-container></button>
+    <button name="bt3" type="button" grafanaDashboardTasks><ng-container i18n>Dashboard</ng-container></button>
+    <button name="bt4" type="button" [task]="{name: 'bar'}" grafanaDashboardTask><ng-container i18n>Dashboard</ng-container></button>
+    <button name="bt5" type="button" [runtimeApp]="runtimeApp" grafanaDashboardRuntimeApp><ng-container i18n>Dashboard</ng-container></button>
+    <button name="bt6" type="button" [instance]="runtimeAppInstance" grafanaDashboardRuntimeInstance><ng-container i18n>Dashboard</ng-container></button>
     <button
       name="bt7"
       type="button"
       [taskExecution]="{taskName: 'bar1', executionId: 'bar2'}"
       grafanaDashboardTaskExecution
-    >
+      i18n>
       Dashboard
     </button>
     <button
@@ -47,7 +47,7 @@ import {RuntimeApp, RuntimeAppInstance} from '../model/runtime.model';
         taskExecutionId: 'bar5'
       }"
       grafanaDashboardJobExecution
-    >
+      i18n>
       Dashboard
     </button>
   </div>`

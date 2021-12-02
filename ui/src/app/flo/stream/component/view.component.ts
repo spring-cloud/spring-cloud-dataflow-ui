@@ -42,7 +42,7 @@ export class StreamFloViewComponent implements OnDestroy, OnChanges {
           this.dsl = streams.map(s => `${s.name}=${s.dslText}`).join('\n');
         },
         error => {
-          this.notificationService.error('An error occured', error);
+          this.notificationService.error($localize `An error occurred`, error);
         }
       );
     } else {
@@ -51,7 +51,7 @@ export class StreamFloViewComponent implements OnDestroy, OnChanges {
           this.dsl = stream.dslText;
         },
         error => {
-          this.notificationService.error('An error occured', error);
+          this.notificationService.error($localize `An error occurred`, error);
         }
       );
     }

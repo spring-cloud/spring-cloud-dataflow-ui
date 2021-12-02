@@ -69,8 +69,8 @@ describe('apps/uri/uri.component.ts', () => {
       expect(inputs.force.checked).toBe(a.force);
       component.submit();
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid field');
-      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Some field(s) are missing or invalid.');
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `Invalid field`);
+      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe($localize `Some field(s) are missing or invalid.`);
     });
   });
 
@@ -86,8 +86,8 @@ describe('apps/uri/uri.component.ts', () => {
     fixture.detectChanges();
     expect(spy).toHaveBeenCalledTimes(1);
     expect(navigate.calls.mostRecent().args[0].toString()).toBe('apps');
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Import application(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Application(s) Imported.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Import application(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe($localize `Application(s) Imported.`);
     done();
   });
 
@@ -99,6 +99,6 @@ describe('apps/uri/uri.component.ts', () => {
     fixture.detectChanges();
     component.submit();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
   });
 });

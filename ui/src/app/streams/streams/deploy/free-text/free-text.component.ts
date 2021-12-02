@@ -178,7 +178,7 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    */
   deployStream(): void {
     if (!this.isSubmittable) {
-      this.notificationService.error('Invalid properties', 'Some line(s) are invalid.');
+      this.notificationService.error($localize `Invalid properties`, $localize `Some line(s) are invalid.`);
     } else {
       this.deploy.emit(this.getCleanProperties());
     }

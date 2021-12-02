@@ -10,6 +10,7 @@
       (keydown)="onKeyDown($event)"
       id="quick_search"
       type="text"
+      i18n-placeholder
       placeholder="Search for keywords ..."
       #inputQuickSearch
     />
@@ -20,15 +21,15 @@
   <div></div>
   <div class="result" *ngIf="isFocus && isSearch()">
     <div *ngIf="isSearching()">
-      <div class="searching">Searching for results...</div>
+      <div class="searching"><ng-container i18n>Searching for results...</ng-container></div>
     </div>
     <div *ngIf="!isSearching()">
       <div class="no-result" *ngIf="isNoResult()">
-        There are no search results for "<strong>{{ search.value }}</strong
+        <ng-container i18n>There are no search results for</ng-container> "<strong>{{ search.value }}</strong
         >"
       </div>
       <div *ngIf="results.apps && results.apps.total > 0">
-        <h4>Application(s)</h4>
+        <h4><ng-container i18n>Application(s)</ng-container></h4>
         <ul>
           <li *ngFor="let app of results.apps.items; let i = index" [class.active]="selected === i">
             <a (mouseover)="selected = i" (click)="navigate('/apps/' + app.type + '/' + app.name)">
@@ -41,16 +42,12 @@
         </ul>
       </div>
       <div *ngIf="results.streams && results.streams.total > 0">
-        <h4>Streams(s)</h4>
+        <h4><ng-container i18n>Streams(s)</ng-container></h4>
         <ul>
-          <li
-            *ngFor="let stream of results.streams.items; let i = index"
-            [class.active]="selected === i + results.apps.items.length"
-          >
-            <a
-              (mouseover)="selected = i + results.apps.items.length"
-              (click)="navigate('/streams/list/' + stream.name)"
-            >
+          <li *ngFor="let stream of results.streams.items; let i = index"
+            [class.active]="selected === i + results.apps.items.length">
+            <a (mouseover)="selected = i + results.apps.items.length"
+              (click)="navigate('/streams/list/' + stream.name)">
               <span class="text-truncate">
                 {{ stream.name }} <span class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span>
               </span>
@@ -59,7 +56,7 @@
         </ul>
       </div>
       <div *ngIf="results.tasks && results.tasks.total > 0">
-        <h4>Task(s)</h4>
+        <h4><ng-container i18n>Task(s)</ng-container></h4>
         <ul>
           <li
             *ngFor="let task of results.tasks.items; let i = index"

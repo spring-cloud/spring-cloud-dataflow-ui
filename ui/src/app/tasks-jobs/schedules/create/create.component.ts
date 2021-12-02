@@ -78,7 +78,7 @@ export class CreateComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           this.back();
         }
       );
@@ -124,7 +124,7 @@ export class CreateComponent implements OnInit {
 
   submit(): void {
     if (!this.form.valid) {
-      this.notificationService.error('Invalid field(s)', 'Some field(s) are missing or invalid.');
+      this.notificationService.error($localize `Invalid field(s)`, $localize `Some field(s) are missing or invalid.`);
     } else {
       this.creating = true;
       const getClean = (val: string): Array<string> => val.split('\n').filter(a => a !== '');
@@ -147,19 +147,19 @@ export class CreateComponent implements OnInit {
         () => {
           if (scheduleParams.length === 1) {
             this.notificationService.success(
-              'Schedule creation',
-              `Successfully schedule creation "${scheduleParams[0].schedulerName}"`
+              $localize `Schedule creation`,
+              $localize `Successfully schedule creation` + ` "${scheduleParams[0].schedulerName}"`
             );
           } else {
             this.notificationService.success(
-              'Schedules creation',
-              `Successfully ${scheduleParams.length} schedules creation`
+              $localize `Schedules creation`,
+              $localize `Successfully` + `${scheduleParams.length}` + $localize `schedules creation`
             );
           }
           this.back();
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           this.creating = false;
         }
       );

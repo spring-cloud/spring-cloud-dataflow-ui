@@ -72,7 +72,7 @@ export class DeployComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           if (HttpError.is404(error)) {
             this.router.navigate(['/streams/definitions']);
           }
@@ -103,7 +103,7 @@ export class DeployComponent implements OnInit, OnDestroy {
   runExport(value: Array<string>): void {
     this.update(value);
     if (this.properties.length === 0) {
-      this.notificationService.error('An error occured', 'There are no properties to export.');
+      this.notificationService.error($localize `An error occurred`, 'There are no properties to export.');
     } else {
       const propertiesText = this.properties.join('\n');
       const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
@@ -121,7 +121,7 @@ export class DeployComponent implements OnInit, OnDestroy {
   runCopy(value: Array<string>): void {
     this.update(value);
     if (this.properties.length === 0) {
-      this.notificationService.error('An error occured', 'There are no properties to copy.');
+      this.notificationService.error($localize `An error occurred`, 'There are no properties to copy.');
     } else {
       const propertiesText = this.properties.join('\n');
       this.clipboardCopyService.executeCopy(propertiesText);
@@ -184,7 +184,7 @@ export class DeployComponent implements OnInit, OnDestroy {
           this.isDeploying = false;
           const err = error.message ? error.message : error.toString();
           this.notificationService.error(
-            'An error occurred',
+            $localize `An error occurred`,
             err ? err : 'An error occurred during the stream deployment update.'
           );
         }

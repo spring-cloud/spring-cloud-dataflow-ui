@@ -1,12 +1,12 @@
 <div class="login-wrapper" *ngIf="shouldProtect | async; else main">
   <form class="login">
     <section class="title">
-      <h3 class="welcome">Welcome to</h3>
-      Data Flow UI
-      <h5 class="hint">You have to log in to access the application.</h5>
+      <h3 class="welcome"><ng-container i18n>Welcome to </ng-container></h3>
+      <ng-container i18n>Data Flow UI</ng-container>
+      <h5 class="hint"><ng-container i18n>You have to log in to access the application.</ng-container></h5>
     </section>
     <div style="padding-bottom: 50px">
-      <a href="{{ baseApiUrl }}login" class="btn btn-primary"> Log In </a>
+      <a href="{{ baseApiUrl }}login" class="btn btn-primary"><ng-container i18n> Log In </ng-container></a>
     </div>
   </form>
 </div>
@@ -17,7 +17,7 @@
       <div class="branding">
         <a routerLink="/" class="logo-and-title">
           <app-logo></app-logo>
-          <span class="title">Data Flow</span>
+          <span class="title"><ng-container i18n>Data Flow</ng-container></span>
         </a>
       </div>
       <app-search></app-search>

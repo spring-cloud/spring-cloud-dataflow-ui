@@ -1,11 +1,25 @@
 <h1 class="page-title-actions">
   Streams
   <span class="actions">
-    <button type="button" class="btn btn-sm btn-primary" (click)="create()" [appRole]="['ROLE_CREATE']">
+    <button type="button"
+            class="btn btn-sm btn-primary"
+            (click)="create()"
+            [appRole]="['ROLE_CREATE']"
+            i18n>
       Create stream(s)
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>Grafana Dashboard</button>
-    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardStreams>Wavefront Dashboard</button>
+    <button type="button"
+            class="btn btn-sm btn-secondary"
+            grafanaDashboardStreams
+            i18n>
+      Grafana Dashboard
+    </button>
+    <button type="button"
+            class="btn btn-sm btn-secondary"
+            wavefrontDashboardStreams
+            i18n>
+      Wavefront Dashboard
+    </button>
   </span>
 </h1>
 
@@ -17,14 +31,19 @@
   #datagrid
 >
   <clr-dg-action-bar *ngIf="grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">Cancel</button>
+    <button type="button"
+            class="btn btn-sm btn-secondary"
+            (click)="setMode(false)"
+            i18n>
+      Cancel
+    </button>
     <button
       type="button"
       class="btn btn-sm btn-secondary"
       [disabled]="selected?.length === 0"
       (click)="deploy(selected)"
       [appRole]="['ROLE_DEPLOY']"
-    >
+      i18n>
       Deploy stream(s)
     </button>
     <button
@@ -33,7 +52,7 @@
       [disabled]="selected?.length === 0"
       (click)="undeploy(selected)"
       [appRole]="['ROLE_CREATE']"
-    >
+      i18n>
       Undeploy stream(s)
     </button>
     <button
@@ -42,7 +61,7 @@
       [disabled]="selected?.length === 0"
       (click)="destroy(selected)"
       [appRole]="['ROLE_DESTROY']"
-    >
+      i18n>
       Destroy stream(s)
     </button>
     <button
@@ -51,20 +70,22 @@
       [disabled]="selected?.length === 0"
       (click)="clone(selected)"
       [appRole]="['ROLE_CREATE']"
-    >
+      i18n>
       Clone stream(s)
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button
-      type="button"
-      class="btn btn-sm btn-secondary"
-      (click)="setMode(true)"
-      [appRole]="['ROLE_DEPLOY', 'ROLE_CREATE', 'ROLE_DESTROY']"
-    >
+    <button type="button" class="btn btn-sm btn-secondary"
+            (click)="setMode(true)"
+            [appRole]="['ROLE_DEPLOY', 'ROLE_CREATE', 'ROLE_DESTROY']"
+            i18n>
       Group Actions
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary"
+            (click)="refresh(state)"
+            i18n>
+      Refresh
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     [clrDgField]="'name'"
@@ -73,13 +94,13 @@
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName:30 | async"
     [clrFilterValue]="context.name"
   >
-    <ng-container> Name </ng-container>
+    <ng-container i18n> Name </ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
     [style.width.px]="context.sizeDescription | datagridcolumn: datagrid:contextName:30 | async"
   >
-    <ng-container> Description </ng-container>
+    <ng-container i18n> Description </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -88,7 +109,7 @@
     (clrDgColumnResize)="updateContext('sizeDslText', $event)"
     [style.width.px]="context.sizeDslText | datagridcolumn: datagrid:contextName:30 | async"
   >
-    <ng-container> Definition </ng-container>
+    <ng-container i18n> Definition </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -96,7 +117,7 @@
     [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName:20 | async"
   >
     <ng-container>
-      Status&nbsp;
+      <ng-container i18n>Status</ng-container>&nbsp;
       <button class="datagrid-column-title" style="width: 20px; flex: 0" (click)="statusModal.open()">
         <clr-icon shape="info-standard"></clr-icon>
       </button>
@@ -125,7 +146,7 @@
         (click)="deploy([stream])"
         *ngIf="stream.status === 'UNDEPLOYED'"
         [appRole]="['ROLE_DEPLOY']"
-      >
+        i18n>
         Deploy
       </button>
       <button
@@ -133,7 +154,7 @@
         (click)="deploy([stream])"
         *ngIf="stream.status !== 'UNDEPLOYED'"
         [appRole]="['ROLE_MODIFY']"
-      >
+        i18n>
         Update
       </button>
       <button
@@ -141,13 +162,33 @@
         (click)="undeploy([stream])"
         *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
         [appRole]="['ROLE_CREATE']"
-      >
+        i18n>
         Undeploy
       </button>
-      <button class="action-item" (click)="destroy([stream])" [appRole]="['ROLE_DESTROY']">Destroy</button>
-      <button class="action-item" (click)="clone([stream])" [appRole]="['ROLE_CREATE']">Clone</button>
-      <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
-      <button class="action-item" wavefrontDashboardStream [stream]="stream">Wavefront Dashboard</button>
+      <button class="action-item"
+              (click)="destroy([stream])"
+              [appRole]="['ROLE_DESTROY']"
+              i18n>
+        Destroy
+      </button>
+      <button class="action-item"
+              (click)="clone([stream])"
+              [appRole]="['ROLE_CREATE']"
+              i18n>
+        Clone
+      </button>
+      <button class="action-item"
+              grafanaDashboardStream
+              [stream]="stream"
+              i18n>
+        Grafana Dashboard
+      </button>
+      <button class="action-item"
+              wavefrontDashboardStream
+              [stream]="stream"
+              i18n>
+        Wavefront Dashboard
+      </button>
     </clr-dg-action-overflow>
     <ng-template
       [clrIfExpanded]="expanded[stream.name]"
@@ -162,7 +203,7 @@
       </clr-dg-row-detail>
     </ng-template>
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder><ng-container i18n>No results found.</ng-container></clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination
       #pagination
@@ -170,8 +211,8 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Streams per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} streams
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"><ng-container i18n>Streams per page</ng-container></clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} <ng-container i18n>of</ng-container> {{ page?.total }} <ng-container i18n>streams</ng-container>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

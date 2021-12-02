@@ -74,7 +74,7 @@ export class StepComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           if (HttpError.is404(error)) {
             this.router.navigateByUrl('/tasks-jobs/job-executions');
           }
@@ -92,7 +92,7 @@ export class StepComponent implements OnInit {
       },
       error => {
         this.loadingExecution = false;
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
       }
     );
   }

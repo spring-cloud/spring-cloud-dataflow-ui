@@ -75,7 +75,7 @@ describe('streams/streams/stream/stream.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     expect(navigate).toHaveBeenCalledWith('streams/list');
     done();
   });

@@ -32,15 +32,15 @@ export class DestroyComponent {
       )
       .subscribe(
         data => {
-          this.notificationService.success('Delete schedule(s)', `${data.length} schedule(s) deleted.`);
+          this.notificationService.success($localize `Delete schedule(s)`, `${data.length}` + $localize ` schedule(s) deleted.`);
           this.onDestroyed.emit(data);
           this.isOpen = false;
           this.schedules = null;
         },
         error => {
           this.notificationService.error(
-            'An error occurred',
-            'An error occurred while deleting schedule(s). ' + 'Please check the server logs for more details.'
+            $localize `An error occurred`,
+            $localize `An error occurred while deleting schedule(s). Please check the server logs for more details.`
           );
           this.isOpen = false;
           this.schedules = null;

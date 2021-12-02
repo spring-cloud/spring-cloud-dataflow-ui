@@ -125,7 +125,7 @@ describe('shared/component/search/search.component.ts', () => {
     component.search.setValue('foo');
     setTimeout(() => {
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
       expect(NotificationServiceMock.mock.errorNotification[0].message).toContain('error');
       done();
     }, 320);
@@ -137,7 +137,7 @@ describe('shared/component/search/search.component.ts', () => {
     component.search.setValue('foo');
     setTimeout(() => {
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
       expect(NotificationServiceMock.mock.errorNotification[0].message).toContain('error');
       done();
     }, 320);
@@ -149,7 +149,7 @@ describe('shared/component/search/search.component.ts', () => {
     component.search.setValue('foo');
     setTimeout(() => {
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
       expect(NotificationServiceMock.mock.errorNotification[0].message).toContain('error');
       done();
     }, 320);

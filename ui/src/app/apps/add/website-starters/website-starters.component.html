@@ -1,54 +1,68 @@
 <form clrForm (submit)="submit()">
   <p>
-    Use predefined application-URIs (for either maven or docker) for all the out-of-the-box stream and task/batch apps.
+    <ng-container i18n>Use predefined application-URIs (for either maven or docker) for all the out-of-the-box stream and task/batch apps.</ng-container>
   </p>
   <clr-radio-container>
     <clr-radio-wrapper>
       <input [(ngModel)]="value" type="radio" clrRadio value="stream.kafka.maven" name="type" />
-      <label>Stream application starters for Kafka/Maven</label>
+      <label><ng-container i18n>Stream application starters for Kafka/Maven</ng-container></label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
       <input [(ngModel)]="value" type="radio" clrRadio value="stream.kafka.docker" name="type" />
-      <label>Stream application starters for Kafka/Docker</label>
+      <label><ng-container i18n>Stream application starters for Kafka/Docker</ng-container></label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
       <input [(ngModel)]="value" type="radio" clrRadio value="stream.rabbitmq.maven" name="type" />
-      <label>Stream application starters for RabbitMQ/Maven</label>
+      <label><ng-container i18n>Stream application starters for RabbitMQ/Maven</ng-container></label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
       <input [(ngModel)]="value" type="radio" clrRadio value="stream.rabbitmq.docker" name="type" />
-      <label>Stream application starters for RabbitMQ/Docker</label>
+      <label><ng-container i18n>Stream application starters for RabbitMQ/Docker</ng-container></label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
       <input [(ngModel)]="value" type="radio" clrRadio value="task.maven" name="type" />
-      <label>Task application starters for Maven</label>
+      <label><ng-container i18n>Task application starters for Maven</ng-container></label>
     </clr-radio-wrapper>
     <clr-radio-wrapper>
       <input [(ngModel)]="value" type="radio" clrRadio value="task.docker" name="type" />
-      <label>Task application starters for Docker</label>
+      <label><ng-container i18n>Task application starters for Docker</ng-container></label>
     </clr-radio-wrapper>
   </clr-radio-container>
   <clr-checkbox-container>
     <clr-checkbox-wrapper>
       <input [(ngModel)]="force" type="checkbox" clrCheckbox value="false" name="force" />
-      <label
-        >Force, the applications will be imported and installed even if it already exists but only if not being used
-        already.</label
-      >
+      <label>
+        <ng-container i18n>Force, the applications will be imported and installed even if it already exists but only if not being used
+        already.</ng-container>
+      </label>
     </clr-checkbox-wrapper>
   </clr-checkbox-container>
   <div class="clr-accordion-footer">
-    <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-    <button class="btn btn-primary" type="submit">Import Application(s)</button>
+    <button class="btn btn-secondary"
+            type="button"
+            (click)="back()"
+            i18n>
+      Cancel
+    </button>
+    <button class="btn btn-primary"
+            type="submit"
+            i18n>
+      Import Application(s)
+    </button>
   </div>
 </form>
 
 <clr-modal [(clrModalOpen)]="isImporting" *ngIf="isImporting" clrModalClosable="false" clrModalSize="md">
-  <h3 class="modal-title">Import application(s)</h3>
+  <h3 class="modal-title"><ng-container i18n>Import application(s)</ng-container></h3>
   <div class="modal-body">
-    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; Importing application(s)...</div>
+    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; <ng-container i18n>Importing application(s)...</ng-container></div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
+      <button type="button"
+              class="btn btn-default"
+              [disabled]="true"
+              i18n>
+        Cancel
+      </button>
     </div>
   </div>
 </clr-modal>

@@ -229,11 +229,11 @@ export class StreamFloCreateComponent implements OnInit, OnDestroy {
 
   createStreamDefs(): void {
     if (!this.dsl || !this.dsl.trim()) {
-      this.notificationService.error('An error occurred', 'Please, enter one or more valid streams.');
+      this.notificationService.error($localize `An error occurred`, $localize `Please, enter one or more valid streams.`);
       return;
     }
     if (this.isCreateStreamsDisabled) {
-      this.notificationService.error('An error occurred', 'Some field(s) are missing or invalid.');
+      this.notificationService.error($localize `An error occurred`, $localize `Some field(s) are missing or invalid.`);
       return;
     }
     /*

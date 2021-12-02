@@ -90,7 +90,7 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

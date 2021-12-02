@@ -40,10 +40,20 @@
     </form>
   </div>
   <div class="modal-body app-properties" *ngIf="propertiesGroupModels.length === 0">
-    <div style="padding: 10px 0"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; Loading...</div>
+    <div style="padding: 10px 0"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; <ng-container i18n>Loading...</ng-container></div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="handleCancel()">Cancel</button>
-    <button type="submit" class="btn btn-primary" (click)="handleOk()">Update</button>
+    <button type="button"
+            class="btn btn-default"
+            (click)="handleCancel()"
+            i18n>
+      Cancel
+    </button>
+    <button type="submit"
+            class="btn btn-primary"
+            (click)="handleOk()"
+            i18n>
+      Update
+    </button>
   </div>
 </clr-modal>

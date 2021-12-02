@@ -99,7 +99,7 @@ export class SearchComponent implements OnInit {
               this.searching.apps = false;
             },
             error => {
-              this.notificationService.error('An error occurred', error);
+              this.notificationService.error($localize `An error occurred`, error);
               this.searching.apps = false;
             }
           );
@@ -110,7 +110,7 @@ export class SearchComponent implements OnInit {
                 this.searching.streams = false;
               },
               error => {
-                this.notificationService.error('An error occurred', error);
+                this.notificationService.error($localize `An error occurred`, error);
                 this.searching.streams = false;
               }
             );
@@ -124,7 +124,7 @@ export class SearchComponent implements OnInit {
                 this.searching.tasks = false;
               },
               error => {
-                this.notificationService.error('An error occurred', error);
+                this.notificationService.error($localize `An error occurred`, error);
                 this.searching.tasks = false;
               }
             );

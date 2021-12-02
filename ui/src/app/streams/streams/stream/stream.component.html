@@ -1,6 +1,6 @@
 <h1 class="page-title">
   <span class="text-truncate">
-    Stream <strong>{{ stream?.name }}</strong
+    <ng-container i18n>Stream</ng-container> <strong>{{ stream?.name }}</strong
     >&nbsp;
     <span *ngIf="stream?.status" class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span>
   </span>
@@ -15,7 +15,7 @@
       class="btn btn-sm btn-secondary"
       (click)="deploy()"
       [appRole]="['ROLE_DEPLOY']"
-    >
+     i18n>
       Deploy stream
     </button>
     <button
@@ -25,7 +25,7 @@
       class="btn btn-sm btn-secondary"
       (click)="deploy()"
       [appRole]="['ROLE_MODIFY']"
-    >
+     i18n>
       Update stream
     </button>
     <button
@@ -35,7 +35,7 @@
       class="btn btn-sm btn-secondary"
       (click)="undeploy()"
       [appRole]="['ROLE_CREATE']"
-    >
+     i18n>
       Undeploy stream
     </button>
     <button
@@ -44,10 +44,14 @@
       class="btn btn-sm btn-secondary"
       (click)="destroy()"
       [appRole]="['ROLE_DESTROY']"
-    >
+     i18n>
       Destroy stream
     </button>
-    <button id="btn-grafana" type="button" class="btn btn-sm btn-secondary" grafanaDashboardStream [stream]="stream">
+    <button id="btn-grafana"
+            type="button"
+            class="btn btn-sm btn-secondary"
+            grafanaDashboardStream [stream]="stream"
+            i18n>
       Grafana Dashboard
     </button>
     <button
@@ -56,7 +60,7 @@
       class="btn btn-sm btn-secondary"
       wavefrontDashboardStream
       [stream]="stream"
-    >
+      i18n>
       Wavefront Dashboard
     </button>
   </div>
@@ -67,23 +71,23 @@
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngIf="stream.description" class="row">
-              <div class="key">Description</div>
+              <div class="key"><ng-container i18n>Description</ng-container></div>
               <div class="value">{{ stream.description }}</div>
             </div>
             <div class="row">
-              <div class="key">Definition</div>
+              <div class="key"><ng-container i18n>Definition</ng-container></div>
               <div class="value">
                 <span class="dsl-text"><app-stream-dsl [dsl]="stream.dslText"></app-stream-dsl></span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Status</div>
+              <div class="key"><ng-container i18n>Status</ng-container></div>
               <div class="value">
                 <span class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Applications</div>
+              <div class="key"><ng-container i18n>Applications</ng-container></div>
               <div class="value">
                 <div *ngIf="!loadingApps">
                   <div *ngFor="let app of applications">
@@ -94,7 +98,7 @@
                 </div>
                 <div *ngIf="loadingApps">
                   <clr-spinner clrInline clrSmall></clr-spinner>
-                  Loading applications...
+                  <ng-container i18n>Loading applications...</ng-container>
                 </div>
               </div>
             </div>
@@ -156,7 +160,7 @@
             </div>
             <div *ngIf="loadingDeploymentInfo">
               <clr-spinner clrInline clrSmall></clr-spinner>
-              Loading deployment info...
+              <ng-container i18n>Loading deployment info...</ng-container>
             </div>
           </div>
         </ng-template>
@@ -178,13 +182,13 @@
                       }}</span>
                     </td>
                     <td class="left">{{ app.deploymentId }}</td>
-                    <td class="left">{{ app.instances?.length || 'n/a' }} instance(s)</td>
+                    <td class="left">{{ app.instances?.length || 'n/a' }} <ng-container i18n>instance(s)</ng-container></td>
                     <td class="left" style="width: 20px">
                       <button
                         type="button"
                         (click)="showLog(app.deploymentId, getAppType(app.name))"
                         class="btn btn-sm btn-secondary"
-                      >
+                        i18n>
                         View Log
                       </button>
                     </td>
@@ -194,7 +198,7 @@
             </div>
             <div *ngIf="loadingRuntime || loadingApps">
               <clr-spinner clrInline clrSmall></clr-spinner>
-              Loading runtime...
+              <ng-container i18n>Loading runtime...</ng-container>
             </div>
           </div>
         </ng-template>
@@ -208,11 +212,11 @@
             <table *ngIf="history.length > 0" class="table table-noborder" style="margin-top: 0">
               <thead>
                 <tr>
-                  <th class="left">Version</th>
-                  <th class="left">Date</th>
-                  <th class="left">Stream status</th>
-                  <th class="left">Description</th>
-                  <th class="left">Platform</th>
+                  <th class="left"><ng-container i18n>Version</ng-container></th>
+                  <th class="left"><ng-container i18n>Date</ng-container></th>
+                  <th class="left"><ng-container i18n>Stream status</ng-container></th>
+                  <th class="left"><ng-container i18n>Description</ng-container></th>
+                  <th class="left"><ng-container i18n>Platform</ng-container></th>
                   <th class="left" style="width: 20px">&nbsp;</th>
                 </tr>
               </thead>
@@ -231,18 +235,18 @@
                       (click)="rollback(hist)"
                       class="btn btn-sm btn-secondary"
                       [disabled]="!canRollback(hist)"
-                    >
+                      i18n>
                       Rollback
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <div *ngIf="history.length === 0">There is no history yet.</div>
+            <div *ngIf="history.length === 0"><ng-container i18n>There is no history yet.</ng-container></div>
           </div>
           <div *ngIf="loadingHistory">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading history...
+            <ng-container i18n>Loading history...</ng-container>
           </div>
         </ng-template>
       </app-view-card>
@@ -252,26 +256,26 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading stream...
+  <ng-container i18n>Loading stream...</ng-container>
 </div>
 
 <clr-modal [(clrModalOpen)]="isLogOpen" *ngIf="log" clrModalSize="xl">
   <h3 class="modal-title">
-    Log {{ log.name }}
+    <ng-container i18n>Log</ng-container> {{ log.name }}
     <span class="label label-app {{ log.type }}">{{ log.type }}</span>
   </h3>
   <div class="modal-body" *ngIf="!loadingLogs">
     <div *ngIf="hasLog(log.name)">
       <pre style="overflow: scroll; max-height: 500px; font-size: 13px"><code>{{log.log}}</code></pre>
     </div>
-    <div *ngIf="!hasLog(log.name)">No log.</div>
+    <div *ngIf="!hasLog(log.name)"><ng-container i18n>No log.</ng-container></div>
   </div>
   <div class="modal-body" *ngIf="loadingLogs">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Loading log(s)...
+    <ng-container i18n>Loading log(s)...</ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isLogOpen = false">Close</button>
+    <button type="button" class="btn btn-outline" (click)="isLogOpen = false"><ng-container i18n>Close</ng-container></button>
   </div>
 </clr-modal>
 

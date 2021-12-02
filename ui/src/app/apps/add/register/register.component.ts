@@ -31,9 +31,9 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
     if (!this.isValid()) {
       if (this.noValue()) {
-        this.notificationService.error('Invalid application', 'Please, register at least one application.');
+        this.notificationService.error($localize `Invalid application`, $localize `Please, register at least one application.`);
       } else {
-        this.notificationService.error('Invalid application(s)', 'Some field(s) are missing or invalid.');
+        this.notificationService.error($localize `Invalid application(s)`, $localize `Some field(s) are missing or invalid.`);
       }
     } else {
       this.isImporting = true;
@@ -55,12 +55,12 @@ export class RegisterComponent implements OnInit {
         // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           data => {
-            this.notificationService.success('Register application(s).', `${data.length} App(s) registered.`);
+            this.notificationService.success($localize `Register application(s).`, `${data.length}`+ $localize ` App(s) registered.`);
             this.cancel();
           },
           error => {
             this.isImporting = false;
-            this.notificationService.error('An error occurred', error);
+            this.notificationService.error($localize `An error occurred`, error);
           }
         );
     }

@@ -5,7 +5,6 @@ import {Properties} from 'spring-flo';
 import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
 import PropertiesSource = Properties.PropertiesSource;
 import {Subject} from 'rxjs/index';
-import {debounceTime} from 'rxjs/operators';
 
 /**
  * Class to add group titleModal to a model.

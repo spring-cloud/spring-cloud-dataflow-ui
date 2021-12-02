@@ -5,7 +5,7 @@ describe('KeyValueValidator', () => {
   describe('validateSyntax', () => {
     it('invalid (return error)', () => {
       ['foo', ' foo', ' foo '].forEach(mock => {
-        expect(KeyValueValidator.validateSyntax(mock)).toBe('Invalid key/value property');
+        expect(KeyValueValidator.validateSyntax(mock)).toBe($localize `Invalid key/value property`);
       });
     });
 

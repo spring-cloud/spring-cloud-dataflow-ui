@@ -52,7 +52,7 @@ export class ExecutionComponent implements OnInit {
           this.getTask();
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           if (HttpError.is404(error)) {
             this.router.navigateByUrl('/tasks-jobs/task-executions');
           }

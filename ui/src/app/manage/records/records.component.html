@@ -1,7 +1,12 @@
-<h1>Audit Records</h1>
+<h1><ng-container i18n>Audit Records</ng-container></h1>
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" #datagrid>
   <clr-dg-action-bar>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button"
+            class="btn btn-sm btn-secondary"
+            (click)="refresh(state)"
+            i18n>
+      Refresh
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     class="cell-id"
@@ -10,7 +15,7 @@
     (clrDgColumnResize)="updateContext('sizeId', $event)"
     [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName:0 | async"
   >
-    <ng-container> ID </ng-container>
+    <ng-container i18n> ID </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -20,7 +25,7 @@
     [clrFilterValue]="context.dates || []"
     [style.width.px]="context.sizeCreatedOn | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Created On </ng-container>
+    <ng-container i18n> Created On </ng-container>
     <clr-dg-filter [clrDgFilter]="datesFilter">
       <app-clr-datagrid-date-filter [value]="context.dates" #datesFilter></app-clr-datagrid-date-filter>
     </clr-dg-filter>
@@ -33,7 +38,7 @@
     [style.width.px]="context.sizeAuditAction | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Actions
+      <ng-container i18n>Actions</ng-container>
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
     <clr-dg-filter [clrDgFilter]="actionFilter">
@@ -48,7 +53,7 @@
     [style.width.px]="context.sizeAuditOperation | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Operations
+      <ng-container i18n>Operations</ng-container>
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
     <clr-dg-filter [clrDgFilter]="operationFilter">
@@ -63,7 +68,7 @@
     [style.width.px]="context.sizeCorrelationId | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Operation ID
+      <ng-container i18n>Operation ID</ng-container>
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
@@ -74,7 +79,7 @@
     [style.width.px]="context.sizeCreatedBy | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Create by
+      <ng-container i18n>Create by</ng-container>
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
@@ -85,7 +90,7 @@
     [style.width.px]="context.sizePlatformName | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Platform name
+      <ng-container i18n>Platform name</ng-container>
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
@@ -108,46 +113,46 @@
       ><span class="text-truncate">{{ record.platformName || 'N/A' }}</span></clr-dg-cell
     >
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder><ng-container i18n>No results found.</ng-container></clr-dg-placeholder>
   <clr-dg-detail *clrIfDetail="let detail">
-    <clr-dg-detail-header> Record {{ detail.auditRecordId }} </clr-dg-detail-header>
+    <clr-dg-detail-header> <ng-container i18n>Record</ng-container> {{ detail.auditRecordId }} </clr-dg-detail-header>
     <clr-dg-detail-body>
       <table class="table">
         <thead>
-          <th class="left" width="150px">Property</th>
+          <th class="left" width="150px"><ng-container i18n>Property</ng-container></th>
           <th class="left">Value</th>
         </thead>
         <tbody>
           <tr>
-            <td class="left"><strong>Created On</strong></td>
+            <td class="left"><strong><ng-container i18n>Created On</ng-container></strong></td>
             <td class="left">{{ detail.createdOn | datetime }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Actions</strong></td>
+            <td class="left"><strong><ng-container i18n>Actions</ng-container></strong></td>
             <td class="left">
               <span class="{{ detail.labelActionClass() }}">{{ detail.auditAction }}</span>
             </td>
           </tr>
           <tr>
-            <td class="left"><strong>Operations</strong></td>
+            <td class="left"><strong><ng-container i18n>Operations</ng-container></strong></td>
             <td class="left">
               <span class="label">{{ detail.auditOperation }}</span>
             </td>
           </tr>
           <tr>
-            <td class="left"><strong>Operation ID</strong></td>
+            <td class="left"><strong><ng-container i18n>Operation ID</ng-container></strong></td>
             <td class="left">{{ detail.correlationId }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Create by</strong></td>
+            <td class="left"><strong><ng-container i18n>Create by</ng-container></strong></td>
             <td class="left">{{ detail.createdBy || 'N/A' }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Platform name</strong></td>
+            <td class="left"><strong><ng-container i18n>Platform name</ng-container></strong></td>
             <td class="left">{{ detail.platformName || 'N/A' }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Data</strong></td>
+            <td class="left"><strong><ng-container i18n>Data</ng-container></strong></td>
             <td class="left">
               <code style="word-break: break-all">{{ detail.auditData || 'N/A' }}</code>
             </td>
@@ -163,8 +168,8 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Records per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} records
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"><ng-container i18n>Records per page</ng-container></clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} <ng-container i18n>of</ng-container> {{ page?.total }} <ng-container i18n>records</ng-container>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

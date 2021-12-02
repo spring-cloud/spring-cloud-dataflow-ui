@@ -56,8 +56,8 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1 task definition(s) destroyed.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Destroy task(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1' + $localize ` task definition(s) destroyed.`);
     done();
   });
 
@@ -71,8 +71,8 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 task definition(s) destroyed.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Destroy task(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2' + $localize ` task definition(s) destroyed.`);
     done();
   });
 
@@ -87,7 +87,7 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

@@ -68,7 +68,7 @@ describe('manage/tools/import-export.component.ts', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     const title = fixture.debugElement.query(By.css('app-manage-stream-export .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Export stream(s)');
+    expect(title.textContent).toContain($localize `Export stream(s)`);
   });
 
   it('should open the stream export modal', () => {
@@ -76,7 +76,7 @@ describe('manage/tools/import-export.component.ts', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     const title = fixture.debugElement.query(By.css('app-manage-stream-import .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Import stream(s)');
+    expect(title.textContent).toContain($localize `Import stream(s)`);
   });
 
   it('should open the task export modal', () => {
@@ -84,7 +84,7 @@ describe('manage/tools/import-export.component.ts', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     const title = fixture.debugElement.query(By.css('app-manage-task-export .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Export task(s)');
+    expect(title.textContent).toContain($localize `Export task(s)`);
   });
 
   it('should open the task export modal', () => {
@@ -92,6 +92,6 @@ describe('manage/tools/import-export.component.ts', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
     const title = fixture.debugElement.query(By.css('app-manage-task-import .modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Import task(s)');
+    expect(title.textContent).toContain($localize `Import task(s)`);
   });
 });

@@ -68,6 +68,6 @@ describe('tasks-jobs/tasks/create/create.component.ts', () => {
     component.submit();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Task creation');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Task creation`);
   });
 });

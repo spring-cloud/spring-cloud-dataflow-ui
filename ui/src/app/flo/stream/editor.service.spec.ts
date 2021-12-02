@@ -149,9 +149,9 @@ describe('Streams Editor Service', () => {
     editorService.validate(graph, null, null).then(markers => {
       expectMarkerCount(markers, 3);
       let m = getMarkersOn(markers, timeSource);
-      expectMarker(m[0], Flo.Severity.Error, 'Invalid outgoing link');
+      expectMarker(m[0], Flo.Severity.Error, $localize `Invalid outgoing link(s)`);
       m = getMarkersOn(markers, transformProcessor);
-      expectMarker(m[0], Flo.Severity.Error, 'Invalid incoming link');
+      expectMarker(m[0], Flo.Severity.Error, $localize `Invalid incoming link(s)`);
       expectMarker(m[1], Flo.Severity.Error, EditorService.VALMSG_NEEDS_OUTPUT_CONNECTION);
       done();
     });

@@ -40,9 +40,9 @@ import {NotificationService} from '../../service/notification.service';
             type="file"
             (change)="fileChange($event)"
           />
-          Import a file
+          <ng-container i18n>Import a file</ng-container>
         </a>
-        <a class="btn btn-sm btn-secondary" (click)="copyClipboard()">Copy to the clipboard</a>
+        <a class="btn btn-sm btn-secondary" (click)="copyClipboard()"><ng-container i18n>Copy to the clipboard</ng-container></a>
       </div>
     </div>
   `,
@@ -147,6 +147,6 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
       return;
     }
     this.clipboardCopyService.executeCopy(this.form.get('textarea').value);
-    this.notificationService.success('Content copied', 'The content have been copied to your clipboard.');
+    this.notificationService.success($localize `Content copied`, $localize `The content have been copied to your clipboard.`);
   }
 }

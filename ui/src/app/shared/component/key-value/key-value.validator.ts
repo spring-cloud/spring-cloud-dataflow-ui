@@ -9,7 +9,7 @@ export class KeyValueValidator {
     }
     const tmp = value.split(/=(.*)/);
     if (tmp.length !== 3) {
-      return 'Invalid key/value property';
+      return $localize `Invalid key/value property`;
     }
     return null;
   }

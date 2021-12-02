@@ -1,40 +1,45 @@
-<h1>Jobs</h1>
+<h1><ng-container i18n>Jobs</ng-container></h1>
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" *ngIf="isInit" #datagrid>
   <clr-dg-action-bar>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button"
+            class="btn btn-sm btn-secondary"
+            (click)="refresh(state)"
+            i18n>
+      Refresh
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeId', $event)"
     [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Execution Id </ng-container>
+    <ng-container i18n> Execution Id </ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeName', $event)"
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Name </ng-container>
+    <ng-container i18n> Name </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeTaskId', $event)"
     [style.width.px]="context.sizeTaskId | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Task Id </ng-container>
+    <ng-container i18n> Task Id </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeInstanceId', $event)"
     [style.width.px]="context.sizeInstanceId | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Instance Id </ng-container>
+    <ng-container i18n> Instance Id </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStart', $event)"
     [style.width.px]="context.sizeStart | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Job Start Time </ng-container>
+    <ng-container i18n> Job Start Time </ng-container>
     <clr-dg-filter [clrDgFilter]="dateFilter">
       <app-clr-datagrid-date-filter property="dates" [value]="context.dates" #dateFilter>
       </app-clr-datagrid-date-filter>
@@ -44,14 +49,14 @@
     (clrDgColumnResize)="updateContext('sizeStepCount', $event)"
     [style.width.px]="context.sizeStepCount | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Step Execution Count </ng-container>
+    <ng-container i18n> Step Execution Count </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
     [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Status </ng-container>
+    <ng-container i18n> Status </ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
@@ -69,25 +74,34 @@
       ><span class="{{ execution.labelStatusClass() }}">{{ execution.status }}</span></clr-dg-cell
     >
     <clr-dg-action-overflow>
-      <button class="action-item" (click)="details(execution)">Details</button>
+      <button class="action-item"
+              (click)="details(execution)"
+              i18n>
+        Details
+      </button>
       <button
         class="action-item"
         (click)="restart(execution)"
         [disabled]="execution.status !== 'FAILED' && execution.status !== 'STOPPED' && execution.status !== 'ERROR'"
-      >
+        i18n>
         Restart
       </button>
       <button
         class="action-item"
         (click)="stop(execution)"
         [disabled]="execution.status === 'FAILED' || execution.status === 'ERROR' || execution.status === 'COMPLETED'"
-      >
+        i18n>
         Stop
       </button>
-      <button class="action-item" grafanaDashboardJobExecution [jobExecution]="execution">Grafana Dashboard</button>
+      <button class="action-item"
+              grafanaDashboardJobExecution
+              [jobExecution]="execution"
+              i18n>
+        Grafana Dashboard
+      </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder><ng-container i18n>No results found.</ng-container></clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination
       #pagination
@@ -95,20 +109,20 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Job executions per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} job executions
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]"><ng-container i18n>Job executions per page</ng-container></clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} <ng-container i18n>of</ng-container> {{ page?.total }} <ng-container i18n>job executions</ng-container>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
 
 <app-confirm #restartModal (onConfirmed)="restartJob()" title="Confirm restart the job execution" yes="Restart">
-  This action will restart the steps failed of the job execution
+  <ng-container i18n>This action will restart the steps failed of the job execution</ng-container>
   <strong>{{ selection?.name }} ({{ selection?.jobExecutionId }})</strong>.<br />
-  Are you sure?
+  <ng-container i18n>Are you sure?</ng-container>
 </app-confirm>
 
 <app-confirm #stopModal (onConfirmed)="stopJob()" title="Confirm stop the job execution" yes="Stop">
-  This action will stop the job execution
+  <ng-container i18n>This action will stop the job execution</ng-container>
   <strong>{{ selection?.name }} ({{ selection?.jobExecutionId }})</strong>.<br />
-  Are you sure?
+  <ng-container i18n>Are you sure?</ng-container>
 </app-confirm>

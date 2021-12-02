@@ -1,15 +1,15 @@
 <div *ngIf="builder$ | async as builder; else loading">
   <clr-alert *ngIf="task.composed && hasMigrations()" [clrAlertType]="info" [clrAlertClosable]="false">
     <clr-alert-item>
-      <span class="alert-text"> There are properties which can be migrated. </span>
+      <span class="alert-text"><ng-container i18n> There are properties which can be migrated. </ng-container></span>
       <div class="alert-actions">
         <clr-dropdown>
           <button class="dropdown-toggle" clrDropdownTrigger>
-            Actions
+            <ng-container i18n>Actions</ng-container>
             <clr-icon shape="caret down"></clr-icon>
           </button>
           <clr-dropdown-menu clrPosition="bottom-right">
-            <a (click)="migrate()" class="dropdown-item" clrDropdownItem>Migrate</a>
+            <a (click)="migrate()" class="dropdown-item" clrDropdownItem><ng-container i18n> Migrate</ng-container></a>
           </clr-dropdown-menu>
         </clr-dropdown>
       </div>
@@ -31,7 +31,7 @@
             <div class="line-toggle">
               <a class="toggle" (click)="state.platform = !state.platform">
                 <clr-icon shape="angle" [class.active]="state.platform"></clr-icon>
-                Platform
+                <ng-container i18n>Platform</ng-container>
               </a>
             </div>
 
@@ -41,18 +41,18 @@
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
                   <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                    <span>The define platform is not valid (unknown).</span>
+                    <span><ng-container i18n>The define platform is not valid (unknown).</ng-container></span>
                   </clr-tooltip-content>
                 </clr-tooltip>
               </div>
-              <div class="form-control form-control-label">Platform</div>
+              <div class="form-control form-control-label"><ng-container i18n> Platform</ng-container></div>
             </div>
 
             <!-- 3 Generic Deployer Properties header -->
             <div class="line-toggle">
               <a class="toggle" (click)="state.deployer = !state.deployer">
                 <clr-icon shape="angle" [class.active]="state.deployer"></clr-icon>
-                Generic Deployer Properties
+                <ng-container i18n> Generic Deployer Properties</ng-container>
               </a>
             </div>
 
@@ -82,14 +82,14 @@
 
               <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
                 <clr-icon shape="angle" [class.active]="state.specificPlatform"></clr-icon>
-                Deployment Platform
+                <ng-container i18n>Deployment Platform</ng-container>
               </a>
             </div>
 
             <!-- 6 Deployment Platform options -->
             <div *ngIf="state.specificPlatform">
               <div *ngIf="builder.builderDeploymentProperties.global.length > 0" class="line-body">
-                <div class="form-control form-control-label">Properties</div>
+                <div class="form-control form-control-label"><ng-container i18n> Properties</ng-container></div>
               </div>
             </div>
             <div *ngIf="state.specificPlatform" formArrayName="specificPlatform">
@@ -124,7 +124,7 @@
             <div class="line-toggle">
               <a class="toggle" (click)="state.app = !state.app">
                 <clr-icon shape="angle" [class.active]="state.app"></clr-icon>
-                Applications Properties
+                <ng-container i18n>Applications Properties</ng-container>
               </a>
             </div>
 
@@ -140,10 +140,10 @@
                   </clr-tooltip>
                 </div>
 
-                <div class="form-control form-control-label">Version</div>
+                <div class="form-control form-control-label"><ng-container i18n>Version</ng-container></div>
               </div>
               <div class="line-body">
-                <div class="form-control form-control-label">Properties</div>
+                <div class="form-control form-control-label"><ng-container i18n>Properties</ng-container></div>
               </div>
               <div formArrayName="global">
                 <div
@@ -176,20 +176,20 @@
             <div class="line-toggle" *ngIf="task.composed && builder.ctrProperties.length > 0">
               <a class="toggle" (click)="state.ctr = !state.ctr">
                 <clr-icon shape="angle" [class.active]="state.ctr"></clr-icon>
-                Ctr Properties
+                <ng-container i18n>Ctr Properties</ng-container>
               </a>
             </div>
 
             <!-- 10 Ctr Properties options -->
             <div class="line-body" *ngIf="state.ctr && task.composed && builder.ctrProperties.length > 0">
-              <div class="form-control form-control-label">Properties</div>
+              <div class="form-control form-control-label"><ng-container i18n>Properties</ng-container></div>
             </div>
 
             <!-- 11 Ctr Arguments -->
             <div class="line-toggle">
               <a class="toggle" (click)="state.arguments = !state.arguments">
                 <clr-icon shape="angle" [class.active]="state.arguments"></clr-icon>
-                Arguments
+                <ng-container i18n>Arguments</ng-container>
               </a>
             </div>
 
@@ -202,7 +202,7 @@
           <!-- col 2 global -->
           <div class="col-fixed global" *ngIf="task.composed">
             <!-- 0 Global header -->
-            <div class="line-head">Global</div>
+            <div class="line-head"><ng-container i18n>Global</ng-container></div>
 
             <!-- 1 Platform header -->
             <div class="line-toggle"></div>
@@ -217,7 +217,7 @@
             >
               <div class="clr-select-wrapper">
                 <select tabindex="1" formControlName="platform" class="clr-select">
-                  <option value="">Select a value</option>
+                  <option value=""><ng-container i18n>Select a value</ng-container></option>
                   <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
                     {{ platform.name }}
                     ({{ platform.type }})
@@ -231,7 +231,7 @@
                     "
                     [value]="builder.formGroup.get('platform').value"
                   >
-                    {{ builder.formGroup.get('platform').value }} (invalid)
+                    {{ builder.formGroup.get('platform').value }} <ng-container i18n>(invalid)</ng-container>
                   </option>
                 </select>
               </div>
@@ -269,13 +269,13 @@
             >
               <div class="form-control form-control-label">
                 <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties).length }}</strong>
-                <span> /</span> {{ builder.builderDeploymentProperties.global.length }} properties
+                <span> /</span> {{ builder.builderDeploymentProperties.global.length }} <ng-container i18n>properties</ng-container>
                 <button
                   tabindex="{{ 201 }}"
                   type="button"
                   (click)="openDeploymentProperties(builder)"
                   class="btn btn-sm btn-secondary"
-                >
+                 i18n>
                   Edit
                 </button>
               </div>
@@ -334,7 +334,7 @@
                 *ngIf="!builder.ctrPropertiesState.isLoading && !builder.ctrPropertiesState.isOnError"
               >
                 <strong>{{ getCtrProperties(builder.ctrProperties).length }}</strong>
-                <span> /</span> {{ builder.ctrProperties.length }} properties
+                <span> /</span> {{ builder.ctrProperties.length }} <ng-container i18n>properties</ng-container>
                 <button
                   tabindex="{{ 401 }}"
                   type="button"
@@ -345,10 +345,10 @@
                 </button>
               </div>
               <div *ngIf="builder.ctrPropertiesState.isLoading" class="form-control form-control-label">
-                Loading ...
+                <ng-container i18n>Loading ...</ng-container>
               </div>
               <div *ngIf="builder.ctrPropertiesState.isOnError" class="form-control form-control-label">
-                Error Loading
+                <ng-container i18n>Error Loading</ng-container>
               </div>
             </div>
 
@@ -398,7 +398,7 @@
               >
                 <clr-select-container style="margin-top: 0">
                   <select tabindex="1" formControlName="platform" clrSelect>
-                    <option value="">Select a value</option>
+                    <option value=""><ng-container i18n>Select a value</ng-container></option>
                     <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
                       {{ platform.name }}
                       ({{ platform.type }})
@@ -412,7 +412,7 @@
                       "
                       [value]="builder.formGroup.get('platform').value"
                     >
-                      {{ builder.formGroup.get('platform').value }} (invalid)
+                      {{ builder.formGroup.get('platform').value }} <ng-container i18n>(invalid)</ng-container>
                     </option>
                   </select>
                 </clr-select-container>
@@ -452,13 +452,13 @@
               >
                 <div class="form-control form-control-label">
                   <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties, app.name).length }}</strong>
-                  <span> /</span> {{ builder.builderDeploymentProperties.apps[app.name].length }} properties
+                  <span> /</span> {{ builder.builderDeploymentProperties.apps[app.name].length }} <ng-container i18n>properties</ng-container>
                   <button
                     tabindex="{{ 201 }}"
                     type="button"
                     (click)="openDeploymentProperties(builder, app.name)"
                     class="btn btn-sm btn-secondary"
-                  >
+                    i18n>
                     Edit
                   </button>
                 </div>
@@ -499,7 +499,7 @@
                             *ngIf="app.optionsState.isInvalid"
                             [value]="builder.formGroup.get('appsVersion').get(app.name).value"
                           >
-                            {{ builder.formGroup.get('appsVersion').get(app.name).value }} (invalid)
+                            {{ builder.formGroup.get('appsVersion').get(app.name).value }} <ng-container i18n>(invalid)</ng-container>
                           </option>
                         </select>
                       </clr-select-container>
@@ -518,23 +518,23 @@
                   >
                     <div *ngIf="app.options.length > 0">
                       <strong>{{ getAppProperties(builder.builderAppsProperties, app.name).length }}</strong>
-                      <span> /</span> {{ app.options.length }} properties
+                      <span> /</span> {{ app.options.length }} <ng-container i18n>properties</ng-container>
                       <button
                         tabindex="{{ 301 }}"
                         type="button"
                         (click)="openApp(builder, app)"
                         class="btn btn-sm btn-secondary"
-                      >
+                        i18n>
                         Edit
                       </button>
                     </div>
                     <div *ngIf="app.options.length === 0">
-                      <strong>No properties</strong>
+                      <strong><ng-container i18n>No properties</ng-container></strong>
                     </div>
                   </div>
-                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">Loading ...</div>
-                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">Error loading</div>
-                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label">Invalid version</div>
+                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label"><ng-container i18n>Loading ...</ng-container></div>
+                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label"><ng-container i18n>Error loading</ng-container></div>
+                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label"><ng-container i18n>Invalid version</ng-container></div>
                 </div>
                 <div formArrayName="global">
                   <div
@@ -586,9 +586,9 @@
           </div>
         </div>
         <div>
-          <a tabindex="600" id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">Cancel</a>
+          <a tabindex="600" id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks"><ng-container i18n>Cancel</ng-container></a>
           <button tabindex="600" id="btn-deploy-builder" type="submit" class="btn btn-primary">
-            <span>Launch task</span>
+            <span><ng-container i18n>Launch task</ng-container></span>
           </button>
         </div>
       </div>

@@ -32,7 +32,7 @@ export class InfoComponent implements OnInit {
   copyToClipboard(): void {
     if (this.about) {
       this.clipboardCopyService.executeCopy(new JsonPipe().transform(this.about), this.container.nativeElement);
-      this.notificationService.success('Copy to clipboard', 'Copied About Details to Clipboard (As JSON).');
+      this.notificationService.success($localize `Copy to clipboard`, $localize `Copied About Details to Clipboard (As JSON).`);
     }
   }
 }

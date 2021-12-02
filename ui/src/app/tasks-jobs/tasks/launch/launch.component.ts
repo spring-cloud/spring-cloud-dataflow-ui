@@ -80,7 +80,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           if (HttpError.is404(error)) {
             this.router.navigate(['/tasks-jobs/tasks']);
           }
@@ -115,7 +115,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
   runPropertiesExport(value: Array<string>): void {
     this.updateProperties(value);
     if (this.properties.length === 0) {
-      this.notificationService.error('An error occured', 'There are no properties to export.');
+      this.notificationService.error($localize `An error occurred`, 'There are no properties to export.');
     } else {
       const propertiesText = this.properties.join('\n');
       const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
@@ -128,7 +128,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
   runArgumentsExport(value: Array<string>): void {
     this.updateArguments(value);
     if (this.arguments.length === 0) {
-      this.notificationService.error('An error occured', 'There are no arguments to export.');
+      this.notificationService.error($localize `An error occurred`, 'There are no arguments to export.');
     } else {
       const argumentsText = this.arguments.join('\n');
       const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
@@ -146,7 +146,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
   runPropertiesCopy(value: Array<string>): void {
     this.updateProperties(value);
     if (this.properties.length === 0) {
-      this.notificationService.error('An error occured', 'There are no properties to copy.');
+      this.notificationService.error($localize `An error occurred`, 'There are no properties to copy.');
     } else {
       const propertiesText = this.properties.join('\n');
       this.clipboardCopyService.executeCopy(propertiesText);
@@ -157,7 +157,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
   runArgumentsCopy(value: Array<string>): void {
     this.updateArguments(value);
     if (this.arguments.length === 0) {
-      this.notificationService.error('An error occured', 'There are no arguments to copy.');
+      this.notificationService.error($localize `An error occurred`, 'There are no arguments to copy.');
     } else {
       const argumentsText = this.arguments.join('\n');
       this.clipboardCopyService.executeCopy(argumentsText);
@@ -183,7 +183,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
       error => {
         this.isLaunching = false;
         const err = error.message ? error.message : error.toString();
-        this.notificationService.error('An error occurred', err ? err : 'An error occurred during the task launch.');
+        this.notificationService.error($localize `An error occurred`, err ? err : 'An error occurred during the task launch.');
       }
     );
   }

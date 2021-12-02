@@ -30,7 +30,7 @@ export class UriComponent {
 
   submit(): void {
     if (!this.form.valid) {
-      this.notificationService.error('Invalid field', 'Some field(s) are missing or invalid.');
+      this.notificationService.error($localize `Invalid field`, $localize `Some field(s) are missing or invalid.`);
     } else {
       this.isImporting = true;
       this.appService
@@ -38,12 +38,12 @@ export class UriComponent {
         // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           data => {
-            this.notificationService.success('Import application(s)', 'Application(s) Imported.');
+            this.notificationService.success($localize `Import application(s)`, $localize `Application(s) Imported.`);
             this.back();
           },
           error => {
             this.isImporting = false;
-            this.notificationService.error('An error occurred', error);
+            this.notificationService.error($localize `An error occurred`, error);
           }
         );
     }

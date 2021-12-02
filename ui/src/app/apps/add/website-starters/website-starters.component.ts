@@ -29,7 +29,7 @@ export class WebsiteStartersComponent {
 
   submit(): void {
     if (!this.value || !this.uris[this.value]) {
-      this.notificationService.error('No starter selected', 'Please, select a starter pack.');
+      this.notificationService.error($localize `No starter selected`, $localize `Please, select a starter pack.`);
       return;
     }
     this.isImporting = true;
@@ -38,11 +38,11 @@ export class WebsiteStartersComponent {
       // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
       .subscribe(
         () => {
-          this.notificationService.success('Import starters', 'Application(s) Imported.');
+          this.notificationService.success($localize `Import starters`, $localize `Application(s) Imported.`);
           this.back();
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           this.isImporting = false;
         }
       );

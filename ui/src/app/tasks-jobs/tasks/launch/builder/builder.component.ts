@@ -1114,7 +1114,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   launchTask() {
     if (!this.isSubmittable(this.refBuilder)) {
-      this.notificationService.error('An error occurred', 'Some field(s) are invalid.');
+      this.notificationService.error($localize `An error occurred`, 'Some field(s) are invalid.');
     } else {
       this.launch.emit({props: this.getProperties(), args: this.getArguments()});
     }

@@ -39,7 +39,7 @@ export class TaskNodeComponent extends NodeComponent {
     app.name = element.prop('metadata/name');
     app.type = ApplicationType.task;
     modal.app = app;
-    modal.title = `Properties for ${element.prop('metadata/name').toUpperCase()}`;
+    modal.title = $localize `Properties for` + `${element.prop('metadata/name').toUpperCase()}`;
     modal.setData(new TaskGraphPropertiesSource(element));
   }
 }

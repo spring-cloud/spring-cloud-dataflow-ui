@@ -1,9 +1,10 @@
 <p>
-  Register one or more applications by entering a <strong>Name</strong>, <strong>Type</strong> and
-  <strong>App URI</strong> of the application Jar. You can also provide an optional
-  <strong>metadata artifact URI</strong>. <br />
-  The App <strong>URI</strong> &amp; the <strong>Metadata Artifact URI</strong> are typically provided using the Maven
-  coordinates of the Jar but can be a local file or a docker image URI.
+  <ng-container i18n>Register one or more applications by entering a</ng-container> <strong><ng-container i18n>Name</ng-container></strong>,
+  <strong><ng-container i18n>Type</ng-container></strong> <ng-container i18n>and</ng-container>
+  <strong><ng-container i18n>App URI</ng-container></strong> <ng-container i18n>of the application Jar. You can also provide an optional</ng-container>
+  <strong><ng-container i18n>metadata artifact URI</ng-container></strong>. <br />
+  <ng-container i18n>The App</ng-container> <strong><ng-container i18n>URI</ng-container></strong> &amp; <ng-container i18n>the</ng-container> <strong><ng-container i18n>Metadata Artifact URI</ng-container></strong> <ng-container i18n>are typically provided using the Maven
+  coordinates of the Jar but can be a local file or a docker image URI.</ng-container>
 </p>
 
 <form clrForm clrLayout="horizontal" (submit)="register()">
@@ -14,7 +15,7 @@
           class="clr-form-control clr-row"
           [class.clr-error]="submitted && form.get('name').invalid && !isFormEmpty(form)"
         >
-          <label class="clr-col-2 clr-control-label" for="name{{ i }}">Name</label>
+          <label class="clr-col-2 clr-control-label" for="name{{ i }}"><ng-container i18n>Name</ng-container></label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-input-wrapper">
               <input
@@ -27,7 +28,7 @@
               />
             </div>
             <div class="clr-subtext" *ngIf="submitted && form.get('name').invalid && !isFormEmpty(form)">
-              Please provide a valid name for the app.
+              <ng-container i18n>Please provide a valid name for the app.</ng-container>
             </div>
           </div>
         </div>
@@ -46,7 +47,7 @@
               </select>
             </div>
             <div class="clr-subtext" *ngIf="submitted && form.get('type').invalid && !isFormEmpty(form)">
-              Please provide a valid type.
+              <ng-container i18n>Please provide a valid type.</ng-container>
             </div>
           </div>
         </div>
@@ -67,7 +68,7 @@
               />
             </div>
             <div class="clr-subtext" *ngIf="submitted && form.get('uri').invalid && !isFormEmpty(form)">
-              Please provide a valid URI pointing to the respective properties file.
+              <ng-container i18n>Please provide a valid URI pointing to the respective properties file.</ng-container>
             </div>
           </div>
         </div>
@@ -75,7 +76,7 @@
           class="clr-form-control clr-row"
           [class.clr-error]="submitted && form.get('metaDataUri').invalid && !isFormEmpty(form)"
         >
-          <label class="clr-col-2 clr-control-label" for="metaDataUri{{ i }}">Metadata URI</label>
+          <label class="clr-col-2 clr-control-label" for="metaDataUri{{ i }}"><ng-container i18n>Metadata URI</ng-container></label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-input-wrapper">
               <input
@@ -88,17 +89,17 @@
               />
             </div>
             <div class="clr-subtext" *ngIf="submitted && form.get('metaDataUri').invalid && !isFormEmpty(form)">
-              Please provide a valid URI pointing to the respective properties file.
+              <ng-container i18n>Please provide a valid URI pointing to the respective properties file.</ng-container>
             </div>
           </div>
         </div>
         <clr-checkbox-container>
           <clr-checkbox-wrapper>
             <input formControlName="force" type="checkbox" clrCheckbox value="false" name="force" />
-            <label
-              >Force, the applications will be imported and installed even if it already exists but only if not being
-              used already.</label
-            >
+            <label>
+              <ng-container i18n>Force, the applications will be imported and installed even if it already exists but only if not being
+              used already.</ng-container>
+            </label>
           </clr-checkbox-wrapper>
         </clr-checkbox-container>
         <div class="form-group">
@@ -109,7 +110,7 @@
               [disabled]="forms.length <= 1"
               class="btn btn-sm btn-secondary"
               title="Remove"
-            >
+              i18n>
               Remove
             </button>
           </div>
@@ -124,24 +125,40 @@
           (click)="newForm()"
           class="btn btn-sm btn-secondary"
           itle="Add application"
-        >
+          i18n>
           New application
         </button>
       </div>
     </div>
   </div>
   <div class="clr-accordion-footer">
-    <button name="cancel" type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
-    <button name="register" type="submit" class="btn btn-primary">Import application(s)</button>
+    <button name="cancel"
+            type="button"
+            class="btn btn-default"
+            (click)="cancel()"
+            i18n>
+      Cancel
+    </button>
+    <button name="register"
+            type="submit"
+            class="btn btn-primary"
+            i18n>
+      Import application(s)
+    </button>
   </div>
 </form>
 
 <clr-modal [(clrModalOpen)]="isImporting" *ngIf="isImporting" clrModalClosable="false" clrModalSize="md">
-  <h3 class="modal-title">Register application(s)</h3>
+  <h3 class="modal-title"><ng-container i18n>Register application(s)</ng-container></h3>
   <div class="modal-body">
-    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; Registering application(s)...</div>
+    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; <ng-container i18n>Registering application(s)...</ng-container></div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
+      <button type="button"
+              class="btn btn-default"
+              [disabled]="true"
+              i18n>
+        Cancel
+      </button>
     </div>
   </div>
 </clr-modal>

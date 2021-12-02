@@ -119,7 +119,7 @@ export class TaskCreateComponent {
 
   execute(operations: Array<Observable<any>>): void {
     if (!operations || operations.length === 0) {
-      this.notificationService.success('Creation success', 'The tasks have been created.');
+      this.notificationService.success($localize `Creation success`, $localize `The tasks have been created.`);
       this.isOpen = false;
       return;
     }

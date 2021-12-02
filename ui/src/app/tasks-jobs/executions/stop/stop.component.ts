@@ -36,7 +36,7 @@ export class StopComponent {
       },
       error => {
         this.notificationService.error(
-          'An error occurred',
+          $localize `An error occurred`,
           'An error occurred while stopping task executions. ' + 'Please check the server logs for more details.'
         );
         this.isOpen = false;

@@ -30,7 +30,7 @@ export class PropsComponent {
 
   submit(): void {
     if (!this.form.valid) {
-      this.notificationService.error('Invalid field(s)', 'Some field(s) are missing or invalid.');
+      this.notificationService.error($localize `Invalid field(s)`, $localize `Some field(s) are missing or invalid.`);
     } else {
       this.isImporting = true;
       this.appService
@@ -38,14 +38,14 @@ export class PropsComponent {
         // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
         .subscribe(
           () => {
-            this.notificationService.success('Import application(s)', 'Application(s) Imported.');
+            this.notificationService.success($localize `Import application(s)`, $localize `Application(s) Imported.`);
             this.back();
           },
           () => {
             this.isImporting = false;
             this.notificationService.error(
-              'An error occurred',
-              'An error occurred while importing Apps. ' + 'Please check the server logs for more details.'
+              $localize `An error occurred`,
+              $localize `An error occurred while importing Apps. Please check the server logs for more details.`
             );
           }
         );

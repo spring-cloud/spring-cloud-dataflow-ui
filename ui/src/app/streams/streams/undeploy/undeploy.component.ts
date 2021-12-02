@@ -40,7 +40,7 @@ export class UndeployComponent {
       },
       error => {
         this.notificationService.error(
-          'An error occurred',
+          $localize `An error occurred`,
           'An error occurred while undeploying Streams. ' + 'Please check the server logs for more details.'
         );
         this.isOpen = false;

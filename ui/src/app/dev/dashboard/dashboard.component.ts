@@ -33,7 +33,7 @@ export class DashboardComponent implements OnDestroy {
     this.processing = true;
     this.operationSubscription = this.getOperation(operation).subscribe(() => {
       this.processing = false;
-      this.notificationService.success('Operation success', 'The operation has been processed with success.');
+      this.notificationService.success($localize `Operation success`, $localize `The operation has been processed with success.`);
     });
   }
 

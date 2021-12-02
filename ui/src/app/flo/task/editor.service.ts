@@ -118,7 +118,7 @@ export class EditorService implements Flo.Editor {
             severity: Flo.Severity.Error,
             message: `${exitStatusNumber.get(
               exitStatus
-            )} links with Exit Status "${exitStatus}". Should only be one such link`,
+            )}`+$localize `links with Exit Status` + `${exitStatus}` + $localize `. Should only be one such link`,
             range: element.attr('range')
           })
         );
@@ -128,7 +128,7 @@ export class EditorService implements Flo.Editor {
         if (incoming.length !== 0) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: `${type} node can only have outgoing links`,
+            message: `${type}`+$localize ` node can only have outgoing links`,
             range: element.attr('range')
           });
         }
@@ -136,7 +136,7 @@ export class EditorService implements Flo.Editor {
         if (link) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: 'Links from START should not specify an Exit Status',
+            message: $localize `Links from START should not specify an Exit Status`,
             range: element.attr('range')
           });
         }
@@ -144,7 +144,7 @@ export class EditorService implements Flo.Editor {
         if (incoming.length === 0) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: 'End state does not have anything leading to it',
+            message: $localize `End state does not have anything leading to it`,
             range: element.attr('range')
           });
         }
@@ -152,14 +152,14 @@ export class EditorService implements Flo.Editor {
         if (incoming.length === 0) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: 'Must have incoming links',
+            message: $localize `Must have incoming links`,
             range: element.attr('range')
           });
         }
         if (outgoing.length === 0) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: 'Must have outgoing links',
+            message: $localize `Must have outgoing links`,
             range: element.attr('range')
           });
         }
@@ -167,7 +167,7 @@ export class EditorService implements Flo.Editor {
         if (link) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: 'Links should not specify an Exit Status',
+            message: $localize `Links should not specify an Exit Status`,
             range: element.attr('range')
           });
         }
@@ -175,14 +175,14 @@ export class EditorService implements Flo.Editor {
         if (incoming.length === 0) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: 'Must have an incoming link',
+            message: $localize `Must have an incoming link`,
             range: element.attr('range')
           });
         }
         if (outgoing.length === 0) {
           markers.push({
             severity: Flo.Severity.Error,
-            message: 'Must have an outgoing link',
+            message: $localize `Must have an outgoing link`,
             range: element.attr('range')
           });
         } else {
@@ -190,7 +190,7 @@ export class EditorService implements Flo.Editor {
           if (!link) {
             markers.push({
               severity: Flo.Severity.Error,
-              message: 'Must have at least one outgoing link with no Exit Status condition specified',
+              message: $localize `Must have at least one outgoing link with no Exit Status condition specified`,
               range: element.attr('range')
             });
           }

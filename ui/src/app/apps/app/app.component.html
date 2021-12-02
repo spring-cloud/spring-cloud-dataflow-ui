@@ -10,7 +10,7 @@
 <div *ngIf="!loading">
   <div class="datagrid-action-bar" [appRole]="['ROLE_DESTROY']">
     <button id="btnUnregister" type="button" class="btn btn-sm btn-outline-danger" (click)="unregister()">
-      Unregister Application
+      <ng-container i18n>Unregister Application</ng-container>
     </button>
     <button
       id="btnVersion"
@@ -18,17 +18,17 @@
       class="btn btn-sm btn-secondary"
       (click)="manageVersions()"
       *ngIf="versions?.length > 1"
-    >
+      i18n>
       Manage versions
     </button>
   </div>
 
   <div class="title-select" *ngIf="detailedApp && versions?.length > 1">
-    Version
+    <ng-container i18n>Version</ng-container>
     <clr-dropdown>
       <button class="btn btn-sm btn-secondary" clrDropdownTrigger>
         {{ detailedApp.version }}&nbsp;
-        <span *ngIf="detailedApp.defaultVersion">(DEFAULT)</span>
+        <span *ngIf="detailedApp.defaultVersion"><ng-container i18n>(DEFAULT)</ng-container></span>
         <clr-icon shape="caret down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen>
@@ -39,7 +39,7 @@
           (click)="getProperties(version)"
         >
           {{ version.version }}&nbsp;
-          <span *ngIf="version.defaultVersion">(DEFAULT)</span>
+          <span *ngIf="version.defaultVersion"><ng-container i18n>(DEFAULT)</ng-container></span>
         </button>
       </clr-dropdown-menu>
     </clr-dropdown>
@@ -52,34 +52,34 @@
           <div *ngIf="!loadingProperties">
             <div class="block card-block-keyvalue">
               <div class="row">
-                <div class="key">Type</div>
+                <div class="key"><ng-container i18n>Type</ng-container></div>
                 <div class="value">
                   <span class="{{ app.labelTypeClass() }}">{{ app.type }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">Version</div>
+                <div class="key"><ng-container i18n>Version</ng-container></div>
                 <div class="value">
                   <span *ngIf="defaultApp" class="label">{{ defaultApp.version }}</span>
                 </div>
               </div>
               <div *ngIf="detailedApp.uri" class="row">
-                <div class="key">Uri</div>
+                <div class="key"><ng-container i18n>Uri</ng-container></div>
                 <div class="value">{{ detailedApp.uri }}</div>
               </div>
               <div class="row">
-                <div class="key">Metadata Uri</div>
+                <div class="key"><ng-container i18n>Metadata Uri</ng-container></div>
                 <div class="value">{{ detailedApp.metaDataUri || 'N/A' }}</div>
               </div>
               <div class="row" *ngIf="versions">
-                <div class="key">Version(s)</div>
+                <div class="key"><ng-container i18n>Version(s)</ng-container></div>
                 <div class="value">{{ versions.length }}</div>
               </div>
             </div>
           </div>
           <div *ngIf="loadingProperties">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading information...
+            <ng-container i18n>Loading information...</ng-container>
           </div>
         </ng-template>
       </app-view-card>
@@ -110,8 +110,8 @@
                         <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
                       </div>
                       <div class="alert-text">
-                        There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br />Do you
-                        want to <strong>display all the properties</strong> ?
+                        <ng-container i18n>There are</ng-container> <strong><ng-container i18n>more than 50 properties</ng-container></strong> <ng-container i18n>to display, the UI can be slow.</ng-container><br /><ng-container i18n>Do you
+                        want to </ng-container><strong><ng-container i18n>display all the properties</ng-container></strong> ?
                       </div>
                     </div>
                     <div class="alert-item static">
@@ -119,7 +119,9 @@
                         <div class="alert-icon-wrapper"></div>
                       </div>
                       <div class="alert-text">
-                        <button class="btn btn-primary btn-sm" (click)="showAllProperties = true">
+                        <button class="btn btn-primary btn-sm"
+                                (click)="showAllProperties = true"
+                                i18n>
                           Show all the properties
                         </button>
                       </div>
@@ -134,7 +136,7 @@
                         <td class="key">
                           {{ getReadableId(property.id) }}
                           <div *ngIf="property.isDeprecated">
-                            <span class="label label-warning">Deprecation level: {{ property.deprecation.level }}</span>
+                            <span class="label label-warning"><ng-container i18n>Deprecation level:</ng-container> {{ property.deprecation.level }}</span>
                           </div>
                         </td>
                         <td class="value">
@@ -143,7 +145,7 @@
                             <div class="type-block">
                               <code>{{ property.type }}</code
                               >&nbsp;<span *ngIf="property.defaultValue"
-                                >(Default value: <code>{{ property.defaultValue }}</code
+                                >(<ng-container i18n>Default value:</ng-container> <code>{{ property.defaultValue }}</code
                                 >)</span
                               >
                             </div>
@@ -154,11 +156,11 @@
                   </table>
                 </div>
               </div>
-              <div *ngIf="!(detailedApp.options?.length > 0)">No property</div>
+              <div *ngIf="!(detailedApp.options?.length > 0)"><ng-container i18n>No property</ng-container></div>
             </div>
             <div *ngIf="loadingProperties">
               <clr-spinner clrInline clrSmall></clr-spinner>
-              Loading properties...
+              <ng-container i18n>Loading properties...</ng-container>
             </div>
           </ng-template>
         </app-view-card>
@@ -169,7 +171,7 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading application...
+  <ng-container i18n>Loading application...</ng-container>
 </div>
 
 <app-unregister #unregisterModal (onUnregistered)="back()"></app-unregister>

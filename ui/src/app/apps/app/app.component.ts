@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     this.appsService.getAppVersions(this.app.name, this.app.type).subscribe(
       (apps: App[]) => {
         if (apps.length === 0) {
-          this.notificationService.error('An error occurred', 'No application found.');
+          this.notificationService.error($localize `An error occurred`, $localize `No application found.`);
           this.back();
         }
         this.versions = apps;
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
         this.loading = false;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
         this.back();
       }
     );
@@ -78,7 +78,7 @@ export class AppComponent implements OnInit {
         this.loadingProperties = false;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
         if (HttpError.is404(error)) {
           this.back();
         }

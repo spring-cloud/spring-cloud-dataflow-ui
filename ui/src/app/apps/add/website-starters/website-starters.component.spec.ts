@@ -63,8 +63,8 @@ describe('apps/website-starters/website-starters.component.ts', () => {
     fixture.detectChanges();
     expect(spy).toHaveBeenCalledTimes(1);
     expect(navigate.calls.mostRecent().args[0].toString()).toBe('apps');
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Import starters');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Application(s) Imported.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Import starters`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe($localize `Application(s) Imported.`);
     done();
   });
 
@@ -73,8 +73,8 @@ describe('apps/website-starters/website-starters.component.ts', () => {
     component.force = true;
     component.submit();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('No starter selected');
-    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Please, select a starter pack.');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `No starter selected`);
+    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe($localize `Please, select a starter pack.`);
   });
 
   it('should handle error on run', () => {
@@ -85,6 +85,6 @@ describe('apps/website-starters/website-starters.component.ts', () => {
     fixture.detectChanges();
     component.submit();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
   });
 });

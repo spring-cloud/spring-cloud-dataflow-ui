@@ -52,12 +52,12 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Clean Up Task Execution(s)');
+    expect(title.textContent).toContain($localize `Confirm Clean Up Task Execution(s)`);
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up task execution(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1 task execution(s) cleaned up.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Clean up task execution(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1' + $localize ` task execution(s) cleaned up.`);
     done();
   });
 
@@ -71,8 +71,8 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up task execution(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 task execution(s) cleaned up.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Clean up task execution(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2'+ $localize ` task execution(s) cleaned up.`);
     done();
   });
 
@@ -87,7 +87,7 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

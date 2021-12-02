@@ -53,7 +53,7 @@ describe('apps/version/version.component.ts', () => {
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
     const items = fixture.debugElement.queryAll(By.css('.modal-body table tbody tr'));
-    expect(title.textContent).toContain('Manage versions');
+    expect(title.textContent).toContain($localize `Manage versions`);
     expect(items.length).toBe(2);
     done();
   });
@@ -64,7 +64,7 @@ describe('apps/version/version.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     expect(component.isOpen).toBe(false);
     done();
   });
@@ -83,13 +83,13 @@ describe('apps/version/version.component.ts', () => {
     expect(modal).toBeTruthy();
     const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
     const confirm = modal.queryAll(By.css('.modal-footer button'))[1].nativeElement;
-    expect(title.textContent).toContain('Confirm unregister version');
+    expect(title.textContent).toContain($localize `Confirm unregister version`);
     confirm.click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     expect(component.isOpen).toBe(false);
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Unregister version');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Unregister version`);
     done();
   });
 
@@ -108,13 +108,13 @@ describe('apps/version/version.component.ts', () => {
     expect(modal).toBeTruthy();
     const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
     const confirm = modal.queryAll(By.css('.modal-footer button'))[1].nativeElement;
-    expect(title.textContent).toContain('Confirm unregister version');
+    expect(title.textContent).toContain($localize `Confirm unregister version`);
     confirm.click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     expect(component.isOpen).toBe(false);
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 
@@ -132,12 +132,12 @@ describe('apps/version/version.component.ts', () => {
     expect(modal).toBeTruthy();
     const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
     const confirm = modal.queryAll(By.css('.modal-footer button'))[1].nativeElement;
-    expect(title.textContent).toContain('Confirm make default version');
+    expect(title.textContent).toContain($localize `Confirm make default version`);
     confirm.click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Default version');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Default version`);
     done();
   });
 
@@ -156,13 +156,13 @@ describe('apps/version/version.component.ts', () => {
     expect(modal).toBeTruthy();
     const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
     const confirm = modal.queryAll(By.css('.modal-footer button'))[1].nativeElement;
-    expect(title.textContent).toContain('Confirm make default version');
+    expect(title.textContent).toContain($localize `Confirm make default version`);
     confirm.click();
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     expect(component.isOpen).toBe(false);
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

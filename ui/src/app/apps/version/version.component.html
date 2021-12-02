@@ -1,12 +1,12 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning" clrModalSize="lg">
-  <h3 class="modal-title">Manage versions</h3>
+  <h3 class="modal-title"><ng-container i18n>Manage versions</ng-container></h3>
   <div class="modal-body" *ngIf="versions?.length > 1 && !isRunning && !loading">
     <table class="table table-striped">
       <thead>
         <tr>
           <th class="left">&nbsp;</th>
-          <th class="left">Name</th>
-          <th class="left">Type</th>
+          <th class="left"><ng-container i18n>Name</ng-container></th>
+          <th class="left"><ng-container i18n>Type</ng-container></th>
           <th class="left">&nbsp;</th>
         </tr>
       </thead>
@@ -24,13 +24,18 @@
             </span>
           </td>
           <td nowrap="">
-            <button type="button" class="btn btn-sm btn-secondary" (click)="unregisterConfirm(app)">Unregister</button>
+            <button type="button"
+                    class="btn btn-sm btn-secondary"
+                    (click)="unregisterConfirm(app)"
+                    i18n>
+              Unregister
+            </button>
             <button
               type="button"
               [disabled]="app.defaultVersion"
               (click)="makeDefaultConfirm(app)"
               class="btn btn-sm btn-secondary"
-            >
+              i18n>
               Set default
             </button>
           </td>
@@ -40,31 +45,37 @@
   </div>
   <div class="modal-body" *ngIf="loading">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Loading versions(s) ...
+    <ng-container i18n>Loading versions(s) ...</ng-container>
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Unregistering application(s) ...
+    <ng-container i18n>Unregistering application(s) ...</ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">Cancel</button>
+    <button type="button"
+            class="btn btn-outline"
+            [disabled]="isRunning"
+            (click)="isOpen = false"
+            i18n>
+      Cancel
+    </button>
   </div>
 </clr-modal>
 
 <app-confirm #unregisterModal (onConfirmed)="unregister()" title="Confirm unregister version" yes="Unregister">
-  This action will unregister the <strong>version {{ selected?.version }}</strong> of the application
+  <ng-container i18n>This action will unregister the</ng-container> <strong><ng-container i18n>version</ng-container> {{ selected?.version }}</strong> <ng-container i18n>of the application</ng-container>
   <strong>{{ selected?.name }}</strong
   >&nbsp;<span class="{{ selected?.labelTypeClass() }}">{{ selected?.type }}</span
   >.
   <br />
-  Are you sure?
+  <ng-container i18n>Are you sure?</ng-container>
 </app-confirm>
 
 <app-confirm #makeDefaultModal (onConfirmed)="makeDefault()" title="Confirm make default version" yes="Make default">
-  This action will make the version <strong>{{ selected?.version }}</strong> as the default version for the application
+  <ng-container i18n>This action will make the version</ng-container> <strong>{{ selected?.version }}</strong> <ng-container i18n>as the default version for the application</ng-container>
   <strong>{{ selected?.name }}</strong
   >&nbsp; <span class="{{ selected?.labelTypeClass() }}">{{ selected?.type }}</span
   >.
   <br />
-  Are you sure?
+  <ng-container i18n>Are you sure?</ng-container>
 </app-confirm>

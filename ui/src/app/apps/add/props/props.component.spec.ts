@@ -72,8 +72,8 @@ describe('apps/props/props.component.ts', () => {
       expect(inputs.force.checked).toBe(values.force);
       component.submit();
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid field(s)');
-      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Some field(s) are missing or invalid.');
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `Invalid field(s)`);
+      expect(NotificationServiceMock.mock.errorNotification[0].message).toBe($localize `Some field(s) are missing or invalid.`);
     });
   });
 
@@ -96,8 +96,8 @@ describe('apps/props/props.component.ts', () => {
       expect(inputs.force.checked).toBe(values.force);
       component.submit();
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Import application(s)');
-      expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Application(s) Imported.');
+      expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Import application(s)`);
+      expect(NotificationServiceMock.mock.successNotifications[0].message).toBe($localize `Application(s) Imported.`);
     });
     expect(navigate).toHaveBeenCalledTimes(2);
   });
@@ -111,9 +111,9 @@ describe('apps/props/props.component.ts', () => {
     fixture.detectChanges();
     component.submit();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     expect(NotificationServiceMock.mock.errorNotification[0].message).toContain(
-      'An error occurred while importing Apps.'
+      $localize `An error occurred while importing Apps.`
     );
   });
 });

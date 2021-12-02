@@ -33,16 +33,16 @@ const NODE_DROPPING = false;
  */
 @Injectable()
 export class EditorService implements Flo.Editor {
-  static VALMSG_NEEDS_OUTPUT_CONNECTION = 'Should direct its output to an app';
-  static VALMSG_NEEDS_INPUT_CONNECTION = 'Should have an input connection from an app';
-  static VALMSG_DESTINATION_SHOULD_BE_NAMED = 'Destination should be named';
-  static VALMSG_DESTINATION_CANNOT_BE_TAPPED = 'Cannot tap into a destination app';
-  static VALMSG_TAPSOURCE_CANNOT_BE_TAPPED = 'Cannot tap into a tap source';
-  static VALMSG_SOURCES_MUST_BE_AT_START = 'Sources must appear at the start of a stream';
-  static VALMSG_SINK_SHOULD_BE_AT_END = 'Sink should be at the end of a stream';
-  static VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE = 'Only one non-tap link allowed from source';
-  static VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR = 'Only one non-tap link allowed from processor';
-  static VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION = 'Element needs exactly one non-tapping output connection';
+  static VALMSG_NEEDS_OUTPUT_CONNECTION = $localize `Should direct its output to an app`;
+  static VALMSG_NEEDS_INPUT_CONNECTION = $localize `Should have an input connection from an app`;
+  static VALMSG_DESTINATION_SHOULD_BE_NAMED = $localize `Destination should be named`;
+  static VALMSG_DESTINATION_CANNOT_BE_TAPPED = $localize `Cannot tap into a destination app`;
+  static VALMSG_TAPSOURCE_CANNOT_BE_TAPPED = $localize `Cannot tap into a tap source`;
+  static VALMSG_SOURCES_MUST_BE_AT_START = $localize `Sources must appear at the start of a stream`;
+  static VALMSG_SINK_SHOULD_BE_AT_END = $localize `Sink should be at the end of a stream`;
+  static VALMSG_ONLY_ONE_NON_TAPLINK_FROM_SOURCE = $localize `Only one non-tap link allowed from source`;
+  static VALMSG_ONLY_ONE_NON_TAPLINK_FROM_PROCESSOR = $localize `Only one non-tap link allowed from processor`;
+  static VALMSG_NEEDS_NONTAP_OUTPUT_CONNECTION = $localize `Element needs exactly one non-tapping output connection`;
 
   STREAM_PALETTE_WIDTH = 1;
 
@@ -374,7 +374,7 @@ export class EditorService implements Flo.Editor {
       errors.push({
         severity: Flo.Severity.Error,
         message:
-          incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
+          incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : $localize `Input should come from one app only`,
         range: element.attr('range')
       });
     }
@@ -413,7 +413,7 @@ export class EditorService implements Flo.Editor {
       errors.push({
         severity: Flo.Severity.Error,
         message:
-          incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
+          incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : $localize `Input should come from one app only`,
         range: element.attr('range')
       });
     }
@@ -437,21 +437,21 @@ export class EditorService implements Flo.Editor {
       errors.push({
         severity: Flo.Severity.Error,
         message:
-          incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : 'Input should come from one app only',
+          incoming.length === 0 ? EditorService.VALMSG_NEEDS_INPUT_CONNECTION : $localize `Input should come from one app only`,
         range: element.attr('range')
       });
     }
     if (outgoing.length !== 0) {
       errors.push({
         severity: Flo.Severity.Error,
-        message: 'Task should be at the end of a stream',
+        message: $localize `Task should be at the end of a stream`,
         range: element.attr('range')
       });
     }
     if (tap.length !== 0) {
       errors.push({
         severity: Flo.Severity.Error,
-        message: 'Cannot tap into a task app',
+        message: $localize `Cannot tap into a task app`,
         range: element.attr('range')
       });
     }
@@ -467,7 +467,7 @@ export class EditorService implements Flo.Editor {
     if (incoming.length !== 0) {
       errors.push({
         severity: Flo.Severity.Error,
-        message: 'Tap must appear at the start of a stream',
+        message: $localize `Tap must appear at the start of a stream`,
         range: element.attr('range')
       });
     }
@@ -554,7 +554,7 @@ export class EditorService implements Flo.Editor {
     if (invalidIncoming.length > 0) {
       errors.push({
         severity: Flo.Severity.Error,
-        message: 'Invalid incoming link' + (invalidIncoming.length > 1 ? 's' : ''),
+        message: $localize `Invalid incoming link(s)`,
         range: element.attr('range')
       });
     }
@@ -562,7 +562,7 @@ export class EditorService implements Flo.Editor {
     if (invalidOutgoing.length > 0) {
       errors.push({
         severity: Flo.Severity.Error,
-        message: 'Invalid outgoing link' + (invalidOutgoing.length > 1 ? 's' : ''),
+        message: $localize `Invalid outgoing link(s)`,
         range: element.attr('range')
       });
     }
@@ -697,9 +697,9 @@ export class EditorService implements Flo.Editor {
   private validateMetadata(element: dia.Cell, errors: Array<Flo.Marker>): void {
     // Unresolved elements validation
     if (!element.prop('metadata') || SharedUtils.isUnresolved(element)) {
-      let msg = "Unknown element '" + element.prop('metadata/name') + "'";
+      let msg = $localize `Unknown element '` + element.prop('metadata/name') + "'";
       if (element.prop('metadata/group')) {
-        msg += " from group '" + element.prop('metadata/group') + "'.";
+        msg += $localize ` from group '` + element.prop('metadata/group') + "'.";
       }
       errors.push({
         severity: Flo.Severity.Error,

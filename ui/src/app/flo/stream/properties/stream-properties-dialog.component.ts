@@ -50,9 +50,9 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
           ],
           asyncValidator: Properties.Validators.uniqueResource(value => this.isUniqueStreamName(value), 500),
           errorData: [
-            {id: 'pattern', message: 'Invalid stream name!'},
-            {id: 'uniqueResource', message: 'Stream name already exists!'},
-            {id: 'noneOf', message: 'Stream name already exists on the canvas'}
+            {id: 'pattern', message: $localize `Invalid stream name!`},
+            {id: 'uniqueResource', message: $localize `Stream name already exists!`},
+            {id: 'noneOf', message: $localize `Stream name already exists on the canvas`}
           ]
         };
       }

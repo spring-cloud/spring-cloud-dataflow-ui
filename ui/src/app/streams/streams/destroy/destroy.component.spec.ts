@@ -58,8 +58,8 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy stream');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Successfully removed stream "foo".');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Destroy stream`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe($localize `Successfully removed stream "foo".`);
     done();
   });
 
@@ -73,8 +73,8 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy streams');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 stream(s) destroyed.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Destroy streams`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe( '2' + $localize ` stream(s) destroyed.`);
     done();
   });
 
@@ -89,7 +89,7 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

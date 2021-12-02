@@ -1,15 +1,27 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="history" [clrModalClosable]="!isRunning">
-  <h3 class="modal-title">Confirm stream rollback</h3>
+  <h3 class="modal-title"><ng-container i18n>Confirm stream rollback</ng-container></h3>
   <div class="modal-body" *ngIf="!isRunning">
-    This action will rollback the stream <strong>{{ history.stream }}</strong> to the version {{ history.version }}. Are
-    you sure?
+    <ng-container i18n>This action will rollback the stream</ng-container><strong>{{ history.stream }}</strong> <ng-container i18n>to the version</ng-container> {{ history.version }}. <ng-container i18n>Are
+    you sure?</ng-container>
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Rollback stream(s) ...
+    <ng-container i18n>Rollback stream(s) ...</ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="rollback()" [disabled]="isRunning">Rollback</button>
+    <button type="button"
+            class="btn btn-outline"
+            (click)="isOpen = false"
+            [disabled]="isRunning"
+            i18n>
+      Cancel
+    </button>
+    <button type="button"
+            class="btn btn-primary"
+            (click)="rollback()"
+            [disabled]="isRunning"
+            i18n>
+      Rollback
+    </button>
   </div>
 </clr-modal>

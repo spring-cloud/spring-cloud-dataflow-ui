@@ -53,7 +53,7 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Rollback success');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Rollback success`);
     done();
   });
 
@@ -64,7 +64,7 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

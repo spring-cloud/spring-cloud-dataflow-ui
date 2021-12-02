@@ -5,20 +5,21 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build",
+    "build": "ng build --localize",
     "test": "ng test",
     "pretty": "pretty-quick",
     "test-saucelabs-local": "node ./node_modules/@angular/cli/bin/ng test --karma-config ./src/karma-saucelabs.conf.js",
     "test-browserstack-local": "node ./node_modules/@angular/cli/bin/ng test --karma-config ./src/karma-browserstack.conf.js",
     "lint": "ng lint",
     "e2e": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e",
+    "i18n:extract": "ng xi18n --output-path src/locale",
     "e2e-saucelabs-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-saucelabs.conf.js --configuration production",
     "e2e-browserstack-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-browserstack.conf.js --configuration production",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json -n \"Spring Cloud Data Flow Dashboard Documentation\"",
     "mavenbuild-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeCustom",
-    "mavenbuild-without-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production --output-path ./../target/classes/public/dashboard",
-    "mavenbuild": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeHeadless && --max_old_space_size=4096 node ./node_modules/@angular/cli/bin/ng build --configuration production --output-path ./../target/classes/public/dashboard",
-    "bundle-report": "ng build --stats-json && webpack-bundle-analyzer dist/stats.json"
+    "mavenbuild-without-tests": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --localize --configuration production --output-path ./../target/classes/public/dashboard",
+    "mavenbuild": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng test --code-coverage true --watch false --browsers ChromeHeadless && --max_old_space_size=4096 node ./node_modules/@angular/cli/bin/ng build --localize --configuration production --output-path ./../target/classes/public/dashboard",
+    "bundle-report": "ng build --localize --stats-json && webpack-bundle-analyzer dist/stats.json"
   },
   "private": true,
   "dependencies": {

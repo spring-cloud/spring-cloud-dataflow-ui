@@ -45,7 +45,7 @@ export class SchedulesComponent extends DatagridComponent {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
         }
       );
     }

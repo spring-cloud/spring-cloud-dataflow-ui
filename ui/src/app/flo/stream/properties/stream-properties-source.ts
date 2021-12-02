@@ -33,7 +33,7 @@ export class StreamGraphPropertiesSource extends GraphNodePropertiesSource imple
         defaultValue: this.cell.prop('metadata/name'),
         attr: 'node-name',
         value: this.cell.attr('node-name'),
-        description: 'Label of the app',
+        description: $localize `Label of the app`,
         isSemantic: false
       });
     }
@@ -44,7 +44,7 @@ export class StreamGraphPropertiesSource extends GraphNodePropertiesSource imple
         type: null,
         value: this.cell.attr('stream-name'),
         defaultValue: '',
-        description: 'The name of the stream started by this app',
+        description: $localize `The name of the stream started by this app`,
         attr: 'stream-name',
         isSemantic: false
       });

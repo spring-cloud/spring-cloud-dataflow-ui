@@ -47,7 +47,7 @@ export class ToolsService {
             {
               position: 0,
               length: dsl.length,
-              message: 'Multi-line task definitions are not supported'
+              message: $localize `Multi-line task definitions are not supported`
             }
           ]
         });

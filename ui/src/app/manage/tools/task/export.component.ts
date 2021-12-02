@@ -8,15 +8,15 @@ import {TaskService} from '../../../shared/api/task.service';
   selector: 'app-manage-task-export',
   template: `
     <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning" clrModalSize="lg">
-      <h3 class="modal-title">Export task(s)</h3>
+      <h3 class="modal-title"><ng-container i18n>Export task(s)</ng-container></h3>
       <div class="modal-body" *ngIf="!isRunning">
         <div>
-          You can create an export of your <strong>selected tasks</strong>.<br />
-          This operation will generate and download a <strong>JSON file</strong>.
+          <ng-container i18n>You can create an export of your <strong>selected tasks</strong>.<br />
+          This operation will generate and download a <strong>JSON file</strong>.</ng-container>
         </div>
         <clr-datagrid [(clrDgSelected)]="selected" *ngIf="tasks">
-          <clr-dg-column>Name</clr-dg-column>
-          <clr-dg-column>Definition</clr-dg-column>
+          <clr-dg-column><ng-container i18n>Name</ng-container></clr-dg-column>
+          <clr-dg-column><ng-container i18n>Definition</ng-container></clr-dg-column>
           <clr-dg-row *clrDgItems="let task of tasks.items" [clrDgItem]="task">
             <clr-dg-cell>{{ task.name }}</clr-dg-cell>
             <clr-dg-cell>
@@ -27,12 +27,19 @@ import {TaskService} from '../../../shared/api/task.service';
       </div>
       <div class="modal-body" *ngIf="isRunning">
         <clr-spinner clrInline clrSmall></clr-spinner>
-        Exporting task(s) ...
+        <ng-container i18n>Exporting task(s) ...</ng-container>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="run()" [disabled]="isRunning">
-          <span>Export task(s)</span>
+        <button type="button" class="btn btn-outline"
+                [disabled]="isRunning"
+                (click)="isOpen = false"
+                i18n>
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary"
+                (click)="run()"
+                [disabled]="isRunning">
+          <span><ng-container i18n>Export task(s)</ng-container></span>
         </button>
       </div>
     </clr-modal>

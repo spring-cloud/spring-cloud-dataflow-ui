@@ -9,8 +9,8 @@ import {App} from '../../model/app.model';
 export class ConfirmComponent {
   isOpen = false;
   @Output() onConfirmed = new EventEmitter();
-  @Input() title = 'Confirm action';
-  @Input() yes = 'Yes';
+  @Input() title = $localize `Confirm action`;
+  @Input() yes = $localize `Yes`;
 
   open(): void {
     this.isOpen = true;

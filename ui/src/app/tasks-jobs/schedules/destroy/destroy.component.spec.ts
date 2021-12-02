@@ -55,12 +55,12 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Delete Schedule');
+    expect(title.textContent).toContain($localize `Confirm Delete Schedule`);
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Delete schedule(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1 schedule(s) deleted.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Delete schedule(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1' + $localize ` schedule(s) deleted.`);
     done();
   });
 
@@ -70,12 +70,12 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Delete Schedule');
+    expect(title.textContent).toContain($localize `Confirm Delete Schedule`);
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Delete schedule(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 schedule(s) deleted.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Delete schedule(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2' + $localize ` schedule(s) deleted.`);
     done();
   });
 
@@ -86,11 +86,11 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Delete Schedule');
+    expect(title.textContent).toContain($localize `Confirm Delete Schedule`);
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

@@ -67,16 +67,16 @@ describe('apps/unregister/unregister.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Unregister Application');
+    expect(title.textContent).toContain($localize `Confirm Unregister Application`);
     const btnUnregister: HTMLButtonElement = fixture.debugElement.query(
       By.css('.modal-footer .btn-danger')
     ).nativeElement;
     btnUnregister.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Unregister application');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Unregister application`);
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe(
-      'Successfully removed app "foo" of type "source".'
+      $localize `Successfully removed app "foo" of type "source".`
     );
     done();
   });
@@ -94,8 +94,8 @@ describe('apps/unregister/unregister.component.ts', () => {
     btnUnregister.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Unregister applications');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 app(s) unregistered.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Unregister applications`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2'+ $localize ` app(s) unregistered.`);
     done();
   });
 
@@ -113,7 +113,7 @@ describe('apps/unregister/unregister.component.ts', () => {
     btnUnregister.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe($localize `An error occurred`);
     done();
   });
 });

@@ -57,7 +57,7 @@ export class ExecutionComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error($localize `An error occurred`, error);
           if (HttpError.is404(error)) {
             this.router.navigateByUrl('/tasks-jobs/job-executions');
           }
@@ -75,7 +75,7 @@ export class ExecutionComponent implements OnInit {
       },
       error => {
         this.loadingExecution = false;
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
       }
     );
   }
@@ -133,10 +133,10 @@ export class ExecutionComponent implements OnInit {
   restartJob(): void {
     this.jobService.restart(this.execution).subscribe(
       () => {
-        this.notificationService.success('Restart job', `Successfully restarted job "${this.execution.name}"`);
+        this.notificationService.success($localize `Restart job`, $localize `Successfully restarted job` + `"${this.execution.name}"`);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
       }
     );
   }
@@ -171,10 +171,10 @@ export class ExecutionComponent implements OnInit {
   stopJob(): void {
     this.jobService.stop(this.execution).subscribe(
       () => {
-        this.notificationService.success('Stop job', `Successfully stopped job "${this.execution.name}"`);
+        this.notificationService.success($localize `Stop job`, $localize `Successfully stopped job` + ` "${this.execution.name}"`);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
       }
     );
   }

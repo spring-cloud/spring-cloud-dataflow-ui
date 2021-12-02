@@ -3,20 +3,20 @@
     <clr-icon shape="info-standard"></clr-icon>
   </a>
   <clr-signpost-content #signpost class="signpost-about" clrPosition="bottom-left" *clrIfOpen>
-    <h3 style="margin-top: 0">Spring Cloud Data Flow</h3>
+    <h3 style="margin-top: 0"><ng-container i18n>Spring Cloud Data Flow</ng-container></h3>
     <p>
-      Data Flow Server Implementation<br />
-      <strong>Name</strong>: {{ about.versions.implementation.name || 'n/a' }}<br />
-      <strong>Version</strong>: {{ about.versions.implementation.version || 'n/a' }}<br />
-      <button class="btn btn-sm btn-primary" (click)="more()">More info</button>
+      <ng-container i18n>Data Flow Server Implementation </ng-container><br />
+      <strong><ng-container i18n>Name</ng-container></strong>: {{ about.versions.implementation.name || 'n/a' }}<br />
+      <strong><ng-container i18n>Version</ng-container></strong>: {{ about.versions.implementation.version || 'n/a' }}<br />
+      <button class="btn btn-sm btn-primary" (click)="more()"><ng-container i18n>More info</ng-container></button>
     </p>
     <ul>
       <ul>
         <li>
-          <a target="_blank" href="https://cloud.spring.io/spring-cloud-dataflow/"> Project Page </a>
+          <a target="_blank" href="https://cloud.spring.io/spring-cloud-dataflow/"><ng-container i18n> Project Page </ng-container></a>
         </li>
         <li>
-          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow"> Source Code </a>
+          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow"><ng-container i18n> Source Code </ng-container></a>
         </li>
         <li>
           <a
@@ -25,7 +25,7 @@
               about.versions.core.version
             }}/reference/htmlsingle/"
           >
-            Documentation
+            <ng-container i18n>Documentation</ng-container>
           </a>
         </li>
         <li>
@@ -35,14 +35,14 @@
               about.versions.core.version
             }}/reference/htmlsingle/#api-guide-resources"
           >
-            API Docs
+            <ng-container i18n>API Docs</ng-container>
           </a>
         </li>
         <li>
-          <a target="_blank" href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow"> Support Forum </a>
+          <a target="_blank" href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow"><ng-container i18n> Support Forum </ng-container></a>
         </li>
         <li>
-          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues"> Issue Tracker </a>
+          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues"><ng-container i18n> Issue Tracker </ng-container></a>
         </li>
       </ul>
     </ul>

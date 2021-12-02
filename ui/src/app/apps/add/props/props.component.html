@@ -1,19 +1,19 @@
 <p>
-  Enter the list of properties into the text area field below.<br />
-  Alternatively, you can also select a file in your local file system, which is used to populate the text area field.
+  <ng-container i18n>Enter the list of properties into the text area field below.</ng-container><br />
+  <ng-container i18n>Alternatively, you can also select a file in your local file system, which is used to populate the text area field.</ng-container>
 </p>
 
 <form role="form" (ngSubmit)="submit()" clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4">
   <clr-control-container class="key-value-wrapper">
-    <label class="clr-col-md-1">Apps as Properties</label>
+    <label class="clr-col-md-1"><ng-container i18n>Apps as Properties</ng-container></label>
     <app-key-value [validators]="validators" clrControl formControlName="properties" [kvFocus]="true"></app-key-value>
     <clr-control-helper>
-      Example:<br />
+      <ng-container i18n>Example:</ng-container><br />
       <pre><code>task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE
 task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE</code></pre>
     </clr-control-helper>
     <clr-control-error>
-      One or more application(s) are required.<br />Example:
+      <ng-container i18n>One or more application(s) are required.</ng-container><br /><ng-container i18n>Example:</ng-container>
       <code>task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE</code>
     </clr-control-error>
   </clr-control-container>
@@ -21,24 +21,37 @@ task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE</co
   <clr-checkbox-container>
     <clr-checkbox-wrapper>
       <input formControlName="force" type="checkbox" clrCheckbox value="false" name="force" />
-      <label
-        >Force, the applications will be imported and installed even if it already exists but only if not being used
-        already.</label
-      >
+      <label>
+        <ng-container i18n>Force, the applications will be imported and installed even if it already exists but only if not being used already.</ng-container>
+      </label>
     </clr-checkbox-wrapper>
   </clr-checkbox-container>
   <div class="clr-accordion-footer">
-    <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-    <button class="btn btn-primary" type="submit">Import Application(s)</button>
+    <button class="btn btn-secondary"
+            type="button"
+            (click)="back()"
+            i18n>
+      Cancel
+    </button>
+    <button class="btn btn-primary"
+            type="submit"
+            i18n>
+      Import Application(s)
+    </button>
   </div>
 </form>
 
 <clr-modal [(clrModalOpen)]="isImporting" *ngIf="isImporting" clrModalClosable="false" clrModalSize="md">
-  <h3 class="modal-title">Import application(s)</h3>
+  <h3 class="modal-title"><ng-container i18n>Import application(s)</ng-container></h3>
   <div class="modal-body">
-    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; Importing application(s)...</div>
+    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; <ng-container i18n>Importing application(s)...</ng-container></div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
+      <button type="button"
+              class="btn btn-default"
+              [disabled]="true"
+              i18n>
+        Cancel
+      </button>
     </div>
   </div>
 </clr-modal>

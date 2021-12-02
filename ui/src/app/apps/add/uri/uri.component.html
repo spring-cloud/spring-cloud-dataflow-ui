@@ -1,7 +1,7 @@
 <p>
-  Provide a URI that points to the location of the properties file.<br />
-  This properties file is formatted so that the keys represent the type and the name of the application, e.g. type.name.
-  The property values are the URIs of the app.
+  <ng-container i18n>Provide a URI that points to the location of the properties file.</ng-container><br />
+  <ng-container i18n>This properties file is formatted so that the keys represent the type and the name of the application, e.g. type.name.
+  The property values are the URIs of the app.</ng-container>
 </p>
 
 <form role="form" (ngSubmit)="submit()" clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="2">
@@ -17,29 +17,43 @@
       style="width: 100%"
       placeholder="https://url.to.properties"
     />
-    <clr-control-helper> e.g.: <code> https://dataflow.spring.io/kafka-maven-latest</code> </clr-control-helper>
-    <clr-control-error> Please provide a valid URI pointing to the respective properties file. </clr-control-error>
+    <clr-control-helper> <ng-container i18n>e.g.:</ng-container> <code> https://dataflow.spring.io/kafka-maven-latest</code> </clr-control-helper>
+    <clr-control-error> <ng-container i18n>Please provide a valid URI pointing to the respective properties file.</ng-container> </clr-control-error>
   </clr-input-container>
   <clr-checkbox-container>
     <clr-checkbox-wrapper>
       <input id="forceInput" formControlName="force" type="checkbox" clrCheckbox value="false" name="force" />
-      <label
-        >Force, the applications will be imported and installed even if it already exists but only if not being used
-        already.</label
-      >
+      <label>
+        <ng-container i18n>Force, the applications will be imported and installed even if it already exists but only if not being used
+        already.</ng-container>
+      </label>
     </clr-checkbox-wrapper>
   </clr-checkbox-container>
   <div class="clr-accordion-footer">
-    <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-    <button class="btn btn-primary" type="submit">Import Application(s)</button>
+    <button class="btn btn-secondary"
+            type="button"
+            (click)="back()"
+            i18n>
+      Cancel
+    </button>
+    <button class="btn btn-primary"
+            type="submit"
+            i18n>
+      Import Application(s)
+    </button>
   </div>
 </form>
 <clr-modal [(clrModalOpen)]="isImporting" *ngIf="isImporting" clrModalClosable="false" clrModalSize="md">
-  <h3 class="modal-title">Import application(s)</h3>
+  <h3 class="modal-title"><ng-container i18n>Import application(s)</ng-container></h3>
   <div class="modal-body">
-    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; Importing application(s)...</div>
+    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; <ng-container i18n>Importing application(s)...</ng-container></div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
+      <button type="button"
+              class="btn btn-default"
+              [disabled]="true"
+              i18n>
+        Cancel
+      </button>
     </div>
   </div>
 </clr-modal>

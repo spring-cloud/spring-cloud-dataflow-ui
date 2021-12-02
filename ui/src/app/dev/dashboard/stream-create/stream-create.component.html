@@ -7,15 +7,15 @@
   class="wizard"
 >
   <clr-wizard-title>Create Streams</clr-wizard-title>
-  <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
-  <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
-  <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
-  <clr-wizard-button [type]="'finish'">Create streams</clr-wizard-button>
+  <clr-wizard-button [type]="'cancel'"><ng-container i18n>Cancel</ng-container></clr-wizard-button>
+  <clr-wizard-button [type]="'previous'"><ng-container i18n>Back</ng-container></clr-wizard-button>
+  <clr-wizard-button [type]="'next'"><ng-container i18n>Next</ng-container></clr-wizard-button>
+  <clr-wizard-button [type]="'finish'"><ng-container i18n>Create streams</ng-container></clr-wizard-button>
   <clr-wizard-page>
-    <ng-template clrPageTitle>Names</ng-template>
+    <ng-template clrPageTitle><ng-container i18n>Names</ng-container></ng-template>
     <form clrForm #formNames="ngForm">
       <clr-input-container>
-        <label class="clr-col-md-4"> Names Pattern </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Names Pattern</ng-container></label>
         <input
           clrInput
           required
@@ -27,7 +27,7 @@
       </clr-input-container>
 
       <clr-select-container>
-        <label class="clr-col-md-4"> Min characters </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Min characters</ng-container> </label>
         <select
           clrSelect
           [(ngModel)]="model.names.min"
@@ -44,7 +44,7 @@
         </select>
       </clr-select-container>
       <clr-select-container>
-        <label class="clr-col-md-4"> Max characters </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Max characters</ng-container> </label>
         <select
           clrSelect
           [(ngModel)]="model.names.max"
@@ -64,10 +64,10 @@
   </clr-wizard-page>
 
   <clr-wizard-page>
-    <ng-template clrPageTitle>Descriptions</ng-template>
+    <ng-template clrPageTitle><ng-container i18n>Descriptions</ng-container></ng-template>
     <form clrForm #formDescriptions="ngForm">
       <clr-select-container>
-        <label class="clr-col-md-4"> Min characters </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Min characters</ng-container> </label>
         <select
           clrSelect
           [(ngModel)]="model.descriptions.min"
@@ -84,7 +84,7 @@
         </select>
       </clr-select-container>
       <clr-select-container>
-        <label class="clr-col-md-4"> Max characters </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Max characters</ng-container> </label>
         <select
           clrSelect
           [(ngModel)]="model.descriptions.max"
@@ -104,7 +104,7 @@
   </clr-wizard-page>
 
   <clr-wizard-page>
-    <ng-template clrPageTitle>DSL</ng-template>
+    <ng-template clrPageTitle><ng-container i18n>DSL</ng-container></ng-template>
 
     <form clrForm #formDescriptions="ngForm">
       <!--      <clr-select-container>-->
@@ -120,7 +120,7 @@
       <!--        </select>-->
       <!--      </clr-select-container>-->
       <clr-textarea-container>
-        <label class="clr-col-md-2"> Definition </label>
+        <label class="clr-col-md-2"> <ng-container i18n>Definition</ng-container> </label>
         <textarea
           [(ngModel)]="model.dsl.value"
           clrTextarea
@@ -139,12 +139,12 @@
     (clrWizardPagePrevious)="wizard.previous()"
   >
     <ng-template clrPageTitle>
-      <span *ngIf="!processing">Options</span>
-      <span *ngIf="processing">Processing</span>
+      <span *ngIf="!processing"><ng-container i18n>Options</ng-container></span>
+      <span *ngIf="processing"><ng-container i18n>Processing</ng-container></span>
     </ng-template>
     <form clrForm #formOptions="ngForm" *ngIf="!processing">
       <clr-select-container>
-        <label class="clr-col-md-4"> Number of streams </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Number of streams</ng-container> </label>
         <select
           clrSelect
           [(ngModel)]="model.options.count"
@@ -161,7 +161,7 @@
         </select>
       </clr-select-container>
       <clr-select-container>
-        <label class="clr-col-md-4"> Delay </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Delay</ng-container> </label>
         <select
           clrSelect
           [(ngModel)]="model.options.delay"
@@ -169,14 +169,14 @@
           name="optionsDelay"
           #optionsDelay="ngModel"
         >
-          <option value="0">No break</option>
+          <option value="0"><ng-container i18n>No break</ng-container></option>
           <option value="1">1s</option>
           <option value="2">2s</option>
           <option value="10">10s</option>
         </select>
       </clr-select-container>
       <clr-checkbox-container>
-        <label class="clr-col-md-4"> Deploy streams </label>
+        <label class="clr-col-md-4"> <ng-container i18n>Deploy streams</ng-container> </label>
         <clr-checkbox-wrapper>
           <input
             [(ngModel)]="model.options.deploy"
@@ -189,7 +189,7 @@
       </clr-checkbox-container>
     </form>
     <ng-container *ngIf="processing">
-      <p>{{ step }}/{{ model.options.count }} - Processing...</p>
+      <p>{{ step }}/{{ model.options.count }} - <ng-container i18n>Processing...</ng-container></p>
       <div class="progress labeled">
         <progress [value]="progress" max="100" [attr.data-displayval]="progress + '%'"></progress>
       </div>

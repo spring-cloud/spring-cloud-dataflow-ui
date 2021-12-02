@@ -1,5 +1,5 @@
 <h1>
-  Job execution <strong *ngIf="!loading">{{ execution.name }} ({{ execution.jobExecutionId }})</strong>
+  <ng-container i18n>Job execution</ng-container> <strong *ngIf="!loading">{{ execution.name }} ({{ execution.jobExecutionId }})</strong>
 </h1>
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
@@ -8,7 +8,7 @@
       class="btn btn-sm btn-secondary"
       (click)="restart()"
       [disabled]="execution.status !== 'FAILED' && execution.status !== 'STOPPED' && execution.status !== 'ERROR'"
-    >
+      i18n>
       Restart the job
     </button>
     <button
@@ -16,10 +16,13 @@
       class="btn btn-sm btn-secondary"
       (click)="stop()"
       [disabled]="execution.status === 'FAILED' || execution.status === 'ERROR' || execution.status === 'COMPLETED'"
-    >
+      i18n>
       Stop the job
     </button>
-    <button class="btn btn-sm btn-secondary" grafanaDashboardJobExecution [jobExecution]="execution">
+    <button class="btn btn-sm btn-secondary"
+            grafanaDashboardJobExecution
+            [jobExecution]="execution"
+            i18n>
       Grafana Dashboard
     </button>
   </div>
@@ -30,19 +33,19 @@
         <ng-template>
           <div class="block card-block-keyvalue lg-key" *ngIf="!loading">
             <div class="row">
-              <div class="key">Id</div>
+              <div class="key"><ng-container i18n>Id</ng-container></div>
               <div class="value">{{ execution.jobExecutionId }}</div>
             </div>
             <div class="row">
-              <div class="key">Job Name</div>
+              <div class="key"><ng-container i18n>Job Name</ng-container></div>
               <div class="value">{{ execution.name }}</div>
             </div>
             <div class="row">
-              <div class="key">Job Instance</div>
+              <div class="key"><ng-container i18n>Job Instance</ng-container></div>
               <div class="value">{{ execution.jobInstanceId }}</div>
             </div>
             <div class="row">
-              <div class="key">Task Execution Id</div>
+              <div class="key"><ng-container i18n>Task Execution Id</ng-container></div>
               <div class="value">
                 <a routerLink="/tasks-jobs/task-executions/{{ execution.taskExecutionId }}">{{
                   execution.taskExecutionId
@@ -50,39 +53,39 @@
               </div>
             </div>
             <div class="row">
-              <div class="key">Job Parameters</div>
+              <div class="key"><ng-container i18n>Job Parameters</ng-container></div>
               <div class="value">{{ execution.jobParametersString }}</div>
             </div>
             <div class="row">
-              <div class="key">Start Time</div>
+              <div class="key"><ng-container i18n>Start Time</ng-container></div>
               <div class="value">{{ execution.startTime | datetime }}</div>
             </div>
             <div class="row">
-              <div class="key">End Time</div>
+              <div class="key"><ng-container i18n>End Time</ng-container></div>
               <div class="value">{{ execution.endTime | datetime }}</div>
             </div>
             <div class="row">
-              <div class="key">Duration</div>
+              <div class="key"><ng-container i18n>Duration</ng-container></div>
               <div class="value">{{ execution.startTime | duration: execution.endTime }}</div>
             </div>
             <div class="row">
-              <div class="key">Status</div>
+              <div class="key"><ng-container i18n>Status</ng-container></div>
               <div class="value">
                 <span class="{{ execution.labelStatusClass() }}">{{ execution.status }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Exit Code</div>
+              <div class="key"><ng-container i18n>Exit Code</ng-container></div>
               <div class="value">
                 <span class="{{ execution.labelExitCodeClass() }}">{{ execution.exitCode }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Exit Message</div>
+              <div class="key"><ng-container i18n>Exit Message</ng-container></div>
               <div class="value">{{ execution.exitMessage }}</div>
             </div>
             <div class="row">
-              <div class="key">Step Execution Count</div>
+              <div class="key"><ng-container i18n>Step Execution Count</ng-container></div>
               <div class="value">{{ execution.stepExecutionCount }}</div>
             </div>
           </div>
@@ -95,27 +98,27 @@
           <div *ngIf="!loadingTask">
             <div class="block card-block-keyvalue" *ngIf="task">
               <div class="row">
-                <div class="key">Name</div>
+                <div class="key"><ng-container i18n>Name</ng-container></div>
                 <div class="value">{{ task.name }}</div>
               </div>
               <div *ngIf="task.description" class="row">
-                <div class="key">Description</div>
+                <div class="key"><ng-container i18n>Description</ng-container></div>
                 <div class="value">{{ task.description }}</div>
               </div>
               <div class="row">
-                <div class="key">Definition</div>
+                <div class="key"><ng-container i18n>Definition</ng-container></div>
                 <div class="value">
                   <span class="dsl-text">{{ task.dslText }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">Status</div>
+                <div class="key"><ng-container i18n>Status</ng-container></div>
                 <div class="value">
                   <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">Applications</div>
+                <div class="key"><ng-container i18n>Applications</ng-container></div>
                 <div class="value">
                   <div *ngIf="!loadingApplications">
                     <div *ngFor="let app of applications">
@@ -126,21 +129,30 @@
                   </div>
                   <div *ngIf="loadingApplications">
                     <clr-spinner clrInline clrSmall></clr-spinner>
-                    Loading application(s)...
+                    <ng-container i18n>Loading application(s)...</ng-container>
                   </div>
                 </div>
               </div>
             </div>
-            <div *ngIf="!task">No task found.</div>
+            <div *ngIf="!task"><ng-container i18n>No task found.</ng-container></div>
           </div>
           <div *ngIf="loadingTask">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading task...
+            <ng-container i18n>Loading task...</ng-container>
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="task">
-          <button class="btn btn-sm btn-secondary" (click)="navigateTask()">View task</button>
-          <button type="button" class="btn btn-sm btn-secondary" (click)="relaunch()">Relaunch Task</button>
+          <button class="btn btn-sm btn-secondary"
+                  (click)="navigateTask()"
+                  i18n>
+            View task
+          </button>
+          <button type="button"
+                  class="btn btn-sm btn-secondary"
+                  (click)="relaunch()"
+                  i18n>
+            Relaunch Task
+          </button>
         </div>
       </app-view-card>
       <app-view-card titleModal="Task execution" keyContext="job" name="{{ execution.jobExecutionId }}" id="execution">
@@ -148,11 +160,11 @@
           <div class="block card-block-keyvalue lg-key" *ngIf="!loadingExecution">
             <div *ngIf="taskExecution">
               <div class="row">
-                <div class="key">Execution Id</div>
+                <div class="key"><ng-container i18n>Execution Id</ng-container></div>
                 <div class="value">{{ taskExecution.executionId }}</div>
               </div>
               <div class="row">
-                <div class="key">Arguments</div>
+                <div class="key"><ng-container i18n>Arguments</ng-container></div>
                 <div class="value">
                   <div *ngIf="taskExecution.getArgumentsToArray().length > 0">
                     <div *ngFor="let arg of taskExecution.getArgumentsToArray()">
@@ -164,13 +176,13 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">External Execution Id</div>
+                <div class="key"><ng-container i18n>External Execution Id</ng-container></div>
                 <div class="value">
                   {{ taskExecution.externalExecutionId || 'N/A' }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Job Execution Ids</div>
+                <div class="key"><ng-container i18n>Job Execution Ids</ng-container></div>
                 <div class="value">
                   <a
                     [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
@@ -182,50 +194,50 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">Batch Job</div>
+                <div class="key"><ng-container i18n>Batch Job</ng-container></div>
                 <div class="value">
                   <clr-icon *ngIf="taskExecution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
                   <clr-icon *ngIf="taskExecution.jobExecutionIds?.length === 0" shape="success-standard"></clr-icon>
                 </div>
               </div>
               <div class="row">
-                <div class="key">Start Time</div>
+                <div class="key"><ng-container i18n>Start Time</ng-container></div>
                 <div class="value">
                   {{ taskExecution.startTime | datetime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">End Time</div>
+                <div class="key"><ng-container i18n>End Time</ng-container></div>
                 <div class="value">
                   {{ taskExecution.endTime | datetime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Duration</div>
+                <div class="key"><ng-container i18n>Duration</ng-container></div>
                 <div class="value">
                   {{ taskExecution.startTime | duration: taskExecution.endTime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Exit Code</div>
+                <div class="key"><ng-container i18n>Exit Code</ng-container></div>
                 <div class="value">
                   {{ taskExecution.exitCode }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Exit Message</div>
+                <div class="key"><ng-container i18n>Exit Message</ng-container></div>
                 <div class="value">
                   {{ taskExecution.exitMessage || 'N/A' }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Resource URL</div>
+                <div class="key"><ng-container i18n>Resource URL</ng-container></div>
                 <div class="value">
                   {{ taskExecution.resourceUrl || 'N/A' }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Application Properties</div>
+                <div class="key"><ng-container i18n>Application Properties</ng-container></div>
                 <div class="value">
                   <div *ngIf="taskExecution.getAppPropertiesToArray().length > 0">
                     <div *ngFor="let arg of taskExecution.getAppPropertiesToArray()">
@@ -237,7 +249,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">Platform Properties</div>
+                <div class="key"><ng-container i18n>Platform Properties</ng-container></div>
                 <div class="value">
                   <div *ngIf="taskExecution.getDeploymentPropertiesToArray().length > 0">
                     <div *ngFor="let arg of taskExecution.getDeploymentPropertiesToArray()">
@@ -249,16 +261,25 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="!taskExecution">No execution yet.</div>
+            <div *ngIf="!taskExecution"><ng-container i18n>No execution yet.</ng-container></div>
           </div>
           <div *ngIf="loadingExecution">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading task...
+            <ng-container i18n>Loading task...</ng-container>
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="execution">
-          <button class="btn btn-sm btn-secondary" (click)="navigateTaskExecution()">View task execution</button>
-          <button class="btn btn-sm btn-secondary" (click)="viewLog()" *ngIf="hasLog()">View log</button>
+          <button class="btn btn-sm btn-secondary"
+                  (click)="navigateTaskExecution()"
+                  i18n>
+            View task execution
+          </button>
+          <button class="btn btn-sm btn-secondary"
+                  (click)="viewLog()"
+                  *ngIf="hasLog()"
+                  i18n>
+            View log
+          </button>
         </div>
       </app-view-card>
     </div>
@@ -270,14 +291,14 @@
           <table class="table table-noborder table-compact" style="margin: 0">
             <thead>
               <tr>
-                <th class="left">Step Id</th>
-                <th class="left">Step Name</th>
-                <th class="left">Reads</th>
-                <th class="left">Writes</th>
-                <th class="left">Commits</th>
-                <th class="left">Rollbacks</th>
-                <th class="left">Duration</th>
-                <th class="left">Status</th>
+                <th class="left"><ng-container i18n>Step Id</ng-container></th>
+                <th class="left"><ng-container i18n>Step Name</ng-container></th>
+                <th class="left"><ng-container i18n>Reads</ng-container></th>
+                <th class="left"><ng-container i18n>Writes</ng-container></th>
+                <th class="left"><ng-container i18n>Commits</ng-container></th>
+                <th class="left"><ng-container i18n>Rollbacks</ng-container></th>
+                <th class="left"><ng-container i18n>Duration</ng-container></th>
+                <th class="left"><ng-container i18n>Status</ng-container></th>
               </tr>
             </thead>
             <tbody>
@@ -311,19 +332,19 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading job execution...
+  <ng-container i18n>Loading job execution...</ng-container>
 </div>
 
 <app-confirm #restartModal (onConfirmed)="restartJob()" title="Confirm restart the job execution" yes="Restart">
-  This action will restart the steps failed of the job execution
+  <ng-container i18n>This action will restart the steps failed of the job execution</ng-container>
   <strong>{{ execution?.name }} ({{ execution?.jobExecutionId }})</strong>.<br />
-  Are you sure?
+  <ng-container i18n>Are you sure?</ng-container>
 </app-confirm>
 
 <app-confirm #stopModal (onConfirmed)="stopJob()" title="Confirm stop the job execution" yes="Stop">
-  This action will stop the job execution
+  <ng-container i18n>This action will stop the job execution</ng-container>
   <strong>{{ execution?.name }} ({{ execution?.jobExecutionId }})</strong>.<br />
-  Are you sure?
+  <ng-container i18n>Are you sure?</ng-container>
 </app-confirm>
 
 <app-task-execution-log #logModal></app-task-execution-log>

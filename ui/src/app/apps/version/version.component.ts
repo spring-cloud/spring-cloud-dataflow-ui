@@ -30,7 +30,7 @@ export class VersionComponent {
         this.loading = false;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
         this.isOpen = false;
       }
     );
@@ -50,8 +50,8 @@ export class VersionComponent {
     this.appService.unregisterApp(this.selected).subscribe(
       () => {
         this.notificationService.success(
-          'Unregister version',
-          'Successfully removed version "' + this.selected.version + '".'
+          $localize `Unregister version`,
+          $localize `Successfully removed version "` + this.selected.version + '".'
         );
         this.open(this.versions[0].name, this.versions[0].type);
         this.selected = null;
@@ -61,7 +61,7 @@ export class VersionComponent {
         this.onChange.emit(true);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
         this.isOpen = false;
         this.selected = null;
       }
@@ -72,16 +72,15 @@ export class VersionComponent {
     this.appService.defaultVersion(this.selected).subscribe(
       () => {
         this.notificationService.success(
-          'Default version',
-          `The version <strong>${this.selected.version}</strong> ` +
-            `is now the default version of the application <strong>${this.versions[0].name}</strong> (${this.versions[0].type}).`
+          $localize `Default version`,
+          $localize `The version <strong>${this.selected.version}</strong> is now the default version of the application <strong>${this.versions[0].name}</strong> (${this.versions[0].type}).`
         );
         this.open(this.versions[0].name, this.versions[0].type);
         this.selected = null;
         this.onChange.emit(true);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
         this.isOpen = false;
         this.selected = null;
       }

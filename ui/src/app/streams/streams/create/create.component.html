@@ -1,13 +1,13 @@
-<h1>Create stream(s)</h1>
+<h1><ng-container i18n>Create stream(s)</ng-container></h1>
 
 <app-stream-flo-create #flo></app-stream-flo-create>
 
-<button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-<button class="btn btn-primary" type="button" (click)="createStream()">Create stream(s)</button>
+<button class="btn btn-secondary" type="button" (click)="back()"><ng-container i18n>Cancel</ng-container></button>
+<button class="btn btn-primary" type="button" (click)="createStream()"><ng-container i18n>Create stream(s)</ng-container></button>
 
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!progressData" clrModalSize="lg">
-  <h3 class="modal-title" *ngIf="!progressData">Create Stream(s)</h3>
-  <h3 class="modal-title" *ngIf="progressData">Creating Stream(s)...</h3>
+  <h3 class="modal-title" *ngIf="!progressData"><ng-container i18n>Create Stream(s)</ng-container></h3>
+  <h3 class="modal-title" *ngIf="progressData"><ng-container i18n>Creating Stream(s)...</ng-container></h3>
   <div *ngIf="progressData" class="modal-body">
     <div>
       <div class="progress-static labeled">
@@ -22,21 +22,21 @@
       <div *ngIf="errors && errors.length > 0" class="alert alert-error">
         <div *ngFor="let error of errors">• {{ error }}</div>
       </div>
-      <div style="margin-bottom: 0.8rem">This action will create the following <strong>stream(s)</strong>:</div>
+      <div style="margin-bottom: 0.8rem"><ng-container i18n>This action will create the following</ng-container> <strong><ng-container i18n>stream(s)</ng-container></strong>:</div>
       <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
         <div class="alert-items">
           <div class="alert-item static">
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <div class="alert-text">Duplicate stream name, please check input names.</div>
+            <div class="alert-text"><ng-container i18n>Duplicate stream name, please check input names.</ng-container></div>
           </div>
         </div>
       </div>
       <div *ngFor="let def of getStreams(); let i = index" class="card" style="padding: 10px 0">
         <div class="card-block">
           <div class="clr-form-control clr-row" style="margin-top: 0; max-height: 16px">
-            <label class="clr-control-label clr-col-12 clr-col-md-2">Definition</label>
+            <label class="clr-control-label clr-col-12 clr-col-md-2"><ng-container i18n>Definition</ng-container></label>
             <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
               <!--                <app-stream-dsl>{{def.def | truncate: 90}}</app-stream-dsl>-->
               <span class="dsl-text dsl-truncate">{{ def.def }}</span>
@@ -44,7 +44,7 @@
           </div>
 
           <div class="form-group clr-form-control clr-row">
-            <label class="clr-control-label clr-col-12 clr-col-md-2">Name</label>
+            <label class="clr-control-label clr-col-12 clr-col-md-2"><ng-container i18n>Name</ng-container></label>
             <div
               class="clr-control-container clr-error clr-col-md-10 clr-col-12"
               [class]="{'clr-error': getControl(def.index.toString()).errors}"
@@ -69,7 +69,7 @@
                 class="clr-subtext"
                 *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
               >
-                Stream name is required!
+                <ng-container i18n>Stream name is required!</ng-container>
               </div>
               <div
                 class="clr-subtext"
@@ -77,26 +77,26 @@
                   getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource
                 "
               >
-                Stream name is already taken!
+                <ng-container i18n>Stream name is already taken!</ng-container>
               </div>
               <div
                 class="clr-subtext"
                 *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern"
               >
-                Invalid stream name!
+                <ng-container i18n>Invalid stream name!</ng-container>
               </div>
               <div
                 class="clr-subtext"
                 *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.maxlength"
               >
-                Stream name must be less than 255 characters long!
+                <ng-container i18n>Stream name must be less than 255 characters long!</ng-container>
               </div>
             </div>
           </div>
 
           <clr-control-container class="form-group">
             <label class="clr-control-label clr-col-12 clr-col-md-2" [for]="def.index.toString() + '_desc'"
-              >Description</label
+              ><ng-container i18n>Description</ng-container></label
             >
             <input
               [id]="def.index.toString() + '_desc'"
@@ -109,8 +109,8 @@
               maxlength="255"
               style="width: 560px"
             />
-            <clr-control-error *clrIfError="'maxlength'"
-              >Stream description must be less than 255 characters long!
+            <clr-control-error *clrIfError="'maxlength'">
+              <ng-container i18n>Stream description must be less than 255 characters long!</ng-container>
             </clr-control-error>
           </clr-control-container>
         </div>
@@ -118,8 +118,18 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="progressData">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="progressData || !canSubmit()">
+    <button type="button"
+            class="btn btn-default"
+            (click)="cancel()"
+            [disabled]="progressData"
+            i18n>
+      Cancel
+    </button>
+    <button type="button"
+            class="btn btn-primary"
+            (click)="submit()"
+            [disabled]="progressData || !canSubmit()"
+            i18n>
       Create the stream(s)
     </button>
   </div>

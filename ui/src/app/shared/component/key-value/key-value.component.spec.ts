@@ -148,9 +148,9 @@ describe('KeyValueComponent', () => {
       fixture.detectChanges();
       component.copyClipboard();
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Content copied');
+      expect(NotificationServiceMock.mock.successNotifications[0].title).toContain($localize `Content copied`);
       expect(NotificationServiceMock.mock.successNotifications[0].message).toContain(
-        'The content have been copied to your clipboard.'
+        $localize `The content have been copied to your clipboard.`
       );
     });
   });

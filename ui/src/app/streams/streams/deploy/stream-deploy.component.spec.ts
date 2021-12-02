@@ -132,7 +132,7 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(spy).toHaveBeenCalled();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toContain('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toContain($localize `An error occurred`);
     done();
   });
 

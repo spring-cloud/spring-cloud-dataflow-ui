@@ -5,15 +5,19 @@
     </span>
   </h1>
   <p style="margin-top: 0.6rem; margin-bottom: 0.6rem">
-    Please specify any optional deployment properties. You can either use the builder.
+    <ng-container i18n>Please specify any optional deployment properties. You can either use the builder.</ng-container>
     <br />
-    Alternatively, you can point to an external properties file containing the deployment properties. For more
-    information please see the Technical Documentation.
+    <ng-container i18n>Alternatively, you can point to an external properties file containing the deployment properties. For more
+    information please see the Technical Documentation.</ng-container>
   </p>
 
   <clr-tabs *ngIf="!loading && task">
     <clr-tab>
-      <button clrTabLink id="link1">Builder</button>
+      <button clrTabLink
+              id="link1"
+              i18n>
+        Builder
+      </button>
       <clr-tab-content id="content1" *clrIfActive="true">
         <app-task-launch-builder
           [task]="task"
@@ -29,7 +33,11 @@
       </clr-tab-content>
     </clr-tab>
     <clr-tab>
-      <button clrTabLink>Freetext</button>
+      <button
+        clrTabLink
+        i18n>
+        Freetext
+      </button>
       <clr-tab-content *clrIfActive>
         <app-task-launch-free-text
           [task]="task"
@@ -52,15 +60,20 @@
     <h3 class="modal-title">Launch task</h3>
     <div class="modal-body" *ngIf="isLaunching">
       <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
-      <span>Launching task ...</span>
+      <span><ng-container i18n>Launching task ...</ng-container></span>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
+      <button type="button"
+              class="btn btn-outline"
+              [disabled]="true"
+              i18n>
+        Cancel
+      </button>
     </div>
   </clr-modal>
 </div>
 
 <div *ngIf="loading">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading data ...
+  <ng-container i18n>Loading data ...</ng-container>
 </div>

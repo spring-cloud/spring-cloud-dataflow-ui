@@ -646,15 +646,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
     if (control instanceof FormGroup) {
       if (control.get('property')) {
         if (control.get('property') && control.get('property').invalid) {
-          arr.push('The field "property" is not valid.');
+          arr.push($localize `The field "property" is not valid.`);
         }
       }
       if (control.get('global') && control.get('global').invalid) {
-        arr.push('The field "global" is not valid.');
+        arr.push($localize `The field "global" is not valid.`);
       }
       streamDeployConfig.apps.forEach(app => {
         if (control.get(app.name).invalid) {
-          arr.push(`The field "${app.name}" is not valid.`);
+          arr.push($localize `The field `+ `"${app.name}"` + $localize+` is not valid.`);
         }
       });
     } else {
@@ -749,7 +749,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       this.changeDetector.markForCheck();
     });
     this.groupsPropertiesModal.setData(groupPropertiesSources);
-    this.groupsPropertiesModal.title = 'Deployment properties for platform';
+    this.groupsPropertiesModal.title = $localize `Deployment properties for platform`;
     this.groupsPropertiesModal.isOpen = true;
   }
 
@@ -833,7 +833,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   deployStream(): void {
     if (!this.isSubmittable(this.refBuilder)) {
-      this.notificationService.error('An error occurred', 'Some field(s) are invalid.');
+      this.notificationService.error($localize `An error occurred`, $localize `Some field(s) are invalid.`);
     } else {
       this.deploy.emit(this.getProperties());
     }

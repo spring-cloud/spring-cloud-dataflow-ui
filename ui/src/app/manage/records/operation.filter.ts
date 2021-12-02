@@ -4,12 +4,13 @@ import {App} from '../../shared/model/app.model';
 import {RecordService} from '../../shared/api/record.service';
 import {RecordOperationType} from '../../shared/model/record.model';
 
+
 @Component({
   selector: 'app-clr-datagrid-operation-filter',
   template: ` <div>
     <clr-radio-wrapper>
       <input type="radio" clrRadio (change)="change()" [(ngModel)]="val" value="all" name="options" />
-      <label>All operations</label>
+      <label><ng-container i18n>All operations</ng-container></label>
     </clr-radio-wrapper>
     <clr-radio-wrapper *ngFor="let operation of operationTypes">
       <input type="radio" clrRadio (change)="change()" [(ngModel)]="val" value="{{ operation.key }}" name="options" />

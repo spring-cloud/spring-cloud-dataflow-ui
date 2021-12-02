@@ -1,4 +1,4 @@
-<h1>Tools</h1>
+<h1><ng-container i18n>Tools</ng-container></h1>
 
 <div class="clr-row">
   <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" appRole appFeature="streams">
@@ -6,15 +6,15 @@
       <ng-template>
         <div>
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('export-stream')"
-            >Export stream(s): Create a JSON file with the selected streams</a
-          >
+          <a href="{{ baseApiUrl }}#" (click)="run('export-stream')">
+            <ng-container i18n>Export stream(s): Create a JSON file with the selected streams</ng-container>
+          </a>
         </div>
         <div [appRole]="['ROLE_CREATE']">
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('import-stream')"
-            >Import stream(s): Import streams from a JSON file</a
-          >
+          <a href="{{ baseApiUrl }}#" (click)="run('import-stream')">
+            <ng-container i18n>Import stream(s): Import streams from a JSON file</ng-container>
+          </a>
         </div>
       </ng-template>
     </app-view-card>
@@ -23,11 +23,11 @@
       <ng-template>
         <div>
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-all')">Clean up all task/job executions</a>
+          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-all')"><ng-container i18n>Clean up all task/job executions</ng-container></a>
         </div>
         <div>
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-completed')">Clean up all completed task/job executions</a>
+          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-completed')"><ng-container i18n>Clean up all completed task/job executions</ng-container></a>
         </div>
       </ng-template>
     </app-view-card>
@@ -37,13 +37,13 @@
       <ng-template>
         <div>
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('export-task')"
-            >Export task(s): Create a JSON file with the selected tasks</a
-          >
+          <a href="{{ baseApiUrl }}#" (click)="run('export-task')">
+            <ng-container i18n>Export task(s): Create a JSON file with the selected tasks</ng-container>
+          </a>
         </div>
         <div [appRole]="['ROLE_CREATE']">
           <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('import-task')">Import task(s): Import tasks from a JSON file</a>
+          <a href="{{ baseApiUrl }}#" (click)="run('import-task')"><ng-container i18n>Import task(s): Import tasks from a JSON file</ng-container></a>
         </div>
       </ng-template>
     </app-view-card>

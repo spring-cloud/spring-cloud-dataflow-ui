@@ -51,12 +51,12 @@ describe('tasks-jobs/tasks/cleanup/cleanup.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Clean Up Execution(s)');
+    expect(title.textContent).toContain($localize `Confirm Clean Up Execution(s)`);
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up execution(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('12 execution(s) cleaned up.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe($localize `Clean up execution(s)`);
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('12'+ $localize ` execution(s) cleaned up.`);
     done();
   });
 });

@@ -28,13 +28,13 @@ export class CleanupComponent {
         this.count = count;
         this.loading = false;
         if (this.count.all === 0) {
-          this.notificationService.warning('No execution', 'There is no execution for this task.');
+          this.notificationService.warning($localize `No execution`, $localize `There is no execution for this task.`);
           this.isOpen = false;
           this.task = null;
         }
       },
       (error: AppError) => {
-        this.notificationService.error('An error occurred', error.getMessage());
+        this.notificationService.error($localize `An error occurred`, error.getMessage());
         this.isOpen = false;
       }
     );
@@ -47,15 +47,15 @@ export class CleanupComponent {
     this.taskService.taskExecutionsClean(this.task, this.status === 'completed').subscribe(
       () => {
         this.notificationService.success(
-          'Clean up execution(s)',
-          `${this.status === 'completed' ? this.count.completed : this.count.all} execution(s) cleaned up.`
+          $localize `Clean up execution(s)`,
+          `${this.status === 'completed' ? this.count.completed : this.count.all}` + $localize ` execution(s) cleaned up.`
         );
         this.onCleaned.emit(this.count);
         this.isOpen = false;
         this.task = null;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
         this.isOpen = false;
         this.task = null;
       }

@@ -1,18 +1,18 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="streams?.length === 1" class="modal-title">Confirm Destroy Stream</h3>
-  <h3 *ngIf="streams?.length > 1" class="modal-title">Confirm Destroy Streams</h3>
+  <h3 *ngIf="streams?.length === 1" class="modal-title"><ng-container i18n>Confirm Destroy Stream</ng-container></h3>
+  <h3 *ngIf="streams?.length > 1" class="modal-title"><ng-container i18n>Confirm Destroy Streams</ng-container></h3>
   <div class="modal-body" *ngIf="streams.length === 1 && !isRunning">
-    This action will destroy and delete the stream <strong>{{ streams[0].name }}</strong
-    >. Are you sure?
+    <ng-container i18n>This action will destroy and delete the stream</ng-container> <strong>{{ streams[0].name }}</strong
+    >. <ng-container i18n>Are you sure?</ng-container>
   </div>
   <div class="modal-body" *ngIf="streams?.length > 1 && !isRunning">
-    This action will destroy the <strong>{{ streams.length }} stream definitions</strong> listed below. Are you sure?
+    <ng-container i18n>This action will destroy the</ng-container> <strong>{{ streams.length }} <ng-container i18n>stream definitions</ng-container></strong> <ng-container i18n>listed below. Are you sure?</ng-container>
     <br />
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="left">Name</th>
-          <th class="left">Definition</th>
+          <th class="left"><ng-container i18n>Name</ng-container></th>
+          <th class="left"><ng-container i18n>Definition</ng-container></th>
         </tr>
       </thead>
       <tbody>
@@ -31,13 +31,22 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Destroying stream(s) ...
+    <ng-container i18n>Destroying stream(s) ...</ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
-      <span *ngIf="streams.length === 1">Destroy the stream</span>
-      <span *ngIf="streams.length > 1">Destroy the streams</span>
+    <button type="button"
+            class="btn btn-outline"
+            (click)="isOpen = false"
+            [disabled]="isRunning"
+            i18n>
+      Cancel
+    </button>
+    <button type="button"
+            class="btn btn-danger"
+            (click)="unregister()"
+            [disabled]="isRunning">
+      <span *ngIf="streams.length === 1"><ng-container i18n>Destroy the stream</ng-container></span>
+      <span *ngIf="streams.length > 1"><ng-container i18n>Destroy the streams</ng-container></span>
     </button>
   </div>
 </clr-modal>

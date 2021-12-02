@@ -6,8 +6,15 @@
     "dataflow": {
       "root": "",
       "sourceRoot": "src",
+      "sourceLocale": "en",
       "projectType": "application",
       "prefix": "app",
+      "i18n": {
+        "locales": {
+          "en": "src/locale/messages.en.xlf",
+          "de": "src/locale/messages.de.xlf"
+        }
+      },
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -97,6 +104,12 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "en": {
+              "localize": ["en"]
+            },
+            "de": {
+              "localize": ["de"]
             }
           },
           "defaultConfiguration": ""
@@ -110,6 +123,12 @@
           "configurations": {
             "production": {
               "browserTarget": "dataflow:build:production"
+            },
+            "en": {
+              "browserTarget": "dataflow:build:en"
+            },
+            "de": {
+              "browserTarget": "dataflow:build:de"
             }
           }
         },

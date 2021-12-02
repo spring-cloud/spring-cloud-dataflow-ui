@@ -10,26 +10,26 @@ import {ImportExportService} from '../../../shared/service/import-export.service
       [clrModalClosable]="view !== 'loading'"
       [clrModalSize]="view === 'result' ? 'lg' : 'md'"
     >
-      <h3 class="modal-title">Import stream(s)</h3>
+      <h3 class="modal-title"><ng-container i18n>Import stream(s)</ng-container></h3>
       <div class="modal-body clr-form clr-form-horizontal" *ngIf="view === 'file'">
         <div>
-          You can import your streams from a <strong>JSON file</strong>.<br />
-          The file needs to be modified for sensitive properties before importing.
+          <ng-container i18n>You can import your streams from a <strong>JSON file</strong>.<br />
+          The file needs to be modified for sensitive properties before importing.</ng-container>
         </div>
         <div class="clr-form-control clr-row">
-          <label class="clr-col-2 clr-control-label">JSON file</label>
+          <label class="clr-col-2 clr-control-label"><ng-container i18n>JSON file</ng-container></label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-file-input-wrapper">
               <label for="file">
                 <span class="filename text-truncate">{{ file?.name }}</span>
-                <span class="btn btn-sm btn-secondary">Select a file</span>
+                <span class="btn btn-sm btn-secondary"><ng-container i18n>Select a file</ng-container></span>
                 <input name="file" id="file" type="file" (change)="fileChanged($event)" />
               </label>
             </div>
           </div>
         </div>
         <clr-checkbox-container class="clr-form-control clr-row">
-          <label class="clr-col-2">Options</label>
+          <label class="clr-col-2"><ng-container i18n>Options</ng-container></label>
           <clr-checkbox-wrapper>
             <input
               type="checkbox"
@@ -39,21 +39,21 @@ import {ImportExportService} from '../../../shared/service/import-export.service
               [(ngModel)]="optimize"
               class="clr-col-10"
             />
-            <label>Optimize</label>
+            <label><ng-container i18n>Optimize</ng-container></label>
           </clr-checkbox-wrapper>
         </clr-checkbox-container>
       </div>
       <div class="modal-body" *ngIf="view === 'result'">
         <div>
-          File: <strong>{{ file?.name }}</strong
+          <ng-container i18n>File:</ng-container> <strong>{{ file?.name }}</strong
           ><br />
-          Duration: <strong>{{ result.duration }}s</strong>
+          <ng-container i18n>Duration:</ng-container> <strong>{{ result.duration }}s</strong>
         </div>
         <div *ngIf="result.error.length > 0">
-          <h4>{{ result.error.length }} error(s)</h4>
+          <h4>{{ result.error.length }} <ng-container i18n>error(s)</ng-container></h4>
           <clr-datagrid class="clr-datagrid-no-fixed-height">
             <clr-dg-column [style.width.px]="10">&nbsp;</clr-dg-column>
-            <clr-dg-column>Description</clr-dg-column>
+            <clr-dg-column><ng-container i18n>Description</ng-container></clr-dg-column>
             <clr-dg-row *clrDgItems="let stream of result.error; index as i">
               <clr-dg-cell>
                 <clr-icon shape="error-standard" class="is-solid"></clr-icon>
@@ -66,18 +66,18 @@ import {ImportExportService} from '../../../shared/service/import-export.service
                   <span class="dsl-text dsl-truncate">{{ stream.dslText }}</span>
                 </div>
                 <div class="error">
-                  Message: {{ stream.message }}<br />
-                  Index: {{ i }}
+                  <ng-container i18n>Message:</ng-container> {{ stream.message }}<br />
+                  <ng-container i18n>Index:</ng-container> {{ i }}
                 </div>
               </clr-dg-cell>
             </clr-dg-row>
           </clr-datagrid>
         </div>
         <div *ngIf="result.success.length > 0">
-          <h4>{{ result.success.length }} stream(s) created</h4>
+          <h4>{{ result.success.length }} <ng-container i18n>stream(s) created</ng-container></h4>
           <clr-datagrid class="clr-datagrid-no-fixed-height">
             <clr-dg-column [style.width.px]="10">&nbsp;</clr-dg-column>
-            <clr-dg-column>Description</clr-dg-column>
+            <clr-dg-column><ng-container i18n>Description</ng-container></clr-dg-column>
             <clr-dg-row *clrDgItems="let stream of result.success">
               <clr-dg-cell>
                 <clr-icon shape="success-standard" class="is-solid"></clr-icon>
@@ -96,7 +96,7 @@ import {ImportExportService} from '../../../shared/service/import-export.service
       </div>
       <div class="modal-body" *ngIf="view === 'importing'">
         <clr-spinner clrInline clrSmall></clr-spinner>
-        Importing stream(s) ...
+        <ng-container i18n>Importing stream(s) ...</ng-container>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" [disabled]="view === 'importing'" (click)="isOpen = false">
@@ -109,7 +109,7 @@ import {ImportExportService} from '../../../shared/service/import-export.service
           [disabled]="view === 'importing'"
           *ngIf="view === 'file'"
         >
-          <span>Import stream(s)</span>
+          <span><ng-container i18n>Import stream(s)</ng-container></span>
         </button>
       </div>
     </clr-modal>

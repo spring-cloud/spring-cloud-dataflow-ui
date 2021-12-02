@@ -27,18 +27,18 @@ export class UnregisterComponent {
       data => {
         if (data.length === 1) {
           this.notificationService.success(
-            'Unregister application',
-            'Successfully removed app "' + this.apps[0].name + '" of type "' + this.apps[0].type.toString() + '".'
+            $localize `Unregister application`,
+            $localize `Successfully removed app "` + this.apps[0].name + $localize `" of type "` + this.apps[0].type.toString() + '".'
           );
         } else {
-          this.notificationService.success('Unregister applications', `${data.length} app(s) unregistered.`);
+          this.notificationService.success($localize `Unregister applications`, `${data.length}` + $localize ` app(s) unregistered.`);
         }
         this.onUnregistered.emit(data);
         this.isOpen = false;
         this.apps = null;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
         this.onUnregistered.emit(true);
         this.isOpen = false;
         this.apps = null;

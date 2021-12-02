@@ -1,25 +1,23 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="schedules" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="schedules?.length === 1" class="modal-title">Confirm Delete Schedule</h3>
-  <h3 *ngIf="schedules?.length > 1" class="modal-title">Confirm Delete Schedules</h3>
+  <h3 *ngIf="schedules?.length === 1" class="modal-title"><ng-container i18n>Confirm Delete Schedule</ng-container></h3>
+  <h3 *ngIf="schedules?.length > 1" class="modal-title"><ng-container i18n>Confirm Delete Schedules</ng-container></h3>
   <div class="modal-body" *ngIf="schedules.length === 1 && !isRunning">
-    This action will delete the schedule
-    <u
-      ><strong>{{ schedules[0].name }}</strong></u
-    >. Are you sure?
+    <ng-container i18n>This action will delete the schedule</ng-container>
+    <u><strong>{{ schedules[0].name }}</strong></u>. <ng-container i18n>Are you sure?</ng-container>
   </div>
   <div class="modal-body" *ngIf="schedules?.length > 1 && !isRunning">
-    This action will delete the
+    <ng-container i18n>This action will delete the</ng-container>
     <u
-      ><strong>{{ schedules.length }} schedule{{ schedules?.length > 1 ? 's' : '' }}</strong></u
+      ><strong>{{ schedules.length }} <ng-container i18n>schedule</ng-container>{{ schedules?.length > 1 ? 's' : '' }}</strong></u
     >
-    listed below.<br />Are you sure?
+    <ng-container i18n>listed below.</ng-container><br /><ng-container i18n>Are you sure?</ng-container>
     <br />
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="left">Name</th>
-          <th class="left">Task name</th>
-          <th class="left">Platform</th>
+          <th class="left"><ng-container i18n>Name</ng-container></th>
+          <th class="left"><ng-container i18n>Task name</ng-container></th>
+          <th class="left"><ng-container i18n>Platform</ng-container></th>
         </tr>
       </thead>
       <tbody>
@@ -35,13 +33,21 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Deleting schedule(s) ...
+    <ng-container i18n>Deleting schedule(s) ...</ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
-    <button type="button" class="btn btn-danger" (click)="destroy()" [disabled]="isRunning">
-      <span *ngIf="schedules.length === 1">Delete the schedule</span>
-      <span *ngIf="schedules.length > 1">Delete the schedules</span>
+    <button type="button" class="btn btn-outline"
+            (click)="isOpen = false"
+            [disabled]="isRunning"
+            i18n>
+      Cancel
+    </button>
+    <button type="button"
+            class="btn btn-danger"
+            (click)="destroy()"
+            [disabled]="isRunning">
+      <span *ngIf="schedules.length === 1"><ng-container i18n>Delete the schedule</ng-container></span>
+      <span *ngIf="schedules.length > 1"><ng-container i18n>Delete the schedules</ng-container></span>
     </button>
   </div>
 </clr-modal>

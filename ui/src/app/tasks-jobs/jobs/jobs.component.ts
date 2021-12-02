@@ -44,7 +44,7 @@ export class JobsComponent extends DatagridComponent {
           },
           error => {
             this.loading = false;
-            this.notificationService.error('An error occurred', error);
+            this.notificationService.error($localize `An error occurred`, error);
           }
         );
     }
@@ -62,10 +62,10 @@ export class JobsComponent extends DatagridComponent {
   restartJob(): void {
     this.jobService.restart(this.selection).subscribe(
       () => {
-        this.notificationService.success('Restart job', `Successfully restarted job "${this.selection.name}"`);
+        this.notificationService.success($localize `Restart job`, $localize `Successfully restarted job` + ` "${this.selection.name}"`);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
       }
     );
   }
@@ -78,10 +78,10 @@ export class JobsComponent extends DatagridComponent {
   stopJob(): void {
     this.jobService.stop(this.selection).subscribe(
       () => {
-        this.notificationService.success('Stop job', `Successfully stopped job "${this.selection.name}"`);
+        this.notificationService.success($localize `Stop job`, $localize `Successfully stopped job` + ` "${this.selection.name}"`);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error($localize `An error occurred`, error);
       }
     );
   }

@@ -1,23 +1,23 @@
 <form clrForm>
   <clr-modal [(clrModalOpen)]="isOpen" clrModalSize="xs">
-    <h3 class="modal-title">Settings</h3>
+    <h3 class="modal-title"><ng-container i18n>Settings</ng-container></h3>
     <div class="modal-body">
       <clr-select-container *ngIf="themeActive">
-        <label>Theme</label>
+        <label><ng-container i18n>Theme</ng-container></label>
         <select
           clrSelect
           name="theme"
           [value]="themeActive.value"
           (change)="themeActiveSettingOnChange($event.target.value)"
         >
-          <option value="default">default</option>
-          <option value="dark">dark</option>
+          <option value="default"><ng-container i18n>default</ng-container></option>
+          <option value="dark"><ng-container i18n>dark</ng-container></option>
         </select>
-        <clr-control-helper> You can choose between dark and default theme </clr-control-helper>
+        <clr-control-helper> <ng-container i18n>You can choose between dark and default theme</ng-container> </clr-control-helper>
       </clr-select-container>
 
       <clr-select-container *ngIf="resultsPerPage">
-        <label>Results</label>
+        <label><ng-container i18n>Results</ng-container></label>
         <select
           clrSelect
           name="theme"
@@ -29,11 +29,16 @@
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <clr-control-helper> You can choose the number of results per page. </clr-control-helper>
+        <clr-control-helper> <ng-container i18n>You can choose the number of results per page.</ng-container> </clr-control-helper>
       </clr-select-container>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
+      <button type="button"
+              class="btn btn-outline"
+              (click)="isOpen = false"
+              i18n>
+        Close
+      </button>
     </div>
   </clr-modal>
 </form>

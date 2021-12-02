@@ -3,13 +3,13 @@
   <form clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4" (submit)="submit()">
     <div *ngIf="config.tasks.length === 1" formArrayName="names">
       <div class="clr-form-control clr-row">
-        <div class="clr-col-md-2 clr-control-label">Task Name</div>
+        <div class="clr-col-md-2 clr-control-label"><ng-container i18n>Task Name</ng-container></div>
         <div class="clr-col-9">
           {{ config.tasks[0].name }}
         </div>
       </div>
       <clr-input-container>
-        <label class="clr-col-md-2">Schedule name</label>
+        <label class="clr-col-md-2"><ng-container i18n>Schedule name</ng-container></label>
         <input
           clrInput
           type="text"
@@ -17,8 +17,8 @@
           name="example"
           [dataflowFocus]="true"
         />
-        <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
-        <clr-control-error *clrIfError="'exist'">The name already exists.</clr-control-error>
+        <clr-control-error *clrIfError="'required'"><ng-container i18n>The name is required.</ng-container></clr-control-error>
+        <clr-control-error *clrIfError="'exist'"><ng-container i18n>The name already exists.</ng-container></clr-control-error>
       </clr-input-container>
     </div>
     <div *ngIf="config.tasks.length > 1" formArrayName="names">
@@ -28,19 +28,19 @@
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <span class="alert-text">Duplicate schedule name on the form.</span>
+            <span class="alert-text"><ng-container i18n>Duplicate schedule name on the form.</ng-container></span>
           </div>
         </div>
       </div>
       <div *ngFor="let task of config.tasks; index as i">
         <div class="clr-form-control clr-row">
-          <div class="clr-col-md-2 clr-control-label">Task Name</div>
+          <div class="clr-col-md-2 clr-control-label"><ng-container i18n>Task Name</ng-container></div>
           <div class="clr-col-9">
             {{ task.name }}
           </div>
         </div>
         <clr-input-container>
-          <label class="clr-col-md-2">Schedule</label>
+          <label class="clr-col-md-2"><ng-container i18n>Schedule</ng-container></label>
           <input
             clrInput
             type="text"
@@ -48,14 +48,14 @@
             name="example"
             [dataflowFocus]="i === 0"
           />
-          <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
-          <clr-control-error *clrIfError="'exist'">The name already exists.</clr-control-error>
-          <clr-control-error *clrIfError="'notUnique'">The name already exists.</clr-control-error>
+          <clr-control-error *clrIfError="'required'"><ng-container i18n>The name is required.</ng-container></clr-control-error>
+          <clr-control-error *clrIfError="'exist'"><ng-container i18n>The name already exists.</ng-container></clr-control-error>
+          <clr-control-error *clrIfError="'notUnique'"><ng-container i18n>The name already exists.</ng-container></clr-control-error>
         </clr-input-container>
       </div>
     </div>
     <clr-select-container>
-      <label class="clr-col-md-2"> Platform </label>
+      <label class="clr-col-md-2"><ng-container i18n>Platform</ng-container></label>
       <select clrSelect [formControl]="form.get('platform')">
         <option value="">Select</option>
         <option *ngFor="let platform of config.platforms" [value]="platform.name">
@@ -63,57 +63,74 @@
           ({{ platform.type }})
         </option>
       </select>
-      <clr-control-error *clrIfError="'required'">The platform is required.</clr-control-error>
+      <clr-control-error *clrIfError="'required'"><ng-container i18n>The platform is required.</ng-container></clr-control-error>
     </clr-select-container>
     <clr-input-container>
-      <label class="clr-col-md-2">Cron Expression</label>
+      <label class="clr-col-md-2"><ng-container i18n>Cron Expression</ng-container></label>
       <input clrInput type="text" [formControl]="form.get('cron')" name="example" />
-      <clr-control-error *clrIfError="'required'">The cron expression is required.</clr-control-error>
+      <clr-control-error *clrIfError="'required'"><ng-container i18n>The cron expression is required.</ng-container></clr-control-error>
     </clr-input-container>
     <clr-control-container class="key-value-wrapper">
       <label class="clr-col-md-2">Arguments</label>
       <app-key-value clrControl formControlName="args"></app-key-value>
       <clr-control-helper>
-        Arguments can be prefixed by <code>--</code> (optional). Example:<br />
+        <ng-container i18n>Arguments can be prefixed by</ng-container> <code>--</code> (optional). <ng-container i18n>Example:</ng-container><br />
         <pre><code>--myarg1=value1
 --myarg2=value2</code></pre>
       </clr-control-helper>
       <clr-control-error>
-        One or more arguments are invalid.<br />Example: <code>myarg=myvalue</code>.
+        <ng-container i18n>One or more arguments are invalid.</ng-container><br /><ng-container i18n>Example:</ng-container> <code>myarg=myvalue</code>.
       </clr-control-error>
     </clr-control-container>
     <clr-control-container class="key-value-wrapper">
-      <label class="clr-col-md-2">Properties</label>
+      <label class="clr-col-md-2"><ng-container i18n>Properties</ng-container></label>
       <app-key-value clrControl formControlName="props"></app-key-value>
       <clr-control-helper>
-        Parameters should start with an <code>app.</code> or <code>scheduler.</code>. Example:<br />
+        <ng-container i18n>Parameters should start with an</ng-container>
+        <code><ng-container i18n>app.</ng-container></code>
+        <ng-container i18n>or</ng-container><code><ng-container i18n>scheduler.</ng-container></code>.
+        <ng-container i18n>Example:</ng-container><br />
         <pre><code>app.myparam=value1
           scheduler.myparam2=value2</code></pre>
       </clr-control-helper>
       <clr-control-error>
-        One or more parameters are invalid.<br />Example: <code>app.myarg=myvalue</code>.
+        <ng-container i18n>One or more parameters are invalid.</ng-container><br /><ng-container i18n>Example:</ng-container> <code>app.myarg=myvalue</code>.
       </clr-control-error>
     </clr-control-container>
     <clr-control-container>
       <label class="clr-col-md-2"></label>
-      <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-      <button class="btn btn-primary" type="submit">Create schedule(s)</button>
+      <button class="btn btn-secondary"
+              type="button"
+              (click)="back()"
+              i18n>
+        Cancel
+      </button>
+      <button class="btn btn-primary"
+              type="submit"
+              i18n>
+        Create schedule(s)
+      </button>
     </clr-control-container>
   </form>
 </div>
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading...
+  <ng-container i18n>Loading...</ng-container>
 </div>
 
 <clr-modal [(clrModalOpen)]="creating" *ngIf="config" [clrModalClosable]="false">
   <h3 class="modal-title">Create schedule(s)</h3>
   <div class="modal-body">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Creating schedule(s)...
+    <ng-container i18n>Creating schedule(s)...</ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
+    <button type="button"
+            class="btn btn-outline"
+            [disabled]="true"
+            i18n>
+      Cancel
+    </button>
   </div>
 </clr-modal>

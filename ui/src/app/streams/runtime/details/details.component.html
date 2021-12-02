@@ -1,13 +1,18 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="runtimeApp" [clrModalSize]="'lg'">
   <h3 class="modal-title">
-    Instances for app
-    <strong>{{ runtimeApp.deploymentId }}</strong
-    >&nbsp;
+    <ng-container i18n>Instances for app</ng-container>
+    <strong>{{ runtimeApp.deploymentId }}</strong>&nbsp;
     <span class="{{ runtimeApp.stateColor() }}">{{ runtimeApp.state }}</span>
-    <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeApp [runtimeApp]="runtimeApp">
+    <button class="btn btn-sm btn-secondary"
+            grafanaDashboardRuntimeApp
+            [runtimeApp]="runtimeApp"
+            i18n>
       Grafana dashboard
     </button>
-    <button class="btn btn-sm btn-secondary" wavefrontDashboardRuntimeApp [runtimeApp]="runtimeApp">
+    <button class="btn btn-sm btn-secondary"
+            wavefrontDashboardRuntimeApp
+            [runtimeApp]="runtimeApp"
+            i18n>
       Wavefront dashboard
     </button>
   </h3>
@@ -15,25 +20,22 @@
     <ng-template ngFor let-item [ngForOf]="runtimeApp.appInstances">
       <div>
         <h4>
-          Instance
-          <strong>{{ item.instanceId }}</strong
-          >&nbsp;
+          <ng-container i18n>Instance</ng-container>
+          <strong>{{ item.instanceId }}</strong>&nbsp;
           <span class="{{ item.stateColor() }}">{{ item.state }}</span>
-          <button class="btn btn-sm btn-secondary" grafanaDashboardRuntimeInstance [instance]="item">
+          <button class="btn btn-sm btn-secondary"
+                  grafanaDashboardRuntimeInstance
+                  [instance]="item"
+                  i18n>
             Grafana dashboard
           </button>
-          <button class="btn btn-sm btn-secondary" wavefrontDashboardRuntimeInstance [instance]="item">
+          <button class="btn btn-sm btn-secondary"
+                  wavefrontDashboardRuntimeInstance
+                  [instance]="item"
+                  i18n>
             Wavefront dashboard
           </button>
         </h4>
-
-        <!--          <span *ngIf="grafanaEnabled" style="margin-left: 1rem; float: right;margin-top:-4px;">-->
-        <!--            <button type="button" (click)="grafanaInstanceDashboard(item)" class="btn btn-default btn-fa"-->
-        <!--                    titleModal="Grafana Dashboard">-->
-        <!--              <span class="icon-custom icon-custom-grafana"></span>-->
-        <!--              Grafana Dashboard-->
-        <!--            </button>-->
-        <!--          </span>-->
         <ng-template ngFor let-item [ngForOf]="item.attributes | keyvalue">
           <div class="clr-row">
             <div class="clr-col-5">
@@ -48,6 +50,11 @@
     </ng-template>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
+    <button type="button"
+            class="btn btn-outline"
+            (click)="isOpen = false"
+            i18n>
+      Close
+    </button>
   </div>
 </clr-modal>

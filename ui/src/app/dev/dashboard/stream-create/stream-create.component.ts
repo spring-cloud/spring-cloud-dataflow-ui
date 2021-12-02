@@ -130,7 +130,7 @@ export class StreamCreateComponent {
 
   execute(operations: Array<Observable<any>>): void {
     if (!operations || operations.length === 0) {
-      this.notificationService.success('Creation success', 'The streams have been created.');
+      this.notificationService.success($localize `Creation success`, $localize `The streams have been created.`);
       this.isOpen = false;
       return;
     }
