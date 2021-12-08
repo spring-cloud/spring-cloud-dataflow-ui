@@ -12,7 +12,7 @@
     "test-browserstack-local": "node ./node_modules/@angular/cli/bin/ng test --karma-config ./src/karma-browserstack.conf.js",
     "lint": "ng lint",
     "e2e": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e",
-    "i18n:extract": "ng xi18n --output-path src/locale",
+    "i18n:extract": "ng extract-i18n --format=xlf2 --output-path src/locale --out-file messages.en.xlf" ,
     "e2e-saucelabs-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-saucelabs.conf.js --configuration production",
     "e2e-browserstack-local": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng e2e --host dataflow.local --protractor-config ./e2e/protractor-browserstack.conf.js --configuration production",
     "doc": "./node_modules/.bin/compodoc -p tsconfig.json -n \"Spring Cloud Data Flow Dashboard Documentation\"",

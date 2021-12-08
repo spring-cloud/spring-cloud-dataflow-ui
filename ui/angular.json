@@ -6,10 +6,10 @@
     "dataflow": {
       "root": "",
       "sourceRoot": "src",
-      "sourceLocale": "en",
       "projectType": "application",
       "prefix": "app",
       "i18n": {
+        "sourceLocale": "en",
         "locales": {
           "en": "src/locale/messages.en.xlf",
           "de": "src/locale/messages.de.xlf"
