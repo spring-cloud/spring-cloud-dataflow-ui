@@ -9,7 +9,7 @@
       "projectType": "application",
       "prefix": "app",
       "i18n": {
-        "sourceLocale": "en",
+        "sourceLocale": "en-US",
         "locales": {
           "en": "src/locale/messages.en.xlf",
           "de": "src/locale/messages.de.xlf"
