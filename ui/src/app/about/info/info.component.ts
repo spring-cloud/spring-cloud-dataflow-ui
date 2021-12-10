@@ -7,7 +7,8 @@ import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-about-info',
-  templateUrl: './info.component.html'
+  templateUrl: './info.component.html',
+  styleUrls: ['./info.component.scss']
 })
 export class InfoComponent implements OnInit {
   loading = true;
