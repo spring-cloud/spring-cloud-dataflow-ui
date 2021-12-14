@@ -10,9 +10,8 @@
           [value]="languageActive.value"
           (change)="languageActiveSettingOnChange($event.target.value)"
         >
-          <option value="en-EN"><ng-container i18n>english</ng-container></option>
-          <option value="de-DE"><ng-container i18n>german</ng-container></option>
-          <option value="fr-FR"><ng-container i18n>french</ng-container></option>
+          <option value="en"><ng-container i18n>english</ng-container></option>
+          <option value="de"><ng-container i18n>german</ng-container></option>
         </select>
         <clr-control-helper>
           <ng-container i18n>You can choose your preferred language</ng-container>

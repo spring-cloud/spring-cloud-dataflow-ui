@@ -11,11 +11,14 @@ import {LocalStorageService} from 'angular-2-local-storage';
   providedIn: 'root'
 })
 export class SettingsService {
+
+  static LANGUAGES = ['en', 'de'];
+
   constructor(private store: Store<State>, private localStorageService: LocalStorageService) {}
 
   load(): Observable<SettingModel[]> {
     const isDarkConfig = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const activeLanguage = navigator.language;
+    const activeLanguage = navigator?.language.split('-')[0] ?? 'en';
     let activeValue: string = isDarkConfig ? 'dark' : 'default';
     if (this.localStorageService.get('themeActiveValue')) {
       activeValue = this.localStorageService.get('themeActiveValue');
@@ -55,6 +58,6 @@ export class SettingsService {
   }
 
   getAllLanguages(): Observable<string[]> {
-    return of(['en-EN','de-DE','fr-FR']); // Temporary static list
+    return of(SettingsService.LANGUAGES);
   }
 }
