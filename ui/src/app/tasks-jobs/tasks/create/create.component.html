@@ -2,18 +2,8 @@
 
 <app-task-create-view #flo></app-task-create-view>
 
-<button class="btn btn-secondary"
-        type="button"
-        (click)="back()"
-        i18n>
-  Cancel
-</button>
-<button class="btn btn-primary"
-        type="button"
-        (click)="createTask()"
-        i18n>
-  Create task
-</button>
+<button class="btn btn-secondary" type="button" (click)="back()" i18n>Cancel</button>
+<button class="btn btn-primary" type="button" (click)="createTask()" i18n>Create task</button>
 
 <clr-modal
   [(clrModalOpen)]="isOpen"
@@ -25,18 +15,8 @@
   <div *ngIf="isCreating" class="modal-body">
     <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; <ng-container i18n>Creating task...</ng-container></div>
     <div class="modal-footer">
-      <button type="button"
-              class="btn btn-default"
-              [disabled]="true"
-              i18n>
-        Cancel
-      </button>
-      <button type="submit"
-              class="btn btn-primary"
-              [disabled]="true"
-              i18n>
-        Create the task
-      </button>
+      <button type="button" class="btn btn-default" [disabled]="true" i18n>Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="true" i18n>Create the task</button>
     </div>
   </div>
 
@@ -45,14 +25,20 @@
       <div *ngIf="errors && errors.length > 0" class="alert alert-error">
         <div *ngFor="let error of errors">• {{ error }}</div>
       </div>
-      <div style="margin-bottom: 0.8rem"><ng-container i18n>This action will create the following</ng-container><strong><ng-container i18n>task</ng-container></strong>:</div>
+      <div style="margin-bottom: 0.8rem">
+        <ng-container i18n>This action will create the following</ng-container
+        ><strong><ng-container i18n>task</ng-container></strong
+        >:
+      </div>
       <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
         <div class="alert-items">
           <div class="alert-item static">
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <div class="alert-text"><ng-container i18n>Duplicate task name, please check input names.</ng-container></div>
+            <div class="alert-text">
+              <ng-container i18n>Duplicate task name, please check input names.</ng-container>
+            </div>
           </div>
         </div>
       </div>
@@ -79,13 +65,20 @@
             />
           </div>
           <div class="clr-subtext" *ngIf="!taskName?.errors">
-            <ng-container i18n>The task definition name should be less than 63 characters for Kubernetes or Cloud Foundry platforms.</ng-container>
+            <ng-container i18n
+              >The task definition name should be less than 63 characters for Kubernetes or Cloud Foundry
+              platforms.</ng-container
+            >
           </div>
-          <div class="clr-subtext" *ngIf="taskName?.errors && taskName.errors?.required"><ng-container i18n>Task name is required!</ng-container></div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName.errors?.required">
+            <ng-container i18n>Task name is required!</ng-container>
+          </div>
           <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.uniqueResource">
             <ng-container i18n>Task name is already taken!</ng-container>
           </div>
-          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.pattern"><ng-container i18n>Task task name!</ng-container></div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.pattern">
+            <ng-container i18n>Task task name!</ng-container>
+          </div>
           <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.maxlength">
             <ng-container i18n>Task name must be less than 256 characters long!</ng-container>
           </div>
@@ -93,7 +86,9 @@
       </div>
 
       <clr-control-container class="form-group">
-        <label class="clr-control-label clr-col-12 clr-col-md-2" for="desc"><ng-container i18n>Description</ng-container></label>
+        <label class="clr-control-label clr-col-12 clr-col-md-2" for="desc"
+          ><ng-container i18n>Description</ng-container></label
+        >
         <input
           id="desc"
           name="desc"
@@ -109,19 +104,8 @@
       </clr-control-container>
 
       <div class="modal-footer">
-        <button type="button"
-                class="btn btn-default"
-                (click)="close()"
-                [disabled]="isCreating"
-                i18n>
-          Cancel
-        </button>
-        <button type="submit"
-                class="btn btn-primary"
-                [disabled]="!form.valid"
-                i18n>
-          Create the task
-        </button>
+        <button type="button" class="btn btn-default" (click)="close()" [disabled]="isCreating" i18n>Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!form.valid" i18n>Create the task</button>
       </div>
     </form>
   </div>

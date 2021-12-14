@@ -3,7 +3,9 @@
 <app-stream-flo-create #flo></app-stream-flo-create>
 
 <button class="btn btn-secondary" type="button" (click)="back()"><ng-container i18n>Cancel</ng-container></button>
-<button class="btn btn-primary" type="button" (click)="createStream()"><ng-container i18n>Create stream(s)</ng-container></button>
+<button class="btn btn-primary" type="button" (click)="createStream()">
+  <ng-container i18n>Create stream(s)</ng-container>
+</button>
 
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!progressData" clrModalSize="lg">
   <h3 class="modal-title" *ngIf="!progressData"><ng-container i18n>Create Stream(s)</ng-container></h3>
@@ -22,21 +24,29 @@
       <div *ngIf="errors && errors.length > 0" class="alert alert-error">
         <div *ngFor="let error of errors">• {{ error }}</div>
       </div>
-      <div style="margin-bottom: 0.8rem"><ng-container i18n>This action will create the following</ng-container> <strong><ng-container i18n>stream(s)</ng-container></strong>:</div>
+      <div style="margin-bottom: 0.8rem">
+        <ng-container i18n>This action will create the following</ng-container>
+        <strong><ng-container i18n>stream(s)</ng-container></strong
+        >:
+      </div>
       <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
         <div class="alert-items">
           <div class="alert-item static">
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <div class="alert-text"><ng-container i18n>Duplicate stream name, please check input names.</ng-container></div>
+            <div class="alert-text">
+              <ng-container i18n>Duplicate stream name, please check input names.</ng-container>
+            </div>
           </div>
         </div>
       </div>
       <div *ngFor="let def of getStreams(); let i = index" class="card" style="padding: 10px 0">
         <div class="card-block">
           <div class="clr-form-control clr-row" style="margin-top: 0; max-height: 16px">
-            <label class="clr-control-label clr-col-12 clr-col-md-2"><ng-container i18n>Definition</ng-container></label>
+            <label class="clr-control-label clr-col-12 clr-col-md-2"
+              ><ng-container i18n>Definition</ng-container></label
+            >
             <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
               <!--                <app-stream-dsl>{{def.def | truncate: 90}}</app-stream-dsl>-->
               <span class="dsl-text dsl-truncate">{{ def.def }}</span>
@@ -118,18 +128,8 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button"
-            class="btn btn-default"
-            (click)="cancel()"
-            [disabled]="progressData"
-            i18n>
-      Cancel
-    </button>
-    <button type="button"
-            class="btn btn-primary"
-            (click)="submit()"
-            [disabled]="progressData || !canSubmit()"
-            i18n>
+    <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="progressData" i18n>Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="progressData || !canSubmit()" i18n>
       Create the stream(s)
     </button>
   </div>
