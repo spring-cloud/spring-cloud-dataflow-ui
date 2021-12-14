@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {from, Observable, of} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {getThemeActiveSetting, settingsFeatureKey, State} from './store/settings.reducer';
+import {getThemeActiveSetting,getLanguageActiveSetting, settingsFeatureKey, State} from './store/settings.reducer';
 import {loaded, update} from './store/settings.action';
 import {SettingModel} from '../shared/model/setting.model';
 import {LocalStorageService} from 'angular-2-local-storage';
@@ -15,11 +15,13 @@ export class SettingsService {
 
   load(): Observable<SettingModel[]> {
     const isDarkConfig = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const activeLanguage = navigator.language;
     let activeValue: string = isDarkConfig ? 'dark' : 'default';
     if (this.localStorageService.get('themeActiveValue')) {
       activeValue = this.localStorageService.get('themeActiveValue');
     }
     const settings: SettingModel[] = [
+      {name: 'language-active', value: activeLanguage},
       {name: 'theme-active', value: activeValue},
       {name: 'results-per-page', value: '20'}
     ];
@@ -29,6 +31,9 @@ export class SettingsService {
   update(setting: SettingModel): Observable<void> {
     if (setting.name === 'theme-active') {
       this.localStorageService.set('themeActiveValue', setting.value);
+    }
+    if (setting.name === 'language-active') {
+      this.localStorageService.set('languageActiveValue', setting.value);
     }
     return from(new Promise<void>(resolve => resolve()));
   }
@@ -43,5 +48,13 @@ export class SettingsService {
 
   getSettings(): Observable<SettingModel[]> {
     return this.store.pipe(select(state => state[settingsFeatureKey].settings));
+  }
+
+  getLang(): Observable<string> {
+    return this.store.pipe(select(getLanguageActiveSetting));
+  }
+
+  getAllLanguages(): Observable<string[]> {
+    return of(['en-EN','de-DE','fr-FR']); // Temporary static list
   }
 }

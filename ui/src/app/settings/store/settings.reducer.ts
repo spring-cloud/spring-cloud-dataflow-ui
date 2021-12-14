@@ -5,6 +5,7 @@ import {SettingModel} from '../../shared/model/setting.model';
 
 export const settingsFeatureKey = 'settings';
 export const themeActiveKey = 'theme-active';
+export const languageActiveKey = 'language-active';
 
 export interface SettingsState {
   settings: SettingModel[];
@@ -15,6 +16,8 @@ export interface State extends fromRoot.State {
 }
 
 export const getThemeActiveSetting = (state: State): string => getSetting(state.settings.settings, themeActiveKey);
+
+export const getLanguageActiveSetting = (state: State): string => getSetting(state.settings.settings, languageActiveKey);
 
 export const getSetting = (settings: SettingModel[], name: string): string =>
   settings.find(s => s.name === name)?.value;

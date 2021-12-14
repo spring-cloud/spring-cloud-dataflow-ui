@@ -2,6 +2,22 @@
   <clr-modal [(clrModalOpen)]="isOpen" clrModalSize="xs">
     <h3 class="modal-title"><ng-container i18n>Settings</ng-container></h3>
     <div class="modal-body">
+      <clr-select-container *ngIf="languageActive">
+        <label><ng-container i18n>Language</ng-container></label>
+        <select
+          clrSelect
+          name="language"
+          [value]="languageActive.value"
+          (change)="languageActiveSettingOnChange($event.target.value)"
+        >
+          <option value="en-EN"><ng-container i18n>english</ng-container></option>
+          <option value="de-DE"><ng-container i18n>german</ng-container></option>
+          <option value="fr-FR"><ng-container i18n>french</ng-container></option>
+        </select>
+        <clr-control-helper>
+          <ng-container i18n>You can choose your preferred language</ng-container>
+        </clr-control-helper>
+      </clr-select-container>
       <clr-select-container *ngIf="themeActive">
         <label><ng-container i18n>Theme</ng-container></label>
         <select
@@ -13,7 +29,9 @@
           <option value="default"><ng-container i18n>default</ng-container></option>
           <option value="dark"><ng-container i18n>dark</ng-container></option>
         </select>
-        <clr-control-helper> <ng-container i18n>You can choose between dark and default theme</ng-container> </clr-control-helper>
+        <clr-control-helper>
+          <ng-container i18n>You can choose between dark and default theme</ng-container>
+        </clr-control-helper>
       </clr-select-container>
 
       <clr-select-container *ngIf="resultsPerPage">
@@ -29,16 +47,13 @@
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <clr-control-helper> <ng-container i18n>You can choose the number of results per page.</ng-container> </clr-control-helper>
+        <clr-control-helper>
+          <ng-container i18n>You can choose the number of results per page.</ng-container>
+        </clr-control-helper>
       </clr-select-container>
     </div>
     <div class="modal-footer">
-      <button type="button"
-              class="btn btn-outline"
-              (click)="isOpen = false"
-              i18n>
-        Close
-      </button>
+      <button type="button" class="btn btn-outline" (click)="isOpen = false" i18n>Close</button>
     </div>
   </clr-modal>
 </form>

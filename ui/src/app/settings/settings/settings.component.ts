@@ -11,6 +11,7 @@ import {SettingModel} from '../../shared/model/setting.model';
 export class SettingsComponent extends ModalDialog implements OnInit {
   themeActive: SettingModel;
   resultsPerPage: SettingModel;
+  languageActive: SettingModel;
 
   constructor(private settingsService: SettingsService) {
     super();
@@ -20,6 +21,7 @@ export class SettingsComponent extends ModalDialog implements OnInit {
     this.settingsService.getSettings().subscribe(settings => {
       this.themeActive = settings.find(st => st.name === 'theme-active');
       this.resultsPerPage = settings.find(st => st.name === 'results-per-page');
+      this.languageActive = settings.find(st => st.name === 'language-active');
     });
   }
 
@@ -29,5 +31,9 @@ export class SettingsComponent extends ModalDialog implements OnInit {
 
   resultPerPageSettingOnChange(count: string): void {
     this.settingsService.dispatch({name: 'results-per-page', value: count});
+  }
+
+  languageActiveSettingOnChange(count: string): void {
+    this.settingsService.dispatch({name: 'language-active', value: count});
   }
 }
