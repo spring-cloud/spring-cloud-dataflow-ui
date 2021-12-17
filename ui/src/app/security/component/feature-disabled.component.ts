@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 @Component({
   template: `
-    <h1>Feature Disabled</h1>
-    <p>The requested feature is disabled on the server.</p>
+    <h1>{{ 'security.featureDisabled.title' | translate }}</h1>
+    <p>{{ 'security.featureDisabled.description' | translate }}</p>
   `
 })
 export class FeatureDisabledComponent {}

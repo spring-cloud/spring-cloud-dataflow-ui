@@ -14,6 +14,8 @@ import {ToolsServiceMock} from '../../../tests/service/task-tools.service.mock';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {TaskService} from '../../../shared/api/task.service';
 import {of} from 'rxjs';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/tasks/create/create.component.ts', () => {
   let component: CreateComponent;
@@ -32,6 +34,7 @@ describe('tasks-jobs/tasks/create/create.component.ts', () => {
           ReactiveFormsModule,
           ClarityModule,
           RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           BrowserAnimationsModule
         ],
         providers: [

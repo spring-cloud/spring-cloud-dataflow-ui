@@ -13,6 +13,7 @@ import {TaskService} from '../../../shared/api/task.service';
 import {ToolsService} from '../../../flo/task/tools.service';
 import get from 'lodash.get';
 import {LogComponent} from '../../executions/execution/log/log.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-job-execution',
@@ -38,7 +39,8 @@ export class ExecutionComponent implements OnInit {
     private toolsService: ToolsService,
     private taskService: TaskService,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class ExecutionComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           if (HttpError.is404(error)) {
             this.router.navigateByUrl('/tasks-jobs/job-executions');
           }
@@ -75,7 +77,7 @@ export class ExecutionComponent implements OnInit {
       },
       error => {
         this.loadingExecution = false;
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }
@@ -133,10 +135,13 @@ export class ExecutionComponent implements OnInit {
   restartJob(): void {
     this.jobService.restart(this.execution).subscribe(
       () => {
-        this.notificationService.success('Restart job', `Successfully restarted job "${this.execution.name}"`);
+        this.notificationService.success(
+          this.translate.instant('jobs.main.message.successStopTitle'),
+          this.translate.instant('jobs.main.message.successRestartMessage', {name: this.execution.name})
+        );
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }
@@ -171,10 +176,13 @@ export class ExecutionComponent implements OnInit {
   stopJob(): void {
     this.jobService.stop(this.execution).subscribe(
       () => {
-        this.notificationService.success('Stop job', `Successfully stopped job "${this.execution.name}"`);
+        this.notificationService.success(
+          this.translate.instant('jobs.main.message.successStopTitle'),
+          this.translate.instant('jobs.main.message.successStopMessage', {name: this.execution.name})
+        );
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }

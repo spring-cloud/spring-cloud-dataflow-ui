@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {StreamHistory} from '../../../shared/model/stream.model';
 import {StreamService} from '../../../shared/api/stream.service';
 import {NotificationService} from '../../../shared/service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stream-rollback',
@@ -14,7 +15,11 @@ export class RollbackComponent {
   isRunning = false;
   @Output() onRollback = new EventEmitter();
 
-  constructor(private streamService: StreamService, private notificationService: NotificationService) {}
+  constructor(
+    private streamService: StreamService,
+    private notificationService: NotificationService,
+    private translation: TranslateService
+  ) {}
 
   open(history: StreamHistory): void {
     this.history = history;
@@ -30,14 +35,14 @@ export class RollbackComponent {
     this.streamService.rollbackStream(this.history).subscribe(
       data => {
         this.notificationService.success(
-          'Rollback success',
-          `Successful stream rollback to version '${this.history.version}'`
+          this.translation.instant('streams.rollback.message.successTitle'),
+          this.translation.instant('streams.rollback.message.successContent', {version: this.history.version})
         );
         this.onRollback.emit(true);
         this.close();
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translation.instant('commons.message.error'), error);
         this.isRunning = false;
       }
     );

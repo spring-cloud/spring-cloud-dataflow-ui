@@ -1,34 +1,43 @@
 <h1>
-  Schedule <strong>{{ schedule?.name }}</strong>
+  {{ 'schedules.schedule.title' | translate }} <strong>{{ schedule?.name }}</strong>
 </h1>
 
 <div class="datagrid-action-bar">
-  <button type="button" class="btn btn-sm btn-secondary" (click)="detailsTask()">Task details</button>
-  <button type="button" class="btn btn-sm btn-outline-danger" (click)="destroy()">Delete schedule</button>
+  <button type="button" class="btn btn-sm btn-secondary" (click)="detailsTask()">
+    {{ 'schedules.schedule.taskDetails' | translate }}
+  </button>
+  <button type="button" class="btn btn-sm btn-outline-danger" (click)="destroy()">
+    {{ 'schedules.schedule.deleteSchedule' | translate }}
+  </button>
 </div>
 
 <div *ngIf="!isLoading">
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Information" keyContext="schedule" name="{{ schedule.name }}" id="info">
+      <app-view-card
+        [titleModal]="'schedules.schedule.information' | translate"
+        keyContext="schedule"
+        name="{{ schedule.name }}"
+        id="info"
+      >
         <ng-template>
           <div class="block card-block-keyvalue">
             <div class="row">
-              <div class="key">Name</div>
+              <div class="key">{{ 'schedules.main.name' | translate }}</div>
               <div class="value">{{ schedule.name }}</div>
             </div>
             <div class="row">
-              <div class="key">Task name</div>
+              <div class="key">{{ 'schedules.main.taskName' | translate }}</div>
               <div class="value">
                 <a [routerLink]="'/tasks-jobs/tasks/' + schedule.taskName">{{ schedule.taskName }}</a>
               </div>
             </div>
             <div class="row">
-              <div class="key">Platform</div>
+              <div class="key">{{ 'schedules.main.platform' | translate }}</div>
               <div class="value">{{ schedule.platform || 'N/A' }}</div>
             </div>
             <div class="row">
-              <div class="key">Cron Expr.</div>
+              <div class="key">{{ 'schedules.main.cronExp' | translate }}</div>
               <div class="value">{{ schedule.cronExpression || 'N/A' }}</div>
             </div>
           </div>
@@ -37,23 +46,28 @@
     </div>
 
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Task Information" keyContext="schedule" name="{{ schedule.name }}" id="task">
+      <app-view-card
+        [titleModal]="'schedules.schedule.taskInformation' | translate"
+        keyContext="schedule"
+        name="{{ schedule.name }}"
+        id="task"
+      >
         <ng-template>
           <div class="block card-block-keyvalue">
             <div class="row">
-              <div class="key">Name</div>
+              <div class="key">{{ 'tasks.main.name' | translate }}</div>
               <div class="value">
                 <a [routerLink]="'/tasks-jobs/tasks/' + task.name">{{ task.name }}</a>
               </div>
             </div>
             <div class="row">
-              <div class="key">Definition</div>
+              <div class="key">{{ 'tasks.main.definition' | translate }}</div>
               <div class="value">
                 <span class="dsl-text">{{ task.dslText }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Status</div>
+              <div class="key">{{ 'tasks.main.status' | translate }}</div>
               <div class="value">
                 <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
               </div>
@@ -67,7 +81,7 @@
 
 <div *ngIf="isLoading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading schedule...
+  {{ 'commons.loading' | translate }}
 </div>
 
 <app-schedule-destroy #destroyModal (onDestroyed)="back()"></app-schedule-destroy>

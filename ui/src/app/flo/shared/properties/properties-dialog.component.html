@@ -1,7 +1,7 @@
 <clr-modal [(clrModalOpen)]="isOpen" clrModalSize="lg" class="modal-fixed modal-properties">
   <div class="modal-title">
     <h3 *ngIf="app" style="margin-top: 0.2rem">
-      Properties for <strong>{{ app.name }}</strong>
+      {{ 'flo.properties.title' | translate }} <strong>{{ app.name }}</strong>
       <span class="{{ app.labelTypeClass() }}">{{ typeString }}</span>
       <span class="label" *ngIf="app.version"
         ><span>{{ app.version }}</span></span
@@ -12,7 +12,7 @@
         <input
           type="search"
           class="clr-input"
-          placeholder="Search properties ..."
+          [placeholder]="'flo.properties.searchProperties' | translate"
           [(ngModel)]="searchFilterText"
           [ngModelOptions]="{standalone: true}"
         />
@@ -52,11 +52,13 @@
   </div>
 
   <div class="modal-body app-properties" *ngIf="!propertiesGroupModel || propertiesGroupModel.isLoading">
-    <div style="padding: 10px 0"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; Loading...</div>
+    <div style="padding: 10px 0">
+      <clr-spinner clrSmall clrInline></clr-spinner>&nbsp;{{ 'commons.loading' | translate }}
+    </div>
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="handleCancel()">Cancel</button>
-    <button type="submit" class="btn btn-primary" (click)="handleOk()">Update</button>
+    <button type="button" class="btn btn-default" (click)="handleCancel()">{{ 'commons.cancel' | translate }}</button>
+    <button type="submit" class="btn btn-primary" (click)="handleOk()">{{ 'commons.update' | translate }}</button>
   </div>
 </clr-modal>

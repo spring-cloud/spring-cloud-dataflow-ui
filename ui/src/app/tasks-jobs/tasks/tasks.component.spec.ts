@@ -13,9 +13,10 @@ import {TaskServiceMock} from '../../tests/api/task.service.mock';
 import {GroupServiceMock} from '../../tests/service/group.service.mock';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {SettingsServiceMock} from '../../tests/service/settings.service.mock';
-import {ConfirmComponent} from '../../shared/component/confirm/confirm.component';
 import {DatagridColumnPipe} from '../../shared/pipe/datagrid-column.pipe';
 import {CleanupComponent} from './cleanup/cleanup.component';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('tasks-jobs/tasks/tasks.component.ts', () => {
   let component: TasksComponent;
@@ -25,7 +26,13 @@ describe('tasks-jobs/tasks/tasks.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [TasksComponent, DestroyComponent, CleanupComponent, RoleDirective, DatagridColumnPipe],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

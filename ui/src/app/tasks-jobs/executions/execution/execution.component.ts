@@ -12,6 +12,7 @@ import {Task} from '../../../shared/model/task.model';
 import {TaskConversion} from '../../../flo/task/model/models';
 import {ToolsService} from '../../../flo/task/tools.service';
 import get from 'lodash.get';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-execution',
@@ -33,7 +34,8 @@ export class ExecutionComponent implements OnInit {
     private router: Router,
     private taskService: TaskService,
     private toolsService: ToolsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -122,7 +124,10 @@ export class ExecutionComponent implements OnInit {
   }
 
   log(): void {
-    this.logModal.open(`Log task execution ${this.execution.executionId}`, this.execution);
+    this.logModal.open(
+      this.translate.instant('executions.execution.logTitle', {id: this.execution.executionId}),
+      this.execution
+    );
   }
 
   stop(): void {

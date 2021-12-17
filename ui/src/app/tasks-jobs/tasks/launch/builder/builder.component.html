@@ -1,15 +1,17 @@
 <div *ngIf="builder$ | async as builder; else loading">
   <clr-alert *ngIf="task.composed && hasMigrations()" [clrAlertType]="info" [clrAlertClosable]="false">
     <clr-alert-item>
-      <span class="alert-text"> There are properties which can be migrated. </span>
+      <span class="alert-text">{{ 'tasks.launch.builder.alert.migrateContent' | translate }}</span>
       <div class="alert-actions">
         <clr-dropdown>
           <button class="dropdown-toggle" clrDropdownTrigger>
-            Actions
+            {{ 'commons.actions' | translate }}
             <clr-icon shape="caret down"></clr-icon>
           </button>
           <clr-dropdown-menu clrPosition="bottom-right">
-            <a (click)="migrate()" class="dropdown-item" clrDropdownItem>Migrate</a>
+            <a (click)="migrate()" class="dropdown-item" clrDropdownItem>{{
+              'tasks.launch.builder.alert.migrate' | translate
+            }}</a>
           </clr-dropdown-menu>
         </clr-dropdown>
       </div>
@@ -31,7 +33,7 @@
             <div class="line-toggle">
               <a class="toggle" (click)="state.platform = !state.platform">
                 <clr-icon shape="angle" [class.active]="state.platform"></clr-icon>
-                Platform
+                {{ 'tasks.launch.builder.platform' | translate }}
               </a>
             </div>
 
@@ -41,18 +43,18 @@
                 <clr-tooltip>
                   <clr-icon clrTooltipTrigger shape="clr-validate-icon" size="24"></clr-icon>
                   <clr-tooltip-content clrPosition="top-right" clrSize="md" *clrIfOpen>
-                    <span>The define platform is not valid (unknown).</span>
+                    <span>{{ 'tasks.launch.builder.invalidPlatform' | translate }}</span>
                   </clr-tooltip-content>
                 </clr-tooltip>
               </div>
-              <div class="form-control form-control-label">Platform</div>
+              <div class="form-control form-control-label">{{ 'tasks.launch.builder.platform' | translate }}</div>
             </div>
 
             <!-- 3 Generic Deployer Properties header -->
             <div class="line-toggle">
               <a class="toggle" (click)="state.deployer = !state.deployer">
                 <clr-icon shape="angle" [class.active]="state.deployer"></clr-icon>
-                Generic Deployer Properties
+                {{ 'tasks.launch.builder.genericDeployerProperties' | translate }}
               </a>
             </div>
 
@@ -82,14 +84,14 @@
 
               <a class="toggle" (click)="state.specificPlatform = !state.specificPlatform">
                 <clr-icon shape="angle" [class.active]="state.specificPlatform"></clr-icon>
-                Deployment Platform
+                {{ 'tasks.launch.builder.deploymentPlatform' | translate }}
               </a>
             </div>
 
             <!-- 6 Deployment Platform options -->
             <div *ngIf="state.specificPlatform">
               <div *ngIf="builder.builderDeploymentProperties.global.length > 0" class="line-body">
-                <div class="form-control form-control-label">Properties</div>
+                <div class="form-control form-control-label">{{ 'tasks.launch.builder.properties' | translate }}</div>
               </div>
             </div>
             <div *ngIf="state.specificPlatform" formArrayName="specificPlatform">
@@ -112,7 +114,7 @@
 
                 <input
                   tabindex="{{ 210 + i * 10 }}"
-                  placeholder="Enter a value"
+                  [placeholder]="'tasks.launch.builder.enterValue' | translate"
                   class="clr-input"
                   formControlName="property"
                   type="text"
@@ -124,7 +126,7 @@
             <div class="line-toggle">
               <a class="toggle" (click)="state.app = !state.app">
                 <clr-icon shape="angle" [class.active]="state.app"></clr-icon>
-                Applications Properties
+                {{ 'tasks.launch.builder.applicationsProperties' | translate }}
               </a>
             </div>
 
@@ -140,10 +142,10 @@
                   </clr-tooltip>
                 </div>
 
-                <div class="form-control form-control-label">Version</div>
+                <div class="form-control form-control-label">{{ 'tasks.launch.builder.version' | translate }}</div>
               </div>
               <div class="line-body">
-                <div class="form-control form-control-label">Properties</div>
+                <div class="form-control form-control-label">{{ 'tasks.launch.builder.properties' | translate }}</div>
               </div>
               <div formArrayName="global">
                 <div
@@ -163,7 +165,7 @@
 
                   <input
                     tabindex="{{ 302 + i }}"
-                    placeholder="Enter a value"
+                    [placeholder]="'tasks.launch.builder.enterValue' | translate"
                     class="clr-input"
                     formControlName="property"
                     type="text"
@@ -176,20 +178,20 @@
             <div class="line-toggle" *ngIf="task.composed && builder.ctrProperties.length > 0">
               <a class="toggle" (click)="state.ctr = !state.ctr">
                 <clr-icon shape="angle" [class.active]="state.ctr"></clr-icon>
-                Ctr Properties
+                {{ 'tasks.launch.builder.ctrProperties' | translate }}
               </a>
             </div>
 
             <!-- 10 Ctr Properties options -->
             <div class="line-body" *ngIf="state.ctr && task.composed && builder.ctrProperties.length > 0">
-              <div class="form-control form-control-label">Properties</div>
+              <div class="form-control form-control-label">{{ 'tasks.launch.builder.properties' | translate }}</div>
             </div>
 
             <!-- 11 Ctr Arguments -->
             <div class="line-toggle">
               <a class="toggle" (click)="state.arguments = !state.arguments">
                 <clr-icon shape="angle" [class.active]="state.arguments"></clr-icon>
-                Arguments
+                {{ 'tasks.launch.builder.arguments' | translate }}
               </a>
             </div>
 
@@ -202,7 +204,7 @@
           <!-- col 2 global -->
           <div class="col-fixed global" *ngIf="task.composed">
             <!-- 0 Global header -->
-            <div class="line-head">Global</div>
+            <div class="line-head">{{ 'tasks.launch.builder.global' | translate }}</div>
 
             <!-- 1 Platform header -->
             <div class="line-toggle"></div>
@@ -217,7 +219,7 @@
             >
               <div class="clr-select-wrapper">
                 <select tabindex="1" formControlName="platform" class="clr-select">
-                  <option value="">Select a value</option>
+                  <option value="">{{ 'tasks.launch.builder.selectValue' | translate }}</option>
                   <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
                     {{ platform.name }}
                     ({{ platform.type }})
@@ -231,7 +233,7 @@
                     "
                     [value]="builder.formGroup.get('platform').value"
                   >
-                    {{ builder.formGroup.get('platform').value }} (invalid)
+                    {{ builder.formGroup.get('platform').value }} ({{ 'tasks.launch.builder.invalid' | translate }})
                   </option>
                 </select>
               </div>
@@ -250,7 +252,7 @@
               >
                 <input
                   tabindex="{{ 2 + i }}"
-                  placeholder="Enter a number"
+                  [placeholder]="'tasks.launch.builder.enterNumber' | translate"
                   formControlName="global"
                   class="clr-input"
                   [class.form-control-number]="deployer.suffix"
@@ -269,14 +271,15 @@
             >
               <div class="form-control form-control-label">
                 <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties).length }}</strong>
-                <span> /</span> {{ builder.builderDeploymentProperties.global.length }} properties
+                <span> /</span> {{ builder.builderDeploymentProperties.global.length }}
+                {{ 'tasks.launch.builder.properties' | translate | lowercase }}
                 <button
                   tabindex="{{ 201 }}"
                   type="button"
                   (click)="openDeploymentProperties(builder)"
                   class="btn btn-sm btn-secondary"
                 >
-                  Edit
+                  {{ 'commons.edit' | translate }}
                 </button>
               </div>
             </div>
@@ -291,7 +294,7 @@
               >
                 <input
                   tabindex="{{ 211 + i * 10 }}"
-                  placeholder="Enter a value"
+                  [placeholder]="'tasks.launch.builder.enterValue' | translate"
                   class="clr-input"
                   formControlName="global"
                   type="text"
@@ -315,7 +318,7 @@
                 >
                   <input
                     tabindex="{{ 302 + i }}"
-                    placeholder="Enter a value"
+                    [placeholder]="'tasks.launch.builder.enterValue' | translate"
                     class="clr-input"
                     formControlName="global"
                     type="text"
@@ -334,21 +337,22 @@
                 *ngIf="!builder.ctrPropertiesState.isLoading && !builder.ctrPropertiesState.isOnError"
               >
                 <strong>{{ getCtrProperties(builder.ctrProperties).length }}</strong>
-                <span> /</span> {{ builder.ctrProperties.length }} properties
+                <span> /</span> {{ builder.ctrProperties.length }}
+                {{ 'tasks.launch.builder.properties' | translate | lowercase }}
                 <button
                   tabindex="{{ 401 }}"
                   type="button"
                   (click)="openCtrProperties(builder)"
                   class="btn btn-sm btn-secondary"
                 >
-                  Edit
+                  {{ 'commons.edit' | translate }}
                 </button>
               </div>
               <div *ngIf="builder.ctrPropertiesState.isLoading" class="form-control form-control-label">
-                Loading ...
+                {{ 'commons.loading' | translate }}
               </div>
               <div *ngIf="builder.ctrPropertiesState.isOnError" class="form-control form-control-label">
-                Error Loading
+                {{ 'tasks.launch.builder.errorLoading' | translate }}
               </div>
             </div>
 
@@ -365,7 +369,7 @@
               >
                 <input
                   tabindex="{{ 500 + i * 10 }}"
-                  placeholder="Enter a value"
+                  [placeholder]="'tasks.launch.builder.enterValue' | translate"
                   class="clr-input"
                   formControlName="global"
                   type="text"
@@ -398,7 +402,7 @@
               >
                 <clr-select-container style="margin-top: 0">
                   <select tabindex="1" formControlName="platform" clrSelect>
-                    <option value="">Select a value</option>
+                    <option value="">{{ 'tasks.launch.builder.selectValue' | translate }}</option>
                     <option *ngFor="let platform of builder.taskLaunchConfig.platform.values" [value]="platform.key">
                       {{ platform.name }}
                       ({{ platform.type }})
@@ -412,7 +416,7 @@
                       "
                       [value]="builder.formGroup.get('platform').value"
                     >
-                      {{ builder.formGroup.get('platform').value }} (invalid)
+                      {{ builder.formGroup.get('platform').value }} ({{ 'tasks.launch.builder.invalid' | translate }})
                     </option>
                   </select>
                 </clr-select-container>
@@ -452,14 +456,15 @@
               >
                 <div class="form-control form-control-label">
                   <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties, app.name).length }}</strong>
-                  <span> /</span> {{ builder.builderDeploymentProperties.apps[app.name].length }} properties
+                  <span> /</span> {{ builder.builderDeploymentProperties.apps[app.name].length }}
+                  {{ 'tasks.launch.builder.properties' | translate | lowercase }}
                   <button
                     tabindex="{{ 201 }}"
                     type="button"
                     (click)="openDeploymentProperties(builder, app.name)"
                     class="btn btn-sm btn-secondary"
                   >
-                    Edit
+                    {{ 'commons.edit' | translate }}
                   </button>
                 </div>
               </div>
@@ -473,7 +478,7 @@
                 >
                   <input
                     tabindex="{{ 212 + i * 10 + colindex }}"
-                    placeholder="Enter a value"
+                    [placeholder]="'tasks.launch.builder.enterValue' | translate"
                     class="clr-input"
                     [formControlName]="app.name"
                     type="text"
@@ -499,7 +504,9 @@
                             *ngIf="app.optionsState.isInvalid"
                             [value]="builder.formGroup.get('appsVersion').get(app.name).value"
                           >
-                            {{ builder.formGroup.get('appsVersion').get(app.name).value }} (invalid)
+                            {{ builder.formGroup.get('appsVersion').get(app.name).value }} ({{
+                              'tasks.launch.builder.invalid' | translate | lowercase
+                            }})
                           </option>
                         </select>
                       </clr-select-container>
@@ -518,23 +525,30 @@
                   >
                     <div *ngIf="app.options.length > 0">
                       <strong>{{ getAppProperties(builder.builderAppsProperties, app.name).length }}</strong>
-                      <span> /</span> {{ app.options.length }} properties
+                      <span> /</span> {{ app.options.length }}
+                      {{ 'tasks.launch.builder.properties' | translate | lowercase }}
                       <button
                         tabindex="{{ 301 }}"
                         type="button"
                         (click)="openApp(builder, app)"
                         class="btn btn-sm btn-secondary"
                       >
-                        Edit
+                        {{ 'commons.edit' | translate }}
                       </button>
                     </div>
                     <div *ngIf="app.options.length === 0">
-                      <strong>No properties</strong>
+                      <strong>{{ 'tasks.launch.builder.noProperties' | translate }}</strong>
                     </div>
                   </div>
-                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">Loading ...</div>
-                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">Error loading</div>
-                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label">Invalid version</div>
+                  <div *ngIf="app.optionsState.isLoading" class="form-control form-control-label">
+                    {{ 'commons.loading' | translate | lowercase }}
+                  </div>
+                  <div *ngIf="app.optionsState.isOnError" class="form-control form-control-label">
+                    {{ 'tasks.launch.builder.errorLoading' | translate | lowercase }}
+                  </div>
+                  <div *ngIf="app.optionsState.isInvalid" class="form-control form-control-label">
+                    {{ 'tasks.launch.builder.invalidVersion' | translate }}
+                  </div>
                 </div>
                 <div formArrayName="global">
                   <div
@@ -545,7 +559,7 @@
                   >
                     <input
                       tabindex="{{ 302 + i }}"
-                      placeholder="Enter a value"
+                      [placeholder]="'tasks.launch.builder.enterValue' | translate"
                       class="clr-input"
                       [formControlName]="app.name"
                       type="text"
@@ -574,7 +588,7 @@
                   >
                     <input
                       tabindex="{{ 501 + i * 10 + colindex }}"
-                      placeholder="Enter a value"
+                      [placeholder]="'tasks.launch.builder.enterValue' | translate"
                       class="clr-input"
                       [formControlName]="app.name"
                       type="text"
@@ -586,9 +600,11 @@
           </div>
         </div>
         <div>
-          <a tabindex="600" id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">Cancel</a>
+          <a tabindex="600" id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">{{
+            'commons.cancel' | translate
+          }}</a>
           <button tabindex="600" id="btn-deploy-builder" type="submit" class="btn btn-primary">
-            <span>Launch task</span>
+            <span>{{ 'tasks.launch.builder.launch' | translate }}</span>
           </button>
         </div>
       </div>

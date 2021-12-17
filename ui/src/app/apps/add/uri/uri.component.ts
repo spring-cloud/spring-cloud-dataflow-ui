@@ -4,6 +4,7 @@ import {NotificationService} from '../../../shared/service/notification.service'
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AppsAddValidator} from '../add.validtor';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-uri',
@@ -16,7 +17,8 @@ export class UriComponent {
   constructor(
     private appService: AppService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {
     this.form = new FormGroup({
       uri: new FormControl('', [Validators.required, AppsAddValidator.uri]),
@@ -30,22 +32,25 @@ export class UriComponent {
 
   submit(): void {
     if (!this.form.valid) {
-      this.notificationService.error('Invalid field', 'Some field(s) are missing or invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
     } else {
       this.isImporting = true;
-      this.appService
-        .importUri(this.form.get('uri').value.toString(), this.form.get('force').value)
-        // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
-        .subscribe(
-          data => {
-            this.notificationService.success('Import application(s)', 'Application(s) Imported.');
-            this.back();
-          },
-          error => {
-            this.isImporting = false;
-            this.notificationService.error('An error occurred', error);
-          }
-        );
+      this.appService.importUri(this.form.get('uri').value.toString(), this.form.get('force').value).subscribe(
+        () => {
+          this.notificationService.success(
+            this.translate.instant('applications.add.uri.message.successTitle'),
+            this.translate.instant('applications.add.uri.message.successContent')
+          );
+          this.back();
+        },
+        error => {
+          this.isImporting = false;
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        }
+      );
     }
   }
 

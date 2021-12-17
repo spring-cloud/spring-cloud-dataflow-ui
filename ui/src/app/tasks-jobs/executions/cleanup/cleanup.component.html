@@ -1,22 +1,19 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="executions" [clrModalClosable]="!isRunning">
-  <h3 class="modal-title">Confirm Clean Up Task Execution(s)</h3>
+  <h3 class="modal-title">{{ 'executions.cleanup.title' | translate }}</h3>
   <div class="modal-body" *ngIf="executions.length === 1 && !isRunning">
-    <p>
-      This action will remove the data of the task execution <strong>{{ executions[0].executionId }}</strong> (task
-      <strong>{{ executions[0].taskName }}</strong
-      >). Are you sure?
-    </p>
+    <p
+      [innerHTML]="
+        'executions.cleanup.description' | translate: {id: executions[0].executionId, taskName: executions[0].taskName}
+      "
+    ></p>
   </div>
   <div class="modal-body" *ngIf="executions.length > 1 && !isRunning">
-    <p>
-      This action will remove the data of the <strong>{{ executions.length }} task executions</strong> listed below. Are
-      you sure?
-    </p>
+    <p [innerHTML]="'executions.cleanup.description2' | translate: {count: executions.length}"></p>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="left">Execution ID</th>
-          <th class="left">Task</th>
+          <th class="left">{{ 'executions.main.executionId' | translate }}</th>
+          <th class="left">{{ 'executions.main.taskName' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -29,13 +26,15 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Removing data...
+    {{ 'executions.cleanup.removing' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
-      <span *ngIf="executions.length === 1">Clean up Task Execution</span>
-      <span *ngIf="executions.length > 1">Clean up Task Executions</span>
+      <span *ngIf="executions.length === 1">{{ 'executions.cleanup.cleanupExecution' | translate }}</span>
+      <span *ngIf="executions.length > 1">{{ 'executions.cleanup.cleanupExecutions' | translate }}</span>
     </button>
   </div>
 </clr-modal>

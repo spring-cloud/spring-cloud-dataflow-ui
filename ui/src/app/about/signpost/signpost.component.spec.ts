@@ -9,6 +9,11 @@ import {AppServiceMock} from '../../tests/api/app.service.mock';
 import {NotificationServiceMock} from '../../tests/service/notification.service.mock';
 import {SignpostComponent} from './signpost.component';
 import {InfoComponent} from '../info/info.component';
+import {SharedModule} from '../../shared/shared.module';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
+import {StoreModule} from '@ngrx/store';
+import {ROOT_REDUCERS, metaReducers} from 'src/app/reducers/reducer';
 
 describe('about/signpost/signpost.component.ts', () => {
   let component: SignpostComponent;
@@ -18,7 +23,15 @@ describe('about/signpost/signpost.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SignpostComponent, InfoComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          SharedModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          RouterTestingModule.withRoutes([]),
+          StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

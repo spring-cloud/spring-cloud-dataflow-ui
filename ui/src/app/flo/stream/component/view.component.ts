@@ -5,6 +5,7 @@ import {MetamodelService} from '../metamodel.service';
 import {RenderService} from '../render.service';
 import {delay} from 'rxjs/operators';
 import {Stream} from '../../../shared/model/stream.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stream-flo-view',
@@ -31,7 +32,8 @@ export class StreamFloViewComponent implements OnDestroy, OnChanges {
     private streamService: StreamService,
     private notificationService: NotificationService,
     public metamodelService: MetamodelService,
-    public renderService: RenderService
+    public renderService: RenderService,
+    private translate: TranslateService
   ) {}
 
   ngOnChanges(): void {
@@ -42,7 +44,7 @@ export class StreamFloViewComponent implements OnDestroy, OnChanges {
           this.dsl = streams.map(s => `${s.name}=${s.dslText}`).join('\n');
         },
         error => {
-          this.notificationService.error('An error occured', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
         }
       );
     } else {
@@ -51,7 +53,7 @@ export class StreamFloViewComponent implements OnDestroy, OnChanges {
           this.dsl = stream.dslText;
         },
         error => {
-          this.notificationService.error('An error occured', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
         }
       );
     }

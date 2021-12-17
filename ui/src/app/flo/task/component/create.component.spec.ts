@@ -8,6 +8,8 @@ import {MockSharedAppService} from '../../../tests/service/app.service.mock';
 import {ToolsServiceMock} from '../../../tests/service/task-tools.service.mock';
 import {TaskFloModule} from '../../task-flo.module';
 import {StoreModule} from '@ngrx/store';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 /**
  * Test {@link TaskDefinitionCreateComponent}.
@@ -24,7 +26,13 @@ describe('TaskFloCreateComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({}), TaskFloModule, BrowserAnimationsModule, RouterTestingModule.withRoutes([])],
+      imports: [
+        StoreModule.forRoot({}),
+        TaskFloModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule,
+        RouterTestingModule.withRoutes([])
+      ],
       providers: [{provide: MetamodelService, useValue: metamodelService}]
     }).compileComponents();
   });

@@ -7,10 +7,19 @@ import {ClarityModule} from '@clr/angular';
 import {NavComponent} from './nav/nav.component';
 import {LogoComponent} from './logo/logo.component';
 import {SecurityModule} from '../security/security.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [LogoComponent, NavComponent],
-  imports: [RouterModule, BrowserModule, BrowserAnimationsModule, CommonModule, ClarityModule, SecurityModule],
+  imports: [
+    RouterModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    ClarityModule,
+    SecurityModule,
+    TranslateModule
+  ],
   exports: [LogoComponent, NavComponent]
 })
 export class LayoutModule {}

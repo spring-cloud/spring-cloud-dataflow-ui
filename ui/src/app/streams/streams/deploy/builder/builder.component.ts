@@ -25,6 +25,7 @@ import {
 import {App} from '../../../../shared/model/app.model';
 import {PropertiesDialogComponent} from '../../../../flo/shared/properties/properties-dialog.component';
 import {StreamAppPropertiesSource, StreamHead} from '../../../../flo/stream/properties/stream-properties-source';
+import {TranslateService} from '@ngx-translate/core';
 
 export class AppPropertiesSource implements StreamAppPropertiesSource {
   private options: Array<any>;
@@ -116,7 +117,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
   constructor(
     private streamDeployService: StreamDeployService,
     private changeDetector: ChangeDetectorRef,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   /**
@@ -646,15 +648,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
     if (control instanceof FormGroup) {
       if (control.get('property')) {
         if (control.get('property') && control.get('property').invalid) {
-          arr.push('The field "property" is not valid.');
+          arr.push(this.translate.instant('streams.deploy.builder.tooltip.invalidProperty'));
         }
       }
       if (control.get('global') && control.get('global').invalid) {
-        arr.push('The field "global" is not valid.');
+        arr.push(this.translate.instant('streams.deploy.builder.tooltip.invalidGlobal'));
       }
       streamDeployConfig.apps.forEach(app => {
         if (control.get(app.name).invalid) {
-          arr.push(`The field "${app.name}" is not valid.`);
+          arr.push(this.translate.instant('streams.deploy.builder.tooltip.invalidField', {name: app.name}));
         }
       });
     } else {
@@ -749,7 +751,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
       this.changeDetector.markForCheck();
     });
     this.groupsPropertiesModal.setData(groupPropertiesSources);
-    this.groupsPropertiesModal.title = 'Deployment properties for platform';
+    this.groupsPropertiesModal.title = this.translate.instant(
+      'streams.deploy.builder.tooltip.deploymentPropertiesTitle'
+    );
     this.groupsPropertiesModal.isOpen = true;
   }
 
@@ -833,7 +837,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   deployStream(): void {
     if (!this.isSubmittable(this.refBuilder)) {
-      this.notificationService.error('An error occurred', 'Some field(s) are invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
     } else {
       this.deploy.emit(this.getProperties());
     }

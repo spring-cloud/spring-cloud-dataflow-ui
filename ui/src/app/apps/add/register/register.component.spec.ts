@@ -12,6 +12,8 @@ import {NotificationServiceMock} from '../../../tests/service/notification.servi
 import {RegisterComponent} from './register.component';
 import {throwError} from 'rxjs';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('apps/register/register.component.ts', () => {
   let component: RegisterComponent;
@@ -26,6 +28,7 @@ describe('apps/register/register.component.ts', () => {
           ReactiveFormsModule,
           FormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],
@@ -121,7 +124,7 @@ describe('apps/register/register.component.ts', () => {
     fixture.detectChanges();
     fixture.debugElement.query(By.css('button[name=register]')).nativeElement.click();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid application(s)');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid field(s)');
     expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Some field(s) are missing or invalid.');
   });
 

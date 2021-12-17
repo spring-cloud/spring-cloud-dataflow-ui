@@ -13,6 +13,8 @@ import {UnregisterComponent} from '../unregister/unregister.component';
 import {VersionComponent} from '../version/version.component';
 import {ConfirmComponent} from '../../shared/component/confirm/confirm.component';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('apps/add.component.ts', () => {
   let component: AppComponent;
@@ -26,6 +28,7 @@ describe('apps/add.component.ts', () => {
           BrowserModule,
           FormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

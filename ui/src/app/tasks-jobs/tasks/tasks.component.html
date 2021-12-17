@@ -1,11 +1,15 @@
 <h1 class="page-title-actions">
-  Tasks
+  {{ 'tasks.main.title' | translate }}
   <span class="actions">
     <button type="button" class="btn btn-sm btn-primary" (click)="createTask()" [appRole]="['ROLE_CREATE']">
-      Create task
+      {{ 'tasks.main.create' | translate }}
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>Grafana Dashboard</button>
-    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardTasks>Wavefront Dashboard</button>
+    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>
+      {{ 'tasks.main.grafana' | translate }}
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardTasks>
+      {{ 'tasks.main.wavefront' | translate }}
+    </button>
   </span>
 </h1>
 
@@ -17,7 +21,9 @@
   #datagrid
 >
   <clr-dg-action-bar *ngIf="grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">Cancel</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button
       type="button"
       [disabled]="selected?.length === 0"
@@ -26,7 +32,7 @@
       [appRole]="['ROLE_SCHEDULE']"
       appFeature="schedules"
     >
-      Schedule task(s)
+      {{ 'tasks.main.scheduleTasks' | translate }}
     </button>
     <button
       type="button"
@@ -35,7 +41,7 @@
       (click)="destroyTasks(selected)"
       [appRole]="['ROLE_DESTROY']"
     >
-      Destroy task(s)
+      {{ 'tasks.main.destroyTasks' | translate }}
     </button>
     <button
       type="button"
@@ -44,7 +50,7 @@
       (click)="cloneTasks(selected)"
       [appRole]="['ROLE_CREATE']"
     >
-      Clone task(s)
+      {{ 'tasks.main.cloneTasks' | translate }}
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
@@ -54,9 +60,11 @@
       (click)="setMode(true)"
       [appRole]="['ROLE_DESTROY', 'ROLE_SCHEDULE']"
     >
-      Group Actions
+      {{ 'commons.groupActions' | translate }}
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      {{ 'commons.refresh' | translate }}
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     [clrDgField]="'taskName'"
@@ -65,7 +73,7 @@
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName:15 | async"
     [clrFilterValue]="context.taskName"
   >
-    <ng-container> Name </ng-container>
+    <ng-container>{{ 'tasks.main.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
@@ -80,14 +88,14 @@
     (clrDgColumnResize)="updateContext('sizeDsl', $event)"
     [style.width.px]="context.sizeDsl | datagridcolumn: datagrid:contextName:15 | async"
   >
-    <ng-container> Definition </ng-container>
+    <ng-container>{{ 'tasks.main.definition' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
     [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName:15 | async"
   >
-    <ng-container> Status </ng-container>
+    <ng-container>{{ 'tasks.main.status' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let task of page?.items" [clrDgItem]="task" [clrDgSelectable]="!task.composedTaskElement">
@@ -106,8 +114,10 @@
       ><span class="{{ task.labelStatusClass() }}">{{ task.status }}</span></clr-dg-cell
     >
     <clr-dg-action-overflow *ngIf="!grouped">
-      <button class="action-item" (click)="details(task)">Details</button>
-      <button class="action-item" (click)="launch(task)" [appRole]="['ROLE_DEPLOY']">Launch</button>
+      <button class="action-item" (click)="details(task)">{{ 'tasks.main.details' | translate }}</button>
+      <button class="action-item" (click)="launch(task)" [appRole]="['ROLE_DEPLOY']">
+        {{ 'tasks.main.launch' | translate }}
+      </button>
       <button
         class="action-item"
         (click)="schedule(task)"
@@ -115,7 +125,7 @@
         appFeature="schedules"
         [disabled]="task.composedTaskElement"
       >
-        Schedule
+        {{ 'tasks.main.schedule' | translate }}
       </button>
       <button
         class="action-item"
@@ -123,7 +133,7 @@
         [appRole]="['ROLE_DESTROY']"
         [disabled]="task.composedTaskElement"
       >
-        Destroy
+        {{ 'tasks.main.destroy' | translate }}
       </button>
       <button
         class="action-item"
@@ -131,7 +141,7 @@
         [appRole]="['ROLE_CREATE']"
         [disabled]="task.composedTaskElement"
       >
-        Clone
+        {{ 'tasks.main.clone' | translate }}
       </button>
       <button
         class="action-item"
@@ -139,13 +149,13 @@
         [appRole]="['ROLE_DESTROY']"
         [disabled]="task.composedTaskElement"
       >
-        Cleanup
+        {{ 'tasks.main.cleanup' | translate }}
       </button>
-      <button class="action-item" grafanaDashboardTask [task]="task">Grafana Dashboard</button>
-      <button class="action-item" wavefrontDashboardTask [task]="task">Wavefront Dashboard</button>
+      <button class="action-item" grafanaDashboardTask [task]="task">{{ 'tasks.main.grafana' | translate }}</button>
+      <button class="action-item" wavefrontDashboardTask [task]="task">{{ 'tasks.main.wavefront' | translate }}</button>
     </clr-dg-action-overflow>
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder>{{ 'commons.noResultFound' | translate }}</clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination
       #pagination
@@ -153,8 +163,13 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Tasks per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} tasks
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
+        'tasks.main.tasksPerPage' | translate
+      }}</clr-dg-page-size>
+      {{
+        'tasks.main.pagination'
+          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+      }}
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

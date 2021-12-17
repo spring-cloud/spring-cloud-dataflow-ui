@@ -17,6 +17,8 @@ import {TaskPage} from '../../model/task.model';
 import {StreamPage} from '../../model/stream.model';
 import {AppPage} from '../../model/app.model';
 import {By} from '@angular/platform-browser';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('shared/component/search/search.component.ts', () => {
   let component: SearchComponent;
@@ -30,6 +32,7 @@ describe('shared/component/search/search.component.ts', () => {
           FormsModule,
           ReactiveFormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

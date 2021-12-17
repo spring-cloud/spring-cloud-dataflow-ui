@@ -15,6 +15,8 @@ import {RoleDirective} from '../../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../../tests/service/context.service.mock';
 import {Task} from '../../../../shared/model/task.model';
 import {SIMPLE_TASK_DEFAULT, COMPOSED_TASK_DEFAULT} from '../../../../tests/data/task';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
   let component: BuilderComponent;
@@ -30,6 +32,7 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
           FormsModule,
           ReactiveFormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

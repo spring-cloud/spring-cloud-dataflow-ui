@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {JobService} from '../../shared/api/job.service';
 import {ClrDatagridStateInterface} from '@clr/angular';
 import {JobExecution, JobExecutionPage} from '../../shared/model/job.model';
@@ -8,6 +8,7 @@ import {NotificationService} from '../../shared/service/notification.service';
 import {DatagridComponent} from '../../shared/component/datagrid/datagrid.component';
 import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-jobs',
@@ -25,7 +26,8 @@ export class JobsComponent extends DatagridComponent {
     protected contextService: ContextService,
     protected settingsService: SettingsService,
     protected changeDetectorRef: ChangeDetectorRef,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {
     super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/jobs');
   }
@@ -44,7 +46,7 @@ export class JobsComponent extends DatagridComponent {
           },
           error => {
             this.loading = false;
-            this.notificationService.error('An error occurred', error);
+            this.notificationService.error(this.translate.instant('commons.message.error'), error);
           }
         );
     }
@@ -62,10 +64,13 @@ export class JobsComponent extends DatagridComponent {
   restartJob(): void {
     this.jobService.restart(this.selection).subscribe(
       () => {
-        this.notificationService.success('Restart job', `Successfully restarted job "${this.selection.name}"`);
+        this.notificationService.success(
+          this.translate.instant('jobs.main.message.successStopTitle'),
+          this.translate.instant('jobs.main.message.successRestartMessage', {name: this.selection.name})
+        );
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }
@@ -78,10 +83,13 @@ export class JobsComponent extends DatagridComponent {
   stopJob(): void {
     this.jobService.stop(this.selection).subscribe(
       () => {
-        this.notificationService.success('Stop job', `Successfully stopped job "${this.selection.name}"`);
+        this.notificationService.success(
+          this.translate.instant('jobs.main.message.successStopTitle'),
+          this.translate.instant('jobs.main.message.successStopMessage', {name: this.selection.name})
+        );
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }

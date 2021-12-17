@@ -41,6 +41,7 @@ import {StoreModule} from '@ngrx/store';
 import * as fromContext from './store/context.reducer';
 import {DateFilterComponent} from './filter/date/date.filter';
 import {DatagridColumnPipe} from './pipe/datagrid-column.pipe';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   entryComponents: [ToastComponent],
@@ -84,6 +85,7 @@ import {DatagridColumnPipe} from './pipe/datagrid-column.pipe';
     ReactiveFormsModule,
     FormsModule,
     StoreModule.forFeature(fromContext.contextFeatureKey, fromContext.reducer),
+    TranslateModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       tapToDismiss: false,

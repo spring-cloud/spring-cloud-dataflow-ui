@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
 import {AppService} from '../../../shared/api/app.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 
@@ -24,28 +25,32 @@ export class WebsiteStartersComponent {
   constructor(
     private router: Router,
     private notificationService: NotificationService,
-    private appService: AppService
+    private appService: AppService,
+    private translate: TranslateService
   ) {}
 
   submit(): void {
     if (!this.value || !this.uris[this.value]) {
-      this.notificationService.error('No starter selected', 'Please, select a starter pack.');
+      this.notificationService.error(
+        this.translate.instant('applications.add.websiteStarters.message.noStarterTitle'),
+        this.translate.instant('applications.add.websiteStarters.message.noStarterContent')
+      );
       return;
     }
     this.isImporting = true;
-    this.appService
-      .importUri(this.uris[this.value], this.force)
-      // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
-      .subscribe(
-        () => {
-          this.notificationService.success('Import starters', 'Application(s) Imported.');
-          this.back();
-        },
-        error => {
-          this.notificationService.error('An error occurred', error);
-          this.isImporting = false;
-        }
-      );
+    this.appService.importUri(this.uris[this.value], this.force).subscribe(
+      () => {
+        this.notificationService.success(
+          this.translate.instant('applications.add.websiteStarters.message.successTitle'),
+          this.translate.instant('applications.add.websiteStarters.message.successContent')
+        );
+        this.back();
+      },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.isImporting = false;
+      }
+    );
   }
 
   back(): void {

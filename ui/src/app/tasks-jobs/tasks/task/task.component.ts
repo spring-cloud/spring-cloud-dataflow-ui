@@ -16,6 +16,7 @@ import {AboutState} from '../../../shared/store/about.reducer';
 import {ScheduleService} from '../../../shared/api/schedule.service';
 import {SchedulePage} from '../../../shared/model/schedule.model';
 import {CleanupComponent} from '../cleanup/cleanup.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-task',
@@ -43,7 +44,8 @@ export class TaskComponent implements OnInit {
     private toolsService: ToolsService,
     private scheduleService: ScheduleService,
     private aboutService: AboutService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -82,7 +84,7 @@ export class TaskComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           if (HttpError.is404(error)) {
             this.back();
           }
@@ -97,7 +99,7 @@ export class TaskComponent implements OnInit {
         this.loadingSchedules = false;
       },
       error => {
-        this.notificationService.error('An error occured', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingSchedules = false;
       }
     );
@@ -144,7 +146,7 @@ export class TaskComponent implements OnInit {
       },
       error => {
         this.loadingExecution = false;
-        this.notificationService.error('An error occured', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }

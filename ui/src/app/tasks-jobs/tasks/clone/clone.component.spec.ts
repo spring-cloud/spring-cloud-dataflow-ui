@@ -9,6 +9,8 @@ import {NotificationServiceMock} from '../../../tests/service/notification.servi
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {CloneComponent} from './clone.component';
 import {TaskServiceMock} from '../../../tests/api/task.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('apps/tasks-jobs/tasks/clone/clone.component.ts', () => {
   let component: CloneComponent;
@@ -23,6 +25,7 @@ describe('apps/tasks-jobs/tasks/clone/clone.component.ts', () => {
           ClarityModule,
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           ReactiveFormsModule
         ],
         providers: [

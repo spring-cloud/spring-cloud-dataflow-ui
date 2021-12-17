@@ -15,6 +15,8 @@ import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {SettingsServiceMock} from '../../tests/service/settings.service.mock';
 import {DateFilterComponent} from '../../shared/filter/date/date.filter';
 import {DatagridColumnPipe} from '../../shared/pipe/datagrid-column.pipe';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('tasks-jobs/jobs/jobs.component.ts', () => {
   let component: JobsComponent;
@@ -31,7 +33,13 @@ describe('tasks-jobs/jobs/jobs.component.ts', () => {
           DateFilterComponent,
           DatagridColumnPipe
         ],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

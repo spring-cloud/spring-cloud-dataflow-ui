@@ -5,6 +5,7 @@ import {SettingModel} from '../../shared/model/setting.model';
 
 export const settingsFeatureKey = 'settings';
 export const themeActiveKey = 'theme-active';
+export const languageActiveKey = 'language-active';
 
 export interface SettingsState {
   settings: SettingModel[];
@@ -20,7 +21,10 @@ export const getSetting = (settings: SettingModel[], name: string): string =>
   settings.find(s => s.name === name)?.value;
 
 export const initialState: SettingsState = {
-  settings: [{name: themeActiveKey, value: 'default'}]
+  settings: [
+    {name: themeActiveKey, value: 'default'},
+    {name: languageActiveKey, value: 'en'}
+  ]
 };
 
 function mergeSettings(left: SettingModel[], right: SettingModel[]): SettingModel[] {
@@ -40,11 +44,9 @@ function mergeSettings(left: SettingModel[], right: SettingModel[]): SettingMode
 
 function updateSettings(settings: SettingModel[], setting: SettingModel): SettingModel[] {
   const to = [];
-  let isOverride = false;
   settings.forEach(v => {
     if (v.name === setting.name) {
       to.push({name: v.name, value: setting.value});
-      isOverride = true;
     } else {
       to.push({name: v.name, value: v.value});
     }

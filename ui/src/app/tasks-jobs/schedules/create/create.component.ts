@@ -13,6 +13,7 @@ import {KeyValueValidator} from '../../../shared/component/key-value/key-value.v
 import {TaskPropValidator} from '../../tasks/task-prop.validator';
 import {Task} from '../../../shared/model/task.model';
 import {Platform} from '../../../shared/model/platform.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-schedules-create',
@@ -30,7 +31,8 @@ export class CreateComponent implements OnInit {
     private route: ActivatedRoute,
     private scheduleService: ScheduleService,
     private taskService: TaskService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +43,7 @@ export class CreateComponent implements OnInit {
             if (this.groupService.group(params.id)) {
               return forkJoin([...(this.groupService.group(params.id) as any)].map(id => this.taskService.getTask(id)));
             } else {
-              return throwError('Group selection not found.');
+              return throwError(this.translate.instant('schedules.create.message.groupSeclectionNotFoundTitle'));
             }
           } else {
             return forkJoin([this.taskService.getTask(params.id)]);
@@ -78,7 +80,7 @@ export class CreateComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           this.back();
         }
       );
@@ -124,7 +126,10 @@ export class CreateComponent implements OnInit {
 
   submit(): void {
     if (!this.form.valid) {
-      this.notificationService.error('Invalid field(s)', 'Some field(s) are missing or invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
     } else {
       this.creating = true;
       const getClean = (val: string): Array<string> => val.split('\n').filter(a => a !== '');
@@ -147,19 +152,21 @@ export class CreateComponent implements OnInit {
         () => {
           if (scheduleParams.length === 1) {
             this.notificationService.success(
-              'Schedule creation',
-              `Successfully schedule creation "${scheduleParams[0].schedulerName}"`
+              this.translate.instant('schedules.create.message.scheculeSuccessTitle'),
+              this.translate.instant('schedules.create.message.scheculeSuccessContent', {
+                name: scheduleParams[0].schedulerName
+              })
             );
           } else {
             this.notificationService.success(
-              'Schedules creation',
-              `Successfully ${scheduleParams.length} schedules creation`
+              this.translate.instant('schedules.create.message.scheculesSuccessTitle'),
+              this.translate.instant('schedules.create.message.scheculesSuccessContent', {count: scheduleParams.length})
             );
           }
           this.back();
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           this.creating = false;
         }
       );

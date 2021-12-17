@@ -1,23 +1,13 @@
-<h1>Runtime</h1>
+<h1>{{ 'runtime.main.title' | translate }}</h1>
 
-<!--<div class="alert alert-info">-->
-<!--  <div class="alert-items">-->
-<!--    <div class="alert-item static">-->
-<!--      <div class="alert-icon-wrapper">-->
-<!--        <clr-icon class="alert-icon" shape="info-circle"></clr-icon>-->
-<!--      </div>-->
-<!--      <span class="alert-text">Work in progress</span>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh()">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh()">
+      {{ 'commons.refresh' | translate }}
+    </button>
   </div>
   <div *ngFor="let runtimeStream of page.items">
-    <h3>
-      Stream <strong>{{ runtimeStream.name }}</strong>
-    </h3>
+    <h3 [innerHTML]="'runtime.main.stream' | translate: {name: runtimeStream.name}"></h3>
     <div class="clr-row">
       <ng-template ngFor let-runtimeApp [ngForOf]="runtimeStream.apps">
         <div class="clr-col-12 clr-col-sm-3">
@@ -29,17 +19,17 @@
               </h4>
               <p class="card-text">
                 {{ runtimeApp.appInstances.length }}
-                <span *ngIf="runtimeApp.appInstances.length > 1">instances</span>
-                <span *ngIf="!(runtimeApp.appInstances.length > 1)">instance</span>
+                <span *ngIf="runtimeApp.appInstances.length > 1">{{ 'runtime.main.instances' | translate }}</span>
+                <span *ngIf="!(runtimeApp.appInstances.length > 1)">{{ 'runtime.main.instance' | translate }}</span>
               </p>
             </div>
             <div class="card-footer">
               <button class="btn btn-sm btn-link" (click)="details(runtimeApp)">View details</button>
               <button class="btn btn-sm btn-link" grafanaDashboardRuntimeApp [runtimeApp]="runtimeApp">
-                Grafana dashboard
+                {{ 'runtime.main.grafana' | translate }}
               </button>
               <button class="btn btn-sm btn-link" wavefrontDashboardRuntimeApp [runtimeApp]="runtimeApp">
-                Wavefront dashboard
+                {{ 'runtime.main.wavefront' | translate }}
               </button>
             </div>
           </div>
@@ -54,7 +44,7 @@
         <div class="alert-icon-wrapper">
           <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
         </div>
-        <span class="alert-text"> There are currently <strong>no applications running</strong>. </span>
+        <span class="alert-text" [innerHTML]="'runtime.main.noApp' | translate"></span>
       </div>
     </div>
   </div>
@@ -62,7 +52,7 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading runtime...
+  {{ 'runtime.main.loading' | translate }}
 </div>
 
 <app-runtime-details #detailsModal></app-runtime-details>

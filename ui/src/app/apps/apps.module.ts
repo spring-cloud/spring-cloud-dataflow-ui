@@ -16,6 +16,7 @@ import {PropsComponent} from './add/props/props.component';
 import {RegisterComponent} from './add/register/register.component';
 import {UriComponent} from './add/uri/uri.component';
 import {WebsiteStartersComponent} from './add/website-starters/website-starters.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {WebsiteStartersComponent} from './add/website-starters/website-starters.
     SharedModule,
     ClarityModule,
     SecurityModule,
-    AppsRoutingModule
+    AppsRoutingModule,
+    TranslateModule
   ],
   providers: []
 })

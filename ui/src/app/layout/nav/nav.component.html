@@ -6,7 +6,7 @@
 
   <a clrVerticalNavLink routerLink="apps" routerLinkActive="active">
     <clr-icon shape="applications" class="is-solid" clrVerticalNavIcon></clr-icon>
-    Applications
+    {{ 'layout.nav.applications' | translate }}
   </a>
 
   <clr-vertical-nav-group
@@ -16,10 +16,14 @@
     appFeature="streams"
   >
     <clr-icon shape="cloud-scale" clrVerticalNavIcon></clr-icon>
-    Streams
+    {{ 'layout.nav.streams' | translate }}
     <clr-vertical-nav-group-children>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="streams/list"> Streams </a>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="streams/runtime"> Runtime </a>
+      <a clrVerticalNavLink routerLinkActive="active" routerLink="streams/list">
+        {{ 'layout.nav.streams' | translate }}
+      </a>
+      <a clrVerticalNavLink routerLinkActive="active" routerLink="streams/runtime">
+        {{ 'layout.nav.runtime' | translate }}
+      </a>
     </clr-vertical-nav-group-children>
   </clr-vertical-nav-group>
 
@@ -30,11 +34,17 @@
     appFeature="tasks"
   >
     <clr-icon shape="blocks-group" clrVerticalNavIcon></clr-icon>
-    Tasks / Jobs
+    {{ 'layout.nav.tasksJobs' | translate }}
     <clr-vertical-nav-group-children>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/tasks"> Tasks </a>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/task-executions"> Task executions </a>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/job-executions"> Job executions </a>
+      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/tasks">
+        {{ 'layout.nav.tasks' | translate }}
+      </a>
+      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/task-executions">
+        {{ 'layout.nav.taskExecution' | translate }}
+      </a>
+      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/job-executions">
+        {{ 'layout.nav.jobExecution' | translate }}
+      </a>
       <a
         clrVerticalNavLink
         routerLinkActive="active"
@@ -42,16 +52,18 @@
         [appRole]="[]"
         appFeature="schedules"
       >
-        Schedules
+        {{ 'layout.nav.schedules' | translate }}
       </a>
     </clr-vertical-nav-group-children>
   </clr-vertical-nav-group>
 
   <clr-vertical-nav-group routerLinkActive="active" clrVerticalNavGroupExpanded="false">
     <clr-icon shape="briefcase" clrVerticalNavIcon></clr-icon>
-    Manage
+    {{ 'layout.nav.manage' | translate }}
     <clr-vertical-nav-group-children>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="manage/records"> Audit Records </a>
+      <a clrVerticalNavLink routerLinkActive="active" routerLink="manage/records">
+        {{ 'layout.nav.auditRecords' | translate }}
+      </a>
       <a
         clrVerticalNavLink
         routerLinkActive="active"
@@ -59,7 +71,7 @@
         [appRole]="[]"
         appFeature="streams,tasks"
       >
-        Tools
+        {{ 'layout.nav.tools' | translate }}
       </a>
     </clr-vertical-nav-group-children>
   </clr-vertical-nav-group>

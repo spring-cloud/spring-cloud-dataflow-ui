@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import {TaskService} from '../../../shared/api/task.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 
@@ -14,7 +15,11 @@ export class CleanupComponent {
   status = 'all';
   @Output() onCleaned = new EventEmitter();
 
-  constructor(private taskService: TaskService, private notificationService: NotificationService) {}
+  constructor(
+    private taskService: TaskService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
+  ) {}
 
   open(status: string): void {
     this.status = status;
@@ -23,7 +28,10 @@ export class CleanupComponent {
       this.count = count;
       this.loading = false;
       if (this.count.all === 0) {
-        this.notificationService.warning('No execution', 'There is no execution.');
+        this.notificationService.warning(
+          this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionTitle'),
+          this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionContent')
+        );
         this.isOpen = false;
       }
     });
@@ -36,14 +44,16 @@ export class CleanupComponent {
     this.taskService.taskExecutionsClean(null, this.status === 'completed').subscribe(
       () => {
         this.notificationService.success(
-          'Clean up execution(s)',
-          `${this.status === 'completed' ? this.count.completed : this.count.all} execution(s) cleaned up.`
+          this.translate.instant('tools.modal.cleanUp.message.successTitle'),
+          this.translate.instant('tools.modal.cleanUp.message.successContent', {
+            count: this.status === 'completed' ? this.count.completed : this.count.all
+          })
         );
         this.onCleaned.emit(this.count);
         this.isOpen = false;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.isOpen = false;
       }
     );

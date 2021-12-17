@@ -1,8 +1,5 @@
 <form [formGroup]="formGroup" (submit)="deployStream()">
-  <p>
-    Enter the list of properties into the text area field below. Alternatively, you can also select a file in your local
-    file system, which is used to populate the text area field.
-  </p>
+  <p [innerHTML]="'streams.deploy.freetext.description' | translate"></p>
   <div class="form-textarea">
     <div class="numbers">
       <ng-template ngFor let-item [ngForOf]="lines">
@@ -23,8 +20,6 @@
           (click)="propertiesFile.click()"
           style="border-right: 0"
         >
-          <!--      tippy-->
-          <!--      [tippyOptions]="{ content: 'Please provide a text file containing properties. This will be used to populate the text area above.', placement: 'right' }"-->
           <input
             formControlName="file"
             id="propertiesFile"
@@ -33,27 +28,27 @@
             #propertiesFile
             (change)="fileChange($event)"
           />
-          Import a local file
+          {{ 'commons.importFile' | translate }}
         </button>
         <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
-          <span
-            >Please provide a text file containing properties. This will be used to populate the text area above.</span
-          >
+          <span [innerHTML]="'streams.deploy.freetext.tooltip' | translate"></span>
         </clr-tooltip-content>
       </clr-tooltip>
 
-      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">Export</button>
+      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">
+        {{ 'streams.deploy.main.export' | translate }}
+      </button>
       <button id="btn-copy" type="button" class="btn btn-sm btn btn-secondary" (click)="copyToClipboard()">
-        Copy to Clipboard
+        {{ 'streams.deploy.main.copy' | translate }}
       </button>
     </div>
   </div>
 
   <div>
-    <a id="btn-cancel" class="btn btn-default" routerLink="/streams/list">Cancel</a>
+    <a id="btn-cancel" class="btn btn-default" routerLink="/streams/list">{{ 'commons.cancel' | translate }}</a>
     <button id="btn-deploy" type="submit" class="btn btn-primary">
-      <span *ngIf="!isDeployed">Deploy the stream</span>
-      <span *ngIf="isDeployed">Update the stream</span>
+      <span *ngIf="!isDeployed">{{ 'streams.deploy.freetext.deploy' | translate }}</span>
+      <span *ngIf="isDeployed">{{ 'streams.deploy.freetext.update' | translate }}</span>
     </button>
   </div>
 </form>

@@ -12,6 +12,8 @@ import {NotificationServiceMock} from '../../../tests/service/notification.servi
 import {KeyValueComponent} from '../../../shared/component/key-value/key-value.component';
 import {throwError} from 'rxjs';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('apps/props/props.component.ts', () => {
   let component: PropsComponent;
@@ -26,6 +28,7 @@ describe('apps/props/props.component.ts', () => {
           ReactiveFormsModule,
           FormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

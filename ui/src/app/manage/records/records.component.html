@@ -1,7 +1,9 @@
-<h1>Audit Records</h1>
+<h1>{{ 'auditRecords.title' | translate }}</h1>
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" #datagrid>
   <clr-dg-action-bar>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      {{ 'commons.refresh' | translate }}
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     class="cell-id"
@@ -10,7 +12,7 @@
     (clrDgColumnResize)="updateContext('sizeId', $event)"
     [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName:0 | async"
   >
-    <ng-container> ID </ng-container>
+    <ng-container>{{ 'auditRecords.id' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -20,7 +22,7 @@
     [clrFilterValue]="context.dates || []"
     [style.width.px]="context.sizeCreatedOn | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Created On </ng-container>
+    <ng-container>{{ 'auditRecords.createdOn' | translate }}</ng-container>
     <clr-dg-filter [clrDgFilter]="datesFilter">
       <app-clr-datagrid-date-filter [value]="context.dates" #datesFilter></app-clr-datagrid-date-filter>
     </clr-dg-filter>
@@ -33,7 +35,7 @@
     [style.width.px]="context.sizeAuditAction | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Actions
+      {{ 'auditRecords.actions' | translate }}
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
     <clr-dg-filter [clrDgFilter]="actionFilter">
@@ -48,7 +50,7 @@
     [style.width.px]="context.sizeAuditOperation | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Operations
+      {{ 'auditRecords.operations' | translate }}
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
     <clr-dg-filter [clrDgFilter]="operationFilter">
@@ -63,7 +65,7 @@
     [style.width.px]="context.sizeCorrelationId | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Operation ID
+      {{ 'auditRecords.operationID' | translate }}
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
@@ -74,7 +76,7 @@
     [style.width.px]="context.sizeCreatedBy | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Create by
+      {{ 'auditRecords.createBy' | translate }}
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
@@ -85,7 +87,7 @@
     [style.width.px]="context.sizePlatformName | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      Platform name
+      {{ 'auditRecords.platformName' | translate }}
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
@@ -108,46 +110,60 @@
       ><span class="text-truncate">{{ record.platformName || 'N/A' }}</span></clr-dg-cell
     >
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder>{{ 'auditRecords.noResult' | translate }}</clr-dg-placeholder>
   <clr-dg-detail *clrIfDetail="let detail">
     <clr-dg-detail-header> Record {{ detail.auditRecordId }} </clr-dg-detail-header>
     <clr-dg-detail-body>
       <table class="table">
         <thead>
-          <th class="left" width="150px">Property</th>
+          <th class="left" width="150px">{{ 'auditRecords.property' | translate }}</th>
           <th class="left">Value</th>
         </thead>
         <tbody>
           <tr>
-            <td class="left"><strong>Created On</strong></td>
+            <td class="left">
+              <strong>{{ 'auditRecords.createdOn' | translate }}</strong>
+            </td>
             <td class="left">{{ detail.createdOn | datetime }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Actions</strong></td>
+            <td class="left">
+              <strong>{{ 'auditRecords.actions' | translate }}</strong>
+            </td>
             <td class="left">
               <span class="{{ detail.labelActionClass() }}">{{ detail.auditAction }}</span>
             </td>
           </tr>
           <tr>
-            <td class="left"><strong>Operations</strong></td>
+            <td class="left">
+              <strong>{{ 'auditRecords.operations' | translate }}</strong>
+            </td>
             <td class="left">
               <span class="label">{{ detail.auditOperation }}</span>
             </td>
           </tr>
           <tr>
-            <td class="left"><strong>Operation ID</strong></td>
+            <td class="left">
+              <strong>{{ 'auditRecords.operationID' | translate }}</strong>
+            </td>
             <td class="left">{{ detail.correlationId }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Create by</strong></td>
+            <td class="left">
+              <strong>{{ 'auditRecords.createBy' | translate }}</strong>
+            </td>
             <td class="left">{{ detail.createdBy || 'N/A' }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Platform name</strong></td>
+            <td class="left">
+              <strong>{{ 'auditRecords.platformName' | translate }}</strong>
+            </td>
             <td class="left">{{ detail.platformName || 'N/A' }}</td>
           </tr>
           <tr>
-            <td class="left"><strong>Data</strong></td>
+            <td class="left">
+              <strong>{{ 'auditRecords.data' | translate }}</strong>
+            </td>
             <td class="left">
               <code style="word-break: break-all">{{ detail.auditData || 'N/A' }}</code>
             </td>
@@ -163,8 +179,13 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Records per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} records
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
+        'auditRecords.recordsPerPage' | translate
+      }}</clr-dg-page-size>
+      {{
+        'auditRecords.pagination'
+          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+      }}
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

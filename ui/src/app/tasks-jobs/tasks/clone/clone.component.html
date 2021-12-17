@@ -1,6 +1,6 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="tasks" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="tasks?.length === 1" class="modal-title">Clone Task</h3>
-  <h3 *ngIf="tasks?.length > 1" class="modal-title">Clone Tasks</h3>
+  <h3 *ngIf="tasks?.length === 1" class="modal-title">{{ 'tasks.clone.cloneTitle' | translate }}</h3>
+  <h3 *ngIf="tasks?.length > 1" class="modal-title">{{ 'tasks.clones.cloneTitle' | translate }}</h3>
   <div class="modal-body" *ngIf="!isRunning && !loading">
     <form
       clrForm
@@ -10,27 +10,27 @@
       clrLabelSize="4"
       style="padding: 0; margin: 0"
     >
-      <div style="margin-bottom: 0">This action will create the following <strong>task(s)</strong>:</div>
+      <div style="margin-bottom: 0" [innerHTML]="'tasks.clone.content' | translate"></div>
       <div class="alert alert-danger" *ngIf="form?.hasError('uniqueTaskNames')">
         <div class="alert-items">
           <div class="alert-item static">
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <div class="alert-text">Duplicate task name, please check input names.</div>
+            <div class="alert-text">{{ 'tasks.clone.duplication' | translate }}</div>
           </div>
         </div>
       </div>
       <div *ngFor="let task of tasks; let i = index" class="card" style="padding: 10px 0">
         <div class="card-block">
           <div class="clr-form-control clr-row" style="margin-top: 0; height: 42px">
-            <label class="clr-control-label clr-col-12 clr-col-md-2">Definition:</label>
+            <label class="clr-control-label clr-col-12 clr-col-md-2">{{ 'tasks.main.definition' | translate }}:</label>
             <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
               <span class="dsl-text dsl-truncate">{{ task.dslText }}</span>
             </div>
           </div>
           <clr-input-container style="margin-top: 0">
-            <label class="clr-col-12 clr-col-md-2">Name</label>
+            <label class="clr-col-12 clr-col-md-2">{{ 'tasks.main.name' | translate }}</label>
             <input
               clrInput
               name="name"
@@ -40,14 +40,16 @@
               class="clr-col-12 clr-col-md-10"
               style="width: 100%"
             />
-            <clr-control-error *clrIfError="'required'"> Task name is required. </clr-control-error>
+            <clr-control-error *clrIfError="'required'">{{ 'tasks.clone.requiredName' | translate }}</clr-control-error>
             <clr-control-error *clrIfError="'pattern'">
-              Invalid task name (no space or special charaters).
+              {{ 'tasks.clone.invalidName' | translate }}
             </clr-control-error>
             <clr-control-error *clrIfError="'maxLength'">
-              Task name must be less than 255 characters long.
+              {{ 'tasks.clone.maxLengthName' | translate }}
             </clr-control-error>
-            <clr-control-error *clrIfError="'uniqueTaskName'"> Task name is already taken. </clr-control-error>
+            <clr-control-error *clrIfError="'uniqueTaskName'">{{
+              'tasks.clone.uniqueName' | translate
+            }}</clr-control-error>
           </clr-input-container>
         </div>
       </div>
@@ -55,17 +57,19 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Loading...
+    {{ 'commons.loading' | translate }}
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Cloning task(s)...
+    {{ 'tasks.clone.cloning' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="isRunning">
-      <span *ngIf="tasks.length === 1">Clone the task</span>
-      <span *ngIf="tasks.length > 1">Clone the tasks</span>
+      <span *ngIf="tasks.length === 1">{{ 'tasks.clone.clone' | translate }}</span>
+      <span *ngIf="tasks.length > 1">{{ 'tasks.clone.clone2' | translate }}</span>
     </button>
   </div>
 </clr-modal>

@@ -1,23 +1,35 @@
 <form clrForm>
   <clr-modal [(clrModalOpen)]="isOpen" clrModalSize="xs">
-    <h3 class="modal-title">Settings</h3>
+    <h3 class="modal-title">{{ 'settings.title' | translate }}</h3>
     <div class="modal-body">
+      <clr-select-container *ngIf="languageActive && languages.length > 1">
+        <label>{{ 'settings.language' | translate }}</label>
+        <select
+          clrSelect
+          name="language"
+          [value]="languageActive.value"
+          (change)="languageActiveSettingOnChange($event.target.value)"
+        >
+          <option value="{{ lang }}" *ngFor="let lang of languages">{{ 'settings.' + lang | translate }}</option>
+        </select>
+        <clr-control-helper>{{ 'settings.languageDescription' | translate }}</clr-control-helper>
+      </clr-select-container>
       <clr-select-container *ngIf="themeActive">
-        <label>Theme</label>
+        <label>{{ 'settings.theme' | translate }}</label>
         <select
           clrSelect
           name="theme"
           [value]="themeActive.value"
           (change)="themeActiveSettingOnChange($event.target.value)"
         >
-          <option value="default">default</option>
-          <option value="dark">dark</option>
+          <option value="default">{{ 'settings.defaultTheme' | translate }}</option>
+          <option value="dark">{{ 'settings.darkTheme' | translate }}</option>
         </select>
-        <clr-control-helper> You can choose between dark and default theme </clr-control-helper>
+        <clr-control-helper>{{ 'settings.themeDescription' | translate }}</clr-control-helper>
       </clr-select-container>
 
       <clr-select-container *ngIf="resultsPerPage">
-        <label>Results</label>
+        <label>{{ 'settings.results' | translate }}</label>
         <select
           clrSelect
           name="theme"
@@ -29,11 +41,13 @@
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <clr-control-helper> You can choose the number of results per page. </clr-control-helper>
+        <clr-control-helper>
+          {{ 'settings.resultsDescription' | translate }}
+        </clr-control-helper>
       </clr-select-container>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
+      <button type="button" class="btn btn-outline" (click)="isOpen = false" translate>settings.close</button>
     </div>
   </clr-modal>
 </form>

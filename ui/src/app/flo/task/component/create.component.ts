@@ -29,7 +29,7 @@ import {TaskGraphPropertiesSource} from '../properties/task-properties-source';
         (contentValidated)="contentValidated = $event"
         (validationMarkers)="validationMarkers = $event"
         (onProperties)="handleLinkEvent($event)"
-        searchFilterPlaceHolder="Applications"
+        [searchFilterPlaceHolder]="'flo.commons.searchForApplications' | translate"
       >
         <div header class="flow-definition-container">
           <dsl-editor
@@ -37,7 +37,7 @@ import {TaskGraphPropertiesSource} from '../properties/task-properties-source';
             line-numbers="true"
             line-wrapping="true"
             (focus)="editorContext.graphToTextSync = false"
-            placeholder="Enter task definitions here..."
+            [placeholder]="'flo.stream.enterTaskDefinition' | translate"
             (blur)="editorContext.graphToTextSync = true"
             [lintOptions]="lintOptions"
           ></dsl-editor>
@@ -77,10 +77,14 @@ import {TaskGraphPropertiesSource} from '../properties/task-properties-source';
           <clr-icon shape="plus-circle"></clr-icon>
         </button>
         <div class="divider"></div>
-        <button (click)="arrangeAll()" class="btn btn-sm btn-secondary" type="button">Fit to Content</button>
+        <button (click)="arrangeAll()" class="btn btn-sm btn-secondary" type="button">
+          {{ 'flo.commons.fitToContent' | translate }}
+        </button>
       </div>
       <div class="overlay-loader" *ngIf="!isReady">
-        <div style="padding: 10px 0;"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; Loading editor...</div>
+        <div style="padding: 10px 0;">
+          <clr-spinner clrSmall clrInline></clr-spinner>&nbsp;{{ 'commons.loading' | translate }}
+        </div>
       </div>
       <app-properties-dialog-content #propertiesDialog></app-properties-dialog-content>
     </div>

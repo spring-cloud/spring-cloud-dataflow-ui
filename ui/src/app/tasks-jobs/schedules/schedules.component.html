@@ -1,4 +1,4 @@
-<h1>Schedules</h1>
+<h1>{{ 'schedules.main.title' | translate }}</h1>
 
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
@@ -8,38 +8,44 @@
   #datagrid
 >
   <clr-dg-action-bar *ngIf="grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">Cancel</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button
       type="button"
       [disabled]="selected?.length === 0"
       class="btn btn-sm btn-outline-danger"
       (click)="destroySchedules(selected)"
     >
-      Delete schedules(s)
+      {{ 'schedules.main.deleteSchedules' | translate }}
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">Group Actions</button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)">
+      {{ 'commons.groupActions' | translate }}
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      {{ 'commons.refresh' | translate }}
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeName', $event)"
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Name </ng-container>
+    <ng-container>{{ 'schedules.main.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeTaskName', $event)"
     [style.width.px]="context.sizeTaskName | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Task name </ng-container>
+    <ng-container>{{ 'schedules.main.taskName' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizePlatform', $event)"
     [style.width.px]="context.sizePlatform | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Platform </ng-container>
+    <ng-container>{{ 'schedules.main.platform' | translate }}</ng-container>
     <clr-dg-filter [clrDgFilter]="platformFilter">
       <app-clr-datagrid-platform-filter [value]="context.platform" #platformFilter></app-clr-datagrid-platform-filter>
     </clr-dg-filter>
@@ -48,7 +54,7 @@
     (clrDgColumnResize)="updateContext('sizeCronExpression', $event)"
     [style.width.px]="context.sizeCronExpression | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Cron Expression </ng-container>
+    <ng-container>{{ 'schedules.main.cronExpression' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let schedule of page?.items" [clrDgItem]="schedule">
@@ -63,14 +69,20 @@
     <clr-dg-cell>{{ schedule.platform || 'N/A' }}</clr-dg-cell>
     <clr-dg-cell>{{ schedule.cronExpression || 'N/A' }}</clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
-      <button class="action-item" (click)="details(schedule)">Details</button>
-      <button class="action-item" (click)="taskDetails(schedule)">Task details</button>
-      <button class="action-item" (click)="createSchedule(schedule)">Add new schedule</button>
-      <button class="action-item" (click)="destroySchedules([schedule])">Destroy</button>
+      <button class="action-item" (click)="details(schedule)">{{ 'schedules.main.details' | translate }}</button>
+      <button class="action-item" (click)="taskDetails(schedule)">
+        {{ 'schedules.main.taskDetails' | translate }}
+      </button>
+      <button class="action-item" (click)="createSchedule(schedule)">
+        {{ 'schedules.main.addNewSchedule' | translate }}
+      </button>
+      <button class="action-item" (click)="destroySchedules([schedule])">
+        {{ 'schedules.main.destroy' | translate }}
+      </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
-  <clr-dg-footer> {{ page?.total }} schedules </clr-dg-footer>
+  <clr-dg-placeholder>{{ 'commons.noResultFound' | translate }}</clr-dg-placeholder>
+  <clr-dg-footer>{{ 'schedules.main.pagination' | translate: {count: page?.total} }}</clr-dg-footer>
 </clr-datagrid>
 
 <app-schedule-destroy #destroyModal (onDestroyed)="refresh(state)"></app-schedule-destroy>

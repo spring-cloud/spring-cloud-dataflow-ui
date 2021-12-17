@@ -4,6 +4,7 @@ import {KeyValueValidator} from './key-value.validator';
 import {KeyValueValidators} from './key-value.interface';
 import {ClipboardCopyService} from '../../service/clipboard-copy.service';
 import {NotificationService} from '../../service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-key-value',
@@ -40,7 +41,7 @@ import {NotificationService} from '../../service/notification.service';
             type="file"
             (change)="fileChange($event)"
           />
-          Import a file
+          {{ 'commons.importFile' | translate }}
         </a>
         <a class="btn btn-sm btn-secondary" (click)="copyClipboard()">Copy to the clipboard</a>
       </div>
@@ -63,7 +64,11 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
   lines: Array<any> = [];
   @ViewChild('propertiesFile', {static: true}) propertiesFile;
 
-  constructor(private clipboardCopyService: ClipboardCopyService, private notificationService: NotificationService) {
+  constructor(
+    private clipboardCopyService: ClipboardCopyService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
+  ) {
     this.form = new FormGroup({
       textarea: new FormControl(''),
       file: new FormControl('')
@@ -147,6 +152,9 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
       return;
     }
     this.clipboardCopyService.executeCopy(this.form.get('textarea').value);
-    this.notificationService.success('Content copied', 'The content have been copied to your clipboard.');
+    this.notificationService.success(
+      this.translate.instant('commons.message.copiedTitle'),
+      this.translate.instant('commons.message.copiedContent')
+    );
   }
 }

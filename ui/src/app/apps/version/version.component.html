@@ -1,12 +1,12 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning" clrModalSize="lg">
-  <h3 class="modal-title">Manage versions</h3>
+  <h3 class="modal-title">{{ 'applications.version.manageVersions' | translate }}</h3>
   <div class="modal-body" *ngIf="versions?.length > 1 && !isRunning && !loading">
     <table class="table table-striped">
       <thead>
         <tr>
           <th class="left">&nbsp;</th>
-          <th class="left">Name</th>
-          <th class="left">Type</th>
+          <th class="left">{{ 'applications.main.name' | translate }}</th>
+          <th class="left">{{ 'applications.main.type' | translate }}</th>
           <th class="left">&nbsp;</th>
         </tr>
       </thead>
@@ -24,14 +24,16 @@
             </span>
           </td>
           <td nowrap="">
-            <button type="button" class="btn btn-sm btn-secondary" (click)="unregisterConfirm(app)">Unregister</button>
+            <button type="button" class="btn btn-sm btn-secondary" (click)="unregisterConfirm(app)">
+              {{ 'applications.main.unregister' | translate }}
+            </button>
             <button
               type="button"
               [disabled]="app.defaultVersion"
               (click)="makeDefaultConfirm(app)"
               class="btn btn-sm btn-secondary"
             >
-              Set default
+              {{ 'commons.makeDefault' | translate }}
             </button>
           </td>
         </tr>
@@ -40,31 +42,34 @@
   </div>
   <div class="modal-body" *ngIf="loading">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Loading versions(s) ...
+    {{ 'applications.unregister.loadingVersions' | translate }}
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Unregistering application(s) ...
+    {{ 'applications.unregister.unregisteringApplications' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">Cancel</button>
+    <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">
+      {{ 'commons.cancel' | translate }}
+    </button>
   </div>
 </clr-modal>
 
 <app-confirm #unregisterModal (onConfirmed)="unregister()" title="Confirm unregister version" yes="Unregister">
-  This action will unregister the <strong>version {{ selected?.version }}</strong> of the application
-  <strong>{{ selected?.name }}</strong
+  {{ 'applications.version.loadingVersions' | translate }}
+  <strong>{{ 'applications.version.version' | translate }} {{ selected?.version }}</strong>
+  {{ 'applications.version.ofTheApplication' | translate }} <strong>{{ selected?.name }}</strong
   >&nbsp;<span class="{{ selected?.labelTypeClass() }}">{{ selected?.type }}</span
   >.
   <br />
-  Are you sure?
+  {{ 'commons.areYouSure' | translate }}
 </app-confirm>
 
 <app-confirm #makeDefaultModal (onConfirmed)="makeDefault()" title="Confirm make default version" yes="Make default">
-  This action will make the version <strong>{{ selected?.version }}</strong> as the default version for the application
-  <strong>{{ selected?.name }}</strong
+  {{ 'applications.version.thisActionWillMakeTheVersion' | translate }} <strong>{{ selected?.version }}</strong>
+  {{ 'applications.version.asTheDefaultVersion' | translate }} <strong>{{ selected?.name }}</strong
   >&nbsp; <span class="{{ selected?.labelTypeClass() }}">{{ selected?.type }}</span
   >.
   <br />
-  Are you sure?
+  {{ 'commons.areYouSure' | translate }}
 </app-confirm>

@@ -14,8 +14,9 @@ import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {SettingsServiceMock} from '../../tests/service/settings.service.mock';
 import {PlatformFilterComponent} from './platform.filter';
 import {TaskServiceMock} from '../../tests/api/task.service.mock';
-import {ConfirmComponent} from '../../shared/component/confirm/confirm.component';
 import {DatagridColumnPipe} from '../../shared/pipe/datagrid-column.pipe';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('tasks-jobs/schedules/schedules.component.ts', () => {
   let component: SchedulesComponent;
@@ -31,7 +32,13 @@ describe('tasks-jobs/schedules/schedules.component.ts', () => {
           RoleDirective,
           DatagridColumnPipe
         ],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,
